@@ -9,6 +9,12 @@
   const QB = {};
   window.QB = QB;
 
+  // Base URL for question-bank figures. Empty = serve relatively from
+  // /qbank/figures/ (works over file:// and when figures are committed to the
+  // repo). Set to a CDN base (e.g. "https://pub-xxxx.r2.dev/figures/") to serve
+  // figures from an external host (Cloudflare R2 / Internet Archive / etc.).
+  QB.FIGURE_BASE = "";
+
   /* ---------- data ------------------------------------------------------- */
   let _cache = null;
   QB.data = function () {
@@ -58,7 +64,7 @@
   QB.figures = function (rec) {
     const out = [];
     const push = function (arr, kind) {
-      (arr || []).forEach(function (p) { if (p) out.push({ src: "figures/" + p, kind: kind }); });
+      (arr || []).forEach(function (p) { if (p) out.push({ src: (QB.FIGURE_BASE || "figures/") + p, kind: kind }); });
     };
     push(rec.imgQ, "question");
     push(rec.fig, "figure");
