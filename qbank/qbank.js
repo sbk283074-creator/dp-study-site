@@ -11,9 +11,13 @@
 
   // Base URL for question-bank figures. Empty = serve relatively from
   // /qbank/figures/ (works over file:// and when figures are committed to the
-  // repo). Set to a CDN base (e.g. "https://pub-xxxx.r2.dev/figures/") to serve
-  // figures from an external host (Cloudflare R2 / Internet Archive / etc.).
-  QB.FIGURE_BASE = "";
+  // repo). Set to a CDN base to serve figures from an external host.
+  //
+  // We reuse the ORIGINAL full-stack platform's Netlify Blobs "figures" store
+  // directly — it already holds every referenced figure (15,798 keys) and is
+  // served by the /figures/* function on the live Netlify site. No separate
+  // upload host is needed.
+  QB.FIGURE_BASE = "https://e9ce3af0-6dfc-46ef-adc7-5d90a9e64dd2.netlify.app/figures/";
 
   /* ---------- data ------------------------------------------------------- */
   let _cache = null;
