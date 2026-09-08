@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="math">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Number &amp; algebra — Mathematics AA HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Mathematics AA HL · Topic 1</span>
+<h1 class="page-title">Number &amp; algebra</h1>
+<p class="lede">Topic 1 is the toolbox every other topic borrows from. Sequences become Maclaurin series in
+Topic 5; the binomial theorem becomes the expansion of \((1+x)^p\); logarithms let you linearise an exponential
+model in Topic 4; and complex numbers turn trigonometric identities into one-line algebra. If you are slow
+here, you are slow everywhere.</p>
+<div class="page-meta">
+  <span class="tag">39 teaching hours (HL)</span>
+  <span class="tag">HL only: counting, partial fractions, complex numbers, proof</span>
+  <span class="tag tag--hl">Paper 1 · Paper 2 · Paper 3</span>
+</div>
+
+<h2>1.1 Standard form, SI units and accuracy</h2>
+
+<p>Standard form means writing a number as \(a\times10^k\) with \(1\le a&lt;10\) and \(k\in\mathbb{Z}\). You use it
+because Physical quantities span forty orders of magnitude: the charge on an electron is
+\(1.60\times10^{-19}\) C, Avogadro's constant is \(6.02\times10^{23}\) mol<sup>−1</sup>. Prefixes are just
+powers of ten with names: nano \(10^{-9}\), micro \(10^{-6}\), milli \(10^{-3}\), kilo \(10^{3}\), mega
+\(10^{6}\), giga \(10^{9}\).</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it</span>
+  <p>Three habits. (1) <strong>Estimate the power of ten first</strong>, then the mantissa — most errors are
+  wrong powers, not wrong digits. (2) <strong>Do not round until the last line</strong>; store intermediate
+  values on your GDC. (3) In a "show that" or "calculate" question, give the final answer to 3 significant
+  figures unless told otherwise, and <em>write the units</em> — the IB routinely allocates a mark for units in
+  applied questions.</p>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Your GDC displays \(3.2\mathrm{E}{-4}\) and students copy \(3.2\times10^{4}\). The "E" notation means
+  \(\times10^{\text{that power}}\), sign included. Second trap: \(\mathrm{e}\) (the number 2.718…) and E
+  (exponent) look identical on a calculator screen; check the context. Third: in standard-form division,
+  \(\frac{6\times10^8}{3\times10^{-2}} = 2\times10^{10}\), not \(2\times10^{6}\) — subtract the exponents:
+  \(8-(-2)=10\).</p>
+</div>
+
+<h2>1.2 Sequences and series</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p>A <strong>sequence</strong> is an ordered list; a <strong>series</strong> is the sum of a sequence. Almost
+every exam question is one of two types: "find the \(n\)th term" (use the closed form) or "find the sum of the
+first \(n\) terms" (use the sum formula). Recognising which type you have is 90% of the work.</p>
+
+<h3>Arithmetic sequences</h3>
+
+<p><strong>Intuition:</strong> an arithmetic sequence is one where you add the same amount every time. Salary
+with a fixed annual raise, a ball rolling down a slope gaining equal speed each second: constant
+<em>difference</em>.</p>
+
+<p><strong>Formal statement:</strong> with first term \(u_1\) and common difference \(d\),</p>
+\[u_n = u_1 + (n-1)d,\qquad S_n = \frac{n}{2}\bigl(2u_1+(n-1)d\bigr) = \frac{n}{2}(u_1+u_n).\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Why \(S_n = \frac{n}{2}(u_1+u_n)\) (Gauss's pairing argument)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Write the sum forwards and backwards:
+      \[S_n = u_1 + (u_1+d) + \cdots + (u_n-d) + u_n\]
+      \[S_n = u_n + (u_n-d) + \cdots + (u_1+d) + u_1\]</li>
+      <li>Add the two lines term by term. Each pair sums to \(u_1+u_n\), and there are \(n\) pairs:
+      \(2S_n = n(u_1+u_n)\).</li>
+      <li>Hence \(S_n = \dfrac{n}{2}(u_1+u_n)\). Substituting \(u_n=u_1+(n-1)d\) gives the other form.</li>
+    </ol>
+    <p><strong>Meaning:</strong> the sum is <em>number of terms × average of first and last</em>. Because an
+    arithmetic sequence is linear, its average really is the midpoint of the ends. <strong>Wrong tool when:</strong>
+    the terms multiply rather than add — then you need the geometric formula.</p>
+  </div>
+</details>
+
+<h3>Geometric sequences and series</h3>
+
+<p><strong>Intuition:</strong> a geometric sequence multiplies by the same factor each step. Compound interest,
+radioactive decay, a bouncing ball losing 20% of its height each bounce: constant <em>ratio</em>.</p>
+
+<p><strong>Formal statement:</strong> with first term \(u_1\) and common ratio \(r\),</p>
+\[u_n = u_1 r^{n-1},\qquad S_n = \frac{u_1(r^n-1)}{r-1} = \frac{u_1(1-r^n)}{1-r}\quad (r\neq1).\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> The geometric sum by the "multiply and subtract" trick</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>\(S_n = u_1 + u_1r + u_1r^2 + \cdots + u_1r^{n-1}\).</li>
+      <li>Multiply everything by \(r\): \(rS_n = u_1r + u_1r^2 + \cdots + u_1r^{n}\).</li>
+      <li>Subtract: \((1-r)S_n = u_1 - u_1r^{n} = u_1(1-r^n)\).</li>
+      <li>Divide: \(S_n = \dfrac{u_1(1-r^n)}{1-r}\).</li>
+    </ol>
+    <p><strong>Meaning:</strong> every term except the first and the last cancels — the series "telescopes after
+    scaling". This same trick (multiply by the ratio, subtract) is the standard way to sum any series whose
+    terms are of the form \(ar^{k}\), including the arithmetico-geometric ones you meet in Paper 3.</p>
+  </div>
+</details>
+
+<h3>Infinite geometric series and sigma notation</h3>
+
+<p><strong>Intuition:</strong> if \(|r|&lt;1\), each term is a fixed fraction of the previous one, so the sum
+creeps towards a limit and stops. If \(|r|\ge1\), the terms do not shrink and the sum runs away.</p>
+
+\[S_\infty = \frac{u_1}{1-r}\quad\text{for }|r|&lt;1.\]
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Number line showing partial sums of a geometric series converging to 2">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="60" y1="180" x2="600" y2="180" stroke="#334155" stroke-width="2"/>
+    <line x1="60" y1="170" x2="60" y2="190" stroke="#334155" stroke-width="2"/>
+    <line x1="276" y1="170" x2="276" y2="190" stroke="#334155" stroke-width="2"/>
+    <line x1="384" y1="170" x2="384" y2="190" stroke="#334155" stroke-width="2"/>
+    <line x1="438" y1="170" x2="438" y2="190" stroke="#334155" stroke-width="2"/>
+    <line x1="465" y1="170" x2="465" y2="190" stroke="#334155" stroke-width="2"/>
+    <line x1="556" y1="170" x2="556" y2="190" stroke="#3653d6" stroke-width="3"/>
+    <circle cx="168" cy="180" r="5" fill="#151923"/>
+    <circle cx="276" cy="180" r="5" fill="#151923"/>
+    <circle cx="384" cy="180" r="5" fill="#151923"/>
+    <circle cx="438" cy="180" r="5" fill="#151923"/>
+    <circle cx="465" cy="180" r="5" fill="#151923"/>
+    <circle cx="479" cy="180" r="4" fill="#6c7788"/>
+    <text x="60" y="215" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">0</text>
+    <text x="160" y="215" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">S1=1</text>
+    <text x="268" y="215" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">S2=1.5</text>
+    <text x="370" y="215" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">S3=1.75</text>
+    <text x="495" y="215" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">S5=1.9375</text>
+    <text x="548" y="160" font-size="13" font-family="system-ui, sans-serif" fill="#3653d6">Limit = 2</text>
+    <path d="M168 180 L 276 180" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="60" y="90" font-size="14" font-family="system-ui, sans-serif" fill="#151923">Partial sums of 1 + 1/2 + 1/4 + 1/8 + ...</text>
+    <text x="60" y="115" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">each step adds half of the remaining distance to 2</text>
+    <text x="60" y="265" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">|r| &lt; 1 the gap shrinks geometrically, so the sum converges</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> Partial sums of \(1+\frac12+\frac14+\cdots\). The \(n\)th partial sum is \(2^{}-2^{1-n}\); the gap to the limit is halved every step, which is exactly what \(|r|&lt;1\) guarantees.</figcaption>
+</figure>
+
+<p><strong>Sigma notation</strong> is compressed addition: \(\displaystyle\sum_{r=1}^{n}(3r-1)\) means "substitute
+\(r=1,2,\dots,n\) into \(3r-1\) and add". Learn to read and rewrite it instantly, because Paper 1 asks you to
+expand a sigma expression and Paper 3 asks you to prove a sigma identity by induction.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it</span>
+  <p>Standard manipulation rules (all examinable, all quick):
+  \[\sum_{r=1}^{n}(a_r+b_r)=\sum a_r + \sum b_r,\qquad \sum_{r=1}^{n}ka_r = k\sum a_r,\qquad \sum_{r=1}^{n} k = nk.\]
+  To turn \(\sum_{r=1}^{n}(3r-1)\) into a closed form: split as \(3\sum r - \sum 1 = 3\cdot\frac{n(n+1)}{2}-n
+  = \frac{3n^2+n}{2}\). Then check with \(n=1\): gives 2, and the original first term is \(3(1)-1=2\). ✓</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 6 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The third term of an arithmetic sequence is 10 and the seventh term is 22.
+    (a) Find the first term and the common difference. (b) Find the smallest \(n\) for which \(S_n>1000\).</p>
+    <ol class="steps">
+      <li>Translate to equations: \(u_3=u_1+2d=10\), \(u_7=u_1+6d=22\).</li>
+      <li>Subtract: \(4d = 12 \Rightarrow d = 3\). Then \(u_1 = 10-6 = 4\).</li>
+      <li>Sum: \(S_n = \dfrac{n}{2}\bigl(2(4)+(n-1)3\bigr)=\dfrac{n}{2}(3n+5)\).</li>
+      <li>Solve \(\dfrac{n(3n+5)}{2}>1000 \Rightarrow 3n^2+5n-2000>0\).</li>
+      <li>Quadratic formula: \(n = \dfrac{-5+\sqrt{25+24000}}{6}=\dfrac{-5+\sqrt{24025}}{6}\). \(\sqrt{24025}=155\), so \(n=\dfrac{150}{6}=25\).</li>
+      <li>Check: \(S_{25}=\dfrac{25}{2}(80)=1000\) — not greater. So \(n=26\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(u_1=4,\ d=3,\ n=26\). Marks: two for the equations, one for \(d\) and \(u_1\), two for setting up and solving the inequality, one for noticing that the equality case at \(n=25\) does <em>not</em> satisfy "&gt;" .</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A geometric series has first term 27 and common ratio \(r\) with \(0&lt;r&lt;1\).
+    The sum of the first two terms is 36. (a) Show that \(r=\dfrac13\). (b) Hence find \(S_\infty\).
+    (c) Find the least \(n\) such that \(S_n > 0.99S_\infty\).</p>
+    <ol class="steps">
+      <li>\(27+27r = 36 \Rightarrow 27r = 9 \Rightarrow r=\dfrac13\). ■</li>
+      <li>\(S_\infty = \dfrac{27}{1-\frac13} = \dfrac{27}{\frac23}=40.5\).</li>
+      <li>\(S_n = \dfrac{27(1-(\frac13)^n)}{1-\frac13} = 40.5\left(1-3^{-n}\right)\).</li>
+      <li>Require \(40.5(1-3^{-n}) > 0.99(40.5) \Rightarrow 1-3^{-n} > 0.99 \Rightarrow 3^{-n} &lt; 0.01\).</li>
+      <li>\(3^{n} > 100\). Since \(3^4=81\) and \(3^5=243\), the least \(n\) is 5.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) shown; (b) \(S_\infty=40.5\); (c) \(n=5\). The "hence" mark in (b) requires you to use \(S_\infty=\frac{u_1}{1-r}\) with the \(r\) from (a), not to recompute. Sanity check: \(S_5 = 40.5(1-1/243)=40.33\), and 99% of 40.5 is 40.095 — consistent.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>(1) \(S_n\) formulas have two versions with \(r-1\) and \(1-r\); pick the one that keeps the denominator
+  positive to avoid sign errors. (2) \(S_\infty\) requires \(|r|&lt;1\) — state the condition, it is often a mark.
+  (3) With an alternating ratio \(r=-\frac12\) the series <em>does</em> converge; \(|r|&lt;1\) means \(-1&lt;r&lt;1\), not
+  \(0&lt;r&lt;1\). (4) "Sum to infinity" and "the limit of the sequence" are different: for \(u_n=27(1/3)^{n-1}\) the
+  sequence tends to 0 while \(S_\infty=40.5\).</p>
+</div>
+
+<h3>Financial applications</h3>
+<span class="badge badge--sl">SL / HL</span>
+
+<p>Compound interest is a geometric sequence in disguise: each period multiplies the balance by
+\(\left(1+\frac{r}{100k}\right)\). The IB gives you \(FV = PV\left(1+\frac{r}{100k}\right)^{kn}\) in the
+booklet; <strong>loans and annuities are not given</strong> and must be derived from the geometric sum.</p>
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> The loan-repayment (amortisation) formula</summary>
+  <div class="dbody">
+    <p>Let \(P\) = amount borrowed, \(i\) = interest rate <em>per period</em> (as a decimal), \(M\) = payment at
+    the <em>end</em> of each period, \(B_n\) = balance after \(n\) payments.</p>
+    <ol class="steps">
+      <li>\(B_1 = P(1+i)-M\).</li>
+      <li>\(B_2 = B_1(1+i)-M = P(1+i)^2 - M\bigl(1+(1+i)\bigr)\).</li>
+      <li>After \(n\) payments the pattern is \(B_n = P(1+i)^n - M\bigl(1+(1+i)+\cdots+(1+i)^{n-1}\bigr)\).</li>
+      <li>The bracket is a geometric sum with \(n\) terms, first term 1, ratio \((1+i)\):
+      \(\dfrac{(1+i)^n-1}{i}\).</li>
+      <li>Hence \(B_n = P(1+i)^n - M\,\dfrac{(1+i)^n-1}{i}\).</li>
+      <li>Set \(B_n=0\) and rearrange: \(M = \dfrac{Pi(1+i)^n}{(1+i)^n-1}\). This is the repayment formula.</li>
+    </ol>
+    <p><strong>Meaning:</strong> two geometric processes fight each other — the debt grows by \((1+i)^n\) while
+    your payments accumulate with interest. <strong>Wrong tool when:</strong> payments are made at the start of
+    the period (then multiply the payment bracket by one extra \((1+i)\)), or the rate changes midway (then
+    restart the recurrence at the change point — the GDC's financial solver handles this; one formula does not).</p>
+  </div>
+</details>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Graph of a loan balance falling and an annuity fund rising over time">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="70" y1="270" x2="600" y2="270" stroke="#334155" stroke-width="2"/>
+    <line x1="70" y1="270" x2="70" y2="40" stroke="#334155" stroke-width="2"/>
+    <path d="M70 70 C 200 90, 330 160, 590 258" fill="none" stroke="#3653d6" stroke-width="3"/>
+    <path d="M70 258 C 220 240, 360 180, 590 70" fill="none" stroke="#b03060" stroke-width="3"/>
+    <line x1="70" y1="70" x2="590" y2="70" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+    <line x1="70" y1="258" x2="590" y2="258" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="300" y="60" font-size="13" font-family="system-ui, sans-serif" fill="#b03060">fund value (annuity)</text>
+    <text x="330" y="250" font-size="13" font-family="system-ui, sans-serif" fill="#3653d6">outstanding balance (loan)</text>
+    <text x="80" y="40" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">early payments are mostly interest</text>
+    <text x="300" y="292" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">time / years</text>
+    <text x="20" y="160" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">$</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> The same geometric machinery, twice. A loan balance decays slowly at first (most of the payment covers interest); a savings fund grows slowly at first and then accelerates. Both curves are \((1+i)^n\) in disguise.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A mortgage of \$250\,000 is taken at a nominal annual rate of 4.8%,
+    compounded monthly, with equal monthly payments over 25 years. (a) Find the monthly payment.
+    (b) Find the total interest paid.</p>
+    <ol class="steps">
+      <li>Per-period rate: \(i = \dfrac{0.048}{12}=0.004\). Number of payments: \(n = 25\times12 = 300\).</li>
+      <li>\(M = \dfrac{Pi(1+i)^n}{(1+i)^n-1} = \dfrac{250000(0.004)(1.004)^{300}}{(1.004)^{300}-1}\).</li>
+      <li>\((1.004)^{300} = 3.3122\ldots\) (GDC), so \(M = \dfrac{1000\times3.3122}{2.3122} = 1432.4\).</li>
+      <li>Total paid \(= 1432.44\times300 = 429\,732\). Interest \(= 429\,732-250\,000 = 179\,732\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \$1\,432 per month; total interest \$179\,732 (nearest dollar). Marks: one for \(i\) and \(n\), two for the substituted formula, one for the payment, one for total paid, one for the interest. Sanity check: 4.8% of \$250\,000 is \$12\,000 of interest in year one — \$1\,000 per month, so a payment of \$1\,432 is just plausible.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 4</span> IB-style · 8 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Maya saves \$500 at the end of each month into an account paying 5.4% per
+    annum, compounded monthly. She wants \$80\,000. (a) Show that the amount after \(n\) months is
+    \(A_n = 500\,\dfrac{(1.0045)^n-1}{0.0045}\). (b) Determine the number of full months needed.</p>
+    <ol class="steps">
+      <li>Each deposit grows for a different length of time, so the fund is a geometric series with first term
+      \(500\), ratio \(1.0045\), \(n\) terms: \(A_n = 500\bigl(1+1.0045+\cdots+1.0045^{\,n-1}\bigr)\).</li>
+      <li>Apply the sum formula: \(A_n = 500\,\dfrac{(1.0045)^n-1}{1.0045-1} = 500\,\dfrac{(1.0045)^n-1}{0.0045}\). ■</li>
+      <li>Set \(A_n \ge 80\,000\): \((1.0045)^n \ge 1 + \dfrac{80000(0.0045)}{500} = 1+0.72 = 1.72\).</li>
+      <li>Take logs: \(n\ln(1.0045) \ge \ln 1.72 \Rightarrow n \ge \dfrac{0.54232}{0.0044899} = 120.8\).</li>
+      <li>So 121 full months, i.e. 10 years and 1 month.</li>
+      <li>Check: \(A_{121} = 500\dfrac{1.0045^{121}-1}{0.0045} = 500\dfrac{0.72172}{0.0045} = 80\,191\). ✓</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 121 months. The log step is where the accuracy mark sits; using your GDC's financial solver is fine but you must still write the inequality. Sanity check: 121 deposits of \$500 = \$60\,500 paid in and about \$19\,700 of interest — reasonable for a decade.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>The single biggest finance error is mixing the <em>annual</em> rate with a <em>monthly</em> period count.
+  Convert first: \(i = r_{\text{annual}}/k\), \(n = k\times\text{years}\). Second: the formula booklet uses
+  \(r\) as a <em>percentage</em> (\(r=4.8\)), but the amortisation derivation uses a <em>decimal</em>
+  (\(i=0.004\)) — never mix them. Third: when the GDC finance solver returns a negative payment, that is the
+  sign convention (money flowing out), not an error — report the positive value.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — sequences &amp; finance</span>
+  <p><strong>sequence</strong><strong>series</strong><strong>term</strong><strong>common difference</strong><strong>common ratio</strong><strong>arithmetic sequence</strong><strong>geometric sequence</strong><strong>converge / diverge</strong> /<strong>sum to infinity</strong><strong>sigma notation</strong><strong>compound interest</strong><strong>nominal annual rate</strong><strong>amortisation / loan repayment</strong> /<strong>annuity</strong><strong>outstanding balance</strong></p>
+</div>
+
+<h2>1.3 Exponents and logarithms</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> a logarithm answers the question "what exponent do I need?".
+\(\log_2 8 = 3\) because \(2^3=8\). Exponentiation and taking logs are inverse operations, which is why logs
+undo exponentials in exactly the way subtraction undoes addition — but with an extra twist: logs turn
+<em>multiplication into addition</em> and <em>powers into multipliers</em>. That is why they were invented
+(astronomers multiplying twenty-digit numbers in the 1600s) and why they still matter (decibels, pH,
+earthquake magnitude, algorithm complexity in Computer Science).</p>
+
+<p><strong>Formal statement — the laws</strong> (for \(a>0,\ a\neq1,\ x>0,\ y>0\)):</p>
+\[\log_a(xy)=\log_a x+\log_a y,\quad \log_a\!\left(\frac{x}{y}\right)=\log_a x-\log_a y,\quad
+\log_a(x^m)=m\log_a x,\]
+\[a^{\log_a x}=x,\qquad \log_a a = 1,\qquad \log_a 1 = 0,\qquad \log_a b = \frac{\ln b}{\ln a}\ \text{(change of base)}.\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> The product law and the change-of-base rule</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Let \(p=\log_a x\) and \(q=\log_a y\). By definition \(a^p=x\) and \(a^q=y\).</li>
+      <li>Multiply: \(xy = a^p a^q = a^{p+q}\) (using the exponent law \(a^pa^q=a^{p+q}\)).</li>
+      <li>Take \(\log_a\) of both sides: \(\log_a(xy)=p+q=\log_a x+\log_a y\). ■</li>
+      <li>For change of base, let \(t=\log_a b\), so \(a^t = b\).</li>
+      <li>Take natural logs of both sides: \(\ln(a^t)=\ln b \Rightarrow t\ln a = \ln b\) (using \(\ln(x^m)=m\ln x\)).</li>
+      <li>Hence \(t = \dfrac{\ln b}{\ln a}\). ■</li>
+    </ol>
+    <p><strong>Meaning:</strong> every log law is an exponent law with the names changed. If you forget a log
+    law, re-derive it in ten seconds this way. <strong>Wrong tool when:</strong> the argument is negative or
+    zero — \(\log(-3)\) is undefined over the reals, and "\(\log\) of a negative" is an immediate signal you
+    have made an algebra error.</p>
+  </div>
+</details>
+
+<h3>\(\mathrm{e}\) and the natural logarithm</h3>
+
+<p>\(\mathrm{e}=2.71828\ldots\) is defined by the property that the function \(f(x)=\mathrm{e}^x\) is its own
+derivative: \(\frac{\mathrm{d}}{\mathrm{d}x}\mathrm{e}^x = \mathrm{e}^x\). Everything else about \(\mathrm{e}\)
+— its limit definition \(\mathrm{e}=\lim_{n\to\infty}\left(1+\frac1n\right)^n\), its role in continuous
+compounding \(A=P\mathrm{e}^{rt}\), its appearance in the normal distribution — follows from that one property.
+\(\ln x\) is \(\log_{\mathrm{e}} x\), and it is the inverse of \(\mathrm{e}^x\).</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it</span>
+  <p>To solve \(a^x=b\): take logs of both sides, then \(x\ln a = \ln b\), so \(x = \dfrac{\ln b}{\ln a}\).
+  To solve an equation where the unknown appears both as a base and an exponent (e.g. \(x^2 = 2^x\)), the GDC
+  is legitimate — but in Paper 1 you would instead be asked to <em>verify</em> a given solution by substitution.
+  To linearise \(y=ab^x\): take logs, \(\ln y = \ln a + x\ln b\), which is a straight line in \(x\) and \(\ln y\)
+  with gradient \(\ln b\) — this is the bridge to regression in Topic 4.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> IB-style · 6 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Solve \(\log_2(x+3) + \log_2(x-1) = 5\), giving your answer exactly.</p>
+    <ol class="steps">
+      <li>Combine using the product law: \(\log_2\bigl((x+3)(x-1)\bigr) = 5\).</li>
+      <li>Rewrite in exponential form: \((x+3)(x-1) = 2^5 = 32\).</li>
+      <li>Expand: \(x^2+2x-3 = 32 \Rightarrow x^2+2x-35=0\).</li>
+      <li>Factorise: \((x+7)(x-5)=0 \Rightarrow x=-7\) or \(x=5\).</li>
+      <li>Check domains: \(x+3>0\) and \(x-1>0\) require \(x>1\). So \(x=-7\) is rejected.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(x=5\). Marks: one for combining logs, one for converting to exponential form, two for the quadratic, and one for rejecting the extraneous root — students lose this last mark constantly. Sanity check: \(\log_2 8 + \log_2 4 = 3+2=5\). ✓</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 6</span> IB-style · 8 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The mass \(m\) grams of a radioactive isotope after \(t\) years is
+    \(m = 200\mathrm{e}^{-0.035t}\). (a) Find the half-life. (b) Hence find the time for the mass to fall to
+    10% of its original value.</p>
+    <ol class="steps">
+      <li>Half-life means \(100 = 200\mathrm{e}^{-0.035t} \Rightarrow \mathrm{e}^{-0.035t} = 0.5\).</li>
+      <li>\(-0.035t = \ln 0.5 = -0.693147\), so \(t = 19.8\) years.</li>
+      <li>For 10%: \(20 = 200\mathrm{e}^{-0.035t} \Rightarrow \mathrm{e}^{-0.035t}=0.1 \Rightarrow t = \dfrac{\ln 0.1}{-0.035} = 65.8\) years.</li>
+      <li>Alternatively "hence": \(0.1 = \left(\tfrac12\right)^{n}\) where \(n\) half-lives, so
+      \(n = \dfrac{\ln 0.1}{\ln 0.5} = 3.3219\) half-lives, i.e. \(3.3219\times19.80 = 65.8\) years.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> half-life 19.8 years; 10% time 65.8 years. The "hence" route is faster and earns the extra mark. Sanity check: 65.8 / 19.8 ≈ 3.32, and \((1/2)^{3.32}=0.1\). ✓</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>(1) \(\log(a+b)\) has <em>no</em> simplification — never write \(\log a + \log b\). (2) \(\frac{\log a}{\log b}
+  \neq \log(a-b)\); the correct identity is change of base. (3) Forgetting to check the domain after solving a
+  log equation: \(\log_2(x-1)\) requires \(x>1\). (4) Using \(\log\) on your GDC when you mean \(\ln\) — on most
+  models the \(\log\) key is base 10.</p>
+</div>
+
+<h2>1.4 The binomial theorem</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> \((a+b)^n\) means "choose either \(a\) or \(b\) from each of the \(n\) brackets
+and multiply". If you take \(b\) from exactly \(r\) brackets and \(a\) from the other \(n-r\), you get a term
+\(a^{n-r}b^r\). How many ways can you choose which \(r\) brackets contribute \(b\)? \(\binom{n}{r}\). That is
+the entire theorem — counting, not magic.</p>
+
+\[(a+b)^n = \sum_{r=0}^{n}\binom{n}{r}a^{\,n-r}b^{\,r},\qquad \binom{n}{r}=\frac{n!}{r!(n-r)!}.\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Why the coefficients are \(\binom{n}{r}\) (and why Pascal's triangle works)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Write \((a+b)^n = (a+b)(a+b)\cdots(a+b)\) with \(n\) brackets.</li>
+      <li>Expanding means picking one letter from each bracket; there are \(2^n\) such picks before collecting.</li>
+      <li>A pick producing \(a^{n-r}b^{r}\) is determined by <em>which</em> \(r\) of the \(n\) brackets supplied
+      \(b\). The number of such choices is \(\binom{n}{r} = \dfrac{n!}{r!(n-r)!}\).</li>
+      <li>Therefore the collected coefficient of \(a^{n-r}b^{r}\) is exactly \(\binom{n}{r}\).</li>
+      <li>Pascal's rule: \(\binom{n}{r}+\binom{n}{r+1} = \binom{n+1}{r+1}\). Algebraically,
+      \(\frac{n!}{r!(n-r)!}+\frac{n!}{(r+1)!(n-r-1)!} = \frac{n!(n-r)+n!(r+1)}{(r+1)!(n-r)!} = \frac{(n+1)!}{(r+1)!(n-r)!}\).</li>
+    </ol>
+    <p><strong>Meaning:</strong> Pascal's triangle is a lookup table for \(\binom{n}{r}\); row \(n\) (starting
+    at \(n=0\)) reads \(1,\ n,\ \binom{n}{2},\dots\). <strong>Wrong tool when:</strong> \(n\) is large or the
+    terms involve fractions or powers of \(x\) — then use the general term directly instead of writing out the
+    whole expansion.</p>
+  </div>
+</details>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — finding a specific term</span>
+  <p>The term in \(b^r\) (the \((r+1)\)th term) is \(T_{r+1} = \binom{n}{r}a^{\,n-r}b^{\,r}\). Procedure:
+  write the general term, collect the powers of \(x\), set the exponent equal to the power you want, solve for
+  \(r\), then substitute. If the resulting \(r\) is not an integer in \(\{0,1,\dots,n\}\), that power does not
+  occur.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 7</span> IB-style · 6 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Find the coefficient of \(x^5\) in the expansion of
+    \(\left(3x^2-\dfrac{2}{x}\right)^{10}\).</p>
+    <ol class="steps">
+      <li>General term: \(T_{r+1}=\binom{10}{r}(3x^2)^{10-r}\left(-\dfrac{2}{x}\right)^{r}\).</li>
+      <li>Collect \(x\): \(=\binom{10}{r}3^{10-r}(-2)^r x^{2(10-r)}x^{-r} = \binom{10}{r}3^{10-r}(-2)^r x^{20-3r}\).</li>
+      <li>Require \(20-3r = 5 \Rightarrow 3r = 15 \Rightarrow r=5\).</li>
+      <li>Coefficient \(=\binom{10}{5}3^{5}(-2)^5 = 252 \times 243 \times (-32)\).</li>
+      <li>\(252\times243 = 61\,236\); \(61\,236\times(-32) = -1\,959\,552\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(-1\,959\,552\). Marks: one for the general term, one for collecting the power of \(x\), one for \(r=5\), two for the arithmetic. Sanity check: \(r=5\) is an integer in range; the sign is negative because \(r\) is odd.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 8</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> In the expansion of \((1+kx)^n\), where \(n\in\mathbb{Z}^+\) and \(k>0\), the
+    coefficients of \(x^2\) and \(x^3\) are 60 and 160 respectively. Find \(n\) and \(k\).</p>
+    <ol class="steps">
+      <li>General term: \(\binom{n}{r}(kx)^r\), so coefficient of \(x^r\) is \(\binom{n}{r}k^r\).</li>
+      <li>\(\binom{n}{2}k^2 = 60\) and \(\binom{n}{3}k^3 = 160\).</li>
+      <li>Divide: \(\dfrac{\binom{n}{3}k^3}{\binom{n}{2}k^2} = \dfrac{160}{60} = \dfrac83\).</li>
+      <li>Now \(\dfrac{\binom{n}{3}}{\binom{n}{2}} = \dfrac{n(n-1)(n-2)/6}{n(n-1)/2} = \dfrac{n-2}{3}\), so
+      \(\dfrac{(n-2)k}{3} = \dfrac83 \Rightarrow (n-2)k = 8\).</li>
+      <li>From \(\binom{n}{2}k^2=60\): \(\dfrac{n(n-1)}{2}k^2=60\). With \(k=\dfrac{8}{n-2}\):
+      \(\dfrac{n(n-1)}{2}\cdot\dfrac{64}{(n-2)^2}=60 \Rightarrow 32n(n-1) = 60(n-2)^2\).</li>
+      <li>Expand: \(32n^2-32n = 60n^2-240n+240 \Rightarrow 28n^2-208n+240=0 \Rightarrow 7n^2-52n+60=0\).</li>
+      <li>\(n = \dfrac{52\pm\sqrt{2704-1680}}{14} = \dfrac{52\pm32}{14}\), so \(n=6\) or \(n=\dfrac{10}{7}\) (reject, not an integer).</li>
+      <li>Then \(k = \dfrac{8}{6-2} = 2\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(n=6,\ k=2\). Check: \(\binom{6}{2}2^2 = 15\times4=60\); \(\binom{6}{3}2^3=20\times8=160\). ✓ Dividing the two equations is the efficient move — expanding both separately is slow and error-prone.</div>
+  </div>
+</details>
+
+<h3>HL: permutations and combinations</h3>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Intuition:</strong> combinatorics has exactly two questions to answer before you touch a formula —
+<em>does order matter?</em> and <em>can the same object be used twice?</em> Order matters → permutations
+(arrangements); order does not matter → combinations (selections).</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Situation</th><th>Formula</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td>Arrange \(n\) distinct objects</td><td>\(n!\)</td><td>6 books on a shelf: \(6! = 720\)</td></tr>
+    <tr><td>Arrange \(r\) from \(n\) distinct objects</td><td>\({}^nP_r = \dfrac{n!}{(n-r)!}\)</td><td>President + secretary from 20: \(20\times19=380\)</td></tr>
+    <tr><td>Choose \(r\) from \(n\), order irrelevant</td><td>\({}^nC_r = \binom{n}{r}=\dfrac{n!}{r!(n-r)!}\)</td><td>Pick 3 of 20 for a committee: 1140</td></tr>
+    <tr><td>Arrange \(n\) objects with repeats \(n_1,n_2,\dots\)</td><td>\(\dfrac{n!}{n_1!\,n_2!\cdots}\)</td><td>Letters of MATHEMATICS: \(\dfrac{11!}{2!2!2!}\)</td></tr>
+    <tr><td>Arrange \(n\) objects in a circle</td><td>\((n-1)!\)</td><td>Seating 5 around a table: \(4! = 24\)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 9</span> IB-style · 6 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A team of 5 is chosen from 7 boys and 6 girls. Find the number of possible
+    teams containing (a) no restriction; (b) exactly 3 girls; (c) at least one of each sex.</p>
+    <ol class="steps">
+      <li>(a) Choose 5 from 13: \(\binom{13}{5} = 1287\).</li>
+      <li>(b) Choose 3 girls from 6 and 2 boys from 7: \(\binom{6}{3}\binom{7}{2} = 20\times21 = 420\).</li>
+      <li>(c) Total minus all-boys minus all-girls: \(1287 - \binom{7}{5} - \binom{6}{5} = 1287 - 21 - 6 = 1260\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 1287; (b) 420; (c) 1260. The "at least one" wording is the signal to use the complement — direct counting here needs four separate cases. Multiplying in (b) is the multiplication principle: for each choice of girls there are 21 choices of boys.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 10</span> IB-style · 5 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> How many distinct arrangements are there of the letters of the word
+    MATHEMATICS? How many of these have the two M's together?</p>
+    <ol class="steps">
+      <li>11 letters; M, A, T each appear twice. Distinct arrangements \(=\dfrac{11!}{2!\,2!\,2!} = \dfrac{39\,916\,800}{8}=4\,989\,600\).</li>
+      <li>Treat "MM" as a single block: now 10 objects, with A and T repeated twice:
+      \(\dfrac{10!}{2!\,2!}=\dfrac{3\,628\,800}{4}=907\,200\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 4 989 600 and 907 200. The block method (glue the letters that must be adjacent, count, then unglue) generalises to every "must be together" problem; "must be separated" is handled by the complement or by gap-filling.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Confusing \({}^nP_r\) with \(\binom{n}{r}\) is the classic: "a committee" is a combination (no internal
+  order), "a queue" or "a 3-digit number" is a permutation. Second trap: dividing by \(r!\) when the objects
+  are <em>not</em> identical — only divide for genuine repetition. Third: forgetting restrictions like "the
+  first digit cannot be 0"; handle the restricted position first, then fill the rest.</p>
+</div>
+
+<h2>1.5 Partial fractions</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Intuition:</strong> partial fractions is the reverse of adding fractions. You already know
+\(\frac{1}{2}+\frac{1}{3}=\frac{5}{6}\); partial fractions goes from \(\frac{5}{6}\) back to
+\(\frac{1}{2}+\frac{1}{3}\). It is worth learning because a complicated rational function becomes a sum of
+simple ones — and simple ones integrate (Topic 5) and expand as series (Maclaurin, Topic 5).</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Factor in the denominator</th><th>Form to write</th></tr></thead>
+  <tbody>
+    <tr><td>linear \((ax+b)\)</td><td>\(\dfrac{A}{ax+b}\)</td></tr>
+    <tr><td>repeated linear \((ax+b)^2\)</td><td>\(\dfrac{A}{ax+b}+\dfrac{B}{(ax+b)^2}\)</td></tr>
+    <tr><td>quadratic \((ax^2+bx+c)\)</td><td>\(\dfrac{Ax+B}{ax^2+bx+c}\)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 11</span> IB-style · 6 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Express \(\dfrac{5x+1}{(x-1)(x+2)}\) in partial fractions.</p>
+    <ol class="steps">
+      <li>Write \(\dfrac{5x+1}{(x-1)(x+2)} \equiv \dfrac{A}{x-1}+\dfrac{B}{x+2}\).</li>
+      <li>Multiply through by \((x-1)(x+2)\): \(5x+1 \equiv A(x+2)+B(x-1)\).</li>
+      <li>Cover-up with \(x=1\): \(6 = 3A \Rightarrow A=2\).</li>
+      <li>Cover-up with \(x=-2\): \(-9 = -3B \Rightarrow B=3\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(\dfrac{2}{x-1}+\dfrac{3}{x+2}\). Check by adding: \(\frac{2(x+2)+3(x-1)}{(x-1)(x+2)} = \frac{5x+1}{(x-1)(x+2)}\). ✓ The cover-up method (substitute the root of each factor) only works for <em>non-repeated linear</em> factors; otherwise equate coefficients.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 12</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Express \(\dfrac{3x^2-4x+2}{x(x-1)^2}\) in partial fractions.</p>
+    <ol class="steps">
+      <li>There is a repeated linear factor, so write
+      \(\dfrac{3x^2-4x+2}{x(x-1)^2} \equiv \dfrac{A}{x}+\dfrac{B}{x-1}+\dfrac{C}{(x-1)^2}\).</li>
+      <li>Multiply by \(x(x-1)^2\): \(3x^2-4x+2 \equiv A(x-1)^2 + Bx(x-1) + Cx\).</li>
+      <li>\(x=0\): \(2 = A\). \(x=1\): \(3-4+2 = C \Rightarrow C=1\).</li>
+      <li>Compare \(x^2\) coefficients: \(3 = A + B \Rightarrow B = 1\).</li>
+      <li>Check with \(x=2\): LHS \(=12-8+2=6\); RHS \(=2(1)^2+1(2)(1)+1(2)=2+2+2=6\). ✓</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(\dfrac{2}{x}+\dfrac{1}{x-1}+\dfrac{1}{(x-1)^2}\). Cover-up still finds the constant over the <em>highest</em> power of a repeated factor (\(C\) here); \(B\) must come from comparing coefficients.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — algebra, logs, counting</span>
+  <p><strong>exponent / power</strong> /<strong>base</strong><strong>logarithm</strong><strong>natural logarithm</strong><strong>change of base</strong><strong>laws of logarithms</strong><strong>binomial theorem</strong><strong>coefficient</strong><strong>general term</strong><strong>Pascal's triangle</strong><strong>permutation</strong><strong>combination</strong><strong>factorial</strong><strong>partial fractions</strong></p>
+</div>
+
+<h2>1.6 Complex numbers</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Intuition:</strong> the real numbers are a line, and \(x^2+1=0\) has nowhere to live on a line.
+So we invent a second axis: let \(i=\sqrt{-1}\) and place numbers in a <em>plane</em>. The shock is how much
+this buys you. Multiplication by \(i\) is a rotation by \(90^\circ\). Every polynomial of degree \(n\) now has
+exactly \(n\) roots. Trigonometric identities become algebra. And the numbers that look most "imaginary" turn
+out to describe real oscillations — which is why Physics HL uses \(\mathrm{e}^{i\omega t}\) for waves.</p>
+
+<h3>Cartesian form</h3>
+
+<p>A complex number is \(z = a+bi\) with \(a,b\in\mathbb{R}\). \(a=\Re(z)\) is the real part, \(b=\Im(z)\) the
+imaginary part (note: \(\Im(z)\) is the <em>real number</em> \(b\), not \(bi\)). The conjugate is
+\(z^* = a-bi\), and \(zz^* = a^2+b^2 = |z|^2\).</p>
+
+<p>Arithmetic: add and subtract component-wise; multiply using \(i^2=-1\); divide by multiplying top and
+bottom by the conjugate of the denominator:</p>
+\[\frac{a+bi}{c+di} = \frac{(a+bi)(c-di)}{c^2+d^2}.\]
+
+<h3>Modulus–argument (polar) and Euler form</h3>
+
+<p><strong>Intuition:</strong> a point in the plane can be described by Cartesian coordinates \((a,b)\) or by
+"how far and which way" — distance \(r\) from the origin and angle \(\theta\) from the positive real axis. In
+Cartesian form multiplication is messy; in polar form multiplication is trivial (multiply distances, add
+angles).</p>
+
+\[z = r(\cos\theta + i\sin\theta) = r\,\mathrm{cis}\,\theta = r\mathrm{e}^{i\theta},\qquad r=|z|=\sqrt{a^2+b^2},\quad \theta=\arg z.\]
+\[|zw| = |z||w|,\qquad \arg(zw) = \arg z + \arg w,\qquad \left|\frac{z}{w}\right|=\frac{|z|}{|w|},\qquad \arg\!\left(\frac{z}{w}\right)=\arg z - \arg w.\]
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Argand diagram showing modulus and argument of a complex number">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="80" y1="250" x2="600" y2="250" stroke="#334155" stroke-width="2"/>
+    <line x1="200" y1="250" x2="200" y2="40" stroke="#334155" stroke-width="2"/>
+    <line x1="200" y1="250" x2="430" y2="105" stroke="#3653d6" stroke-width="3"/>
+    <line x1="430" y1="105" x2="430" y2="250" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+    <path d="M200 220 A 50 50 0 0 0 245 240" fill="none" stroke="#b03060" stroke-width="2"/>
+    <circle cx="430" cy="105" r="5" fill="#151923"/>
+    <text x="440" y="95" font-size="14" font-family="system-ui, sans-serif" fill="#151923">z = a + bi</text>
+    <text x="255" y="238" font-size="14" font-family="system-ui, sans-serif" fill="#b03060">theta</text>
+    <text x="300" y="168" font-size="14" font-family="system-ui, sans-serif" fill="#3653d6">r = |z|</text>
+    <text x="330" y="270" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">a</text>
+    <text x="185" y="170" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">b</text>
+    <text x="580" y="245" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">Re</text>
+    <text x="205" y="50" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">Im</text>
+    <text x="70" y="150" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">a = r cos theta</text>
+    <text x="70" y="168" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">b = r sin theta</text>
+    <text x="70" y="186" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">tan theta = b/a</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 3.</span> Modulus–argument form is just polar coordinates. Always draw the point first: the quadrant decides \(\theta\), and \(\arctan(b/a)\) alone puts every point in the wrong half-plane half the time.</figcaption>
+</figure>
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Euler's formula \(\mathrm{e}^{i\theta}=\cos\theta+i\sin\theta\) and De Moivre's theorem</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Assume the Maclaurin series (Topic 5) can be evaluated at complex arguments:
+      \(\mathrm{e}^{x} = 1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\cdots\).</li>
+      <li>Substitute \(x=i\theta\): \(\mathrm{e}^{i\theta} = 1+i\theta+\frac{(i\theta)^2}{2!}+\frac{(i\theta)^3}{3!}+\cdots
+      = 1+i\theta-\frac{\theta^2}{2!}-\frac{i\theta^3}{3!}+\frac{\theta^4}{4!}+\cdots\).</li>
+      <li>Group real and imaginary parts: real part \(=1-\frac{\theta^2}{2!}+\frac{\theta^4}{4!}-\cdots=\cos\theta\);
+      imaginary part \(=\theta-\frac{\theta^3}{3!}+\cdots=\sin\theta\).</li>
+      <li>Hence \(\mathrm{e}^{i\theta}=\cos\theta+i\sin\theta\). Two corollaries: \(|\mathrm{e}^{i\theta}|=1\), and
+      \(\cos\theta=\frac{\mathrm{e}^{i\theta}+\mathrm{e}^{-i\theta}}{2}\), \(\sin\theta=\frac{\mathrm{e}^{i\theta}-\mathrm{e}^{-i\theta}}{2i}\).</li>
+      <li><strong>De Moivre:</strong> \(z=r\mathrm{e}^{i\theta} \Rightarrow z^n = r^n\mathrm{e}^{in\theta}
+      = r^n(\cos n\theta + i\sin n\theta)\).</li>
+    </ol>
+    <p><strong>Meaning:</strong> raising to a power raises the modulus to that power and <em>multiplies the
+    argument</em>. Taking an \(n\)th root therefore divides the argument — but with \(n\) different answers,
+    because adding \(2\pi\) to \(\theta\) does not change the number. <strong>Wrong tool when:</strong> \(n\) is
+    not an integer — then \(\mathrm{e}^{in\theta}\) is still defined but multi-valued handling is beyond this
+    course.</p>
+  </div>
+</details>
+
+<h3>Powers and \(n\)th roots</h3>
+
+\[z^n = r^n\bigl(\cos n\theta+i\sin n\theta\bigr),\qquad
+z_k = r^{1/n}\!\left(\cos\frac{\theta+2k\pi}{n}+i\sin\frac{\theta+2k\pi}{n}\right),\quad k=0,1,\dots,n-1.\]
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Argand diagram of the six sixth roots of unity forming a regular hexagon">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="60" y1="160" x2="340" y2="160" stroke="#334155" stroke-width="1"/>
+    <line x1="200" y1="40" x2="200" y2="280" stroke="#334155" stroke-width="1"/>
+    <circle cx="200" cy="160" r="100" fill="none" stroke="#3653d6" stroke-width="2" stroke-dasharray="5 4"/>
+    <polygon points="300,160 250,73.4 150,73.4 100,160 150,246.6 250,246.6" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <line x1="200" y1="160" x2="300" y2="160" stroke="#b03060" stroke-width="1.5"/>
+    <line x1="200" y1="160" x2="250" y2="73.4" stroke="#b03060" stroke-width="1.5"/>
+    <line x1="200" y1="160" x2="150" y2="73.4" stroke="#b03060" stroke-width="1.5"/>
+    <line x1="200" y1="160" x2="100" y2="160" stroke="#b03060" stroke-width="1.5"/>
+    <line x1="200" y1="160" x2="150" y2="246.6" stroke="#b03060" stroke-width="1.5"/>
+    <line x1="200" y1="160" x2="250" y2="246.6" stroke="#b03060" stroke-width="1.5"/>
+    <circle cx="300" cy="160" r="5" fill="#151923"/>
+    <circle cx="250" cy="73.4" r="5" fill="#151923"/>
+    <circle cx="150" cy="73.4" r="5" fill="#151923"/>
+    <circle cx="100" cy="160" r="5" fill="#151923"/>
+    <circle cx="150" cy="246.6" r="5" fill="#151923"/>
+    <circle cx="250" cy="246.6" r="5" fill="#151923"/>
+    <text x="306" y="152" font-size="12" font-family="system-ui, sans-serif" fill="#151923">1</text>
+    <text x="256" y="68" font-size="12" font-family="system-ui, sans-serif" fill="#151923">w</text>
+    <text x="120" y="68" font-size="12" font-family="system-ui, sans-serif" fill="#151923">w²</text>
+    <text x="80" y="152" font-size="12" font-family="system-ui, sans-serif" fill="#151923">w³=-1</text>
+    <text x="360" y="90" font-size="13" font-family="system-ui, sans-serif" fill="#151923">The six 6th roots of unity</text>
+    <text x="360" y="112" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">equally spaced: arguments 2*pi*k/6</text>
+    <text x="360" y="134" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">vertices of a regular hexagon</text>
+    <text x="360" y="156" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">they sum to zero (rotational symmetry)</text>
+    <text x="360" y="178" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">each satisfies w^6 = 1, w != 1</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 4.</span> The six sixth roots of unity. Because the points are rotationally symmetric, their vector sum is zero — a fact that kills several otherwise brutal algebraic sums.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 13</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Let \(z = 1+i\sqrt3\). (a) Write \(z\) in modulus–argument form.
+    (b) Hence find \(z^{10}\) in Cartesian form.</p>
+    <ol class="steps">
+      <li>\(|z| = \sqrt{1+3} = 2\); \(\tan\theta = \frac{\sqrt3}{1}=\sqrt3\) and \(z\) is in the first quadrant, so \(\theta = \frac{\pi}{3}\).</li>
+      <li>\(z = 2\left(\cos\frac{\pi}{3}+i\sin\frac{\pi}{3}\right)\).</li>
+      <li>De Moivre: \(z^{10} = 2^{10}\left(\cos\frac{10\pi}{3}+i\sin\frac{10\pi}{3}\right)\).</li>
+      <li>\(\frac{10\pi}{3} = 2\pi + \frac{4\pi}{3}\), so the argument is equivalent to \(\frac{4\pi}{3}\).</li>
+      <li>\(\cos\frac{4\pi}{3}=-\frac12,\ \sin\frac{4\pi}{3}=-\frac{\sqrt3}{2}\).</li>
+      <li>\(z^{10} = 1024\left(-\frac12 - i\frac{\sqrt3}{2}\right) = -512 - 512\sqrt3\,i\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(-512-512\sqrt3\,i\). Marks: one for \(|z|\), one for \(\arg z\), two for De Moivre, two for reducing the angle and converting back. Sanity check: \(|z^{10}| = 2^{10}=1024\), and \(|-512-512\sqrt3 i| = 512\sqrt{1+3}=1024\). ✓</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 14</span> IB-style · 9 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> (a) Solve \(z^3 = 8i\), giving answers in the form \(r\mathrm{e}^{i\theta}\).
+    (b) Plot the roots on an Argand diagram. (c) Hence state the value of the sum of the three roots.</p>
+    <ol class="steps">
+      <li>Write \(8i\) in polar form: \(|8i| = 8\), \(\arg(8i)=\frac{\pi}{2}\), so \(8i = 8\mathrm{e}^{i\pi/2}\).</li>
+      <li>Roots: \(z_k = 8^{1/3}\mathrm{e}^{i(\pi/2 + 2k\pi)/3} = 2\mathrm{e}^{i(\pi/6 + 2k\pi/3)}\) for \(k=0,1,2\).</li>
+      <li>\(k=0:\ 2\mathrm{e}^{i\pi/6}\); \(k=1:\ 2\mathrm{e}^{i5\pi/6}\); \(k=2:\ 2\mathrm{e}^{i3\pi/2}\).</li>
+      <li>In Cartesian form: \(2\mathrm{e}^{i\pi/6}=\sqrt3+i\); \(2\mathrm{e}^{i5\pi/6}=-\sqrt3+i\);
+      \(2\mathrm{e}^{i3\pi/2}=-2i\).</li>
+      <li>Sum: \((\sqrt3+i)+(-\sqrt3+i)+(-2i) = 0\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(z = 2\mathrm{e}^{i\pi/6},\ 2\mathrm{e}^{i5\pi/6},\ 2\mathrm{e}^{i3\pi/2}\); sum \(=0\). Verification: \((-2i)^3 = -8i^3 = 8i\). ✓ The three roots lie on a circle of radius 2 at \(120^\circ\) spacing, so their centroid is the origin — hence the sum is zero. This geometric argument is worth a mark on its own.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>(1) \(\arg z\) from \(\arctan(b/a)\) alone: \(\arctan\) returns values in \((-\frac{\pi}{2},\frac{\pi}{2})\),
+  so a point in quadrant 2 or 3 is wrong by \(\pi\). Draw the point. (2) Forgetting the principal argument
+  convention: \(-\pi &lt; \theta \le \pi\) (or \(0\le\theta&lt;2\pi\), depending on your textbook — state which you
+  use). (3) Finding only one \(n\)th root: there are always exactly \(n\) of them, spaced \(\frac{2\pi}{n}\)
+  apart. (4) Writing \(\Im(z)=3i\); the imaginary part is the real number 3.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — complex numbers</span>
+  <p><strong>complex number</strong><strong>real / imaginary part</strong> /<strong>conjugate</strong><strong>modulus</strong><strong>argument</strong><strong>Argand diagram</strong><strong>Cartesian form</strong><strong>polar / modulus–argument form</strong> /<strong>Euler's form</strong><strong>De Moivre's theorem</strong><strong>roots of unity</strong><strong>quadrant</strong></p>
+</div>
+
+<h2>1.7 Proof</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p>Proof is not a topic you revise; it is a reflex you build. The IB can ask you to prove something from any
+topic, at any time, in any paper. There are four weapons: <strong>induction</strong> (for statements indexed by
+an integer \(n\)), <strong>contradiction</strong> (for "there is no…" or "this is irrational"),
+<strong>counterexample</strong> (to destroy a universal claim), and <strong>direct deduction</strong>
+(the everyday algebra you have always done).</p>
+
+<h3>Proof by induction</h3>
+
+<p><strong>Intuition:</strong> dominoes. If the first domino falls, and every domino that falls knocks over the
+next, then all of them fall. The "first domino" is the base case; the "knocking" is the inductive step.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the four-sentence template</span>
+  <ol class="steps">
+    <li><strong>Proposition:</strong> state clearly what \(P(n)\) is.</li>
+    <li><strong>Base case:</strong> show \(P(1)\) is true (check by direct substitution; write the numbers).</li>
+    <li><strong>Inductive hypothesis:</strong> assume \(P(k)\) is true for some \(k\in\mathbb{Z}^+\) — write it
+    out explicitly as an equation, because you are about to use it.</li>
+    <li><strong>Inductive step:</strong> prove \(P(k+1)\), using the hypothesis somewhere. Then: "Since \(P(1)\)
+    is true and \(P(k)\Rightarrow P(k+1)\), by induction \(P(n)\) is true for all \(n\in\mathbb{Z}^+\)."</li>
+  </ol>
+  <p>That final sentence is a mark. Write it every time.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 15</span> IB-style · 7 marks · Summation by induction</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove by induction that \(\displaystyle\sum_{r=1}^{n} r\,2^{r} = (n-1)2^{n+1}+2\) for all \(n\in\mathbb{Z}^+\).</p>
+    <ol class="steps">
+      <li><strong>Base case \(n=1\):</strong> LHS \(=1\cdot2^1=2\); RHS \(=(1-1)2^{2}+2 = 2\). True.</li>
+      <li><strong>Hypothesis:</strong> assume \(\sum_{r=1}^{k} r2^{r} = (k-1)2^{k+1}+2\).</li>
+      <li><strong>Step:</strong> \(\sum_{r=1}^{k+1} r2^{r} = \underbrace{\sum_{r=1}^{k} r2^{r}}_{\text{use hypothesis}} + (k+1)2^{k+1}\).</li>
+      <li>\(= (k-1)2^{k+1}+2 + (k+1)2^{k+1} = \bigl[(k-1)+(k+1)\bigr]2^{k+1}+2 = 2k\cdot 2^{k+1}+2 = k\,2^{k+2}+2\).</li>
+      <li>The target with \(n=k+1\) is \(((k+1)-1)2^{(k+1)+1}+2 = k\,2^{k+2}+2\). Matches. ■</li>
+      <li>Conclusion: true for \(n=1\), and \(P(k)\Rightarrow P(k+1)\), so true for all \(n\in\mathbb{Z}^+\).</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one for the base case with numbers shown, one for a clearly stated hypothesis, three for the algebra of the step, one for showing the target form explicitly, one for the conclusion sentence. The trick: <em>write down the \(n=k+1\) target before you start</em>, so you know what shape to aim for.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 16</span> IB-style · 7 marks · Divisibility by induction</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove that \(7^{n}-3^{n}\) is divisible by 4 for all \(n\in\mathbb{Z}^+\).</p>
+    <ol class="steps">
+      <li><strong>Base case \(n=1\):</strong> \(7-3=4\), divisible by 4. ✓</li>
+      <li><strong>Hypothesis:</strong> assume \(7^{k}-3^{k}=4m\) for some integer \(m\), i.e. \(7^{k}=3^{k}+4m\).</li>
+      <li><strong>Step:</strong> \(7^{k+1}-3^{k+1} = 7\cdot 7^{k} - 3\cdot 3^{k}\).</li>
+      <li>Substitute \(7^{k}=3^{k}+4m\): \(= 7(3^{k}+4m) - 3\cdot3^{k} = 7\cdot3^{k}+28m-3\cdot3^{k}\).</li>
+      <li>\(= 4\cdot 3^{k} + 28m = 4(3^{k}+7m)\), a multiple of 4. ■</li>
+      <li>Conclusion as before.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one base case, one for "\(=4m\) for integer \(m\)", three for the substitution and factorisation, one for the conclusion. The key move is <em>replacing \(7^k\)</em> using the hypothesis in the form \(7^k = 3^k + 4m\) — students who write "assume \(7^k-3^k\) is divisible by 4" but never convert it into an equation get stuck here.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 17</span> IB-style · 8 marks · Inductive proof of a derivative and of De Moivre</summary>
+  <div class="dbody">
+    <p><strong>Question (a).</strong> Prove by induction that \(\frac{\mathrm{d}}{\mathrm{d}x}(x^{n}) = nx^{n-1}\) for \(n\in\mathbb{Z}^+\), using the product rule.</p>
+    <ol class="steps">
+      <li>Base case \(n=1\): \(\frac{\mathrm{d}}{\mathrm{d}x}(x)=1 = 1\cdot x^{0}\). ✓</li>
+      <li>Hypothesis: \(\frac{\mathrm{d}}{\mathrm{d}x}(x^{k}) = kx^{k-1}\).</li>
+      <li>Step: \(x^{k+1} = x\cdot x^{k}\), so by the product rule
+      \(\frac{\mathrm{d}}{\mathrm{d}x}(x^{k+1}) = 1\cdot x^{k} + x\cdot kx^{k-1} = x^{k}+kx^{k} = (k+1)x^{k}\). ■</li>
+    </ol>
+    <p><strong>Question (b).</strong> Prove De Moivre's theorem for positive integers:
+    \((\cos\theta+i\sin\theta)^{n} = \cos n\theta + i\sin n\theta\).</p>
+    <ol class="steps">
+      <li>Base case \(n=1\): trivially true.</li>
+      <li>Hypothesis: \((\cos\theta+i\sin\theta)^{k} = \cos k\theta+i\sin k\theta\).</li>
+      <li>Step: \((\cos\theta+i\sin\theta)^{k+1} = (\cos k\theta+i\sin k\theta)(\cos\theta+i\sin\theta)\).</li>
+      <li>Expand: \(= \cos k\theta\cos\theta - \sin k\theta\sin\theta + i(\sin k\theta\cos\theta+\cos k\theta\sin\theta)\).</li>
+      <li>Apply the compound-angle identities: \(=\cos(k+1)\theta + i\sin(k+1)\theta\). ■</li>
+    </ol>
+    <div class="answerline"><b>Note:</b> both proofs are worth knowing because they are examinable end-to-end and each is only four or five lines. Part (b) is why the compound-angle identities matter: they are the engine of the inductive step.</div>
+  </div>
+</details>
+
+<h3>Proof by contradiction</h3>
+
+<p><strong>Intuition:</strong> assume the opposite of what you want, follow the logic honestly, and arrive at
+something impossible. Since your reasoning was valid, the assumption must have been false — so the original
+claim is true.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 18</span> IB-style · 7 marks · \(\sqrt2\) is irrational</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove that \(\sqrt2\) is irrational.</p>
+    <ol class="steps">
+      <li>Assume the contrary: \(\sqrt2 = \dfrac{p}{q}\) where \(p,q\in\mathbb{Z}^+\) and the fraction is in
+      lowest terms (so \(p\) and \(q\) share no common factor).</li>
+      <li>Square: \(2 = \dfrac{p^2}{q^2} \Rightarrow p^2 = 2q^2\).</li>
+      <li>So \(p^2\) is even, hence \(p\) is even: write \(p=2r\).</li>
+      <li>Then \((2r)^2 = 2q^2 \Rightarrow 4r^2 = 2q^2 \Rightarrow q^2 = 2r^2\), so \(q^2\) is even, hence \(q\) is even.</li>
+      <li>But then both \(p\) and \(q\) are even, contradicting "lowest terms".</li>
+      <li>Therefore the assumption is false: \(\sqrt2\) is irrational. ■</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one for stating the assumption with "lowest terms", two for \(p^2=2q^2\) and the parity argument, two for reaching the shared factor of 2, one for the contradiction statement, one for the conclusion. The step "\(p^2\) even \(\Rightarrow p\) even" is justified by the contrapositive: if \(p\) were odd, \(p^2\) would be odd.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 19</span> IB-style · 4 marks · Counterexample</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Anna claims that \(n^2+n+41\) is prime for every positive integer \(n\).
+    Disprove her claim.</p>
+    <ol class="steps">
+      <li>A single counterexample is enough. Choose \(n=41\) (chosen so that 41 factors out).</li>
+      <li>\(41^2+41+41 = 41(41+1+1) = 41\times43\), which is composite.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(n=41\) gives \(1763 = 41\times43\), not prime. The claim is false. Note: \(n=40\) gives \(40^2+40+41 = 1681 = 41^2\) also composite — one counterexample suffices, never try to list them all.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>(1) Induction without a base case, or a base case with no numbers written — both lose marks. (2) Assuming
+  what you are trying to prove inside the inductive step: you may use only \(P(k)\), not \(P(k+1)\). (3) Not
+  stating the conclusion ("therefore, by induction…"). (4) Confusing an example with a proof: checking
+  \(n=1,2,3,4\) proves nothing. (5) In a contradiction proof, forgetting to say <em>why</em> the conclusion is
+  impossible.</p>
+</div>
+
+<h2>1.8 Systems of linear equations</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> two equations in two unknowns describe two lines: one intersection, none
+(parallel), or infinitely many (the same line). Three equations in three unknowns describe three planes in
+space: they can meet in a point, meet in a line, fail to meet at all, or coincide. The algebra and the geometry
+are the same story.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it</span>
+  <p>With a GDC: enter the coefficient matrix and use rref (reduced row echelon form) or the simultaneous
+  equation solver. Read the outcome: a unique solution is a column of values; a row of the form
+  \(0\ 0\ 0\ |\ 1\) means <strong>no solution</strong>; a row \(0\ 0\ 0\ |\ 0\) means
+  <strong>infinitely many</strong>, and you then set one variable \(= \lambda\) and express the others in terms
+  of it. Always write the equations down <em>before</em> reaching for the calculator — the method marks are for
+  the setup.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 20</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Find the value of \(k\) for which the system
+    \(\begin{cases} x+2y-z = 4 \\ 2x-y+3z = 1 \\ 3x+y+kz = 5 \end{cases}\)
+    does not have a unique solution, and interpret the situation geometrically.</p>
+    <ol class="steps">
+      <li>Write the coefficient matrix \(A=\begin{pmatrix}1&2&-1\\2&-1&3\\3&1&k\end{pmatrix}\).</li>
+      <li>No unique solution \(\Leftrightarrow \det A = 0\).</li>
+      <li>\(\det A = 1(-k-3) - 2(2k-9) + (-1)(2+3) = -k-3-4k+18-5 = 10-5k\).</li>
+      <li>\(10-5k=0 \Rightarrow k=2\).</li>
+      <li>Interpretation: the three planes do not meet in a single point — they either form a triangular prism
+      (no common point) or share a common line (infinitely many solutions).</li>
+      <li>To distinguish: with \(k=2\), equation (3) is \(3x+y+2z=5\). Adding equations (1) and (2) gives
+      \(3x+y+2z=5\) — identical to (3). So the three planes share a line: infinitely many solutions.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(k=2\), infinitely many solutions (the planes meet in a common line). Marks: two for \(\det A\), one for \(k\), one for the geometric interpretation, two for distinguishing line from prism. Notice that the row-relationship \((1)+(2)=(3)\) is the fastest way to decide which case you have.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 21</span> IB-style · 6 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Solve \(\begin{cases} x+y+z = 6 \\ 2x-y = 1 \\ x+2y-3z = -9 \end{cases}\).</p>
+    <ol class="steps">
+      <li>From the second equation: \(y = 2x-1\).</li>
+      <li>Substitute into the first: \(x + (2x-1) + z = 6 \Rightarrow z = 7-3x\).</li>
+      <li>Substitute both into the third: \(x + 2(2x-1) - 3(7-3x) = -9\).</li>
+      <li>\(x + 4x - 2 - 21 + 9x = -9 \Rightarrow 14x - 23 = -9 \Rightarrow 14x = 14 \Rightarrow x=1\).</li>
+      <li>Then \(y = 2(1)-1 = 1\) and \(z = 7-3 = 4\).</li>
+      <li>Check: \(1+1+4=6\) ✓; \(2-1=1\) ✓; \(1+2-12=-9\) ✓.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(x=1,\ y=1,\ z=4\). Substitution is fast here because one equation lacks \(z\); elimination or rref is safer for general systems. Always check by substituting back — it costs 20 seconds and catches every arithmetic slip.</div>
+  </div>
+</details>
+
+<div class="conn">
+  <span class="conn__title">Connections</span>
+  <ul>
+    <li><strong>→ Topic 5 (Calculus):</strong> partial fractions is the standard way to integrate rational
+    functions; Maclaurin coefficients are \(\frac{f^{(n)}(0)}{n!}\), pure factorial algebra from the binomial
+    theorem; geometric series give the sum of an infinite Maclaurin-type expansion.</li>
+    <li><strong>→ Topic 3 (Trigonometry):</strong> De Moivre's theorem produces \(\cos 3\theta\), \(\sin 4\theta\)
+    and every multiple-angle identity in two lines; roots of unity are vertices of regular polygons.</li>
+    <li><strong>→ Topic 4 (Statistics):</strong> \(\binom{n}{r}\) is the binomial probability coefficient;
+    logs linearise exponential models so that regression applies; \(\mathrm{e}\) appears in the normal pdf.</li>
+    <li><strong>→ Topic 2 (Functions):</strong> partial fractions and the remainder theorem are the same
+    algebraic skill applied to different objects; logs and exponentials are inverse functions.</li>
+    <li><strong>→ Physics HL:</strong> \(\mathrm{e}^{i\omega t}\) for oscillations, complex impedance, and
+    standard-form SI units all come straight from this topic.</li>
+    <li><strong>→ Computer Science HL:</strong> the division algorithm in the \(\sqrt2\) proof mod 2, recursion
+    versus closed form for sequences, \(\log_2\) in algorithm complexity.</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can derive \(S_n\) for arithmetic and geometric series from memory and state the condition for \(S_\infty\).</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive the loan-repayment formula from a geometric sum and use it with a monthly rate.</span></label></li>
+  <li><label><input type="checkbox"><span>I can prove the three log laws and the change-of-base rule from the definition.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write down the general term of \((a+b)^n\) and extract any requested coefficient.</span></label></li>
+  <li><label><input type="checkbox"><span>I can distinguish permutation from combination questions and handle repeated letters and "at least one" wording.</span></label></li>
+  <li><label><input type="checkbox"><span>I can decompose a rational function with repeated and quadratic factors into partial fractions.</span></label></li>
+  <li><label><input type="checkbox"><span>I can convert a complex number between Cartesian, polar and Euler forms, and find its argument in the correct quadrant.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use De Moivre's theorem for powers and find all \(n\) \(n\)th roots, plotting them on an Argand diagram.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write a complete induction proof for sums, divisibility, derivatives and De Moivre.</span></label></li>
+  <li><label><input type="checkbox"><span>I can prove \(\sqrt2\) is irrational and construct a counterexample to a false conjecture.</span></label></li>
+  <li><label><input type="checkbox"><span>I can decide whether a \(3\times3\) system has a unique solution, none, or infinitely many, and say what that means for three planes.</span></label></li>
+</ul>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li><p>An arithmetic sequence has \(u_4 = 7\) and \(u_9 = 22\). Find \(u_1\), \(d\), and the sum of the first 20 terms.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(u_9-u_4 = 5d = 15 \Rightarrow d=3\).</li>
+        <li>\(u_1 = 7-3(3) = -2\).</li>
+        <li>\(S_{20} = \frac{20}{2}(2(-2)+19\cdot3) = 10(-4+57)=530\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(u_1=-2,\ d=3,\ S_{20}=530\). Check: \(u_{20}=-2+19(3)=55\); \(\frac{20}{2}(-2+55)=530\). ✓</div>
+    </div></details>
+  </li>
+  <li><p>Find \(\displaystyle\sum_{r=1}^{20} 3\left(\frac{1}{2}\right)^{r}\), and state the sum to infinity of the same series.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Geometric with \(u_1 = \frac32\), \(r=\frac12\), \(n=20\).</li>
+        <li>\(S_{20} = \dfrac{\frac32\left(1-(\frac12)^{20}\right)}{1-\frac12} = 3\left(1-2^{-20}\right) = 2.999997\).</li>
+        <li>\(S_\infty = \dfrac{3/2}{1/2} = 3\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(S_{20}=3(1-2^{-20})\approx 2.999997\); \(S_\infty=3\). The finite sum is just under the limit — a good sanity check.</div>
+    </div></details>
+  </li>
+  <li><p>Solve \(2^{2x} - 5\cdot2^{x} + 4 = 0\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Let \(y=2^{x}\); then \(y^2-5y+4=0\).</li>
+        <li>\((y-1)(y-4)=0 \Rightarrow y=1\) or \(y=4\).</li>
+        <li>\(2^x=1\Rightarrow x=0\); \(2^x=4\Rightarrow x=2\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(x=0\) or \(x=2\). The substitution \(y=2^x\) (a "disguised quadratic") is the standard move; note \(y>0\), so any negative root would be rejected.</div>
+    </div></details>
+  </li>
+  <li><p>Find the term independent of \(x\) in \(\left(2x+\dfrac{3}{x^2}\right)^{9}\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>General term: \(\binom{9}{r}(2x)^{9-r}(3x^{-2})^{r} = \binom{9}{r}2^{9-r}3^{r}x^{9-r-2r} = \binom{9}{r}2^{9-r}3^{r}x^{9-3r}\).</li>
+        <li>Independent of \(x\): \(9-3r=0 \Rightarrow r=3\).</li>
+        <li>Coefficient \(=\binom{9}{3}2^{6}3^{3} = 84\times64\times27 = 145\,152\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(145\,152\). "Term independent of \(x\)" means the constant term: set the exponent to zero, not to one.</div>
+    </div></details>
+  </li>
+  <li><p>Write \(\dfrac{2x+5}{x^2+3x+2}\) in partial fractions, then solve \(\dfrac{2x+5}{x^2+3x+2}=\dfrac{3}{x+1}\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Factorise: \(x^2+3x+2=(x+1)(x+2)\). Write \(\frac{A}{x+1}+\frac{B}{x+2}\).</li>
+        <li>\(2x+5 \equiv A(x+2)+B(x+1)\). \(x=-1\): \(3=A\). \(x=-2\): \(1=-B\Rightarrow B=-1\).</li>
+        <li>So \(\frac{3}{x+1}-\frac{1}{x+2} = \frac{3}{x+1} \Rightarrow -\frac{1}{x+2}=0\), impossible.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(\dfrac{3}{x+1}-\dfrac{1}{x+2}\); the equation has <strong>no solution</strong>. A rational expression can never equal zero unless its numerator is zero — here the left-over term is \(-\frac{1}{x+2}\), never zero. Answering "no solution" with a reason is a full-marks response.</div>
+    </div></details>
+  </li>
+  <li><p>Let \(z = \frac{(1+i)^8}{(\sqrt3-i)^3}\). Find \(|z|\) and \(\arg z\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(1+i = \sqrt2\,\mathrm{cis}(\pi/4)\), so \((1+i)^8 = (\sqrt2)^8\mathrm{cis}(2\pi) = 16\).</li>
+        <li>\(\sqrt3-i = 2\,\mathrm{cis}(-\pi/6)\), so \((\sqrt3-i)^3 = 8\,\mathrm{cis}(-\pi/2) = -8i\).</li>
+        <li>\(z = \dfrac{16}{-8i} = \dfrac{16i}{8} = 2i\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(|z|=2\), \(\arg z = \frac{\pi}{2}\). Working in polar form avoids expanding \((1+i)^8\) by hand — this is exactly why modulus–argument form exists.</div>
+    </div></details>
+  </li>
+  <li><p>Prove by induction that \(\displaystyle\sum_{r=1}^{n}\frac{1}{r(r+1)} = \frac{n}{n+1}\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Base case \(n=1\): LHS \(=\frac{1}{1\cdot2}=\frac12\); RHS \(=\frac{1}{2}\). ✓</li>
+        <li>Hypothesis: \(\sum_{r=1}^{k}\frac{1}{r(r+1)} = \frac{k}{k+1}\).</li>
+        <li>Step: \(\sum_{r=1}^{k+1} = \frac{k}{k+1} + \frac{1}{(k+1)(k+2)} = \frac{k(k+2)+1}{(k+1)(k+2)} = \frac{k^2+2k+1}{(k+1)(k+2)} = \frac{(k+1)^2}{(k+1)(k+2)} = \frac{k+1}{k+2}\). ■</li>
+        <li>Conclusion: true for all \(n\in\mathbb{Z}^+\).</li>
+      </ol>
+      <div class="answerline"><b>Alternative insight:</b> \(\frac{1}{r(r+1)} = \frac{1}{r}-\frac{1}{r+1}\), so the series telescopes to \(1-\frac{1}{n+1}=\frac{n}{n+1}\). Knowing both methods is ideal: the telescoping proof shows <em>why</em>, the induction proof is what the question asks for.</div>
+    </div></details>
+  </li>
+  <li><p>The cubic \(x^3-6x^2+11x-6=0\) has roots \(\alpha,\beta,\gamma\). Without solving the cubic, write down \(\alpha+\beta+\gamma\), \(\alpha\beta+\beta\gamma+\gamma\alpha\) and \(\alpha\beta\gamma\), and hence find \(\frac{1}{\alpha}+\frac{1}{\beta}+\frac{1}{\gamma}\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>For \(ax^3+bx^2+cx+d\): sum of roots \(=-\frac{b}{a}=6\); sum of pairwise products \(=\frac{c}{a}=11\); product \(=-\frac{d}{a}=6\).</li>
+        <li>\(\frac{1}{\alpha}+\frac{1}{\beta}+\frac{1}{\gamma} = \dfrac{\beta\gamma+\gamma\alpha+\alpha\beta}{\alpha\beta\gamma} = \dfrac{11}{6}\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> 6, 11, 6, and \(\frac{11}{6}\). Check: the cubic factors as \((x-1)(x-2)(x-3)\), and \(\frac11+\frac12+\frac13 = \frac{11}{6}\). ✓ This is Vieta's formulas — see Topic 2 for the general statement.</div>
+    </div></details>
+  </li>
+</ol>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

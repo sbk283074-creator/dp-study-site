@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B2 · Programming — DP Computer Science HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Computer Science HL · Theme B · B2</span>
+<h1 class="page-title">B2 · Programming</h1>
+<p class="lede">This is the topic where you stop describing solutions and start building them. Everything on this
+page is shown twice — in <strong>Python</strong> and in <strong>Java</strong> — because Paper 2 lets you answer in
+either, and because you must be able to read the other one when a textbook or a past-paper answer uses it. The
+concepts are identical; only the punctuation differs. Read both columns even if you only write one.</p>
+<div class="page-meta">
+  <span class="tag">Theme B · examined in Paper 2 (answer in Java or Python)</span>
+  <span class="tag">B2.1 Fundamentals · B2.2 Data structures · B2.3 Constructs · B2.4 Algorithms · B2.5 File processing</span>
+  <span class="tag tag--hl">HL and SL share B2; HL questions probe efficiency and edge cases harder</span>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — the single most expensive habit in Paper 2</span>
+  <p>Writing pseudocode when the question asked for Java or Python. The exam gives you the pseudocode; your job is
+  to translate it into a real language correctly. That means semicolons and braces in Java, colons and indentation
+  in Python, and the language's own keywords in both (<code>elif</code>/<code>else if</code>,
+  <code>print()</code>/<code>System.out.println()</code>, <code>len()</code>/<code>.length</code>). A mixed
+  register — <code>output "x"</code> inside a Python loop — is a syntax error and it costs marks that are
+  otherwise free.</p>
+</div>
+
+<h2>B2.1 · Variables, constants and data types</h2>
+
+<p>A <strong>variable</strong> is a named location in memory holding a value that can change. A
+<strong>constant</strong> is a named value that must not change after it is set — using one is not decoration; it
+prevents a whole class of bug and it tells the reader that the number means something.</p>
+
+<div class="grid grid--2">
+  <div class="card"><h4>Python</h4>
+<pre><code>VAT_RATE = 0.20        # constant by convention: uppercase
+name = "Amara"         # str
+age = 17               # int
+height = 1.68          # float
+isPrefect = True       # bool  (capital T)
+grade = 'A'            # str of length 1
+
+# Python is dynamically typed: the type travels with the value
+print(type(age), type(height))   # &lt;class 'int'&gt; &lt;class 'float'&gt;
+
+# Casting
+ageText = input("Age: ")   # input() ALWAYS returns a string
+age = int(ageText)         # must cast before arithmetic</code></pre></div>
+  <div class="card"><h4>Java</h4>
+<pre><code>final double VAT_RATE = 0.20;   // final = cannot be reassigned
+String name = "Amara";
+int age = 17;
+double height = 1.68;
+boolean isPrefect = true;       // lowercase
+char grade = 'A';               // single quotes for char, double for String
+
+// Java is statically typed: you declare the type, and it is checked
+// at compile time
+System.out.println(age + " " + height);
+
+// Casting
+String ageText = scanner.nextLine();
+age = Integer.parseInt(ageText);   // explicit parse
+double avg = (double) total / count;   // cast int to double BEFORE dividing</code></pre></div>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — integer division</span>
+  <p>In Python 2 and in Java, dividing two integers gives an integer: <code>7 / 2</code> is <code>3</code>, not
+  <code>3.5</code>. In Java this is the source of "my average is always 0" — <code>total / count</code> with both
+  <code>int</code> truncates before the assignment promotes it to <code>double</code>. Fix it by casting first:
+  <code>(double) total / count</code>. In Python 3, <code>/</code> always produces a float and <code>//</code> is
+  the integer-division operator — so <code>7 / 2</code> is <code>3.5</code> and <code>7 // 2</code> is
+  <code>3</code>. Know which language you are writing.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 1</span> Types, casting and the MOD/DIV pattern</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Write a program that reads a number of seconds and prints it as
+    minutes and seconds.</p>
+    <h4>Python</h4>
+<pre><code>total = int(input("Seconds: "))
+minutes = total // 60          # DIV
+seconds = total % 60           # MOD
+print(minutes, "min", seconds, "s")</code></pre>
+    <h4>Java</h4>
+<pre><code>Scanner sc = new Scanner(System.in);
+System.out.print("Seconds: ");
+int total = sc.nextInt();
+int minutes = total / 60;      // int / int = int  (DIV)
+int seconds = total % 60;      // remainder        (MOD)
+System.out.println(minutes + " min " + seconds + " s");</code></pre>
+    <p><strong>Sample run.</strong></p>
+<pre><code>Seconds: 145
+2 min 25 s</code></pre>
+    <ol class="steps">
+      <li>145 // 60 = 2 (the whole number of minutes); 145 % 60 = 25 (the leftover seconds).</li>
+      <li>The identity that makes this safe: total = (total DIV 60) × 60 + (total MOD 60), i.e. 2 × 60 + 25 = 145.</li>
+      <li>Check the boundary: 120 seconds → 2 min 0 s ✓; 59 seconds → 0 min 59 s ✓.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 2 min 25 s. This DIV/MOD pair is the standard way to convert between units, and it also appears whenever you need to split a linear index into (row, column) for a 2-D array: row = index DIV width, column = index MOD width.</div>
+  </div>
+</details>
+
+<h2>B2.3 · Selection and iteration</h2>
+
+<div class="grid grid--2">
+  <div class="card"><h4>Python — selection</h4>
+<pre><code>mark = int(input("Mark: "))
+
+if mark &gt;= 80:
+    grade = "A"
+elif mark &gt;= 60:      # elif, not "else if"
+    grade = "B"
+elif mark &gt;= 40:
+    grade = "C"
+else:
+    grade = "Fail"
+
+print("Grade:", grade)</code></pre>
+    <p><em>Note:</em> Python has no <code>switch</code> before 3.10 (<code>match</code>); use
+    <code>if/elif</code> chains.</p>
+  </div>
+  <div class="card"><h4>Java — selection</h4>
+<pre><code>int mark = sc.nextInt();
+String grade;
+
+if (mark &gt;= 80) {
+    grade = "A";
+} else if (mark &gt;= 60) {
+    grade = "B";
+} else if (mark &gt;= 40) {
+    grade = "C";
+} else {
+    grade = "Fail";
+}
+
+System.out.println("Grade: " + grade);
+
+// switch works on int, char, String and enum
+switch (grade) {
+    case "A" -&gt; System.out.println("Excellent");
+    case "B" -&gt; System.out.println("Good");
+    default  -&gt; System.out.println("Keep going");
+}</code></pre>
+  </div>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — ordering the branches</span>
+  <p>Both versions above test the highest band first. If you write <code>if mark &gt;= 40</code> first, a mark of 85
+  is caught immediately and graded C. The program runs, produces no error, and silently gives the wrong answer —
+  a logic error of the kind discussed on the B1 page. When writing a banding chain, always go from the most
+  restrictive condition to the least.</p>
+</div>
+
+<h3>Iteration: for versus while</h3>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to choose</span>
+  <p>Use <strong>for</strong> when you know in advance how many times the loop must run — for every element of an
+  array, for i from 0 to 9, for each character in a string. Use <strong>while</strong> when the loop continues
+  until something happens and you cannot predict how many iterations that will take — until the user types "quit",
+  until the end of a file, until the guess is right. Choosing <code>while</code> when you have a known count invites
+  the classic bug of forgetting to increment the counter, producing an infinite loop.</p>
+</div>
+
+<div class="grid grid--2">
+  <div class="card"><h4>Python — iteration</h4>
+<pre><code># count-controlled
+for i in range(10):        # 0 .. 9
+    print(i)
+
+for i in range(1, 11):     # 1 .. 10
+    print(i)
+
+for i in range(0, 10, 2):  # 0, 2, 4, 6, 8
+    print(i)
+
+# condition-controlled
+answer = ""
+while answer != "quit":
+    answer = input("Command (quit to stop): ")
+    print("You typed:", answer)
+
+# do-while equivalent (body runs at least once)
+while True:
+    n = int(input("Enter 1-10: "))
+    if 1 &lt;= n &lt;= 10:
+        break              # exit the loop</code></pre>
+  </div>
+  <div class="card"><h4>Java — iteration</h4>
+<pre><code>// count-controlled
+for (int i = 0; i &lt; 10; i++) {
+    System.out.println(i);
+}
+
+for (int i = 1; i &lt;= 10; i++) {   // 1 .. 10
+    System.out.println(i);
+}
+
+// enhanced for over an array
+for (int value : numbers) {
+    System.out.println(value);
+}
+
+// condition-controlled
+String answer = "";
+while (!answer.equals("quit")) {
+    answer = sc.nextLine();
+    System.out.println("You typed: " + answer);
+}
+
+// do-while: body always runs at least once
+int n;
+do {
+    n = sc.nextInt();
+} while (n &lt; 1 || n &gt; 10);</code></pre>
+  </div>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — comparing strings with == in Java</span>
+  <p><code>==</code> compares <em>references</em> — whether two variables point at the same object — not contents.
+  So <code>if (answer == "quit")</code> is usually false even when the user typed quit, because the literal and the
+  input are different objects. Always use <code>answer.equals("quit")</code>. In Python, <code>==</code> does
+  compare values, so the equivalent trap does not exist — but <code>is</code> in Python is the reference comparison
+  and should almost never be used for strings or numbers.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 6 marks · nested loops and a 2-D grid problem</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A 4 × 5 grid holds temperatures. Write a program that fills it from input and
+    prints the row number and value of the hottest cell.</p>
+    <h4>Python</h4>
+<pre><code>ROWS, COLS = 4, 5
+grid = []
+for r in range(ROWS):
+    row = []
+    for c in range(COLS):
+        row.append(int(input(f"Row {r}, col {c}: ")))
+    grid.append(row)
+
+hottest = grid[0][0]
+hotRow = 0
+for r in range(ROWS):
+    for c in range(COLS):
+        if grid[r][c] &gt; hottest:
+            hottest = grid[r][c]
+            hotRow = r
+
+print("Hottest:", hottest, "in row", hotRow)</code></pre>
+    <h4>Java</h4>
+<pre><code>final int ROWS = 4, COLS = 5;
+int[][] grid = new int[ROWS][COLS];
+
+for (int r = 0; r &lt; ROWS; r++) {
+    for (int c = 0; c &lt; COLS; c++) {
+        grid[r][c] = sc.nextInt();
+    }
+}
+
+int hottest = grid[0][0];
+int hotRow = 0;
+for (int r = 0; r &lt; ROWS; r++) {
+    for (int c = 0; c &lt; COLS; c++) {
+        if (grid[r][c] &gt; hottest) {
+            hottest = grid[r][c];
+            hotRow = r;
+        }
+    }
+}
+System.out.println("Hottest: " + hottest + " in row " + hotRow);</code></pre>
+    <p><strong>Sample run</strong> with values 12 15 9 20 7 / 22 18 25 11 13 / 5 8 30 2 4 / 19 21 17 6 10:</p>
+<pre><code>Hottest: 30 in row 2</code></pre>
+    <ol class="steps">
+      <li>The grid is stored <strong>row-major</strong>: <code>grid[row][column]</code>. Row 2 is the third row,
+      because indexing starts at 0.</li>
+      <li>The seed value is <code>grid[0][0]</code>, not 0 — see the B1 trap; temperatures can be negative.</li>
+      <li>The outer loop selects the row, the inner loop walks along it, so the cells are visited in reading order.</li>
+      <li>Total iterations = ROWS × COLS = 20, which is why nested loops over one collection are O(n²) in the
+      number of rows when the grid is square.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> Hottest: 30 in row 2. Marks: 1 for correct nested input loop, 1 for correct nested search loop, 1 for seeding with the first element, 1 for row-major indexing, 1 for correct output, 1 for the index being 0-based (row 2 means the third row). The most common error is writing grid[c][r].</div>
+  </div>
+</details>
+
+<h2>B2.2 · Data structures: arrays and lists</h2>
+
+<div class="grid grid--2">
+  <div class="card"><h4>Python — lists</h4>
+<pre><code>marks = [72, 85, 61, 90, 48]   # a list, dynamic, mutable
+
+print(marks[0])        # 72  — first element
+print(marks[-1])       # 48  — last element (Python only)
+print(len(marks))      # 5
+
+marks.append(77)       # add at the end
+marks.insert(1, 66)    # insert at index 1
+marks.remove(61)       # remove the first value 61
+popped = marks.pop()   # remove and return the last
+del marks[2]           # remove by index
+
+for m in marks:        # iterate by value
+    print(m)
+
+for i in range(len(marks)):   # iterate by index
+    print(i, marks[i])
+
+# slicing creates a NEW list
+first3 = marks[0:3]
+reversedCopy = marks[::-1]
+
+# 2-D: a list of lists
+grid = [[1,2,3],[4,5,6],[7,8,9]]
+print(grid[1][2])      # 6</code></pre>
+  </div>
+  <div class="card"><h4>Java — arrays and ArrayList</h4>
+<pre><code>int[] marks = {72, 85, 61, 90, 48};   // fixed size
+
+System.out.println(marks[0]);   // 72
+System.out.println(marks.length);  // length, NOT length()
+
+// arrays cannot grow, so use ArrayList when you need to
+ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+list.add(77);
+list.add(1, 66);
+list.remove(Integer.valueOf(61));  // by value
+list.remove(2);                    // by index
+int last = list.get(list.size() - 1);
+
+for (int m : marks) {          // enhanced for: by value
+    System.out.println(m);
+}
+for (int i = 0; i &lt; marks.length; i++) {
+    System.out.println(i + " " + marks[i]);
+}
+
+// 2-D array: rows then columns
+int[][] grid = {{1,2,3},{4,5,6},{7,8,9}};
+System.out.println(grid[1][2]);   // 6</code></pre>
+  </div>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — Python list assignment does not copy</span>
+  <p><code>b = a</code> makes both names refer to the <em>same</em> list; changing <code>b</code> changes
+  <code>a</code>. To copy, use <code>b = a[:]</code> or <code>b = list(a)</code>. The same trap exists in Java:
+  <code>int[] b = a;</code> copies the reference. Use <code>Arrays.copyOf(a, a.length)</code>. This matters
+  enormously in sub-procedures (below) and in the IA, where "my other list changed" bugs can cost hours.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> Two-dimensional array: summing a border</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Given a 3 × 4 grid, calculate the sum of the cells on the outer border.</p>
+    <h4>Python</h4>
+<pre><code>grid = [[2,4,1,7],
+        [3,9,5,2],
+        [8,1,6,3]]
+
+rows = len(grid)
+cols = len(grid[0])
+total = 0
+for r in range(rows):
+    for c in range(cols):
+        if r == 0 or r == rows - 1 or c == 0 or c == cols - 1:
+            total += grid[r][c]
+print("Border sum:", total)</code></pre>
+    <p><strong>Output:</strong> <code>Border sum: 46</code></p>
+    <ol class="steps">
+      <li>Top row: 2+4+1+7 = 14. Bottom row: 8+1+6+3 = 18.</li>
+      <li>Left column excluding corners: 3. Right column excluding corners: 2.</li>
+      <li>Total: 14 + 18 + 3 + 2 = 37… let me redo carefully: the condition includes corners once because it is a
+      single <code>if</code> per cell. Top row 14, bottom row 18, middle rows' first column: grid[1][0] = 3;
+      middle rows' last column: grid[1][3] = 2. So 14 + 18 + 3 + 2 = <strong>37</strong>.</li>
+    </ol>
+    <h4>Java</h4>
+<pre><code>int[][] grid = {{2,4,1,7},
+                {3,9,5,2},
+                {8,1,6,3}};
+int rows = grid.length, cols = grid[0].length, total = 0;
+for (int r = 0; r &lt; rows; r++) {
+    for (int c = 0; c &lt; cols; c++) {
+        if (r == 0 || r == rows - 1 || c == 0 || c == cols - 1) {
+            total += grid[r][c];
+        }
+    }
+}
+System.out.println("Border sum: " + total);   // 37</code></pre>
+    <div class="answerline"><b>Answer:</b> 37. The condition <code>r == 0 || r == rows-1 || c == 0 || c == cols-1</code> is the reusable pattern for "is this cell on the edge" — worth memorising, because border and neighbour questions recur. Using <code>and</code> instead of <code>or</code> here is a common slip that counts only the four corners.</div>
+  </div>
+</details>
+
+<h2>Strings and string manipulation</h2>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Operation</th><th>Python</th><th>Java</th></tr></thead>
+  <tbody>
+    <tr><td>Length</td><td><code>len(s)</code></td><td><code>s.length()</code></td></tr>
+    <tr><td>Character at index</td><td><code>s[i]</code></td><td><code>s.charAt(i)</code></td></tr>
+    <tr><td>Substring</td><td><code>s[2:5]</code> (start inclusive, end exclusive)</td><td><code>s.substring(2, 5)</code> (same convention)</td></tr>
+    <tr><td>Upper / lower</td><td><code>s.upper()</code>, <code>s.lower()</code></td><td><code>s.toUpperCase()</code>, <code>s.toLowerCase()</code></td></tr>
+    <tr><td>Find position</td><td><code>s.find("ab")</code> → −1 if absent</td><td><code>s.indexOf("ab")</code> → −1 if absent</td></tr>
+    <tr><td>Replace</td><td><code>s.replace("a", "b")</code></td><td><code>s.replace("a", "b")</code></td></tr>
+    <tr><td>Split</td><td><code>s.split(",")</code> → list</td><td><code>s.split(",")</code> → String[]</td></tr>
+    <tr><td>Join</td><td><code>",".join(parts)</code></td><td><code>String.join(",", parts)</code></td></tr>
+    <tr><td>Trim whitespace</td><td><code>s.strip()</code></td><td><code>s.trim()</code></td></tr>
+    <tr><td>Concatenate</td><td><code>s + t</code></td><td><code>s + t</code> or <code>s.concat(t)</code></td></tr>
+    <tr><td>Mutability</td><td><strong>Immutable</strong> — every operation returns a new string</td><td><strong>Immutable</strong> — use <code>StringBuilder</code> for heavy building</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 4</span> IB-style · 6 marks · string processing</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Write a program that reads a sentence and outputs the number of words, the number
+    of vowels, and the sentence with the words in reverse order.</p>
+    <h4>Python</h4>
+<pre><code>sentence = input("Sentence: ").strip()
+words = sentence.split()
+vowels = "aeiouAEIOU"
+
+vowelCount = 0
+for ch in sentence:
+    if ch in vowels:
+        vowelCount += 1
+
+reversedWords = " ".join(reversed(words))
+
+print("Words:", len(words))
+print("Vowels:", vowelCount)
+print("Reversed:", reversedWords)</code></pre>
+    <h4>Java</h4>
+<pre><code>String sentence = sc.nextLine().trim();
+String[] words = sentence.split("\\s+");   // regex for whitespace
+String vowels = "aeiouAEIOU";
+
+int vowelCount = 0;
+for (int i = 0; i &lt; sentence.length(); i++) {
+    if (vowels.indexOf(sentence.charAt(i)) &gt;= 0) {
+        vowelCount++;
+    }
+}
+
+StringBuilder sb = new StringBuilder();
+for (int i = words.length - 1; i &gt;= 0; i--) {
+    sb.append(words[i]);
+    if (i &gt; 0) sb.append(" ");
+}
+
+System.out.println("Words: " + words.length);
+System.out.println("Vowels: " + vowelCount);
+System.out.println("Reversed: " + sb);</code></pre>
+    <p><strong>Sample run.</strong></p>
+<pre><code>Sentence: the quick brown fox
+Words: 4
+Vowels: 5
+Reversed: fox brown quick the</code></pre>
+    <ol class="steps">
+      <li>Vowels: <em>the</em> (e), <em>quick</em> (u, i), <em>brown</em> (o), <em>fox</em> (o) = 5. ✓</li>
+      <li><code>split()</code> in Python with no argument handles multiple spaces; in Java you must pass a regex
+      <code>"\\s+"</code> or consecutive spaces produce empty strings.</li>
+      <li>Neither language reverses the characters — only the word order. Reversing characters would be
+      <code>sentence[::-1]</code> in Python or <code>new StringBuilder(sentence).reverse()</code> in Java.</li>
+      <li>Both languages' strings are immutable, so "changing" a string always produces a new one — which is why
+      the Java version uses <code>StringBuilder</code> for repeated appending in a loop.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 4 words, 5 vowels, "fox brown quick the". Marks: 1 for splitting correctly, 1 for the vowel count loop, 1 for reversing word order, 1 for correct output, and 2 for handling the edge cases — leading/trailing spaces (hence <code>.strip()</code> / <code>.trim()</code>) and multiple spaces between words.</div>
+  </div>
+</details>
+
+<h2>Sub-procedures and functions</h2>
+
+<p>A <strong>sub-procedure</strong> performs an action and returns nothing. A <strong>function</strong> computes and
+returns a value. The distinction is not stylistic: it tells the reader whether calling it changes anything.</p>
+
+<div class="grid grid--2">
+  <div class="card"><h4>Python</h4>
+<pre><code>def greet(name):            # procedure: no return
+    print("Hello,", name)
+
+def square(x):              # function: returns
+    return x * x
+
+def addStudent(students, name):   # list is MUTABLE
+    students.append(name)         # so the caller's list changes
+
+roster = ["Ana"]
+addStudent(roster, "Bo")
+print(roster)          # ['Ana', 'Bo']  — the caller WAS changed
+
+def doubleIt(n):            # int is immutable
+    n = n * 2               # rebinds the local name only
+    return n
+
+a = 5
+doubleIt(a)
+print(a)               # 5 — unchanged unless you assign the result</code></pre>
+  </div>
+  <div class="card"><h4>Java</h4>
+<pre><code>public static void greet(String name) {   // void = no return value
+    System.out.println("Hello, " + name);
+}
+
+public static int square(int x) {
+    return x * x;
+}
+
+public static void addStudent(ArrayList&lt;String&gt; list, String name) {
+    list.add(name);        // object reference: caller's list changes
+}
+
+ArrayList&lt;String&gt; roster = new ArrayList&lt;&gt;();
+roster.add("Ana");
+addStudent(roster, "Bo");
+System.out.println(roster);   // [Ana, Bo]
+
+public static void doubleIt(int n) {
+    n = n * 2;             // primitive: local copy only
+}
+int a = 5;
+doubleIt(a);
+System.out.println(a);     // 5 — unchanged</code></pre>
+  </div>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why pass by value versus by reference actually matters</span>
+  <p>Both languages pass <em>the value of the variable</em>. The subtlety is what that value is. For a primitive
+  (<code>int</code>, <code>double</code>, <code>boolean</code>) or an immutable object (Python's
+  <code>int</code>, <code>str</code>, <code>tuple</code>; Java's <code>String</code>), the value <em>is</em> the
+  data, so the callee gets a copy and cannot affect the caller. For a mutable object (a Python list or dict, a Java
+  array, an <code>ArrayList</code>, any object), the value is a <em>reference</em> — an address — so the callee
+  holds a copy of the address, which still points at the same object. Calling <code>append</code> or
+  <code>.add()</code> on it mutates the caller's object. Reassigning the parameter
+  (<code>students = []</code>) does <em>not</em>, because that only changes what the local copy of the address
+  points at. Knowing which operations mutate and which rebind is the difference between a working program and a
+  mysteriously broken one.</p>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — global variables</span>
+  <p>A <strong>global</strong> variable is declared outside any sub-procedure and is visible everywhere. They are
+  dangerous because any part of the program can change them, so when a value is wrong you have no way to know
+  which of twenty places broke it. They also make sub-procedures non-reusable: a function that secretly depends on
+  a global cannot be moved to another program. Use parameters for input, a return value for output, and reserve
+  globals for genuine constants. In Python, note that a function that <em>assigns</em> to a name creates a local
+  variable unless you declare <code>global</code> — which is itself a reason to avoid the pattern.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> IB-style · 6 marks · local scope and parameter passing</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> State the output of each program and explain the difference.</p>
+    <h4>Python</h4>
+<pre><code>def mystery(numbers):
+    numbers = numbers + [99]     # creates a NEW list, rebinds the local name
+    print("inside:", numbers)
+
+values = [1, 2, 3]
+mystery(values)
+print("outside:", values)</code></pre>
+<pre><code>def mystery2(numbers):
+    numbers.append(99)           # mutates the SAME list
+    print("inside:", numbers)
+
+mystery2(values)
+print("outside:", values)</code></pre>
+    <ol class="steps">
+      <li><code>mystery</code>: <code>numbers + [99]</code> builds a new list; assigning it to
+      <code>numbers</code> rebinds the local name. The caller's list is untouched.
+      Output: <code>inside: [1, 2, 3, 99]</code> then <code>outside: [1, 2, 3]</code>.</li>
+      <li><code>mystery2</code>: <code>append</code> mutates the object that both names refer to.
+      Output: <code>inside: [1, 2, 3, 99]</code> then <code>outside: [1, 2, 3, 99]</code>.</li>
+      <li>The one-word test: does the line <em>assign</em> to the parameter, or <em>call a method</em> on it?
+      Assignment rebinds; a method call mutates.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> mystery → outside [1,2,3]; mystery2 → outside [1,2,3,99]. This exact distinction is examined because it is the single most common misunderstanding of parameter passing. It also explains why a recursive function that passes <code>path + [x]</code> down the recursion is safe from accidental sharing, while one that appends to a shared list must undo the append on the way back.</div>
+  </div>
+</details>
+
+<h2>Recursion</h2>
+
+<p>A recursive sub-procedure <strong>calls itself</strong>. Every correct recursive solution has exactly two
+parts:</p>
+
+<ol class="steps">
+  <li>A <strong>base case</strong> — an input small enough to answer directly, with no further recursive call. This
+  is what stops the recursion.</li>
+  <li>A <strong>recursive case</strong> — the problem is restated as a smaller version of itself, so each call
+  moves closer to the base case.</li>
+</ol>
+
+<details class="derivation">
+  <summary><span class="badge">Why</span> Why infinite recursion crashes rather than merely running slowly</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Every time a sub-procedure is called, the machine creates an <strong>activation record</strong>
+      (a <em>stack frame</em>) holding the parameters, the local variables and the return address, and pushes it
+      onto the <strong>call stack</strong>.</li>
+      <li>When the procedure returns, its frame is popped and execution resumes where it left off.</li>
+      <li>The stack occupies a finite region of memory. A recursive call with no base case — or with a base case
+      that is never reached — pushes frame after frame and never pops any.</li>
+      <li>Eventually the stack region is exhausted and the program fails: Python raises
+      <code>RecursionError: maximum recursion depth exceeded</code>, Java throws
+      <code>StackOverflowError</code>. Both are runtime errors, not syntax errors, and both mean the same thing:
+      your recursion did not terminate.</li>
+      <li>Hence the rule: before you finish writing a recursive function, identify the base case and argue that each
+      recursive call makes the argument strictly smaller. If you cannot make that argument, the function is wrong.</li>
+    </ol>
+    <p><strong>What it means:</strong> recursion is not magic; it is a stack of pending calls, and every recursive
+    function is really an explicit stack that the language maintains for you.</p>
+  </div>
+</details>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 400" role="img" aria-label="The call stack while computing factorial(3), showing frames being pushed then popped in reverse order">
+    <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
+
+    <text x="320" y="28" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">The call stack during factorial(3) — pushing down, then popping back up</text>
+
+    <rect x="230" y="46" width="180" height="40" rx="4" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+    <text x="320" y="71" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">factorial(1) → returns 1</text>
+
+    <rect x="230" y="94" width="180" height="40" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="320" y="119" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">factorial(2): 2 * factorial(1)</text>
+
+    <rect x="230" y="142" width="180" height="40" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="320" y="167" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">factorial(3): 3 * factorial(2)</text>
+
+    <text x="320" y="204" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">↑ stack grows upward as calls are made (top = most recent)</text>
+
+    <text x="150" y="240" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">Unwinding</text>
+    <text x="470" y="240" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">Values returned</text>
+
+    <rect x="40" y="256" width="220" height="34" rx="4" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <text x="150" y="278" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">factorial(1) hits the base case</text>
+
+    <rect x="40" y="298" width="220" height="34" rx="4" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <text x="150" y="320" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">factorial(2) = 2 × 1</text>
+
+    <rect x="40" y="340" width="220" height="34" rx="4" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <text x="150" y="362" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">factorial(3) = 3 × 2</text>
+
+    <rect x="360" y="256" width="240" height="34" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="480" y="278" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">1</text>
+
+    <rect x="360" y="298" width="240" height="34" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="480" y="320" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">2</text>
+
+    <rect x="360" y="340" width="240" height="34" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="480" y="362" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">6  ← final answer</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> Nothing is computed on the way <em>down</em>; the calls
+  simply stack up. The arithmetic happens on the way <em>back up</em>, as each frame receives the value from the
+  frame above it.</figcaption>
+</figure>
+
+<div class="grid grid--2">
+  <div class="card"><h4>Python — factorial and Fibonacci</h4>
+<pre><code>def factorial(n):
+    if n == 0 or n == 1:      # base case
+        return 1
+    else:
+        return n * factorial(n - 1)   # recursive case
+
+print(factorial(5))    # 120
+
+
+def fib(n):
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+    else:
+        return fib(n - 1) + fib(n - 2)
+
+print(fib(6))          # 8</code></pre>
+  </div>
+  <div class="card"><h4>Java — factorial and Fibonacci</h4>
+<pre><code>public static int factorial(int n) {
+    if (n == 0 || n == 1) {          // base case
+        return 1;
+    } else {
+        return n * factorial(n - 1); // recursive case
+    }
+}
+System.out.println(factorial(5));    // 120
+
+
+public static int fib(int n) {
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+    return fib(n - 1) + fib(n - 2);
+}
+System.out.println(fib(6));          // 8</code></pre>
+  </div>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why naive Fibonacci is a warning, not an example to copy</span>
+  <p><code>fib(n)</code> calls <code>fib(n-1)</code> and <code>fib(n-2)</code>, and each of those calls both again,
+  so the same values are recomputed an enormous number of times: <code>fib(5)</code> is computed once from
+  fib(6), twice from fib(7), three times from fib(8)… The number of calls grows like the Fibonacci sequence
+  itself, roughly \(O(2^{n})\). Computing fib(40) that way takes minutes; computing it with a loop takes
+  microseconds. This is the standard example of <strong>when recursion is the wrong tool</strong>: the naive
+  recursive form is beautifully clear and catastrophically slow, because the sub-problems overlap. The fix is
+  <strong>memoisation</strong> (store each computed value and reuse it), which brings it back to O(n).</p>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — recursion versus iteration</span>
+  <p>Use recursion when the problem is naturally self-similar and the sub-problems do <em>not</em> overlap:
+  traversing a tree (B4), computing a factorial, exploring a maze, quicksort and mergesort, parsing nested
+  structures such as JSON or an expression tree. Use iteration when the sub-problems overlap (naive Fibonacci),
+  when the depth could be large enough to risk stack overflow, or when a simple loop states the solution more
+  clearly. Every recursion can be rewritten as a loop with an explicit stack — and sometimes you should.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 6</span> IB-style · 8 marks · trace a recursive function</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> State the output of the following, and explain what the function computes.</p>
+<pre><code>def f(n):
+    if n == 0:
+        return
+    print(n)
+    f(n - 1)
+    print(n)
+
+f(3)</code></pre>
+    <ol class="steps">
+      <li><code>f(3)</code>: n ≠ 0, so print 3, then call <code>f(2)</code>.</li>
+      <li><code>f(2)</code>: print 2, call <code>f(1)</code>.</li>
+      <li><code>f(1)</code>: print 1, call <code>f(0)</code>.</li>
+      <li><code>f(0)</code>: base case, <code>return</code> immediately — prints nothing.</li>
+      <li>Now the stack unwinds: <code>f(1)</code> resumes and prints 1; <code>f(2)</code> resumes and prints 2;
+      <code>f(3)</code> resumes and prints 3.</li>
+    </ol>
+<pre><code>3
+2
+1
+1
+2
+3</code></pre>
+    <p>The function prints the numbers from n down to 1 and then from 1 back up to n. The two <code>print</code>
+    statements are on either side of the recursive call, so the first runs on the way down and the second on the
+    way back up — and the stack guarantees the order is perfectly nested.</p>
+    <div class="answerline"><b>Answer:</b> 3 2 1 1 2 3 (one per line). Marks: 1 per correct line of output, plus 2 for explaining that the second print executes during unwinding, after the recursive call returns. Students who write "3 2 1 3 2 1" have forgotten that the unwinding is last-in-first-out.</div>
+  </div>
+</details>
+
+<h2>B2.5 · File processing</h2>
+
+<p>Four modes matter: <strong>read</strong> (<code>r</code>), <strong>write</strong> (<code>w</code> — creates the
+file or <em>erases</em> it if it exists), <strong>append</strong> (<code>a</code> — adds to the end, preserving
+existing content), and read/write. Forgetting the difference between write and append destroys data silently, which
+is why it is examined.</p>
+
+<div class="grid grid--2">
+  <div class="card"><h4>Python — files</h4>
+<pre><code># WRITE (overwrites!)
+with open("log.txt", "w") as file:
+    file.write("Session start\n")
+    file.write("User: ada\n")
+
+# APPEND (preserves existing content)
+with open("log.txt", "a") as file:
+    file.write("User: bob\n")
+
+# READ all lines into a list
+with open("log.txt", "r") as file:
+    lines = file.readlines()
+
+for line in lines:
+    print(line.strip())     # strip removes the newline
+
+# READ line by line, handling EOF naturally
+with open("log.txt") as file:
+    for line in file:       # stops at end of file automatically
+        print(line.strip())
+
+# Check existence first to avoid an exception
+import os
+if os.path.exists("log.txt"):
+    with open("log.txt") as file:
+        print(file.read())</code></pre>
+  </div>
+  <div class="card"><h4>Java — files</h4>
+<pre><code>// WRITE (overwrites)
+try (PrintWriter out = new PrintWriter("log.txt")) {
+    out.println("Session start");
+    out.println("User: ada");
+}
+
+// APPEND (preserves existing content)
+try (FileWriter fw = new FileWriter("log.txt", true);
+     PrintWriter out = new PrintWriter(fw)) {
+    out.println("User: bob");
+}
+
+// READ: loop until readLine() returns null, which signals EOF
+try (BufferedReader br = new BufferedReader(new FileReader("log.txt"))) {
+    String line;
+    while ((line = br.readLine()) != null) {
+        System.out.println(line.trim());
+    }
+} catch (IOException e) {
+    System.out.println("Could not read the file: " + e.getMessage());
+}
+
+// Check existence first
+File f = new File("log.txt");
+if (f.exists()) { /* safe to open */ }</code></pre>
+  </div>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — the three file errors that cost marks</span>
+  <ol class="steps">
+    <li><strong>Opening with <code>"w"</code> when you meant append.</strong> The file is truncated to zero length
+    the moment it is opened. No warning, no undo.</li>
+    <li><strong>Not closing the file.</strong> Data sits in a buffer and may never reach the disk; on some systems
+    you also lock the file against other processes. Python's <code>with</code> and Java's
+    <code>try-with-resources</code> close it automatically even if an exception occurs — always use them.</li>
+    <li><strong>Ignoring EOF.</strong> In Java, <code>readLine()</code> returns <code>null</code> at end of file, so
+    the idiom <code>while ((line = br.readLine()) != null)</code> is both the loop and the EOF test. In Python,
+    iterating a file object with <code>for line in file</code> handles EOF for you — the cleanest form.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 7</span> IB-style · 8 marks · read, filter, write</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A file <code>marks.txt</code> contains one record per line in the form
+    <code>name,mark</code>. Write a program that reads the file, writes the names of students scoring below 50 to
+    <code>resit.txt</code>, and prints how many there were.</p>
+    <h4>Python</h4>
+<pre><code>count = 0
+with open("marks.txt") as inFile, open("resit.txt", "w") as outFile:
+    for line in inFile:
+        line = line.strip()
+        if line == "":              # skip blank lines
+            continue
+        name, markText = line.split(",")
+        mark = int(markText)
+        if mark &lt; 50:
+            outFile.write(name + "\n")
+            count += 1
+
+print("Students needing a resit:", count)</code></pre>
+    <h4>Java</h4>
+<pre><code>int count = 0;
+try (BufferedReader br = new BufferedReader(new FileReader("marks.txt"));
+     PrintWriter out = new PrintWriter("resit.txt")) {
+
+    String line;
+    while ((line = br.readLine()) != null) {   // null = EOF
+        line = line.trim();
+        if (line.isEmpty()) continue;
+        String[] parts = line.split(",");
+        int mark = Integer.parseInt(parts[1]);
+        if (mark &lt; 50) {
+            out.println(parts[0]);
+            count++;
+        }
+    }
+} catch (IOException e) {
+    System.out.println("File error: " + e.getMessage());
+}
+System.out.println("Students needing a resit: " + count);</code></pre>
+    <p><strong>Input file.</strong></p>
+<pre><code>Ada,72
+Bo,45
+Chen,50
+Dara,31
+Eve,88</code></pre>
+    <p><strong>Output.</strong></p>
+<pre><code>Students needing a resit: 2</code></pre>
+    <p><strong><code>resit.txt</code> now contains:</strong></p>
+<pre><code>Bo
+Dara</code></pre>
+    <ol class="steps">
+      <li>Chen scored exactly 50, so <code>mark &lt; 50</code> is false and Chen is not included — the boundary
+      case that decides whether you need <code>&lt;</code> or <code>&lt;=</code>.</li>
+      <li>Skipping blank lines prevents a crash on a trailing newline at the end of the file, which is the most
+      common real-world EOF bug.</li>
+      <li>Both versions open the output with a mode that creates or overwrites, which is correct here because we
+      are producing a fresh report.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 2 students; resit.txt contains Bo and Dara. Marks: 1 for reading to EOF, 2 for splitting and casting, 1 for the correct comparison at the boundary, 1 for writing one name per line, 1 for the counter, 1 for the blank-line guard, 1 for correct resource handling.</div>
+  </div>
+</details>
+
+<h2>Exception handling</h2>
+
+<p>An <strong>exception</strong> is an event that disrupts the normal flow because the program cannot proceed:
+the file is missing, the input is not a number, the divisor is zero, the index is out of range. Handling it means
+catching it and doing something sensible instead of crashing.</p>
+
+<div class="grid grid--2">
+  <div class="card"><h4>Python</h4>
+<pre><code>try:
+    age = int(input("Age: "))
+    print("Next year you will be", age + 1)
+except ValueError:
+    print("That was not a whole number.")
+except ZeroDivisionError:
+    print("Cannot divide by zero.")
+except Exception as e:      # last resort only
+    print("Unexpected error:", e)
+else:
+    print("Input accepted.")   # runs if no exception
+finally:
+    print("Done.")             # always runs</code></pre>
+  </div>
+  <div class="card"><h4>Java</h4>
+<pre><code>try {
+    int age = Integer.parseInt(sc.nextLine());
+    System.out.println("Next year you will be " + (age + 1));
+} catch (NumberFormatException e) {
+    System.out.println("That was not a whole number.");
+} catch (ArithmeticException e) {
+    System.out.println("Cannot divide by zero.");
+} catch (Exception e) {        // last resort only
+    System.out.println("Unexpected error: " + e.getMessage());
+} finally {
+    System.out.println("Done.");   // always runs
+}</code></pre>
+  </div>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — why you catch specific exceptions</span>
+  <p>Writing <code>except Exception</code> or <code>catch (Exception e)</code> catches everything, including bugs
+  you did not anticipate, and then reports one vague message for all of them. That hides errors rather than
+  handling them: a typo that produces an index error looks identical to a user typing letters, so you cannot tell
+  the user what to do differently. Catch the specific exception you expect (a number-format error, a file-not-found
+  error) and let anything else fail loudly — during development, a loud failure is a gift. In an exam answer,
+  naming two specific exception types scores better than one generic catch.</p>
+</div>
+
+<h2>Collections and iteration</h2>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Structure</th><th>Python</th><th>Java</th><th>Use it when</th></tr></thead>
+  <tbody>
+    <tr><td>Dynamic array</td><td><code>list</code></td><td><code>ArrayList</code></td><td>The default choice: ordered, indexable, grows as needed</td></tr>
+    <tr><td>Key–value map</td><td><code>dict</code></td><td><code>HashMap</code></td><td>Looking up a value by a key in O(1) — see B4</td></tr>
+    <tr><td>Unique set</td><td><code>set</code></td><td><code>HashSet</code></td><td>Membership tests and removing duplicates</td></tr>
+    <tr><td>Queue / stack</td><td><code>deque</code> (from collections)</td><td><code>ArrayDeque</code></td><td>FIFO or LIFO processing — see B4</td></tr>
+  </tbody>
+</table>
+</div>
+
+<pre><code># Python: counting word frequencies — the classic dict pattern
+counts = {}
+for word in text.split():
+    word = word.lower().strip(".,!?")
+    counts[word] = counts.get(word, 0) + 1   # get() avoids a KeyError
+
+for word, n in sorted(counts.items(), key=lambda kv: -kv[1]):
+    print(f"{word}: {n}")</code></pre>
+
+<pre><code>// Java: the same idea with HashMap
+HashMap&lt;String, Integer&gt; counts = new HashMap&lt;&gt;();
+for (String word : text.split("\\s+")) {
+    word = word.toLowerCase().replaceAll("[.,!?]", "");
+    counts.put(word, counts.getOrDefault(word, 0) + 1);
+}
+for (String word : counts.keySet()) {
+    System.out.println(word + ": " + counts.get(word));
+}</code></pre>
+
+<div class="callout callout--link">
+  <span class="callout__label">Connection</span>
+  <p>A dictionary/hash map is the practical face of the <strong>hash table</strong> you study in B4. The reason
+  <code>counts[word]</code> is fast, and the reason a <code>HashMap</code> has no defined iteration order, both
+  come from hashing — come back to this code once you have read B4 and it will make complete sense.</p>
+</div>
+
+<h2>IDE features and systematic debugging</h2>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Feature</th><th>What it does</th><th>When you use it</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Breakpoint</strong></td><td>Pauses execution at a chosen line</td><td>You know roughly where the bug is and want to look around</td></tr>
+    <tr><td><strong>Step over</strong></td><td>Executes the current line, including any sub-procedure call, and moves on</td><td>Watching a loop progress</td></tr>
+    <tr><td><strong>Step into</strong></td><td>Enters the sub-procedure being called</td><td>You suspect the bug is inside the procedure</td></tr>
+    <tr><td><strong>Step out</strong></td><td>Runs to the end of the current sub-procedure and returns to the caller</td><td>You stepped in by accident, or have seen enough</td></tr>
+    <tr><td><strong>Watch / variable inspector</strong></td><td>Shows the current value of chosen expressions</td><td>Checking whether an accumulator is doing what you expect</td></tr>
+    <tr><td><strong>Call stack pane</strong></td><td>Shows the chain of calls that led here</td><td>Debugging recursion, or any crash</td></tr>
+    <tr><td><strong>Syntax highlighting / autocomplete</strong></td><td>Colours code by role; suggests names and parameters</td><td>Constantly — they catch typos before you run anything</td></tr>
+    <tr><td><strong>Linter / static analysis</strong></td><td>Warns about unused variables, unreachable code, shadowed names</td><td>Before you test, to remove noise</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — a debugging method that actually works</span>
+  <ol class="steps">
+    <li><strong>Reproduce it reliably.</strong> Find the exact input that causes the failure. If you cannot make it
+    happen on demand you cannot tell when you have fixed it.</li>
+    <li><strong>Read the error message properly.</strong> It gives the exception type and a line number. "Index out
+    of bounds at line 42" tells you more than any amount of staring.</li>
+    <li><strong>Form one hypothesis and test it.</strong> Not "maybe it's the loop" — "if the bug is an off-by-one,
+    then with n = 1 the loop should execute zero times but I predict it executes once".</li>
+    <li><strong>Instrument rather than guess.</strong> Add a print of the variables at the top of the loop, or set a
+    breakpoint and watch them. Compare what actually happens with what you predicted.</li>
+    <li><strong>Bisect.</strong> If the program is long, print or break halfway. Find the point where the state
+    stops matching your expectation; the bug is before it.</li>
+    <li><strong>Fix the cause, not the symptom.</strong> If an index is out of range, do not add a
+    <code>try</code> around it — work out why the index is too large.</li>
+    <li><strong>Add a test for it.</strong> The regression test is what stops the bug coming back, and in your IA
+    it is also evidence of systematic testing.</li>
+  </ol>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary</span>
+  <p><strong>variable / constant</strong> /<strong>data type</strong><strong>integer / real (float) / boolean / character / string</strong> / / / /<strong>casting / type conversion</strong><strong>declaration</strong><strong>initialisation</strong><strong>assignment</strong><strong>selection</strong><strong>iteration / loop</strong> /<strong>nested loop</strong><strong>infinite loop</strong><strong>array / list</strong> /<strong>two-dimensional array</strong><strong>row-major</strong><strong>index / indices</strong> /<strong>element</strong><strong>string manipulation</strong><strong>concatenation</strong><strong>substring</strong><strong>immutable / mutable</strong> /<strong>sub-procedure / function</strong> /<strong>parameter / argument</strong> /<strong>pass by value / by reference</strong> /<strong>local / global scope</strong> /<strong>return value</strong><strong>recursion</strong><strong>base case</strong><strong>recursive case</strong><strong>call stack</strong><strong>stack frame</strong><strong>stack overflow</strong><strong>unwinding</strong><strong>memoisation</strong><strong>file handling</strong><strong>read / write / append</strong> / /<strong>end of file (EOF)</strong><strong>buffer</strong><strong>exception handling</strong><strong>try / catch (except) / finally</strong> / /<strong>collection</strong><strong>dictionary / map</strong> /<strong>IDE</strong><strong>breakpoint</strong><strong>step over / step into</strong> /<strong>watch</strong><strong>debugger</strong><strong>regression test</strong></p>
+</div>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li><p>State the output.</p>
+<pre><code>nums = [4, 7, 2, 9, 5]
+total = 0
+for i in range(len(nums)):
+    if nums[i] % 2 == 1:
+        total += nums[i]
+print(total)</code></pre>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Odd values: 7, 9, 5 → total = 21. <strong>Output: 21.</strong></p>
+      <div class="answerline"><b>Note:</b> <code>%</code> is MOD, so <code>nums[i] % 2 == 1</code> tests oddness. For negative numbers <code>% 2</code> in Python still gives 1 (Python's modulo follows the sign of the divisor), while in Java <code>-3 % 2</code> is -1 — a genuine cross-language trap.</div>
+    </div></details>
+  </li>
+  <li><p>Explain the difference between a sub-procedure and a function, and give a situation where each is the
+  better choice.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>A <strong>sub-procedure</strong> performs an action and returns no value (void in Java; a function with no
+      <code>return</code> in Python). Use it when the purpose is an effect: printing a menu, writing to a file,
+      updating an object's state.</p>
+      <p>A <strong>function</strong> computes and returns a value. Use it when the caller needs a result it will
+      use in further computation: <code>average(marks)</code>, <code>distance(a, b)</code>,
+      <code>isValid(email)</code>.</p>
+      <p>The practical reason it matters: a function can be used inside an expression
+      (<code>if isValid(email):</code>), and it has no side effects to reason about, which makes it far easier to
+      test and to reuse.</p>
+    </div></details>
+  </li>
+  <li><p>Write a program in your chosen language that reads 10 integers into an array and prints the second-largest
+  distinct value. Explain how you handled the case where all values are equal.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <h4>Python</h4>
+<pre><code>values = [int(input()) for _ in range(10)]
+largest = max(values)
+rest = [v for v in values if v != largest]
+if rest:
+    print("Second largest:", max(rest))
+else:
+    print("All values are equal:", largest)</code></pre>
+      <ol class="steps">
+        <li>Find the largest, then find the largest of everything that is not equal to it.</li>
+        <li>If <code>rest</code> is empty, every element equalled the largest, so there is no second-largest —
+        the program reports that instead of crashing.</li>
+        <li>Note this returns the second-largest <em>distinct</em> value: for [5, 5, 3] it gives 3, not 5. If the
+        question wanted the second element in sorted order, the answer would be 5 — always check which is meant,
+        and say so.</li>
+      </ol>
+      <div class="answerline"><b>Marks:</b> 2 for finding the largest, 2 for filtering it out, 2 for handling the all-equal case explicitly. The last part is the one most answers omit.</div>
+    </div></details>
+  </li>
+  <li><p>State the output of this recursive function and explain the pattern.</p>
+<pre><code>def stars(n):
+    if n == 0:
+        return ""
+    return "*" + stars(n - 1)
+
+for i in range(1, 5):
+    print(stars(i))</code></pre>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+<pre><code>*
+**
+***
+****</code></pre>
+      <p><code>stars(1)</code> = "*" + stars(0) = "*" + "" = "*". <code>stars(2)</code> = "*" + "*" = "**", and so
+      on. The base case returns the empty string, which is the identity for concatenation — the same trick as
+      returning 1 for factorial (the identity for multiplication) or 0 for a sum.</p>
+      <div class="answerline"><b>Key insight:</b> choosing the correct <em>identity element</em> for your base case is what makes recursive string and list building work cleanly. Getting it wrong ("" for a sum, 0 for a product) is a classic bug.</div>
+    </div></details>
+  </li>
+  <li><p>Explain why the following recursive function is dangerous, and rewrite it iteratively.</p>
+<pre><code>def fib(n):
+    if n &lt;= 1:
+        return n
+    return fib(n - 1) + fib(n - 2)</code></pre>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p><strong>Why it is dangerous:</strong> the sub-problems overlap — <code>fib(5)</code> is recomputed from
+      scratch inside <code>fib(6)</code> and again inside <code>fib(7)</code> — so the number of calls grows
+      exponentially, roughly O(2ⁿ). fib(40) takes minutes or worse. It also uses O(n) stack space.</p>
+      <h4>Iterative rewrite</h4>
+<pre><code>def fib(n):
+    if n &lt;= 1:
+        return n
+    prev, curr = 0, 1
+    for _ in range(2, n + 1):
+        prev, curr = curr, prev + curr
+    return curr</code></pre>
+      <p>This is O(n) time and O(1) space: each value is computed once and only the last two are kept. If you want
+      to keep the recursive form, add <strong>memoisation</strong> — a dictionary of computed values checked at the
+      top of the function — which also brings it to O(n).</p>
+    </div></details>
+  </li>
+  <li><p>Describe what happens if a program opens a file for writing when the file already contains data, and state
+  how to avoid losing that data.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Opening in write mode (<code>"w"</code> in Python, <code>new PrintWriter(file)</code> or
+      <code>new FileWriter(file)</code> without the append flag in Java) <strong>truncates the file to zero
+      length immediately</strong>, before anything is written. The existing contents are lost permanently, with no
+      error, no confirmation and no undo.</p>
+      <p>To avoid it: open in append mode (<code>"a"</code>, or <code>new FileWriter(file, true)</code>) when you
+      want to add to existing content; check whether the file exists first; or write to a new file and rename it
+      once the write has succeeded — which is the safest pattern, because a crash mid-write leaves the original
+      intact.</p>
+    </div></details>
+  </li>
+  <li><p>A program crashes with <code>ValueError: invalid literal for int() with base 10: 'twelve'</code>.
+  Identify the type of error, explain the cause, and write the code that handles it.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>It is a <strong>value error</strong> raised at run time: <code>int()</code> was asked to convert the
+      string "twelve", which does not represent an integer in base 10. It is a runtime error rather than a syntax
+      error because the code is grammatically valid — it fails only on this particular input.</p>
+<pre><code>while True:
+    text = input("Enter a whole number: ")
+    try:
+        value = int(text)
+        break                 # valid input, leave the loop
+    except ValueError:
+        print("That is not a whole number. Try again.")
+print("You entered", value)</code></pre>
+      <p>The loop is the important part: it handles the exception <em>and</em> re-prompts, so the program recovers
+      instead of just reporting the problem and stopping. In Java the equivalent catches
+      <code>NumberFormatException</code>.</p>
+    </div></details>
+  </li>
+  <li><p>Explain why using a global variable inside a sub-procedure is usually a bad idea, and describe how to
+  achieve the same result without one.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li><strong>No local reasoning.</strong> Any part of the program can change a global, so when the value is
+        wrong, the fault could be anywhere — you have destroyed your ability to locate the bug by looking at one
+        function.</li>
+        <li><strong>No reuse.</strong> A sub-procedure that reads a global cannot be copied into another program,
+        or even called twice for two different data sets, without that global being set up first.</li>
+        <li><strong>Hidden dependencies.</strong> The function's signature no longer tells you what it needs, so a
+        reader cannot tell that calling it will change something else.</li>
+        <li><strong>Concurrency breaks.</strong> Two parts of a program running at the same time cannot safely share
+        a mutable global.</li>
+        <li><strong>Instead:</strong> pass the data in as a parameter and return the result. If several values must
+        move together, pass an object (B3) or a collection — the data is then explicit in the signature and the
+        function becomes testable in isolation.</li>
+      </ol>
+    </div></details>
+  </li>
+</ol>
+
+<div class="conn">
+  <span class="conn__title">Connections</span>
+  <ul>
+    <li><strong>→ B1 Computational thinking:</strong> the pseudocode design becomes this code; trace tables are how
+    you check it.</li>
+    <li><strong>→ B3 OOP:</strong> classes are what you reach for when the sub-procedures and the data they operate
+    on belong together.</li>
+    <li><strong>→ B4 Abstract data types:</strong> stacks, queues, linked lists and trees are all built from the
+    arrays, records and recursion on this page.</li>
+    <li><strong>→ A1 Computer fundamentals:</strong> overflow, floating-point equality and character encoding are
+    all bugs you meet here in practice; translation (A1.4) is what happens to your source before it runs.</li>
+    <li><strong>→ A2 Networks:</strong> file handling and exception handling are the tools for any networked
+    application, where failure is normal rather than exceptional.</li>
+    <li><strong>→ IA:</strong> B2 is the entire technical basis of your computational solution — the code quality
+    and the commenting habits start here.</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can declare variables and constants, and cast between int, float and string in my chosen language.</span></label></li>
+  <li><label><input type="checkbox"><span>I know how integer division behaves in both languages and how to avoid the truncation bug.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write a multi-branch selection with the conditions in the correct order.</span></label></li>
+  <li><label><input type="checkbox"><span>I can choose between for and while and justify the choice.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write a do-while / repeat-until loop in both languages.</span></label></li>
+  <li><label><input type="checkbox"><span>I can iterate a 1-D and a 2-D array with nested loops and row-major indexing.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use the common string functions in both languages.</span></label></li>
+  <li><label><input type="checkbox"><span>I can distinguish a sub-procedure from a function and say when to use each.</span></label></li>
+  <li><label><input type="checkbox"><span>I can predict whether a parameter change is visible to the caller.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain why globals are dangerous and how to avoid them.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write a recursive function with a correct base case and trace it.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain why infinite recursion crashes and why naive Fibonacci is exponential.</span></label></li>
+  <li><label><input type="checkbox"><span>I can read, write and append to a text file safely, handling EOF.</span></label></li>
+  <li><label><input type="checkbox"><span>I can catch specific exceptions and explain why that beats a generic catch.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use breakpoints, stepping and watches, and follow a systematic debugging method.</span></label></li>
+</ul>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

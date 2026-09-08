@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 · Computational thinking — DP Computer Science HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Computer Science HL · Theme B · B1</span>
+<h1 class="page-title">B1 · Computational thinking</h1>
+<p class="lede">Computational thinking is not "thinking about computers" — it is the habit of taking a
+vague, messy real-world problem and reshaping it until a machine could carry it out. The five strands the syllabus
+names (think procedurally, logically, ahead, concurrently, abstractly) are not a list to memorise; they are five
+questions you ask yourself when you get stuck. Do this topic first, because every other B topic assumes it, and
+because the IB pseudocode you learn here is the language every Paper 2 question is written in.</p>
+<div class="page-meta">
+  <span class="tag">Theme B · examined in Paper 2</span>
+  <span class="tag">B1.1 Approaches to computational thinking</span>
+  <span class="tag tag--hl">HL and SL share B1; HL goes deeper in efficiency analysis</span>
+</div>
+
+<h2>The five strands</h2>
+
+<p>Each strand below is given with a worked example, because a definition alone earns nothing.</p>
+
+<h3>1 · Think procedurally</h3>
+
+<p>Break the problem into ordered steps, and notice where the same step repeats so it can become a procedure with
+parameters rather than being written twice.</p>
+
+<p><strong>Example.</strong> "Work out the student with the highest average mark." Procedural thinking turns this
+into: for each student, sum their marks and divide by how many there are; keep a record of the best average so far
+and the name that goes with it; whenever a student's average beats the best so far, replace both. Two sub-problems
+appear (average of one student; find the maximum over many), and the second is a pattern you will use for the rest
+of your life.</p>
+
+<h3>2 · Think logically</h3>
+
+<p>Decisions must be exhaustive and exclusive: every possible input must take exactly one path.</p>
+
+<p><strong>Example.</strong> "Grade the exam: A above 80, B above 70, C above 60, otherwise fail." Write it in
+descending order with a final catch-all:
+<code>if mark &gt; 80 then "A" else if mark &gt; 70 then "B" else if mark &gt; 60 then "C" else "Fail"</code>.
+Written in ascending order (<code>if mark &gt; 60 then "C"</code> first), a mark of 85 is caught by the first
+branch and graded C — a logic error, not a syntax error, so the program runs and silently gives wrong grades.
+That is the practical meaning of thinking logically.</p>
+
+<h3>3 · Think ahead</h3>
+
+<p>Design for inputs you have not seen yet, and for the consequences of your own choices.</p>
+
+<p><strong>Example.</strong> You write a program that reads a class list. Thinking ahead means asking: what if the
+file is empty? What if a name contains an apostrophe? What if there are 40 students rather than 30? What if someone
+runs it twice? What if the input is a number where you expected text? Every one of those is a decision you make
+<em>now</em>, cheaply, rather than a bug you find <em>later</em>, expensively. It is also what makes your IA strong:
+a testing table with boundary and erroneous data is "thinking ahead" written down.</p>
+
+<h3>4 · Think concurrently</h3>
+
+<p>Notice which parts of a task do not depend on each other, and could therefore happen at the same time.</p>
+
+<p><strong>Example.</strong> A program downloads ten images and then processes each one. Downloading is limited by
+the network; processing is limited by the CPU. They do not contend for the same resource, so while image 3 is
+downloading, images 1 and 2 can be processed. The parts that must stay in order are the ones with a genuine
+<em>dependency</em>: you cannot process an image before it has arrived. Concurrency is the study of which
+orderings are real constraints and which are accidents of how you happened to write the code.</p>
+
+<h3>5 · Think abstractly</h3>
+
+<p>Decide what to keep and what to discard, and give the thing you kept a name.</p>
+
+<p><strong>Example.</strong> A navigation app does not model roads. It models a graph: places as nodes, journeys as
+edges with a cost. It discards the road's surface, its width, its colour, whether it has a shop on it — and keeps
+exactly one number, the travel time. That act of discarding is what makes the problem solvable at all, and it is
+why the same shortest-path algorithm works for road networks, internet routing, and the number of edits between two
+words. Abstraction is the highest-value of the five strands and the one that most often appears in 6-mark
+"explain" questions.</p>
+
+<div class="callout callout--link">
+  <span class="callout__label">Connection</span>
+  <p>Abstraction is the same idea in every topic: it is the layer model in A1, the E-R model in A3, the feature
+  selection in A4, the class in B3, and the ADT in B4. In each case the pattern is identical — hide the
+  representation, expose the operations. If you can state that sentence and illustrate it with two examples from
+  different topics, you have the connections question in the bag.</p>
+</div>
+
+<h3>Decomposition, pattern recognition and generalisation</h3>
+
+<dl class="glossary">
+  <dt>Decomposition</dt>
+  <dd>Breaking a large problem into smaller sub-problems, each of which is independently solvable and testable. The
+  test of a good decomposition: you can name each piece, you can test each piece on its own, and changing one piece
+  does not force changes in the others.</dd>
+  <dt>Pattern recognition</dt>
+  <dd>Noticing that sub-problems share a structure. If three parts of your program each "find the largest thing in
+  a collection", that is one sub-procedure with a parameter, not three pieces of code.</dd>
+  <dt>Generalisation / abstraction</dt>
+  <dd>Rewriting the solution to the shared structure so it works for <em>any</em> instance: not "find the highest
+  mark in Mr Lee's class" but "find the maximum value in an array of numbers", or better, "find the element that
+  ranks highest by a given comparison".</dd>
+</dl>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 6 marks · decompose and abstract</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A school wants a program that, from a file of pupils each with a list of test
+    scores, prints the name of the top pupil in each year group and the school average. (a) Decompose the problem.
+    (b) Identify one place where pattern recognition reduces the work. (c) Identify one abstraction.</p>
+    <ol class="steps">
+      <li><strong>(a) Decomposition:</strong> (i) read the file into a collection of pupil records; (ii) for one
+      pupil, compute their average score; (iii) find the pupil with the highest average within one year group;
+      (iv) compute the mean across all pupils; (v) format and output the results.</li>
+      <li>Each sub-problem can be written and tested separately: you can test (ii) on a made-up pupil without any
+      file, and (iii) on a made-up list.</li>
+      <li><strong>(b) Pattern:</strong> "highest average within year 10", "highest average within year 11",
+      "highest average within year 12" are the same computation with a different filter. So write one sub-procedure
+      <code>topPupil(pupils, year)</code> and call it three times.</li>
+      <li><strong>(c) Abstraction:</strong> a pupil is reduced to just the attributes the problem needs — name,
+      year group, and the list of scores. Address, date of birth, medical notes and photo are discarded because
+      they cannot affect the answer. Equally, "the file" is abstracted into "a collection of pupil records", so the
+      rest of the program does not care whether the data came from a CSV, a database or a keyboard.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 2 for a decomposition with at least four named, independently testable sub-problems; 2 for recognising that the per-year computation is one parameterised procedure; 2 for identifying what is discarded and why. "It makes it simpler" is not an abstraction — say what is kept and what is thrown away.</div>
+  </div>
+</details>
+
+<h2>Algorithm design tools</h2>
+
+<h3>Structured English</h3>
+
+<p>Numbered steps in plain language, precise enough to be unambiguous but without code syntax. It is the right
+first draft: you can show it to a non-programmer (your IA client!) and they can tell you whether it is correct.</p>
+
+<pre><code>1. Set bestAverage to 0 and bestName to an empty string.
+2. For each pupil in the list:
+   2.1 Add up all of that pupil's scores.
+   2.2 Divide the total by the number of scores to get the average.
+   2.3 If this average is greater than bestAverage:
+        set bestAverage to this average
+        set bestName to this pupil's name.
+3. Output bestName and bestAverage.</code></pre>
+
+<h3>Flowcharts</h3>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="The standard flowchart symbols: terminator, process, input/output, decision and connector, with a small worked example">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+    <rect x="20" y="40" width="130" height="46" rx="22" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="85" y="68" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Terminator</text>
+    <text x="85" y="112" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">start / stop</text>
+
+    <rect x="180" y="40" width="130" height="46" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="245" y="68" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Process</text>
+    <text x="245" y="112" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">a calculation or</text>
+
+    <polygon points="360,40 490,40 490,86 360,86 385,63" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="417" y="68" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Input / Output</text>
+    <text x="417" y="112" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">read or display data</text>
+
+    <polygon points="540,40 630,63 540,86 450,63" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+    <text x="540" y="66" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Decision</text>
+    <text x="540" y="112" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">yes / no branch</text>
+
+    <text x="85" y="150" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">assign a value</text>
+
+    <text x="30" y="180" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13">Worked example — count how many of 10 numbers are negative</text>
+
+    <rect x="60" y="192" width="110" height="36" rx="16" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+    <text x="115" y="214" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">count = 0</text>
+
+    <rect x="230" y="192" width="110" height="36" rx="16" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+    <text x="285" y="214" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">i = 1</text>
+
+    <polygon points="400,192 510,192 510,228 400,228 425,210" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+    <text x="448" y="214" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">input n</text>
+
+    <polygon points="285,250 355,272 285,294 215,272" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="285" y="270" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">n &lt; 0?</text>
+
+    <rect x="60" y="262" width="120" height="34" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="120" y="283" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">count = count + 1</text>
+
+    <line x1="115" y1="228" x2="115" y2="240" stroke="#334155" stroke-width="2"/>
+    <line x1="115" y1="240" x2="225" y2="240" stroke="#334155" stroke-width="2"/>
+    <line x1="225" y1="240" x2="225" y2="272" stroke="#334155" stroke-width="2"/>
+    <path d="M225 272 L 219 264 L 219 280 Z" fill="#334155"/>
+    <text x="170" y="234" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788">yes</text>
+
+    <line x1="355" y1="272" x2="400" y2="272" stroke="#334155" stroke-width="2"/>
+    <text x="378" y="264" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788">no</text>
+    <text x="560" y="276" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788">loop back until</text>
+    <text x="560" y="292" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788">i = 10, then output</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> The four symbols you must be able to draw and read. The
+  rounded rectangle is start/stop, the rectangle is a process, the parallelogram is input/output, and the diamond is
+  the only symbol with two outgoing arrows.</figcaption>
+</figure>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — flowchart arrows and decision labels</span>
+  <p>Three habits lose marks. (1) A decision diamond drawn with one arrow out instead of two. (2) Both branches
+  labelled "yes" — or worse, unlabelled. (3) A loop with no exit: if the arrow back into the loop cannot be
+  avoided, your algorithm is infinite. Always check that every diamond has exactly two labelled exits and that
+  every loop has a condition that can eventually become false.</p>
+</div>
+
+<h2>IB pseudocode conventions</h2>
+
+<p>This is the notation the IB uses in exam questions. It is deliberately language-neutral, so it has no
+semicolons, no braces and no type declarations. It is <em>not</em> Java and <em>not</em> Python — when a Paper 2
+question asks for Java or Python, write real code; when it asks for pseudocode, write this.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Purpose</th><th>IB pseudocode</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>Output</td><td><code>output "Result: ", total</code></td><td>Comma-separated items, all printed.</td></tr>
+    <tr><td>Input</td><td><code>input name</code></td><td>Reads a value into the variable.</td></tr>
+    <tr><td>Assignment</td><td><code>total = 0</code> &nbsp;or&nbsp; <code>total ← 0</code></td><td>Both forms are used; <code>=</code> is assignment, not comparison.</td></tr>
+    <tr><td>Selection</td><td><code>if mark &gt;= 50 then</code> … <code>else if mark &gt;= 40 then</code> … <code>else</code> … <code>endif</code></td><td>Every <code>if</code> needs a matching <code>endif</code>.</td></tr>
+    <tr><td>Condition-controlled loop</td><td><code>loop while count &lt; 10</code> … <code>endloop</code></td><td>Checked <em>before</em> the body, so the body may run zero times.</td></tr>
+    <tr><td>Post-checked loop</td><td><code>loop</code> … <code>until answer = "quit"</code></td><td>Body runs at least once. (Java's <code>do…while</code>.)</td></tr>
+    <tr><td>Count-controlled loop</td><td><code>loop for i = 0 to 9</code> … <code>endfor</code> &nbsp;or&nbsp; <code>loop for i = 1 to n</code> … <code>next i</code></td><td>Both closing forms appear in IB material; match the form used in the question.</td></tr>
+    <tr><td>Arrays</td><td><code>marks[3] = 72</code>, <code>grid[2][1]</code></td><td>Indices usually start at 0, but read the question — some use 1.</td></tr>
+    <tr><td>Sub-procedure</td><td><code>procedure greet(name)</code> … <code>endprocedure</code>, called with <code>greet("Sam")</code></td><td>Does not return a value.</td></tr>
+    <tr><td>Function</td><td><code>function square(x)</code> … <code>return x * x</code> … <code>endfunction</code></td><td>Must contain <code>return</code>.</td></tr>
+    <tr><td>Arithmetic</td><td><code>MOD</code>, <code>DIV</code>, <code>^</code> or <code>**</code> for powers</td><td><code>17 MOD 5 = 2</code>; <code>17 DIV 5 = 3</code>.</td></tr>
+    <tr><td>Comparison</td><td><code>=</code>, <code>&lt;&gt;</code> or <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></td><td><code>&lt;&gt;</code> means "not equal to".</td></tr>
+    <tr><td>Logical</td><td><code>AND</code>, <code>OR</code>, <code>NOT</code></td><td>Use parentheses when mixing <code>AND</code> and <code>OR</code>.</td></tr>
+    <tr><td>Strings</td><td><code>length(s)</code>, <code>substring(s, start, len)</code>, <code>upper(s)</code>, <code>lower(s)</code></td><td>Questions define any function they expect you to use.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — pseudocode earns logic marks, not style marks</span>
+  <p>Examiners are instructed to accept any unambiguous pseudocode. You will not lose a mark for writing
+  <code>endwhile</code> instead of <code>endloop</code>, or for using Python-style indentation. You <em>will</em>
+  lose marks for: an ambiguous condition, a missing block terminator so the reader cannot tell what is inside the
+  loop, or using a variable that was never initialised. Indentation is free and it is the single best way to signal
+  structure — use it even though the IB convention also uses explicit terminators.</p>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — MOD and DIV are not the same as / and %</span>
+  <p><code>DIV</code> is integer division: it gives the whole-number quotient and throws away the remainder.
+  <code>MOD</code> gives the remainder. So <code>17 DIV 5 = 3</code> and <code>17 MOD 5 = 2</code>, and the
+  identity \(a = (a \text{ DIV } b) \times b + (a \text{ MOD } b)\) always holds. In Python these are
+  <code>//</code> and <code>%</code>; in Java <code>/</code> on two <code>int</code>s is DIV and <code>%</code> is
+  MOD, but <code>/</code> on a <code>double</code> is ordinary division — the classic source of "why is my average
+  zero?" bugs.</p>
+</div>
+
+<h2>Trace tables</h2>
+
+<p>A trace table records the value of every variable after each significant step. It is the only reliable way to
+answer "state the output of this algorithm" and the only reliable way to debug a loop. The method:</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — build the table mechanically</span>
+  <ol class="steps">
+    <li>Make one column per variable <em>plus</em> one for output. Include loop counters and accumulators.</li>
+    <li>Write the initial values as the first row.</li>
+    <li>Walk the algorithm one line at a time. Every time a variable <em>changes</em>, add a row.</li>
+    <li>At a loop, evaluate the condition <em>before</em> each pass and stop when it is false.</li>
+    <li>Never do two steps in your head at once — that is where errors enter.</li>
+    <li>Sanity-check at the end: does the final value make sense?</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 5 marks · trace a nested loop</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> State the output of the following pseudocode.</p>
+<pre><code>total = 0
+loop for i = 1 to 3
+    loop for j = 1 to 2
+        total = total + i * j
+    next j
+next i
+output total</code></pre>
+    <ol class="steps">
+      <li>Initial: total = 0.</li>
+      <li>i = 1: j = 1 → total = 0 + 1×1 = 1; j = 2 → total = 1 + 1×2 = 3.</li>
+      <li>i = 2: j = 1 → total = 3 + 2×1 = 5; j = 2 → total = 5 + 2×2 = 9.</li>
+      <li>i = 3: j = 1 → total = 9 + 3×1 = 12; j = 2 → total = 12 + 3×2 = 18.</li>
+      <li>Loop ends; output 18.</li>
+    </ol>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>i</th><th>j</th><th>i*j</th><th>total</th></tr></thead>
+        <tbody>
+          <tr><td>—</td><td>—</td><td>—</td><td>0</td></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>1</td><td>2</td><td>2</td><td>3</td></tr>
+          <tr><td>2</td><td>1</td><td>2</td><td>5</td></tr>
+          <tr><td>2</td><td>2</td><td>4</td><td>9</td></tr>
+          <tr><td>3</td><td>1</td><td>3</td><td>12</td></tr>
+          <tr><td>3</td><td>2</td><td>6</td><td>18</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="answerline"><b>Answer:</b> 18. Check by factorising: total = Σ i Σ j = (1+2+3)(1+2) = 6 × 3 = 18. ✓ Whenever the body is a product of a function of i and a function of j, the double sum factorises — a two-second check that catches most slips.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 3</span> IB-style · 7 marks · trace with a sub-procedure and by-reference parameters</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> State the output.</p>
+<pre><code>procedure bump(a, b)
+    a = a + 10
+    b = b * 2
+    output a, b
+endprocedure
+
+x = 5
+y = 3
+bump(x, y)
+output x, y</code></pre>
+    <ol class="steps">
+      <li>Initial: x = 5, y = 3.</li>
+      <li>Call <code>bump(x, y)</code> with <strong>pass by value</strong> (the default in the IB pseudocode model):
+      the procedure receives <em>copies</em>, so a = 5 and b = 3 locally.</li>
+      <li>Inside: a = 15, b = 6. Output: <code>15 6</code>.</li>
+      <li>Return. The copies are discarded; <code>x</code> and <code>y</code> in the main program are
+      <em>unchanged</em>.</li>
+      <li>Output: <code>5 3</code>.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> "15 6" then "5 3". The mark hinges on knowing the parameter-passing convention: with pass by value the caller's variables cannot change. If the question states (or your language uses) pass by reference — as Python does for mutable objects such as lists, and as Java does for arrays and objects — then y would be changed in the caller. Always state which convention you are assuming; that sentence is itself often awarded a mark.</div>
+  </div>
+</details>
+
+<h2>Standard algorithms</h2>
+
+<h3>Find maximum / minimum, count, sum, average</h3>
+
+<p>All four share one skeleton: initialise an accumulator, loop over the collection, update the accumulator, output
+it. The only thing that changes is the initial value and the update rule — and the initial value is where the bugs
+live.</p>
+
+<pre><code>// maximum of an array A of n values, indices 0..n-1
+maxVal = A[0]                 // NOT 0 — see the trap below
+loop for i = 1 to n - 1
+    if A[i] &gt; maxVal then
+        maxVal = A[i]
+    endif
+next i
+output maxVal</code></pre>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — initialising the maximum to zero</span>
+  <p><code>maxVal = 0</code> is wrong whenever all the values could be negative: with the array
+  <code>[-5, -2, -9]</code> the algorithm would report 0, a value that is not in the array at all. Always seed the
+  accumulator with the <em>first element</em> and start the loop at index 1. Symmetrically, when finding a minimum,
+  seed with the first element rather than 0 — otherwise an array of positive values reports 0. And when counting or
+  summing, seed with 0 and divide by the count, never by a hard-coded constant.</p>
+</div>
+
+<h3>Linear search</h3>
+
+<pre><code>found = false
+index = -1
+i = 0
+loop while (found = false) AND (i &lt; n)
+    if A[i] = target then
+        found = true
+        index = i
+    endif
+    i = i + 1
+endwhile
+output index</code></pre>
+
+<p>It examines elements one by one until it finds the target or runs out. It works on <strong>unsorted</strong>
+data, which is its main virtue. On average it examines half the elements; at worst all of them.</p>
+
+<h3>Binary search</h3>
+
+<pre><code>low = 0
+high = n - 1
+found = false
+loop while (low &lt;= high) AND (found = false)
+    mid = (low + high) DIV 2
+    if A[mid] = target then
+        found = true
+    else
+        if A[mid] &lt; target then
+            low = mid + 1        // discard the left half INCLUDING mid
+        else
+            high = mid - 1       // discard the right half INCLUDING mid
+        endif
+    endif
+endwhile</code></pre>
+
+<details class="derivation">
+  <summary><span class="badge">Why</span> Why binary search needs sorted data, and why it is O(log n)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>The algorithm's entire claim is: if <code>A[mid] &lt; target</code>, then because the array is sorted,
+      every element at index ≤ mid is also less than the target, so the target cannot be in the left half and we may
+      discard it.</li>
+      <li>That inference is <em>only</em> valid because of the ordering property. On unsorted data, "A[mid] is too
+      small" tells you nothing at all about A[mid−1], so discarding half the array is unjustified and the algorithm
+      can return "not found" for an element that is present. This is why "state the precondition" is a one-mark
+      question that follows every binary search question.</li>
+      <li><strong>Why log₂ n.</strong> Each comparison halves the search space: n → n/2 → n/4 → … → 1. After k
+      comparisons the remaining space is \(n / 2^{k}\). The search ends when that reaches 1, so
+      \(n / 2^{k} = 1\), giving \(2^{k} = n\) and \(k = \log_{2} n\).</li>
+      <li>So 1 000 000 elements need at most about \(\log_{2}(10^{6}) \approx 20\) comparisons, against 1 000 000
+      for a linear search in the worst case. That is the entire argument for sorting data you intend to search
+      repeatedly.</li>
+      <li><strong>The catch:</strong> sorting costs O(n log n), so if you search once it is not worth sorting
+      first. Sort once, search many times — that is when binary search pays.</li>
+    </ol>
+    <p><strong>What it means:</strong> the log behaviour is not a rule to memorise; it falls out of halving.
+    <strong>When it is the wrong tool:</strong> on a small array, or on a linked list, where there is no random
+    access to the middle element at all.</p>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 4</span> IB-style · 6 marks · hand-trace a binary search</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Array <code>A = [3, 8, 14, 21, 27, 33, 40, 52]</code>, indices 0 to 7. Trace a
+    binary search for the target 33, showing low, high and mid at each step.</p>
+    <ol class="steps">
+      <li>low = 0, high = 7. mid = (0 + 7) DIV 2 = 3. A[3] = 21 &lt; 33, so low = 4.</li>
+      <li>low = 4, high = 7. mid = (4 + 7) DIV 2 = 5. A[5] = 33 = target. <strong>Found at index 5.</strong></li>
+    </ol>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Step</th><th>low</th><th>high</th><th>mid</th><th>A[mid]</th><th>Action</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>0</td><td>7</td><td>3</td><td>21</td><td>21 &lt; 33 → low = 4</td></tr>
+          <tr><td>2</td><td>4</td><td>7</td><td>5</td><td>33</td><td>equal → found</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Two steps instead of six for a linear search. Now trace a search for 10 (not present):</p>
+    <ol class="steps">
+      <li>low = 0, high = 7, mid = 3, A[3] = 21 &gt; 10 → high = 2.</li>
+      <li>low = 0, high = 2, mid = 1, A[1] = 8 &lt; 10 → low = 2.</li>
+      <li>low = 2, high = 2, mid = 2, A[2] = 14 &gt; 10 → high = 1.</li>
+      <li>Now low (2) &gt; high (1), so the <code>loop while low &lt;= high</code> exits and "not found" is
+      reported.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> found at index 5 in 2 steps; the absent value 10 takes 4 steps. Marks: 1 per correct row, 1 for the final answer. The most common error is setting low = mid or high = mid instead of mid ± 1, which can loop for ever when low and high are adjacent — always move past mid.</div>
+  </div>
+</details>
+
+<h3>Bubble sort</h3>
+
+<pre><code>swapped = true
+loop while swapped = true
+    swapped = false
+    loop for i = 0 to n - 2
+        if A[i] &gt; A[i+1] then
+            temp   = A[i]
+            A[i]   = A[i+1]
+            A[i+1] = temp
+            swapped = true
+        endif
+    next i
+endwhile</code></pre>
+
+<p>Each pass walks the array comparing adjacent pairs and swapping any that are out of order, so the largest
+remaining value "bubbles" to the end. The <code>swapped</code> flag is the optimisation: if a whole pass makes no
+swap, the array is sorted and the algorithm can stop early.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> IB-style · 6 marks · bubble sort pass by pass</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Show the state of the array after each pass of bubble sort on
+    <code>[5, 2, 9, 1, 3]</code>, and state how many comparisons and swaps occur in total.</p>
+    <ol class="steps">
+      <li><strong>Pass 1:</strong> compare 5,2 → swap → [2,5,9,1,3]; compare 5,9 → no swap; compare 9,1 → swap →
+      [2,5,1,9,3]; compare 9,3 → swap → [2,5,1,3,9]. The 9 is in its final place. (4 comparisons, 3 swaps.)</li>
+      <li><strong>Pass 2:</strong> 2,5 no swap; 5,1 swap → [2,1,5,3,9]; 5,3 swap → [2,1,3,5,9]. The 5 is placed.
+      (3 comparisons, 2 swaps.)</li>
+      <li><strong>Pass 3:</strong> 2,1 swap → [1,2,3,5,9]; 2,3 no swap. (2 comparisons, 1 swap.)</li>
+      <li><strong>Pass 4:</strong> 1,2 no swap. (1 comparison, 0 swaps.) No swaps occurred, so the flag stops the
+      algorithm.</li>
+      <li><strong>Totals:</strong> 4 + 3 + 2 + 1 = 10 comparisons; 3 + 2 + 1 = 6 swaps.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> [2,5,1,3,9] → [2,1,3,5,9] → [1,2,3,5,9] → [1,2,3,5,9]; 10 comparisons, 6 swaps. Marks: 1 per correct pass, 1 for the totals. Notice the pattern: for n = 5 the comparisons are 1 + 2 + 3 + 4 = 10 = n(n−1)/2 — the same quadratic formula as the mesh-topology argument in A2.</div>
+  </div>
+</details>
+
+<h3>Selection sort</h3>
+
+<pre><code>loop for i = 0 to n - 2
+    minIndex = i
+    loop for j = i + 1 to n - 1
+        if A[j] &lt; A[minIndex] then
+            minIndex = j
+        endif
+    next j
+    // swap A[i] with A[minIndex]
+    temp       = A[i]
+    A[i]       = A[minIndex]
+    A[minIndex] = temp
+next i</code></pre>
+
+<p>Each pass finds the smallest value in the unsorted remainder and swaps it into position — so each element moves
+at most once.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 6</span> IB-style · 6 marks · selection sort pass by pass, and comparison with bubble sort</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Show the array after each pass of selection sort on <code>[5, 2, 9, 1, 3]</code>
+    and compare its efficiency with bubble sort on the same data.</p>
+    <ol class="steps">
+      <li><strong>Pass 1:</strong> scan indices 0–4; the minimum is 1 at index 3; swap with index 0 →
+      [<strong>1</strong>, 2, 9, 5, 3].</li>
+      <li><strong>Pass 2:</strong> scan indices 1–4; the minimum is 2 at index 1; already in place →
+      [1, <strong>2</strong>, 9, 5, 3].</li>
+      <li><strong>Pass 3:</strong> scan indices 2–4; the minimum is 3 at index 4; swap with index 2 →
+      [1, 2, <strong>3</strong>, 5, 9].</li>
+      <li><strong>Pass 4:</strong> scan indices 3–4; the minimum is 5 at index 3; already in place →
+      [1, 2, 3, <strong>5</strong>, 9]. Sorted.</li>
+      <li><strong>Comparisons:</strong> 4 + 3 + 2 + 1 = 10 — the same as bubble sort, because both scan the
+      unsorted portion. <strong>Swaps: at most 2 here</strong> (indices 0 and 2), against 6 for bubble sort.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> [1,2,9,5,3] → [1,2,9,5,3] → [1,2,3,5,9] → [1,2,3,5,9]. Both are O(n²) in comparisons, so neither is fast for large n. Selection sort does at most n−1 swaps, which makes it better when writing to memory is expensive (flash storage, or sorting records that are costly to move). Bubble sort is faster when the data is already nearly sorted, because its swapped flag detects that after a single pass — selection sort cannot.</div>
+  </div>
+</details>
+
+<h2>Algorithm efficiency and Big-O</h2>
+
+<p>Big-O describes how the number of steps grows as the input size \(n\) grows. It deliberately ignores constants
+and lower-order terms, because at large \(n\) only the fastest-growing term matters.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Complexity</th><th>Name</th><th>What it means</th><th>Example</th><th>n = 1 000 000</th></tr></thead>
+  <tbody>
+    <tr><td>\(O(1)\)</td><td>Constant</td><td>Independent of the input size</td><td>Accessing <code>A[5]</code>; pushing onto a stack</td><td>1 step</td></tr>
+    <tr><td>\(O(\log n)\)</td><td>Logarithmic</td><td>Halving the problem each step</td><td>Binary search; searching a balanced BST</td><td>≈ 20 steps</td></tr>
+    <tr><td>\(O(n)\)</td><td>Linear</td><td>Proportional to the input size</td><td>Linear search; summing an array; traversing a linked list</td><td>1 000 000 steps</td></tr>
+    <tr><td>\(O(n \log n)\)</td><td>Linearithmic</td><td>Split, sort the halves, merge</td><td>Merge sort, quicksort (average), heap sort</td><td>≈ 20 000 000 steps</td></tr>
+    <tr><td>\(O(n^{2})\)</td><td>Quadratic</td><td>Every element against every other</td><td>Bubble sort, selection sort, nested loops over the same array</td><td>10<sup>12</sup> steps</td></tr>
+    <tr><td>\(O(2^{n})\)</td><td>Exponential</td><td>Doubles with each addition to the input</td><td>Naive recursive Fibonacci; brute-force subset search</td><td>impossible</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why the constants are ignored — and when that is misleading</span>
+  <p>An \(O(n^{2})\) algorithm that does one operation per iteration beats an \(O(n \log n)\) algorithm that does a
+  hundred, for every \(n\) you are likely to meet. Big-O describes the <em>shape</em> of the growth, not the
+  absolute time, and it is a statement about what happens as \(n\) becomes large. This is exactly why bubble sort
+  is still taught and still used: for \(n = 20\) it is perfectly fine, and it is three lines long. Say this in an
+  answer and you sound like someone who understands the concept rather than someone reciting a table.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 7</span> IB-style · 6 marks · state the complexity of an algorithm</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> State the time complexity of each fragment, with a reason.</p>
+<pre><code>(a)  total = 0
+     loop for i = 0 to n - 1
+         total = total + A[i]
+     next i
+
+(b)  loop for i = 0 to n - 1
+         loop for j = 0 to n - 1
+             output A[i] + A[j]
+         next j
+     next i
+
+(c)  low = 0
+     high = n - 1
+     loop while low &lt;= high
+         mid = (low + high) DIV 2
+         ...
+     endwhile
+
+(d)  output A[0]</code></pre>
+    <ol class="steps">
+      <li>(a) One loop, n iterations, constant work each → <strong>O(n)</strong>, linear.</li>
+      <li>(b) A loop of n iterations inside a loop of n iterations → n × n = n² → <strong>O(n²)</strong>,
+      quadratic.</li>
+      <li>(c) The search space halves each iteration → <strong>O(log n)</strong>, logarithmic.</li>
+      <li>(d) A single array access with no loop → <strong>O(1)</strong>, constant.</li>
+      <li>Extra credit that often carries a mark: if (a) and (d) appear in the same program, the total is
+      O(n) + O(1) = <strong>O(n)</strong>, because the slower-growing term is discarded — the overall complexity of
+      a program is determined by its dominant part.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) O(n); (b) O(n²); (c) O(log n); (d) O(1). Always give the reason in words ("the search space halves", "a loop inside a loop"), not just the notation.</div>
+  </div>
+</details>
+
+<h2>Testing</h2>
+
+<h3>Three kinds of error</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Type</th><th>What it is</th><th>When it appears</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Syntax error</strong></td><td>The code breaks the grammar of the language</td><td>At compile time (Java) or immediately at run time (Python)</td><td>Missing colon in Python; missing semicolon or unmatched brace in Java</td></tr>
+    <tr><td><strong>Logic error</strong></td><td>The code runs but does the wrong thing</td><td>Never reported — you find it by testing</td><td>Using <code>&gt;</code> where <code>&gt;=</code> was needed; the wrong loop bound; grading in ascending order</td></tr>
+    <tr><td><strong>Runtime error</strong></td><td>The program crashes while running because of a situation it cannot handle</td><td>Only on the input that triggers it</td><td>Division by zero; index out of bounds; trying to open a file that does not exist; null reference</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Syntax errors are the easy ones: the computer tells you. Logic and runtime errors are the ones your testing
+strategy exists to catch, and they are caught by choosing the right <em>data</em>.</p>
+
+<h3>Three kinds of test data</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Type</th><th>Purpose</th><th>Example for "enter an age between 0 and 120"</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Normal (valid)</strong></td><td>Show that it works for ordinary, expected input</td><td>25, 47, 90</td></tr>
+    <tr><td><strong>Boundary / extreme</strong></td><td>Probe the edges of the valid range, where off-by-one bugs live</td><td>0, 120, and the just-invalid values 1 and 119 if the test is inclusive; also −1 and 121</td></tr>
+    <tr><td><strong>Erroneous / invalid</strong></td><td>Check that bad input is rejected gracefully rather than crashing</td><td>−5, 200, "twenty", an empty string, 3.7</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="derivation">
+  <summary><span class="badge">Why</span> Why boundary testing catches the off-by-one bug specifically</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>An off-by-one error is a mistake at the <em>edge</em> of a range: <code>&lt;</code> instead of
+      <code>&lt;=</code>, starting a loop at 1 instead of 0, or <code>n - 2</code> instead of <code>n - 1</code>.</li>
+      <li>Inside the range, all those mistakes give the same answer as the correct code, so normal data cannot detect
+      them. A loop over 10 items behaves identically whether it runs to <code>i &lt; 10</code> or
+      <code>i &lt;= 10</code> for the middle eight items — they differ only at the ends.</li>
+      <li>Therefore the only inputs that can distinguish the two are the ones at the boundary, plus the first value
+      just outside it.</li>
+      <li>That is why a test plan without boundary data is not a test plan: it systematically misses the most common
+      class of logic error in student code — and, for the same reason, the most common class of bug in real code.</li>
+      <li>Practical rule: for a valid range a to b inclusive, test a−1, a, a+1, a middle value, b−1, b, b+1. Seven
+      cases, and they cover virtually everything.</li>
+    </ol>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 8</span> IB-style · 8 marks · construct a test table</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A program asks for a mark from 0 to 100 inclusive and outputs a grade:
+    A for 80 and above, B for 60 to 79, C for 40 to 59, Fail below 40. Construct a test table with normal,
+    boundary and erroneous data, giving the expected result for each.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Test</th><th>Type</th><th>Input</th><th>Expected output</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Normal</td><td>85</td><td>A</td><td>clearly inside the A band</td></tr>
+          <tr><td>2</td><td>Normal</td><td>65</td><td>B</td><td>clearly inside the B band</td></tr>
+          <tr><td>3</td><td>Normal</td><td>45</td><td>C</td><td>clearly inside the C band</td></tr>
+          <tr><td>4</td><td>Boundary</td><td>80</td><td>A</td><td>the lower edge of A — tests &gt; vs &gt;=</td></tr>
+          <tr><td>5</td><td>Boundary</td><td>79</td><td>B</td><td>one below the A boundary</td></tr>
+          <tr><td>6</td><td>Boundary</td><td>60</td><td>B</td><td>the lower edge of B</td></tr>
+          <tr><td>7</td><td>Boundary</td><td>59</td><td>C</td><td>one below the B boundary</td></tr>
+          <tr><td>8</td><td>Boundary</td><td>40</td><td>C</td><td>the lower edge of C</td></tr>
+          <tr><td>9</td><td>Boundary</td><td>39</td><td>Fail</td><td>one below the C boundary</td></tr>
+          <tr><td>10</td><td>Boundary</td><td>0</td><td>Fail</td><td>the bottom of the valid range</td></tr>
+          <tr><td>11</td><td>Boundary</td><td>100</td><td>A</td><td>the top of the valid range</td></tr>
+          <tr><td>12</td><td>Erroneous</td><td>−1</td><td>Error message, re-prompt</td><td>just below the valid range</td></tr>
+          <tr><td>13</td><td>Erroneous</td><td>101</td><td>Error message, re-prompt</td><td>just above the valid range</td></tr>
+          <tr><td>14</td><td>Erroneous</td><td>"abc"</td><td>Error message, no crash</td><td>wrong data type</td></tr>
+          <tr><td>15</td><td>Erroneous</td><td>(empty)</td><td>Error message, no crash</td><td>missing input</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="answerline"><b>Marks:</b> 2 for at least three normal cases with correct expected results, 3 for boundary cases that include both the edge and one-beyond on each side, 3 for erroneous cases including a wrong type and an empty input, 1 for stating that erroneous input should produce a message and re-prompt rather than crash. Notice there are <em>four</em> band edges (39/40, 59/60, 79/80, 100/101) — a test table with only two boundary tests has missed half of them.</div>
+  </div>
+</details>
+
+<h3>Validation vs verification</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th></th><th>Validation</th><th>Verification</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Question it answers</strong></td><td>"Are we building the right thing?"</td><td>"Are we building the thing right?"</td></tr>
+    <tr><td><strong>Techniques</strong></td><td>Checking the output against what the <em>user</em> actually needs; prototypes; user acceptance testing; review against the success criteria</td><td>Testing, code review, dry runs, trace tables, inspection against the design</td></tr>
+    <tr><td><strong>When it happens</strong></td><td>At the end, with the client</td><td>Throughout development</td></tr>
+    <tr><td><strong>In the IA</strong></td><td>The evaluation: does the solution solve the client's real problem?</td><td>The testing table: does each feature behave as specified?</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--note">
+  <span class="callout__label">Note — the data-entry meaning of validation</span>
+  <p>Be careful: in databases (A3) "validation" also means checking input at the point of entry — a range check, a
+  presence check, a format check. Both meanings appear in this course. In B1, "validation" is about the product
+  meeting the user's needs; in A3, it is about a single value being acceptable. If a question is ambiguous, answer
+  both senses in one sentence and you cannot be wrong.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary</span>
+  <p><strong>computational thinking</strong><strong>decomposition</strong><strong>abstraction</strong><strong>pattern recognition</strong><strong>generalisation</strong><strong>procedure</strong> /<strong>think procedurally / logically / ahead / concurrently / abstractly</strong> / / / /<strong>structured English</strong><strong>flowchart</strong><strong>terminator / process / decision</strong> / /<strong>pseudocode</strong><strong>trace table</strong><strong>variable</strong><strong>assignment</strong><strong>iteration / loop</strong> /<strong>selection</strong><strong>accumulator</strong><strong>counter</strong><strong>loop counter</strong><strong>boundary data</strong><strong>linear search / binary search</strong> /<strong>bubble sort / selection sort</strong> /<strong>pass</strong><strong>swap</strong><strong>efficiency</strong><strong>time complexity</strong><strong>Big-O notation</strong> O<strong>constant / linear / logarithmic / quadratic</strong> / / /<strong>syntax error / logic error / runtime error</strong> / /<strong>normal / boundary (extreme) / erroneous data</strong> / /<strong>validation / verification</strong> /<strong>off-by-one error</strong><strong>dry run</strong></p>
+</div>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li><p>State the output of this pseudocode.</p>
+<pre><code>n = 5
+result = 1
+loop for i = 1 to n
+    result = result * i
+next i
+output result</code></pre>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>result = 1 × 1 × 2 × 3 × 4 × 5 = <strong>120</strong>. This is 5! (5 factorial). Trace: 1, 1, 2, 6, 24, 120.</p>
+      <div class="answerline"><b>Trap:</b> if the loop were <code>i = 0 to n</code>, the first multiplication would be by 0 and the answer would be 0 — a single-character difference with a completely different result.</div>
+    </div></details>
+  </li>
+  <li><p>Explain the difference between a syntax error, a logic error and a runtime error, giving an example of
+  each.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>A <strong>syntax error</strong> breaks the grammar of the language (missing colon in Python, missing
+      semicolon in Java) and is reported before or immediately at run time.</p>
+      <p>A <strong>logic error</strong> is valid code that computes the wrong thing (using <code>&gt;</code> where
+      <code>&gt;=</code> was needed, or the wrong loop bound). It is never reported; only testing reveals it.</p>
+      <p>A <strong>runtime error</strong> crashes during execution because of a specific situation
+      (division by zero, index out of bounds, opening a file that does not exist). It only appears on the input that
+      triggers it, which is why erroneous test data matters.</p>
+    </div></details>
+  </li>
+  <li><p>State the output of the following, and explain what the algorithm does.</p>
+<pre><code>count = 0
+loop for i = 1 to 20
+    if (i MOD 3 = 0) AND (i MOD 5 = 0) then
+        count = count + 1
+    endif
+next i
+output count</code></pre>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>The condition is true when i is divisible by both 3 and 5, i.e. by 15.</li>
+        <li>Between 1 and 20, only 15 qualifies.</li>
+      </ol>
+      <p><strong>Output: 1.</strong> The algorithm counts numbers in the range that are multiples of 15.</p>
+      <div class="answerline"><b>Trap:</b> AND means both conditions must hold. With OR, the count would be 6+4−1 = 9 (multiples of 3 or 5, remembering 15 is counted once).</div>
+    </div></details>
+  </li>
+  <li><p>Explain why binary search cannot be used on unsorted data, using a concrete example.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Take the array <code>[9, 3, 7, 1, 5]</code> and search for 1. Binary search computes mid = 2, sees
+      A[2] = 7 &gt; 1, and concludes the target must be in the left half — so it discards indices 3 and 4. But the
+      target, 1, is at index 3, which was just thrown away. The algorithm reports "not found" for an element that
+      is present.</p>
+      <p>The inference "A[mid] &gt; target, therefore everything to the right is also too big" is valid only because
+      of the sorted-order property. Without it, the value at one position tells you nothing about any other
+      position, so halving is unjustified.</p>
+    </div></details>
+  </li>
+  <li><p>An array of 1024 sorted values is searched. State the maximum number of comparisons needed by
+  (a) linear search and (b) binary search, and explain the difference.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>(a) Linear search: 1024 in the worst case (the target is the last element or absent).</li>
+        <li>(b) Binary search: \(\log_{2} 1024 = 10\), so at most 11 comparisons in practice (ten halvings plus the
+        final equality check that terminates the loop).</li>
+        <li>The difference arises because binary search halves the search space at each step:
+        1024 → 512 → 256 → 128 → 64 → 32 → 16 → 8 → 4 → 2 → 1.</li>
+        <li>The precondition is that the data is sorted, and the cost of achieving that must be counted if the data
+        is not already sorted.</li>
+      </ol>
+    </div></details>
+  </li>
+  <li><p>Show the state of <code>[7, 3, 5, 3]</code> after each pass of bubble sort, and state the total number of
+  comparisons.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li><strong>Pass 1:</strong> 7,3 swap → [3,7,5,3]; 7,5 swap → [3,5,7,3]; 7,3 swap → [3,5,3,7].
+        (3 comparisons, 3 swaps.)</li>
+        <li><strong>Pass 2:</strong> 3,5 no swap; 5,3 swap → [3,3,5,7]. (2 comparisons, 1 swap.)</li>
+        <li><strong>Pass 3:</strong> 3,3 no swap. (1 comparison, 0 swaps.) No swaps, so stop.</li>
+        <li>Total comparisons = 3 + 2 + 1 = 6 = n(n−1)/2 with n = 4.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> [3,5,3,7] → [3,3,5,7] → sorted; 6 comparisons. Note that the two 3s are not swapped when they meet, which is what makes this variant <em>stable</em> — equal elements keep their relative order.</div>
+    </div></details>
+  </li>
+  <li><p>State the time complexity of an algorithm whose running time is
+  \(T(n) = 4n^{2} + 100n + 50\), and justify your answer.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Big-O keeps only the fastest-growing term and drops constant multipliers.</li>
+        <li>The terms are \(4n^{2}\), \(100n\) and \(50\). As \(n\) grows, \(n^{2}\) dominates \(n\), and the
+        constant 50 does not grow at all.</li>
+        <li>So \(T(n) = 4n^{2} + 100n + 50\) is <strong>O(n²)</strong>.</li>
+        <li>Check: at n = 1000, the \(4n^{2}\) term is 4 000 000, the \(100n\) term is 100 000, and the constant is
+        50 — the quadratic term is already 97 % of the total, and the proportion grows.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> O(n²), quadratic. Stating that the constants are dropped because they do not affect the <em>shape</em> of the growth is what earns the justification mark.</div>
+    </div></details>
+  </li>
+  <li><p>A program reads a positive integer n and prints the first n terms of the sequence 1, 1, 2, 3, 5, 8, …
+  Construct a test table with normal, boundary and erroneous data.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Input</th><th>Expected output</th></tr></thead>
+          <tbody>
+            <tr><td>Normal</td><td>5</td><td>1 1 2 3 5</td></tr>
+            <tr><td>Normal</td><td>7</td><td>1 1 2 3 5 8 13</td></tr>
+            <tr><td>Boundary</td><td>1</td><td>1</td></tr>
+            <tr><td>Boundary</td><td>2</td><td>1 1</td></tr>
+            <tr><td>Boundary</td><td>0</td><td>nothing printed, or a clear message (this is the value that must be defined)</td></tr>
+            <tr><td>Erroneous</td><td>−3</td><td>rejection message, no crash</td></tr>
+            <tr><td>Erroneous</td><td>2.5</td><td>rejection message (not an integer)</td></tr>
+            <tr><td>Erroneous</td><td>"five"</td><td>rejection message, no crash</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="answerline"><b>Marks:</b> normal cases with exact expected output, boundary cases covering the smallest valid inputs and the ambiguous case n = 0, and erroneous cases of both wrong range and wrong type. The best answers note that n = 0 reveals an <em>underspecified requirement</em> — the specification says "positive", so 0 should probably be rejected, and the test exposes that the programmer must decide.</div>
+    </div></details>
+  </li>
+</ol>
+
+<div class="conn">
+  <span class="conn__title">Connections</span>
+  <ul>
+    <li><strong>→ B2 Programming:</strong> every construct you write is an implementation of something on this page.
+    The pseudocode here is the design; B2 is the code.</li>
+    <li><strong>→ B3 OOP:</strong> abstraction at the level of objects — a class is a set of decisions about what to
+    hide.</li>
+    <li><strong>→ B4 Abstract data types:</strong> the efficiency table here is the vocabulary you need to compare
+    stacks, queues, linked lists, trees and hash tables.</li>
+    <li><strong>→ A1 Computer fundamentals:</strong> Boolean logic underpins every condition; the fetch–decode–execute
+    cycle is itself an algorithm.</li>
+    <li><strong>→ A3 Databases:</strong> normalisation is decomposition applied to data.</li>
+    <li><strong>→ A4 Machine learning:</strong> the ML workflow is this page's decomposition applied to data
+    problems.</li>
+    <li><strong>→ IA:</strong> the testing table and the trace table are exactly the evidence the IA asks for; a
+    strong testing section is mostly this page executed carefully.</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can explain the five strands of computational thinking with an example each.</span></label></li>
+  <li><label><input type="checkbox"><span>I can decompose a problem into independently testable sub-problems.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain abstraction as deciding what to keep and what to discard.</span></label></li>
+  <li><label><input type="checkbox"><span>I can draw the four flowchart symbols and a flowchart with a loop.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write IB pseudocode for selection, both loop types, arrays and sub-procedures.</span></label></li>
+  <li><label><input type="checkbox"><span>I can build a trace table for nested loops and for sub-procedure calls.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write find-maximum, count, sum and average without seeding bugs.</span></label></li>
+  <li><label><input type="checkbox"><span>I can trace linear and binary search and state binary search's precondition.</span></label></li>
+  <li><label><input type="checkbox"><span>I can trace bubble sort and selection sort pass by pass and count comparisons.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive why binary search is O(log n).</span></label></li>
+  <li><label><input type="checkbox"><span>I can state the Big-O of a code fragment with a reason.</span></label></li>
+  <li><label><input type="checkbox"><span>I can distinguish syntax, logic and runtime errors.</span></label></li>
+  <li><label><input type="checkbox"><span>I can construct a test table with normal, boundary and erroneous data.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain why boundary data catches off-by-one errors.</span></label></li>
+  <li><label><input type="checkbox"><span>I can distinguish validation from verification.</span></label></li>
+</ul>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

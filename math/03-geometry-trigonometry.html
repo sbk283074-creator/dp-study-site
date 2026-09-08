@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="math">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geometry &amp; trigonometry — Mathematics AA HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Mathematics AA HL · Topic 3</span>
+<h1 class="page-title">Geometry &amp; trigonometry</h1>
+<p class="lede">Two halves that turn out to be one subject. The geometry half is about measuring space:
+distances and angles in 3-D, areas, volumes. The trigonometry half is about periodic behaviour, and it is the
+single most transferable skill in the course — trig identities are the engine of Topic 5 integration, and
+vectors are the language of kinematics. At HL you also prove the identities rather than just quote them.</p>
+<div class="page-meta">
+  <span class="tag">51 teaching hours (HL)</span>
+  <span class="tag">HL only: reciprocal ratios, Pythagorean identities, compound/double angle, inverse trig, 3-D vectors</span>
+  <span class="tag tag--hl">Paper 1 · Paper 2 · Paper 3</span>
+</div>
+
+<h2>3.1 Three-dimensional geometry</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> in 3-D you very rarely need new formulas — you need to find the right
+<em>right-angled triangle</em> inside the solid. Every 3-D problem is: identify a right triangle, apply
+Pythagoras or SOHCAHTOA, then interpret. The skill is visual, and it is trainable: always redraw the relevant
+triangle flat, in 2-D, beside the solid.</p>
+
+<p><strong>Formal statements:</strong></p>
+<ul>
+  <li>Distance between \((x_1,y_1,z_1)\) and \((x_2,y_2,z_2)\):
+  \(d=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2+(z_2-z_1)^2}\).</li>
+  <li><strong>Angle between a line and a plane:</strong> the angle between the line and its
+  <em>projection</em> onto the plane. Method: pick two points on the line, drop perpendiculars to the plane, and
+  the projection is the segment joining the feet.</li>
+  <li><strong>Angle between two lines:</strong> the angle between lines drawn parallel to them that intersect.</li>
+  <li><strong>Angle between two planes</strong> <span class="badge badge--hl">HL only</span>: the angle between
+  lines in each plane that are both perpendicular to the line of intersection.</li>
+</ul>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Solid</th><th>Volume</th><th>Surface area</th></tr></thead>
+  <tbody>
+    <tr><td>Prism / cylinder</td><td>\(V = Ah\) (cross-section area × length)</td><td>\(2A + \) area of rectangular faces</td></tr>
+    <tr><td>Pyramid / cone</td><td>\(V = \dfrac13 Ah\)</td><td>base + sum of triangular/lateral faces</td></tr>
+    <tr><td>Sphere</td><td>\(V = \dfrac43\pi r^3\)</td><td>\(A = 4\pi r^2\)</td></tr>
+    <tr><td>Cone (curved only)</td><td>—</td><td>\(\pi r l\) where \(l=\sqrt{r^2+h^2}\)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Two planes meeting along a line, showing the angle between them">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <polygon points="180,240 480,240 430,90 230,90" fill="#eef2ff" stroke="#334155" stroke-width="2"/>
+    <polygon points="230,90 430,90 520,180 320,265" fill="#ffffff" stroke="#3653d6" stroke-width="2"/>
+    <line x1="230" y1="90" x2="430" y2="90" stroke="#151923" stroke-width="2.5"/>
+    <line x1="230" y1="90" x2="255" y2="235" stroke="#b03060" stroke-width="2" stroke-dasharray="5 4"/>
+    <line x1="430" y1="90" x2="405" y2="180" stroke="#b03060" stroke-width="2" stroke-dasharray="5 4"/>
+    <path d="M245 180 A 40 40 0 0 0 275 205" fill="none" stroke="#b03060" stroke-width="2"/>
+    <text x="250" y="215" font-size="14" font-family="system-ui, sans-serif" fill="#b03060">theta</text>
+    <text x="290" y="80" font-size="13" font-family="system-ui, sans-serif" fill="#151923">line of intersection</text>
+    <text x="60" y="130" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">both dashed lines are</text>
+    <text x="60" y="150" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">perpendicular to the</text>
+    <text x="60" y="170" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">line of intersection</text>
+    <text x="60" y="200" font-size="13" font-family="system-ui, sans-serif" fill="#151923">angle between planes = angle</text>
+    <text x="60" y="218" font-size="13" font-family="system-ui, sans-serif" fill="#151923">between those two lines</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> The angle between two planes. The dashed lines both lie in their own plane and are perpendicular to the common edge — that is the only pair of lines whose angle counts.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A cuboid has base \(ABCD\) with \(AB=8\), \(BC=6\), and height \(AE=5\).
+    (a) Find the length of the space diagonal \(AG\). (b) Find the angle between \(AG\) and the base plane
+    \(ABCD\).</p>
+    <ol class="steps">
+      <li>Base diagonal \(AC = \sqrt{8^2+6^2} = 10\) (the 6-8-10 triangle — memorise it, it recurs).</li>
+      <li>Space diagonal \(AG = \sqrt{AC^2+AE^2} = \sqrt{100+25} = \sqrt{125} = 5\sqrt5 \approx 11.2\).</li>
+      <li>The projection of \(AG\) onto the base plane is \(AC\). So the required angle is \(\angle GAC\), in the
+      right triangle \(ACG\) (right angle at \(C\), since \(CG\) is vertical).</li>
+      <li>\(\tan\theta = \dfrac{CG}{AC} = \dfrac{5}{10} = 0.5 \Rightarrow \theta = 26.6^\circ\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(AG=5\sqrt5\approx11.2\); angle \(26.6^\circ\). Marks: one for \(AC\), one for \(AG\), two for identifying the projection as \(AC\), two for the angle. Sanity check: the angle must be less than the angle between \(AG\) and any line in the base through \(A\); and \(5/10\) giving about 27° is sensible.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 2</span> IB-style · 9 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A solid cone has base radius 6 cm and vertical height 8 cm.
+    (a) Find its volume and total surface area. (b) The cone is melted and recast into a sphere. Find the radius
+    of the sphere. (c) Find the angle between the slant edge and the base plane.</p>
+    <ol class="steps">
+      <li>Slant height \(l = \sqrt{6^2+8^2} = 10\).</li>
+      <li>Volume \(=\frac13\pi r^2h = \frac13\pi(36)(8) = 96\pi \approx 302\) cm³.</li>
+      <li>Surface area \(= \pi r^2 + \pi r l = 36\pi + 60\pi = 96\pi \approx 302\) cm². (Coincidence of numbers here, not a rule.)</li>
+      <li>Sphere: \(\frac43\pi R^3 = 96\pi \Rightarrow R^3 = 72 \Rightarrow R = 4.16\) cm.</li>
+      <li>Angle between slant edge and base: the slant edge runs from the apex to a point on the rim; its
+      projection on the base is the radius to that point. So in the right triangle with legs 8 (height) and 6
+      (radius): \(\tan\theta = \frac{8}{6} \Rightarrow \theta = 53.1^\circ\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(V=96\pi\) cm³, \(A=96\pi\) cm², \(R=4.16\) cm, angle \(53.1^\circ\). The volume-conservation step (b) is a standard IB twist: equate volumes, cancel \(\pi\), solve. The angle in (c) uses the axial cross-section triangle, not the surface.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>(1) Using the wrong triangle: the angle between a line and a plane is <em>not</em> the angle between the
+  line and any random line in the plane — it is the angle with the <em>projection</em>. (2) Confusing slant
+  height \(l\) with vertical height \(h\) in \(\pi r l\). (3) Forgetting that a pyramid's volume has the factor
+  \(\frac13\): the IB gives it in the booklet, but students reach for \(\frac12\) under pressure. (4) Rounding
+  before the final step in multi-part volume questions — keep \(\pi\) symbolic as long as possible.</p>
+</div>
+
+<h2>3.2 Radian measure, arc length and sector area</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> degrees are arbitrary; someone chose 360. Radians are forced by the geometry: one
+radian is the angle whose arc equals the radius. That makes radians the natural unit for calculus — which is
+why \(\frac{\mathrm{d}}{\mathrm{d}x}\sin x = \cos x\) is <em>only</em> true in radians, and why every trig
+question in Topic 5 assumes them.</p>
+
+\[\pi\text{ radians} = 180^\circ,\qquad l = r\theta,\qquad A_{\text{sector}} = \tfrac12 r^2\theta,\qquad
+A_{\text{segment}} = \tfrac12 r^2(\theta-\sin\theta)\quad(\theta\text{ in radians}).\]
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="A sector of a circle with radius r, arc length r theta and angle theta">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <path d="M140 240 L 140 80 A 160 160 0 0 1 270 100 Z" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <line x1="140" y1="240" x2="140" y2="80" stroke="#334155" stroke-width="2"/>
+    <line x1="140" y1="240" x2="270" y2="100" stroke="#334155" stroke-width="2"/>
+    <path d="M140 200 A 40 40 0 0 1 172 205" fill="none" stroke="#b03060" stroke-width="2"/>
+    <text x="180" y="220" font-size="15" font-family="system-ui, sans-serif" fill="#b03060">theta</text>
+    <text x="80" y="170" font-size="13" font-family="system-ui, sans-serif" fill="#151923">r</text>
+    <text x="290" y="95" font-size="13" font-family="system-ui, sans-serif" fill="#151923">r</text>
+    <text x="330" y="140" font-size="13" font-family="system-ui, sans-serif" fill="#151923">arc length l = r*theta</text>
+    <text x="330" y="165" font-size="13" font-family="system-ui, sans-serif" fill="#151923">sector area = (1/2) r^2 theta</text>
+    <text x="330" y="195" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">theta MUST be in radians:</text>
+    <text x="330" y="215" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">one radian gives l = r exactly</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> The two sector formulas are proportional reasoning: a full turn is \(2\pi\) radians, circumference \(2\pi r\), area \(\pi r^2\), so the fraction \(\frac{\theta}{2\pi}\) of each gives \(l=r\theta\) and \(A=\frac12 r^2\theta\).</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A sector of a circle of radius 12 cm has area 160 cm². (a) Find the angle in
+    radians. (b) Find the perimeter of the sector. (c) The sector is folded into a cone. Find the base radius of
+    the cone.</p>
+    <ol class="steps">
+      <li>\(\frac12 r^2\theta = 160 \Rightarrow \frac12(144)\theta = 160 \Rightarrow \theta = \frac{320}{144} = \frac{20}{9} = 2.22\) rad.</li>
+      <li>Arc length \(l = r\theta = 12\cdot\frac{20}{9} = \frac{80}{3} = 26.7\) cm. Perimeter \(= l + 2r = 26.7+24 = 50.7\) cm.</li>
+      <li>When folded, the arc becomes the circumference of the cone's base: \(2\pi R = \frac{80}{3}\Rightarrow R = \frac{40}{3\pi} = 4.24\) cm.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 2.22 rad; (b) 50.7 cm; (c) 4.24 cm. The folding step is a favourite: "arc length becomes circumference" is the one idea you need. Sanity check: \(R=4.24 &lt; 12\), as it must be.</div>
+  </div>
+</details>
+
+<h2>3.3 The unit circle and exact values</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> put a circle of radius 1 at the origin. For a point \(P\) at angle \(\theta\)
+measured anticlockwise from the positive \(x\)-axis, the coordinates are literally
+\((\cos\theta,\ \sin\theta)\). That is not a formula to memorise; it is the <em>definition</em> of sine and
+cosine for any angle. Everything else — signs in quadrants, exact values, identities — comes from this picture.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>\(\theta\)</th><th>\(0\)</th><th>\(\dfrac{\pi}{6}\)</th><th>\(\dfrac{\pi}{4}\)</th><th>\(\dfrac{\pi}{3}\)</th><th>\(\dfrac{\pi}{2}\)</th></tr></thead>
+  <tbody>
+    <tr><td>\(\sin\theta\)</td><td>\(0\)</td><td>\(\dfrac12\)</td><td>\(\dfrac{\sqrt2}{2}\)</td><td>\(\dfrac{\sqrt3}{2}\)</td><td>\(1\)</td></tr>
+    <tr><td>\(\cos\theta\)</td><td>\(1\)</td><td>\(\dfrac{\sqrt3}{2}\)</td><td>\(\dfrac{\sqrt2}{2}\)</td><td>\(\dfrac12\)</td><td>\(0\)</td></tr>
+    <tr><td>\(\tan\theta\)</td><td>\(0\)</td><td>\(\dfrac{1}{\sqrt3}\)</td><td>\(1\)</td><td>\(\sqrt3\)</td><td>undefined</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it</span>
+  <p>Memorise the \(\sin\) row as \(\frac{\sqrt0}{2},\frac{\sqrt1}{2},\frac{\sqrt2}{2},\frac{\sqrt3}{2},\frac{\sqrt4}{2}\)
+  and the \(\cos\) row is the same list backwards. Then \(\tan = \sin/\cos\). For any other angle, use the
+  quadrant: find the related acute angle (the "reference angle") and attach the sign. ASTC — All positive in
+  quadrant 1, Sin positive in 2, Tan in 3, Cos in 4.</p>
+</div>
+
+<h2>3.4 Graphs of the trigonometric functions</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p>\(y=\sin x\): period \(2\pi\), amplitude 1, passes through the origin, zeros at multiples of \(\pi\).
+\(y=\cos x\): the same curve shifted left by \(\frac{\pi}{2}\) — zeros at odd multiples of \(\frac{\pi}{2}\).
+\(y=\tan x\): period \(\pi\), vertical asymptotes at \(x=\frac{\pi}{2}+k\pi\), range \(\mathbb{R}\).
+In the form \(y=a\sin(b(x-c))+d\): amplitude \(|a|\), period \(\frac{2\pi}{|b|}\), shift \(\begin{pmatrix}c\\d\end{pmatrix}\).</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Confusing \(\sin 2x\) (period \(\pi\), two cycles in \(2\pi\)) with \(2\sin x\) (period \(2\pi\), double
+  height). And with \(y=\sin(x+\frac{\pi}{3})\) the graph moves <em>left</em>, not right — the sign inside the
+  bracket is always the opposite of your instinct.</p>
+</div>
+
+<h2>3.5 Solving trigonometric equations</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the five-step method</span>
+  <ol class="steps">
+    <li><strong>Isolate one trig function</strong> (or factorise to get products equal to zero).</li>
+    <li><strong>Substitue if disguised</strong>: \(\sin^2x\) or \(\cos 2x\) may let you turn the equation into a
+    quadratic in \(\sin x\) — use \(\cos^2x = 1-\sin^2x\).</li>
+    <li><strong>Find the principal value</strong> with your GDC (or exact values), and note the interval and
+    whether it is degrees or radians.</li>
+    <li><strong>Find all solutions in the interval</strong> using symmetry: for \(\sin x = k\), the second
+    solution is \(\pi - \theta\); for \(\cos x = k\), it is \(-\theta\) (i.e. \(2\pi-\theta\)); for \(\tan x=k\),
+    add \(\pi\).</li>
+    <li><strong>Check the endpoints</strong> of the interval, and count solutions against a sketch.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 4</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Solve \(2\sin^2x + 3\cos x = 0\) for \(0\le x \le 2\pi\).</p>
+    <ol class="steps">
+      <li>Convert to one function using \(\sin^2x = 1-\cos^2x\): \(2(1-\cos^2x)+3\cos x = 0\).</li>
+      <li>\(2-2\cos^2x+3\cos x = 0 \Rightarrow 2\cos^2x - 3\cos x - 2 = 0\).</li>
+      <li>Factorise: \((2\cos x + 1)(\cos x - 2) = 0\).</li>
+      <li>\(\cos x = -\frac12\) or \(\cos x = 2\) (reject — cosine lies in \([-1,1]\)).</li>
+      <li>\(\cos x = -\frac12\): principal value \(\frac{2\pi}{3}\); by symmetry the other solution in
+      \([0,2\pi]\) is \(2\pi - \frac{2\pi}{3} = \frac{4\pi}{3}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(x=\dfrac{2\pi}{3},\ \dfrac{4\pi}{3}\). Rejecting \(\cos x=2\) is a mark. Sanity check: \(2\sin^2(120°)+3\cos120° = 2(\frac34)+3(-\frac12) = 1.5-1.5=0\). ✓</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 5</span> IB-style · 8 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Solve \(\sin 2x = \sin x\) for \(0\le x\le 2\pi\), and hence find the total
+    area enclosed between \(y=\sin 2x - \sin x\) and the \(x\)-axis on \([0,\pi]\).</p>
+    <ol class="steps">
+      <li>Use \(\sin 2x = 2\sin x\cos x\): \(2\sin x\cos x - \sin x = 0 \Rightarrow \sin x(2\cos x - 1)=0\).</li>
+      <li>\(\sin x = 0 \Rightarrow x = 0,\ \pi,\ 2\pi\); \(\cos x = \frac12 \Rightarrow x = \frac{\pi}{3},\ \frac{5\pi}{3}\).</li>
+      <li>On \([0,\pi]\): the curve crosses at \(x=0,\ \frac{\pi}{3},\ \pi\). Test \(x=\frac{\pi}{6}\):
+      \(\sin\frac{\pi}{3}-\sin\frac{\pi}{6} = 0.866-0.5>0\). Test \(x=\frac{2\pi}{3}\):
+      \(\sin\frac{4\pi}{3}-\sin\frac{2\pi}{3} = -0.866-0.866&lt;0\).</li>
+      <li>Area \(= \left|\int_0^{\pi/3}(\sin2x-\sin x)\,\mathrm{d}x\right| + \left|\int_{\pi/3}^{\pi}(\sin2x-\sin x)\,\mathrm{d}x\right|\).</li>
+      <li>Antiderivative: \(-\frac12\cos2x+\cos x\). First piece: \(\left[-\frac12\cos 2x+\cos x\right]_0^{\pi/3}
+      = \left(\frac14+\frac12\right) - \left(-\frac12+1\right) = \frac34-\frac12 = \frac14\).</li>
+      <li>Second piece: \(\left[-\frac12\cos2x+\cos x\right]_{\pi/3}^{\pi} = \left(-\frac12 - 1\right) - \frac34 = -\frac94\); absolute value \(\frac94\).</li>
+      <li>Total \(= \frac14+\frac94 = \frac52 = 2.5\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> solutions \(0,\frac{\pi}{3},\pi,\frac{5\pi}{3},2\pi\); area \(2.5\). This question is a perfect example of Topics 3 and 5 fused: the trig equation supplies the limits of integration, and "total area" forces you to split at the crossing and take absolute values.</div>
+  </div>
+</details>
+
+<h2>3.6 Sine rule, cosine rule, area of a triangle</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+\[\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C},\qquad
+c^2 = a^2+b^2-2ab\cos C \quad\left(\text{i.e. }\cos C = \frac{a^2+b^2-c^2}{2ab}\right),\qquad
+\text{Area} = \frac12 ab\sin C.\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Area formula, sine rule (from area) and cosine rule (from coordinates)</summary>
+  <div class="dbody">
+    <p><strong>Area:</strong> drop the perpendicular from \(B\) to side \(b\); its length is \(c\sin A\). So
+    area \(=\frac12\times b \times c\sin A\). Same argument from any vertex. ■</p>
+    <p><strong>Sine rule:</strong> all three area expressions are equal:
+    \(\frac12 bc\sin A = \frac12 ac\sin B = \frac12 ab\sin C\). Divide by \(\frac12 abc\):
+    \(\frac{\sin A}{a} = \frac{\sin B}{b} = \frac{\sin C}{c}\). Invert. ■</p>
+    <p><strong>Cosine rule:</strong> place \(C\) at the origin, \(A\) at \((b,0)\) and \(B\) at
+    \((a\cos C,\ a\sin C)\). Then
+    \(c^2 = (a\cos C - b)^2 + (a\sin C)^2 = a^2\cos^2C - 2ab\cos C + b^2 + a^2\sin^2C = a^2+b^2-2ab\cos C\). ■</p>
+    <p><strong>Meaning:</strong> the cosine rule is Pythagoras with a correction term \(-2ab\cos C\); when
+    \(C=90^\circ\) the correction vanishes, which is why Pythagoras is a special case. <strong>Wrong tool
+    when:</strong> you know two angles and a side — use the sine rule; using the cosine rule there wastes two
+    minutes.</p>
+  </div>
+</details>
+
+<h3>The ambiguous case (SSA)</h3>
+
+<p>When you know two sides and a non-included angle, there may be <strong>two</strong> triangles, one, or none.
+The test: given \(a,\ b,\ A\), compute \(\sin B = \frac{b\sin A}{a}\). If \(\sin B>1\): no triangle. If
+\(\sin B = 1\): one right triangle. If \(\sin B&lt;1\): two candidate angles, \(B_1=\arcsin(\cdot)\) and
+\(B_2 = 180^\circ - B_1\); keep \(B_2\) only if \(A + B_2 &lt; 180^\circ\).</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 6</span> IB-style · 8 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> In triangle \(ABC\), \(A=35^\circ\), \(a=7\), \(b=10\). Find all possible
+    values of \(B\), \(C\) and \(c\).</p>
+    <ol class="steps">
+      <li>\(\dfrac{\sin B}{10} = \dfrac{\sin 35^\circ}{7} \Rightarrow \sin B = \dfrac{10\sin35^\circ}{7} = \dfrac{10(0.5736)}{7} = 0.8194\).</li>
+      <li>\(B_1 = \arcsin(0.8194) = 55.0^\circ\). Then \(C_1 = 180-35-55.0 = 90.0^\circ\) and
+      \(c_1 = \dfrac{7\sin90^\circ}{\sin35^\circ} = \dfrac{7}{0.5736} = 12.2\).</li>
+      <li>Second candidate: \(B_2 = 180-55.0 = 125.0^\circ\). Check \(A+B_2 = 160^\circ &lt; 180^\circ\) ✓, so a
+      second triangle exists.</li>
+      <li>\(C_2 = 180-35-125.0 = 20.0^\circ\); \(c_2 = \dfrac{7\sin20^\circ}{\sin35^\circ} = \dfrac{7(0.3420)}{0.5736} = 4.17\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> two triangles: \((B,C,c) = (55.0^\circ, 90.0^\circ, 12.2)\) and \((125.0^\circ, 20.0^\circ, 4.17)\). The mark scheme always allocates a mark for <em>stating that there are two triangles</em>. Sketch the SSA configuration to see it: side \(a\) swinging about \(C\) can cut the ray from \(A\) twice.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 7</span> IB-style · 6 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Two ships leave port \(P\). Ship A sails 12 km on a bearing of \(040^\circ\);
+    ship B sails 15 km on a bearing of \(105^\circ\). Find the distance between them and the bearing of B from A.</p>
+    <ol class="steps">
+      <li>The angle at \(P\) between the two paths is \(105^\circ-40^\circ = 65^\circ\).</li>
+      <li>Cosine rule: \(d^2 = 12^2+15^2-2(12)(15)\cos65^\circ = 144+225-360(0.4226) = 369-152.1 = 216.9\).</li>
+      <li>\(d = 14.7\) km.</li>
+      <li>Angle at A: \(\dfrac{\sin(\angle A)}{15} = \dfrac{\sin 65^\circ}{14.73} \Rightarrow \sin(\angle A) = \dfrac{15(0.9063)}{14.73} = 0.9229\), so \(\angle A = 67.3^\circ\).</li>
+      <li>Bearing of B from A: the bearing of A from P is \(040^\circ\), so the bearing of P from A is \(220^\circ\).
+      The angle at A between AP and AB is \(67.3^\circ\), and B lies "to the south-east" of A, so bearing
+      \(= 220^\circ - 67.3^\circ = 152.7^\circ\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 14.7 km; bearing \(153^\circ\). Bearing questions are geometry questions in disguise — always sketch a compass rose with north lines. Get the reverse bearing right (add/subtract 180°) before touching the internal angle.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — sections 3.1–3.6</span>
+  <p><strong>solid / three-dimensional</strong> /<strong>pyramid</strong><strong>cone</strong><strong>sphere</strong><strong>prism</strong><strong>slant height</strong><strong>apex</strong><strong>angle between a line and a plane</strong><strong>angle between two planes</strong><strong>foot of the perpendicular</strong><strong>cross-section</strong><strong>volume</strong><strong>surface area</strong><strong>angle of elevation</strong><strong>angle of depression</strong><strong>bearing</strong><strong>triangle</strong><strong>hypotenuse</strong></p>
+</div>
+
+<h2>3.7 Trigonometric identities</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p>\(\tan\theta = \dfrac{\sin\theta}{\cos\theta}\) and \(\sin^2\theta+\cos^2\theta = 1\) are given in the formula
+booklet and are SL/HL. The rest of this section is HL.</p>
+
+<p><strong>Proof of \(\sin^2+\cos^2=1\):</strong> on the unit circle the point \((\cos\theta,\sin\theta)\) is at
+distance 1 from the origin, so by Pythagoras \(\cos^2\theta+\sin^2\theta = 1\). Divide by \(\cos^2\theta\) to get
+\(1+\tan^2\theta = \sec^2\theta\); divide by \(\sin^2\theta\) to get \(1+\cot^2\theta = \csc^2\theta\).</p>
+
+<h3>HL: reciprocal ratios and the Pythagorean identities</h3>
+<span class="badge badge--hl">HL only</span>
+
+\[\sec\theta = \frac{1}{\cos\theta},\qquad \csc\theta = \frac{1}{\sin\theta},\qquad \cot\theta = \frac{1}{\tan\theta}=\frac{\cos\theta}{\sin\theta}.\]
+\[1+\tan^2\theta = \sec^2\theta,\qquad 1+\cot^2\theta = \csc^2\theta.\]
+
+<h3>HL: compound-angle identities, with proof</h3>
+<span class="badge badge--hl">HL only</span>
+
+\[\sin(A\pm B) = \sin A\cos B \pm \cos A\sin B\]
+\[\cos(A\pm B) = \cos A\cos B \mp \sin A\sin B\]
+\[\tan(A\pm B) = \frac{\tan A \pm \tan B}{1 \mp \tan A\tan B}\]
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Unit circle construction for the compound angle identities">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <circle cx="230" cy="165" r="120" fill="#eef2ff" stroke="#334155" stroke-width="2"/>
+    <line x1="80" y1="165" x2="390" y2="165" stroke="#334155" stroke-width="1.5"/>
+    <line x1="230" y1="165" x2="230" y2="35" stroke="#334155" stroke-width="1.5"/>
+    <line x1="230" y1="165" x2="334" y2="60" stroke="#3653d6" stroke-width="3"/>
+    <line x1="230" y1="165" x2="350" y2="129" stroke="#b03060" stroke-width="2.5"/>
+    <line x1="334" y1="60" x2="334" y2="165" stroke="#3653d6" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <line x1="230" y1="165" x2="334" y2="165" stroke="#3653d6" stroke-width="1.5"/>
+    <path d="M230 135 A 30 30 0 0 1 262 148" fill="none" stroke="#b03060" stroke-width="2"/>
+    <path d="M230 110 A 55 55 0 0 1 288 138" fill="none" stroke="#3653d6" stroke-width="2"/>
+    <circle cx="334" cy="60" r="4.5" fill="#151923"/>
+    <circle cx="350" cy="129" r="4.5" fill="#151923"/>
+    <text x="340" y="50" font-size="13" font-family="system-ui, sans-serif" fill="#151923">P: angle A+B</text>
+    <text x="356" y="140" font-size="13" font-family="system-ui, sans-serif" fill="#b03060">angle A</text>
+    <text x="290" y="128" font-size="14" font-family="system-ui, sans-serif" fill="#3653d6">B</text>
+    <text x="265" y="160" font-size="13" font-family="system-ui, sans-serif" fill="#3653d6">cos(A+B)</text>
+    <text x="338" y="115" font-size="13" font-family="system-ui, sans-serif" fill="#3653d6">sin(A+B)</text>
+    <text x="420" y="80" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Compare PQ by two routes:</text>
+    <text x="420" y="102" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">distance formula on unit circle</text>
+    <text x="420" y="122" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">and the cosine rule</text>
+    <text x="420" y="150" font-size="13" font-family="system-ui, sans-serif" fill="#151923">cos(A-B) = cosA cosB + sinA sinB</text>
+    <text x="420" y="172" font-size="13" font-family="system-ui, sans-serif" fill="#151923">then replace B by -B:</text>
+    <text x="420" y="192" font-size="13" font-family="system-ui, sans-serif" fill="#151923">cos(A+B) = cosA cosB - sinA sinB</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 3.</span> The classical construction: two points on the unit circle at angles \(A\) and \(B\). Computing the distance between them two ways forces the compound-angle identity out.</figcaption>
+</figure>
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> \(\cos(A-B)=\cos A\cos B+\sin A\sin B\), and all the others from it</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Take \(P(\cos A,\sin A)\) and \(Q(\cos B,\sin B)\) on the unit circle. Both are distance 1 from \(O\).</li>
+      <li>By the distance formula:
+      \(PQ^2 = (\cos A-\cos B)^2+(\sin A-\sin B)^2
+      = \cos^2A+\cos^2B-2\cos A\cos B + \sin^2A+\sin^2B-2\sin A\sin B
+      = 2 - 2(\cos A\cos B+\sin A\sin B)\).</li>
+      <li>By the cosine rule in triangle \(POQ\), where \(\angle POQ = A-B\):
+      \(PQ^2 = 1^2+1^2-2(1)(1)\cos(A-B) = 2-2\cos(A-B)\).</li>
+      <li>Equate: \(2-2\cos(A-B) = 2-2(\cos A\cos B + \sin A\sin B)\), so
+      \(\cos(A-B) = \cos A\cos B + \sin A\sin B\). ■</li>
+      <li>Replace \(B\) by \(-B\), using \(\cos(-B)=\cos B\) and \(\sin(-B)=-\sin B\):
+      \(\cos(A+B) = \cos A\cos B - \sin A\sin B\).</li>
+      <li>For sine: \(\sin(A+B) = \cos\!\left(\frac{\pi}{2}-(A+B)\right) = \cos\!\left(\left(\frac{\pi}{2}-A\right)-B\right)
+      = \cos\!\left(\frac{\pi}{2}-A\right)\cos B + \sin\!\left(\frac{\pi}{2}-A\right)\sin B = \sin A\cos B + \cos A\sin B\).</li>
+      <li>Replace \(B\) by \(-B\) for \(\sin(A-B)\). For tangent, divide \(\sin(A+B)\) by \(\cos(A+B)\) and then
+      divide top and bottom by \(\cos A\cos B\):
+      \(\tan(A+B) = \dfrac{\tan A+\tan B}{1-\tan A\tan B}\).</li>
+    </ol>
+    <p><strong>Meaning:</strong> one picture generates six identities. If you remember the construction, you
+    never need to memorise the list. <strong>Wrong tool when:</strong> you are solving an equation numerically —
+    identities are for exact work and for integration, not for a GDC solve.</p>
+  </div>
+</details>
+
+<h3>HL: double-angle identities</h3>
+<span class="badge badge--hl">HL only</span>
+
+\[\sin 2\theta = 2\sin\theta\cos\theta,\qquad
+\cos 2\theta = \cos^2\theta-\sin^2\theta = 2\cos^2\theta-1 = 1-2\sin^2\theta,\qquad
+\tan 2\theta = \frac{2\tan\theta}{1-\tan^2\theta}.\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Double-angle identities from the compound-angle ones (set \(B=A\))</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>\(\sin(A+A) = \sin A\cos A + \cos A\sin A = 2\sin A\cos A\).</li>
+      <li>\(\cos(A+A) = \cos A\cos A - \sin A\sin A = \cos^2A - \sin^2A\).</li>
+      <li>Using \(\sin^2A = 1-\cos^2A\): \(\cos 2A = \cos^2A-(1-\cos^2A) = 2\cos^2A-1\).</li>
+      <li>Using \(\cos^2A = 1-\sin^2A\): \(\cos 2A = (1-\sin^2A)-\sin^2A = 1-2\sin^2A\).</li>
+      <li>\(\tan 2A = \dfrac{\tan A+\tan A}{1-\tan A\tan A} = \dfrac{2\tan A}{1-\tan^2A}\).</li>
+    </ol>
+    <p><strong>Meaning:</strong> the three forms of \(\cos 2\theta\) are the same fact dressed for three jobs:
+    use \(1-2\sin^2\theta\) when the rest of the expression is in sines, \(2\cos^2\theta-1\) when it is in
+    cosines, and \(\cos^2-\sin^2\) when both appear. Choosing the right form <em>is</em> the exam skill — this is
+    exactly what \(\int\sin^2x\,\mathrm{d}x\) requires in Topic 5.</p>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 8</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Given \(\sin\theta = \dfrac35\) with \(\dfrac{\pi}{2}&lt;\theta&lt;\pi\), find the
+    exact values of (a) \(\cos\theta\); (b) \(\sin 2\theta\); (c) \(\cos 2\theta\); (d) \(\tan 2\theta\).</p>
+    <ol class="steps">
+      <li>\(\theta\) is in quadrant 2, so \(\cos\theta&lt;0\): \(\cos\theta = -\sqrt{1-\frac{9}{25}} = -\frac45\).</li>
+      <li>\(\sin2\theta = 2\sin\theta\cos\theta = 2\cdot\frac35\cdot\left(-\frac45\right) = -\frac{24}{25}\).</li>
+      <li>\(\cos 2\theta = 1-2\sin^2\theta = 1-2\cdot\frac{9}{25} = \frac{7}{25}\).</li>
+      <li>\(\tan 2\theta = \dfrac{\sin2\theta}{\cos2\theta} = \dfrac{-24/25}{7/25} = -\dfrac{24}{7}\).</li>
+      <li>Check: \(\frac{\pi}{2}&lt;\theta&lt;\pi\) means \(\pi&lt;2\theta&lt;2\pi\), so \(2\theta\) is in quadrants 3 or 4.
+      With \(\sin2\theta&lt;0\) and \(\cos2\theta>0\), \(2\theta\) is in quadrant 4. ✓</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(-\frac45,\ -\frac{24}{25},\ \frac{7}{25},\ -\frac{24}{7}\). The quadrant check in step 5 is what turns a correct answer into a justified one.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 9</span> IB-style · 8 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> (a) Show that \(\dfrac{\sin 2x}{1+\cos 2x} = \tan x\).
+    (b) Hence solve \(\tan x = 3\cos x\) for \(0\le x\le 2\pi\).</p>
+    <ol class="steps">
+      <li>\(\sin 2x = 2\sin x\cos x\) and \(1+\cos 2x = 1 + (2\cos^2x-1) = 2\cos^2x\).</li>
+      <li>So \(\dfrac{\sin2x}{1+\cos2x} = \dfrac{2\sin x\cos x}{2\cos^2x} = \dfrac{\sin x}{\cos x} = \tan x\). ■</li>
+      <li>For (b): \(3\cos x = \tan x = \dfrac{\sin x}{\cos x} \Rightarrow 3\cos^2x = \sin x\).</li>
+      <li>\(3(1-\sin^2x) = \sin x \Rightarrow 3\sin^2x + \sin x - 3 = 0\).</li>
+      <li>\(\sin x = \dfrac{-1\pm\sqrt{1+36}}{6} = \dfrac{-1\pm\sqrt{37}}{6}\). \(\frac{-1+\sqrt{37}}{6} = 0.8471\);
+      \(\frac{-1-\sqrt{37}}{6} = -1.180\) (reject, outside \([-1,1]\)).</li>
+      <li>\(x = \arcsin(0.8471) = 1.012\) or \(x = \pi - 1.012 = 2.130\).</li>
+      <li>Check: both satisfy \(\cos x>0\) for the first and \(\cos x&lt;0\) for the second? At \(x=2.130\),
+      \(\cos x = -0.531\) and \(\tan x = -1.594\), while \(3\cos x = -1.594\). ✓ Both valid.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(x = 1.01\) or \(2.13\) (radians). The "hence" in (b) is a hint to rewrite \(\tan x\) using the identity from (a) — although here the direct \(\tan=\sin/\cos\) route is equivalent. Always check both solutions in the original equation: squaring can introduce extras.</div>
+  </div>
+</details>
+
+<h2>3.8 HL: inverse trigonometric functions</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Intuition:</strong> \(\sin x\) is not one-to-one (infinitely many angles share a sine), so it cannot
+have an inverse unless we restrict its domain. The IB uses <strong>principal values</strong>:</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Function</th><th>Domain</th><th>Range (principal values)</th></tr></thead>
+  <tbody>
+    <tr><td>\(y=\arcsin x\)</td><td>\(-1\le x\le1\)</td><td>\(-\dfrac{\pi}{2}\le y\le\dfrac{\pi}{2}\)</td></tr>
+    <tr><td>\(y=\arccos x\)</td><td>\(-1\le x\le1\)</td><td>\(0\le y\le\pi\)</td></tr>
+    <tr><td>\(y=\arctan x\)</td><td>\(\mathbb{R}\)</td><td>\(-\dfrac{\pi}{2}&lt; y&lt;\dfrac{\pi}{2}\)</td></tr>
+  </tbody>
+</table>
+</div>
+<p>The graphs are the reflections of the <em>restricted</em> trig graphs in \(y=x\). Two consequences you will be
+tested on: \(\arcsin(\sin x)\) is not always \(x\) (only when \(x\) is in the principal range), and
+\(\arcsin x + \arccos x = \frac{\pi}{2}\).</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 10</span> IB-style · 6 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Find the exact value of (a) \(\arcsin\!\left(\sin\frac{5\pi}{6}\right)\);
+    (b) \(\arctan 1 + \arccos\!\left(-\frac12\right)\); (c) \(\tan\!\left(\arcsin\frac35\right)\).</p>
+    <ol class="steps">
+      <li>(a) \(\sin\frac{5\pi}{6} = \frac12\), and \(\arcsin\frac12 = \frac{\pi}{6}\), not \(\frac{5\pi}{6}\) —
+      because \(\frac{5\pi}{6}\) is outside the principal range \([-\frac{\pi}{2},\frac{\pi}{2}]\).</li>
+      <li>(b) \(\arctan 1 = \frac{\pi}{4}\); \(\arccos(-\frac12) = \frac{2\pi}{3}\). Sum \(= \frac{\pi}{4}+\frac{2\pi}{3}=\frac{11\pi}{12}\).</li>
+      <li>(c) Let \(\theta = \arcsin\frac35\), so \(\sin\theta=\frac35\) and \(\theta\) is acute. Then
+      \(\cos\theta = \frac45\), so \(\tan\theta = \frac{3/5}{4/5} = \frac34\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(\frac{\pi}{6}\); (b) \(\frac{11\pi}{12}\); (c) \(\frac34\). Part (a) is the single most common inverse-trig error in the whole course: arcsin returns the principal value, always.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — trig graphs, identities &amp; rules</span>
+  <p><strong>segment</strong><strong>unit circle</strong><strong>quadrant</strong><strong>reference angle</strong><strong>amplitude</strong><strong>period</strong><strong>identity</strong><strong>compound angle</strong><strong>double angle</strong><strong>sine rule</strong><strong>cosine rule</strong><strong>ambiguous case</strong> SSA<strong>bearing</strong><strong>projection</strong><strong>inverse trigonometric function</strong><strong>principal value</strong><strong>secant / cosecant / cotangent</strong> / /</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — sections 3.7–3.8</span>
+  <p><strong>radian</strong><strong>arc length</strong><strong>sector</strong><strong>segment</strong><strong>unit circle</strong><strong>quadrant</strong><strong>reference angle</strong><strong>amplitude</strong><strong>period</strong><strong>identity</strong><strong>compound angle</strong><strong>double angle</strong><strong>sine rule</strong><strong>cosine rule</strong><strong>ambiguous case</strong> SSA<strong>projection</strong><strong>inverse trigonometric function</strong><strong>principal value</strong><strong>secant / cosecant / cotangent</strong> / /</p>
+</div>
+
+<h2>3.9 HL: vectors in three dimensions</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Intuition:</strong> a vector is an arrow: it has length and direction, but no fixed position. You add
+them tip-to-tail; you scale them by stretching. The <strong>scalar (dot) product</strong> is a machine that turns
+two vectors into a number, and that number is zero exactly when the vectors are perpendicular — which makes it
+the fastest perpendicularity test in mathematics.</p>
+
+\[\mathbf{a}\cdot\mathbf{b} = a_1b_1+a_2b_2+a_3b_3 = |\mathbf{a}||\mathbf{b}|\cos\theta,\qquad
+|\mathbf{a}| = \sqrt{a_1^2+a_2^2+a_3^2}.\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Why \(\mathbf{a}\cdot\mathbf{b}=|\mathbf{a}||\mathbf{b}|\cos\theta\)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Place the tails of \(\mathbf{a}\) and \(\mathbf{b}\) together; the third side of the triangle is
+      \(\mathbf{b}-\mathbf{a}\).</li>
+      <li>Cosine rule: \(|\mathbf{b}-\mathbf{a}|^2 = |\mathbf{a}|^2+|\mathbf{b}|^2-2|\mathbf{a}||\mathbf{b}|\cos\theta\).</li>
+      <li>Expand the left side in components:
+      \(|\mathbf{b}-\mathbf{a}|^2 = (b_1-a_1)^2+(b_2-a_2)^2+(b_3-a_3)^2 = |\mathbf{a}|^2+|\mathbf{b}|^2-2(a_1b_1+a_2b_2+a_3b_3)\).</li>
+      <li>Compare the two expressions: \(a_1b_1+a_2b_2+a_3b_3 = |\mathbf{a}||\mathbf{b}|\cos\theta\). ■</li>
+    </ol>
+    <p><strong>Meaning:</strong> the dot product measures "how much of \(\mathbf{a}\) points along
+    \(\mathbf{b}\)". If \(\theta=90^\circ\) it is zero; if the vectors point the same way it is
+    \(|\mathbf{a}||\mathbf{b}|\). <strong>Wrong tool when:</strong> you need a vector perpendicular to two given
+    vectors — that is the <em>vector</em> (cross) product, which is the subject of section 3.10. The fallback
+    that always works: solve \(\mathbf{n}\cdot\mathbf{a}=\mathbf{n}\cdot\mathbf{b}=0\) for a normal
+    \(\mathbf{n}\).</p>
+  </div>
+</details>
+
+<h3>Lines: \(\mathbf{r} = \mathbf{a} + \lambda\mathbf{b}\)</h3>
+
+<p>The line through point \(\mathbf{a}\) in direction \(\mathbf{b}\) is \(\mathbf{r}=\mathbf{a}+\lambda\mathbf{b}\),
+\(\lambda\in\mathbb{R}\). In coordinates: \(\begin{pmatrix}x\\y\\z\end{pmatrix} =
+\begin{pmatrix}a_1\\a_2\\a_3\end{pmatrix} + \lambda\begin{pmatrix}b_1\\b_2\\b_3\end{pmatrix}\), giving the
+parametric equations \(x=a_1+\lambda b_1\), etc. Eliminating \(\lambda\) gives the Cartesian form
+\(\frac{x-a_1}{b_1}=\frac{y-a_2}{b_2}=\frac{z-a_3}{b_3}\).</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — classifying two lines</span>
+  <ol class="steps">
+    <li><strong>Parallel:</strong> direction vectors are scalar multiples (\(\mathbf{b}_1 = k\mathbf{b}_2\)).</li>
+    <li><strong>Coincident:</strong> parallel <em>and</em> they share a point (check whether a point on one
+    satisfies the other's equation).</li>
+    <li><strong>Intersecting:</strong> set the two parametric forms equal, giving three equations in two
+    unknowns (\(\lambda,\mu\)); solve two, then check the third. Consistent → intersect.</li>
+    <li><strong>Skew:</strong> not parallel and the system is inconsistent — the lines miss each other in
+    space. This is the case that only exists in 3-D, and the IB loves it.</li>
+    <li><strong>Angle between lines:</strong> \(\cos\theta = \dfrac{|\mathbf{b}_1\cdot\mathbf{b}_2|}{|\mathbf{b}_1||\mathbf{b}_2|}\)
+    — the modulus gives the acute angle.</li>
+  </ol>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Two lines meeting at a point with direction vectors and the angle between them">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="80" y1="250" x2="560" y2="80" stroke="#3653d6" stroke-width="3"/>
+    <line x1="90" y1="90" x2="540" y2="240" stroke="#3653d6" stroke-width="3"/>
+    <line x1="300" y1="170" x2="360" y2="110" stroke="#b03060" stroke-width="2.5"/>
+    <line x1="300" y1="170" x2="365" y2="200" stroke="#b03060" stroke-width="2.5"/>
+    <path d="M330 170 A 35 35 0 0 0 345 150" fill="none" stroke="#b03060" stroke-width="2"/>
+    <text x="352" y="168" font-size="14" font-family="system-ui, sans-serif" fill="#b03060">theta</text>
+    <circle cx="300" cy="170" r="4.5" fill="#151923"/>
+    <polygon points="357,112 366,116 358,122" fill="#b03060"/>
+    <polygon points="362,198 371,202 363,208" fill="#b03060"/>
+    <text x="370" y="115" font-size="13" font-family="system-ui, sans-serif" fill="#b03060">b1</text>
+    <text x="372" y="208" font-size="13" font-family="system-ui, sans-serif" fill="#b03060">b2</text>
+    <text x="70" y="285" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">cos(theta) = |b1 . b2| / (|b1| |b2|)</text>
+    <text x="70" y="305" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">the dot product of the DIRECTION vectors gives the angle, wherever the lines sit</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 4.</span> Only the direction vectors matter for the angle between two lines — their positions are irrelevant. This is why skew lines still have a well-defined angle.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 11</span> IB-style · 9 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Line \(L_1\): \(\mathbf{r}=\begin{pmatrix}1\\2\\3\end{pmatrix}+\lambda\begin{pmatrix}2\\-1\\1\end{pmatrix}\).
+    Line \(L_2\): \(\mathbf{r}=\begin{pmatrix}4\\1\\0\end{pmatrix}+\mu\begin{pmatrix}-1\\3\\2\end{pmatrix}\).
+    (a) Show that the lines intersect and find the point of intersection. (b) Find the angle between them.</p>
+    <ol class="steps">
+      <li>Set equal: \(1+2\lambda = 4-\mu\); \(2-\lambda = 1+3\mu\); \(3+\lambda = 2\mu\).</li>
+      <li>From the third: \(\lambda = 2\mu - 3\). Substitute into the second: \(2-(2\mu-3) = 1+3\mu \Rightarrow 5-2\mu = 1+3\mu \Rightarrow \mu = \frac45\), so \(\lambda = \frac85-3 = -\frac75\).</li>
+      <li>Check the first equation: LHS \(= 1+2(-\frac75) = -\frac95\); RHS \(= 4-\frac45 = \frac{16}{5}\). Not equal!</li>
+      <li>So the three equations are inconsistent: the lines do <strong>not</strong> intersect. They are not
+      parallel (direction vectors are not multiples), so they are <strong>skew</strong>.</li>
+      <li>Angle: \(\mathbf{b}_1\cdot\mathbf{b}_2 = (2)(-1)+(-1)(3)+(1)(2) = -2-3+2 = -3\);
+      \(|\mathbf{b}_1|=\sqrt6\), \(|\mathbf{b}_2|=\sqrt{14}\).</li>
+      <li>\(\cos\theta = \dfrac{|-3|}{\sqrt6\sqrt{14}} = \dfrac{3}{\sqrt{84}} = 0.3273 \Rightarrow \theta = 70.9^\circ\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> the lines are skew; the angle between them is \(70.9^\circ\). The trap is assuming intersection: you must solve <em>two</em> equations and then test the third. Two of three equations agreeing means nothing.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 12</span> IB-style · 9 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Two particles move with position vectors (metres) at time \(t\) (seconds):
+    \(\mathbf{r}_A = \begin{pmatrix}2\\-1\end{pmatrix}+t\begin{pmatrix}3\\4\end{pmatrix}\) and
+    \(\mathbf{r}_B = \begin{pmatrix}14\\5\end{pmatrix}+t\begin{pmatrix}1\\-2\end{pmatrix}\).
+    (a) Find the velocity of each particle and the speed of A. (b) Find the time when they are closest and the
+    minimum distance between them.</p>
+    <ol class="steps">
+      <li>Velocities are the coefficients of \(t\): \(\mathbf{v}_A = \begin{pmatrix}3\\4\end{pmatrix}\),
+      \(\mathbf{v}_B=\begin{pmatrix}1\\-2\end{pmatrix}\) m s<sup>−1</sup>. Speed of A \(= \sqrt{9+16}=5\) m s<sup>−1</sup>.</li>
+      <li>Relative position: \(\mathbf{r}_A-\mathbf{r}_B = \begin{pmatrix}-12\\-6\end{pmatrix}+t\begin{pmatrix}2\\6\end{pmatrix}\).</li>
+      <li>Squared distance: \(D(t) = (-12+2t)^2+(-6+6t)^2 = 144-48t+4t^2+36-72t+36t^2 = 180-120t+40t^2\).</li>
+      <li>Minimise: \(D'(t) = -120+80t = 0 \Rightarrow t = 1.5\) s.</li>
+      <li>\(D(1.5) = 180-180+40(2.25) = 90\), so minimum distance \(= \sqrt{90} = 9.49\) m.</li>
+      <li>Alternative (vector) check: at closest approach the relative velocity is perpendicular to the relative
+      position: \((\mathbf{r}_A-\mathbf{r}_B)\cdot(\mathbf{v}_A-\mathbf{v}_B)=0\). Relative velocity
+      \(=\begin{pmatrix}2\\6\end{pmatrix}\); relative position at \(t=1.5\) is \(\begin{pmatrix}-9\\3\end{pmatrix}\);
+      dot product \(=-18+18=0\). ✓</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> speeds 5 and \(\sqrt5\) m s<sup>−1</sup>; closest at \(t=1.5\) s with distance 9.49 m. The dot-product test in step 6 is a beautiful cross-check that uses two topics at once, and it is exactly the kind of reasoning Paper 3 rewards.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>(1) Forgetting the modulus in \(\cos\theta=\frac{|\mathbf{b}_1\cdot\mathbf{b}_2|}{|\mathbf{b}_1||\mathbf{b}_2|}\):
+  without it you get the obtuse angle, and the IB asks for the acute one. (2) Concluding "intersect" from two of
+  three equations. (3) Using position vectors instead of direction vectors for the angle between lines. (4) In
+  kinematics, differentiating a position vector term by term but forgetting that a constant vector's derivative
+  is zero.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — section 3.9 (vectors)</span>
+  <p><strong>vector</strong><strong>scalar</strong><strong>magnitude</strong><strong>direction</strong><strong>position vector</strong><strong>direction vector</strong><strong>unit vector</strong><strong>scalar (dot) product</strong> /<strong>perpendicular / orthogonal</strong> /<strong>parallel</strong><strong>collinear</strong><strong>skew lines</strong><strong>coincident</strong><strong>vector equation of a line</strong><strong>parameter</strong><strong>component</strong><strong>resultant</strong> /</p>
+</div>
+
+<h2>3.10 HL: the vector (cross) product</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Intuition:</strong> the dot product takes two vectors and returns a <em>number</em> — it answers "how
+much do these point the same way?". The cross product takes two vectors and returns a <em>vector</em>, and that
+vector is perpendicular to both of them. That single property is why the cross product is the tool for anything
+involving a plane, a normal direction, or an area in three dimensions.</p>
+
+\[\mathbf{a}\times\mathbf{b} =
+\begin{vmatrix}\mathbf{i}&\mathbf{j}&\mathbf{k}\\ a_1&a_2&a_3\\ b_1&b_2&b_3\end{vmatrix}
+= \begin{pmatrix}a_2b_3-a_3b_2\\ a_3b_1-a_1b_3\\ a_1b_2-a_2b_1\end{pmatrix},
+\qquad |\mathbf{a}\times\mathbf{b}| = |\mathbf{a}||\mathbf{b}|\sin\theta.\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Why \(|\mathbf{a}\times\mathbf{b}|\) is the area of a parallelogram</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>The parallelogram spanned by \(\mathbf{a}\) and \(\mathbf{b}\) has base \(|\mathbf{a}|\).</li>
+      <li>Its perpendicular height is \(|\mathbf{b}|\sin\theta\), where \(\theta\) is the angle between them.</li>
+      <li>So the area is \(|\mathbf{a}||\mathbf{b}|\sin\theta\) — which is exactly \(|\mathbf{a}\times\mathbf{b}|\).</li>
+      <li>Halve it: the triangle with two sides \(\mathbf{a}\) and \(\mathbf{b}\) has area
+      \(\tfrac12|\mathbf{a}\times\mathbf{b}|\).</li>
+    </ol>
+    <p><strong>Meaning:</strong> the <em>direction</em> of \(\mathbf{a}\times\mathbf{b}\) carries the normal
+    information; its <em>magnitude</em> carries an area. One object doing two jobs is why the IB so often asks
+    for "the area of triangle \(ABC\)" immediately after asking for a cross product.
+    <strong>Wrong tool when:</strong> the vectors are parallel (then \(\mathbf{a}\times\mathbf{b}=\mathbf{0}\)),
+    or when the question is about an angle — use the dot product for that.</p>
+  </div>
+</details>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the four properties that get tested</span>
+  <ol class="steps">
+    <li><strong>Direction:</strong> perpendicular to both inputs, given by the right-hand rule. Always check it:
+    dot your answer with each input vector — both results must be 0.</li>
+    <li><strong>Anti-commutative:</strong> \(\mathbf{a}\times\mathbf{b}=-(\mathbf{b}\times\mathbf{a})\). Order
+    matters here, unlike with the dot product.</li>
+    <li><strong>Parallel test:</strong> \(\mathbf{a}\times\mathbf{b}=\mathbf{0}\) exactly when the vectors are
+    parallel (or one is zero).</li>
+    <li><strong>Area:</strong> parallelogram \(=|\mathbf{a}\times\mathbf{b}|\); triangle
+    \(=\tfrac12|\mathbf{a}\times\mathbf{b}|\).</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 13</span> IB-style · 8 marks · cross product and area</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Let \(\mathbf{a}=\begin{pmatrix}1\\-2\\3\end{pmatrix}\) and
+    \(\mathbf{b}=\begin{pmatrix}4\\0\\-1\end{pmatrix}\). (a) Find \(\mathbf{a}\times\mathbf{b}\). (b) Hence find a
+    unit vector perpendicular to both. (c) Find the area of the triangle with vertices \(O(0,0,0)\),
+    \(A(1,-2,3)\) and \(B(4,0,-1)\).</p>
+    <ol class="steps">
+      <li>Component formula: \(\bigl((-2)(-1)-(3)(0),\ (3)(4)-(1)(-1),\ (1)(0)-(-2)(4)\bigr)\).</li>
+      <li>\(= (2-0,\ 12+1,\ 0+8) = \begin{pmatrix}2\\13\\8\end{pmatrix}\).</li>
+      <li>Verify: \((2,13,8)\cdot(1,-2,3) = 2-26+24 = 0\) ✓ and \((2,13,8)\cdot(4,0,-1) = 8+0-8 = 0\) ✓.</li>
+      <li>Magnitude: \(|\mathbf{a}\times\mathbf{b}| = \sqrt{4+169+64} = \sqrt{237}\).</li>
+      <li>Unit normal: \(\dfrac{1}{\sqrt{237}}\begin{pmatrix}2\\13\\8\end{pmatrix}\). Its negative is also
+      perpendicular — the question asks for <em>a</em> unit vector, so either sign is accepted.</li>
+      <li>Area of triangle \(OAB\) \(= \tfrac12|\overrightarrow{OA}\times\overrightarrow{OB}| = \tfrac12\sqrt{237}
+      = 7.70\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(\mathbf{a}\times\mathbf{b}=(2,13,8)\); unit normal
+    \(\frac{1}{\sqrt{237}}(2,13,8)\); area \(=7.70\). The check in step 3 costs ten seconds and catches the single
+    most common arithmetic slip — a sign error in the middle component.</div>
+  </div>
+</details>
+
+<h2>3.11 HL: the equation of a plane</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Intuition:</strong> a line needs a point and <em>one</em> direction. A plane needs a point and
+<em>two</em> non-parallel directions — or, more usefully, a point and a <em>normal</em>. The normal is the
+direction the plane does <em>not</em> go in, and it is far more powerful than the two directions, because
+"everything in the plane is perpendicular to the normal" is a single equation.</p>
+
+<p>Three equivalent forms — you must be able to move between all three:</p>
+
+\[\underbrace{\mathbf{r}=\mathbf{a}+\lambda\mathbf{b}+\mu\mathbf{c}}_{\text{point + two directions}}
+\qquad\Longleftrightarrow\qquad
+\underbrace{\mathbf{r}\cdot\mathbf{n}=\mathbf{a}\cdot\mathbf{n}}_{\text{point + normal}}
+\qquad\Longleftrightarrow\qquad
+\underbrace{ax+by+cz=d}_{\text{Cartesian, where }\mathbf{n}=\begin{pmatrix}a\\b\\c\end{pmatrix}}\]
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — finding the equation of a plane</span>
+  <ol class="steps">
+    <li><strong>Given a point \(\mathbf{a}\) and a normal \(\mathbf{n}\):</strong> write
+    \(\mathbf{r}\cdot\mathbf{n}=\mathbf{a}\cdot\mathbf{n}\), then expand to \(ax+by+cz=d\).</li>
+    <li><strong>Given three points \(A,B,C\):</strong> form two vectors in the plane,
+    \(\mathbf{b}=\overrightarrow{AB}\) and \(\mathbf{c}=\overrightarrow{AC}\), then the normal is
+    \(\mathbf{n}=\mathbf{b}\times\mathbf{c}\). Now use step 1.</li>
+    <li><strong>Given the Cartesian form \(ax+by+cz=d\):</strong> read the normal straight off as
+    \(\mathbf{n}=(a,b,c)\). No working needed — this is why the IB often gives it in this form.</li>
+    <li><strong>Any multiple is the same plane:</strong> \(2x+4y-6z=8\) and \(x+2y-3z=4\) describe the same
+    plane. Scale to taste, but keep it consistent within one question.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 14</span> IB-style · 9 marks · plane through three points</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Find the Cartesian equation of the plane through \(A(1,2,3)\), \(B(3,-1,4)\)
+    and \(C(0,2,-1)\).</p>
+    <ol class="steps">
+      <li>Two vectors in the plane: \(\overrightarrow{AB}=\begin{pmatrix}2\\-3\\1\end{pmatrix}\),
+      \(\overrightarrow{AC}=\begin{pmatrix}-1\\0\\-4\end{pmatrix}\).</li>
+      <li>Normal \(= \overrightarrow{AB}\times\overrightarrow{AC}
+      = \bigl((-3)(-4)-(1)(0),\ (1)(-1)-(2)(-4),\ (2)(0)-(-3)(-1)\bigr)
+      = \begin{pmatrix}12\\7\\-3\end{pmatrix}\).</li>
+      <li>Check: \((12,7,-3)\cdot(2,-3,1) = 24-21-3 = 0\) ✓;
+      \((12,7,-3)\cdot(-1,0,-4) = -12+0+12 = 0\) ✓.</li>
+      <li>Use \(\mathbf{r}\cdot\mathbf{n} = \mathbf{a}\cdot\mathbf{n}\) with \(\mathbf{a}=A\):
+      \(\mathbf{a}\cdot\mathbf{n} = 12(1)+7(2)-3(3) = 12+14-9 = 17\).</li>
+      <li>So the plane is \(12x+7y-3z = 17\).</li>
+      <li>Verify with the two unused points: \(B\): \(12(3)+7(-1)-3(4) = 36-7-12 = 17\) ✓;
+      \(C\): \(12(0)+7(2)-3(-1) = 0+14+3 = 17\) ✓.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(12x+7y-3z=17\). Substituting the third point back in is not paranoia — it is the only way to catch a cross-product slip before you spend ten more marks on a wrong normal.</div>
+  </div>
+</details>
+
+<h2>3.12 HL: intersections and angles with planes</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p>Everything in this section reduces to one idea: <strong>the normal does the work</strong>. Angles with a plane
+are angles with the normal (with a complement); intersecting a line with a plane is substituting a parametric
+line into one Cartesian equation.</p>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why the formulas look "swapped"</span>
+  <p>The angle between a line and a plane is the angle between the line and its <em>projection</em> onto the
+  plane. That is the <strong>complement</strong> of the angle between the line and the normal — so the formula
+  uses \(\sin\), not \(\cos\):</p>
+  <p>\[\sin\theta = \frac{|\mathbf{b}\cdot\mathbf{n}|}{|\mathbf{b}||\mathbf{n}|}\quad\text{(line vs plane)},
+  \qquad
+  \cos\theta = \frac{|\mathbf{n}_1\cdot\mathbf{n}_2|}{|\mathbf{n}_1||\mathbf{n}_2|}\quad\text{(plane vs plane)}.\]</p>
+  <p>Two planes meet at the same angle as their normals — no complement needed there, because the normals are
+  both in the "perpendicular" role.</p>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="A plane with its normal vector and a line meeting the plane, showing that the angle between the line and the plane is the complement of the angle between the line and the normal">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <polygon points="120,235 400,180 530,240 250,295" fill="#eef2fb" stroke="#3653d6" stroke-width="2"/>
+    <line x1="325" y1="238" x2="500" y2="240" stroke="#3653d6" stroke-width="2" stroke-dasharray="6 4"/>
+    <line x1="325" y1="238" x2="325" y2="95" stroke="#1d7a4c" stroke-width="3"/>
+    <polygon points="320,105 330,105 325,93" fill="#1d7a4c"/>
+    <text x="337" y="115" font-size="15" font-family="system-ui, sans-serif" fill="#1d7a4c">n</text>
+    <line x1="195" y1="120" x2="403" y2="309" stroke="#b03060" stroke-width="3"/>
+    <polygon points="197,124 205,117 209,128" fill="#b03060"/>
+    <text x="150" y="112" font-size="14" font-family="system-ui, sans-serif" fill="#b03060">L, direction b</text>
+    <circle cx="325" cy="238" r="4.5" fill="#151923"/>
+    <path d="M 325 183 A 55 55 0 0 0 284 201" fill="none" stroke="#1d7a4c" stroke-width="2"/>
+    <text x="288" y="172" font-size="14" font-family="system-ui, sans-serif" fill="#1d7a4c">a</text>
+    <path d="M 395 238 A 70 70 0 0 1 377 285" fill="none" stroke="#b03060" stroke-width="2"/>
+    <text x="404" y="272" font-size="15" font-family="system-ui, sans-serif" fill="#b03060">theta</text>
+    <text x="70" y="290" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">sin(theta) = |b . n| / (|b| |n|)</text>
+    <text x="70" y="308" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">theta is the angle with the PLANE, so a is its complement: theta = 90 - a</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 5.</span> A line \(L\) meeting a plane at \(P\). The angle \(\alpha\) between \(L\) and the normal and the angle \(\theta\) between \(L\) and the plane add to \(90^\circ\) — which is why the line–plane formula uses \(\sin\) while every other angle formula in this topic uses \(\cos\).</figcaption>
+</figure>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the three intersection cases</span>
+  <ol class="steps">
+    <li><strong>Line \(\cap\) plane:</strong> substitute the parametric line
+    \(\mathbf{r}=\mathbf{a}+\lambda\mathbf{b}\) into \(ax+by+cz=d\), giving one equation in \(\lambda\). Solve,
+    then substitute \(\lambda\) back into the line to get the <em>point</em>. If the coefficient of \(\lambda\)
+    is zero: the line is either parallel to the plane (no solution) or lies in it (infinitely many).</li>
+    <li><strong>Plane \(\cap\) plane:</strong> a <em>line</em>. Solve the two Cartesian equations together — put
+    one variable equal to \(t\) and express the other two in terms of it.</li>
+    <li><strong>Three planes:</strong> solve the \(3\times3\) system. Four outcomes — a unique point (the
+    normals are independent); a common line (the planes form a "book"); no common point (two are parallel, or
+    they form a triangular prism); or all three coincide.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 15</span> IB-style · 11 marks · line meets plane, and the angle</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The plane \(\Pi\) has equation \(2x-y+3z=11\). The line \(L\) has equation
+    \(\mathbf{r}=\begin{pmatrix}1\\0\\4\end{pmatrix}+\lambda\begin{pmatrix}2\\1\\-1\end{pmatrix}\).
+    (a) Find the point where \(L\) meets \(\Pi\). (b) Find the angle between \(L\) and \(\Pi\).</p>
+    <ol class="steps">
+      <li>Write \(L\) in components: \(x=1+2\lambda\), \(y=\lambda\), \(z=4-\lambda\).</li>
+      <li>Substitute into \(\Pi\): \(2(1+2\lambda) - (\lambda) + 3(4-\lambda) = 11\).</li>
+      <li>Simplify: \(2+4\lambda-\lambda+12-3\lambda = 11 \Rightarrow 14 + 0\lambda = 11\).</li>
+      <li>The \(\lambda\) terms cancel and the statement is false — so \(L\) is <strong>parallel to</strong>
+      \(\Pi\) and never meets it. (Had it read \(14=14\), the line would lie <em>in</em> the plane.)</li>
+      <li>Angle: \(\mathbf{b}=(2,1,-1)\), \(\mathbf{n}=(2,-1,3)\).</li>
+      <li>\(\mathbf{b}\cdot\mathbf{n} = 4-1-3 = 0\). So \(\mathbf{b}\perp\mathbf{n}\): the direction of the line
+      is perpendicular to the normal, meaning the line runs <em>along</em> the plane. The angle is
+      \(\theta = \arcsin\frac{0}{\sqrt6\sqrt{14}} = 0^\circ\), consistent with step 4.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> no point of intersection — \(L\) is parallel to \(\Pi\); the angle is \(0^\circ\). Note how the dot product being zero explains the algebra: "coefficient of \(\lambda\) is zero" and "direction \(\perp\) normal" are the same fact wearing two different hats.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 16</span> IB-style · 12 marks · three planes</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Determine the nature of the intersection of
+    \(\Pi_1: x+y+z=6\), \(\Pi_2: 2x-y+z=3\), \(\Pi_3: 3x+2z=9\).</p>
+    <ol class="steps">
+      <li>From \(\Pi_3\): \(x = \dfrac{9-2z}{3}\).</li>
+      <li>Substitute into \(\Pi_1\): \(\dfrac{9-2z}{3}+y+z = 6 \Rightarrow y = 6 - z - \dfrac{9-2z}{3}
+      = \dfrac{18-3z-9+2z}{3} = \dfrac{9-z}{3}\).</li>
+      <li>Substitute both into \(\Pi_2\): \(2\cdot\dfrac{9-2z}{3} - \dfrac{9-z}{3} + z = 3\).</li>
+      <li>Multiply by 3: \(18-4z-9+z+3z = 9 \Rightarrow 9 + 0z = 9\). Always true.</li>
+      <li>So \(z\) is free: the three planes share a <strong>line</strong>. Put \(z=t\):
+      \(x = \dfrac{9-2t}{3}\), \(y = \dfrac{9-t}{3}\), \(z=t\).</li>
+      <li>Check \(t=0\): \((3,3,0)\) — \(\Pi_1\): 6 ✓, \(\Pi_2\): \(6-3+0=3\) ✓, \(\Pi_3\): 9 ✓.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> the planes meet in the line \(\mathbf{r}=\begin{pmatrix}3\\3\\0\end{pmatrix}+t\begin{pmatrix}-\tfrac23\\-\tfrac13\\1\end{pmatrix}\). The give-away is the row that reduces to \(0=0\) — one free variable means a line, two free variables means the planes coincide, and a row like \(0=5\) means no common point.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>(1) Using \(\cos\) instead of \(\sin\) for the line–plane angle. If your answer looks suspiciously large, you
+  have found the angle with the <em>normal</em>. (2) Forgetting the modulus — angles are acute unless stated
+  otherwise. (3) Reporting the value of \(\lambda\) as the answer; the question asks for the <em>point</em>, so
+  you must substitute back. (4) Concluding "no intersection" when the \(\lambda\) terms cancel: check whether the
+  remaining statement is true (line lies in the plane) or false (parallel, no intersection).</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — sections 3.10 to 3.12</span>
+  <p><strong>vector (cross) product</strong> /<strong>right-hand rule</strong><strong>normal (vector)</strong><strong>unit normal</strong><strong>plane</strong><strong>Cartesian equation of a plane</strong><strong>parametric form</strong><strong>projection onto a plane</strong><strong>angle between a line and a plane</strong><strong>angle between two planes</strong><strong>intersection</strong> /<strong>free variable / parameter</strong><strong>area of a parallelogram</strong></p>
+</div>
+
+<div class="conn">
+  <span class="conn__title">Connections</span>
+  <ul>
+    <li><strong>→ Topic 5 (Calculus):</strong> every derivative of a trig function assumes radians; \(\int\sin^2x\,\mathrm{d}x\)
+    needs \(\cos2x = 1-2\sin^2x\); substituting \(x=a\sin\theta\) uses \(1-\sin^2\theta=\cos^2\theta\); and
+    \(\int\frac{1}{1+x^2}\mathrm{d}x = \arctan x\) is inverse trig in disguise.</li>
+    <li><strong>→ Topic 1 (Algebra):</strong> De Moivre's theorem derives \(\cos3\theta\) and \(\sin3\theta\);
+    roots of unity sit at the vertices of regular polygons.</li>
+    <li><strong>→ Topic 2 (Functions):</strong> sinusoidal graphs are the \(a\sin(b(x-c))+d\) family; inverse
+    trig functions exist only through the same domain-restriction argument used for inverses generally.</li>
+    <li><strong>→ Topic 4 (Statistics):</strong> the \(\chi^2\), \(z\) and \(t\) tests are geometry-free, but
+    regression on seasonal data uses sinusoidal models.</li>
+    <li><strong>→ Physics HL:</strong> vector components, resolving forces, projectile motion, SHM
+    (\(\ddot x = -\omega^2 x\) whose solution is sinusoidal) and magnetic force cross products all live here.</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can find distances, and angles between lines and planes and between two planes, in 3-D solids.</span></label></li>
+  <li><label><input type="checkbox"><span>I know the volume and surface-area formulas for prism, pyramid, cone and sphere, and can apply conservation of volume.</span></label></li>
+  <li><label><input type="checkbox"><span>I can convert between degrees and radians and use \(l=r\theta\), \(A=\frac12r^2\theta\) and the segment formula.</span></label></li>
+  <li><label><input type="checkbox"><span>I can read exact trig values off the unit circle for any angle in any quadrant.</span></label></li>
+  <li><label><input type="checkbox"><span>I can solve trig equations on a finite interval by hand and with a GDC, including disguised quadratics.</span></label></li>
+  <li><label><input type="checkbox"><span>I can apply the sine rule including the ambiguous SSA case, and the cosine rule, and the area formula.</span></label></li>
+  <li><label><input type="checkbox"><span>I can prove the compound-angle and double-angle identities from the unit-circle distance argument.</span></label></li>
+  <li><label><input type="checkbox"><span>I can choose the correct one of the three \(\cos2\theta\) forms for a given problem.</span></label></li>
+  <li><label><input type="checkbox"><span>I can evaluate inverse trig expressions using principal values, including \(\arcsin(\sin x)\neq x\) cases.</span></label></li>
+  <li><label><input type="checkbox"><span>I can classify two lines as parallel, coincident, intersecting or skew, and find the angle between them.</span></label></li>
+  <li><label><input type="checkbox"><span>I can differentiate a position vector to get velocity and find the time of closest approach of two particles.</span></label></li>
+  <li><label><input type="checkbox"><span>I can compute \(\mathbf{a}\times\mathbf{b}\), and use it to find a unit normal and the area of a triangle in 3-D.</span></label></li>
+  <li><label><input type="checkbox"><span>I can find the equation of a plane in all three forms, and move between them.</span></label></li>
+  <li><label><input type="checkbox"><span>I can find the angle between a line and a plane, and between two planes, using the right one of \(\sin\) or \(\cos\).</span></label></li>
+  <li><label><input type="checkbox"><span>I can find where a line meets a plane, and tell "parallel" from "lying in the plane".</span></label></li>
+  <li><label><input type="checkbox"><span>I can solve three plane equations simultaneously and state whether the result is a point, a line, or nothing.</span></label></li>
+</ul>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li><p>Convert \(225^\circ\) to radians, and \(\dfrac{7\pi}{12}\) to degrees.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(225^\circ \times \frac{\pi}{180} = \frac{5\pi}{4}\) rad. \(\frac{7\pi}{12}\times\frac{180}{\pi} = 105^\circ\).</p>
+      <div class="answerline"><b>Answer:</b> \(\frac{5\pi}{4}\) and \(105^\circ\). Multiply by \(\frac{\pi}{180}\) to go to radians, by \(\frac{180}{\pi}\) to go back.</div>
+    </div></details>
+  </li>
+  <li><p>A sector has perimeter 30 cm and radius 8 cm. Find its angle in radians and its area.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Perimeter \(= 2r + l = 16 + l = 30 \Rightarrow l = 14\) cm.</li>
+        <li>\(\theta = \frac{l}{r} = \frac{14}{8} = 1.75\) rad.</li>
+        <li>Area \(= \frac12 r^2\theta = \frac12(64)(1.75) = 56\) cm².</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> 1.75 rad, 56 cm². Equivalently \(A=\frac12 r l = \frac12(8)(14)=56\) — a useful shortcut.</div>
+    </div></details>
+  </li>
+  <li><p>Solve \(\sqrt3\tan x + 1 = 0\) for \(-\pi \le x \le \pi\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(\tan x = -\frac{1}{\sqrt3}\). Principal value: \(-\frac{\pi}{6}\).</li>
+        <li>Tangent has period \(\pi\), so add \(\pi\): \(-\frac{\pi}{6}+\pi = \frac{5\pi}{6}\).</li>
+        <li>In \([-\pi,\pi]\): \(-\frac{\pi}{6}\) and \(\frac{5\pi}{6}\). (Adding \(\pi\) again exceeds \(\pi\).)</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(x=-\dfrac{\pi}{6},\ \dfrac{5\pi}{6}\). Tangent's period is \(\pi\), not \(2\pi\) — one extra solution pair is the usual error here.</div>
+    </div></details>
+  </li>
+  <li><p>In triangle \(ABC\), \(b=9\), \(c=6\), \(A=52^\circ\). Find \(a\) and the area of the triangle.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Cosine rule: \(a^2 = 81+36-2(9)(6)\cos52^\circ = 117-108(0.6157) = 117-66.5 = 50.5\).</li>
+        <li>\(a = 7.11\).</li>
+        <li>Area \(=\frac12 bc\sin A = \frac12(9)(6)\sin52^\circ = 27(0.7880) = 21.3\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(a=7.11\), area \(=21.3\). Two sides and the included angle (SAS) is cosine rule then area — never the sine rule.</div>
+    </div></details>
+  </li>
+  <li><p>Prove that \(\dfrac{1-\cos 2x}{\sin 2x} = \tan x\), and hence find the exact value of \(\tan 22.5^\circ\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(1-\cos2x = 1-(1-2\sin^2x)=2\sin^2x\); \(\sin2x = 2\sin x\cos x\).</li>
+        <li>Ratio \(= \dfrac{2\sin^2x}{2\sin x\cos x} = \dfrac{\sin x}{\cos x} = \tan x\). ■</li>
+        <li>Put \(x = 22.5^\circ\), so \(2x = 45^\circ\): \(\tan 22.5^\circ = \dfrac{1-\cos45^\circ}{\sin45^\circ}
+        = \dfrac{1-\frac{\sqrt2}{2}}{\frac{\sqrt2}{2}} = \dfrac{2-\sqrt2}{\sqrt2} = \sqrt2-1\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(\sqrt2-1 \approx 0.414\). This "half-angle" trick (use a double-angle identity with \(2x\) equal to a nice angle) produces exact values for \(15^\circ\), \(22.5^\circ\), \(75^\circ\) and so on.</div>
+    </div></details>
+  </li>
+  <li><p>Find a vector of magnitude 5 in the direction of \(\begin{pmatrix}1\\-2\\2\end{pmatrix}\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(|\mathbf{v}| = \sqrt{1+4+4} = 3\).</li>
+        <li>Unit vector: \(\frac13\begin{pmatrix}1\\-2\\2\end{pmatrix}\).</li>
+        <li>Scale to magnitude 5: \(5\cdot\frac13\begin{pmatrix}1\\-2\\2\end{pmatrix} = \begin{pmatrix}5/3\\-10/3\\10/3\end{pmatrix}\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(\begin{pmatrix}5/3\\-10/3\\10/3\end{pmatrix}\). Always divide by the magnitude first, then scale — a unit vector is the bridge.</div>
+    </div></details>
+  </li>
+  <li><p>Show that the lines \(\mathbf{r}=\begin{pmatrix}1\\0\\2\end{pmatrix}+\lambda\begin{pmatrix}1\\2\\-1\end{pmatrix}\) and \(\mathbf{r}=\begin{pmatrix}3\\4\\0\end{pmatrix}+\mu\begin{pmatrix}2\\4\\-2\end{pmatrix}\) are parallel, and determine whether they are coincident.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Direction vectors: \(\begin{pmatrix}1\\2\\-1\end{pmatrix}\) and \(\begin{pmatrix}2\\4\\-2\end{pmatrix} = 2\begin{pmatrix}1\\2\\-1\end{pmatrix}\). Parallel. ✓</li>
+        <li>Test whether \((3,4,0)\) lies on the first line: \(1+\lambda=3\Rightarrow\lambda=2\); then \(y=0+2(2)=4\) ✓; \(z=2+2(-1)=0\) ✓.</li>
+        <li>All three agree, so the point is shared and the lines are <strong>coincident</strong> — the same line written twice.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> coincident. Parallel plus one shared point is the definition; if the \(z\)-check had failed, they would be distinct parallel lines.</div>
+    </div></details>
+  </li>
+  <li><p>A particle has velocity \(\mathbf{v}(t) = \begin{pmatrix}2t\\3t^2-4\end{pmatrix}\) and initial position \(\begin{pmatrix}1\\2\end{pmatrix}\). Find its position vector, and its distance from the origin at \(t=2\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Integrate: \(\mathbf{r}(t) = \begin{pmatrix}t^2+c_1\\ t^3-4t+c_2\end{pmatrix}\); use \(\mathbf{r}(0)=\begin{pmatrix}1\\2\end{pmatrix}\) to get \(c_1=1,\ c_2=2\).</li>
+        <li>\(\mathbf{r}(t) = \begin{pmatrix}t^2+1\\ t^3-4t+2\end{pmatrix}\).</li>
+        <li>At \(t=2\): \(\mathbf{r}=\begin{pmatrix}5\\2\end{pmatrix}\); distance \(=\sqrt{25+4}=\sqrt{29}=5.39\) m.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(\sqrt{29}\approx5.39\) m. Integration of a vector is component-wise — the reverse of the differentiation in Worked example 12. This is why Topic 5 and Topic 3 must be revised together.</div>
+    </div></details>
+  </li>
+  <li><p>Let \(\mathbf{a}=\begin{pmatrix}2\\-1\\3\end{pmatrix}\) and \(\mathbf{b}=\begin{pmatrix}-1\\4\\2\end{pmatrix}\).
+  (a) Find \(\mathbf{a}\times\mathbf{b}\). (b) Verify your answer is perpendicular to both. (c) Find the area of
+  the triangle with vertices \(O(0,0,0)\), \(A(2,-1,3)\), \(B(-1,4,2)\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(\bigl((-1)(2)-(3)(4),\ (3)(-1)-(2)(2),\ (2)(4)-(-1)(-1)\bigr) = (-2-12,\ -3-4,\ 8-1) = (-14,-7,7)\).</li>
+        <li>Check: \((-14,-7,7)\cdot(2,-1,3) = -28+7+21 = 0\) ✓; \((-14,-7,7)\cdot(-1,4,2) = 14-28+14 = 0\) ✓.</li>
+        <li>\(|\mathbf{a}\times\mathbf{b}| = \sqrt{196+49+49} = \sqrt{294}\).</li>
+        <li>Area \(= \tfrac12\sqrt{294} = 8.57\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \((-14,-7,7)\); area \(=8.57\). Note that \((14,7,-7)\) is equally valid as a normal — the sign only records which way the right-hand rule points.</div>
+    </div></details>
+  </li>
+  <li><p>Find the Cartesian equation of the plane through \(A(2,0,1)\), \(B(1,3,-1)\) and \(C(4,-2,2)\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(\overrightarrow{AB}=(-1,3,-2)\), \(\overrightarrow{AC}=(2,-2,1)\).</li>
+        <li>Normal \(= \bigl(3(1)-(-2)(-2),\ (-2)(2)-(-1)(1),\ (-1)(-2)-3(2)\bigr) = (-1,-3,-4)\).</li>
+        <li>\(\mathbf{a}\cdot\mathbf{n} = (2,0,1)\cdot(-1,-3,-4) = -2+0-4 = -6\).</li>
+        <li>Plane: \(-x-3y-4z=-6\), i.e. \(x+3y+4z=6\).</li>
+        <li>Check \(B\): \(1+9-4=6\) ✓; check \(C\): \(4-6+8=6\) ✓.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(x+3y+4z=6\). Multiplying the whole equation by \(-1\) is the same plane — pick whichever makes the leading coefficient positive, then never change it mid-question.</div>
+    </div></details>
+  </li>
+  <li><p>The plane \(\Pi\) has equation \(x-2y+z=5\). The line \(L\) has equation
+  \(\mathbf{r}=\begin{pmatrix}0\\1\\2\end{pmatrix}+\lambda\begin{pmatrix}1\\-1\\3\end{pmatrix}\).
+  (a) Find the coordinates of the point where \(L\) meets \(\Pi\). (b) Find the angle between \(L\) and \(\Pi\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Components: \(x=\lambda\), \(y=1-\lambda\), \(z=2+3\lambda\).</li>
+        <li>Substitute: \(\lambda-2(1-\lambda)+(2+3\lambda)=5 \Rightarrow \lambda-2+2\lambda+2+3\lambda=5 \Rightarrow 6\lambda=5\), so \(\lambda=\tfrac56\).</li>
+        <li>Point: \(\bigl(\tfrac56,\ 1-\tfrac56,\ 2+\tfrac{15}{6}\bigr) = \bigl(\tfrac56,\ \tfrac16,\ \tfrac92\bigr)\).</li>
+        <li>Check: \(\tfrac56-\tfrac13+\tfrac92 = \tfrac{5-2+27}{6} = \tfrac{30}{6}=5\) ✓.</li>
+        <li>Angle: \(\mathbf{b}\cdot\mathbf{n} = (1,-1,3)\cdot(1,-2,1) = 1+2+3 = 6\); \(|\mathbf{b}|=\sqrt{11}\), \(|\mathbf{n}|=\sqrt6\).</li>
+        <li>\(\sin\theta = \dfrac{6}{\sqrt{11}\sqrt6} = \dfrac{6}{\sqrt{66}} = 0.7385 \Rightarrow \theta = 47.6^\circ\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(\bigl(\tfrac56,\tfrac16,\tfrac92\bigr)\); \(47.6^\circ\). If you used \(\cos\) here you would get \(42.4^\circ\) — the angle with the <em>normal</em>, and the single most common way to lose these marks.</div>
+    </div></details>
+  </li>
+  <li><p>The planes \(\Pi_1: 2x+y-z=4\) and \(\Pi_2: x-y+2z=1\) intersect in a line. Find a vector equation of
+  that line.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Add the equations: \(3x+z=5\), so \(z=5-3x\).</li>
+        <li>Put \(x=t\); then \(z=5-3t\).</li>
+        <li>From \(\Pi_1\): \(2t+y-(5-3t)=4 \Rightarrow y = 9-5t\).</li>
+        <li>So \(\mathbf{r}=\begin{pmatrix}0\\9\\5\end{pmatrix}+t\begin{pmatrix}1\\-5\\-3\end{pmatrix}\).</li>
+        <li>Check \(t=0\), the point \((0,9,5)\): \(\Pi_1\): \(0+9-5=4\) ✓; \(\Pi_2\): \(0-9+10=1\) ✓.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(\mathbf{r}=(0,9,5)+t(1,-5,-3)\). Infinitely many correct forms exist — any point on the line and any non-zero multiple of the direction will do. You can also get the direction as \(\mathbf{n}_1\times\mathbf{n}_2\), which is a good cross-check.</div>
+    </div></details>
+  </li>
+</ol>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

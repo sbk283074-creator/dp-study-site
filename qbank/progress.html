@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="qbank">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Progress — Question Bank</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/qbank.css">
+</head>
+<body>
+<div id="app-shell">
+
+  <span class="eyebrow">Question Bank · Progress</span>
+  <h1 class="page-title">Your practice progress</h1>
+  <p class="lede">A running tally of every question you have attempted in practice mode. Stored locally — clear it
+  any time.</p>
+
+  <div id="qb-root">
+    <div class="qb-stats" id="qb-stats"></div>
+    <h2>Accuracy by subject</h2>
+    <div class="qb-bars" id="qb-bars"></div>
+    <h2>Recent sessions</h2>
+    <div id="qb-recent"></div>
+    <div style="margin-top:16px"><button class="btn" id="qb-reset" type="button">Reset all progress</button></div>
+  </div>
+
+</div>
+
+<script src="data/physics.js"></script>
+<script src="data/mathematics.js"></script>
+<script src="data/computer-science.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="qbank.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const $ = function (id) { return document.getElementById(id); };
+  const p = QB.getProgress();
+  const acc = p.attempts ? Math.round(100 * p.correct / p.attempts) : 0;
+  const labels = { physics: "Physics HL", mathematics: "Math AA HL", "computer-science": "CS HL", other: "Other" };
+
+  $("qb-stats").innerHTML = [
+    { n: p.attempts, l: "Attempted" },
+    { n: p.correct, l: "Correct" },
+    { n: p.wrong, l: "Wrong" },
+    { n: acc + "%", l: "Accuracy" },
+    { n: p.streak, l: "Day streak" }
+  ].map(function (s) { return '<div class="qb-stat"><div class="qb-stat__n">' + s.n + '</div><div class="qb-stat__l">' + s.l + "</div></div>"; }).join("");
+
+  const subs = Object.keys(p.bySubject);
+  if (!subs.length) {
+    $("qb-bars").innerHTML = '<div class="qb-notice">No practice recorded yet. Start a <a href="practice.html">session</a> to build your stats.</div>';
+  } else {
+    $("qb-bars").innerHTML = subs.map(function (s) {
+      const d = p.bySubject[s]; const a = d.attempts ? Math.round(100 * d.correct / d.attempts) : 0;
+      return '<div class="qb-bar"><span>' + (labels[s] || s) + "</span>" +
+        '<div class="qb-bar__track"><div class="qb-bar__fill" style="width:' + a + '%"></div></div>' +
+        '<span class="qb-bar__pct">' + a + "% (" + d.correct + "/" + d.attempts + ")</span></div>";
+    }).join("");
+  }
+
+  const recent = (p.sessions || []).slice(-12).reverse();
+  if (!recent.length) {
+    $("qb-recent").innerHTML = '<div class="qb-notice">No sessions logged yet.</div>';
+  } else {
+    $("qb-recent").innerHTML = '<div class="qb-list">' + recent.map(function (s) {
+      const when = new Date(s.t).toLocaleString();
+      const lbl = labels[s.subj] || s.subj;
+      return '<div class="qb-row" style="cursor:default"><div class="qb-row__main">' +
+        '<div class="qb-row__title">' + (s.ok ? "✓ Correct" : "✗ Wrong") + " · " + lbl + "</div>" +
+        '<div class="qb-row__sub">' + QB.esc(when) + "</div></div></div>";
+    }).join("") + "</div>";
+  }
+
+  $("qb-reset").addEventListener("click", function () {
+    if (window.confirm("Reset all practice progress and the wrong book?")) {
+      QB.storeSet("progress", { attempts: 0, correct: 0, wrong: 0, bySubject: {}, sessions: [], streak: 0, lastDay: null });
+      QB.storeSet("wrong", []);
+      location.reload();
+    }
+  });
+});
+</script>
+</body>
+</html>

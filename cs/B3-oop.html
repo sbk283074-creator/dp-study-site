@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B3 · Object-oriented programming — DP Computer Science HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Computer Science HL · Theme B · B3</span>
+<h1 class="page-title">B3 · Object-oriented programming</h1>
+<p class="lede">Object-oriented programming is a way of organising a program around the <em>things</em> it deals with
+rather than the <em>steps</em> it performs. That sounds like a stylistic preference. It is not: it changes which
+bugs are even possible, and it changes how much of your program you must rewrite when the requirements change.
+This page explains each mechanism, then — more importantly — <em>why</em> each mechanism exists, because
+Paper 2 questions rarely ask "what is encapsulation"; they ask you to design a class, extend a hierarchy, or
+justify a choice, and you cannot do that from definitions alone. All main code is in <strong>Java</strong>; the
+last section shows the same ideas in Python.</p>
+<div class="page-meta">
+ <span class="tag">Theme B · examined in Paper 2 (answer in Java or Python)</span>
+ <span class="tag">B3.1 Fundamentals of OOP for a single class</span>
+ <span class="tag tag--hl">B3.2 Fundamentals of OOP for multiple classes — HL only</span>
+</div>
+
+<div class="callout callout--why">
+ <span class="callout__label">Why this topic is on the syllabus</span>
+ <p>Every large program is eventually changed by someone who did not write it. The central question of B3 is:
+ <em>what can I arrange now so that a later change stays small?</em> Encapsulation, inheritance, polymorphism and
+ abstraction are four different answers to that one question, and every exam question on this topic is really
+ asking you to pick the right answer for a given situation.</p>
+</div>
+
+<h2>B3.1a · Why OOP exists: the procedural pain it removes</h2>
+
+<p>Start with a real task: a school library tracks its items. A procedural solution holds the facts in parallel
+arrays and writes functions that act on them.</p>
+
+<pre><code>// Procedural version — data and the code that uses it are separated
+String[] titles = new String[100];
+String[] authors = new String[100];
+boolean[] onLoan = new boolean[100];
+int count = 0;
+
+void borrowItem(int index) {
+ if (onLoan[index]) { System.out.println("already out"); return; }
+ onLoan[index] = true;
+}</code></pre>
+
+<p>This works for a week. Then three things go wrong.</p>
+
+<div class="grid grid--3">
+ <div class="card"><h4>1. Nothing keeps the arrays in step</h4>
+ <p>Sorting <code>titles</code> without sorting <code>authors</code> and <code>onLoan</code> the same way
+ silently corrupts every record. There is no mechanism in the language that prevents it — the four arrays are
+ four unrelated objects that you happen to keep aligned by discipline.</p></div>
+ <div class="card"><h4>2. Every fact can be set to nonsense</h4>
+ <p>Any of the two hundred places that touch this data can write <code>onLoan[7] = true</code> without checking
+ anything. When a book turns out to be both "on loan" and "available", every one of those places is a
+ suspect.</p></div>
+ <div class="card"><h4>3. A new item type edits every function</h4>
+ <p>Add DVDs. Now <code>borrowItem</code>, <code>printItem</code>, <code>isOverdue</code> and
+ <code>sortItems</code> each need a branch on the item type. One new noun means editing every verb.</p></div>
+</div>
+
+<p>The object-oriented version groups the facts about <em>one item</em> with the operations that make sense
+<em>for that item</em>:</p>
+
+<pre><code>public class Book {
+ private String title; // the data ...
+ private String author;
+ private boolean onLoan;
+
+ public void borrow() { // ... and the only code allowed to change it
+ if (onLoan) { throw new IllegalStateException("already out"); }
+ onLoan = true;
+ }
+}</code></pre>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> The three arguments for bundling data with behaviour</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li><strong>Invariant protection.</strong> Every class has an <em>invariant</em> — a sentence about its
+ fields that must always be true. For <code>Book</code>: "if <code>onLoan</code> is false then no member holds
+ it". If the fields are public, all 200 call sites can break that invariant. If the fields are private and the
+ only mutating code is <code>borrow()</code> and <code>returnItem()</code>, the number of suspects drops from
+ 200 to 2. The benefit is not secrecy; it is a short suspect list when something goes wrong.</li>
+ <li><strong>Change locality.</strong> Adding a DVD in the object-oriented version means writing
+ <em>one new class</em>. Code like <code>for (LibraryItem it : items) { out += it.describe(); }</code> does not
+ change at all, because it never asks what kind of item it has — it asks the item to describe itself. That
+ property has a name: <strong>polymorphism</strong>, and it is the reason hierarchies are worth the
+ indirection.</li>
+ <li><strong>Shared vocabulary with the client.</strong> The librarian talks about books, members and loans.
+ A class diagram uses those same words, so you can hold it up in a meeting and be corrected. You cannot do
+ that with four arrays. This matters directly for your IA, where the client's understanding of the design is
+ part of the evidence.</li>
+ </ol>
+ <p><strong>The honest counter-argument.</strong> OOP is not free. It adds files, boilerplate and a layer of
+ indirection that makes a program harder to read top-to-bottom. For a forty-line script it is overkill, and for
+ a program that is essentially one long data transformation (read a file, filter it, write a file) a few plain
+ functions are clearer. Say this in an evaluation question; examiners reward it.</p>
+ </div>
+</details>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Trap</span>
+ <p>"OOP models the real world" is a slogan, not an answer. In an exam, never write "because it is easier" or
+ "because it is more realistic". Write the mechanism and the consequence: <em>"private fields mean the balance can
+ only change through <code>withdraw()</code>, which refuses amounts greater than the balance, so the invariant
+ balance&nbsp;≥&nbsp;0 cannot be broken by calling code."</em></p>
+</div>
+
+<h2>B3.1b · Classes, objects and instances</h2>
+
+<p>A <strong>class</strong> is a blueprint: it describes what fields and methods its objects will have. An
+<strong>object</strong> (an <strong>instance</strong> of the class) is a concrete thing in memory created from that
+blueprint at run time. One class, many objects — each with its <em>own</em> copy of the fields, sharing
+<em>one</em> copy of the method code.</p>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 320" role="img" aria-label="Two reference variables on the stack both pointing to a single Book object on the heap">
+ <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+ <defs>
+ <marker id="b3arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+ <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a5a13" stroke="#7a5a13"/>
+ </marker>
+ </defs>
+
+ <text x="40" y="40" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#151923">Stack — local variables hold references</text>
+ <rect x="40" y="55" width="180" height="130" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <rect x="58" y="75" width="144" height="38" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+ <text x="70" y="100" font-family="system-ui, sans-serif" font-size="14" fill="#151923">Book b1 = @101</text>
+ <rect x="58" y="127" width="144" height="38" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+ <text x="70" y="152" font-family="system-ui, sans-serif" font-size="14" fill="#151923">Book b2 = @101</text>
+
+ <text x="380" y="40" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#151923">Heap — the object lives here</text>
+ <rect x="380" y="55" width="220" height="150" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <rect x="396" y="72" width="188" height="118" fill="#ffffff" stroke="#6c7788" stroke-width="1.5"/>
+ <text x="408" y="95" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#151923">Book @101</text>
+ <text x="408" y="120" font-family="system-ui, sans-serif" font-size="13" fill="#151923">- title = "Klara and the Sun"</text>
+ <text x="408" y="142" font-family="system-ui, sans-serif" font-size="13" fill="#151923">- author = "Ishiguro"</text>
+ <text x="408" y="164" font-family="system-ui, sans-serif" font-size="13" fill="#151923">- onLoan = false</text>
+
+ <line x1="202" y1="94" x2="392" y2="120" stroke="#7a5a13" stroke-width="2" marker-end="url(#b3arrow)"/>
+ <line x1="202" y1="146" x2="392" y2="150" stroke="#7a5a13" stroke-width="2" marker-end="url(#b3arrow)"/>
+
+ <text x="40" y="230" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">b1 and b2 are two names for ONE object.</text>
+ <text x="40" y="252" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">b1.setAuthor("X") is visible through b2.getAuthor().</text>
+ <text x="40" y="274" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">Assignment copies the reference, never the object.</text>
+ <text x="40" y="296" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">This is the single most examined idea in B3.</text>
+ </svg>
+ <figcaption>Two reference variables, one object. Every "what is the output?" question on OOP is testing this
+ picture.</figcaption>
+</figure>
+
+<pre><code>public class Book {
+ // ---- attributes (fields): the state of ONE book ----
+ private String title;
+ private String author;
+ private int pages;
+
+ // ---- constructor: runs once, when the object is created ----
+ public Book(String t, String a, int p) {
+ title = t;
+ author = a;
+ pages = p;
+ }
+
+ // ---- methods: what a book can do or tell you ----
+ public String getTitle() { return title; }
+ public int getPages() { return pages; }
+
+ public String describe() {
+ return title + " by " + author + " (" + pages + " pages)";
+ }
+}</code></pre>
+
+<pre><code>// Creating and using objects
+Book b1 = new Book("Klara and the Sun", "Ishiguro", 303);
+Book b2 = new Book("Norwegian Wood", "Murakami", 296);
+Book b3 = b1; // b3 refers to the SAME object as b1
+
+System.out.println(b1.describe()); // Klara and the Sun by Ishiguro (303 pages)
+System.out.println(b2.getTitle()); // Norwegian Wood
+System.out.println(b1 == b3); // true — same object
+System.out.println(b1.equals(b2)); // false — different content (unless equals is overridden)</code></pre>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Traps — object identity</span>
+ <ul>
+ <li><code>==</code> on objects compares <strong>references</strong>, not content. Use
+ <code>.equals()</code> for content, and remember that your own classes must <em>override</em>
+ <code>equals()</code> for that to work — otherwise it inherits the reference comparison from
+ <code>Object</code>.</li>
+ <li>Comparing strings: <code>if (name == "Amara")</code> may work by accident and then fail. Always
+ <code>if (name.equals("Amara"))</code>.</li>
+ <li>Passing an object to a method passes a <em>copy of the reference</em>. The method cannot make the caller's
+ variable point somewhere else, but it <em>can</em> change the object that both references name.</li>
+ </ul>
+</div>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — writing a class from a description</span>
+ <ol class="steps">
+ <li>Underline the <strong>nouns</strong> that have state → these are your classes (Book, Member, Loan).</li>
+ <li>For each noun, list the facts you must remember about it → private fields with types.</li>
+ <li>List what the noun must be <em>asked</em> or <em>told</em> → public methods. Questions become getters and
+ boolean queries; commands become void methods.</li>
+ <li>Write the constructor so that it sets <em>every</em> field and rejects invalid starting values.</li>
+ <li>Ask: "what must always be true?" Add guards to any method that could break it.</li>
+ </ol>
+</div>
+
+<h2>B3.1c · Constructors</h2>
+
+<p>A <strong>constructor</strong> has the same name as the class and <strong>no return type</strong> — not even
+<code>void</code>. It runs when <code>new</code> allocates the object, and its job is to leave the object in a
+<em>valid</em> state. A constructor that leaves a field unset has failed.</p>
+
+<pre><code>public class Student {
+ private String name;
+ private int grade;
+ private String house;
+
+ // Parameterised constructor
+ public Student(String name, int grade, String house) {
+ this.name = name; // this.name = the field; name = the parameter
+ this.grade = grade;
+ this.house = house;
+ }
+
+ // Overloaded convenience constructor — delegates with this(...)
+ public Student(String name, int grade) {
+ this(name, grade, "Unassigned");
+ }
+
+ public String getName() { return name; }
+}</code></pre>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why the constructor must set every field, and what <code>this</code> really is</summary>
+ <div class="dbody">
+ <p>In Java a field you never assign still has a value — <code>0</code> for numbers, <code>false</code> for
+ booleans, <code>null</code> for objects. That is the trap: an unassigned field does not cause an error, it
+ causes a <em>plausible wrong answer</em>. A <code>Student</code> whose <code>house</code> is <code>null</code>
+ will print fine and then crash three classes later when something calls <code>house.length()</code>. Java's
+ default values exist because the language guarantees memory is zeroed before use; the cost is that "forgot to
+ initialise" is invisible at the point of the mistake.</p>
+ <p><code>this</code> is a reference to the object the method was called on. It is needed when a parameter
+ <em>shadows</em> a field — writing <code>name = name;</code> assigns the parameter to itself and silently does
+ nothing, one of the most common silent bugs in student Java. <code>this(...)</code> as the first line of a
+ constructor calls a different constructor of the same class, which is how you avoid copy-pasting the
+ assignment block.</p>
+ <p><strong>Rule to remember:</strong> if your class has <em>any</em> constructor, Java no longer supplies the
+ default no-argument one. Code that calls <code>new Student()</code> then fails to compile until you write it
+ yourself.</p>
+ </div>
+</details>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Traps — constructors</span>
+ <ul>
+ <li>Writing <code>public void Book(...)</code> — that is a <em>method</em>, not a constructor, and your
+ fields stay at their default values.</li>
+ <li>Putting a return type on a constructor, or giving it a different name from the class.</li>
+ <li><code>this(...)</code> or <code>super(...)</code> not on the <strong>first line</strong> — compile
+ error.</li>
+ <li>Using <code>this</code> inside a <code>static</code> method: there is no object, so there is no
+ <code>this</code>.</li>
+ </ul>
+</div>
+
+<h2>B3.1d · Encapsulation, access modifiers and getters/setters</h2>
+
+<p><strong>Encapsulation</strong> means keeping an object's fields private and exposing a controlled public
+interface. It is the mechanism that makes the invariant argument above real.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Modifier</th><th>Visible to</th><th>Use it for</th></tr></thead>
+ <tbody>
+ <tr><td><code>private</code></td><td>Only code inside this class</td><td><strong>All fields, by default.</strong> Helper methods nobody else should call.</td></tr>
+ <tr><td><code>protected</code></td><td>This class, subclasses, and the same package</td><td>Fields/methods subclasses legitimately need but the outside world does not.</td></tr>
+ <tr><td><em>(no modifier)</em> package-private</td><td>Everything in the same package</td><td>Rarely chosen deliberately. Avoid in exam answers.</td></tr>
+ <tr><td><code>public</code></td><td>Everyone</td><td>The class's intended interface: constructors and the methods clients should call.</td></tr>
+ </tbody>
+</table>
+</div>
+
+<p>Here is the difference made concrete. First a class with no encapsulation:</p>
+
+<pre><code>public class BankAccount {
+ public double balance; // anyone can write anything
+}
+
+BankAccount a = new BankAccount();
+a.balance = -100000; // legal. catastrophic. no error, ever.</code></pre>
+
+<p>Now encapsulated, with the invariant <em>balance&nbsp;≥&nbsp;0</em> and <em>owner never changes</em>:</p>
+
+<pre><code>public class BankAccount {
+ private double balance;
+ private final String owner; // final: must be set in the constructor, then never reassigned
+
+ public BankAccount(String owner, double opening) {
+ if (opening &lt; 0) {
+ throw new IllegalArgumentException("opening balance cannot be negative");
+ }
+ this.owner = owner;
+ this.balance = opening;
+ }
+
+ public double getBalance() { return balance; }
+ public String getOwner() { return owner; } // getter only: no setter for owner
+
+ public void deposit(double amount) {
+ if (amount &lt;= 0) { throw new IllegalArgumentException("deposit must be positive"); }
+ balance = balance + amount;
+ }
+
+ public boolean withdraw(double amount) {
+ if (amount &lt;= 0 || amount &gt; balance) { return false; } // refuse, do not go negative
+ balance = balance - amount;
+ return true;
+ }
+}</code></pre>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Getters and setters are not ceremony — they are the only place a rule can live</summary>
+ <div class="dbody">
+ <p>Look at what the encapsulated version buys you and count the places that can make the balance negative:
+ <strong>zero</strong>. There is no setter for <code>balance</code>, <code>deposit</code> rejects non-positive
+ amounts, and <code>withdraw</code> returns <code>false</code> rather than overdrawing. The invariant
+ <em>balance&nbsp;≥&nbsp;0</em> is now enforced by the structure of the class rather than by the hope that
+ callers behave.</p>
+ <p>The second, less obvious benefit: <strong>the setter is where the validation goes, and there is exactly one
+ of them.</strong> If the rule changes tomorrow ("withdrawals over £500 need approval"), you edit one method.
+ With a public field you would have to find every assignment in the program.</p>
+ <p>The third: a getter lets you change the <em>storage</em> without changing the <em>interface</em>. If
+ <code>balance</code> later becomes pence held as a <code>long</code> to avoid floating-point error,
+ <code>getBalance()</code> can divide by 100 on the way out and no caller changes.</p>
+ <p><strong>When a getter/setter pair for every field is wrong.</strong> If you find yourself writing
+ <code>setBalance()</code>, you have undone the encapsulation and just added typing. Generate only the accessors
+ that a client genuinely needs; leave the rest off. An examiner spotting
+ <code>public void setBalance(double b)</code> on a bank account will mark it as a misunderstanding, not as
+ thoroughness.</p>
+ </div>
+</details>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 6 marks · encapsulation with a trace</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> Consider the <code>BankAccount</code> class above. State the output, or the error,
+ produced by each line of the following code.</p>
+<pre><code>BankAccount acc = new BankAccount("Mei", 100.0);
+System.out.println(acc.getBalance()); // (i)
+System.out.println(acc.withdraw(30.0)); // (ii)
+System.out.println(acc.withdraw(90.0)); // (iii)
+System.out.println(acc.getBalance()); // (iv)
+acc.deposit(-5.0); // (v)
+BankAccount bad = new BankAccount("Tom", -1.0); // (vi)</code></pre>
+ <ol class="steps">
+ <li><strong>(i)</strong> <code>100.0</code> — the constructor accepted a valid opening balance.</li>
+ <li><strong>(ii)</strong> <code>true</code> — 30&nbsp;≤&nbsp;100 so the withdrawal succeeds and the balance
+ becomes <code>70.0</code>.</li>
+ <li><strong>(iii)</strong> <code>false</code> — 90&nbsp;&gt;&nbsp;70, so <code>withdraw</code> takes the
+ refusal branch and returns without changing the balance. The balance is still <code>70.0</code>.</li>
+ <li><strong>(iv)</strong> <code>70.0</code>.</li>
+ <li><strong>(v)</strong> No output: an <code>IllegalArgumentException</code> is thrown because the amount is
+ not positive. The program terminates unless the call is inside a <code>try</code> block.</li>
+ <li><strong>(vi)</strong> The exception is thrown <em>in the constructor</em>, so <code>bad</code> is never
+ assigned — the object fails to be created at all.</li>
+ </ol>
+ <p class="answerline"><strong>Answer:</strong> (i) 100.0 &nbsp; (ii) true &nbsp; (iii) false &nbsp; (iv) 70.0
+ &nbsp; (v) IllegalArgumentException, deposit must be positive &nbsp; (vi) IllegalArgumentException, opening
+ balance cannot be negative.</p>
+ <div class="callout callout--exam">
+ <span class="callout__label">Where the marks are</span>
+ <p>One mark per line. The two marks everyone drops are (iii) — candidates print <code>false</code> and then
+ give the balance as <code>-20.0</code>, forgetting that the guard returns <em>before</em> the subtraction —
+ and (v), where candidates write "prints nothing" instead of naming the exception and its message.</p>
+ </div>
+ </div>
+</details>
+
+<h2>B3.2a · Inheritance <span class="badge badge--hl">HL only</span></h2>
+
+<p><strong>Inheritance</strong> lets one class (<em>subclass</em> / <em>child</em>) acquire the fields and methods
+of another (<em>superclass</em> / <em>parent</em>) and then add or change what it needs. Java spells it
+<code>extends</code>. Test the relationship with the words <strong>is-a</strong>: a <em>Circle</em> is-a
+<em>Shape</em>. If "is-a" sounds wrong — a <em>Circle</em> is-a <em>Point</em>? no — inheritance is the wrong
+tool.</p>
+
+<pre><code>public class Shape {
+ private String name;
+
+ public Shape(String name) { this.name = name; }
+
+ public String getName() { return name; }
+
+ public double area() { return 0.0; } // placeholder, replaced below
+
+ public String describe() { return name + " with area " + area(); }
+}
+
+public class Circle extends Shape {
+ private double radius;
+
+ public Circle(double radius) {
+ super("Circle"); // MUST be the first statement
+ this.radius = radius;
+ }
+
+ @Override // annotation: forces the compiler to check this really overrides
+ public double area() { return Math.PI * radius * radius; }
+}
+
+public class Rectangle extends Shape {
+ private double width;
+ private double height;
+
+ public Rectangle(double w, double h) {
+ super("Rectangle");
+ width = w;
+ height = h;
+ }
+
+ @Override
+ public double area() { return width * height; }
+}</code></pre>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> What <code>super(...)</code> is doing and why the first line rule exists</summary>
+ <div class="dbody">
+ <p>A subclass object <em>contains</em> the superclass part. Constructing a <code>Circle</code> therefore means:
+ allocate the object, then run the <code>Shape</code> constructor to initialise the Shape part, then run the
+ <code>Circle</code> constructor body to initialise the Circle part. Order matters — the subclass body may use
+ inherited fields, so those fields must already exist. That is why <code>super(...)</code> must be the first
+ statement.</p>
+ <p>If you omit it, Java silently inserts <code>super();</code> — a call to a <em>no-argument</em> superclass
+ constructor. If the superclass has no such constructor, you get the classic error
+ <code>constructor Shape in class Shape cannot be applied to given types</code>, which looks mysterious until
+ you know about the invisible insertion. Fix it by writing an explicit <code>super(...)</code>.</p>
+ <p><strong>The subtle and examined consequence:</strong> <code>describe()</code> is defined <em>once</em>, in
+ <code>Shape</code>, but it calls <code>area()</code> — and at run time <code>area()</code> resolves to the
+ subclass version. So <code>new Circle(2.0).describe()</code> prints the circle's area even though no circle
+ code appears in <code>describe()</code>. A method in a parent can depend on behaviour supplied by a child that
+ did not exist when the parent was written. This is the engine behind everything polymorphic on this page.</p>
+ </div>
+</details>
+
+<h2>B3.2b · Polymorphism: overloading vs overriding <span class="badge badge--hl">HL only</span></h2>
+
+<p><strong>Polymorphism</strong> means "many forms": one name, behaviour chosen for the situation. Java has two
+quite different mechanisms with the same word attached, and exam questions love the contrast.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th></th><th>Overloading</th><th>Overriding</th></tr></thead>
+ <tbody>
+ <tr><td><strong>What changes</strong></td><td>The parameter list (type, count, order)</td><td>Nothing — the signature is identical</td></tr>
+ <tr><td><strong>Where</strong></td><td>Same class (or a subclass)</td><td>A subclass replaces a superclass method</td></tr>
+ <tr><td><strong>Return type</strong></td><td>May differ freely</td><td>Must be the same or a subtype (covariant)</td></tr>
+ <tr><td><strong>Access</strong></td><td>May differ freely</td><td>Cannot be <em>more</em> restrictive (public → private is illegal)</td></tr>
+ <tr><td><strong>Decided</strong></td><td>Compile time — <em>static</em> / early binding</td><td>Run time — <em>dynamic</em> / late binding</td></tr>
+ <tr><td><strong>Based on</strong></td><td>The <em>declared</em> types of the arguments</td><td>The <em>actual</em> class of the object</td></tr>
+ <tr><td><strong>Annotation</strong></td><td>None</td><td><code>@Override</code></td></tr>
+ </tbody>
+</table>
+</div>
+
+<pre><code>// OVERLOADING — same name, different parameters, chosen by the compiler
+public class Printer {
+ public void show(String s) { System.out.println("String: " + s); }
+ public void show(int n) { System.out.println("int: " + n); }
+ public void show(String s, int n) { System.out.println("both: " + s + n); }
+}
+
+Printer p = new Printer();
+p.show("A"); // String: A
+p.show(7); // int: 7
+p.show("A", 7); // both: A7
+
+// The declared type decides, not the object
+Object o = "hello";
+p.show(o); // COMPILE ERROR unless a show(Object) overload exists</code></pre>
+
+<pre><code>// OVERRIDING + dynamic dispatch
+Shape[] shapes = { new Circle(2.0), new Rectangle(3.0, 4.0) };
+
+double total = 0.0;
+for (Shape s : shapes) {
+ total = total + s.area(); // s is DECLARED Shape, but each object answers for itself
+}
+System.out.println(total); // 24.566370614359172
+
+for (Shape s : shapes) {
+ System.out.println(s.describe()); // describe() is Shape's; area() inside it is the subclass's
+}</code></pre>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> How the run time finds the right method, and why it is worth the cost</summary>
+ <div class="dbody">
+ <p>With overloading, the compiler can see the declared types of the arguments, so it can pick the method once
+ and burn the choice into the compiled code. Nothing is left to decide later. The surprising consequence — and
+ a real exam trap — is that if a variable is declared <code>Shape</code>, the compiler picks the
+ <code>show(Shape)</code> overload even when the object actually held is a <code>Circle</code>.</p>
+ <p>With overriding the compiler genuinely cannot know: <code>s</code> is declared <code>Shape</code>, but at
+ run time it may hold a <code>Circle</code>, a <code>Rectangle</code>, or a class nobody has written yet. So the
+ compiler emits an instruction that looks up the object's actual class and jumps to that class's entry for
+ <code>area()</code>. The cost is one extra indirection per call — negligible — and the payoff is large:</p>
+ <ol class="steps">
+ <li><code>for (Shape s : shapes) { total += s.area(); }</code> contains <strong>no</strong>
+ <code>if</code> and <strong>no</strong> type test. Adding a <code>Triangle</code> class requires no change to
+ this loop, even though the loop was written before <code>Triangle</code> existed.</li>
+ <li>The alternative — <code>if (s instanceof Circle) {...} else if (s instanceof Rectangle) {...}</code> —
+ must be edited for every new shape, and forgetting one branch produces a wrong answer with no error.</li>
+ </ol>
+ <p><strong>When it is the wrong tool.</strong> If you find yourself writing
+ <code>if (x instanceof Circle)</code> to decide what to do, you have defeated polymorphism; the behaviour you
+ want probably belongs as an overridden method on the classes themselves. An occasional <code>instanceof</code>
+ before a downcast is acceptable, but a chain of them is a design smell and examiners are trained to spot
+ it.</p>
+ </div>
+</details>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 2</span> IB-style · 8 marks · predict output with inheritance, overriding and overloading</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> State the exact output.</p>
+<pre><code>public class A {
+ public String greet() { return "A"; }
+ public String greet(String s){ return "A:" + s; }
+ public String show() { return "showA-" + greet(); }
+}
+public class B extends A {
+ @Override public String greet() { return "B"; }
+ public String extra(){ return "extraB"; }
+}
+
+A x = new A();
+A y = new B();
+B z = new B();
+
+System.out.println(x.greet()); // (i)
+System.out.println(y.greet()); // (ii)
+System.out.println(y.show()); // (iii)
+System.out.println(y.greet("hi")); // (iv)
+System.out.println(z.extra()); // (v)
+System.out.println(y.extra()); // (vi)</code></pre>
+ <ol class="steps">
+ <li><strong>(i)</strong> <code>A</code> — <code>x</code> holds an <code>A</code>.</li>
+ <li><strong>(ii)</strong> <code>B</code> — <code>y</code> is declared <code>A</code> but <em>holds</em> a
+ <code>B</code>, and overriding resolves on the actual class. <strong>This is the mark everyone gets wrong;
+ if you said <code>A</code> you are thinking about overloading.</strong></li>
+ <li><strong>(iii)</strong> <code>showA-B</code> — <code>show()</code> is not overridden, so
+ <code>A</code>'s version runs; when it calls <code>greet()</code> the call dispatches to <code>B</code>'s
+ override. Result: the parent's text with the child's behaviour.</li>
+ <li><strong>(iv)</strong> <code>A:hi</code> — <code>greet(String)</code> is <em>overloaded</em>, not
+ overridden (<code>B</code> does not redefine it), and overload resolution is done at compile time from the
+ declared type <code>A</code>, which does have that method.</li>
+ <li><strong>(v)</strong> <code>extraB</code> — <code>z</code> is declared <code>B</code>, so
+ <code>extra()</code> is visible.</li>
+ <li><strong>(vi)</strong> <strong>Compile error.</strong> <code>y</code> is declared <code>A</code>, and
+ <code>A</code> has no <code>extra()</code>. The object really is a <code>B</code>, but the compiler only
+ knows the declared type. To call it you would need a cast: <code>((B) y).extra()</code>.</li>
+ </ol>
+ <p class="answerline"><strong>Answer:</strong> (i) A &nbsp; (ii) B &nbsp; (iii) showA-B &nbsp; (iv) A:hi &nbsp;
+ (v) extraB &nbsp; (vi) compile error — <code>extra()</code> is not a member of type <code>A</code>.</p>
+ <div class="callout callout--exam">
+ <span class="callout__label">Where the marks are</span>
+ <p>Six outputs plus two explanation marks. The rule to write down before you start: <em>the compiler looks at
+ the declared type to decide what is <strong>legal</strong>; the run time looks at the actual class to decide
+ what <strong>happens</strong>.</em> (vi) is a legality question; (ii) and (iii) are behaviour questions.</p>
+ </div>
+ </div>
+</details>
+
+<h2>B3.2c · Abstraction: abstract classes and interfaces <span class="badge badge--hl">HL only</span></h2>
+
+<p><strong>Abstraction</strong> means working with the idea of a thing while ignoring the details you do not need
+right now. In Java it is implemented by two constructs that look similar and are chosen for different reasons.</p>
+
+<pre><code>public abstract class Shape {
+ private String name;
+
+ public Shape(String name) { this.name = name; }
+
+ public String getName() { return name; }
+
+ public abstract double area(); // no body: every subclass MUST supply one
+
+ public String describe() { // concrete method that USES the abstract one
+ return name + " with area " + area();
+ }
+}
+
+Shape s = new Shape("blob"); // COMPILE ERROR — Shape is abstract; cannot be instantiated</code></pre>
+
+<pre><code>public interface Payable {
+ double calculatePay(); // implicitly public abstract
+ String getPayeeName();
+}
+
+public class Teacher implements Payable {
+ private String name; private double rate; private int hours;
+
+ public Teacher(String name, double rate, int hours) {
+ this.name = name; this.rate = rate; this.hours = hours;
+ }
+ @Override public double calculatePay() { return rate * hours; }
+ @Override public String getPayeeName() { return name; }
+}
+
+public class SalariedEmployee implements Payable {
+ private String name; private double annual;
+ public SalariedEmployee(String name, double annual) { this.name = name; this.annual = annual; }
+ @Override public double calculatePay() { return annual / 12.0; }
+ @Override public String getPayeeName() { return name; }
+}
+
+// One loop, no type tests, works for any future Payable class
+Payable[] staff = { new Teacher("Mei", 40.0, 20), new SalariedEmployee("Tom", 48000) };
+double bill = 0;
+for (Payable p : staff) { bill = bill + p.calculatePay(); }
+System.out.println(bill); // 800.0 + 4000.0 = 4800.0</code></pre>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why abstract classes are allowed to call methods that do not exist yet</summary>
+ <div class="dbody">
+ <p>An abstract method has a signature and no body, so <code>new Shape(...)</code> is forbidden: the JVM would
+ have an object whose <code>area()</code> has nothing to run. But inside <code>Shape</code>, the call
+ <code>area()</code> is perfectly safe, because <code>Shape</code> can only ever be the superclass part of some
+ concrete subclass, and the language guarantees that subclass implemented <code>area()</code>. The compiler
+ checks the promise at the subclass; the run time keeps it with dynamic dispatch.</p>
+ <p>The payoff is a specific and powerful pattern: <strong>the superclass owns the algorithm, the subclass fills
+ in one step</strong>. In the library example below, <code>renew()</code> is written once and complete, yet it
+ calls the abstract <code>maxRenewals()</code> — so books get two renewals and DVDs get one without a single
+ duplicated line or a single <code>if</code>.</p>
+ <p><strong>Why interfaces exist: the diamond problem.</strong> Suppose <code>Printer</code> and
+ <code>Scanner</code> both extend <code>Device</code> and both override <code>start()</code>. A class
+ <code>MultiFunction extends Printer, Scanner</code> now has two competing implementations of
+ <code>start()</code> and, worse, two copies of <code>Device</code>'s fields. Which one runs? Whose
+ <code>serialNumber</code> is it? Languages that allow this must invent complicated rules. Java's answer is
+ blunt and effective: <strong>inherit implementation from at most one class; implement as many interfaces as
+ you like.</strong> A classic interface has no state and no body, so there is nothing to be ambiguous about —
+ implementing two interfaces that both declare <code>start()</code> is fine because there is only one
+ implementation: yours.</p>
+ <p><strong>When it is the wrong tool.</strong> An abstract class with no concrete methods and no fields is
+ really an interface; use the interface. An interface you are tempted to give lots of <code>default</code>
+ methods is turning back into a class.</p>
+ </div>
+</details>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Choose…</th><th>When</th><th>Because</th></tr></thead>
+ <tbody>
+ <tr><td><strong>Abstract class</strong></td><td>The classes share <em>state</em> and <em>code</em>, and are genuinely the same kind of thing (is-a)</td><td>It can hold fields and give every subclass working methods for free. One superclass only.</td></tr>
+ <tr><td><strong>Interface</strong></td><td>Unrelated classes share a <em>capability</em>, not an identity (can-do)</td><td>A <code>Teacher</code> and an <code>Invoice</code> are nothing alike but both can be <em>Payable</em>. A class implements many.</td></tr>
+ <tr><td><strong>Both</strong></td><td>Common in real designs</td><td><code>class Book extends LibraryItem implements Reservable</code> — identity from the parent, capability from the interface.</td></tr>
+ </tbody>
+</table>
+</div>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Traps — abstract vs interface</span>
+ <ul>
+ <li>Interface methods are <code>public abstract</code> whether you write it or not. Declaring one
+ <code>private</code> is a compile error. Implementing it with weaker access (package-private) is also an
+ error.</li>
+ <li>A class that implements an interface must implement <strong>every</strong> method of that interface, or it
+ must itself be declared <code>abstract</code>.</li>
+ <li><code>implements</code> for interfaces, <code>extends</code> for classes. An interface can
+ <code>extend</code> another interface (never <code>implement</code>).</li>
+ <li>Constructors cannot be <code>abstract</code>, and <code>static</code> and <code>abstract</code> cannot
+ appear on the same method — there would be no object to dispatch on.</li>
+ </ul>
+</div>
+
+<h2>UML class diagrams</h2>
+
+<p>A UML class diagram is the standard way to show a design without writing the code. Paper 2 will both
+<em>give</em> you one and <em>ask</em> you for one. A class box has three compartments.</p>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 320" role="img" aria-label="A UML class box for BankAccount, showing the name, attribute and method compartments with visibility markers">
+ <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+ <rect x="150" y="40" width="300" height="170" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+ <line x1="150" y1="78" x2="450" y2="78" stroke="#334155" stroke-width="1.5"/>
+ <line x1="150" y1="148" x2="450" y2="148" stroke="#334155" stroke-width="1.5"/>
+
+ <text x="300" y="66" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#151923">BankAccount</text>
+
+ <text x="164" y="100" font-family="system-ui, sans-serif" font-size="13" fill="#151923">- owner : String</text>
+ <text x="164" y="120" font-family="system-ui, sans-serif" font-size="13" fill="#151923">- balance : double</text>
+ <text x="164" y="140" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">(final — never reassigned)</text>
+
+ <text x="164" y="170" font-family="system-ui, sans-serif" font-size="13" fill="#151923">+ getBalance() : double</text>
+ <text x="164" y="190" font-family="system-ui, sans-serif" font-size="13" fill="#151923">+ getOwner() : String</text>
+ <text x="164" y="210" font-family="system-ui, sans-serif" font-size="13" fill="#151923">+ deposit(amount : double) : void</text>
+
+ <text x="470" y="70" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#7a5a13">+ public</text>
+ <text x="470" y="92" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#7a5a13">- private</text>
+ <text x="470" y="114" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#7a5a13"># protected</text>
+ <text x="470" y="140" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">name : type</text>
+ <text x="470" y="158" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">method(p : T) : R</text>
+ <text x="470" y="176" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">underlined = static</text>
+ <text x="470" y="194" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">italic = abstract</text>
+
+ <text x="150" y="250" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">Attributes go in the middle compartment, methods in the bottom one.</text>
+ <text x="150" y="272" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">Note there is no setBalance() and no setOwner(): the design deliberately</text>
+ <text x="150" y="294" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">exposes no way to break the invariant balance &gt;= 0.</text>
+ </svg>
+ <figcaption>A class box. Visibility markers, typed attributes, and method signatures with parameter and return
+ types.</figcaption>
+</figure>
+
+<p>The four relationship arrows are what most candidates muddle. The difference between the middle two is not
+syntax but <em>lifetime</em>.</p>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 400" role="img" aria-label="The four UML relationships: association, aggregation, composition and generalisation, with multiplicities">
+ <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
+
+ <!-- Association -->
+ <text x="24" y="34" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#7a5a13">Association — "uses"</text>
+ <rect x="24" y="56" width="96" height="40" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="72" y="81" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">Teacher</text>
+ <rect x="196" y="56" width="96" height="40" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="244" y="81" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">Student</text>
+ <line x1="120" y1="76" x2="196" y2="76" stroke="#334155" stroke-width="1.5"/>
+ <text x="158" y="66" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">teaches</text>
+ <text x="132" y="98" font-family="system-ui, sans-serif" font-size="12" fill="#151923">1</text>
+ <text x="204" y="98" font-family="system-ui, sans-serif" font-size="12" fill="#151923">0..*</text>
+ <text x="24" y="126" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">Neither owns the other. A plain line.</text>
+
+ <!-- Aggregation -->
+ <text x="336" y="34" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#7a5a13">Aggregation — weak "has-a"</text>
+ <rect x="336" y="56" width="96" height="40" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="384" y="81" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">School</text>
+ <rect x="508" y="56" width="96" height="40" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="556" y="81" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">Student</text>
+ <polygon points="432,76 446,68 460,76 446,84" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+ <line x1="460" y1="76" x2="508" y2="76" stroke="#334155" stroke-width="1.5"/>
+ <text x="484" y="98" font-family="system-ui, sans-serif" font-size="12" fill="#151923">0..*</text>
+ <text x="336" y="126" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">Hollow diamond. Parts survive the whole.</text>
+
+ <!-- Composition -->
+ <text x="24" y="220" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#7a5a13">Composition — strong "has-a"</text>
+ <rect x="24" y="242" width="96" height="40" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="72" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">Order</text>
+ <rect x="196" y="242" width="110" height="40" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="251" y="267" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">OrderLine</text>
+ <polygon points="120,262 134,254 148,262 134,270" fill="#334155" stroke="#334155" stroke-width="1.5"/>
+ <line x1="148" y1="262" x2="196" y2="262" stroke="#334155" stroke-width="1.5"/>
+ <text x="168" y="284" font-family="system-ui, sans-serif" font-size="12" fill="#151923">1..*</text>
+ <text x="24" y="308" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">Filled diamond. Parts die with the whole.</text>
+
+ <!-- Generalisation -->
+ <text x="336" y="220" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#7a5a13">Generalisation — "is-a"</text>
+ <rect x="452" y="238" width="96" height="36" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="500" y="261" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-style="italic" fill="#151923">Shape</text>
+ <rect x="336" y="316" width="96" height="36" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="384" y="339" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">Circle</text>
+ <rect x="476" y="316" width="110" height="36" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="531" y="339" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">Rectangle</text>
+ <line x1="500" y1="274" x2="500" y2="292" stroke="#334155" stroke-width="1.5"/>
+ <polygon points="500,276 490,292 510,292" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+ <line x1="500" y1="292" x2="500" y2="302" stroke="#334155" stroke-width="1.5"/>
+ <line x1="384" y1="302" x2="500" y2="302" stroke="#334155" stroke-width="1.5"/>
+ <line x1="384" y1="302" x2="384" y2="316" stroke="#334155" stroke-width="1.5"/>
+ <line x1="531" y1="302" x2="531" y2="316" stroke="#334155" stroke-width="1.5"/>
+ <text x="336" y="374" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">Hollow triangle points at the PARENT.</text>
+ </svg>
+ <figcaption>The four relationships, with multiplicities. Read <code>1..*</code> as "one to many".</figcaption>
+</figure>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Relationship</th><th>Arrow</th><th>UML meaning</th><th>The test to apply</th></tr></thead>
+ <tbody>
+ <tr><td><strong>Association</strong></td><td>Plain line, optional verb and multiplicities</td><td>Objects know about each other; neither owns the other</td><td>"They interact but live independent lives."</td></tr>
+ <tr><td><strong>Aggregation</strong></td><td>Hollow diamond at the <em>whole</em> end</td><td>Weak has-a: the whole has parts, the parts outlive it</td><td>"Delete the whole — does the part still make sense? <strong>Yes.</strong>"</td></tr>
+ <tr><td><strong>Composition</strong></td><td>Filled diamond at the <em>whole</em> end</td><td>Strong has-a: parts are created and destroyed with the whole</td><td>"Delete the whole — does the part still make sense? <strong>No.</strong>"</td></tr>
+ <tr><td><strong>Generalisation</strong></td><td>Hollow triangle pointing at the parent</td><td>is-a; inheritance</td><td>"A Circle <em>is a</em> Shape." If it reads wrong, do not inherit.</td></tr>
+ </tbody>
+</table>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why aggregation and composition look identical in code but are not the same decision</summary>
+ <div class="dbody">
+ <p>Both are written the same way — a field holding a collection of references:</p>
+<pre><code>// Aggregation: the Student objects were created elsewhere and are passed in
+public class School {
+ private ArrayList&lt;Student&gt; roll = new ArrayList&lt;Student&gt;();
+ public void enrol(Student s) { roll.add(s); } // the School did NOT make s
+}
+
+// Composition: the Order creates its own OrderLine objects
+public class Order {
+ private ArrayList&lt;OrderLine&gt; lines = new ArrayList&lt;OrderLine&gt;();
+ public void addLine(String item, int qty) {
+ lines.add(new OrderLine(item, qty)); // the Order MAKES the line
+ }
+}</code></pre>
+ <p>The difference is <em>lifetime and ownership</em>, and it is decided by the answer to one question:
+ <strong>if the whole is deleted, does the part still mean anything?</strong> A <code>Student</code> who leaves
+ the school is still a person with a name and a record. An <code>OrderLine</code> without its
+ <code>Order</code> is a quantity of something for nobody — it is meaningless. So <code>School→Student</code> is
+ aggregation and <code>Order→OrderLine</code> is composition.</p>
+ <p>Why bother distinguishing them? Because the answer tells you who is allowed to create and destroy the part,
+ which in turn determines where the code goes. In composition the parent's constructor and destructor own the
+ part's life, so no other class can leak a half-built part into the system. In aggregation the part arrives from
+ outside and must be treated as shared — you must not modify it in ways its other owners would not expect.</p>
+ <p><strong>In an exam:</strong> justify with the deletion test, not with a definition. "An OrderLine cannot
+ exist independently of its Order, so the relationship is composition" earns the mark; "composition is a strong
+ has-a relationship" does not.</p>
+ </div>
+</details>
+
+<h2>B3.2d · A full worked design: the school library <span class="badge badge--hl">HL only</span></h2>
+
+<div class="callout callout--note">
+ <span class="callout__label">The brief</span>
+ <p>A school library tracks its items. Every item has a unique ID, a title and a publication year. Books also
+ have an author and a page count; DVDs also have a director and a running time in minutes. Every item may be
+ borrowed for up to 21 days. A book may be renewed twice, a DVD once. The librarian wants a list of all
+ currently overdue items and a printable catalogue.</p>
+</div>
+
+<p><strong>Step 1 — the classes.</strong> Nouns with state: <code>LibraryItem</code> (shared facts),
+<code>Book</code> and <code>Dvd</code> (specific facts), <code>Library</code> (the collection). Because
+<code>Book</code> is-a <code>LibraryItem</code> and the differences are only in <em>some</em> fields and
+<em>one</em> rule, inheritance fits. <code>LibraryItem</code> should be <strong>abstract</strong>: you never lend a
+generic item, and there is no sensible default for <code>maxRenewals()</code>.</p>
+
+<p><strong>Step 2 — the class diagram.</strong></p>
+
+<pre><code> &lt;&lt;abstract&gt;&gt;
+ LibraryItem
+-----------------------------------
+- id : String
+- title : String
+- year : int
+- onLoan : boolean
+- daysOnLoan : int
+- renewalsUsed : int
+-----------------------------------
++ borrow() : void
++ returnItem() : void
++ renew() : boolean
++ addDay() : void
++ isOverdue() : boolean
++ maxRenewals() : int &lt;&lt;abstract&gt;&gt;
++ describe() : String &lt;&lt;abstract&gt;&gt;
+-----------------------------------
+ /|\ (generalisation)
+ ------ ------
+ | |
+ Book Dvd
+---------------- ----------------
+- author - director : String
+- pages : int - minutes : int
+---------------- ----------------
+maxRenewals()=2 maxRenewals()=1
+
+
+ Library ◆———— LibraryItem (composition: 1 to 0..*)
+-----------------------------------
+- items : ArrayList&lt;LibraryItem&gt;
+-----------------------------------
++ addItem(item : LibraryItem) : void
++ listOverdue() : ArrayList&lt;LibraryItem&gt;
++ printCatalogue() : String
+-----------------------------------</code></pre>
+
+<p><strong>Step 3 — the code.</strong></p>
+
+<pre><code>public abstract class LibraryItem {
+ private String id;
+ private String title;
+ private int year;
+ private boolean onLoan;
+ private int daysOnLoan;
+ private int renewalsUsed;
+
+ public LibraryItem(String id, String title, int year) {
+ this.id = id; this.title = title; this.year = year;
+ this.onLoan = false; this.daysOnLoan = 0; this.renewalsUsed = 0;
+ }
+
+ public String getId() { return id; }
+ public String getTitle() { return title; }
+ public boolean isOnLoan() { return onLoan; }
+
+ // ---- the two things only a subclass can know ----
+ public abstract int maxRenewals();
+ public abstract String describe();
+
+ // ---- behaviour written ONCE, for every kind of item ----
+ public void borrow() {
+ if (onLoan) { throw new IllegalStateException(title + " is already on loan"); }
+ onLoan = true;
+ daysOnLoan = 0;
+ renewalsUsed = 0;
+ }
+
+ public void returnItem() {
+ onLoan = false;
+ daysOnLoan = 0;
+ }
+
+ public boolean renew() { // calls the abstract method
+ if (!onLoan) { return false; }
+ if (renewalsUsed &gt;= maxRenewals()) { return false; }
+ renewalsUsed = renewalsUsed + 1;
+ daysOnLoan = 0;
+ return true;
+ }
+
+ public void addDay() { // the Library calls this once per day
+ if (onLoan) { daysOnLoan = daysOnLoan + 1; }
+ }
+
+ public boolean isOverdue() { return onLoan &amp;&amp; daysOnLoan &gt; 21; }
+}</code></pre>
+
+<pre><code>public class Book extends LibraryItem {
+ private String author;
+ private int pages;
+
+ public Book(String id, String title, int year, String author, int pages) {
+ super(id, title, year);
+ this.author = author;
+ this.pages = pages;
+ }
+
+ @Override public int maxRenewals() { return 2; }
+ @Override public String describe() {
+ return "Book: " + getTitle() + " by " + author + " (" + pages + " pages)";
+ }
+}
+
+public class Dvd extends LibraryItem {
+ private String director;
+ private int minutes;
+
+ public Dvd(String id, String title, int year, String director, int minutes) {
+ super(id, title, year);
+ this.director = director;
+ this.minutes = minutes;
+ }
+
+ @Override public int maxRenewals() { return 1; }
+ @Override public String describe() {
+ return "DVD: " + getTitle() + ", dir. " + director + " (" + minutes + " min)";
+ }
+}</code></pre>
+
+<pre><code>import java.util.ArrayList;
+
+public class Library {
+ private ArrayList&lt;LibraryItem&gt; items;
+
+ public Library() { items = new ArrayList&lt;LibraryItem&gt;(); }
+
+ public void addItem(LibraryItem item) { items.add(item); }
+
+ public ArrayList&lt;LibraryItem&gt; listOverdue() {
+ ArrayList&lt;LibraryItem&gt; result = new ArrayList&lt;LibraryItem&gt;();
+ for (LibraryItem it : items) {
+ if (it.isOverdue()) { result.add(it); }
+ }
+ return result;
+ }
+
+ public String printCatalogue() {
+ String out = "";
+ for (LibraryItem it : items) {
+ out = out + it.describe() + "\n"; // dynamic dispatch picks Book.describe or Dvd.describe
+ }
+ return out;
+ }
+
+ public void nextDay() {
+ for (LibraryItem it : items) { it.addDay(); }
+ }
+}</code></pre>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 3</span> IB-style · 8 marks · trace the design above</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> State the output of the following, and state the value returned by
+ <code>listOverdue().size()</code> at the end.</p>
+<pre><code>Library lib = new Library();
+Book b = new Book("B01", "Klara and the Sun", 2021, "Ishiguro", 303);
+Dvd d = new Dvd ("D01", "Arrival", 2016, "Villeneuve", 116);
+lib.addItem(b);
+lib.addItem(d);
+
+b.borrow();
+d.borrow();
+
+System.out.println(b.renew()); // (i)
+System.out.println(b.renew()); // (ii)
+System.out.println(b.renew()); // (iii)
+System.out.println(d.renew()); // (iv)
+System.out.println(d.renew()); // (v)
+
+for (int day = 1; day &lt;= 22; day = day + 1) { lib.nextDay(); }
+System.out.println(b.isOverdue()); // (vi)
+System.out.println(lib.listOverdue().size()); // (vii)
+System.out.print(lib.printCatalogue()); // (viii)</code></pre>
+ <ol class="steps">
+ <li><strong>(i)</strong> <code>true</code>. The book is on loan, <code>renewalsUsed</code> is 0 and
+ <code>maxRenewals()</code> for a <code>Book</code> is 2, so 0&nbsp;≥&nbsp;2 is false. The renewal succeeds:
+ <code>renewalsUsed</code> becomes 1 and <code>daysOnLoan</code> resets to 0.</li>
+ <li><strong>(ii)</strong> <code>true</code>. 1&nbsp;≥&nbsp;2 is still false; <code>renewalsUsed</code>
+ becomes 2.</li>
+ <li><strong>(iii)</strong> <code>false</code>. Now 2&nbsp;≥&nbsp;2, so the book has used its allowance.
+ <strong>Note the ordering:</strong> the check happens <em>before</em> the increment, so a book gets exactly
+ two renewals, not three.</li>
+ <li><strong>(iv)</strong> <code>true</code>. The DVD's <code>maxRenewals()</code> returns 1, so the first
+ renewal passes.</li>
+ <li><strong>(v)</strong> <code>false</code>. 1&nbsp;≥&nbsp;1 — the DVD has used its single renewal.
+ <strong>The same method <code>renew()</code> produced different limits for the two objects without an
+ <code>if</code> anywhere.</strong></li>
+ <li><strong>(vi)</strong> <code>true</code>. Both items ran 22 days. After the final renewal
+ <code>daysOnLoan</code> was reset to 0 and then incremented once per day to 22, and 22&nbsp;&gt;&nbsp;21.</li>
+ <li><strong>(vii)</strong> <code>2</code> — both the book and the DVD are overdue, because both were
+ borrowed at the start and both had their counter reset on the last successful renewal.</li>
+ <li><strong>(viii)</strong>
+<pre><code>Book: Klara and the Sun by Ishiguro (303 pages)
+DVD: Arrival, dir. Villeneuve (116 min)</code></pre>
+ One loop, one line of code, two different <code>describe()</code> implementations — dynamic dispatch.</li>
+ </ol>
+ <p class="answerline"><strong>Answer:</strong> (i) true (ii) true (iii) false (iv) true (v) false (vi) true
+ (vii) 2 (viii) the two lines shown above.</p>
+ <div class="callout callout--exam">
+ <span class="callout__label">Where the marks are</span>
+ <p>One mark per output plus two for explaining <em>why</em> (iii) and (v) differ. The explanation mark wants
+ the words <strong>overriding</strong>, <strong>abstract method</strong> and <strong>dynamic dispatch</strong>,
+ in that chain: <code>renew()</code> is inherited and concrete; it calls the abstract
+ <code>maxRenewals()</code>; at run time the call is dispatched to <code>Book.maxRenewals()</code> or
+ <code>Dvd.maxRenewals()</code> depending on the actual object. Candidates who write "because the book class
+ says 2" usually get one of the two.</p>
+ </div>
+ </div>
+</details>
+
+<div class="callout callout--note">
+ <span class="callout__label">Extension task — do this before the exam</span>
+ <p>The librarian now wants to lend <strong>magazines</strong> (with an issue number, and <strong>no</strong>
+ renewals allowed) and <strong>audiobooks</strong> (with a narrator and a duration), and wants books — but not
+ DVDs — to be <strong>reservable</strong> by a member.</p>
+ <ol class="steps">
+ <li>Write <code>Magazine extends LibraryItem</code> with <code>maxRenewals()</code> returning
+ <code>0</code>. Notice that <code>renew()</code> then returns <code>false</code> immediately, with no new
+ logic.</li>
+ <li>Write <code>Audiobook extends LibraryItem</code>.</li>
+ <li>Write the interface <code>Reservable</code> with <code>void reserve(String memberId)</code> and
+ <code>String getReservedBy()</code>, and make <code>Book implements Reservable</code>.</li>
+ <li>Add a <code>listReservable()</code> method to <code>Library</code> that uses
+ <code>if (it instanceof Reservable)</code>.</li>
+ <li><strong>Now count what you had to change in <code>LibraryItem</code>, <code>Library</code>,
+ <code>printCatalogue()</code> and <code>listOverdue()</code>: nothing.</strong> That is the entire argument for
+ this topic, and it is the sentence to write in an evaluation question.</li>
+ </ol>
+</div>
+
+<h2>The same ideas in Python</h2>
+
+<p>Paper 2 accepts Python, and the concepts are identical. The syntax differs and so do two important guarantees.</p>
+
+<pre><code>class Book:
+ def __init__(self, title, author, pages): # constructor; self is the object
+ self._title = title # single underscore = "internal, please don't touch"
+ self._author = author
+ self._pages = pages
+
+ @property # getter — call as book.title, with no parentheses
+ def title(self):
+ return self._title
+
+ @title.setter # setter — runs validation on assignment
+ def title(self, value):
+ if value == "":
+ raise ValueError("title cannot be empty")
+ self._title = value
+
+ def describe(self):
+ return f"{self._title} by {self._author} ({self._pages} pages)"
+
+
+b = Book("Arrival", "Villeneuve", 116)
+print(b.title) # Arrival (calls the property)
+b.title = "" # raises ValueError — the rule lives in one place
+print(b.describe())</code></pre>
+
+<pre><code>from abc import ABC, abstractmethod
+
+class Shape(ABC): # ABC = abstract base class
+ @abstractmethod
+ def area(self): # no body — subclasses must implement
+ pass
+
+ def describe(self): # concrete method using the abstract one
+ return f"area = {self.area()}"
+
+class Circle(Shape):
+ def __init__(self, r):
+ self.r = r
+ def area(self): # no "override" keyword, no annotation needed
+ return 3.14159 * self.r * self.r
+
+shapes = [Circle(2.0), Circle(1.0)]
+total = 0
+for s in shapes:
+ total += s.area() # duck typing: if it has .area(), it works
+print(total) # 15.70795</code></pre>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Idea</th><th>Java</th><th>Python</th></tr></thead>
+ <tbody>
+ <tr><td><strong>The object</strong></td><td>Implicit inside methods</td><td><code>self</code>, listed as the first parameter of every instance method</td></tr>
+ <tr><td><strong>Constructor</strong></td><td><code>public Book(...)</code></td><td><code>def __init__(self, ...)</code></td></tr>
+ <tr><td><strong>Private field</strong></td><td><code>private</code> — enforced by the compiler</td><td><code>_name</code> — a <em>convention only</em>; nothing stops you. <code>__name</code> name-mangles, which discourages but does not prevent access.</td></tr>
+ <tr><td><strong>Getter / setter</strong></td><td><code>getX()</code> / <code>setX()</code> methods</td><td><code>@property</code> and <code>@x.setter</code> — the caller keeps writing <code>obj.x</code></td></tr>
+ <tr><td><strong>Inheritance</strong></td><td><code>class B extends A</code> — one parent only</td><td><code>class B(A)</code> — multiple inheritance is allowed</td></tr>
+ <tr><td><strong>Call the parent</strong></td><td><code>super(...)</code>, first line of the constructor</td><td><code>super().__init__(...)</code>, anywhere, and easy to forget</td></tr>
+ <tr><td><strong>Abstract</strong></td><td><code>abstract</code> keyword</td><td>Inherit from <code>ABC</code> and use <code>@abstractmethod</code></td></tr>
+ <tr><td><strong>Interfaces</strong></td><td>A separate <code>interface</code> construct</td><td>No keyword needed — <strong>duck typing</strong>: if it has the method, it satisfies the requirement</td></tr>
+ <tr><td><strong>Overriding</strong></td><td><code>@Override</code> (optional but catches typos)</td><td>Same name, same parameters, subclass. No marker.</td></tr>
+ </tbody>
+</table>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> What duck typing gains and what it costs</summary>
+ <div class="dbody">
+ <p>Java checks at <em>compile time</em> that a <code>Circle</code> really is a <code>Shape</code> and really
+ implemented every abstract method. Python checks nothing until the line runs; if <code>.area()</code> is
+ missing you get an <code>AttributeError</code> at the moment of the call, possibly weeks later in production.
+ That is a real cost, and it is why Python projects lean heavily on tests.</p>
+ <p>The gain is flexibility and far less code. A function that needs "something with an
+ <code>area()</code>" needs no interface declared, no import, and no shared ancestor — which is why Python is
+ pleasant for small programs and why large Python codebases add type hints and linters to recover some of
+ Java's checking.</p>
+ <p><strong>The honest contrast for an exam answer:</strong> Java's <code>private</code> and
+ <code>abstract</code> are <em>enforced</em> guarantees; Python's equivalent conventions are
+ <em>social</em> ones. Neither is automatically better — a small script does not need the ceremony, a
+ system handling money probably does. Say which you would choose for the scenario in front of you and why.</p>
+ </div>
+</details>
+
+<h2>Exam technique for OOP questions</h2>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it</span>
+ <ol class="steps">
+ <li><strong>Read any given code or diagram before the question.</strong> Use the exact class, method and
+ attribute names from the paper. Inventing <code>getBalance()</code> when the paper defined
+ <code>balance()</code> throws away marks.</li>
+ <li><strong>"State the output":</strong> find every point where the declared type and the actual class differ.
+ That is where the question lives. Everything else is arithmetic.</li>
+ <li><strong>"Construct a class diagram":</strong> three compartments per box; visibility markers
+ <code>+</code>/<code>-</code>/<code>#</code>; attributes as <code>name : type</code>; methods as
+ <code>method(p : type) : returnType</code>; relationship arrows with multiplicities; italic or
+ <code>&lt;&lt;abstract&gt;&gt;</code> for abstract classes and methods.</li>
+ <li><strong>"Explain the use of X":</strong> name the mechanism, then name the consequence for
+ <em>this</em> scenario. "Encapsulation means the fields are private, so the balance can only be changed by
+ <code>deposit()</code> and <code>withdraw()</code>, which validate their arguments, so the balance can never
+ become negative."</li>
+ <li><strong>"Extend the design":</strong> write the <em>new</em> class only. Show <code>extends</code> /
+ <code>implements</code>, the constructor calling <code>super(...)</code> correctly, and
+ <strong>every</strong> abstract or interface method implemented with <code>@Override</code>.</li>
+ <li><strong>"Justify inheritance over X":</strong> use the is-a test and the change-locality argument
+ ("adding a new type requires one new class, not edits to every method").</li>
+ </ol>
+</div>
+
+<div class="callout callout--trap">
+ <span class="callout__label">The eight mistakes that cost the most marks</span>
+ <ul>
+ <li>Confusing a class with an object — "the class <code>b1</code>" instead of "the object <code>b1</code> of
+ class <code>Book</code>".</li>
+ <li>Giving a constructor a return type, or naming it differently from the class.</li>
+ <li>Writing <code>name = name;</code> without <code>this.</code>.</li>
+ <li>Using <code>==</code> to compare strings or object content.</li>
+ <li>Saying the declared type wins for an <em>overridden</em> method (it wins for <em>overloads</em> and for
+ what is <em>legal</em>; the actual class wins for what <em>runs</em>).</li>
+ <li>Putting <code>super(...)</code> or <code>this(...)</code> somewhere other than line one.</li>
+ <li>Generating a setter for every field and calling it encapsulation.</li>
+ <li>Drawing the generalisation arrow pointing at the subclass. The triangle points at the
+ <strong>parent</strong>.</li>
+ </ul>
+</div>
+
+<div class="callout callout--vocab">
+ <span class="callout__label">Key vocabulary — English → </span>
+ <ul>
+ <li><strong>class</strong> — <strong>object / instance</strong> — / <strong>instantiate</strong> — </li>
+ <li><strong>attribute / field</strong> — / <strong>method</strong> — <strong>constructor</strong> — </li>
+ <li><strong>encapsulation</strong> — <strong>access modifier</strong> — <strong>private / public / protected</strong> — / / </li>
+ <li><strong>getter / setter</strong> — / <strong>invariant</strong> — </li>
+ <li><strong>inheritance</strong> — <strong>superclass / subclass</strong> — / <strong>parent / child class</strong> — / </li>
+ <li><strong>extend</strong> — <strong>override</strong> — <strong>overload</strong> — </li>
+ <li><strong>polymorphism</strong> — <strong>dynamic dispatch</strong> — <strong>late binding</strong> — </li>
+ <li><strong>abstract class / abstract method</strong> — / <strong>interface</strong> — <strong>implement</strong> — </li>
+ <li><strong>diamond problem</strong> — <strong>multiple inheritance</strong> — </li>
+ <li><strong>UML class diagram</strong> — UML <strong>multiplicity</strong> — 1..*</li>
+ <li><strong>association</strong> — <strong>aggregation</strong> — <strong>composition</strong> — </li>
+ <li><strong>generalisation</strong> — <strong>is-a / has-a</strong> — "" / ""</li>
+ <li><strong>duck typing</strong> — <strong>reference</strong> — <strong>heap / stack</strong> — / </li>
+ </ul>
+</div>
+
+<h2>Practice</h2>
+<ol class="practice">
+ <li><p>A school records modules, each with a code, a title and a list of enrolled students. Identify: one class,
+ two attributes, and one method that is <em>not</em> a simple getter.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p><strong>Class:</strong> <code>Module</code>. <strong>Attributes:</strong> <code>code</code> (String),
+ <code>title</code> (String) — or the <code>ArrayList&lt;Student&gt;</code> enrolled list.</p>
+ <p><strong>Method that is not a getter:</strong> <code>enrol(Student s)</code>, which adds a student and
+ should check they are not already enrolled and that the module is not full. Other valid answers:
+ <code>averageScore()</code>, <code>isFull()</code>.</p>
+ <p><strong>Why examiners reject getters here:</strong> a getter transfers data out and decides nothing. The
+ question is testing whether you can see behaviour that belongs on the class — something the class must
+ <em>do</em>, having applied a rule.</p>
+ </div></details></li>
+
+ <li><p>Write a complete Java class <code>Member</code> with private fields <code>name</code> (String) and
+ <code>points</code> (int). Include a constructor, getters, and a method
+ <code>addPoints(int n)</code> that ignores non-positive values. Points must never become negative.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+<pre><code>public class Member {
+ private String name;
+ private int points;
+
+ public Member(String name, int openingPoints) {
+ if (openingPoints &lt; 0) { throw new IllegalArgumentException("points cannot be negative"); }
+ this.name = name;
+ this.points = openingPoints;
+ }
+
+ public String getName() { return name; }
+ public int getPoints() { return points; }
+
+ public void addPoints(int n) {
+ if (n &lt;= 0) { return; } // ignore: non-positive adds nothing
+ points = points + n; // points can only rise, so it stays non-negative
+ }
+}</code></pre>
+ <p><strong>Marks:</strong> private fields (1), constructor that assigns both and validates (2), two getters
+ (1), <code>addPoints</code> with the guard (2). The common error is an <code>else</code> that prints an error
+ message instead of silently ignoring — read the wording: "ignores".</p>
+ </div></details></li>
+
+ <li><p>Explain, with reference to a specific example, what is meant by <em>encapsulation</em> and why it is used.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p>Encapsulation is keeping the fields of an object private and allowing access only through public methods.
+ In a <code>BankAccount</code> class, <code>balance</code> is private so no other class can write to it
+ directly.</p>
+ <p><strong>Why:</strong> the class has an invariant — balance&nbsp;≥&nbsp;0. Because the only way the balance
+ changes is through <code>deposit()</code> and <code>withdraw()</code>, and <code>withdraw()</code> refuses
+ amounts larger than the balance, the invariant cannot be broken by calling code. If the balance were public,
+ any class could set it to a negative value and the error would surface far from the place that caused it.</p>
+ <p>A second reason: if the storage changes (for example to pence in a <code>long</code>), only the methods
+ change; callers are unaffected.</p>
+ <p><strong>Marks:</strong> definition (1) + a concrete private-field example (1) + the consequence for the
+ invariant (2). Candidates who only write "it hides the data" usually score 1 of 4.</p>
+ </div></details></li>
+
+ <li><p>State the output.</p>
+<pre><code>class Animal { public String speak() { return "..."; }
+ public String feed() { return "eats " + speak(); } }
+class Dog extends Animal { @Override public String speak() { return "woof"; } }
+class Cat extends Animal { @Override public String speak() { return "miaow"; } }
+
+Animal[] pets = { new Dog(), new Cat(), new Animal() };
+for (Animal a : pets) { System.out.println(a.feed()); }</code></pre>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+<pre><code>eats woof
+eats miaow
+eats ...</code></pre>
+ <p><code>feed()</code> is defined once in <code>Animal</code> and is not overridden. Each time the loop runs,
+ <code>feed()</code> calls <code>speak()</code>, and <em>that</em> call is dispatched to the actual class of
+ the object — <code>Dog</code>, <code>Cat</code>, <code>Animal</code> — even though the array is declared
+ <code>Animal[]</code>. This is dynamic dispatch.</p>
+ </div></details></li>
+
+ <li><p>Give <strong>two</strong> differences between overloading and overriding.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p>Any two of:</p>
+ <ul>
+ <li>Overloading uses a different parameter list; overriding keeps the signature identical.</li>
+ <li>Overloading happens within one class (or a subclass); overriding requires a subclass and a
+ superclass.</li>
+ <li>Overloading is resolved at <strong>compile time</strong> from the declared argument types; overriding is
+ resolved at <strong>run time</strong> from the actual class of the object.</li>
+ <li>An overridden method must not reduce visibility; an overload may use any visibility.</li>
+ </ul>
+ <p><strong>Do not write</strong> "overriding is when there are two methods with the same name" — that is
+ overloading in the parent and child, and it is wrong.</p>
+ </div></details></li>
+
+ <li><p>A program has classes <code>Car</code>, <code>Bicycle</code> and <code>Boat</code>. Each needs to be
+ <em>taxable</em>: the system must be able to call <code>calculateTax()</code> on any of them. Should this use an
+ abstract superclass or an interface? Justify.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p>An <strong>interface</strong>, for example <code>public interface Taxable { double calculateTax(); }</code>,
+ with <code>class Car implements Taxable</code>, and so on.</p>
+ <p><strong>Justification:</strong> the relationship is a shared <em>capability</em> (can-be-taxed), not a
+ shared identity. A car, a bicycle and a boat have almost no common state and no common behaviour beyond this
+ one method, so a superclass would carry no reusable code and would force an artificial is-a relationship.
+ Using an interface also leaves each class free to extend a class of its own.</p>
+ <p><strong>The scoring sentence:</strong> "they are otherwise unrelated, so inheritance would imply an is-a
+ relationship that does not exist". Candidates who only say "interfaces allow multiple inheritance" get one
+ mark — that is a property of interfaces, not a reason to choose one here.</p>
+ </div></details></li>
+
+ <li><p>The diagram shows <code>Customer 1 —— 1..* Order</code> and
+ <code>Order ◆—— 1..* OrderLine</code>. Name the two relationships and explain the difference in terms of what
+ happens when an <code>Order</code> is deleted.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p><code>Customer → Order</code> is <strong>aggregation</strong> (or a plain association).
+ <code>Order → OrderLine</code> is <strong>composition</strong>.</p>
+ <p>When an <code>Order</code> is deleted, its <code>OrderLine</code> objects are deleted with it, because a
+ line has no meaning without the order it belongs to — that is what the filled diamond records. The
+ <code>Customer</code>, by contrast, continues to exist; deleting an order does not delete the person.</p>
+ <p><strong>Marks:</strong> naming both (2) + the deletion test applied to both (2).</p>
+ </div></details></li>
+
+ <li><p>A system has <code>abstract class Employee</code> with <code>abstract double monthlyPay()</code>, and
+ subclasses <code>SalesEmployee</code> (salary plus commission) and <code>HourlyEmployee</code> (rate times
+ hours). Write <code>HourlyEmployee</code> in full and explain why <code>Employee</code> must be abstract.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+<pre><code>public class HourlyEmployee extends Employee {
+ private double rate;
+ private int hours;
+
+ public HourlyEmployee(String name, double rate, int hours) {
+ super(name);
+ this.rate = rate;
+ this.hours = hours;
+ }
+
+ @Override
+ public double monthlyPay() {
+ return rate * hours;
+ }
+}</code></pre>
+ <p><code>Employee</code> must be abstract because <code>monthlyPay()</code> has no sensible general
+ implementation — there is no such thing as the pay of "an employee" until you know which kind. Declaring it
+ abstract (a) prevents <code>new Employee(...)</code>, which would be an object with a method that has nothing
+ to run, and (b) forces every subclass to provide an implementation, so any code holding an
+ <code>Employee</code> reference can safely call <code>monthlyPay()</code>.</p>
+ <p>Note that a concrete method in <code>Employee</code>, such as <code>printPayslip()</code>, can call
+ <code>monthlyPay()</code> even though the body has not been written — dynamic dispatch fills it in at
+ run time.</p>
+ </div></details></li>
+
+ <li><p>Design question. A cinema sells tickets for films shown in screens at set times. Identify three classes,
+ one inheritance relationship (or explain why there is none), and one composition relationship.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p><strong>Classes:</strong> <code>Film</code> (title, certificate, duration), <code>Screening</code> (film,
+ screen, start time, seats remaining), <code>Booking</code> (screening, customer, seats).</p>
+ <p><strong>Composition:</strong> <code>Screening ◆—— Seat</code> (or a collection of seats). A seat row
+ belongs to one screening — if the screening is cancelled, its seating grid goes with it. Equally valid:
+ <code>Booking ◆—— Ticket</code>, since a ticket cannot exist without its booking.</p>
+ <p><strong>Inheritance:</strong> there is a <em>possible</em> one — <code>StandardSeat</code> and
+ <code>PremiumSeat</code> extending <code>Seat</code>, differing in price. A strong answer points out that
+ this is only worth doing if the subclasses differ in <em>behaviour</em>, not just in a price number; if the
+ only difference is a field, one <code>Seat</code> class with a <code>price</code> attribute is the better
+ design.</p>
+ <p><strong>The mark that separates a 6 from an 8:</strong> recognising that inheritance should not be used
+ just because you can draw it. Justify with "the subclasses would differ only in a field value, so a single
+ class with an attribute is simpler and avoids extra classes".</p>
+ </div></details></li>
+</ol>
+
+<div class="conn">
+ <span class="conn__title">Connections</span>
+ <ul>
+ <li><strong>→ B2 Programming:</strong> classes are what you reach for when the sub-procedures and the data they
+ operate on belong together; the parameter-passing rules from B2 explain exactly why passing an object lets the
+ callee change it.</li>
+ <li><strong>→ B4 Abstract data types:</strong> a stack, a queue or a linked list is the classic example of
+ encapsulation — the fields (the node pointers, the array, the top index) are private, and only
+ <code>push/pop</code> or <code>enqueue/dequeue</code> can touch them.</li>
+ <li><strong>→ B1 Computational thinking:</strong> abstraction in B1 (ignoring irrelevant detail) becomes the
+ <code>abstract</code> keyword and interfaces here; decomposition is what produces the class list in the first
+ place.</li>
+ <li><strong>→ A3 Databases:</strong> a class maps to a table, an object to a row, an attribute to a column, and
+ a foreign key to a reference or a collection. The normalisation rules from A3 are, informally, rules about
+ designing classes.</li>
+ <li><strong>→ A1 Computer fundamentals:</strong> references are addresses; the heap/stack picture on this page
+ is the same memory model you met in A1, now with names on it.</li>
+ <li><strong>→ IA:</strong> a well-factored class design with a UML diagram is among the strongest evidence you
+ can put in the computational-solution report, and the extension task above is the shape of a good
+ "future development" paragraph.</li>
+ </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+ <li><label><input type="checkbox"><span>I can explain what problem OOP solves, using the invariant argument and the change-locality argument.</span></label></li>
+ <li><label><input type="checkbox"><span>I can distinguish a class from an object and predict the effect of assigning one reference variable to another.</span></label></li>
+ <li><label><input type="checkbox"><span>I can write a class with private fields, a validating constructor and the accessors a client actually needs.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain why <code>==</code> is wrong for object content and what to use instead.</span></label></li>
+ <li><label><input type="checkbox"><span>I can write a subclass with <code>extends</code>, <code>super(...)</code> on the first line and <code>@Override</code> on every override.</span></label></li>
+ <li><label><input type="checkbox"><span>I can state the difference between overloading and overriding, including when each is resolved.</span></label></li>
+ <li><label><input type="checkbox"><span>I can predict the output of code where the declared type and the actual class differ.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain how a method in a parent can call a method implemented only in a child.</span></label></li>
+ <li><label><input type="checkbox"><span>I can choose between an abstract class and an interface and justify the choice for a given scenario.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain the diamond problem and why Java limits class inheritance to one parent.</span></label></li>
+ <li><label><input type="checkbox"><span>I can draw a UML class box with visibility markers, typed attributes and full method signatures.</span></label></li>
+ <li><label><input type="checkbox"><span>I can draw and label association, aggregation, composition and generalisation, with multiplicities.</span></label></li>
+ <li><label><input type="checkbox"><span>I can justify aggregation versus composition using the deletion test.</span></label></li>
+ <li><label><input type="checkbox"><span>I can design a small class hierarchy from a written scenario and extend it with a new subclass without changing existing code.</span></label></li>
+ <li><label><input type="checkbox"><span>I can write the Python equivalents of a class, a property, inheritance and an abstract base class.</span></label></li>
+</ul>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

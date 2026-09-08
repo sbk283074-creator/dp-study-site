@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="physics">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D · Fields — Physics HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Physics HL · Theme D</span>
+<h1 class="page-title">D · Fields</h1>
+<p class="lede">Theme D asks: <em>how do objects interact without touching?</em> The answer the course builds is
+the <strong>field</strong>: instead of action at a distance, a mass or a charge alters the space around it, and
+a second object responds to the field <em>at its own location</em>. Once you accept that move, everything else
+follows — field lines, potentials, equipotential surfaces, orbital motion, the magnetic force on a moving
+charge, and finally induction, where a changing magnetic field creates a voltage. Induction is the physics
+behind every power station on Earth.</p>
+<div class="page-meta">
+  <span class="tag">D.1 Gravitational fields · D.2 Electric &amp; magnetic fields · D.3 Motion in EM fields</span>
+  <span class="tag tag--hl">D.4 Induction — HL only; potentials &amp; escape speed — HL only</span>
+  <span class="tag">~4,900 words</span>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">The one idea that organises the whole theme</span>
+  <p>Gravity and electrostatics have <em>identical mathematics</em>. Newton:
+  \(F = -\dfrac{Gm_1m_2}{r^2}\). Coulomb: \(F = \dfrac{kq_1q_2}{r^2}\). Both are inverse-square, both have a
+  field strength defined as force per unit "charge" (mass or charge), both have a potential defined as energy
+  per unit "charge", and both have \(1/r\) potential and \(1/r^2\) field. Learn one and you get the other free.
+  The differences are: gravity is always attractive, mass has only one sign, and gravity is far weaker.</p>
+</div>
+
+<h2 id="d1">D.1 Gravitational fields <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Newton's law of gravitation</h3>
+
+<p>\[F = \frac{Gm_1m_2}{r^2}\]</p>
+<dl class="glossary">
+  <dt>\(G\)</dt><dd>gravitational constant, \(6.67\times10^{-11}\ \text{N m}^2\text{kg}^{-2}\)</dd>
+  <dt>\(m_1, m_2\)</dt><dd>the two masses (kg), treated as point masses or spherically symmetric bodies</dd>
+  <dt>\(r\)</dt><dd>the separation of their <em>centres</em> (m)</dd>
+</dl>
+<p>The force is always <strong>attractive</strong>, acts along the line joining the centres, and obeys an
+<strong>inverse-square law</strong>: double the separation and the force drops by a factor of four.</p>
+
+<h3>Gravitational field strength</h3>
+
+<p>\[g = \frac{F}{m} = \frac{GM}{r^2}\]</p>
+<p>Unit N kg⁻¹ (equivalently m s⁻²). It is a <strong>vector</strong>, pointing in the direction a test mass
+would accelerate. At Earth's surface \(g \approx 9.81\ \text{N kg}^{-1}\).</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>\(r\) is measured from the <em>centre</em> of the planet, not from its surface. A satellite at height
+  \(h\) above a planet of radius \(R\) has \(r = R + h\). Using \(r = h\) is the single most common error in
+  D.1, and it produces wildly wrong answers. Write \(R\) and \(h\) on your diagram before you start.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 1</span> IB-style · 4 marks · field strength</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Determine the gravitational field strength at a height of 400 km above the
+    Earth's surface. Earth: mass \(5.97\times10^{24}\) kg, radius \(6.37\times10^6\) m.</p>
+    <ol class="steps">
+      <li>\(r = 6.37\times10^6 + 4.00\times10^5 = 6.77\times10^6\ \text{m}\).</li>
+      <li>\(g = \dfrac{GM}{r^2} = \dfrac{(6.67\times10^{-11})(5.97\times10^{24})}{(6.77\times10^6)^2}
+      = \dfrac{3.98\times10^{14}}{4.58\times10^{13}} = 8.69\ \text{N kg}^{-1}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(8.7\ \text{N kg}^{-1}\). Check: this is about 89% of the surface
+    value, so gravity at the ISS orbit is still strong — astronauts are weightless because they are in free
+    fall, not because gravity is absent. That distinction is a favourite exam point.</div>
+  </div>
+</details>
+
+<h3>Orbital motion and Kepler's laws</h3>
+
+<p><strong>Intuition.</strong> An orbit is perpetual free fall. The spacecraft is falling towards Earth, but it
+is also moving sideways fast enough that the surface curves away beneath it. The force is perpendicular to the
+velocity, so it changes direction without changing speed — circular motion (A.2) with gravity supplying the
+centripetal force.</p>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Orbital speed and the derivation of Kepler's third law</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Gravity provides the centripetal force: \(\dfrac{GMm}{r^2} = \dfrac{mv^2}{r}\).</li>
+      <li>Cancelling \(m\) and one \(r\): \(v^2 = \dfrac{GM}{r}\), so \(v = \sqrt{\dfrac{GM}{r}}\). Note the
+      satellite's own mass does not matter.</li>
+      <li>The period is \(T = \dfrac{2\pi r}{v} = \dfrac{2\pi r}{\sqrt{GM/r}} = \dfrac{2\pi r^{3/2}}{\sqrt{GM}}\).</li>
+      <li>Squaring: \(T^2 = \dfrac{4\pi^2}{GM}r^3\).</li>
+      <li>Since \(\dfrac{4\pi^2}{GM}\) is constant for a given central body, \(T^2 \propto r^3\) — which
+      <strong>is Kepler's third law</strong>.</li>
+    </ol>
+    <p><strong>What it means:</strong> all satellites orbiting the same planet obey the same \(T^2\)–\(r^3\)
+    relationship regardless of their mass. <strong>Application:</strong> compare two satellites by ratio —
+    \(\dfrac{T_1^2}{T_2^2} = \dfrac{r_1^3}{r_2^3}\) — which avoids using \(G\) at all.</p>
+  </div>
+</details>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Kepler's law</th><th>Statement</th><th>Physical origin</th></tr></thead>
+    <tbody>
+      <tr><td>First</td><td>Planets move in ellipses with the Sun at one focus.</td><td>Inverse-square force (the ellipse is the general bound orbit).</td></tr>
+      <tr><td>Second</td><td>Equal areas are swept out in equal times — planets move faster at perihelion.</td><td>Conservation of angular momentum: gravity is a central force so exerts zero torque.</td></tr>
+      <tr><td>Third</td><td>\(T^2 \propto r^3\) for all planets orbiting the same star.</td><td>Derived above from \(F = GMm/r^2\) and circular motion.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 6 marks · geostationary orbit</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A geostationary satellite orbits the Earth with a period of 24 hours.
+    Determine (a) its orbital radius and (b) its height above the Earth's surface. Earth mass
+    \(5.97\times10^{24}\) kg, radius \(6.37\times10^6\) m.</p>
+    <ol class="steps">
+      <li>\(T = 24\times3600 = 86\,400\ \text{s}\).</li>
+      <li>From \(T^2 = \dfrac{4\pi^2 r^3}{GM}\): \(r^3 = \dfrac{GMT^2}{4\pi^2}
+      = \dfrac{(6.67\times10^{-11})(5.97\times10^{24})(86\,400)^2}{39.48}\).</li>
+      <li>Numerator: \(3.98\times10^{14}\times7.46\times10^9 = 2.97\times10^{24}\). So
+      \(r^3 = \dfrac{2.97\times10^{24}}{39.48} = 7.53\times10^{22}\ \text{m}^3\).</li>
+      <li>\(r = (7.53\times10^{22})^{1/3} = 4.22\times10^7\ \text{m}\).</li>
+      <li>(b) Height \(= 4.22\times10^7 - 6.37\times10^6 = 3.58\times10^7\ \text{m} = 35\,800\ \text{km}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(r = 4.2\times10^7\ \text{m}\), height 35 800 km. The accepted value
+    is about 35 786 km, so this is spot on. A geostationary satellite must orbit above the equator and in the
+    same sense as Earth's rotation — those conditions are part of the definition, not consequences of the
+    maths.</div>
+  </div>
+</details>
+
+<h3>Gravitational potential and potential energy <span class="badge badge--hl">HL only</span></h3>
+
+<p><strong>Intuition.</strong> Field strength tells you the force per kilogram; potential tells you the energy
+per kilogram. Potential is defined by the work done in bringing a unit mass from infinity — where the potential
+is defined to be zero — to that point.</p>
+
+<p>\[V_g = -\frac{GM}{r}, \qquad E_p = mV_g = -\frac{GMm}{r}\]</p>
+<dl class="glossary">
+  <dt>\(V_g\)</dt><dd>gravitational potential (J kg⁻¹). <strong>Negative</strong> everywhere, zero at infinity.</dd>
+  <dt>\(E_p\)</dt><dd>gravitational potential energy (J), also negative, zero at infinity.</dd>
+  <dt>Why negative?</dt><dd>Gravity is attractive. You would have to <em>add</em> energy to pull the mass out to
+  infinity, so a bound mass has less energy than a free one — i.e. negative.</dd>
+</dl>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(V_g = -GM/r\) by integrating the field strength</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>The work done <em>by the field</em> moving a unit mass from infinity to \(r\) is
+      \(\displaystyle\int_\infty^r g\,dr\). Since \(g = GM/r^2\) points <em>inwards</em> while \(dr\) is
+      measured outwards, the work done by the field on an inward displacement is
+      \(\displaystyle\int_\infty^r \left(-\frac{GM}{r^2}\right)dr\).</li>
+      <li>\(\displaystyle\int_\infty^r -\frac{GM}{r^2}\,dr = \left[\frac{GM}{r}\right]_\infty^r = \frac{GM}{r}\).</li>
+      <li>The potential is the work done by an <em>external agent</em> per unit mass, which is the negative of
+      this: \(V_g = -\dfrac{GM}{r}\).</li>
+      <li>Equivalently: \(g = -\dfrac{dV_g}{dr}\), and differentiating \(-GM/r\) gives
+      \(-(-GM/r^2)\cdot(-1)\)… check directly: \(-\dfrac{d}{dr}\left(-\dfrac{GM}{r}\right)
+      = -\left(\dfrac{GM}{r^2}\right)\cdot(-1)\cdot(-1)\) — the cleanest statement is that field strength is
+      the negative gradient of potential, and the pair \(g = -GM/r^2\) (inward), \(V_g = -GM/r\) is consistent.</li>
+    </ol>
+    <p><strong>What it means:</strong> potential is a scalar, so you can add contributions from several masses
+    by simple addition — far easier than adding field vectors. <strong>When it is wrong:</strong> the
+    \(-GMm/r\) formula is for point masses or spheres; the near-Earth approximation \(mgh\) is only valid for
+    small height changes.</p>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Students write \(E_p = +GMm/r\) and then get escape speed wrong by a sign. Also: \(mgh\) and \(-GMm/r\)
+  are the <em>same</em> thing for small heights — the difference in \(-GMm/r\) between \(R\) and \(R+h\) is
+  approximately \(mgh\). If a question involves a large height change (satellites, escape), use
+  \(-GMm/r\); if it involves a few metres near the surface, \(mgh\) is fine and faster.</p>
+</div>
+
+<h3>Escape speed and orbital energy <span class="badge badge--hl">HL only</span></h3>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Escape speed \(v_e = \sqrt{2GM/r}\) from energy conservation</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>"Escape" means reaching infinity with (just) zero speed, i.e. total energy = 0 there.</li>
+      <li>Total energy at the surface: \(E = \tfrac12 mv_e^2 + \left(-\dfrac{GMm}{r}\right)\).</li>
+      <li>By conservation of energy this must equal the total energy at infinity, which is 0.</li>
+      <li>\(\tfrac12 mv_e^2 - \dfrac{GMm}{r} = 0 \Rightarrow v_e^2 = \dfrac{2GM}{r} \Rightarrow
+      v_e = \sqrt{\dfrac{2GM}{r}}\).</li>
+      <li>Compare with orbital speed \(v_{\text{orb}} = \sqrt{GM/r}\): escape speed is \(\sqrt2\) times larger,
+      independent of the mass of the escaping object.</li>
+    </ol>
+    <p><strong>What it means:</strong> escape speed depends only on the planet's mass and radius.
+    <strong>When it is wrong:</strong> it ignores air resistance and the rotation of the planet (launching
+    eastwards from the equator gives you a useful head start).</p>
+  </div>
+</details>
+
+<p><strong>Total energy of a satellite in a circular orbit</strong> (HL): combining
+\(E_k = \tfrac12 mv^2 = \tfrac12 m\cdot\dfrac{GM}{r} = \dfrac{GMm}{2r}\) with \(E_p = -\dfrac{GMm}{r}\):</p>
+<p>\[E_{\text{total}} = -\frac{GMm}{2r}\]</p>
+<p>Note \(E_k = +\dfrac{GMm}{2r}\) is <em>positive</em> and exactly half the magnitude of the negative
+potential energy. To move a satellite from a low orbit to a higher one you must <strong>add</strong> energy —
+yet it ends up moving <em>slower</em>. Counter-intuitive, and frequently examined.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Equipotential surfaces and field lines around a planet, plus an orbit">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <circle cx="230" cy="160" r="42" fill="#eef2ff" stroke="#0a6f80" stroke-width="2.5"/>
+    <text x="206" y="166" font-size="13" font-family="system-ui, sans-serif" fill="#151923">planet M</text>
+    <circle cx="230" cy="160" r="80" fill="none" stroke="#7a5a13" stroke-width="2" stroke-dasharray="5 4"/>
+    <circle cx="230" cy="160" r="122" fill="none" stroke="#7a5a13" stroke-width="2" stroke-dasharray="5 4"/>
+    <circle cx="230" cy="160" r="164" fill="none" stroke="#7a5a13" stroke-width="2" stroke-dasharray="5 4"/>
+    <text x="316" y="92" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13">equipotentials (all V negative, closer = more negative)</text>
+    <line x1="230" y1="118" x2="230" y2="60" stroke="#c0392b" stroke-width="2"/>
+    <line x1="230" y1="202" x2="230" y2="260" stroke="#c0392b" stroke-width="2"/>
+    <line x1="188" y1="160" x2="130" y2="160" stroke="#c0392b" stroke-width="2"/>
+    <line x1="272" y1="160" x2="330" y2="160" stroke="#c0392b" stroke-width="2"/>
+    <text x="130" y="52" font-size="12" font-family="system-ui, sans-serif" fill="#c0392b">field lines (inward)</text>
+    <circle cx="394" cy="160" r="7" fill="#151923"/>
+    <circle cx="230" cy="160" r="164" fill="none" stroke="#0a6f80" stroke-width="2.5"/>
+    <line x1="230" y1="160" x2="394" y2="160" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="290" y="152" font-size="12" font-family="system-ui, sans-serif" fill="#151923">r</text>
+    <text x="404" y="164" font-size="12" font-family="system-ui, sans-serif" fill="#151923">satellite: v = &#8730;(GM/r)</text>
+    <text x="30" y="296" font-size="12" font-family="system-ui, sans-serif" fill="#151923">Field lines are perpendicular to equipotentials; no work is done moving along an equipotential (&#916;V = 0).</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> Gravitational field lines (radially inward) crossing
+  equipotential surfaces at right angles. Moving a mass along an equipotential requires no work — that is what
+  "equipotential" means.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 3</span> HL · 7 marks · escape speed and orbit change</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A 500 kg satellite is in a circular orbit of radius \(7.0\times10^6\) m
+    around the Earth (\(M = 5.97\times10^{24}\) kg). (a) Determine its speed, kinetic energy and total energy.
+    (b) Determine the escape speed from that radius. (c) Hence determine the additional energy needed to escape.</p>
+    <ol class="steps">
+      <li>(a) \(v = \sqrt{GM/r} = \sqrt{\dfrac{3.98\times10^{14}}{7.0\times10^6}} = \sqrt{5.69\times10^7}
+      = 7.54\times10^3\ \text{m s}^{-1}\).</li>
+      <li>\(E_k = \tfrac12(500)(7.54\times10^3)^2 = 1.42\times10^{10}\ \text{J}\).</li>
+      <li>\(E_{\text{total}} = -\dfrac{GMm}{2r} = -\dfrac{(3.98\times10^{14})(500)}{2(7.0\times10^6)}
+      = -1.42\times10^{10}\ \text{J}\). (Notice \(E_{\text{total}} = -E_k\), as the derivation predicted.)</li>
+      <li>(b) \(v_e = \sqrt{2GM/r} = \sqrt2\times7.54\times10^3 = 1.07\times10^4\ \text{m s}^{-1}\).</li>
+      <li>(c) To escape, the total energy must become 0. Currently it is \(-1.42\times10^{10}\) J, so
+      \(1.42\times10^{10}\ \text{J}\) must be supplied.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 7.5 km s⁻¹, \(E_k = 1.4\times10^{10}\) J,
+    \(E_{\text{total}} = -1.4\times10^{10}\) J; (b) 10.7 km s⁻¹; (c) \(1.4\times10^{10}\) J. The energy needed
+    to escape is exactly the magnitude of the (negative) total energy — a neat check that examiners like.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 4</span> HL · 6 marks · raising an orbit</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A satellite moves from a circular orbit of radius \(r\) to one of radius
+    \(2r\). Explain why energy must be supplied even though the satellite's speed decreases.</p>
+    <ol class="steps">
+      <li>Speed: \(v \propto 1/\sqrt r\), so doubling \(r\) reduces the speed by a factor of \(\sqrt2\). The
+      kinetic energy therefore <em>halves</em>.</li>
+      <li>Potential energy: \(E_p = -GMm/r\), so doubling \(r\) makes \(E_p\) <em>less negative</em> — it
+      increases by \(\dfrac{GMm}{2r}\).</li>
+      <li>Total energy: \(E = -\dfrac{GMm}{2r}\), so going from \(r\) to \(2r\) changes \(E\) from
+      \(-\dfrac{GMm}{2r}\) to \(-\dfrac{GMm}{4r}\) — an increase of \(\dfrac{GMm}{4r}\).</li>
+      <li>The gain in potential energy (\(\dfrac{GMm}{2r}\)) is twice the loss in kinetic energy
+      (\(\dfrac{GMm}{4r}\)), so the net change is positive: energy must be supplied.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(\Delta E = +\dfrac{GMm}{4r}\) must be supplied. This is the
+    classic "counter-intuitive orbit" question: higher orbits are slower but have <em>more</em> total energy.
+    If a question asks you to "explain, with reference to energy", this two-term argument is the whole
+    answer.</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>D.1 links to <strong>A.2 circular motion</strong> (gravity supplies the centripetal force) and
+  <strong>A.3 energy</strong> (escape speed is pure energy conservation). It links to
+  <strong>A.4 angular momentum</strong>: Kepler's second law is conservation of angular momentum, since gravity
+  is a central force with zero torque. And it links to <strong>E.5 stars</strong>: the mass–luminosity relation
+  and stellar evolution are governed by gravity.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — D.1</span>
+  <p><strong>gravitational field</strong><strong>gravitational field strength</strong> /<strong>gravitational potential</strong><strong>gravitational potential energy</strong><strong>inverse-square law</strong><strong>orbit</strong><strong>orbital speed</strong><strong>escape speed</strong><strong>geostationary</strong><strong>equipotential surface</strong><strong>field line</strong><strong>period</strong><strong>Kepler's laws</strong><strong>bound / unbound orbit</strong> /<strong>weightless</strong></p>
+</div>
+
+<h2 id="d2">D.2 Electric and magnetic fields <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Charge and Coulomb's law</h3>
+
+<p>\[F = \frac{k q_1 q_2}{r^2}, \qquad k = \frac{1}{4\pi\varepsilon_0} = 8.99\times10^9\ \text{N m}^2\text{C}^{-2}\]</p>
+<dl class="glossary">
+  <dt>Charge \(q\)</dt><dd>Unit C. Quantised: \(q = ne\) with \(e = 1.60\times10^{-19}\) C. Two kinds, positive
+  and negative.</dd>
+  <dt>Attractive / repulsive</dt><dd>Like charges repel, unlike charges attract — unlike gravity, which is only
+  attractive.</dd>
+  <dt>Permittivity of free space \(\varepsilon_0\)</dt><dd>\(8.85\times10^{-12}\ \text{F m}^{-1}\).</dd>
+</dl>
+
+<h3>Electric field strength and field lines</h3>
+
+<p>\[E = \frac{F}{q}\]</p>
+<p>Unit N C⁻¹ (equivalently V m⁻¹). It is a <strong>vector</strong>, defined as the force per unit
+<em>positive</em> charge, so it points in the direction a positive charge would accelerate.</p>
+
+<p>For a point charge: \(E = \dfrac{kQ}{r^2}\). Between parallel plates: \(E = \dfrac{V}{d}\), uniform.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — reading and drawing field lines</span>
+  <ol class="steps">
+    <li>Field lines point from positive to negative; the arrow shows the force on a <em>positive</em> test
+    charge.</li>
+    <li>The <strong>density</strong> of lines indicates field strength: closer lines, stronger field.</li>
+    <li>Field lines <strong>never cross</strong> (the field has one direction at each point) and never form
+    closed loops (electrostatic fields are conservative).</li>
+    <li>Field lines meet conducting surfaces at right angles, and the field inside a conductor in electrostatic
+    equilibrium is zero.</li>
+    <li>Field lines cross equipotential surfaces at <strong>90°</strong>.</li>
+  </ol>
+</div>
+
+<h3>Uniform electric field between parallel plates</h3>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(E = V/d\) from work and potential difference</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Move a charge \(q\) from one plate to the other across a uniform field \(E\). The force on it is
+      \(F = qE\) and it acts over distance \(d\).</li>
+      <li>Work done \(= Fd = qEd\).</li>
+      <li>By the definition of potential difference, the work done per unit charge is \(V\), so
+      \(V = \dfrac{qEd}{q} = Ed\).</li>
+      <li>Therefore \(E = \dfrac{V}{d}\), and \(E\) is uniform because \(V\) changes linearly with distance.</li>
+    </ol>
+    <p><strong>Units:</strong> V m⁻¹ is the same as N C⁻¹ — show this if asked:
+    \(\dfrac{\text{V}}{\text{m}} = \dfrac{\text{J C}^{-1}}{\text{m}} = \dfrac{\text{N m C}^{-1}}{\text{m}}
+    = \text{N C}^{-1}\). <strong>When it is wrong:</strong> near the edges of the plates (fringing), where the
+    field is not uniform.</p>
+  </div>
+</details>
+
+<h3>Magnetic fields</h3>
+
+<p><strong>Intuition.</strong> A magnetic field is produced by <em>moving</em> charge — a current in a wire, or
+the orbital and spin motion of electrons in a permanent magnet. Crucially, the magnetic force acts only on
+charges that are <em>already moving</em>, and it acts <strong>perpendicular</strong> to their velocity. That is
+why it changes direction, not speed, and why it does no work.</p>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Source</th><th>Field pattern</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Bar magnet</td><td>Loops from N to S outside, S to N inside</td><td>Lines are continuous closed loops — no magnetic monopole.</td></tr>
+      <tr><td>Straight current-carrying wire</td><td>Concentric circles around the wire</td><td>Direction from the <strong>right-hand grip rule</strong>: thumb along current, fingers curl in the field direction.</td></tr>
+      <tr><td>Flat circular coil</td><td>Circular at the centre, perpendicular to the coil</td><td>Field at the centre is strongest and perpendicular to the plane of the coil.</td></tr>
+      <tr><td>Solenoid (long coil)</td><td>Uniform inside, like a bar magnet outside</td><td>Strength increases with current, turns per unit length, and a soft-iron core.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Electric field lines start and end on charges; magnetic field lines are <strong>closed loops</strong>
+  (there are no magnetic monopoles in this syllabus). If you draw a magnetic field line starting at a north
+  pole and stopping at a south pole, you have drawn it wrong — it continues through the magnet. Also: the
+  force on a moving charge is \(F = Bqv\sin\theta\) — if the charge moves <em>parallel</em> to the field,
+  \(\theta = 0\) and the force is <strong>zero</strong>.</p>
+</div>
+
+<h3>Electric potential and potential energy <span class="badge badge--hl">HL only</span></h3>
+
+<p>\[V_e = \frac{kQ}{r}, \qquad E_p = qV_e = \frac{kQq}{r}\]</p>
+<dl class="glossary">
+  <dt>Electric potential \(V_e\)</dt>
+  <dd>Work done per unit positive charge in bringing a test charge from infinity to that point. Unit V
+  (= J C⁻¹). It is a <strong>scalar</strong> — positive near a positive charge, negative near a negative one.</dd>
+  <dt>Electric potential energy</dt>
+  <dd>\(E_p = qV\). For like charges it is positive (they repel, so pushing them together stores energy); for
+  unlike charges it is negative (they attract, so they are bound).</dd>
+  <dt>Equipotential surfaces</dt>
+  <dd>Surfaces of constant potential. No work is done moving a charge along one, so \(\Delta E_p = 0\).
+  They are always perpendicular to field lines.</dd>
+</dl>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the gravity/electrostatics translation table</span>
+  <ol class="steps">
+    <li>\(g = GM/r^2 \longleftrightarrow E = kQ/r^2\) — both inverse-square field strengths.</li>
+    <li>\(F = GMm/r^2 \longleftrightarrow F = kQq/r^2\) — both inverse-square forces.</li>
+    <li>\(V_g = -GM/r \longleftrightarrow V_e = +kQ/r\) — both \(1/r\) potentials. (Sign differs because
+    gravity is always attractive.)</li>
+    <li>\(W = q\Delta V\) is the electric version of \(W = mg\Delta h\). If a charge moves between two
+    points, the work done on it is \(q(V_1 - V_2)\) — <strong>independent of the path taken</strong>.</li>
+    <li>Energy gained by a charge accelerated through a pd \(V\): \(\Delta E_k = qV\). This is where the
+    electron-volt comes from: 1 eV = \(1.60\times10^{-19}\) J.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> IB-style · 6 marks · parallel plates</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Two parallel plates are 4.0 cm apart with a pd of 2000 V across them. An
+    electron is released from rest at the negative plate. Determine (a) the electric field strength,
+    (b) the force on the electron and (c) its speed on reaching the positive plate.</p>
+    <ol class="steps">
+      <li>(a) \(E = V/d = 2000/0.040 = 5.0\times10^4\ \text{V m}^{-1}\).</li>
+      <li>(b) \(F = qE = (1.60\times10^{-19})(5.0\times10^4) = 8.0\times10^{-15}\ \text{N}\), directed
+      <em>towards the positive plate</em> because the electron is negative.</li>
+      <li>(c) Energy: \(qV = \tfrac12 mv^2\), so \(v = \sqrt{\dfrac{2qV}{m}}
+      = \sqrt{\dfrac{2(1.60\times10^{-19})(2000)}{9.11\times10^{-31}}}
+      = \sqrt{\dfrac{6.4\times10^{-16}}{9.11\times10^{-31}}} = \sqrt{7.03\times10^{14}}
+      = 2.65\times10^7\ \text{m s}^{-1}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(5.0\times10^4\ \text{V m}^{-1}\), (b)
+    \(8.0\times10^{-15}\ \text{N}\) towards the positive plate, (c) \(2.7\times10^7\ \text{m s}^{-1}\) (about
+    9% of \(c\), so non-relativistic treatment is acceptable). The energy gained is 2000 eV = 2 keV — this is
+    exactly how an old cathode-ray tube accelerated its beam.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 6</span> HL · 7 marks · point-charge potential</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Two point charges, \(+4.0\ \mu\text{C}\) and \(-6.0\ \mu\text{C}\), are 0.30 m
+    apart. Determine (a) the electric potential at the midpoint and (b) the work done bringing a
+    \(+2.0\ \text{nC}\) charge from infinity to the midpoint.</p>
+    <ol class="steps">
+      <li>(a) Potentials add as <em>scalars</em>. Each charge is 0.15 m from the midpoint:
+      \(V = \dfrac{k(4.0\times10^{-6})}{0.15} + \dfrac{k(-6.0\times10^{-6})}{0.15}\).</li>
+      <li>\(V = \dfrac{8.99\times10^9}{0.15}(4.0\times10^{-6} - 6.0\times10^{-6})
+      = (5.99\times10^{10})(-2.0\times10^{-6}) = -1.20\times10^5\ \text{V}\).</li>
+      <li>(b) \(W = qV = (2.0\times10^{-9})(-1.20\times10^5) = -2.4\times10^{-4}\ \text{J}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(-1.2\times10^5\ \text{V}\), (b) \(-2.4\times10^{-4}\ \text{J}\).
+    The negative sign means the field does positive work — the negative charge dominates, so a positive test
+    charge is attracted and the external agent must <em>hold it back</em>. Note the field strength at the
+    midpoint is <em>not</em> zero (both fields point the same way), even though we used scalar addition for the
+    potential. That contrast is a very common exam question.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — D.2</span>
+  <p><strong>electric charge</strong><strong>Coulomb's law</strong><strong>electric field strength</strong><strong>field line</strong><strong>uniform field</strong><strong>parallel plates</strong><strong>electric potential</strong><strong>potential difference</strong><strong>equipotential</strong><strong>permittivity</strong><strong>magnetic field</strong><strong>magnetic flux density</strong><strong>right-hand rule</strong><strong>solenoid</strong><strong>electron-volt</strong><strong>test charge</strong></p>
+</div>
+
+<h2 id="d3">D.3 Motion in electromagnetic fields <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Charged particle in a uniform electric field</h3>
+
+<p>Force \(F = qE\) is constant in magnitude and direction (along/against the field for a positive/negative
+charge). So the acceleration is constant: \(a = \dfrac{qE}{m}\). This is <strong>projectile motion</strong>
+(A.1) with \(g\) replaced by \(qE/m\) — the same two-component method, the same parabolic path. Note that
+unlike gravity, the direction depends on the <em>sign</em> of the charge.</p>
+
+<h3>Charged particle in a uniform magnetic field</h3>
+
+<p>\[F = Bqv\sin\theta\]</p>
+<p>When \(\theta = 90^\circ\) the force has its maximum value \(Bqv\) and is perpendicular to the velocity, so
+it provides a centripetal force and the particle moves in a <strong>circle</strong>.</p>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(r = \dfrac{mv}{Bq}\) and the cyclotron frequency</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Magnetic force = centripetal force: \(Bqv = \dfrac{mv^2}{r}\).</li>
+      <li>Cancel one \(v\): \(Bq = \dfrac{mv}{r}\), so \(r = \dfrac{mv}{Bq}\).</li>
+      <li>The radius is proportional to momentum \(p = mv\) — which is why particle physicists measure
+      momentum from the curvature of tracks in a bubble chamber.</li>
+      <li>The period: \(T = \dfrac{2\pi r}{v} = \dfrac{2\pi mv}{Bqv} = \dfrac{2\pi m}{Bq}\).</li>
+      <li>So \(f = \dfrac{Bq}{2\pi m}\) — the <strong>cyclotron frequency</strong>. Remarkably, it is
+      <em>independent of the speed and radius</em>: a faster particle goes in a bigger circle but takes the
+      same time. That is what makes a cyclotron possible.</li>
+    </ol>
+    <p><strong>What it means:</strong> the magnetic force does no work (it is perpendicular to the motion), so
+    the speed and kinetic energy are constant — only the direction changes.
+    <strong>When it is wrong:</strong> at relativistic speeds, where \(m\) must be replaced by \(\gamma m\)
+    (A.5), causing the cyclotron to fall out of sync — hence the synchrotron.</p>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Direction. The force on a <em>positive</em> charge is given by Fleming's <strong>left-hand rule</strong>
+  (or \(\mathbf{F} = q\mathbf{v}\times\mathbf{B}\)): First finger = field (N→S), second finger = current
+  (direction of motion of positive charge), thumb = force. For an <strong>electron you must reverse the
+  direction</strong>, because it is negatively charged. Nearly every "state the direction" mark lost in D.3 is
+  this one.</p>
+</div>
+
+<h3>Combined electric and magnetic fields</h3>
+
+<p>With both fields present and perpendicular, the two forces can balance:</p>
+<p>\[qE = Bqv \quad\Rightarrow\quad v = \frac{E}{B}\]</p>
+<p>Only particles with this speed pass through undeflected — that is a <strong>velocity selector</strong>. It is
+the operating principle of mass spectrometers and of J.J. Thomson's measurement of \(e/m\).</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 7</span> IB-style · 6 marks · electron in a magnetic field</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> An electron is accelerated from rest through 500 V and then enters a uniform
+    magnetic field of 8.0 mT perpendicular to its velocity. Determine (a) its speed and (b) the radius of its
+    circular path.</p>
+    <ol class="steps">
+      <li>(a) \(qV = \tfrac12 mv^2\): \(v = \sqrt{\dfrac{2(1.60\times10^{-19})(500)}{9.11\times10^{-31}}}
+      = \sqrt{1.756\times10^{14}} = 1.33\times10^7\ \text{m s}^{-1}\).</li>
+      <li>(b) \(r = \dfrac{mv}{Bq} = \dfrac{(9.11\times10^{-31})(1.33\times10^7)}{(8.0\times10^{-3})(1.60\times10^{-19})}
+      = \dfrac{1.21\times10^{-23}}{1.28\times10^{-21}} = 9.5\times10^{-3}\ \text{m}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(1.3\times10^7\ \text{m s}^{-1}\), (b) 9.5 mm. A radius of
+    about a centimetre in a modest field is typical for electrons — which is why electron-beam tubes need
+    fairly strong fields to bend the beam visibly.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 8</span> IB-style · 7 marks · velocity selector</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> In a velocity selector, a uniform electric field of
+    \(4.0\times10^4\ \text{V m}^{-1}\) and a uniform magnetic field of 0.20 T are at right angles to each
+    other and to the beam. (a) Determine the speed of the particles that pass through undeflected.
+    (b) Explain what happens to faster particles.</p>
+    <ol class="steps">
+      <li>(a) \(qE = Bqv \Rightarrow v = E/B = 4.0\times10^4/0.20 = 2.0\times10^5\ \text{m s}^{-1}\).</li>
+      <li>(b) The electric force \(qE\) is unchanged but the magnetic force \(Bqv\) increases with \(v\). For a
+      faster particle \(Bqv \gt qE\), so the magnetic force dominates and the particle is deflected in the
+      direction of the magnetic force. (For a slower particle, the electric force dominates and it deflects the
+      other way.)</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(2.0\times10^5\ \text{m s}^{-1}\), (b) faster particles are
+    deflected by the magnetic force. Note the charge \(q\) cancels, so the selector works for any charge —
+    but the <em>direction</em> of deflection depends on the sign.</div>
+  </div>
+</details>
+
+<h3>Force on a current-carrying conductor</h3>
+
+<p>\[F = BIL\sin\theta\]</p>
+<dl class="glossary">
+  <dt>\(B\)</dt><dd>magnetic flux density (T, tesla)</dd>
+  <dt>\(I\)</dt><dd>current (A)</dd>
+  <dt>\(L\)</dt><dd>length of conductor <em>in</em> the field (m)</dd>
+  <dt>\(\theta\)</dt><dd>angle between the conductor (current direction) and the field lines</dd>
+</dl>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(F = BIL\) from \(F = Bqv\) on the drifting electrons</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Consider a wire of length \(L\) and cross-sectional area \(A\), carrying current \(I\). Suppose it
+      contains \(n\) charge carriers per unit volume, each of charge \(q\), drifting at speed \(v\).</li>
+      <li>Current \(I = nAqv\) (a standard result: \(I = \dfrac{\Delta q}{\Delta t}\) with the charge in a
+      length \(v\Delta t\) being \(nA\,v\Delta t\,q\)).</li>
+      <li>The number of carriers in the wire is \(nAL\), and each experiences force \(Bqv\), so the total force
+      is \(F = (nAL)(Bqv) = B(nAqv)L\).</li>
+      <li>Substituting \(I = nAqv\): \(F = BIL\). With the angle included: \(F = BIL\sin\theta\).</li>
+    </ol>
+    <p><strong>What it means:</strong> the force on a wire is really the sum of the forces on its moving
+    charges — the same physics as D.3's first section. <strong>When it is wrong:</strong> if the wire is
+    parallel to the field, \(\theta = 0\) and there is no force. Also, \(L\) is only the length actually
+    <em>inside</em> the field.</p>
+  </div>
+</details>
+
+<h3>Force between parallel current-carrying wires</h3>
+
+<p>\[\frac{F}{L} = \frac{\mu_0 I_1 I_2}{2\pi r}\]</p>
+<p>Currents in the <strong>same</strong> direction <strong>attract</strong>; in opposite directions they
+<strong>repel</strong>. (Mnemonic: each wire sits in the other's field; apply \(F = BIL\) and the left-hand
+rule twice and you get attraction for parallel currents.)</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 9</span> IB-style · 5 marks · parallel wires</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Two long parallel wires 0.10 m apart carry currents of 8.0 A and 12 A in
+    opposite directions. Determine the force per unit length on each wire and state whether it is attractive or
+    repulsive.</p>
+    <ol class="steps">
+      <li>\(\dfrac{F}{L} = \dfrac{\mu_0 I_1I_2}{2\pi r} = \dfrac{(4\pi\times10^{-7})(8.0)(12)}{2\pi(0.10)}\).</li>
+      <li>Numerator: \(4\pi\times10^{-7}\times96 = 1.206\times10^{-4}\). Denominator: 0.628.</li>
+      <li>\(\dfrac{F}{L} = 1.92\times10^{-4}\ \text{N m}^{-1}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(1.9\times10^{-4}\ \text{N m}^{-1}\), <strong>repulsive</strong>
+    because the currents are in opposite directions. The forces on the two wires are equal in magnitude and
+    opposite in direction — a Newton's third law pair (A.2), which is a nice link to state if asked.</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>D.3 links to <strong>E.1 Rutherford scattering</strong>: an alpha particle approaching a nucleus is a
+  charged particle deflected by a Coulomb field — the same "force perpendicular-ish to motion produces a
+  curved path" reasoning. It links to <strong>D.4 induction</strong>: a wire carrying current in a field feels
+  a force, which is exactly how a motor works, and the mirror image of a generator. And it links to
+  <strong>A.5</strong>: muons and other cosmic-ray particles curve in Earth's magnetic field, and at high
+  energy you need relativistic momentum.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — D.3</span>
+  <p><strong>charged particle</strong><strong>deflection</strong><strong>magnetic force</strong> /<strong>circular path</strong><strong>radius of curvature</strong><strong>cyclotron</strong><strong>velocity selector</strong><strong>mass spectrometer</strong><strong>Fleming's left-hand rule</strong><strong>current-carrying conductor</strong><strong>parallel wires</strong><strong>attract / repel</strong> /</p>
+</div>
+
+<h2 id="d4">D.4 Induction <span class="badge badge--hl">HL only</span></h2>
+
+<h3>Magnetic flux and flux linkage</h3>
+
+<p><strong>Intuition.</strong> Imagine the magnetic field lines as rain falling through a window frame. The
+<strong>flux</strong> is how much rain passes through the frame: more field, bigger frame, or a frame turned
+more face-on to the rain all increase it.</p>
+
+<p>\[\Phi = BA\cos\theta \qquad N\Phi = BAN\cos\theta\]</p>
+<dl class="glossary">
+  <dt>\(\Phi\)</dt><dd>magnetic flux, unit <strong>weber (Wb)</strong>. \(1\ \text{Wb} = 1\ \text{T m}^2\).</dd>
+  <dt>\(B\)</dt><dd>magnetic flux density (T)</dd>
+  <dt>\(A\)</dt><dd>area of the coil (m²)</dd>
+  <dt>\(\theta\)</dt><dd>the angle between the field and the <strong>normal</strong> to the plane of the coil</dd>
+  <dt>\(N\Phi\)</dt><dd><strong>flux linkage</strong> (Wb-turns) — flux through one turn times the number of
+  turns</dd>
+</dl>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>The angle in \(\Phi = BA\cos\theta\) is measured from the <strong>normal</strong> to the coil, so a coil
+  "face-on" to the field (maximum flux) has \(\theta = 0\) and \(\cos\theta = 1\). A coil "edge-on" (plane
+  parallel to field) has \(\theta = 90^\circ\) and zero flux. Many students use \(\sin\theta\) here and then
+  get the generator graph a quarter-cycle out of phase. Rule of thumb: face-on ⇒ maximum flux; use
+  \(\cos\) with the angle from the normal.</p>
+</div>
+
+<h3>Faraday's law and Lenz's law</h3>
+
+<p>\[\varepsilon = -N\frac{\Delta\Phi}{\Delta t} \qquad \text{or} \qquad
+\varepsilon = -\frac{\Delta(N\Phi)}{\Delta t}\]</p>
+
+<p>The emf is the <strong>rate of change of flux linkage</strong>. Not the flux — the rate of change of it. A
+huge constant flux produces <em>nothing</em>.</p>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why the minus sign? (Lenz's law)</span>
+  <p>The minus sign is Lenz's law in symbols: <strong>the induced emf drives a current whose magnetic effect
+  opposes the change that caused it</strong>. Why must it? Suppose it didn't. If the induced current
+  <em>helped</em> the change, a small change would produce a current that increases the change, which produces
+  a bigger current — free energy, forever. That violates conservation of energy. So the opposition is not a
+  rule of thumb about coils; it is energy conservation expressing itself. <strong>That argument is a
+  3-mark "explain" answer in full.</strong></p>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the four-step Lenz's law procedure</span>
+  <ol class="steps">
+    <li>Identify the change: is the flux <em>increasing</em> or <em>decreasing</em>, and in which direction does
+    the original field point?</li>
+    <li>Determine what the induced field must do: oppose the <em>change</em>. If flux is increasing, the induced
+    field points <em>against</em> the original field; if decreasing, it points <em>with</em> it.</li>
+    <li>Use the right-hand grip rule to find the current direction that produces that induced field.</li>
+    <li>State the direction of the current and mark it on the diagram. Practise with a bar magnet pushed into
+    a coil, then pulled out, then with the other pole — the three cases examiners always use.</li>
+  </ol>
+</div>
+
+<h3>Motional emf</h3>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(\varepsilon = BLv\) for a rod moving through a field</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>A conducting rod of length \(L\) moves at speed \(v\) perpendicular to a uniform field \(B\).</li>
+      <li>Each charge \(q\) in the rod moves at speed \(v\) through the field, so it experiences a magnetic
+      force \(F = Bqv\) along the rod (Fleming's left-hand rule).</li>
+      <li>Charges separate until the electric force \(qE\) balances the magnetic force \(Bqv\), so
+      \(E = Bv\).</li>
+      <li>The pd between the ends of the rod is \(\varepsilon = EL = BLv\).</li>
+      <li>Alternatively from Faraday: in time \(\Delta t\) the rod sweeps out area \(Lv\Delta t\), so
+      \(\Delta\Phi = BLv\Delta t\) and \(\varepsilon = \dfrac{\Delta\Phi}{\Delta t} = BLv\). Same answer by two
+      routes — which is a good check.</li>
+    </ol>
+    <p><strong>What it means:</strong> a conductor moving through a field becomes a battery.
+    <strong>When it is wrong:</strong> if the rod moves <em>along</em> its own length, no emf (no charge
+    separation across it); if it moves parallel to the field, no magnetic force at all.</p>
+  </div>
+</details>
+
+<h3>The AC generator: a coil rotating in a field</h3>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(\varepsilon = BAN\omega\sin\omega t\) for a rotating coil</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>A coil of \(N\) turns and area \(A\) rotates at angular speed \(\omega\) in a uniform field \(B\).
+      Let \(\theta\) be the angle between the field and the normal to the coil.</li>
+      <li>If the coil starts face-on (\(\theta = 0\)) at \(t = 0\), then \(\theta = \omega t\) and the flux
+      linkage is \(N\Phi = BAN\cos\omega t\).</li>
+      <li>Faraday's law: \(\varepsilon = -\dfrac{d(N\Phi)}{dt} = -\dfrac{d}{dt}(BAN\cos\omega t)
+      = BAN\omega\sin\omega t\).</li>
+      <li>So the emf varies <strong>sinusoidally</strong> with peak value
+      \(\varepsilon_0 = BAN\omega\) (also written \(NBA\omega\)).</li>
+    </ol>
+    <p><strong>What it means:</strong> the emf is maximum when the flux is changing fastest — which is when the
+    flux itself is <em>zero</em> (coil edge-on). The emf is zero when the flux is maximum (coil face-on).
+    <strong>That phase relationship is the single most tested idea in D.4.</strong></p>
+  </div>
+</details>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="AC generator output: flux linkage and emf varying sinusoidally, a quarter cycle out of phase">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="70" y1="160" x2="600" y2="160" stroke="#334155" stroke-width="1.5"/>
+    <line x1="70" y1="40" x2="70" y2="280" stroke="#334155" stroke-width="1.5"/>
+    <text x="30" y="160" font-size="12" font-family="system-ui, sans-serif" fill="#151923">emf, flux</text>
+    <text x="300" y="300" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">time</text>
+    <path d="M70 70 Q 145 70 220 160 Q 295 250 370 160 Q 445 70 520 160 Q 560 205 600 160" fill="none" stroke="#0a6f80" stroke-width="2.5"/>
+    <text x="80" y="60" font-size="13" font-family="system-ui, sans-serif" fill="#0a6f80">flux linkage N&#934; &#8733; cos &#969;t</text>
+    <path d="M70 160 Q 145 250 220 160 Q 295 70 370 160 Q 445 250 520 160 Q 560 115 600 160" fill="none" stroke="#c0392b" stroke-width="2.5"/>
+    <text x="240" y="250" font-size="13" font-family="system-ui, sans-serif" fill="#c0392b">emf &#949; &#8733; sin &#969;t</text>
+    <circle cx="70" cy="70" r="4" fill="#0a6f80"/>
+    <circle cx="70" cy="160" r="4" fill="#c0392b"/>
+    <line x1="220" y1="45" x2="220" y2="275" stroke="#334155" stroke-width="1" stroke-dasharray="3 3"/>
+    <text x="196" y="38" font-size="12" font-family="system-ui, sans-serif" fill="#151923">T/4</text>
+    <text x="120" y="215" font-size="12" font-family="system-ui, sans-serif" fill="#151923">flux max &#8594; emf zero</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> The AC generator. Flux linkage (teal) and emf (red) are
+  a quarter of a cycle out of phase: the emf is greatest when the flux is changing fastest, i.e. when the flux
+  itself passes through zero.</figcaption>
+</figure>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Three, all common. (1) Drawing the emf curve in phase with the flux — it is 90° out of phase.
+  (2) Using peak values where rms is needed: for a sinusoid, \(V_{\text{rms}} = V_0/\sqrt2\) and
+  \(I_{\text{rms}} = I_0/\sqrt2\). Mains "230 V" is an rms value; its peak is 325 V.
+  (3) Saying "a bigger flux gives a bigger emf" — no: a bigger rate of <em>change</em> does. A coil sitting in
+  a huge static field has zero induced emf.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 10</span> HL · 6 marks · motional emf</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> An aircraft with a wingspan of 35 m flies horizontally at 250 m s⁻¹ through
+    the Earth's magnetic field. The vertical component of the field is \(5.0\times10^{-5}\) T. Determine the emf
+    induced between the wingtips.</p>
+    <ol class="steps">
+      <li>The wings move horizontally, cutting the <em>vertical</em> component of the field, so
+      \(\varepsilon = BLv\) with \(B = 5.0\times10^{-5}\) T.</li>
+      <li>\(\varepsilon = (5.0\times10^{-5})(35)(250) = 0.44\ \text{V}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 0.44 V. Small but real — and it is why aircraft are fitted with
+    static discharge wicks. Notice the horizontal component of the field produces nothing here, because the
+    wings move <em>along</em> it rather than cutting it.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 11</span> HL · 8 marks · AC generator</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A rectangular coil of 200 turns, each of area 0.020 m², rotates at 50 Hz in a
+    uniform magnetic field of 0.15 T. (a) Determine the peak emf. (b) Determine the rms emf.
+    (c) Determine the emf at the instant when the plane of the coil is parallel to the field.
+    (d) Explain your answer to (c).</p>
+    <ol class="steps">
+      <li>\(\omega = 2\pi f = 2\pi(50) = 314\ \text{rad s}^{-1}\).</li>
+      <li>(a) \(\varepsilon_0 = BAN\omega = (0.15)(0.020)(200)(314) = 188\ \text{V}\).</li>
+      <li>(b) \(\varepsilon_{\text{rms}} = 188/\sqrt2 = 133\ \text{V}\).</li>
+      <li>(c) When the plane of the coil is parallel to the field, the normal is perpendicular to the field, so
+      \(\theta = 90^\circ\) and the flux linkage is zero — but the emf is at its <strong>maximum</strong>,
+      188 V.</li>
+      <li>(d) The emf depends on the <em>rate of change</em> of flux linkage, not on the flux itself. At this
+      orientation the flux is zero but changing fastest, so \(|\varepsilon|\) is maximum.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 190 V, (b) 130 V, (c) 190 V, (d) emf peaks when flux linkage is
+    zero. This is the exam's favourite D.4 question; if you can explain (d) in that sentence, you have the
+    topic.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 12</span> HL · 7 marks · Lenz's law with a falling magnet</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A bar magnet is dropped through a horizontal copper ring, north pole first.
+    Describe and explain the force on the magnet as it approaches, as it passes through, and as it leaves.</p>
+    <ol class="steps">
+      <li><strong>Approaching:</strong> the downward flux through the ring is increasing. By Lenz's law the
+      induced current creates a field opposing that increase — i.e. an upward field. The top of the ring becomes
+      a north pole, which repels the approaching north pole. The magnet experiences an upward force and
+      accelerates at less than \(g\).</li>
+      <li><strong>Inside the ring (centre):</strong> at the instant the magnet is at the centre the flux is at a
+      maximum, so its rate of change is momentarily zero, the induced emf is zero, and there is no magnetic
+      force.</li>
+      <li><strong>Leaving:</strong> the downward flux is now decreasing. The induced current reverses, creating
+      a downward field to oppose the decrease. The top of the ring becomes a south pole, attracting the
+      receding north pole — again an upward force on the magnet.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> upward force on the way in, none at the centre, upward force on the
+    way out — the magnet is always <em>retarded</em>. The kinetic energy lost becomes thermal energy in the
+    ring. This is exactly Lenz's law as energy conservation: the magnet can never be accelerated by the ring,
+    or we would have a perpetual motion machine.</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>D.4 links to <strong>B.5 circuits</strong> (the induced emf drives a current through the circuit;
+  \(P = \varepsilon^2/R\)), to <strong>C.1 SHM</strong> (the output is sinusoidal with angular frequency
+  \(\omega\)), and to <strong>A.3 energy</strong> (Lenz's law is energy conservation, and the mechanical work
+  done turning a generator becomes electrical energy). It also links to <strong>B.4</strong>: every power
+  station is a heat engine turning a generator, so the Carnot ceiling limits the electricity, not just the
+  heat.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — D.4</span>
+  <p><strong>magnetic flux</strong><strong>flux linkage</strong><strong>weber</strong><strong>magnetic flux density</strong><strong>induced emf</strong><strong>Faraday's law</strong><strong>Lenz's law</strong><strong>rate of change</strong><strong>motional emf</strong><strong>generator</strong><strong>rotate / rotation</strong><strong>peak value</strong><strong>root-mean-square (rms)</strong><strong>alternating current (AC)</strong><strong>oppose</strong> /</p>
+</div>
+
+<div class="conn">
+  <span class="conn__title">Connections — Theme D to the rest</span>
+  <ul>
+    <li><strong>→ Theme A:</strong> circular motion under gravity (D.1) and under magnetic force (D.3); energy
+    conservation gives escape speed; angular momentum gives Kepler's second law.</li>
+    <li><strong>→ Theme B:</strong> potential difference in circuits (B.5) is the same quantity as electric
+    potential in D.2; a generator is how a heat engine (B.4) produces electricity.</li>
+    <li><strong>→ Theme C:</strong> the AC generator output is sinusoidal (C.1); EM waves are oscillating
+    fields (C.2).</li>
+    <li><strong>→ Theme E:</strong> Rutherford scattering is Coulomb repulsion (D.2 + E.1); the Bohr model
+    balances Coulomb attraction with circular motion (D.2 + E.1); cloud and bubble chambers use magnetic
+    curvature to identify particles (D.3 + E.3).</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can use F = GMm/r² with r measured from the centre, and g = GM/r².</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive Kepler's third law and use it in ratio form.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive V_g = −GM/r and explain why it is negative.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive escape speed and the total energy of an orbiting satellite.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain why a higher orbit has more total energy but lower speed.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use Coulomb's law and E = F/q, and draw correct field-line patterns.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive E = V/d and use qV = ½mv² for accelerated charges.</span></label></li>
+  <li><label><input type="checkbox"><span>I can add electric potentials as scalars and know when the field is not zero.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive r = mv/Bq and the cyclotron frequency, and give the direction for an electron.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive F = BIL from F = Bqv and give the parallel-wire force direction.</span></label></li>
+  <li><label><input type="checkbox"><span>I can define flux and flux linkage and use Φ = BA cos θ with the correct angle.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive ε = BANω sin ωt and explain the quarter-cycle phase difference with flux.</span></label></li>
+  <li><label><input type="checkbox"><span>I can apply Lenz's law to a magnet entering and leaving a coil, and justify it by energy conservation.</span></label></li>
+</ul>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li>
+    <p><strong>[4 marks]</strong> Calculate the gravitational force between two 5.0 kg spheres whose centres
+    are 0.20 m apart. Comment on the magnitude.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(F = \dfrac{Gm_1m_2}{r^2} = \dfrac{(6.67\times10^{-11})(25)}{0.04} = 4.2\times10^{-8}\ \text{N}\).</p>
+      <p>Tiny — far below the weight of the spheres (~49 N) and below what you could detect without a
+      Cavendish torsion balance. This is why we only notice gravity when at least one mass is planet-sized.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> A planet orbits a star with twice the period of Earth and the same star.
+    Determine the ratio of its orbital radius to Earth's.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(T^2 \propto r^3\), so \(\left(\dfrac{r_p}{r_E}\right)^3 = \left(\dfrac{T_p}{T_E}\right)^2 = 2^2 = 4\).</p>
+      <p>\(\dfrac{r_p}{r_E} = 4^{1/3} = 1.59\). The planet orbits at about 1.6 times Earth's radius — and since
+      \(v \propto 1/\sqrt r\), it moves more slowly.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> Determine the escape speed from the surface of the Moon. Moon:
+    mass \(7.35\times10^{22}\) kg, radius \(1.74\times10^6\) m. Hence comment on why the Moon has no
+    atmosphere.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(v_e = \sqrt{\dfrac{2GM}{r}} = \sqrt{\dfrac{2(6.67\times10^{-11})(7.35\times10^{22})}{1.74\times10^6}}
+      = \sqrt{\dfrac{9.80\times10^{12}}{1.74\times10^6}} = \sqrt{5.63\times10^6} = 2.37\times10^3\ \text{m s}^{-1}\).</p>
+      <p>At lunar surface temperatures the rms speed of light gas molecules (hydrogen, helium) is comparable to
+      or greater than 2.4 km s⁻¹, so over geological time those molecules escape. Heavier molecules are too
+      slow to escape, but without a magnetic field the solar wind also strips the atmosphere. Hence the Moon
+      has essentially none.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> An oil drop carries a charge of \(3.2\times10^{-19}\) C in a uniform field of
+    \(2.5\times10^4\ \text{V m}^{-1}\). Determine the electric force on it and compare it with its weight
+    (mass \(1.0\times10^{-14}\) kg).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(F_E = qE = (3.2\times10^{-19})(2.5\times10^4) = 8.0\times10^{-15}\ \text{N}\).</p>
+      <p>Weight \(= mg = 1.0\times10^{-14}\times9.81 = 9.81\times10^{-14}\ \text{N}\). The weight is about 12
+      times larger than the electric force, so the drop falls — you would need a field about 12 times stronger
+      (≈ 3.1 × 10⁵ V m⁻¹) to hold it stationary. This is the principle of Millikan's oil-drop experiment.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A proton moves at \(4.0\times10^6\ \text{m s}^{-1}\) perpendicular to a
+    uniform magnetic field of 0.50 T. Determine the radius of its path and the time for one revolution.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(r = \dfrac{mv}{Bq} = \dfrac{(1.67\times10^{-27})(4.0\times10^6)}{(0.50)(1.60\times10^{-19})}
+      = \dfrac{6.68\times10^{-21}}{8.0\times10^{-20}} = 0.0835\ \text{m}\).</p>
+      <p>\(T = \dfrac{2\pi m}{Bq} = \dfrac{2\pi(1.67\times10^{-27})}{(0.50)(1.60\times10^{-19})}
+      = \dfrac{1.049\times10^{-26}}{8.0\times10^{-20}} = 1.31\times10^{-7}\ \text{s}\).</p>
+      <p>Note the period does <em>not</em> depend on the speed — double the speed and the radius doubles but the
+      period is unchanged.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A straight wire of length 0.25 m carries 6.0 A at right angles to a magnetic
+    field of 0.40 T. Determine the force on the wire. State what happens if the wire is rotated to lie parallel
+    to the field.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(F = BIL\sin 90^\circ = 0.40\times6.0\times0.25 = 0.60\ \text{N}\).</p>
+      <p>Parallel: \(\sin 0^\circ = 0\), so the force is zero. The force is maximum when the wire is
+      perpendicular to the field and zero when parallel — that \(\sin\theta\) is the whole story of the motor
+      effect.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[7 marks]</strong> A coil of 500 turns and area 0.010 m² is in a field of 0.080 T. It is
+    rotated from face-on to edge-on in 0.20 s. Determine the average emf induced.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Initial flux linkage \(= BAN\cos 0^\circ = 0.080\times0.010\times500 = 0.40\ \text{Wb-turns}\).</p>
+      <p>Final flux linkage \(= BAN\cos 90^\circ = 0\).</p>
+      <p>Average emf \(= \dfrac{|\Delta(N\Phi)|}{\Delta t} = \dfrac{0.40}{0.20} = 2.0\ \text{V}\).</p>
+      <p>This is an <em>average</em> — the instantaneous emf varies during the rotation, starting at zero
+      (flux maximum) and ending at its peak (flux changing fastest).</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[8 marks]</strong> Explain, with reference to Faraday's and Lenz's laws, why the induced current
+    in a coil must oppose the change in flux linkage that produces it, and describe an experiment that
+    demonstrates this.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p><strong>Faraday:</strong> the induced emf equals the rate of change of flux linkage,
+      \(\varepsilon = -N\Delta\Phi/\Delta t\). The minus sign encodes Lenz's law.</p>
+      <p><strong>Why opposition is necessary:</strong> suppose the induced current produced a magnetic field
+      that <em>aided</em> the change in flux. Then a small change would induce a current that increases the
+      change, inducing a larger current, and so on — energy would be created from nothing, violating
+      conservation of energy. Therefore the induced effect must oppose the cause.</p>
+      <p><strong>Demonstration:</strong> drop a strong magnet through a vertical copper tube and time it;
+      then time a non-magnetic object of the same mass and shape. The magnet takes far longer. As it falls,
+      the changing flux in the tube induces circulating (eddy) currents whose magnetic field opposes the
+      magnet's motion, producing an upward force. The magnet's lost gravitational potential energy appears as
+      thermal energy in the tube, which warms slightly. A plastic tube gives no such delay — the control.</p>
+    </div></details>
+  </li>
+</ol>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="qbank">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Question Bank — DP Learning</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/qbank.css">
+</head>
+<body>
+<div id="app-shell">
+
+  <span class="eyebrow">Question Bank · Search &amp; browse</span>
+  <h1 class="page-title">Every question, in one place</h1>
+  <p class="lede">All 9,969 questions from the practice platform — past papers and curated sets across Physics HL,
+  Mathematics AA HL and Computer Science HL — searchable and filterable. Set the currency filter to
+  <strong>current</strong> to see only material on the syllabus you will be examined on in May 2028; flip it to
+  <strong>legacy</strong> or <strong>all</strong> for extra practice on overlapping content.</p>
+
+  <div id="qb-root">
+    <div class="qb-toolbar">
+      <div class="qb-search">
+        <input id="qb-q" type="search" placeholder="Search question text, command term, topic…" autocomplete="off">
+      </div>
+      <div class="qb-filters">
+        <div class="qb-field"><label for="f-subject">Subject</label><select id="f-subject"></select></div>
+        <div class="qb-field"><label for="f-status">Currency</label><select id="f-status"></select></div>
+        <div class="qb-field"><label for="f-topic">Topic</label><select id="f-topic"></select></div>
+        <div class="qb-field"><label for="f-paper">Paper</label><select id="f-paper"></select></div>
+        <div class="qb-field"><label for="f-command">Command</label><select id="f-command"></select></div>
+        <div class="qb-field"><label for="f-year">Year</label><select id="f-year"></select></div>
+      </div>
+      <div class="qb-toolbar__row">
+        <span class="qb-count" id="qb-count"></span>
+        <span class="qb-toolbar__spacer" style="flex:1"></span>
+        <button class="btn" id="qb-savecoll" type="button">Save filter as collection</button>
+        <a class="btn btn--primary" id="qb-practice" href="practice.html">Start practice with these</a>
+      </div>
+    </div>
+    <div id="qb-results"></div>
+  </div>
+
+</div>
+
+<script src="data/physics.js"></script>
+<script src="data/mathematics.js"></script>
+<script src="data/computer-science.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="qbank.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const $ = function (id) { return document.getElementById(id); };
+  const recs = QB.data();
+
+  function fill(sel, items, allLabel, selected) {
+    sel.innerHTML = '<option value="">' + allLabel + "</option>" +
+      items.map(function (it) {
+        return '<option value="' + QB.esc(it.v) + '"' + (String(it.v) === String(selected) ? " selected" : "") + ">" +
+          QB.esc(it.v) + " (" + it.n + ")</option>";
+      }).join("");
+  }
+
+  const params = QB.params();
+  const groups = QB.groups();
+  fill($("f-subject"), groups, "All subjects", params.subject);
+  fill($("f-status"), [{ v: "current", n: 0 }, { v: "legacy", n: 0 }, { v: "unknown", n: 0 }]
+        .map(function (x) { x.n = recs.filter(function (r) { return r.status === x.v; }).length; return x; }),
+        "All currencies", params.status || "current");
+  fill($("f-topic"), QB.facet("topic"), "All topics", params.topic);
+  fill($("f-paper"), QB.facet("paper"), "All papers", params.paper);
+  fill($("f-command"), QB.facet("command"), "All command terms", params.command);
+  fill($("f-year"), QB.facet("year").map(function (x) { return { v: x.v, n: x.n }; }), "All years", params.year);
+
+  // Narrow topic/paper/command/year when a subject is chosen.
+  function refillDynamic() {
+    const subj = $("f-subject").value;
+    const base = subj ? recs.filter(function (r) { return r.group === subj; }) : recs;
+    const f = function (field) {
+      const m = {}; base.forEach(function (r) { const v = r[field]; if (v != null && v !== "") m[v] = (m[v] || 0) + 1; });
+      return Object.keys(m).sort(function (a, b) { return m[b] - m[a]; }).map(function (v) { return { v: v, n: m[v] }; });
+    };
+    fill($("f-topic"), f("topic"), "All topics", $("f-topic").value);
+    fill($("f-paper"), f("paper"), "All papers", $("f-paper").value);
+    fill($("f-command"), f("command"), "All command terms", $("f-command").value);
+    fill($("f-year"), f("year"), "All years", $("f-year").value);
+  }
+
+  function readFilters() {
+    return {
+      subject: $("f-subject").value, status: $("f-status").value, topic: $("f-topic").value,
+      paper: $("f-paper").value, command: $("f-command").value, year: $("f-year").value, q: $("qb-q").value
+    };
+  }
+
+  let current = [];
+  function update() {
+    const f = readFilters();
+    current = QB.applyFilters(recs, f);
+    current = QB.search(current, f.q);
+    $("qb-count").innerHTML = "<b>" + current.length.toLocaleString() + "</b> questions match";
+    QB.renderPaged(current, $("qb-results"), {});
+    // keep the practice link in sync
+    const p = new URLSearchParams();
+    ["subject", "status", "topic", "paper", "command", "year"].forEach(function (k) { if (f[k]) p.set(k, f[k]); });
+    if (f.q) p.set("q", f.q);
+    $("qb-practice").href = "practice.html?" + p.toString();
+  }
+
+  ["f-subject", "f-status", "f-topic", "f-paper", "f-command", "f-year"].forEach(function (id) {
+    $(id).addEventListener("change", function () { if (id === "f-subject") refillDynamic(); update(); });
+  });
+  let to;
+  $("qb-q").addEventListener("input", function () { clearTimeout(to); to = setTimeout(update, 120); });
+
+  $("qb-savecoll").addEventListener("click", function () {
+    const f = readFilters();
+    const name = window.prompt("Name this collection (e.g. “Current Physics P1 hard”):", "");
+    if (!name) return;
+    QB.saveColl(name, f);
+    window.alert('Saved “' + name + '”. Find it under Collections.');
+  });
+
+  update();
+});
+</script>
+</body>
+</html>

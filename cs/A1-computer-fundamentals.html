@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A1 · Computer fundamentals — DP Computer Science HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Computer Science HL · Theme A · A1</span>
+<h1 class="page-title">A1 · Computer fundamentals</h1>
+<p class="lede">Everything a computer does, from streaming video to training a neural network, is the
+fetch–decode–execute cycle running billions of times a second over patterns of bits. This topic is where you learn
+what those bits are, how they are stored, how they are moved, and how the machine is organised to move them. It is
+the most self-contained topic in the course and the most reliably scorable in Paper 1 — there is no opinion in
+"convert 173 to hexadecimal", only right and wrong.</p>
+<div class="page-meta">
+ <span class="tag">Theme A · examined in Paper 1</span>
+ <span class="tag tag--hl">HL only: A1.4 Translation (compilers, interpreters, assemblers, bytecode, VMs)</span>
+ <span class="tag">A1.1 Hardware · A1.2 Data representation and logic · A1.3 Operating systems and control systems</span>
+</div>
+
+<h2>A1.1 · What a computer system is, and the layers of abstraction</h2>
+
+<p>A <strong>computer system</strong> is a combination of hardware and software working together to accept input,
+process it, store it, and produce output. That sentence is examinable almost verbatim, but the interesting part is
+the word <em>system</em>: no single component can do anything useful alone. A CPU with no memory cannot remember
+the instruction it just fetched. Memory with no operating system is a grid of bits with no meaning. An operating
+system with no application does nothing a user cares about.</p>
+
+<div class="callout callout--why">
+ <span class="callout__label">Why abstraction is the central idea</span>
+ <p>Computing is built in layers, and every layer is defined by what it <em>hides</em> from the layer above. The
+ transistor hides the physics. The logic gate hides the transistor. The CPU hides the gates. Machine code hides the
+ CPU's wiring. Assembly hides the bit patterns. A high-level language hides the registers. The operating system
+ hides the hardware entirely. Your Python program hides all of it. Each layer offers the one above a simpler
+ <em>interface</em> and a set of promises — and that is the whole trick: you can reason at any layer without
+ knowing the details below it. When an exam asks "explain the role of abstraction", this is the answer: managing
+ complexity by hiding unnecessary detail behind a well-defined interface.</p>
+</div>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Layer</th><th>What it deals in</th><th>What it hides from the layer above</th></tr></thead>
+ <tbody>
+ <tr><td>Hardware / physical</td><td>voltages, transistors, gates</td><td>—</td></tr>
+ <tr><td>Machine code / instruction set</td><td>binary opcodes and operands</td><td>the wiring and timing of gates</td></tr>
+ <tr><td>Assembly language</td><td>mnemonics like <code>LDA</code>, <code>ADD</code>, <code>STA</code></td><td>the binary encoding of each instruction</td></tr>
+ <tr><td>High-level language (Java / Python)</td><td>variables, loops, objects</td><td>registers, memory addresses, the stack</td></tr>
+ <tr><td>Operating system</td><td>processes, files, devices</td><td>which physical disk block, which CPU core</td></tr>
+ <tr><td>Application / user</td><td>documents, buttons, results</td><td>almost everything</td></tr>
+ </tbody>
+</table>
+</div>
+
+<p><strong>The stored-program concept</strong> (von Neumann architecture) is the insight that made modern computing
+possible: <em>instructions are data</em>. Both the program and the data it manipulates live in the same memory, in
+the same binary encoding, fetched over the same bus. Before this, "programming" a machine meant physically rewiring
+it. After it, running a new program meant loading different numbers into memory.</p>
+
+<details class="derivation">
+ <summary><span class="badge">Why</span> Why the stored-program concept changed everything — and what it costs</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>If instructions and data share one memory, the machine needs only one mechanism to get either: put an
+ address on the address bus, read what comes back on the data bus.</li>
+ <li>Therefore the machine can treat instructions as data: a program can generate, modify, or load other
+ programs. That is what a compiler, an interpreter, a loader and a just-in-time compiler all do.</li>
+ <li>Therefore one machine can run an unbounded number of different programs without any hardware change —
+ which is precisely why your phone is a camera, a map, a bank and a games console.</li>
+ <li><strong>The cost — the von Neumann bottleneck.</strong> Because instructions and data share one bus, the
+ CPU cannot fetch an instruction and fetch data at the same moment. It must serialise them. This is the
+ structural reason cache memory exists, and why modern designs separate instruction cache from data cache.</li>
+ </ol>
+ <p><strong>What it means:</strong> the flexibility of general-purpose computing is bought with a throughput
+ limit. <strong>When it is the wrong lens:</strong> a GPU or a purpose-built ASIC abandons this generality
+ deliberately, which is why specialised hardware beats a CPU on narrow tasks.</p>
+ </div>
+</details>
+
+<h2>Computer architecture</h2>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 360" role="img" aria-label="Block diagram of the CPU, registers and the three system buses connecting to memory and I/O">
+ <rect x="0" y="0" width="640" height="360" fill="#ffffff"/>
+
+ <rect x="190" y="40" width="290" height="200" rx="8" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+ <text x="335" y="62" font-size="14" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">CPU</text>
+
+ <rect x="205" y="75" width="120" height="60" rx="6" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+ <text x="265" y="100" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Control Unit</text>
+ <text x="265" y="118" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">decode &amp; coordinate</text>
+
+ <rect x="345" y="75" width="120" height="60" rx="6" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+ <text x="405" y="100" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">ALU</text>
+ <text x="405" y="118" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">arithmetic &amp; logic</text>
+
+ <rect x="205" y="155" width="260" height="70" rx="6" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+ <text x="335" y="174" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Registers (tiny, extremely fast, inside the CPU)</text>
+ <text x="245" y="198" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">PC</text>
+ <text x="305" y="198" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">MAR</text>
+ <text x="365" y="198" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">MDR</text>
+ <text x="425" y="198" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Accumulator</text>
+ <text x="245" y="214" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">next instr.</text>
+ <text x="305" y="214" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">address</text>
+ <text x="365" y="214" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">data</text>
+ <text x="425" y="214" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">result</text>
+
+ <rect x="30" y="90" width="120" height="90" rx="6" fill="#eef2ff" stroke="#334155" stroke-width="2"/>
+ <text x="90" y="118" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Main memory</text>
+ <text x="90" y="136" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">(RAM)</text>
+ <text x="90" y="156" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">instructions + data</text>
+
+ <rect x="500" y="90" width="110" height="90" rx="6" fill="#eef2ff" stroke="#334155" stroke-width="2"/>
+ <text x="555" y="118" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">I/O</text>
+ <text x="555" y="136" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">controllers</text>
+ <text x="555" y="156" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">disk, screen …</text>
+
+ <text x="176" y="140" font-size="12" font-family="system-ui, sans-serif" fill="#151923">Address bus</text>
+ <text x="176" y="200" font-size="12" font-family="system-ui, sans-serif" fill="#151923">Data bus</text>
+ <text x="176" y="260" font-size="12" font-family="system-ui, sans-serif" fill="#151923">Control bus</text>
+
+ <line x1="150" y1="130" x2="190" y2="130" stroke="#3653d6" stroke-width="2"/>
+ <line x1="150" y1="130" x2="186" y2="130" stroke="#3653d6" stroke-width="2"/>
+ <path d="M190 130 L 182 126 L 182 134 Z" fill="#3653d6"/>
+ <text x="192" y="124" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788">one way →</text>
+
+ <line x1="150" y1="200" x2="188" y2="200" stroke="#0a6f80" stroke-width="2"/>
+ <path d="M190 200 L 182 196 L 182 204 Z" fill="#0a6f80"/>
+ <path d="M152 200 L 160 196 L 160 204 Z" fill="#0a6f80"/>
+ <text x="192" y="194" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788">both ways ↔</text>
+
+ <line x1="150" y1="262" x2="188" y2="262" stroke="#b03060" stroke-width="2"/>
+ <path d="M190 262 L 182 258 L 182 266 Z" fill="#b03060"/>
+ <path d="M152 262 L 160 258 L 160 266 Z" fill="#b03060"/>
+
+ <line x1="480" y1="130" x2="498" y2="130" stroke="#3653d6" stroke-width="2"/>
+ <path d="M500 130 L 492 126 L 492 134 Z" fill="#3653d6"/>
+ <line x1="480" y1="200" x2="498" y2="200" stroke="#0a6f80" stroke-width="2"/>
+ <path d="M500 200 L 492 196 L 492 204 Z" fill="#0a6f80"/>
+
+ <text x="30" y="320" font-size="12" font-family="system-ui, sans-serif" fill="#151923">Bus width matters: a 32-bit address bus can address 2^32 different locations (4 GiB).</text>
+ <text x="30" y="340" font-size="12" font-family="system-ui, sans-serif" fill="#151923">A wider data bus moves more bits per clock tick; a faster clock moves them more often.</text>
+ </svg>
+ <figcaption><span class="viz__title">Figure 1.</span> The classic exam block diagram. Notice the directions: the
+ address bus is one-way out of the CPU (the CPU decides where), the data bus is two-way (read and write), and the
+ control bus carries the signals — read, write, interrupt, clock — that say <em>what kind</em> of transfer this is.</figcaption>
+</figure>
+
+<h3>The parts, and what each actually does</h3>
+
+<dl class="glossary">
+ <dt>Control unit (CU)</dt>
+ <dd>Fetches instructions, decodes them into control signals, and coordinates every other component. It does not
+ compute; it directs. It is the component that asserts "read" on the control bus and then waits.</dd>
+ <dt>Arithmetic logic unit (ALU)</dt>
+ <dd>Performs arithmetic (add, subtract, multiply) and logical operations (AND, OR, NOT, comparisons). It receives
+ two operands, performs one operation selected by the control unit, and puts the result somewhere — usually the
+ accumulator. It also sets <strong>flags</strong> (zero, carry, negative, overflow) that later instructions test.</dd>
+ <dt>Program counter (PC)</dt>
+ <dd>Holds the <em>address of the next instruction</em> to be fetched. After each fetch it increments; a jump
+ instruction overwrites it instead. This single register is why programs run in sequence.</dd>
+ <dt>Memory address register (MAR)</dt>
+ <dd>Holds the address of the memory location about to be read from or written to. Whatever is in the MAR is what
+ appears on the address bus.</dd>
+ <dt>Memory data register (MDR)</dt>
+ <dd>Holds the data just fetched from memory, or about to be written to it. Acts as a buffer between the fast CPU
+ and the slower memory.</dd>
+ <dt>Accumulator</dt>
+ <dd>A general-purpose register that holds one operand and then the result of an ALU operation. Older/simpler
+ architectures have essentially one; modern ones have a register file of many, but the exam model keeps the
+ accumulator because it makes the cycle easy to explain.</dd>
+ <dt>Cache</dt>
+ <dd>Small, very fast memory sitting between the CPU and RAM, holding recently and nearby used data.</dd>
+ <dt>Clock</dt>
+ <dd>A signal that switches at a fixed frequency and synchronises every step. "3.4 GHz" means 3.4 billion cycles
+ per second.</dd>
+</dl>
+
+<div class="callout callout--why">
+ <span class="callout__label">Why cache exists — and why it works</span>
+ <p>RAM is hundreds of times slower than the CPU. If the CPU waited for RAM on every access it would idle away most
+ of its life. Cache is expensive, tiny, and fast, so we put a copy of <em>some</em> of RAM in it. The reason this
+ pays off is not magic, it is observed behaviour: programs exhibit <strong>temporal locality</strong> (if you used
+ a value, you will probably use it again soon — think of a loop counter) and <strong>spatial locality</strong> (if
+ you used address 1000 you will probably soon use 1001–1031 — think of iterating an array). Caches therefore load
+ a whole <em>block</em> of consecutive addresses, not a single byte, and keep what was used recently.</p>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Why</span> Why clock speed alone does not determine performance</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>Work done per second ≈ (instructions per second) × (work per instruction).</li>
+ <li>Instructions per second ≈ clock rate ÷ average cycles per instruction (CPI). A 4 GHz chip that needs 3
+ cycles per instruction is slower than a 3 GHz chip that needs 2.</li>
+ <li>But if the required data is not in cache, the CPU stalls for tens or hundreds of cycles waiting for RAM —
+ so effective CPI is dominated by cache hit rate for memory-heavy code.</li>
+ <li>More cores only help if the problem can be split into independent pieces (and if the software is written
+ to use them). Doubling cores on a strictly sequential task does nothing.</li>
+ </ol>
+ <p><strong>Conclusion:</strong> clock speed, core count, cache size and bus width all matter, and the exam
+ expects you to say that none of them alone determines real performance. <strong>When the shortcut is wrong:</strong>
+ comparing two CPUs by GHz alone is the classic mistake examiners reward you for spotting.</p>
+ </div>
+</details>
+
+<h2>The fetch–decode–execute cycle</h2>
+
+<p>Every instruction the CPU ever runs goes through the same three stages. Learn it as a fixed ritual; Paper 1
+questions award a mark per correct step and students routinely lose two by merging them.</p>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 320" role="img" aria-label="The fetch-decode-execute cycle shown as a three-stage loop">
+ <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+ <rect x="40" y="40" width="150" height="90" rx="8" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+ <text x="115" y="66" font-size="14" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">1 · FETCH</text>
+ <text x="115" y="88" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">PC → MAR</text>
+ <text x="115" y="104" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">read: MDR ← mem</text>
+ <text x="115" y="120" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">PC ← PC + 1</text>
+
+ <rect x="245" y="40" width="150" height="90" rx="8" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+ <text x="320" y="66" font-size="14" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">2 · DECODE</text>
+ <text x="320" y="88" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">CU reads the opcode</text>
+ <text x="320" y="104" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">works out the operand</text>
+ <text x="320" y="120" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">addressing mode</text>
+
+ <rect x="450" y="40" width="150" height="90" rx="8" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+ <text x="525" y="66" font-size="14" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">3 · EXECUTE</text>
+ <text x="525" y="88" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">ALU does the work</text>
+ <text x="525" y="104" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">or data is moved</text>
+ <text x="525" y="120" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">result → register</text>
+
+ <line x1="190" y1="85" x2="243" y2="85" stroke="#334155" stroke-width="2"/>
+ <path d="M245 85 L 237 81 L 237 89 Z" fill="#334155"/>
+ <line x1="395" y1="85" x2="448" y2="85" stroke="#334155" stroke-width="2"/>
+ <path d="M450 85 L 442 81 L 442 89 Z" fill="#334155"/>
+
+ <path d="M525 130 L 525 175 L 115 175 L 115 132" fill="none" stroke="#334155" stroke-width="2"/>
+ <path d="M115 130 L 111 138 L 119 138 Z" fill="#334155"/>
+
+ <rect x="40" y="200" width="560" height="70" rx="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+ <text x="320" y="224" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Interrupts: at the end of each cycle the CPU checks the interrupt register.</text>
+ <text x="320" y="244" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">If an interrupt is pending, the current register values are saved to the stack,</text>
+ <text x="320" y="262" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">an interrupt service routine runs, and the registers are restored — resuming seamlessly.</text>
+
+ <text x="320" y="302" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">The cycle never stops; it repeats until power is removed.</text>
+ </svg>
+ <figcaption><span class="viz__title">Figure 2.</span> Three stages, then check for interrupts, then repeat.
+ The detail that earns the mark is that the PC is incremented <em>during fetch</em>, so it already points at the
+ next instruction while the current one is being executed — which is exactly how a jump works.</figcaption>
+</figure>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to write it in the exam</span>
+ <ol class="steps">
+ <li><strong>Fetch:</strong> the address in the PC is copied to the MAR; the CU issues a read on the control bus;
+ the contents of that memory location travel along the data bus into the MDR; the instruction is copied into the
+ current instruction register; the PC is incremented.</li>
+ <li><strong>Decode:</strong> the control unit examines the opcode and determines the operation and the operand
+ (which may be an immediate value, a register, or another memory address that must itself be fetched).</li>
+ <li><strong>Execute:</strong> the operation is performed — the ALU computes, or data is transferred, or the PC
+ is overwritten by a jump address.</li>
+ <li><strong>Repeat</strong>, checking for interrupts between cycles.</li>
+ </ol>
+ <p>Name the registers. "The CPU gets the instruction from memory" is worth less than "the address in the program
+ counter is copied into the memory address register".</p>
+</div>
+
+<h3>Machine code and thinking at assembly level</h3>
+
+<p>An instruction is a binary word split into an <strong>opcode</strong> (what to do) and an
+<strong>operand</strong> (what to do it to). A tiny invented machine with a 4-bit opcode and a 12-bit operand could
+represent <code>0001 000000110010</code> as "opcode 1 = load the value at address 50 into the accumulator".</p>
+
+<pre><code>Assembly Meaning (typical)
+------------ --------------------------------------------------
+LDA 50 Load the contents of memory address 50 into the accumulator
+ADD 51 Add the contents of address 51 to the accumulator
+STA 52 Store the accumulator into address 52
+JMP 20 Put 20 into the PC (jump)
+BRZ 20 If the zero flag is set, put 20 into the PC (branch if zero)
+INP Read from an input device into the accumulator
+OUT Send the accumulator to an output device
+HLT Stop</code></pre>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 4 marks · trace an assembly program</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> Memory contains: address 50 = 7, address 51 = 5, address 52 = 0. Trace this
+ program and state the final contents of address 52.</p>
+<pre><code>LDA 50
+ADD 51
+STA 52
+HLT</code></pre>
+ <ol class="steps">
+ <li><code>LDA 50</code>: accumulator ← memory[50] = 7.</li>
+ <li><code>ADD 51</code>: accumulator ← 7 + memory[51] = 7 + 5 = 12.</li>
+ <li><code>STA 52</code>: memory[52] ← 12.</li>
+ <li><code>HLT</code>: stop.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> memory[52] = 12. The point of the question is that assembly is imperative and sequential: each line changes exactly one piece of state, and the state is the accumulator plus memory. Trace it one line at a time and never do two steps in your head at once.</div>
+ </div>
+</details>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 2</span> IB-style · 6 marks · counting with a branch</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> Explain what the following program does and state the final value in address 60.
+ Assume address 60 starts at 0 and address 61 holds the value 4.</p>
+<pre><code> LDA 61
+LOOP BRZ DONE
+ STA 60
+ SUB ONE
+ JMP LOOP
+DONE HLT
+ONE DAT 1</code></pre>
+ <ol class="steps">
+ <li><code>LDA 61</code>: accumulator ← 4.</li>
+ <li><code>BRZ DONE</code>: the zero flag is not set (4 ≠ 0), so continue.</li>
+ <li><code>STA 60</code>: memory[60] ← 4.</li>
+ <li><code>SUB ONE</code>: accumulator ← 4 − 1 = 3. <code>JMP LOOP</code>.</li>
+ <li>Iteration 2: 3 → memory[60] = 3, accumulator = 2. Iteration 3: memory[60] = 2, accumulator = 1.
+ Iteration 4: memory[60] = 1, accumulator = 0.</li>
+ <li>Iteration 5: <code>BRZ DONE</code> — the zero flag IS set, so jump to <code>DONE</code> and halt.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> memory[60] = 1. The loop copies a decreasing counter into address 60 and stops before storing 0. This is the off-by-one pattern in hardware form: the placement of the zero test relative to the store determines whether 0 is stored. A student who assumes it stores 0 has missed that BRZ runs <em>before</em> STA.</div>
+ </div>
+</details>
+
+<div class="callout callout--link">
+ <span class="callout__label">Connection</span>
+ <p>Assembly-language thinking reappears in B2 (recursion and the call stack), in B4 (a linked list is literally
+ nodes holding a value and an address), and in A1.4 Translation (an assembler is a one-to-one translator; a
+ compiler is not). Every time you see "address of" in this course, it is the MAR idea again.</p>
+</div>
+
+<h2>A1.3 · The operating system</h2>
+
+<p>An <strong>operating system (OS)</strong> is software that manages the computer's hardware and provides services
+to applications. Its job is to be the layer that lets a program say "save this file" without knowing what kind of
+disk is installed.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>OS function</th><th>What it actually does</th><th>Why the application needs it</th></tr></thead>
+ <tbody>
+ <tr><td>Processor / process management</td><td>Decides which process runs on which core and for how long; saves and restores register state on a context switch</td><td>Lets many programs appear to run simultaneously on few cores</td></tr>
+ <tr><td>Memory management</td><td>Allocates RAM to processes, keeps them out of each other's space, moves pages between RAM and disk (virtual memory)</td><td>A program can use more memory than physically exists and cannot crash another program</td></tr>
+ <tr><td>File / storage management</td><td>Maintains the directory structure, permissions, free-space map</td><td>"Save to Documents/report.pdf" instead of "write to cylinder 400, head 2, sector 17"</td></tr>
+ <tr><td>Device management via drivers</td><td>Translates generic requests into device-specific commands</td><td>One printing API works for 200 different printers</td></tr>
+ <tr><td>Security and access control</td><td>User accounts, permissions, authentication</td><td>Two users on one machine cannot read each other's files</td></tr>
+ <tr><td>User interface</td><td>Shell / GUI</td><td>Humans can operate the machine at all</td></tr>
+ <tr><td>Interrupt handling</td><td>Pauses the current process, runs an interrupt service routine, resumes</td><td>Slow devices (keyboard, disk, network) do not block the CPU</td></tr>
+ </tbody>
+</table>
+</div>
+
+<div class="callout callout--why">
+ <span class="callout__label">Why interrupts rather than polling</span>
+ <p>The alternative to an interrupt is <strong>polling</strong>: the CPU repeatedly asks "are you ready yet?".
+ That wastes millions of cycles on a device that will take milliseconds to respond. With an interrupt, the device
+ asserts a signal on the control bus when it is ready, the CPU finishes the current instruction, saves its state,
+ services the device, restores state and carries on. The device sets the pace instead of the CPU guessing it. This
+ is the same design argument as event-driven programming in B2 and as callback-based I/O in a networked application
+ in A2 — signal when something happens; do not loop asking.</p>
+</div>
+
+<h3>Control systems</h3>
+
+<p>A <strong>control system</strong> (embedded system) is a computer system built into a larger device to monitor
+and control it — a washing machine, a car's anti-lock brakes, an insulin pump. The pattern is always the same loop:
+a <strong>sensor</strong> measures the physical world, the computer compares the reading with a target, and an
+<strong>actuator</strong> changes something physical.</p>
+
+<ul>
+ <li><strong>Sensor</strong> — input device that measures a physical quantity and converts it into an electrical
+ signal: temperature, light, pressure, proximity, acceleration. Crucially, sensors produce <em>analogue</em>
+ signals (continuously varying voltage), which must pass through an <strong>analogue-to-digital converter (ADC)</strong>
+ before the CPU can use them.</li>
+ <li><strong>Actuator</strong> — output device that converts an electrical signal into physical action: motor,
+ solenoid, valve, heater, buzzer, LED. Where the output must be smooth (motor speed, speaker volume), a
+ <strong>digital-to-analogue converter (DAC)</strong> is used.</li>
+</ul>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 3</span> IB-style · 6 marks · a greenhouse control system</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A greenhouse uses a microcontroller to keep the temperature between 18 °C and
+ 24 °C. Describe the role of the sensor, the processor and the actuator, and explain why an ADC is required.</p>
+ <ol class="steps">
+ <li>A <strong>temperature sensor</strong> (e.g. a thermistor in a potential divider) produces a voltage that
+ varies continuously with temperature — an analogue signal.</li>
+ <li>An <strong>ADC</strong> samples that voltage at intervals and converts each sample to a binary integer,
+ because the microcontroller can only process digital values.</li>
+ <li>The <strong>processor</strong> compares the reading with the stored limits: if the value is below 18 the
+ heater is switched on; if above 24 the vent motor is switched on; otherwise both stay off.</li>
+ <li>The <strong>actuators</strong> — a heater relay and a vent motor — convert the digital decision into a
+ physical change.</li>
+ <li>The loop repeats continuously, typically with a delay, so the system monitors and corrects itself.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> sensor → ADC → compare → actuator → repeat. Marks: 1 for the sensor measuring continuously, 1 for the ADC converting analogue to digital, 1 for the comparison against stored limits, 1 for the actuator changing the physical state, 1–2 for explaining that the loop repeats. Naming the specific devices in the scenario (heater, vent) is what lifts an answer from generic to contextualised.</div>
+ </div>
+</details>
+
+<h2>Memory and storage</h2>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th></th><th>RAM</th><th>ROM</th></tr></thead>
+ <tbody>
+ <tr><td>Volatile?</td><td><strong>Volatile</strong> — contents lost when power is removed</td><td><strong>Non-volatile</strong> — contents persist</td></tr>
+ <tr><td>Can be written?</td><td>Read and write, constantly</td><td>Read-only in normal operation (flash-based ROM can be rewritten, but rarely and slowly)</td></tr>
+ <tr><td>What it holds</td><td>The operating system, running applications, their data</td><td>The bootstrap / firmware that starts the machine (BIOS/UEFI)</td></tr>
+ <tr><td>Why it is needed</td><td>Speed: nothing else is fast enough to be the CPU's working area</td><td>Something must tell the machine how to load the OS from disk when there is no OS yet — the bootstrapping problem</td></tr>
+ </tbody>
+</table>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Why</span> Why ROM must exist — the bootstrapping problem</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>To run an operating system you must load it from secondary storage into RAM.</li>
+ <li>But loading requires code to control the disk — and no code is in RAM yet, because RAM is empty at
+ power-on.</li>
+ <li>This is circular unless some code is <em>already</em> available without being loaded. That is ROM: a small
+ program permanently present that knows how to test the hardware and load the first sector of the boot disk.</li>
+ <li>That small program is the <strong>bootstrap loader</strong>, and the process is <strong>booting</strong>
+ — the image of a machine "pulling itself up by its bootstraps".</li>
+ </ol>
+ <p><strong>What it means:</strong> non-volatility is not a convenience at start-up; it is a logical necessity.</p>
+ </div>
+</details>
+
+<h3>Secondary storage compared</h3>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th></th><th>Magnetic (HDD)</th><th>Optical (CD/DVD/BD)</th><th>Solid state (SSD / flash)</th></tr></thead>
+ <tbody>
+ <tr><td>How it stores a bit</td><td>Magnetised regions on a spinning platter, read by a head on a moving arm</td><td>Pits and lands on a disc surface, read by a laser</td><td>Electrons trapped in floating-gate transistors; no moving parts</td></tr>
+ <tr><td>Capacity</td><td>Very high (multi-TB), cheapest per GB</td><td>Low (700 MB – 50 GB)</td><td>High, mid-price per GB</td></tr>
+ <tr><td>Speed</td><td>Slow — limited by platter rotation and seek time (mechanical)</td><td>Slow, especially random access</td><td>Fast — no mechanical delay; near-uniform access time</td></tr>
+ <tr><td>Durability</td><td>Vulnerable to physical shock while spinning</td><td>Scratches cause data loss; degrades with light/heat</td><td>Shock-resistant, but memory cells wear out after a finite number of write cycles</td></tr>
+ <tr><td>Best used for</td><td>Bulk archival, backups, large media libraries</td><td>Distribution of software/media, long-term archival copies</td><td>Operating system and applications — anywhere access speed matters</td></tr>
+ </tbody>
+</table>
+</div>
+
+<div class="callout callout--exam">
+ <span class="callout__label">Exam technique — justify, don't list</span>
+ <p>A question that says "justify the choice of storage for a laptop used by a video editor" is not asking for the
+ table above. It is asking: <em>this</em> user reads and writes very large files frequently, so access speed and
+ sustained write bandwidth dominate, so an SSD is justified despite the higher cost per gigabyte; a secondary large
+ HDD may be justified for archiving finished projects because there, cost per gigabyte dominates and files are
+ written once. Always name the property, then tie it to the scenario's need. A list of features with no "therefore"
+ scores about half.</p>
+</div>
+
+<h2>A1.2 · Data representation</h2>
+
+<h3>How many values can n bits represent?</h3>
+
+<p>One bit has 2 states. Two bits have \(2 \times 2 = 4\) states: 00, 01, 10, 11. Each extra bit doubles the count.
+So:</p>
+
+\[ \textbf{number of distinct values} = 2^{n} \qquad \textbf{range for unsigned integers} = 0 \text{ to } 2^{n}-1 \]
+
+<div class="callout callout--trap">
+ <span class="callout__label">Trap — the minus one</span>
+ <p>8 bits represent \(2^{8} = 256\) different values, but the largest unsigned value is 255, because zero
+ consumes one of the 256 patterns. Students lose a mark on "what is the largest value an 8-bit register can hold"
+ every single session. And if the register holds a <em>memory address</em>, the question is about how many
+ <em>locations</em> can be addressed — that is 256, not 255, because address 0 is a location.</p>
+</div>
+
+<h3>Denary to binary — two methods</h3>
+
+<p><strong>Method 1: successive division by 2.</strong> Divide by 2, record the remainder, repeat with the quotient
+until it is 0, then read the remainders bottom-to-top.</p>
+
+<details class="worked">
+ <summary><span class="badge badge--easy">Worked example 4</span> Convert 173 to binary and then to hexadecimal</summary>
+ <div class="dbody">
+ <p><strong>Denary → binary (division method).</strong></p>
+ <ol class="steps">
+ <li>173 ÷ 2 = 86 r <strong>1</strong></li>
+ <li>86 ÷ 2 = 43 r <strong>0</strong></li>
+ <li>43 ÷ 2 = 21 r <strong>1</strong></li>
+ <li>21 ÷ 2 = 10 r <strong>1</strong></li>
+ <li>10 ÷ 2 = 5 r <strong>0</strong></li>
+ <li>5 ÷ 2 = 2 r <strong>1</strong></li>
+ <li>2 ÷ 2 = 1 r <strong>0</strong></li>
+ <li>1 ÷ 2 = 0 r <strong>1</strong></li>
+ <li>Read the remainders upwards: <strong>10101101</strong>.</li>
+ </ol>
+ <p><strong>Binary → hexadecimal.</strong> Split into groups of 4 from the <em>right</em>:
+ 1010 | 1101 → A | D → <strong>AD</strong>.</p>
+ <p><strong>Check:</strong> \(\text{AD}_{16} = 10 \times 16 + 13 = 160 + 13 = 173\). ✓</p>
+ <div class="answerline"><b>Answer:</b> 173 = 10101101₂ = AD₁₆. Always do the reverse check — it takes five seconds and catches the single most common error, which is reading the remainders in the wrong order.</div>
+ </div>
+</details>
+
+<p><strong>Method 2: place-value subtraction.</strong> Write the column headings (128, 64, 32, 16, 8, 4, 2, 1), put a
+1 where the value fits and subtract, and a 0 where it does not.</p>
+
+<details class="worked">
+ <summary><span class="badge badge--easy">Worked example 5</span> Convert 205 to binary by place values, and convert 10010110 to denary</summary>
+ <div class="dbody">
+ <p><strong>205 → binary.</strong></p>
+ <ol class="steps">
+ <li>128 fits into 205: <strong>1</strong>, remainder 77.</li>
+ <li>64 fits into 77: <strong>1</strong>, remainder 13.</li>
+ <li>32 does not fit into 13: <strong>0</strong>. 16 does not: <strong>0</strong>. 8 fits: <strong>1</strong>,
+ remainder 5.</li>
+ <li>4 fits: <strong>1</strong>, remainder 1. 2 does not: <strong>0</strong>. 1 fits: <strong>1</strong>.</li>
+ <li>Result: <strong>11001101</strong>.</li>
+ </ol>
+ <p><strong>10010110 → denary.</strong></p>
+ <ol class="steps">
+ <li>Columns: 1×128 + 0×64 + 0×32 + 1×16 + 0×8 + 1×4 + 1×2 + 0×1</li>
+ <li>= 128 + 16 + 4 + 2 = <strong>150</strong>.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> 205 = 11001101₂; 10010110₂ = 150. Sanity check on the second: the leading bit is 1, so the value must be at least 128 — if you get less than 128 you have misaligned a column.</div>
+ </div>
+</details>
+
+<details class="derivation">
+ <summary><span class="badge">Why</span> Why hexadecimal exists — the compactness argument</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>Humans read and transcribe long binary strings badly: 1110101100101101 is 16 characters with no structure,
+ and miscopying one is invisible.</li>
+ <li>Hexadecimal uses base 16, and \(16 = 2^{4}\), so <strong>each hex digit maps to exactly 4 bits</strong>
+ and vice versa. No arithmetic is involved — you translate four bits at a time, independently.</li>
+ <li>So the same value becomes <code>EB2D</code>: four characters, chunked, and each chunk carries meaning
+ (the high byte, the low byte).</li>
+ <li>Why base 16 and not base 10? Because 10 is not a power of 2, so decimal digits do <em>not</em> align with
+ bit boundaries — converting between denary and binary requires real division arithmetic, whereas hex is
+ pattern matching.</li>
+ <li>Why not octal (base 8)? It also aligns (\(8 = 2^{3}\)), but it does not divide a byte into a whole number
+ of digits, which is why hex won.</li>
+ </ol>
+ <p><strong>Where you see it:</strong> MAC addresses, IPv6 addresses, colour codes (<code>#FF8800</code>), memory
+ dumps, and Unicode code points. <strong>When it is the wrong tool:</strong> never do arithmetic in hex if you can
+ do it in denary — hex is a <em>notation</em>, not a number system you compute in.</p>
+ </div>
+</details>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — the hex conversion ritual</span>
+ <ol class="steps">
+ <li>Binary → hex: split into groups of four starting from the <strong>right</strong>. Pad the leftmost group
+ with zeros if needed.</li>
+ <li>Hex → binary: expand each digit to exactly four bits, including leading zeros (A = 1010, 0 = 0000).</li>
+ <li>Hex → denary: multiply each digit by its power of 16 and add: \(\text{2F9}_{16} = 2(256) + 15(16) + 9 = 761\).</li>
+ <li>Denary → hex: either convert to binary first and group, or divide repeatedly by 16.</li>
+ </ol>
+</div>
+
+<h3>BCD — binary-coded decimal</h3>
+
+<p>In BCD, each <em>decimal digit</em> is stored in its own 4-bit group. So 47 is <code>0100 0111</code>, not the
+pure binary <code>00101111</code>.</p>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 6</span> IB-style · 4 marks · BCD, and why it is used</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> (a) Represent 582 in BCD. (b) State one advantage and one disadvantage of BCD
+ compared with pure binary.</p>
+ <ol class="steps">
+ <li>Each decimal digit → 4 bits: 5 = 0101, 8 = 1000, 2 = 0010.</li>
+ <li>So 582 in BCD = <code>0101 1000 0010</code>.</li>
+ <li><strong>Advantage:</strong> conversion to and from the decimal digits a human reads is trivial — no
+ division, just read each nibble. This matters in digital clocks, calculators, meters and any device whose
+ output is decimal digits.</li>
+ <li><strong>Disadvantage:</strong> it wastes storage. BCD uses 12 bits here where pure binary needs only 10
+ (582 = 1001000110), and in general 4 bits per digit represents 10 of 16 possible patterns, so about 37 % of
+ the patterns are unused. Arithmetic in BCD also needs correction steps after addition.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> (a) 0101 1000 0010. (b) Advantage: exact decimal representation and trivial conversion for display/kiosk devices; no rounding error for money. Disadvantage: inefficient use of bits and more complex arithmetic. Applications where decimal exactness matters (financial displays) are the standard IB example.</div>
+ </div>
+</details>
+
+<h3>Character encoding: ASCII and Unicode</h3>
+
+<p>A character set is an agreed mapping between numbers and characters. <strong>ASCII</strong> originally used 7
+bits — 128 characters: the English letters, digits, punctuation and control codes. Extended ASCII uses 8 bits for
+256 characters, adding a few accented letters and box-drawing symbols, but inconsistently between manufacturers.</p>
+
+<div class="callout callout--why">
+ <span class="callout__label">Why Unicode was necessary</span>
+ <p>8 bits gives 256 patterns. English fits. Nothing else does. Chinese alone has tens of thousands of characters;
+ add Arabic, Cyrillic, Devanagari, Korean, Greek, Thai, and the world's emoji, and 256 is not a constraint you can
+ engineer around — it is simply too small. The pre-Unicode workaround was <em>code pages</em>: the same byte value
+ 0xE4 meant "ä" on one system and a Chinese character on another, so a document was meaningless without knowing
+ which page it was written in. <strong>Unicode</strong> solves this by giving every character in every writing
+ system a single unique <strong>code point</strong> (written U+0041 for "A", U+4E2D for ), decoupling "which
+ character is this" from "how many bytes does it take to store".</p>
+</div>
+
+<p><strong>UTF-8</strong> is the variable-width encoding that stores those code points: characters in the ASCII
+range use 1 byte (so old ASCII files are valid UTF-8 — a deliberate design decision that made adoption possible),
+most European characters 2 bytes, CJK characters typically 3 bytes, and emoji 4 bytes.</p>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Trap — characters are not bytes</span>
+ <p>In Java, a <code>char</code> is 16 bits (UTF-16) and in Python 3 a string is a sequence of Unicode code points,
+ so <code>len("")</code> is 1. But a file containing needs 3 bytes in UTF-8. Exam questions that say "a text
+ file contains 500 characters" and then ask for the file size in bytes cannot be answered without knowing the
+ encoding — and if the file is ASCII, it is 500 bytes; if it is Chinese in UTF-8, it is 1500. Say which assumption
+ you are making.</p>
+</div>
+
+<h3>Units and file-size calculations</h3>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Unit</th><th>Symbol</th><th>Value</th></tr></thead>
+ <tbody>
+ <tr><td>bit</td><td>b</td><td>0 or 1</td></tr>
+ <tr><td>byte</td><td>B</td><td>8 bits</td></tr>
+ <tr><td>kibibyte</td><td>KiB</td><td>\(2^{10}\) = 1024 bytes</td></tr>
+ <tr><td>mebibyte</td><td>MiB</td><td>\(2^{20}\) = 1 048 576 bytes</td></tr>
+ <tr><td>gibibyte</td><td>GiB</td><td>\(2^{30}\) bytes</td></tr>
+ <tr><td>tebibyte</td><td>TiB</td><td>\(2^{40}\) bytes</td></tr>
+ </tbody>
+</table>
+</div>
+
+<p>Note the distinction: "kilobyte" in ordinary SI means 1000 bytes and is what disk manufacturers print on the box;
+"kibibyte" means 1024 and is what your operating system usually reports. That is why a "1 TB" drive shows as about
+931 GB in Windows — nothing is missing, two different definitions of "T" are in play.</p>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 7</span> IB-style · 6 marks · a sound file size and a download time</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A mono audio recording is sampled at 44 100 Hz with a sample resolution of 16 bits
+ and lasts 3 minutes. Calculate the file size in MiB, and the time to transmit it over a 2 Mbit/s connection.</p>
+ <ol class="steps">
+ <li>Number of samples = 44 100 × 180 s = <strong>7 938 000</strong>.</li>
+ <li>Bits per sample = 16, and mono means one channel (no ×2).</li>
+ <li>Total bits = 7 938 000 × 16 = 127 008 000 bits. In bytes: ÷ 8 = 15 876 000 bytes.</li>
+ <li>In MiB: ÷ 1024 ÷ 1024 = 15 876 000 / 1 048 576 ≈ <strong>15.1 MiB</strong>.</li>
+ <li>Transmission time = 127 008 000 bits ÷ 2 000 000 bit/s ≈ <strong>63.5 s</strong>.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> ≈ 15.1 MiB; ≈ 64 s. Method marks: (1) samples = rate × time, (1) bits = samples × resolution × channels, (1) convert bits to bytes, (1) convert to MiB, (1) time = bits ÷ bit rate, (1) sensible units. Two classic traps: using 1000 instead of 1024 when MiB is asked for, and forgetting that a "2 Mbit/s" link is bits while your file size is bytes.</div>
+ </div>
+</details>
+
+<h3>Compression</h3>
+
+<p><strong>Lossless</strong> compression removes redundancy without losing any information — the original can be
+reconstructed bit-for-bit. <strong>Lossy</strong> compression discards information permanently, exploiting limits
+of human perception, in exchange for much smaller files.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th></th><th>Lossless</th><th>Lossy</th></tr></thead>
+ <tbody>
+ <tr><td>Reconstruction</td><td>Exact</td><td>Approximate</td></tr>
+ <tr><td>Typical examples</td><td>Run-length encoding, Huffman coding, LZW, ZIP, PNG, FLAC</td><td>JPEG, MP3, AAC, MPEG video</td></tr>
+ <tr><td>Compression ratio</td><td>Modest (2–3× on text)</td><td>Large (10× or more on images and audio)</td></tr>
+ <tr><td>Used when</td><td>Text, program code, databases, medical images — anywhere altering one bit is unacceptable</td><td>Photos, music, video — where a human will not notice what was removed</td></tr>
+ <tr><td>Why it works</td><td>Real data is redundant: repeated symbols, repeated patterns</td><td>Human senses have thresholds; detail below them can be dropped</td></tr>
+ </tbody>
+</table>
+</div>
+
+<h4>Run-length encoding, worked through</h4>
+
+<p>RLE replaces a run of identical values with a single value and a count. It is the compression you can do entirely
+by hand, which is why the exam likes it.</p>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 8</span> IB-style · 6 marks · RLE by hand</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A black-and-white image row is stored as
+ <code>WWWWWWWWBBBWWWWWWBBBBBWWWW</code>. (a) Encode it using run-length encoding as (count, value) pairs.
+ (b) Calculate the number of bits saved if the original uses 1 bit per pixel and each RLE pair uses 8 bits for the
+ count and 1 bit for the value. (c) State a type of image for which RLE would <em>increase</em> the file size.</p>
+ <ol class="steps">
+ <li>Count the runs: 8 W, 3 B, 6 W, 5 B, 4 W.</li>
+ <li>Encoded: <code>8W 3B 6W 5B 4W</code>.</li>
+ <li>Original: 8+3+6+5+4 = 26 pixels × 1 bit = <strong>26 bits</strong>.</li>
+ <li>Encoded: 5 pairs × (8 + 1) bits = <strong>45 bits</strong>.</li>
+ <li>So this encoding actually <em>wastes</em> 19 bits — the runs are too short to pay for the count field.</li>
+ <li>(c) An image with no runs — alternating black and white pixels, or a photographic image with smooth
+ noise — produces a count of 1 for every pixel, so every pixel costs 9 bits instead of 1.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> (a) 8W 3B 6W 5B 4W. (b) 26 → 45 bits, so 19 bits worse. (c) Any image with few or no repeated adjacent pixels, e.g. random noise or a finely detailed photograph. The general lesson the examiner wants: compression is not free and not universal — its effectiveness depends entirely on the statistical structure of the data.</div>
+ </div>
+</details>
+
+<div class="callout callout--note">
+ <span class="callout__label">Note — why RLE works on some images and not others</span>
+ <p>RLE exploits <em>spatial redundancy</em>: neighbouring pixels tend to be the same colour. Cartoons, icons,
+ scanned line art and screenshots have huge flat areas, so RLE (and PNG more generally) is excellent. Photographs
+ almost never have exact repeats because of sensor noise, which is why JPEG uses a completely different strategy —
+ it transforms the image into frequency components and throws away the high-frequency ones your eye would not
+ resolve anyway.</p>
+</div>
+
+<h2>Binary arithmetic</h2>
+
+<h3>Addition and overflow</h3>
+
+<p>Binary addition follows the same rules as denary: add the column, carry if it exceeds the base. In base 2 that
+means 1 + 1 = 0 carry 1, and 1 + 1 + 1 = 1 carry 1.</p>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 9</span> Addition, and an overflow that matters</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> Using an 8-bit register, add 200 (11001000) and 100 (01100100). State the result
+ the hardware stores, state the value of the carry flag, and explain why this is a problem.</p>
+ <ol class="steps">
+ <li>Add column by column from the right, carrying where a column totals 2 or 3:
+ 11001000 + 01100100 = 1 00101100.</li>
+ <li>The register has only 8 bits, so the leading 1 is the <strong>carry out</strong> and is discarded. The
+ stored result is <code>00101100</code> = 44.</li>
+ <li>The true sum is 200 + 100 = 300, which exceeds the maximum unsigned value 255, so 300 − 256 = 44 is
+ stored instead. The carry flag is <strong>set to 1</strong>.</li>
+ <li>The stored value 44 is simply wrong for the intended calculation, and nothing warns the program.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> 00101100 (44), carry flag = 1. Overflow matters because the machine does not raise an exception: the wrong answer propagates silently into every later calculation. This is why a program that sums large values must use a wider type (a 64-bit integer, or an arbitrary-precision integer as Python's int does by default). Notice also that in <em>signed</em> two's-complement interpretation the same bits mean something different — overflow is detected by comparing the carry into the sign bit with the carry out of it, not simply by the carry flag.</div>
+ </div>
+</details>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Trap — overflow produces no error</span>
+ <p>In most high-level languages an integer overflow is not a crash; it is a wrong number. In Java,
+ <code>int i = 2147483647; i = i + 1;</code> gives −2147483648, wrapping around. Python's <code>int</code>
+ grows automatically and does not overflow, but NumPy fixed-width types do. Never write "the program will crash"
+ in an overflow question unless you are certain — write "the result will be incorrect / will wrap around".</p>
+</div>
+
+<h3>Negative numbers: two's complement</h3>
+
+<p>Three representations of signed numbers you should be able to distinguish, and one you should be able to use.</p>
+
+<ul>
+ <li><strong>Sign and magnitude:</strong> the leftmost bit is the sign (0 = +, 1 = −), the rest is the magnitude.
+ Problem: two representations of zero (+0 and −0), and the hardware needs separate add and subtract circuits.</li>
+ <li><strong>One's complement:</strong> negate by inverting every bit. Still two zeros. Addition needs an
+ "end-around carry" fix-up.</li>
+ <li><strong>Two's complement:</strong> negate by inverting every bit and <em>adding 1</em>. One zero. Subtraction
+ is addition. This is what every real machine uses.</li>
+</ul>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — the two-step rule</span>
+ <ol class="steps">
+ <li><strong>To negate:</strong> start from the right, copy all bits up to and including the first 1, then flip
+ every bit after it. (This is a faster way to do "invert then add 1" and gives the same answer.)</li>
+ <li><strong>To read a negative value:</strong> either apply the same operation to find its magnitude, or use the
+ place-value method with the leftmost column <em>negative</em>: for 8 bits the headings are
+ −128, 64, 32, 16, 8, 4, 2, 1.</li>
+ <li><strong>Range:</strong> with n bits, \( -2^{n-1} \) to \( 2^{n-1} - 1 \). For 8 bits: −128 to +127.</li>
+ </ol>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Proof</span> Why two's complement makes subtraction work — the modular arithmetic argument</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>An n-bit register cannot distinguish values that differ by \(2^{n}\). Everything it does is arithmetic
+ <em>modulo</em> \(2^{n}\): the hardware simply discards the carry out of the top bit.</li>
+ <li>In modulo-\(2^{n}\) arithmetic, subtracting \(b\) is identical to adding \(2^{n} - b\), because
+ \(a - b \equiv a + (2^{n} - b) \pmod{2^{n}}\).</li>
+ <li>And the two's complement of \(b\) is <em>defined</em> to be \(2^{n} - b\). (Check: "invert every bit" of
+ an n-bit number \(b\) produces \((2^{n}-1) - b\); adding 1 gives \(2^{n} - b\).)</li>
+ <li>Therefore adding the two's complement of \(b\) performs subtraction, using exactly the same adder
+ circuit, with no special cases and no sign checks.</li>
+ <li>Worked check with 8 bits, 7 − 5: 5 = 00000101, invert → 11111010, add 1 → 11111011 (= 251 = 256 − 5).
+ Now 00000111 + 11111011 = 1 00000010. Discard the carry out of bit 7 → 00000010 = 2. ✓</li>
+ <li>Why the "one zero" property follows: +0 is 00000000; its two's complement is 11111111 + 1 = 1 00000000,
+ which discards to 00000000 — the same pattern. So there is exactly one zero, and the spare pattern
+ 10000000 is free to represent −128, which is why the negative range is one larger than the positive.</li>
+ </ol>
+ <p><strong>What it means:</strong> two's complement is not a convention anyone invented for tidiness; it is the
+ unique representation under which an ordinary binary adder performs signed subtraction correctly.
+ <strong>When it is the wrong tool:</strong> for floating-point values — those use a sign bit with a separate
+ exponent-and-mantissa format (IEEE 754), not two's complement.</p>
+ </div>
+</details>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 10</span> IB-style · 5 marks · two's complement both ways</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> Using 8-bit two's complement: (a) represent −43; (b) state what 10010101
+ represents.</p>
+ <ol class="steps">
+ <li>(a) +43 = 00101011 (32 + 8 + 2 + 1).</li>
+ <li>Invert: 11010100. Add 1: 11010101. So −43 = <strong>11010101</strong>.</li>
+ <li>Check with the fast method: copy up to and including the first 1 from the right in 00101011 → the last
+ bits 1, then flip the rest → 11010101. Same answer. ✓</li>
+ <li>(b) The leading bit is 1, so 10010101 is negative. Apply the negation: copy up to and including the first
+ 1 (that is just the final 1), then flip everything else → 01101011.</li>
+ <li>01101011 = 64 + 32 + 8 + 2 + 1 = 107. So 10010101 = <strong>−107</strong>.</li>
+ <li>Check by place values with a negative top column: −128 + 16 + 4 + 1 = −107. ✓</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> (a) 11010101. (b) −107. Always do the second check — if the two methods disagree, you have flipped the wrong bit.</div>
+ </div>
+</details>
+
+<h3>Binary fractions and floating point</h3>
+
+<p>In fixed-point binary the column headings continue past the point as halves, quarters, eighths: for
+\(101.101_2\) the headings are 4, 2, 1, ½, ¼, ⅛, giving \(5 + 0.5 + 0.125 = 5.625\).</p>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 11</span> IB-style · 6 marks · why 0.1 is not storable</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> Explain why the denary value 0.1 cannot be represented exactly in binary, and state
+ the consequence for a program that adds 0.1 ten times and compares the result with 1.0.</p>
+ <ol class="steps">
+ <li>A fraction terminates in base 2 only if its denominator (in lowest terms) is a power of 2. 0.1 = 1/10, and
+ 10 = 2 × 5, so it has a factor 5 — it does not terminate. (This is exactly why 1/3 does not terminate in
+ decimal: 3 is not a factor of the base.)</li>
+ <li>Repeatedly doubling: 0.1 → 0.2 → 0.4 → 0.8 → 1.6 → 1.2 → 0.4 … the fractional part cycles, so the binary
+ expansion 0.0001100110011… repeats for ever.</li>
+ <li>Stored in a finite number of bits (24-bit mantissa in single precision, 53 in double), the value is
+ truncated, so the stored number is very slightly more or less than 0.1.</li>
+ <li>Adding it ten times accumulates that error, so the result is not exactly 1.0 and a direct
+ <code>== 1.0</code> comparison is <strong>false</strong>.</li>
+ <li>The correct technique is to compare against a tolerance: <code>abs(x - 1.0) &lt; 1e-9</code>, or to work in
+ integer units (store cents instead of dollars).</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> 0.1 has a recurring binary expansion, is stored approximately, and repeated addition accumulates the error, so the comparison fails. This is the standard "explain why" question on floating point — the marks are for (1) the recurring expansion / non-power-of-2 denominator, (1) truncation to a finite mantissa, (1) the accumulated error, (1) the consequence for equality testing.</div>
+ </div>
+</details>
+
+<h2>Boolean logic</h2>
+
+<p>George Boole's insight was that logical reasoning could be done with algebra, where the variables take only two
+values. A century later Claude Shannon noticed this is precisely how switching circuits behave — and digital
+computing became applied Boolean algebra.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Operator</th><th>Meaning</th><th>Algebraic notation</th><th>Gate</th><th>Key identity</th></tr></thead>
+ <tbody>
+ <tr><td>NOT</td><td>inverts the input</td><td>\(\overline{A}\) or ¬A</td><td>NOT (inverter)</td><td>\(\overline{\overline{A}} = A\)</td></tr>
+ <tr><td>AND</td><td>true only if both are true</td><td>\(A \cdot B\)</td><td>AND</td><td>\(A \cdot 1 = A\), \(A \cdot 0 = 0\)</td></tr>
+ <tr><td>OR</td><td>true if at least one is true</td><td>\(A + B\)</td><td>OR</td><td>\(A + 0 = A\), \(A + 1 = 1\)</td></tr>
+ <tr><td>XOR</td><td>true if exactly one is true</td><td>\(A \oplus B\)</td><td>XOR</td><td>\(A \oplus A = 0\)</td></tr>
+ <tr><td>NAND</td><td>NOT of AND</td><td>\(\overline{A \cdot B}\)</td><td>NAND</td><td>universal gate</td></tr>
+ <tr><td>NOR</td><td>NOT of OR</td><td>\(\overline{A + B}\)</td><td>NOR</td><td>universal gate</td></tr>
+ </tbody>
+</table>
+</div>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 320" role="img" aria-label="Logic gates: the standard symbols for NOT, AND, OR, XOR, NAND and NOR">
+ <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+ <text x="60" y="30" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">NOT</text>
+ <path d="M30 50 L 60 50 L 70 70 L 60 90 L 30 90 Z" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+ <circle cx="75" cy="70" r="5" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+ <line x1="10" y1="70" x2="30" y2="70" stroke="#334155" stroke-width="2"/>
+ <line x1="80" y1="70" x2="105" y2="70" stroke="#334155" stroke-width="2"/>
+
+ <text x="215" y="30" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">AND</text>
+ <path d="M175 45 L 205 45 A 25 25 0 0 1 205 95 L 175 95 Z" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+ <line x1="150" y1="60" x2="175" y2="60" stroke="#334155" stroke-width="2"/>
+ <line x1="150" y1="80" x2="175" y2="80" stroke="#334155" stroke-width="2"/>
+ <line x1="230" y1="70" x2="255" y2="70" stroke="#334155" stroke-width="2"/>
+
+ <text x="370" y="30" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">OR</text>
+ <path d="M330 45 Q 360 45 385 70 Q 360 95 330 95 Q 350 70 330 45 Z" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+ <line x1="305" y1="60" x2="335" y2="60" stroke="#334155" stroke-width="2"/>
+ <line x1="305" y1="80" x2="335" y2="80" stroke="#334155" stroke-width="2"/>
+ <line x1="385" y1="70" x2="410" y2="70" stroke="#334155" stroke-width="2"/>
+
+ <text x="525" y="30" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">XOR</text>
+ <path d="M485 45 Q 515 45 540 70 Q 515 95 485 95 Q 505 70 485 45 Z" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+ <path d="M475 45 Q 495 45 515 70" fill="none" stroke="#334155" stroke-width="2"/>
+ <path d="M475 95 Q 495 95 515 70" fill="none" stroke="#334155" stroke-width="2"/>
+ <line x1="460" y1="60" x2="477" y2="52" stroke="#334155" stroke-width="2"/>
+ <line x1="460" y1="80" x2="477" y2="88" stroke="#334155" stroke-width="2"/>
+ <line x1="540" y1="70" x2="565" y2="70" stroke="#334155" stroke-width="2"/>
+
+ <text x="215" y="170" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">NAND (= AND + bubble)</text>
+ <path d="M175 185 L 205 185 A 25 25 0 0 1 205 235 L 175 235 Z" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+ <circle cx="236" cy="210" r="5" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+ <line x1="150" y1="200" x2="175" y2="200" stroke="#334155" stroke-width="2"/>
+ <line x1="150" y1="220" x2="175" y2="220" stroke="#334155" stroke-width="2"/>
+ <line x1="241" y1="210" x2="266" y2="210" stroke="#334155" stroke-width="2"/>
+
+ <text x="475" y="170" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">NOR (= OR + bubble)</text>
+ <path d="M440 185 Q 470 185 495 210 Q 470 235 440 235 Q 460 210 440 185 Z" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+ <circle cx="500" cy="210" r="5" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+ <line x1="415" y1="200" x2="443" y2="200" stroke="#334155" stroke-width="2"/>
+ <line x1="415" y1="220" x2="443" y2="220" stroke="#334155" stroke-width="2"/>
+ <line x1="505" y1="210" x2="530" y2="210" stroke="#334155" stroke-width="2"/>
+
+ <text x="320" y="285" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">The small circle on the output means "invert". NAND and NOR are universal:</text>
+ <text x="320" y="305" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">any circuit at all can be built from NAND gates alone (or from NOR gates alone).</text>
+ </svg>
+ <figcaption><span class="viz__title">Figure 3.</span> The six gate symbols the exam expects you to recognise and
+ draw. Learn the silhouettes: AND is a flat-back D, OR is a shield with a curved back and a pointed nose, and the
+ bubble always means inversion.</figcaption>
+</figure>
+
+<h3>Deriving a Boolean expression from a truth table</h3>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — the sum-of-products method</span>
+ <ol class="steps">
+ <li>Identify every row where the output is <strong>1</strong>.</li>
+ <li>For each such row, write an AND term: include the variable itself if it is 1 in that row, and its
+ complement if it is 0.</li>
+ <li>OR all those terms together. That expression is correct by construction — it is true on exactly the rows you
+ selected.</li>
+ <li>Simplify with Boolean algebra or a Karnaugh map if the question asks for the simplest circuit.</li>
+ </ol>
+</div>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 12</span> IB-style · 8 marks · truth table → expression → circuit → simplification</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A burglar alarm sounds (Z = 1) when the sensor S is triggered AND the system is
+ armed A, OR when the panic button P is pressed regardless of anything else.</p>
+ <ol class="steps">
+ <li><strong>Write the truth table</strong> (3 inputs → 8 rows). Z = 1 when P = 1 (four rows), plus the row
+ S = 1, A = 1, P = 0. So Z = 1 in five rows.</li>
+ <li><strong>Direct expression from the words:</strong> \(Z = (S \cdot A) + P\).</li>
+ <li><strong>Verify with the sum-of-products method</strong> on the five 1-rows to confirm it matches.</li>
+ <li><strong>Simplify using Boolean algebra:</strong></li>
+ <li>Expand the S·A term so every term contains P:
+ \(S \cdot A = S \cdot A \cdot (P + \overline{P}) = S \cdot A \cdot P + S \cdot A \cdot \overline{P}\).</li>
+ <li>Now \(Z = S A P + S A \overline{P} + P\). Use the absorption law \(X + X Y = X\) with \(X = P\):
+ the term \(S A P\) is absorbed into \(P\).</li>
+ <li>So \(Z = S A \overline{P} + P\). Two terms instead of five — a simpler circuit with fewer gates.</li>
+ <li><strong>Circuit:</strong> one NOT gate on P, one AND gate combining S, A and ¬P, one OR gate combining that
+ with P.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> Z = (S·A) + P, simplifiable to Z = (S·A·¬P) + P. Marks: (2) correct truth table, (2) correct unsimplified expression, (2) correct simplification with the law named, (2) correct circuit. The exam rarely requires you to find the <em>minimal</em> form, but it does require you to show the algebra — the simplification is where the method marks are.</div>
+ </div>
+</details>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 13</span> IB-style · 5 marks · expression → truth table</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> Draw the truth table for \(F = \overline{A} \cdot B + A \cdot \overline{B}\)
+ and identify the gate this implements.</p>
+ <ol class="steps">
+ <li>Row A=0, B=0: ¬A·B = 0, A·¬B = 0 → F = 0.</li>
+ <li>Row A=0, B=1: ¬A·B = 1, A·¬B = 0 → F = 1.</li>
+ <li>Row A=1, B=0: ¬A·B = 0, A·¬B = 1 → F = 1.</li>
+ <li>Row A=1, B=1: both terms 0 → F = 0.</li>
+ <li>The pattern 0,1,1,0 is exactly XOR: output 1 when the inputs differ.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> F = A ⊕ B. This is the classic exam move: an unfamiliar expression that turns out to be a single standard gate. Building the truth table is the only reliable way to spot it — do not try to see it by inspection.</div>
+ </div>
+</details>
+
+<div class="callout callout--link">
+ <span class="callout__label">Connection</span>
+ <p>Every <code>if</code> condition you write in B2 is a Boolean expression. De Morgan's laws —
+ \(\overline{A \cdot B} = \overline{A} + \overline{B}\) and \(\overline{A + B} = \overline{A} \cdot \overline{B}\)
+ — are exactly the rule you use in Python when you rewrite
+ <code>not (a and b)</code> as <code>(not a) or (not b)</code>, or in Java when you rewrite
+ <code>!(x &lt; 5 &amp;&amp; y &gt; 3)</code> as <code>x &gt;= 5 || y &lt;= 3</code>. Same algebra, different
+ notation.</p>
+</div>
+
+<h2>A1.4 · Translation <span class="badge badge--hl">HL only</span></h2>
+
+<p>Source code cannot be executed directly; it must be translated into machine code. There are three kinds of
+translator, and the difference between them is <em>when</em> translation happens and <em>whether the result is
+saved</em>.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th></th><th>Assembler</th><th>Compiler</th><th>Interpreter</th></tr></thead>
+ <tbody>
+ <tr><td>Input</td><td>Assembly language</td><td>High-level source</td><td>High-level source</td></tr>
+ <tr><td>Translation unit</td><td>One instruction → one machine instruction</td><td>Whole program at once</td><td>One statement at a time</td></tr>
+ <tr><td>Output</td><td>Machine code</td><td>Object/executable code, saved</td><td>None saved; actions are performed directly</td></tr>
+ <tr><td>Execution speed</td><td>Fast</td><td>Fast (translation already done)</td><td>Slower (re-translates each run, and each loop iteration)</td></tr>
+ <tr><td>Error reporting</td><td>At assembly time</td><td>All errors reported after the whole compile</td><td>Stops at the first error at the failing line</td></tr>
+ <tr><td>Development experience</td><td>Hard</td><td>Slower edit–test cycle; excellent for shipping</td><td>Fast edit–test cycle; excellent for learning and scripting</td></tr>
+ <tr><td>Source needed at run time?</td><td>No</td><td>No</td><td>Yes</td></tr>
+ </tbody>
+</table>
+</div>
+
+<p><strong>Bytecode and the virtual machine</strong> is the middle path, and it is how Java works. The compiler
+translates source into <strong>bytecode</strong> — a machine code for a processor that does not physically exist.
+The <strong>Java Virtual Machine (JVM)</strong> then interprets or just-in-time compiles that bytecode for the
+actual hardware. The payoff is portability: the same <code>.class</code> file runs on Windows, macOS and Linux
+without recompilation, because each platform supplies its own JVM. Python does something similar: CPython compiles
+your <code>.py</code> into bytecode in a <code>__pycache__</code> folder and the Python VM runs that.</p>
+
+<div class="callout callout--exam">
+ <span class="callout__label">Exam technique — the evaluate question you will get</span>
+ <p>"Compare a compiler and an interpreter for the development of a commercial application" wants four things:
+ (1) a compiler produces an executable that runs fast and hides source code, which suits commercial distribution;
+ (2) but the edit–compile–test cycle is slower and errors are reported in bulk, which slows development;
+ (3) an interpreter gives immediate feedback and platform independence at the development stage, which speeds
+ debugging; (4) but it runs slower and requires the source or the runtime to be present, which suits neither
+ performance-critical nor proprietary distribution. Then conclude: development in an interpreted environment,
+ distribution as compiled code — which is exactly what the bytecode/JVM hybrid achieves.</p>
+</div>
+
+<h2>Social, ethical and legal dimensions</h2>
+
+<p>These are examined, and examined seriously, usually as a 6–10 mark <em>discuss</em> or <em>to what extent</em>
+question, often attached to the case study. The content is easy; the skill is writing a balanced evaluation.</p>
+
+<div class="grid grid--2">
+ <div class="card"><h4>Privacy and surveillance</h4>
+ <p>Every digital service collects data about you. The ethical question is not "is data collected" but
+ <em>who decides, for what purpose, with what consent, and with what recourse</em>. Arguments for collection:
+ personalisation, safety, fraud prevention, public health. Arguments against: function creep (data collected for
+ one purpose used for another), chilling effects on behaviour, disproportionate impact on minorities, and the
+ impossibility of genuine consent when the alternative is not using the service.</p></div>
+ <div class="card"><h4>Intellectual property and open source</h4>
+ <p>Copyright protects the expression of an idea; patents protect an invention; trade secrets protect
+ confidential business information. Software sits awkwardly across all three, which is why licences matter.
+ <strong>Proprietary</strong> licences restrict use, modification and redistribution.
+ <strong>Open source</strong> licences grant those rights, sometimes with a <strong>copyleft</strong> condition
+ (GPL: derived work must also be open) and sometimes without (MIT, Apache: do almost anything, just attribute).
+ Arguments for open source: scrutiny improves security, education, no vendor lock-in. Arguments against: no
+ guaranteed support, unclear liability, harder to fund development.</p></div>
+ <div class="card"><h4>Accessibility and the digital divide</h4>
+ <p>Accessibility means designing so people with disabilities can use the product — screen-reader-compatible
+ markup, captions, keyboard navigation, sufficient contrast. The digital divide is the gap between those who have
+ affordable access to computing and the skills to use it and those who do not, along lines of income, geography,
+ age, language and disability. It is a <em>compounding</em> problem: as services move online, those excluded lose
+ access to the service itself.</p></div>
+ <div class="card"><h4>Sustainability and e-waste</h4>
+ <p>Computing consumes energy (devices, data centres, networks, and training large AI models), water for cooling,
+ and rare-earth minerals for manufacture. Discarded devices create e-waste containing toxic materials, much of
+ which is shipped to countries with weaker environmental regulation. Tension to name: efficiency improvements are
+ frequently cancelled out by increased use (Jevons paradox) — faster, cheaper computing drives more of it.</p></div>
+</div>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to write a balanced evaluation — the four-paragraph template</span>
+ <ol class="steps">
+ <li><strong>Paragraph 1 — define the stakes in this scenario.</strong> Who are the stakeholders? Name at least
+ three (users, the company, employees, governments, non-users, future generations — pick the ones the scenario
+ actually implies).</li>
+ <li><strong>Paragraph 2 — the strongest case for.</strong> Not three weak points; one or two strong ones,
+ each developed with a concrete consequence.</li>
+ <li><strong>Paragraph 3 — the strongest case against,</strong> again developed. Use "however" and "on the other
+ hand" explicitly so the examiner can see the balance.</li>
+ <li><strong>Paragraph 4 — a judgement.</strong> "On balance…", "This is acceptable provided that…", "The benefit
+ outweighs the risk for X but not for Y." A conclusion that weighs, not one that simply repeats.</li>
+ </ol>
+ <p><strong>The mark that is most often lost</strong> is the final one. An evaluation with no judgement is capped
+ around half marks however accurate the analysis — the command term asked you to weigh, and weighing produces a
+ verdict.</p>
+</div>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Trap — being generic</span>
+ <p>"Privacy is a concern because personal data could be misused" is true of every technology ever built and scores
+ almost nothing. "In this system, the camera records the resident's daily routine continuously, so the data reveals
+ not just what they did but when they are out of the house — information that is valuable to a burglar as well as
+ to the care provider" is worth marks. Always attach the abstract harm to a specific mechanism in the specific
+ scenario.</p>
+</div>
+
+<div class="callout callout--vocab">
+ <span class="callout__label">Vocabulary</span>
+ <p><strong>abstraction</strong><strong>stored-program concept</strong><strong>fetch–decode–execute cycle</strong><strong>register</strong><strong>program counter (PC)</strong><strong>accumulator</strong><strong>bus (address / data / control)</strong> //<strong>cache</strong><strong>clock speed</strong><strong>core</strong><strong>volatile / non-volatile</strong> /<strong>bootstrap</strong><strong>sensor / actuator</strong> /<strong>ADC / DAC</strong> /<strong>interrupt</strong><strong>overflow</strong><strong>two's complement</strong><strong>sign and magnitude</strong><strong>BCD</strong><strong>Unicode / code point / UTF-8</strong> / / UTF-8<strong>lossy / lossless compression</strong> /<strong>run-length encoding (RLE)</strong><strong>truth table</strong><strong>logic gate</strong><strong>Boolean expression</strong><strong>compiler / interpreter / assembler</strong> / /<strong>bytecode / virtual machine</strong> /<strong>intellectual property</strong><strong>open source / copyleft</strong> /<strong>digital divide</strong><strong>e-waste</strong><strong>stakeholder</strong><strong>surveillance</strong></p>
+</div>
+
+<h2>Practice</h2>
+<ol class="practice">
+ <li><p>Convert 219 to (a) binary, (b) hexadecimal. Show your method.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>219 ÷ 2 = 109 r 1; 109 ÷ 2 = 54 r 1; 54 ÷ 2 = 27 r 0; 27 ÷ 2 = 13 r 1; 13 ÷ 2 = 6 r 1;
+ 6 ÷ 2 = 3 r 0; 3 ÷ 2 = 1 r 1; 1 ÷ 2 = 0 r 1.</li>
+ <li>Read upwards: <strong>11011011</strong>.</li>
+ <li>Group in fours from the right: 1101 | 1011 → D | B → <strong>DB</strong>.</li>
+ <li>Check: 13 × 16 + 11 = 208 + 11 = 219. ✓</li>
+ </ol>
+ </div></details>
+ </li>
+ <li><p>Using 8-bit two's complement, (a) represent −89, (b) state the denary value of 11100110,
+ (c) state the range of values that can be held.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>(a) +89 = 01011001 (64 + 16 + 8 + 1). Invert → 10100110. Add 1 → <strong>10100111</strong>.</li>
+ <li>(b) Leading bit is 1, so negative. Negate: copy up to and including the first 1 (the last bit), flip the
+ rest → 00011010 = 16 + 8 + 2 = 26. So <strong>−26</strong>. Check: −128 + 64 + 32 + 4 + 2 = −26. ✓</li>
+ <li>(c) −128 to +127.</li>
+ </ol>
+ </div></details>
+ </li>
+ <li><p>Explain, with reference to the stored-program concept, why a single general-purpose computer can function
+ as a word processor, a games console and a web browser.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>Instructions and data are stored in the same memory in the same binary form.</li>
+ <li>Therefore the computer's behaviour is determined entirely by the contents of memory, not by its
+ physical construction.</li>
+ <li>Loading a different program simply puts different bit patterns into memory; no hardware change is
+ needed.</li>
+ <li>Each application is therefore just a particular sequence of instructions fetched and executed by the
+ same fetch–decode–execute cycle.</li>
+ </ol>
+ <div class="answerline"><b>Marks:</b> 1 for instructions-as-data, 1 for same memory, 1 for behaviour depending on memory contents, 1 for the conclusion that no hardware change is needed.</div>
+ </div></details>
+ </li>
+ <li><p>Describe the role of the MAR, the MDR and the program counter during the fetch stage.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p>The address of the next instruction is copied from the <strong>PC</strong> into the
+ <strong>MAR</strong>; the MAR's contents are placed on the address bus; the control unit issues a read
+ signal; the data returned on the data bus is placed in the <strong>MDR</strong>; the instruction is copied
+ from the MDR into the current instruction register; and the <strong>PC is incremented</strong> so it points
+ at the next instruction.</p>
+ <p>Naming all three registers with their specific role is what earns the marks. "The CPU fetches the
+ instruction" earns none of them.</p>
+ </div></details>
+ </li>
+ <li><p>A 24-bit colour image is 1920 × 1080 pixels. Calculate its uncompressed size in MiB. State one reason a
+ photograph of the same dimensions saved as PNG might be much larger than one saved as JPEG.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>Pixels = 1920 × 1080 = 2 073 600.</li>
+ <li>Bits = 2 073 600 × 24 = 49 766 400 bits. Bytes = ÷ 8 = 6 220 800 bytes.</li>
+ <li>MiB = 6 220 800 ÷ 1 048 576 ≈ <strong>5.93 MiB</strong>.</li>
+ <li>PNG is <em>lossless</em>, so it must preserve every pixel exactly; a photograph contains sensor noise so
+ adjacent pixels rarely match, making run-length and dictionary methods ineffective. JPEG is <em>lossy</em>
+ and discards high-frequency detail the eye will not resolve, so it can be far smaller at the cost of
+ permanent quality loss.</li>
+ </ol>
+ </div></details>
+ </li>
+ <li><p>Give the truth table for \(F = \overline{(A + B) \cdot C}\) and hence write an equivalent expression using
+ only AND, OR and NOT applied to single variables.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>Apply De Morgan: \(\overline{(A+B)\cdot C} = \overline{(A+B)} + \overline{C} = \overline{A}\cdot\overline{B} + \overline{C}\).</li>
+ <li>Truth table (A, B, C): F = 0 only when (A+B) = 1 and C = 1, i.e. rows 011, 101, 111 (in A,B,C order:
+ 0,1,1; 1,0,1; 1,1,1). All other rows give F = 1.</li>
+ <li>So F = 1 for 000, 001, 010, 100, 110 and F = 0 for 011, 101, 111.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> F = ¬A·¬B + ¬C. Check row 011: ¬A·¬B = 1·0 = 0, ¬C = 0 → F = 0 ✓. Row 000: 1·1 = 1 → F = 1 ✓. This is a NAND-of-OR structure: (A NOR B) OR (NOT C).</div>
+ </div></details>
+ </li>
+ <li><p><span class="badge badge--hl">HL only</span> Explain the difference between a compiler and an interpreter,
+ and explain how bytecode and a virtual machine combine advantages of both.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>A <strong>compiler</strong> translates the whole source program into machine code once, producing an
+ executable. It runs fast and the source need not be distributed, but errors are only reported after
+ compilation and the edit–test cycle is slow.</li>
+ <li>An <strong>interpreter</strong> translates and executes one statement at a time. Errors are reported
+ immediately at the failing line and development is fast, but execution is slower (each statement is
+ re-translated on every run and on every loop iteration) and the source or interpreter must be present.</li>
+ <li><strong>Bytecode + VM</strong> gets both: the source is compiled once to an intermediate, portable
+ bytecode, then that bytecode is executed by a platform-specific virtual machine (often with just-in-time
+ compilation of hot code). Portability comes from the bytecode; speed approaches compiled code via JIT; and
+ development still feels immediate.</li>
+ </ol>
+ <div class="answerline"><b>Marks:</b> 1–2 for each of compiler and interpreter with a distinguishing property, 1–2 for the bytecode/VM combination and the specific advantage it delivers.</div>
+ </div></details>
+ </li>
+ <li><p>Discuss whether a company should be permitted to collect and analyse the location data of its employees'
+ delivery vehicles.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p>A high-scoring answer has four elements.</p>
+ <ol class="steps">
+ <li><strong>Stakeholders:</strong> the company, the drivers, customers awaiting deliveries, and society
+ (road safety).</li>
+ <li><strong>For:</strong> route optimisation reduces fuel use, emissions and cost; customers get accurate
+ delivery windows; stolen vehicles and goods can be recovered; drivers can be protected in an emergency.</li>
+ <li><strong>Against:</strong> continuous location tracking reveals breaks, medical appointments and union
+ meetings — function creep beyond the stated operational purpose; it creates pressure and stress; it may
+ breach data-protection law if it is excessive relative to the purpose (data minimisation); and drivers who
+ are not consulted cannot give meaningful consent given the power imbalance.</li>
+ <li><strong>Judgement:</strong> on balance it is defensible <em>provided</em> that data is collected only
+ during shifts, is retained for a limited period, is not used in disciplinary proceedings without
+ agreement, and that drivers are consulted and can see what is recorded about them.</li>
+ </ol>
+ <div class="answerline"><b>Where the marks are:</b> 1–2 for named stakeholders, 1–2 for developed arguments for, 1–2 for developed arguments against, 1–2 for a clear, supported judgement. Naming a legal principle such as data minimisation or purpose limitation is what distinguishes a 7 from a 5.</div>
+ </div></details>
+ </li>
+</ol>
+
+<div class="conn">
+ <span class="conn__title">Connections</span>
+ <ul>
+ <li><strong>→ A2 Networks:</strong> every value discussed here travels as bits over a network; file-size and
+ bit-rate calculations reappear as bandwidth and transmission-time questions.</li>
+ <li><strong>→ A3 Databases:</strong> character encoding and Unicode determine how text is stored and compared;
+ data types are just bit widths with an interpretation.</li>
+ <li><strong>→ A4 Machine learning:</strong> floating-point representation explains why numerical results are
+ approximate, and binary features are what a model actually consumes.</li>
+ <li><strong>→ B1 Computational thinking:</strong> Boolean logic is the formal basis of every condition and every
+ loop-termination test you will write.</li>
+ <li><strong>→ B2 Programming:</strong> overflow, integer division and floating-point equality are the three
+ numerical bugs you will actually meet in your own code.</li>
+ <li><strong>→ B4 Abstract data types:</strong> a pointer is a memory address — the MAR idea applied to data
+ rather than instructions.</li>
+ <li><strong>→ Physics HL:</strong> ADC/DAC, sensor calibration, and the physics of magnetic and optical storage.</li>
+ </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+ <li><label><input type="checkbox"><span>I can explain the stored-program concept and state its main disadvantage.</span></label></li>
+ <li><label><input type="checkbox"><span>I can name the roles of the PC, MAR, MDR, accumulator, ALU and control unit.</span></label></li>
+ <li><label><input type="checkbox"><span>I can describe the fetch–decode–execute cycle naming the registers in each stage.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain why cache improves performance and name the two kinds of locality.</span></label></li>
+ <li><label><input type="checkbox"><span>I can convert denary ↔ binary ↔ hexadecimal with two methods and check my answer.</span></label></li>
+ <li><label><input type="checkbox"><span>I can state how many values n bits represent and the unsigned and two's-complement ranges.</span></label></li>
+ <li><label><input type="checkbox"><span>I can negate a two's-complement number and explain why subtraction becomes addition.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain why 0.1 cannot be stored exactly in binary and what that does to equality tests.</span></label></li>
+ <li><label><input type="checkbox"><span>I can derive a Boolean expression from a truth table and build a truth table from an expression.</span></label></li>
+ <li><label><input type="checkbox"><span>I can draw the six standard logic gate symbols from memory.</span></label></li>
+ <li><label><input type="checkbox"><span>I can calculate image, sound and file sizes and transmission times.</span></label></li>
+ <li><label><input type="checkbox"><span>I can compare lossy and lossless compression and work through an RLE example.</span></label></li>
+ <li><label><input type="checkbox"><span>I can write a four-paragraph balanced evaluation naming stakeholders and reaching a judgement.</span></label></li>
+</ul>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

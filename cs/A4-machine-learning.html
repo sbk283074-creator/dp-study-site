@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 · Machine learning — DP Computer Science HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Computer Science HL · Theme A · A4</span>
+<h1 class="page-title">A4 · Machine learning</h1>
+<p class="lede">Traditional programming is you writing the rules and the computer applying them. Machine learning
+inverts that: you supply the data and the answers, and the computer works out the rules. That inversion is one of
+the most important ideas in modern computing, and it is new to this syllabus — which means the questions are still
+settling into a pattern, but the conceptual core is stable: what a model is, how it learns, how you know whether it
+learned anything, and what happens when it is wrong.</p>
+<div class="page-meta">
+ <span class="tag">Theme A · examined in Paper 1 (and frequently in the case study)</span>
+ <span class="tag">A4.1 Fundamentals · A4.4 Ethical considerations</span>
+ <span class="tag tag--hl">HL only: A4.2 Data preprocessing · A4.3 Machine learning approaches</span>
+</div>
+
+<div class="callout callout--why">
+ <span class="callout__label">Why the IBO added this topic</span>
+ <p>The stated aim of the new course is that it should be "future-facing" and about computer science rather than
+ information technology. Machine learning is the clearest case where knowing the computing matters more than
+ knowing the software: you cannot evaluate a system that diagnoses patients, shortlists job applicants or prices
+ insurance unless you understand what the model was trained on, what it optimised, and how it can fail. That is
+ exactly what Paper 1 will ask you to do — and notice that almost every question is <em>analysis</em>, not code.</p>
+</div>
+
+<h2>A4.1 · What machine learning actually is</h2>
+
+<p>Here is the inversion, stated precisely.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th></th><th>Traditional programming</th><th>Machine learning</th></tr></thead>
+ <tbody>
+ <tr><td>Input to the machine</td><td>Rules + data</td><td>Data + answers</td></tr>
+ <tr><td>Output from the machine</td><td>Answers</td><td>Rules (a <em>model</em>)</td></tr>
+ <tr><td>Who writes the rules</td><td>You</td><td>The learning algorithm</td></tr>
+ <tr><td>Example</td><td>You code "if the message contains 'free iPad' then spam"</td><td>You show the system 10 000 messages labelled spam or not, and it finds patterns you never wrote down</td></tr>
+ <tr><td>Works well when</td><td>You can articulate the rule exactly</td><td>The rule exists but you cannot state it — recognising a face, translating a sentence, predicting demand</td></tr>
+ </tbody>
+</table>
+</div>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Trap — "the computer learns like a human"</span>
+ <p>It does not, and saying so loses marks. What happens is narrowly this: the system has a large set of adjustable
+ numbers (parameters/weights) and a fixed procedure that adjusts them slightly to reduce a number called the
+ <strong>loss</strong> (a measure of how wrong its outputs are on the training data). Repeat that adjustment many
+ times and the parameters end up at values that perform well on the data seen. There is no understanding, no
+ intention and no generalisation beyond what the data supports. The correct phrase is "the model is fitted to the
+ data" or "the parameters are optimised", not "the model understands".</p>
+</div>
+
+<h3>The three types of learning</h3>
+
+<div class="grid grid--3">
+ <div class="card"><h4>Supervised learning</h4>
+ <p>The training data is <strong>labelled</strong>: every example comes with the correct answer. The model
+ learns to map input to that answer.</p>
+ <p><strong>Classification</strong> — the label is a category: is this email spam, is this tumour malignant,
+ which digit is this?</p>
+ <p><strong>Regression</strong> — the label is a number: what will this house sell for, how many units will
+ we sell next week, what will the temperature be?</p>
+ <p><em>Everyday example:</em> a photo app that has been shown thousands of pictures labelled "cat" or "not cat"
+ and now labels new photos.</p></div>
+ <div class="card"><h4>Unsupervised learning</h4>
+ <p>The training data is <strong>unlabelled</strong>. There is no right answer to learn; the model is asked to
+ find structure — usually to group similar examples together (<strong>clustering</strong>) or to describe the
+ data with fewer numbers (<strong>dimensionality reduction</strong>).</p>
+ <p><em>Everyday example:</em> a music service noticing that you and 40 000 other listeners play the same
+ obscure tracks, and building a "you might like" group — nobody told it the genre existed.</p></div>
+ <div class="card"><h4>Reinforcement learning</h4>
+ <p>There is no dataset at all. An <strong>agent</strong> acts in an environment and receives a
+ <strong>reward</strong> signal; it learns a <strong>policy</strong> (what to do in each state) that maximises
+ total reward over time. It learns by trial and error, including from rewards that arrive much later than the
+ action that earned them.</p>
+ <p><em>Everyday example:</em> a program that learns to play a game by playing it millions of times, receiving
+ +1 for a win and −1 for a loss, with no human ever showing it a good move.</p></div>
+</div>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — choosing the type from a scenario</span>
+ <ol class="steps">
+ <li>Do you have historical examples <em>with the correct answer</em>? If yes → supervised.</li>
+ <li>Is the answer a category or a quantity? Category → classification. Quantity → regression.</li>
+ <li>No correct answers, but you want groups or structure? → unsupervised (clustering).</li>
+ <li>No data at all, but there is an environment the system can act in and a score it can receive? →
+ reinforcement learning.</li>
+ <li>Say which one the scenario implies <em>and why</em> — the "why" is the mark.</li>
+ </ol>
+</div>
+
+<h2>A4.2 · Data preprocessing and the workflow <span class="badge badge--hl">HL only</span></h2>
+
+<ol class="steps">
+ <li><strong>Collect data.</strong> More relevant data beats a cleverer algorithm, almost always. But data
+ collection is where bias enters: if you collect only from one group, the model only works for that group.</li>
+ <li><strong>Clean it (A4.2, HL).</strong> Real data has missing values, duplicates, impossible values,
+ inconsistent spellings and units, and outliers. You must handle missing data (drop the row, or impute a value
+ such as the mean), remove duplicates, and decide whether an outlier is an error or a genuine extreme that matters.</li>
+ <li><strong>Select and engineer features.</strong> A <strong>feature</strong> is an input variable the model uses.
+ Selecting the right ones is often more valuable than choosing a fancier model; irrelevant features add noise, and
+ too many features relative to the number of examples makes overfitting far more likely.</li>
+ <li><strong>Split the data</strong> into <strong>training</strong>, <strong>validation</strong> and
+ <strong>test</strong> sets.</li>
+ <li><strong>Train</strong> the model on the training set — this is where the parameters are adjusted.</li>
+ <li><strong>Tune</strong> using the validation set — choose the settings that are not learned from data
+ (<strong>hyperparameters</strong>, such as k in k-nearest neighbours or the number of layers) by seeing how each
+ performs on data the model has not trained on.</li>
+ <li><strong>Evaluate once</strong> on the test set, which has been kept sealed until now, to estimate how the
+ model will do in the real world.</li>
+ <li><strong>Deploy and monitor.</strong> A model's performance decays as the world changes
+ (<strong>model drift</strong>), so it must be retrained.</li>
+</ol>
+
+<details class="derivation">
+ <summary><span class="badge">Why</span> Why you must split the data — overfitting and underfitting, and why the test set must be sealed</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>The purpose of a model is not to do well on data it has seen; it is to do well on data it has not seen.
+ That property is called <strong>generalisation</strong>, and it is the only thing we care about.</li>
+ <li>Accuracy on the training set is therefore a meaningless measure of quality. A model with enough
+ parameters can memorise the training set perfectly — including its noise and its errors — and be worthless on
+ anything new. That is <strong>overfitting</strong> (): the model has fitted the training data too
+ closely.</li>
+ <li>The opposite failure is <strong>underfitting</strong> (): the model is too simple to capture the
+ pattern at all, so it does badly on both training and test data.</li>
+ <li>So we hold data back. If the model has never seen that data, its performance there is an honest estimate of
+ generalisation.</li>
+ <li><strong>Why three sets and not two?</strong> Because choosing hyperparameters on the test set is itself a
+ form of learning from it — you would be selecting the settings that happen to suit that particular sample. The
+ validation set absorbs that selection pressure, leaving the test set genuinely untouched for a single final
+ estimate. Using the test set to tune is the most common methodological error and it invalidates your result.</li>
+ <li>Practical splits: 60/20/20 or 70/15/15 for training/validation/test; and split <em>randomly</em>, or by
+ time if the data is a time series (you must not train on the future to predict the past).</li>
+ </ol>
+ <p><strong>What it means:</strong> a training accuracy of 99 % and a test accuracy of 62 % is not a good model
+ — it is an overfitted one, and the gap between the two numbers is the diagnostic.</p>
+ </div>
+</details>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 340" role="img" aria-label="Training and validation error curves against model complexity, showing underfitting, the optimum and overfitting">
+ <rect x="0" y="0" width="640" height="340" fill="#ffffff"/>
+
+ <line x1="70" y1="270" x2="600" y2="270" stroke="#334155" stroke-width="2"/>
+ <line x1="70" y1="270" x2="70" y2="40" stroke="#334155" stroke-width="2"/>
+ <text x="60" y="44" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="end">error</text>
+ <text x="600" y="292" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="end">model complexity (or training time)</text>
+
+ <path d="M70 90 Q 150 110 230 145 Q 320 185 420 220 Q 520 248 600 258" fill="none" stroke="#b03060" stroke-width="3"/>
+ <text x="470" y="212" font-size="12" font-family="system-ui, sans-serif" fill="#b03060">training error</text>
+
+ <path d="M70 260 Q 130 200 190 150 Q 240 118 300 128 Q 380 145 460 200 Q 530 245 600 272" fill="none" stroke="#3653d6" stroke-width="3"/>
+ <text x="330" y="106" font-size="12" font-family="system-ui, sans-serif" fill="#3653d6">validation error</text>
+
+ <line x1="300" y1="40" x2="300" y2="270" stroke="#6c7788" stroke-width="2" stroke-dasharray="5 4"/>
+ <text x="310" y="54" font-size="12" font-family="system-ui, sans-serif" fill="#151923">sweet spot</text>
+
+ <rect x="70" y="40" width="150" height="230" fill="none" stroke="none"/>
+ <text x="145" y="312" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">underfitting</text>
+ <text x="430" y="312" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">overfitting</text>
+
+ <line x1="190" y1="288" x2="190" y2="300" stroke="#6c7788" stroke-width="2"/>
+ <line x1="70" y1="296" x2="600" y2="296" stroke="#e2e8f0" stroke-width="2"/>
+
+ <text x="330" y="332" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Both errors are high → too simple. Training low but validation rising → memorising.</text>
+ </svg>
+ <figcaption><span class="viz__title">Figure 1.</span> The central diagnostic picture of machine learning. Training
+ error always falls as the model gets more complex. Validation error falls, bottoms out, then rises. The goal is
+ the bottom of that valley — <em>not</em> the lowest training error.</figcaption>
+</figure>
+
+<h2>Key concepts, defined</h2>
+
+<dl class="glossary">
+ <dt>Feature ()</dt>
+ <dd>An input variable the model uses to make its prediction. In a house-price model: floor area, number of
+ bedrooms, distance to the station.</dd>
+ <dt>Label ()</dt>
+ <dd>The correct answer for a training example — the thing the model is being taught to predict.</dd>
+ <dt>Weight / parameter ( / )</dt>
+ <dd>An adjustable number inside the model that determines how much influence a feature has. Training is the
+ process of finding good weights.</dd>
+ <dt>Training ()</dt>
+ <dd>Adjusting the weights to reduce the error on the training data.</dd>
+ <dt>Inference ()</dt>
+ <dd>Using the trained model to make a prediction. Expensive once, cheap forever after — and, crucially, the
+ weights are frozen.</dd>
+ <dt>Loss / cost function ()</dt>
+ <dd>A single number measuring how wrong the model's predictions are. Training is optimisation of this number.</dd>
+ <dt>Hyperparameter ()</dt>
+ <dd>A setting chosen by the designer rather than learned from data: the learning rate, k in k-NN, the number of
+ layers, the number of training rounds.</dd>
+ <dt>Epoch</dt>
+ <dd>One complete pass through the training data.</dd>
+ <dt>Accuracy</dt>
+ <dd>Proportion of all predictions that were correct. Dangerous on its own — see below.</dd>
+ <dt>Precision and recall</dt>
+ <dd><strong>Precision:</strong> of the things the model flagged, how many were actually positive.
+ <strong>Recall:</strong> of the things that actually were positive, how many did the model catch. They trade off
+ against each other, and which you prefer depends on the cost of each kind of mistake.</dd>
+ <dt>Confusion matrix</dt>
+ <dd>A two-by-two table of true positives, false positives, false negatives and true negatives. It is the source
+ from which precision, recall and accuracy are all computed.</dd>
+</dl>
+
+<div class="callout callout--why">
+ <span class="callout__label">Why accuracy is a trap</span>
+ <p>Suppose 1 in 1000 transactions is fraudulent. A model that predicts "never fraudulent" for everything scores
+ 99.9 % accuracy and is completely useless — it catches no fraud at all. Accuracy hides this because the classes
+ are extremely <strong>imbalanced</strong>. That is why you look at the confusion matrix instead: how many of the
+ actual frauds did we catch (<strong>recall</strong>), and when we blocked a card how often were we right
+ (<strong>precision</strong>)? For a rare but serious class — disease, fraud, structural fault — recall is usually
+ the one you care about, because a missed case is far more costly than a false alarm. Say that reasoning out loud
+ in your answer; it is the difference between a definition and an evaluation.</p>
+</div>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 8 marks · confusion matrix, accuracy, precision, recall</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A model screens 1000 patients for a disease. 60 patients have the disease. The
+ model flags 70 patients as positive, of whom 55 really do have it. (a) Complete the confusion matrix.
+ (b) Calculate accuracy, precision and recall. (c) The model is to be used to decide who gets an invasive
+ follow-up test. Comment on whether accuracy is a suitable measure here.</p>
+ <ol class="steps">
+ <li>True positives (TP) = 55 — flagged and ill.</li>
+ <li>False positives (FP) = 70 − 55 = 15 — flagged but healthy.</li>
+ <li>False negatives (FN) = 60 − 55 = 5 — ill but missed.</li>
+ <li>True negatives (TN) = 1000 − 55 − 15 − 5 = 925 — healthy and not flagged.</li>
+ <li>Accuracy = (TP + TN) / total = (55 + 925) / 1000 = <strong>0.980 = 98.0 %</strong>.</li>
+ <li>Precision = TP / (TP + FP) = 55 / 70 = <strong>0.786 = 78.6 %</strong>.</li>
+ <li>Recall = TP / (TP + FN) = 55 / 60 = <strong>0.917 = 91.7 %</strong>.</li>
+ <li>(c) Accuracy is misleading here. A model that flagged nobody at all would score 94 % accuracy
+ (940/1000) while detecting no disease whatsoever, because the disease is rare — only 6 % of the sample.</li>
+ <li>For an invasive follow-up, both errors matter: a false negative means a sick patient is not treated
+ (so recall matters), and a false positive means a healthy patient undergoes an invasive procedure (so
+ precision matters). The right answer is to report precision, recall and the trade-off between them, not
+ accuracy.</li>
+ </ol>
+ <div class="answerline"><b>Marks:</b> 1 each for TP, FP, FN, TN; 1 each for accuracy, precision, recall; 1–2 for the comment on accuracy being unsuitable because the classes are imbalanced and because the two error types have very different costs.</div>
+ </div>
+</details>
+
+<h2>A4.3 · Machine learning approaches: k-nearest neighbours <span class="badge badge--hl">HL only</span></h2>
+
+<p>k-NN is the algorithm to study because you can do it entirely by hand, so the exam can ask you to. The idea is
+almost insultingly simple: to classify a new point, find the k training points closest to it and take a majority
+vote.</p>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — the procedure</span>
+ <ol class="steps">
+ <li>Choose k (an odd number avoids ties in binary classification).</li>
+ <li>Compute the distance from the new point to every training point, usually Euclidean:
+ \(d = \sqrt{(x_1 - a_1)^2 + (x_2 - a_2)^2}\).</li>
+ <li>Sort the distances and take the k smallest.</li>
+ <li>Count the labels among those k neighbours and assign the majority label.</li>
+ <li>For <em>regression</em> instead of classification, take the mean of the k neighbours' values rather than a
+ vote.</li>
+ </ol>
+</div>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 2</span> IB-style · 9 marks · k-NN by hand, k = 3</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A college records, for each of six former students, the hours studied (x) and the
+ number of past papers completed (y), and whether they passed. A current student has studied 6 hours and
+ completed 4 past papers. Use k-NN with k = 3 to predict whether they pass.</p>
+<pre><code>Student x (hours) y (papers) Result
+A 2 1 Fail
+B 3 2 Fail
+C 3 1 Fail
+D 7 5 Pass
+E 8 6 Pass
+F 7 6 Pass
+Query Q 6 4 ?</code></pre>
+ <ol class="steps">
+ <li>Compute \(d = \sqrt{(6-x)^2 + (4-y)^2}\) to every point.</li>
+ <li>A: \(\sqrt{4^2 + 3^2} = \sqrt{16+9} = \sqrt{25} = \mathbf{5.000}\)</li>
+ <li>B: \(\sqrt{3^2 + 2^2} = \sqrt{9+4} = \sqrt{13} \approx \mathbf{3.606}\)</li>
+ <li>C: \(\sqrt{3^2 + 3^2} = \sqrt{18} \approx \mathbf{4.243}\)</li>
+ <li>D: \(\sqrt{1^2 + 1^2} = \sqrt{2} \approx \mathbf{1.414}\)</li>
+ <li>E: \(\sqrt{2^2 + 2^2} = \sqrt{8} \approx \mathbf{2.828}\)</li>
+ <li>F: \(\sqrt{1^2 + 2^2} = \sqrt{5} \approx \mathbf{2.236}\)</li>
+ <li>Sort: D (1.414) &lt; F (2.236) &lt; E (2.828) &lt; B (3.606) &lt; C (4.243) &lt; A (5.000).</li>
+ <li>The three nearest are D, F and E — all labelled <strong>Pass</strong>. Majority vote: <strong>Pass</strong>.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> Pass, with all three nearest neighbours agreeing. Marks: 1 for the formula, up to 4 for correct distances, 1 for identifying the three nearest, 1 for the vote, 1–2 for a sensible comment (below).</div>
+ <p><strong>The comment that earns the last two marks:</strong> with k = 1 the prediction would also be Pass but
+ it would depend entirely on a single individual, so it is very sensitive to noise and to one unusual student.
+ With k = 5, the neighbours would be D, F, E, B (Fail) and C (Fail) — still a 3-to-2 majority for Pass, but a
+ much less confident one. Small k gives a flexible, high-variance model that fits the training data closely;
+ large k gives a smoother, lower-variance model that can miss genuine structure. Choosing k is exactly the
+ overfitting/underfitting trade-off of Figure 1, and it is chosen on the <em>validation</em> set.</p>
+ </div>
+</details>
+
+<details class="derivation">
+ <summary><span class="badge">Why</span> Why feature scaling is not optional in k-NN</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>Suppose one feature is annual income in yuan (range 0 to 500 000) and the other is age (range 18 to 65).</li>
+ <li>The squared difference in income will be on the order of \(10^{10}\) while the squared difference in age
+ is at most about 2200. The distance is therefore almost entirely determined by income, and age contributes
+ essentially nothing.</li>
+ <li>The model has silently ignored a feature, and you get no warning.</li>
+ <li>The fix is <strong>normalisation</strong> (scaling each feature to 0–1) or <strong>standardisation</strong>
+ (subtract the mean, divide by the standard deviation, so each feature has mean 0 and standard deviation 1).</li>
+ <li>After scaling, both features contribute on comparable terms. The same issue affects any distance- or
+ gradient-based method, which is most of machine learning.</li>
+ </ol>
+ <p><strong>What it means:</strong> preprocessing is not admin; it changes what the model can see.
+ <strong>When it matters less:</strong> tree-based methods split one feature at a time, so they are largely
+ indifferent to scale.</p>
+ </div>
+</details>
+
+<h2>A4.3 · Machine learning approaches: neural networks <span class="badge badge--hl">HL only</span></h2>
+
+<p>A neural network is a stack of layers of simple units. Each unit takes a weighted sum of its inputs, adds a
+<strong>bias</strong>, and passes the result through a non-linear <strong>activation function</strong>. Stack enough
+of them and the whole thing can approximate extraordinarily complicated relationships between input and output.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Part</th><th>What it is</th></tr></thead>
+ <tbody>
+ <tr><td>Input layer</td><td>One unit per feature. It performs no computation; it just presents the values.</td></tr>
+ <tr><td>Hidden layer(s)</td><td>Layers between input and output. This is where the computation happens, and "deep learning" simply means many hidden layers.</td></tr>
+ <tr><td>Output layer</td><td>Produces the answer: one unit for regression or binary classification, several (often with softmax) for multi-class classification.</td></tr>
+ <tr><td>Weights</td><td>One per connection. They are what training adjusts, and they are what the model <em>is</em>.</td></tr>
+ <tr><td>Bias</td><td>An extra adjustable constant added to the weighted sum, letting a unit fire even when all inputs are zero.</td></tr>
+ <tr><td>Activation function</td><td>A non-linear function applied to the weighted sum. Common choices: sigmoid, tanh, ReLU.</td></tr>
+ </tbody>
+</table>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Why</span> Why an activation function must be non-linear — the collapse argument</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>Each unit computes a weighted sum of its inputs — a linear operation.</li>
+ <li>A linear function of a linear function is still linear. So if the activation were linear (or absent), a
+ hundred-layer network would mathematically collapse into a single linear function of the inputs.</li>
+ <li>That network could only ever draw a straight line (or a flat plane) as its decision boundary — no more
+ powerful than the simplest possible model, no matter how many layers you stacked.</li>
+ <li>Inserting a non-linearity after each sum breaks the collapse. Each layer can now bend the function a
+ little, and many layers bend it enough to represent very complex boundaries.</li>
+ <li><strong>ReLU</strong> (\(f(x) = \max(0, x)\)) is the standard modern choice because it is cheap to compute
+ and its gradient does not vanish for positive values, which makes deep networks trainable. The
+ <strong>sigmoid</strong> squashes any input into (0, 1), which is why it is used for outputs that must be
+ interpreted as a probability — but it saturates at the extremes, so its gradient becomes tiny and learning
+ slows, which is why it is rarely used in hidden layers today.</li>
+ </ol>
+ <p><strong>What it means:</strong> the non-linearity is not a detail; it is the entire source of a neural
+ network's expressive power.</p>
+ </div>
+</details>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 3</span> IB-style · 8 marks · a full forward pass by hand</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A network has two inputs, a hidden layer of two units with the sigmoid activation
+ \(\sigma(z)=\dfrac{1}{1+e^{-z}}\), and one output unit with the sigmoid activation. Inputs are
+ \(x_1 = 0.5,\ x_2 = 0.8\). Weights and biases are given below. Compute the output and state the predicted
+ class using a threshold of 0.5.</p>
+<pre><code>hidden unit 1: w = (0.4, -0.2) bias = 0.1
+hidden unit 2: w = (-0.5, 0.7) bias = -0.3
+output unit : w = (0.9, -0.6) bias = 0.2</code></pre>
+ <ol class="steps">
+ <li><strong>Hidden unit 1.</strong> Weighted sum: \(z_1 = 0.4(0.5) + (-0.2)(0.8) + 0.1 = 0.20 - 0.16 + 0.10 = 0.14\).</li>
+ <li>Activate: \(h_1 = \sigma(0.14) = \dfrac{1}{1+e^{-0.14}} = \dfrac{1}{1+0.8694} = \mathbf{0.535}\) (3 s.f.).</li>
+ <li><strong>Hidden unit 2.</strong> \(z_2 = (-0.5)(0.5) + 0.7(0.8) + (-0.3) = -0.25 + 0.56 - 0.30 = 0.01\).</li>
+ <li>Activate: \(h_2 = \sigma(0.01) = \dfrac{1}{1+0.9900} = \mathbf{0.503}\) (3 s.f.).</li>
+ <li><strong>Output unit.</strong> Its inputs are now \(h_1\) and \(h_2\):
+ \(z_o = 0.9(0.535) + (-0.6)(0.503) + 0.2 = 0.4815 - 0.3015 + 0.2 = 0.380\).</li>
+ <li>Activate: \(y = \sigma(0.380) = \dfrac{1}{1+e^{-0.380}} = \dfrac{1}{1+0.6839} = \mathbf{0.594}\) (3 s.f.).</li>
+ <li>Threshold 0.5: since 0.594 &gt; 0.5, the predicted class is <strong>1 (positive)</strong>.</li>
+ <li>Interpretation: 0.594 is a probability-like score, not a certainty. It is only just above the threshold, so
+ this is a low-confidence prediction — worth stating, because a question often asks what the value means.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> h₁ = 0.535, h₂ = 0.503, output = 0.594 → class 1. Marks: 1 per correct weighted sum, 1 per correct activation, 1 for the threshold decision, 1 for interpreting the value as a confidence. The most common arithmetic slip is forgetting to add the bias — check for it.</div>
+ </div>
+</details>
+
+<div class="callout callout--exam">
+ <span class="callout__label">Exam technique — what the exam will and will not ask you to do</span>
+ <p>You will not be asked to implement backpropagation or to derive a gradient. You <em>will</em> be asked to:
+ identify the layers and say what each does; explain what a weight is; perform a forward pass with given weights
+ (as above); explain the role of the activation function; explain why training needs many examples and much
+ computation; and explain why the model's decisions are hard to explain. Practise the forward-pass arithmetic until
+ it is mechanical — it is the one place in this topic where a numerical answer is unambiguously right or wrong.</p>
+</div>
+
+<h2>A4.4 · Limitations and ethics</h2>
+
+<p>This is the part of A4 that is examined hardest, because it is where machine learning meets the social and
+ethical reasoning the IB cares about. Each issue below has a mechanism — learn the mechanism, not just the slogan.</p>
+
+<div class="grid grid--2">
+ <div class="card"><h4>Bias and discrimination ()</h4>
+ <p><strong>Mechanism:</strong> the model learns whatever regularities exist in the training data, including the
+ ones produced by historical prejudice. If a company hired mostly men for a decade, a model trained on those
+ decisions learns that being male predicts being hired. The model is not prejudiced; it is accurately
+ reproducing a prejudiced process — which is worse, because it does so at scale, automatically, and with the
+ appearance of objectivity. <strong>Also:</strong> under-representation means the model simply has fewer
+ examples for some groups, so it performs worse for them. Removing the protected attribute does <em>not</em> fix
+ it, because other features correlate with it (postcode correlates with ethnicity).</p></div>
+ <div class="card"><h4>Lack of explainability ()</h4>
+ <p><strong>Mechanism:</strong> a large model's decision is the combined effect of millions of weights, none of
+ which corresponds to a human-understandable rule. So the model can be right without anyone being able to say
+ why. This matters legally (data-protection regimes in many jurisdictions grant a right to an explanation for
+ automated decisions) and practically (if you cannot explain a diagnosis, a doctor cannot verify it, and a
+ developer cannot debug it). The field of <em>explainable AI</em> exists because this is a real barrier to
+ deploying models in high-stakes settings.</p></div>
+ <div class="card"><h4>Privacy ()</h4>
+ <p><strong>Mechanism:</strong> models are trained on personal data, and they can leak it — a model trained on
+ medical records may reproduce details of individuals when prompted, an attack called
+ <strong>membership inference</strong> or <strong>model inversion</strong>. Consent is also weak: data collected
+ for one purpose is routinely reused for training without a fresh decision by the subject. Techniques such as
+ <strong>differential privacy</strong> (adding carefully calibrated noise so no individual's data materially
+ affects the output) and <strong>federated learning</strong> (train on the device, share only the updates) exist
+ and are worth naming.</p></div>
+ <div class="card"><h4>Environmental cost ()</h4>
+ <p><strong>Mechanism:</strong> training a large model means running thousands of power-hungry processors for
+ weeks, consuming electricity and the water used to cool the data centres. There is also the hardware's
+ embodied carbon. The honest observation is that inference now dominates total energy use for widely deployed
+ models, because a model is trained once and used billions of times — so the environmental argument is about
+ deployment scale as much as training runs.</p></div>
+ <div class="card"><h4>Deepfakes and misinformation ()</h4>
+ <p><strong>Mechanism:</strong> generative models can produce photorealistic images, video and audio of people
+ saying and doing things they never did. The damage is not only individual (fraud, revenge, political
+ manipulation) but epistemic: when convincing fakes are cheap, people can dismiss genuine evidence as fake —
+ a phenomenon sometimes called the "liar's dividend". Detection is an arms race, so the durable responses are
+ provenance (cryptographic signing of authentic media) and literacy, not detection alone.</p></div>
+ <div class="card"><h4>Job displacement and accountability ()</h4>
+ <p><strong>Mechanism:</strong> machine learning automates <em>tasks</em> rather than whole jobs, but the tasks
+ it automates first are the routine cognitive ones that have historically been entry-level professional work.
+ The distributional effect matters: productivity gains accrue to the owners of the system while displacement
+ costs fall on individuals. And accountability is genuinely hard: when a model's decision harms someone, the
+ chain from the data collector to the trainer to the deployer to the user makes it easy for everyone to disclaim
+ responsibility. "The algorithm decided" is not an answer the law accepts.</p></div>
+</div>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to write the ML evaluation — the structure that scores</span>
+ <ol class="steps">
+ <li><strong>Say what kind of system this is</strong> and what it optimises. "This is a supervised
+ classification system trained on historical hiring decisions, so it optimises accuracy against those past
+ decisions."</li>
+ <li><strong>Name the stakeholders</strong> — applicants, the employer, existing staff, regulators, and groups
+ historically under-represented in the industry.</li>
+ <li><strong>Develop two benefits concretely:</strong> consistency (the same application always gets the same
+ treatment, unlike a tired human at 5 pm), and throughput (thousands of applications screened cheaply).</li>
+ <li><strong>Develop two harms concretely, with the mechanism:</strong> historical bias in the training labels is
+ learned and amplified; and unsuccessful applicants cannot be told why they were rejected, so they cannot
+ appeal or improve.</li>
+ <li><strong>Propose mitigations:</strong> audit the model's outcomes for disparate impact across groups before
+ deployment; keep a human in the loop for decisions that affect individuals; publish the features used; retrain
+ and re-audit on a schedule.</li>
+ <li><strong>Reach a judgement:</strong> "acceptable as a <em>screening aid</em> with a human decision and
+ regular auditing; not acceptable as an autonomous reject mechanism, because the harms are concentrated on
+ individuals who have no route to challenge the outcome."</li>
+ </ol>
+ <p>The single sentence that most improves these answers is one that distinguishes what the model was
+ <em>optimised</em> for from what we actually <em>want</em>. A model optimises the loss function you gave it;
+ everything you forgot to put in that function is something it will happily sacrifice.</p>
+</div>
+
+<div class="callout callout--vocab">
+ <span class="callout__label">Vocabulary</span>
+ <p><strong>machine learning</strong><strong>model</strong><strong>training / inference</strong> /<strong>supervised learning</strong><strong>unsupervised learning</strong><strong>reinforcement learning</strong><strong>classification / regression</strong> /<strong>clustering</strong><strong>labelled / unlabelled data</strong> /<strong>feature</strong><strong>label</strong><strong>weight</strong><strong>bias (in a network)</strong><strong>bias (in data)</strong><strong>training / validation / test set</strong> / /<strong>overfitting</strong><strong>underfitting</strong><strong>generalisation</strong><strong>hyperparameter</strong><strong>loss function</strong><strong>epoch</strong><strong>accuracy</strong><strong>precision</strong><strong>recall</strong><strong>confusion matrix</strong><strong>true positive / false positive / false negative / true negative</strong> / / /<strong>k-nearest neighbours (k-NN)</strong> k<strong>Euclidean distance</strong><strong>feature scaling / normalisation</strong> /<strong>neural network</strong><strong>input / hidden / output layer</strong> / /<strong>activation function</strong><strong>sigmoid / ReLU</strong> S /<strong>forward propagation</strong><strong>threshold</strong><strong>explainability</strong><strong>deepfake</strong><strong>model drift</strong><strong>stakeholder</strong></p>
+</div>
+
+<h2>Practice</h2>
+<ol class="practice">
+ <li><p>Explain the difference between supervised and unsupervised learning, giving an example of each.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p>In <strong>supervised</strong> learning the training data is labelled: each example comes with the correct
+ answer, and the model learns to map input to that answer. Example: a system shown thousands of X-rays each
+ labelled "fracture" or "no fracture", which then classifies new X-rays.</p>
+ <p>In <strong>unsupervised</strong> learning the data has no labels; the model is asked to find structure,
+ typically by grouping similar examples. Example: a retailer feeding purchase histories into a clustering
+ algorithm and discovering four distinct customer groups it had never defined.</p>
+ <p>The distinguishing feature is the presence or absence of the correct answer in the training data — say that
+ explicitly.</p>
+ </div></details>
+ </li>
+ <li><p>A model predicts whether a machine will fail in the next month. Explain why training accuracy alone is not
+ a sufficient measure of whether the model is useful.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>Training accuracy measures performance on data the model has already seen, and a model with enough
+ capacity can memorise that data — including its noise — without learning anything general.</li>
+ <li>That is overfitting, and it produces high training accuracy with poor performance on new data, which is
+ the only performance that matters.</li>
+ <li>The correct procedure is to hold back a validation and a test set, train only on the training set, and
+ measure on data the model has never seen.</li>
+ <li>Additionally, failures are usually rare, so accuracy is dominated by the majority class; precision,
+ recall and the confusion matrix are needed to see whether the model actually catches the failures.</li>
+ </ol>
+ </div></details>
+ </li>
+ <li><p>Using the six-student dataset from Worked example 2, predict the result for a student who studied 4 hours
+ and completed 2 past papers, using k = 3. Show all distances.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>Query Q = (4, 2). Distance \(d=\sqrt{(4-x)^2+(2-y)^2}\).</li>
+ <li>A (2,1): \(\sqrt{4+1}=\sqrt5\approx2.236\). B (3,2): \(\sqrt{1+0}=1.000\).
+ C (3,1): \(\sqrt{1+1}=\sqrt2\approx1.414\). D (7,5): \(\sqrt{9+9}=\sqrt{18}\approx4.243\).
+ E (8,6): \(\sqrt{16+16}=\sqrt{32}\approx5.657\). F (7,6): \(\sqrt{9+16}=5.000\).</li>
+ <li>Three nearest: B (1.000, Fail), C (1.414, Fail), A (2.236, Fail).</li>
+ <li>All three are Fail, so the prediction is <strong>Fail</strong> — and with unanimous neighbours this is a
+ confident prediction.</li>
+ </ol>
+ <div class="answerline"><b>Answer:</b> Fail. Note how the same dataset gives Pass for (6,4) and Fail for (4,2) — the decision boundary is a curve in the 2-D feature space, which is precisely what nearest-neighbour methods produce.</div>
+ </div></details>
+ </li>
+ <li><p>Explain why the value of k in k-nearest neighbours is described as a trade-off, and say how you would
+ choose it.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>A small k (such as 1) makes the model very flexible: the decision boundary follows individual training
+ points closely, so it fits the training data well but is highly sensitive to noise and outliers — high
+ variance, overfitting.</li>
+ <li>A large k smooths the boundary by averaging over many neighbours, which reduces sensitivity to noise but
+ can wash out genuine local structure — high bias, underfitting.</li>
+ <li>So the choice is exactly the bias–variance trade-off, the same one shown in Figure 1.</li>
+ <li>Choose it empirically: try several values, measure each one's accuracy (or error) on the
+ <strong>validation</strong> set, and pick the value that performs best there. Confirm once on the test set.</li>
+ </ol>
+ <div class="answerline"><b>Trap:</b> choosing k by looking at the test set. That contaminates the test set and invalidates your final estimate.</div>
+ </div></details>
+ </li>
+ <li><p>A spam filter flags 200 of 10 000 emails as spam; 160 of those really are spam, and 40 real spam emails
+ were missed. Calculate precision and recall, and state which one matters more for this application, with a
+ reason.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>TP = 160, FP = 40. Total actual spam = 160 + 40 = 200, so FN = 40.</li>
+ <li>Precision = TP / (TP + FP) = 160 / 200 = <strong>0.80</strong>.</li>
+ <li>Recall = TP / (TP + FN) = 160 / 200 = <strong>0.80</strong>.</li>
+ <li>For a spam filter, <strong>precision matters more</strong>: a false positive means a genuine email — a
+ job offer, a password reset, a message from a family member — is hidden from the user and may never be
+ seen, whereas a false negative merely means the user deletes one more junk email themselves.</li>
+ <li>The two errors have very unequal costs, and that asymmetry, not the numbers, decides which metric to
+ optimise.</li>
+ </ol>
+ </div></details>
+ </li>
+ <li><p>Explain what is meant by the activation function of a neuron, and explain why a network without one would
+ be no more powerful than a single-layer model.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>Each unit computes the weighted sum of its inputs plus a bias, and then applies the activation function
+ to produce the unit's output.</li>
+ <li>A weighted sum is a linear operation, and composing linear operations gives another linear operation.</li>
+ <li>So without a non-linear activation, no matter how many layers you stack, the whole network reduces
+ mathematically to one linear function of the inputs — it could only ever produce a straight-line decision
+ boundary.</li>
+ <li>Applying a non-linear function at each layer breaks that collapse: each layer can bend the mapping, and
+ many layers together can represent very complex functions. That is the source of a network's expressive
+ power.</li>
+ </ol>
+ </div></details>
+ </li>
+ <li><p>Discuss the use of a machine-learning system to predict which students are at risk of failing, so that
+ teachers can intervene.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li><strong>Stakeholders:</strong> the students flagged, the students not flagged, teachers, parents, the
+ school, and the education authority.</li>
+ <li><strong>Benefits:</strong> support can be targeted at the students who need it earliest, when
+ intervention is cheapest and most effective; teachers' limited time is allocated better; and patterns a
+ human would miss across hundreds of students (falling attendance combined with a particular assessment
+ profile) can be surfaced.</li>
+ <li><strong>Harms — with mechanisms:</strong> the model is trained on <em>past</em> outcomes, so it will
+ learn whatever disadvantages existed historically; students from groups already over-represented among
+ past failures will be flagged disproportionately, and being labelled "at risk" can lower expectations and
+ become self-fulfilling. Data on family income, health and behaviour is highly sensitive and its use may
+ exceed what students consented to. And the prediction is probabilistic, so some flagged students were never
+ at risk while some who were at risk are missed and get no help.</li>
+ <li><strong>Mitigations:</strong> audit false-positive and false-negative rates across groups; use the
+ output only to <em>offer</em> support, never to withdraw it; tell students what data is used; keep the
+ decision with a teacher who knows the student; review the model each year.</li>
+ <li><strong>Judgement:</strong> defensible as a prompt for a human conversation about support, provided it
+ is audited and transparent; not defensible as an autonomous allocation of teaching time, because the cost
+ of a wrong prediction falls on an individual child with no route to challenge it.</li>
+ </ol>
+ <div class="answerline"><b>Marks:</b> stakeholders; developed benefits; developed harms with mechanism; mitigations; a clear judgement. A conclusion that says "it depends" without saying what it depends on is not a judgement.</div>
+ </div></details>
+ </li>
+ <li><p>A training run gives 99 % accuracy on the training set and 61 % on the validation set. Identify the
+ problem, explain what has happened, and suggest two ways to improve generalisation.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>This is <strong>overfitting</strong>: the model has fitted the training data, including its noise,
+ rather than the underlying pattern, so it does not generalise.</li>
+ <li>The large gap between the two figures is the diagnostic — training accuracy alone would have looked
+ excellent.</li>
+ <li><strong>Improve by (any two of):</strong> collecting more training data; simplifying the model (fewer
+ features, fewer parameters, fewer layers); <strong>regularisation</strong>, which penalises large weights
+ and so discourages the model from contorting itself to fit individual points; <strong>early stopping</strong>
+ — stop training when validation error stops improving, as in Figure 1; or data augmentation, which creates
+ additional plausible training examples.</li>
+ <li>Also worth a mark: check for data leakage, where information about the test set has accidentally
+ entered training — that produces the same symptom.</li>
+ </ol>
+ </div></details>
+ </li>
+</ol>
+
+<div class="conn">
+ <span class="conn__title">Connections</span>
+ <ul>
+ <li><strong>→ A1 Computer fundamentals:</strong> floating-point representation explains why training is
+ approximated and why results are not exactly reproducible; parallel hardware is why training is feasible at all.</li>
+ <li><strong>→ A3 Databases:</strong> models are trained on data assembled from operational systems and data
+ warehouses; poor database design becomes poor data quality becomes a biased model.</li>
+ <li><strong>→ A2 Networks:</strong> cloud-based ML services move personal data off the device; federated
+ learning is a network-and-privacy answer to that.</li>
+ <li><strong>→ B1 Computational thinking:</strong> the ML workflow is decomposition and iteration applied to
+ data; choosing features is abstraction.</li>
+ <li><strong>→ B2 Programming:</strong> the training loop is a nested iteration over epochs and batches, and
+ the forward pass is a sequence of vector operations — arrays and loops.</li>
+ <li><strong>→ B4 Abstract data types:</strong> a decision tree is a binary tree (B4), and feature-indexed
+ lookup behaves like a hash table.</li>
+ <li><strong>→ Case study:</strong> if your pre-seen case study involves AI — very likely — this page is the
+ conceptual toolkit for it.</li>
+ <li><strong>→ Maths AA HL:</strong> vectors, distance, the chain rule behind backpropagation, and statistics.</li>
+ </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+ <li><label><input type="checkbox"><span>I can contrast traditional programming with machine learning.</span></label></li>
+ <li><label><input type="checkbox"><span>I can describe supervised, unsupervised and reinforcement learning with an example each.</span></label></li>
+ <li><label><input type="checkbox"><span>I can distinguish classification from regression.</span></label></li>
+ <li><label><input type="checkbox"><span>I can state the eight steps of the ML workflow in order.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain why the data must be split into three sets and what each is for.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain overfitting and underfitting and read the validation-error curve.</span></label></li>
+ <li><label><input type="checkbox"><span>I can define feature, label, weight, inference, hyperparameter and loss.</span></label></li>
+ <li><label><input type="checkbox"><span>I can compute accuracy, precision and recall from a confusion matrix.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain why accuracy is misleading for imbalanced classes.</span></label></li>
+ <li><label><input type="checkbox"><span>I can carry out a k-NN classification by hand for a 2-D dataset.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain why feature scaling matters in distance-based methods.</span></label></li>
+ <li><label><input type="checkbox"><span>I can perform a forward pass on a tiny neural network by hand.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain why the activation function must be non-linear.</span></label></li>
+ <li><label><input type="checkbox"><span>I can write a six-part balanced evaluation of an ML system with a judgement.</span></label></li>
+</ul>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

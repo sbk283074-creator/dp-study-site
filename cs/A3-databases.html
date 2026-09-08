@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A3 · Databases — DP Computer Science HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Computer Science HL · Theme A · A3</span>
+<h1 class="page-title">A3 · Databases</h1>
+<p class="lede">A database is not a spreadsheet with extra steps. It is a claim about the world — "every order
+belongs to exactly one customer", "no two books share an ISBN" — enforced by software so that the claim stays true
+no matter how many people use the system at once. This topic teaches you to turn a messy real situation into tables
+that cannot contradict themselves, and then to ask questions of those tables in SQL. Get it right and the exam
+questions are the most mechanical marks available in Paper 1.</p>
+<div class="page-meta">
+ <span class="tag">Theme A · examined in Paper 1; SQL may appear in Paper 2</span>
+ <span class="tag">A3.1 Fundamentals · A3.2 Design · A3.3 Programming · A3.4 Alternative databases (HL)</span>
+ <span class="tag tag--hl">HL only: A3.4 Alternative databases and data warehouses</span>
+</div>
+
+<h2>A3.1 · Why databases rather than flat files</h2>
+
+<p>A <strong>flat file</strong> is a single table holding everything — the shape a spreadsheet naturally takes.
+Suppose a small bookshop keeps this:</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>OrderID</th><th>OrderDate</th><th>CustomerName</th><th>CustomerEmail</th><th>City</th><th>BookTitle</th><th>AuthorName</th><th>AuthorNationality</th><th>Qty</th><th>UnitPrice</th></tr></thead>
+ <tbody>
+ <tr><td>1001</td><td>2026-03-02</td><td>A. Chen</td><td>a.chen@x.com</td><td>Shanghai</td><td>Dune</td><td>F. Herbert</td><td>American</td><td>1</td><td>12.99</td></tr>
+ <tr><td>1001</td><td>2026-03-02</td><td>A. Chen</td><td>a.chen@x.com</td><td>Shanghai</td><td>Emma</td><td>J. Austen</td><td>British</td><td>2</td><td>8.50</td></tr>
+ <tr><td>1002</td><td>2026-03-03</td><td>L. Moreau</td><td>l.m@x.com</td><td>Lyon</td><td>Dune</td><td>F. Herbert</td><td>American</td><td>1</td><td>12.99</td></tr>
+ <tr><td>1003</td><td>2026-03-05</td><td>A. Chen</td><td>a.chen@x.com</td><td>Shanghai</td><td>Emma</td><td>J. Austen</td><td>British</td><td>1</td><td>8.50</td></tr>
+ </tbody>
+</table>
+</div>
+
+<p>Now exercise it. These five problems are the standard answer, and each has a name.</p>
+
+<div class="grid grid--2">
+ <div class="card"><h4>1 · Redundancy ()</h4>
+ <p>"F. Herbert — American" is stored three times, and A. Chen's address four. The file is bigger than it needs
+ to be, and every duplicate is a copy that can drift out of step with the others.</p></div>
+ <div class="card"><h4>2 · Update anomaly ()</h4>
+ <p>A. Chen moves to Beijing. You must find and change <em>every</em> row containing her name. Miss one and the
+ database now says she lives in two cities — and nothing in the file can detect the contradiction.</p></div>
+ <div class="card"><h4>3 · Insertion anomaly ()</h4>
+ <p>You want to add a new book that nobody has ordered yet. There is nowhere to put it, because a row only
+ exists as part of an order. You are forced to invent a fake order, or leave the book out of the system.</p></div>
+ <div class="card"><h4>4 · Deletion anomaly ()</h4>
+ <p>Order 1001 is the last order containing <em>Dune</em>. Cancel it and you delete the only record that Dune
+ exists, who wrote it, and what it costs — information that had nothing to do with that order.</p></div>
+ <div class="card"><h4>5 · No integrity and no concurrency</h4>
+ <p>Nothing in a flat file prevents two different spellings of the same author, a quantity of −3, an order with
+ no customer, or two users overwriting each other's edits. A DBMS can enforce all of those.</p></div>
+ <div class="card"><h4>Plus: no independent access</h4>
+ <p>Every question ("which books has A. Chen bought?") requires a bespoke program. A database offers one
+ declarative language — SQL — that answers any question you can phrase, without writing new code.</p></div>
+</div>
+
+<div class="callout callout--why">
+ <span class="callout__label">Why this is the real motivation, stated precisely</span>
+ <p>Notice that all four anomalies come from the same root cause: <strong>one row mixes facts about several
+ different things</strong> (an order, a customer, a book, an author). Because the facts are tangled, you cannot
+ record one of them without the others, change one without hunting the others, or remove one without destroying
+ the others. Normalisation is not a tidying ritual — it is the process of untangling those facts so that each fact
+ lives in exactly one place. Once each fact has one home, update means "change one row", insert means "add the
+ thing you know", and delete means "remove the thing you no longer need". That is the whole payoff.</p>
+</div>
+
+<h2>The relational model</h2>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Formal term</th><th>Everyday term</th><th>What it is</th></tr></thead>
+ <tbody>
+ <tr><td>Relation</td><td>Table</td><td>A collection of data about one kind of thing</td></tr>
+ <tr><td>Tuple</td><td>Record / row</td><td>One instance of that thing</td></tr>
+ <tr><td>Attribute</td><td>Field / column</td><td>One property, with a declared data type</td></tr>
+ <tr><td>Domain</td><td>—</td><td>The set of permitted values for an attribute (its type plus any constraints)</td></tr>
+ <tr><td>Degree</td><td>—</td><td>The number of attributes</td></tr>
+ <tr><td>Cardinality</td><td>—</td><td>The number of tuples</td></tr>
+ </tbody>
+</table>
+</div>
+
+<h3>Keys — the four kinds you must distinguish</h3>
+
+<dl class="glossary">
+ <dt>Candidate key</dt>
+ <dd>Any attribute, or minimal set of attributes, that uniquely identifies a tuple. <em>Minimal</em> matters: if
+ {StudentID} already works, then {StudentID, Name} is a superkey but not a candidate key, because you could drop
+ Name and still be unique.</dd>
+ <dt>Primary key</dt>
+ <dd>The candidate key chosen to be the official identifier. Must be unique and never null. It may be a
+ <strong>surrogate key</strong> — an artificial ID invented by the designer (auto-increment integer) — which is
+ usually better than a natural key because real-world identifiers (names, emails, even ISBNs) can change or be
+ mistyped.</dd>
+ <dt>Composite (compound) key</dt>
+ <dd>A primary key made of two or more attributes because no single one is unique. In an order-line table,
+ {OrderID, BookID} identifies a row: an order can contain many books and a book can appear in many orders, but the
+ <em>pair</em> occurs once.</dd>
+ <dt>Foreign key</dt>
+ <dd>An attribute in one table that is the primary key in another, creating a link. It is the mechanism by which
+ relations are, well, relational.</dd>
+ <dt>Referential integrity</dt>
+ <dd>The rule that every foreign key value must either match an existing primary key value in the referenced table
+ or be null. It is what stops the database containing an order for a customer who does not exist.</dd>
+</dl>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Trap — "a foreign key is a link" is not enough</span>
+ <p>An exam answer that says "a foreign key links two tables" earns one mark. The full answer: it is an attribute
+ whose values are drawn from the primary key of another table; it establishes the relationship; and the DBMS
+ enforces <strong>referential integrity</strong> on it, which prevents (i) inserting a child row whose parent
+ does not exist, (ii) deleting a parent row that still has children, and (iii) changing a primary key value while
+ children still point at the old one. Naming those three behaviours is where the marks are.</p>
+</div>
+
+<h2>A3.2 · Entity–relationship modelling</h2>
+
+<p>An <strong>entity</strong> is a thing the organisation needs to store data about (Customer, Book, Order). An
+<strong>attribute</strong> is a property of an entity. A <strong>relationship</strong> is an association between
+entities. Three relationship types, and one of them cannot be implemented directly.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Type</th><th>Meaning</th><th>Example</th><th>How it is implemented</th></tr></thead>
+ <tbody>
+ <tr><td>One to one (1:1)</td><td>Each instance of A relates to at most one of B, and vice versa</td><td>Each employee has one parking space</td><td>Put the foreign key in either table; often the two should simply be merged into one table unless there is a reason to separate them (security, optional data)</td></tr>
+ <tr><td>One to many (1:M)</td><td>One instance of A relates to many of B; each B relates to one A</td><td>One customer places many orders; each order belongs to one customer</td><td>Put the <em>one</em> side's primary key into the <em>many</em> side's table as a foreign key — i.e. CustomerID goes into Order</td></tr>
+ <tr><td>Many to many (M:N)</td><td>Each A relates to many B and each B to many A</td><td>An order contains many books; a book appears in many orders</td><td><strong>Cannot be implemented directly.</strong> It must be resolved with a third, link (junction / associative) table</td></tr>
+ </tbody>
+</table>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Proof</span> Why a many-to-many relationship cannot be stored in either table</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>Suppose we try to store the books in an order by adding BookID to the Order table. One order contains
+ three books, so we need three BookID values in one row — that means either repeated columns
+ (BookID1, BookID2, BookID3), which is not first normal form, or three copies of the whole order row, which
+ reintroduces the redundancy we were trying to remove.</li>
+ <li>Symmetrically, storing OrderID in the Book table needs one value per order that ever contained that
+ book — the same problem in the other direction.</li>
+ <li>A relational table has a fixed number of columns and each cell holds one atomic value. No arrangement of
+ columns can hold a variable-length <em>set</em> of references.</li>
+ <li>But a <em>row</em> can hold a pair: (OrderID, BookID). So we create a new table whose rows are exactly
+ those pairs. The many-to-many becomes two one-to-many relationships with the link table in the middle — and
+ the link table is also the natural home for facts about the <em>pair</em>, such as quantity and the price
+ charged.</li>
+ </ol>
+ <p><strong>What it means:</strong> the link table is not a workaround or a convention — it is forced by the
+ structure of a relation. <strong>When it is the wrong tool:</strong> if the relationship genuinely has no
+ attributes and is strictly one-to-many, adding a link table is over-engineering.</p>
+ </div>
+</details>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 380" role="img" aria-label="Entity-relationship diagram for the bookshop: Customer, Order, OrderLine link table and Book, with multiplicities">
+ <rect x="0" y="0" width="640" height="380" fill="#ffffff"/>
+
+ <rect x="30" y="40" width="150" height="90" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+ <text x="105" y="62" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">CUSTOMER</text>
+ <text x="105" y="84" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">CustomerID (PK)</text>
+ <text x="105" y="102" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Name, Email</text>
+ <text x="105" y="120" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">CityID (FK)</text>
+
+ <rect x="245" y="40" width="150" height="90" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+ <text x="320" y="62" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">ORDER</text>
+ <text x="320" y="84" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">OrderID (PK)</text>
+ <text x="320" y="102" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">OrderDate</text>
+ <text x="320" y="120" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">CustomerID (FK)</text>
+
+ <rect x="460" y="40" width="150" height="90" rx="6" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+ <text x="535" y="62" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">BOOK</text>
+ <text x="535" y="84" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">BookID (PK)</text>
+ <text x="535" y="102" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Title, UnitPrice</text>
+ <text x="535" y="120" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">AuthorID (FK)</text>
+
+ <rect x="245" y="200" width="150" height="90" rx="6" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+ <text x="320" y="222" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">ORDERLINE</text>
+ <text x="320" y="244" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">OrderID (PK, FK)</text>
+ <text x="320" y="262" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">BookID (PK, FK)</text>
+ <text x="320" y="280" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Quantity, PriceCharged</text>
+
+ <rect x="30" y="200" width="150" height="90" rx="6" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+ <text x="105" y="222" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">CITY</text>
+ <text x="105" y="244" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">CityID (PK)</text>
+ <text x="105" y="262" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">CityName</text>
+ <text x="105" y="280" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">DeliveryZone</text>
+
+ <rect x="460" y="200" width="150" height="90" rx="6" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+ <text x="535" y="222" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">AUTHOR</text>
+ <text x="535" y="244" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">AuthorID (PK)</text>
+ <text x="535" y="262" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">AuthorName</text>
+ <text x="535" y="280" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Nationality</text>
+
+ <line x1="182" y1="85" x2="242" y2="85" stroke="#334155" stroke-width="2"/>
+ <text x="212" y="78" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">1</text>
+ <text x="212" y="100" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">N</text>
+ <path d="M242 85 L 234 81 L 234 89 Z" fill="#334155"/>
+
+ <line x1="397" y1="85" x2="457" y2="85" stroke="#334155" stroke-width="2"/>
+ <text x="427" y="78" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">N</text>
+ <text x="427" y="100" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">M</text>
+
+ <line x1="320" y1="132" x2="320" y2="197" stroke="#7a5a13" stroke-width="2"/>
+ <text x="334" y="150" font-size="11" font-family="system-ui, sans-serif" fill="#151923">1</text>
+ <text x="334" y="180" font-size="11" font-family="system-ui, sans-serif" fill="#151923">N</text>
+ <path d="M320 197 L 316 189 L 324 189 Z" fill="#7a5a13"/>
+
+ <line x1="397" y1="245" x2="457" y2="245" stroke="#7a5a13" stroke-width="2"/>
+ <text x="427" y="238" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">N</text>
+ <text x="427" y="262" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">1</text>
+ <path d="M457 245 L 449 241 L 449 249 Z" fill="#7a5a13"/>
+
+ <line x1="182" y1="245" x2="242" y2="245" stroke="#334155" stroke-width="2"/>
+ <text x="212" y="238" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">N</text>
+ <text x="212" y="262" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">1</text>
+ <path d="M242 245 L 234 241 L 234 249 Z" fill="#334155"/>
+
+ <text x="320" y="332" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">ORDERLINE is the link table that resolves ORDER ⋈ BOOK many-to-many.</text>
+ <text x="320" y="356" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">PK = primary key · FK = foreign key · 1 / N = multiplicity</text>
+ </svg>
+ <figcaption><span class="viz__title">Figure 1.</span> The bookshop E-R model. Read the multiplicities in pairs:
+ one CUSTOMER has many ORDERs; one ORDER has many ORDERLINEs; each ORDERLINE refers to one BOOK; each BOOK has one
+ AUTHOR.</figcaption>
+</figure>
+
+<h2>Normalisation — 1NF, 2NF, 3NF on the same scenario</h2>
+
+<p>Normalisation is a sequence of tests. At each stage you ask one question, and if the answer is "no", you split
+the table and repeat.</p>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — the three tests in plain language</span>
+ <ol class="steps">
+ <li><strong>1NF:</strong> Is every cell a single, atomic value, and are there no repeating groups of columns?
+ If a row contains several values in one field, or columns like Phone1, Phone2, Phone3, split them out into
+ separate rows or a separate table.</li>
+ <li><strong>2NF:</strong> Is the table in 1NF, and does every non-key attribute depend on the
+ <em>whole</em> primary key — not just part of it? This question only bites when the key is
+ <strong>composite</strong>. A <strong>partial dependency</strong> (depends on part of the key) must be removed
+ into its own table.</li>
+ <li><strong>3NF:</strong> Is the table in 2NF, and does every non-key attribute depend on the key,
+ <em>the whole key, and nothing but the key</em>? A <strong>transitive dependency</strong> (A → B → C, so
+ non-key C depends on non-key B) must be removed into its own table.</li>
+ </ol>
+ <p>The mnemonic is real: "the key, the whole key, and nothing but the key, so help me Codd."</p>
+</div>
+
+<h3>Step 0 — the unnormalised file</h3>
+
+<p>Start with the flat file from the top of the page, but in its true form: one row per order, with the ordered
+books crammed into a repeating group. This is <strong>not in 1NF</strong>.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>OrderID</th><th>OrderDate</th><th>CustomerName</th><th>City</th><th>DeliveryZone</th><th>Books ordered (repeating group)</th></tr></thead>
+ <tbody>
+ <tr><td>1001</td><td>2026-03-02</td><td>A. Chen</td><td>Shanghai</td><td>East</td><td>Dune (×1, 12.99, F. Herbert, American); Emma (×2, 8.50, J. Austen, British)</td></tr>
+ <tr><td>1002</td><td>2026-03-03</td><td>L. Moreau</td><td>Lyon</td><td>West</td><td>Dune (×1, 12.99, F. Herbert, American)</td></tr>
+ </tbody>
+</table>
+</div>
+
+<h3>Step 1 — first normal form</h3>
+
+<p>Remove the repeating group: each order–book pair becomes its own row, and every cell holds one atomic value.
+Choose the composite primary key <strong>{OrderID, BookTitle}</strong> (we will replace the title with an ID
+shortly).</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>OrderID</th><th>BookTitle</th><th>OrderDate</th><th>CustomerName</th><th>City</th><th>DeliveryZone</th><th>AuthorName</th><th>AuthorNationality</th><th>Qty</th><th>UnitPrice</th></tr></thead>
+ <tbody>
+ <tr><td>1001</td><td>Dune</td><td>2026-03-02</td><td>A. Chen</td><td>Shanghai</td><td>East</td><td>F. Herbert</td><td>American</td><td>1</td><td>12.99</td></tr>
+ <tr><td>1001</td><td>Emma</td><td>2026-03-02</td><td>A. Chen</td><td>Shanghai</td><td>East</td><td>J. Austen</td><td>British</td><td>2</td><td>8.50</td></tr>
+ <tr><td>1002</td><td>Dune</td><td>2026-03-03</td><td>L. Moreau</td><td>Lyon</td><td>West</td><td>F. Herbert</td><td>American</td><td>1</td><td>12.99</td></tr>
+ </tbody>
+</table>
+</div>
+
+<p><strong>Now in 1NF.</strong> But look at what 1NF has and has not fixed. The anomalies are all still there —
+A. Chen's city is still repeated, and cancel the last Dune order and Dune disappears.</p>
+
+<h3>Step 2 — second normal form</h3>
+
+<p>The key is composite, so ask: does each non-key attribute need <em>both</em> parts of the key to be determined?</p>
+
+<ul>
+ <li>Qty? Yes — the quantity is a fact about (this order, this book). ✓ full dependency.</li>
+ <li>OrderDate, CustomerName? These depend on <strong>OrderID alone</strong> — a <em>partial</em> dependency. ✗</li>
+ <li>UnitPrice, AuthorName? These depend on <strong>BookTitle alone</strong> — also partial. ✗</li>
+</ul>
+
+<p>Remove the partial dependencies into their own tables, keyed by the part of the key they depend on.</p>
+
+<div class="grid grid--3">
+ <div class="card"><h4>ORDER</h4><p>OrderID (PK), OrderDate, CustomerID (FK)<br><small>one row per order</small></p></div>
+ <div class="card"><h4>BOOK</h4><p>BookID (PK), Title, UnitPrice, AuthorID (FK)<br><small>one row per book</small></p></div>
+ <div class="card"><h4>ORDERLINE</h4><p>OrderID (PK, FK), BookID (PK, FK), Quantity, PriceCharged<br><small>one row per book within an order</small></p></div>
+</div>
+
+<p><strong>What 2NF removed:</strong> the insertion anomaly for books (a book can now exist with no orders), the
+deletion anomaly for books (cancelling an order no longer destroys the book), and the redundancy of repeating the
+book's price and author on every order line. It also fixed the anomaly that you cannot record an order with no
+lines yet.</p>
+
+<h3>Step 3 — third normal form</h3>
+
+<p>Now hunt <strong>transitive dependencies</strong> in the new tables: a non-key attribute determined by another
+non-key attribute.</p>
+
+<ul>
+ <li>In BOOK: BookID → AuthorID → AuthorNationality. Nationality is a fact about the <em>author</em>, not about the
+ book. Transitive. ✗</li>
+ <li>In ORDER → CUSTOMER: CustomerID → City → DeliveryZone. The delivery zone is a fact about the <em>city</em>,
+ not about the customer. Transitive. ✗</li>
+</ul>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 320" role="img" aria-label="The bookshop scenario after normalisation, shown as five linked tables with foreign key arrows">
+ <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+ <rect x="20" y="30" width="170" height="76" rx="4" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+ <text x="105" y="50" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">CUSTOMER</text>
+ <text x="105" y="70" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">CustomerID (PK)</text>
+ <text x="105" y="86" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Name, Email</text>
+ <text x="105" y="100" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">CityID (FK) → CITY</text>
+
+ <rect x="235" y="30" width="170" height="76" rx="4" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+ <text x="320" y="50" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">ORDER</text>
+ <text x="320" y="70" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">OrderID (PK)</text>
+ <text x="320" y="86" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">OrderDate</text>
+ <text x="320" y="100" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">CustomerID (FK) → CUSTOMER</text>
+
+ <rect x="450" y="30" width="170" height="76" rx="4" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+ <text x="535" y="50" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">ORDERLINE</text>
+ <text x="535" y="70" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">OrderID (PK, FK) → ORDER</text>
+ <text x="535" y="86" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">BookID (PK, FK) → BOOK</text>
+ <text x="535" y="100" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Quantity, PriceCharged</text>
+
+ <rect x="235" y="180" width="170" height="76" rx="4" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+ <text x="320" y="200" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">BOOK</text>
+ <text x="320" y="220" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">BookID (PK)</text>
+ <text x="320" y="236" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Title, UnitPrice</text>
+ <text x="320" y="250" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">AuthorID (FK) → AUTHOR</text>
+
+ <rect x="20" y="180" width="170" height="76" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+ <text x="105" y="200" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">AUTHOR</text>
+ <text x="105" y="220" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">AuthorID (PK)</text>
+ <text x="105" y="236" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">AuthorName</text>
+ <text x="105" y="250" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Nationality</text>
+
+ <rect x="450" y="180" width="170" height="76" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+ <text x="535" y="200" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">CITY</text>
+ <text x="535" y="220" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">CityID (PK)</text>
+ <text x="535" y="236" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">CityName</text>
+ <text x="535" y="250" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">DeliveryZone</text>
+
+ <path d="M320 108 L 320 150 L 105 150 L 105 178" fill="none" stroke="#334155" stroke-width="2"/>
+ <path d="M105 178 L 101 170 L 109 170 Z" fill="#334155"/>
+ <path d="M105 108 L 105 130 L 535 130 L 535 178" fill="none" stroke="#6c7788" stroke-width="2" stroke-dasharray="5 4"/>
+ <path d="M535 178 L 531 170 L 539 170 Z" fill="#6c7788"/>
+ <path d="M535 108 L 535 130 L 320 130 L 320 178" fill="none" stroke="#7a5a13" stroke-width="2"/>
+ <path d="M320 178 L 316 170 L 324 170 Z" fill="#7a5a13"/>
+ <path d="M320 258 L 320 290 L 105 290 L 105 258" fill="none" stroke="#7a5a13" stroke-width="2"/>
+ <path d="M105 260 L 101 268 L 109 268 Z" fill="#7a5a13"/>
+
+ <text x="320" y="306" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Each arrow points from the table holding the foreign key to the table it references.</text>
+ </svg>
+ <figcaption><span class="viz__title">Figure 2.</span> The same data in 3NF: six tables, each storing one kind of
+ fact, joined by foreign keys. Every fact has exactly one home.</figcaption>
+</figure>
+
+<p><strong>What 3NF removed:</strong> the transitive dependencies. Author nationality is now stored once per
+author, so correcting an author's details means one row; a delivery zone is stored once per city, so changing the
+zone for Shanghai means one row. And critically, you can now record a city's zone before any customer lives there.</p>
+
+<div class="callout callout--exam">
+ <span class="callout__label">Exam technique — how to present a normalisation answer</span>
+ <p>Examiners do not want prose; they want tables. For each form: (1) state the rule; (2) identify the specific
+ dependency that violates it, naming the attributes; (3) draw the resulting table(s) with the primary key
+ underlined or labelled PK and foreign keys labelled FK. A student who writes "there is a partial dependency so we
+ split the table" without saying <em>which</em> attribute depends on <em>which</em> part of the key loses the
+ identification mark every time.</p>
+</div>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 1</span> IB-style · 9 marks · full normalisation from a description</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A school records music lessons. The single table below is used. Each pupil has one
+ instrument teacher; each teacher teaches one instrument and charges a fixed hourly rate.</p>
+<pre><code>Lesson(PupilName, PupilForm, TeacherName, Instrument, HourlyRate, LessonDate, Room, Grade)</code></pre>
+ <p>Normalise to 3NF, stating the reason for each step.</p>
+ <ol class="steps">
+ <li><strong>Is it in 1NF?</strong> Yes — every cell is atomic and there are no repeating groups. (If a pupil
+ could take two instruments, the key would need both and PupilForm would repeat.)</li>
+ <li><strong>Choose the key.</strong> A pupil has one teacher, so one instrument; lessons differ by date.
+ The key is <strong>{PupilID, LessonDate}</strong> (introduce PupilID — names are not unique).</li>
+ <li><strong>2NF — partial dependencies.</strong> PupilForm depends on PupilID alone. TeacherName,
+ Instrument, HourlyRate also depend on PupilID alone (because each pupil has one teacher). Grade depends on
+ the whole key (a pupil's grade at a particular date). Room depends on the whole key.</li>
+ <li><strong>Split for 2NF:</strong>
+ <code>PUPIL(PupilID PK, PupilName, PupilForm, TeacherID FK)</code> and
+ <code>LESSON(PupilID PK FK, LessonDate PK, Room, Grade)</code>.</li>
+ <li><strong>3NF — transitive dependencies.</strong> In PUPIL: PupilID → TeacherID → Instrument and HourlyRate.
+ Instrument and HourlyRate are facts about the teacher, not the pupil, so they must move — otherwise changing
+ a teacher's rate means editing every pupil row for that teacher.</li>
+ <li><strong>Split for 3NF:</strong> <code>TEACHER(TeacherID PK, TeacherName, Instrument, HourlyRate)</code>
+ and <code>PUPIL(PupilID PK, PupilName, PupilForm, TeacherID FK)</code>. LESSON is already in 3NF (Room and
+ Grade depend on the whole key and on nothing else).</li>
+ <li><strong>Final answer:</strong> PUPIL, TEACHER, LESSON with TeacherID as a foreign key in PUPIL and
+ PupilID as a foreign key in LESSON.</li>
+ </ol>
+ <div class="answerline"><b>Marks:</b> 1 for stating 1NF is already satisfied (or correcting it if not), 1 for the key, 2 for identifying the partial dependencies by name, 2 for the 2NF tables, 2 for identifying the transitive dependency, 1 for the final 3NF tables. Naming PupilID as a surrogate key is a mark-winner: it shows you know names are not unique.</div>
+ </div>
+</details>
+
+<h2>A3.3 · SQL in depth</h2>
+
+<p>SQL is <strong>declarative</strong>: you say what you want, not how to find it. That is the single most important
+idea, and it explains why SQL is short compared with the code you would write in B2 to do the same job.</p>
+
+<h3>CREATE TABLE — types and constraints</h3>
+
+<pre><code>CREATE TABLE Book (
+ BookID INTEGER PRIMARY KEY,
+ Title VARCHAR(80) NOT NULL,
+ UnitPrice DECIMAL(6,2) NOT NULL CHECK (UnitPrice &gt;= 0),
+ AuthorID INTEGER NOT NULL,
+ FOREIGN KEY (AuthorID) REFERENCES Author(AuthorID)
+);
+
+CREATE TABLE OrderLine (
+ OrderID INTEGER,
+ BookID INTEGER,
+ Quantity INTEGER NOT NULL DEFAULT 1 CHECK (Quantity &gt; 0),
+ PriceCharged DECIMAL(6,2) NOT NULL,
+ PRIMARY KEY (OrderID, BookID), -- composite key
+ FOREIGN KEY (OrderID) REFERENCES OrderT(OrderID) ON DELETE CASCADE,
+ FOREIGN KEY (BookID) REFERENCES Book(BookID)
+);</code></pre>
+
+<p>Constraints are the point, so learn what each earns you: <code>PRIMARY KEY</code> gives uniqueness and non-null;
+<code>FOREIGN KEY</code> gives referential integrity; <code>NOT NULL</code> forces a value;
+<code>CHECK</code> restricts the domain; <code>DEFAULT</code> supplies one when none is given;
+<code>UNIQUE</code> allows nulls but forbids duplicates. <code>ON DELETE CASCADE</code> says: if the parent order
+is deleted, delete its lines too — otherwise the delete is rejected.</p>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Trap — ORDER is a reserved word</span>
+ <p><code>ORDER</code> is an SQL keyword (<code>ORDER BY</code>), so a table called <code>Order</code> must be
+ quoted or renamed — in the examples above I used <code>OrderT</code>. Related traps:
+ <code>VARCHAR</code> without a length is invalid in some dialects; <code>DECIMAL(6,2)</code> means six digits
+ total with two after the point, so it stores up to 9999.99 — money should never be a <code>FLOAT</code> because
+ of the representation error covered on the A1 page; and <code>NULL</code> is not zero or an empty string, it is
+ "unknown", so <code>WHERE price = NULL</code> never matches — you need
+ <code>WHERE price IS NULL</code>.</p>
+</div>
+
+<h3>INSERT, SELECT, and the WHERE clause</h3>
+
+<pre><code>INSERT INTO Author (AuthorID, AuthorName, Nationality)
+VALUES (1, 'F. Herbert', 'American'),
+ (2, 'J. Austen', 'British');
+
+SELECT Title, UnitPrice FROM Book WHERE UnitPrice &gt; 10 ORDER BY UnitPrice DESC;</code></pre>
+
+<p>Comparison operators: <code>=</code>, <code>&lt;&gt;</code> or <code>!=</code>, <code>&lt;</code>,
+<code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>. Combine with <code>AND</code>, <code>OR</code>,
+<code>NOT</code>. Pattern matching uses <code>LIKE</code> with <code>%</code> for any run of characters and
+<code>_</code> for exactly one.</p>
+
+<pre><code>-- titles beginning with D
+SELECT Title FROM Book WHERE Title LIKE 'D%';
+-- authors whose name has 'er' anywhere
+SELECT AuthorName FROM Author WHERE AuthorName LIKE '%er%';
+-- second character is 'u'
+SELECT Title FROM Book WHERE Title LIKE '_u%';</code></pre>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Trap — AND binds tighter than OR</span>
+ <p><code>WHERE City = 'Shanghai' OR City = 'Lyon' AND Zone = 'East'</code> means
+ "Shanghai (regardless of zone), or Lyon and East". If you meant "either city, but only East", you need
+ parentheses: <code>WHERE (City = 'Shanghai' OR City = 'Lyon') AND Zone = 'East'</code>. Whenever you mix
+ <code>AND</code> and <code>OR</code>, add the brackets even if you think they are unnecessary.</p>
+</div>
+
+<h3>Aggregate functions, GROUP BY and HAVING</h3>
+
+<pre><code>SELECT COUNT(*) AS NumBooks,
+ SUM(Quantity) AS TotalCopies,
+ AVG(PriceCharged) AS AvgPrice,
+ MIN(PriceCharged) AS Cheapest,
+ MAX(PriceCharged) AS Dearest
+FROM OrderLine;</code></pre>
+
+<p>Without <code>GROUP BY</code>, an aggregate collapses the whole table to one row. With it, you get one row per
+group:</p>
+
+<pre><code>SELECT BookID, SUM(Quantity) AS CopiesSold
+FROM OrderLine
+GROUP BY BookID;
+
+-- only groups that pass a condition on the aggregate
+SELECT BookID, SUM(Quantity) AS CopiesSold
+FROM OrderLine
+GROUP BY BookID
+HAVING SUM(Quantity) &gt; 5;</code></pre>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — WHERE vs HAVING, the rule you must know cold</span>
+ <p><strong>WHERE</strong> filters <em>rows before</em> grouping; it cannot refer to an aggregate.
+ <strong>HAVING</strong> filters <em>groups after</em> aggregation; it is almost always used with an aggregate.
+ So: "orders placed in 2026 by customers who spent more than 200" needs
+ <code>WHERE OrderDate &gt;= '2026-01-01'</code> and <code>HAVING SUM(...) &gt; 200</code> — both, in that order.
+ A question that asks "which books sold more than five copies" is a <code>HAVING</code> question; one that asks
+ "how many copies of book 4 sold" is a <code>WHERE</code> question.</p>
+</div>
+
+<h3>JOINs — what each one actually returns</h3>
+
+<p>Consider two small tables.</p>
+
+<div class="grid grid--2">
+ <div class="card"><h4>Customer</h4>
+<pre><code>CustomerID | Name
+-----------+--------
+1 | A. Chen
+2 | L. Moreau
+3 | K. Osei</code></pre></div>
+ <div class="card"><h4>OrderT</h4>
+<pre><code>OrderID | CustomerID | Total
+--------+------------+-------
+5001 | 1 | 21.49
+5002 | 1 | 17.00
+5003 | 2 | 12.99</code></pre></div>
+</div>
+
+<pre><code>SELECT c.Name, o.OrderID, o.Total
+FROM Customer c
+INNER JOIN OrderT o ON c.CustomerID = o.CustomerID;</code></pre>
+
+<div class="table-wrap">
+<table><thead><tr><th>Name</th><th>OrderID</th><th>Total</th></tr></thead>
+<tbody>
+ <tr><td>A. Chen</td><td>5001</td><td>21.49</td></tr>
+ <tr><td>A. Chen</td><td>5002</td><td>17.00</td></tr>
+ <tr><td>L. Moreau</td><td>5003</td><td>12.99</td></tr>
+</tbody></table>
+</div>
+
+<p><strong>Inner join</strong> returns rows where the key matches in <em>both</em> tables. K. Osei is missing — he
+has no orders.</p>
+
+<pre><code>SELECT c.Name, o.OrderID
+FROM Customer c
+LEFT JOIN OrderT o ON c.CustomerID = o.CustomerID;</code></pre>
+
+<div class="table-wrap">
+<table><thead><tr><th>Name</th><th>OrderID</th></tr></thead>
+<tbody>
+ <tr><td>A. Chen</td><td>5001</td></tr>
+ <tr><td>A. Chen</td><td>5002</td></tr>
+ <tr><td>L. Moreau</td><td>5003</td></tr>
+ <tr><td>K. Osei</td><td>NULL</td></tr>
+</tbody></table>
+</div>
+
+<p><strong>Left (outer) join</strong> returns <em>every</em> row from the left table, with NULLs where there is no
+match on the right. The right outer join is the same idea with the tables swapped; a full outer join keeps
+unmatched rows from both sides. Use a left join whenever the question says "including those who have not…" — that
+phrase is the signal.</p>
+
+<div class="callout callout--exam">
+ <span class="callout__label">Exam technique — the "list all students and the number of books they borrowed" question</span>
+ <p>The word <em>all</em> is the tell. If you write <code>SELECT ... FROM Student s, Loan l WHERE s.StudentID =
+ l.StudentID GROUP BY ...</code> you have written an inner join and every student with no loans vanishes — and
+ you lose a mark for the wrong join plus a mark for the missing zero rows. The correct answer is
+ <code>LEFT JOIN</code> with <code>COUNT(l.LoanID)</code>, not <code>COUNT(*)</code>, because
+ <code>COUNT(*)</code> counts the NULL-padded row and returns 1 instead of 0. That single distinction —
+ <code>COUNT(column)</code> skips nulls, <code>COUNT(*)</code> does not — is examined frequently.</p>
+</div>
+
+<h3>UPDATE, DELETE, ALTER, DROP</h3>
+
+<pre><code>UPDATE Book SET UnitPrice = UnitPrice * 1.05 WHERE AuthorID = 1;
+DELETE FROM OrderLine WHERE Quantity = 0;
+ALTER TABLE Book ADD COLUMN ISBN VARCHAR(13);
+DROP TABLE OrderLine;</code></pre>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Trap — UPDATE and DELETE without WHERE</span>
+ <p><code>UPDATE Book SET UnitPrice = 9.99;</code> changes every book. <code>DELETE FROM OrderLine;</code> empties
+ the table. In an exam, a question showing a destructive statement without a <code>WHERE</code> is very often
+ asking you to spot exactly that. Also note the hierarchy: <code>DROP</code> removes an entire table (structure
+ and data), <code>DELETE</code> removes rows (structure intact, and it can be rolled back inside a transaction),
+ and <code>TRUNCATE</code> removes all rows quickly but usually cannot be rolled back.</p>
+</div>
+
+<h3>Transactions, concurrency and deadlock</h3>
+
+<p>A <strong>transaction</strong> is a sequence of operations treated as a single unit. It must satisfy
+<strong>ACID</strong>:</p>
+
+<dl class="glossary">
+ <dt>Atomicity</dt>
+ <dd>All of it happens or none of it does. Transferring money is a debit and a credit; if the credit fails after
+ the debit succeeded, the money has vanished.</dd>
+ <dt>Consistency</dt>
+ <dd>The database moves from one valid state to another; constraints are satisfied before and after.</dd>
+ <dt>Isolation</dt>
+ <dd>Concurrent transactions do not see each other's partial work, so their effect is as if they had run one at a
+ time — this is <strong>serialisability</strong>.</dd>
+ <dt>Durability</dt>
+ <dd>Once committed, the change survives a crash — which is why the DBMS writes to a log before confirming the
+ commit.</dd>
+</dl>
+
+<details class="derivation">
+ <summary><span class="badge">Why</span> Why concurrent access needs locking — the lost update problem</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>Two customers buy the last copy of a book at the same moment. Both transactions read
+ <code>Stock = 1</code>.</li>
+ <li>Both compute <code>Stock − 1 = 0</code> and both write 0. Result: one copy sold, stock reduced by one —
+ fine. But now suppose both compute on a shared value and write back: transaction A reads 10, adds 2, writes
+ 12; transaction B reads 10, adds 5, writes 15. A's update is <strong>lost</strong>.</li>
+ <li>The general name is the <strong>lost update problem</strong>, and it exists whenever
+ read-modify-write is interleaved.</li>
+ <li>The fix is <strong>record locking</strong>: a transaction takes a lock on the rows it modifies and holds
+ it until it commits, so the second transaction must wait rather than read a stale value.</li>
+ <li><strong>Shared (read) locks</strong> can be held by many readers at once; an
+ <strong>exclusive (write) lock</strong> excludes everyone. That is the standard compromise: many readers,
+ one writer.</li>
+ </ol>
+ <p><strong>What it means:</strong> serialisability is the correctness property, locking is the mechanism, and
+ the cost is reduced concurrency — the more you lock, the more transactions queue.</p>
+ </div>
+</details>
+
+<details class="derivation">
+ <summary><span class="badge">Why</span> Why deadlock happens and how a DBMS resolves it</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li>Transaction A locks the Customer row and then requests the Order row. Transaction B locks the Order row
+ and then requests the Customer row.</li>
+ <li>Each now holds a resource the other needs and neither can proceed. This is <strong>deadlock</strong>.</li>
+ <li>There are four conditions for deadlock (mutual exclusion, hold-and-wait, no preemption, circular wait);
+ break any one and deadlock becomes impossible.</li>
+ <li>Real systems usually allow it and detect it: the DBMS builds a wait-for graph, looks for a cycle, and
+ when it finds one <strong>aborts one transaction</strong> (the <em>victim</em> — usually the younger or
+ cheaper one), rolls it back, releases its locks and lets the other proceed. The victim's application is
+ told to retry.</li>
+ <li>Prevention alternatives: acquire all locks in a fixed global order (breaks circular wait) or take all
+ locks at transaction start (breaks hold-and-wait) — both reduce concurrency, which is why detection is
+ usually preferred.</li>
+ </ol>
+ <p><strong>What it means:</strong> a deadlock is not a bug in your SQL; it is an inherent consequence of
+ locking, so applications must handle a "deadlock victim" error by retrying.</p>
+ </div>
+</details>
+
+<h3>Backup, recovery, integrity and validation</h3>
+
+<div class="grid grid--2">
+ <div class="card"><h4>Backup and recovery</h4>
+ <p>A <strong>full backup</strong> copies everything; an <strong>incremental backup</strong> copies only what
+ changed since the last backup; a <strong>differential</strong> copies everything since the last full backup.
+ Combined with the <strong>transaction log</strong>, a DBMS can restore to a precise moment
+ (<em>point-in-time recovery</em>). Backups must be stored off-site or in another region, and — critically —
+ must be <strong>restored regularly in a test</strong>, because an untested backup is not a backup.</p></div>
+ <div class="card"><h4>Integrity vs validation</h4>
+ <p><strong>Validation</strong> checks input at entry: a range check, a type check, a presence check, a format
+ check (regular expression), a length check, a check digit. <strong>Integrity</strong> is a property of the
+ stored data: entity integrity (primary keys unique and not null), referential integrity (foreign keys match),
+ and domain integrity (values within the declared type and constraints). Validation prevents bad data arriving;
+ integrity constraints guarantee the stored data stays coherent even when a bug lets something through.</p></div>
+ <div class="card"><h4>Database security</h4>
+ <p>Least privilege — each application account gets only the permissions it needs. Views can expose a subset of
+ columns or rows. Parameterised queries prevent SQL injection. Encryption at rest and in TLS in transit.
+ Auditing records who changed what. And physical security of the server room, because an attacker with the disk
+ owns the data.</p></div>
+ <div class="card"><h4>Why data must be validated twice</h4>
+ <p>Client-side validation improves the user experience but can be bypassed entirely by sending a request
+ directly to the server. Server-side validation is the one that matters. Both should exist; only one is a
+ security control.</p></div>
+</div>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 8 marks · write SQL from a scenario</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> Using the bookshop tables, write SQL to: (a) list the title and unit price of every
+ book by a British author, cheapest first; (b) find how many copies of each book have been sold, including books
+ that have never been sold; (c) find the names of customers who have placed no orders; (d) increase by 10 % the
+ price of every book that has sold fewer than 3 copies in total.</p>
+ <ol class="steps">
+ <li><strong>(a)</strong> needs Author and Book joined:</li>
+ </ol>
+<pre><code>SELECT b.Title, b.UnitPrice
+FROM Book b
+JOIN Author a ON b.AuthorID = a.AuthorID
+WHERE a.Nationality = 'British'
+ORDER BY b.UnitPrice ASC;</code></pre>
+ <p><strong>(b)</strong> "including books never sold" signals a LEFT JOIN from Book, and must count the joined
+ column so unsold books give 0, not 1:</p>
+<pre><code>SELECT b.Title, COALESCE(SUM(o.Quantity), 0) AS CopiesSold
+FROM Book b
+LEFT JOIN OrderLine o ON b.BookID = o.BookID
+GROUP BY b.BookID, b.Title;</code></pre>
+ <p><strong>(c)</strong> "no orders" — a LEFT JOIN and then filter for the NULL, or use NOT IN:</p>
+<pre><code>SELECT c.Name
+FROM Customer c
+LEFT JOIN OrderT o ON c.CustomerID = o.CustomerID
+WHERE o.OrderID IS NULL;</code></pre>
+ <p><strong>(d)</strong> needs a subquery, because you cannot mix an aggregate into an UPDATE's WHERE without
+ one:</p>
+<pre><code>UPDATE Book
+SET UnitPrice = UnitPrice * 1.10
+WHERE BookID IN (
+ SELECT o.BookID
+ FROM OrderLine o
+ GROUP BY o.BookID
+ HAVING SUM(o.Quantity) &lt; 3
+);</code></pre>
+ <div class="answerline"><b>Where the marks are:</b> (a) 2 — the JOIN and the ORDER BY; (b) 2 — the LEFT JOIN and the correct handling of zero; (c) 2 — LEFT JOIN plus IS NULL; (d) 2 — the subquery with GROUP BY and HAVING. In (b), <code>COUNT(*)</code> instead of <code>SUM</code> or <code>COALESCE</code> is the single most common lost mark on this question type.</div>
+ </div>
+</details>
+
+<h2>A3.4 · Alternative databases and data warehouses <span class="badge badge--hl">HL only</span></h2>
+
+<p>The relational model assumes structured data with a stable schema, and it enforces consistency strongly. Those
+assumptions are exactly what some modern applications cannot accept. Non-relational ("NoSQL") stores relax
+something in exchange for something else.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Type</th><th>How it stores data</th><th>Relaxes</th><th>Best for</th><th>Example</th></tr></thead>
+ <tbody>
+ <tr><td><strong>Document</strong></td><td>Records as self-describing documents (usually JSON), grouped in collections; each document may have different fields</td>
+ <td>A fixed schema, and joins</td>
+ <td>Content management, catalogues, user profiles — anything whose fields vary between records or change often</td><td>MongoDB, CouchDB</td></tr>
+ <tr><td><strong>Key–value</strong></td><td>A dictionary: one key retrieves one opaque value, extremely fast</td>
+ <td>Querying by anything other than the key</td>
+ <td>Caching, session storage, shopping carts, feature flags</td><td>Redis, DynamoDB</td></tr>
+ <tr><td><strong>Wide-column</strong></td><td>Rows keyed by a row key, with flexible, very large numbers of columns, stored column-family-wise</td>
+ <td>Relational join semantics and ad-hoc queries</td>
+ <td>Time series, IoT readings, messaging — massive write volumes and predictable query patterns</td><td>Cassandra, HBase</td></tr>
+ <tr><td><strong>Graph</strong></td><td>Nodes and explicitly stored edges with properties</td>
+ <td>The tabular model entirely</td>
+ <td>Social networks, fraud rings, recommendation, network topology — where the <em>relationships</em> are the query</td><td>Neo4j</td></tr>
+ </tbody>
+</table>
+</div>
+
+<div class="callout callout--why">
+ <span class="callout__label">Why NoSQL exists — the CAP trade-off, in plain terms</span>
+ <p>Once you replicate data across machines in different locations, a network fault can partition the system into
+ two halves that cannot see each other. Then you must choose: keep answering queries in both halves and accept
+ that they may briefly disagree (<strong>availability</strong> over <strong>consistency</strong>), or refuse to
+ answer in the minority half until the partition heals (<strong>consistency</strong> over availability). You
+ cannot have both under partition — that is the CAP theorem. Relational databases traditionally chose
+ consistency; many NoSQL stores choose availability and accept <em>eventual consistency</em> — the copies
+ converge when the network recovers. For a bank balance, eventual consistency is unacceptable. For a social media
+ like counter, it is obviously fine. Choosing a database is therefore choosing where you sit on that trade-off.</p>
+</div>
+
+<h3>Data warehouses</h3>
+
+<p>A <strong>database</strong> is optimised for running the business <em>now</em>: many small, fast, concurrent
+reads and writes on current data (<em>OLTP</em> — online transaction processing). A <strong>data warehouse</strong>
+is optimised for analysing the business <em>over time</em>: huge reads across historical data
+(<em>OLAP</em> — online analytical processing).</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th></th><th>Operational database</th><th>Data warehouse</th></tr></thead>
+ <tbody>
+ <tr><td>Purpose</td><td>Day-to-day transactions</td><td>Analysis, reporting, decision support</td></tr>
+ <tr><td>Data</td><td>Current, detailed, updated constantly</td><td>Historical, aggregated, appended periodically</td></tr>
+ <tr><td>Design</td><td>Highly normalised (3NF) to avoid update anomalies</td><td><strong>Deliberately denormalised</strong> (star/snowflake schema) to make queries fast and simple</td></tr>
+ <tr><td>Workload</td><td>Many short reads and writes</td><td>Few, very large read queries</td></tr>
+ <tr><td>Update pattern</td><td>INSERT/UPDATE/DELETE all the time</td><td>Bulk load via <strong>ETL</strong> (extract, transform, load) on a schedule; data is rarely updated or deleted</td></tr>
+ </tbody>
+</table>
+</div>
+
+<p>Notice the apparent contradiction, because it is a favourite exam point: we normalise the operational database
+and then <em>denormalise</em> for the warehouse. There is no inconsistency — normalisation optimises for
+<em>correctness under update</em>, denormalisation optimises for <em>speed of reading</em>, and a warehouse is
+written once and read a great deal.</p>
+
+<p>In a <strong>star schema</strong>, a central <em>fact table</em> (one row per sale, say, holding the numeric
+measures and foreign keys) is surrounded by <em>dimension tables</em> (Customer, Product, Date, Store) holding the
+descriptive attributes you group and filter by. The shape is the query pattern made physical.</p>
+
+<div class="callout callout--vocab">
+ <span class="callout__label">Vocabulary</span>
+ <p><strong>flat file</strong><strong>redundancy</strong><strong>update / insertion / deletion anomaly</strong> / /<strong>normalisation</strong><strong>first / second / third normal form (1NF / 2NF / 3NF)</strong> / /<strong>entity / attribute / relationship</strong> / /<strong>one-to-many / many-to-many</strong> /<strong>link table (junction table)</strong><strong>primary key</strong><strong>candidate key</strong><strong>composite key</strong><strong>foreign key</strong><strong>referential integrity</strong><strong>partial dependency</strong><strong>transitive dependency</strong><strong>relation / tuple / attribute</strong> / /<strong>SQL</strong><strong>query</strong><strong>aggregate function</strong><strong>GROUP BY / HAVING</strong> /<strong>inner join / left join / right join</strong> / /<strong>transaction</strong><strong>ACID</strong><strong>serialisability</strong><strong>record locking</strong><strong>deadlock</strong><strong>rollback / commit</strong> /<strong>validation / verification</strong> /<strong>backup / recovery</strong> /<strong>NoSQL</strong><strong>data warehouse</strong><strong>star schema / fact table / dimension table</strong> / /<strong>ETL</strong><strong>denormalisation</strong></p>
+</div>
+
+<h2>Practice</h2>
+<ol class="practice">
+ <li><p>State three problems caused by storing data in a single flat file, and name each one.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p>Any three of: <strong>redundancy</strong> — the same fact is stored repeatedly, wasting space;
+ <strong>update anomaly</strong> — changing one fact requires changing many rows, and a missed row leaves
+ contradictory data; <strong>insertion anomaly</strong> — a fact cannot be recorded because other unrelated
+ facts are missing; <strong>deletion anomaly</strong> — removing one fact destroys another; plus the absence
+ of enforced integrity and of concurrency control. Names matter: an unnamed problem scores less.</p>
+ </div></details>
+ </li>
+ <li><p>Explain the difference between a primary key, a candidate key and a foreign key.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p>A <strong>candidate key</strong> is any minimal set of attributes that uniquely identifies a row. The
+ <strong>primary key</strong> is the one candidate key chosen to identify rows officially; it must be unique
+ and not null, and there is exactly one per table. A <strong>foreign key</strong> is an attribute in one table
+ that holds the primary key value from another table, thereby creating the relationship between them and
+ enabling the DBMS to enforce referential integrity.</p>
+ </div></details>
+ </li>
+ <li><p>Explain why a many-to-many relationship cannot be implemented directly in a relational database, and
+ describe how it is resolved.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>A relational table has a fixed number of columns and each cell holds one atomic value, so there is no
+ way to store a variable-length set of references in a row.</li>
+ <li>Putting the foreign key in either table would require repeating columns (not 1NF) or duplicating the
+ whole row (reintroducing redundancy).</li>
+ <li>Resolution: create a third <strong>link table</strong> whose rows are the pairs, with a composite
+ primary key made of the two foreign keys.</li>
+ <li>That converts one many-to-many into two one-to-many relationships, and the link table is also the
+ natural home for attributes that belong to the <em>pair</em> — quantity, price charged, date borrowed.</li>
+ </ol>
+ </div></details>
+ </li>
+ <li><p>The table <code>Employee(EmpID, EmpName, DeptID, DeptName, DeptPhone)</code> is in 1NF. Normalise it to
+ 3NF, stating the reason for each step.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>The key is <code>EmpID</code>, which is not composite, so there can be no partial dependency — the
+ table is already in 2NF.</li>
+ <li>Check 3NF: <code>EmpID → DeptID</code>, and <code>DeptID → DeptName, DeptPhone</code>. So DeptName and
+ DeptPhone depend on a non-key attribute — a <strong>transitive dependency</strong>.</li>
+ <li>Split it out: <code>DEPARTMENT(DeptID PK, DeptName, DeptPhone)</code>.</li>
+ <li>Result: <code>EMPLOYEE(EmpID PK, EmpName, DeptID FK)</code> and <code>DEPARTMENT(DeptID PK, DeptName,
+ DeptPhone)</code>.</li>
+ <li>Why it matters: a department's phone number is now stored once, so changing it is one row; and a new
+ department can be created before it has any employees (removing an insertion anomaly).</li>
+ </ol>
+ </div></details>
+ </li>
+ <li><p>Write SQL to list each customer's name together with the total value of their orders, for customers who
+ have ordered, highest total first.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+<pre><code>SELECT c.Name, SUM(o.Total) AS TotalSpent
+FROM Customer c
+JOIN OrderT o ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, c.Name
+ORDER BY TotalSpent DESC;</code></pre>
+ <p>Points: an <code>INNER JOIN</code> is correct here because the question says "who have ordered";
+ <code>GROUP BY</code> must include every non-aggregated selected column; and you may order by the alias.</p>
+ </div></details>
+ </li>
+ <li><p>Explain the difference between WHERE and HAVING, and give an example of a question that needs each.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p><strong>WHERE</strong> filters individual rows before any grouping takes place and cannot contain an
+ aggregate. <strong>HAVING</strong> filters groups after aggregation and is normally used with an aggregate.</p>
+ <p>Example needing WHERE: "list the orders placed after 1 March" —
+ <code>WHERE OrderDate &gt; '2026-03-01'</code>.</p>
+ <p>Example needing HAVING: "list the books that have sold more than 10 copies" —
+ <code>GROUP BY BookID HAVING SUM(Quantity) &gt; 10</code>.</p>
+ </div></details>
+ </li>
+ <li><p>Explain, using an example, what a lost update is and how record locking prevents it.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>Two transactions read the same value (say stock = 10) at the same time.</li>
+ <li>Transaction A adds 2 and writes 12. Transaction B, working from the value it read earlier, adds 5 and
+ writes 15.</li>
+ <li>A's update is <strong>lost</strong> — the correct total, 17, was never reached.</li>
+ <li>With a record lock, A takes an exclusive lock on the row before its update and holds it until commit, so
+ B must wait until A finishes and then reads the new value 12 before adding 5, giving 17.</li>
+ <li>The cost is that B is blocked, so throughput falls; and the risk of deadlock appears, which the DBMS
+ resolves by aborting one transaction and forcing a retry.</li>
+ </ol>
+ </div></details>
+ </li>
+ <li><p><span class="badge badge--hl">HL only</span> A hospital wants to keep (i) live patient monitoring readings
+ arriving thousands of times a second, and (ii) ten years of records for research. Discuss the choice of data
+ store for each.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li><strong>(i) Live readings:</strong> extremely high write volume, time-stamped, append-only, queried by
+ patient and time window. A <strong>wide-column</strong> store (Cassandra) or a dedicated time-series
+ database suits this: it is built for massive sequential writes and range queries on a partition key, and it
+ scales horizontally by adding nodes.</li>
+ <li>A relational database would struggle with the write rate and would waste effort on features the data
+ does not need (joins, transactions across rows, strong consistency between readings).</li>
+ <li><strong>(ii) Ten years of records for research:</strong> this is analytical — researchers run large,
+ unpredictable queries over historical data. A <strong>data warehouse</strong> with a star schema is right:
+ a fact table of measurements with dimension tables for patient, ward, device and date, loaded periodically
+ by ETL from the operational systems.</li>
+ <li>Denormalisation is appropriate here because the data is written once and read many times, so query speed
+ matters more than update efficiency.</li>
+ <li><strong>Important qualification:</strong> patient identity and clinical records should stay in a
+ strongly consistent relational store because correctness there is non-negotiable — the CAP trade-off is
+ acceptable for sensor readings and not for who is allergic to what.</li>
+ </ol>
+ <div class="answerline"><b>Marks:</b> one justified recommendation for each workload, one contrast between OLTP and OLAP, and one mark for the qualification that different data in the same organisation warrants different stores. A single recommendation for both halves of the question cannot reach the top band.</div>
+ </div></details>
+ </li>
+</ol>
+
+<div class="conn">
+ <span class="conn__title">Connections</span>
+ <ul>
+ <li><strong>→ A1 Computer fundamentals:</strong> Unicode and fixed-width fields determine how text is stored;
+ the A1 units work reappears in storage sizing.</li>
+ <li><strong>→ A2 Networks:</strong> a DBMS is the classic client–server service, and SQL injection is where
+ A2.4 meets A3.3.</li>
+ <li><strong>→ A4 Machine learning:</strong> a model is only as good as the data it trains on; database design
+ decisions become data quality problems later, and data warehouses are where training data is assembled.</li>
+ <li><strong>→ B1 Computational thinking:</strong> normalisation is decomposition applied to data — the same
+ "one fact, one place" instinct.</li>
+ <li><strong>→ B2 Programming:</strong> reading from a database and iterating the result set is a standard
+ file/IO pattern; prepared statements are parameter passing with type checking.</li>
+ <li><strong>→ B4 Abstract data types:</strong> a B-tree index is why a database finds one row among millions
+ without scanning them all.</li>
+ <li><strong>→ IA:</strong> if your computational solution stores anything, normalising it and showing the
+ tables is free marks in criterion B (design).</li>
+ </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+ <li><label><input type="checkbox"><span>I can name and explain the four flat-file anomalies.</span></label></li>
+ <li><label><input type="checkbox"><span>I can define relation, tuple, attribute, primary/candidate/composite/foreign key.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain referential integrity and what a DBMS enforces because of it.</span></label></li>
+ <li><label><input type="checkbox"><span>I can justify why many-to-many must be resolved with a link table.</span></label></li>
+ <li><label><input type="checkbox"><span>I can apply 1NF, 2NF and 3NF to a scenario, naming the dependency at each step.</span></label></li>
+ <li><label><input type="checkbox"><span>I can write CREATE TABLE with data types and four kinds of constraint.</span></label></li>
+ <li><label><input type="checkbox"><span>I can write SELECT with WHERE, AND/OR/NOT, LIKE, ORDER BY and aggregates.</span></label></li>
+ <li><label><input type="checkbox"><span>I know when to use WHERE and when to use HAVING.</span></label></li>
+ <li><label><input type="checkbox"><span>I can predict the rows returned by inner, left and right joins.</span></label></li>
+ <li><label><input type="checkbox"><span>I know why COUNT(column) and COUNT(*) can differ after a LEFT JOIN.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain ACID, the lost update problem, locking and deadlock.</span></label></li>
+ <li><label><input type="checkbox"><span>I can distinguish validation from integrity, and backup from recovery.</span></label></li>
+ <li><label><input type="checkbox"><span>I can compare document, key-value, wide-column and graph stores.</span></label></li>
+ <li><label><input type="checkbox"><span>I can contrast a database with a data warehouse and explain denormalisation.</span></label></li>
+</ul>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

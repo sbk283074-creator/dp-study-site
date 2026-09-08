@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="math">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistics &amp; probability — Mathematics AA HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Mathematics AA HL · Topic 4</span>
+<h1 class="page-title">Statistics &amp; probability</h1>
+<p class="lede">Topic 4 is the topic where AA HL students lose the most marks per minute, because it feels
+"easy" right up to the point where it isn't. The descriptive half (mean, spread, correlation) is quick. The
+inference half (confidence intervals, hypothesis tests, χ²) is where a mark depends on one sentence you either
+write or don't. The fix is procedural: learn <em>one</em> hypothesis-testing routine and run it identically for
+every variant.</p>
+<div class="page-meta">
+  <span class="tag">33 teaching hours (HL)</span>
+  <span class="tag">HL only: continuous rv, Poisson, Bayes, linear combinations, CLT, confidence intervals, hypothesis tests</span>
+  <span class="tag tag--hl">Paper 2 · Paper 3</span>
+</div>
+
+<h2>4.1 Data: types, diagrams and summaries</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> statistics begins by describing what you have and ends by guessing what you do
+not have. The first half of this section is description; the whole of the second half of the topic is guessing
+— with an honest measure of how wrong you might be.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Concept</th><th>Meaning</th><th>Watch out for</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Population</strong></td><td>Every individual you care about</td><td>Often too large to measure</td></tr>
+    <tr><td><strong>Sample</strong></td><td>The subset you actually measure</td><td>Must be representative; a biased sample ruins everything downstream</td></tr>
+    <tr><td><strong>Discrete data</strong></td><td>Countable values (number of siblings)</td><td>Bar charts, gaps between bars</td></tr>
+    <tr><td><strong>Continuous data</strong></td><td>Measured on a scale (height, time)</td><td>Histograms, no gaps, <em>frequency density</em> not frequency</td></tr>
+    <tr><td><strong>Grouped data</strong></td><td>Binned into intervals</td><td>Use mid-interval values; results are <em>estimates</em></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — histograms and grouped estimates</span>
+  <p>In a histogram with unequal class widths, the <em>area</em> of each bar represents frequency, so the
+  vertical axis is frequency density \(=\dfrac{\text{frequency}}{\text{class width}}\). To estimate the mean from
+  grouped data use \(\bar x = \dfrac{\sum f x}{\sum f}\) where \(x\) is the mid-interval value. To estimate the
+  standard deviation use \(s_n = \sqrt{\dfrac{\sum f x^2}{\sum f} - \bar x^2}\). Your GDC's statistics mode does
+  this in seconds — but you must enter mid-interval values into one list and frequencies into another, and you
+  must know which standard deviation it is reporting.</p>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>\(s_n\) versus \(s_{n-1}\). Your GDC displays both. \(s_n\) (dividing by \(n\)) describes
+  <em>this sample</em>; \(s_{n-1}\) (dividing by \(n-1\)) is the <strong>unbiased estimate</strong> of the
+  population standard deviation, and it is the one you use in a \(t\)-test or a confidence interval. If a
+  question says "estimate the population standard deviation", it wants \(s_{n-1}\). Writing the wrong one loses
+  the accuracy mark and can flip a conclusion.</p>
+</div>
+
+<h3>Cumulative frequency, box plots and outliers</h3>
+
+<p>A <strong>cumulative frequency</strong> curve plots the running total against the upper class boundary; the
+median is at half the total frequency, the quartiles at one-quarter and three-quarters. A <strong>box and
+whisker plot</strong> shows five numbers: minimum, \(Q_1\), median, \(Q_3\), maximum. The interquartile range
+is \(\text{IQR} = Q_3-Q_1\), and an <strong>outlier</strong> is any value below \(Q_1-1.5\times\text{IQR}\) or
+above \(Q_3+1.5\times\text{IQR}\).</p>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique</span>
+  <p>When comparing two data sets, never just quote numbers. Use the sentence frame:
+  "The median of A is ___ compared with ___ for B, so on average A is ___; however the IQR of A is ___
+  compared with ___ for B, so A is more/less spread." One comparative sentence about <em>centre</em> and one
+  about <em>spread</em>, each with numbers, is a full-marks comparison. Adding a comment on skew or outliers is
+  what pushes a good answer to the top band.</p>
+</div>
+
+<h2>4.2 Mean, median, mode, variance, standard deviation</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+\[\bar x = \frac{\sum x}{n},\qquad s_n^2 = \frac{\sum x^2}{n}-\bar x^2 = \frac{\sum (x-\bar x)^2}{n},\qquad s_n = \sqrt{s_n^2},\qquad s_{n-1}^2 = \frac{n}{n-1}s_n^2.\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> The computational formula for variance, and why \(n-1\) is unbiased</summary>
+  <div class="dbody">
+    <p><strong>Computational form:</strong></p>
+    <ol class="steps">
+      <li>\(\sum (x_i-\bar x)^2 = \sum(x_i^2 - 2x_i\bar x + \bar x^2) = \sum x_i^2 - 2\bar x\sum x_i + n\bar x^2\).</li>
+      <li>Since \(\sum x_i = n\bar x\), this is \(\sum x_i^2 - 2n\bar x^2 + n\bar x^2 = \sum x_i^2 - n\bar x^2\).</li>
+      <li>Divide by \(n\): \(\dfrac{\sum x_i^2}{n}-\bar x^2\). ■</li>
+    </ol>
+    <p><strong>Why \(n-1\):</strong> \(\bar x\) is computed from the same data, so the deviations
+    \((x_i-\bar x)\) are constrained to sum to zero — you have "used up" one piece of information, leaving
+    \(n-1\) independent deviations. Dividing by \(n\) therefore systematically underestimates the true variance;
+    multiplying by \(\frac{n}{n-1}\) corrects it exactly. This is Bessel's correction, and it is why the
+    estimator is called <em>unbiased</em>: \(E(S_{n-1}^2) = \sigma^2\).</p>
+    <p><strong>Wrong tool when:</strong> the data are heavily skewed or contain outliers — then the mean and
+    standard deviation are poor summaries and you should report the median and IQR.</p>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The numbers of minutes 12 students spent on homework were:
+    15, 22, 22, 25, 28, 30, 31, 33, 35, 40, 42, 95.
+    (a) Find the mean and standard deviation. (b) Identify any outliers. (c) state which of the mean or median
+    is the better measure of centre, and justify your answer.</p>
+    <ol class="steps">
+      <li>\(\sum x = 418\), so \(\bar x = \dfrac{418}{12} = 34.8\) minutes.</li>
+      <li>\(\sum x^2 = 19\,586\) (GDC), so \(s_n^2 = \dfrac{19586}{12} - 34.8^2 = 1632.2 - 1213.4 = 418.8\), and \(s_n = 20.5\) minutes.</li>
+      <li>Median \(=\frac{30+31}{2} = 30.5\). \(Q_1 = 23.5\), \(Q_3 = 37.5\), so IQR \(= 14\).</li>
+      <li>Upper fence: \(37.5 + 1.5(14) = 58.5\). The value 95 is above it, so 95 is an outlier.</li>
+      <li>The median (30.5) is the better measure of centre: the outlier 95 drags the mean up to 34.8, above
+      nine of the twelve values.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> mean 34.8, \(s_n=20.5\), outlier 95, median preferred. Sanity check: the mean being larger than the median indicates right skew — consistent with a single extreme value at the top.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 6 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The table shows the masses (kg) of 50 parcels.</p>
+    <div class="table-wrap"><table><thead><tr><th>Mass (kg)</th><th>0–2</th><th>2–5</th><th>5–10</th><th>10–20</th></tr></thead>
+    <tbody><tr><td>Frequency</td><td>12</td><td>18</td><td>14</td><td>6</td></tr></tbody></table></div>
+    <p>Estimate the mean and standard deviation. Explain why a histogram of this data must use frequency density.</p>
+    <ol class="steps">
+      <li>Mid-interval values: 1, 3.5, 7.5, 15.</li>
+      <li>\(\bar x = \dfrac{12(1)+18(3.5)+14(7.5)+6(15)}{50} = \dfrac{12+63+105+90}{50} = \dfrac{270}{50} = 5.4\) kg.</li>
+      <li>\(\dfrac{\sum fx^2}{n} = \dfrac{12(1)+18(12.25)+14(56.25)+6(225)}{50} = \dfrac{12+220.5+787.5+1350}{50} = \dfrac{2370}{50} = 47.4\).</li>
+      <li>\(s_n^2 = 47.4 - 5.4^2 = 47.4-29.16 = 18.24 \Rightarrow s_n = 4.27\) kg.</li>
+      <li>Class widths are unequal (2, 3, 5, 10), so plotting raw frequency would make wide classes look
+      artificially large; frequency density \(=\frac{f}{\text{width}}\) makes the <em>area</em> proportional to
+      frequency.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> mean 5.4 kg, \(s_n = 4.27\) kg. This is an <em>estimate</em> — say so, that word is often a mark.</div>
+  </div>
+</details>
+
+<h2>4.3 Correlation and linear regression</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> Pearson's \(r\) measures how close the points are to a straight line:
+\(r=1\) perfect positive, \(r=-1\) perfect negative, \(r\approx0\) no <em>linear</em> relationship. The
+regression line of \(y\) on \(x\) is the straight line that best predicts \(y\) from \(x\), and it always passes
+through the point \((\bar x,\ \bar y)\).</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Three killers. (1) <strong>Correlation is not causation</strong>: ice-cream sales and drowning deaths
+  correlate because both rise in summer. (2) <strong>Extrapolation</strong>: using the regression line outside
+  the range of the data is unjustified — the relationship may change completely. (3) <strong>\(r\) only measures
+  linear association</strong>: a perfect parabola can give \(r\approx0\). Also note \(r\) is unchanged by
+  linear scaling, but the regression line's <em>equation</em> does change if you swap units.</p>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Scatter plot with regression line and a dashed extrapolation beyond the data">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="70" y1="270" x2="600" y2="270" stroke="#334155" stroke-width="2"/>
+    <line x1="70" y1="270" x2="70" y2="40" stroke="#334155" stroke-width="2"/>
+    <circle cx="130" cy="230" r="4" fill="#3653d6"/>
+    <circle cx="175" cy="205" r="4" fill="#3653d6"/>
+    <circle cx="215" cy="215" r="4" fill="#3653d6"/>
+    <circle cx="250" cy="180" r="4" fill="#3653d6"/>
+    <circle cx="290" cy="175" r="4" fill="#3653d6"/>
+    <circle cx="325" cy="150" r="4" fill="#3653d6"/>
+    <circle cx="365" cy="145" r="4" fill="#3653d6"/>
+    <circle cx="400" cy="120" r="4" fill="#3653d6"/>
+    <circle cx="440" cy="115" r="4" fill="#3653d6"/>
+    <line x1="100" y1="248" x2="440" y2="118" stroke="#b03060" stroke-width="3"/>
+    <line x1="440" y1="118" x2="580" y2="58" stroke="#b03060" stroke-width="3" stroke-dasharray="7 5"/>
+    <line x1="440" y1="40" x2="440" y2="270" stroke="#6c7788" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="455" y="70" font-size="13" font-family="system-ui, sans-serif" fill="#b03060">extrapolation</text>
+    <text x="455" y="88" font-size="12" font-family="system-ui, sans-serif" fill="#b03060">(unsafe)</text>
+    <text x="375" y="250" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">data range</text>
+    <text x="90" y="60" font-size="14" font-family="system-ui, sans-serif" fill="#151923">regression line of y on x passes through (x-bar, y-bar)</text>
+    <text x="300" y="295" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">x</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> The solid segment is supported by data; the dashed continuation is a guess. IB questions routinely ask you to comment on the validity of a prediction — "outside the range of the data" is the phrase that earns the mark.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Data for 8 students gave \(\sum x = 52\), \(\sum y = 96\),
+    \(\sum x^2 = 396\), \(\sum y^2 = 1264\), \(\sum xy = 692\).
+    (a) Find \(r\). (b) Find the regression line of \(y\) on \(x\). (c) Predict \(y\) when \(x=9\), and comment
+    on the reliability.</p>
+    <ol class="steps">
+      <li>\(r = \dfrac{n\sum xy - \sum x\sum y}{\sqrt{\left(n\sum x^2-(\sum x)^2\right)\left(n\sum y^2-(\sum y)^2\right)}}
+      = \dfrac{8(692)-52(96)}{\sqrt{(8(396)-52^2)(8(1264)-96^2)}} = \dfrac{5536-4992}{\sqrt{(3168-2704)(10112-9216)}} = \dfrac{544}{\sqrt{464\times896}}\).</li>
+      <li>\(\sqrt{415\,744} = 644.8\), so \(r = 0.844\) — a strong positive correlation.</li>
+      <li>Gradient \(b = \dfrac{S_{xy}}{S_{xx}} = \dfrac{544/8}{464/8} = \dfrac{68}{58} = 1.172\);
+      \(\bar x = 6.5,\ \bar y=12\), so \(a = 12 - 1.172(6.5) = 4.379\).</li>
+      <li>Line: \(y = 1.17x + 4.38\). At \(x=9\): \(y = 1.172(9)+4.379 = 14.93\).</li>
+      <li>\(x\) ranges from about 1 to 12 in this data set (since \(\bar x=6.5\)), so \(x=9\) is within range:
+      the prediction is reasonably reliable.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(r=0.844\); \(y=1.17x+4.38\); prediction 14.9, reliable (interpolation). Note \(r^2 = 0.712\), meaning about 71% of the variation in \(y\) is explained by the linear model — a sentence like that is what "interpret \(r^2\)" wants.</div>
+  </div>
+</details>
+
+<h2>4.4 Probability</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> probability is a measure of how much of the possibility space an event occupies.
+Two events are <strong>mutually exclusive</strong> if they cannot both happen (\(P(A\cap B)=0\)); they are
+<strong>independent</strong> if one happening tells you nothing about the other
+(\(P(A\cap B)=P(A)P(B)\), equivalently \(P(A\mid B)=P(A)\)). These are <em>different</em> ideas and students
+confuse them constantly.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the four rules you need</span>
+  <ul>
+    <li>Addition: \(P(A\cup B) = P(A)+P(B)-P(A\cap B)\); if mutually exclusive, the last term is 0.</li>
+    <li>Multiplication: \(P(A\cap B) = P(A)P(B\mid A)\); if independent, \(P(A\cap B)=P(A)P(B)\).</li>
+    <li>Conditional: \(P(A\mid B) = \dfrac{P(A\cap B)}{P(B)}\).</li>
+    <li>Complement: \(P(A') = 1-P(A)\).</li>
+  </ul>
+  <p>Venn diagrams for overlapping categories; tree diagrams for sequences of events (multiply along branches,
+  add across outcomes).</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 4</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> In a class of 30, 18 study Physics, 14 study Chemistry, and 7 study neither.
+    (a) Find the number studying both. (b) A student is chosen at random. Given that they study Chemistry, find
+    the probability they study Physics. (c) Show that the events "studies Physics" and "studies Chemistry" are
+    not independent.</p>
+    <ol class="steps">
+      <li>Studying at least one: \(30-7 = 23\). By inclusion–exclusion: \(23 = 18+14 - n(P\cap C)\), so
+      \(n(P\cap C) = 9\).</li>
+      <li>\(P(P\mid C) = \dfrac{n(P\cap C)}{n(C)} = \dfrac{9}{14} = 0.643\).</li>
+      <li>For independence we need \(P(P\mid C) = P(P)\). But \(P(P) = \frac{18}{30} = 0.6 \neq 0.643\).</li>
+      <li>Equivalently: \(P(P)P(C) = 0.6\times\frac{14}{30} = 0.28\), while \(P(P\cap C) = \frac{9}{30} = 0.3\). Not equal.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 9; \(0.643\); not independent. Always quote <em>both</em> numbers in an independence test and compare them explicitly — writing "they are different" without the numbers scores nothing.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A test for a disease is 95% accurate when the disease is present and 97%
+    accurate when it is absent. In the population, 1 in 200 people have the disease. A randomly chosen person
+    tests positive. Find the probability they actually have the disease.</p>
+    <ol class="steps">
+      <li>Tree: \(P(D) = 0.005\), \(P(D')=0.995\); \(P(+\mid D)=0.95\), \(P(+\mid D')=0.03\).</li>
+      <li>\(P(D\cap +) = 0.005\times0.95 = 0.00475\); \(P(D'\cap +) = 0.995\times0.03 = 0.02985\).</li>
+      <li>\(P(+) = 0.00475+0.02985 = 0.0346\).</li>
+      <li>\(P(D\mid +) = \dfrac{0.00475}{0.0346} = 0.137\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 0.137 (about 14%). The result shocks everyone, and it is the point: with a rare disease, most positive tests are false positives. This is Bayes' theorem in action — and it is HL-examinable in its formal version (section 4.8).</div>
+  </div>
+</details>
+
+<h2>4.5 Discrete random variables</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> a random variable is a number whose value is decided by chance. Its
+<em>distribution</em> tells you the probability of each value. The <strong>expected value</strong> \(E(X)\) is
+the long-run average — not "the value I expect", but "what I'd average over many repetitions". The
+<strong>variance</strong> measures how spread out the values are around \(E(X)\).</p>
+
+\[E(X) = \sum x\,P(X=x),\qquad E(g(X)) = \sum g(x)P(X=x),\qquad Var(X) = E(X^2)-[E(X)]^2.\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> \(Var(X) = E(X^2)-[E(X)]^2\)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>By definition \(Var(X) = E\!\left[(X-\mu)^2\right]\) where \(\mu = E(X)\).</li>
+      <li>Expand inside the expectation: \(E\!\left[(X-\mu)^2\right] = E\!\left[X^2 - 2\mu X + \mu^2\right]\).</li>
+      <li>Expectation is linear: \(= E(X^2) - 2\mu E(X) + \mu^2 = E(X^2) - 2\mu^2 + \mu^2 = E(X^2)-\mu^2\). ■</li>
+    </ol>
+    <p><strong>Meaning:</strong> "mean of the squares minus the square of the mean". This is the same identity as
+    the computational variance formula in section 4.2 — data and distributions share the algebra.
+    <strong>Wrong tool when:</strong> \(X\) is continuous — then replace sums with integrals (section 4.7).</p>
+  </div>
+</details>
+
+<h3>The binomial distribution</h3>
+<span class="badge badge--sl">SL / HL</span>
+
+<p>Conditions: fixed number \(n\) of independent trials, two outcomes, constant probability \(p\) of "success".
+Then \(X\sim B(n,p)\) with \(P(X=x) = \binom{n}{x}p^x(1-p)^{n-x}\), \(E(X)=np\), \(Var(X)=np(1-p)\).</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 6</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A fair die is rolled 8 times. Let \(X\) be the number of sixes.
+    (a) Find \(P(X=2)\). (b) Find \(P(X\ge 2)\). (c) Find \(E(X)\) and \(Var(X)\).
+    (d) The die is now suspected of bias. In 60 rolls, 17 sixes appear. Is this evidence of bias at the 5% level?</p>
+    <ol class="steps">
+      <li>\(X\sim B(8,\frac16)\). \(P(X=2) = \binom{8}{2}\left(\frac16\right)^2\left(\frac56\right)^6 = 28\times0.02778\times0.3349 = 0.2605\).</li>
+      <li>\(P(X\ge2) = 1-P(X\le1) = 1-[0.2326+0.3721] = 0.3953\) (GDC binomial CDF).</li>
+      <li>\(E(X) = 8\times\frac16 = \frac43\); \(Var(X) = 8\times\frac16\times\frac56 = \frac{10}{9}\).</li>
+      <li>Hypothesis test: \(H_0: p=\frac16\), \(H_1: p\neq\frac16\). Under \(H_0\), \(Y\sim B(60,\frac16)\) and
+      \(P(Y\ge 17) = 0.0144\). Two-tailed: \(p\)-value \(=2\times0.0144 = 0.0288 &lt; 0.05\).</li>
+      <li>Reject \(H_0\): there is evidence at the 5% level that the die is biased.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 0.261; (b) 0.395; (c) \(\frac43\), \(\frac{10}{9}\); (d) reject \(H_0\) (\(p=0.0288\)). Part (d) is the HL binomial test — note the two-tailed doubling and the conclusion phrased "evidence of bias", never "the die is biased".</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 7</span> IB-style · 8 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A game costs \$5 to play. You roll two dice and win \$\(W\) where \(W\) is the
+    sum of the dice, in dollars, if the sum exceeds 8; otherwise you win nothing. (a) Tabulate the distribution
+    of your profit \(P\). (b) Find the expected profit. (c) Is the game fair?</p>
+    <ol class="steps">
+      <li>Sums exceeding 8: 9, 10, 11, 12 with probabilities \(\frac{4}{36},\frac{3}{36},\frac{2}{36},\frac{1}{36}\). Total \(\frac{10}{36}=\frac{5}{18}\).</li>
+      <li>Profit \(= W-5\) if you win, and \(-5\) if you lose. So: \(P(\text{profit}=4)=\frac{4}{36}\),
+      \(5:\frac{3}{36}\), \(6:\frac{2}{36}\), \(7:\frac{1}{36}\), \(-5:\frac{26}{36}\).</li>
+      <li>\(E(\text{profit}) = \frac{4(4)+5(3)+6(2)+7(1)+(-5)(26)}{36} = \frac{16+15+12+7-130}{36} = \frac{-80}{36} = -2.22\).</li>
+      <li>Not fair: the expected profit is \(-\$2.22\) per game, so the player loses on average.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(E = -\$2.22\); not fair (a fair game has \(E=0\)). Careful with the profit variable: a classic error is to compute \(E(W)\) and forget to subtract the stake.</div>
+  </div>
+</details>
+
+<h2>4.6 The normal distribution</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> the bell curve. It is symmetric about its mean \(\mu\), and \(\sigma\) controls how
+wide it is. About 68% of the data lies within \(1\sigma\) of the mean, 95% within \(2\sigma\), 99.7% within
+\(3\sigma\). It matters because (section 4.11) <em>sample means</em> are approximately normal whatever the
+population looks like.</p>
+
+\[X\sim N(\mu,\sigma^2),\qquad Z = \frac{X-\mu}{\sigma}\sim N(0,1).\]
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Normal curve with regions within one and two standard deviations shaded">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="50" y1="265" x2="600" y2="265" stroke="#334155" stroke-width="2"/>
+    <path d="M60 260 C 140 260, 180 70, 325 70 C 470 70, 510 260, 590 260" fill="#eef2ff" stroke="#3653d6" stroke-width="2.5"/>
+    <path d="M228 260 C 250 250, 270 90, 325 70 C 380 90, 400 250, 422 260 Z" fill="#3653d6" fill-opacity="0.25" stroke="#3653d6" stroke-width="1.5"/>
+    <line x1="325" y1="70" x2="325" y2="265" stroke="#151923" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <line x1="228" y1="265" x2="228" y2="200" stroke="#151923" stroke-width="1.5"/>
+    <line x1="422" y1="265" x2="422" y2="200" stroke="#151923" stroke-width="1.5"/>
+    <line x1="132" y1="265" x2="132" y2="235" stroke="#151923" stroke-width="1.5"/>
+    <line x1="518" y1="265" x2="518" y2="235" stroke="#151923" stroke-width="1.5"/>
+    <text x="290" y="150" font-size="14" font-family="system-ui, sans-serif" fill="#151923">68%</text>
+    <text x="320" y="285" font-size="13" font-family="system-ui, sans-serif" fill="#151923">mu</text>
+    <text x="215" y="285" font-size="13" font-family="system-ui, sans-serif" fill="#151923">mu - sigma</text>
+    <text x="405" y="285" font-size="13" font-family="system-ui, sans-serif" fill="#151923">mu + sigma</text>
+    <text x="110" y="285" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">mu-2s</text>
+    <text x="505" y="285" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">mu+2s</text>
+    <text x="60" y="45" font-size="14" font-family="system-ui, sans-serif" fill="#151923">95% within 2 sigma, 99.7% within 3 sigma</text>
+    <text x="450" y="130" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">symmetry means</text>
+    <text x="450" y="148" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">P(X &gt; mu) = 0.5</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> Standardising means "count how many standard deviations away from the mean". Once you think in \(z\)-units, every normal distribution is the same curve and your GDC's inverse normal does the rest.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 8</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The masses of apples are normally distributed with mean 150 g and standard
+    deviation 22 g. (a) Find the probability that a randomly chosen apple has mass between 140 g and 170 g.
+    (b) 10% of apples have mass greater than \(m\) grams. Find \(m\).</p>
+    <ol class="steps">
+      <li>Standardise: \(z_1 = \frac{140-150}{22} = -0.4545\); \(z_2 = \frac{170-150}{22} = 0.9091\).</li>
+      <li>\(P(-0.4545&lt;Z&lt;0.9091) = P(Z&lt;0.9091) - P(Z&lt;-0.4545) = 0.8183-0.3247 = 0.4936\).</li>
+      <li>For (b): \(P(X>m) = 0.10 \Rightarrow P\left(Z>\frac{m-150}{22}\right) = 0.10 \Rightarrow \frac{m-150}{22} = 1.2816\) (inverse normal).</li>
+      <li>\(m = 150 + 22(1.2816) = 178.2\) g.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 0.494; (b) 178 g. Always sketch and shade: it tells you whether to use the upper or lower tail and catches sign errors in \(z\).</div>
+  </div>
+</details>
+
+<h2>4.7 HL: continuous random variables</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Intuition:</strong> for a continuous variable, \(P(X=x)=0\) for every single value — only
+<em>intervals</em> have probability, and probability is <em>area under the pdf</em>. This is where Topic 5 walks
+straight into Topic 4: every probability is a definite integral.</p>
+
+\[P(a\le X\le b) = \int_a^b f(x)\,\mathrm{d}x,\qquad \int_{-\infty}^{\infty} f(x)\,\mathrm{d}x = 1,\qquad
+F(x) = \int_{-\infty}^{x} f(t)\,\mathrm{d}t.\]
+\[E(X) = \int x\,f(x)\,\mathrm{d}x,\qquad E(g(X)) = \int g(x) f(x)\,\mathrm{d}x,\qquad Var(X) = E(X^2)-[E(X)]^2.\]
+\[\text{median } m:\ \int_{-\infty}^{m} f = \tfrac12;\qquad \text{lower quartile}:\ \int_{-\infty}^{q_1} f = \tfrac14.\]
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it</span>
+  <ol class="steps">
+    <li>If a constant \(k\) is unknown, normalise first: integrate \(f\) over its support, set equal to 1, solve for \(k\).</li>
+    <li>For \(E(X)\), multiply the integrand by \(x\) and integrate over the support — the limits come from the
+    <em>support</em>, not from \(-\infty\) to \(\infty\), if \(f\) is piecewise.</li>
+    <li>For the median, set the cdf equal to \(\frac12\) and solve (you may need to decide which piece of a
+    piecewise cdf applies — check that your \(m\) lies in the interval you used).</li>
+    <li>Use your GDC's numerical integration to check every one of these integrals. A 20-second check is worth
+    more than a re-derivation.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 9</span> IB-style · 10 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A continuous random variable \(X\) has pdf
+    \(f(x) = \begin{cases} kx(3-x), & 0\le x\le 3 \\ 0, & \text{otherwise.}\end{cases}\)
+    (a) Show that \(k=\dfrac{2}{9}\). (b) Find \(E(X)\). (c) Find the median of \(X\). (d) Find \(P(X>2)\).</p>
+    <ol class="steps">
+      <li>Normalise: \(\int_0^3 kx(3-x)\,\mathrm{d}x = k\left[\frac{3x^2}{2}-\frac{x^3}{3}\right]_0^3
+      = k\left(\frac{27}{2}-9\right) = k\cdot\frac{9}{2} = 1 \Rightarrow k = \frac29\). ■</li>
+      <li>\(E(X) = \frac29\int_0^3 x^2(3-x)\,\mathrm{d}x = \frac29\left[x^3-\frac{x^4}{4}\right]_0^3
+      = \frac29\left(27-\frac{81}{4}\right) = \frac29\cdot\frac{27}{4} = \frac32\).</li>
+      <li>Median \(m\): \(\frac29\int_0^m x(3-x)\,\mathrm{d}x = \frac12 \Rightarrow \frac29\left(\frac{3m^2}{2}-\frac{m^3}{3}\right)=\frac12\).</li>
+      <li>Multiply: \(\frac{3m^2}{2}-\frac{m^3}{3} = \frac94 \Rightarrow 18m^2 - 4m^3 = 27 \Rightarrow 4m^3-18m^2+27=0\).</li>
+      <li>Solve on the GDC: \(m = 1.50\) (the other roots lie outside \([0,3]\)). Indeed \(m=1.5\) gives
+      \(4(3.375)-18(2.25)+27 = 13.5-40.5+27=0\). ✓</li>
+      <li>\(P(X>2) = \frac29\int_2^3 x(3-x)\,\mathrm{d}x = \frac29\left[\frac{3x^2}{2}-\frac{x^3}{3}\right]_2^3
+      = \frac29\left(\frac92 - \left(6-\frac83\right)\right) = \frac29\left(4.5-\frac{10}{3}\right) = \frac29\cdot\frac76 = \frac{7}{27}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(k=\frac29\); \(E(X)=1.5\); median 1.5; \(P(X>2)=\frac{7}{27}=0.259\). Note that the mean equals the median here because the pdf is symmetric about \(x=1.5\) — spotting that saves the entire cubic in parts (b) and (c).</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 10</span> IB-style · 9 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The time \(T\) (hours) a phone battery lasts has pdf
+    \(f(t) = \dfrac{1}{8}\mathrm{e}^{-t/8}\) for \(t\ge0\). (a) Verify this is a valid pdf.
+    (b) Find \(E(T)\). (c) Find the probability the battery lasts more than 10 hours.</p>
+    <ol class="steps">
+      <li>\(\int_0^\infty \frac18\mathrm{e}^{-t/8}\,\mathrm{d}t = \frac18\left[-8\mathrm{e}^{-t/8}\right]_0^\infty = -[0-1] = 1\). ✓</li>
+      <li>\(E(T) = \frac18\int_0^\infty t\,\mathrm{e}^{-t/8}\,\mathrm{d}t\). Integrate by parts with \(u=t\), \(\mathrm{d}v=\mathrm{e}^{-t/8}\mathrm{d}t\):
+      \(= \frac18\left(\left[-8t\mathrm{e}^{-t/8}\right]_0^\infty + 8\int_0^\infty \mathrm{e}^{-t/8}\,\mathrm{d}t\right)
+      = \frac18\left(0 + 64\right) = 8\) hours.</li>
+      <li>\(P(T>10) = \int_{10}^\infty \frac18\mathrm{e}^{-t/8}\mathrm{d}t = \left[-\mathrm{e}^{-t/8}\right]_{10}^\infty = \mathrm{e}^{-10/8} = 0.287\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(E(T)=8\) hours, \(P(T>10)=0.287\). This is the exponential distribution — the continuous model for waiting times, and the continuous analogue of the geometric distribution. The integration by parts in (b) is exactly the Topic 5 technique from section 5.8.</div>
+  </div>
+</details>
+
+<h2>4.8 HL: Poisson distribution and Bayes' theorem</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Poisson intuition:</strong> count how many times something happens in a fixed interval when events
+occur independently at a constant average rate and there is no upper limit. Emails per hour, flaws per metre of
+cable, decays per second. One parameter only: the mean rate \(m\).</p>
+
+\[X\sim Po(m):\quad P(X=x) = \frac{\mathrm{e}^{-m}m^x}{x!},\qquad E(X)=Var(X)=m.\]
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — choosing between binomial and Poisson</span>
+  <p>Ask: is there a fixed number of trials \(n\)? Yes → binomial. No, just an average rate over a continuous
+  interval → Poisson. Watch the <em>interval</em>: if the rate is 3 per hour, then over 2 hours the parameter is
+  \(m=6\); over 20 minutes it is \(m=1\). Rescaling the interval is the single most common error.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 11</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Calls arrive at a switchboard at an average rate of 4 per 10 minutes.
+    (a) Find the probability of exactly 2 calls in 10 minutes. (b) Find the probability of at least 5 calls in
+    30 minutes. (c) Find the probability of no calls in 5 minutes.</p>
+    <ol class="steps">
+      <li>(a) \(X\sim Po(4)\): \(P(X=2) = \dfrac{\mathrm{e}^{-4}4^2}{2!} = \dfrac{0.01832\times16}{2} = 0.1465\).</li>
+      <li>(b) 30 minutes is three intervals, so \(m = 12\). \(P(X\ge5) = 1-P(X\le4) = 1-0.0076 = 0.9924\) (GDC).</li>
+      <li>(c) 5 minutes is half, so \(m=2\). \(P(X=0) = \mathrm{e}^{-2} = 0.1353\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 0.147; (b) 0.992; (c) 0.135. Every part requires rescaling the rate to match the interval — write "\(m=12\)" explicitly so the examiner can see you did.</div>
+  </div>
+</details>
+
+<h3>Bayes' theorem</h3>
+
+<p><strong>Intuition:</strong> you observe an effect and want to revise your belief about the cause. Bayes'
+theorem is the rule for flipping a conditional probability: \(P(A\mid B)\) from \(P(B\mid A)\).</p>
+
+\[P(A\mid B) = \frac{P(A)P(B\mid A)}{P(A)P(B\mid A)+P(A')P(B\mid A')}\]
+More generally, for a partition \(A_1,\dots,A_k\): \(P(A_i\mid B) = \dfrac{P(A_i)P(B\mid A_i)}{\sum_j P(A_j)P(B\mid A_j)}\).
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Bayes' theorem from the definition of conditional probability</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>By definition: \(P(A\mid B) = \dfrac{P(A\cap B)}{P(B)}\) and \(P(B\mid A) = \dfrac{P(A\cap B)}{P(A)}\).</li>
+      <li>From the second, \(P(A\cap B) = P(B\mid A)P(A)\).</li>
+      <li>By the law of total probability, \(P(B) = P(A\cap B) + P(A'\cap B) = P(B\mid A)P(A)+P(B\mid A')P(A')\).</li>
+      <li>Substitute both into step 1: \(P(A\mid B) = \dfrac{P(B\mid A)P(A)}{P(B\mid A)P(A)+P(B\mid A')P(A')}\). ■</li>
+    </ol>
+    <p><strong>Meaning:</strong> the posterior \(= \dfrac{\text{prior}\times\text{likelihood}}{\text{total probability of the evidence}}\).
+    <strong>Wrong tool when:</strong> the \(A_i\) do not form a partition (they must be exhaustive and mutually
+    exclusive).</p>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 12</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Machine A makes 60% of items and has a 2% defect rate; machine B makes 40% and
+    has a 5% defect rate. An item is chosen at random and is defective. Find the probability it came from
+    machine A.</p>
+    <ol class="steps">
+      <li>\(P(A)=0.6,\ P(B)=0.4,\ P(D\mid A)=0.02,\ P(D\mid B)=0.05\).</li>
+      <li>\(P(A\mid D) = \dfrac{P(A)P(D\mid A)}{P(A)P(D\mid A)+P(B)P(D\mid B)} = \dfrac{0.6(0.02)}{0.6(0.02)+0.4(0.05)} = \dfrac{0.012}{0.012+0.020}\).</li>
+      <li>\(= \dfrac{0.012}{0.032} = 0.375\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 0.375. Even though machine A makes most items, a defective item is more likely to come from B (62.5%) because B's defect rate is much higher. Drawing a tree first, then applying Bayes, is the most reliable route.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — data &amp; probability</span>
+  <p><strong>population / sample</strong> /<strong>discrete / continuous data</strong> /<strong>grouped data</strong><strong>frequency density</strong><strong>histogram</strong><strong>cumulative frequency</strong><strong>box plot</strong><strong>outlier</strong><strong>quartile / interquartile range (IQR)</strong> /<strong>mean / median / mode</strong> / /<strong>variance</strong><strong>standard deviation</strong><strong>skewness</strong><strong>correlation coefficient</strong><strong>regression line</strong><strong>extrapolation</strong><strong>mutually exclusive</strong><strong>independent</strong><strong>conditional probability</strong><strong>random variable</strong><strong>expected value</strong><strong>probability density function (pdf)</strong><strong>cumulative distribution function (cdf)</strong><strong>normal distribution</strong><strong>standardisation</strong></p>
+</div>
+
+<h2>4.9 HL: linear combinations of random variables &amp; unbiased estimates</h2>
+<span class="badge badge--hl">HL only</span>
+
+\[E(aX+b) = aE(X)+b,\qquad Var(aX+b) = a^2Var(X),\]
+\[E(aX\pm bY) = aE(X)\pm bE(Y),\qquad Var(aX\pm bY) = a^2Var(X)+b^2Var(Y)\ \ (\text{independent }X,Y).\]
+For \(n\) independent identically distributed variables: \(E(\bar X)=\mu\), \(Var(\bar X)=\dfrac{\sigma^2}{n}\).
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Variance always uses <em>squared</em> coefficients and always <em>adds</em> for independent variables —
+  including the minus case: \(Var(X-Y) = Var(X)+Var(Y)\), not \(Var(X)-Var(Y)\). And \(Var(2X+3Y)=4Var(X)+9Var(Y)\):
+  students write \(2Var(X)+3Var(Y)\) every single session.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 13</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Independent random variables have \(E(X)=10,\ Var(X)=4\) and \(E(Y)=3,\ Var(Y)=9\).
+    Find the mean and standard deviation of (a) \(3X-2Y\); (b) \(X+5\).</p>
+    <ol class="steps">
+      <li>(a) \(E(3X-2Y) = 3(10)-2(3) = 24\).</li>
+      <li>\(Var(3X-2Y) = 9(4)+4(9) = 36+36 = 72\), so sd \(=\sqrt{72} = 8.49\).</li>
+      <li>(b) \(E(X+5) = 15\); \(Var(X+5) = 1^2\cdot4 = 4\), so sd \(=2\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) mean 24, sd 8.49; (b) mean 15, sd 2. Adding a constant shifts the mean but does not change the spread — that is the whole content of \(Var(aX+b)=a^2Var(X)\).</div>
+  </div>
+</details>
+
+<h2>4.10 HL: the central limit theorem</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Statement:</strong> if \(X_1,\dots,X_n\) are independent identically distributed random variables with
+mean \(\mu\) and variance \(\sigma^2\), then for <strong>large \(n\)</strong> (usually \(n\ge30\) is taken as
+sufficient) the sample mean is approximately normal:</p>
+\[\bar X \sim N\!\left(\mu,\ \frac{\sigma^2}{n}\right)\ \text{approximately},\qquad\text{equivalently}\quad \sum X_i \sim N(n\mu,\ n\sigma^2).\]
+
+<div class="callout callout--why">
+  <span class="callout__label">Why this exists</span>
+  <p>The CLT is the reason statistics works. You almost never know the population distribution — but you rarely
+  need to, because <em>averages</em> are normal regardless. Its practical content is the \(\sqrt n\): the
+  standard deviation of the mean is \(\frac{\sigma}{\sqrt n}\), so to halve your uncertainty you need four times
+  the data.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 14</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The mass of a suitcase has mean 18 kg and standard deviation 5 kg.
+    (a) Find the probability that 40 randomly chosen suitcases have total mass exceeding 760 kg.
+    (b) State the theorem you used and why it applies.</p>
+    <ol class="steps">
+      <li>\(S = \sum X_i\) has \(E(S)=40\times18 = 720\) and \(Var(S) = 40\times25 = 1000\), so sd \(=\sqrt{1000}=31.62\).</li>
+      <li>By the CLT, \(S\approx N(720, 1000)\).</li>
+      <li>\(P(S>760) = P\!\left(Z>\dfrac{760-720}{31.62}\right) = P(Z>1.265) = 0.103\).</li>
+      <li>The CLT applies because \(n=40\ge30\), the suitcases are independent, and they are identically
+      distributed.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 0.103. Writing the CLT conditions (large \(n\), independence, identical distribution) is usually a mark — and it is the difference between a statistical argument and a guess.</div>
+  </div>
+</details>
+
+<h2>4.11 HL: confidence intervals</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Intuition:</strong> a confidence interval takes a sample mean and builds a range around it that
+usually contains the true population mean. A 95% confidence interval means: if you repeated the whole procedure
+many times, 95% of the intervals you built would contain \(\mu\). It does <em>not</em> mean "there is a 95%
+probability that \(\mu\) is in this interval" — \(\mu\) is fixed; the interval is random.</p>
+
+\[\text{CI for }\mu:\quad \bar x \pm z\frac{\sigma}{\sqrt n}\ \ (\sigma\text{ known}),\qquad
+\bar x \pm t_{n-1}\frac{s_{n-1}}{\sqrt n}\ \ (\sigma\text{ unknown, normal population}).\]
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it</span>
+  <ol class="steps">
+    <li>Identify: is \(\sigma\) (population sd) given? Yes → \(z\)-interval. Only \(s_{n-1}\) (sample sd) → \(t\)-interval with \(n-1\) degrees of freedom.</li>
+    <li>Write the formula, substitute, and give the interval with units.</li>
+    <li>Interpret in context: "We are 95% confident that the true mean ___ lies between ___ and ___."</li>
+    <li>If asked how to halve the width: quadruple \(n\) (width \(\propto \frac{1}{\sqrt n}\)).</li>
+    <li>Link to hypothesis tests: a 95% CI contains exactly those values of \(\mu_0\) that would <em>not</em> be
+    rejected by a two-tailed test at the 5% level.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 15</span> IB-style · 9 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A sample of 25 batteries has mean lifetime 52.3 hours. The population standard
+    deviation is known to be 6 hours. (a) Find a 95% confidence interval for the mean lifetime.
+    (b) Find a 99% confidence interval. (c) The manufacturer claims the mean is 55 hours. Comment.</p>
+    <ol class="steps">
+      <li>\(\sigma\) known → \(z\)-interval: \(52.3 \pm 1.96\cdot\dfrac{6}{\sqrt{25}} = 52.3 \pm 1.96(1.2) = 52.3\pm2.352\).</li>
+      <li>95% CI: \((49.9,\ 54.7)\) hours.</li>
+      <li>99%: \(z=2.576\): \(52.3\pm 2.576(1.2) = 52.3 \pm 3.091\), so \((49.2,\ 55.4)\) hours.</li>
+      <li>The 95% interval does not contain 55, so at the 5% level there is evidence against the claim.
+      The 99% interval <em>does</em> contain 55, so at the 1% level there is not sufficient evidence.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (49.9, 54.7) and (49.2, 55.4). Higher confidence → wider interval: that relationship is worth stating explicitly for a mark. Part (c) shows the CI/test duality that Paper 3 loves.</div>
+  </div>
+</details>
+
+<h2>4.12 HL: hypothesis testing — one procedure, every variant</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p>Every IB hypothesis test — \(z\)-test, \(t\)-test, binomial test, Poisson test, \(\chi^2\) goodness-of-fit,
+\(\chi^2\) independence — is the <em>same six steps</em>. Learn the routine once and you have learned six
+question types.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">The 6-step procedure (use this every time)</span>
+  <ol class="steps">
+    <li><strong>Hypotheses.</strong> Write \(H_0\) and \(H_1\) in symbols <em>and</em> in words, defining the
+    parameter (e.g. "\(p\) is the probability that a randomly chosen bulb is defective"). \(H_0\) always
+    contains the equality; \(H_1\) determines whether the test is one- or two-tailed.</li>
+    <li><strong>Model and conditions.</strong> Name the distribution of the test statistic under \(H_0\)
+    (e.g. \(X\sim B(20,0.4)\), or \(\bar X\sim N(\mu,\sigma^2/n)\) by the CLT with \(n\ge30\)), and state the
+    significance level \(\alpha\) (default 5% if not given).</li>
+    <li><strong>Test statistic.</strong> Compute it with a formula and a visible substitution:
+    \(z=\frac{\bar x-\mu}{\sigma/\sqrt n}\), \(t=\frac{\bar x-\mu}{s/\sqrt n}\), \(\chi^2=\sum\frac{(f_o-f_e)^2}{f_e}\),
+    or a direct \(p\)-value from a binomial/Poisson tail.</li>
+    <li><strong>\(p\)-value or critical region.</strong> Either find \(p\) and compare with \(\alpha\), or find
+    the critical value and check whether the statistic falls in the rejection region. Write the comparison
+    explicitly: "\(0.032 &lt; 0.05\)".</li>
+    <li><strong>Decision.</strong> "Reject \(H_0\)" or "fail to reject \(H_0\)" — never "accept \(H_0\)".</li>
+    <li><strong>Conclusion in context.</strong> One sentence, in the language of the question, that a
+    non-mathematician could understand: "There is sufficient evidence at the 5% level to conclude that the mean
+    lifetime is less than 55 hours."</li>
+  </ol>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>(1) Writing \(H_1\) with an equals sign. (2) Forgetting to double the \(p\)-value for a two-tailed test.
+  (3) Saying "accept \(H_0\)" — you can only fail to reject it. (4) Concluding with no reference to the
+  significance level or the context. (5) Using \(s_n\) instead of \(s_{n-1}\) in a \(t\)-test. (6) For
+  \(\chi^2\), using percentages instead of counts, or forgetting that expected frequencies must be at least 5
+  (otherwise combine categories).</p>
+</div>
+
+<h3>Variant 1: \(z\)-test (\(\sigma\) known) and Variant 2: \(t\)-test (\(\sigma\) unknown)</h3>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 16</span> IB-style · 9 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The labelled mass of a packet of rice is 500 g. A sample of 15 packets has mean
+    mass 496.2 g and standard deviation 5.1 g. Test at the 5% level whether the mean mass differs from 500 g,
+    assuming masses are normally distributed.</p>
+    <ol class="steps">
+      <li>Let \(\mu\) be the population mean mass. \(H_0: \mu = 500\); \(H_1: \mu \neq 500\) (two-tailed).</li>
+      <li>\(\sigma\) unknown, population normal, \(n=15\) → \(t\)-test with 14 degrees of freedom. \(\alpha=0.05\).</li>
+      <li>\(t = \dfrac{\bar x - \mu}{s_{n-1}/\sqrt n} = \dfrac{496.2-500}{5.1/\sqrt{15}} = \dfrac{-3.8}{1.3166} = -2.886\).</li>
+      <li>\(p\)-value (two-tailed, df 14) \(= 2P(T_{14} &lt; -2.886) = 0.0118\).</li>
+      <li>\(0.0118 &lt; 0.05\), so reject \(H_0\).</li>
+      <li>There is sufficient evidence at the 5% level to conclude that the mean mass of a packet is different
+      from 500 g (the sample suggests it is under-filled).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> reject \(H_0\), \(p=0.0118\). Using \(s_{n-1}=5.1\) is essential; if 5.1 were \(s_n\), then \(s_{n-1} = 5.1\sqrt{\frac{15}{14}} = 5.28\) and the conclusion could change. Always check which one the question gives you.</div>
+  </div>
+</details>
+
+<h3>Variant 3: binomial test; Variant 4: Poisson test</h3>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 17</span> IB-style · 8 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A hospital records an average of 3.0 admissions per night. After a local
+    factory closes, the hospital records 7 admissions on a particular night. Test at the 5% level whether the
+    mean number of admissions per night has decreased or increased.</p>
+    <ol class="steps">
+      <li>Let \(\lambda\) be the mean number of admissions per night. \(H_0: \lambda = 3\);
+      \(H_1: \lambda \neq 3\).</li>
+      <li>Under \(H_0\), \(X\sim Po(3)\).</li>
+      <li>\(P(X\ge 7) = 1 - P(X\le 6) = 1 - 0.9665 = 0.0335\).</li>
+      <li>Two-tailed: since the Poisson is skewed, the standard IB approach is to double this tail:
+      \(p = 2(0.0335) = 0.0670\). (Some markschemes accept comparing the single tail with 0.025.)</li>
+      <li>\(0.0670 > 0.05\), so we fail to reject \(H_0\).</li>
+      <li>There is insufficient evidence at the 5% level that the mean number of admissions has changed.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> do not reject \(H_0\). Note the judgement call: the observed value 7 is in the upper tail, so the appropriate one-tailed \(p\) is 0.0335; whether to double depends on whether \(H_1\) is two-tailed. State your choice — examiners credit a justified method.</div>
+  </div>
+</details>
+
+<h3>Variant 5: \(\chi^2\) goodness of fit</h3>
+
+<p>Test statistic \(\chi^2 = \sum\dfrac{(f_o-f_e)^2}{f_e}\) with degrees of freedom
+\(\nu = k-1\) (minus one more for each parameter estimated from the data). Reject \(H_0\) if
+\(\chi^2_{\text{calc}} > \chi^2_{\text{crit}}\) or if \(p &lt; \alpha\).</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 18</span> IB-style · 10 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A die is rolled 120 times with these results:
+    score 1: 14, 2: 22, 3: 18, 4: 25, 5: 17, 6: 24. Test at the 5% level whether the die is fair.</p>
+    <ol class="steps">
+      <li>\(H_0\): the die is fair (each score has probability \(\frac16\)); \(H_1\): it is not fair.</li>
+      <li>Expected frequency for each score \(= \frac{120}{6} = 20\).</li>
+      <li>\(\chi^2 = \dfrac{(14-20)^2}{20}+\dfrac{(22-20)^2}{20}+\dfrac{(18-20)^2}{20}+\dfrac{(25-20)^2}{20}+\dfrac{(17-20)^2}{20}+\dfrac{(24-20)^2}{20}\).</li>
+      <li>\(= \dfrac{36+4+4+25+9+16}{20} = \dfrac{94}{20} = 4.7\).</li>
+      <li>Degrees of freedom \(= 6-1 = 5\). Critical value at 5%: \(\chi^2_{5,0.95} = 11.07\).</li>
+      <li>\(4.7 &lt; 11.07\) (equivalently \(p = 0.454 > 0.05\)), so fail to reject \(H_0\).</li>
+      <li>There is no evidence at the 5% level that the die is unfair.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(\chi^2=4.7\), \(\nu=5\), \(p=0.454\); do not reject \(H_0\). All expected frequencies are 20 ≥ 5, so no categories need combining. Quote \(\nu\) — it is a mark on its own.</div>
+  </div>
+</details>
+
+<h3>Variant 6: \(\chi^2\) test for independence</h3>
+
+<p>Expected frequency \(= \dfrac{\text{row total}\times\text{column total}}{\text{grand total}}\);
+degrees of freedom \(\nu = (r-1)(c-1)\).</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 19</span> IB-style · 11 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> 200 voters were classified by age group and party preference:</p>
+    <div class="table-wrap"><table><thead><tr><th></th><th>Party X</th><th>Party Y</th><th>Total</th></tr></thead>
+    <tbody>
+      <tr><td>Under 30</td><td>48</td><td>32</td><td>80</td></tr>
+      <tr><td>30 and over</td><td>54</td><td>66</td><td>120</td></tr>
+      <tr><td>Total</td><td>102</td><td>98</td><td>200</td></tr>
+    </tbody></table></div>
+    <p>Test at the 5% level whether age group and party preference are independent.</p>
+    <ol class="steps">
+      <li>\(H_0\): age group and party preference are independent; \(H_1\): they are not independent.</li>
+      <li>Expected counts: under-30/X \(=\frac{80\times102}{200} = 40.8\); under-30/Y \(=39.2\);
+      30+/X \(=61.2\); 30+/Y \(=58.8\).</li>
+      <li>\(\chi^2 = \dfrac{(48-40.8)^2}{40.8}+\dfrac{(32-39.2)^2}{39.2}+\dfrac{(54-61.2)^2}{61.2}+\dfrac{(66-58.8)^2}{58.8}\).</li>
+      <li>\(= \dfrac{51.84}{40.8}+\dfrac{51.84}{39.2}+\dfrac{51.84}{61.2}+\dfrac{51.84}{58.8}
+      = 1.271+1.322+0.847+0.882 = 4.322\).</li>
+      <li>\(\nu = (2-1)(2-1) = 1\). Critical value at 5% with 1 df: 3.841.</li>
+      <li>\(4.322 > 3.841\) (equivalently \(p = 0.0377 &lt; 0.05\)), so reject \(H_0\).</li>
+      <li>There is evidence at the 5% level that age group and party preference are associated — younger voters
+      in this sample favour Party X.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(\chi^2 = 4.32\), \(\nu=1\), \(p=0.0377\); reject \(H_0\). Note the Yates correction is not required in this syllabus. Always add the interpretive sentence identifying <em>which</em> cell drove the result.</div>
+  </div>
+</details>
+
+<h3>Type I and Type II errors</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th></th><th>\(H_0\) true</th><th>\(H_0\) false</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Reject \(H_0\)</strong></td><td>Type I error — probability \(=\alpha\) (the significance level)</td><td>Correct decision — probability \(=1-\beta\), the <em>power</em></td></tr>
+    <tr><td><strong>Fail to reject \(H_0\)</strong></td><td>Correct decision — probability \(=1-\alpha\)</td><td>Type II error — probability \(=\beta\)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The only way to reduce both simultaneously is to increase the sample size. Decreasing \(\alpha\) makes Type I
+less likely but Type II more likely — that trade-off is the standard "discuss" question.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Sampling distribution with the critical region shaded in one tail">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="60" y1="265" x2="600" y2="265" stroke="#334155" stroke-width="2"/>
+    <path d="M70 260 C 170 260, 220 70, 330 70 C 440 70, 490 260, 590 260" fill="#eef2ff" stroke="#3653d6" stroke-width="2.5"/>
+    <path d="M470 92 C 510 150, 540 220, 590 260 L 470 260 Z" fill="#b03060" fill-opacity="0.3" stroke="#b03060" stroke-width="2"/>
+    <line x1="470" y1="80" x2="470" y2="265" stroke="#b03060" stroke-width="2" stroke-dasharray="5 4"/>
+    <line x1="330" y1="70" x2="330" y2="265" stroke="#151923" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="450" y="60" font-size="14" font-family="system-ui, sans-serif" fill="#b03060">critical value</text>
+    <text x="500" y="180" font-size="13" font-family="system-ui, sans-serif" fill="#b03060">critical region</text>
+    <text x="505" y="200" font-size="12" font-family="system-ui, sans-serif" fill="#b03060">(reject H0)</text>
+    <text x="320" y="285" font-size="13" font-family="system-ui, sans-serif" fill="#151923">value under H0</text>
+    <text x="70" y="45" font-size="14" font-family="system-ui, sans-serif" fill="#151923">shaded area = significance level alpha = P(Type I error)</text>
+    <text x="180" y="240" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">do not reject</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 3.</span> The critical region is chosen <em>before</em> you see the data. Its area is \(\alpha\), which is exactly why a Type I error has probability \(\alpha\) — rejecting when \(H_0\) is true means landing in that tail by chance.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 20</span> IB-style · 6 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A test of \(H_0: \mu = 50\) against \(H_1: \mu > 50\) is carried out at the 5%
+    level. Describe, in context, what a Type I error and a Type II error would be, and state which is more
+    serious if \(H_0\) being true corresponds to a water supply being safe.</p>
+    <ol class="steps">
+      <li>Type I: concluding the mean exceeds 50 when in fact it equals 50 — declaring the water unsafe when it
+      is safe.</li>
+      <li>Type II: failing to detect that the mean exceeds 50 — declaring the water safe when it is not.</li>
+      <li>Here a Type II error is more serious (unsafe water is supplied), so we would choose a <em>larger</em>
+      \(\alpha\) (or a larger sample) to reduce \(\beta\) — accepting more false alarms to catch more real ones.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> as above. \(P(\text{Type I}) = \alpha = 0.05\) by construction. The power \(1-\beta\) rises with \(n\) and with the true distance from \(\mu_0\).</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — inference</span>
+  <p><strong>hypothesis test</strong><strong>null hypothesis</strong><strong>alternative hypothesis</strong><strong>significance level</strong><strong>p-value</strong> p<strong>critical value / region</strong> /<strong>one-tailed / two-tailed</strong> /<strong>reject / fail to reject</strong> /<strong>Type I / Type II error</strong> /<strong>power of a test</strong><strong>confidence interval</strong><strong>degrees of freedom</strong><strong>expected frequency</strong><strong>goodness of fit</strong><strong>test for independence</strong><strong>central limit theorem</strong><strong>unbiased estimate</strong><strong>posterior / prior probability</strong> /</p>
+</div>
+
+<div class="conn">
+  <span class="conn__title">Connections</span>
+  <ul>
+    <li><strong>→ Topic 5 (Calculus):</strong> every continuous-distribution question is an integration
+    question: normalisation, \(E(X)=\int xf(x)\mathrm{d}x\), median from the cdf. Integration by parts appears
+    in the exponential distribution's mean.</li>
+    <li><strong>→ Topic 2 (Functions):</strong> the normal pdf is an exponential of a quadratic; the pdf/cdf
+    pair are function and area-function, exactly the integral relationship of Topic 5.</li>
+    <li><strong>→ Topic 1 (Algebra):</strong> \(\binom{n}{r}\) is the binomial coefficient; logarithms linearise
+    exponential data before regression.</li>
+    <li><strong>→ Physics HL:</strong> measurement uncertainty, error bars and the normal distribution of
+    random errors; Poisson counting statistics in radioactivity.</li>
+    <li><strong>→ Computer Science HL / English A:</strong> data ethics in sampling; "correlation is not
+    causation" is a core critical-thinking move in both the IA and the essay.</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can distinguish population/sample and discrete/continuous data, and use frequency density for unequal classes.</span></label></li>
+  <li><label><input type="checkbox"><span>I can compute mean, variance and standard deviation from raw and grouped data, and know when to use \(s_{n-1}\).</span></label></li>
+  <li><label><input type="checkbox"><span>I can find outliers using the \(1.5\times\text{IQR}\) rule and compare distributions using centre, spread and skew.</span></label></li>
+  <li><label><input type="checkbox"><span>I can compute and interpret \(r\) and the regression line, and explain why extrapolation is unsafe.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use Venn and tree diagrams, and test for independence and mutual exclusivity numerically.</span></label></li>
+  <li><label><input type="checkbox"><span>I can compute \(E(X)\) and \(Var(X)\) for discrete distributions and for the binomial distribution.</span></label></li>
+  <li><label><input type="checkbox"><span>I can standardise and use the normal distribution, including inverse normal problems.</span></label></li>
+  <li><label><input type="checkbox"><span>I can normalise a pdf, find \(E(X)\), \(Var(X)\), the median and probabilities for a continuous random variable.</span></label></li>
+  <li><label><input type="checkbox"><span>I can apply the Poisson distribution with a rescaled rate, and Bayes' theorem with a partition.</span></label></li>
+  <li><label><input type="checkbox"><span>I can combine random variables linearly and use the CLT with its conditions.</span></label></li>
+  <li><label><input type="checkbox"><span>I can run the 6-step hypothesis-test routine for \(z\), \(t\), binomial, Poisson, \(\chi^2\) GOF and \(\chi^2\) independence.</span></label></li>
+  <li><label><input type="checkbox"><span>I can define Type I and Type II errors in context and explain the trade-off with \(\alpha\).</span></label></li>
+</ul>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li><p>Data set: 4, 7, 7, 9, 10, 12, 13, 15, 40. Find the median, quartiles and any outliers.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(n=9\), median = 5th value = 10.</li>
+        <li>Lower half: 4, 7, 7, 9 → \(Q_1 = 7\). Upper half: 12, 13, 15, 40 → \(Q_3 = 14\).</li>
+        <li>IQR \(= 14-7 = 7\); upper fence \(= 14+1.5(7) = 24.5\); lower fence \(= 7-10.5 = -3.5\).</li>
+        <li>40 is above 24.5, so it is an outlier.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> median 10, \(Q_1=7\), \(Q_3=14\), outlier 40. Note the median is used as a fence-exclusion: with an odd \(n\), exclude the median when finding quartiles.</div>
+    </div></details>
+  </li>
+  <li><p>\(X\sim B(12, 0.35)\). Find \(P(X=4)\) and \(P(X\ge 4)\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(P(X=4) = \binom{12}{4}(0.35)^4(0.65)^8 = 495\times0.015006\times0.031864 = 0.2367\).</li>
+        <li>\(P(X\ge4) = 1-P(X\le3) = 1-0.3467 = 0.6533\) (GDC binomial CDF).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> 0.237 and 0.653. Write \(X\sim B(12,0.35)\) before any computation — the distribution statement is itself a mark in hypothesis-testing questions.</div>
+    </div></details>
+  </li>
+  <li><p>\(X\sim N(20, 9)\). Find \(P(17&lt;X&lt;26)\), and the value of \(a\) such that \(P(X&lt;a)=0.90\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(\sigma = 3\). \(z_1 = \frac{17-20}{3} = -1\), \(z_2 = \frac{26-20}{3} = 2\).</li>
+        <li>\(P(-1&lt;Z&lt;2) = 0.9772-0.1587 = 0.8185\).</li>
+        <li>\(P(X&lt;a)=0.90 \Rightarrow z = 1.2816 \Rightarrow a = 20+3(1.2816) = 23.8\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> 0.8185 and 23.8. Note \(N(20,9)\) means variance 9, so \(\sigma=3\) — the second parameter is the variance, and forgetting this is endemic.</div>
+    </div></details>
+  </li>
+  <li><p>A continuous random variable has pdf \(f(x)=\dfrac{3}{8}x^2\) on \([0,2]\). Find \(E(X)\) and \(Var(X)\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Check: \(\frac38\int_0^2 x^2dx = \frac38\cdot\frac83 = 1\). ✓</li>
+        <li>\(E(X) = \frac38\int_0^2 x^3dx = \frac38\cdot\frac{16}{4} = \frac38\cdot4 = 1.5\).</li>
+        <li>\(E(X^2) = \frac38\int_0^2 x^4 dx = \frac38\cdot\frac{32}{5} = 2.4\).</li>
+        <li>\(Var(X) = 2.4 - 2.25 = 0.15\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(E(X)=1.5\), \(Var(X)=0.15\) (sd 0.387). The distribution is concentrated near 2, so the mean being 1.5 is sensible.</div>
+    </div></details>
+  </li>
+  <li><p>Flaws in glass occur at 0.4 per m². Find the probability that a 5 m² sheet has (a) no flaws; (b) at least 3 flaws.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Rate over 5 m²: \(m = 0.4\times5 = 2\). \(X\sim Po(2)\).</li>
+        <li>(a) \(P(X=0)=\mathrm{e}^{-2}=0.1353\).</li>
+        <li>(b) \(P(X\ge3) = 1-P(X\le2) = 1-(0.1353+0.2707+0.2707) = 1-0.6767 = 0.3233\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> 0.135 and 0.323. Rescaling the rate to the given area is essential; using \(m=0.4\) scores zero.</div>
+    </div></details>
+  </li>
+  <li><p>Independent variables: \(X\sim N(50, 25)\) and \(Y\sim N(30, 16)\). Find the distribution, mean and standard deviation of \(X-2Y\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Linear combinations of independent normal variables are normal.</li>
+        <li>\(E(X-2Y) = 50-2(30) = -10\).</li>
+        <li>\(Var(X-2Y) = 25 + 4(16) = 25+64 = 89\), so sd \(=9.43\).</li>
+        <li>\(X-2Y \sim N(-10, 89)\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(N(-10, 89)\), mean \(-10\), sd 9.43. The variance adds even though the combination subtracts — the trap of the decade.</div>
+    </div></details>
+  </li>
+  <li><p>A sample of 36 has mean 18.4 and the population standard deviation is 3.6. Find a 90% confidence interval for the population mean.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(\sigma\) known → \(z\)-interval; \(z = 1.645\) for 90%.</li>
+        <li>\(18.4 \pm 1.645\frac{3.6}{\sqrt{36}} = 18.4 \pm 1.645(0.6) = 18.4 \pm 0.987\).</li>
+        <li>Interval: \((17.4,\ 19.4)\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> (17.4, 19.4). To halve the width you need four times the sample: \(n=144\).</div>
+    </div></details>
+  </li>
+  <li><p>Carry out a \(\chi^2\) goodness-of-fit test: 100 observations across 4 categories gave observed counts 32, 28, 22, 18, while the model predicts ratios 3:3:2:2. Test at the 10% level.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(H_0\): the data fit the 3:3:2:2 model; \(H_1\): they do not.</li>
+        <li>Expected: \(30, 30, 20, 20\).</li>
+        <li>\(\chi^2 = \frac{(32-30)^2}{30}+\frac{(28-30)^2}{30}+\frac{(22-20)^2}{20}+\frac{(18-20)^2}{20}
+        = \frac{4}{30}+\frac{4}{30}+\frac{4}{20}+\frac{4}{20} = 0.1333+0.1333+0.2+0.2 = 0.6667\).</li>
+        <li>\(\nu = 4-1 = 3\); critical value at 10% \(= 6.251\).</li>
+        <li>\(0.667 &lt; 6.251\) (\(p = 0.881 > 0.10\)), so fail to reject \(H_0\): the model fits well.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(\chi^2=0.667\), \(\nu=3\), do not reject \(H_0\). Convert ratios to expected counts using the total — never test ratios directly.</div>
+    </div></details>
+  </li>
+</ol>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

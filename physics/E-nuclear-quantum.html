@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="physics">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E · Nuclear and quantum physics — Physics HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Physics HL · Theme E</span>
+<h1 class="page-title">E · Nuclear and quantum physics</h1>
+<p class="lede">Theme E asks: <em>how does the behaviour of the very small explain the very large?</em> The
+answer runs through the whole theme: energy levels in atoms produce spectra, spectra tell us what stars are
+made of, nuclear binding energy powers stars, stars make the heavy elements, and the fusion that lights the sky
+is the same process we are trying to harness on Earth. Along the way you meet the idea that broke classical
+physics — energy and matter come in packets — and the two experiments that prove it.</p>
+<div class="page-meta">
+  <span class="tag">E.1 Atomic structure · E.3 Radioactive decay · E.4 Fission · E.5 Fusion and stars</span>
+  <span class="tag tag--hl">E.2 Quantum physics — HL only; nuclear radius, Bohr, decay law — HL only</span>
+  <span class="tag">~5,000 words</span>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why E is the theme students find most abstract</span>
+  <p>You cannot see any of it. That makes it tempting to memorise equations without pictures. Resist that.
+  Every formula here has a physical picture: energy levels are a staircase, decay is a dice roll repeated by
+  \(10^{20}\) nuclei at once, fission is a drop of liquid wobbling apart, fusion is two nuclei pushed over a
+  hill. Build the picture, then the equation.</p>
+</div>
+
+<h2 id="e1">E.1 Structure of the atom <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>The nuclear atom and Rutherford scattering</h3>
+
+<p><strong>The experiment.</strong> Alpha particles (helium nuclei, \(+2e\), mass \(4u\)) were fired at a thin
+gold foil in a vacuum. The prediction from the then-current "plum pudding" model (positive charge spread
+throughout the atom) was that all alpha particles would pass through with tiny deflections. The observation:
+most went straight through, some deflected noticeably, and about 1 in 8000 bounced back through more than
+90°.</p>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why that result is so shocking, and what it proves</span>
+  <p>Rutherford's own words: it was "as if you fired a 15-inch shell at a piece of tissue paper and it came
+  back and hit you". For an alpha particle to be turned around, it must have encountered an enormous repulsive
+  force, which means a concentrated positive charge — and since only a tiny fraction bounce back, that charge
+  must occupy a tiny volume. <strong>Conclusion:</strong> the atom is mostly empty space, with nearly all its
+  mass and all its positive charge in a nucleus of radius about \(10^{-15}\) m, while the atom itself is about
+  \(10^{-10}\) m across. That is a factor of \(10^5\) in radius — if the nucleus were a marble, the atom would
+  be a football stadium.</p>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — the three observations and what each shows</span>
+  <ol class="steps">
+    <li><strong>Most pass through undeflected</strong> → the atom is mostly empty space.</li>
+    <li><strong>Some are deflected through small angles</strong> → the nucleus is positively charged and
+    repels the positive alpha particles (Coulomb repulsion, D.2).</li>
+    <li><strong>A very few are deflected through more than 90°</strong> → the nucleus is extremely small and
+    contains nearly all the mass, so a head-on approach can reverse the alpha particle.</li>
+  </ol>
+  <p>Learn this triple. "Describe what the observations show" is a standard 3-mark question and each bullet is
+  a mark.</p>
+</div>
+
+<h3>Nuclear notation</h3>
+
+<p>\[{}^{A}_{Z}X\]</p>
+<dl class="glossary">
+  <dt>\(A\) — nucleon number (mass number)</dt><dd>protons + neutrons</dd>
+  <dt>\(Z\) — proton number (atomic number)</dt><dd>number of protons; defines the element</dd>
+  <dt>\(N = A - Z\)</dt><dd>number of neutrons</dd>
+  <dt>Isotope</dt><dd>Same \(Z\), different \(A\) — same element, different neutron count, so different
+  nuclear stability but (almost) identical chemistry.</dd>
+  <dt>Unified atomic mass unit u</dt><dd>\(1\ \text{u} = 1.66\times10^{-27}\ \text{kg} = 931.5\ \text{MeV}/c^2\).
+  Defined so that one atom of carbon-12 has mass exactly 12 u.</dd>
+</dl>
+
+<h3>Atomic energy levels and spectra</h3>
+
+<p><strong>Intuition.</strong> An electron in an atom cannot have just any energy — only certain allowed values,
+like a ball on a staircase rather than a ramp. When an electron drops from a higher level to a lower one, the
+energy difference leaves as a single photon of frequency \(f\) given by</p>
+
+<p>\[E_1 - E_2 = hf = \frac{hc}{\lambda}\]</p>
+
+<p>Because only certain differences are possible, only certain frequencies appear — and that is why atoms
+produce <strong>line spectra</strong> rather than a continuous rainbow. Conversely, an atom absorbs photons
+whose energy exactly matches a gap, producing dark <strong>absorption lines</strong> in a continuous
+spectrum.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Atomic energy level diagram showing transitions producing emission lines">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="70" y1="60" x2="70" y2="270" stroke="#334155" stroke-width="2"/>
+    <text x="24" y="166" font-size="12" font-family="system-ui, sans-serif" fill="#151923" transform="rotate(-90 24 166)">Energy</text>
+    <line x1="70" y1="270" x2="270" y2="270" stroke="#334155" stroke-width="2.5"/>
+    <text x="150" y="292" font-size="13" font-family="system-ui, sans-serif" fill="#151923">n = 1 (ground state)</text>
+    <line x1="70" y1="200" x2="270" y2="200" stroke="#334155" stroke-width="2.5"/>
+    <text x="150" y="222" font-size="13" font-family="system-ui, sans-serif" fill="#151923">n = 2</text>
+    <line x1="70" y1="150" x2="270" y2="150" stroke="#334155" stroke-width="2.5"/>
+    <text x="150" y="172" font-size="13" font-family="system-ui, sans-serif" fill="#151923">n = 3</text>
+    <line x1="70" y1="110" x2="270" y2="110" stroke="#334155" stroke-width="2.5"/>
+    <text x="150" y="132" font-size="13" font-family="system-ui, sans-serif" fill="#151923">n = 4</text>
+    <line x1="70" y1="60" x2="270" y2="60" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="150" y="52" font-size="13" font-family="system-ui, sans-serif" fill="#151923">n = &#8734; (ionisation, 0 eV)</text>
+    <line x1="200" y1="110" x2="200" y2="270" stroke="#c0392b" stroke-width="2.5"/>
+    <polygon points="200,270 195,258 205,258" fill="#c0392b"/>
+    <text x="212" y="200" font-size="12" font-family="system-ui, sans-serif" fill="#c0392b">largest E &#8594; shortest &#955;</text>
+    <line x1="120" y1="150" x2="120" y2="270" stroke="#0a6f80" stroke-width="2"/>
+    <polygon points="120,270 115,258 125,258" fill="#0a6f80"/>
+    <line x1="240" y1="150" x2="240" y2="200" stroke="#0a6f80" stroke-width="2"/>
+    <polygon points="240,200 235,190 245,190" fill="#0a6f80"/>
+    <text x="252" y="180" font-size="12" font-family="system-ui, sans-serif" fill="#0a6f80">smallest E &#8594; longest &#955;</text>
+    <rect x="360" y="70" width="240" height="40" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+    <text x="372" y="96" font-size="12" font-family="system-ui, sans-serif" fill="#151923">emission spectrum: bright lines on black</text>
+    <line x1="380" y1="90" x2="380" y2="90" stroke="#c0392b" stroke-width="6"/>
+    <line x1="440" y1="90" x2="440" y2="90" stroke="#0a6f80" stroke-width="6"/>
+    <line x1="520" y1="90" x2="520" y2="90" stroke="#7a5a13" stroke-width="6"/>
+    <line x1="570" y1="90" x2="570" y2="90" stroke="#151923" stroke-width="6"/>
+    <rect x="360" y="140" width="240" height="40" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+    <rect x="362" y="142" width="236" height="36" fill="#e8eaf0"/>
+    <text x="372" y="196" font-size="12" font-family="system-ui, sans-serif" fill="#151923">absorption: dark lines on a continuum</text>
+    <line x1="440" y1="142" x2="440" y2="178" stroke="#151923" stroke-width="3"/>
+    <line x1="520" y1="142" x2="520" y2="178" stroke="#151923" stroke-width="3"/>
+    <text x="360" y="250" font-size="12" font-family="system-ui, sans-serif" fill="#151923">The dark absorption lines fall at exactly the same</text>
+    <text x="360" y="270" font-size="12" font-family="system-ui, sans-serif" fill="#151923">wavelengths as the bright emission lines.</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> Energy levels and spectra. Bigger energy drops give
+  higher frequency and therefore <em>shorter</em> wavelength — check yourself: the shortest-wavelength line
+  comes from the largest drop, not the smallest.</figcaption>
+</figure>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Two. (1) Energy levels are <strong>negative</strong>, with zero at ionisation (the electron free and at
+  rest at infinity). So \(n = 1\) at −13.6 eV for hydrogen is the <em>lowest</em> (most bound) state. A
+  transition from −1.5 eV to −3.4 eV releases 1.9 eV, not "3.4 − 1.5 with a sign you guess" — draw the
+  staircase. (2) Bigger energy ⇒ shorter wavelength, since \(E = hc/\lambda\). Students routinely pair the
+  biggest drop with the longest wavelength.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 6 marks · photon from a transition</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> In a hydrogen atom an electron makes a transition from the \(n = 3\) level
+    (\(-1.51\) eV) to the \(n = 2\) level (\(-3.40\) eV). Determine (a) the energy of the emitted photon in eV
+    and in J, (b) its frequency and (c) its wavelength.</p>
+    <ol class="steps">
+      <li>(a) \(\Delta E = -1.51 - (-3.40) = +1.89\ \text{eV}\). The photon carries away 1.89 eV.</li>
+      <li>In joules: \(1.89\times1.60\times10^{-19} = 3.02\times10^{-19}\ \text{J}\).</li>
+      <li>(b) \(f = \dfrac{E}{h} = \dfrac{3.02\times10^{-19}}{6.63\times10^{-34}} = 4.56\times10^{14}\ \text{Hz}\).</li>
+      <li>(c) \(\lambda = \dfrac{c}{f} = \dfrac{3.00\times10^8}{4.56\times10^{14}} = 6.58\times10^{-7}\ \text{m}
+      = 658\ \text{nm}\) — red light, the H-alpha line.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 1.89 eV (\(3.02\times10^{-19}\) J), \(4.56\times10^{14}\) Hz,
+    658 nm. This is the famous red line in the Balmer series, responsible for the colour of many emission
+    nebulae — a pleasing sanity check and a great linking remark in an exam.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 2</span> IB-style · 7 marks · ionisation and absorption</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The ground state of hydrogen is −13.6 eV. (a) Determine the ionisation
+    energy in J. (b) Photons of wavelength 90 nm are incident on ground-state hydrogen atoms. Determine the
+    kinetic energy of any electrons released.</p>
+    <ol class="steps">
+      <li>(a) Ionisation energy \(= 13.6\ \text{eV} = 13.6\times1.60\times10^{-19} = 2.18\times10^{-18}\ \text{J}\).</li>
+      <li>(b) Photon energy \(= \dfrac{hc}{\lambda} = \dfrac{(6.63\times10^{-34})(3.00\times10^8)}{90\times10^{-9}}
+      = \dfrac{1.989\times10^{-25}}{9.0\times10^{-8}} = 2.21\times10^{-18}\ \text{J}\).</li>
+      <li>In eV: \(2.21\times10^{-18}/1.60\times10^{-19} = 13.8\ \text{eV}\).</li>
+      <li>Excess becomes kinetic energy: \(KE = 13.8 - 13.6 = 0.2\ \text{eV}
+      = 3.2\times10^{-20}\ \text{J}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(2.18\times10^{-18}\) J, (b) about 0.2 eV
+    (\(3\times10^{-20}\) J). Note the threshold: any wavelength longer than
+    \(\lambda = hc/13.6\ \text{eV} = 91.2\) nm cannot ionise hydrogen from the ground state at all, however
+    intense the beam. That threshold idea is the bridge into E.2.</div>
+  </div>
+</details>
+
+<h3>Nuclear radius and deviations from Rutherford scattering <span class="badge badge--hl">HL only</span></h3>
+
+<p><strong>Intuition.</strong> Alpha particles fired at ever-higher energies get closer and closer to the
+nucleus. Eventually they get close enough to feel the <strong>strong nuclear force</strong>, which is
+attractive at short range, and the scattering stops following Rutherford's pure Coulomb prediction. The
+energy at which this happens tells you the nuclear radius.</p>
+
+<p>\[R = R_0 A^{1/3}, \qquad R_0 \approx 1.2\times10^{-15}\ \text{m}\]</p>
+
+<p>The \(A^{1/3}\) dependence is exactly what you expect if nuclear matter has constant density: volume
+\(\propto A\), so radius \(\propto A^{1/3}\).</p>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Estimating nuclear radius from the closest-approach energy</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>An alpha particle of kinetic energy \(E_k\) approaching a nucleus head-on slows as its kinetic energy
+      converts to electrostatic potential energy \(E_p = \dfrac{kQq}{r}\).</li>
+      <li>At the distance of closest approach \(d\), all the kinetic energy has been converted:
+      \(E_k = \dfrac{k(2e)(Ze)}{d}\), so \(d = \dfrac{2kZe^2}{E_k}\).</li>
+      <li>If alpha particles of energy \(E_k\) begin to show deviations from Rutherford's formula, then \(d\) is
+      comparable to the nuclear radius, so \(R \approx \dfrac{2kZe^2}{E_k}\).</li>
+      <li>Plotting the radius deduced this way against \(A^{1/3}\) gives a straight line through the origin,
+      confirming \(R = R_0A^{1/3}\).</li>
+    </ol>
+    <p><strong>What it means:</strong> nuclear radius grows very slowly with nucleon number — a uranium nucleus
+    is only about 6 times the radius of a proton's nucleus despite being 238 times heavier.
+    <strong>Consequence:</strong> nuclear density is roughly constant at about \(10^{17}\ \text{kg m}^{-3}\).</p>
+  </div>
+</details>
+
+<h3>The Bohr model for hydrogen <span class="badge badge--hl">HL only</span></h3>
+
+<p><strong>Intuition.</strong> Bohr made one radical proposal: the electron's angular momentum is quantised,
+\(mvr = \dfrac{nh}{2\pi}\). Combine that with Coulomb attraction supplying the centripetal force and the
+allowed radii and energies fall out — and they match the observed spectrum of hydrogen.</p>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Bohr's energy levels \(E_n = -\dfrac{13.6}{n^2}\ \text{eV}\)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Coulomb attraction provides the centripetal force: \(\dfrac{k e^2}{r^2} = \dfrac{mv^2}{r}\), so
+      \(mv^2 = \dfrac{ke^2}{r}\) and \(E_k = \dfrac{ke^2}{2r}\).</li>
+      <li>Electric potential energy of the electron: \(E_p = -\dfrac{ke^2}{r}\).</li>
+      <li>Total energy: \(E = E_k + E_p = \dfrac{ke^2}{2r} - \dfrac{ke^2}{r} = -\dfrac{ke^2}{2r}\).</li>
+      <li>Bohr's quantisation: \(mvr = \dfrac{nh}{2\pi}\), so \(v = \dfrac{nh}{2\pi mr}\).</li>
+      <li>Substitute into \(mv^2 = ke^2/r\):
+      \(m\left(\dfrac{nh}{2\pi mr}\right)^2 = \dfrac{ke^2}{r}\), giving
+      \(\dfrac{n^2h^2}{4\pi^2mr} = ke^2\), so \(r_n = \dfrac{n^2h^2}{4\pi^2mke^2}\).</li>
+      <li>Then \(E_n = -\dfrac{ke^2}{2r_n} = -\dfrac{2\pi^2mk^2e^4}{n^2h^2}\). Substituting the constants gives
+      \(E_n = -\dfrac{13.6}{n^2}\ \text{eV}\).</li>
+    </ol>
+    <p><strong>What it means:</strong> the \(1/n^2\) pattern predicts the Balmer, Lyman and Paschen series
+    exactly, which is a spectacular success. <strong>When it is wrong:</strong> it only works for
+    hydrogen-like (single-electron) ions. It cannot explain the spectra of multi-electron atoms, the
+    intensities of lines, or why the electron does not radiate while in a stationary state — that needs full
+    quantum mechanics.</p>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>E.1 links to <strong>D.2 electrostatics</strong> (Rutherford scattering is Coulomb repulsion, and the Bohr
+  model balances Coulomb attraction with circular motion), to <strong>C.3 diffraction gratings</strong>
+  (that is how you measure the spectral lines), and to <strong>E.5 stars</strong> (stellar spectra tell us
+  composition and, via the Doppler shift of those lines, radial velocity).</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — E.1</span>
+  <p><strong>nucleus</strong><strong>proton / neutron / electron</strong> //<strong>alpha particle</strong> α<strong>scattering</strong><strong>deflection</strong><strong>gold foil</strong><strong>nucleon number</strong><strong>proton number</strong><strong>isotope</strong><strong>energy level</strong><strong>ground state</strong><strong>excited state</strong><strong>transition</strong><strong>emission / absorption spectrum</strong> /<strong>ionisation</strong><strong>photon</strong><strong>quantised</strong><strong>nuclear radius</strong></p>
+</div>
+
+<h2 id="e2">E.2 Quantum physics <span class="badge badge--hl">HL only</span></h2>
+
+<h3>The photoelectric effect</h3>
+
+<p><strong>The experiment.</strong> Shine light on a clean metal surface in a vacuum. Electrons are emitted. The
+three observations that destroyed classical wave theory:</p>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Observation</th><th>Classical wave prediction</th><th>Photon explanation</th></tr></thead>
+    <tbody>
+      <tr><td>There is a <strong>threshold frequency</strong> \(f_0\) below which no electrons are emitted, however intense the light.</td><td>Any frequency should work if the beam is intense enough — energy accumulates.</td><td>Each photon has energy \(hf\). If \(hf \lt \phi\), one photon cannot free an electron. Intensity only sets how many photons arrive.</td></tr>
+      <tr><td>Emission is <strong>instantaneous</strong>, even at very low intensity.</td><td>At low intensity there should be a measurable delay while energy accumulates.</td><td>One photon interacts with one electron; the energy arrives all at once.</td></tr>
+      <tr><td>The maximum electron KE depends on <strong>frequency</strong>, not intensity. Intensity changes the number emitted per second.</td><td>A more intense wave carries more energy, so electrons should come out faster.</td><td>\(hf = \phi + KE_{\max}\). Higher intensity = more photons = more electrons, each with the same maximum KE.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Einstein's photoelectric equation</h3>
+
+<p>\[hf = \phi + \frac12 mv_{\max}^2 \qquad \text{or} \qquad KE_{\max} = hf - \phi\]</p>
+<dl class="glossary">
+  <dt>\(h\)</dt><dd>Planck's constant, \(6.63\times10^{-34}\ \text{J s}\)</dd>
+  <dt>\(f\)</dt><dd>frequency of the incident radiation (Hz)</dd>
+  <dt>\(\phi\)</dt><dd><strong>work function</strong> (J or eV) — the minimum energy needed to remove an
+  electron from the surface of the metal. A property of the metal.</dd>
+  <dt>\(KE_{\max}\)</dt><dd>maximum kinetic energy of the emitted electrons; the maximum because some electrons
+  lose energy on the way out.</dd>
+</dl>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Graph of maximum kinetic energy against frequency for the photoelectric effect">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="90" y1="260" x2="600" y2="260" stroke="#334155" stroke-width="2"/>
+    <line x1="90" y1="260" x2="90" y2="30" stroke="#334155" stroke-width="2"/>
+    <text x="300" y="298" font-size="13" font-family="system-ui, sans-serif" fill="#151923">frequency f / Hz</text>
+    <text x="24" y="150" font-size="13" font-family="system-ui, sans-serif" fill="#151923" transform="rotate(-90 24 150)">KE&#8344;&#8336;&#8331; / J</text>
+    <line x1="230" y1="260" x2="560" y2="70" stroke="#0a6f80" stroke-width="3"/>
+    <circle cx="230" cy="260" r="5" fill="#c0392b"/>
+    <text x="196" y="278" font-size="13" font-family="system-ui, sans-serif" fill="#c0392b">f&#8320; (threshold)</text>
+    <line x1="90" y1="260" x2="230" y2="260" stroke="#6c7788" stroke-width="2" stroke-dasharray="4 3"/>
+    <line x1="230" y1="200" x2="90" y2="200" stroke="#6c7788" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="96" y="192" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">&#8722;&#966;</text>
+    <line x1="230" y1="260" x2="230" y2="200" stroke="#6c7788" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="330" y="130" font-size="14" font-family="system-ui, sans-serif" fill="#0a6f80">gradient = h</text>
+    <line x1="470" y1="260" x2="470" y2="120" stroke="#7a5a13" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="478" y="150" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13">more intense light:</text>
+    <text x="478" y="168" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13">same KE&#8344;&#8336;&#8331;,</text>
+    <text x="478" y="186" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13">more electrons</text>
+    <line x1="90" y1="70" x2="600" y2="70" stroke="none"/>
+    <text x="96" y="50" font-size="12" font-family="system-ui, sans-serif" fill="#151923">different metal &#8594; same gradient h, different intercept</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> \(KE_{\max}\) against \(f\). The gradient is
+  <em>always</em> Planck's constant, whatever the metal; the intercept on the frequency axis is the threshold
+  frequency and the (negative) intercept on the energy axis is minus the work function.</figcaption>
+</figure>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — reading the graph and using stopping voltage</span>
+  <ol class="steps">
+    <li>Gradient of a \(KE_{\max}\)–\(f\) graph \(= h\). Intercept on the \(f\)-axis \(= f_0 = \phi/h\).
+    Intercept on the \(KE\)-axis \(= -\phi\).</li>
+    <li>In the lab you measure <strong>stopping voltage</strong> \(V_s\): the reverse potential difference just
+    enough to stop the fastest electrons. Then \(eV_s = KE_{\max} = \tfrac12 mv_{\max}^2\).</li>
+    <li>So \(eV_s = hf - \phi\), and a plot of \(V_s\) against \(f\) has gradient \(h/e\) — the classic
+    experiment for measuring Planck's constant.</li>
+    <li>Increasing intensity raises the saturation current (more electrons per second) but leaves \(V_s\)
+    unchanged. That is the observation the exam most wants you to state.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> HL · 6 marks · photoelectric equation</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Light of wavelength 250 nm strikes a metal of work function 2.8 eV.
+    Determine (a) the maximum kinetic energy of the emitted electrons in eV and J and (b) the stopping
+    voltage.</p>
+    <ol class="steps">
+      <li>Photon energy \(E = \dfrac{hc}{\lambda} = \dfrac{(6.63\times10^{-34})(3.00\times10^8)}{250\times10^{-9}}
+      = 7.96\times10^{-19}\ \text{J}\). In eV: \(7.96\times10^{-19}/1.60\times10^{-19} = 4.97\ \text{eV}\).</li>
+      <li>(a) \(KE_{\max} = hf - \phi = 4.97 - 2.8 = 2.17\ \text{eV}
+      = 3.47\times10^{-19}\ \text{J}\).</li>
+      <li>(b) \(eV_s = KE_{\max}\), so \(V_s = 2.17\ \text{V}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 2.2 eV (\(3.5\times10^{-19}\) J), (b) 2.2 V. Neat shortcut: when
+    energies are in eV, the stopping voltage in volts is numerically equal to \(KE_{\max}\) in eV — because
+    \(eV_s = KE_{\max}\) and \(e\) cancels in eV units.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 4</span> HL · 7 marks · finding h from a graph</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> For a certain metal the following stopping voltages are measured.</p>
+    <div class="table-wrap">
+      <table><thead><tr><th>\(f\) / \(10^{14}\) Hz</th><th>5.0</th><th>6.0</th><th>7.0</th><th>8.0</th><th>9.0</th></tr></thead>
+      <tbody><tr><td>\(V_s\) / V</td><td>0.20</td><td>0.61</td><td>1.02</td><td>1.44</td><td>1.85</td></tr></tbody></table>
+    </div>
+    <p>Determine Planck's constant and the work function.</p>
+    <ol class="steps">
+      <li>\(eV_s = hf - \phi\), so \(V_s = \dfrac{h}{e}f - \dfrac{\phi}{e}\). Gradient \(= h/e\).</li>
+      <li>Gradient \(= \dfrac{1.85-0.20}{(9.0-5.0)\times10^{14}} = \dfrac{1.65}{4.0\times10^{14}}
+      = 4.13\times10^{-15}\ \text{V Hz}^{-1}\).</li>
+      <li>\(h = e\times\text{gradient} = 1.60\times10^{-19}\times4.13\times10^{-15}
+      = 6.60\times10^{-34}\ \text{J s}\). (Close to the accepted \(6.63\times10^{-34}\).)</li>
+      <li>Threshold: extrapolate to \(V_s = 0\). From \(f = 5.0\times10^{14}\), \(V_s = 0.20\); the gradient is
+      \(4.13\times10^{-15}\), so \(f_0 = 5.0\times10^{14} - \dfrac{0.20}{4.13\times10^{-15}}
+      = 5.0\times10^{14} - 4.84\times10^{13} = 4.52\times10^{14}\ \text{Hz}\).</li>
+      <li>\(\phi = hf_0 = 6.60\times10^{-34}\times4.52\times10^{14} = 2.98\times10^{-19}\ \text{J} = 1.86\ \text{eV}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(h = 6.6\times10^{-34}\ \text{J s}\), \(\phi = 1.9\ \text{eV}\).
+    Always quote \(h\) with the unit J s and compare with the data-booklet value as a sanity check.</div>
+  </div>
+</details>
+
+<h3>Matter waves and the de Broglie wavelength</h3>
+
+<p><strong>Intuition.</strong> If light — which we thought was a wave — behaves as a particle, then perhaps
+matter — which we thought was particles — behaves as a wave. De Broglie proposed it, and electron diffraction
+confirmed it: fire electrons at a crystal and you get a <em>diffraction pattern</em>, which only waves
+produce.</p>
+
+<p>\[\lambda = \frac{h}{p} = \frac{h}{mv}\]</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Use \(p = mv\) only at non-relativistic speeds; at high speeds use relativistic momentum. And do not
+  confuse the de Broglie wavelength with the photon relation \(E = hf\) — de Broglie connects wavelength to
+  <em>momentum</em>, not to energy. A slow neutron has a long wavelength and can be diffracted by a crystal
+  lattice; a fast electron has a very short wavelength, which is exactly why electron microscopes resolve far
+  finer detail than optical ones.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> HL · 6 marks · de Broglie</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> (a) Determine the de Broglie wavelength of an electron accelerated through
+    100 V. (b) Determine the de Broglie wavelength of a 60 kg person walking at 1.4 m s⁻¹ and comment.</p>
+    <ol class="steps">
+      <li>(a) \(KE = 100\ \text{eV} = 1.60\times10^{-17}\ \text{J}\). \(p = \sqrt{2mE_k}
+      = \sqrt{2(9.11\times10^{-31})(1.60\times10^{-17})} = \sqrt{2.92\times10^{-47}}
+      = 5.40\times10^{-24}\ \text{kg m s}^{-1}\).</li>
+      <li>\(\lambda = h/p = 6.63\times10^{-34}/5.40\times10^{-24} = 1.23\times10^{-10}\ \text{m}\) — about an
+      atomic diameter, which is why electrons diffract from crystal lattices.</li>
+      <li>(b) \(p = 60\times1.4 = 84\ \text{kg m s}^{-1}\); \(\lambda = 6.63\times10^{-34}/84
+      = 7.9\times10^{-36}\ \text{m}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(1.2\times10^{-10}\) m, (b) \(7.9\times10^{-36}\) m — far
+    smaller than any possible aperture, so wave behaviour is unobservable for macroscopic objects. That is
+    <em>why</em> quantum mechanics looks strange to us: the effects are there, but the wavelengths are
+    absurdly small.</div>
+  </div>
+</details>
+
+<h3>Wave–particle duality</h3>
+
+<p>The synthesis: light and matter both exhibit wave behaviour (interference, diffraction) and particle
+behaviour (photoelectric effect, Compton scattering, discrete detector clicks). Which aspect you see depends on
+the experiment. The IB's shorthand you should be able to write in one paragraph:
+<em>light propagates as a wave and interacts as a particle</em>.</p>
+
+<h3>Compton scattering</h3>
+
+<p><strong>Intuition.</strong> Shine X-rays at a material and measure the scattered radiation: some of it comes
+out at a <em>longer wavelength</em> than it went in, and the shift depends on the scattering angle. A classical
+wave cannot change wavelength on scattering — the electrons would just re-radiate at the same frequency. But
+if you treat the photon as a particle carrying momentum \(p = h/\lambda\) and momentum <em>and</em> energy are
+conserved in the collision with a (nearly free) electron, the wavelength shift falls out:</p>
+
+<p>\[\Delta\lambda = \frac{h}{m_ec}(1 - \cos\theta)\]</p>
+
+<p>The constant \(\dfrac{h}{m_ec} = 2.43\times10^{-12}\ \text{m}\) is the <strong>Compton wavelength</strong> of
+the electron.</p>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — why Compton matters more than the formula</span>
+  <p>The IB cares about the <em>argument</em>: a photon has momentum \(p = h/\lambda\); the collision conserves
+  both momentum and energy (A.2 + A.3); the electron recoils and takes some energy; so the scattered photon has
+  less energy and therefore a longer wavelength. A photon losing energy in a collision is particle behaviour
+  that no wave model can reproduce. That paragraph, not the algebra, is what earns the marks.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 6</span> HL · 6 marks · Compton shift</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> X-rays of wavelength 0.100 nm are scattered through 90° by electrons.
+    Determine (a) the wavelength of the scattered radiation and (b) the energy transferred to the electron.</p>
+    <ol class="steps">
+      <li>(a) \(\Delta\lambda = \dfrac{h}{m_ec}(1-\cos 90^\circ) = 2.43\times10^{-12}(1-0)
+      = 2.43\times10^{-12}\ \text{m}\).</li>
+      <li>\(\lambda' = 0.100\times10^{-9} + 2.43\times10^{-12} = 1.0243\times10^{-10}\ \text{m}\).</li>
+      <li>(b) Energy before \(= \dfrac{hc}{\lambda} = \dfrac{1.989\times10^{-25}}{1.00\times10^{-10}}
+      = 1.989\times10^{-15}\ \text{J}\).</li>
+      <li>Energy after \(= \dfrac{1.989\times10^{-25}}{1.0243\times10^{-10}} = 1.942\times10^{-15}\ \text{J}\).</li>
+      <li>Transferred to the electron \(= 1.989 - 1.942 = 0.047\times10^{-15} = 4.7\times10^{-17}\ \text{J}\)
+      (about 294 eV).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 0.1024 nm, (b) \(4.7\times10^{-17}\) J. The shift is only 2.4%,
+    which is why Compton scattering is hard to observe with visible light (where the shift would be a
+    negligible fraction of the wavelength) and why X-rays are used.</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>E.2 links to <strong>C.3 diffraction</strong> (electron diffraction is the evidence for matter waves), to
+  <strong>A.2 momentum conservation</strong> (Compton scattering is a collision), and to <strong>D.2</strong>
+  (an electron's de Broglie wavelength in a potential difference follows from \(qV = \tfrac12 mv^2\)).
+  It also links to <strong>A.5</strong>: relativistic momentum is needed for high-energy electrons.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — E.2</span>
+  <p><strong>photoelectric effect</strong><strong>photon</strong><strong>work function</strong><strong>threshold frequency</strong> /<strong>stopping voltage</strong><strong>photoelectron</strong><strong>Planck's constant</strong><strong>quantisation</strong><strong>matter wave</strong><strong>de Broglie wavelength</strong><strong>wave–particle duality</strong><strong>Compton scattering</strong><strong>recoil</strong><strong>electron diffraction</strong></p>
+</div>
+
+<h2 id="e3">E.3 Radioactive decay <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Mass defect and nuclear binding energy</h3>
+
+<p><strong>Intuition.</strong> Weigh a helium nucleus. Now weigh two protons and two neutrons separately. The
+nucleus is <em>lighter</em> than its parts. The missing mass — the <strong>mass defect</strong> — has been
+converted to energy and released when the nucleus formed. That released energy is the
+<strong>binding energy</strong>: the energy you would have to put back in to pull the nucleus apart.</p>
+
+<p>\[\Delta E = \Delta m\,c^2\]</p>
+
+<dl class="glossary">
+  <dt>Mass defect \(\Delta m\)</dt>
+  <dd>\(\Delta m = \left(Zm_p + Nm_n\right) - m_{\text{nucleus}}\), in kg or u.</dd>
+  <dt>Binding energy</dt>
+  <dd>\(E = \Delta m c^2\). Using u: \(1\ \text{u} \equiv 931.5\ \text{MeV}\).</dd>
+  <dt>Binding energy per nucleon</dt>
+  <dd>\(E/A\). This is the quantity that decides whether fusion or fission releases energy. It peaks at about
+  8.8 MeV per nucleon around iron-56.</dd>
+  <dt>Strong nuclear force</dt>
+  <dd>Short-range (about 1–2 fm), very strong, attractive between nucleons, and charge-independent. Short range
+  is what limits nuclear size; its attraction is what overcomes the electrostatic repulsion between
+  protons.</dd>
+</dl>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why the binding-energy curve explains everything</span>
+  <p>Plot binding energy per nucleon against \(A\) and you get a curve that rises steeply from hydrogen, peaks
+  near iron-56 at about 8.8 MeV, then falls slowly. <strong>Nuclei want to move up that curve.</strong>
+  Fusing light nuclei (moving right from hydrogen) increases the binding energy per nucleon, releasing energy.
+  Splitting a very heavy nucleus (moving left from uranium) also increases it, releasing energy. Iron-56 is the
+  most tightly bound nucleus, which is why stars cannot release energy by fusing beyond iron — and why stellar
+  cores that reach iron collapse.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 7</span> IB-style · 8 marks · binding energy of helium-4</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The mass of a helium-4 nucleus is 4.001 506 u. Masses: proton 1.007 276 u,
+    neutron 1.008 665 u, \(1\ \text{u} = 931.5\ \text{MeV}/c^2\). Determine (a) the mass defect, (b) the
+    binding energy in MeV and J, (c) the binding energy per nucleon.</p>
+    <ol class="steps">
+      <li>Mass of separate nucleons \(= 2(1.007276) + 2(1.008665) = 2.014552 + 2.017330 = 4.031882\ \text{u}\).</li>
+      <li>(a) \(\Delta m = 4.031882 - 4.001506 = 0.030376\ \text{u}\).</li>
+      <li>(b) \(E = 0.030376\times931.5 = 28.3\ \text{MeV}\). In joules:
+      \(28.3\times10^6\times1.60\times10^{-19} = 4.53\times10^{-12}\ \text{J}\).</li>
+      <li>(c) Per nucleon: \(28.3/4 = 7.07\ \text{MeV}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 0.0304 u, (b) 28.3 MeV (\(4.5\times10^{-12}\) J),
+    (c) 7.1 MeV per nucleon. Sanity check: helium-4 is unusually tightly bound for a light nucleus (its
+    neighbours are nearer 5–6 MeV per nucleon), which is exactly why alpha decay is so favourable — the alpha
+    particle is an exceptionally stable package.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 8</span> IB-style · 7 marks · energy from fission</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> In a fission reaction, the total mass of the reactants exceeds the total
+    mass of the products by 0.190 u. Determine the energy released in MeV and in J, and estimate the number of
+    such fissions needed to supply 1.0 kWh.</p>
+    <ol class="steps">
+      <li>\(E = 0.190\times931.5 = 177\ \text{MeV}\).</li>
+      <li>In joules: \(177\times10^6\times1.60\times10^{-19} = 2.83\times10^{-11}\ \text{J}\).</li>
+      <li>\(1.0\ \text{kWh} = 3.6\times10^6\ \text{J}\). Number of fissions
+      \(= \dfrac{3.6\times10^6}{2.83\times10^{-11}} = 1.27\times10^{17}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 177 MeV (\(2.8\times10^{-11}\) J) per fission;
+    \(1.3\times10^{17}\) fissions per kWh. That sounds enormous but corresponds to only about 0.05 g of
+    uranium — a powerful comparison for any <em>evaluate</em> question about nuclear power.</div>
+  </div>
+</details>
+
+<h3>Alpha, beta and gamma decay</h3>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Type</th><th>Nature</th><th>Change to nucleus</th><th>Penetration</th><th>Ionising power</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Alpha</strong> \(\alpha\)</td><td>Helium nucleus \({}^4_2\text{He}\), \(+2e\)</td><td>\(A \to A-4\), \(Z \to Z-2\)</td><td>Stopped by paper or a few cm of air</td><td>Very strong</td></tr>
+      <tr><td><strong>Beta minus</strong> \(\beta^-\)</td><td>Electron \({}^{0}_{-1}e\) + antineutrino</td><td>\(A\) unchanged, \(Z \to Z+1\) (a neutron becomes a proton)</td><td>Stopped by a few mm of aluminium</td><td>Moderate</td></tr>
+      <tr><td><strong>Beta plus</strong> \(\beta^+\)</td><td>Positron \({}^{0}_{+1}e\) + neutrino</td><td>\(A\) unchanged, \(Z \to Z-1\)</td><td>Annihilates with an electron</td><td>Moderate</td></tr>
+      <tr><td><strong>Gamma</strong> \(\gamma\)</td><td>High-energy photon</td><td>No change in \(A\) or \(Z\); the nucleus loses excitation energy</td><td>Reduced (not stopped) by several cm of lead</td><td>Weak</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — balancing a decay equation</span>
+  <ol class="steps">
+    <li>Conserve <strong>nucleon number</strong> \(A\): the superscripts on the left must sum to those on the
+    right.</li>
+    <li>Conserve <strong>charge</strong> (proton number) \(Z\): the subscripts must balance, treating an
+    electron as \(-1\).</li>
+    <li>Include the neutrino/antineutrino for beta decay. It carries the "missing" energy and momentum — that
+    is how the neutrino was predicted.</li>
+    <li>Check: for \(\beta^-\), \({}^{14}_{6}\text{C} \to {}^{14}_{7}\text{N} + {}^{0}_{-1}e + \bar{\nu}\).
+    \(A\): 14 = 14 + 0 ✓. \(Z\): 6 = 7 + (−1) ✓.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 9</span> IB-style · 5 marks · decay equations</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Uranium-238 decays through a series to lead-206. Determine the number of
+    alpha and beta-minus decays involved.</p>
+    <ol class="steps">
+      <li>Let there be \(x\) alpha decays and \(y\) beta-minus decays.</li>
+      <li>Nucleon number: \(238 - 4x = 206\), so \(4x = 32\) and \(x = 8\).</li>
+      <li>Proton number: \(92 - 2x + y = 82\). With \(x = 8\): \(92 - 16 + y = 82\), so \(y = 6\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 8 alpha decays and 6 beta-minus decays. The method is two
+    simultaneous equations from the two conservation laws — a favourite 4–5 mark question that is pure algebra
+    once you know to set it up that way.</div>
+  </div>
+</details>
+
+<h3>Half-life, activity, decay law <span class="badge badge--hl">HL only for the decay law</span></h3>
+
+<dl class="glossary">
+  <dt>Half-life \(T_{1/2}\)</dt>
+  <dd>The time for the number of undecayed nuclei (and hence the activity and the count rate) to halve. It is
+  fixed for a given isotope and completely unaffected by temperature, pressure or chemical state.</dd>
+  <dt>Activity \(A\)</dt>
+  <dd>The number of decays per second, unit <strong>becquerel (Bq)</strong> = 1 s⁻¹.
+  \(A = -\dfrac{dN}{dt} = \lambda N\).</dd>
+  <dt>Decay constant \(\lambda\)</dt>
+  <dd>The probability per unit time that a given nucleus decays. Unit s⁻¹.
+  \(\lambda = \dfrac{\ln 2}{T_{1/2}}\).</dd>
+  <dt>Exponential decay law</dt>
+  <dd>\(N = N_0e^{-\lambda t}\), and \(A = A_0e^{-\lambda t}\), and count rate
+  \(R = R_0e^{-\lambda t}\).</dd>
+</dl>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(N = N_0e^{-\lambda t}\) from "probability of decay is constant"</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Each nucleus has a constant probability \(\lambda\) of decaying per unit time, so the number decaying
+      per unit time is proportional to the number present: \(\dfrac{dN}{dt} = -\lambda N\).</li>
+      <li>Separate variables: \(\dfrac{dN}{N} = -\lambda\,dt\).</li>
+      <li>Integrate from \(N_0\) at \(t=0\): \(\ln N - \ln N_0 = -\lambda t\), so \(\ln\left(\dfrac{N}{N_0}\right)
+      = -\lambda t\).</li>
+      <li>Exponentiate: \(N = N_0e^{-\lambda t}\).</li>
+      <li>For the half-life, set \(N = N_0/2\): \(\ln(1/2) = -\lambda T_{1/2}\), so
+      \(\lambda T_{1/2} = \ln 2\) and \(T_{1/2} = \dfrac{\ln 2}{\lambda}\).</li>
+      <li>Taking logs of the decay law gives a straight line: \(\ln N = \ln N_0 - \lambda t\), so a plot of
+      \(\ln N\) against \(t\) has gradient \(-\lambda\).</li>
+    </ol>
+    <p><strong>What it means:</strong> decay is <em>random</em> — you can never say when a particular nucleus
+    will decay, only the probability. With \(10^{20}\) nuclei the statistical average is exact enough to be a
+    precise clock. <strong>When it is wrong:</strong> never — but remember that measured
+    <strong>count rate</strong> includes background radiation, which you must subtract first.</p>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Background radiation. Every measured count rate includes counts from the environment. You
+  <strong>must</strong> measure the background (with the source removed) and subtract it before doing any
+  half-life calculation. Forgetting it is the single most common cause of a wrong half-life in the IA.
+  Also: the activity/count rate halves in the same time as \(N\) — but only after the background has been
+  removed.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 10</span> IB-style · 6 marks · half-life</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A sample has an activity of 800 Bq. After 12 hours it is 100 Bq. Determine
+    the half-life.</p>
+    <ol class="steps">
+      <li>\(\dfrac{A}{A_0} = \dfrac{100}{800} = \dfrac18\).</li>
+      <li>\(\dfrac18 = \left(\dfrac12\right)^3\), so three half-lives have elapsed.</li>
+      <li>\(3T_{1/2} = 12\ \text{h}\), so \(T_{1/2} = 4.0\ \text{h}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 4.0 hours. The "count the halvings" method is faster than logs when
+    the ratio is a power of 2 — always check that first. Otherwise use
+    \(t = \dfrac{1}{\lambda}\ln\left(\dfrac{A_0}{A}\right)\).</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 11</span> HL · 7 marks · decay constant and activity</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A sample contains \(2.0\times10^{20}\) nuclei of a nuclide with half-life
+    5.0 years. Determine (a) the decay constant in s⁻¹, (b) the initial activity, (c) the number of nuclei
+    remaining after 15 years.</p>
+    <ol class="steps">
+      <li>\(T_{1/2} = 5.0\times365\times24\times3600 = 1.58\times10^8\ \text{s}\).</li>
+      <li>(a) \(\lambda = \dfrac{\ln 2}{T_{1/2}} = \dfrac{0.693}{1.58\times10^8} = 4.39\times10^{-9}\ \text{s}^{-1}\).</li>
+      <li>(b) \(A_0 = \lambda N_0 = 4.39\times10^{-9}\times2.0\times10^{20} = 8.8\times10^{11}\ \text{Bq}\).</li>
+      <li>(c) 15 years = 3 half-lives, so \(N = 2.0\times10^{20}/8 = 2.5\times10^{19}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(4.4\times10^{-9}\ \text{s}^{-1}\), (b) \(8.8\times10^{11}\) Bq,
+    (c) \(2.5\times10^{19}\). The activity is enormous because there are so many nuclei even though each is
+    very unlikely to decay in any given second — that contrast is the essence of radioactive decay.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — E.3</span>
+  <p><strong>mass defect</strong><strong>binding energy</strong><strong>binding energy per nucleon</strong><strong>strong nuclear force</strong><strong>radioactive decay</strong><strong>alpha / beta / gamma decay</strong> α/β/γ<strong>half-life</strong><strong>activity</strong><strong>decay constant</strong><strong>becquerel</strong><strong>count rate</strong><strong>background radiation</strong><strong>random process</strong><strong>neutrino</strong><strong>antimatter / positron</strong> /<strong>isotope</strong></p>
+</div>
+
+<h2 id="e4">E.4 Fission <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Energy release and the chain reaction</h3>
+
+<p><strong>Intuition.</strong> A heavy nucleus like uranium-235 is like a wobbly liquid drop: the short-range
+strong force barely holds a nucleus that big together against the electrostatic repulsion of 92 protons. Absorb
+a neutron and it oscillates, elongates, and — if it stretches far enough — the repulsive Coulomb force wins and
+it splits into two smaller, more tightly bound nuclei. The products have less total mass; the difference
+appears as about 200 MeV of energy, mostly as the kinetic energy of the fragments.</p>
+
+<p>\[{}^{235}_{92}\text{U} + {}^{1}_{0}n \to {}^{236}_{92}\text{U}^* \to {}^{141}_{56}\text{Ba}
++ {}^{92}_{36}\text{Kr} + 3\,{}^{1}_{0}n + \text{energy}\]</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — why a chain reaction is possible</span>
+  <ol class="steps">
+    <li>Each fission releases 2–3 <strong>neutrons</strong> as well as energy.</li>
+    <li>Those neutrons can be absorbed by other U-235 nuclei, causing further fissions.</li>
+    <li>If on average <em>more than one</em> neutron per fission causes another fission, the reaction grows
+    exponentially — a <strong>chain reaction</strong>.</li>
+    <li>The condition is summarised by the <strong>multiplication factor</strong> \(k\): \(k \lt 1\) the
+    reaction dies out; \(k = 1\) it is steady (a reactor); \(k \gt 1\) it grows (a bomb).</li>
+    <li><strong>Critical mass</strong>: below a certain mass too many neutrons escape through the surface for
+    \(k\) to reach 1. Surface area grows as \(r^2\) but volume (neutron production) as \(r^3\), so bigger is
+    better for sustaining the reaction.</li>
+  </ol>
+</div>
+
+<h3>Reactor components</h3>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Component</th><th>What it does</th><th>The physics</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Control rods</strong> (boron or cadmium)</td><td>Absorb neutrons; raised or lowered to control the rate</td><td>These nuclei have very large neutron-capture cross-sections. Lowering the rods reduces \(k\) towards 1; full insertion shuts the reaction down.</td></tr>
+      <tr><td><strong>Moderator</strong> (water, heavy water, graphite)</td><td>Slows the fast fission neutrons down</td><td>U-235 much more readily absorbs <em>slow</em> (thermal) neutrons than fast ones. Elastic collisions with light nuclei remove the neutrons' kinetic energy — with a light moderator the energy transfer per collision is greatest.</td></tr>
+      <tr><td><strong>Coolant</strong> (water, gas, liquid metal)</td><td>Carries the thermal energy away to the heat exchanger</td><td>Converts nuclear energy to thermal energy to steam to electricity — the Carnot limit of B.4 applies.</td></tr>
+      <tr><td><strong>Shielding</strong> (thick concrete and steel)</td><td>Absorbs gamma rays and neutrons</td><td>Gamma requires dense, high-Z material (lead or thick concrete); neutrons are best slowed by hydrogenous material then absorbed.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Nuclear waste</h3>
+
+<p>Spent fuel contains fission products with a wide range of half-lives — from fractions of a second to
+hundreds of thousands of years. The honest evaluation: high-level waste is small in volume but hazardous for
+timescales far beyond any human institution, and there is no universally accepted permanent disposal solution
+(deep geological repositories are the current consensus approach). Low-level waste is voluminous but
+short-lived. An <em>evaluate</em> question wants both the volume argument and the timescale argument.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 12</span> IB-style · 6 marks · reactor power</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A reactor produces 1.0 GW of electrical power at 33% efficiency. Each fission
+    releases 200 MeV. Determine (a) the thermal power and (b) the number of fissions per second.</p>
+    <ol class="steps">
+      <li>(a) Thermal power \(= 1.0/0.33 = 3.03\ \text{GW}\).</li>
+      <li>Energy per fission \(= 200\times10^6\times1.60\times10^{-19} = 3.2\times10^{-11}\ \text{J}\).</li>
+      <li>(b) Fissions per second \(= \dfrac{3.03\times10^9}{3.2\times10^{-11}} = 9.5\times10^{19}\ \text{s}^{-1}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 3.0 GW thermal, (b) \(9.5\times10^{19}\) fissions per second.
+    Note the 2 GW "lost" is dumped to the environment as waste heat — the thermodynamic price discussed in
+    B.4.</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>E.4 links to <strong>B.4 thermodynamics</strong> (a reactor is a heat source for a heat engine, so the
+  Carnot ceiling applies), to <strong>B.5</strong> (the generated electricity), and to
+  <strong>B.2</strong> (nuclear power as a low-carbon but contested response to the enhanced greenhouse
+  effect). It also links to <strong>A.2</strong>: the moderator works by elastic collisions and momentum
+  transfer.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — E.4</span>
+  <p><strong>nuclear fission</strong><strong>chain reaction</strong><strong>critical mass</strong><strong>control rod</strong><strong>moderator</strong> /<strong>coolant</strong><strong>shielding</strong><strong>nuclear reactor</strong><strong>enriched uranium</strong><strong>fission fragment</strong><strong>nuclear waste</strong><strong>thermal neutron</strong><strong>cross-section</strong></p>
+</div>
+
+<h2 id="e5">E.5 Fusion and stars <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Fusion in stars and the conditions needed</h3>
+
+<p><strong>Intuition.</strong> Fusion means pushing two positively charged nuclei close enough (about 1 fm)
+for the strong nuclear force to grab them. The obstacle is that they repel each other ferociously. To overcome
+it you need the nuclei moving very fast — i.e. an extremely high temperature — and a high density so collisions
+are frequent. In the Sun's core: about \(1.5\times10^7\) K, a density of about 150 000 kg m⁻³, and even then a
+given proton waits billions of years on average before fusing. That is why the Sun burns so slowly — which is
+fortunate for us.</p>
+
+<p>The net reaction in the Sun (the proton–proton chain), overall:</p>
+<p>\[4\,{}^{1}_{1}\text{H} \to {}^{4}_{2}\text{He} + 2\,{}^{0}_{+1}e + 2\nu + \text{energy}\]</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 13</span> IB-style · 7 marks · fusion energy</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The mass of four protons exceeds the mass of a helium-4 nucleus plus the two
+    positrons by 0.0287 u. Determine (a) the energy released per helium nucleus formed and (b) the energy
+    released per kilogram of hydrogen consumed.</p>
+    <ol class="steps">
+      <li>(a) \(E = 0.0287\times931.5 = 26.7\ \text{MeV}
+      = 26.7\times10^6\times1.60\times10^{-19} = 4.28\times10^{-12}\ \text{J}\).</li>
+      <li>(b) Mass of 4 protons \(= 4\times1.67\times10^{-27} = 6.68\times10^{-27}\ \text{kg}\) (using the
+      proton mass; the mass converted to energy is 0.7% of this).</li>
+      <li>Energy per kg \(= \dfrac{4.28\times10^{-12}}{6.68\times10^{-27}} = 6.4\times10^{14}\ \text{J kg}^{-1}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 26.7 MeV, (b) \(6.4\times10^{14}\ \text{J kg}^{-1}\). Compare
+    with fossil fuels at ~40 MJ kg⁻¹: fusion releases about ten million times more energy per kilogram.
+    That single comparison is the whole case for fusion research.</div>
+  </div>
+</details>
+
+<h3>Stellar equilibrium</h3>
+
+<p><strong>Intuition.</strong> A star is a battle between gravity pulling in and pressure pushing out. As long
+as fusion supplies enough thermal pressure to balance gravity, the star is in <strong>hydrostatic
+equilibrium</strong> and is stable. Run out of fuel and gravity wins: the core contracts, heats up, and may
+ignite the next fusion stage (hydrogen → helium → carbon → … → iron). Iron is the end of the road: fusing it
+<em>consumes</em> energy rather than releasing it, so the core collapses.</p>
+
+<h3>The Hertzsprung–Russell diagram</h3>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 400" role="img" aria-label="Hertzsprung-Russell diagram showing main sequence, giants, supergiants and white dwarfs">
+    <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
+    <line x1="80" y1="350" x2="600" y2="350" stroke="#334155" stroke-width="2"/>
+    <line x1="80" y1="350" x2="80" y2="30" stroke="#334155" stroke-width="2"/>
+    <text x="250" y="382" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Surface temperature</text>
+    <text x="30" y="200" font-size="13" font-family="system-ui, sans-serif" fill="#151923" transform="rotate(-90 30 200)">Luminosity</text>
+    <text x="108" y="372" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">hot / blue</text>
+    <text x="520" y="372" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">cool / red</text>
+    <text x="96" y="46" font-size="12" font-family="system-ui, sans-serif" fill="#151923">high</text>
+    <text x="96" y="340" font-size="12" font-family="system-ui, sans-serif" fill="#151923">low</text>
+    <path d="M150 60 L 230 140 L 300 210 L 370 270 L 440 310" fill="none" stroke="#0a6f80" stroke-width="3"/>
+    <text x="300" y="245" font-size="13" font-family="system-ui, sans-serif" fill="#0a6f80">main sequence</text>
+    <circle cx="330" cy="240" r="7" fill="#eef2ff" stroke="#151923" stroke-width="2"/>
+    <text x="344" y="244" font-size="12" font-family="system-ui, sans-serif" fill="#151923">Sun</text>
+    <circle cx="470" cy="110" r="9" fill="#eef2ff" stroke="#c0392b" stroke-width="2"/>
+    <text x="484" y="114" font-size="12" font-family="system-ui, sans-serif" fill="#c0392b">red giants / supergiants</text>
+    <circle cx="180" cy="110" r="8" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="150" y="90" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13">blue giants</text>
+    <circle cx="200" cy="315" r="6" fill="#eef2ff" stroke="#334155" stroke-width="2"/>
+    <circle cx="250" cy="322" r="6" fill="#eef2ff" stroke="#334155" stroke-width="2"/>
+    <circle cx="300" cy="328" r="6" fill="#eef2ff" stroke="#334155" stroke-width="2"/>
+    <text x="196" y="345" font-size="12" font-family="system-ui, sans-serif" fill="#151923">white dwarfs</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 3.</span> The H–R diagram. About 90% of stars lie on the main
+  sequence, where they burn hydrogen. Note the axes: temperature increases to the <em>left</em> — a detail
+  examiners check you have noticed.</figcaption>
+</figure>
+
+<p><strong>Stellar evolution in one paragraph.</strong> A cloud of gas collapses under gravity, heats up, and
+if it is massive enough ignites hydrogen fusion — a <strong>protostar</strong> becomes a
+<strong>main-sequence star</strong>. It stays there for most of its life (the Sun: about 10 billion years
+total). When the core hydrogen runs out, the star leaves the main sequence, expands and cools at the surface
+while the core contracts — a <strong>red giant</strong>. Low-mass stars then shed their outer layers as a
+planetary nebula and leave a <strong>white dwarf</strong> (supported by electron degeneracy pressure, slowly
+cooling). Massive stars go further, fusing up to iron, then undergo a <strong>supernova</strong>, leaving a
+<strong>neutron star</strong> or a black hole.</p>
+
+<h3>Stellar parallax, luminosity, apparent brightness</h3>
+
+<dl class="glossary">
+  <dt>Stellar parallax</dt>
+  <dd>The apparent shift of a nearby star against the distant background as Earth orbits the Sun. The
+  <strong>parallax angle</strong> \(p\) (arcseconds) is half the total annual shift, and the distance is
+  \(d\ (\text{pc}) = \dfrac{1}{p\ ('')}\). One parsec \(= 3.09\times10^{16}\) m ≈ 3.26 light-years.</dd>
+  <dt>Luminosity \(L\)</dt>
+  <dd>The total power radiated by a star (W). An intrinsic property.</dd>
+  <dt>Apparent brightness \(b\)</dt>
+  <dd>The power per unit area received at Earth (W m⁻²). Follows the inverse-square law:
+  \(b = \dfrac{L}{4\pi d^2}\).</dd>
+</dl>
+
+<h3>Stefan–Boltzmann and Wien</h3>
+
+<p>\[L = \sigma A T^4 = 4\pi R^2\sigma T^4, \qquad \lambda_{\max}T = 2.9\times10^{-3}\ \text{m K}\]</p>
+<p>These two let you go from a star's spectrum (colour) to its temperature, and from its temperature and
+luminosity to its radius — which is how we know that Betelgeuse is enormous and Sirius B is tiny.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 14</span> IB-style · 8 marks · stellar radius</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A star has a peak wavelength of 290 nm and a luminosity of
+    \(1.0\times10^{28}\) W. Determine (a) its surface temperature and (b) its radius.</p>
+    <ol class="steps">
+      <li>(a) \(T = \dfrac{2.9\times10^{-3}}{290\times10^{-9}} = 1.0\times10^4\ \text{K}\).</li>
+      <li>(b) \(L = 4\pi R^2\sigma T^4\), so
+      \(R^2 = \dfrac{L}{4\pi\sigma T^4} = \dfrac{1.0\times10^{28}}{4\pi(5.67\times10^{-8})(1.0\times10^{16})}\).</li>
+      <li>Denominator: \(4\pi\times5.67\times10^{-8}\times10^{16} = 7.13\times10^9\). So
+      \(R^2 = 1.40\times10^{18}\) and \(R = 1.18\times10^9\ \text{m}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 10 000 K, (b) \(1.2\times10^9\) m — nearly twice the Sun's
+    radius (\(7.0\times10^8\) m). A hotter star than the Sun and larger, so far more luminous. Consistent.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 15</span> IB-style · 6 marks · parallax and brightness</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A star has a parallax angle of 0.020 arcseconds and an apparent brightness of
+    \(4.0\times10^{-12}\ \text{W m}^{-2}\). Determine (a) its distance in parsecs and metres and (b) its
+    luminosity.</p>
+    <ol class="steps">
+      <li>(a) \(d = 1/0.020 = 50\ \text{pc}\). In metres: \(50\times3.09\times10^{16} = 1.55\times10^{18}\ \text{m}\).</li>
+      <li>(b) \(L = 4\pi d^2 b = 4\pi(1.55\times10^{18})^2(4.0\times10^{-12})\).</li>
+      <li>\(d^2 = 2.40\times10^{36}\); so \(L = 4\pi\times2.40\times10^{36}\times4.0\times10^{-12}
+      = 1.21\times10^{26}\ \text{W}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 50 pc (\(1.5\times10^{18}\) m), (b) \(1.2\times10^{26}\) W —
+    about a third of the Sun's luminosity (\(3.8\times10^{26}\) W). A dimmer, cooler star, so redder — exactly
+    where you would place it on the H–R diagram.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Confusing luminosity with apparent brightness is the classic. Luminosity is what the star
+  <em>emits</em>; apparent brightness is what we <em>receive</em>, and it falls as \(1/d^2\). A dim nearby star
+  can look brighter than a luminous distant one. Also: the parallax angle is <em>half</em> the total annual
+  shift, and the formula \(d = 1/p\) needs \(p\) in arcseconds and gives \(d\) in parsecs — not
+  light-years.</p>
+</div>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>E.5 links to <strong>B.2 black-body radiation</strong> (the same Stefan–Boltzmann and Wien laws, applied
+  to stars instead of planets), to <strong>C.5 Doppler</strong> (spectral lines shifted by stellar motion
+  give radial velocity and the expansion of the universe), to <strong>E.1 spectra</strong> (absorption lines
+  give composition), and to <strong>E.3 binding energy</strong> (the binding-energy curve explains why fusion
+  releases energy up to iron and why iron cores collapse).</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — E.5</span>
+  <p><strong>nuclear fusion</strong><strong>stellar equilibrium</strong><strong>hydrostatic equilibrium</strong><strong>protostar</strong><strong>main sequence</strong><strong>red giant</strong><strong>white dwarf</strong><strong>supernova</strong><strong>neutron star</strong><strong>black hole</strong><strong>Hertzsprung–Russell diagram</strong><strong>luminosity</strong><strong>apparent brightness</strong><strong>stellar parallax</strong><strong>parsec</strong><strong>arcsecond</strong><strong>Stefan–Boltzmann law</strong> –<strong>Wien's law</strong></p>
+</div>
+
+<div class="conn">
+  <span class="conn__title">Connections — Theme E to the rest</span>
+  <ul>
+    <li><strong>→ Theme C:</strong> spectra are measured with diffraction gratings (C.3); the Doppler shift of
+    spectral lines (C.5) measures stellar motion; electron diffraction (C.3) proves matter waves (E.2).</li>
+    <li><strong>→ Theme D:</strong> Rutherford scattering is Coulomb repulsion (D.2); the Bohr model balances
+    Coulomb attraction with circular motion (D.2); magnetic fields curve charged-particle tracks (D.3).</li>
+    <li><strong>→ Theme B:</strong> black-body radiation (B.2) is the tool for stellar temperature;
+    thermodynamics (B.4) governs reactor efficiency.</li>
+    <li><strong>→ Theme A:</strong> momentum and energy conservation drive Compton scattering (A.2, A.3);
+    \(E = mc^2\) is relativistic mass–energy (A.5).</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can state the three Rutherford observations and what each proves.</span></label></li>
+  <li><label><input type="checkbox"><span>I can calculate photon energies and wavelengths from energy-level differences.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain why energy levels are negative and what ionisation energy means.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive Bohr's E_n = −13.6/n² eV and state its limitations.</span></label></li>
+  <li><label><input type="checkbox"><span>I can state the three photoelectric observations and the photon explanation of each.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use hf = φ + KE_max and read h, φ and f₀ from a graph.</span></label></li>
+  <li><label><input type="checkbox"><span>I can calculate a de Broglie wavelength and explain Compton scattering qualitatively.</span></label></li>
+  <li><label><input type="checkbox"><span>I can calculate mass defect and binding energy per nucleon.</span></label></li>
+  <li><label><input type="checkbox"><span>I can balance alpha and beta decay equations and solve decay-series problems.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive N = N₀e^(−λt) and use λ = ln2/T½, subtracting background first.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain the roles of control rods, moderator, coolant and shielding.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain why fusion requires high temperature and density, and why iron is the endpoint.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use parallax, the inverse-square law, Stefan–Boltzmann and Wien to characterise a star.</span></label></li>
+</ul>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li>
+    <p><strong>[3 marks]</strong> State what the observation that "most alpha particles pass straight through
+    the gold foil" shows about the atom.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>That the atom is mostly empty space: the positive charge and nearly all the mass are concentrated in a
+      tiny nucleus, so the vast majority of alpha particles pass far from any nucleus and are barely
+      deflected.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> An electron drops from −0.85 eV to −3.40 eV in a hydrogen atom. Determine the
+    wavelength of the photon emitted and state in which region of the electromagnetic spectrum it lies.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(\Delta E = -0.85 - (-3.40) = 2.55\ \text{eV} = 4.08\times10^{-19}\ \text{J}\).</p>
+      <p>\(\lambda = \dfrac{hc}{E} = \dfrac{1.989\times10^{-25}}{4.08\times10^{-19}} = 4.87\times10^{-7}\ \text{m}
+      = 487\ \text{nm}\) — blue-green visible light (another Balmer line).</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> Light of frequency \(7.5\times10^{14}\) Hz strikes a metal whose work
+    function is 2.0 eV. Determine (a) the maximum kinetic energy of the photoelectrons and (b) their maximum
+    speed.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) \(hf = 6.63\times10^{-34}\times7.5\times10^{14} = 4.97\times10^{-19}\ \text{J} = 3.11\ \text{eV}\).</p>
+      <p>\(KE_{\max} = 3.11 - 2.0 = 1.11\ \text{eV} = 1.78\times10^{-19}\ \text{J}\).</p>
+      <p>(b) \(v = \sqrt{\dfrac{2E_k}{m}} = \sqrt{\dfrac{2(1.78\times10^{-19})}{9.11\times10^{-31}}}
+      = \sqrt{3.91\times10^{11}} = 6.25\times10^5\ \text{m s}^{-1}\).</p>
+      <p>Note: doubling the intensity would double the number of electrons emitted per second but leave this
+      speed unchanged.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> Explain why increasing the intensity of the light does not increase the
+    maximum kinetic energy of the photoelectrons.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Each electron is liberated by absorbing a single photon of energy \(hf\). Increasing the intensity
+      increases the number of photons arriving per second, so more electrons are emitted per second, but each
+      still receives the same energy \(hf\) and loses the same work function \(\phi\). Hence
+      \(KE_{\max} = hf - \phi\) is unchanged. The increase in intensity shows up as an increase in the
+      saturation current, not in the stopping voltage.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> Calculate the de Broglie wavelength of a neutron
+    (\(m = 1.67\times10^{-27}\) kg) moving at \(2.0\times10^3\ \text{m s}^{-1}\), and explain why such neutrons
+    are useful for studying crystal structures.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(\lambda = \dfrac{h}{mv} = \dfrac{6.63\times10^{-34}}{(1.67\times10^{-27})(2.0\times10^3)}
+      = \dfrac{6.63\times10^{-34}}{3.34\times10^{-24}} = 1.99\times10^{-10}\ \text{m}\).</p>
+      <p>About 0.2 nm — comparable to the spacing between planes of atoms in a crystal. Diffraction is
+      significant when the wavelength is comparable to the spacing, so thermal neutrons diffract strongly from
+      crystals and reveal their structure.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> The mass defect of iron-56 is 0.528 u for 56 nucleons. Determine the binding
+    energy per nucleon in MeV, and explain the significance of this value.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Total binding energy \(= 0.528\times931.5 = 492\ \text{MeV}\). Per nucleon:
+      \(492/56 = 8.78\ \text{MeV}\).</p>
+      <p>This is close to the maximum on the binding-energy-per-nucleon curve. Nuclei lighter than iron release
+      energy by fusion; nuclei heavier release energy by fission; iron itself is the most tightly bound, so
+      neither process releases energy from it. That is why fusion in massive stellar cores stops at iron,
+      triggering core collapse and a supernova.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A radioactive source gives a corrected count rate of 640 counts per minute.
+    After 8.0 hours it is 40 counts per minute. Determine the half-life.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Ratio \(= 40/640 = 1/16 = (1/2)^4\), so four half-lives have passed in 8.0 h.</p>
+      <p>\(T_{1/2} = 8.0/4 = 2.0\ \text{h}\).</p>
+      <p>The word "corrected" matters: the count rate must have the background subtracted before the ratio is
+      taken. If a background of, say, 20 counts per minute had not been subtracted, the ratio would be
+      60/660 = 1/11 and the answer would be wrong.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[8 marks]</strong> Discuss the advantages and disadvantages of using nuclear fission to generate
+    electricity, referring to physics in your answer.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p><strong>Advantages:</strong> the energy density of uranium is millions of times that of fossil fuels,
+      so a small fuel mass supplies a large city; operation emits no CO₂, so it does not contribute to the
+      enhanced greenhouse effect; the technology is mature and provides reliable baseload power, unlike
+      intermittent renewables.</p>
+      <p><strong>Disadvantages:</strong> high-level waste remains hazardous for timescales of tens of thousands
+      of years, requiring geological disposal that no country has yet fully implemented; a loss of cooling can
+      lead to meltdown and release of radioactive material; the fuel can be diverted to weapons; and decommissioning
+      is slow and expensive.</p>
+      <p><strong>Physics-based evaluation:</strong> the reactor is a heat engine, so the Carnot ceiling
+      \(\eta = 1 - T_C/T_H\) limits efficiency — and because reactor steam temperatures are lower than in fossil
+      plants, nuclear thermal efficiency is typically only ~33%. The comparison is therefore not simply
+      "nuclear good/bad": the physics gives a genuine low-carbon baseload option whose cost is long-lived
+      waste and low public acceptability.</p>
+    </div></details>
+  </li>
+</ol>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

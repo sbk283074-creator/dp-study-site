@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="physics">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F · Skills and the scientific investigation — Physics HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Physics HL · Theme F</span>
+<h1 class="page-title">F · Skills and the scientific investigation</h1>
+<p class="lede">This is the 20% of your grade you control completely. The IA is not a test of how clever your
+apparatus is — it is a test of whether you can design a question you can actually answer, take data whose
+uncertainties you understand, process it honestly, and then tell the examiner precisely what you would do
+differently. Every mark comes from <em>justified decisions</em>: why this range, why this instrument, why this
+uncertainty dominates, why this improvement. This page turns all of that into a procedure.</p>
+<div class="page-meta">
+  <span class="tag">Units &amp; dimensions · Uncertainty · Graphs &amp; linearising</span>
+  <span class="tag tag--hl">IA: 10 hours · 24 marks · 20% of the course</span>
+  <span class="tag">~4,600 words</span>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why most IAs lose marks — and it is not the physics</span>
+  <p>The overwhelming majority of lost IA marks are not lost because the physics was wrong. They are lost
+  because the student never <em>quantified</em> anything. "The results were quite accurate" scores nothing.
+  "The percentage difference from the literature value is 4.8%, which is smaller than the 6.1% uncertainty in
+  the gradient, so the result agrees with the accepted value" scores full marks. Every section of this page
+  ends with the sentence you should actually write.</p>
+</div>
+
+<h2 id="units">Units, prefixes and dimensional consistency</h2>
+
+<h3>SI base units and derived units you must know cold</h3>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Quantity</th><th>Base / derived unit</th><th>In base units</th></tr></thead>
+    <tbody>
+      <tr><td>Mass</td><td>kg</td><td>kg</td></tr>
+      <tr><td>Length</td><td>m</td><td>m</td></tr>
+      <tr><td>Time</td><td>s</td><td>s</td></tr>
+      <tr><td>Current</td><td>A</td><td>A</td></tr>
+      <tr><td>Temperature</td><td>K</td><td>K</td></tr>
+      <tr><td>Amount of substance</td><td>mol</td><td>mol</td></tr>
+      <tr><td>Force</td><td>N</td><td>kg m s⁻²</td></tr>
+      <tr><td>Energy / work</td><td>J</td><td>kg m² s⁻²</td></tr>
+      <tr><td>Power</td><td>W</td><td>kg m² s⁻³</td></tr>
+      <tr><td>Pressure</td><td>Pa</td><td>kg m⁻¹ s⁻²</td></tr>
+      <tr><td>Charge</td><td>C</td><td>A s</td></tr>
+      <tr><td>Potential difference</td><td>V</td><td>kg m² s⁻³ A⁻¹</td></tr>
+      <tr><td>Resistance</td><td>Ω</td><td>kg m² s⁻³ A⁻²</td></tr>
+      <tr><td>Magnetic flux density</td><td>T</td><td>kg s⁻² A⁻¹</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Dimensional consistency: your free error-detector</h3>
+
+<p>Every equation you write must have the same dimensions on both sides. This is a <em>check</em>, not a
+proof — but it catches most algebra slips in seconds.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it</span>
+  <ol class="steps">
+    <li>Replace every symbol with its base-unit dimensions.</li>
+    <li>Simplify both sides.</li>
+    <li>If they differ, your rearrangement is wrong.</li>
+    <li>Also use it to find the units of a gradient: gradient units = (vertical-axis unit) ÷
+    (horizontal-axis unit). If your "gradient = g" claim has units of m s⁻², good; if not, something is
+    wrong.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 1</span> 3 marks · checking a claimed relationship</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A student claims the period of a pendulum is \(T = 2\pi\sqrt{\dfrac{g}{l}}\).
+    Use dimensional analysis to show this is wrong, and give the correct form.</p>
+    <ol class="steps">
+      <li>Dimensions of \(g/l\): \(\dfrac{\text{m s}^{-2}}{\text{m}} = \text{s}^{-2}\).</li>
+      <li>So the right-hand side has dimensions \(\sqrt{\text{s}^{-2}} = \text{s}^{-1}\), while \(T\) has
+      dimensions of s. Not consistent.</li>
+      <li>To get seconds you need \(\sqrt{l/g}\): \(\sqrt{\dfrac{\text{m}}{\text{m s}^{-2}}} = \sqrt{\text{s}^2}
+      = \text{s}\). ✓</li>
+      <li>Correct form: \(T = 2\pi\sqrt{\dfrac{l}{g}}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> the student inverted the ratio. Dimensional analysis does not tell
+    you the \(2\pi\), but it catches the inversion instantly — and this is exactly the check you should run on
+    your own rearrangement in the IA.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> 4 marks · units of a gradient</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> For a spring, \(T^2 = \dfrac{4\pi^2}{k}m\). A student plots \(T^2\) (s²)
+    against \(m\) (kg). State the units of the gradient and hence how to find \(k\), including its units.</p>
+    <ol class="steps">
+      <li>Gradient units \(= \dfrac{\text{s}^2}{\text{kg}} = \text{s}^2\text{kg}^{-1}\).</li>
+      <li>Gradient \(= \dfrac{4\pi^2}{k}\), so \(k = \dfrac{4\pi^2}{\text{gradient}}\).</li>
+      <li>Units of \(k\): \(\dfrac{1}{\text{s}^2\text{kg}^{-1}} = \text{kg s}^{-2} = \text{N m}^{-1}\). ✓ — the
+      correct unit for a spring constant, confirming the analysis.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> gradient in s² kg⁻¹; \(k = 4\pi^2/\text{gradient}\) in N m⁻¹. If your
+    units had come out as N m⁻² you would know immediately that something was wrong.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>In the IA, the most common dimensional error is a mixed prefix: recording lengths in cm in one column and
+  using them with a formula that needs m, or quoting a resistance in kΩ but substituting 3.3 into
+  \(P = V^2/R\). <strong>Put the unit in every column header and convert to SI in the table itself.</strong>
+  Write the header as "\(l\) / m" and the entry as 0.640, not "\(l\) / cm" with 64.0.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — units</span>
+  <p><strong>base unit</strong><strong>derived unit</strong><strong>dimensional analysis</strong><strong>consistency</strong><strong>prefix</strong> /<strong>significant figures</strong><strong>order of magnitude</strong><strong>convert</strong><strong>column heading</strong></p>
+</div>
+
+<h2 id="uncertainty">Uncertainty</h2>
+
+<h3>Random vs systematic; precision vs accuracy</h3>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>Random error</h4>
+    <p>Causes scatter: readings sometimes high, sometimes low. Sources: reaction time, parallax, reading a
+    fluctuating display, turbulence. <strong>Reduced by repeating and averaging.</strong> It shows up in your
+    error bars.</p>
+  </div>
+  <div class="card">
+    <h4>Systematic error</h4>
+    <p>Shifts every reading the same way. Sources: a zero error on a balance, a miscalibrated sensor, an
+    unaccounted-for resistance, ignoring the end correction of a pipe. <strong>Not reduced by
+    repeating.</strong> It shows up as a non-zero intercept or a percentage difference larger than your
+    uncertainty.</p>
+  </div>
+  <div class="card">
+    <h4>Precision</h4>
+    <p>How closely repeated measurements agree — the scatter. High precision = small random error. Nothing to
+    do with being "right".</p>
+  </div>
+  <div class="card">
+    <h4>Accuracy</h4>
+    <p>How close a measurement is to the true value. High accuracy = small systematic error.</p>
+  </div>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Saying an instrument is "precise to ±0.01 mm" when you mean the manufacturer's <em>resolution</em>.
+  Precision is about your <em>spread of readings</em>; resolution is the smallest division. The uncertainty in
+  a single reading from a digital instrument is usually taken as ±1 in the last digit (or ±half the smallest
+  division for an analogue scale), but the uncertainty in a repeated measurement is better estimated from the
+  spread of the repeats. Use whichever is larger — and say that you did.</p>
+</div>
+
+<h3>Absolute, fractional and percentage uncertainty</h3>
+
+<dl class="glossary">
+  <dt>Absolute uncertainty \(\Delta x\)</dt>
+  <dd>The uncertainty expressed in the same units as the quantity: \(l = 0.640 \pm 0.002\ \text{m}\).</dd>
+  <dt>Fractional uncertainty</dt>
+  <dd>\(\dfrac{\Delta x}{x}\) — dimensionless.</dd>
+  <dt>Percentage uncertainty</dt>
+  <dd>\(\dfrac{\Delta x}{x}\times100\%\).</dd>
+</dl>
+
+<h3>Combining uncertainties</h3>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Operation</th><th>Rule</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Addition or subtraction: \(z = x \pm y\)</td><td>Add <strong>absolute</strong> uncertainties: \(\Delta z = \Delta x + \Delta y\)</td><td>\((12.0\pm0.2) - (8.0\pm0.2) = 4.0\pm0.4\) cm</td></tr>
+      <tr><td>Multiplication or division: \(z = xy\) or \(z = x/y\)</td><td>Add <strong>percentage</strong> uncertainties: \(\dfrac{\Delta z}{z} = \dfrac{\Delta x}{x} + \dfrac{\Delta y}{y}\)</td><td>If \(V\) has 2% and \(I\) has 3%, then \(R = V/I\) has 5%.</td></tr>
+      <tr><td>Power: \(z = x^n\)</td><td>Multiply the percentage uncertainty by \(|n|\): \(\dfrac{\Delta z}{z} = |n|\dfrac{\Delta x}{x}\)</td><td>\(r^2\) has twice the percentage uncertainty of \(r\); \(\sqrt l\) has half.</td></tr>
+      <tr><td>Logarithm: \(z = \ln x\)</td><td>Absolute uncertainty in \(\ln x\) = fractional uncertainty in \(x\): \(\Delta(\ln x) = \dfrac{\Delta x}{x}\)</td><td>Used for decay curves: the error bars in \(\ln N\) are \(\Delta N/N\).</td></tr>
+      <tr><td>Trigonometry: \(z = \sin\theta\)</td><td>Estimate from the spread: use the largest and smallest plausible \(\theta\) and compute the resulting spread in \(\sin\theta\)</td><td>For \(\theta = 30^\circ \pm 2^\circ\): \(\sin 28^\circ = 0.469\), \(\sin 32^\circ = 0.530\), so \(\sin\theta = 0.50 \pm 0.03\).</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Why percentage uncertainties add for a product, and why a
+  power multiplies</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Take \(z = xy\). If \(x\) becomes \(x + \Delta x\) and \(y\) becomes \(y + \Delta y\), then
+      \(z + \Delta z = (x+\Delta x)(y+\Delta y) = xy + x\Delta y + y\Delta x + \Delta x\Delta y\).</li>
+      <li>Subtract \(z = xy\): \(\Delta z = x\Delta y + y\Delta x + \Delta x\Delta y\).</li>
+      <li>The last term is the product of two small quantities, so it is negligible for small uncertainties.
+      Hence \(\Delta z \approx x\Delta y + y\Delta x\).</li>
+      <li>Divide by \(z = xy\): \(\dfrac{\Delta z}{z} = \dfrac{\Delta y}{y} + \dfrac{\Delta x}{x}\). So
+      <strong>fractional uncertainties add</strong>.</li>
+      <li>For a power, \(z = x^2\) is just the product rule with \(y = x\), giving
+      \(\dfrac{\Delta z}{z} = 2\dfrac{\Delta x}{x}\). By the same argument \(z = x^n\) gives
+      \(\dfrac{\Delta z}{z} = |n|\dfrac{\Delta x}{x}\), and \(z = \sqrt{x}\) (i.e. \(n = \tfrac12\)) gives
+      half the fractional uncertainty.</li>
+      <li>Note these are <em>worst-case</em> estimates: they assume all errors conspire against you. If the
+      uncertainties are independent and random, adding them in quadrature
+      (\(\sqrt{(\Delta x/x)^2 + (\Delta y/y)^2}\)) is statistically better — but the IB accepts and often
+      expects simple addition.</li>
+    </ol>
+    <p><strong>What it means:</strong> the quantity with the largest percentage uncertainty dominates, and
+    squaring a quantity doubles its percentage uncertainty. <strong>When it is wrong:</strong> for
+    subtraction of two nearly equal numbers, where the <em>absolute</em> uncertainties add and the fractional
+    uncertainty explodes — use absolute uncertainties there.</p>
+  </div>
+</details>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Why the gradient uncertainty propagates as the same percentage</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>In the pendulum experiment \(g = \dfrac{4\pi^2}{m}\) where \(m\) is the gradient. \(4\pi^2\) is exact,
+      so \(g \propto m^{-1}\).</li>
+      <li>Using the power rule with \(n = -1\): \(\dfrac{\Delta g}{g} = |-1|\dfrac{\Delta m}{m}
+      = \dfrac{\Delta m}{m}\).</li>
+      <li>So the percentage uncertainty in \(g\) equals the percentage uncertainty in the gradient — no factor
+      of 2, no square root.</li>
+      <li>Had the relationship been \(g \propto m^2\) you would double it; had it been \(g \propto \sqrt m\) you
+      would halve it. Always check the power before propagating.</li>
+    </ol>
+    <p><strong>What it means:</strong> improving your gradient by a factor of 2 improves your final constant by
+    a factor of 2 (for a \(-1\) power). <strong>Use it in the evaluation:</strong> "reducing the timing
+    uncertainty by half would halve the uncertainty in \(g\), from 6.2% to 3.1%."</p>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>The skills here link to <strong>every theme at once</strong>. A pendulum IA is A.1 kinematics and C.1
+  SHM; a resistivity IA is B.5 circuits and D.2 fields; a spectroscopy IA is E.1 energy levels and C.3
+  diffraction gratings. The reason the IB weights the IA at 20% is precisely that it forces you to run a whole
+  theme's worth of physics end-to-end — and the same linearising-and-error-bars skill is what Paper 1B's
+  data-based questions test under time pressure.</p>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the general maximum–minimum method (works for everything)</span>
+  <ol class="steps">
+    <li>Calculate the quantity using the best values.</li>
+    <li>Calculate it again using the most unfavourable combination of \(+\Delta\) and \(-\Delta\).</li>
+    <li>The difference is your absolute uncertainty.</li>
+    <li>This is slower than the rules but always defensible, and it is <em>essential</em> for trigonometric and
+    complicated functions where the simple rules fail.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> 5 marks · combining uncertainties</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A cylinder has diameter \(d = (24.0 \pm 0.2)\) mm and length
+    \(L = (150 \pm 1)\) mm. Determine the volume and its percentage uncertainty.</p>
+    <ol class="steps">
+      <li>\(V = \dfrac{\pi d^2L}{4} = \dfrac{\pi(0.0240)^2(0.150)}{4} = \dfrac{\pi(5.76\times10^{-4})(0.150)}{4}
+      = 6.79\times10^{-5}\ \text{m}^3\).</li>
+      <li>Percentage uncertainty in \(d\): \(\dfrac{0.2}{24.0}\times100\% = 0.83\%\). Since \(d\) is squared:
+      \(2\times0.83 = 1.67\%\).</li>
+      <li>Percentage uncertainty in \(L\): \(\dfrac{1}{150}\times100\% = 0.67\%\).</li>
+      <li>Total: \(1.67 + 0.67 = 2.34\%\). So \(\Delta V = 0.0234\times6.79\times10^{-5}
+      = 1.6\times10^{-6}\ \text{m}^3\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(V = (6.79 \pm 0.16)\times10^{-5}\ \text{m}^3\) (2.3%). The
+    diameter dominates because it is squared — so if you want a better volume,
+    <strong>measure the diameter more carefully, not the length</strong>. That sentence is exactly the kind of
+    targeted improvement the evaluation criterion rewards.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 4</span> 6 marks · uncertainty in a logarithm</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> In a radioactive decay experiment, a corrected count rate is
+    \(N = 240 \pm 16\) counts per minute. Determine the value and absolute uncertainty of \(\ln N\).</p>
+    <ol class="steps">
+      <li>\(\ln 240 = 5.481\).</li>
+      <li>Fractional uncertainty in \(N\): \(\dfrac{16}{240} = 0.0667\).</li>
+      <li>Absolute uncertainty in \(\ln N\): \(\Delta(\ln N) = \dfrac{\Delta N}{N} = 0.0667\).</li>
+      <li>So \(\ln N = 5.481 \pm 0.067\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(5.48 \pm 0.07\). Notice that the error bars on a \(\ln N\) plot are
+    <em>not</em> all the same size — they grow as \(N\) falls, because \(\Delta N/N\) grows. This is a subtle
+    point that impresses examiners and very few students mention.</div>
+  </div>
+</details>
+
+<h3>Error bars and what they tell you</h3>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — drawing and reading error bars</span>
+  <ol class="steps">
+    <li>Draw a bar from \(x - \Delta x\) to \(x + \Delta x\) and similarly for \(y\), making a cross.</li>
+    <li>The <strong>best-fit line must pass through every error bar</strong> (or, more precisely, through
+    almost all of them). If it cannot, either your uncertainties are underestimated or the relationship is
+    not the one you assumed.</li>
+    <li>To get the uncertainty in the gradient: draw the best-fit line, then draw the <strong>steepest</strong>
+    and <strong>shallowest</strong> lines that still pass through all the error bars. The uncertainty is half
+    the difference between those two gradients.</li>
+    <li>Do not draw the max/min lines through the origin unless theory says the intercept is zero.</li>
+  </ol>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Linearised data plot with error bars, best-fit line and steepest and shallowest lines">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="80" y1="270" x2="600" y2="270" stroke="#334155" stroke-width="2"/>
+    <line x1="80" y1="270" x2="80" y2="30" stroke="#334155" stroke-width="2"/>
+    <text x="300" y="300" font-size="13" font-family="system-ui, sans-serif" fill="#151923">l / m</text>
+    <text x="26" y="160" font-size="13" font-family="system-ui, sans-serif" fill="#151923" transform="rotate(-90 26 160)">T&#178; / s&#178;</text>
+    <g stroke="#334155" stroke-width="1.4">
+      <line x1="140" y1="238" x2="140" y2="248"/><line x1="134" y1="243" x2="146" y2="243"/>
+      <line x1="240" y1="196" x2="240" y2="208"/><line x1="233" y1="202" x2="247" y2="202"/>
+      <line x1="340" y1="152" x2="340" y2="166"/><line x1="332" y1="159" x2="348" y2="159"/>
+      <line x1="440" y1="108" x2="440" y2="124"/><line x1="431" y1="116" x2="449" y2="116"/>
+      <line x1="540" y1="62" x2="540" y2="80"/><line x1="530" y1="71" x2="550" y2="71"/>
+    </g>
+    <line x1="100" y1="262" x2="580" y2="46" stroke="#0a6f80" stroke-width="2.5"/>
+    <text x="404" y="128" font-size="13" font-family="system-ui, sans-serif" fill="#0a6f80">best-fit line</text>
+    <line x1="100" y1="256" x2="580" y2="30" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="420" y="60" font-size="12" font-family="system-ui, sans-serif" fill="#c0392b">steepest acceptable</text>
+    <line x1="100" y1="268" x2="580" y2="64" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="300" y="250" font-size="12" font-family="system-ui, sans-serif" fill="#c0392b">shallowest acceptable</text>
+    <circle cx="140" cy="243" r="3" fill="#151923"/>
+    <circle cx="240" cy="202" r="3" fill="#151923"/>
+    <circle cx="340" cy="159" r="3" fill="#151923"/>
+    <circle cx="440" cy="116" r="3" fill="#151923"/>
+    <circle cx="540" cy="71" r="3" fill="#151923"/>
+    <text x="96" y="288" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">gradient = 4&#960;&#178;/g</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> \(T^2\) against \(l\) with error bars. The steepest and
+  shallowest lines that still pass through every error bar give the range of plausible gradients; half their
+  difference is the uncertainty in the gradient.</figcaption>
+</figure>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — uncertainty</span>
+  <p><strong>uncertainty</strong><strong>random error</strong><strong>systematic error</strong><strong>precision</strong><strong>accuracy</strong><strong>absolute uncertainty</strong><strong>fractional uncertainty</strong><strong>percentage uncertainty</strong><strong>error bar</strong><strong>best-fit line</strong><strong>outlier</strong><strong>repeat readings</strong><strong>mean</strong><strong>spread / range</strong><strong>resolution</strong><strong>zero error</strong><strong>calibration</strong><strong>parallax</strong></p>
+</div>
+
+<h2 id="graphs">Graphs and data analysis</h2>
+
+<h3>Choosing axes and linearising</h3>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the linearising recipe</span>
+  <ol class="steps">
+    <li>Write the relationship with the <strong>dependent</strong> quantity (the one you measured as the
+    outcome) alone on the left.</li>
+    <li>Identify the <strong>independent</strong> variable (the one you deliberately changed) and get it to
+    power 1 on the right.</li>
+    <li>Whatever operation is applied to it, apply to the whole axis: if the right side has \(l\), plot against
+    \(l\); if it has \(1/R\), plot against \(1/R\); if it has \(T^2\), plot \(T^2\).</li>
+    <li>Whatever multiplies it is the <strong>gradient</strong>; anything added is the
+    <strong>intercept</strong>.</li>
+    <li>Extract the physical constant from the gradient, and check the units of the gradient match.</li>
+  </ol>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Relationship</th><th>Plot</th><th>Gradient</th><th>Intercept</th></tr></thead>
+    <tbody>
+      <tr><td>\(T = 2\pi\sqrt{l/g}\)</td><td>\(T^2\) vs \(l\)</td><td>\(4\pi^2/g\)</td><td>0</td></tr>
+      <tr><td>\(T = 2\pi\sqrt{m/k}\)</td><td>\(T^2\) vs \(m\)</td><td>\(4\pi^2/k\)</td><td>0</td></tr>
+      <tr><td>\(s = \lambda D/a\)</td><td>\(s\) vs \(D\)</td><td>\(\lambda/a\)</td><td>0</td></tr>
+      <tr><td>\(V = \varepsilon - Ir\)</td><td>\(V\) vs \(I\)</td><td>\(-r\)</td><td>\(\varepsilon\)</td></tr>
+      <tr><td>\(N = N_0e^{-\lambda t}\)</td><td>\(\ln N\) vs \(t\)</td><td>\(-\lambda\)</td><td>\(\ln N_0\)</td></tr>
+      <tr><td>\(\tfrac12 mv^2 = mgh\)</td><td>\(v^2\) vs \(h\)</td><td>\(2g\)</td><td>0</td></tr>
+      <tr><td>\(b = L/4\pi d^2\)</td><td>\(b\) vs \(1/d^2\)</td><td>\(L/4\pi\)</td><td>0</td></tr>
+      <tr><td>\(R = \rho L/A\)</td><td>\(R\) vs \(L\)</td><td>\(\rho/A\)</td><td>0 (or contact resistance)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Two. (1) Putting the independent variable on the vertical axis "because it looks better" — the
+  independent variable always goes on the <em>horizontal</em> axis (x), the dependent on the vertical (y).
+  (2) Forcing the line through the origin when there is a real physical intercept. A non-zero intercept in a
+  \(V\)–\(I\) graph is the emf; a non-zero intercept in a \(T^2\)–\(l\) graph is the end effect. Forcing it
+  through zero throws away information you should be discussing.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> 6 marks · gradient with uncertainty</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A student plots \(T^2\) against \(l\) for a pendulum and obtains a best-fit
+    gradient of \(4.05\ \text{s}^2\text{m}^{-1}\). The steepest and shallowest acceptable lines have gradients
+    4.30 and 3.80. Determine \(g\) and its uncertainty.</p>
+    <ol class="steps">
+      <li>\(g = \dfrac{4\pi^2}{\text{gradient}} = \dfrac{39.48}{4.05} = 9.75\ \text{m s}^{-2}\).</li>
+      <li>Uncertainty in gradient: \(\Delta m = \dfrac{4.30-3.80}{2} = 0.25\ \text{s}^2\text{m}^{-1}\);
+      percentage uncertainty \(= \dfrac{0.25}{4.05}\times100\% = 6.2\%\).</li>
+      <li>Since \(g \propto 1/\text{gradient}\), the percentage uncertainty in \(g\) is the same, 6.2%.</li>
+      <li>\(\Delta g = 0.062\times9.75 = 0.60\ \text{m s}^{-2}\), so \(g = 9.8 \pm 0.6\ \text{m s}^{-2}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(g = 9.8 \pm 0.6\ \text{m s}^{-2}\). The accepted value
+    9.81 lies inside this range, so the result agrees — state that explicitly. Note the percentage uncertainty
+    in \(g\) equals that in the gradient because \(g\) is inversely proportional to it (a power of −1, so
+    \(|n| = 1\)).</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 6</span> 7 marks · internal resistance from a graph</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The following data are obtained for a cell.</p>
+    <div class="table-wrap">
+      <table><thead><tr><th>\(I\) / A</th><th>0.10</th><th>0.20</th><th>0.30</th><th>0.40</th><th>0.50</th></tr></thead>
+      <tbody><tr><td>\(V\) / V</td><td>1.44</td><td>1.38</td><td>1.32</td><td>1.26</td><td>1.20</td></tr></tbody></table>
+    </div>
+    <p>Determine the emf and internal resistance.</p>
+    <ol class="steps">
+      <li>Linearise: \(V = \varepsilon - Ir\), so plot \(V\) against \(I\).</li>
+      <li>Gradient \(= \dfrac{1.20-1.44}{0.50-0.10} = \dfrac{-0.24}{0.40} = -0.60\ \text{V A}^{-1}\), so
+      \(r = 0.60\ \Omega\).</li>
+      <li>Intercept on the \(V\)-axis: from \(V = 1.44\) at \(I = 0.10\), \(\varepsilon = 1.44 + 0.60(0.10)
+      = 1.50\ \text{V}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(\varepsilon = 1.50\ \text{V}\), \(r = 0.60\ \Omega\). Units check:
+    the gradient is in V A⁻¹ = Ω ✓. The intercept is the emf (the pd at zero current) — a physical meaning you
+    should always state.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — data-based questions in Paper 1B</span>
+  <p>Paper 1B gives you a dataset you have never seen. The routine is identical: read the axes and units,
+  linearise if needed, find the gradient with its units, and interpret it. Two habits win marks: (1) use a
+  large triangle for the gradient — at least half the line length; (2) quote the gradient with its units before
+  you use it, because the follow-up question is usually "hence determine…" and the units will guide you.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — graphs</span>
+  <p><strong>independent variable</strong><strong>dependent variable</strong><strong>controlled variable</strong><strong>axis</strong><strong>scale</strong><strong>linearise</strong><strong>gradient</strong><strong>intercept</strong><strong>best-fit line</strong><strong>curve</strong><strong>scatter</strong><strong>extrapolate</strong><strong>data point</strong><strong>trend</strong></p>
+</div>
+
+<h2 id="csp">The collaborative sciences project</h2>
+
+<p><strong>10 hours, shared across your science subjects, not individually assessed in the physics grade</strong>
+— but it is 10 of the 60 prescribed hours, and it is the cheapest place to learn the skills the IA is marked
+on.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — get IA value out of the CSP</span>
+  <ol class="steps">
+    <li>Volunteer for the role that forces you to handle data: data logging, spreadsheet processing, or
+    uncertainty analysis.</li>
+    <li>Practise the exact habits the IA rewards: a variables table, repeats, uncertainty columns, error bars,
+    a linearised graph.</li>
+    <li>Keep your own record. If your project involves physics (renewable energy, water quality, materials
+    testing), it may seed an IA research question — but note that the IA must be <em>your own</em> independent
+    work.</li>
+    <li>Use the interdisciplinary angle: the CSP's whole point is that one phenomenon can be approached from
+    physics, chemistry, biology and CS. Write down the physics mechanism explicitly — it is excellent
+    practice for the linking questions in Paper 2.</li>
+  </ol>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — the CSP</span>
+  <p><strong>collaborative sciences project</strong><strong>interdisciplinary</strong><strong>shared</strong><strong>role / responsibility</strong> /<strong>group work</strong><strong>common theme</strong></p>
+</div>
+
+<h2 id="ia">The scientific investigation (IA)</h2>
+
+<p><strong>10 hours, 24 marks, 20% of your final grade.</strong> Four criteria, each marked out of 6:</p>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Criterion</th><th>Marks</th><th>What it really asks</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Research design</strong></td><td>6</td><td>Is the question focused and answerable? Are the variables properly identified and controlled? Is the method detailed enough to repeat? Is the chosen range and instrument justified?</td></tr>
+      <tr><td><strong>Data analysis</strong></td><td>6</td><td>Is the data sufficient and correctly recorded with uncertainties? Is it processed correctly (including propagation)? Is the graph correct, with error bars and a best-fit line?</td></tr>
+      <tr><td><strong>Conclusion</strong></td><td>6</td><td>Does the conclusion follow from the processed data? Is it compared quantitatively with a literature value? Is the physics explained, not just asserted?</td></tr>
+      <tr><td><strong>Evaluation</strong></td><td>6</td><td>Are the limitations specific and quantified? Is the single biggest source of error identified with its size? Are the improvements concrete and realistic?</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Choosing a research question you can actually answer in 10 hours</h3>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the five tests for a good RQ</span>
+  <ol class="steps">
+    <li><strong>It must be a relationship, not a fact.</strong> "How does the period of a pendulum depend on
+    its length?" is good. "What is \(g\)?" is weak — it becomes a one-number answer with nothing to
+    discuss.</li>
+    <li><strong>You must be able to get at least 6–8 data points</strong> across a wide enough range for a
+    meaningful graph.</li>
+    <li><strong>The apparatus must exist in your school</strong> or be cheap and safe to obtain. Do not design
+    a vacuum chamber.</li>
+    <li><strong>There must be a literature value</strong> to compare against — otherwise your conclusion
+    criterion has nothing to bite on.</li>
+    <li><strong>Something must go interestingly wrong</strong> so you have a real systematic error to discuss.
+    The best IAs have a genuine puzzle: a non-zero intercept, a small curvature, an unexpected dependence.</li>
+  </ol>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Choosing an RQ that is too ambitious ("determine the universal gravitational constant \(G\)") or too
+  trivial ("does the mass of a cart affect its acceleration down a slope"). The sweet spot is a
+  <em>standard</em> relationship investigated with unusual care, where the value of your work comes from the
+  rigour of the uncertainty analysis and the quality of the evaluation — not from novelty.</p>
+</div>
+
+<h3>The hypothesis and the variables table</h3>
+
+<p>A good <strong>hypothesis</strong> states the expected relationship <em>and the reason</em>. Not "the period
+will increase with length" but:</p>
+
+<blockquote class="quote-block">"Theory predicts \(T = 2\pi\sqrt{l/g}\), so a graph of \(T^2\) against \(l\)
+should be a straight line through the origin with gradient \(4\pi^2/g\). Using \(g = 9.81\ \text{m s}^{-2}\),
+the expected gradient is \(4.02\ \text{s}^2\text{m}^{-1}\). The measured gradient is expected to be slightly
+larger because the string will stretch under the bob's weight, reducing the effective length."
+<cite>Model hypothesis — note the quantitative prediction and the anticipated deviation</cite></blockquote>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Variable type</th><th>Example (pendulum)</th><th>How you control / measure it</th><th>Uncertainty</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Independent</strong> — what you change</td><td>Length \(l\) / m</td><td>Metre rule, pivot to centre of bob; 6 values from 0.20 m to 1.00 m</td><td>±0.001 m (half division) — but see below</td></tr>
+      <tr><td><strong>Dependent</strong> — what you measure</td><td>Period \(T\) / s</td><td>Time 20 oscillations with a stopwatch; repeat 3 times; divide by 20</td><td>±0.15 s from the spread of repeats, ÷20 = ±0.008 s per period</td></tr>
+      <tr><td><strong>Controlled</strong> — what you hold fixed</td><td>Mass of bob, amplitude (&lt;10°), same string, no draughts</td><td>Same bob throughout; release against a fixed protractor mark</td><td>—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — the sentence that earns the research-design marks</span>
+  <p>For <em>every</em> controlled variable, write one sentence justifying the control: "The amplitude was kept
+  below 10° so that the small-angle approximation \(\sin\theta \approx \theta\) remains valid, since at 10° the
+  error in this approximation is about 0.5%." That is a justified decision, and justified decisions are what
+  the criterion rewards. Lists of variables without reasons score in the bottom band.</p>
+</div>
+
+<h3>Apparatus and method detail</h3>
+
+<p>The test for the method section is simple: <strong>could a competent classmate reproduce your experiment
+exactly from what you wrote, without asking you anything?</strong> That means:</p>
+<ul>
+  <li>A labelled diagram or photograph of the actual setup (not a generic textbook picture).</li>
+  <li>Apparatus with ranges and precisions: "metre rule, ±1 mm", "digital stopwatch, ±0.01 s",
+  "micrometer, ±0.01 mm".</li>
+  <li>The exact range and number of values of the independent variable, and why that range.</li>
+  <li>The number of repeats, and why.</li>
+  <li>Any safety or ethical points (lasers, heavy suspended masses, radioactive sources if your school permits
+  sealed sources).</li>
+</ul>
+
+<h3>Data tables with uncertainty columns</h3>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th>\(l\) / m<br>±0.001</th><th>\(20T\) (1) / s</th><th>\(20T\) (2) / s</th><th>\(20T\) (3) / s</th>
+      <th>mean \(T\) / s</th><th>\(\Delta T\) / s</th><th>\(T^2\) / s²</th><th>\(\Delta(T^2)\) / s²</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0.200</td><td>17.94</td><td>17.88</td><td>17.98</td><td>0.897</td><td>0.003</td><td>0.804</td><td>0.005</td></tr>
+      <tr><td>0.400</td><td>25.32</td><td>25.40</td><td>25.28</td><td>1.267</td><td>0.003</td><td>1.604</td><td>0.008</td></tr>
+      <tr><td>0.600</td><td>31.02</td><td>30.94</td><td>31.10</td><td>1.551</td><td>0.003</td><td>2.406</td><td>0.009</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Presenting raw data only, processing nothing, and expecting the analysis criterion to be satisfied. The
+  table must show <strong>processed</strong> columns (means, derived quantities) <em>and</em> their propagated
+  uncertainties. Show one worked example of the propagation in words beneath the table — "for the first row,
+  \(\Delta(T^2)/T^2 = 2\Delta T/T = 2(0.003)/0.897 = 0.67\%\)" — then state that the rest were done the same
+  way.</p>
+</div>
+
+<h3>Processing and graphing</h3>
+
+<ol class="steps">
+  <li>Plot the linearised graph with sensible scales (use most of the page) and labelled axes with units.</li>
+  <li>Add error bars to every point.</li>
+  <li>Draw the best-fit line (or use software, but state that you used it and what method).</li>
+  <li>Draw steepest/shallowest lines; quote gradient ± uncertainty with units.</li>
+  <li>Extract the physical constant and propagate the uncertainty.</li>
+</ol>
+
+<h3>Conclusion: comparison to literature values</h3>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the four-sentence conclusion that scores 6/6</span>
+  <ol class="steps">
+    <li><strong>State the relationship you found, in words and as an equation with numbers.</strong>
+    "\(T^2\) is directly proportional to \(l\): \(T^2 = (4.05\ \text{s}^2\text{m}^{-1})\,l - 0.01\ \text{s}^2\)."</li>
+    <li><strong>Give the physical constant with uncertainty.</strong>
+    "Hence \(g = 9.75 \pm 0.60\ \text{m s}^{-2}\)."</li>
+    <li><strong>Compare quantitatively with the accepted value.</strong>
+    "The percentage difference from 9.81 m s⁻² is 0.6%, which is far smaller than the 6.2% uncertainty, so my
+    result agrees with the accepted value within experimental uncertainty."</li>
+    <li><strong>Interpret the intercept / any deviation physically.</strong>
+    "The small negative intercept of −0.01 s² is within its own uncertainty of ±0.02 s², so it is not
+    significant; had it been significant and negative it would suggest the measured lengths were
+    systematically too large."</li>
+  </ol>
+</div>
+
+<h3>Evaluation: specific, quantified, actionable</h3>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>What scores 0</h4>
+    <p>"Human error." "The equipment wasn't very accurate." "I could use better apparatus." "Parallax error."
+    These are unnamed, unquantified, and unactionable.</p>
+  </div>
+  <div class="card">
+    <h4>What scores 6</h4>
+    <p>"The largest single contribution to the uncertainty in \(T\) is the reaction time in starting and
+    stopping the stopwatch. Across 20 oscillations the spread of my three repeats was up to 0.16 s, i.e.
+    ±0.08 s, which after dividing by 20 gives ±0.004 s on each period — a 0.4% uncertainty that dominates the
+    0.2% uncertainty in \(l\). Using a light gate at the equilibrium position would reduce this to under
+    0.05%, making the uncertainty in \(l\) the limiting factor instead."</p>
+  </div>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the evaluation template</span>
+  <ol class="steps">
+    <li>Name the error precisely ("reaction time in starting/stopping the stopwatch", not "human error").</li>
+    <li>Say whether it is random or systematic, and which quantity it affects.</li>
+    <li><strong>Quantify it</strong> — a number with units, and a percentage of the measured value.</li>
+    <li>Compare it with your other uncertainties and declare the <strong>single largest</strong>, with the
+    numbers to justify the claim.</li>
+    <li>Propose a specific improvement and <strong>state how much it would help</strong> (a number, an
+    instrument, a technique).</li>
+    <li>Identify at least one genuine <em>systematic</em> error separately, and explain what it would do to
+    your graph (intercept? curvature? shift in gradient?).</li>
+  </ol>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — the IA</span>
+  <p><strong>research question</strong><strong>hypothesis</strong><strong>method</strong><strong>apparatus</strong><strong>reliability</strong><strong>validity</strong><strong>limitation</strong><strong>improvement</strong><strong>replicate</strong><strong>anomaly</strong><strong>literature value</strong> /<strong>accepted value</strong><strong>moderation</strong> /<strong>criterion</strong><strong>top-band</strong></p>
+</div>
+
+<h2 id="ideas">12 ranked IA ideas</h2>
+
+<p>Ranked by <em>reliability of outcome</em> — i.e. how likely you are to get clean, gradeable data inside
+10 hours — not by cleverness.</p>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>#</th><th>Research question</th><th>Equipment needed</th><th>Difficulty</th><th>Why it works / what to watch</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>How does the period of a simple pendulum depend on length?</td><td>Retort stand, string, bob, metre rule, stopwatch, protractor</td><td>Easy</td><td>Classic for a reason: clean linearisation, literature value, and a real systematic (measuring to the bob's centre). Time 20 swings.</td></tr>
+      <tr><td>2</td><td>How does the resistance of a wire depend on its length?</td><td>Constantan wire, metre rule, micrometer, ammeter, voltmeter, power supply</td><td>Easy</td><td>Gives resistivity. Watch for heating — keep current low and take readings quickly. Non-zero intercept = contact resistance.</td></tr>
+      <tr><td>3</td><td>How does the terminal pd of a cell depend on current?</td><td>Cell, variable resistor, ammeter, voltmeter</td><td>Easy</td><td>Gradient = −r, intercept = emf, both with literature-comparable values. Beautiful, unambiguous graph.</td></tr>
+      <tr><td>4</td><td>How does the period of a mass–spring system depend on mass?</td><td>Spring set, masses, stopwatch, clamp stand</td><td>Easy</td><td>Gives \(k\), which you can cross-check from a static \(F\)–\(x\) graph. The intercept reveals the spring's own effective mass — a gift for evaluation.</td></tr>
+      <tr><td>5</td><td>How does the deflection of a cantilever depend on the load and its position?</td><td>Metre rule, clamp, masses, G-clamp, ruler or dial gauge</td><td>Medium</td><td>Two independent variables you can separate. Rich evaluation (the rule's own mass, the clamp not being rigid).</td></tr>
+      <tr><td>6</td><td>How does the refractive index of a liquid depend on concentration?</td><td>Semicircular trough or rectangular container, laser, protractor, sugar solution, refractometer (optional)</td><td>Medium</td><td>Clean linear region at low concentration; strong real-world link. Requires careful laser safety and beam-width correction.</td></tr>
+      <tr><td>7</td><td>How does the wavelength of light affect the double-slit fringe spacing?</td><td>Laser or LED + filters, double-slit slide, screen, metre rule</td><td>Medium</td><td>Tests \(s = \lambda D/a\) directly. Measuring across many fringes is the accuracy trick; dark room essential.</td></tr>
+      <tr><td>8</td><td>How does the period of oscillation depend on the moment of inertia of a rotating body?</td><td>Rotating platform, masses on a rod, light gate or stopwatch</td><td>Medium</td><td>Genuine HL content (A.4). The intercept gives the platform's own \(I\) — excellent evaluation material.</td></tr>
+      <tr><td>9</td><td>How does the resonant frequency of an air column depend on its length (end correction)?</td><td>Resonance tube, water, signal generator, speaker or tuning forks</td><td>Medium</td><td>The end correction is a measurable systematic. Using two resonances and their difference eliminates it — a top-band move.</td></tr>
+      <tr><td>10</td><td>How does the intensity of a source vary with distance (inverse-square law)?</td><td>LDR or photodiode, multimeter, metre rule, lamp, dark conditions</td><td>Medium</td><td>Plot \(I\) against \(1/d^2\). Watch: background light must be subtracted, and the "point source" assumption fails close up.</td></tr>
+      <tr><td>11</td><td>How does the magnetic force on a current-carrying wire depend on the current and the field?</td><td>Current balance or a wire on a balance, magnets, power supply, ammeter</td><td>Hard</td><td>Excellent HL physics (\(F = BIL\)) but fiddly to set up and sensitive to draughts and lead-wire forces.</td></tr>
+      <tr><td>12</td><td>How does the half-life of a short-lived isotope (e.g. protactinium-234) depend on… nothing — measure it</td><td>Sealed protactinium generator, GM tube + counter, or a school-approved equivalent</td><td>Hard</td><td>Requires the school to hold and licence the source, and needs careful background subtraction. Do not attempt without explicit teacher approval and a risk assessment.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Picking idea 11 or 12 because it "looks impressive". Difficulty is not rewarded — <em>rigour</em> is. A
+  superbly-analysed pendulum beats a sloppy current balance every single time, and the pendulum is far more
+  likely to produce data you can actually draw conclusions from.</p>
+</div>
+
+<h2 id="complaints">The examiner's most common complaints</h2>
+
+<p>Drawn from what moderators consistently report. Each complaint is followed by the fix.</p>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Complaint</th><th>Why it costs marks</th><th>The fix</th></tr></thead>
+    <tbody>
+      <tr><td>"Human error" as a source of error</td><td>Unnamed, unquantified, unactionable — zero marks in evaluation</td><td>Name the mechanism ("reaction time in starting the stopwatch"), give its size, and propose a light gate.</td></tr>
+      <tr><td>No error bars, or error bars with no explanation of how they were obtained</td><td>Data-analysis marks require you to show the uncertainty in <em>both</em> variables and to derive them</td><td>Show one worked calculation in the text, state the rule used, and say the rest were done identically.</td></tr>
+      <tr><td>Data table with no uncertainty columns</td><td>Same criterion; a table of bare numbers cannot be "processed correctly"</td><td>Add a column of absolute uncertainties for every measured quantity and every derived one.</td></tr>
+      <tr><td>Conclusion restates the graph instead of interpreting it</td><td>Conclusion criterion: "the conclusion must be justified by the data and compared with the accepted value"</td><td>Quote the percentage difference, compare it with the percentage uncertainty, and state whether they agree.</td></tr>
+      <tr><td>Improvements that are vague ("use better equipment", "take more readings")</td><td>Not actionable, so not creditworthy</td><td>Name the instrument, the setting, and the expected improvement in the uncertainty.</td></tr>
+      <tr><td>Method too brief to reproduce</td><td>Research-design marks depend on replicability</td><td>Include ranges, precisions, the number of repeats, and a labelled photo of your actual setup.</td></tr>
+      <tr><td>Only 3 or 4 data points</td><td>Too few to establish a trend or to fit a line meaningfully</td><td>Aim for 6–8 values across the widest workable range, with at least 3 repeats each.</td></tr>
+      <tr><td>Significant figures ignored (e.g. "g = 9.7538216 m s⁻²")</td><td>Shows no awareness that uncertainty limits precision</td><td>Quote the value and its uncertainty to the same power of ten, then round both to 1 or 2 significant figures.</td></tr>
+      <tr><td>Units missing from table headers or graph axes</td><td>Makes the data uninterpretable</td><td>Header format: "\(l\) / m", "\(T^2\) / s²" — quantity symbol, slash, unit.</td></tr>
+      <tr><td>Background radiation not subtracted in a decay experiment</td><td>Invalidates the half-life and hence the conclusion</td><td>Measure background for a long count with the source removed; subtract it before any analysis.</td></tr>
+      <tr><td>Forcing a best-fit line through the origin when a real intercept exists</td><td>Discards the most interesting information in the data</td><td>Fit freely, then discuss whether the intercept is significant given its uncertainty.</td></tr>
+      <tr><td>Confusing precision with accuracy, or a "very accurate" claim with no number</td><td>Vocabulary marks and evaluation marks</td><td>Use percentage uncertainty for precision and percentage difference for accuracy, and always give the number.</td></tr>
+      <tr><td>The investigation is really a demonstration, not an investigation</td><td>No relationship tested, so little to analyse</td><td>Reframe as "how does Y depend on X?" and vary X across a range.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — the last-hour checklist before you submit</span>
+  <ol class="steps">
+    <li>Does every measured quantity have an uncertainty in the table?</li>
+    <li>Does every point on the graph have error bars?</li>
+    <li>Is there a best-fit line with a gradient, an uncertainty, and units?</li>
+    <li>Does the conclusion contain a percentage difference <em>and</em> a percentage uncertainty, compared
+    explicitly?</li>
+    <li>Is the largest source of error named, quantified, and given a numeric improvement?</li>
+    <li>Is there at least one <em>systematic</em> error discussed separately from the random ones?</li>
+    <li>Could a classmate repeat this from your method alone?</li>
+    <li>Are your significant figures consistent with your uncertainties?</li>
+  </ol>
+</div>
+
+<div class="conn">
+  <span class="conn__title">Connections</span>
+  <ul>
+    <li><strong>→ Every theme:</strong> the IA is where the themes stop being separate. A pendulum IA uses A.1
+    kinematics, C.1 SHM and A.4 rotation; a resistance IA uses B.5 and D.2.</li>
+    <li><strong>→ Paper 1B:</strong> the data-based questions in Paper 1 are the same skills under time
+    pressure. Every hour spent on your IA graph technique is worth marks in Paper 1B.</li>
+    <li><strong>→ Maths AA HL:</strong> linearising, logarithms, and uncertainty propagation are applied
+    calculus and statistics.</li>
+    <li><strong>→ Computer Science HL:</strong> if you write a script to process your data, you are doing the
+    same work twice — and you can legitimately reuse your CS skills for fitting and error propagation, as long
+    as you explain the method in your write-up.</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can check any equation for dimensional consistency and find the units of a gradient.</span></label></li>
+  <li><label><input type="checkbox"><span>I can distinguish random from systematic error, and precision from accuracy, with examples.</span></label></li>
+  <li><label><input type="checkbox"><span>I can combine uncertainties for sums, products, powers, logarithms and trigonometry.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use the maximum–minimum method for any function.</span></label></li>
+  <li><label><input type="checkbox"><span>I can draw error bars and find the uncertainty in a gradient from steepest/shallowest lines.</span></label></li>
+  <li><label><input type="checkbox"><span>I can linearise at least eight standard relationships and state what the gradient equals.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write a hypothesis with a quantitative prediction and an anticipated deviation.</span></label></li>
+  <li><label><input type="checkbox"><span>I can build a variables table with justified controls and uncertainties.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write a conclusion with a percentage difference compared against a percentage uncertainty.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write an evaluation that names, quantifies and fixes the single biggest error.</span></label></li>
+  <li><label><input type="checkbox"><span>I have chosen an IA research question that passes all five tests.</span></label></li>
+  <li><label><input type="checkbox"><span>I have checked my draft against all eight items of the pre-submission checklist.</span></label></li>
+</ul>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li>
+    <p><strong>[3 marks]</strong> A student writes \(v = \sqrt{\dfrac{2E_k}{m}}\) and obtains a speed in
+    m s⁻¹. Show by dimensional analysis that the expression is consistent.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(E_k\) has dimensions kg m² s⁻²; \(m\) has kg. So \(\dfrac{2E_k}{m}\) has dimensions
+      \(\dfrac{\text{kg m}^2\text{s}^{-2}}{\text{kg}} = \text{m}^2\text{s}^{-2}\). Taking the square root gives
+      m s⁻¹, matching \(v\). ✓ Consistent.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[4 marks]</strong> A resistance is \(R = (220 \pm 2)\ \Omega\) and the current through it is
+    \(I = (0.50 \pm 0.01)\) A. Determine the power dissipated and its absolute uncertainty.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(P = I^2R = (0.50)^2(220) = 55\ \text{W}\).</p>
+      <p>Percentage uncertainty in \(I\): \(0.01/0.50\times100\% = 2\%\); since \(I\) is squared, 4%.</p>
+      <p>Percentage uncertainty in \(R\): \(2/220\times100\% = 0.91\%\).</p>
+      <p>Total 4.91%, so \(\Delta P = 0.0491\times55 = 2.7\ \text{W}\). Thus
+      \(P = 55 \pm 3\ \text{W}\). The current dominates because it is squared — measure the current more
+      carefully.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[4 marks]</strong> State the difference between a random and a systematic error, and give one
+    example of each from a pendulum experiment.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Random errors cause scatter in repeated measurements and can be reduced by averaging: e.g. the
+      variation in the measured time for 20 oscillations due to reaction time.</p>
+      <p>Systematic errors shift all measurements in the same direction and cannot be reduced by repeating:
+      e.g. measuring the length to the top of the bob instead of to its centre of mass, which makes every
+      length too small by the bob's radius and biases the gradient.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> For a fixed mass of gas at constant temperature, \(pV = \text{constant}\).
+    State what you would plot to obtain a straight line, and what the gradient would be.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Rewrite as \(p = \dfrac{\text{constant}}{V} = (\text{constant})\dfrac{1}{V}\). So plot \(p\) on the
+      vertical axis against \(1/V\) on the horizontal axis. The gradient is the constant \(pV = nRT\), with
+      units of J (Pa m³ = J).</p>
+      <p>Alternatively plot \(p\) against \(V\) and get a curve — which is why linearising is necessary if you
+      want a gradient and an uncertainty in it.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> A student measures \(g = 10.4\ \text{m s}^{-2}\) with a percentage uncertainty
+    of 3%. Determine the percentage difference from 9.81 m s⁻² and state what the comparison tells you.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Percentage difference \(= \dfrac{|10.4 - 9.81|}{9.81}\times100\% = \dfrac{0.59}{9.81}\times100\%
+      = 6.0\%\).</p>
+      <p>Since 6.0% &gt; 3.0%, the accepted value lies <em>outside</em> the uncertainty range, so the result
+      does <strong>not</strong> agree with the accepted value and there is evidence of a significant
+      systematic error that must be identified — e.g. measuring the pendulum length to the wrong point, or
+      using too large an amplitude.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A student's evaluation says: "The experiment was affected by human error and
+    the equipment was not accurate. To improve, I would use better equipment and take more readings." Rewrite
+    this to score full marks.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>"The largest source of uncertainty was the reaction time in starting and stopping the stopwatch. Over
+      20 oscillations the three repeats spanned up to 0.16 s, giving an uncertainty of ±0.08 s in the total
+      time and therefore ±0.004 s in each period — a fractional uncertainty of 0.4%, which exceeds the 0.2%
+      uncertainty in the length. Replacing the stopwatch with a light gate at the equilibrium position, where
+      the bob's speed is greatest, would reduce this to below 0.05%, leaving the measurement of length as the
+      limiting factor. In addition, there is a systematic error: the length was measured to the top of the bob
+      rather than to its centre of mass, making every length 1.1 cm too small; this shifts the best-fit line
+      horizontally and produces a positive intercept on the \(l\)-axis, which is consistent with the observed
+      intercept of +1.2 cm."</p>
+      <p>Every element is named, quantified, and given a concrete improvement with an expected magnitude.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A student measures the count rate from a source and obtains 320, 315, 325
+    counts per minute. With the source removed, 28, 32, 30 counts per minute are recorded. Determine the
+    corrected count rate with its uncertainty, and explain why the correction matters.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Mean with source \(= 320\); spread is ±5, so the uncertainty in the mean is about ±3 (or use
+      \(\pm\frac{\text{range}}{2}\) conservatively).</p>
+      <p>Mean background \(= 30\), spread ±2, uncertainty about ±1.</p>
+      <p>Corrected rate \(= 320 - 30 = 290\) counts per minute, with absolute uncertainty
+      \(3 + 1 = 4\) (add absolute uncertainties for a subtraction).</p>
+      <p>So \(290 \pm 4\) counts per minute (1.4%). The correction matters because the background is 9% of the
+      raw count — leaving it in would make the source appear significantly more active than it is and would
+      distort any half-life calculated later.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[7 marks]</strong> Design an investigation to determine the resistivity of a metal wire. Your
+    answer should include the research question, the variables with justifications, the linearised graph, and
+    one quantified improvement.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p><strong>RQ:</strong> How does the resistance of a constantan wire depend on its length?</p>
+      <p><strong>Variables.</strong> Independent: length \(L\) between the crocodile clips, from 0.20 m to
+      1.00 m in 0.10 m steps. Dependent: resistance \(R = V/I\) measured with an ammeter and voltmeter.
+      Controlled: the same wire throughout (constant cross-sectional area and material); current kept below
+      0.5 A so the wire does not heat and change its resistivity; the wire straightened and taped to a metre
+      rule so the length between clips is well defined; readings taken promptly and the circuit opened between
+      them.</p>
+      <p><strong>Graph.</strong> \(R = \dfrac{\rho}{A}L\), so plot \(R\) against \(L\). Gradient \(= \rho/A\),
+      and since \(A = \pi d^2/4\) with \(d\) measured by micrometer at six points along the wire,
+      \(\rho = \text{gradient}\times A\).</p>
+      <p><strong>Improvement.</strong> The diameter dominates: \(A\) depends on \(d^2\), so a 1% uncertainty in
+      \(d\) becomes 2% in \(A\) and hence in \(\rho\). Measuring \(d\) with a micrometer at ten points
+      (rather than six) and taking the mean reduces the random component by roughly \(\sqrt{10/6} \approx 1.3\),
+      bringing the contribution down to about 1.5%. A further improvement would be to use a four-terminal
+      (Kelvin) connection to eliminate contact resistance, which is the cause of any non-zero intercept.</p>
+    </div></details>
+  </li>
+</ol>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

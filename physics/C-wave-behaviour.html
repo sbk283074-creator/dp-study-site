@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="physics">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C · Wave behaviour — Physics HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Physics HL · Theme C</span>
+<h1 class="page-title">C · Wave behaviour</h1>
+<p class="lede">Theme C asks: <em>how do waves carry and transfer energy?</em> A wave is a disturbance that
+moves without the medium moving with it — energy travels, matter stays roughly put. That one property explains
+why two waves can pass through each other, why they can cancel, why they bend round corners, and why an
+observer moving relative to a source hears a different pitch. It also sets up the central drama of Theme E:
+light diffracts like a wave and arrives in packets like a particle.</p>
+<div class="page-meta">
+  <span class="tag">C.1 SHM · C.2 Wave model · C.3 Phenomena · C.4 Standing waves · C.5 Doppler</span>
+  <span class="tag tag--hl">HL: phase angle, single-slit &amp; grating, quantitative Doppler</span>
+  <span class="tag">~4,700 words</span>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why this theme is the hinge of the course</span>
+  <p>C is the bridge. It uses Theme A (oscillation is \(F = ma\) with a position-dependent force). It is used
+  by Theme E (atomic spectra are wavelengths; de Broglie waves are matter waves). And it contains the two
+  experiments — Young's double slit and the photoelectric effect — that together define wave–particle duality.
+  If you are strong here, E becomes much easier.</p>
+</div>
+
+<h2 id="c1">C.1 Simple harmonic motion <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>The condition for SHM</h3>
+
+<p><strong>Intuition.</strong> Imagine a mass on a spring. Pull it down and release. The further you pull, the
+harder the spring pulls back. So the acceleration always points <em>towards the equilibrium position</em> and
+is <em>proportional to the displacement</em>. That is the whole definition:</p>
+
+<p>\[a = -\omega^2 x\]</p>
+<dl class="glossary">
+  <dt>\(x\)</dt><dd>displacement from the equilibrium position (m)</dd>
+  <dt>\(a\)</dt><dd>acceleration (m s⁻²), always directed towards equilibrium — hence the minus sign</dd>
+  <dt>\(\omega\)</dt><dd>angular frequency (rad s⁻¹), with \(\omega = 2\pi f = \dfrac{2\pi}{T}\)</dd>
+  <dt>\(x_0\)</dt><dd>amplitude (m) — the maximum displacement</dd>
+</dl>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>The condition is \(a \propto -x\), not merely "it oscillates". A ball bouncing on the floor oscillates but
+  is <em>not</em> SHM, because while it is in the air the acceleration is constant (\(-g\)), not proportional
+  to displacement. The test is always: sketch or derive \(a\) as a function of \(x\) and check whether it is a
+  straight line through the origin with a negative gradient.</p>
+</div>
+
+<h3>Period, frequency, angular frequency</h3>
+<p>\[T = \frac{1}{f}, \qquad \omega = 2\pi f = \frac{2\pi}{T}, \qquad f = \frac{\omega}{2\pi}\]</p>
+<ul>
+  <li>\(T\) period (s) — time for one complete oscillation.</li>
+  <li>\(f\) frequency (Hz) — oscillations per second.</li>
+  <li>\(\omega\) angular frequency (rad s⁻¹) — the rate of change of <em>phase</em>; it is the same quantity in
+  radians per second, which is why factors of \(2\pi\) keep appearing.</li>
+</ul>
+<p>The key insight for the whole topic: <strong>the period of SHM does not depend on the amplitude.</strong>
+Swing a pendulum gently or widely (up to about 10°) and it takes the same time. That is because a larger
+amplitude means a larger restoring force, so a larger average speed — the two effects cancel exactly.</p>
+
+<h3>The mass–spring system</h3>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(T = 2\pi\sqrt{m/k}\) for a mass on a spring</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Hooke's law gives the restoring force \(F = -kx\), where \(k\) is the spring constant (N m⁻¹).</li>
+      <li>Newton's second law: \(ma = -kx\), so \(a = -\dfrac{k}{m}x\).</li>
+      <li>Compare with the SHM condition \(a = -\omega^2 x\): therefore \(\omega^2 = \dfrac{k}{m}\) and
+      \(\omega = \sqrt{\dfrac{k}{m}}\).</li>
+      <li>Since \(T = \dfrac{2\pi}{\omega}\): \(T = 2\pi\sqrt{\dfrac{m}{k}}\).</li>
+    </ol>
+    <p><strong>What it means:</strong> a stiffer spring (larger \(k\)) gives a shorter period; a bigger mass
+    gives a longer one. Amplitude does not appear — the defining property of SHM.
+    <strong>When it is wrong:</strong> vertical springs need care only in that the equilibrium position shifts
+    by \(mg/k\); the period is unchanged. With two springs in series or parallel, replace \(k\) by the
+    effective spring constant first.</p>
+  </div>
+</details>
+
+<h3>The simple pendulum</h3>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(T = 2\pi\sqrt{l/g}\) and the small-angle approximation</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>For a bob of mass \(m\) on a string of length \(l\) displaced by angle \(\theta\), the restoring
+      force along the arc is the component of weight: \(F = -mg\sin\theta\).</li>
+      <li>The displacement along the arc is \(x = l\theta\), so \(a = \dfrac{F}{m} = -g\sin\theta\).</li>
+      <li>For <em>small</em> angles (in radians), \(\sin\theta \approx \theta\), so \(a \approx -g\theta
+      = -g\dfrac{x}{l} = -\dfrac{g}{l}x\).</li>
+      <li>This is the SHM condition with \(\omega^2 = \dfrac{g}{l}\), so \(T = 2\pi\sqrt{\dfrac{l}{g}}\).</li>
+    </ol>
+    <p><strong>What it means:</strong> the period depends on length and \(g\) only — not on mass, not on
+    amplitude (for small angles). <strong>When it is wrong:</strong> for large amplitudes the
+    \(\sin\theta\approx\theta\) approximation fails and the period increases slightly; and the formula assumes a
+    light, inextensible string and a point mass.</p>
+  </div>
+</details>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the pendulum experiment you will actually do</span>
+  <ol class="steps">
+    <li>Measure the length \(l\) from the <em>pivot</em> to the <em>centre of mass</em> of the bob — not to the
+    top of the bob.</li>
+    <li>Time 20 oscillations, not one, and divide. This divides the reaction-time uncertainty by 20.</li>
+    <li>Keep the amplitude below about 10° so the small-angle approximation holds.</li>
+    <li>Vary \(l\), plot \(T^2\) against \(l\); the gradient is \(4\pi^2/g\), so \(g = 4\pi^2/\text{gradient}\).</li>
+    <li>Expect a small positive intercept from the bob's radius or a systematic error in \(l\) — that is a
+    genuine evaluation point, not a failure.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 1</span> IB-style · 4 marks · spring</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A spring of spring constant 80 N m⁻¹ has a 0.50 kg mass attached. Determine
+    the period of oscillation. The mass is then pulled down 0.060 m and released. Determine the maximum
+    speed.</p>
+    <ol class="steps">
+      <li>\(T = 2\pi\sqrt{m/k} = 2\pi\sqrt{0.50/80} = 2\pi\sqrt{0.00625} = 2\pi(0.0791) = 0.497\ \text{s}\).</li>
+      <li>\(\omega = \sqrt{k/m} = \sqrt{160} = 12.6\ \text{rad s}^{-1}\).</li>
+      <li>Maximum speed \(v_{\max} = \omega x_0 = 12.6\times0.060 = 0.76\ \text{m s}^{-1}\), occurring at the
+      equilibrium position.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(T = 0.50\ \text{s}\), \(v_{\max} = 0.76\ \text{m s}^{-1}\). Check by
+    energy: \(\tfrac12 kx_0^2 = \tfrac12(80)(0.0036) = 0.144\ \text{J}\); \(\tfrac12 mv^2 = 0.144\) gives
+    \(v = 0.76\ \text{m s}^{-1}\) ✓. Note the amplitude does not affect the period.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 7 marks · pendulum and g</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A student obtains these data for a simple pendulum.</p>
+    <div class="table-wrap">
+      <table><thead><tr><th>\(l\) / m</th><th>0.200</th><th>0.400</th><th>0.600</th><th>0.800</th><th>1.000</th></tr></thead>
+      <tbody><tr><td>\(T\) / s</td><td>0.92</td><td>1.27</td><td>1.55</td><td>1.79</td><td>2.01</td></tr></tbody></table>
+    </div>
+    <p>By plotting a suitable graph, determine a value for \(g\).</p>
+    <ol class="steps">
+      <li>Linearise: \(T^2 = \dfrac{4\pi^2}{g}l\), so plot \(T^2\) against \(l\).</li>
+      <li>Compute \(T^2\): 0.846, 1.613, 2.403, 3.204, 4.040 s².</li>
+      <li>Gradient from end points: \(\dfrac{4.040-0.846}{1.000-0.200} = \dfrac{3.194}{0.800}
+      = 3.99\ \text{s}^2\text{m}^{-1}\).</li>
+      <li>\(g = \dfrac{4\pi^2}{\text{gradient}} = \dfrac{39.48}{3.99} = 9.89\ \text{m s}^{-2}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(g = 9.9\ \text{m s}^{-2}\), within 1% of the accepted 9.81 — an
+    excellent result. The straightness of the \(T^2\)–\(l\) plot is itself the evidence that the motion is SHM
+    with \(T \propto \sqrt{l}\).</div>
+  </div>
+</details>
+
+<h3>Energy in SHM</h3>
+
+<p><strong>Intuition.</strong> SHM is a continuous trade between two stores. At the extremes the oscillator is
+momentarily at rest and all the energy is potential; at the centre it is moving fastest and all the energy is
+kinetic; in between it is shared. With no damping the total is constant.</p>
+
+<p>\[E_{\text{total}} = \tfrac12 m\omega^2 x_0^2, \qquad E_k = \tfrac12 m\omega^2(x_0^2 - x^2),
+\qquad E_p = \tfrac12 m\omega^2 x^2\]</p>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> The energy expressions from \(v = \omega\sqrt{x_0^2-x^2}\)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>For SHM, \(x = x_0\sin\omega t\), so \(v = \dfrac{dx}{dt} = \omega x_0\cos\omega t\).</li>
+      <li>Using \(\cos^2\omega t = 1 - \sin^2\omega t = 1 - \dfrac{x^2}{x_0^2}\):
+      \(v^2 = \omega^2x_0^2\left(1 - \dfrac{x^2}{x_0^2}\right) = \omega^2(x_0^2 - x^2)\).</li>
+      <li>\(E_k = \tfrac12 mv^2 = \tfrac12 m\omega^2(x_0^2 - x^2)\). At \(x = 0\):
+      \(E_{k,\max} = \tfrac12 m\omega^2 x_0^2\).</li>
+      <li>By conservation, \(E_p = E_{\text{total}} - E_k = \tfrac12 m\omega^2x^2\).</li>
+    </ol>
+    <p><strong>What it means:</strong> total energy scales with the <em>square</em> of the amplitude — double the
+    amplitude and you quadruple the energy. Also note \(E_{\text{total}} = \tfrac12 kx_0^2\) for a spring, since
+    \(k = m\omega^2\). <strong>Trap:</strong> the <em>average</em> kinetic energy over a cycle equals the
+    average potential energy — each is half the total.</p>
+  </div>
+</details>
+
+<h3>The displacement family <span class="badge badge--hl">HL only</span> — phase angle</h3>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>\(x = x_0\sin(\omega t)\)</h4>
+    <p>Starts at the equilibrium position moving in the positive direction.</p>
+  </div>
+  <div class="card">
+    <h4>\(x = x_0\cos(\omega t)\)</h4>
+    <p>Starts at maximum positive displacement (released from rest at the top).</p>
+  </div>
+</div>
+
+<p>The general form is</p>
+<p>\[x = x_0\sin(\omega t + \phi)\]</p>
+<p>where \(\phi\) is the <strong>phase angle</strong> (rad). It tells you where in the cycle the oscillator was
+at \(t = 0\). Two oscillators with the same frequency but different \(\phi\) are <strong>out of phase</strong>;
+a phase difference of \(\pi\) rad (180°) means they are in <strong>antiphase</strong>.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — choosing sin or cos, and finding \(\phi\)</span>
+  <ol class="steps">
+    <li>Read the initial condition. Released from rest at maximum displacement? Use cosine. Passing through
+    equilibrium at \(t = 0\)? Use sine.</li>
+    <li>To find \(\phi\) generally: at \(t = 0\), \(x(0) = x_0\sin\phi\), so \(\phi = \arcsin(x(0)/x_0)\). Then
+    check the sign of \(v(0) = \omega x_0\cos\phi\) to choose between the two possible quadrants.</li>
+    <li>To compare two oscillations: their phase difference is \(\Delta\phi\). Path difference and phase
+    difference are linked by \(\dfrac{\Delta\phi}{2\pi} = \dfrac{\text{path difference}}{\lambda}\).</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 3</span> HL · 6 marks · phase angle</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> An oscillator has period 0.80 s and amplitude 0.050 m. At \(t = 0\) its
+    displacement is \(+0.025\) m and it is moving in the negative direction. (a) Determine \(\omega\) and
+    \(\phi\) and write the full expression for \(x(t)\). (b) Determine its displacement at \(t = 0.10\) s.</p>
+    <ol class="steps">
+      <li>\(\omega = 2\pi/T = 2\pi/0.80 = 7.85\ \text{rad s}^{-1}\).</li>
+      <li>\(\sin\phi = 0.025/0.050 = 0.5\), so \(\phi = \pi/6 = 0.524\) rad or \(\phi = 5\pi/6 = 2.62\) rad.</li>
+      <li>Velocity \(v = \omega x_0\cos(\omega t + \phi)\), so at \(t=0\), \(v_0 = \omega x_0\cos\phi\). We need
+      \(v_0 \lt 0\), so \(\cos\phi \lt 0\), which selects \(\phi = 5\pi/6 = 2.62\) rad.</li>
+      <li>\(x(t) = 0.050\sin(7.85t + 2.62)\) m.</li>
+      <li>(b) At \(t = 0.10\): \(7.85(0.10) + 2.62 = 3.405\) rad. \(\sin(3.405) = -0.259\), so
+      \(x = -0.0129\ \text{m}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(x = 0.050\sin(7.85t + 2.62)\) m; at \(t = 0.10\) s,
+    \(x = -1.3\ \text{cm}\). The displacement is negative because the oscillator had already passed back
+    through the equilibrium position — check the sign against the stated initial motion.</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>C.1 links to <strong>A.4 rotational motion</strong>: SHM is the projection of uniform circular motion onto
+  a diameter, which is exactly why \(\omega\) (an angular quantity) appears in linear oscillation. It links to
+  <strong>D.4 induction</strong>: the emf of a rotating coil is \(N B A \omega\sin\omega t\) — the same
+  sinusoidal form. And it links to <strong>C.4 resonance</strong>, where a driving force at the natural
+  frequency produces a large-amplitude oscillation.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — C.1</span>
+  <p><strong>simple harmonic motion (SHM)</strong><strong>oscillation</strong><strong>displacement</strong><strong>amplitude</strong><strong>period</strong><strong>frequency</strong><strong>angular frequency</strong><strong>phase / phase angle</strong> /<strong>phase difference</strong><strong>in phase / out of phase</strong> /<strong>antiphase</strong><strong>restoring force</strong><strong>equilibrium position</strong><strong>spring constant</strong><strong>small-angle approximation</strong><strong>damping</strong></p>
+</div>
+
+<h2 id="c2">C.2 Wave model <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Transverse and longitudinal</h3>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>Transverse</h4>
+    <p>Particle oscillation is <strong>perpendicular</strong> to the direction of energy transfer. Examples:
+    waves on a string, all electromagnetic waves, secondary seismic (S) waves. Can be polarised.</p>
+  </div>
+  <div class="card">
+    <h4>Longitudinal</h4>
+    <p>Particle oscillation is <strong>parallel</strong> to the direction of energy transfer, producing
+    compressions and rarefactions. Examples: sound in air, primary seismic (P) waves. Cannot be polarised.</p>
+  </div>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Only transverse waves can be polarised. If an exam question says "this wave can be polarised", the answer
+  is transverse — and for EM waves that is one of the pieces of evidence that light is transverse. Conversely,
+  students often claim sound can be polarised; it cannot, because it is longitudinal.</p>
+</div>
+
+<h3>Wavelength, frequency, period, wave speed</h3>
+
+<p>\[v = f\lambda = \frac{\lambda}{T}\]</p>
+<dl class="glossary">
+  <dt>Wavelength \(\lambda\)</dt>
+  <dd>The distance between two consecutive points in phase (e.g. crest to crest), in m.</dd>
+  <dt>Frequency \(f\)</dt>
+  <dd>The number of complete cycles passing a point per second, in Hz. <strong>Set by the source</strong> and
+  unchanged when a wave crosses a boundary.</dd>
+  <dt>Wave speed \(v\)</dt>
+  <dd>Determined by the <em>medium</em>, not by the source.</dd>
+</dl>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap — the single most important idea in C.3</span>
+  <p>When a wave passes from one medium into another, its <strong>frequency stays the same</strong> and its
+  <strong>speed and wavelength both change</strong>. Students routinely "keep the wavelength constant", which
+  makes refraction impossible to explain. Say it out loud: frequency is set by the source; speed is set by the
+  medium; wavelength adjusts so that \(v = f\lambda\).</p>
+</div>
+
+<h3>Sound waves</h3>
+<ul>
+  <li>Longitudinal, requiring a medium (they cannot travel through a vacuum — the classic bell-jar
+  demonstration).</li>
+  <li>Speed in air at 20 °C ≈ 343 m s⁻¹; faster in liquids and much faster in solids.</li>
+  <li>Pitch ↔ frequency; loudness ↔ amplitude (intensity).</li>
+  <li><strong>Intensity level</strong> is measured on a logarithmic scale in dB:
+  \(\text{level} = 10\log_{10}\left(\dfrac{I}{I_0}\right)\) with \(I_0 = 1.0\times10^{-12}\ \text{W m}^{-2}\).
+  Every 10 dB is a factor of 10 in intensity; every 3 dB is (approximately) a factor of 2.</li>
+</ul>
+
+<h3>Electromagnetic waves</h3>
+<ul>
+  <li>Transverse, oscillating electric and magnetic fields at right angles to each other and to the direction
+  of travel.</li>
+  <li>All travel at \(c = 3.00\times10^8\ \text{m s}^{-1}\) in a vacuum — the same for every frequency.</li>
+  <li>No medium required.</li>
+  <li>The spectrum, in order of increasing frequency (decreasing wavelength): radio, microwave, infrared,
+  visible (red → violet), ultraviolet, X-ray, gamma.</li>
+</ul>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 4</span> IB-style · 4 marks · wave speed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A sound wave of frequency 440 Hz travels through air at 343 m s⁻¹ and then
+    enters water, where its speed is 1480 m s⁻¹. Determine (a) the wavelength in air and (b) the wavelength in
+    water.</p>
+    <ol class="steps">
+      <li>(a) \(\lambda_{\text{air}} = v/f = 343/440 = 0.78\ \text{m}\).</li>
+      <li>(b) The frequency is unchanged at 440 Hz, so
+      \(\lambda_{\text{water}} = 1480/440 = 3.36\ \text{m}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 0.78 m in air, 3.4 m in water. The wavelength increases by the same
+    factor as the speed, because the frequency is fixed by the source.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> IB-style · 5 marks · intensity level</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The intensity of a sound increases from \(2.0\times10^{-6}\) to
+    \(6.0\times10^{-4}\ \text{W m}^{-2}\). Determine the change in intensity level.</p>
+    <ol class="steps">
+      <li>Ratio \(= \dfrac{6.0\times10^{-4}}{2.0\times10^{-6}} = 300\).</li>
+      <li>\(\Delta\text{level} = 10\log_{10}(300) = 10\times2.477 = 24.8\ \text{dB}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 25 dB. Alternatively compute both levels:
+    \(10\log_{10}(2.0\times10^6) = 63.0\) dB and \(10\log_{10}(6.0\times10^8) = 87.8\) dB, difference 24.8 dB.
+    Note the shortcut: you only ever need the <em>ratio</em>.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — C.2</span>
+  <p><strong>wave</strong><strong>transverse wave</strong><strong>longitudinal wave</strong><strong>wavelength</strong><strong>wave speed</strong><strong>crest / trough</strong> /<strong>compression / rarefaction</strong> /<strong>medium</strong><strong>polarisation</strong><strong>intensity</strong><strong>decibel</strong><strong>electromagnetic spectrum</strong><strong>ultraviolet / infrared</strong> /</p>
+</div>
+
+<h2 id="c3">C.3 Wave phenomena <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Reflection and refraction, Snell's law</h3>
+
+<p><strong>Intuition for refraction.</strong> A wavefront entering a slower medium at an angle has one edge
+slow down first, so the whole wavefront swings round — exactly like a marching band turning when one end slows.
+Since \(f\) is fixed and \(v\) drops, \(\lambda\) must drop too.</p>
+
+<dl class="glossary">
+  <dt>Refractive index \(n\)</dt>
+  <dd>\(n = \dfrac{c}{v}\) — the ratio of the speed of light in a vacuum to its speed in the medium. Always
+  \(n \ge 1\).</dd>
+  <dt>Snell's law</dt>
+  <dd>\(n_1\sin\theta_1 = n_2\sin\theta_2\), with angles measured from the <strong>normal</strong>.
+  Equivalently \(\dfrac{\sin\theta_1}{\sin\theta_2} = \dfrac{v_1}{v_2} = \dfrac{\lambda_1}{\lambda_2}\).</dd>
+</dl>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Angles in Snell's law are measured from the <em>normal</em>, never from the surface. If a question gives
+  "30° to the surface", the angle of incidence is 60°. Draw the normal first, every time.</p>
+</div>
+
+<h3>Total internal reflection and critical angle</h3>
+
+<p>Light going from a <em>slower</em> medium (higher \(n\)) to a <em>faster</em> one bends <em>away</em> from
+the normal. Increase the angle of incidence far enough and the refracted ray would have to leave at 90° — that
+is the <strong>critical angle</strong> \(\theta_c\). Beyond it, no refraction: all the light reflects.</p>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(\sin\theta_c = n_2/n_1\), and \(1/n\) for air</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Start from Snell's law: \(n_1\sin\theta_1 = n_2\sin\theta_2\).</li>
+      <li>At the critical angle, \(\theta_1 = \theta_c\) and the refracted ray grazes the boundary, so
+      \(\theta_2 = 90^\circ\) and \(\sin\theta_2 = 1\).</li>
+      <li>Therefore \(n_1\sin\theta_c = n_2\), i.e. \(\sin\theta_c = \dfrac{n_2}{n_1}\).</li>
+      <li>If the second medium is air or vacuum, \(n_2 = 1\), so \(\sin\theta_c = \dfrac{1}{n_1}\).</li>
+    </ol>
+    <p><strong>Condition:</strong> TIR only happens going from high \(n\) to low \(n\). If you are asked "can
+    TIR occur here?", check that first. <strong>Application:</strong> optical fibres, prisms in binoculars, the
+    sparkle of a cut diamond, and the mirage effect.</p>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 6</span> IB-style · 6 marks · TIR in a fibre</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> An optical fibre has a core of refractive index 1.48 surrounded by cladding
+    of index 1.46. (a) Determine the critical angle at the core–cladding boundary. (b) Explain why the
+    cladding is necessary.</p>
+    <ol class="steps">
+      <li>(a) \(\sin\theta_c = \dfrac{n_2}{n_1} = \dfrac{1.46}{1.48} = 0.9865\), so
+      \(\theta_c = \arcsin(0.9865) = 80.6^\circ\).</li>
+      <li>(b) The core must be surrounded by a medium of <em>lower</em> refractive index for TIR to occur at
+      all. Cladding guarantees a clean, known boundary; without it, dirt, moisture or contact with another
+      fibre would change the local refractive index, let light leak out, and cause cross-talk between
+      adjacent fibres.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(\theta_c = 81^\circ\) (measured from the normal). Note how large
+    this is: the critical angle is close to 90°, which means light must strike the boundary at a very grazing
+    angle to be totally internally reflected — which is why fibres guide light that travels nearly parallel to
+    the axis.</div>
+  </div>
+</details>
+
+<h3>Diffraction</h3>
+
+<p><strong>Intuition.</strong> Waves spread out when they pass through a gap or round an obstacle. The effect
+is significant only when the gap is <strong>comparable in size to the wavelength</strong>: that is why you can
+hear someone around a corner (sound wavelengths are metres, doorways are metres) but not see them (light
+wavelengths are ~500 nm).</p>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — sketching diffraction</span>
+  <p>For a single slit: the central maximum is <strong>twice the width</strong> of the other maxima and much
+  brighter; intensity falls off rapidly with angle. If the slit is widened, the pattern gets narrower and the
+  central maximum narrower still. If you increase the wavelength, the pattern spreads. These three
+  statements are a complete 3-mark "describe and explain" answer.</p>
+</div>
+
+<h3>Superposition and interference</h3>
+
+<p>The <strong>principle of superposition</strong>: when two or more waves meet, the resultant displacement is
+the vector sum of the individual displacements. The waves pass through each other unchanged.</p>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>Constructive interference</h4>
+    <p>Waves arrive <strong>in phase</strong>; path difference \(= n\lambda\) (\(n = 0, 1, 2, \dots\)).
+    Resultant amplitude is the sum; intensity is maximum.</p>
+  </div>
+  <div class="card">
+    <h4>Destructive interference</h4>
+    <p>Waves arrive in <strong>antiphase</strong>; path difference \(= \left(n+\tfrac12\right)\lambda\).
+    Resultant amplitude is the difference; intensity is minimum.</p>
+  </div>
+</div>
+
+<h3>Young's double-slit experiment</h3>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Young's double-slit geometry showing path difference and fringe spacing">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <rect x="40" y="150" width="10" height="20" fill="#334155"/>
+    <rect x="40" y="60" width="10" height="8" fill="#334155"/>
+    <rect x="40" y="252" width="10" height="8" fill="#334155"/>
+    <text x="20" y="160" font-size="13" font-family="system-ui, sans-serif" fill="#151923">S</text>
+    <rect x="150" y="86" width="10" height="12" fill="#0a6f80"/>
+    <rect x="150" y="222" width="10" height="12" fill="#0a6f80"/>
+    <text x="166" y="96" font-size="13" font-family="system-ui, sans-serif" fill="#0a6f80">S&#8321;</text>
+    <text x="166" y="232" font-size="13" font-family="system-ui, sans-serif" fill="#0a6f80">S&#8322;</text>
+    <line x1="150" y1="92" x2="150" y2="228" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="110" y="164" font-size="13" font-family="system-ui, sans-serif" fill="#151923">a (slit separation)</text>
+    <line x1="560" y1="40" x2="560" y2="280" stroke="#334155" stroke-width="2"/>
+    <text x="568" y="152" font-size="13" font-family="system-ui, sans-serif" fill="#151923">screen</text>
+    <circle cx="560" cy="160" r="6" fill="#eef2ff" stroke="#0a6f80" stroke-width="2"/>
+    <text x="520" y="182" font-size="12" font-family="system-ui, sans-serif" fill="#151923">central bright</text>
+    <line x1="155" y1="92" x2="560" y2="160" stroke="#c0392b" stroke-width="1.5"/>
+    <line x1="155" y1="228" x2="560" y2="160" stroke="#c0392b" stroke-width="1.5"/>
+    <circle cx="560" cy="90" r="6" fill="#eef2ff" stroke="#c0392b" stroke-width="2"/>
+    <text x="500" y="76" font-size="12" font-family="system-ui, sans-serif" fill="#151923">1st bright fringe</text>
+    <line x1="560" y1="160" x2="560" y2="90" stroke="#7a5a13" stroke-width="2.5"/>
+    <text x="470" y="128" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13">s (fringe spacing)</text>
+    <line x1="155" y1="92" x2="560" y2="90" stroke="#6c7788" stroke-width="1.5"/>
+    <line x1="155" y1="228" x2="560" y2="160" stroke="#6c7788" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="344" y1="60" x2="600" y2="60" stroke="#334155" stroke-width="1.5"/>
+    <line x1="344" y1="55" x2="344" y2="65" stroke="#334155" stroke-width="1.5"/>
+    <line x1="600" y1="55" x2="600" y2="65" stroke="#334155" stroke-width="1.5"/>
+    <text x="410" y="50" font-size="13" font-family="system-ui, sans-serif" fill="#151923">D (slit to screen)</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> Young's double-slit geometry. The approximation
+  \(D \gg a\) lets you treat the two rays as parallel, so the path difference is \(a\sin\theta\); for small
+  angles \(\sin\theta \approx \tan\theta = s/D\), giving \(s = \lambda D/a\).</figcaption>
+</figure>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(s = \dfrac{\lambda D}{a}\) — the fringe spacing formula</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Two slits \(S_1, S_2\) separated by \(a\) are illuminated coherently. Consider a point P on a screen a
+      distance \(D\) away, at angle \(\theta\) to the central axis.</li>
+      <li>The path difference between the two rays reaching P is \(\Delta = a\sin\theta\) — this is exact when
+      the rays are treated as parallel, which requires \(D \gg a\).</li>
+      <li>Bright fringe (constructive): \(\Delta = n\lambda\), so \(a\sin\theta = n\lambda\).</li>
+      <li>For small angles, \(\sin\theta \approx \tan\theta = \dfrac{x_n}{D}\) where \(x_n\) is the distance of
+      the \(n\)th bright fringe from the centre. So \(a\dfrac{x_n}{D} = n\lambda\), i.e.
+      \(x_n = \dfrac{n\lambda D}{a}\).</li>
+      <li>The spacing between adjacent fringes is \(s = x_{n+1} - x_n = \dfrac{\lambda D}{a}\).</li>
+    </ol>
+    <p><strong>What it means:</strong> to get wide, easily measured fringes you want a large \(D\), a small
+    slit separation \(a\), and a long wavelength — red light gives wider fringes than blue.
+    <strong>When it is wrong:</strong> for large angles the small-angle approximation fails; use
+    \(a\sin\theta = n\lambda\) directly.</p>
+  </div>
+</details>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the double-slit experiment in the lab</span>
+  <ol class="steps">
+    <li>Use a <strong>single source</strong> and a double slit (or a laser straight onto the double slit) so
+    the two slits are <strong>coherent</strong> — constant phase difference. Two separate lamps never work.</li>
+    <li>Measure across <em>several</em> fringes: measure the distance spanning, say, 10 fringe spacings and
+    divide by 10. This is the single biggest accuracy win in the whole experiment.</li>
+    <li>Measure \(D\) from the slits to the screen with a metre rule; measure \(a\) from the slit holder's
+    stated value (it is usually printed on the slide — trust it rather than trying to measure 0.25 mm).</li>
+    <li>Plot \(s\) against \(D\) (or \(s\) against \(1/a\) with several slides) to get \(\lambda\) from a
+    gradient.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 7</span> IB-style · 6 marks · double slit</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A double slit of separation 0.30 mm is placed 2.5 m from a screen. Light of
+    wavelength 590 nm is used. (a) Determine the fringe spacing. (b) Determine the distance from the central
+    maximum to the third bright fringe. (c) State the effect of halving the slit separation.</p>
+    <ol class="steps">
+      <li>(a) \(s = \dfrac{\lambda D}{a} = \dfrac{(590\times10^{-9})(2.5)}{0.30\times10^{-3}}
+      = \dfrac{1.475\times10^{-6}}{3.0\times10^{-4}} = 4.92\times10^{-3}\ \text{m}\).</li>
+      <li>(b) Third bright fringe: \(x_3 = 3s = 3\times4.92 = 14.8\ \text{mm}\).</li>
+      <li>(c) Halving \(a\) doubles the spacing to 9.8 mm — the fringes spread out.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 4.9 mm, (b) 15 mm, (c) 9.8 mm. Sanity check: fringes of a few
+    millimetres are exactly what you see in the lab, and measuring 10 of them gives ~50 mm on a ruler — a
+    1% measurement. That is why the experiment works so well.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 8</span> IB-style · 7 marks · determining λ from data</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A student measures the spacing \(s\) of double-slit fringes for different
+    slit–screen distances \(D\).</p>
+    <div class="table-wrap">
+      <table><thead><tr><th>\(D\) / m</th><th>0.80</th><th>1.20</th><th>1.60</th><th>2.00</th><th>2.40</th></tr></thead>
+      <tbody><tr><td>\(s\) / mm</td><td>1.7</td><td>2.6</td><td>3.4</td><td>4.3</td><td>5.1</td></tr></tbody></table>
+    </div>
+    <p>The slit separation is 0.28 mm. Determine the wavelength of the light.</p>
+    <ol class="steps">
+      <li>\(s = \dfrac{\lambda}{a}D\), so a graph of \(s\) against \(D\) has gradient \(\lambda/a\).</li>
+      <li>Gradient from the data: \(\dfrac{5.1-1.7}{2.40-0.80} = \dfrac{3.4}{1.60} = 2.125\ \text{mm m}^{-1}
+      = 2.125\times10^{-3}\) (dimensionless, since both are lengths).</li>
+      <li>\(\lambda = a\times\text{gradient} = 0.28\times10^{-3}\times2.125\times10^{-3}
+      = 5.95\times10^{-7}\ \text{m}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(\lambda \approx 6.0\times10^{-7}\ \text{m}\) (595 nm, orange-yellow).
+    Using a gradient rather than a single pair of readings averages out the scatter — always prefer the graph.</div>
+  </div>
+</details>
+
+<h3>Single-slit diffraction and diffraction gratings <span class="badge badge--hl">HL only</span></h3>
+
+<p><strong>A diffraction grating</strong> is many equally spaced slits (typically 300–600 lines per mm). With
+more slits the bright fringes become <em>narrower and brighter</em>, and the positions of the maxima are given
+by the same condition as the double slit:</p>
+<p>\[d\sin\theta = n\lambda\]</p>
+<p>where \(d\) is the slit spacing (\(d = 1/N\) for \(N\) lines per metre) and \(n\) is the <strong>order</strong>.
+Note that the small-angle approximation is usually <em>not</em> valid for gratings — angles are large — so use
+\(\sin\theta\) directly.</p>
+
+<p>For a <strong>single slit</strong> of width \(b\), the first minimum is at</p>
+<p>\[\sin\theta = \frac{\lambda}{b}\]</p>
+<p>and the central maximum is twice as wide as the others. Increasing the slit width \(b\) narrows the pattern.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 9</span> HL · 7 marks · grating</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A grating with 600 lines per mm is illuminated with light of wavelength
+    589 nm. (a) Determine the angle of the second-order maximum. (b) Determine the highest order observable.
+    (c) Explain your answer to (b).</p>
+    <ol class="steps">
+      <li>Slit spacing \(d = \dfrac{1}{600\times10^3} = 1.667\times10^{-6}\ \text{m}\).</li>
+      <li>(a) \(d\sin\theta = n\lambda\) with \(n = 2\):
+      \(\sin\theta = \dfrac{2(589\times10^{-9})}{1.667\times10^{-6}} = 0.707\), so \(\theta = 45.0^\circ\).</li>
+      <li>(b) The maximum order satisfies \(\sin\theta \le 1\), so \(n\lambda \le d\):
+      \(n \le \dfrac{1.667\times10^{-6}}{589\times10^{-9}} = 2.83\). So \(n_{\max} = 2\).</li>
+      <li>(c) For \(n = 3\), \(\sin\theta = 1.06 \gt 1\), which has no solution — the third order cannot exist.
+      Higher orders are simply not produced.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 45.0°, (b) \(n = 2\) only. So you see a central maximum and two
+    orders on each side — five bright lines in total. The "sin θ cannot exceed 1" argument is the standard
+    method for finding the highest order; write it explicitly.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 10</span> HL · 6 marks · single slit</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A laser of wavelength 633 nm passes through a single slit of width 0.10 mm
+    onto a screen 3.0 m away. Determine the width of the central maximum.</p>
+    <ol class="steps">
+      <li>First minimum: \(\sin\theta = \lambda/b = \dfrac{633\times10^{-9}}{1.0\times10^{-4}}
+      = 6.33\times10^{-3}\), so \(\theta = 0.363^\circ = 6.33\times10^{-3}\) rad (small angle confirmed).</li>
+      <li>Distance from centre to first minimum on the screen: \(y = D\tan\theta \approx D\theta
+      = 3.0\times6.33\times10^{-3} = 0.019\ \text{m}\).</li>
+      <li>Width of the central maximum \(= 2y = 0.038\ \text{m} = 3.8\ \text{cm}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 3.8 cm. The "twice" is the point: the central maximum spans from the
+    first minimum on one side to the first minimum on the other.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — C.3</span>
+  <p><strong>reflection</strong><strong>refraction</strong><strong>refractive index</strong><strong>normal</strong><strong>angle of incidence / refraction</strong> /<strong>total internal reflection</strong><strong>critical angle</strong><strong>diffraction</strong><strong>superposition</strong><strong>interference</strong><strong>constructive / destructive</strong> /<strong>coherent</strong><strong>path difference</strong><strong>fringe</strong><strong>fringe spacing</strong><strong>diffraction grating</strong><strong>order (of a maximum)</strong><strong>slit width</strong><strong>resolution</strong></p>
+</div>
+
+<h2 id="c4">C.4 Standing waves and resonance <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>How a standing wave forms</h3>
+
+<p><strong>Intuition.</strong> Send a wave along a string fixed at the far end and it reflects and comes back
+through the incoming wave. Where the two waves are always in antiphase they cancel — a <strong>node</strong>.
+Where they are always in phase they add — an <strong>antinode</strong>. Because the nodes do not move, the
+pattern appears to stand still, and energy is stored rather than transported.</p>
+
+<dl class="glossary">
+  <dt>Node</dt><dd>A point of zero amplitude (permanent destructive interference).</dd>
+  <dt>Antinode</dt><dd>A point of maximum amplitude (permanent constructive interference).</dd>
+  <dt>Distance node to adjacent node</dt><dd>\(\lambda/2\).</dd>
+  <dt>Harmonic</dt><dd>A allowed mode of vibration. The first harmonic (fundamental) has the lowest frequency.</dd>
+</dl>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Standing wave harmonics in an open pipe and a closed pipe">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <text x="30" y="30" font-size="14" font-family="system-ui, sans-serif" fill="#151923">Open pipe (antinodes at both ends)</text>
+    <line x1="40" y1="70" x2="580" y2="70" stroke="#334155" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <path d="M40 70 Q 310 20 580 70" fill="none" stroke="#0a6f80" stroke-width="2.5"/>
+    <path d="M40 70 Q 310 120 580 70" fill="none" stroke="#0a6f80" stroke-width="2.5"/>
+    <circle cx="40" cy="70" r="4" fill="#c0392b"/>
+    <circle cx="580" cy="70" r="4" fill="#c0392b"/>
+    <circle cx="310" cy="70" r="4" fill="#7a5a13"/>
+    <text x="300" y="132" font-size="12" font-family="system-ui, sans-serif" fill="#151923">1st harmonic: L = &#955;/2, f&#8321; = v/2L</text>
+
+    <line x1="40" y1="170" x2="580" y2="170" stroke="#334155" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <path d="M40 170 Q 162 120 285 170 Q 407 220 580 170" fill="none" stroke="#0a6f80" stroke-width="2.5"/>
+    <path d="M40 170 Q 162 220 285 170 Q 407 120 580 170" fill="none" stroke="#0a6f80" stroke-width="2.5"/>
+    <circle cx="285" cy="170" r="4" fill="#7a5a13"/>
+    <text x="270" y="240" font-size="12" font-family="system-ui, sans-serif" fill="#151923">2nd harmonic: L = &#955;, f&#8322; = 2f&#8321;</text>
+
+    <text x="30" y="272" font-size="14" font-family="system-ui, sans-serif" fill="#151923">Closed pipe (node at closed end, antinode at open end):</text>
+    <text x="30" y="296" font-size="13" font-family="system-ui, sans-serif" fill="#151923">only odd harmonics — L = &#955;/4, 3&#955;/4, 5&#955;/4 … f&#8321; = v/4L, f&#8323; = 3f&#8321;</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> Pipe harmonics. Antinodes at open ends (red), nodes at
+  closed ends (brown). An open pipe supports all harmonics; a closed pipe supports only the odd ones, which is
+  why a clarinet and a flute of similar length sound an octave apart in pitch.</figcaption>
+</figure>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>System</th><th>End conditions</th><th>Fundamental</th><th>Harmonics present</th></tr></thead>
+    <tbody>
+      <tr><td>String fixed at both ends</td><td>node–node</td><td>\(f_1 = \dfrac{v}{2L}\), \(v = \sqrt{T/\mu}\)</td><td>All: \(f_n = nf_1\)</td></tr>
+      <tr><td>Open pipe (both ends open)</td><td>antinode–antinode</td><td>\(f_1 = \dfrac{v}{2L}\)</td><td>All: \(f_n = nf_1\)</td></tr>
+      <tr><td>Closed pipe (one end closed)</td><td>node–antinode</td><td>\(f_1 = \dfrac{v}{4L}\)</td><td>Odd only: \(f_n = nf_1\) with \(n = 1,3,5,\dots\)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Two. (1) The antinode at an open end is slightly <em>outside</em> the pipe — the <strong>end
+  correction</strong> — so experimentally \(f_1\) is a little lower than \(v/4L\). If your measured value is
+  lower than the calculated one, this is usually why, and it is a superb evaluation point.
+  (2) The wave speed \(v\) in \(f = v/2L\) is the speed of sound in <em>air</em> for a pipe, but the speed on
+  the <em>string</em> for a string — do not put 343 m s⁻¹ into a string question.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 11</span> IB-style · 6 marks · string harmonics</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A string of length 0.80 m and mass 4.0 g is held under a tension of 200 N.
+    Determine (a) the speed of a transverse wave on the string and (b) the frequency of the third harmonic.</p>
+    <ol class="steps">
+      <li>Mass per unit length \(\mu = \dfrac{4.0\times10^{-3}}{0.80} = 5.0\times10^{-3}\ \text{kg m}^{-1}\).</li>
+      <li>\(v = \sqrt{T/\mu} = \sqrt{200/5.0\times10^{-3}} = \sqrt{4.0\times10^4} = 200\ \text{m s}^{-1}\).</li>
+      <li>Fundamental \(f_1 = v/2L = 200/1.6 = 125\ \text{Hz}\). Third harmonic \(f_3 = 3f_1 = 375\ \text{Hz}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 200 m s⁻¹, (b) 375 Hz. Note the third harmonic is three times
+    the fundamental — the harmonic series of a string is an integer multiple series, which is why stringed
+    instruments sound "harmonic".</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 12</span> IB-style · 8 marks · resonance tube</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A tuning fork of frequency 512 Hz is held above a resonance tube closed at
+    the bottom by water. The first resonance occurs when the air column is 0.160 m long; the next at 0.495 m.
+    (a) Determine the speed of sound. (b) Determine the end correction.</p>
+    <ol class="steps">
+      <li>Resonances occur at \(L_1 + e = \lambda/4\) and \(L_2 + e = 3\lambda/4\), where \(e\) is the end
+      correction.</li>
+      <li>Subtract: \(L_2 - L_1 = \lambda/2\), so \(\lambda = 2(0.495-0.160) = 2(0.335) = 0.670\ \text{m}\).</li>
+      <li>(a) \(v = f\lambda = 512\times0.670 = 343\ \text{m s}^{-1}\).</li>
+      <li>(b) \(e = \lambda/4 - L_1 = 0.1675 - 0.160 = 0.0075\ \text{m} = 7.5\ \text{mm}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 343 m s⁻¹, (b) 7.5 mm. Using the <em>difference</em> between two
+    resonances eliminates the end correction — a beautiful experimental trick that examiners reward. The end
+    correction is about 5% of the length, so ignoring it in a single-resonance calculation gives a 5% error in
+    \(v\).</div>
+  </div>
+</details>
+
+<h3>Resonance, natural frequency and damping</h3>
+
+<dl class="glossary">
+  <dt>Natural frequency</dt>
+  <dd>The frequency at which a system oscillates when displaced and released. Set by the system's own
+  parameters (e.g. \(\sqrt{k/m}\), \(\sqrt{g/l}\)).</dd>
+  <dt>Resonance</dt>
+  <dd>When a periodic driving force matches the natural frequency, energy transfer is maximised and the
+  amplitude becomes large.</dd>
+  <dt>Damping</dt>
+  <dd>The loss of energy from an oscillating system, usually to friction or drag, causing the amplitude to
+  decrease. <strong>Light damping</strong>: amplitude decays slowly, the resonance peak is sharp and high.
+  <strong>Heavy damping</strong>: amplitude decays fast, the peak is broad and low, and the resonant frequency
+  shifts slightly lower.</dd>
+</dl>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — the resonance curve question</span>
+  <p>You will be shown (or asked to sketch) amplitude against driving frequency for light and heavy damping.
+  The markscheme wants: both curves peak at (or just below) the natural frequency; the lightly damped curve is
+  taller and narrower; heavy damping broadens and lowers the peak. Add an application — a singer shattering a
+  glass, a bridge driven by wind (Tacoma Narrows), or a radio tuned by matching an LC circuit's natural
+  frequency — for the final mark.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — C.4</span>
+  <p><strong>standing wave</strong><strong>node</strong><strong>antinode</strong><strong>harmonic</strong> /<strong>fundamental (first harmonic)</strong><strong>resonance</strong><strong>natural frequency</strong><strong>driving force</strong><strong>damping</strong><strong>light / heavy / critical damping</strong> //<strong>end correction</strong><strong>amplitude</strong><strong>tension</strong><strong>mass per unit length</strong></p>
+</div>
+
+<h2 id="c5">C.5 Doppler effect <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Qualitative Doppler: what happens and why</h3>
+
+<p><strong>Intuition.</strong> A source emits wavefronts at a fixed frequency. If the source moves towards you,
+each successive wavefront is emitted from a position closer to you, so the wavefronts arrive bunched up —
+shorter wavelength, higher frequency. Moving away, they are stretched. Crucially, <strong>the source does not
+change the frequency it emits</strong>; you <em>receive</em> a different frequency.</p>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Case</th><th>What changes</th><th>Observed effect</th></tr></thead>
+    <tbody>
+      <tr><td>Source moves towards observer</td><td>Wavefronts compressed, \(\lambda\) decreases</td><td>Higher pitch / blueshift</td></tr>
+      <tr><td>Source moves away</td><td>Wavefronts stretched, \(\lambda\) increases</td><td>Lower pitch / redshift</td></tr>
+      <tr><td>Observer moves towards source</td><td>\(\lambda\) unchanged; observer meets wavefronts more often</td><td>Higher pitch</td></tr>
+      <tr><td>Observer moves away</td><td>\(\lambda\) unchanged; fewer wavefronts met per second</td><td>Lower pitch</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>The two cases are <strong>not symmetric</strong> for sound, because sound has a medium. A moving
+  <em>source</em> changes the wavelength; a moving <em>observer</em> does not — it changes the rate at which
+  wavefronts are encountered. That asymmetry is why there are two different formulas. For light there is no
+  medium, so only the <em>relative</em> speed matters — which is precisely what forces special relativity
+  (A.5) into the formula.</p>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Wavefront diagrams for a stationary, moving source and moving observer">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <text x="30" y="34" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Stationary source — concentric, evenly spaced</text>
+    <circle cx="100" cy="90" r="12" fill="none" stroke="#0a6f80" stroke-width="2"/>
+    <circle cx="100" cy="90" r="28" fill="none" stroke="#0a6f80" stroke-width="2"/>
+    <circle cx="100" cy="90" r="44" fill="none" stroke="#0a6f80" stroke-width="2"/>
+    <circle cx="100" cy="90" r="60" fill="none" stroke="#0a6f80" stroke-width="2"/>
+    <circle cx="100" cy="90" r="4" fill="#151923"/>
+
+    <text x="240" y="34" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Moving source — bunched ahead</text>
+    <circle cx="300" cy="90" r="14" fill="none" stroke="#c0392b" stroke-width="2"/>
+    <circle cx="306" cy="90" r="30" fill="none" stroke="#c0392b" stroke-width="2"/>
+    <circle cx="312" cy="90" r="46" fill="none" stroke="#c0392b" stroke-width="2"/>
+    <circle cx="318" cy="90" r="62" fill="none" stroke="#c0392b" stroke-width="2"/>
+    <circle cx="318" cy="90" r="4" fill="#151923"/>
+    <text x="382" y="94" font-size="12" font-family="system-ui, sans-serif" fill="#151923">compressed &#8594; higher f</text>
+    <text x="180" y="94" font-size="12" font-family="system-ui, sans-serif" fill="#151923">spread out</text>
+
+    <text x="30" y="200" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Observer moving towards a stationary source — unchanged wavefronts, higher encounter rate</text>
+    <circle cx="120" cy="270" r="20" fill="none" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="120" cy="270" r="44" fill="none" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="120" cy="270" r="68" fill="none" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="120" cy="270" r="4" fill="#151923"/>
+    <polygon points="400,270 380,262 380,278" fill="#0a6f80"/>
+    <text x="410" y="275" font-size="13" font-family="system-ui, sans-serif" fill="#151923">observer</text>
+    <line x1="300" y1="270" x2="376" y2="270" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="290" y="255" font-size="12" font-family="system-ui, sans-serif" fill="#151923">u</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 3.</span> Wavefront pictures. Compare the top two panels: with a
+  moving source the circles are no longer concentric — that is the physical origin of the shift.</figcaption>
+</figure>
+
+<h3>Quantitative Doppler for sound <span class="badge badge--hl">HL only</span></h3>
+
+<dl class="glossary">
+  <dt>Moving source, stationary observer</dt>
+  <dd>\(f' = f\dfrac{v}{v \mp u_s}\), where \(v\) is the wave speed in the medium and \(u_s\) the source speed.
+  Use the <em>minus</em> sign when the source approaches (giving \(f' \gt f\)) and the <em>plus</em> sign when
+  it recedes.</dd>
+  <dt>Moving observer, stationary source</dt>
+  <dd>\(f' = f\dfrac{v \pm u_o}{v}\). Use <em>plus</em> when the observer moves towards the source.</dd>
+</dl>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Both Doppler formulas for sound</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li><strong>Moving source.</strong> In one period \(T\) the source moves \(u_sT\) while the wavefront
+      travels \(vT\). Ahead of the source the wavelength is compressed to \(\lambda' = vT - u_sT = (v-u_s)T\).</li>
+      <li>So \(f' = \dfrac{v}{\lambda'} = \dfrac{v}{(v-u_s)T} = f\dfrac{v}{v-u_s}\) for approach, and
+      \(f\dfrac{v}{v+u_s}\) for recession.</li>
+      <li><strong>Moving observer.</strong> The wavefronts are unchanged, spacing \(\lambda = v/f\). An
+      observer moving towards them at \(u_o\) meets them at relative speed \(v + u_o\), so the rate of
+      encounter is \(f' = \dfrac{v+u_o}{\lambda} = f\dfrac{v+u_o}{v}\).</li>
+    </ol>
+    <p><strong>What it means:</strong> the asymmetry is real and physical. <strong>When it is wrong:</strong>
+    for light. There is no medium, so neither formula applies; you need the relativistic Doppler formula, and
+    the shift depends only on the relative velocity.</p>
+  </div>
+</details>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — never memorise the signs wrongly</span>
+  <ol class="steps">
+    <li>Decide first, by intuition, whether the observed frequency should be <em>higher</em> or <em>lower</em>.</li>
+    <li>Then choose the sign that produces that. If the source approaches, the denominator must be
+    <em>smaller</em> than \(v\), so use \(v - u_s\). If the observer approaches, the numerator must be larger
+    than \(v\), so use \(v + u_o\).</li>
+    <li>Sanity-check with the ratio: \(f'/f\) should be greater than 1 for approach, less than 1 for
+    recession.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 13</span> HL · 6 marks · siren</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A siren emits 800 Hz and moves towards a stationary observer at
+    30 m s⁻¹. The speed of sound is 340 m s⁻¹. Determine the observed frequency.</p>
+    <ol class="steps">
+      <li>The source approaches, so the observed frequency must be higher: use \(f' = f\dfrac{v}{v-u_s}\).</li>
+      <li>\(f' = 800\times\dfrac{340}{340-30} = 800\times\dfrac{340}{310} = 800\times1.097 = 877\ \text{Hz}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 877 Hz. The ratio 1.097 is greater than 1, confirming the frequency
+    increased, as intuition demands. Note that if the <em>observer</em> had moved at 30 m s⁻¹ instead, the
+    answer would be \(800\times370/340 = 871\) Hz — slightly different, because the two cases really are not
+    symmetric.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 14</span> HL · 7 marks · Doppler in astronomy</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A spectral line from a distant galaxy is measured at 660.0 nm. The same line
+    measured in the laboratory is 589.0 nm. (a) Determine the radial speed of the galaxy. (b) State what the
+    observation tells us about the universe.</p>
+    <ol class="steps">
+      <li>The observed wavelength is <em>longer</em> — redshift — so the galaxy is receding.</li>
+      <li>For light at non-relativistic speeds, \(\dfrac{\Delta\lambda}{\lambda} \approx \dfrac{v}{c}\):
+      \(\dfrac{\Delta\lambda}{\lambda} = \dfrac{660.0-589.0}{589.0} = \dfrac{71.0}{589.0} = 0.1206\).</li>
+      <li>\(v = 0.1206\times3.00\times10^8 = 3.6\times10^7\ \text{m s}^{-1}\) (about 36 000 km s⁻¹, or 0.12c).</li>
+      <li>(b) Nearly all distant galaxies show redshift, and the recession speed increases with distance
+      (Hubble's law). This is evidence that the universe is expanding.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(3.6\times10^7\ \text{m s}^{-1}\) receding. At 0.12c the
+    non-relativistic approximation is starting to strain, so a careful answer should note that the
+    relativistic Doppler formula would give a slightly different value — that caveat is exactly the sort of
+    remark that earns the final mark in an HL "discuss".</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>C.5 links to <strong>A.5 relativity</strong>: for light the classical formulas fail and the relativistic
+  Doppler formula is required, because only relative motion is meaningful. It links to <strong>E.1 atomic
+  spectra</strong>: the shifted spectral lines are the same transitions you calculate from energy levels, so
+  \(E = hf\) plus a Doppler shift lets you measure stellar motion. And it links to <strong>C.2</strong>: the
+  shift is in <em>frequency</em>, and because \(c\) is fixed, a frequency shift implies a wavelength shift.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — C.5</span>
+  <p><strong>Doppler effect</strong><strong>wavefront</strong><strong>source</strong><strong>observer</strong><strong>approach / recede</strong> /<strong>observed frequency</strong><strong>redshift / blueshift</strong> /<strong>radial speed</strong><strong>spectral line</strong><strong>expanding universe</strong><strong>Hubble's law</strong></p>
+</div>
+
+<div class="conn">
+  <span class="conn__title">Connections — Theme C to the rest</span>
+  <ul>
+    <li><strong>→ Theme A:</strong> SHM is \(a = -\omega^2x\) from \(F = -kx\) (A.2); the energy in SHM is A.3
+    conservation; a rotating coil's sinusoidal emf (D.4) is C.1's maths.</li>
+    <li><strong>→ Theme B:</strong> thermal radiation is an EM wave; molecular absorption of IR is a resonance
+    effect.</li>
+    <li><strong>→ Theme D:</strong> EM waves are oscillating fields (D.2); a rotating coil in a magnetic field
+    produces an emf that oscillates sinusoidally (D.4).</li>
+    <li><strong>→ Theme E:</strong> diffraction proves light is a wave; the photoelectric effect (E.2) proves
+    it is not only a wave; de Broglie's \(\lambda = h/p\) (E.2) makes the connection quantitative; atomic
+    spectra (E.1) and stellar spectra (E.5) are measured with gratings.</li>
+    <li><strong>→ Maths AA HL:</strong> sinusoidal functions, radians, small-angle approximations from Taylor
+    series, and the geometry behind \(a\sin\theta = n\lambda\).</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can state the condition for SHM and test whether a given motion satisfies it.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive T = 2π√(m/k) and T = 2π√(l/g), and state the approximation each needs.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive and use v = ω√(x₀² − x²) and the energy expressions for SHM.</span></label></li>
+  <li><label><input type="checkbox"><span>I can find the phase angle φ from initial conditions and choose the correct quadrant.</span></label></li>
+  <li><label><input type="checkbox"><span>I can state which quantity changes and which stays fixed when a wave crosses a boundary.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive sin θ_c = n₂/n₁ and state the condition for TIR.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive s = λD/a and use it to determine a wavelength from data.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use d sin θ = nλ for a grating and find the highest observable order.</span></label></li>
+  <li><label><input type="checkbox"><span>I can sketch the first three harmonics for strings, open pipes and closed pipes.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain the end correction and use two resonances to eliminate it.</span></label></li>
+  <li><label><input type="checkbox"><span>I can draw wavefront diagrams for a moving source and a moving observer.</span></label></li>
+  <li><label><input type="checkbox"><span>I can apply both Doppler formulas for sound and explain why they differ.</span></label></li>
+</ul>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li>
+    <p><strong>[3 marks]</strong> State the condition for simple harmonic motion and explain why a bouncing
+    ball is not an example of it.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Condition: the acceleration is proportional to the displacement from equilibrium and directed towards
+      it, i.e. \(a = -\omega^2 x\). A bouncing ball: while it is in contact with the floor the force varies
+      with compression (roughly SHM-like), but in free flight the acceleration is constant at \(-g\),
+      independent of displacement. Since \(a\) is not proportional to \(-x\) throughout, the motion is periodic
+      but not SHM.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> A mass of 0.20 kg on a spring oscillates with amplitude 0.080 m and period
+    0.60 s. Determine (a) the spring constant, (b) the maximum speed, (c) the total energy.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) \(T = 2\pi\sqrt{m/k}\) so \(k = \dfrac{4\pi^2 m}{T^2} = \dfrac{4\pi^2(0.20)}{0.36}
+      = 21.9\ \text{N m}^{-1}\).</p>
+      <p>(b) \(\omega = 2\pi/0.60 = 10.5\ \text{rad s}^{-1}\); \(v_{\max} = \omega x_0 = 10.5\times0.080
+      = 0.84\ \text{m s}^{-1}\).</p>
+      <p>(c) \(E = \tfrac12 m\omega^2x_0^2 = \tfrac12(0.20)(109.7)(0.0064) = 0.070\ \text{J}\). (Also
+      \(\tfrac12 kx_0^2 = \tfrac12(21.9)(0.0064) = 0.070\) J ✓.)</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> Light of wavelength 600 nm in air enters glass of refractive index 1.50 at
+    40° to the normal. Determine the angle of refraction, the speed in the glass, and the wavelength in the
+    glass.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(\sin\theta_2 = \dfrac{\sin 40^\circ}{1.50} = \dfrac{0.643}{1.50} = 0.428\), so
+      \(\theta_2 = 25.4^\circ\).</p>
+      <p>\(v = c/n = 3.00\times10^8/1.50 = 2.0\times10^8\ \text{m s}^{-1}\).</p>
+      <p>Frequency unchanged, so \(\lambda_{\text{glass}} = \lambda_{\text{air}}/n = 600/1.50 = 400\ \text{nm}\).</p>
+      <p>Note the ray bends <em>towards</em> the normal on entering a denser medium — the check that catches
+      a swapped ratio.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A ray attempts to leave a glass block (\(n = 1.52\)) into air. Determine the
+    critical angle and state what happens at an angle of incidence of 50°.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>\(\sin\theta_c = 1/1.52 = 0.658\), so \(\theta_c = 41.1^\circ\).</p>
+      <p>At 50° the angle of incidence exceeds the critical angle, so total internal reflection occurs: all the
+      light is reflected back into the glass and none is refracted out. (Since 50° &gt; 41°, and the ray is
+      going from high to low \(n\), TIR is possible.)</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> In a double-slit experiment, the slit separation is 0.40 mm and the screen is
+    3.0 m away. Ten fringe spacings measure 45 mm. Determine the wavelength of the light.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Fringe spacing \(s = 45/10 = 4.5\ \text{mm} = 4.5\times10^{-3}\ \text{m}\).</p>
+      <p>\(\lambda = \dfrac{sa}{D} = \dfrac{(4.5\times10^{-3})(0.40\times10^{-3})}{3.0}
+      = 6.0\times10^{-7}\ \text{m} = 600\ \text{nm}\).</p>
+      <p>Measuring across ten fringes reduces the fractional uncertainty in \(s\) by a factor of ten compared
+      with measuring one — worth stating if the question asks about improving the experiment.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> An open pipe is 0.60 m long. The speed of sound is 340 m s⁻¹. Determine the
+    frequencies of the first three harmonics. How would your answer differ for a closed pipe of the same
+    length?</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Open pipe: \(f_1 = v/2L = 340/1.2 = 283\ \text{Hz}\); \(f_2 = 567\ \text{Hz}\); \(f_3 = 850\ \text{Hz}\).</p>
+      <p>Closed pipe: \(f_1 = v/4L = 340/2.4 = 142\ \text{Hz}\), and only odd harmonics exist, so
+      \(f_3 = 425\ \text{Hz}\) and \(f_5 = 708\ \text{Hz}\). The closed pipe sounds an octave lower for the same
+      length, and its harmonic series is sparser — which is why the two instruments have distinct timbres.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[7 marks]</strong> A car horn emits 500 Hz. Determine the frequency heard by a stationary
+    observer as the car approaches at 25 m s⁻¹, and then as it recedes at the same speed. Speed of sound
+    = 340 m s⁻¹.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Approaching: \(f' = 500\times\dfrac{340}{340-25} = 500\times1.079 = 540\ \text{Hz}\).</p>
+      <p>Receding: \(f' = 500\times\dfrac{340}{340+25} = 500\times0.9315 = 466\ \text{Hz}\).</p>
+      <p>The change in frequency as the car passes is 540 − 466 = 74 Hz, which is the characteristic "drop in
+      pitch" you hear. Note the two shifts are <em>not</em> equal in magnitude about 500 Hz — another sign of
+      the asymmetry.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[8 marks]</strong> Discuss how the observations of Young's double-slit experiment and of the
+    photoelectric effect together lead to the concept of wave–particle duality.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Young's double-slit experiment produces a stable interference pattern of bright and dark fringes.
+      Interference requires superposition of waves with a well-defined phase and a path difference measurable
+      in wavelengths, and it is quantitatively predicted by \(s = \lambda D/a\). Light therefore behaves as a
+      wave.</p>
+      <p>The photoelectric effect cannot be explained by waves: there is a threshold frequency below which no
+      electrons are emitted regardless of intensity, emission is instantaneous even at low intensity, and the
+      maximum electron kinetic energy depends on frequency, not intensity. Einstein's explanation — light
+      consists of photons of energy \(E = hf\), one photon giving all its energy to one electron — accounts for
+      all three observations via \(hf = \phi + \tfrac12 mv_{\max}^2\). Light therefore behaves as particles.</p>
+      <p>Since both sets of observations are reproducible and mutually irreconcilable within a single classical
+      picture, we say light has a dual nature: it propagates as a wave and interacts as a particle. De Broglie
+      extended this to matter with \(\lambda = h/p\), and electron diffraction confirmed it — so the duality is
+      a property of nature, not a defect of our theories.</p>
+    </div></details>
+  </li>
+</ol>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

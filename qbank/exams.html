@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="qbank">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exam Papers — Question Bank</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/qbank.css">
+</head>
+<body>
+<div id="app-shell">
+
+  <span class="eyebrow">Question Bank · Exam papers</span>
+  <h1 class="page-title">Full exam papers</h1>
+  <p class="lede">Replicate exam conditions: open a full paper and work through it start to finish. Tap a paper to
+  load all of its questions.</p>
+
+  <div id="qb-root">
+    <div class="qb-list" id="qb-exams"></div>
+    <div id="qb-results" style="margin-top:18px"></div>
+    <div style="margin-top:14px"><button class="btn" id="qb-back" type="button" hidden>← Back to all papers</button></div>
+  </div>
+
+</div>
+
+<script src="data/physics.js"></script>
+<script src="data/mathematics.js"></script>
+<script src="data/computer-science.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="qbank.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const $ = function (id) { return document.getElementById(id); };
+  const recs = QB.data();
+  const byId = {}; recs.forEach(function (r) { byId[r.id] = r; });
+  const exams = QB.examPapers();
+
+  const examsRoot = $("qb-exams"), results = $("qb-results");
+  function renderList() {
+    $("qb-back").hidden = true;
+    results.innerHTML = "";
+    if (!exams.length) { examsRoot.innerHTML = '<div class="qb-empty">No full exam papers are included in this export.</div>'; return; }
+    examsRoot.innerHTML = exams.map(function (e, i) {
+      const sub = [e.paper, e.totalMarks ? e.totalMarks + " marks" : "", e.durationMin ? e.durationMin + " min" : "", (e.items || []).length + " Qs"].filter(Boolean).join(" · ");
+      return '<a class="qb-row" href="#" data-i="' + i + '">' +
+        '<div class="qb-row__main"><div class="qb-row__title">' + QB.esc(e.name || ("Paper " + (i + 1))) + "</div>" +
+        '<div class="qb-row__sub">' + QB.esc(sub) + (e.note ? " — " + QB.esc(e.note) : "") + "</div></div>" +
+        '<span class="qb-row__n">' + (e.items || []).length + "</span><span class=\"qb-row__chev\">›</span></a>";
+    }).join("");
+    examsRoot.querySelectorAll(".qb-row").forEach(function (a) {
+      a.addEventListener("click", function (e) { e.preventDefault(); showExam(parseInt(a.getAttribute("data-i"), 10)); });
+    });
+  }
+
+  function showExam(i) {
+    const e = exams[i];
+    const items = (e.items || []).map(function (id) { return byId[id]; }).filter(Boolean);
+    $("qb-back").hidden = false;
+    examsRoot.innerHTML = "";
+    results.innerHTML = "<h3>" + (e.items || []).length + " question" + ((e.items || []).length === 1 ? "" : "s") + " in this paper</h3>";
+    QB.renderPaged(items, results, {});
+  }
+
+  $("qb-back").addEventListener("click", renderList);
+  renderList();
+});
+</script>
+</body>
+</html>

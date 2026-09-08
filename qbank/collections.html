@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="qbank">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Collections — Question Bank</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/css/qbank.css">
+</head>
+<body>
+<div id="app-shell">
+
+  <span class="eyebrow">Question Bank · Collections</span>
+  <h1 class="page-title">Collections &amp; saved sets</h1>
+  <p class="lede">Save a filter from the search page as a named set, or jump into a ready-made collection. Everything
+  here is stored in your browser (localStorage) — nothing leaves this device.</p>
+
+  <div id="qb-root">
+    <h2>Saved sets</h2>
+    <div class="qb-list" id="qb-saved"></div>
+    <h2>Quick collections</h2>
+    <div class="qb-list" id="qb-auto"></div>
+  </div>
+
+</div>
+
+<script src="data/physics.js"></script>
+<script src="data/mathematics.js"></script>
+<script src="data/computer-science.js"></script>
+<script src="../assets/js/app.js"></script>
+<script src="qbank.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const $ = function (id) { return document.getElementById(id); };
+  const recs = QB.data();
+
+  function toQuery(f) {
+    const p = new URLSearchParams();
+    ["subject", "status", "topic", "paper", "command", "level", "year", "difficulty", "q"].forEach(function (k) {
+      if (f[k]) p.set(k, f[k]);
+    });
+    if (f.hasFig) p.set("hasFig", "1");
+    if (f.kp) p.set("kp", f.kp);
+    return p.toString();
+  }
+  function href(f) { return "index.html?" + toQuery(f); }
+
+  function countLabel(f) {
+    return QB.applyFilters(recs, f).length.toLocaleString() + " Qs";
+  }
+
+  // Quick collections
+  const auto = [
+    { name: "All current questions", sub: "On your May 2028 syllabus", f: { status: "current" } },
+    { name: "All legacy questions", sub: "Superseded guides — extra practice", f: { status: "legacy" } },
+    { name: "Hard questions", sub: "Flagged difficulty = hard", f: { difficulty: "hard" } },
+    { name: "Questions with figures", sub: "Need a diagram or graph", f: { hasFig: true } }
+  ];
+  $("qb-auto").innerHTML = auto.map(function (c) {
+    return '<a class="qb-row" href="' + href(c.f) + '">' +
+      '<div class="qb-row__main"><div class="qb-row__title">' + QB.esc(c.name) + "</div>" +
+      '<div class="qb-row__sub">' + QB.esc(c.sub) + "</div></div>" +
+      '<span class="qb-row__n">' + countLabel(c.f) + "</span><span class=\"qb-row__chev\">›</span></a>";
+  }).join("");
+
+  // Saved sets
+  function renderSaved() {
+    const saved = QB.getColl();
+    if (!saved.length) { $("qb-saved").innerHTML = '<div class="qb-empty">No saved sets yet. On the <a href="index.html">search page</a>, build a filter and choose “Save filter as collection”.</div>'; return; }
+    $("qb-saved").innerHTML = saved.map(function (c, i) {
+      const bits = [];
+      if (c.f.subject) bits.push(QB.groups().filter(function (g) { return g.v === c.f.subject; })[0] ? QB.groups().filter(function (g) { return g.v === c.f.subject; })[0].label : c.f.subject);
+      if (c.f.status) bits.push("currency " + c.f.status);
+      if (c.f.topic) bits.push(c.f.topic);
+      if (c.f.paper) bits.push(c.f.paper);
+      if (c.f.q) bits.push('“' + c.f.q + '”');
+      return '<div class="qb-row" style="cursor:default">' +
+        '<a class="qb-row__main" href="' + href(c.f) + '" style="flex:1;text-decoration:none;color:inherit">' +
+          '<div class="qb-row__title">' + QB.esc(c.name) + "</div>" +
+          '<div class="qb-row__sub">' + (bits.length ? bits.join(" · ") : "all questions") + " · " + countLabel(c.f) + "</div></a>" +
+        '<button class="btn qb-del" data-i="' + i + '" type="button">Delete</button></div>";
+    }).join("");
+    $("qb-saved").querySelectorAll(".qb-del").forEach(function (b) {
+      b.addEventListener("click", function () { QB.delColl(parseInt(b.getAttribute("data-i"), 10)); renderSaved(); });
+    });
+  }
+  renderSaved();
+});
+</script>
+</body>
+</html>

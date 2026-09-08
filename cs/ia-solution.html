@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Internal assessment — the computational solution — DP Computer Science HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Computer Science HL · Internal assessment · 20 % of HL</span>
+<h1 class="page-title">The computational solution (IA)</h1>
+<p class="lede">You find a real person with a real problem, you apply the computational thinking process to it, and
+you produce a working solution plus a document that shows every step of your thinking. That is 35 hours and 20 % of
+your HL grade, marked by your teacher and moderated by the IB. The single most important thing on this page is this:
+the marker cannot reward thinking they cannot see. A brilliant program with thin documentation scores 4 or 5; a
+modest program whose documentation shows deliberate abstraction, a real client, systematic testing and honest
+evaluation scores 7. Everything below is about making your thinking visible.</p>
+<div class="page-meta">
+  <span class="tag">35 hours, same at SL and HL</span>
+  <span class="tag">HL 20 % · SL 30 %</span>
+  <span class="tag tag--hl">Java or Python — pick one and stay in it</span>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why this is assessed this way</span>
+  <p>The old IA was called "the solution" and was largely a dossier about a product. The new one is called
+  <em>the computational solution</em> and is explicitly built around the computational thinking process, because the
+  IBO's view is that the program is the <em>evidence</em>, not the <em>object</em> of assessment. What is assessed is
+  whether you can specify a problem someone actually has, decide what to keep and what to discard, design an
+  algorithm that solves the abstracted problem, build it, prove it works, and judge it honestly. That is the same
+  loop in <a href="B1-computational-thinking.html">B1</a>; the IA is B1 with a client attached.</p>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="The computational thinking process as a cycle: problem specification, abstraction, algorithm design, implementation, testing, evaluation, reflection">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+    <path d="M320 40 A 120 120 0 1 1 319.9 40" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+    <circle cx="320" cy="160" r="112" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+
+    <rect x="248" y="26" width="144" height="46" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="320" y="48" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">1 · Specify the problem</text>
+    <text x="320" y="65" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">client · context · scope</text>
+
+    <rect x="410" y="90" width="144" height="46" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="482" y="112" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">2 · Abstract</text>
+    <text x="482" y="129" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">keep / discard / name</text>
+
+    <rect x="410" y="184" width="144" height="46" rx="6" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+    <text x="482" y="206" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">3 · Design algorithms</text>
+    <text x="482" y="223" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">pseudocode · structures</text>
+
+    <rect x="248" y="248" width="144" height="46" rx="6" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+    <text x="320" y="270" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">4 · Implement</text>
+    <text x="320" y="287" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Java or Python</text>
+
+    <rect x="86" y="184" width="144" height="46" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="158" y="206" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">5 · Test</text>
+    <text x="158" y="223" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">unit · integration · UAT</text>
+
+    <rect x="86" y="90" width="144" height="46" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="158" y="112" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">6 · Evaluate</text>
+    <text x="158" y="129" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">vs success criteria</text>
+
+    <path d="M392 46 L 400 50 L 394 56 Z" fill="#334155"/>
+    <path d="M558 120 L 552 112 L 552 128 Z" fill="#334155"/>
+    <path d="M482 230 L 486 238 L 478 238 Z" fill="#334155"/>
+    <path d="M248 271 L 240 267 L 240 275 Z" fill="#334155"/>
+    <path d="M158 184 L 154 176 L 162 176 Z" fill="#334155"/>
+    <path d="M86 112 L 78 108 L 78 116 Z" fill="#334155"/>
+
+    <text x="320" y="160" font-size="13" font-family="system-ui, sans-serif" fill="#3653d6" text-anchor="middle">document at every step</text>
+    <text x="320" y="178" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">the artefact is the evidence</text>
+
+    <text x="20" y="308" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">Gold = the two steps students under-document. The loop is real: evaluation often sends you back to abstraction.</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> The computational thinking process, and therefore the shape
+  of the IA criteria. Note that it is a cycle: an honest evaluation almost always reveals a limitation that sends you
+  back to step 2. A record of tasks that shows a <em>second</em> pass through abstraction is evidence of real
+  computational thinking, not of failure.</figcaption>
+</figure>
+
+<h2>Choosing the problem: the two-question test</h2>
+
+<p>Almost every weak IA was decided in the first week. Use this test before you commit to anything:</p>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>Test 1 — "Can I demo it in three minutes?"</h4>
+    <p>Without explaining anything, can you show a user doing the thing your solution does, from start to finish, in
+    under three minutes? If a demo needs narration, your scope is wrong: either the problem is too big (you will run
+    out of hours) or too diffuse (you have no clear single function to demo).</p>
+  </div>
+  <div class="card">
+    <h4>Test 2 — "Does it have a real user who is waiting for it?"</h4>
+    <p>Name the person, out loud. If the answer is "me", "my teacher", or "students in general", you have no client,
+    and the criteria that depend on a client — problem specification, success criteria, evaluation — have nothing to
+    bite on. A real client is someone who will tell you that your first idea was wrong.</p>
+  </div>
+</div>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th></th><th>Too small (caps at 4–5)</th><th>Right size (7 is available)</th><th>Too big (you will not finish)</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Problem</strong></td><td>"Convert between binary and decimal."</td><td>"Our canteen throws away
+    ~40 portions a day; predict tomorrow's demand per dish so the manager can order correctly."</td><td>"A complete
+    school management system."</td></tr>
+    <tr><td><strong>Data</strong></td><td>None, or one variable in memory.</td><td>200–2,000 real records, persisted
+    in a file or a database, with a data dictionary.</td><td>Ten related tables, user roles, a live API.</td></tr>
+    <tr><td><strong>Algorithm</strong></td><td>A loop and an if.</td><td>Two or three non-trivial algorithms:
+    validation, search/filter, a simple model or optimisation. Complexity justified in words.</td><td>A neural
+    network, a path-finder over live maps, real-time multi-user sync.</td></tr>
+    <tr><td><strong>Client</strong></td><td>Yourself.</td><td>One named person, interviewed twice, who signs success
+    criteria.</td><td>A whole department with conflicting requirements.</td></tr>
+    <tr><td><strong>Build time</strong></td><td>3 hours of coding.</td><td>12–18 hours of coding, 17 hours of
+    documentation.</td><td>60+ hours of coding.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — four ways the problem choice caps your mark</span>
+  <ol class="steps">
+    <li><strong>No client.</strong> Without one there is no interview, no signed success criteria, and no
+    external validation. The evaluation criterion asks for evaluation <em>against success criteria</em>; invented
+    criteria are visibly invented.</li>
+    <li><strong>Solved problem.</strong> If a free app already does it perfectly, the marker asks why anyone needs
+    yours. This is fine — say so, and explain what is different about <em>this</em> context (language, cost, offline
+    use, the specific data).</li>
+    <li><strong>A game.</strong> Games are allowed but rarely score well: no real client, no real data, and
+    evaluation collapses into "it was fun". If you must, make it an educational tool for a named teacher with
+    measurable learning outcomes.</li>
+    <li><strong>Pure CRUD.</strong> Add, view, edit, delete with nothing interesting in the middle gives you almost
+    nothing to write about in algorithm design. You need at least one algorithm worth a page: a search, a ranking, a
+    scheduling rule, a forecast, a parse, an optimisation.</li>
+  </ol>
+</div>
+
+<h2>Twenty-eight project ideas, ranked</h2>
+
+<p>Difficulty: ★ easy but thin, ★★ solid 6–7 candidate, ★★★ ambitious — only take one of these if you are already
+a confident programmer. "Draws on" tells you which syllabus topics the <em>documentation</em> can legitimately
+reference, which is what raises the mark.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>#</th><th>Project</th><th>Client</th><th>Draws on</th><th>Lang</th><th>Diff</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Canteen pre-order + next-day demand forecast</td><td>Canteen manager</td><td>B1, B2, A3, A4</td><td>Python</td><td>★★</td></tr>
+    <tr><td>2</td><td>Physics lab equipment loan &amp; calibration tracker</td><td>Lab technician</td><td>B1, B3, A3, A2</td><td>Java</td><td>★★</td></tr>
+    <tr><td>3</td><td>Revision timetable generator from exam dates + topic confidence</td><td>Classmate / tutor</td><td>B1, B2, B4</td><td>Python</td><td>★★</td></tr>
+    <tr><td>4</td><td>Sports-team rotation and fatigue planner</td><td>PE teacher</td><td>B1, B2, B3</td><td>Python</td><td>★★</td></tr>
+    <tr><td>5</td><td>School club attendance &amp; register with QR check-in</td><td>Club leader</td><td>B2, A3, A1</td><td>Python</td><td>★★</td></tr>
+    <tr><td>6</td><td>Second-hand textbook exchange with matching</td><td>Librarian</td><td>B2, B3, A3</td><td>Java</td><td>★★</td></tr>
+    <tr><td>7</td><td>Binary/hex/2's-complement drill with adaptive difficulty</td><td>CS teacher (A1)</td><td>B1, A1, A4</td><td>Python</td><td>★</td></tr>
+    <tr><td>8</td><td>Weather-station logger + anomaly alerts</td><td>Physics dept</td><td>A1, A2, B2, A3</td><td>Python</td><td>★★</td></tr>
+    <tr><td>9</td><td>Mock-exam results analyser with per-topic diagnostics</td><td>Subject teacher</td><td>B2, A3, A4</td><td>Python</td><td>★★</td></tr>
+    <tr><td>10</td><td>Timetable clash detector for the school</td><td>Deputy head</td><td>B1, B4, A3</td><td>Java</td><td>★★★</td></tr>
+    <tr><td>11</td><td>Inventory system for the drama department's costumes</td><td>Drama teacher</td><td>B2, B3, A3</td><td>Java</td><td>★</td></tr>
+    <tr><td>12</td><td>Car-park occupancy predictor from a cheap sensor log</td><td>Site manager</td><td>A1, A4, B2</td><td>Python</td><td>★★</td></tr>
+    <tr><td>13</td><td>Flashcard app with spaced-repetition scheduling</td><td>Language teacher</td><td>B1, B2, B4</td><td>Python</td><td>★★</td></tr>
+    <tr><td>14</td><td>Charity-shop stock valuation tool</td><td>Local shop</td><td>B2, A3</td><td>Python</td><td>★</td></tr>
+    <tr><td>15</td><td>Image-analysis tool counting cells / seedlings</td><td>Biology teacher</td><td>A4, B2, A1</td><td>Python</td><td>★★★</td></tr>
+    <tr><td>16</td><td>Café queue simulation to decide staffing</td><td>Café owner</td><td>B1, B2, A4</td><td>Python</td><td>★★</td></tr>
+    <tr><td>17</td><td>Exam-seating plan generator with constraints</td><td>Exams officer</td><td>B1, B4, B3</td><td>Java</td><td>★★★</td></tr>
+    <tr><td>18</td><td>Personal finance tracker with category prediction</td><td>Parent / friend</td><td>B2, A3, A4</td><td>Python</td><td>★★</td></tr>
+    <tr><td>19</td><td>Music-practice log with streak and goal tracking</td><td>Music teacher</td><td>B2, B3, A3</td><td>Java</td><td>★</td></tr>
+    <tr><td>20</td><td>Energy-use dashboard from smart-meter CSV</td><td>Facilities manager</td><td>A3, B2, A4</td><td>Python</td><td>★★</td></tr>
+    <tr><td>21</td><td>Lost-property register with photo + matching</td><td>Reception</td><td>B2, A3</td><td>Python</td><td>★</td></tr>
+    <tr><td>22</td><td>Route planner for the school's minibus runs</td><td>Transport officer</td><td>B4, B1, A3</td><td>Java</td><td>★★★</td></tr>
+    <tr><td>23</td><td>Sensor-based plant watering scheduler</td><td>Groundskeeper</td><td>A1, A2, B2</td><td>Python</td><td>★★</td></tr>
+    <tr><td>24</td><td>Plagiarism-lite: similarity checker for internal essays</td><td>English teacher</td><td>B2, B4, A3</td><td>Python</td><td>★★★</td></tr>
+    <tr><td>25</td><td>Appointment booking for the school counsellor</td><td>Counsellor</td><td>B3, A3, A2</td><td>Java</td><td>★★</td></tr>
+    <tr><td>26</td><td>GDPR-style consent and data-retention register</td><td>Data officer</td><td>A2, A3, B2</td><td>Python</td><td>★★</td></tr>
+    <tr><td>27</td><td>Small BLE beacon attendance for a sixth-form common room</td><td>Head of sixth form</td><td>A1, A2, B2</td><td>Python</td><td>★★★</td></tr>
+    <tr><td>28</td><td>Text-adventure engine for a primary-school reading scheme</td><td>Primary teacher</td><td>B3, B2, B4</td><td>Java</td><td>★★</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — pick in this order</span>
+  <ol class="steps">
+    <li>Shortlist five ideas where you already <em>know</em> a named person who has the problem. Access to a real
+    client beats any amount of technical interest.</li>
+    <li>Check the "draws on" column against what you will have covered by the end of DP1. If your project needs B4
+    and you are only starting B2, either change the project or change the timetable.</li>
+    <li>Apply the two-question test to each. Kill any idea that fails it.</li>
+    <li>Write a one-paragraph problem statement for the survivor and send it to your teacher before you write a
+    line of code.</li>
+  </ol>
+</div>
+
+<h2>Criterion by criterion: what top-band work looks like</h2>
+
+<div class="callout callout--note">
+  <span class="callout__label">Confirm the wording yourself</span>
+  <p>The five strands below are those the new guide organises the IA around — problem specification, abstraction,
+  algorithm design and implementation, testing and evaluation, documentation and reflection. The exact criterion
+  letters, mark allocations and strand wordings are published in the current <em>DP computer science subject
+  brief</em> and the IA criteria document on ibo.org; open them before you start and write the current wording at
+  the top of your plan. What follows describes what the descriptors <em>mean in practice</em>, which does not
+  change even when the marks do.</p>
+</div>
+
+<h3>Criterion 1 · Problem specification</h3>
+
+<p><strong>The question the marker is asking:</strong> does this student understand someone else's problem well
+enough to have specified it, rather than having invented a problem to fit a program they wanted to write?</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Element</th><th>Top band</th><th>Weak</th></tr></thead>
+  <tbody>
+    <tr><td><strong>The problem statement</strong></td><td>One paragraph, 100–150 words, naming the client, the
+    setting, the current situation, and the measurable pain ("≈ 40 portions wasted per day, ≈ £260 per week").</td>
+    <td>"People find it hard to keep track of their homework." No client, no numbers, no setting.</td></tr>
+    <tr><td><strong>Evidence of the problem</strong></td><td>Interview transcript extract, a photo of the current
+    paper system, a sample of the existing spreadsheet, or a count you did yourself.</td><td>Asserted: "this is
+    clearly a problem".</td></tr>
+    <tr><td><strong>Success criteria</strong></td><td>5–7 criteria, each <strong>measurable and testable</strong>,
+    written with the client, dated and signed. "The forecast for a dish must be within 15 % of actual sales on
+    4 out of 5 school days."</td><td>3 vague criteria invented by the student: "easy to use", "works well",
+    "looks good".</td></tr>
+    <tr><td><strong>Scope and limits</strong></td><td>An explicit "out of scope" list — what this solution will
+    <em>not</em> do, and why.</td><td>Absent, so the marker cannot tell whether you finished or gave up.</td></tr>
+    <tr><td><strong>Justification of the solution type</strong></td><td>Why a program, rather than a spreadsheet or
+    a change of process — one paragraph, honest ("a spreadsheet was tried and failed because …").</td><td>"A
+    computer program is the best way to solve this." Unargued.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Mistakes that cap this criterion</span>
+  <ul>
+    <li>Success criteria that cannot be measured — "user-friendly" — make the evaluation criterion impossible to do
+    well, because there is nothing to evaluate against.</li>
+    <li>Writing the specification <em>after</em> you built the program. The marker can tell: the specification
+    describes features the program happens to have, including the accidental ones.</li>
+    <li>No client voice. Every criterion must be traceable to something the client said or agreed to.</li>
+  </ul>
+</div>
+
+<h3>Criterion 2 · Abstraction</h3>
+
+<p><strong>The question:</strong> did the student decide what matters, and can they justify what they threw away?</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Artefact</th><th>Top band</th><th>Weak</th></tr></thead>
+  <tbody>
+    <tr><td><strong>What is kept / discarded</strong></td><td>A table: for each real-world entity, the attributes
+    kept, the attributes discarded, and one sentence of justification for each discard.</td><td>A list of variables
+    with types. That is a data dictionary, not abstraction.</td></tr>
+    <tr><td><strong>The model</strong></td><td>The problem restated in abstract terms: "a dish is a tuple
+    (name, category, lead time, price); a day is a sequence of demand values; the forecast is a weighted mean over
+    the last <em>k</em> matching days."</td><td>Restating the problem in the same words you started with.</td></tr>
+    <tr><td><strong>Decomposition</strong></td><td>A structure chart or numbered decomposition into 4–8 sub-problems,
+    each independently testable, with the dependency between them shown.</td><td>A single flowchart of the whole
+    program, 40 boxes deep.</td></tr>
+    <tr><td><strong>Assumptions</strong></td><td>4–6 stated assumptions, each with the consequence if it is false.</td>
+    <td>None stated, or "I assume the user is sensible".</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="derivation">
+  <summary><span class="badge">Why this works</span> Why abstraction is the criterion that separates 5 from 7</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Every other criterion can be satisfied by effort: you can write more tests, draw more diagrams, keep a
+      longer record of tasks. Abstraction cannot be faked by volume, because it is a <em>decision</em> — you either
+      justify discarding something or you do not.</li>
+      <li>The reason it is assessed at all: the same abstraction reappears everywhere in the course — the layer model
+      in <a href="A1-computer-fundamentals.html">A1</a>, the E-R model in <a href="A3-databases.html">A3</a>, feature
+      selection in <a href="A4-machine-learning.html">A4</a>, the class in <a href="B3-oop.html">B3</a>, the ADT in
+      <a href="B4-abstract-data-types.html">B4</a>. A student who can justify one abstraction in their IA has
+      understood the idea that runs through the whole syllabus, and the marker is looking for exactly that.</li>
+      <li>The practical trick: after you choose what to keep, write one sentence for each discarded attribute
+      beginning "I do not need X because …". Six of those sentences is a top-band abstraction section, and it takes
+      fifteen minutes.</li>
+      <li><strong>When it is the wrong tool:</strong> do not over-abstract. If a detail genuinely affects the
+      outcome (a dish's lead time affects whether you can order it at all), discarding it is an error, and saying so
+      in the write-up is worth more than a tidy model. Honest complexity beats false simplicity.</li>
+    </ol>
+  </div>
+</details>
+
+<h3>Criterion 3 · Algorithm design and implementation</h3>
+
+<p><strong>The question:</strong> can the student design a correct algorithm in a notation independent of the
+language, then implement it in real Java or Python with a level of technique appropriate to HL?</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Element</th><th>Top band</th><th>Weak</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Pseudocode</strong></td><td>IB pseudocode for every non-trivial algorithm, with meaningful
+    identifiers and a comment per block. 3–6 algorithms, not 20.</td><td>One giant pseudocode listing of the whole
+    program, or pseudocode that is actually Python with <code>output</code> in it.</td></tr>
+    <tr><td><strong>Choice of data structure</strong></td><td>Each structure chosen and justified against the
+    alternative: "an array, because the number of dishes is fixed at 12 and it is indexed by position; a
+    dictionary would be faster to look up but the order matters for display."</td><td>"I used an array." No
+    alternative considered, no cost.</td></tr>
+    <tr><td><strong>Efficiency</strong></td><td>At least one complexity statement in words, ideally with
+    \(O(n)\) / \(O(n^2)\) notation and a comparison of two candidate designs.</td><td>Absent. At HL, silence here
+    is conspicuous.</td></tr>
+    <tr><td><strong>Code quality</strong></td><td>Meaningful identifiers, constants for magic numbers, functions
+    with single responsibilities, no duplicated blocks, consistent naming, comments that explain <em>why</em> and
+    not <em>what</em>. 300–800 lines is typical.</td><td><code>a</code>, <code>x1</code>, <code>temp2</code>;
+    one 200-line main method; comments that restate the code.</td></tr>
+    <tr><td><strong>Language features</strong></td><td>Deliberate use of the features the course teaches: file
+    handling, exception handling, and either OOP (classes, encapsulation, inheritance if justified) or a
+    functional/declarative approach, whichever you justify.</td><td>Everything in one file, global variables, string
+    concatenation for SQL.</td></tr>
+    <tr><td><strong>Originality vs reuse</strong></td><td>External code (a date parser, a library) used
+    deliberately and cited in the code and in a bibliography.</td><td>Uncredited copied blocks, or a refusal to use
+    any library at all out of misplaced caution.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Here is the same core algorithm written both ways, because your IA must be in one real language and because you
+should be able to read the other. This is the forecast function from the exemplar below — a weighted mean over the
+last <em>k</em> matching days.</p>
+
+<div class="grid grid--2">
+  <div class="card"><h4>Python</h4>
+<pre><code>def forecast(demand, day_type, k=4):
+    """Weighted mean of the last k matching days.
+    demand: list of (date, day_type, portions)
+    Weights: most recent matching day counts most."""
+    matches = [d for d in demand if d[1] == day_type][-k:]
+    if not matches:                 # no history: fall back to the mean
+        return round(sum(d[2] for d in demand) / len(demand))
+    total, weight_sum = 0, 0
+    for i, row in enumerate(matches):   # i = 0 for the oldest match
+        w = i + 1                       # 1, 2, 3, ... k
+        total += row[2] * w
+        weight_sum += w
+    return round(total / weight_sum)</code></pre></div>
+  <div class="card"><h4>Java</h4>
+<pre><code>public static int forecast(List&lt; Demand &gt; demand, String dayType, int k) {
+    // collect matching days, then take the last k
+    List&lt; Integer &gt; matches = new ArrayList&lt;&gt;();
+    for (Demand d : demand)
+        if (d.dayType.equals(dayType)) matches.add(d.portions);
+    if (matches.isEmpty()) {                       // no history
+        int sum = 0;
+        for (Demand d : demand) sum += d.portions;
+        return Math.round((float) sum / demand.size());
+    }
+    int from = Math.max(0, matches.size() - k);
+    int total = 0, weightSum = 0;
+    for (int i = from; i &lt; matches.size(); i++) {
+        int w = i - from + 1;                      // 1, 2, 3, ... k
+        total += matches.get(i) * w;
+        weightSum += w;
+    }
+    return Math.round((float) total / weightSum);  // cast BEFORE dividing
+}</code></pre></div>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">What markers actually reward here</span>
+  <p>They reward <em>evidence of a decision</em>. "I chose a weighted mean over a plain mean because the client
+  said Monday's demand resembles last Monday more than last Friday; a plain mean over seven days gave a 31 % error
+  on the test set and the weighted mean over four matching days gave 11 %" — that single sentence is worth more
+  than three pages of code listing. Include the code in the appendix, and put the <em>reasoning</em> in the body of
+  the document.</p>
+</div>
+
+<h3>Criterion 4 · Testing and evaluation</h3>
+
+<p><strong>The question:</strong> has the student proved the solution works, against criteria that came from
+someone other than themselves?</p>
+
+<p>Three levels, all three required:</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Level</th><th>What it tests</th><th>How you evidence it</th><th>How many</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Unit</strong></td><td>One function in isolation. "Does <code>forecast()</code> return 38 for
+    this known input?"</td><td>A test table row: input, expected, actual, pass/fail. Screenshot of the console or
+    a test run.</td><td>8–12</td></tr>
+    <tr><td><strong>Integration</strong></td><td>Two or more parts working together. "Does saving an order update
+    the forecast for tomorrow?"</td><td>A short scenario script: steps, expected outcome, observed outcome.</td>
+    <td>3–5</td></tr>
+    <tr><td><strong>Acceptance (UAT)</strong></td><td>The whole solution against the client's success criteria.</td>
+    <td>A table with one row per success criterion: criterion, how tested, evidence, client's verdict. Plus the
+    client's own words.</td><td>One row per criterion</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Your test data must include all four types. This is the single cheapest way to look like you know what you are
+doing:</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Type</th><th>Purpose</th><th>Example for a "enter number of portions" field</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Valid (typical)</strong></td><td>Shows it works in the normal case.</td><td>120</td></tr>
+    <tr><td><strong>Boundary</strong></td><td>Shows you thought about the edges of validity.</td><td>0, 1, 999, 1000
+    (if 0 &lt; n ≤ 1000)</td></tr>
+    <tr><td><strong>Erroneous / invalid type</strong></td><td>Shows it does not crash.</td><td>−5, "abc", 12.5,
+    empty input</td></tr>
+    <tr><td><strong>Extreme</strong></td><td>Shows behaviour under stress.</td><td>100000, a 500-character dish
+    name, an empty data file</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Mistakes that cap this criterion</span>
+  <ul>
+    <li><strong>Only valid data.</strong> A test table with six rows that all pass and all use normal input
+    demonstrates nothing. Markers look for at least two rows that were <em>expected to fail gracefully</em>.</li>
+    <li><strong>No expected column.</strong> "Input 120 → output 120 ✓" with no expected value written before the
+    run is not a test; it is a record.</li>
+    <li><strong>Bugs found but not described.</strong> If a test failed and you fixed something, say what failed,
+    what the cause was, and what you changed. This is the most convincing evidence in the whole IA and students hide
+    it out of embarrassment.</li>
+    <li><strong>Evaluation written as a feature list.</strong> See below.</li>
+  </ul>
+</div>
+
+<h3>Criterion 5 · Documentation and reflection</h3>
+
+<p><strong>The question:</strong> can a reader follow the whole process without asking you anything, and does the
+student show they learned something?</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Artefact</th><th>Top band</th><th>Weak</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Record of tasks</strong></td><td>A table: date, planned task, actual task, time spent, outcome,
+    next step. 25–40 rows across 30+ hours, honest about dead ends.</td><td>Eight rows written the night before,
+    all "coded the program".</td></tr>
+    <tr><td><strong>Plan</strong></td><td>Dated, with milestones and a rationale for the order; annotated when
+    reality diverged.</td><td>A Gantt chart with no annotations and no evidence it was used.</td></tr>
+    <tr><td><strong>Design artefacts</strong></td><td>System/context diagram, UI mockups (before <em>and</em> after),
+    flowcharts or pseudocode per algorithm, data dictionary, test plan written <em>before</em> testing.</td>
+    <td>One flowchart; mockups drawn after the UI was built.</td></tr>
+    <tr><td><strong>Video evidence</strong></td><td>3–5 minutes: the client's problem stated, the solution demoed by
+    a real user, one success criterion being checked, one limitation shown honestly.</td><td>10 minutes of
+    screencast with no sound, or a video of code scrolling.</td></tr>
+    <tr><td><strong>Reflection</strong></td><td>Throughout: after each stage, 2–3 sentences on what went wrong, what
+    you would do differently, and what you decided and why. Not a single paragraph at the end.</td><td>A closing
+    paragraph: "I enjoyed this project and learned a lot about time management."</td></tr>
+    <tr><td><strong>Bibliography &amp; citations</strong></td><td>Every external source cited — libraries,
+    documentation, Stack Overflow, the client interview — in a consistent format, with matching in-code
+    comments.</td><td>Nothing cited, or "references: google".</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>The documentation structure</h2>
+
+<p>Use this order. Lengths are the ones that reliably fit inside the file-size and page limits while still giving
+the marker everything.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Section</th><th>Length</th><th>Must contain</th></tr></thead>
+  <tbody>
+    <tr><td><strong>A · Planning</strong><br>Record of tasks, plan, timeline</td><td>3–4 pages</td><td>Dated table of
+    tasks; the plan; the justification of the problem choice (the two-question test answered in writing).</td></tr>
+    <tr><td><strong>B · Problem specification</strong></td><td>2–3 pages</td><td>Client and context; evidence of the
+    problem; interview transcript extract; <strong>signed success criteria</strong>; scope and out-of-scope;
+    rationale for a computational solution.</td></tr>
+    <tr><td><strong>C · Design</strong></td><td>6–10 pages</td><td>System/context diagram; decomposition /
+    structure chart; abstraction table (keep/discard/why); UI mockups; flowcharts; IB pseudocode for each
+    algorithm; data dictionary; choice-of-structure and complexity justification; test plan.</td></tr>
+    <tr><td><strong>D · Developed solution</strong></td><td>2–3 pages + appendix</td><td>How it was built
+    (environment, language, libraries); key code excerpts <em>in the body</em> with an explanation of why; the full
+    listing in an appendix; instructions for running it.</td></tr>
+    <tr><td><strong>E · Testing</strong></td><td>4–6 pages</td><td>Unit table (8–12 rows, four data types),
+    integration scenarios, acceptance table against success criteria, screenshots with captions, the client's
+    verdict, and at least one bug found-and-fixed narrative.</td></tr>
+    <tr><td><strong>F · Evaluation</strong></td><td>2–3 pages</td><td>Criterion-by-criterion verdict with evidence;
+    limitations tied to criteria; extensions that follow <em>from</em> the limitations; client's final comment;
+    reflection on the process.</td></tr>
+    <tr><td><strong>G · References &amp; appendix</strong></td><td>1–2 pages + code</td><td>Bibliography, credits for
+    external code, interview consent, full code listing, video link.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the caption rule</span>
+  <p>Every diagram, mockup and screenshot gets a caption of one sentence saying what the reader should <em>notice</em>,
+  not what the image <em>is</em>. "Figure 7. The forecast dialog, showing the 15 % tolerance band the client
+  specified in criterion 4" is a caption. "Figure 7. Screenshot of program" is not — and a marker scrolling thirty
+  uncaptioned screenshots learns nothing, so the work cannot be credited.</p>
+</div>
+
+<h2>Using the client properly — the difference between a 5 and a 7</h2>
+
+<p>This is the highest-leverage part of the whole IA and the one most students skip. A client gives you three things
+you cannot invent: evidence that the problem is real, criteria you did not choose, and an external verdict.</p>
+
+<ol class="steps">
+  <li><strong>Interview 1 (week 1, 20 minutes, recorded or minuted).</strong> Ask: what do you do now? What goes
+  wrong, and how often? How do you know when it has gone wrong? What would "better" look like, in numbers? What must
+  the solution never do? Do not propose your solution in this meeting — you are there to hear the problem.</li>
+  <li><strong>Write the success criteria from their answers</strong> and send them back. Each criterion should be
+  phrased so that it can only be answered yes or no with evidence.</li>
+  <li><strong>Get them signed</strong> — an email reply saying "yes, those are the right criteria" is enough and is
+  better than a formal signature because it is dated and quotable. Screenshot it into the document.</li>
+  <li><strong>Interview 2 (week 10, 20 minutes).</strong> Demo it. Ask them to attempt a task themselves while you
+  say nothing. Record what they struggle with — that is your best evaluation material.</li>
+  <li><strong>Ask for a written verdict</strong> against each criterion. Two sentences per criterion, in their
+  words, is worth more than two pages of your own evaluation.</li>
+</ol>
+
+<pre><code>Interview 1 — extract (canteen manager, 12 September)
+
+Q: How do you decide how much to cook each day?
+A: I look at what we sold the same day last week and I add a bit. If it's a
+   Monday I look at last Monday. Mostly I just know.
+Q: How much is wasted on a normal day?
+A: Forty portions, give or take. Some days sixty if the weather turns.
+Q: What would "getting it right" mean to you?
+A: If I could be within about ten or fifteen portions of what we actually
+   sell, I'd order differently and I'd stop binning so much.
+Q: What must it not do?
+A: It must not tell me to cook less than we need. Running out is worse than
+   waste — the students complain and I can't fix it at 12:15.
+
+→ Criterion 3 drafted from this: "the forecast must not under-predict by
+  more than 5 % on any day" — note that this is asymmetric, and it is the
+  client's asymmetry, not mine. Under-prediction is penalised, over-prediction
+  is not. That single detail drives the whole design of the forecast function.</code></pre>
+
+<div class="callout callout--link">
+  <span class="callout__label">Connection — this is the case study skill, up close</span>
+  <p>Identifying a stakeholder, working out what they actually want, noticing who is excluded, and weighing one
+  group's interest against another is exactly what Paper 1's case study questions ask for — see
+  <a href="case-study.html">the case study page</a>. Students who do a good IA with a real client find the
+  stakeholder questions in Paper 1 much easier, because they have done the thing for real rather than read about
+  it.</p>
+</div>
+
+<h2>Evaluation that actually evaluates</h2>
+
+<p>An evaluation is not a list of improvements. It is a verdict on each success criterion, supported by evidence,
+followed by limitations that are <em>the reason a criterion was only partly met</em>.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Weak (generic)</th><th>Strong (tied to a criterion)</th></tr></thead>
+  <tbody>
+    <tr><td>"I would add a GUI if I had more time."</td><td>"Criterion 5 (usable by staff with no training) was only
+    partly met: the client completed the order task in 95 seconds without help, but twice pressed Enter at the
+    prompt expecting a menu, which suggests a numbered menu would remove the ambiguity. This is a change to the
+    input layer, not to the model."</td></tr>
+    <tr><td>"The program could be faster."</td><td>"Criterion 2 (forecast within 15 % on 4 of 5 days) was met on
+    4 of 5 days; the fifth was the day after a public holiday, when the matching-day history contained no comparable
+    day. The failure is a property of the data, not of the algorithm, and it would not be fixed by more efficient
+    code."</td></tr>
+    <tr><td>"It works well and the client was happy."</td><td>"The client's verdict on criterion 3 was 'it never
+    under-cooks, which is the thing I care about' — but she also noted that the forecast is only useful if the
+    previous week's sales were recorded correctly, which they sometimes are not. This is the most significant
+    limitation, because it is outside the program's control."</td></tr>
+    <tr><td>"In future I would use a neural network."</td><td>"A weighted mean was chosen over linear regression
+    because with 30 days of history the regression overfits the two outliers; with a full term of data the
+    regression would likely be better. That is the next thing I would test, and it is a consequence of the data
+    volume, not of the design."</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">The three-sentence structure that always works</span>
+  <p>For each limitation: <strong>(1)</strong> what the criterion required; <strong>(2)</strong> the evidence that
+  it was only partly met; <strong>(3)</strong> the specific change that would address it, with a reason why that
+  change is not simply "more time". Then one sentence on what you would do differently in the <em>process</em> —
+  that last sentence is the reflection the criterion asks for, and it must be about your decisions, not your
+  feelings.</p>
+</div>
+
+<h2>Academic honesty and citing external code</h2>
+
+<p>Using external code is normal, expected, and fine. Concealing it is the only thing that ends badly.</p>
+
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>Every borrowed block has an in-code comment with the source URL and the date.</span></label></li>
+  <li><label><input type="checkbox"><span>The bibliography lists the same sources in the same order.</span></label></li>
+  <li><label><input type="checkbox"><span>Libraries and frameworks (pandas, JDBC, Tkinter, Flask) are named and versioned.</span></label></li>
+  <li><label><input type="checkbox"><span>Anything you cannot explain line by line is either removed or fully credited and explained.</span></label></li>
+  <li><label><input type="checkbox"><span>The client interview is credited as a source, with consent.</span></label></li>
+  <li><label><input type="checkbox"><span>No part of the written document is generated and pasted without your own rewriting; if you used an AI tool for anything, you say what and where.</span></label></li>
+</ul>
+
+<pre><code># Adapted from a Stack Overflow answer by user 'jfs', "Parsing ISO dates in Python"
+# https://stackoverflow.com/questions/127803  (accessed 4 Nov 2027)
+# Changed: returns None instead of raising, because the client's export
+#          contains blank dates when a dish was not offered that day.
+def parse_date(text):
+    try:
+        return datetime.date.fromisoformat(text.strip())
+    except ValueError:
+        return None</code></pre>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — "cited" is not the same as "understood"</span>
+  <p>Crediting a block you cannot explain does not make it yours; the marker will ask you about it in the
+  viva-style check many schools run, and unexplained code cannot be credited to the algorithm-design criterion
+  anyway. Rule: if you cannot describe what each line does and why it is there, do not ship it.</p>
+</div>
+
+<h2>A fourteen-week timeline</h2>
+
+<div class="io-plan">
+  <div class="io-plan__row"><div class="io-plan__t">Week 1</div><div class="io-plan__c">
+    <strong>Client and problem.</strong> Shortlist ideas, apply the two-question test, interview 1, write the
+    problem statement with evidence. <em>Deliverable:</em> interview minutes + draft problem statement.</div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Week 2</div><div class="io-plan__c">
+    <strong>Specification.</strong> Draft 5–7 success criteria, send to the client, get agreement in writing. Write
+    the plan and start the record of tasks. <em>Deliverable:</em> signed criteria + plan.</div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Week 3</div><div class="io-plan__c">
+    <strong>Abstraction and design.</strong> Keep/discard table, decomposition, system diagram, UI mockups, data
+    dictionary. <em>Deliverable:</em> design section draft, 60 % done.</div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Week 4</div><div class="io-plan__c">
+    <strong>Algorithms.</strong> IB pseudocode for each non-trivial algorithm; complexity justification; the test
+    plan written now, before code. <em>Deliverable:</em> pseudocode + test plan.</div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Weeks 5–8</div><div class="io-plan__c">
+    <strong>Build</strong>, in vertical slices: data layer → one algorithm → minimal UI → next algorithm → polish.
+    Commit or save a version every session. Update the record of tasks as you go, not later.
+    <em>Deliverable:</em> working prototype by week 8.</div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Week 9</div><div class="io-plan__c">
+    <strong>Unit and integration testing.</strong> Run the test plan, fill expected vs actual honestly, screenshot
+    everything, write up the bugs you found and fixed. <em>Deliverable:</em> testing section.</div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Week 10</div><div class="io-plan__c">
+    <strong>Client interview 2.</strong> Acceptance testing with the real user; capture their verdict per
+    criterion. <em>Deliverable:</em> acceptance table + recorded verdict.</div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Week 11</div><div class="io-plan__c">
+    <strong>Video and evaluation.</strong> Record the 3–5 minute video; write the evaluation criterion by
+    criterion. <em>Deliverable:</em> video + evaluation draft.</div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Week 12</div><div class="io-plan__c">
+    <strong>Assemble.</strong> Full document, appendix code listing, bibliography, captions on every figure.
+    <em>Deliverable:</em> complete draft.</div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Week 13</div><div class="io-plan__c">
+    <strong>Cold read.</strong> Give the document to someone who has never seen your project. Every question they
+    ask is a gap. Fix those, then check against the pre-submission checklist below.</div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Week 14</div><div class="io-plan__c">
+    <strong>Submit.</strong> File naming, format, size limits, and the exact upload route your school uses. Leave
+    two days of slack before this week — the number of IAs lost to a corrupted upload is not small.</div></div>
+</div>
+
+<h2>Worked exemplar — OUTLINE ONLY</h2>
+
+<div class="callout callout--note">
+  <span class="callout__label">This is an outline, not a finished IA</span>
+  <p>What follows is invented and deliberately abbreviated: it shows the <em>shape</em> and the standard of each
+  artefact, not their full length. A real submission would be several times longer at every step. Do not copy it —
+  copying an outline gets you a project with no client, and the client is the part that earns the marks.</p>
+</div>
+
+<h3>The problem</h3>
+
+<p><strong>Client:</strong> Mrs Adeyemi, manager of the school canteen (410 students, one sitting, 12 dishes per
+day). <strong>Problem:</strong> she decides how much of each dish to cook by looking at the same day last week and
+adjusting by feel; she bins about 40 portions a day (≈ £260 of food per week) and runs out roughly once a fortnight.
+<strong>Existing process:</strong> a paper sheet and a spreadsheet that nobody updates.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="System context diagram for the canteen forecast tool showing the manager, the program, its data store and the external data">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+    <rect x="250" y="130" width="160" height="80" rx="8" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+    <text x="330" y="158" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Preorder tool</text>
+    <text x="330" y="176" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">(Python 3 + SQLite)</text>
+    <text x="330" y="194" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">forecast() · validate() · save()</text>
+
+    <rect x="30" y="130" width="150" height="80" rx="8" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="105" y="158" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Canteen manager</text>
+    <text x="105" y="176" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">client / primary user</text>
+    <text x="105" y="194" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">no training assumed</text>
+
+    <rect x="470" y="60" width="150" height="70" rx="8" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="545" y="88" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">students</text>
+    <text x="545" y="106" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">pre-order by 20:00</text>
+    <text x="545" y="122" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">(web form)</text>
+
+    <rect x="470" y="210" width="150" height="70" rx="8" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="545" y="238" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">SQLite database</text>
+    <text x="545" y="256" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">dish · day · order</text>
+    <text x="545" y="272" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">local file, backup nightly</text>
+
+    <rect x="30" y="30" width="150" height="60" rx="8" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="105" y="58" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">term calendar</text>
+    <text x="105" y="76" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">day type, holidays</text>
+
+    <line x1="180" y1="170" x2="246" y2="170" stroke="#334155" stroke-width="2"/>
+    <path d="M248 170 L 240 166 L 240 174 Z" fill="#334155"/>
+    <text x="186" y="160" font-size="11" font-family="system-ui, sans-serif" fill="#151923">views forecast</text>
+    <line x1="246" y1="182" x2="180" y2="182" stroke="#334155" stroke-width="2"/>
+    <path d="M180 182 L 188 178 L 188 186 Z" fill="#334155"/>
+    <text x="186" y="200" font-size="11" font-family="system-ui, sans-serif" fill="#151923">enters actuals</text>
+
+    <line x1="470" y1="95" x2="414" y2="140" stroke="#334155" stroke-width="2"/>
+    <path d="M412 141 L 420 138 L 417 130 Z" fill="#334155"/>
+    <text x="404" y="112" font-size="11" font-family="system-ui, sans-serif" fill="#151923">orders</text>
+
+    <line x1="414" y1="200" x2="470" y2="240" stroke="#334155" stroke-width="2"/>
+    <path d="M472 241 L 464 237 L 467 229 Z" fill="#334155"/>
+    <text x="418" y="230" font-size="11" font-family="system-ui, sans-serif" fill="#151923">reads / writes</text>
+
+    <line x1="180" y1="60" x2="300" y2="128" stroke="#334155" stroke-width="2" stroke-dasharray="6 4"/>
+    <path d="M302 130 L 293 127 L 297 119 Z" fill="#334155"/>
+    <text x="196" y="100" font-size="11" font-family="system-ui, sans-serif" fill="#151923">day type</text>
+
+    <text x="20" y="305" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">Dashed = external data the program does not control. A context diagram answers "what is inside my solution and what is not?" — the first design artefact you should draw.</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> System context diagram for the exemplar. Notice what it
+  settles: the program is the gold box and everything else is outside it, so there is no ambiguity later about
+  whether "the web form" or "the backup" is part of what you built. Draw this before you code, and redraw it if the
+  scope changes.</figcaption>
+</figure>
+
+<h3>Success criteria (agreed by email, 19 September)</h3>
+
+<ol class="steps">
+  <li>The tool must store each dish, its category and its lead time (days).</li>
+  <li>Each evening it must show a forecast, in portions, for each dish for the next school day.</li>
+  <li>The forecast must not be more than 15 % below the number actually sold, on at least 4 school days out of
+  5 — <em>under-prediction is the failure that matters to the client</em>.</li>
+  <li>The manager must be able to enter the actual number sold in under 30 seconds for all 12 dishes.</li>
+  <li>It must run on the canteen's existing Windows laptop with no internet connection.</li>
+  <li>No dish may be deleted if historical sales reference it (the manager must not lose history by accident).</li>
+</ol>
+
+<h3>Abstraction — keep / discard</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Real-world thing</th><th>Kept</th><th>Discarded</th><th>Why discarded</th></tr></thead>
+  <tbody>
+    <tr><td>Dish</td><td>name, category, lead time (days), price</td><td>recipe, ingredients, allergen list, photo</td>
+    <td>The forecast is per dish; allergen data is already held by the school office and is a compliance matter, not
+    a demand one.</td></tr>
+    <tr><td>Day</td><td>date, day type (A/B/C timetable), is-holiday</td><td>weather, menu for other sittings, events</td>
+    <td>The client said weather matters "some days", but there is no free offline weather feed and criterion 5
+    forbids internet — so the effect is absorbed by using only recent matching days.</td></tr>
+    <tr><td>Sale</td><td>dish, date, portions sold, portions wasted</td><td>time of sale, who bought it, payment method</td>
+    <td>Demand is aggregated per day; individual sales are identifiable personal data and data minimisation says do
+    not store what you do not use.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Algorithm (pseudocode, one of four)</h3>
+
+<pre><code>// Criterion 3: under-prediction is penalised, over-prediction is not.
+// So after computing the weighted mean, add a safety margin equal to
+// one standard deviation of the last k matching days.
+
+METHOD forecast(demand, dayType, k)
+    matches = all rows in demand where row.dayType == dayType
+    matches = last k rows of matches
+    if matches is empty then
+        return mean of all rows            // cold-start fallback
+    endif
+    total = 0
+    weightSum = 0
+    for i = 0 to length(matches) - 1
+        weight = i + 1                     // oldest match weighs least
+        total = total + matches[i].portions * weight
+        weightSum = weightSum + weight
+    endfor
+    mean = total / weightSum
+    sd = standardDeviation(matches.portions)
+    return round(mean + sd)                // asymmetric: bias upward
+ENDMETHOD</code></pre>
+
+<p><strong>Complexity note.</strong> The scan over <code>demand</code> is \(O(n)\) in the number of stored
+day-records; with one year of data \(n \approx 190\), so even a linear scan is instant and a more complex structure
+would be unjustified. The weighting loop is \(O(k)\) with \(k = 4\), i.e. constant. Dividing by
+<code>weightSum</code> rather than <code>k</code> is what makes the weights sum to 1.</p>
+
+<h3>Test table (extract)</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>#</th><th>Type</th><th>Input</th><th>Expected</th><th>Actual</th><th>Result</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Valid</td><td>4 matching days: 40, 44, 38, 42; k = 4</td><td>mean ≈ 41, +1 sd ≈ 3 → 44</td>
+    <td>44</td><td>Pass</td></tr>
+    <tr><td>2</td><td>Boundary</td><td>Only 1 matching day: 40</td><td>40 (sd = 0, no margin)</td><td>40</td>
+    <td>Pass</td></tr>
+    <tr><td>3</td><td>Boundary</td><td>0 matching days, 30 other days, mean 35</td><td>35 (cold-start fallback)</td>
+    <td>35</td><td>Pass</td></tr>
+    <tr><td>4</td><td>Erroneous</td><td>Portions = −12</td><td>Reject, message, no database write</td>
+    <td>Rejected with message</td><td>Pass</td></tr>
+    <tr><td>5</td><td>Erroneous</td><td>Portions = "abc"</td><td>Reject, no crash</td>
+    <td><strong>Crashed</strong> — <code>ValueError</code> on <code>int()</code></td>
+    <td><strong>Fail → fixed</strong> with a try/except wrapper; retest 5b passed</td></tr>
+    <tr><td>6</td><td>Extreme</td><td>100,000 portions</td><td>Reject: exceeds sanity limit of 500</td><td>Rejected</td>
+    <td>Pass</td></tr>
+    <tr><td>7</td><td>Integration</td><td>Save today's actuals, then re-run forecast</td><td>Tomorrow's forecast changes</td>
+    <td>Changed 44 → 46</td><td>Pass</td></tr>
+    <tr><td>8</td><td>Acceptance (crit. 4)</td><td>Client enters 12 dishes unaided</td><td>Under 30 seconds</td>
+    <td>95 seconds</td><td><strong>Partly met</strong> → limitation L2</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Evaluation (extract, two of six criteria)</h3>
+
+<p><strong>Criterion 3 — met.</strong> Over the ten-day trial the forecast was never more than 15 % below actual
+sales; on nine of ten days it was within 12 %. Under-prediction occurred zero times, which is the property the
+client cares about most, and it is a direct consequence of adding one standard deviation rather than rounding to
+the mean.</p>
+
+<p><strong>Criterion 4 — partly met.</strong> The manager entered twelve dishes in 95 seconds, not 30. Observation
+during interview 2 showed the delay was entirely at the "enter portions" prompt, where she pressed Enter expecting
+a menu. The data entry itself is fast. <em>Limitation L2</em>: the interface assumes the operator knows the prompt
+format. The fix is a numbered menu with a default value, which is a change to the input layer only — the model and
+the storage layer are unaffected, so this could be added without retesting the forecast.</p>
+
+<p><strong>Reflection.</strong> The most consequential decision was the asymmetric margin; I made it after
+interview 1, and if I had skipped that interview I would have optimised for absolute error and produced a tool that
+under-cooks once a week, which the client would have rejected. Next time I would write the test plan before the
+pseudocode, not after it — two tests in the table were impossible to run because I had not designed for injectable
+data.</p>
+
+<h2>Pre-submission checklist</h2>
+
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>A named client is identified, and their words appear in the document.</span></label></li>
+  <li><label><input type="checkbox"><span>5–7 success criteria, each measurable, agreed in writing and dated.</span></label></li>
+  <li><label><input type="checkbox"><span>Record of tasks covers 30+ hours with honest entries and dead ends.</span></label></li>
+  <li><label><input type="checkbox"><span>Abstraction table has a justification for every discarded attribute.</span></label></li>
+  <li><label><input type="checkbox"><span>IB pseudocode exists for every non-trivial algorithm, in IB notation.</span></label></li>
+  <li><label><input type="checkbox"><span>At least one complexity statement, and one justified choice between two structures.</span></label></li>
+  <li><label><input type="checkbox"><span>Code uses meaningful identifiers, constants, and no 200-line main method.</span></label></li>
+  <li><label><input type="checkbox"><span>Test table has 8+ rows including boundary, erroneous and extreme data, with an expected column.</span></label></li>
+  <li><label><input type="checkbox"><span>At least one test failure is documented, with cause and fix.</span></label></li>
+  <li><label><input type="checkbox"><span>Acceptance testing was done by the client, and their verdict is recorded per criterion.</span></label></li>
+  <li><label><input type="checkbox"><span>Video is 3–5 minutes, shows a real user, and includes one limitation.</span></label></li>
+  <li><label><input type="checkbox"><span>Every figure, mockup and screenshot has a caption that says what to notice.</span></label></li>
+  <li><label><input type="checkbox"><span>Evaluation addresses each success criterion individually; every limitation is tied to a criterion.</span></label></li>
+  <li><label><input type="checkbox"><span>External code is cited in-code and in the bibliography, and you can explain all of it.</span></label></li>
+  <li><label><input type="checkbox"><span>File names, format and size match your school's submission rules.</span></label></li>
+  <li><label><input type="checkbox"><span>Someone who has never seen the project can read it without asking a question.</span></label></li>
+</ul>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary</span>
+  <p><strong>internal assessment (IA)</strong><strong>computational solution</strong><strong>client / stakeholder</strong> /<strong>success criteria</strong><strong>problem specification</strong><strong>abstraction</strong><strong>decomposition</strong><strong>assumption</strong><strong>constraint</strong><strong>scope / out of scope</strong> /<strong>record of tasks</strong><strong>data dictionary</strong><strong>mockup</strong><strong>flowchart</strong><strong>test plan / test table</strong> /<strong>expected vs actual</strong><strong>boundary data</strong><strong>erroneous data</strong><strong>unit / integration / acceptance testing</strong> / /<strong>limitation</strong><strong>extension</strong><strong>reflection</strong><strong>moderation</strong><strong>academic honesty</strong><strong>citation / bibliography</strong> /<strong>appendix</strong><strong>verdict</strong> /</p>
+</div>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li><p>A student submits a technically excellent 900-line program with a 2-page document. Predict their mark and
+  explain, in terms of the criteria, why the program cannot compensate.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>The IA assesses the <em>computational thinking process</em> demonstrated, and every criterion is
+        evidenced by documentation: specification, abstraction, algorithm design, testing, evaluation and
+        reflection.</li>
+        <li>With two pages there is no client evidence, no signed success criteria, no keep/discard justification,
+        no test table and no evaluation against criteria — so four of the five criteria have nothing to mark,
+        regardless of code quality.</li>
+        <li>The program is <em>evidence</em> for the algorithm-design and testing criteria only. A 900-line program
+        with no documentation typically lands in the 3–5 range, and the marker has no route to award more.</li>
+      </ol>
+      <div class="answerline"><b>Rule of thumb:</b> roughly half your 35 hours is documentation. If your record of tasks says otherwise, your plan is wrong.</div>
+    </div></details>
+  </li>
+  <li><p>Rewrite this success criterion so that it is measurable: "The program should be easy to use."</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>"A user who has not seen the program before shall complete the task <em>enter the number of portions sold
+      for all twelve dishes</em> in under 60 seconds, without assistance, on the first attempt."</p>
+      <p>Why this works: it names the task, the user's prior experience, the threshold, and the condition (no
+      assistance). It can be tested and the result will be a number, which is what makes the evaluation possible.
+      Note that the number should come from the client, not from you.</p>
+    </div></details>
+  </li>
+  <li><p>Give three pieces of evidence that a student's specification was written <em>after</em> the program.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>The specification lists features that no client asked for and that are incidental to the problem
+        (e.g. a settings screen, a colour theme).</li>
+        <li>The success criteria are all met perfectly, with no borderline cases — real projects always have at
+        least one partly-met criterion.</li>
+        <li>The "out of scope" list corresponds exactly to features the program lacks, including ones a client
+        would obviously have wanted, and no rationale is given for their exclusion.</li>
+      </ol>
+    </div></details>
+  </li>
+  <li><p>Explain why a test table containing only valid data cannot reach the top band, and state the four data
+  types you must include.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Valid-only testing shows the program works in the case it was written for; it says nothing about the
+      boundaries, about invalid input, or about stress, which is where real defects live. Top-band testing
+      anticipates failure — it is "thinking ahead" written down. Include <strong>valid/typical</strong>,
+      <strong>boundary</strong>, <strong>erroneous (wrong type or out of range)</strong> and
+      <strong>extreme</strong> data, with an expected outcome recorded <em>before</em> the test is run.</p>
+    </div></details>
+  </li>
+  <li><p>A student writes: "A limitation is that I did not have time to add a GUI." Rewrite it as an evaluation
+  point tied to a success criterion.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>"Criterion 5 (usable by staff with no training) was only partly met: the client completed the entry task
+      unaided in 95 seconds against a target of 60, and the delay was entirely at the text prompt, where she
+      pressed Enter expecting a menu. The limitation is therefore the input style, not the absence of a GUI; a
+      numbered menu with a default value would address it and would not require changes to the model or data
+      layer."</p>
+      <div class="answerline"><b>Difference:</b> the original names a missing feature; the rewrite names a criterion, gives evidence, locates the cause, and proposes a proportionate fix. Only the second is an evaluation.</div>
+    </div></details>
+  </li>
+</ol>
+
+<div class="conn">
+  <span class="conn__title">Connections</span>
+  <ul>
+    <li><strong>→ <a href="B1-computational-thinking.html">B1 Computational thinking:</a></strong> the five strands
+    are the IA's skeleton; your abstraction section is "think abstractly" written down.</li>
+    <li><strong>→ <a href="B2-programming.html">B2 Programming:</a></strong> files, validation and exception
+    handling are exactly what the implementation criterion rewards.</li>
+    <li><strong>→ <a href="B3-oop.html">B3 OOP:</a></strong> a class diagram with real inheritance or composition is
+    strong design evidence — but only if the inheritance is justified, not decorative.</li>
+    <li><strong>→ <a href="B4-abstract-data-types.html">B4 ADTs (HL):</a></strong> justify choosing a hash table or
+    a tree over an array and you have a top-band design decision.</li>
+    <li><strong>→ <a href="A3-databases.html">A3 Databases:</a></strong> data dictionary, normalisation and
+    retention policy — the storage half of most IAs.</li>
+    <li><strong>→ <a href="A4-machine-learning.html">A4 Machine learning:</a></strong> if your solution predicts
+    anything, precision/recall and the choice of model belong in your design and evaluation.</li>
+    <li><strong>→ <a href="case-study.html">Case study:</a></strong> stakeholder analysis, impact and exclusion —
+    the same skill, examined in Paper 1.</li>
+    <li><strong>→ <a href="collaborative-project.html">Collaborative sciences project:</a></strong> a low-stakes
+    rehearsal for data handling, documentation and working with others before the IA.</li>
+    <li><strong>→ <a href="index.html">Course overview:</a></strong> where the 35 hours sit and how the 20 %
+    compares with your other components.</li>
+  </ul>
+</div>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

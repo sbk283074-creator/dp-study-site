@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="physics">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A · Space, time and motion — Physics HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Physics HL · Theme A</span>
+<h1 class="page-title">A · Space, time and motion</h1>
+<p class="lede">Theme A asks: <em>how do we describe and predict change?</em> It runs from "a ball rolls down a
+slope" to "two observers disagree about whether two events happened at the same time". The thread is that the
+same three quantities — force, momentum, energy — describe motion at every scale, and that at high speed the
+stage on which motion happens (space and time themselves) stops being fixed. Get A.1–A.3 secure and half of
+Paper 2's quantitative work is already yours.</p>
+<div class="page-meta">
+  <span class="tag">A.1 Kinematics · A.2 Forces &amp; momentum · A.3 Work, energy &amp; power</span>
+  <span class="tag tag--hl">A.4 Rigid body mechanics · A.5 Relativity — HL only</span>
+  <span class="tag">~4,800 words</span>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why this theme comes first</span>
+  <p>Every other theme uses these ideas. Thermodynamics (B.4) is about energy transfers you already met in
+  A.3. Oscillations (C.1) are \(F = ma\) with a force that depends on position. Circular motion under a
+  magnetic force (D.3) is A.2's centripetal acceleration with \(F = Bqv\). If you are shaky on resolving
+  vectors and on energy conservation, you will feel it in four other themes.</p>
+</div>
+
+<h2 id="a1">A.1 Kinematics <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Position, distance, displacement</h3>
+
+<p><strong>Intuition.</strong> Distance is what your pedometer records; displacement is what a compass and a
+ruler would record between your start and finish. Walk 400 m around a running track and your distance is
+400 m but your displacement is zero. <strong>Distance</strong> is a scalar (magnitude only);
+<strong>displacement</strong> \(s\) is a vector (magnitude <em>and</em> direction) and is defined as
+<em>position relative to a stated reference point</em>.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Displacement must be given with a direction, or with a sign if you have defined a positive direction.
+  "The displacement is 30 m" is incomplete; "30 m north" or "\(s = -30\) m taking north as positive" is
+  complete. Similarly speed is scalar and velocity is the vector: \(v = \dfrac{\Delta s}{\Delta t}\).</p>
+</div>
+
+<h3>Speed, velocity, acceleration</h3>
+
+<dl class="glossary">
+  <dt>Instantaneous velocity \(v\)</dt>
+  <dd>\(v = \dfrac{ds}{dt}\) — the gradient of a displacement–time graph at a point. Unit m s⁻¹. It is a
+  vector; its magnitude is the instantaneous speed.</dd>
+  <dt>Average velocity</dt>
+  <dd>\(\dfrac{\text{change in displacement}}{\text{time taken}} = \dfrac{\Delta s}{\Delta t}\). Note:
+  <em>displacement</em>, not distance. A lap of the track gives average velocity 0 but average speed
+  \(400/t\).</dd>
+  <dt>Acceleration \(a\)</dt>
+  <dd>\(a = \dfrac{dv}{dt} = \dfrac{d^2s}{dt^2}\) — the rate of change of velocity, unit m s⁻². Because
+  velocity is a vector, acceleration covers three separate cases: speeding up, slowing down, and
+  <em>changing direction at constant speed</em> (circular motion).</dd>
+</dl>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>"Deceleration" is not a sign. If you take the direction of motion as positive and an object is slowing
+  down, then \(a\) is <em>negative</em>. If later it reverses and speeds up in the negative direction, \(a\)
+  is still negative — and it is now speeding up. Never say "deceleration is negative acceleration"; say
+  "the acceleration is opposite in direction to the velocity".</p>
+</div>
+
+<h3>Motion graphs</h3>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Graph</th><th>Gradient</th><th>Area under</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>displacement–time</td><td>velocity</td><td>nothing useful</td><td>Curved = accelerating. A horizontal segment means the object has <em>stopped</em>, not that it is at the origin.</td></tr>
+      <tr><td>velocity–time</td><td>acceleration</td><td><strong>displacement</strong> (signed area)</td><td>Area below the time axis is negative displacement. This is the whole derivation of SUVAT.</td></tr>
+      <tr><td>acceleration–time</td><td>jerk (not examined)</td><td>change in velocity</td><td>Used in data-based questions with accelerometer data.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique</span>
+  <p>A Paper 1B data-based question often gives you a v–t graph from a video-analysis app and asks you to
+  "determine the distance travelled". If the curve is a smooth curve rather than straight lines, do
+  <strong>not</strong> use SUVAT — SUVAT needs constant acceleration. Instead count squares under the curve
+  (or estimate with a triangle + rectangle), and state your method: "I estimated the area by dividing the
+  region into 8 trapezia of width 0.5 s."</p>
+</div>
+
+<h3>The SUVAT equations</h3>
+
+<p><strong>Intuition.</strong> SUVAT is not five formulas to memorise — it is <em>one</em> situation
+(constant acceleration) described four different ways, each useful because it leaves out one quantity. Learn
+the derivation once from the area under a v–t graph and you can rebuild any of them in the exam.</p>
+
+<dl class="glossary">
+  <dt>\(s\)</dt><dd>displacement (m)</dd>
+  <dt>\(u\)</dt><dd>initial velocity (m s⁻¹)</dd>
+  <dt>\(v\)</dt><dd>final velocity (m s⁻¹)</dd>
+  <dt>\(a\)</dt><dd>constant acceleration (m s⁻²)</dd>
+  <dt>\(t\)</dt><dd>time (s)</dd>
+</dl>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> All of SUVAT from the area under a velocity–time graph</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>With constant acceleration the v–t graph is a straight line from \((0,u)\) to \((t,v)\). Its
+      gradient is \(a\), so \(a = \dfrac{v-u}{t}\).</li>
+      <li>Rearrange: \(v = u + at\). <em>[Equation 1 — leaves out \(s\).]</em></li>
+      <li>Displacement = area under the v–t graph. The area is a trapezium of parallel sides \(u\) and \(v\)
+      and width \(t\): \(s = \dfrac{(u+v)}{2}\,t\). <em>[Equation 2 — leaves out \(a\).]</em></li>
+      <li>Substitute \(v = u + at\) into the trapezium area:
+      \(s = \dfrac{(u + u + at)}{2}t = ut + \tfrac12 at^2\). <em>[Equation 3 — leaves out \(v\).]</em></li>
+      <li>From (1), \(t = \dfrac{v-u}{a}\). Substitute into (2):
+      \(s = \dfrac{(u+v)}{2}\cdot\dfrac{(v-u)}{a} = \dfrac{v^2-u^2}{2a}\).</li>
+      <li>Rearrange: \(v^2 = u^2 + 2as\). <em>[Equation 4 — leaves out \(t\).]</em></li>
+      <li>Equivalently, eliminate \(u\): \(s = vt - \tfrac12 at^2\), useful when the <em>final</em> velocity is
+      what you know.</li>
+    </ol>
+    <p><strong>What it means:</strong> SUVAT is geometry — gradient and area of a straight-line v–t graph.
+    <strong>When it is the wrong tool:</strong> whenever \(a\) is not constant. Projectiles (constant \(g\),
+    so fine), but <em>not</em> an object with drag, <em>not</em> SHM, <em>not</em> circular motion.</p>
+  </div>
+</details>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the five-line SUVAT method</span>
+  <ol class="steps">
+    <li>Draw a sketch. Mark a positive direction and stick to it.</li>
+    <li>Write the five symbols \(s, u, v, a, t\) in a row and fill in what you know, with signs and units.</li>
+    <li>Put "?" against what you want and "×" against what you neither know nor want.</li>
+    <li>Pick the equation that contains the three knowns and the target, i.e. the one that omits the "×".</li>
+    <li>Substitute with units, calculate, then sanity-check the magnitude and the sign.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 1</span> IB-style · 4 marks · constant acceleration</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A train travelling at \(30\ \text{m s}^{-1}\) applies its brakes and
+    decelerates uniformly at \(1.5\ \text{m s}^{-2}\). Determine (a) the time taken to stop and (b) the
+    distance travelled while stopping.</p>
+    <ol class="steps">
+      <li>Take the direction of motion as positive: \(u = +30\), \(v = 0\), \(a = -1.5\), \(t = ?\), \(s = ?\).</li>
+      <li>(a) Use \(v = u+at\): \(0 = 30 - 1.5t \Rightarrow t = \dfrac{30}{1.5} = 20\ \text{s}\).</li>
+      <li>(b) Use \(v^2 = u^2 + 2as\): \(0 = 30^2 + 2(-1.5)s \Rightarrow s = \dfrac{900}{3.0} = 300\ \text{m}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(20\ \text{s}\), (b) \(300\ \text{m}\). The acceleration is
+    negative because it opposes the velocity — that is exactly why the object slows. Check with the average
+    velocity: \(\frac{30+0}{2} = 15\ \text{m s}^{-1}\) for 20 s = 300 m. Consistent.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 6 marks · a two-stage problem with a graph</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A particle starts from rest and accelerates uniformly at
+    \(2.0\ \text{m s}^{-2}\) for 6.0 s. It then travels at constant velocity for 10 s before decelerating
+    uniformly to rest in 4.0 s. (a) Sketch a velocity–time graph. (b) Determine the total displacement.
+    (c) Determine the average velocity.</p>
+    <ol class="steps">
+      <li>Stage 1: \(v = 0 + (2.0)(6.0) = 12\ \text{m s}^{-1}\); displacement \(= \frac12(12)(6.0) = 36\ \text{m}\).</li>
+      <li>Stage 2: constant \(12\ \text{m s}^{-1}\) for 10 s; displacement \(= 12\times10 = 120\ \text{m}\).</li>
+      <li>Stage 3: from 12 to 0 in 4.0 s; displacement \(= \frac{12+0}{2}\times4.0 = 24\ \text{m}\).</li>
+      <li>Total displacement \(= 36 + 120 + 24 = 180\ \text{m}\). Total time \(= 6.0+10+4.0 = 20\ \text{s}\).</li>
+      <li>Average velocity \(= \dfrac{180}{20} = 9.0\ \text{m s}^{-1}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (b) \(180\ \text{m}\), (c) \(9.0\ \text{m s}^{-1}\). The total
+    displacement is the total area under the v–t graph — a trapezium of parallel sides 10 s and 20 s and
+    height 12 m s⁻¹ gives \(\frac{10+20}{2}\times12 = 180\) m, confirming the answer.</div>
+  </div>
+</details>
+
+<h3>Projectile motion</h3>
+
+<p><strong>Intuition.</strong> The one idea that makes projectiles easy: <strong>the horizontal and vertical
+motions are independent</strong>. Gravity only acts downwards, so it cannot change the horizontal velocity. A
+bullet fired horizontally and a bullet dropped from the same height hit the ground at the same instant. So
+you run two SUVAT calculations side by side, sharing only the time \(t\).</p>
+
+<ul>
+  <li>Horizontal: \(a_x = 0\), so \(v_x = u\cos\theta\) constant, and \(x = (u\cos\theta)t\).</li>
+  <li>Vertical: \(a_y = -g\) (taking up as positive), so \(v_y = u\sin\theta - gt\), \(y = (u\sin\theta)t - \tfrac12 gt^2\),
+  \(v_y^2 = (u\sin\theta)^2 - 2gy\).</li>
+</ul>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Projectile trajectory with velocity resolved into horizontal and vertical components">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="60" y1="270" x2="600" y2="270" stroke="#334155" stroke-width="2"/>
+    <line x1="60" y1="270" x2="60" y2="30" stroke="#334155" stroke-width="2"/>
+    <path d="M80 250 Q 240 60 560 250" fill="none" stroke="#0a6f80" stroke-width="3"/>
+    <circle cx="80" cy="250" r="4" fill="#151923"/>
+    <line x1="80" y1="250" x2="210" y2="150" stroke="#c0392b" stroke-width="2.5"/>
+    <polygon points="210,150 200,157 202,144" fill="#c0392b"/>
+    <line x1="210" y1="150" x2="210" y2="250" stroke="#6c7788" stroke-width="2" stroke-dasharray="4 3"/>
+    <line x1="80" y1="250" x2="210" y2="250" stroke="#6c7788" stroke-width="2" stroke-dasharray="4 3"/>
+    <path d="M80 250 A 40 40 0 0 0 104 265" fill="none" stroke="#151923" stroke-width="1.5"/>
+    <text x="120" y="243" font-size="13" font-family="system-ui, sans-serif" fill="#151923">&#952;</text>
+    <text x="120" y="180" font-size="14" font-family="system-ui, sans-serif" fill="#c0392b">u</text>
+    <text x="218" y="205" font-size="13" font-family="system-ui, sans-serif" fill="#151923">u sin&#952;</text>
+    <text x="125" y="263" font-size="13" font-family="system-ui, sans-serif" fill="#151923">u cos&#952;</text>
+    <circle cx="320" cy="118" r="4" fill="#151923"/>
+    <text x="328" y="112" font-size="13" font-family="system-ui, sans-serif" fill="#151923">apex: v&#8347; = 0, v&#8339; unchanged</text>
+    <text x="300" y="295" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">horizontal range</text>
+    <text x="20" y="200" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788" transform="rotate(-90 20 200)">height</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> A projectile. The horizontal component stays constant
+  the whole flight; only the vertical component changes. At the apex the velocity is horizontal (never zero)
+  and the acceleration is still \(g\) downwards.</figcaption>
+</figure>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Range and maximum height of a projectile on level ground</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Vertical displacement returns to zero: \(0 = (u\sin\theta)t - \tfrac12 gt^2\), so
+      \(t = 0\) (launch) or \(t = \dfrac{2u\sin\theta}{g}\) = total time of flight \(T\).</li>
+      <li>Range \(R = v_x T = (u\cos\theta)\cdot\dfrac{2u\sin\theta}{g}
+      = \dfrac{u^2(2\sin\theta\cos\theta)}{g} = \dfrac{u^2\sin 2\theta}{g}\).</li>
+      <li>Maximum height: at the apex \(v_y = 0\), so \(0 = (u\sin\theta)^2 - 2gH\), giving
+      \(H = \dfrac{u^2\sin^2\theta}{2g}\).</li>
+      <li>Maximum range occurs when \(\sin 2\theta = 1\), i.e. \(2\theta = 90^\circ\), \(\theta = 45^\circ\).</li>
+    </ol>
+    <p><strong>What it means:</strong> range depends on \(u^2\) and on \(\sin 2\theta\), so 30° and 60° give
+    the same range. <strong>When it is wrong:</strong> on level ground with no air resistance only. If launch
+    and landing heights differ, go back to the two component equations.</p>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> IB-style · 6 marks · projectile</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A ball is thrown with speed \(24\ \text{m s}^{-1}\) at \(35^\circ\) above the
+    horizontal from ground level. Calculate (a) the maximum height and (b) the horizontal range. Assume
+    \(g = 9.81\ \text{m s}^{-2}\) and no air resistance.</p>
+    <ol class="steps">
+      <li>Resolve: \(u_x = 24\cos 35^\circ = 19.7\ \text{m s}^{-1}\); \(u_y = 24\sin 35^\circ = 13.8\ \text{m s}^{-1}\).</li>
+      <li>(a) \(H = \dfrac{u_y^2}{2g} = \dfrac{(13.8)^2}{2(9.81)} = \dfrac{189.9}{19.62} = 9.7\ \text{m}\).</li>
+      <li>(b) Time of flight from vertical motion: \(0 = 13.8t - 4.905t^2 \Rightarrow t = 2.81\ \text{s}\).</li>
+      <li>Range \(= 19.7 \times 2.81 = 55.3\ \text{m}\). Check with \(u^2\sin 70^\circ/g = 576(0.940)/9.81 = 55.2\ \text{m}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(9.7\ \text{m}\), (b) \(55\ \text{m}\). Sanity check: at 45°
+    the range would be \(24^2/9.81 = 58.7\) m, so 55 m at 35° is slightly less and plausible.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 4</span> IB-style · 7 marks · projectile landing at a different height</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A ball is projected horizontally at \(15\ \text{m s}^{-1}\) from the top of a
+    cliff 44 m high. Determine (a) the time of flight and (b) the distance from the base of the cliff at
+    which it lands.</p>
+    <ol class="steps">
+      <li>Vertical: \(u_y = 0\), \(a = -9.81\) (take up positive), \(s = -44\) m.</li>
+      <li>\(s = ut + \tfrac12 at^2 \Rightarrow -44 = 0 - 4.905t^2 \Rightarrow t^2 = 8.97 \Rightarrow t = 3.0\ \text{s}\).</li>
+      <li>Horizontal: \(x = 15 \times 3.0 = 45\ \text{m}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(3.0\ \text{s}\), (b) \(45\ \text{m}\). The vertical
+    displacement is <em>negative</em> because the ball ends up below its launch point while up is positive —
+    getting that sign right is worth a mark. Note the time of flight does not depend on the horizontal speed
+    at all.</div>
+  </div>
+</details>
+
+<h3>Fluid resistance and terminal speed</h3>
+
+<p><strong>Intuition.</strong> Moving through a fluid means shoving fluid molecules out of the way, so the
+fluid pushes back. The faster you go, the more molecules per second you shove, so the resistive force
+<em>grows with speed</em> (roughly \(F_D \propto v\) at low speeds, \(F_D \propto v^2\) at the speeds you
+meet in the lab). A falling object therefore has weight down and drag up; drag grows as it speeds up; when
+drag equals weight the resultant force is zero, acceleration is zero, and it falls at constant
+<strong>terminal speed</strong>.</p>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Terminal speed from force balance</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Resultant force on a falling sphere: \(F = mg - F_D\), with \(F_D = \tfrac12 C_D\rho A v^2\) (or
+      \(F_D = bv\) for the linear model — the syllabus expects you to reason with whichever is given).</li>
+      <li>Newton's second law: \(m\dfrac{dv}{dt} = mg - bv\) (linear model).</li>
+      <li>At terminal speed, \(\dfrac{dv}{dt} = 0\), so \(mg = bv_t\) giving \(v_t = \dfrac{mg}{b}\).</li>
+      <li>For the quadratic model: \(mg = \tfrac12 C_D\rho A v_t^2 \Rightarrow
+      v_t = \sqrt{\dfrac{2mg}{C_D\rho A}}\).</li>
+    </ol>
+    <p><strong>What it means:</strong> terminal speed is reached <em>asymptotically</em> — the acceleration
+    falls smoothly to zero, so a v–t graph curves over. <strong>When it is wrong:</strong> if the question
+    says "assume air resistance is negligible", you ignore all of this and use SUVAT with \(a = g\).</p>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Three things students get wrong here. (1) Saying terminal <em>velocity</em> is zero — it is the
+  <em>acceleration</em> that is zero. (2) Drawing the v–t graph reaching terminal speed and then turning
+  sharply horizontal — the approach is a smooth curve. (3) Forgetting that on <em>upward</em> motion drag acts
+  <em>downwards</em>, adding to weight, so the object decelerates faster than \(g\) on the way up.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> IB-style · 5 marks · terminal speed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A sphere of mass 0.020 kg falls through air. The drag force is
+    \(F_D = kv^2\) with \(k = 3.2\times10^{-4}\ \text{N s}^2\text{m}^{-2}\). (a) Calculate the terminal
+    speed. (b) State the acceleration at the instant the speed is half the terminal speed.</p>
+    <ol class="steps">
+      <li>(a) At terminal speed \(mg = kv_t^2\), so \(v_t = \sqrt{mg/k} = \sqrt{(0.020)(9.81)/3.2\times10^{-4}}
+      = \sqrt{613} = 24.8\ \text{m s}^{-1}\).</li>
+      <li>(b) At \(v = v_t/2 = 12.4\ \text{m s}^{-1}\): drag \(= k v^2 = 3.2\times10^{-4}(12.4)^2 = 0.049\ \text{N}\).
+      Weight \(= 0.196\ \text{N}\). Resultant \(= 0.196-0.049 = 0.147\ \text{N}\) downwards.</li>
+      <li>\(a = F/m = 0.147/0.020 = 7.4\ \text{m s}^{-2}\) downwards.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(25\ \text{m s}^{-1}\), (b) \(7.4\ \text{m s}^{-2}\) down.
+    Check: at half the terminal speed the drag is a quarter of the weight, so the resultant is three-quarters
+    of \(g\) = 7.36 m s⁻². The acceleration is less than \(g\) because drag opposes the weight.</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>Terminal speed links <strong>A.1</strong> to <strong>B.3 kinetic theory</strong>: the drag force exists
+  because the object collides with molecules and transfers momentum to them, and the internal energy of the
+  fluid rises by exactly the work done against drag. It also links to <strong>B.1</strong>: a falling object
+  that reaches terminal speed stops gaining kinetic energy and instead warms the air.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — A.1</span>
+  <p><strong>displacement</strong><strong>distance</strong><strong>velocity</strong><strong>speed</strong><strong>acceleration</strong><strong>average velocity</strong><strong>instantaneous</strong><strong>gradient</strong> /<strong>area under graph</strong><strong>projectile</strong><strong>trajectory</strong><strong>range</strong><strong>resolve (a vector)</strong><strong>component</strong><strong>fluid resistance / drag</strong><strong>terminal speed</strong><strong>air resistance</strong><strong>uniform acceleration</strong></p>
+</div>
+
+<h2 id="a2">A.2 Forces and momentum <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Newton's three laws</h3>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>First law</h4>
+    <p>An object remains at rest or moves with constant velocity unless acted on by a resultant external
+    force. This is really a <em>definition</em> of what a force does: it changes velocity. It also defines an
+    inertial frame.</p>
+  </div>
+  <div class="card">
+    <h4>Second law (IB form)</h4>
+    <p>\(F = \dfrac{\Delta p}{\Delta t}\) — the resultant force equals the rate of change of momentum. When
+    mass is constant this reduces to \(F = ma\). The IB wants the momentum form; use it.</p>
+  </div>
+  <div class="card">
+    <h4>Third law</h4>
+    <p>If body A exerts a force on body B, then B exerts an equal and opposite force on A: same type, same
+    magnitude, opposite direction, <strong>acting on different bodies</strong>.</p>
+  </div>
+  <div class="card">
+    <h4>Why the third law trips people up</h4>
+    <p>The two forces in a third-law pair never cancel, because they act on <em>different objects</em>. A book
+    resting on a table: the pair is (Earth pulls book) ↔ (book pulls Earth). The reason the book is in
+    equilibrium is a <em>different</em> pair of forces on the <em>same</em> body: weight down and normal
+    reaction up.</p>
+  </div>
+</div>
+
+<h3>Free-body diagrams</h3>
+
+<p>Draw the object alone, as a dot or a box, and draw only forces acting <em>on</em> it, as arrows from its
+centre. Label each. The usual suspects: weight \(W = mg\) (down, from the centre of mass), normal reaction
+\(N\) (perpendicular to the surface), friction \(f\) (along the surface, opposing motion or attempted
+motion), tension \(T\) (along the string), upthrust/buoyancy, drag, applied force.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Free-body diagram of a block on an inclined plane with weight resolved">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="80" y1="260" x2="520" y2="260" stroke="#334155" stroke-width="2"/>
+    <line x1="80" y1="260" x2="500" y2="100" stroke="#334155" stroke-width="2"/>
+    <line x1="80" y1="260" x2="120" y2="260" stroke="#334155" stroke-width="1.5"/>
+    <path d="M80 260 A 40 40 0 0 0 110 250" fill="none" stroke="#151923" stroke-width="1.5"/>
+    <text x="118" y="252" font-size="13" font-family="system-ui, sans-serif" fill="#151923">&#952;</text>
+    <rect x="230" y="140" width="90" height="60" fill="#eef2ff" stroke="#0a6f80" stroke-width="2" transform="rotate(-20 275 170)"/>
+    <circle cx="275" cy="170" r="4" fill="#151923"/>
+    <line x1="275" y1="170" x2="275" y2="260" stroke="#c0392b" stroke-width="2.5"/>
+    <polygon points="275,260 270,250 280,250" fill="#c0392b"/>
+    <text x="258" y="248" font-size="13" font-family="system-ui, sans-serif" fill="#c0392b">mg</text>
+    <line x1="275" y1="170" x2="330" y2="120" stroke="#0a6f80" stroke-width="2.5"/>
+    <polygon points="330,120 320,124 328,131" fill="#0a6f80"/>
+    <text x="332" y="116" font-size="13" font-family="system-ui, sans-serif" fill="#0a6f80">N</text>
+    <line x1="275" y1="170" x2="205" y2="135" stroke="#7a5a13" stroke-width="2.5"/>
+    <polygon points="205,135 215,139 208,146" fill="#7a5a13"/>
+    <text x="168" y="130" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13">f (up slope)</text>
+    <line x1="275" y1="170" x2="232" y2="215" stroke="#6c7788" stroke-width="2" stroke-dasharray="4 3"/>
+    <line x1="275" y1="170" x2="275" y2="215" stroke="#334155" stroke-width="2" stroke-dasharray="4 3"/>
+    <line x1="232" y1="215" x2="275" y2="215" stroke="#334155" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="236" y="232" font-size="13" font-family="system-ui, sans-serif" fill="#151923">mg cos&#952;</text>
+    <text x="288" y="196" font-size="13" font-family="system-ui, sans-serif" fill="#151923">mg sin&#952;</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> A block on a rough incline. Weight is always resolved
+  into \(mg\sin\theta\) <em>down the slope</em> and \(mg\cos\theta\) <em>into the slope</em>. The angle
+  between the weight and the perpendicular-to-plane line equals the incline angle \(\theta\).</figcaption>
+</figure>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Resolving the weight with the wrong angle. The angle between \(mg\) and the line perpendicular to the
+  plane is \(\theta\), so the component <em>parallel</em> to the plane is \(mg\sin\theta\) and the component
+  <em>perpendicular</em> is \(mg\cos\theta\). Check the limit: as \(\theta \to 0\) the down-slope component
+  \(mg\sin\theta \to 0\) (a flat floor has no tendency to slide) — correct.</p>
+</div>
+
+<h3>Friction and contact forces</h3>
+
+<dl class="glossary">
+  <dt>Normal reaction \(N\)</dt>
+  <dd>The contact force perpendicular to the surfaces, arising from the compression of the surfaces at the
+  atomic level. It is <em>not</em> always \(mg\) — on an incline it is \(mg\cos\theta\), and with a vertical
+  component of an applied force it is different again.</dd>
+  <dt>Static friction</dt>
+  <dd>\(f_s \le \mu_s N\). It takes whatever value is needed up to a maximum; it is <strong>not</strong>
+  always equal to \(\mu_s N\).</dd>
+  <dt>Kinetic (dynamic) friction</dt>
+  <dd>\(f_k = \mu_k N\), opposing the relative motion. Usually \(\mu_k \lt \mu_s\), which is why pushing a
+  heavy box gets easier once it starts moving.</dd>
+</dl>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 6</span> IB-style · 6 marks · inclined plane with friction</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A 4.0 kg block rests on a rough plane inclined at \(25^\circ\) to the
+    horizontal. The coefficient of static friction is 0.45. (a) Show that the block does not slide.
+    (b) The plane is tilted until the block just begins to slide. Determine this angle.</p>
+    <ol class="steps">
+      <li>(a) Component down the plane: \(mg\sin 25^\circ = (4.0)(9.81)(0.423) = 16.6\ \text{N}\).</li>
+      <li>Maximum friction: \(f_{\max} = \mu_s N = \mu_s mg\cos 25^\circ = 0.45(4.0)(9.81)(0.906) = 16.0\ \text{N}\).</li>
+      <li>Since 16.0 &lt; 16.6, friction cannot hold it — so the block <em>does</em> slide. (If the question
+      says "show that it does not slide", check the numbers: with \(\mu_s = 0.50\), \(f_{\max} = 17.8\) N &gt;
+      16.6 N, so it stays at rest with friction equal to 16.6 N, not 17.8 N.)</li>
+      <li>(b) At the point of slipping, \(mg\sin\theta = \mu_s mg\cos\theta\), so \(\tan\theta = \mu_s = 0.45\)
+      and \(\theta = 24.2^\circ\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (b) \(\theta = 24^\circ\). Note the elegant result:
+    \(\mu_s = \tan\theta_{\text{critical}}\). The mass cancels — the angle of repose is independent of mass,
+    which is a good exam talking point.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 7</span> IB-style · 8 marks · two connected masses</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A 3.0 kg block on a smooth horizontal table is connected by a light
+    inextensible string over a smooth pulley to a hanging 2.0 kg mass. Determine the acceleration of the
+    system and the tension in the string.</p>
+    <ol class="steps">
+      <li>Both masses share the same acceleration magnitude \(a\) (inextensible string).</li>
+      <li>For the 3.0 kg block (horizontal, smooth): \(T = 3.0a\).</li>
+      <li>For the 2.0 kg mass (downwards positive): \(2.0g - T = 2.0a\).</li>
+      <li>Add: \(2.0g = 5.0a \Rightarrow a = \dfrac{19.6}{5.0} = 3.92\ \text{m s}^{-2}\).</li>
+      <li>\(T = 3.0 \times 3.92 = 11.8\ \text{N}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(a = 3.9\ \text{m s}^{-2}\), \(T = 12\ \text{N}\). Sanity checks:
+    \(a \lt g\) (the hanging mass is not in free fall because the string pulls up on it) ✓; \(T \lt 2.0g = 19.6\) N ✓
+    and \(T &gt; 0\) ✓. The tension is <em>not</em> equal to the weight of the hanging mass — that is the
+    single most common error in connected-body problems, because the hanging mass is accelerating.</div>
+  </div>
+</details>
+
+<h3>Circular motion and centripetal force</h3>
+
+<p><strong>Intuition.</strong> An object moving in a circle at constant speed is <em>still accelerating</em>,
+because its velocity direction keeps changing. The acceleration points to the centre —
+<strong>centripetal</strong> means "centre-seeking" — and has magnitude \(a = v^2/r = \omega^2 r\). The
+centripetal force is not a new force; it is the <em>name we give to the resultant</em> of real forces
+(tension, friction, gravity, normal reaction) that happens to point to the centre.</p>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(a = v^2/r\) from the geometry of a velocity vector triangle</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>In time \(\Delta t\) the object moves through angle \(\Delta\theta\), so the arc length is
+      \(\Delta s = r\Delta\theta\) and \(\Delta\theta = \omega\Delta t\).</li>
+      <li>The velocity vector rotates through the same angle \(\Delta\theta\) while keeping constant
+      magnitude \(v\). The tip of the velocity vector therefore traces a circle of radius \(v\), and the
+      magnitude of the velocity change is \(|\Delta\mathbf{v}| \approx v\Delta\theta\) for small
+      \(\Delta\theta\).</li>
+      <li>\(a = \dfrac{|\Delta\mathbf{v}|}{\Delta t} = \dfrac{v\Delta\theta}{\Delta t} = v\omega\).</li>
+      <li>Since \(v = \omega r\), \(a = v\left(\dfrac{v}{r}\right) = \dfrac{v^2}{r} = \omega^2 r\).</li>
+      <li>Direction: for small \(\Delta\theta\), \(\Delta\mathbf{v}\) points towards the centre.</li>
+    </ol>
+    <p><strong>What it means:</strong> the acceleration is perpendicular to the velocity, so it changes
+    direction without changing speed and does no work. <strong>When it is wrong:</strong> if the speed is
+    changing there is also a tangential acceleration; then the resultant is the vector sum and the motion is
+    not "uniform circular motion".</p>
+  </div>
+</details>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — circular motion problems in four lines</span>
+  <ol class="steps">
+    <li>Draw the free-body diagram <em>at the position asked about</em> (top of the loop, bottom, side,
+    banked track).</li>
+    <li>Resolve along the radius, taking the direction <em>towards the centre</em> as positive.</li>
+    <li>Write \(\sum F_{\text{towards centre}} = \dfrac{mv^2}{r}\).</li>
+    <li>Never add "centrifugal force" to the diagram — there isn't one. If you are tempted, you are in the
+    rotating frame, and the IB will not thank you.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 8</span> IB-style · 6 marks · banked track / conical pendulum</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A car of mass 1200 kg travels at 25 m s⁻¹ around a curve of radius 80 m on a
+    horizontal road. (a) Calculate the minimum coefficient of friction needed. (b) The road is now banked at
+    \(20^\circ\). Determine the speed at which no friction is needed.</p>
+    <ol class="steps">
+      <li>(a) Friction provides the centripetal force: \(\mu mg = \dfrac{mv^2}{r}\), so
+      \(\mu = \dfrac{v^2}{rg} = \dfrac{625}{80\times9.81} = 0.80\).</li>
+      <li>(b) With no friction, resolving: vertical \(N\cos 20^\circ = mg\); radial \(N\sin 20^\circ = mv^2/r\).</li>
+      <li>Divide: \(\tan 20^\circ = \dfrac{v^2}{rg} \Rightarrow v = \sqrt{rg\tan 20^\circ}
+      = \sqrt{80\times9.81\times0.364} = \sqrt{285.7} = 16.9\ \text{m s}^{-1}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(\mu = 0.80\) (a high value — this is a sharp, fast curve);
+    (b) \(17\ \text{m s}^{-1}\) (\(\approx 61\) km h⁻¹). The mass cancelled in both parts: centripetal
+    requirements depend on \(v\) and \(r\), never on mass.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 9</span> IB-style · 6 marks · vertical circle</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A bucket of water of total mass 5.0 kg is swung in a vertical circle of
+    radius 1.2 m. (a) Determine the minimum speed at the top for the water to stay in the bucket.
+    (b) Determine the tension in the handle at the bottom when the speed there is 8.0 m s⁻¹.</p>
+    <ol class="steps">
+      <li>(a) At the top, both weight and the contact force act towards the centre. Minimum speed: the
+      contact force is zero, so \(mg = mv^2/r \Rightarrow v = \sqrt{gr} = \sqrt{9.81\times1.2} = 3.43\ \text{m s}^{-1}\).</li>
+      <li>(b) At the bottom, tension acts up (towards centre) and weight down (away):
+      \(T - mg = mv^2/r\).</li>
+      <li>\(T = m\left(g + \dfrac{v^2}{r}\right) = 5.0\left(9.81 + \dfrac{64}{1.2}\right)
+      = 5.0(9.81 + 53.3) = 316\ \text{N}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(3.4\ \text{m s}^{-1}\), (b) \(320\ \text{N}\). Note the
+    tension at the bottom is over six times the weight — that is why the bottom of a roller coaster loop feels
+    so heavy, and it is why real loops are teardrop-shaped rather than circular.</div>
+  </div>
+</details>
+
+<h3>Momentum and impulse</h3>
+
+<dl class="glossary">
+  <dt>Momentum \(p = mv\)</dt>
+  <dd>Vector, unit kg m s⁻¹ (equivalently N s). "The quantity of motion" — how hard it is to stop something.</dd>
+  <dt>Impulse = \(F\Delta t = \Delta p\)</dt>
+  <dd>Unit N s. Equals the area under a force–time graph.</dd>
+</dl>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(F = \Delta p/\Delta t\) is Newton's second law</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Newton originally stated his second law as: the rate of change of momentum of a body is
+      proportional to the resultant force and takes place in the direction of the force.</li>
+      <li>\(F = \dfrac{dp}{dt} = \dfrac{d(mv)}{dt}\).</li>
+      <li>If \(m\) is constant: \(F = m\dfrac{dv}{dt} = ma\).</li>
+      <li>For a finite time: \(F_{\text{avg}}\Delta t = \Delta p = m(v-u)\).</li>
+    </ol>
+    <p><strong>What it means:</strong> the momentum form is more general — it still works when mass changes
+    (a rocket, a leaking sand truck). <strong>Why it matters in the exam:</strong> impact questions ask for
+    the <em>average force</em>; you get it from \(F = \Delta p/\Delta t\), not from \(F = ma\), because you
+    usually do not know \(a\) during a collision.</p>
+  </div>
+</details>
+
+<h3>Conservation of momentum</h3>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Conservation of momentum from Newton's third law</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Two bodies A and B collide and exert forces on each other. By Newton's third law,
+      \(F_{AB} = -F_{BA}\) at every instant.</li>
+      <li>They interact for the same time \(\Delta t\), so the impulses are equal and opposite:
+      \(F_{AB}\Delta t = -F_{BA}\Delta t\).</li>
+      <li>Impulse = change in momentum, so \(\Delta p_A = -\Delta p_B\), hence
+      \(\Delta p_A + \Delta p_B = 0\).</li>
+      <li>Therefore \(p_{\text{total}}\) is unchanged: \(m_Au_A + m_Bu_B = m_Av_A + m_Bv_B\).</li>
+    </ol>
+    <p><strong>Condition:</strong> no <em>external</em> resultant force on the system. Internal forces cancel
+    in pairs. <strong>When it is wrong:</strong> if there is significant external friction over the collision
+    time, or an external impulse.</p>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Momentum is a vector, so you <em>must</em> choose a positive direction and use signs. In an explosion
+  the initial momentum is zero, so \(m_Av_A = -m_Bv_B\) — the two momenta are equal and opposite, and
+  <em>not</em> \(m_Av_A = m_Bv_B\). Students routinely lose two marks writing the explosion equation without
+  the minus sign.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 10</span> IB-style · 6 marks · inelastic collision</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A 0.15 kg ball moving at 8.0 m s⁻¹ strikes a stationary 0.25 kg ball. After
+    the collision the two balls stick together. (a) Determine their common speed. (b) Calculate the kinetic
+    energy lost.</p>
+    <ol class="steps">
+      <li>Take the initial direction as positive. \(0.15(8.0) + 0.25(0) = (0.15+0.25)v\).</li>
+      <li>\(1.2 = 0.40v \Rightarrow v = 3.0\ \text{m s}^{-1}\).</li>
+      <li>Initial KE \(= \tfrac12(0.15)(8.0)^2 = 4.8\ \text{J}\). Final KE \(= \tfrac12(0.40)(3.0)^2 = 1.8\ \text{J}\).</li>
+      <li>Loss \(= 4.8 - 1.8 = 3.0\ \text{J}\) (63% of the initial KE becomes internal energy and sound).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(3.0\ \text{m s}^{-1}\), (b) 3.0 J lost. Momentum is
+    conserved because the collision is fast (external friction negligible); kinetic energy is
+    <em>not</em> conserved — that is the definition of an inelastic collision.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 11</span> IB-style · 8 marks · elastic collision, both unknowns</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A 2.0 kg trolley moving at 3.0 m s⁻¹ collides head-on with a 1.0 kg trolley
+    moving at 2.0 m s⁻¹ in the opposite direction. The collision is perfectly elastic. Determine the velocity
+    of each trolley after the collision.</p>
+    <ol class="steps">
+      <li>Take right as positive: \(u_1 = +3.0\), \(u_2 = -2.0\).</li>
+      <li>Momentum: \(2(3.0) + 1(-2.0) = 2v_1 + v_2 \Rightarrow 4.0 = 2v_1 + v_2\).</li>
+      <li>Elastic ⇒ KE conserved ⇒ for a 1-D elastic collision, relative speed of approach = relative speed of
+      separation: \(u_1 - u_2 = -(v_1 - v_2)\), so \(3.0-(-2.0) = v_2 - v_1\), i.e. \(v_2 - v_1 = 5.0\).</li>
+      <li>From (ii) \(v_2 = 4.0 - 2v_1\). Sub into (iii): \(4.0 - 2v_1 - v_1 = 5.0 \Rightarrow -3v_1 = 1.0
+      \Rightarrow v_1 = -0.33\ \text{m s}^{-1}\).</li>
+      <li>\(v_2 = 4.0 - 2(-0.33) = 4.67\ \text{m s}^{-1}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(v_1 = -0.33\ \text{m s}^{-1}\) (the 2.0 kg trolley rebounds),
+    \(v_2 = +4.7\ \text{m s}^{-1}\). Check: momentum after = \(2(-0.33) + 4.67 = 4.0\) ✓. KE before =
+    \(\tfrac12(2)(9) + \tfrac12(1)(4) = 11\) J; after = \(\tfrac12(2)(0.111) + \tfrac12(1)(21.8) = 11.0\) J ✓.
+    The negative sign for \(v_1\) means it bounced back — always interpret the sign.</div>
+  </div>
+</details>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Type</th><th>Momentum</th><th>Kinetic energy</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Elastic</td><td>conserved</td><td>conserved</td><td>Relative speed of approach = relative speed of separation. Happens at the atomic scale; macroscopic "elastic" collisions are approximations.</td></tr>
+      <tr><td>Inelastic</td><td>conserved</td><td>not conserved</td><td>Energy becomes internal energy, sound, deformation.</td></tr>
+      <tr><td>Perfectly inelastic (stick together)</td><td>conserved</td><td>maximum loss</td><td>Single final velocity.</td></tr>
+      <tr><td>Explosion</td><td>conserved (starts at 0)</td><td>increases</td><td>Chemical/nuclear energy becomes KE.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>Momentum conservation links <strong>A.2</strong> to <strong>E.2 Compton scattering</strong>: Compton's
+  explanation treats the photon as a particle carrying momentum \(p = h/\lambda\) and applies conservation of
+  momentum <em>and</em> energy to the photon–electron collision. It also links to <strong>B.3 kinetic
+  theory</strong>: pressure on a wall is the momentum change per collision times the collision rate.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — A.2</span>
+  <p><strong>force</strong><strong>resultant / net force</strong><strong>equilibrium</strong><strong>normal reaction</strong> /<strong>friction</strong><strong>static friction</strong><strong>kinetic friction</strong><strong>coefficient of friction</strong><strong>tension</strong><strong>free-body diagram</strong><strong>resolve</strong><strong>centripetal force</strong><strong>centripetal acceleration</strong><strong>momentum</strong><strong>impulse</strong><strong>conservation of momentum</strong><strong>elastic collision</strong><strong>inelastic collision</strong><strong>explosion</strong><strong>terminal</strong><strong>smooth (surface)</strong></p>
+</div>
+
+<h2 id="a3">A.3 Work, energy and power <span class="badge badge--sl">SL / HL</span></h2>
+
+<h3>Work done by a force</h3>
+
+<p><strong>Intuition.</strong> Work measures how much energy a force transfers. Push a box sideways and you
+transfer nothing to its motion — the force is perpendicular to the displacement, so no work. That is why the
+definition includes \(\cos\theta\).</p>
+
+<p>\[W = F s \cos\theta\]</p>
+<p>where \(F\) is the magnitude of the force (N), \(s\) the displacement (m) of the point of application, and
+\(\theta\) the angle between the force and the displacement. Unit: J (1 J = 1 N m).</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>The angle \(\theta\) is between the <em>force</em> and the <em>displacement</em>, not between the force
+  and the horizontal. If you pull a sled with a rope at 30° to the horizontal and the sled moves horizontally,
+  \(\theta = 30^\circ\) and \(W = Fs\cos 30^\circ\). If a crate slides <em>down</em> a slope while friction acts
+  <em>up</em> it, \(\theta = 180^\circ\) and the work done by friction is \(-fs\) — negative, because friction
+  removes energy. Always state that reason in words: markschemes award a mark for "negative because the force
+  opposes the motion".</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 12</span> IB-style · 5 marks · work at an angle</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A crate is pulled 12 m across a horizontal floor by a rope with tension
+    150 N at 40° to the horizontal. Friction is 90 N. Calculate (a) the work done by the tension,
+    (b) the work done by friction, (c) the net work on the crate.</p>
+    <ol class="steps">
+      <li>(a) \(W_T = Fs\cos\theta = 150 \times 12 \times \cos 40^\circ = 150\times12\times0.766 = 1379\ \text{J}\).</li>
+      <li>(b) Friction opposes motion (\(\theta = 180^\circ\)): \(W_f = 90\times12\times\cos 180^\circ
+      = -1080\ \text{J}\).</li>
+      <li>(c) Net work \(= 1379 - 1080 = 299\ \text{J}\) (weight and normal reaction do zero work, being
+      perpendicular to the horizontal displacement).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(1.4\ \text{kJ}\), (b) \(-1.1\ \text{kJ}\), (c) \(0.30\ \text{kJ}\).
+    The net work equals the change in kinetic energy — so the crate is speeding up, by 299 J worth.</div>
+  </div>
+</details>
+
+<h3>Kinetic, gravitational and elastic potential energy</h3>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(E_k = \tfrac12 mv^2\) from work and Newton's second law</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>A constant resultant force \(F\) accelerates a mass \(m\) from rest to speed \(v\) over distance
+      \(s\). The work done is \(W = Fs\).</li>
+      <li>\(F = ma\) and \(v^2 = 2as\) (SUVAT with \(u = 0\)), so \(s = \dfrac{v^2}{2a}\).</li>
+      <li>\(W = ma\cdot\dfrac{v^2}{2a} = \tfrac12 mv^2\).</li>
+      <li>This is the energy stored in the motion, so \(E_k = \tfrac12 mv^2\).</li>
+    </ol>
+    <p><strong>What it means:</strong> doubling the speed quadruples the kinetic energy — which is why
+    stopping distances scale with \(v^2\), not \(v\). <strong>When it is wrong:</strong> at speeds comparable
+    with \(c\); use relativity (A.5).</p>
+  </div>
+</details>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(\Delta E_p = mg\Delta h\) and \(E_e = \tfrac12 kx^2\)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Lifting a mass \(m\) slowly through \(\Delta h\) requires an upward force equal to \(mg\). Work done
+      \(= mg\Delta h\), which is stored as gravitational potential energy.</li>
+      <li>This is <em>change</em> in potential energy only — \(E_p\) has no absolute value unless you choose a
+      zero level. Always say "relative to the floor".</li>
+      <li>For a spring obeying Hooke's law \(F = kx\), the force varies from 0 to \(kx\) as the extension grows
+      from 0 to \(x\). Average force \(= \tfrac12 kx\), so work done \(= \tfrac12 kx \cdot x = \tfrac12 kx^2\).</li>
+      <li>Equivalently, the area under an \(F\)–\(x\) graph (a triangle) \(= \tfrac12 Fx = \tfrac12 kx^2\).</li>
+    </ol>
+    <p><strong>What it means:</strong> the factor \(\tfrac12\) comes from the force increasing linearly — that
+    is why a spring stores half of what a constant force of the same maximum value would.</p>
+  </div>
+</details>
+
+<h3>Conservation of mechanical energy</h3>
+
+<p>If only conservative forces (gravity, spring) do work, then</p>
+<p>\[E_k + E_p = \text{constant}, \qquad \tfrac12 mv^2 + mgh = \text{constant}\]</p>
+<p>If friction or drag acts, mechanical energy is not conserved; instead
+\(W_{\text{non-conservative}} = \Delta E_{\text{mechanical}}\), which is negative for friction.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the energy method vs SUVAT</span>
+  <ol class="steps">
+    <li>Use energy when the question involves <em>speeds and heights</em> but not times. A roller coaster
+    loop, a pendulum, a falling diver, a spring launcher — all energy, no SUVAT.</li>
+    <li>Use SUVAT when the question involves <em>times</em> or a <em>constant acceleration</em>.</li>
+    <li>Energy questions are often faster because you never resolve vectors and never worry about the path
+    shape — only the change in height.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 13</span> IB-style · 7 marks · energy with friction</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A 60 kg skier starts from rest at a height of 45 m and reaches the bottom at
+    22 m s⁻¹. (a) Calculate the energy dissipated. (b) Hence determine the average resistive force if the
+    slope length is 320 m.</p>
+    <ol class="steps">
+      <li>Initial energy \(= mgh = 60\times9.81\times45 = 26\,500\ \text{J}\).</li>
+      <li>Final KE \(= \tfrac12(60)(22)^2 = 14\,520\ \text{J}\).</li>
+      <li>Dissipated \(= 26\,500 - 14\,520 = 11\,980\ \text{J} \approx 12\ \text{kJ}\).</li>
+      <li>(b) Work done against resistance \(= F_{\text{avg}}\times 320 = 11\,980\), so
+      \(F_{\text{avg}} = 37.4\ \text{N}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(12\ \text{kJ}\), (b) \(37\ \text{N}\). Check without
+    friction the speed would be \(\sqrt{2\times9.81\times45} = 29.7\) m s⁻¹; 22 m s⁻¹ is lower, so energy was
+    lost — consistent.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 14</span> IB-style · 8 marks · vertical circle with energy + forces</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A bead of mass 0.050 kg slides on a smooth vertical circular track of radius
+    0.80 m. It starts from rest at the top. Determine the normal reaction at the bottom of the circle.</p>
+    <ol class="steps">
+      <li>Height fallen from top to bottom \(= 2r = 1.60\) m. Energy: \(\tfrac12 mv^2 = mg(2r)\), so
+      \(v^2 = 4gr = 4(9.81)(0.80) = 31.4\), \(v = 5.6\ \text{m s}^{-1}\).</li>
+      <li>At the bottom, towards the centre (upwards) is positive: \(N - mg = \dfrac{mv^2}{r}\).</li>
+      <li>\(N = m\left(g + \dfrac{v^2}{r}\right) = 0.050\left(9.81 + \dfrac{31.4}{0.80}\right)
+      = 0.050(9.81 + 39.2) = 2.45\ \text{N}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(2.5\ \text{N}\), i.e. five times the weight (0.49 N). This is a
+    classic <strong>linking question</strong>: it uses A.3 energy to get the speed and then A.2 circular
+    motion to get the force. Examiners love it because you cannot do it with one theme alone.</div>
+  </div>
+</details>
+
+<h3>Power and efficiency</h3>
+
+<dl class="glossary">
+  <dt>Power \(P = \dfrac{W}{t} = \dfrac{\Delta E}{t}\)</dt>
+  <dd>Rate of doing work, unit W (1 W = 1 J s⁻¹).</dd>
+  <dt>Power from force and velocity</dt>
+  <dd>\(P = Fv\) for a force \(F\) moving its point of application at speed \(v\) in the direction of the
+  force (more generally \(P = Fv\cos\theta\)).</dd>
+  <dt>Efficiency</dt>
+  <dd>\(\eta = \dfrac{\text{useful energy output}}{\text{total energy input}} = \dfrac{\text{useful power out}}{\text{total power in}}\).
+  Dimensionless, often ×100%.</dd>
+</dl>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(P = Fv\)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>\(P = \dfrac{dW}{dt}\) and \(dW = F\,ds\) for a force along the displacement.</li>
+      <li>\(P = F\dfrac{ds}{dt} = Fv\).</li>
+      <li>For a car at constant speed on the level, the engine force equals the resistive force, so
+      \(P = F_{\text{drag}}v\) — and since \(F_{\text{drag}}\propto v^2\), the power needed rises as \(v^3\).</li>
+    </ol>
+    <p><strong>What it means:</strong> doubling your motorway speed needs eight times the power. That is the
+    whole argument for speed limits and fuel economy.</p>
+  </div>
+</details>
+
+<h3>Energy density of fuel sources</h3>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Fuel</th><th>Typical energy density / MJ kg⁻¹</th><th>Comment for an evaluate question</th></tr></thead>
+    <tbody>
+      <tr><td>Coal</td><td>≈ 24</td><td>High carbon emissions, cheap, easy to store.</td></tr>
+      <tr><td>Petrol / diesel</td><td>≈ 44–46</td><td>High density — why transport uses liquid fuel.</td></tr>
+      <tr><td>Natural gas</td><td>≈ 55</td><td>Cleanest fossil fuel, but methane is a potent greenhouse gas if leaked.</td></tr>
+      <tr><td>Uranium (fission, in a thermal reactor)</td><td>≈ 5 × 10⁵ (effectively)</td><td>Millions of times chemical fuels; the issue is waste and safety, not supply.</td></tr>
+      <tr><td>Hydrogen</td><td>≈ 142</td><td>Highest per kg but very low per <em>volume</em> unless liquefied or compressed — the storage problem.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 15</span> IB-style · 6 marks · power and efficiency</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A car of mass 1400 kg climbs a hill of gradient 1 in 12 at a constant
+    18 m s⁻¹. The resistive force is 700 N. (a) Calculate the minimum power output of the engine.
+    (b) If the engine's efficiency is 28% and the fuel has energy density 44 MJ kg⁻¹, determine the fuel
+    consumed per kilometre.</p>
+    <ol class="steps">
+      <li>Gradient 1 in 12 means \(\sin\theta = 1/12\), so the component of weight along the slope is
+      \(mg/12 = 1400(9.81)/12 = 1145\ \text{N}\).</li>
+      <li>Total force needed \(= 1145 + 700 = 1845\ \text{N}\). Power \(= Fv = 1845\times18 = 33.2\ \text{kW}\).</li>
+      <li>(b) Input power \(= 33.2/0.28 = 118.6\ \text{kW}\). Time per km \(= 1000/18 = 55.6\ \text{s}\).</li>
+      <li>Energy input per km \(= 118.6\times10^3 \times 55.6 = 6.59\ \text{MJ}\). Mass of fuel
+      \(= 6.59/44 = 0.15\ \text{kg}\) per km.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(33\ \text{kW}\), (b) \(0.15\ \text{kg km}^{-1}\) (roughly
+    7 L/100 km given petrol's density — a realistic figure, which is your sanity check).</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>Efficiency links <strong>A.3</strong> to <strong>B.4 thermodynamics</strong>: the same ratio
+  ("useful output / total input") becomes the thermal efficiency of a heat engine \(\eta = W/Q_H\), and the
+  second law puts a hard ceiling on it. It also links to <strong>B.2 greenhouse effect</strong> when you
+  evaluate energy sources, and to <strong>E.4 fission</strong> when you compare energy densities.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — A.3</span>
+  <p><strong>work (done)</strong><strong>energy</strong><strong>kinetic energy</strong><strong>gravitational potential energy</strong><strong>elastic (strain) potential energy</strong><strong>conservation of energy</strong><strong>dissipate</strong><strong>power</strong><strong>efficiency</strong><strong>energy density</strong><strong>conservative force</strong><strong>non-conservative force</strong><strong>sanity check</strong></p>
+</div>
+
+<h2 id="a4">A.4 Rigid body mechanics <span class="badge badge--hl">HL only</span></h2>
+
+<p><strong>Intuition.</strong> Everything so far treated objects as point masses. Now the <em>shape</em>
+matters. Pushing a door near the hinge barely opens it; pushing at the handle works — same force, different
+effect. The quantity that captures "where and how hard you push" is <strong>torque</strong>, and the quantity
+that captures "how hard it is to start spinning" is the <strong>moment of inertia</strong>. Rotational
+mechanics is a perfect translation of linear mechanics: replace \(F\to\tau\), \(m\to I\), \(v\to\omega\),
+\(p\to L\), \(s\to\theta\), \(a\to\alpha\) and every equation you know has a twin.</p>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr><th>Linear</th><th>Rotational</th><th>Link</th></tr></thead>
+    <tbody>
+      <tr><td>displacement \(s\)</td><td>angular displacement \(\theta\) (rad)</td><td>\(s = r\theta\)</td></tr>
+      <tr><td>velocity \(v\)</td><td>angular velocity \(\omega\) (rad s⁻¹)</td><td>\(v = r\omega\)</td></tr>
+      <tr><td>acceleration \(a\)</td><td>angular acceleration \(\alpha\) (rad s⁻²)</td><td>\(a_t = r\alpha\)</td></tr>
+      <tr><td>mass \(m\)</td><td>moment of inertia \(I\) (kg m²)</td><td>\(I = \sum m_ir_i^2\)</td></tr>
+      <tr><td>force \(F\)</td><td>torque \(\tau\) (N m)</td><td>\(\tau = Fr\sin\theta\)</td></tr>
+      <tr><td>\(F = ma\)</td><td>\(\tau = I\alpha\)</td><td></td></tr>
+      <tr><td>momentum \(p = mv\)</td><td>angular momentum \(L = I\omega\)</td><td></td></tr>
+      <tr><td>\(F = \Delta p/\Delta t\)</td><td>\(\tau = \Delta L/\Delta t\)</td><td></td></tr>
+      <tr><td>\(E_k = \tfrac12 mv^2\)</td><td>\(E_k = \tfrac12 I\omega^2\)</td><td></td></tr>
+      <tr><td>work \(W = Fs\)</td><td>work \(W = \tau\theta\)</td><td></td></tr>
+      <tr><td>power \(P = Fv\)</td><td>power \(P = \tau\omega\)</td><td></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Torque and rotational equilibrium</h3>
+
+<p>\[\tau = Fr\sin\theta\]</p>
+<p>with \(F\) the force (N), \(r\) the distance from the pivot to the point of application (m), and \(\theta\)
+the angle between the force and the line from pivot to that point. Unit N m (note: not J, even though the
+dimensions match — torque is a vector thing, and examiners do comment).</p>
+
+<dl class="glossary">
+  <dt>Moment of a force = torque</dt>
+  <dd>The turning effect. Perpendicular distance \(d = r\sin\theta\), so \(\tau = Fd\).</dd>
+  <dt>Principle of moments</dt>
+  <dd>For an object in rotational equilibrium, the sum of the clockwise moments about any point equals the sum
+  of the anticlockwise moments.</dd>
+  <dt>Centre of mass / centre of gravity</dt>
+  <dd>The single point at which the entire weight appears to act. For a uniform symmetric object it is the
+  geometric centre.</dd>
+  <dt>A couple</dt>
+  <dd>Two equal, opposite, parallel forces whose lines of action do not coincide. Torque of a couple
+  \(= Fd\) where \(d\) is the perpendicular separation. A couple produces rotation with no translation.</dd>
+</dl>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> The principle of moments from \(\tau = I\alpha\)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Rotational equilibrium means \(\alpha = 0\), so from \(\tau = I\alpha\) the net torque is zero.</li>
+      <li>Taking anticlockwise as positive: \(\sum \tau = 0\), so
+      \(\sum \tau_{\text{anticlockwise}} - \sum \tau_{\text{clockwise}} = 0\).</li>
+      <li>Hence \(\sum \tau_{\text{anticlockwise}} = \sum \tau_{\text{clockwise}}\).</li>
+      <li>For a body in <em>complete</em> equilibrium you also need \(\sum F = 0\) (no translation).
+      Both conditions.</li>
+    </ol>
+    <p><strong>What it means:</strong> two independent conditions, so two families of equation.
+    <strong>Trap:</strong> forgetting \(\sum F = 0\) — a body can have balanced moments and still be
+    accelerating sideways.</p>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 16</span> IB-style · 6 marks · moments</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A uniform beam of mass 20 kg and length 4.0 m is hinged at one end and held
+    horizontal by a cable attached 3.0 m from the hinge at 40° to the beam. Determine the tension in the
+    cable.</p>
+    <ol class="steps">
+      <li>Take moments about the hinge (this eliminates the unknown hinge reaction — the reason you always
+      take moments about the pivot).</li>
+      <li>Anticlockwise moment of the cable's vertical component: \(T\sin 40^\circ \times 3.0\). Only the
+      vertical component turns the beam; the horizontal component acts along the beam and has zero moment.</li>
+      <li>Clockwise moment of the weight acting at the centre (2.0 m from the hinge):
+      \(20\times9.81\times2.0 = 392\ \text{N m}\).</li>
+      <li>\(T(0.643)(3.0) = 392 \Rightarrow T = \dfrac{392}{1.93} = 203\ \text{N}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(T = 200\ \text{N}\). Sanity check: if the cable were vertical,
+    \(T = 392/3.0 = 131\) N; at 40° more tension is needed. ✓</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 17</span> IB-style · 6 marks · tipping</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A uniform rectangular block of mass 5.0 kg, base 0.40 m wide and 1.2 m tall,
+    stands on a rough floor. A horizontal force is applied at the top. (a) Determine the force needed to just
+    start tipping. (b) State whether it tips or slides first if \(\mu_s = 0.60\).</p>
+    <ol class="steps">
+      <li>At the point of tipping the block pivots about the bottom edge; the normal reaction acts there, so
+      take moments about that edge.</li>
+      <li>Clockwise moment of the applied force: \(F \times 1.2\). Anticlockwise moment of the weight acting
+      0.20 m from the edge: \(5.0\times9.81\times0.20 = 9.81\ \text{N m}\).</li>
+      <li>\(F(1.2) = 9.81 \Rightarrow F = 8.2\ \text{N}\).</li>
+      <li>(b) Sliding begins at \(F = \mu_s mg = 0.60\times5.0\times9.81 = 29\ \text{N}\). Since 8.2 &lt; 29,
+      the block <strong>tips</strong> first.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 8.2 N, (b) tips first. The comparison is the point of the
+    question: whichever threshold is lower happens.</div>
+  </div>
+</details>
+
+<h3>Moment of inertia</h3>
+
+<p>\[I = \sum_i m_i r_i^2 \quad \text{or} \quad I = \int r^2\,dm\]</p>
+<p>Unit kg m². It is not just "how much mass" but "how far the mass is from the axis" — squared. The data
+booklet gives standard results: a point mass \(mr^2\); a hoop about its centre \(mr^2\); a solid cylinder or
+disc about its axis \(\tfrac12 mr^2\); a solid sphere about a diameter \(\tfrac25 mr^2\); a thin rod about its
+centre \(\tfrac1{12}ml^2\) and about its end \(\tfrac13 ml^2\).</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Two traps. (1) Using the wrong axis — \(I\) is meaningless without one, and the same object has different
+  \(I\) about different axes (a rod about its end has <em>four times</em> the \(I\) it has about its centre).
+  (2) Expecting a hollow and a solid cylinder of the same mass and radius to roll at the same rate. All the
+  mass of a hoop is at radius \(r\) so \(I = mr^2\); a solid cylinder's mass is spread from 0 to \(r\) so
+  \(I = \tfrac12 mr^2\). The solid one always wins a rolling race, and the mass cancels — the result is
+  independent of both \(m\) and \(r\).</p>
+</div>
+
+<h3>Newton's second law for rotation</h3>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> \(\tau = I\alpha\) from \(F = ma\)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Take a point mass \(m_i\) at distance \(r_i\) from the axis, with a tangential force \(F_i\).</li>
+      <li>Tangential acceleration \(a_i = r_i\alpha\), so \(F_i = m_ir_i\alpha\).</li>
+      <li>Torque on that mass: \(\tau_i = F_ir_i = m_ir_i^2\alpha\).</li>
+      <li>Sum over all the masses: \(\sum\tau_i = \left(\sum m_ir_i^2\right)\alpha = I\alpha\).</li>
+    </ol>
+    <p><strong>What it means:</strong> \(I\) plays the role of "rotational mass". <strong>When it is
+    wrong:</strong> if the axis is accelerating or not fixed, you must use the centre-of-mass form plus the
+    parallel-axis ideas.</p>
+  </div>
+</details>
+
+<h3>Angular momentum and its conservation</h3>
+
+<p>\[L = I\omega \qquad \text{and} \qquad \tau = \frac{dL}{dt}\]</p>
+<p>If the net external torque is zero, \(L\) is constant: \(I_1\omega_1 = I_2\omega_2\). This is why an ice
+skater spins faster when she pulls her arms in — \(I\) falls, so \(\omega\) must rise.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 18</span> IB-style · 7 marks · conservation of angular momentum</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A student sits on a rotating stool holding two 3.0 kg masses at 0.80 m from
+    the axis, rotating at 1.5 rad s⁻¹. The student + stool has moment of inertia 4.0 kg m². She pulls the
+    masses in to 0.25 m from the axis. (a) Determine the new angular velocity. (b) Explain the change in
+    kinetic energy.</p>
+    <ol class="steps">
+      <li>Initial: \(I_i = 4.0 + 2(3.0)(0.80)^2 = 4.0 + 3.84 = 7.84\ \text{kg m}^2\).</li>
+      <li>Final: \(I_f = 4.0 + 2(3.0)(0.25)^2 = 4.0 + 0.375 = 4.375\ \text{kg m}^2\).</li>
+      <li>No external torque, so \(I_i\omega_i = I_f\omega_f\): \(\omega_f = \dfrac{7.84\times1.5}{4.375}
+      = 2.69\ \text{rad s}^{-1}\).</li>
+      <li>(b) \(E_i = \tfrac12(7.84)(1.5)^2 = 8.8\ \text{J}\); \(E_f = \tfrac12(4.375)(2.69)^2 = 15.8\ \text{J}\).</li>
+      <li>The kinetic energy increases by 7.0 J because the student does <em>work</em> pulling the masses
+      inwards against the "centrifugal" effect. Angular momentum is conserved; rotational KE is not.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(2.7\ \text{rad s}^{-1}\), (b) KE rises from 8.8 J to 15.8 J,
+    the extra coming from the student's muscles. This is the rotational twin of the explosion problem in
+    A.2 — conserved quantity, but KE changes.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 19</span> IB-style · 7 marks · rolling down a slope</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A solid sphere of mass 2.0 kg and radius 0.15 m rolls without slipping down
+    a slope from rest through a vertical height of 1.8 m. Determine its final translational speed.</p>
+    <ol class="steps">
+      <li>Energy: \(mgh = \tfrac12 mv^2 + \tfrac12 I\omega^2\), with \(I = \tfrac25 mr^2\) and
+      \(\omega = v/r\) (no slipping).</li>
+      <li>\(mgh = \tfrac12 mv^2 + \tfrac12(\tfrac25 mr^2)\dfrac{v^2}{r^2} = \tfrac12 mv^2 + \tfrac15 mv^2
+      = 0.7\,mv^2\).</li>
+      <li>\(v^2 = \dfrac{gh}{0.7} = \dfrac{9.81\times1.8}{0.7} = 25.2\), so \(v = 5.0\ \text{m s}^{-1}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(5.0\ \text{m s}^{-1}\). Compare with a frictionless slide
+    (\(\sqrt{2gh} = 5.9\) m s⁻¹): rolling is slower because some of the energy is tied up in rotation. Note
+    the mass and radius both cancelled — all solid spheres roll at the same rate regardless of size.</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>Rigid body mechanics links to <strong>A.5 relativity</strong> through the idea that physics must look the
+  same in different frames, and to <strong>D.1 orbital motion</strong>: a planet's orbital angular momentum
+  \(L = mvr\) is conserved because gravity is a central force (zero torque) — which is one way of deriving
+  Kepler's second law.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — A.4</span>
+  <p><strong>torque</strong><strong>moment of a force</strong><strong>moment of inertia</strong><strong>angular displacement/velocity/acceleration</strong> //<strong>angular momentum</strong><strong>rotational kinetic energy</strong><strong>rotational equilibrium</strong><strong>principle of moments</strong><strong>couple</strong><strong>pivot / axis</strong> /<strong>centre of mass</strong><strong>centre of gravity</strong><strong>rolling without slipping</strong><strong>tipping</strong><strong>radian</strong></p>
+</div>
+
+<h2 id="a5">A.5 Galilean and special relativity <span class="badge badge--hl">HL only</span></h2>
+
+<p><strong>Intuition.</strong> You already believe in relativity. On a train moving smoothly at 300 km h⁻¹ you
+can pour a cup of tea, drop a coin straight down, and play catch — everything behaves exactly as it does at
+rest. That is <strong>Galilean relativity</strong>, and it says: the laws of mechanics are the same in all
+inertial frames, so there is no experiment <em>in mechanics</em> that tells you whether you are moving
+uniformly or standing still.</p>
+
+<p>Then came light. Maxwell's equations predicted a speed \(c = 3.00\times10^8\ \text{m s}^{-1}\) with no
+mention of who was measuring it. Every attempt (notably Michelson–Morley) to detect a change in the speed of
+light caused by Earth's motion failed. Einstein's move was radical: take the constancy of \(c\) as a
+<em>postulate</em>, and accept that space and time must bend to accommodate it.</p>
+
+<h3>Reference frames and Galilean transformations</h3>
+
+<dl class="glossary">
+  <dt>Reference frame</dt>
+  <dd>A coordinate system plus clocks, used to measure positions and times of events.</dd>
+  <dt>Inertial frame</dt>
+  <dd>A frame in which Newton's first law holds — i.e. one that is not accelerating or rotating. A frame
+  moving at constant velocity relative to an inertial frame is also inertial.</dd>
+  <dt>Event</dt>
+  <dd>Something that happens at a particular place at a particular time — a point in spacetime.</dd>
+</dl>
+
+<p><strong>Galilean transformations</strong> between frame S and frame S′ moving at speed \(v\) along \(x\):</p>
+<p>\[x' = x - vt, \qquad y'=y,\qquad z'=z,\qquad t' = t\]</p>
+<p>Velocity addition: \(u' = u - v\). Time is <em>absolute</em> — everyone agrees on it. Newton's laws are
+invariant under this transformation, which is exactly why the train feels normal.</p>
+
+<h3>The two postulates of special relativity</h3>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>Postulate 1 — the principle of relativity</h4>
+    <p>The laws of physics are the same in all inertial frames of reference. There is no preferred frame; you
+    cannot claim to be "really" at rest.</p>
+  </div>
+  <div class="card">
+    <h4>Postulate 2 — the invariance of \(c\)</h4>
+    <p>The speed of light in a vacuum is the same value \(c\) for all inertial observers, regardless of the
+    motion of the source or the observer.</p>
+  </div>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why this forces time itself to change</span>
+  <p>Suppose you are on a train and switch on a lamp in the middle of a carriage. You see the light reach the
+  front and back simultaneously. Someone on the platform sees the train moving forward, so the back wall
+  rushes to meet the light and the front wall runs away from it. Since both observers must measure the
+  <em>same</em> \(c\), the platform observer sees the light reach the back first. Two events simultaneous for
+  one observer are not simultaneous for the other. <strong>Relativity of simultaneity</strong> is not a
+  paradox — it is the logical price of the second postulate.</p>
+</div>
+
+<h3>The Lorentz factor and the Lorentz transformations</h3>
+
+<p>\[\gamma = \frac{1}{\sqrt{1-\dfrac{v^2}{c^2}}}\]</p>
+<p>\(\gamma\) is dimensionless, \(\gamma \ge 1\), and it is the single number that controls everything:
+\(\gamma = 1\) at rest, \(\gamma \to \infty\) as \(v \to c\). At \(v = 0.6c\), \(\gamma = 1.25\); at
+\(v = 0.8c\), \(\gamma = 1.67\); at \(v = 0.99c\), \(\gamma = 7.09\).</p>
+
+<p>The <strong>Lorentz transformations</strong> (S′ moving at \(v\) along \(x\)):</p>
+<p>\[x' = \gamma(x - vt), \qquad t' = \gamma\left(t - \frac{vx}{c^2}\right), \qquad y'=y,\qquad z'=z\]</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Compare with the Galilean transformation \(t' = t\): the extra term \(-vx/c^2\) in \(t'\) is where all of
+  the "weirdness" lives. It says that the time you assign to a distant event depends on where it happened and
+  how fast you are moving. Students who memorise \(x' = \gamma(x-vt)\) but write \(t' = t\) get every
+  simultaneity question wrong.</p>
+</div>
+
+<h3>Time dilation and length contraction</h3>
+
+<dl class="glossary">
+  <dt>Proper time \(\Delta t_0\)</dt>
+  <dd>The time interval between two events measured in the frame in which the events occur <em>at the same
+  place</em> (a clock at rest relative to the events). It is the <strong>shortest</strong> measured interval.</dd>
+  <dt>Dilated time \(\Delta t\)</dt>
+  <dd>\(\Delta t = \gamma\,\Delta t_0\). Measured by an observer who sees the clock moving. Moving clocks run
+  slow.</dd>
+  <dt>Proper length \(L_0\)</dt>
+  <dd>The length of an object measured in the frame in which the object is <em>at rest</em>. It is the
+  <strong>longest</strong> measured length.</dd>
+  <dt>Contracted length \(L\)</dt>
+  <dd>\(L = \dfrac{L_0}{\gamma}\), measured in the direction of relative motion only. Dimensions perpendicular
+  to the motion are unchanged.</dd>
+</dl>
+
+<details class="derivation">
+  <summary><span class="badge">Derivation</span> Time dilation from a light clock</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Imagine a clock consisting of two mirrors separated by \(L_0\), with a light pulse bouncing between
+      them. One "tick" is the round trip. In the clock's own frame the time is \(\Delta t_0 = 2L_0/c\).</li>
+      <li>Now view the clock moving sideways at speed \(v\). The light must travel a longer, diagonal path.
+      In time \(\Delta t\) the clock moves \(v\Delta t\) while the light travels \(c\Delta t\) along the
+      diagonal.</li>
+      <li>By Pythagoras, over half a tick:
+      \(\left(\dfrac{c\Delta t}{2}\right)^2 = \left(\dfrac{v\Delta t}{2}\right)^2 + L_0^2\).</li>
+      <li>Divide by \(c^2/4\): \((\Delta t)^2\left(1 - \dfrac{v^2}{c^2}\right) = \dfrac{4L_0^2}{c^2} = (\Delta t_0)^2\).</li>
+      <li>So \(\Delta t = \dfrac{\Delta t_0}{\sqrt{1-v^2/c^2}} = \gamma\,\Delta t_0\).</li>
+    </ol>
+    <p><strong>What it means:</strong> the moving clock's tick takes longer <em>because the light has further
+    to go</em> — not because anything is "wrong" with the clock. <strong>When it is wrong:</strong> never use
+    it without identifying whose clock; the moving observer notices nothing unusual about their own clock.</p>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 20</span> IB-style · 5 marks · muons — the classic</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Muons are created in the upper atmosphere at a height of 10 km and travel
+    downwards at \(0.995c\). The muon proper lifetime is \(2.2\ \mu\text{s}\). (a) Explain why, without
+    relativity, very few muons would reach the ground. (b) Calculate the mean distance travelled in the
+    Earth frame, taking time dilation into account.</p>
+    <ol class="steps">
+      <li>(a) Without relativity, distance \(= c \times \tau = 3.00\times10^8 \times 2.2\times10^{-6} = 660\ \text{m}\).
+      This is far less than 10 km, so essentially no muons should survive to sea level — yet they are
+      detected in large numbers.</li>
+      <li>(b) \(\gamma = \dfrac{1}{\sqrt{1-0.995^2}} = \dfrac{1}{\sqrt{1-0.990025}} = \dfrac{1}{\sqrt{0.009975}}
+      = \dfrac{1}{0.09987} = 10.0\).</li>
+      <li>Dilated lifetime \(= \gamma\tau = 10.0\times2.2 = 22\ \mu\text{s}\).</li>
+      <li>Distance \(= 0.995\times3.00\times10^8\times22\times10^{-6} = 6.6\times10^3\ \text{m} = 6.6\ \text{km}\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 6.6 km in the Earth frame — an order of magnitude more, which is why
+    muons reach the ground. <strong>And now the same physics from the muon's frame:</strong> the muon's clock
+    is normal, but the atmosphere is length-contracted to \(10/10.0 = 1.0\) km, so the muon only has 1 km to
+    cross and survives. Both observers agree that the muon reaches the ground; they disagree about
+    <em>why</em>. That is relativity working correctly, and examiners love it.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 21</span> IB-style · 6 marks · length contraction + the twin paradox</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A spacecraft of proper length 80 m travels past a space station at 0.60c.
+    (a) Determine its length as measured by the station. (b) The spacecraft travels to a star 12 light-years
+    away (as measured from Earth) at 0.60c and returns. Determine the age difference between the astronaut and
+    an Earth observer on return.</p>
+    <ol class="steps">
+      <li>(a) \(\gamma = 1/\sqrt{1-0.36} = 1/0.8 = 1.25\). Contracted length
+      \(L = L_0/\gamma = 80/1.25 = 64\ \text{m}\).</li>
+      <li>(b) Earth frame: distance 12 ly out and 12 ly back at 0.60c, so
+      \(t = 24/0.60 = 40\) years pass on Earth.</li>
+      <li>Astronaut's proper time: \(\Delta t_0 = \Delta t/\gamma = 40/1.25 = 32\) years.</li>
+      <li>Difference \(= 40 - 32 = 8\) years. The astronaut is 8 years younger.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 64 m, (b) the astronaut ages 32 years while Earth ages 40 — an
+    8-year difference. <strong>Why it is not a paradox:</strong> the situation is <em>not</em> symmetric. The
+    astronaut accelerates, turns around, and changes inertial frame; the Earth observer stays in one frame.
+    Only the astronaut's worldline is bent, and the bent one accumulates less proper time. If a question asks
+    you to "resolve the twin paradox", that asymmetry is the entire answer.</div>
+  </div>
+</details>
+
+<h3>Spacetime diagrams</h3>
+
+<p>A <strong>spacetime diagram</strong> plots \(ct\) (vertical) against \(x\) (horizontal). Using \(ct\) as
+the vertical axis means light rays travel at 45°. Key features you must be able to draw and read:</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Spacetime diagram showing worldlines, light cone and relativity of simultaneity">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="80" y1="270" x2="600" y2="270" stroke="#334155" stroke-width="2"/>
+    <line x1="320" y1="270" x2="320" y2="30" stroke="#334155" stroke-width="2"/>
+    <line x1="320" y1="270" x2="560" y2="30" stroke="#0a6f80" stroke-width="2" stroke-dasharray="6 4"/>
+    <line x1="320" y1="270" x2="80" y2="30" stroke="#0a6f80" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="500" y="60" font-size="13" font-family="system-ui, sans-serif" fill="#0a6f80">light ray (45°)</text>
+    <line x1="320" y1="270" x2="420" y2="120" stroke="#c0392b" stroke-width="2.5"/>
+    <text x="428" y="118" font-size="13" font-family="system-ui, sans-serif" fill="#c0392b">moving observer's ct' axis</text>
+    <line x1="320" y1="270" x2="480" y2="270" stroke="#7a5a13" stroke-width="2.5"/>
+    <text x="452" y="290" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13">x' axis (line of simultaneity)</text>
+    <circle cx="380" cy="230" r="4" fill="#151923"/>
+    <text x="352" y="228" font-size="12" font-family="system-ui, sans-serif" fill="#151923">event A</text>
+    <circle cx="470" cy="230" r="4" fill="#151923"/>
+    <text x="476" y="228" font-size="12" font-family="system-ui, sans-serif" fill="#151923">event B</text>
+    <line x1="380" y1="240" x2="470" y2="240" stroke="#6c7788" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <text x="396" y="258" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">simultaneous in S (horizontal)</text>
+    <text x="330" y="45" font-size="13" font-family="system-ui, sans-serif" fill="#151923">ct</text>
+    <text x="590" y="288" font-size="13" font-family="system-ui, sans-serif" fill="#151923">x</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 3.</span> A spacetime diagram. The \(ct'\) axis of a moving
+  observer tilts towards the light ray; their \(x'\) axis (their line of simultaneity) tilts up by the same
+  angle. Events A and B are simultaneous in S but <em>not</em> in S′, because S′'s line of simultaneity is
+  tilted.</figcaption>
+</figure>
+
+<ul>
+  <li>A stationary object's <strong>worldline</strong> is vertical; a moving object's is tilted away from
+  vertical; light is at exactly 45°.</li>
+  <li>The steeper the worldline, the slower the object.</li>
+  <li><strong>Light cone:</strong> the 45° lines from an event separate events that can be causally connected
+  (inside the cone) from those that cannot (outside — "spacelike separated").</li>
+  <li>The \(x'\) axis of a moving observer is <em>tilted</em> relative to the \(x\) axis — that tilt
+  <em>is</em> the relativity of simultaneity, drawn.</li>
+</ul>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>Three reliable markschemes complaints. (1) Saying "moving clocks run slow" without saying <em>as measured
+  by whom</em> — always name the frame. (2) Applying length contraction to the dimension perpendicular to the
+  motion (it does not contract). (3) Using \(\gamma\) upside down: the <em>proper</em> time is the shortest and
+  the <em>proper</em> length is the longest. If your "dilated" time came out smaller than the proper time, you
+  divided instead of multiplying.</p>
+</div>
+
+<div class="callout callout--link">
+  <span class="callout__label">Linking question</span>
+  <p>Relativity links to <strong>E.2 matter waves</strong> through relativistic momentum
+  \(p = \gamma m_0v\), and to <strong>D.3</strong>: particle accelerators must use relativistic momentum
+  because particles reach speeds where \(\gamma \gg 1\). It also links to <strong>C.5 Doppler</strong>: the
+  relativistic Doppler formula for light replaces the classical one when the source speed is a significant
+  fraction of \(c\). And it links to <strong>E.3</strong>: in fission and fusion the mass "lost" is real and
+  \(E = mc^2\) is the relativistic rest energy.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — A.5</span>
+  <p><strong>reference frame</strong><strong>inertial frame</strong><strong>Galilean transformation</strong><strong>Lorentz transformation</strong><strong>Lorentz factor</strong><strong>postulate</strong> /<strong>time dilation</strong><strong>length contraction</strong><strong>proper time</strong><strong>proper length</strong><strong>simultaneity</strong><strong>relativity of simultaneity</strong><strong>spacetime diagram</strong><strong>worldline</strong><strong>light cone</strong><strong>twin paradox</strong><strong>muon</strong> μ<strong>invariant</strong></p>
+</div>
+
+<div class="conn">
+  <span class="conn__title">Connections — Theme A to the rest</span>
+  <ul>
+    <li><strong>→ Theme B:</strong> A.3 energy conservation becomes B.4 the first law of thermodynamics; the
+    work done against drag in A.1 heats the fluid in B.1; the momentum arguments of A.2 give B.3 pressure.</li>
+    <li><strong>→ Theme C:</strong> A.2 circular motion is the parent of C.1 SHM (project circular motion onto
+    a diameter and you get SHM); A.4 rotational motion shares all of its mathematics with C.1 oscillation.</li>
+    <li><strong>→ Theme D:</strong> A.2 centripetal force plus D.2/D.3 magnetic force gives the cyclotron;
+    A.3 potential energy becomes D.1 gravitational potential and D.2 electric potential.</li>
+    <li><strong>→ Theme E:</strong> A.2 momentum conservation is the tool for E.2 Compton scattering and E.3
+    radioactive decay; A.5 relativistic energy is why \(E = mc^2\) in E.3.</li>
+    <li><strong>→ Maths AA HL:</strong> calculus (\(v = ds/dt\)), vectors, trigonometric identities
+    (\(\sin 2\theta\)), and exponential functions (drag).</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can derive all four SUVAT equations from the area under a v–t graph.</span></label></li>
+  <li><label><input type="checkbox"><span>I can solve a projectile problem by running two independent sets of SUVAT.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain why terminal speed occurs and calculate it from a force balance.</span></label></li>
+  <li><label><input type="checkbox"><span>I can draw a correct free-body diagram on an incline and resolve weight into mg sin θ and mg cos θ.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive a = v²/r and apply it to banked tracks, vertical circles and conical pendulums.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive F = Δp/Δt and conservation of momentum, and use signs correctly for explosions.</span></label></li>
+  <li><label><input type="checkbox"><span>I can classify a collision as elastic or inelastic from the kinetic energies.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive Eₖ = ½mv², ΔEₚ = mgΔh and Eₑ = ½kx², and use P = Fv.</span></label></li>
+  <li><label><input type="checkbox"><span>I can take moments about a pivot, find a tipping condition, and use I = Σmr².</span></label></li>
+  <li><label><input type="checkbox"><span>I can apply conservation of angular momentum to a changing moment of inertia.</span></label></li>
+  <li><label><input type="checkbox"><span>I can state both postulates and derive time dilation from the light clock.</span></label></li>
+  <li><label><input type="checkbox"><span>I can do a muon problem from both frames and explain the twin paradox asymmetry.</span></label></li>
+</ul>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li>
+    <p><strong>[3 marks]</strong> A car accelerates uniformly from 12 m s⁻¹ to 28 m s⁻¹ over 160 m. Determine
+    its acceleration.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Use \(v^2 = u^2 + 2as\): \(28^2 = 12^2 + 2a(160)\), so \(784 - 144 = 320a\), giving
+      \(a = 640/320 = 2.0\ \text{m s}^{-2}\). Check: time \(= (28-12)/2.0 = 8.0\) s; average speed
+      \(20\ \text{m s}^{-1}\times8.0 = 160\) m ✓.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[4 marks]</strong> A stone is thrown horizontally at 20 m s⁻¹ from a cliff and lands 60 m from
+    the base. Determine the height of the cliff.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Horizontal: \(t = 60/20 = 3.0\) s. Vertical: \(h = \tfrac12 gt^2 = \tfrac12(9.81)(9.0) = 44\ \text{m}\).
+      The horizontal and vertical motions share only the time — that is the whole method.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> Explain, with reference to the forces acting, why a falling raindrop reaches
+    a constant speed, and describe how its acceleration changes during the fall.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Two forces act: weight \(mg\) downwards (constant) and drag \(F_D\) upwards (increasing with speed).
+      Initially \(v = 0\) so drag is zero and the acceleration is \(g\). As the speed increases the drag
+      increases, so the resultant force \(mg - F_D\) falls and the acceleration decreases. Eventually
+      \(F_D = mg\), the resultant force is zero, the acceleration is zero, and the drop continues at constant
+      terminal speed. Note: the acceleration falls to zero; the velocity does not.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A 0.20 kg ball moving at 6.0 m s⁻¹ rebounds from a wall at 4.0 m s⁻¹ after
+    being in contact with it for 0.050 s. Calculate the average force exerted by the wall on the ball.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Take the initial direction as positive: \(u = +6.0\), \(v = -4.0\).
+      \(\Delta p = m(v-u) = 0.20(-4.0-6.0) = -2.0\ \text{kg m s}^{-1}\).
+      \(F = \Delta p/\Delta t = -2.0/0.050 = -40\ \text{N}\). The magnitude is 40 N and the negative sign
+      shows the force is directed away from the wall, i.e. opposite to the incoming velocity — as expected.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A 1.5 kg trolley moving at 2.0 m s⁻¹ collides with a stationary 2.5 kg
+    trolley and they stick together. (a) Determine the final speed. (b) Show that the collision is inelastic.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) \(1.5(2.0) = (1.5+2.5)v \Rightarrow v = 3.0/4.0 = 0.75\ \text{m s}^{-1}\).</p>
+      <p>(b) KE before \(= \tfrac12(1.5)(4.0) = 3.0\) J; KE after \(= \tfrac12(4.0)(0.5625) = 1.13\) J. Since
+      1.13 &lt; 3.0, kinetic energy is not conserved, so the collision is inelastic. (Momentum is still
+      conserved: \(4.0\times0.75 = 3.0\) ✓.)</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A uniform rod of mass 2.0 kg and length 1.5 m is pivoted 0.30 m from one end.
+    Determine the moment of inertia of the rod about the pivot, given \(I = \tfrac1{12}ml^2\) about its centre.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>About the centre: \(I_G = \tfrac1{12}(2.0)(1.5)^2 = 0.375\ \text{kg m}^2\). The pivot is
+      \(0.75 - 0.30 = 0.45\) m from the centre. Using the parallel-axis theorem:
+      \(I = I_G + md^2 = 0.375 + 2.0(0.45)^2 = 0.375 + 0.405 = 0.78\ \text{kg m}^2\).</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A particle travels at 0.90c. Determine (a) the Lorentz factor and (b) the
+    distance it travels in the laboratory during one proper lifetime of \(2.2\ \mu\text{s}\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) \(\gamma = 1/\sqrt{1-0.90^2} = 1/\sqrt{0.19} = 2.29\).</p>
+      <p>(b) In the lab the lifetime is dilated: \(\Delta t = \gamma\Delta t_0 = 2.29\times2.2\times10^{-6}
+      = 5.04\ \mu\text{s}\). Distance \(= 0.90\times3.00\times10^8\times5.04\times10^{-6}
+      = 1.36\times10^3\ \text{m} \approx 1.4\ \text{km}\). Without relativity it would be 594 m — less than
+      half.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[8 marks]</strong> A spacecraft of proper length 120 m moves at 0.80c relative to a space
+    station. (a) Determine its length as measured at the station. (b) The astronaut measures the journey to a
+    star as taking 6.0 years. Determine the time measured at the station, and explain carefully why this is
+    not a contradiction.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) \(\gamma = 1/\sqrt{1-0.64} = 1/0.6 = 1.67\). \(L = L_0/\gamma = 120/1.67 = 72\ \text{m}\).</p>
+      <p>(b) The astronaut's 6.0 years is the <em>proper</em> time (the clock is at rest relative to the
+      astronaut and both events — departure and arrival — occur at the astronaut's position).
+      \(\Delta t = \gamma\Delta t_0 = 1.67\times6.0 = 10\) years at the station.</p>
+      <p>Why it is consistent: in the station frame the astronaut's clock runs slow, so less time elapses for
+      them; in the astronaut's frame it is the distance to the star that is contracted to
+      \(L_0/\gamma\), so the journey takes less of their time. Both frames agree that the astronaut ages 6
+      years while the station records 10. There is no contradiction because "the time between departure and
+      arrival" is not an invariant — only the spacetime interval is.</p>
+    </div></details>
+  </li>
+</ol>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

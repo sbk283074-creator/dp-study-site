@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The case study — DP Computer Science HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Computer Science HL · Assessment · Examined in Paper 1</span>
+<h1 class="page-title">The case study</h1>
+<p class="lede">Once per examination cycle the IBO publishes a document describing an emerging technology in use in
+a real setting — a hospital, a port, a city, a farm. You study it in class for 30 hours at HL (15 at SL) and then
+meet questions about it in Paper 1. The questions are <em>unseen</em>; the <em>context</em> is not. That combination
+is the whole difficulty: you cannot memorise your way to these marks, but you can prepare for them in a way that is
+almost mechanical. This page gives you the method.</p>
+<div class="page-meta">
+  <span class="tag">HL 30 teaching hours · SL 15</span>
+  <span class="tag">Assessed in Paper 1 at both SL and HL</span>
+  <span class="tag tag--hl">No Paper 3 — the old 2014 arrangement is gone</span>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why the IBO added it</span>
+  <p>Computer science has a problem that physics does not: the content dates. A student who learned "the latest
+  storage medium is the Blu-ray disc" was wrong before they graduated. Rather than chase the market, the IBO chose a
+  fixed core (themes A and B) plus one <em>renewable</em> component that changes with every cycle. The case study
+  exists so that the course always has something current in it without the syllabus having to be rewritten.</p>
+  <p>The second reason is assessment design. Themes A and B can be examined with questions that have right answers.
+  The case study is where the IBO asks questions that do not: <em>should this system be built? who loses? who
+  decides? is this trade-off acceptable?</em> Those are the questions that separate a 5 from a 7 in Paper 1, and they
+  cannot be asked about a sorting algorithm.</p>
+</div>
+
+<h2>What the case study actually is</h2>
+
+<p>The IBO publishes a case study document — typically 8–15 pages — that describes one organisation or sector
+adopting an emerging technology. It usually contains: background on the organisation and the problem it faces, a
+description of the technology and how it was introduced, diagrams of the technical architecture, data or performance
+figures, quotes from the people involved, and some mention of cost, regulation or public reaction.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>What it is</th><th>What it is not</th></tr></thead>
+  <tbody>
+    <tr><td>A <strong>pre-seen</strong> document: released in advance, studied in class, taken into the exam as
+    knowledge (not as a paper — you do not get it in the exam hall).</td>
+    <td>Not a comprehension test. No question asks "according to page 4, what year was the system installed?"</td></tr>
+    <tr><td><strong>Context</strong> for questions that test theme A content. A question about sensors or encryption
+    or databases will be asked <em>about the case study's system</em>.</td>
+    <td>Not a separate syllabus. There is no "case study content" to learn beyond the document itself.</td></tr>
+    <tr><td>A source of <strong>stakeholders, technologies and trade-offs</strong> that you will be asked to reason
+    about.</td>
+    <td>Not a memory test. Quoting figures from the document earns nothing unless you use them to support a
+    judgement.</td></tr>
+    <tr><td>Examined inside <strong>Paper 1</strong>, at both SL and HL, alongside ordinary theme A questions.</td>
+    <td>Not Paper 3. If you are reading a resource that says Paper 3, it is describing the old course.</td></tr>
+    <tr><td>30 recommended teaching hours at HL.</td>
+    <td>Not a separate grade. There is no "case study mark" — the marks sit inside your Paper 1 score.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — how the questions are actually worded</span>
+  <p>Case-study questions in Paper 1 are <em>unseen</em>, but they are built from a small number of archetypes. In
+  practice you will meet three:</p>
+  <ol class="steps">
+    <li><strong>Describe / explain the technology in context</strong> — usually 4–6 marks. "Explain how the system
+    uses sensor data to …", "Describe the role of the digital twin in …".</li>
+    <li><strong>Analyse the impact on a named stakeholder</strong> — usually 6–8 marks. "Analyse the impact of the
+    system on <em>patients</em> / <em>drivers</em> / <em>warehouse staff</em>." The stakeholder is always named or
+    clearly implied, and marks are lost by writing about "people" in general.</li>
+    <li><strong>Evaluate a proposed change or a competing solution</strong> — usually 8–12 marks. "Evaluate the
+    proposal to …", "Discuss whether X would be a better approach than Y." This is the highest-tariff item on the
+    paper and the one students run out of time on.</li>
+  </ol>
+  <p>Each archetype has a repeatable answer shape. They are given below with a worked answer for each.</p>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — three ways students throw away case study marks</span>
+  <ol class="steps">
+    <li><strong>Writing about technology in general.</strong> "AI can be biased because training data may be
+    unrepresentative" is a correct sentence that scores zero if the question was about <em>this</em> system. Every
+    technical point must be attached to something in the case study: this sensor, this dataset, this group of users.</li>
+    <li><strong>Listing stakeholders instead of analysing them.</strong> Naming five groups and saying "they may be
+    affected positively or negatively" is description. Impact requires a <em>mechanism</em>: what the system does →
+    what changes for this group → why that matters to them.</li>
+    <li><strong>Evaluating without criteria.</strong> "It is good because it is efficient" is an assertion. An
+    evaluation compares options against criteria that come from the case study (cost, accuracy, privacy, equity of
+    access, reliability, staff workload) and then <em>weighs</em> them. No criteria, no judgement, no top band.</li>
+  </ol>
+</div>
+
+<h2>The four-pass reading method</h2>
+
+<p>Reading the case study once, carefully, is the single most common wasted effort in this course. You will forget
+almost all of it, and you will not have built the two artefacts (the stakeholder table and the data-flow list) that
+exam questions actually consume. Read it four times, each time for one purpose, and produce one artefact per pass.
+Budget about three hours in total.</p>
+
+<div class="io-plan">
+  <div class="io-plan__row"><div class="io-plan__t">Pass 1<br>~30 min</div><div class="io-plan__c">
+    <strong>Narrative — what happened here?</strong> Read it like a news article, fast, without notes. Then close it
+    and write, from memory, <strong>one paragraph of no more than 80 words</strong> answering: who is the
+    organisation, what problem did they have, what did they build, when, and what happened next.
+    <br><em>Artefact:</em> that paragraph. If you cannot write it, you did not understand the narrative — reread.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Pass 2<br>~60 min</div><div class="io-plan__c">
+    <strong>Stakeholders — who is in this story?</strong> Now read with a highlighter and list every person, group,
+    role and organisation mentioned or clearly implied. Include the quiet ones: the people who clean the building,
+    the residents near the depot, the customer who does not own a smartphone.
+    <br><em>Artefact:</em> a stakeholder table (see below) with at least eight rows, filled in completely.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Pass 3<br>~60 min</div><div class="io-plan__c">
+    <strong>Technologies and data flows — what does the machine actually do?</strong> For every technical noun in the
+    document, write down: what data it produces or consumes, where that data is stored, where it is processed
+    (device, edge, cloud), and what decision or action it triggers.
+    <br><em>Artefact:</em> a data-flow chain (sensors → transmission → storage → processing → decision → actuation
+    → feedback) and a one-line definition of every technology named.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">Pass 4<br>~45 min</div><div class="io-plan__c">
+    <strong>Implications — what is at stake?</strong> Work through the four lenses deliberately: <strong>S</strong>ocial,
+    <strong>E</strong>conomic, <strong>E</strong>thical, <strong>L</strong>egal. For each, write two findings. Then
+    answer the question the document usually does <em>not</em> answer: <strong>who is missing?</strong>
+    <br><em>Artefact:</em> an implications grid with at least eight cells, plus a list of three excluded or
+    under-represented groups.
+  </div></div>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — turn the artefacts into a one-page crib sheet</span>
+  <p>When all four passes are done, compress everything onto a <strong>single side of A4</strong>: the 80-word
+  narrative, the stakeholder table (names only, plus one word each for benefit and harm), the data-flow chain as six
+  boxes with arrows, and eight implication bullets. You cannot take it into the exam, which is exactly the point —
+  the act of compressing forces you to know it. Rewrite the sheet from memory once a week from the day it is made
+  until the exam. A student who can redraw their crib sheet from memory on the morning of Paper 1 will not be
+  surprised by any case-study question, whatever it asks.</p>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="A generic data flow chain for an emerging technology case study: sensors, transmission, storage, processing, decision, actuation, feedback">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+    <rect x="20" y="120" width="90" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="65" y="144" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Sensors /</text>
+    <text x="65" y="162" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">inputs</text>
+
+    <rect x="130" y="120" width="90" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="175" y="144" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Transmission</text>
+    <text x="175" y="162" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">network</text>
+
+    <rect x="240" y="120" width="90" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="285" y="144" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Storage</text>
+    <text x="285" y="162" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">db / lake</text>
+
+    <rect x="350" y="120" width="90" height="56" rx="6" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+    <text x="395" y="144" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Processing</text>
+    <text x="395" y="162" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">model / rules</text>
+
+    <rect x="460" y="120" width="90" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="505" y="144" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Decision</text>
+    <text x="505" y="162" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">output</text>
+
+    <rect x="570" y="120" width="55" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="597" y="144" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Action</text>
+    <text x="597" y="162" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">actuator</text>
+
+    <line x1="110" y1="148" x2="126" y2="148" stroke="#334155" stroke-width="2"/>
+    <path d="M128 148 L 120 144 L 120 152 Z" fill="#334155"/>
+    <line x1="220" y1="148" x2="236" y2="148" stroke="#334155" stroke-width="2"/>
+    <path d="M238 148 L 230 144 L 230 152 Z" fill="#334155"/>
+    <line x1="330" y1="148" x2="346" y2="148" stroke="#334155" stroke-width="2"/>
+    <path d="M348 148 L 340 144 L 340 152 Z" fill="#334155"/>
+    <line x1="440" y1="148" x2="456" y2="148" stroke="#334155" stroke-width="2"/>
+    <path d="M458 148 L 450 144 L 450 152 Z" fill="#334155"/>
+    <line x1="550" y1="148" x2="566" y2="148" stroke="#334155" stroke-width="2"/>
+    <path d="M568 148 L 560 144 L 560 152 Z" fill="#334155"/>
+
+    <path d="M597 176 L 597 240 L 65 240 L 65 180" fill="none" stroke="#3653d6" stroke-width="2" stroke-dasharray="6 4"/>
+    <path d="M65 178 L 61 186 L 69 186 Z" fill="#3653d6"/>
+    <text x="331" y="258" font-size="12" font-family="system-ui, sans-serif" fill="#3653d6" text-anchor="middle">feedback: the action changes what the sensors see next</text>
+
+    <text x="20" y="60" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Ask of each arrow: what format? what protocol? where can it be intercepted?</text>
+    <text x="20" y="82" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Ask of each box: who owns it? who can see the data? what happens if it fails?</text>
+    <text x="20" y="300" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">Gold box = where machine learning usually sits (A4). Dashed line = the feedback loop that makes a system adaptive.</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> Almost every emerging-technology case study can be flattened
+  into this chain. Draw it for your case study in pass 3. Doing so converts a vague document into seven questions
+  you can answer: each box is a "describe" question and each arrow is an A2 (networks) question waiting to happen.</figcaption>
+</figure>
+
+<h2>The stakeholder analysis framework</h2>
+
+<p>A stakeholder is anyone affected by the system, anyone who can affect it, and anyone who is <em>not</em> in the
+room when it is decided. Most students list the first category and stop. Use four columns, and do not allow a row
+until all four are filled.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Column</th><th>The question you answer</th><th>What a weak entry looks like</th><th>What a strong entry looks like</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Who benefits?</strong></td><td>Whose life, income, safety or convenience improves, and by what
+    mechanism?</td><td>"The company — it saves money."</td><td>"Shift planners: the model produces next week's
+    roster in 40 seconds instead of 3 hours, so they can re-run it when someone calls in sick."</td></tr>
+    <tr><td><strong>Who is harmed?</strong></td><td>Who bears a cost, loses autonomy, loses work, or carries a new
+    risk?</td><td>"Some people might lose their jobs."</td><td>"Agency staff: their hours are allocated by a model
+    whose objective function minimises cost, so they are systematically offered the least profitable shifts first."</td></tr>
+    <tr><td><strong>Who decides?</strong></td><td>Who chose the system, who sets its parameters, who can switch it
+    off, who is accountable when it is wrong?</td><td>"The government / the management."</td><td>"The city
+    transport authority sets the objective weights, but the vendor owns the model weights, so neither can fully
+    explain or reverse an individual decision."</td></tr>
+    <tr><td><strong>Who is excluded?</strong></td><td>Who cannot use it, is not represented in the data, or was never
+    consulted?</td><td>(left blank — this is the column most often empty, and the one examiners reward)</td>
+    <td>"Residents without a smartphone or bank card are invisible to the system, so the routes serving their
+    streets are under-funded by the demand model."</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — sentence frames that carry marks</span>
+  <p>Under exam pressure you do not rise to the occasion, you fall to your habits. Install these frames and use them
+  verbatim until they are automatic:</p>
+  <ul>
+    <li><strong>Benefit:</strong> "For <em>[stakeholder]</em>, the system <em>[does X]</em>, which means
+    <em>[concrete change]</em>."</li>
+    <li><strong>Harm:</strong> "For <em>[stakeholder]</em>, the system <em>[does X]</em>, which exposes them to
+    <em>[specific risk]</em> because <em>[mechanism]</em>."</li>
+    <li><strong>Decision power:</strong> "<em>[Stakeholder]</em> controls <em>[parameter/choice]</em>, but does not
+    control <em>[other parameter]</em>, so accountability for <em>[outcome]</em> is unclear."</li>
+    <li><strong>Exclusion:</strong> "Because the system requires <em>[precondition]</em>, <em>[group]</em> cannot
+    participate, so their needs are absent from <em>[dataset/decision]</em>."</li>
+    <li><strong>Weighing (the sentence that unlocks the top band):</strong> "This matters more than
+    <em>[other consideration]</em> here because <em>[fact from the case study]</em>."</li>
+  </ul>
+</div>
+
+<details class="derivation">
+  <summary><span class="badge">Why this works</span> Why "who is excluded?" is the highest-value column</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Exam questions on stakeholders are usually <em>analyse</em> or <em>evaluate</em>. Both require you to go
+      beyond what the document states. The benefits and the decision-makers are almost always stated explicitly in
+      the case study — so writing them down earns you the marks that everyone gets.</li>
+      <li>The harms are sometimes stated, usually in a quote from a critic. Half the cohort will find them.</li>
+      <li>The excluded are almost never stated. Identifying them requires you to <em>infer from the technical
+      design</em>: the system needs a smartphone, so anyone without one is outside it; the model was trained on
+      data from one district, so the other districts are misrepresented; the interface is in one language, so
+      non-speakers cannot consent meaningfully.</li>
+      <li>Therefore the exclusion column is where the discriminating marks live. It is also the column that is
+      generated by <em>technical</em> knowledge (theme A), which is why the case study is examined in Paper 1 and
+      not on its own: the IBO wants technical understanding converted into social judgement.</li>
+      <li><strong>When this is the wrong tool:</strong> if the question says <em>describe</em> or <em>state</em>, do
+      not reach for stakeholders — answer the mechanism question narrowly and move on. Over-answering a 2-mark
+      describe with a stakeholder essay wastes four minutes and scores nothing extra.</li>
+    </ol>
+  </div>
+</details>
+
+<h2>The three question archetypes, with worked answers</h2>
+
+<h3>Archetype 1 — describe / explain the technology in context (4–6 marks)</h3>
+
+<p><strong>Shape:</strong> one sentence of mechanism → one sentence of context (attach it to the case study) → one
+sentence of consequence. That is three marks. For six marks, do it twice with a linking word (<em>furthermore</em>,
+<em>however</em>, <em>as a result</em>). Stop there — more than three linked points on a 6-mark question is
+repetition, and repetition is not marks.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked answer 1</span> Archetype 1 · "Explain how the system uses sensor data to control traffic signals." (6 marks)</summary>
+  <div class="dbody">
+    <p><strong>Question context:</strong> the invented Northbridge case study further down this page.</p>
+    <p><strong>Model answer.</strong></p>
+    <ol class="steps">
+      <li><strong>Mechanism.</strong> Inductive loops in the road surface and anonymised overhead cameras generate a
+      vehicle count per approach every five seconds; each junction cabinet runs a small model locally that estimates
+      queue length from that count.</li>
+      <li><strong>Context.</strong> The junction sends its queue estimate over the council's fibre network to the
+      corridor controller, which compares the queue on each approach and extends the green phase for whichever
+      approach is longest, subject to a minimum and maximum phase length.</li>
+      <li><strong>Consequence.</strong> Because the decision is made at the cabinet rather than in the cloud,
+      a signal can react within one cycle even if the network link to the control centre is down — but it also means
+      the junction cannot see the corridor-wide picture, so it cannot anticipate a queue arriving from the next
+      junction upstream.</li>
+    </ol>
+    <div class="answerline"><b>Where the marks are:</b> 2 for the sensing and estimation (a named sensor + what is
+    derived from it), 2 for the control decision (how the phase is chosen, with the constraint), 2 for the
+    consequence (what the local processing enables and what it costs). Notice that every sentence contains something
+    <em>specific to this system</em> — "inductive loops", "cabinet", "minimum and maximum phase length". A generic
+    answer about "smart traffic lights using AI" scores 1 or 2 at best.</div>
+  </div>
+</details>
+
+<h3>Archetype 2 — analyse the impact on a named stakeholder (6–8 marks)</h3>
+
+<p><strong>Shape:</strong> name the stakeholder in your first sentence and use their name again in your last. Give at
+least two distinct impacts, each with a mechanism. One impact must be a cost or risk — an analysis that finds only
+benefits is not an analysis. Finish with a weighing sentence: which impact dominates for <em>this</em> group and
+why.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked answer 2</span> Archetype 2 · "Analyse the impact of the adaptive corridor system on bus drivers." (8 marks)</summary>
+  <div class="dbody">
+    <p><strong>Model answer.</strong></p>
+    <ol class="steps">
+      <li><strong>Benefit with mechanism.</strong> Bus drivers benefit directly: their vehicles transmit position and
+      occupancy to the corridor controller, which grants them signal priority at junctions when they are behind
+      schedule, so their average delay per junction falls and their schedule becomes achievable. This reduces the
+      pressure to make up time by driving aggressively or skipping breaks.</li>
+      <li><strong>Cost with mechanism.</strong> However, the same telemetry makes drivers continuously measurable.
+      Dwell time at each stop, acceleration and braking events and schedule adherence are all logged, and the
+      operator's dashboard ranks drivers against each other. Drivers therefore experience the system as performance
+      surveillance: behaviour changes to optimise the measured variable rather than the actual service, for example
+      by waiting at a stop to avoid arriving early.</li>
+      <li><strong>Second-order effect.</strong> Because priority is granted to buses that are behind schedule, a
+      driver who is on time never receives it, so the system rewards lateness in a way that is invisible in the
+      aggregate statistics the council publishes.</li>
+      <li><strong>Weighing.</strong> For bus drivers the two effects are of similar size: the reduction in delay is
+      real and daily, but the monitoring changes the nature of the job. Which dominates depends on how the operator
+      uses the data — if the rankings are used only for route planning, the benefit clearly wins; if they are used in
+      individual performance review, the surveillance effect dominates. The case study does not say which, and that
+      ambiguity is itself the most important finding.</li>
+    </ol>
+    <div class="answerline"><b>Where the marks are:</b> 2 for a benefit with a mechanism, 2 for a cost with a
+    mechanism, 2 for a second-order or unintended effect, 2 for the weighing sentence that reaches a conditional
+    conclusion. Note the phrase "the case study does not say which" — admitting a genuine gap in the evidence, and
+    saying what would resolve it, is a top-band move, not a weakness.</div>
+  </div>
+</details>
+
+<h3>Archetype 3 — evaluate a proposed change or a competing solution (8–12 marks)</h3>
+
+<p><strong>Shape:</strong> state the criteria first (two to four, drawn from the case study), then apply each option
+to each criterion, then judge. A table in your planning is fine; the answer itself must be prose. The two things that
+cap this question at half marks are: no criteria, and no judgement. Use this frame:</p>
+
+<p><em>"The proposal should be judged on [criterion 1], [criterion 2] and [criterion 3]. Against [criterion 1], X is
+better because …, whereas Y …. Against [criterion 2] the position reverses because …. Overall, [option] is the
+stronger choice for this context, provided that [condition]; if [condition] does not hold, [other option] would be
+preferable because …."</em></p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked answer 3</span> Archetype 3 · "Evaluate the proposal to replace the corridor's local control with a single central cloud model." (10 marks)</summary>
+  <div class="dbody">
+    <p><strong>Model answer.</strong></p>
+    <ol class="steps">
+      <li><strong>Criteria.</strong> The proposal should be judged on three criteria that matter in this context:
+      responsiveness (a corridor reacts on the timescale of seconds), resilience (the system must keep working when
+      the network does not), and equity (signal priority is currently distributed between junctions by a rule the
+      council publishes).</li>
+      <li><strong>Responsiveness.</strong> A central model can see every junction at once, so it can anticipate a
+      queue propagating upstream rather than reacting to it after it forms. That is a genuine improvement in
+      corridor throughput, and it is the main argument for the change.</li>
+      <li><strong>Resilience.</strong> Against resilience the position reverses. Local control degrades gracefully:
+      each cabinet falls back to a fixed-time plan when the link drops. Central control has a single failure domain —
+      if the cloud region or the fibre backhaul fails, every junction loses adaptive control simultaneously. The
+      council's own winter outage data in the case study suggests this is not hypothetical.</li>
+      <li><strong>Equity.</strong> Centralisation also changes who can be held to account. The current per-junction
+      rule can be read by a resident; a model that sets 200 signal timings from weights nobody outside the vendor can
+      inspect cannot. This is the criterion on which the proposal is weakest, because the affected residents have no
+      route to contest a decision they cannot see.</li>
+      <li><strong>Judgement.</strong> Overall, the proposal is technically stronger and institutionally weaker. It
+      should be adopted <em>conditionally</em>: keep local fallback plans and publish the objective function, so that
+      the corridor gains the anticipatory benefit without acquiring a single point of failure and an opaque
+      decision-maker. If the vendor will not publish the objective function, the resilience and equity costs outweigh
+      the throughput gain, and the local architecture should be retained.</li>
+    </ol>
+    <div class="answerline"><b>Where the marks are:</b> 2 for stating contextualised criteria, 2–3 for a developed
+    advantage, 2–3 for a developed disadvantage on a different axis, 2 for a judgement that is <em>conditional</em>
+    rather than absolute. The word "provided that" is doing enormous work here — absolute verdicts on 10-mark
+    evaluate questions almost always look naive, because real design decisions are trade-offs.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — where the case study sits in your two hours</span>
+  <p>HL Paper 1 is 2 hours. Case-study questions typically account for a substantial minority of the marks and they
+  are the slowest marks on the paper. Do not start with them. Work this order: (1) the whole paper, 90 seconds,
+  ticking what you can do cold; (2) all short-answer theme A questions, fast; (3) the case-study
+  describe/explain items; (4) the big case-study analyse/evaluate last, with a ring-fenced 25 minutes. If you write
+  the evaluation first you will spend 35 minutes on 10 marks and leave 6 marks of SQL unwritten.</p>
+</div>
+
+<h2>Vocabulary of emerging technology</h2>
+
+<p>Learn these thirteen terms. For each one, the second column matters more than the first: knowing the kind of
+question the term is a doorway into is what turns a definition into marks.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Term</th><th>One-line definition</th><th>The kind of exam question it appears in</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Sensor fusion</strong></td><td>Combining readings from two or more different sensors to produce
+    an estimate that is more accurate or more complete than any single sensor's.</td>
+    <td><em>Explain how</em> the system knows X; <em>explain why</em> one sensor is not enough. Also a justification
+    question: "explain why the system uses both a camera and a loop detector".</td></tr>
+    <tr><td><strong>Edge computing</strong></td><td>Processing data on or near the device that produced it, rather
+    than sending it to a central server.</td><td><em>Evaluate</em> — latency, bandwidth cost, and resilience when
+    the network fails. Nearly always paired with privacy: "data never leaves the site".</td></tr>
+    <tr><td><strong>Digital twin</strong></td><td>A live computational model of a physical system, continuously
+    updated with real sensor data so it can be used to predict and to test changes safely.</td>
+    <td><em>Describe the role of</em> the model; <em>explain why</em> the operator tests changes on the twin before
+    the real system. Often attracts a "what are the risks of relying on it?" follow-up.</td></tr>
+    <tr><td><strong>Federated learning</strong></td><td>Training a shared model across many devices without the raw
+    data ever leaving those devices — only model updates are sent and aggregated.</td>
+    <td><em>Evaluate</em> in a privacy context; <em>to what extent does</em> it solve the data protection problem?
+    (Answer: partly — updates can still leak information.)</td></tr>
+    <tr><td><strong>Blockchain</strong></td><td>A distributed, append-only ledger replicated across many nodes, where
+    agreement on new entries is reached by consensus rather than by a central authority.</td>
+    <td><em>Evaluate the use of</em> it for this application — usually the correct answer is that it solves
+    tamper-evidence, not truth, and costs energy and throughput. Never just describe it.</td></tr>
+    <tr><td><strong>Internet of Things (IoT)</strong></td><td>Everyday physical objects embedded with sensors,
+    processors and network connectivity so they can send and receive data.</td>
+    <td>The substrate of most case studies. Appears in <em>describe the architecture</em> and in security questions
+    (attack surface, default credentials, patching).</td></tr>
+    <tr><td><strong>Biometric data</strong></td><td>Measurable physical or behavioural characteristics used to
+    identify a person — fingerprint, face, iris, gait, voice.</td>
+    <td>Almost always <em>discuss</em> or <em>evaluate</em>: consent, irreversibility (you cannot reissue a face),
+    false-match rates that differ between demographic groups.</td></tr>
+    <tr><td><strong>Algorithmic bias</strong></td><td>Systematic, unfair differences in a system's outcomes between
+    groups, arising from the data it was trained on, the features chosen, or the objective it optimises.</td>
+    <td><em>Explain how</em> bias could arise here, and <em>evaluate</em> a proposed mitigation. Requires a mechanism,
+    not the word "biased".</td></tr>
+    <tr><td><strong>Data minimisation</strong></td><td>The principle that a system should collect, keep and process
+    only the data it actually needs for its stated purpose, for only as long as it needs it.</td>
+    <td><em>Evaluate the system's data practices</em>; <em>evaluate a proposal to retain data for longer</em>. Pairs
+    with storage questions (A3) and encryption (A2).</td></tr>
+    <tr><td><strong>Consent</strong></td><td>A freely given, specific, informed and revocable agreement by a person
+    to the processing of their data.</td>
+    <td><em>To what extent can</em> users meaningfully consent here? Strong answers attack "freely given" (no
+    alternative service) and "informed" (nobody reads 40 pages).</td></tr>
+    <tr><td><strong>Right to explanation</strong></td><td>The claim that a person subject to an automated decision
+    is entitled to an account of how and why it was made.</td>
+    <td><em>Discuss</em> — usually against a black-box model. Good answers note the tension with model complexity
+    and with commercial confidentiality.</td></tr>
+    <tr><td><strong>Surveillance</strong></td><td>Systematic monitoring of behaviour or movement, typically by an
+    authority, and typically without the monitored person's knowledge or meaningful ability to opt out.</td>
+    <td><em>Discuss whether</em> the system constitutes surveillance; <em>evaluate the trade-off</em> between safety
+    and privacy. Rewards the "function creep" argument: data collected for X is later used for Y.</td></tr>
+    <tr><td><strong>Digital divide</strong></td><td>The gap between those who have access to, and the skills for,
+    digital technology and those who do not — by income, age, geography or disability.</td>
+    <td><em>Analyse the impact on</em> a group; <em>evaluate</em> a rollout. This is your "who is excluded?"
+    column with a name on it.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--link">
+  <span class="callout__label">Connection — the vocabulary is theme A in disguise</span>
+  <p>None of these thirteen terms is new content. Sensor fusion and IoT are <a href="A1-computer-fundamentals.html">A1
+  fundamentals</a> (sensors, ADCs, embedded systems). Edge computing, blockchain and consent are
+  <a href="A2-networks.html">A2 networks and security</a>. Data minimisation is <a href="A3-databases.html">A3
+  databases</a> — data dictionary design, retention, and why you do not store what you do not need. Federated
+  learning, digital twin and algorithmic bias are <a href="A4-machine-learning.html">A4 machine learning</a>. The
+  case study is not a fifth thing to learn; it is the place where theme A is examined <em>attached to people</em>.
+  If a term feels unfamiliar, it is because the underlying A-topic is weak, not because the case study is hard.</p>
+</div>
+
+<h2>A full practice case study: the Northbridge Adaptive Corridor</h2>
+
+<p>What follows is invented, in the register the IBO uses, with the level of detail a real case study has. Treat it
+as your case study for this page: do the four passes on it, build the artefacts, then attempt the eight questions
+below with the document closed.</p>
+
+<div class="callout callout--note">
+  <span class="callout__label">Practice case study — Northbridge</span>
+  <p><strong>Background.</strong> Northbridge is a city of 340,000 people with a single north–south arterial road,
+  the Corridor, carrying 42,000 vehicles per day and 11 bus routes. Congestion on the Corridor costs the city an
+  estimated £18 million per year in lost time. In 2026 the city council and a transport technology company,
+  Meridian Systems, deployed an <em>Adaptive Corridor System</em> (ACS) along 6.2 km and 31 signalised junctions.</p>
+  <p><strong>How it works.</strong> Each junction has inductive loops cut into the road surface, an overhead camera
+  with on-device inference, and a roadside cabinet containing an industrial computer. The cabinet fuses the loop
+  count and the camera's vehicle classification into a queue-length estimate every five seconds, and chooses the next
+  signal phase using a model that was trained on traffic data from a comparable city. Buses and emergency vehicles
+  transmit their position and schedule status over a dedicated short-range link; the cabinet grants them a green-light
+  extension when they are more than 90 seconds behind schedule. Each cabinet sends its decisions and its sensor
+  summaries to a central platform over the council's fibre network, where they are stored in a cloud data warehouse
+  alongside fare-card taps, weather feeds and the city's roadworks calendar.</p>
+  <p><strong>The digital twin.</strong> Meridian maintains a simulation of the Corridor, calibrated each night
+  against the previous day's sensor data. The council's traffic engineers use it to test proposed timing plans and
+  road layouts before implementing them. Meridian's engineers also use it to retrain the junction model.</p>
+  <p><strong>What happened.</strong> After twelve months the council reports a 14 % reduction in average journey time
+  on the Corridor, a 22 % reduction in bus journey-time variability, and a 9 % increase in cycling. Residents'
+  associations in the two districts adjacent to the Corridor report that traffic has increased on their residential
+  streets. The bus operators' union has raised a formal objection to the driver dashboard, which ranks drivers on
+  schedule adherence, dwell time and harsh-braking events. Two junctions in the low-income district of Southgate
+  were excluded from the deployment because their cabinets could not be upgraded within budget; they still run
+  fixed-time plans. Cycling groups have asked for the camera data to be released so they can audit junction safety;
+  the council has refused, citing the possibility of re-identifying individuals from video.</p>
+  <p><strong>Costs and governance.</strong> The system cost £6.1 million to install and £480,000 per year to
+  operate. The contract runs for eight years. The model and its weights are Meridian's intellectual property; the
+  council sets three parameters — the weight given to bus delay, to pedestrian waiting time, and to general traffic
+  throughput. The council publishes an annual summary report. It does not publish the objective function or the
+  per-junction decision logs.</p>
+</div>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Stakeholder</th><th>Benefits</th><th>Is harmed / bears risk</th><th>Decides?</th><th>Excluded?</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Bus passengers</strong></td><td>Journey time variability down 22 %; buses more predictable</td>
+    <td>Priority only triggers when late, so on-time passengers see no benefit; service may be rerouted using data
+    they cannot see</td><td>No</td><td>Largely absent from consultation</td></tr>
+    <tr><td><strong>Bus drivers</strong></td><td>Less delay, achievable schedules</td><td>Continuous performance
+    ranking from telemetry; gaming of measured variables</td><td>No</td><td>Union consulted after deployment</td></tr>
+    <tr><td><strong>Car drivers on the Corridor</strong></td><td>14 % faster average journey</td><td>Routes can be
+    retimed to favour buses; behaviour logged</td><td>No</td><td>No direct say in objective weights</td></tr>
+    <tr><td><strong>Residents of adjacent districts</strong></td><td>Cleaner air on the Corridor itself</td>
+    <td>Rat-running increases traffic and noise on their streets</td><td>No</td><td>Not modelled by the system at
+    all</td></tr>
+    <tr><td><strong>Southgate residents</strong></td><td>—</td><td>No congestion benefit; the two excluded junctions
+    effectively subsidise the rest of the Corridor</td><td>No</td><td><strong>Explicitly excluded by budget</strong></td></tr>
+    <tr><td><strong>Cyclists</strong></td><td>9 % growth; safer phases possible</td><td>Cannot audit junction safety
+    because video data is withheld</td><td>No</td><td>Excluded from the data, included in the risk</td></tr>
+    <tr><td><strong>City council (transport authority)</strong></td><td>Measurable congestion reduction, a
+    published success metric</td><td>Locked into an 8-year contract; cannot explain individual decisions</td>
+    <td><strong>Yes</strong> — sets three weights, owns the contract</td><td>—</td></tr>
+    <tr><td><strong>Meridian Systems</strong></td><td>Revenue, and a model improved by the city's data</td>
+    <td>Reputational risk from the union dispute</td><td><strong>Yes</strong> — owns the model and its weights</td>
+    <td>—</td></tr>
+    <tr><td><strong>Traffic engineers (council staff)</strong></td><td>Can test changes safely on the digital twin</td>
+    <td>Skills and judgement displaced by the model; accountability without control</td><td>Partly — operational
+    control only</td><td>—</td></tr>
+    <tr><td><strong>Emergency services</strong></td><td>Signal priority reduces response time</td><td>Dependent on a
+    system they do not control</td><td>No</td><td>—</td></tr>
+    <tr><td><strong>Pedestrians, especially elderly or disabled</strong></td><td>One of the three objective weights
+    is pedestrian waiting time</td><td>Crossing time may be shortened to favour throughput</td><td>No</td>
+    <td><strong>Their needs are represented by one parameter, not by consultation</strong></td></tr>
+    <tr><td><strong>People without a smartphone or fare card</strong></td><td>Indirect benefit from less congestion</td>
+    <td>Invisible in the demand data, so their travel patterns do not shape the timings</td><td>No</td>
+    <td><strong>Excluded from the data entirely</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — do the four passes on Northbridge now</span>
+  <p>Close the page (or scroll away) and write: (1) an 80-word narrative; (2) a stakeholder table with at least eight
+  rows of your own — try to find one stakeholder not listed above; (3) the seven-box data-flow chain from Figure 1
+  with the Northbridge-specific contents of each box; (4) an implications grid with two findings under each of
+  social, economic, ethical, legal. Then compare with the table above. If your stakeholder table has fewer than
+  eight rows, reread the case study looking for job titles — every job title in a case study is a stakeholder with a
+  different interest.</p>
+</div>
+
+<h2>Eight unseen-style questions on Northbridge</h2>
+
+<p>These are written in the register of Paper 1. Answer them in full sentences, timed, with the case study closed,
+before opening the answers.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Question 1</span> State two types of data collected by the Northbridge system, and one decision each is used for. (4 marks)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li><strong>Inductive loop vehicle counts</strong> — used to estimate queue length at each approach, which
+      determines how long the green phase is extended.</li>
+      <li><strong>Bus position and schedule status</strong> — used to decide whether to grant a green-light extension
+      (granted only when the bus is more than 90 seconds behind schedule).</li>
+      <li>Also acceptable: camera classification (vehicle type, used to weight the queue estimate); fare-card taps
+      (demand analysis in the warehouse); weather feeds (model input); roadworks calendar (planning).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> any two pairs, one mark each for the data type and one for its use. Note
+    that the mark is for <em>the decision</em>, not for a vague "to improve traffic". Name the decision.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Question 2</span> Explain why the junction model runs in the roadside cabinet rather than in the cloud. (4 marks)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li><strong>Latency.</strong> Signal decisions must be made on the timescale of seconds; a round trip to a
+      cloud region adds delay and variability that is unacceptable when a phase is about to change.</li>
+      <li><strong>Resilience.</strong> If the fibre link to the central platform fails, a cabinet that computes
+      locally continues to control its junction, whereas a cloud-dependent junction would fail — potentially at all
+      31 junctions at once.</li>
+      <li><strong>Bandwidth.</strong> Raw camera and loop data at five-second intervals from 31 junctions is far
+      more data than it is economic to transmit; the cabinet reduces it to a queue estimate and sends only that.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> two developed reasons, 2 marks each. This is edge computing (A1/A2)
+    attached to a context — the generic version of this answer is worth knowing, but only the "31 junctions",
+    "five-second" and "fibre link" details make it worth 4.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Question 3</span> Describe the role of the digital twin in the Northbridge system, and explain one limitation of relying on it. (5 marks)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li><strong>Role.</strong> The digital twin is a continuously updated simulation of the Corridor, calibrated
+      nightly against the previous day's sensor data. The council's engineers use it to test proposed timing plans
+      and road layouts before changing the real road, and Meridian uses it to retrain the junction model — so changes
+      can be trialled without any risk to real traffic.</li>
+      <li><strong>Limitation.</strong> A twin is only as good as its calibration, and it is calibrated on
+      <em>observed</em> behaviour. It cannot predict how drivers will respond to a change they have never experienced
+      — for example, the rat-running onto residential streets, which is a response to the new timings and not a
+      feature of the old data. Any behaviour change induced by the system is outside the model.</li>
+      <li>A second acceptable limitation: the twin is Meridian's, so the council cannot independently verify it;
+      and errors in calibration are silent.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 3 marks for the role (calibration + two uses) and 2 for one developed
+    limitation. "It is a simulation" alone scores 1 — the marks are for <em>what it is used for</em> and
+    <em>where it breaks</em>.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Question 4</span> Analyse the impact of the Adaptive Corridor System on residents of Southgate. (8 marks)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li><strong>Identify the specific harm.</strong> Two of Southgate's junctions were excluded from the deployment
+      on budget grounds and still run fixed-time plans, so Southgate residents receive none of the 14 % journey-time
+      improvement reported for the Corridor.</li>
+      <li><strong>Mechanism of a second harm.</strong> Because the Corridor is now faster, it attracts traffic from
+      parallel routes and from Southgate's own streets; Southgate therefore experiences the <em>induced</em> traffic
+      and congestion caused by a system it does not benefit from. The benefit and the cost are separated by district.</li>
+      <li><strong>Data exclusion.</strong> Southgate is partially instrumented, so its travel patterns appear
+      incompletely in the warehouse. Decisions about future phases of the deployment will be made using data that
+      under-represents the district that is already worst served — a feedback loop that makes the exclusion
+      self-reinforcing.</li>
+      <li><strong>Any benefit.</strong> An indirect benefit exists: some Southgate residents use the Corridor as
+      drivers or bus passengers, and cleaner air on the Corridor may marginally improve local air quality.</li>
+      <li><strong>Weighing.</strong> The indirect benefit is small and shared with the whole city; the two harms are
+      concentrated on one already lower-income district. The distributional effect is therefore clearly negative for
+      Southgate <em>as a district</em>, even though the system is a net benefit to the city — and that gap between
+      the aggregate headline figure and the local experience is the most important thing the council's annual report
+      does not capture.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 2 for the named exclusion, 2 for the induced-traffic mechanism, 2 for the
+    data-representation feedback loop, 2 for the weighing that distinguishes the district-level from the
+    city-level conclusion. The move that earns the last two marks is noticing that "14 % faster" and
+    "Southgate is worse off" can both be true.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Question 5</span> Evaluate the council's decision not to release camera data to cycling groups. (8 marks)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li><strong>Criteria.</strong> The decision should be judged on the public benefit of audit (junction safety),
+      the privacy risk to individuals captured on video, and the credibility of the council's stated process.</li>
+      <li><strong>Against release.</strong> Overhead video of a public road, retained and combined with
+      five-second timestamps, is not anonymous in the way a vehicle count is: routine movements can be reconstructed
+      and individuals re-identified, particularly for people with predictable patterns. The council has a genuine
+      data-protection obligation, and releasing raw video would be irreversible — once published it cannot be
+      recalled.</li>
+      <li><strong>For release, or for a middle option.</strong> However, the refusal is absolute rather than
+      proportionate. The cycling groups want <em>safety</em> findings — near-miss counts, conflict rates, signal
+      timing compliance — not video of identifiable people. Aggregated, thresholded statistics, or analysis
+      performed inside the council's environment with only the results released, would meet the audit need without
+      the re-identification risk.</li>
+      <li><strong>Governance point.</strong> The refusal also sits awkwardly beside the council's willingness to let
+      Meridian use the same data commercially. Data that is too sensitive for a residents' safety audit but
+      acceptable for a vendor's model training is a defensible position only if the distinction is published and
+      justified; the case study gives no evidence that it is.</li>
+      <li><strong>Judgement.</strong> The decision is right in its aim and wrong in its form. Refusing raw video is
+      justified; refusing all derived safety data is not, and it costs the council the independent scrutiny that
+      would detect exactly the kind of error a digital twin cannot. The proportionate response is controlled
+      release of aggregate safety metrics.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 2 for criteria, 2–3 for the privacy argument, 2–3 for the proportionality
+    counter-argument with a concrete alternative, 2 for the judgement. Notice that the strongest answers find the
+    <em>third option</em> — the exam is rarely asking you to choose between yes and no.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Question 6</span> The council proposes to extend the system by adding facial recognition to the overhead cameras to identify drivers who run red lights. Discuss two ethical issues this raises. (6 marks)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li><strong>Consent and function creep.</strong> The cameras were deployed and justified to the public as
+      traffic-flow sensors, with on-device inference explicitly presented as a privacy protection — no images leave
+      the cabinet. Adding biometric identification uses data collected for one purpose for a quite different one,
+      without a fresh mandate. Consent obtained for congestion management is not consent for law enforcement, and
+      the public justification for the original deployment is retrospectively invalidated.</li>
+      <li><strong>Irreversibility and differential error.</strong> A face is not a password: it cannot be reissued
+      if the database is breached, and it is captured from people who have committed no offence. Facial recognition
+      error rates also differ between demographic groups, so false matches — and therefore wrongly issued fines —
+      will not be distributed evenly across the population, which is an equity problem as well as an accuracy one.</li>
+      <li>(A third acceptable issue: proportionality — automated fines for a traffic offence, with no human review
+      before penalty, and the chilling effect of pervasive identification on lawful movement and assembly.)</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 3 marks per developed issue. One mark is for naming the issue; two more
+    for the mechanism and the consequence. "It is a privacy issue" is one mark — the <em>why</em> is worth two.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Question 7</span> Meridian reports that its model correctly identifies congested junctions in 92 % of cases. In a sample of 200 junction-minutes, 40 were actually congested; the model flagged 50, of which 34 were genuinely congested. Calculate the precision and the recall of the model on this sample, and explain why the 92 % figure is misleading. (6 marks)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>True positives (flagged and actually congested) = 34. False positives (flagged but not congested) =
+      50 − 34 = 16. False negatives (congested but not flagged) = 40 − 34 = 6.</li>
+      <li>Precision = TP / (TP + FP) = 34 / 50 = 0.68.</li>
+      <li>Recall = TP / (TP + FN) = 34 / 40 = 0.85.</li>
+      <li>\[\text{precision} = \frac{TP}{TP+FP} = \frac{34}{50} = 0.68 \qquad
+      \text{recall} = \frac{TP}{TP+FN} = \frac{34}{40} = 0.85\]</li>
+      <li><strong>Why 92 % is misleading.</strong> Accuracy is (TP + TN) / total = (34 + 154) / 200 = 0.94, and the
+      quoted 92 % is of this kind. But congestion is rare: only 20 % of junction-minutes are congested. A model that
+      flagged <em>nothing at all</em> would score 80 % accuracy while being useless. Accuracy therefore flatters a
+      model on an imbalanced dataset, and the two figures that actually matter to the operator are different:
+      precision of 0.68 means a third of the interventions are unnecessary (wasted signal changes, and a loss of
+      trust among engineers), while recall of 0.85 means 15 % of genuine congestion is missed.</li>
+      <li><strong>Which matters here?</strong> For a signal controller, missed congestion (low recall) is the more
+      expensive error, because an unmanaged queue propagates; unnecessary phase extension is comparatively cheap.
+      So the model should be retuned to favour recall — and the 92 % figure gives no help whatsoever in deciding
+      that.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 1 for TP/FP/FN identified, 1 + 1 for the two calculations, 2 for the
+    imbalance explanation, 1 for saying which error is worse in this context and why. This is
+    <a href="A4-machine-learning.html">A4.2/A4.3</a> content appearing inside a case study question — exactly the
+    kind of crossover Paper 1 likes.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Question 8</span> To what extent does the governance of the Adaptive Corridor System allow affected residents to hold decision-makers to account? (10 marks)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li><strong>Establish what accountability requires.</strong> Affected people must know a decision was made,
+      must be able to understand why, and must have a route to contest it. Assess the system against all three.</li>
+      <li><strong>Knowing.</strong> Partly satisfied: the annual summary is published, but the per-junction decision
+      logs are not, so a resident whose street has become a rat-run cannot find out what changed or when.</li>
+      <li><strong>Understanding.</strong> Largely not satisfied. The council sets three weights, but the model and
+      its weights are Meridian's intellectual property and the objective function is not published — the
+      right-to-explanation problem in concrete form.</li>
+      <li><strong>Contesting.</strong> Formally possible, practically weak: accountability is split between a body
+      that is accountable but not in control (the council) and a body in control but not accountable to residents
+      (Meridian), and an eight-year contract makes exit expensive.</li>
+      <li><strong>Counter-argument.</strong> Accountability is not absent — the annual report, named officers and
+      the union's successful formal objection are real mechanisms, if slow ones.</li>
+      <li><strong>Judgement.</strong> To a limited extent. More accountable than a wholly private system, less
+      accountable than the fixed-time timing tables it replaced, which any resident could read. The deficit is
+      structural rather than intentional, and could be largely fixed without touching the technology: publish the
+      decision logs and the objective function, and require the twin to be independently auditable.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 2 for a framework, 2 + 2 + 2 for the three tests applied with evidence,
+    2 for the judgement that is explicitly <em>partial</em>. "To what extent" questions are never answered with
+    "yes" or "no"; the mark is in locating the extent precisely and saying what would change it.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — the question you did not get asked</span>
+  <p>In Question 4, most students write about "residents" in general and lose four marks. In Question 8, most
+  students answer "is the system bad?" instead of "to what extent can residents hold decision-makers to account?"
+  and lose six. Before writing, underline the command term and circle the noun phrase after it. If the question
+  names a stakeholder, your answer must name them twice. If it says <em>to what extent</em>, your last sentence must
+  contain a word like <em>partly</em>, <em>limited</em>, or <em>only when</em>.</p>
+</div>
+
+<h2>Revision timetable for the case study across the year</h2>
+
+<p>The case study is released once and examined once. The failure mode is studying it in a single block and
+forgetting it; the fix is small, spaced contact.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>When</th><th>What you do</th><th>Time</th><th>Output</th></tr></thead>
+  <tbody>
+    <tr><td><strong>On release (usually late DP1 or early DP2)</strong></td><td>Passes 1 and 2. Read for narrative,
+    build the stakeholder table.</td><td>1.5 h</td><td>80-word summary + 8-row stakeholder table</td></tr>
+    <tr><td><strong>+1 week</strong></td><td>Pass 3. Data-flow chain, one-line definition per technology named.</td>
+    <td>1 h</td><td>Figure 1 drawn for your case study + tech glossary</td></tr>
+    <tr><td><strong>+2 weeks</strong></td><td>Pass 4. Implications grid and the excluded list. Class discussion or
+    debate is where this lands best.</td><td>1 h</td><td>8-cell grid + 3 excluded groups</td></tr>
+    <tr><td><strong>+3 weeks</strong></td><td>Build the one-page crib sheet. Attempt 3 questions of your own devising
+    in class.</td><td>1 h</td><td>1 side of A4</td></tr>
+    <tr><td><strong>Monthly until the exams</strong></td><td>Redraw the crib sheet from memory. Write one full
+    archetype-3 answer (timed, 25 min) and mark it against the criteria in the worked answers above.</td>
+    <td>45 min</td><td>One timed 10-mark answer per month</td></tr>
+    <tr><td><strong>6 weeks before Paper 1</strong></td><td>Write answers to all three archetypes on a different
+    stakeholder each time, so you have covered at least six stakeholders.</td><td>3 × 25 min</td><td>Six marked
+    answers</td></tr>
+    <tr><td><strong>2 weeks before</strong></td><td>Reread the real case study document once, end to end. You will be
+    surprised how much you misremembered.</td><td>40 min</td><td>Corrected crib sheet</td></tr>
+    <tr><td><strong>Morning of Paper 1</strong></td><td>Redraw the crib sheet from memory. Nothing else.</td>
+    <td>15 min</td><td>—</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — invent your own questions</span>
+  <p>The best preparation for unseen questions is writing them. Once a month, take one stakeholder from your table
+  and write a question beginning "Analyse the impact of the system on …", then answer it in 25 minutes. After three
+  rounds you will have covered six stakeholders, and you will have discovered which rows of your table are thin —
+  those are exactly the rows the examiner is most likely to ask about, because they are the interesting ones.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary</span>
+  <p><strong>case study</strong><strong>pre-seen</strong><strong>unseen question</strong><strong>stakeholder</strong><strong>excluded group</strong><strong>impact</strong><strong>mechanism</strong> ""<strong>trade-off</strong><strong>criterion (pl. criteria)</strong><strong>judgement / conclusion</strong> /<strong>proportionality</strong><strong>accountability</strong><strong>transparency</strong><strong>surveillance</strong><strong>consent</strong><strong>algorithmic bias</strong><strong>data minimisation</strong><strong>digital divide</strong><strong>right to explanation</strong><strong>function creep</strong><strong>aggregate (data)</strong><strong>rat-running</strong><strong>degrade gracefully</strong></p>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can state what the case study is, how many hours it gets at HL, and where it is examined.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain why the IBO added it and why the questions are unseen.</span></label></li>
+  <li><label><input type="checkbox"><span>I can carry out all four reading passes and say what artefact each produces.</span></label></li>
+  <li><label><input type="checkbox"><span>I can build a stakeholder table with all four columns filled for eight groups.</span></label></li>
+  <li><label><input type="checkbox"><span>I can name the three question archetypes and the answer shape of each.</span></label></li>
+  <li><label><input type="checkbox"><span>I can define all thirteen emerging-technology terms and say what question each appears in.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write an evaluate answer that states criteria, applies them and reaches a conditional judgement.</span></label></li>
+  <li><label><input type="checkbox"><span>I can answer a "to what extent" question without saying yes or no.</span></label></li>
+  <li><label><input type="checkbox"><span>I can redraw my one-page crib sheet from memory.</span></label></li>
+  <li><label><input type="checkbox"><span>I know how much of my two hours to reserve for the big case-study question.</span></label></li>
+</ul>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li><p>A classmate says: "The case study questions are unseen, so there is no point revising the case study —
+  you just have to be good at writing." Give two reasons why this is wrong.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Unseen questions test <em>reasoning about known context</em>. Every mark is awarded for a point attached
+        to the case study's stakeholders, technologies or data. Without the context prepared you can only write
+        generic material, which scores in the lowest band regardless of how well it is written.</li>
+        <li>Prepared knowledge is what frees the time. A student who has the stakeholder table memorised spends
+        zero minutes deciding who to write about and 25 minutes writing; one who has not spends 8 minutes deciding
+        and runs out of time. In a 2-hour paper that difference is worth more than any writing skill.</li>
+      </ol>
+    </div></details>
+  </li>
+  <li><p>A question asks you to <em>evaluate</em> a proposal. Your answer describes the proposal in accurate
+  technical detail and concludes "therefore it is a good idea". Explain two specific reasons this cannot reach the
+  top band.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>No criteria were stated, so nothing has been weighed. An evaluation is a comparison against stated
+        criteria from the context; without them the answer is an assertion with technical decoration.</li>
+        <li>The judgement is absolute. Real design decisions are trade-offs, and a conclusion that does not say
+        <em>under what condition</em> it holds — and what would reverse it — has not engaged with the
+        disadvantages at all. Also, only advantages were considered: an evaluation that finds no cost is incomplete
+        by definition.</li>
+      </ol>
+    </div></details>
+  </li>
+  <li><p>Why is accuracy a poor metric for a system that detects a rare event, and which two metrics should be
+  reported instead?</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>When the positive class is rare, a model that never predicts it still achieves high accuracy, so accuracy
+      cannot distinguish a useful model from a useless one. Report <strong>precision</strong>
+      \(= TP/(TP+FP)\) — of the cases flagged, how many were real — and <strong>recall</strong>
+      \(= TP/(TP+FN)\) — of the real cases, how many were caught. Which of the two matters more depends on which
+      error is more expensive in the application, and a good answer says so.</p>
+    </div></details>
+  </li>
+</ol>
+
+<div class="conn">
+  <span class="conn__title">Connections</span>
+  <ul>
+    <li><strong>→ <a href="index.html">Course overview:</a></strong> where the 30 hours sit in the 240-hour HL
+    programme, and how Paper 1 is structured.</li>
+    <li><strong>→ <a href="A1-computer-fundamentals.html">A1 Computer fundamentals:</a></strong> sensors, ADCs,
+    embedded systems and edge processing — the "inputs" box of Figure 1.</li>
+    <li><strong>→ <a href="A2-networks.html">A2 Networks:</a></strong> every arrow in Figure 1 is a network
+    question: protocol, bandwidth, encryption, threat model.</li>
+    <li><strong>→ <a href="A3-databases.html">A3 Databases:</a></strong> the storage box — retention policy, data
+    minimisation, and what a data warehouse is for.</li>
+    <li><strong>→ <a href="A4-machine-learning.html">A4 Machine learning:</a></strong> the processing box —
+    training data, precision/recall, bias, and why a model is a black box.</li>
+    <li><strong>→ <a href="B1-computational-thinking.html">B1 Computational thinking:</a></strong> abstraction is
+    what lets a city be represented as a graph of queues; the same habit finds the stakeholders.</li>
+    <li><strong>→ <a href="ia-solution.html">IA — the computational solution:</a></strong> the stakeholder
+    interview and success-criteria skills are the same ones, applied to a client you can actually talk to.</li>
+    <li><strong>→ <a href="collaborative-project.html">Collaborative sciences project:</a></strong> data handling,
+    ethics of data collection and presentation — a low-stakes rehearsal for this paper.</li>
+    <li><strong>→ English A Lang &amp; Lit SL:</strong> analysing audience, purpose and bias in the case study
+    document itself — the IBO's quotes are chosen, not neutral.</li>
+  </ul>
+</div>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

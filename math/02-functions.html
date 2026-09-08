@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="math">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Functions — Mathematics AA HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Mathematics AA HL · Topic 2</span>
+<h1 class="page-title">Functions</h1>
+<p class="lede">A function is a machine: you feed it an input, it returns exactly one output. Everything in this
+topic — quadratics, exponentials, inverses, modulus, asymptotes — is a different machine, and the exam tests
+whether you can predict what a machine does from its equation, and write the equation of a machine from its
+graph. Topic 2 is also the language of Topic 5: you cannot differentiate what you cannot sketch.</p>
+<div class="page-meta">
+  <span class="tag">32 teaching hours (HL)</span>
+  <span class="tag">HL only: polynomials, oblique asymptotes, odd/even, inequalities, 1/f(x)</span>
+  <span class="tag tag--hl">Paper 1 · Paper 2 · Paper 3</span>
+</div>
+
+<h2>2.1 What a function is: domain, range, and the vertical line test</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> a function is a rule that never hesitates. For each allowed input there is
+exactly one output. \(y=\sqrt{x}\) is a function; \(y=\pm\sqrt{x}\) is not, because \(x=4\) would produce two
+answers. The <strong>domain</strong> is the set of legal inputs, the <strong>range</strong> is the set of
+outputs you actually get.</p>
+
+<p><strong>Formal statement:</strong> \(f:A\to B\) is a function if every \(a\in A\) is assigned exactly one
+\(b\in B\). We write \(f(x)\) for the output, and \(f:A\mapsto B\). A function is
+<strong>one-to-one (injective)</strong> if different inputs always give different outputs:
+\(f(a)=f(b)\Rightarrow a=b\). It is <strong>onto (surjective)</strong> if every element of \(B\) is hit.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — finding domains and ranges</span>
+  <p>Domain restrictions come from exactly four sources, and you check them in this order:
+  (1) denominators cannot be zero; (2) square roots (and any even root) need a non-negative argument;
+  (3) logarithms need a strictly positive argument; (4) an applied context may restrict further (time \(t\ge0\),
+  a length \(>0\)). For the range, either read it from a sketch, or find the range of the "inner" function and
+  push it through the outer one. To find the range algebraically, solve \(y=f(x)\) for \(x\) and see which \(y\)
+  values admit a real solution.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 1</span> IB-style · 5 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Let \(f(x)=\dfrac{1}{\sqrt{4-x}}\) and \(g(x)=\ln(x-1)\).
+    State the largest possible domain of each, and the range of \(f\).</p>
+    <ol class="steps">
+      <li>For \(f\): need \(4-x>0\) (strictly, because it is in a denominator <em>and</em> under a root), so \(x&lt;4\). Domain: \((-\infty,4)\).</li>
+      <li>For \(g\): need \(x-1>0\), so \(x>1\). Domain: \((1,\infty)\).</li>
+      <li>Range of \(f\): as \(x\to4^{-}\), \(\sqrt{4-x}\to0^{+}\), so \(f(x)\to\infty\); as \(x\to-\infty\), \(f(x)\to0^{+}\).</li>
+      <li>\(f\) is continuous and increasing on its domain, so the range is \((0,\infty)\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(\text{dom}(f)=(-\infty,4)\), \(\text{range}(f)=(0,\infty)\); \(\text{dom}(g)=(1,\infty)\). The strict inequality \(4-x>0\) is the mark: \(4-x\ge0\) would allow division by zero at \(x=4\).</div>
+  </div>
+</details>
+
+<h2>2.2 Linear and quadratic functions</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> a quadratic \(ax^2+bx+c\) is a parabola. The sign of \(a\) decides whether it
+opens up or down; the vertex is its turning point; the discriminant \(\Delta=b^2-4ac\) counts how many times it
+crosses the \(x\)-axis. Everything you are ever asked — maximum height of a projectile, minimum cost, "for what
+values of \(k\) does this have two solutions?" — is one of those three facts.</p>
+
+<h3>Completing the square and vertex form</h3>
+
+\[ax^2+bx+c = a\left[\left(x+\frac{b}{2a}\right)^2 - \frac{b^2}{4a^2}\right]+c = a\left(x+\frac{b}{2a}\right)^2 - \frac{\Delta}{4a}\]
+so the vertex is at \(\left(-\dfrac{b}{2a},\ -\dfrac{\Delta}{4a}\right)\) and the axis of symmetry is \(x=-\dfrac{b}{2a}\).
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> The quadratic formula by completing the square</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Start: \(ax^2+bx+c=0\) with \(a\neq0\). Divide by \(a\): \(x^2+\dfrac{b}{a}x+\dfrac{c}{a}=0\).</li>
+      <li>Move the constant: \(x^2+\dfrac{b}{a}x = -\dfrac{c}{a}\).</li>
+      <li>Complete the square — add \(\left(\dfrac{b}{2a}\right)^2\) to both sides:
+      \(\left(x+\dfrac{b}{2a}\right)^2 = \dfrac{b^2}{4a^2}-\dfrac{c}{a} = \dfrac{b^2-4ac}{4a^2}\).</li>
+      <li>Take square roots: \(x+\dfrac{b}{2a} = \pm\dfrac{\sqrt{b^2-4ac}}{2a}\).</li>
+      <li>\(x = \dfrac{-b\pm\sqrt{b^2-4ac}}{2a}\). ■</li>
+    </ol>
+    <p><strong>Meaning:</strong> the formula is not a separate fact to memorise — it <em>is</em> completing the
+    square, done once and for all with letters. The axis of symmetry \(x=-\frac{b}{2a}\) falls out of step 3
+    before you even take the square root. <strong>Wrong tool when:</strong> the question says "find the
+    turning point" — completing the square gives it directly, while the formula gives roots and requires an
+    extra step.</p>
+  </div>
+</details>
+
+<h3>The discriminant and sum/product of roots</h3>
+
+\[\Delta = b^2-4ac:\quad \Delta>0 \Rightarrow \text{two distinct real roots};\quad \Delta=0 \Rightarrow \text{one (repeated)};\quad \Delta&lt;0 \Rightarrow \text{no real roots (a complex conjugate pair)}.\]
+
+\[\alpha+\beta = -\frac{b}{a},\qquad \alpha\beta = \frac{c}{a}\quad\text{(Vieta's formulas)}\]
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Why \(\alpha+\beta=-\frac{b}{a}\) and \(\alpha\beta=\frac{c}{a}\)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>If the roots are \(\alpha,\beta\), then \(ax^2+bx+c = a(x-\alpha)(x-\beta)\).</li>
+      <li>Expand the right side: \(a\bigl(x^2-(\alpha+\beta)x+\alpha\beta\bigr) = ax^2 - a(\alpha+\beta)x + a\alpha\beta\).</li>
+      <li>Compare coefficients with \(ax^2+bx+c\): coefficient of \(x\) gives \(-a(\alpha+\beta)=b\), so \(\alpha+\beta=-\frac{b}{a}\).</li>
+      <li>Constant term: \(a\alpha\beta = c\), so \(\alpha\beta = \frac{c}{a}\). ■</li>
+    </ol>
+    <p><strong>Meaning:</strong> the coefficients of a polynomial are symmetric functions of its roots — which
+    is why you can answer questions about roots without ever finding them. This generalises to cubics in
+    section 2.7. <strong>Wrong tool when:</strong> you actually need the roots themselves; then use the formula
+    or factorise.</p>
+  </div>
+</details>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Three parabolas illustrating positive, zero and negative discriminant">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="40" y1="200" x2="200" y2="200" stroke="#334155" stroke-width="1.5"/>
+    <line x1="250" y1="200" x2="400" y2="200" stroke="#334155" stroke-width="1.5"/>
+    <line x1="450" y1="200" x2="610" y2="200" stroke="#334155" stroke-width="1.5"/>
+    <path d="M50 90 Q 120 250 190 90" fill="none" stroke="#3653d6" stroke-width="2.5"/>
+    <path d="M260 80 Q 325 200 390 80" fill="none" stroke="#3653d6" stroke-width="2.5"/>
+    <path d="M460 120 Q 530 190 600 120" fill="none" stroke="#3653d6" stroke-width="2.5"/>
+    <circle cx="82" cy="200" r="4" fill="#151923"/>
+    <circle cx="158" cy="200" r="4" fill="#151923"/>
+    <circle cx="325" cy="200" r="4" fill="#151923"/>
+    <text x="55" y="270" font-size="13" font-family="system-ui, sans-serif" fill="#151923">delta &gt; 0 : two real roots</text>
+    <text x="255" y="270" font-size="13" font-family="system-ui, sans-serif" fill="#151923">delta = 0 : repeated root</text>
+    <text x="455" y="270" font-size="13" font-family="system-ui, sans-serif" fill="#151923">delta &lt; 0 : no real roots</text>
+    <text x="40" y="50" font-size="14" font-family="system-ui, sans-serif" fill="#151923">The discriminant is a root counter</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> \(\Delta>0\): the parabola crosses the axis twice. \(\Delta=0\): the vertex touches it. \(\Delta&lt;0\): the whole curve sits above (or below) the axis, so the roots are complex — exactly what Topic 1's complex numbers describe.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Let \(f(x)=2x^2-8x+5\). (a) Write \(f(x)\) in the form \(a(x-h)^2+k\).
+    (b) Hence write down the coordinates of the vertex and the equation of the axis of symmetry.
+    (c) State the range of \(f\). (d) Find the values of \(p\) for which \(f(x)=p\) has no real solutions.</p>
+    <ol class="steps">
+      <li>\(2x^2-8x+5 = 2(x^2-4x)+5 = 2\bigl[(x-2)^2-4\bigr]+5 = 2(x-2)^2-8+5 = 2(x-2)^2-3\).</li>
+      <li>Vertex: \((2,-3)\); axis of symmetry: \(x=2\).</li>
+      <li>Since \(a=2>0\) the parabola opens upward with minimum \(-3\), so range \(=[-3,\infty)\).</li>
+      <li>\(f(x)=p\) has no real solutions when the horizontal line \(y=p\) misses the parabola, i.e. \(p&lt;-3\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(2(x-2)^2-3\); (b) \((2,-3)\), \(x=2\); (c) \([-3,\infty)\); (d) \(p&lt;-3\). Every part follows from the vertex form — that is why "express in the form \(a(x-h)^2+k\)" is such a common opening instruction. The "hence" in (b) means use your answer to (a), so do not use \(-\frac{b}{2a}\) instead.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The equation \((k+1)x^2 + 4x + (k-2) = 0\) has two distinct real roots.
+    Find the set of possible values of \(k\).</p>
+    <ol class="steps">
+      <li>Two distinct real roots \(\Rightarrow \Delta > 0\) (and the equation must genuinely be quadratic, so \(k\neq-1\)).</li>
+      <li>\(\Delta = 16 - 4(k+1)(k-2) = 16 - 4(k^2-k-2) = 16-4k^2+4k+8 = 24+4k-4k^2\).</li>
+      <li>\(-4k^2+4k+24 > 0 \Rightarrow k^2-k-6 &lt; 0\) (divide by \(-4\), flip the sign).</li>
+      <li>\((k-3)(k+2)&lt;0 \Rightarrow -2&lt;k&lt;3\).</li>
+      <li>Exclude \(k=-1\) (then the equation becomes \(4x-3=0\), with only one root).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(-2&lt;k&lt;3,\ k\neq-1\). The exclusion is the mark most students miss: a "quadratic" with \(a=0\) is not quadratic. Sanity check: \(k=0\) gives \(x^2+4x-2=0\), \(\Delta=16+8=24>0\). ✓</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>(1) Forgetting to flip the inequality when dividing by a negative — step 3 above. (2) Writing
+  \(x=-\frac{b}{2a}\) when asked for the <em>vertex</em>: that is only the \(x\)-coordinate; you must substitute
+  back. (3) \(\Delta=0\) means "one repeated root", not "no roots" — the IB marks this distinction. (4)
+  Assuming \(a>0\): always check the sign of \(a\) before deciding whether the vertex is a maximum or a
+  minimum.</p>
+</div>
+
+<h2>2.3 Rational functions and asymptotes</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> a rational function is one polynomial divided by another:
+\(f(x)=\frac{P(x)}{Q(x)}\). Where \(Q(x)=0\) the function blows up — a <strong>vertical asymptote</strong>
+(unless the factor cancels, which gives a <em>hole</em>). Far out to the right, the highest powers dominate, so
+the function settles towards a <strong>horizontal asymptote</strong> (or, if the numerator's degree is one
+higher, an <strong>oblique</strong> straight line).</p>
+
+<p><strong>Formal statement:</strong> for \(f(x)=\dfrac{ax+b}{cx+d}\):</p>
+<ul>
+  <li>vertical asymptote: \(x=-\dfrac{d}{c}\);</li>
+  <li>horizontal asymptote: \(y=\dfrac{a}{c}\);</li>
+  <li>\(y\)-intercept \(=\dfrac{b}{d}\), \(x\)-intercept \(=-\dfrac{b}{a}\).</li>
+</ul>
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Why the horizontal asymptote is the ratio of leading coefficients</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Take \(f(x)=\dfrac{ax+b}{cx+d}\) and divide top and bottom by \(x\):
+      \(f(x) = \dfrac{a+\frac{b}{x}}{c+\frac{d}{x}}\).</li>
+      <li>As \(x\to\pm\infty\), \(\frac{b}{x}\to0\) and \(\frac{d}{x}\to0\), so \(f(x)\to\dfrac{a}{c}\).</li>
+      <li>Same argument for any rational function: divide by the highest power of \(x\) in the denominator. If
+      \(\deg P = \deg Q\), the limit is the ratio of leading coefficients; if \(\deg P &lt; \deg Q\), the limit is
+      0 (so \(y=0\)); if \(\deg P > \deg Q\), there is no horizontal asymptote.</li>
+    </ol>
+    <p><strong>Meaning:</strong> asymptotes are limits, which is why this topic sits on the border of Topic 5 —
+    the IB loves asking for \(\lim_{x\to\infty}f(x)\) in Paper 1. <strong>Wrong tool when:</strong> the factor
+    causing the zero also appears in the numerator: \(\frac{x^2-1}{x-1}=x+1\) for \(x\neq1\) has a <em>hole</em>
+    at \(x=1\), not an asymptote.</p>
+  </div>
+</details>
+
+<h3>HL: oblique (slant) asymptotes</h3>
+<span class="badge badge--hl">HL only</span>
+
+<p>When \(\deg P = \deg Q + 1\), divide: \(P(x) = Q(x)(mx+c) + R(x)\) with \(\deg R &lt; \deg Q\). Then
+\(f(x) = mx+c+\frac{R(x)}{Q(x)}\), and since the fraction tends to 0, the oblique asymptote is \(y=mx+c\).</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 4</span> IB-style · 9 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Let \(f(x)=\dfrac{x^2+3x+1}{x-1}\). (a) Find the equations of the two
+    asymptotes. (b) Find the coordinates of the turning points. (c) Sketch the graph, labelling intercepts and
+    asymptotes.</p>
+    <ol class="steps">
+      <li>Vertical asymptote: denominator zero at \(x=1\).</li>
+      <li>Divide: \(x^2+3x+1 \div (x-1)\). \(x^2 \div x = x\); \(x(x-1)=x^2-x\); subtract: \(4x+1\);
+      \(4x\div x = 4\); \(4(x-1)=4x-4\); subtract: \(5\). So \(f(x) = x+4+\dfrac{5}{x-1}\).</li>
+      <li>Oblique asymptote: \(y=x+4\).</li>
+      <li>Intercepts: \(f(0)=\frac{1}{-1}=-1\), so \((0,-1)\). \(x\)-intercepts: \(x^2+3x+1=0\Rightarrow
+      x=\frac{-3\pm\sqrt5}{2}\), i.e. \(-2.618\) and \(-0.382\).</li>
+      <li>Turning points: \(f'(x) = 1 - \dfrac{5}{(x-1)^2} = 0 \Rightarrow (x-1)^2=5 \Rightarrow x = 1\pm\sqrt5\), i.e. \(x=-1.236\) and \(x=3.236\).</li>
+      <li>\(f(-1.236) = -1.236+4+\frac{5}{-2.236} = 2.764-2.236 = 0.528\) (local max on the left branch);
+      \(f(3.236) = 7.236+\frac{5}{2.236}=7.236+2.236 = 9.472\) (local min on the right branch).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> asymptotes \(x=1\) and \(y=x+4\); turning points \((-1.24,\,0.53)\) and \((3.24,\,9.47)\). Every mark here is method: the division for the oblique asymptote, the derivative for the turning points, and the labelled sketch. Sanity check: \(\frac{5}{x-1}>0\) on the right branch, so the curve sits <em>above</em> the asymptote there — and 9.47 &gt; 7.24. ✓</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> IB-style · 6 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Find the asymptotes of \(g(x)=\dfrac{2x^2-5x+3}{x^2-4}\) and hence describe
+    its behaviour as \(x\to\pm\infty\).</p>
+    <ol class="steps">
+      <li>Denominator: \(x^2-4=(x-2)(x+2)\), so vertical asymptotes at \(x=2\) and \(x=-2\).</li>
+      <li>Numerator at those points: \(2(4)-10+3=1\neq0\) (at \(x=2\)), so no cancellation — genuine asymptotes.</li>
+      <li>Degrees equal, so horizontal asymptote \(y=\frac{2}{1}=2\).</li>
+      <li>Confirm by division: \(2x^2-5x+3 = 2(x^2-4) + (-5x+11)\), so \(g(x) = 2 + \dfrac{-5x+11}{x^2-4}\to2\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(x=\pm2\) and \(y=2\). As \(x\to\infty\), \(g(x)\to 2^{-}\) (the remainder is negative for large \(x\)); as \(x\to-\infty\), \(g(x)\to2^{+}\). Stating whether the approach is from above or below is what distinguishes a good sketch from a mediocre one.</div>
+  </div>
+</details>
+
+<h2>2.4 Exponential and logarithmic graphs</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> \(y=a^x\) grows by equal <em>factors</em> in equal time; \(y=\ln x\) grows ever
+more slowly. They are mirror images of each other in the line \(y=x\). Every exponential curve passes through
+\((0,1)\); every log curve passes through \((1,0)\). Adding \(k\) shifts the horizontal asymptote of an
+exponential to \(y=k\), which is the single most useful modelling feature in the course.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th></th><th>\(f(x)=a^x\ (a>1)\)</th><th>\(f(x)=\log_a x\ (a>1)\)</th></tr></thead>
+  <tbody>
+    <tr><td>Domain</td><td>\(\mathbb{R}\)</td><td>\((0,\infty)\)</td></tr>
+    <tr><td>Range</td><td>\((0,\infty)\)</td><td>\(\mathbb{R}\)</td></tr>
+    <tr><td>Key point</td><td>\((0,1)\)</td><td>\((1,0)\)</td></tr>
+    <tr><td>Asymptote</td><td>\(y=0\) (horizontal)</td><td>\(x=0\) (vertical)</td></tr>
+    <tr><td>Inverse</td><td>\(\log_a x\)</td><td>\(a^x\)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 6</span> IB-style · 7 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The temperature of a cup of coffee is modelled by
+    \(T(t) = 20 + 70\mathrm{e}^{-0.08t}\), where \(T\) is in °C and \(t\) in minutes.
+    (a) State the room temperature and the initial temperature. (b) Find the time when the coffee reaches 60°C.
+    (c) Explain why the model predicts the coffee never reaches 20°C.</p>
+    <ol class="steps">
+      <li>As \(t\to\infty\), \(\mathrm{e}^{-0.08t}\to0\), so \(T\to20\): room temperature is 20°C.</li>
+      <li>\(T(0)=20+70=90\)°C.</li>
+      <li>\(60 = 20+70\mathrm{e}^{-0.08t} \Rightarrow \mathrm{e}^{-0.08t} = \frac{40}{70} = \frac47\).</li>
+      <li>\(-0.08t = \ln\frac47 = -0.5596 \Rightarrow t = 6.99\) minutes.</li>
+      <li>\(\mathrm{e}^{-0.08t}>0\) for all finite \(t\), so \(T(t) > 20\) always; 20 is a horizontal asymptote, approached but never attained.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 20°C and 90°C; \(t=7.0\) min; \(y=20\) is an asymptote because \(\mathrm{e}^{-0.08t}\) is strictly positive. Part (c) wants the word <em>asymptote</em> and the reason — "it gets closer and closer" alone scores nothing.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 7</span> IB-style · 8 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The curve \(y = \ln(x-2)+1\) meets its inverse at a point on the line \(y=x\).
+    Find that point.</p>
+    <ol class="steps">
+      <li>Inverse: swap \(x\) and \(y\): \(x = \ln(y-2)+1 \Rightarrow \ln(y-2) = x-1 \Rightarrow y = \mathrm{e}^{x-1}+2\). So \(f^{-1}(x)=\mathrm{e}^{x-1}+2\).</li>
+      <li>A function and its inverse are reflections in \(y=x\), so any intersection on \(y=x\) satisfies \(f(x)=x\). (Intersections <em>off</em> the line are possible but this question specifies on it.)</li>
+      <li>Solve \(\ln(x-2)+1 = x\), i.e. \(\ln(x-2) = x-1\), or \(x-2 = \mathrm{e}^{x-1}\).</li>
+      <li>This cannot be solved algebraically. With a GDC: solve \(h(x)=\ln(x-2)+1-x=0\). Try \(x=2.5\): \(\ln0.5+1-2.5 = -2.19\); \(x=3\): \(0+1-3=-2\); \(x=2.2\): \(\ln0.2+1-2.2=-2.81\). The function stays negative, so there is <strong>no</strong> solution on \(y=x\).</li>
+      <li>Check the derivative: \(h'(x)=\frac{1}{x-2}-1\), zero at \(x=3\), where \(h=-2\) — a maximum, and it is still negative. So the curve never meets the line \(y=x\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> no such point exists. This example is deliberately uncomfortable: the standard exam shortcut (\(f(x)=f^{-1}(x)\Rightarrow f(x)=x\)) is only valid when you <em>already know</em> an intersection exists. Verify with a sketch or a sign check before using it.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — sections 2.1–2.4</span>
+  <p><strong>function</strong><strong>domain</strong><strong>range</strong><strong>vertical line test</strong><strong>mapping</strong><strong>quadratic</strong><strong>completing the square</strong><strong>vertex / turning point</strong><strong>axis of symmetry</strong><strong>discriminant</strong><strong>root / zero</strong> /<strong>parabola</strong><strong>rational function</strong><strong>asymptote</strong> vertical / horizontal<strong>exponential function</strong><strong>logarithm</strong><strong>base</strong><strong>growth / decay</strong> /<strong>limit</strong><strong>approach</strong></p>
+</div>
+
+<h2>2.5 Sinusoidal graphs and transformations</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p>The general sinusoid is \(f(x)=a\sin(b(x-c))+d\): \(|a|\) = amplitude, period \(=\frac{2\pi}{|b|}\), \(c\) =
+horizontal translation (phase shift), \(d\) = the centreline (vertical translation). Topic 3 treats the
+trigonometry; the point here is that reading these four numbers off an equation is a <em>transformation</em>
+skill.</p>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why order matters</span>
+  <p>Transformations are replacements, and replacements do not commute. Compare \(y=f(2x+6)\) with
+  \(y=f(2(x+3))\): they are the same thing. Now compare \(y=f(2x)+6\) with \(y=f(2x+6)\): the first stretches
+  horizontally by \(\frac12\) then shifts <em>up</em> 6; the second stretches horizontally by \(\frac12\) then
+  shifts <em>left</em> 3. The rule that never fails: <strong>factorise the argument first</strong>
+  (\(f(bx+c)=f(b(x+\frac{c}{b}))\)), then apply transformations in the order
+  <em>horizontal translation → horizontal stretch → reflection → vertical stretch → vertical translation</em>.</p>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it</span>
+  <table>
+    <tbody>
+      <tr><td>\(y=f(x)+d\)</td><td>translate \(\begin{pmatrix}0\\d\end{pmatrix}\)</td></tr>
+      <tr><td>\(y=f(x-c)\)</td><td>translate \(\begin{pmatrix}c\\0\end{pmatrix}\) — note the <em>minus</em></td></tr>
+      <tr><td>\(y=pf(x)\)</td><td>vertical stretch, scale factor \(p\)</td></tr>
+      <tr><td>\(y=f(qx)\)</td><td>horizontal stretch, scale factor \(\frac1q\)</td></tr>
+      <tr><td>\(y=-f(x)\)</td><td>reflection in the \(x\)-axis</td></tr>
+      <tr><td>\(y=f(-x)\)</td><td>reflection in the \(y\)-axis</td></tr>
+    </tbody>
+  </table>
+  <p>To find the image of a point \((x_0,y_0)\) under \(y=af(b(x-c))+d\): the new point is
+  \(\left(\frac{x_0}{b}+c,\ ay_0+d\right)\). Learn this formula and every transformation question becomes
+  substitution.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 8</span> IB-style · 6 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The graph of \(y=x^2\) is transformed to \(y=3(x-2)^2+5\). Describe fully the
+    transformation, and state the image of the point \((1,1)\).</p>
+    <ol class="steps">
+      <li>Write in the form \(a\,f(b(x-c))+d\): \(y = 3f(x-2)+5\) with \(f(x)=x^2\), so \(a=3,\ b=1,\ c=2,\ d=5\).</li>
+      <li>Description: translation by \(\begin{pmatrix}2\\0\end{pmatrix}\), then a vertical stretch of scale
+      factor 3, then a translation by \(\begin{pmatrix}0\\5\end{pmatrix}\).</li>
+      <li>Image of \((1,1)\): \(\left(\frac11+2,\ 3(1)+5\right) = (3,8)\).</li>
+      <li>Check: on the new curve, \(x=3\) gives \(3(3-2)^2+5 = 8\). ✓</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> as above; image \((3,8)\). Marks: one per transformation described correctly, one for the image. Saying "stretch then translate" in the wrong order loses the description marks — do the horizontal work first.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 9</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A sinusoid has maximum value 7 at \(x=1\) and minimum value \(-1\) at \(x=5\).
+    Find a formula of the form \(f(x)=a\sin(b(x-c))+d\).</p>
+    <ol class="steps">
+      <li>Centreline: \(d = \frac{7+(-1)}{2} = 3\). Amplitude: \(|a| = \frac{7-(-1)}{2}=4\).</li>
+      <li>Half a period separates a maximum from the next minimum: \(\frac{T}{2} = 5-1 = 4\), so \(T=8\) and
+      \(b = \frac{2\pi}{8}=\frac{\pi}{4}\).</li>
+      <li>For a sine curve, the maximum occurs a quarter-period after the point where it crosses the centreline
+      going up, i.e. at \(c+\frac{T}{4}\). So \(1 = c + 2 \Rightarrow c = -1\).</li>
+      <li>Formula: \(f(x) = 4\sin\!\left(\frac{\pi}{4}(x+1)\right)+3\).</li>
+      <li>Check at \(x=5\): \(\frac{\pi}{4}(6) = \frac{3\pi}{2}\), \(\sin\frac{3\pi}{2}=-1\), giving \(-4+3=-1\). ✓</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(f(x)=4\sin\!\left(\frac{\pi}{4}(x+1)\right)+3\). Equivalent answers exist (e.g. a cosine with a different shift) — the IB accepts any correct form. Sanity-check your formula at both given points; that is a free mark.</div>
+  </div>
+</details>
+
+<h2>2.6 Composite and inverse functions</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p><strong>Intuition:</strong> a composite \(g\circ f\) means "do \(f\), then do \(g\)" — and the order is
+written right-to-left, like Russian dolls. An inverse \(f^{-1}\) means "undo \(f\)". The catch: <em>only
+one-to-one functions can be undone</em>. If both \(x=2\) and \(x=-2\) map to 4, then \(f^{-1}(4)\) cannot
+decide which to return.</p>
+
+<p><strong>Formal statement:</strong> \((g\circ f)(x) = g(f(x))\). The inverse satisfies
+\(f(f^{-1}(x))=f^{-1}(f(x))=x\), exists only when \(f\) is one-to-one, and
+\(\text{dom}(f^{-1}) = \text{range}(f)\), \(\text{range}(f^{-1}) = \text{dom}(f)\).</p>
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> Why the graph of \(f^{-1}\) is the reflection of \(f\) in \(y=x\)</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>By definition, \(y=f(x) \iff x = f^{-1}(y)\).</li>
+      <li>So the point \((a,b)\) lies on \(y=f(x)\) exactly when \((b,a)\) lies on \(y=f^{-1}(x)\).</li>
+      <li>The map \((a,b)\mapsto(b,a)\) is precisely reflection in the line \(y=x\) (the line \(y=x\) is the
+      perpendicular bisector of the segment joining \((a,b)\) to \((b,a)\)).</li>
+      <li>Hence the two graphs are mirror images in \(y=x\). ■</li>
+    </ol>
+    <p><strong>Meaning:</strong> this gives you a two-step procedure for finding an inverse: swap \(x\) and
+    \(y\), then make \(y\) the subject. It also explains why \(f\) and \(f^{-1}\) meet on \(y=x\) <em>if</em>
+    they meet at all. <strong>Wrong tool when:</strong> \(f\) is not one-to-one on its natural domain — you
+    must first restrict the domain (e.g. \(x\ge0\) for \(x^2\)), which is exactly what the IB asks when it
+    introduces \(\arcsin\) in Topic 3.</p>
+  </div>
+</details>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="A function and its inverse reflected in the line y equals x">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="90" y1="260" x2="560" y2="260" stroke="#334155" stroke-width="2"/>
+    <line x1="120" y1="270" x2="120" y2="40" stroke="#334155" stroke-width="2"/>
+    <line x1="120" y1="260" x2="540" y2="50" stroke="#6c7788" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <path d="M120 250 C 200 240, 260 210, 330 120" fill="none" stroke="#3653d6" stroke-width="3"/>
+    <path d="M250 120 C 210 200, 240 250, 400 250" fill="none" stroke="#b03060" stroke-width="3"/>
+    <circle cx="330" cy="120" r="4.5" fill="#151923"/>
+    <circle cx="120" cy="120" r="4.5" fill="#151923"/>
+    <circle cx="330" cy="250" r="4.5" fill="#151923"/>
+    <line x1="330" y1="120" x2="120" y2="120" stroke="#e2e8f0" stroke-width="1"/>
+    <line x1="330" y1="120" x2="330" y2="250" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="345" y="112" font-size="13" font-family="system-ui, sans-serif" fill="#151923">(a, b)</text>
+    <text x="120" y="112" font-size="13" font-family="system-ui, sans-serif" fill="#b03060">(b, a)</text>
+    <text x="470" y="80" font-size="14" font-family="system-ui, sans-serif" fill="#151923">y = x</text>
+    <text x="150" y="200" font-size="14" font-family="system-ui, sans-serif" fill="#3653d6">y = f(x)</text>
+    <text x="400" y="235" font-size="14" font-family="system-ui, sans-serif" fill="#b03060">y = f-inverse(x)</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> Swapping coordinates is reflection in \(y=x\). Because domains and ranges swap too, the inverse of \(y=\mathrm{e}^x\) (range \(y>0\)) is \(y=\ln x\) (domain \(x>0\)) — the restriction is not arbitrary, it is forced.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 10</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Let \(f(x)=\dfrac{2x+1}{x-3}\), \(x\neq3\). (a) Find \(f^{-1}(x)\) and state
+    its domain and range. (b) Show that \(f(f^{-1}(x))=x\).</p>
+    <ol class="steps">
+      <li>Let \(y=\dfrac{2x+1}{x-3}\). Swap: \(x = \dfrac{2y+1}{y-3}\).</li>
+      <li>\(x(y-3) = 2y+1 \Rightarrow xy-3x = 2y+1 \Rightarrow y(x-2) = 3x+1 \Rightarrow y = \dfrac{3x+1}{x-2}\).</li>
+      <li>So \(f^{-1}(x)=\dfrac{3x+1}{x-2}\), domain \(x\neq2\), range \(y\neq3\).</li>
+      <li>Verify: \(f(f^{-1}(x)) = \dfrac{2\left(\frac{3x+1}{x-2}\right)+1}{\left(\frac{3x+1}{x-2}\right)-3}
+      = \dfrac{\frac{6x+2+x-2}{x-2}}{\frac{3x+1-3x+6}{x-2}} = \dfrac{7x}{7} = x\). ■</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(f^{-1}(x)=\dfrac{3x+1}{x-2}\). Note the swap: the forbidden input of \(f\) is 3 and its forbidden output is 2; for \(f^{-1}\) they exchange. Spotting that this function is <em>self-inverse-like</em> in structure (a Möbius map) explains why the algebra collapses so neatly.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 11</span> IB-style · 6 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Let \(f(x)=x^2-4x+5\) for \(x\ge k\). Find the smallest value of \(k\) for
+    which \(f^{-1}\) exists, and find \(f^{-1}\) in that case.</p>
+    <ol class="steps">
+      <li>\(f(x)=(x-2)^2+1\): a parabola with vertex \((2,1)\). It is not one-to-one on \(\mathbb{R}\).</li>
+      <li>Restricting to one side of the axis of symmetry \(x=2\) makes it one-to-one. Smallest such \(k\) with
+      the standard convention \(x\ge k\) is \(k=2\).</li>
+      <li>Then \(y=(x-2)^2+1 \Rightarrow (x-2)^2 = y-1 \Rightarrow x = 2+\sqrt{y-1}\) (positive root because \(x\ge2\)).</li>
+      <li>So \(f^{-1}(x) = 2+\sqrt{x-1}\), domain \(x\ge1\), range \(y\ge2\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(k=2\); \(f^{-1}(x)=2+\sqrt{x-1}\). Choosing the <em>positive</em> root is the whole point of the restriction — write a sentence justifying it, because that justification is a mark.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>(1) Confusing \(f^{-1}(x)\) with \(\frac{1}{f(x)}\) — the inverse is not the reciprocal (except by
+  coincidence for some functions). The reciprocal is written \((f(x))^{-1}\). (2) Forgetting to swap domain and
+  range. (3) Assuming \((g\circ f)^{-1} = g^{-1}\circ f^{-1}\); the correct rule is
+  \((g\circ f)^{-1} = f^{-1}\circ g^{-1}\) — reverse the order, like taking off shoes before socks. (4)
+  Believing \(f(x)=f^{-1}(x)\) always implies \(f(x)=x\); see Worked example 7.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — sections 2.5–2.6</span>
+  <p><strong>sinusoid</strong><strong>amplitude</strong><strong>period</strong><strong>phase shift</strong><strong>centreline</strong><strong>translation</strong><strong>stretch</strong><strong>reflection</strong><strong>composite function</strong><strong>inverse function</strong><strong>one-to-one</strong><strong>self-inverse</strong><strong>restricted domain</strong><strong>image</strong><strong>identity function</strong></p>
+</div>
+
+<h2>2.7 HL: polynomial functions</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>The remainder theorem:</strong> when \(P(x)\) is divided by \((x-a)\), the remainder is \(P(a)\).
+<strong>The factor theorem:</strong> \((x-a)\) is a factor of \(P(x)\) if and only if \(P(a)=0\).</p>
+
+<details class="derivation">
+  <summary><span class="badge">Proof</span> The remainder theorem</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Division with a linear divisor gives \(P(x) = (x-a)Q(x) + R\), where the remainder \(R\) has degree
+      less than 1 — so \(R\) is a <em>constant</em>.</li>
+      <li>Substitute \(x=a\): \(P(a) = (a-a)Q(a) + R = 0 + R = R\). ■</li>
+      <li>Factor theorem: if \(P(a)=0\) then \(R=0\), so \(P(x)=(x-a)Q(x)\) and \((x-a)\) is a factor.
+      Conversely if \((x-a)\) is a factor then \(P(a) = (a-a)Q(a) = 0\). ■</li>
+    </ol>
+    <p><strong>Meaning:</strong> evaluating a polynomial at one number tells you whether a linear expression
+    divides it exactly — no long division needed. <strong>Wrong tool when:</strong> you are dividing by a
+    quadratic; then the remainder has the form \(ax+b\) and you must compare coefficients.</p>
+  </div>
+</details>
+
+<p><strong>Vieta's formulas for a cubic</strong> \(ax^3+bx^2+cx+d\) with roots \(\alpha,\beta,\gamma\):</p>
+\[\alpha+\beta+\gamma = -\frac{b}{a},\qquad \alpha\beta+\beta\gamma+\gamma\alpha = \frac{c}{a},\qquad \alpha\beta\gamma = -\frac{d}{a}.\]
+For a quartic \(ax^4+bx^3+cx^2+dx+e\): sum of roots \(=-\frac{b}{a}\), sum of products in pairs \(=\frac{c}{a}\),
+sum of products in threes \(=-\frac{d}{a}\), product \(=\frac{e}{a}\). The signs alternate.
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 12</span> IB-style · 9 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> \(P(x)=2x^3-5x^2+kx-12\). When \(P(x)\) is divided by \((x-2)\) the remainder
+    is 6. (a) Find \(k\). (b) Hence factorise \(P(x)\) completely. (c) State the sum and product of the roots.</p>
+    <ol class="steps">
+      <li>Remainder theorem: \(P(2)=6\). \(P(2)=2(8)-5(4)+2k-12 = 16-20+2k-12 = 2k-16\).</li>
+      <li>\(2k-16=6 \Rightarrow k=11\).</li>
+      <li>\(P(x)=2x^3-5x^2+11x-12\). Try \(x=1\): \(2-5+11-12=-4\); \(x=\frac32\): \(6.75-11.25+16.5-12=0\). So \((2x-3)\) is a factor.</li>
+      <li>Divide: \(2x^3-5x^2+11x-12 = (2x-3)(x^2-x+4)\). Check the quadratic's discriminant: \(1-16=-15&lt;0\), so it does not factorise further over the reals.</li>
+      <li>Sum of roots \(=-\frac{b}{a}=\frac52\); product \(=-\frac{d}{a}=\frac{12}{2}=6\).</li>
+      <li>Check: the real root is \(\frac32\), and the complex pair from \(x^2-x+4\) has sum 1 and product 4.
+      Total: \(\frac32+1=\frac52\) ✓; \(\frac32\times4 = 6\) ✓.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(k=11\); \(P(x)=(2x-3)(x^2-x+4)\); sum \(\frac52\), product 6. The check in step 6 uses Vieta to confirm the factorisation — do it, it catches arithmetic slips instantly.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 13</span> IB-style · 8 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> The equation \(x^3-3x^2-4x+12=0\) has roots \(\alpha,\beta,\gamma\).
+    (a) Find \(\alpha^2+\beta^2+\gamma^2\). (b) Find a cubic equation with roots
+    \(\frac{1}{\alpha},\frac{1}{\beta},\frac{1}{\gamma}\).</p>
+    <ol class="steps">
+      <li>Vieta: \(\alpha+\beta+\gamma=3\), \(\alpha\beta+\beta\gamma+\gamma\alpha=-4\), \(\alpha\beta\gamma=-12\).</li>
+      <li>Use \((\alpha+\beta+\gamma)^2 = \alpha^2+\beta^2+\gamma^2 + 2(\alpha\beta+\beta\gamma+\gamma\alpha)\).</li>
+      <li>\(9 = \alpha^2+\beta^2+\gamma^2 + 2(-4) \Rightarrow \alpha^2+\beta^2+\gamma^2 = 17\).</li>
+      <li>New roots: sum \(=\dfrac{\beta\gamma+\gamma\alpha+\alpha\beta}{\alpha\beta\gamma} = \dfrac{-4}{-12}=\dfrac13\).</li>
+      <li>Sum of pairwise products \(=\dfrac{\alpha+\beta+\gamma}{\alpha\beta\gamma} = \dfrac{3}{-12} = -\dfrac14\); product \(=\dfrac{1}{\alpha\beta\gamma}=-\dfrac{1}{12}\).</li>
+      <li>Cubic: \(x^3 - \frac13 x^2 - \frac14 x + \frac{1}{12} = 0\), or \(12x^3-4x^2-3x+1=0\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 17; (b) \(12x^3-4x^2-3x+1=0\). The identity in step 2 (square of a sum) is the standard bridge between "sum of roots" and "sum of squares"; memorise it. Sanity check on (b): the original factors as \((x-2)(x+2)(x-3)\), roots \(2,-2,3\); reciprocals \(\frac12,-\frac12,\frac13\) sum to \(\frac13\) ✓.</div>
+  </div>
+</details>
+
+<h2>2.8 Modulus, reciprocal graphs and inequalities</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p><strong>Intuition:</strong> \(|x|\) means "distance from zero", so it is never negative. The graph of
+\(y=|f(x)|\) takes everything below the \(x\)-axis and <em>flips it up</em>; the graph of \(y=f(|x|)\) throws
+away the left half and <em>mirrors the right half</em> across the \(y\)-axis. The graph of \(y=\frac{1}{f(x)}\)
+turns zeros into vertical asymptotes and sends large values to zero.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the three derived graphs</span>
+  <ol class="steps">
+    <li>\(y=|f(x)|\): sketch \(f\); reflect the parts below the axis in the \(x\)-axis; delete the original below-axis pieces. \(x\)-intercepts are unchanged; they become sharp corners (cusps).</li>
+    <li>\(y=f(|x|)\): keep the part of \(f\) with \(x\ge0\); reflect it in the \(y\)-axis. The result is <em>even</em>: symmetric about the \(y\)-axis.</li>
+    <li>\(y=\dfrac{1}{f(x)}\): where \(f=0\), draw a vertical asymptote. Where \(f\) has a local max, \(\frac1f\) has a local min (and vice versa, for positive \(f\)). Where \(f>1\), \(\frac1f\in(0,1)\); where \(0&lt;f&lt;1\), \(\frac1f>1\). Points where \(f=\pm1\) are fixed.</li>
+  </ol>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="A quadratic and its reciprocal showing vertical asymptotes at the zeros">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <line x1="60" y1="160" x2="600" y2="160" stroke="#334155" stroke-width="2"/>
+    <line x1="330" y1="40" x2="330" y2="290" stroke="#334155" stroke-width="2"/>
+    <path d="M120 250 Q 330 300 540 250" fill="none" stroke="#6c7788" stroke-width="2" stroke-dasharray="5 4"/>
+    <path d="M200 40 L 200 290" stroke="#b03060" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <path d="M460 40 L 460 290" stroke="#b03060" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <path d="M130 60 C 180 80, 190 140, 200 250" fill="none" stroke="#3653d6" stroke-width="3"/>
+    <path d="M300 250 C 320 140, 420 80, 470 60" fill="none" stroke="#3653d6" stroke-width="3"/>
+    <path d="M470 60 C 520 90, 560 130, 600 145" fill="none" stroke="#3653d6" stroke-width="3"/>
+    <text x="330" y="100" font-size="14" font-family="system-ui, sans-serif" fill="#6c7788">f(x) (dashed)</text>
+    <text x="450" y="90" font-size="14" font-family="system-ui, sans-serif" fill="#3653d6">1/f(x)</text>
+    <text x="150" y="35" font-size="12" font-family="system-ui, sans-serif" fill="#b03060">x = a</text>
+    <text x="470" y="35" font-size="12" font-family="system-ui, sans-serif" fill="#b03060">x = b</text>
+    <text x="60" y="305" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">zeros of f become vertical asymptotes of 1/f</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 3.</span> Reciprocal graph: zeros become asymptotes; the minimum of \(f\) becomes the maximum of \(\frac1f\) on the positive branch; and \(y=0\) is a horizontal asymptote whenever \(|f|\to\infty\).</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 14</span> IB-style · 7 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Solve \(|2x-1| = |x+3|\).</p>
+    <ol class="steps">
+      <li>Method 1 — square both sides (valid because both sides are non-negative):
+      \((2x-1)^2 = (x+3)^2\).</li>
+      <li>\(4x^2-4x+1 = x^2+6x+9 \Rightarrow 3x^2-10x-8 = 0\).</li>
+      <li>\((3x+2)(x-4)=0 \Rightarrow x=-\frac23\) or \(x=4\).</li>
+      <li>Method 2 — cases, split at \(x=\frac12\) and \(x=-3\):
+      for \(x\ge\frac12\): \(2x-1=x+3\Rightarrow x=4\) ✓;
+      for \(-3\le x&lt;\frac12\): \(1-2x=x+3\Rightarrow x=-\frac23\) ✓;
+      for \(x&lt;-3\): \(1-2x=-(x+3)\Rightarrow x=4\), rejected (not in this region).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(x=-\frac23\) or \(x=4\). Check: \(x=4\): \(|7|=|7|\) ✓; \(x=-\frac23\): \(|-\frac73| = |\frac73|\) ✓. Squaring is faster and safe here; the case method is required when the equation mixes a modulus with a non-modulus term (e.g. \(|x-1| = 2x\)).</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 15</span> IB-style · 8 marks · GDC allowed</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Solve \(\dfrac{x-1}{x+2} \ge 0\), and hence solve
+    \(\dfrac{x-1}{x+2} \ge \dfrac{1}{2}\).</p>
+    <ol class="steps">
+      <li>Critical values: numerator zero at \(x=1\); denominator zero at \(x=-2\) (excluded from the domain).</li>
+      <li>Sign chart on the three intervals: \(x&lt;-2\): e.g. \(x=-3\) gives \(\frac{-4}{-1}=4>0\) ✓;
+      \(-2&lt;x&lt;1\): \(x=0\) gives \(-\frac12&lt;0\) ✗; \(x>1\): \(x=2\) gives \(\frac14>0\) ✓.</li>
+      <li>Solution: \(x&lt;-2\) or \(x\ge1\). (Include \(x=1\) because the inequality is "≥"; never include \(x=-2\).)</li>
+      <li>For the second: \(\dfrac{x-1}{x+2}-\dfrac12 \ge 0 \Rightarrow \dfrac{2x-2-x-2}{2(x+2)}\ge0 \Rightarrow \dfrac{x-4}{x+2}\ge0\).</li>
+      <li>Same method: critical values \(x=4\) (include) and \(x=-2\) (exclude). Solution: \(x&lt;-2\) or \(x\ge4\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(x&lt;-2\) or \(x\ge1\); then \(x&lt;-2\) or \(x\ge4\). The single most common error is <em>multiplying through by \((x+2)\)</em> without knowing its sign — that flips the inequality for half the domain. Always bring everything to one side and use a sign chart.</div>
+  </div>
+</details>
+
+<h3>HL: odd and even functions</h3>
+<span class="badge badge--hl">HL only</span>
+
+<p>\(f\) is <strong>even</strong> if \(f(-x)=f(x)\) for all \(x\) (symmetry in the \(y\)-axis: \(x^2,\ \cos x,\ |x|\)).
+\(f\) is <strong>odd</strong> if \(f(-x)=-f(x)\) (rotational symmetry of order 2 about the origin: \(x^3,\ \sin x,\ \frac1x\)).
+Most functions are neither: to prove "neither", give one value of \(x\) where both conditions fail.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 16</span> IB-style · 5 marks · No GDC</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Determine whether \(f(x)=\dfrac{x^3}{x^2+1}\) and \(g(x)=x^3+x^2\) are odd, even or neither.</p>
+    <ol class="steps">
+      <li>\(f(-x) = \dfrac{(-x)^3}{(-x)^2+1} = \dfrac{-x^3}{x^2+1} = -f(x)\), so \(f\) is <strong>odd</strong>.</li>
+      <li>\(g(-x) = -x^3+x^2\). Compare: \(g(x)=x^3+x^2\) (not equal) and \(-g(x)=-x^3-x^2\) (not equal, the \(x^2\) term differs in sign). At \(x=1\): \(g(-1)=0\) while \(g(1)=2\) and \(-g(1)=-2\).</li>
+      <li>So \(g\) is <strong>neither</strong>.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(f\) odd, \(g\) neither. One counterexample suffices for "neither" — you do not need to test every \(x\). In questions about definite integrals on \([-a,a]\), an odd function integrates to zero; that shortcut returns in Topic 5.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — functions</span>
+  <p><strong>function</strong><strong>domain</strong><strong>range</strong><strong>one-to-one</strong><strong>inverse function</strong><strong>composite function</strong><strong>vertex / turning point</strong> /<strong>axis of symmetry</strong><strong>discriminant</strong><strong>parabola</strong><strong>asymptote</strong> vertical / horizontal / oblique<strong>rational function</strong><strong>transformations</strong> translation / stretch / reflection<strong>modulus</strong><strong>polynomial</strong><strong>root / zero</strong> /<strong>remainder theorem</strong><strong>factor theorem</strong><strong>odd / even function</strong> /<strong>inequality</strong><strong>sign chart</strong></p>
+</div>
+
+<div class="conn">
+  <span class="conn__title">Connections</span>
+  <ul>
+    <li><strong>→ Topic 5 (Calculus):</strong> a stationary point is where \(f'(x)=0\); the sign of \(f''\)
+    classifies it. Oblique asymptotes are found by division and confirmed by limits. Integrating
+    \(\frac{1}{f(x)}\) after partial fractions (Topic 1) is the standard HL technique.</li>
+    <li><strong>→ Topic 3 (Trigonometry):</strong> \(\sin\) and \(\cos\) are the sinusoids of section 2.5;
+    inverse trig functions exist only because we restrict domains — the same restriction argument as Worked
+    example 11.</li>
+    <li><strong>→ Topic 1 (Algebra):</strong> Vieta's formulas are the meeting point of polynomials and
+    complex roots; the remainder theorem is used to test suspected factors found by the rational-root test.</li>
+    <li><strong>→ Topic 4 (Statistics):</strong> the normal curve is \(y=\frac{1}{\sigma\sqrt{2\pi}}\mathrm{e}^{-\frac12 z^2}\)
+    — an exponential of a quadratic, i.e. exactly the function family of sections 2.2 and 2.4.</li>
+    <li><strong>→ Physics HL:</strong> projectile trajectories are quadratics; damping is exponential; both are
+    sketched here and differentiated in Topic 5.</li>
+  </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can find the domain and range of functions involving roots, logs and fractions.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive the quadratic formula by completing the square from memory.</span></label></li>
+  <li><label><input type="checkbox"><span>I can read off the vertex and range from vertex form and use the discriminant to count roots.</span></label></li>
+  <li><label><input type="checkbox"><span>I can find vertical, horizontal and oblique asymptotes and sketch a rational function completely.</span></label></li>
+  <li><label><input type="checkbox"><span>I can describe any transformation sequence in the correct order and find the image of a point.</span></label></li>
+  <li><label><input type="checkbox"><span>I can find an inverse by swapping \(x\) and \(y\), state when a domain restriction is needed, and justify it.</span></label></li>
+  <li><label><input type="checkbox"><span>I can sketch \(y=|f(x)|\), \(y=f(|x|)\) and \(y=\frac{1}{f(x)}\) from the graph of \(f\).</span></label></li>
+  <li><label><input type="checkbox"><span>I can use the remainder and factor theorems and Vieta's formulas for cubics and quartics.</span></label></li>
+  <li><label><input type="checkbox"><span>I can solve inequalities with a sign chart without multiplying by an unknown-sign quantity.</span></label></li>
+  <li><label><input type="checkbox"><span>I can classify functions as odd, even or neither with a justified counterexample.</span></label></li>
+</ul>
+
+<h2>Practice</h2>
+<ol class="practice">
+  <li><p>Express \(3x^2+12x+7\) in the form \(a(x+h)^2+k\), and state the minimum value and where it occurs.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(3(x^2+4x)+7 = 3[(x+2)^2-4]+7 = 3(x+2)^2-12+7 = 3(x+2)^2-5\).</li>
+        <li>Minimum value \(-5\) at \(x=-2\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(3(x+2)^2-5\); minimum \(-5\) at \(x=-2\). Check: \(3(-2)^2+12(-2)+7 = 12-24+7=-5\). ✓</div>
+    </div></details>
+  </li>
+  <li><p>Find \(k\) if the quadratic \(kx^2-6x+9=0\) has exactly one real root.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Case 1: \(k=0\) gives \(-6x+9=0\), a linear equation with exactly one root. So \(k=0\) works.</li>
+        <li>Case 2: \(k\neq0\), require \(\Delta=0\): \(36-4(k)(9)=0 \Rightarrow 36-36k=0 \Rightarrow k=1\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(k=0\) or \(k=1\). Missing the \(k=0\) linear case is the classic omission — the word "quadratic" was not used, so a linear equation is allowed.</div>
+    </div></details>
+  </li>
+  <li><p>Find the asymptotes and intercepts of \(y=\dfrac{3x-1}{x+2}\), and hence state its range.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Vertical: \(x=-2\). Horizontal: \(y=3\).</li>
+        <li>\(x\)-intercept: \(3x-1=0\Rightarrow x=\frac13\). \(y\)-intercept: \(y=\frac{-1}{2}=-\frac12\).</li>
+        <li>Range: \(y\neq3\) (the horizontal asymptote is never reached: \(\frac{3x-1}{x+2}=3\) would require \(-1=6\)).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(x=-2\), \(y=3\); intercepts \((\frac13,0)\) and \((0,-\frac12)\); range \(\mathbb{R}\setminus\{3\}\).</div>
+    </div></details>
+  </li>
+  <li><p>Describe the transformation mapping \(y=f(x)\) to \(y=-2f(3x-6)+1\), and give the image of \((4,5)\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Factorise the argument: \(3x-6 = 3(x-2)\). So \(a=-2,\ b=3,\ c=2,\ d=1\).</li>
+        <li>Order: translate right 2; horizontal stretch scale \(\frac13\); vertical stretch scale 2 with reflection in the \(x\)-axis; translate up 1.</li>
+        <li>Image: \(\left(\frac43+2,\ -2(5)+1\right) = \left(\frac{10}{3},\ -9\right)\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> as above; image \((\frac{10}{3},-9)\). Note \(3x-6\) must be rewritten as \(3(x-2)\) before the shift is seen to be 2, not 6.</div>
+    </div></details>
+  </li>
+  <li><p>Let \(f(x)=\dfrac{x}{x+1}\). Find \(f^{-1}(x)\), state its domain, and verify that \(f^{-1}(f(x))=x\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(y=\dfrac{x}{x+1}\); swap: \(x=\dfrac{y}{y+1} \Rightarrow xy+x=y \Rightarrow y(1-x)=x \Rightarrow y=\dfrac{x}{1-x}\).</li>
+        <li>\(f^{-1}(x)=\dfrac{x}{1-x}\), domain \(x\neq1\).</li>
+        <li>\(f^{-1}(f(x)) = \dfrac{\frac{x}{x+1}}{1-\frac{x}{x+1}} = \dfrac{\frac{x}{x+1}}{\frac{1}{x+1}} = x\). ✓</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(f^{-1}(x)=\dfrac{x}{1-x}\). This function is self-inverse in structure: the same algebra appears twice.</div>
+    </div></details>
+  </li>
+  <li><p>Given that \((x+2)\) is a factor of \(x^3+ax^2-7x+b\), and that the remainder on division by \((x-1)\) is \(-6\), find \(a\) and \(b\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(P(-2)=0\): \(-8+4a+14+b=0 \Rightarrow 4a+b=-6\).</li>
+        <li>\(P(1)=-6\): \(1+a-7+b=-6 \Rightarrow a+b=0\).</li>
+        <li>Subtract: \(3a = -6 \Rightarrow a=-2\), then \(b=2\).</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(a=-2,\ b=2\). Two conditions, two equations — the factor theorem and the remainder theorem used together is the standard pairing.</div>
+    </div></details>
+  </li>
+  <li><p>Solve \(\dfrac{2}{x-1} \le 1\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(\dfrac{2}{x-1}-1 \le 0 \Rightarrow \dfrac{2-(x-1)}{x-1}\le0 \Rightarrow \dfrac{3-x}{x-1}\le0\).</li>
+        <li>Critical values: \(x=3\) (include), \(x=1\) (exclude).</li>
+        <li>Sign chart: \(x&lt;1\): \(\frac{+}{-}&lt;0\) ✓; \(1&lt;x&lt;3\): \(\frac{+}{+}>0\) ✗; \(x>3\): \(\frac{-}{+}&lt;0\) ✓.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> \(x&lt;1\) or \(x\ge3\). Test \(x=0\): \(\frac{2}{-1}=-2\le1\) ✓. Test \(x=2\): \(\frac21=2\le1\) ✗. Consistent.</div>
+    </div></details>
+  </li>
+  <li><p>Sketch \(y=|x^2-4|\) and state the range. Where is the function not differentiable?</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>\(x^2-4\) is a parabola with zeros at \(x=\pm2\) and vertex \((0,-4)\).</li>
+        <li>Reflect the part below the axis: for \(|x|&lt;2\), \(y=4-x^2\); for \(|x|\ge2\), \(y=x^2-4\).</li>
+        <li>Range: \([0,\infty)\).</li>
+        <li>Not differentiable at \(x=\pm2\) — the sharp corners (cusps) where the reflected piece meets the original.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> range \([0,\infty)\); corners at \(x=\pm2\). The "corners" answer is pure Topic 5: differentiability fails where the left and right gradients disagree.</div>
+    </div></details>
+  </li>
+</ol>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

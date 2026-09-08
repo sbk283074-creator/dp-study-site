@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B4 · Abstract data types — DP Computer Science HL</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
+options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Computer Science HL · Theme B · B4</span>
+<h1 class="page-title">B4 · Abstract data types <span class="badge badge--hl">HL only</span></h1>
+<p class="lede">An abstract data type is a <em>promise</em>. A stack promises "the last thing you put in is the
+first thing you get out" and it does not say how. That separation — what it does versus how it does it — is the
+most important idea in this topic, and it is why seven structures that look nothing alike in memory can be
+compared at all. This page covers every ADT on the HL syllabus: arrays and records, stacks, queues, circular
+queues, linked lists, binary trees and binary search trees, sets, and hash tables. For each one you get the
+logical behaviour, a real implementation, the reason the implementation works, and a hand-trace of the kind
+Paper 2 asks for.</p>
+<div class="page-meta">
+ <span class="tag tag--hl">B4.1 Fundamentals of abstract data types — HL only (SL does not examine B4)</span>
+ <span class="tag">Examined in Paper 2 · answer in Java or Python</span>
+ <span class="tag">ADT properties · linked lists · binary search trees · sets · hash tables</span>
+</div>
+
+<div class="callout callout--exam">
+ <span class="callout__label">A note on language for this page</span>
+ <p>B3 used Java because the object-oriented idiom reads most clearly there. This page uses <strong>Python</strong>
+ for implementations, because pointer manipulation — the heart of linked lists, trees and chaining — is far
+ easier to read without type declarations and <code>new</code>. Where the exam asks you to <em>write</em> an
+ operation, I also give it in <strong>IB pseudocode</strong>, which is what you should reproduce in an answer.
+ Nothing here depends on the language; the structures are identical in both.</p>
+</div>
+
+<h2>B4.1a · What an abstract data type actually is</h2>
+
+<p>A <strong>data type</strong> is a set of values plus the operations on them: an integer is the values
+…, −1, 0, 1, … together with <code>+</code>, <code>−</code>, <code>MOD</code>, comparison, and so on. An
+<strong>abstract</strong> data type (ADT) goes one step further: it specifies the operations and the behaviour
+they must have, and says <em>nothing</em> about how the values are stored.</p>
+
+<div class="grid grid--2">
+ <div class="card"><h4>The logical view (the ADT)</h4>
+ <p><strong>Stack:</strong> a collection where insertion and removal happen at one end only, called the top.</p>
+ <ul>
+ <li><code>push(item)</code> — add to the top</li>
+ <li><code>pop()</code> — remove and return the top</li>
+ <li><code>peek()</code> — return the top without removing it</li>
+ <li><code>isEmpty()</code> — true when there is nothing in it</li>
+ </ul></div>
+ <div class="card"><h4>The physical view (the implementation)</h4>
+ <p>The stack could be:</p>
+ <ul>
+ <li>an array with an integer <code>top</code> index</li>
+ <li>a singly linked list where the head is the top</li>
+ <li>two arrays, or a resizable array, or something exotic</li>
+ </ul>
+ <p>All of them satisfy the promise. The user of the stack cannot tell and does not care.</p></div>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why separating "what" from "how" is worth an entire topic</summary>
+ <div class="dbody">
+ <ol class="steps">
+ <li><strong>You can change the implementation without touching the users.</strong> If profiling shows your
+ array-based stack keeps hitting its capacity limit, you swap in a linked-list version. Every line of code
+ that called <code>push()</code> and <code>pop()</code> is untouched, because those names and their behaviour
+ never changed.</li>
+ <li><strong>You can reason about correctness once.</strong> "A stack reverses the order of its contents" is
+ proved once, at the ADT level, and then holds for every implementation. If you reasoned about the array
+ version, you would have to redo the work for the linked-list version.</li>
+ <li><strong>You can compare structures fairly.</strong> Only because both a linked list and a hash table can
+ be described as "a collection with insert, find and delete" can you ask which is faster and get a meaningful
+ answer. The comparison table at the end of this page exists because of this abstraction.</li>
+ <li><strong>It is the same idea as encapsulation.</strong> In B3 you made fields private and exposed methods.
+ An ADT is that principle applied to an entire data structure: the array, the node pointers and the indices are
+ all private; <code>push/pop</code> are the public interface.</li>
+ </ol>
+ <p><strong>When it is the wrong tool.</strong> Abstraction costs an indirection, and sometimes you genuinely
+ need to reach inside. Numerically heavy code that iterates over millions of elements may need the raw
+ contiguous array, and pretending otherwise costs real performance. Say so in an evaluation: an ADT is a
+ trade-off between conceptual cleanliness and direct access, not a free win.</p>
+ </div>
+</details>
+
+<h2>B4.1b · Static structures: arrays and records</h2>
+
+<p>Before the dynamic structures, the two static ones — and the reasons they are not enough.</p>
+
+<h3>One- and two-dimensional arrays</h3>
+
+<p>An array stores a fixed number of elements of the <em>same</em> type in <em>contiguous</em> memory, addressed by
+an integer index. "Fixed" and "contiguous" are not incidental details; they explain every advantage and every
+weakness.</p>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why indexing an array is O(1) — and what that costs you</summary>
+ <div class="dbody">
+ <p>Suppose the array starts at memory address \(B\) and each element occupies \(S\) bytes. Then element
+ \(i\) lives at</p>
+ <p>\[ \text{address}(i) = B + i \cdot S \]</p>
+ <p>One multiplication, one addition, one memory read. The work does not grow with \(i\), and it does not grow
+ with the length of the array — so access by index is \(O(1)\), which is why arrays are the default structure
+ and why random access is described as "free".</p>
+ <p>Now the bill for contiguous storage:</p>
+ <ul>
+ <li><strong>Insertion into the middle is \(O(n)\).</strong> To put a value at index \(k\) you must shift
+ every element from \(k\) onwards one place right, or the contiguity breaks. With 1,000,000 elements that is
+ 1,000,000 moves.</li>
+ <li><strong>The size must be decided in advance.</strong> Over-allocate and you waste memory; under-allocate
+ and you overflow. A "dynamic array" (Python's <code>list</code>, Java's <code>ArrayList</code>) hides this by
+ allocating a bigger block and copying everything across when it runs out — which is usually
+ \(O(1)\) <em>amortised</em> but occasionally \(O(n)\).</li>
+ <li><strong>Deletion leaves a hole</strong> unless you shift, which is another \(O(n)\).</li>
+ </ul>
+ <p><strong>When it is the wrong tool.</strong> Any workload with frequent insertions or deletions at arbitrary
+ positions, or where you cannot predict the maximum size. That is the gap linked lists exist to fill.</p>
+ </div>
+</details>
+
+<p>A <strong>two-dimensional array</strong> is an array of arrays — a grid. It is stored <em>row-major</em>: row 0
+in full, then row 1, and so on, so <code>grid[r][c]</code> is at \(B + (r \cdot \text{columns} + c) \cdot S\).
+This matters twice over: nested loops should iterate the outer index over rows and the inner over columns so that
+access walks memory in order (cache-friendly), and a 2-D array is really a 1-D array with arithmetic on the
+index.</p>
+
+<h3>Records</h3>
+
+<p>A <strong>record</strong> (a <code>struct</code> in C, a class with no methods in Java, a
+<code>dataclass</code> or <code>NamedTuple</code> in Python) groups a fixed set of <em>named fields</em> that may
+have <em>different</em> types.</p>
+
+<pre><code>class StudentRecord: # a record: heterogeneous, named, fixed
+ def __init__(self, sid, name, year, avg):
+ self.sid = sid # str
+ self.name = name # str
+ self.year = year # int
+ self.avg = avg # float
+
+recs = []
+recs.append(StudentRecord("S001", "Amara", 12, 6.4))
+recs.append(StudentRecord("S002", "Bo", 12, 5.1))
+
+print(recs[1].name) # Bo — array index then field name</code></pre>
+
+<div class="conn">
+ <span class="conn__title">Three views of the same thing</span>
+ <ul>
+ <li>An <strong>array</strong> is homogeneous (all one type), accessed by <em>position</em>.</li>
+ <li>A <strong>record</strong> is heterogeneous (mixed types), accessed by <em>name</em>.</li>
+ <li>An <strong>array of records</strong> is a <strong>database table</strong>: the record is the row, the field
+ is the column, and the array is the table. See A3.</li>
+ <li>A record with methods attached is an <strong>object</strong>. See B3.</li>
+ </ul>
+</div>
+
+<h2>B4.1c · Stacks</h2>
+
+<p>A stack is a <strong>LIFO</strong> structure — last in, first out. Only the <strong>top</strong> is accessible.
+Think of a pile of plates: you add to the top and you take from the top; reaching the bottom plate means removing
+every plate above it.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Operation</th><th>Behaviour</th><th>Time</th><th>Failure</th></tr></thead>
+ <tbody>
+ <tr><td><code>push(item)</code></td><td>Place item on top</td><td>\(O(1)\)</td><td><strong>Overflow</strong> — the stack is full</td></tr>
+ <tr><td><code>pop()</code></td><td>Remove and return the top</td><td>\(O(1)\)</td><td><strong>Underflow</strong> — the stack is empty</td></tr>
+ <tr><td><code>peek()</code> / <code>top()</code></td><td>Return the top without removing it</td><td>\(O(1)\)</td><td>Underflow</td></tr>
+ <tr><td><code>isEmpty()</code></td><td>True if nothing is stored</td><td>\(O(1)\)</td><td>—</td></tr>
+ <tr><td><code>isFull()</code></td><td>True if capacity is reached (array version)</td><td>\(O(1)\)</td><td>—</td></tr>
+ </tbody>
+</table>
+</div>
+
+<pre><code>class Stack:
+ def __init__(self, capacity):
+ self.items = [None] * capacity # fixed-size array
+ self.capacity = capacity
+ self.top = -1 # -1 means empty
+
+ def isEmpty(self):
+ return self.top == -1
+
+ def isFull(self):
+ return self.top == self.capacity - 1
+
+ def push(self, item):
+ if self.isFull():
+ raise OverflowError("stack overflow")
+ self.top = self.top + 1 # move up FIRST ...
+ self.items[self.top] = item # ... then write
+
+ def pop(self):
+ if self.isEmpty():
+ raise IndexError("stack underflow")
+ item = self.items[self.top]
+ self.top = self.top - 1 # the slot is now garbage, and that is fine
+ return item
+
+ def peek(self):
+ if self.isEmpty():
+ raise IndexError("stack underflow")
+ return self.items[self.top]</code></pre>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why popping only decrements <code>top</code> instead of clearing the slot</summary>
+ <div class="dbody">
+ <p>After <code>pop()</code>, <code>items[top+1]</code> still physically holds the old value. It does not
+ matter, because <code>top</code> is the <em>only</em> thing that defines where the stack ends. Anything at an
+ index greater than <code>top</code> is outside the stack by definition, and the next <code>push</code> will
+ overwrite it before any code can read it through the interface.</p>
+ <p>That is the ADT boundary doing real work: the <em>logical</em> stack is "the elements at indices
+ \(0 \ldots \text{top}\)" and the leftover bytes above are not part of it. Clearing them would cost a write and
+ buy nothing. (The one exception is security-sensitive code, where you may deliberately overwrite memory that
+ held a password — a good honest aside in an evaluation answer.)</p>
+ <p>Note also that <code>push</code> increments <em>before</em> writing, because <code>top = -1</code> must map
+ to index 0 on the first push. Getting this backwards produces an off-by-one that either wastes slot 0 or
+ writes to index −1, which in Python silently hits the <em>last</em> element — a genuinely nasty bug.</p>
+ </div>
+</details>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — where stacks belong</span>
+ <ul>
+ <li><strong>The call stack.</strong> Every function call pushes an activation record; every return pops one.
+ This is why infinite recursion raises a stack-overflow error rather than hanging forever (see B2).</li>
+ <li><strong>Undo.</strong> An editor pushes the previous state on every edit; Ctrl+Z pops it. Redo is a second
+ stack.</li>
+ <li><strong>Backtracking.</strong> A maze solver pushes each cell it enters; when it hits a dead end it pops
+ back to the last junction.</li>
+ <li><strong>Balanced-bracket checking and expression evaluation</strong> — worked below.</li>
+ <li><strong>Browser history, DFS on a graph, parsing.</strong></li>
+ </ul>
+ <p><strong>When it is the wrong tool:</strong> anything where the oldest item must be handled first (that is a
+ queue) or where you must reach an item in the middle (that is an array or a tree).</p>
+</div>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 6 marks · bracket matching with a stack</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A program must decide whether a string of brackets is <em>balanced</em>: every
+ opener has a matching closer of the same type, correctly nested. Describe how a stack solves this, and trace
+ your method on <code>{ [ ( ) ] }</code> and on <code>{ ( ] }</code>.</p>
+ <p><strong>The algorithm.</strong> Push every opener. On a closer, pop and check that the popped opener is the
+ matching type. At the end, accept only if the stack is empty.</p>
+<pre><code>PAIRS = { ")": "(", "]": "[", "}": "{" }
+
+def isBalanced(text):
+ s = Stack(100)
+ for ch in text:
+ if ch in "([{":
+ s.push(ch)
+ elif ch in ")]}":
+ if s.isEmpty():
+ return False # a closer with nothing to close
+ if s.pop() != PAIRS[ch]:
+ return False # wrong type
+ return s.isEmpty() # openers left over is also a failure</code></pre>
+ <p><strong>Trace 1 — <code>{ [ ( ) ] }</code></strong></p>
+ <div class="table-wrap">
+ <table>
+ <thead><tr><th>Char</th><th>Action</th><th>Stack (bottom → top)</th></tr></thead>
+ <tbody>
+ <tr><td><code>{</code></td><td>push</td><td>{</td></tr>
+ <tr><td><code>[</code></td><td>push</td><td>{ [</td></tr>
+ <tr><td><code>(</code></td><td>push</td><td>{ [ (</td></tr>
+ <tr><td><code>)</code></td><td>pop → <code>(</code>, matches</td><td>{ [</td></tr>
+ <tr><td><code>]</code></td><td>pop → <code>[</code>, matches</td><td>{</td></tr>
+ <tr><td><code>}</code></td><td>pop → <code>{</code>, matches</td><td><em>empty</em></td></tr>
+ </tbody>
+ </table>
+ </div>
+ <p>End of string and the stack is empty → <strong>balanced</strong>.</p>
+ <p><strong>Trace 2 — <code>{ ( ] }</code></strong></p>
+ <div class="table-wrap">
+ <table>
+ <thead><tr><th>Char</th><th>Action</th><th>Stack (bottom → top)</th></tr></thead>
+ <tbody>
+ <tr><td><code>{</code></td><td>push</td><td>{</td></tr>
+ <tr><td><code>(</code></td><td>push</td><td>{ (</td></tr>
+ <tr><td><code>]</code></td><td>pop → <code>(</code>, expected <code>[</code></td><td>{</td></tr>
+ </tbody>
+ </table>
+ </div>
+ <p class="answerline"><strong>Answer:</strong> the first string is balanced; the second is rejected at the
+ third character, because <code>]</code> pops <code>(</code> but expects <code>[</code>. The function returns
+ <code>False</code> without examining the rest.</p>
+ <div class="callout callout--exam">
+ <span class="callout__label">Where the marks are</span>
+ <p>Algorithm description (2), trace 1 (2), trace 2 (2). The two failure marks candidates forget:
+ <strong>a closer when the stack is empty</strong> (<code>()) </code>) and
+ <strong>openers left at the end</strong> (<code>(()</code>). A trace that only ever checks "did the pop
+ match" scores 4 of 6. The reason a stack is the right structure is that nesting is LIFO: the most recently
+ opened bracket must be the first one closed.</p>
+ </div>
+ </div>
+</details>
+
+<h2>B4.1d · Queues and circular queues</h2>
+
+<p>A queue is <strong>FIFO</strong> — first in, first out. Items enter at the <strong>rear</strong> and leave from
+the <strong>front</strong>. It models any waiting line, and it is the structure behind printer spoolers, keyboard
+buffers, breadth-first search, and every scheduling system that must be fair.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Operation</th><th>Behaviour</th><th>Time</th><th>Failure</th></tr></thead>
+ <tbody>
+ <tr><td><code>enqueue(item)</code></td><td>Add at the rear</td><td>\(O(1)\)</td><td>Overflow — the queue is full</td></tr>
+ <tr><td><code>dequeue()</code></td><td>Remove and return the front</td><td>\(O(1)\)</td><td>Underflow — the queue is empty</td></tr>
+ <tr><td><code>peek()</code> / <code>front()</code></td><td>Return the front without removing it</td><td>\(O(1)\)</td><td>Underflow</td></tr>
+ <tr><td><code>isEmpty()</code></td><td>True when nothing is stored</td><td>\(O(1)\)</td><td>—</td></tr>
+ </tbody>
+</table>
+</div>
+
+<h3>The problem with the naive array queue</h3>
+
+<p>The obvious implementation keeps an array, a <code>front</code> index and a <code>rear</code> index. Enqueue
+writes at <code>rear</code> and increments it; dequeue reads from <code>front</code> and increments it. Both
+indices only ever <em>increase</em>.</p>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why the naive queue reports "full" while four fifths of it is empty</summary>
+ <div class="dbody">
+ <p>Start with an array of size 5, <code>front = 0</code>, <code>rear = 0</code>. Enqueue A, B, C, D —
+ <code>rear</code> is now 4. Dequeue twice — <code>front</code> is now 2. The array holds
+ <code>[_, _, C, D, _]</code> with <code>front = 2</code> and <code>rear = 4</code>: only two items, but the
+ next enqueue writes at index 4 and then <code>rear</code> becomes 5, which is off the end.</p>
+ <p>The structure is full in the only sense the code can detect — <code>rear</code> has reached the end of the
+ array — while slots 0 and 1 sit empty and unreachable. Every dequeue permanently retires a slot. After \(n\)
+ dequeues the queue is unusable no matter how few items it holds.</p>
+ <p>Two fixes exist, and the second is the one on the syllabus:</p>
+ <ol class="steps">
+ <li><strong>Shift everything left after each dequeue.</strong> Correct, but every dequeue becomes \(O(n)\),
+ which destroys the main reason to use a queue.</li>
+ <li><strong>Let the indices wrap around.</strong> Treat the array as a ring: after index \(n-1\) comes index
+ \(0\). Both operations stay \(O(1)\) and every slot is reusable. This is the <strong>circular
+ queue</strong>.</li>
+ </ol>
+ </div>
+</details>
+
+<h3>The circular queue</h3>
+
+<p>The array stays exactly where it is — a normal, linear, contiguous block of memory. What becomes circular is
+the <em>arithmetic on the indices</em>:</p>
+
+<p>\[ \text{rear} = (\text{rear} + 1) \bmod n \qquad\qquad \text{front} = (\text{front} + 1) \bmod n \]</p>
+
+<p>where \(n\) is the array length. Conventions on this page (an exam will state its own — apply whatever you are
+given):</p>
+
+<div class="callout callout--note">
+ <span class="callout__label">The convention used here</span>
+ <ul>
+ <li><code>front</code> = index of the first (oldest) item</li>
+ <li><code>rear</code> = index of the <strong>next free slot</strong></li>
+ <li><code>count</code> = number of items currently stored</li>
+ <li>Empty when <code>count == 0</code>; full when <code>count == n</code></li>
+ </ul>
+</div>
+
+<pre><code>class CircularQueue:
+ def __init__(self, n):
+ self.items = [None] * n
+ self.n = n
+ self.front = 0
+ self.rear = 0
+ self.count = 0
+
+ def isEmpty(self):
+ return self.count == 0
+
+ def isFull(self):
+ return self.count == self.n
+
+ def enqueue(self, item):
+ if self.isFull():
+ raise OverflowError("queue overflow")
+ self.items[self.rear] = item
+ self.rear = (self.rear + 1) % self.n # wraps: n-1 -> 0
+ self.count = self.count + 1
+
+ def dequeue(self):
+ if self.isEmpty():
+ raise IndexError("queue underflow")
+ item = self.items[self.front]
+ self.front = (self.front + 1) % self.n # wraps too
+ self.count = self.count - 1
+ return item
+
+ def peek(self):
+ if self.isEmpty():
+ raise IndexError("queue underflow")
+ return self.items[self.front]</code></pre>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why <code>front == rear</code> is ambiguous, and the two ways out</summary>
+ <div class="dbody">
+ <p>With the convention "front = first item, rear = next free slot", an <strong>empty</strong> queue has
+ <code>front == rear</code> (nothing stored, rear has nowhere to advance to). A <strong>full</strong> queue also
+ has <code>front == rear</code> (every slot taken, rear has wrapped all the way round to front). Two different
+ states, one identical picture. This is the single hardest idea in the topic and it is why you cannot test for
+ fullness with <code>front == rear</code>.</p>
+ <p><strong>Solution A — keep a count (used above).</strong> Empty is <code>count == 0</code>, full is
+ <code>count == n</code>. All \(n\) slots are usable; the cost is one extra integer and one extra update per
+ operation. This is the easiest version to trace and to write under pressure.</p>
+ <p><strong>Solution B — sacrifice one slot.</strong> Declare the queue full when
+ \((\text{rear} + 1) \bmod n == \text{front}\). The queue then holds at most \(n-1\) items, and the number
+ stored is \((\text{rear} - \text{front} + n) \bmod n\). No extra variable, one wasted slot. Many textbooks use
+ this, so you must be able to read it.</p>
+ <p><strong>Which is better?</strong> A count is one integer; a wasted slot is \(S\) bytes, and for a queue of
+ large records \(S\) is far bigger than an integer. So the count version is usually the better engineering
+ choice — but it only works if <em>every</em> operation maintains the count correctly, which is one more thing
+ to get wrong. State the trade-off and pick one; do not sit on the fence in an exam answer.</p>
+ <p><strong>Why <code>%</code> and not <code>/</code>:</strong> <code>%</code> is the remainder operator (IB
+ pseudocode: <code>mod</code>), and it maps any non-negative integer into \(0 \ldots n-1\). Rearranging, the
+ structure walks \(0, 1, 2, \ldots, n-1, 0, 1, \ldots\) forever without ever leaving the array bounds.</p>
+ </div>
+</details>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 320" role="img" aria-label="A five-slot circular queue in its final state after the trace, with front at index 3 and rear at index 2">
+ <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+ <defs>
+ <marker id="b4arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+ <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a5a13" stroke="#7a5a13"/>
+ </marker>
+ </defs>
+
+ <circle cx="190" cy="160" r="100" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="6 5"/>
+
+ <rect x="158" y="42" width="64" height="36" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="190" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">0: F</text>
+
+ <rect x="253" y="111" width="64" height="36" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="285" y="134" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">1: G</text>
+
+ <rect x="214" y="219" width="64" height="36" fill="#eef2ff" stroke="#3653d6" stroke-width="2.5"/>
+ <text x="246" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">2: C</text>
+
+ <rect x="102" y="219" width="64" height="36" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2.5"/>
+ <text x="134" y="242" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">3: D</text>
+
+ <rect x="63" y="111" width="64" height="36" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="95" y="134" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">4: E</text>
+
+ <text x="134" y="276" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#7a5a13">front</text>
+ <text x="269" y="276" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#3653d6">rear</text>
+
+ <line x1="300" y1="128" x2="352" y2="112" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 3"/>
+ <line x1="96" y1="112" x2="140" y2="96" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+ <text x="360" y="60" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#7a5a13">State after the trace</text>
+ <text x="360" y="90" font-family="system-ui, sans-serif" font-size="13" fill="#151923">n = 5, front = 3, rear = 2, count = 4</text>
+ <text x="360" y="116" font-family="system-ui, sans-serif" font-size="13" fill="#151923">rear &gt; front is normal: the queue has</text>
+ <text x="360" y="136" font-family="system-ui, sans-serif" font-size="13" fill="#151923">wrapped around at least once.</text>
+ <text x="360" y="168" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">Reading from front:</text>
+ <text x="360" y="192" font-family="system-ui, sans-serif" font-size="13" fill="#151923">3 → 4 → 0 → 1 = D, E, F, G</text>
+ <text x="360" y="224" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">next = (rear + 1) mod 5 = 3</text>
+ <text x="360" y="248" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">count == n is the ONLY full test</text>
+ <text x="360" y="272" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">front == rear would be ambiguous</text>
+ <text x="360" y="296" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">A linear queue says "full" here. Wrong.</text>
+ </svg>
+ <figcaption>The circular queue is a straight array; only the index arithmetic is circular.</figcaption>
+</figure>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 2</span> IB-style · 9 marks · full circular queue trace</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A circular queue is implemented with an array of five elements,
+ <code>front = 0</code>, <code>rear = 0</code>, <code>count = 0</code>, and the operations given above.
+ Complete the trace table for this sequence:</p>
+<pre><code>enqueue(A); enqueue(B); enqueue(C); dequeue(); dequeue();
+enqueue(D); enqueue(E); enqueue(F); dequeue(); enqueue(G);
+enqueue(H); enqueue(I);</code></pre>
+ <p>State the value returned by each <code>dequeue</code>, the final contents of the array, the final values of
+ <code>front</code>, <code>rear</code> and <code>count</code>, and what happens on the last operation.</p>
+ <div class="table-wrap">
+ <table>
+ <thead><tr><th>#</th><th>Operation</th><th>front</th><th>rear</th><th>count</th><th>Array [0..4]</th><th>Returns</th></tr></thead>
+ <tbody>
+ <tr><td>—</td><td><em>initial</em></td><td>0</td><td>0</td><td>0</td><td>_ _ _ _ _</td><td>—</td></tr>
+ <tr><td>1</td><td>enqueue(A)</td><td>0</td><td>1</td><td>1</td><td>A _ _ _ _</td><td>—</td></tr>
+ <tr><td>2</td><td>enqueue(B)</td><td>0</td><td>2</td><td>2</td><td>A B _ _ _</td><td>—</td></tr>
+ <tr><td>3</td><td>enqueue(C)</td><td>0</td><td>3</td><td>3</td><td>A B C _ _</td><td>—</td></tr>
+ <tr><td>4</td><td>dequeue()</td><td>1</td><td>3</td><td>2</td><td>A B C _ _</td><td><strong>A</strong></td></tr>
+ <tr><td>5</td><td>dequeue()</td><td>2</td><td>3</td><td>1</td><td>A B C _ _</td><td><strong>B</strong></td></tr>
+ <tr><td>6</td><td>enqueue(D)</td><td>2</td><td>4</td><td>2</td><td>A B C D _</td><td>—</td></tr>
+ <tr><td>7</td><td>enqueue(E)</td><td>2</td><td><strong>0</strong></td><td>3</td><td>A B C D E</td><td>—</td></tr>
+ <tr><td>8</td><td>enqueue(F)</td><td>2</td><td>1</td><td>4</td><td><strong>F</strong> B C D E</td><td>—</td></tr>
+ <tr><td>9</td><td>dequeue()</td><td>3</td><td>1</td><td>3</td><td>F B C D E</td><td><strong>C</strong></td></tr>
+ <tr><td>10</td><td>enqueue(G)</td><td>3</td><td>2</td><td>4</td><td>F <strong>G</strong> C D E</td><td>—</td></tr>
+ <tr><td>11</td><td>enqueue(H)</td><td>3</td><td>3</td><td><strong>5</strong></td><td>F G <strong>H</strong> D E</td><td>—</td></tr>
+ <tr><td>12</td><td>enqueue(I)</td><td>3</td><td>3</td><td>5</td><td>F G H D E</td><td><strong>overflow</strong></td></tr>
+ </tbody>
+ </table>
+ </div>
+ <ol class="steps">
+ <li><strong>Step 7 is the wrap.</strong> <code>rear</code> was 4, so
+ <code>(4 + 1) mod 5 = 0</code> — the next free slot is index 0, which has been empty since step 4. This is
+ the entire point of the structure.</li>
+ <li><strong>Step 8 overwrites index 0</strong> with F, reusing the space freed by the two dequeues.</li>
+ <li><strong>Step 9</strong> reads <code>items[2]</code> = C, then advances <code>front</code> to
+ <code>(2+1) mod 5 = 3</code>.</li>
+ <li><strong>Step 11 fills the queue.</strong> <code>count</code> reaches 5, which equals <code>n</code>.</li>
+ <li><strong>Step 12 is refused.</strong> <code>isFull()</code> is true, so <code>enqueue</code> raises an
+ overflow and <em>nothing changes</em> — I is not stored, and <code>rear</code> stays at 3. Note that
+ <code>front == rear == 3</code> here, which is exactly the ambiguity: with the count-based convention it
+ means <em>full</em>, not empty.</li>
+ </ol>
+ <p class="answerline"><strong>Answer:</strong> dequeues return A, B, C in that order. Final array
+ <code>[F, G, H, D, E]</code>, <code>front = 3</code>, <code>rear = 3</code>, <code>count = 5</code>; reading
+ from front gives D, E, F, G, H. The twelfth operation causes <strong>overflow</strong> and is rejected.</p>
+ <div class="callout callout--exam">
+ <span class="callout__label">Where the marks are</span>
+ <p>One mark per correct row (up to 6), one for the three returned values in order, one for the final state,
+ one for naming overflow on the last operation. The two rows everyone botches are 7 (forgetting the wrap, and
+ writing <code>rear = 5</code>) and 12 (writing that the queue "stores I somewhere" instead of stating that
+ the operation is refused and the state is unchanged). A linear queue would have overflowed at step 7 — if
+ your trace does not show that difference, you have not demonstrated the point of the structure.</p>
+ </div>
+ </div>
+</details>
+
+<h2>B4.1e · Linked lists</h2>
+
+<p>A linked list stores its elements in <strong>nodes</strong> scattered anywhere in memory. Each node holds the
+data and a <strong>pointer</strong> (<code>next</code>) to the following node. The list is reached through a
+single pointer, <code>head</code>; the last node's <code>next</code> is <code>null</code>.</p>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 320" role="img" aria-label="A singly linked list of four nodes, each with a data field and a next pointer, ending in null">
+ <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+ <defs>
+ <marker id="b4ll" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+ <path d="M 0 0 L 10 5 L 0 10 z" fill="#7a5a13" stroke="#7a5a13"/>
+ </marker>
+ </defs>
+
+ <rect x="24" y="118" width="60" height="34" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+ <text x="54" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#151923">head</text>
+ <line x1="84" y1="135" x2="136" y2="135" stroke="#7a5a13" stroke-width="2" marker-end="url(#b4ll)"/>
+
+ <rect x="140" y="112" width="96" height="44" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+ <line x1="200" y1="112" x2="200" y2="156" stroke="#334155" stroke-width="1.5"/>
+ <text x="170" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">12</text>
+ <text x="218" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#6c7788">•—&gt;</text>
+ <line x1="236" y1="134" x2="246" y2="134" stroke="#7a5a13" stroke-width="2" marker-end="url(#b4ll)"/>
+
+ <rect x="250" y="112" width="96" height="44" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+ <line x1="310" y1="112" x2="310" y2="156" stroke="#334155" stroke-width="1.5"/>
+ <text x="280" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">99</text>
+ <text x="328" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#6c7788">•—&gt;</text>
+ <line x1="346" y1="134" x2="356" y2="134" stroke="#7a5a13" stroke-width="2" marker-end="url(#b4ll)"/>
+
+ <rect x="360" y="112" width="96" height="44" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+ <line x1="420" y1="112" x2="420" y2="156" stroke="#334155" stroke-width="1.5"/>
+ <text x="390" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">7</text>
+ <text x="438" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#6c7788">•—&gt;</text>
+ <line x1="456" y1="134" x2="466" y2="134" stroke="#7a5a13" stroke-width="2" marker-end="url(#b4ll)"/>
+
+ <rect x="470" y="112" width="96" height="44" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+ <line x1="530" y1="112" x2="530" y2="156" stroke="#334155" stroke-width="1.5"/>
+ <text x="500" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">41</text>
+ <text x="548" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#6c7788">•—&gt;</text>
+ <line x1="566" y1="134" x2="584" y2="134" stroke="#7a5a13" stroke-width="2" marker-end="url(#b4ll)"/>
+ <text x="590" y="139" font-family="system-ui, sans-serif" font-size="13" font-style="italic" fill="#6c7788">null</text>
+
+ <text x="24" y="196" font-family="system-ui, sans-serif" font-size="13" fill="#6c7788">Nodes need not be adjacent in memory — only the pointers chain them.</text>
+ <text x="24" y="220" font-family="system-ui, sans-serif" font-size="13" fill="#151923">traversal (follow next until null) ............ O(n)</text>
+ <text x="24" y="242" font-family="system-ui, sans-serif" font-size="13" fill="#151923">insert / delete at head ...................... O(1)</text>
+ <text x="24" y="264" font-family="system-ui, sans-serif" font-size="13" fill="#151923">insert / delete after a known node ........... O(1)</text>
+ <text x="24" y="286" font-family="system-ui, sans-serif" font-size="13" fill="#151923">reaching node i by position .................. O(n) — no indexing</text>
+ </svg>
+ <figcaption>A singly linked list. The cost of \(O(1)\) insertion is that you can no longer jump straight to
+ index \(i\).</figcaption>
+</figure>
+
+<pre><code>class Node:
+ def __init__(self, data):
+ self.data = data
+ self.next = None
+
+class LinkedList:
+ def __init__(self):
+ self.head = None
+
+ def isEmpty(self):
+ return self.head is None
+
+ def insertAtHead(self, data):
+ n = Node(data)
+ n.next = self.head # 1. new node points to the old first node
+ self.head = n # 2. head now points to the new node
+
+ def insertAfter(self, target, data):
+ n = Node(data)
+ n.next = target.next # 1. FIRST: link the new node to what followed
+ target.next = n # 2. THEN: link the predecessor to the new node
+
+ def deleteAfter(self, target):
+ if target.next is None:
+ return
+ target.next = target.next.next # bypass the node; it is now unreachable
+
+ def search(self, value):
+ cur = self.head
+ while cur is not None:
+ if cur.data == value:
+ return True
+ cur = cur.next
+ return False
+
+ def traverse(self):
+ cur = self.head
+ while cur is not None:
+ print(cur.data)
+ cur = cur.next</code></pre>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why the order of the two pointer assignments matters, and why deletion needs the predecessor</summary>
+ <div class="dbody">
+ <p>Insertion <strong>after</strong> a node <code>target</code> is two assignments. Do them in the wrong order
+ and the rest of the list is lost:</p>
+<pre><code>target.next = n # WRONG FIRST STEP: the only pointer to the rest of the
+ # list is overwritten. Everything after target is now
+ # unreachable — leaked, and silently gone.
+n.next = target.next # now reads n.next and assigns it to n.next: a no-op.</code></pre>
+ <p>The correct order reads the old chain <em>before</em> breaking it. The general rule for any pointer surgery:
+ <strong>always set the new node's outgoing pointer first, then rewire the existing node.</strong> Draw the
+ arrows on paper for every linked-list question; nobody traces these reliably in their head.</p>
+ <p>Deletion in a <strong>singly</strong> linked list is \(O(n)\) even though the deletion itself is one
+ assignment, because the assignment needs a pointer to the <em>predecessor</em>, and finding the predecessor
+ requires walking from the head. Given only a pointer to the node you want to delete, you cannot reach
+ backwards. That single fact motivates the doubly linked list.</p>
+ <p>A <strong>doubly</strong> linked list adds a <code>prev</code> pointer, so a node can be deleted in \(O(1)\)
+ once found:
+ <code>node.prev.next = node.next; node.next.prev = node.prev</code> (with null checks at both ends). The cost
+ is one extra pointer per node and twice as many assignments on every insert and delete.</p>
+ <p>A <strong>circular</strong> linked list makes the last node's <code>next</code> point back to the head, so
+ "have I gone all the way round?" is a comparison against <code>head</code> rather than against
+ <code>null</code>. It is the natural structure for round-robin scheduling, where a process list is cycled
+ forever. The danger: every traversal loop must have a guaranteed exit, or it spins indefinitely.</p>
+ </div>
+</details>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th></th><th>Array</th><th>Singly linked list</th><th>Doubly linked list</th></tr></thead>
+ <tbody>
+ <tr><td>Access by index</td><td>\(O(1)\)</td><td>\(O(n)\)</td><td>\(O(n)\)</td></tr>
+ <tr><td>Search for a value</td><td>\(O(n)\) unsorted, \(O(\log n)\) sorted</td><td>\(O(n)\)</td><td>\(O(n)\)</td></tr>
+ <tr><td>Insert at the front</td><td>\(O(n)\) — everything shifts</td><td>\(O(1)\)</td><td>\(O(1)\)</td></tr>
+ <tr><td>Insert at a known position</td><td>\(O(n)\) — shifting</td><td>\(O(1)\) given the predecessor</td><td>\(O(1)\)</td></tr>
+ <tr><td>Delete a known node</td><td>\(O(n)\) — shifting</td><td>\(O(n)\) to find the predecessor</td><td>\(O(1)\)</td></tr>
+ <tr><td>Memory per element</td><td>Just the data</td><td>Data + 1 pointer</td><td>Data + 2 pointers</td></tr>
+ <tr><td>Size</td><td>Fixed (or costly to grow)</td><td>Grows and shrinks freely</td><td>Grows and shrinks freely</td></tr>
+ <tr><td>Memory locality</td><td>Excellent — contiguous, cache-friendly</td><td>Poor — nodes scattered</td><td>Poor</td></tr>
+ <tr><td>Choose it when</td><td>Size is known, access is by index</td><td>Frequent insert/delete at the front, size unknown</td><td>You must delete arbitrary nodes in \(O(1)\), or traverse backwards</td></tr>
+ </tbody>
+</table>
+</div>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 3</span> IB-style · 6 marks · pointer manipulation on a linked list</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A singly linked list currently holds <code>12 → 99 → 7 → 41 → null</code>, with
+ <code>head</code> pointing at the node holding 12.</p>
+ <p>(a) Write the statements needed to insert a new node holding 25 <em>between</em> the nodes holding 7 and 41,
+ assuming you already have a pointer <code>p</code> to the node holding 7.</p>
+ <p>(b) Write the statements to delete the node holding 99, assuming you have a pointer <code>q</code> to the
+ node holding 12.</p>
+ <p>(c) State the resulting list.</p>
+ <ol class="steps">
+ <li><strong>(a)</strong> The new node sits between <code>p</code> (7) and <code>p.next</code> (41). Link
+ forwards first, then rewire:<br>
+ <code>n = Node(25)</code><br>
+ <code>n.next = p.next</code> &nbsp;&nbsp;// n → 41<br>
+ <code>p.next = n</code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 7 → 25</li>
+ <li><strong>(b)</strong> The node to delete is <code>q.next</code>. Bypass it:<br>
+ <code>q.next = q.next.next</code> &nbsp;&nbsp;// 12 → 7, skipping 99</li>
+ <li><strong>(c)</strong> <code>12 → 7 → 25 → 41 → null</code>.</li>
+ </ol>
+ <p class="answerline"><strong>Answer:</strong> (a) <code>n.next = p.next; p.next = n</code> (b)
+ <code>q.next = q.next.next</code> (c) <code>12 → 7 → 25 → 41 → null</code>.</p>
+ <div class="callout callout--exam">
+ <span class="callout__label">Where the marks are</span>
+ <p>Two marks each for (a) and (b), and both marks in (a) depend on the <strong>order</strong>: if you write
+ <code>p.next = n</code> first you have destroyed the only route to the node holding 41, and the pair scores
+ zero even though both lines appear. One mark for (c). A common extra error in (b) is
+ <code>q.next.next = q.next</code>, which points 7 back at 99 and creates an infinite loop.</p>
+ </div>
+ </div>
+</details>
+
+<h2>B4.1f · Binary trees and binary search trees</h2>
+
+<p>A <strong>binary tree</strong> is a set of nodes where each node has at most <strong>two</strong> children,
+called the <strong>left</strong> and <strong>right</strong> child.</p>
+
+<div class="grid grid--3">
+ <div class="card"><h4>Root</h4><p>The single node with no parent. There is exactly one.</p></div>
+ <div class="card"><h4>Leaf</h4><p>A node with no children.</p></div>
+ <div class="card"><h4>Parent / child</h4><p>A node directly above / below another, joined by an <strong>edge</strong>.</p></div>
+ <div class="card"><h4>Subtree</h4><p>Any node together with all of its descendants. A subtree is itself a tree — this is what makes recursion natural.</p></div>
+ <div class="card"><h4>Depth</h4><p>Number of edges from the root to this node. The root has depth 0.</p></div>
+ <div class="card"><h4>Height</h4><p>Number of edges on the longest path from this node down to a leaf. A leaf has height 0.</p></div>
+</div>
+
+<h3>The binary search tree ordering property</h3>
+
+<p>A <strong>binary search tree (BST)</strong> is a binary tree with one extra rule:</p>
+
+<div class="callout callout--note">
+ <span class="callout__label">The BST invariant</span>
+ <p>For every node: <strong>every value in its left subtree is less than the node's value, and every value in its
+ right subtree is greater than it.</strong> (Decide once what to do with duplicates — "go right" is the usual
+ choice — and apply it consistently.)</p>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why a BST searches in \(O(\log n)\) — and why it can collapse to \(O(n)\)</summary>
+ <div class="dbody">
+ <p>Searching is a sequence of comparisons. At the root you compare and then move left or right. Because of the
+ invariant, that single comparison does not just eliminate the root — it eliminates the <em>entire subtree on the
+ other side</em>. Move left from the root and you have discarded every value greater than the root, which could
+ be half the tree.</p>
+ <p>A tree of height \(h\) therefore needs at most \(h+1\) comparisons. A tree with \(n\) nodes of height \(h\)
+ can hold at most \(2^{h+1}-1\) nodes, so for a bushy tree \(n \approx 2^{h+1}\) and</p>
+ <p>\[ h \approx \log_2 n \quad\Rightarrow\quad \text{search cost} = O(\log n) \]</p>
+ <p>Compare that with a linked list or an unsorted array, where finding a value costs \(O(n)\). With
+ \(n = 1\,000\,000\) that is roughly 20 comparisons against 1,000,000 — the difference between instant and
+ unusable.</p>
+ <p><strong>Now the catch, and it is a big one.</strong> That bound holds only if the tree is
+ <em>balanced</em>. Insert keys in <strong>ascending</strong> order — 1, 2, 3, 4, 5 — and every new key goes
+ right of every existing key. The result is a chain: a "tree" with height \(n-1\) that is really a linked list
+ with extra memory. Search becomes \(O(n)\), and the BST buys you nothing. Self-balancing trees (AVL, red-black)
+ exist precisely to prevent this, by rotating nodes during insertion to keep the height near \(\log_2 n\).</p>
+ <p><strong>The honest summary for an exam:</strong> a BST gives \(O(\log n)\) search, insert and delete
+ <em>on average, for randomly ordered input</em>, and \(O(n)\) in the worst case. Average-case claims depend on
+ the input distribution, and sorted input is the pathological case.</p>
+ </div>
+</details>
+
+<pre><code>class TreeNode:
+ def __init__(self, value):
+ self.value = value
+ self.left = None
+ self.right = None
+
+class BST:
+ def __init__(self):
+ self.root = None
+
+ def insert(self, value):
+ self.root = self._insert(self.root, value)
+
+ def _insert(self, node, value):
+ if node is None:
+ return TreeNode(value) # empty slot = the base case
+ if value < node.value:
+ node.left = self._insert(node.left, value)
+ elif value > node.value:
+ node.right = self._insert(node.right, value)
+ # equal: ignore (or count duplicates)
+ return node
+
+ def search(self, value):
+ cur = self.root
+ while cur is not None:
+ if value == cur.value:
+ return True
+ elif value < cur.value:
+ cur = cur.left
+ else:
+ cur = cur.right
+ return False</code></pre>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — insertion is recursion on the invariant</span>
+ <ol class="steps">
+ <li>Start at the root.</li>
+ <li>If the value is smaller, go left; if larger, go right.</li>
+ <li>If you reach <code>None</code>, you have found the only place the value can legally go. Create the node
+ there.</li>
+ <li>Return the (possibly new) node so the parent's pointer can be updated.</li>
+ </ol>
+ <p>Step 3 is the whole insight: you never "find a slot", you <em>fall off the bottom of the tree</em>, and the
+ first empty child pointer you meet is where the value belongs.</p>
+</div>
+
+<h3>Tree traversals</h3>
+
+<p>A <strong>traversal</strong> visits every node exactly once in a defined order. The three depth-first orders
+are named for when the root is visited relative to its subtrees. All three are naturally recursive: to traverse a
+tree, traverse its left subtree, traverse its right subtree, and visit the root — in the order the name
+specifies.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Order</th><th>Rule</th><th>What it is for</th></tr></thead>
+ <tbody>
+ <tr><td><strong>Pre-order</strong></td><td>Root, then left subtree, then right subtree</td><td>Copying a tree; producing a prefix expression; serialising a tree so it can be rebuilt</td></tr>
+ <tr><td><strong>In-order</strong></td><td>Left subtree, then root, then right subtree</td><td><strong>Visiting a BST's values in ascending order</strong></td></tr>
+ <tr><td><strong>Post-order</strong></td><td>Left subtree, then right subtree, then root</td><td>Deleting / freeing a tree (children first); postfix expressions; evaluating an expression tree</td></tr>
+ </tbody>
+</table>
+</div>
+
+<pre><code>def inOrder(node):
+ if node is None:
+ return # base case: an empty subtree contributes nothing
+ inOrder(node.left)
+ print(node.value, end=" ")
+ inOrder(node.right)
+
+def preOrder(node):
+ if node is None:
+ return
+ print(node.value, end=" ")
+ preOrder(node.left)
+ preOrder(node.right)
+
+def postOrder(node):
+ if node is None:
+ return
+ postOrder(node.left)
+ postOrder(node.right)
+ print(node.value, end=" ")</code></pre>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why in-order on a BST prints the values in sorted order</summary>
+ <div class="dbody">
+ <p>Take any node with value \(v\). By the BST invariant, everything in its left subtree is \({}&lt; v\) and
+ everything in its right subtree is \({}&gt; v\). In-order prints <em>all</em> of the left subtree, then \(v\),
+ then <em>all</em> of the right subtree — so \(v\) appears after every smaller value in its subtree and before
+ every larger one. That is precisely the definition of sorted order.</p>
+ <p>The same argument applies recursively at every node, so the whole output is sorted. No sorting was
+ performed: the order was baked in at insertion time. This is the payoff of maintaining the invariant — you pay
+ \(O(\log n)\) per insert and get a sorted listing for the price of an \(O(n)\) walk.</p>
+ <p>Contrast with pre-order, which on a BST gives the root first and tells you nothing about ordering, but which
+ is the traversal you need to <strong>rebuild</strong> the tree, because it identifies the root of every
+ subtree before its contents.</p>
+ </div>
+</details>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 400" role="img" aria-label="A binary search tree with root 10 and the three traversal orders listed beneath it">
+ <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
+
+ <line x1="320" y1="69" x2="170" y2="106" stroke="#334155" stroke-width="1.5"/>
+ <line x1="320" y1="69" x2="470" y2="106" stroke="#334155" stroke-width="1.5"/>
+ <line x1="170" y1="154" x2="95" y2="191" stroke="#334155" stroke-width="1.5"/>
+ <line x1="170" y1="154" x2="245" y2="191" stroke="#334155" stroke-width="1.5"/>
+ <line x1="470" y1="154" x2="395" y2="191" stroke="#334155" stroke-width="1.5"/>
+ <line x1="470" y1="154" x2="545" y2="191" stroke="#334155" stroke-width="1.5"/>
+ <line x1="95" y1="239" x2="50" y2="276" stroke="#334155" stroke-width="1.5"/>
+
+ <circle cx="320" cy="45" r="24" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+ <text x="320" y="52" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#151923">10</text>
+
+ <circle cx="170" cy="130" r="24" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="170" y="137" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">5</text>
+ <circle cx="470" cy="130" r="24" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="470" y="137" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">15</text>
+
+ <circle cx="95" cy="215" r="24" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="95" y="222" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">3</text>
+ <circle cx="245" cy="215" r="24" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="245" y="222" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">7</text>
+ <circle cx="395" cy="215" r="24" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="395" y="222" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">12</text>
+ <circle cx="545" cy="215" r="24" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="545" y="222" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">18</text>
+
+ <circle cx="50" cy="300" r="24" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="50" y="307" text-anchor="middle" font-family="system-ui, sans-serif" font-size="15" fill="#151923">1</text>
+
+ <circle cx="215" cy="300" r="16" fill="#ffffff" stroke="#c3cbd6" stroke-width="1.5" stroke-dasharray="3 3"/>
+ <text x="215" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#c3cbd6">–</text>
+ <circle cx="275" cy="300" r="16" fill="#ffffff" stroke="#c3cbd6" stroke-width="1.5" stroke-dasharray="3 3"/>
+ <text x="275" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#c3cbd6">–</text>
+ <line x1="245" y1="239" x2="222" y2="285" stroke="#c3cbd6" stroke-width="1" stroke-dasharray="3 3"/>
+ <line x1="245" y1="239" x2="268" y2="285" stroke="#c3cbd6" stroke-width="1" stroke-dasharray="3 3"/>
+
+ <text x="24" y="356" font-family="system-ui, sans-serif" font-size="13" fill="#151923">In-order (left, root, right):&nbsp;&nbsp;&nbsp; 1&nbsp; 3&nbsp; 5&nbsp; 7&nbsp; 10&nbsp; 12&nbsp; 15&nbsp; 18</text>
+ <text x="24" y="376" font-family="system-ui, sans-serif" font-size="13" fill="#151923">Pre-order (root, left, right):&nbsp;&nbsp; 10&nbsp; 5&nbsp; 3&nbsp; 1&nbsp; 7&nbsp; 15&nbsp; 12&nbsp; 18</text>
+ <text x="24" y="396" font-family="system-ui, sans-serif" font-size="13" fill="#151923">Post-order (left, right, root): 1&nbsp; 3&nbsp; 7&nbsp; 5&nbsp; 12&nbsp; 18&nbsp; 15&nbsp; 10</text>
+ </svg>
+ <figcaption>A BST built by inserting 10, 5, 15, 3, 7, 12, 18, 1. Dashed circles are null child pointers. Note
+ that the in-order output is sorted.</figcaption>
+</figure>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 4</span> IB-style · 8 marks · build a BST and give all three traversals</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> Starting from an empty binary search tree, insert the values in this order:</p>
+ <p><code>50, 30, 70, 20, 40, 60, 80, 10, 35</code></p>
+ <p>(a) Draw the resulting tree. (b) State the in-order, pre-order and post-order traversals. (c) State the
+ number of comparisons needed to find 35, and to establish that 55 is <em>not</em> present.</p>
+ <ol class="steps">
+ <li><strong>Insert one at a time</strong>, comparing to the root then descending: 50 becomes root; 30 &lt; 50
+ goes left; 70 &gt; 50 goes right; 20 &lt; 50 then &lt; 30 → left of 30; 40 &lt; 50 then &gt; 30 → right of
+ 30; 60 &gt; 50 then &lt; 70 → left of 70; 80 &gt; 50 then &gt; 70 → right of 70; 10 &lt; 50, &lt; 30, &lt; 20
+ → left of 20; 35 &lt; 50, &gt; 30, &lt; 40 → left of 40.</li>
+ <li><strong>The tree:</strong>
+<pre><code> 50
+ / \
+ 30 70
+ / \ / \
+ 20 40 60 80
+ / /
+ 10 35</code></pre></li>
+ <li><strong>In-order</strong> (left, root, right) — descend as far left as possible first:
+ 10, 20, 30, 35, 40, 50, 60, 70, 80. Sorted, as it must be.</li>
+ <li><strong>Pre-order</strong> (root, left, right): 50, then the left subtree pre-order
+ (30, 20, 10, 40, 35), then the right (70, 60, 80) →
+ <strong>50, 30, 20, 10, 40, 35, 70, 60, 80</strong>.</li>
+ <li><strong>Post-order</strong> (left, right, root): left subtree (10, 20, 35, 40, 30), right subtree
+ (60, 80, 70), root 50 →
+ <strong>10, 20, 35, 40, 30, 60, 80, 70, 50</strong>.</li>
+ <li><strong>(c) Finding 35:</strong> 35 ≠ 50 (1), &lt; 50 go left; 35 ≠ 30 (2), &gt; 30 go right;
+ 35 ≠ 40 (3), &lt; 40 go left; 35 = 35 (4). <strong>4 comparisons</strong>.</li>
+ <li><strong>(c) Rejecting 55:</strong> 55 ≠ 50 (1) → right; 55 ≠ 70 (2) → left; 55 ≠ 60 (3) → left;
+ the left child of 60 is <code>null</code>, so 55 is absent. <strong>3 comparisons</strong>. Note that a
+ failed search costs the same order as a successful one — you stop when you fall off the bottom, not when you
+ run out of nodes.</li>
+ </ol>
+ <p class="answerline"><strong>Answer:</strong> (b) in-order 10 20 30 35 40 50 60 70 80; pre-order
+ 50 30 20 10 40 35 70 60 80; post-order 10 20 35 40 30 60 80 70 50. (c) 4 comparisons, then 3.</p>
+ <div class="callout callout--exam">
+ <span class="callout__label">Where the marks are</span>
+ <p>Tree (3), one mark per traversal (3), comparisons (2). The arithmetic on in-order is where marks go: the
+ subtree rooted at 40 contains just 35 and 40, so in-order gives 35 then 40 — candidates often write 40 then
+ 35 because 40 was inserted first. Insertion order has nothing to do with traversal order.</p>
+ </div>
+ </div>
+</details>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 5</span> IB-style · 6 marks · reconstruct a tree from two traversals</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A binary tree has</p>
+ <p><code>pre-order:&nbsp; A B D E C F G</code> &nbsp;&nbsp; <code>in-order:&nbsp; D B E A F C G</code></p>
+ <p>Draw the tree, and explain why the pre-order and post-order traversals alone would <em>not</em> be
+ sufficient.</p>
+ <ol class="steps">
+ <li><strong>The first pre-order element is the root.</strong> A is the root of the whole tree.</li>
+ <li><strong>Locate A in the in-order list:</strong> <code>D B E</code> <strong>A</strong>
+ <code>F C G</code>. Everything left of A is in A's left subtree; everything right is in A's right
+ subtree. So the left subtree holds {D, B, E} and the right holds {F, C, G}.</li>
+ <li><strong>Recurse on the left subtree {D, B, E}.</strong> The next unused pre-order element is B, so B is
+ its root. In the in-order fragment <code>D B E</code>, D is left of B and E is right of B. So B has left
+ child D and right child E.</li>
+ <li><strong>Recurse on the right subtree {F, C, G}.</strong> The next unused pre-order element is C, so C is
+ its root. In <code>F C G</code>, F is left and G is right. So C has left child F and right child G.</li>
+ <li><strong>The tree:</strong>
+<pre><code> A
+ / \
+ B C
+ / \ / \
+ D E F G</code></pre></li>
+ <li><strong>Why pre + post is not enough.</strong> Consider pre-order <code>A B</code> and post-order
+ <code>B A</code>. Both are consistent with A having B as its <em>left</em> child and with A having B as its
+ <em>right</em> child — two different trees, identical traversal pair. Pre-order identifies the root but not
+ which side the remainder belongs to; in-order supplies exactly that, by splitting the values into "left of
+ the root" and "right of the root". <strong>You need in-order plus one of the other two.</strong></li>
+ </ol>
+ <p class="answerline"><strong>Answer:</strong> the tree shown above. Reconstruction requires the in-order
+ traversal to partition the nodes; pre-order alone only tells you the root of each subtree.</p>
+ <div class="callout callout--exam">
+ <span class="callout__label">Where the marks are</span>
+ <p>Tree (3), method (2), explanation of insufficiency (1). The reliable method to write down: <em>take the
+ next unused pre-order element as the root, split the in-order list at that value, recurse on each
+ half.</em> Candidates who try to do this by inspection get the right answer on small trees and lose it
+ completely the moment a subtree is lopsided.</p>
+ </div>
+ </div>
+</details>
+
+<h2>B4.1g · Sets</h2>
+
+<p>A <strong>set</strong> is an unordered collection of <strong>distinct</strong> elements. Adding an element that
+is already present changes nothing. The operations are the ones you know from mathematics.</p>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Operation</th><th>Meaning</th><th>Example with \(A=\{1,2,3\}, B=\{3,4\}\)</th></tr></thead>
+ <tbody>
+ <tr><td><code>add(x)</code></td><td>Insert if not already present</td><td>—</td></tr>
+ <tr><td><code>remove(x)</code></td><td>Delete x</td><td>—</td></tr>
+ <tr><td><code>contains(x)</code></td><td>Membership test</td><td>\(3 \in A\): true</td></tr>
+ <tr><td><code>union(B)</code></td><td>Elements in A or B (or both)</td><td>\(A \cup B = \{1,2,3,4\}\)</td></tr>
+ <tr><td><code>intersection(B)</code></td><td>Elements in both</td><td>\(A \cap B = \{3\}\)</td></tr>
+ <tr><td><code>difference(B)</code></td><td>In A but not in B</td><td>\(A - B = \{1,2\}\)</td></tr>
+ <tr><td><code>isSubsetOf(B)</code></td><td>Every element of A is in B</td><td>false</td></tr>
+ <tr><td><code>isSupersetOf(B)</code></td><td>Every element of B is in A</td><td>false</td></tr>
+ <tr><td><code>size()</code></td><td>Number of elements</td><td>3</td></tr>
+ </tbody>
+</table>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Two implementations, and why one of them turns set algebra into machine instructions</summary>
+ <div class="dbody">
+ <p><strong>Implementation 1 — a hash set</strong> (next section). Membership is \(O(1)\) average, and
+ union/intersection run in \(O(n)\) by iterating the smaller set and testing membership in the larger. This is
+ what Python's <code>set</code> and Java's <code>HashSet</code> do.</p>
+ <p><strong>Implementation 2 — a bit string (characteristic vector).</strong> If the <em>universe</em> of
+ possible elements is small and known — say the 26 letters, or 64 students — assign each element an index and
+ store one bit per element: 1 means present, 0 means absent. Then:</p>
+ <ul>
+ <li>membership = read one bit: \(O(1)\)</li>
+ <li><strong>union = bitwise OR</strong></li>
+ <li><strong>intersection = bitwise AND</strong></li>
+ <li><strong>difference = A AND (NOT B)</strong></li>
+ </ul>
+ <p>This is the same Boolean algebra from A1.2, now doing real work. A 64-element universe fits in a single
+ 64-bit register, so a union of two sets is <em>one machine instruction</em> instead of a loop. That is why
+ database engines and search indexes use bitmaps for filtering.</p>
+ <p><strong>The trade-off.</strong> The bit string is \(O(U)\) in space where \(U\) is the size of the
+ universe, regardless of how few elements are actually in the set — 64 students costs 64 bits even for an empty
+ set. It is brilliant when sets are dense over a small universe and wasteful when the universe is large or the
+ sets are sparse. A hash set is \(O(n)\) in space for \(n\) stored elements, with slower but still
+ \(O(1)\) operations.</p>
+ </div>
+</details>
+
+<details class="worked">
+ <summary><span class="badge badge--medium">Worked example 6</span> IB-style · 6 marks · sets as bit strings</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A school's universe of clubs is
+ \(U = \{\text{Art}, \text{Badminton}, \text{Chess}, \text{Drama}, \text{E-sports}, \text{Film},
+ \text{Gardening}, \text{Hockey}\}\), indexed 0 to 7.</p>
+ <p>\(S_1\) = {Art, Chess, E-sports} &nbsp;&nbsp; \(S_2\) = {Chess, Drama, E-sports, Hockey}</p>
+ <p>(a) Write both sets as 8-bit strings. (b) Compute \(S_1 \cup S_2\), \(S_1 \cap S_2\) and
+ \(S_1 - S_2\) as bit strings and as sets. (c) State which bitwise operation each set operation
+ corresponds to.</p>
+ <ol class="steps">
+ <li><strong>(a)</strong> Index order A, B, C, D, E, F, G, H.<br>
+ \(S_1\): Art=1, Chess=1, E-sports=1 → <code>1 0 1 0 1 0 0 0</code><br>
+ \(S_2\): Chess=1, Drama=1, E-sports=1, Hockey=1 → <code>0 0 1 1 1 0 0 1</code></li>
+ <li><strong>(b) Union — OR:</strong>
+<pre><code> 1 0 1 0 1 0 0 0 S1
+| 0 0 1 1 1 0 0 1 S2
+= 1 0 1 1 1 0 0 1 = {Art, Chess, Drama, E-sports, Hockey}</code></pre></li>
+ <li><strong>Intersection — AND:</strong>
+<pre><code> 1 0 1 0 1 0 0 0
+&amp; 0 0 1 1 1 0 0 1
+= 0 0 1 0 1 0 0 0 = {Chess, E-sports}</code></pre></li>
+ <li><strong>Difference — AND NOT:</strong> NOT \(S_2\) = <code>1 1 0 0 0 1 1 0</code>
+<pre><code> 1 0 1 0 1 0 0 0
+&amp; 1 1 0 0 0 1 1 0
+= 1 0 0 0 0 0 0 0 = {Art}</code></pre>
+ Sensible: Art is the only member of \(S_1\) that \(S_2\) does not have.</li>
+ <li><strong>(c)</strong> union = OR (1 mark), intersection = AND (1), difference = AND NOT (1).</li>
+ </ol>
+ <p class="answerline"><strong>Answer:</strong> \(S_1 =\) <code>10101000</code>,
+ \(S_2 =\) <code>00111001</code>; union <code>10111001</code> = {Art, Chess, Drama, E-sports, Hockey};
+ intersection <code>00101000</code> = {Chess, E-sports}; difference <code>10000000</code> = {Art}.</p>
+ <div class="callout callout--exam">
+ <span class="callout__label">Where the marks are</span>
+ <p>One mark per bit string (2), one per result (3), one for naming the operations. Write the index order down
+ before you start — every wrong answer to this question comes from miscounting positions, not from not
+ understanding OR and AND. And check the difference answer for sanity: it must contain only elements that
+ were in \(S_1\).</p>
+ </div>
+ </div>
+</details>
+
+<h2>B4.1h · Hash tables</h2>
+
+<p>A hash table stores key–value pairs and aims for \(O(1)\) access. The idea: instead of searching for a key,
+<em>compute</em> where it must be.</p>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it</span>
+ <ol class="steps">
+ <li>A <strong>hash function</strong> \(h\) turns a key into an integer.</li>
+ <li>The <strong>index</strong> is \(h(k) \bmod m\), where \(m\) is the table size. Taking the modulus is what
+ forces the result into the range \(0 \ldots m-1\).</li>
+ <li>Store the value at that index. To look it up, recompute the index and go straight there.</li>
+ <li>Two different keys can produce the same index. That is a <strong>collision</strong>, and it is
+ unavoidable — you must plan for it, not hope it does not happen.</li>
+ </ol>
+</div>
+
+<details class="derivation">
+ <summary><span class="badge">Why it works</span> Why collisions are guaranteed, and why \(O(1)\) is a claim about averages</summary>
+ <div class="dbody">
+ <p>Collisions are not bad luck; they are arithmetic. If you place \(n\) items into \(m\) slots, and
+ \(n &gt; m\), then by the <strong>pigeonhole principle</strong> at least one slot holds two items. Even with
+ \(n \ll m\), the birthday paradox makes a collision likely far sooner than intuition suggests: with
+ \(m = 365\) slots, a collision is more likely than not once \(n\) reaches just 23.</p>
+ <p>So the real question is never "will there be a collision" but "what happens when there is one". Two
+ answers:</p>
+ <ul>
+ <li><strong>Open addressing (linear probing):</strong> if slot \(i\) is taken, try \(i+1\), then \(i+2\),
+ wrapping with \(\bmod\, m\), until you find an empty slot.</li>
+ <li><strong>Separate chaining:</strong> every slot holds a <em>list</em> of all the keys that hashed to it.
+ Collisions just make the list longer.</li>
+ </ul>
+ <p><strong>Why \(O(1)\) degrades.</strong> Define the <strong>load factor</strong></p>
+ <p>\[ \alpha = \frac{n}{m} \]</p>
+ <p>where \(n\) is the number of stored items and \(m\) the number of slots. With chaining, the average chain
+ length is \(\alpha\), so a successful search costs about \(1 + \alpha/2\) comparisons. With linear probing the
+ situation is worse, because occupied slots <em>clump</em> into runs: a key landing anywhere in a run must walk
+ to its end, and every new insertion makes the run longer. This is <strong>primary clustering</strong>, and
+ probing costs grow roughly like \(\frac{1}{2}\left(1 + \frac{1}{(1-\alpha)^2}\right)\) — which is fine at
+ \(\alpha = 0.5\) (about 1.5 probes) and catastrophic as \(\alpha \to 1\).</p>
+ <p><strong>The remedy is rehashing.</strong> When \(\alpha\) exceeds a threshold (commonly 0.75), allocate a
+ bigger table — usually about double the size, ideally a prime number — and re-insert every element, because
+ the modulus changed so every index changed. Rehashing is \(O(n)\) and halts the program briefly, but it is
+ amortised over the \(O(1)\) insertions that caused it, so the average stays constant.</p>
+ <p><strong>What makes a good hash function:</strong> it must be fast, deterministic (the same key always gives
+ the same index, or you can never find anything again), and it must spread keys <em>uniformly</em> over the
+ slots. A hash that sends all keys to one slot reduces the table to a linked list — technically still correct,
+ and \(O(n)\).</p>
+ </div>
+</details>
+
+<figure class="viz">
+ <svg viewBox="0 0 640 400" role="img" aria-label="Linear probing and separate chaining for the same seven keys in a seven-slot hash table">
+ <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
+
+ <text x="24" y="30" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#7a5a13">Linear probing (open addressing)</text>
+
+ <rect x="24" y="46" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="39" y="67" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">0</text>
+ <rect x="54" y="46" width="80" height="32" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="94" y="67" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">17</text>
+
+ <rect x="24" y="82" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="39" y="103" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">1</text>
+ <rect x="54" y="82" width="80" height="32" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="94" y="103" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">8</text>
+
+ <rect x="24" y="118" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="39" y="139" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">2</text>
+ <rect x="54" y="118" width="80" height="32" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="94" y="139" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">15</text>
+
+ <rect x="24" y="154" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="39" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">3</text>
+ <rect x="54" y="154" width="80" height="32" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="94" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">22</text>
+
+ <rect x="24" y="190" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="39" y="211" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">4</text>
+ <rect x="54" y="190" width="80" height="32" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="94" y="211" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">29</text>
+
+ <rect x="24" y="226" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="39" y="247" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">5</text>
+ <rect x="54" y="226" width="80" height="32" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="94" y="247" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">3</text>
+
+ <rect x="24" y="262" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="39" y="283" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">6</text>
+ <rect x="54" y="262" width="80" height="32" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="94" y="283" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" fill="#151923">10</text>
+
+ <text x="24" y="322" font-family="system-ui, sans-serif" font-size="12" fill="#151923">h(k) = k mod 7. Every key hashed to 1 or 3.</text>
+ <text x="24" y="342" font-family="system-ui, sans-serif" font-size="12" fill="#151923">Probes: 1+2+3+4+3+4+5 = 22 → average 3.14</text>
+ <text x="24" y="362" font-family="system-ui, sans-serif" font-size="12" fill="#b03060">One long cluster. Not the O(1) we were promised.</text>
+ <text x="24" y="384" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">Load factor = 7/7 = 1.0 — time to rehash.</text>
+
+ <text x="340" y="30" font-family="system-ui, sans-serif" font-size="14" font-weight="700" fill="#7a5a13">Separate chaining</text>
+
+ <rect x="340" y="46" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="355" y="67" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">0</text>
+ <text x="382" y="67" font-family="system-ui, sans-serif" font-size="13" font-style="italic" fill="#c3cbd6">empty</text>
+
+ <rect x="340" y="82" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="355" y="103" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">1</text>
+ <rect x="382" y="86" width="42" height="28" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="403" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">8</text>
+ <rect x="430" y="86" width="42" height="28" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="451" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">15</text>
+ <rect x="478" y="86" width="42" height="28" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="499" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">22</text>
+ <rect x="526" y="86" width="42" height="28" fill="#fdf6e3" stroke="#334155" stroke-width="1.5"/>
+ <text x="547" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">29</text>
+
+ <rect x="340" y="118" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="355" y="139" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">2</text>
+ <text x="382" y="139" font-family="system-ui, sans-serif" font-size="13" font-style="italic" fill="#c3cbd6">empty</text>
+
+ <rect x="340" y="154" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="355" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">3</text>
+ <rect x="382" y="158" width="42" height="28" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="403" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">3</text>
+ <rect x="430" y="158" width="42" height="28" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="451" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">10</text>
+ <rect x="478" y="158" width="42" height="28" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+ <text x="499" y="177" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#151923">17</text>
+
+ <rect x="340" y="190" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="355" y="211" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">4</text>
+ <text x="382" y="211" font-family="system-ui, sans-serif" font-size="13" font-style="italic" fill="#c3cbd6">empty</text>
+
+ <rect x="340" y="226" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="355" y="247" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">5</text>
+ <text x="382" y="247" font-family="system-ui, sans-serif" font-size="13" font-style="italic" fill="#c3cbd6">empty</text>
+
+ <rect x="340" y="262" width="30" height="32" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+ <text x="355" y="283" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#151923">6</text>
+ <text x="382" y="283" font-family="system-ui, sans-serif" font-size="13" font-style="italic" fill="#c3cbd6">empty</text>
+
+ <text x="340" y="322" font-family="system-ui, sans-serif" font-size="12" fill="#151923">Colliding keys share a chain, never a slot.</text>
+ <text x="340" y="342" font-family="system-ui, sans-serif" font-size="12" fill="#151923">Position checks: 10 + 6 = 16 → average 2.29</text>
+ <text x="340" y="362" font-family="system-ui, sans-serif" font-size="12" fill="#0a6f80">Better here: chains do not block other buckets.</text>
+ <text x="340" y="384" font-family="system-ui, sans-serif" font-size="12" fill="#6c7788">Cost: a pointer per node, and poor cache locality.</text>
+ </svg>
+ <figcaption>The same seven keys in the same seven slots. Probing builds one long cluster; chaining keeps the
+ collisions contained — at the cost of an extra pointer per node.</figcaption>
+</figure>
+
+<details class="worked">
+ <summary><span class="badge badge--hard">Worked example 7</span> IB-style · 8 marks · linear probing trace</summary>
+ <div class="dbody">
+ <p><strong>Question.</strong> A hash table has 7 slots, indexed 0 to 6, and uses the hash function
+ \(h(k) = k \bmod 7\) with linear probing. Insert the keys <code>8, 15, 22, 29, 3, 10, 17</code> in that
+ order. Show the table after each insertion, state the number of probes for each key, and comment on the
+ efficiency.</p>
+ <div class="table-wrap">
+ <table>
+ <thead><tr><th>Key</th><th>\(h(k)\)</th><th>Slots tried</th><th>Placed in</th><th>Probes</th></tr></thead>
+ <tbody>
+ <tr><td>8</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+ <tr><td>15</td><td>1</td><td>1 (taken), 2</td><td>2</td><td>2</td></tr>
+ <tr><td>22</td><td>1</td><td>1, 2 (taken), 3</td><td>3</td><td>3</td></tr>
+ <tr><td>29</td><td>1</td><td>1, 2, 3 (taken), 4</td><td>4</td><td>4</td></tr>
+ <tr><td>3</td><td>3</td><td>3, 4 (taken), 5</td><td>5</td><td>3</td></tr>
+ <tr><td>10</td><td>3</td><td>3, 4, 5 (taken), 6</td><td>6</td><td>4</td></tr>
+ <tr><td>17</td><td>3</td><td>3, 4, 5, 6 (taken), <strong>0</strong></td><td>0</td><td>5</td></tr>
+ </tbody>
+ </table>
+ </div>
+ <p><strong>Table after each insertion</strong> (· = empty):</p>
+<pre><code>after 8 : · 8 · · · · ·
+after 15: · 8 15 · · · ·
+after 22: · 8 15 22 · · ·
+after 29: · 8 15 22 29 · ·
+after 3 : · 8 15 22 29 3 ·
+after 10: · 8 15 22 29 3 10
+after 17: 17 8 15 22 29 3 10</code></pre>
+ <ol class="steps">
+ <li><strong>17 is the wrap case.</strong> Its home slot is 3; slots 3, 4, 5, 6 are all taken, so
+ \((3+4) \bmod 7 = 0\) and it lands in slot 0 — the one slot left.</li>
+ <li><strong>Total probes = 22 for 7 keys, average 3.14.</strong></li>
+ <li><strong>The load factor is \(\alpha = 7/7 = 1.0\).</strong> The table is completely full, so any further
+ insertion fails and any unsuccessful search must probe every slot before concluding absence — \(O(n)\), not
+ \(O(1)\).</li>
+ <li><strong>Why it went so badly:</strong> \(h(k) = k \bmod 7\) maps four of the seven keys (8, 15, 22, 29)
+ to slot 1 and three (3, 10, 17) to slot 3, because all seven keys are congruent to 1 or 3 modulo 7. A
+ different table size — a prime not dividing the differences between keys — or a better hash would spread
+ them. This is primary clustering in its purest form: the cluster grows by one for every insertion and each
+ new key pays for all previous ones.</li>
+ </ol>
+ <p class="answerline"><strong>Answer:</strong> final table <code>[17, 8, 15, 22, 29, 3, 10]</code>; probes
+ 1, 2, 3, 4, 3, 4, 5; total 22, average 3.14; load factor 1.0, so performance has degraded to \(O(n)\) and the
+ table should be rehashed into a larger one.</p>
+ <div class="callout callout--exam">
+ <span class="callout__label">Where the marks are</span>
+ <p>Table state (3), probe counts (2), average (1), comment (2). The comment mark wants the word
+ <strong>clustering</strong> and a consequence — "the table is full, so search is now \(O(n)\) and it should
+ be rehashed". Simply writing "it is slow" scores nothing. Note also this specific trap: a candidate who
+ forgets the wrap on the last key and declares overflow has produced a plausible, completely wrong final
+ table.</p>
+ </div>
+ </div>
+</details>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Traps — hash tables</span>
+ <ul>
+ <li><strong>Deletion with linear probing breaks searches.</strong> If you simply empty a slot that was part of
+ a probe chain, later searches for keys that probed <em>past</em> it will hit the empty slot and conclude the
+ key is absent. The fix is a <strong>tombstone</strong> marker that means "was occupied, keep probing", with the
+ slot reused on the next insertion.</li>
+ <li><strong>Probing must wrap.</strong> The sequence is \((h(k)+i) \bmod m\), never \(h(k)+i\).</li>
+ <li><strong>\(O(1)\) is an average, not a guarantee.</strong> With a bad hash function or \(\alpha \approx 1\),
+ both strategies degrade to \(O(n)\).</li>
+ <li><strong>The hash function must be deterministic.</strong> Hashing on a mutable field that you then change
+ makes the entry unreachable.</li>
+ <li><strong>Separate chaining needs no rehash to keep working</strong> — it just slows down — whereas open
+ addressing genuinely fails when the table is full. That is the main practical difference between them.</li>
+ </ul>
+</div>
+
+<h2>Choosing a structure: the comparison table</h2>
+
+<div class="table-wrap">
+<table>
+ <thead><tr><th>Structure</th><th>Search</th><th>Insert</th><th>Delete</th><th>Space</th><th>Choose it when</th></tr></thead>
+ <tbody>
+ <tr><td><strong>Array (unsorted)</strong></td><td>\(O(n)\)</td><td>\(O(1)\) at the end</td><td>\(O(n)\)</td><td>Minimal, contiguous</td><td>Size is known, iteration matters more than lookup</td></tr>
+ <tr><td><strong>Array (sorted)</strong></td><td>\(O(\log n)\)</td><td>\(O(n)\)</td><td>\(O(n)\)</td><td>Minimal, contiguous</td><td>Many lookups, almost no updates</td></tr>
+ <tr><td><strong>Stack</strong></td><td>\(O(n)\)</td><td>\(O(1)\) push</td><td>\(O(1)\) pop</td><td>Minimal</td><td>LIFO: undo, recursion, backtracking, parsing</td></tr>
+ <tr><td><strong>Queue (circular)</strong></td><td>\(O(n)\)</td><td>\(O(1)\)</td><td>\(O(1)\)</td><td>Minimal, all slots reused</td><td>FIFO: scheduling, buffering, breadth-first search</td></tr>
+ <tr><td><strong>Singly linked list</strong></td><td>\(O(n)\)</td><td>\(O(1)\) at the head</td><td>\(O(n)\) to find the predecessor</td><td>+1 pointer per node</td><td>Unpredictable size, insert/delete at the front</td></tr>
+ <tr><td><strong>Doubly linked list</strong></td><td>\(O(n)\)</td><td>\(O(1)\)</td><td>\(O(1)\) given the node</td><td>+2 pointers per node</td><td>You delete arbitrary nodes, or traverse backwards (e.g. a browser history)</td></tr>
+ <tr><td><strong>BST (balanced)</strong></td><td>\(O(\log n)\)</td><td>\(O(\log n)\)</td><td>\(O(\log n)\)</td><td>+2 pointers per node</td><td>You need ordered data with fast lookup, insert and delete</td></tr>
+ <tr><td><strong>BST (degenerate)</strong></td><td>\(O(n)\)</td><td>\(O(n)\)</td><td>\(O(n)\)</td><td>+2 pointers per node</td><td>What you get from sorted input if you do not rebalance</td></tr>
+ <tr><td><strong>Hash table (average)</strong></td><td>\(O(1)\)</td><td>\(O(1)\)</td><td>\(O(1)\)</td><td>Table usually ~1.3–2× the data</td><td>Fast lookup by key and order does not matter</td></tr>
+ <tr><td><strong>Hash table (worst)</strong></td><td>\(O(n)\)</td><td>\(O(n)\)</td><td>\(O(n)\)</td><td>—</td><td>Everything collides, or \(\alpha \to 1\)</td></tr>
+ <tr><td><strong>Set (hash-backed)</strong></td><td>\(O(1)\) membership</td><td>\(O(1)\)</td><td>\(O(1)\)</td><td>As a hash table</td><td>Membership tests, de-duplication, set algebra</td></tr>
+ <tr><td><strong>Set (bit string)</strong></td><td>\(O(1)\)</td><td>\(O(1)\)</td><td>\(O(1)\)</td><td>\(O(U)\), \(U\) = universe size</td><td>Small known universe; union/intersection as AND/OR</td></tr>
+ </tbody>
+</table>
+</div>
+
+<div class="callout callout--how">
+ <span class="callout__label">How to use it — answering "which structure would you use, and why?"</span>
+ <ol class="steps">
+ <li><strong>Name the access pattern.</strong> FIFO → queue. LIFO → stack. Lookup by key with no ordering →
+ hash table. Ordered data with updates → BST. Sequential scan only → array or list.</li>
+ <li><strong>State the complexity of the operations you will actually perform</strong> — not all of them. A
+ print queue enqueues and dequeues and never searches, so its \(O(n)\) search is irrelevant.</li>
+ <li><strong>State the trade-off you are accepting.</strong> "A hash table gives \(O(1)\) average lookup but
+ uses more memory than an array and returns items in no useful order."</li>
+ <li><strong>Mention size predictability.</strong> Known and fixed → array. Unknown and changing → linked
+ structure or a dynamic array.</li>
+ <li><strong>Conclude with the deciding factor for <em>this</em> scenario.</strong> That final sentence is the
+ mark.</li>
+ </ol>
+</div>
+
+<div class="callout callout--trap">
+ <span class="callout__label">Traps — the whole topic</span>
+ <ul>
+ <li>Using <code>front == rear</code> to test a circular queue for full or empty — it is ambiguous by
+ construction.</li>
+ <li>Forgetting the <code>mod</code> on the last probe or on the pointer advance, and reporting overflow or an
+ index error instead.</li>
+ <li>Rewiring a linked list in the wrong order and losing the tail of the list.</li>
+ <li>Saying a BST is always \(O(\log n)\). It is \(O(h)\), and \(h\) can be \(n\).</li>
+ <li>Confusing pre-order and post-order: pre means the root comes <em>first</em>, post means it comes
+ <em>last</em>; in both, left precedes right.</li>
+ <li>Writing the in-order traversal of a BST in insertion order. The traversal depends only on the shape of the
+ tree, not on when the nodes arrived.</li>
+ <li>Saying hash tables eliminate collisions. They resolve them.</li>
+ <li>Quoting \(O(1)\) for a hash table without saying "average" or mentioning the load factor.</li>
+ </ul>
+</div>
+
+<div class="callout callout--vocab">
+ <span class="callout__label">Key vocabulary — English → </span>
+ <ul>
+ <li><strong>abstract data type (ADT)</strong> — <strong>logical view / physical view</strong> — / </li>
+ <li><strong>stack / push / pop / peek</strong> — / / / <strong>top</strong> — </li>
+ <li><strong>LIFO</strong> — <strong>FIFO</strong> — </li>
+ <li><strong>overflow / underflow</strong> — / / </li>
+ <li><strong>queue / enqueue / dequeue</strong> — / / <strong>front / rear</strong> — / </li>
+ <li><strong>circular queue</strong> — <strong>modular arithmetic</strong> — <strong>wrap around</strong> — </li>
+ <li><strong>linked list / node / pointer</strong> — / / <strong>head</strong> — <strong>null</strong> — </li>
+ <li><strong>singly / doubly / circular linked list</strong> — / / </li>
+ <li><strong>binary tree / root / leaf / subtree / edge</strong> — / / / / </li>
+ <li><strong>parent / child</strong> — / <strong>depth / height</strong> — / </li>
+ <li><strong>binary search tree (BST)</strong> — <strong>balanced / degenerate</strong> — / </li>
+ <li><strong>traversal</strong> — <strong>in-order / pre-order / post-order</strong> — / / </li>
+ <li><strong>set / union / intersection / difference / subset</strong> — / / / / </li>
+ <li><strong>hash table / hash function / key</strong> — / / <strong>slot / bucket</strong> — / </li>
+ <li><strong>collision</strong> — <strong>linear probing</strong> — <strong>separate chaining</strong> — </li>
+ <li><strong>load factor</strong> — <strong>rehash</strong> — <strong>clustering</strong> — </li>
+ <li><strong>record / field</strong> — / <strong>contiguous</strong> — </li>
+ </ul>
+</div>
+
+<h2>Practice</h2>
+<ol class="practice">
+ <li><p>Explain the difference between the <em>logical</em> and the <em>physical</em> view of a data structure,
+ using the stack as your example. State one advantage of keeping them separate.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p>The logical view of a stack is LIFO behaviour: items are added and removed at the top only, through
+ <code>push</code>, <code>pop</code>, <code>peek</code> and <code>isEmpty</code>. It says nothing about
+ storage.</p>
+ <p>The physical view is a concrete implementation — an array with a <code>top</code> index, or a linked list
+ whose head is the top.</p>
+ <p><strong>Advantage:</strong> the implementation can be changed (for example to a linked list so the stack
+ no longer has a fixed capacity) without altering any code that uses the stack, because the operations and
+ their behaviour are unchanged. Equally, correctness can be reasoned about once at the ADT level and then
+ applies to every implementation.</p>
+ <p><strong>Marks:</strong> logical view (2), physical view with a concrete example (2), advantage (2).</p>
+ </div></details></li>
+
+ <li><p>A stack is implemented with an array of size 4 and <code>top = -1</code>. Trace
+ <code>push(A); push(B); pop(); push(C); pop(); pop(); pop();</code>. State each value returned and the final
+ state, including any error.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <div class="table-wrap">
+ <table>
+ <thead><tr><th>Operation</th><th>top</th><th>Array</th><th>Returns</th></tr></thead>
+ <tbody>
+ <tr><td>—</td><td>−1</td><td>_ _ _ _</td><td>—</td></tr>
+ <tr><td>push(A)</td><td>0</td><td>A _ _ _</td><td>—</td></tr>
+ <tr><td>push(B)</td><td>1</td><td>A B _ _</td><td>—</td></tr>
+ <tr><td>pop()</td><td>0</td><td>A B _ _</td><td><strong>B</strong></td></tr>
+ <tr><td>push(C)</td><td>1</td><td>A C _ _</td><td>—</td></tr>
+ <tr><td>pop()</td><td>0</td><td>A C _ _</td><td><strong>C</strong></td></tr>
+ <tr><td>pop()</td><td>−1</td><td>A C _ _</td><td><strong>A</strong></td></tr>
+ <tr><td>pop()</td><td>−1</td><td>A C _ _</td><td><strong>underflow</strong></td></tr>
+ </tbody>
+ </table>
+ </div>
+ <p class="answerline"><strong>Answer:</strong> B, C, A, then underflow. Final state
+ <code>top = -1</code>, stack empty, array still physically holding A and C above <code>top</code>.</p>
+ <p>Note that C overwrote B in index 1 — a good reminder that the array contents above <code>top</code> are
+ not part of the stack.</p>
+ </div></details></li>
+
+ <li><p>A circular queue uses an array of size 6 with the count convention. Currently
+ <code>front = 4</code>, <code>rear = 1</code>, <code>count = 3</code>. State, with a reason, how many more items
+ can be enqueued, and give the values of <code>front</code>, <code>rear</code> and <code>count</code> after
+ enqueuing two items and dequeuing one.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p><strong>Three more items.</strong> With the count convention the queue is full when
+ <code>count == n</code>, i.e. <code>count == 6</code>. It currently holds 3, so 3 slots remain. Note that
+ <code>rear (1) &lt; front (4)</code>, which means the queue has wrapped and the occupied slots are 4, 5 and
+ 0 — nothing at all to do with being empty.</p>
+ <p>After two enqueues: <code>rear</code> goes 1 → 2 → 3, <code>count</code> goes 3 → 5. After one dequeue:
+ <code>front</code> goes 4 → 5, <code>count</code> goes 5 → 4.</p>
+ <p class="answerline"><strong>Answer:</strong> 3 more; final <code>front = 5</code>,
+ <code>rear = 3</code>, <code>count = 4</code>.</p>
+ <p><strong>Trap:</strong> do not use <code>front</code> and <code>rear</code> to work out how full the queue
+ is — that is what <code>count</code> is for. If the question's convention wastes a slot instead, the answer
+ would be 2, not 3.</p>
+ </div></details></li>
+
+ <li><p>Describe how to insert a new node into a <em>sorted</em> singly linked list, given only a
+ <code>head</code> pointer. Identify the two special cases and state the time complexity.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <ol class="steps">
+ <li>If the list is empty, or the new value is smaller than <code>head.data</code>, insert at the head:
+ <code>n.next = head; head = n</code>.</li>
+ <li>Otherwise walk the list with two pointers, <code>prev</code> and <code>cur</code>, until
+ <code>cur</code> is null or <code>cur.data &gt; value</code>.</li>
+ <li>Insert between them: <code>n.next = cur; prev.next = n</code>.</li>
+ <li>If you reach the end, <code>cur</code> is null and the node becomes the new tail — the same two
+ assignments still work, because <code>n.next = None</code>.</li>
+ </ol>
+ <p><strong>Complexity:</strong> \(O(n)\) to find the position (you must walk, since there is no indexing),
+ then \(O(1)\) to link. Total \(O(n)\).</p>
+ <p><strong>The two special cases candidates forget:</strong> inserting at the head (step 1 — there is no
+ predecessor, and <code>head</code> itself must be reassigned) and inserting at the tail (step 4 —
+ <code>cur</code> is null, so <code>cur.data</code> would crash the loop test if written in the wrong
+ order).</p>
+ </div></details></li>
+
+ <li><p>Insert 42, 20, 65, 10, 30, 55, 80 into an empty BST in that order. Draw the tree and give the pre-order
+ traversal.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+<pre><code> 42
+ / \
+ 20 65
+ / \ / \
+ 10 30 55 80</code></pre>
+ <p>42 is the root; 20 and 10, 30 go left (30 &gt; 20 so right of 20); 65, 55, 80 go right.</p>
+ <p class="answerline"><strong>Pre-order (root, left, right):</strong> 42, 20, 10, 30, 65, 55, 80.</p>
+ <p><strong>Check:</strong> the in-order traversal must be sorted — 10, 20, 30, 42, 55, 65, 80. If your
+ in-order is not sorted, your tree violates the BST invariant and your pre-order is wrong too. This is the
+ fastest self-check available in the exam.</p>
+ </div></details></li>
+
+ <li><p>A BST contains the values 1 to 7 inserted in <strong>ascending</strong> order. Draw the tree, state its
+ height, and state the complexity of searching it. Explain what this shows about the \(O(\log n)\) claim.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+<pre><code>1
+ \
+ 2
+ \
+ 3
+ \
+ 4
+ \
+ 5
+ \
+ 6
+ \
+ 7</code></pre>
+ <p><strong>Height = 6</strong> (six edges from the root to the only leaf), for 7 nodes.</p>
+ <p><strong>Search is \(O(n)\)</strong>, not \(O(\log n)\): there is no branching, so the structure is
+ functionally a linked list and finding 7 takes 7 comparisons instead of the 3 that a balanced tree would
+ need.</p>
+ <p><strong>What it shows:</strong> the \(O(\log n)\) bound depends on the tree staying balanced, which
+ depends on the <em>order of insertion</em>. Sorted (or reverse-sorted) input is the worst case. Self-
+ balancing trees such as AVL or red-black trees exist to rotate nodes during insertion and keep the height
+ near \(\log_2 n\).</p>
+ <p class="answerline"><strong>Answer:</strong> a chain of height 6, search \(O(n)\); \(O(\log n)\) is an
+ average-case claim that assumes reasonably distributed input, not a guarantee.</p>
+ </div></details></li>
+
+ <li><p>A hash table has 11 slots and uses \(h(k) = k \bmod 11\) with separate chaining. Insert
+ <code>4, 15, 26, 37, 48, 5</code>. Show the resulting table and state the average number of comparisons for a
+ successful search.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p>4 mod 11 = 4; 15 mod 11 = 4; 26 mod 11 = 4; 37 mod 11 = 4; 48 mod 11 = 4; 5 mod 11 = 5.</p>
+<pre><code>0 : empty
+1 : empty
+2 : empty
+3 : empty
+4 : 4 -> 15 -> 26 -> 37 -> 48
+5 : 5
+6 : empty
+7 : empty
+8 : empty
+9 : empty
+10: empty</code></pre>
+ <p>The five keys all differ by 11, so they all hash to slot 4 — a contrived but instructive worst case, and
+ exactly what a poor choice of table size does to you.</p>
+ <p><strong>Average comparisons for a successful search:</strong> chain of 5 contributes
+ 1+2+3+4+5 = 15, the single element in slot 5 contributes 1. Total 16 over 6 keys =
+ \(16/6 \approx 2.67\).</p>
+ <p><strong>Comment mark:</strong> the table has degenerated into a linked list in one bucket, so lookup for
+ those five keys is \(O(5)\) rather than \(O(1)\). A better hash (or a table size that is prime and not
+ related to the key spacing) fixes it.</p>
+ </div></details></li>
+
+ <li><p>Compare linear probing and separate chaining for collision resolution. Give one advantage of each and one
+ disadvantage of each.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <div class="table-wrap">
+ <table>
+ <thead><tr><th></th><th>Linear probing</th><th>Separate chaining</th></tr></thead>
+ <tbody>
+ <tr><td><strong>Advantage</strong></td><td>No extra memory for pointers, and all data sits in one contiguous array, so it is cache-friendly and fast in practice at low load factors.</td><td>Performance degrades gracefully: the table never "fills up", and deletion is simple (unlink a node) with no tombstones needed.</td></tr>
+ <tr><td><strong>Disadvantage</strong></td><td>Primary clustering: colliding keys form runs that grow with every insertion, and the table genuinely fails once full. Deletion needs tombstone markers.</td><td>Every node needs a next pointer, and nodes are allocated separately, so cache locality is poor. Long chains degrade to \(O(n)\).</td></tr>
+ </tbody>
+ </table>
+ </div>
+ <p><strong>Marks:</strong> one advantage and one disadvantage for each (4), plus up to 2 for a justified
+ overall recommendation, e.g. "chaining here, because the number of keys is unknown and I want deletion to be
+ straightforward".</p>
+ </div></details></li>
+
+ <li><p>Design question. A printer spooler receives print jobs from many users and must print them in the order
+ they arrived. (a) Which ADT? (b) Why not the alternatives? (c) One practical problem with a plain array queue
+ and how the chosen structure solves it.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p><strong>(a)</strong> A <strong>queue</strong>, implemented as a circular queue.</p>
+ <p><strong>(b)</strong> A stack would print the most recent job first, starving the earliest jobs — exactly
+ wrong for fairness. A BST or hash table imposes/reveals an order that has nothing to do with arrival time.
+ A plain unsorted array would work but every dequeue would cost \(O(n)\) to shift the remaining jobs.</p>
+ <p><strong>(c)</strong> In a naive array queue, <code>front</code> and <code>rear</code> only increase, so
+ slots freed by completed jobs can never be reused: after enough jobs the queue reports "full" even when it
+ holds almost nothing. The circular queue wraps both indices with
+ \((\text{index} + 1) \bmod n\), so every slot is reusable and both enqueue and dequeue stay \(O(1)\) for
+ the lifetime of the spooler.</p>
+ <p><strong>Marks:</strong> (a) 1, (b) 2, (c) 3. The (c) marks require the <em>mechanism</em> (modular
+ arithmetic on both indices) and the <em>consequence</em> (all slots reusable, both operations still
+ \(O(1)\)), not just the word "circular".</p>
+ </div></details></li>
+
+ <li><p>State, with a reason, which structure you would use for: (a) an undo feature in a text editor; (b) looking
+ up a student's record by their 8-digit ID; (c) keeping a class list in alphabetical order while allowing new
+ students to join mid-year.</p>
+ <details class="answer"><summary>Show answer</summary><div class="dbody">
+ <p><strong>(a) A stack.</strong> Undo reverses the most recent action first, which is LIFO. Each edit pushes
+ the previous state (or an inverse operation); Ctrl+Z pops. \(O(1)\) per operation. A queue would undo the
+ oldest change first, which is not what a user expects.</p>
+ <p><strong>(b) A hash table</strong> keyed on the ID. Lookup by key is \(O(1)\) average, and no ordering is
+ required. A BST would also work in \(O(\log n)\) but offers ordering that is not needed here; an array would
+ be \(O(n)\) or would require the ID range to be small and dense.</p>
+ <p><strong>(c) A balanced binary search tree</strong> (or a self-balancing tree). It maintains ordering
+ continuously, so an in-order traversal yields the alphabetical list in \(O(n)\), while insert and delete stay
+ \(O(\log n)\). A sorted array keeps the order but every insertion costs \(O(n)\) to shift; a hash table
+ gives fast lookup but no order at all.</p>
+ <p><strong>Marks:</strong> two per part — one for the structure, one for the reason stated as a comparison
+ with at least one alternative.</p>
+ </div></details></li>
+</ol>
+
+<div class="conn">
+ <span class="conn__title">Connections</span>
+ <ul>
+ <li><strong>→ B2 Programming:</strong> recursion is the natural way to write tree traversals, and the call
+ stack from B2 is itself a stack ADT — the same LIFO discipline, implemented for you by the language.</li>
+ <li><strong>→ B3 OOP:</strong> every ADT here is an encapsulation exercise: the array, the node pointers and
+ the indices are private; <code>push/pop</code> or <code>insert/search</code> are the public interface.</li>
+ <li><strong>→ B1 Computational thinking:</strong> Big-O, binary search and the standard algorithms are the
+ same ideas; a BST is binary search made into a structure you can update.</li>
+ <li><strong>→ A1 Computer fundamentals:</strong> \(B + i \cdot S\) is the address arithmetic behind array
+ indexing; pointers are memory addresses; the bit-string set implementation is the Boolean logic of A1.2
+ applied to data.</li>
+ <li><strong>→ A3 Databases:</strong> an index on a database column is a B-tree — a generalised, balanced
+ search tree — and hashing is used for hash joins. The two worlds are the same structures under different
+ names.</li>
+ <li><strong>→ A4 Machine learning:</strong> feature vectors, hash-based feature hashing, and the
+ \(k\)-NN search structures all reuse these ideas; the efficiency table tells you what a million data points
+ will cost.</li>
+ <li><strong>→ IA:</strong> choosing and justifying a data structure is one of the clearest places to
+ demonstrate real computational thinking in the report — and the complexity table is your evaluation
+ evidence.</li>
+ </ul>
+</div>
+
+<h2>Check yourself</h2>
+<ul class="checklist">
+ <li><label><input type="checkbox"><span>I can explain what an ADT is and why separating the logical view from the implementation is useful.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain why array indexing is O(1) and what contiguous storage costs on insertion.</span></label></li>
+ <li><label><input type="checkbox"><span>I can implement a stack with an array and a top pointer, and name overflow and underflow correctly.</span></label></li>
+ <li><label><input type="checkbox"><span>I can use a stack to check balanced brackets and trace it.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain why a naive array queue runs out of space while slots sit empty.</span></label></li>
+ <li><label><input type="checkbox"><span>I can trace a circular queue through a full sequence, including the wrap and the overflow.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain why front == rear is ambiguous and state both ways to resolve it.</span></label></li>
+ <li><label><input type="checkbox"><span>I can write linked-list insertion and deletion with the pointer assignments in the correct order.</span></label></li>
+ <li><label><input type="checkbox"><span>I can compare arrays, singly and doubly linked lists, and say when each is the right choice.</span></label></li>
+ <li><label><input type="checkbox"><span>I can state the BST invariant and explain why search is O(log n) and when it is not.</span></label></li>
+ <li><label><input type="checkbox"><span>I can produce in-order, pre-order and post-order traversals of a given tree.</span></label></li>
+ <li><label><input type="checkbox"><span>I can reconstruct a tree from its in-order and pre-order traversals, and explain why in-order is needed.</span></label></li>
+ <li><label><input type="checkbox"><span>I can compute union, intersection and difference with bit strings and name the Boolean operation each uses.</span></label></li>
+ <li><label><input type="checkbox"><span>I can trace linear probing including the wrap, and count probes.</span></label></li>
+ <li><label><input type="checkbox"><span>I can explain load factor, clustering and rehashing, and why O(1) is an average-case claim.</span></label></li>
+ <li><label><input type="checkbox"><span>I can compare linear probing with separate chaining and justify a choice.</span></label></li>
+ <li><label><input type="checkbox"><span>I can choose a structure for a given scenario and justify it with complexity and trade-offs.</span></label></li>
+</ul>
+
+</div>
+<script src="../assets/js/app.js"></script>
+</body>
+</html>

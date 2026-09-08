@@ -1,0 +1,64 @@
+# TaskForge demo - $NO_COLOR=1 $TERM=dumb, TASKFORGE_DB=sqlite:////Users/lucas.ma/Downloads/PYTHON/verify/taskforge/demo.db
+
+$ taskforge --version
+taskforge 0.1.0
+$ taskforge project add work --description Day job
+created project work
+$ taskforge add Write the quarterly report -p work --priority high --due +3d -t writing -t q3
+added #1 Write the quarterly report in work
+$ taskforge add Email Dana about the contract -p work --due today -n attach the signed PDF
+added #2 Email Dana about the contract in work
+$ taskforge add Renew passport -p home --due 2026-08-30 --priority urgent
+added #3 Renew passport in home
+$ taskforge list
+                                     3 task(s)                                      
+┏━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃ ID ┃ Title                         ┃ Project ┃ Pri    ┃ Due        ┃ Tags        ┃
+┡━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│  3 │ Renew passport                │ home    │ urgent │ 2026-08-30 │             │
+│  1 │ Write the quarterly report    │ work    │ high   │ 2026-09-11 │ q3, writing │
+│  2 │ Email Dana about the contract │ work    │ medium │ 2026-09-08 │             │
+└────┴───────────────────────────────┴─────────┴────────┴────────────┴─────────────┘
+$ taskforge list --overdue
+                          1 task(s)                           
+┏━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━┓
+┃ ID ┃ Title          ┃ Project ┃ Pri    ┃ Due        ┃ Tags ┃
+┡━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━┩
+│  3 │ Renew passport │ home    │ urgent │ 2026-08-30 │      │
+└────┴────────────────┴─────────┴────────┴────────────┴──────┘
+$ taskforge done 2
+done #2 Email Dana about the contract
+$ taskforge tag 3 errands
+tagged #3: errands
+$ taskforge report --week
+       Last 7 days       
+┏━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric        ┃ Value ┃
+┡━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ Created       │     3 │
+│ Completed     │     1 │
+│ Overdue now   │     1 │
+│ Open (high)   │     1 │
+│ Open (urgent) │     1 │
+└───────────────┴───────┘
+$ taskforge export demo-export.json
+exported 2 project(s) to demo-export.json
+
+# import into a fresh database
+$ export TASKFORGE_DB=sqlite:///.../fresh.db
+imported 2 project(s), 3 task(s), 0 skipped
+
+$ taskforge list --done        # in the fresh database
+                                     3 task(s)                                      
+┏━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃ ID ┃ Title                         ┃ Project ┃ Pri    ┃ Due        ┃ Tags        ┃
+┡━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│  1 │ Renew passport                │ home    │ urgent │ 2026-08-30 │ errands     │
+│  3 │ Write the quarterly report    │ work    │ high   │ 2026-09-11 │ q3, writing │
+│  2 │ Email Dana about the contract │ work    │ medium │ 2026-09-08 │             │
+└────┴───────────────────────────────┴─────────┴────────┴────────────┴─────────────┘
+
+# error path: unknown task id
+$ taskforge done 999
+error: no task with id #999
+[exit=1]
