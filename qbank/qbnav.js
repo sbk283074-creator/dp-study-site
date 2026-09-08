@@ -25,6 +25,7 @@
   nav.innerHTML =
     '<a class="qb-nav__brand" href="index.html"><span class="qb-nav__logo">Q</span> Question Bank</a>' +
     '<nav class="qb-nav__links" aria-label="Question Bank sections">' + links + '</nav>' +
+    '<a class="qb-nav__site" href="../PYTHON/" title="Open Python Mastery">&#128187; Python</a>' +
     '<a class="qb-nav__home" href="../index.html" title="Back to DP Learning">&#8592; DP Learning</a>';
 
   if (document.body.firstChild) {
