@@ -120,3 +120,32 @@
 /* ---------- Empty state ------------------------------------------------ */
 .qb-notice { border: 1px dashed var(--border-strong); border-radius: var(--radius); padding: 26px; background: var(--surface-2); color: var(--text-2); }
 .qb-notice h3 { margin: 0 0 6px; }
+
+/* ---------- Standalone micro-site chrome (replaces main app.js nav) --------
+   The question bank is a self-contained micro-site: it keeps its own cover and
+   its own navigation menu, linked from the main site but not embedded in it. */
+.qb-nav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--topbar-h);
+  display: flex; align-items: center; gap: 14px; padding: 0 16px;
+  background: rgba(255,255,255,.88); backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--border); z-index: 60;
+}
+html[data-theme="dark"] .qb-nav { background: rgba(22,27,35,.9); }
+.qb-nav__brand { display: flex; align-items: center; gap: 9px; font-weight: 750; letter-spacing: -.01em; font-size: .98rem; color: var(--text); flex: none; }
+.qb-nav__brand:hover { text-decoration: none; }
+.qb-nav__logo { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; background: var(--accent); color: #fff; font-size: .78rem; font-weight: 800; }
+.qb-nav__links { display: flex; align-items: center; gap: 2px; overflow-x: auto; flex: 1; min-width: 0; -webkit-overflow-scrolling: touch; }
+.qb-nav__links::-webkit-scrollbar { height: 0; }
+.qb-nav__link { padding: 7px 11px; border-radius: 9px; font-size: .86rem; font-weight: 600; color: var(--text-2); white-space: nowrap; flex: none; }
+.qb-nav__link:hover { background: var(--surface-3); text-decoration: none; color: var(--text); }
+.qb-nav__link[aria-current="page"] { background: var(--accent-soft); color: var(--accent); }
+.qb-nav__home { flex: none; font-size: .84rem; font-weight: 650; color: var(--muted); padding: 7px 11px; border: 1px solid var(--border); border-radius: 9px; }
+.qb-nav__home:hover { text-decoration: none; border-color: var(--accent); color: var(--accent); }
+@media (max-width: 900px) { .qb-nav__link { padding: 7px 8px; font-size: .82rem; } }
+
+/* Content sits below the fixed nav (mirrors the main site's .main padding). */
+#app-shell {
+  max-width: var(--measure); margin: 0 auto;
+  padding: calc(var(--topbar-h) + 24px) 40px 96px;
+}
+@media (max-width: 720px) { #app-shell { padding: calc(var(--topbar-h) + 18px) 20px 80px; } }

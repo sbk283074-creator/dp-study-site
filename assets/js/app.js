@@ -115,20 +115,6 @@ const NAV = [
       { p: 'core/cas-project.html', t: 'CAS — the project', n: 'C2' },
       { p: 'core/cas-portfolio.html', t: 'CAS — reflection & portfolio', n: 'C3' }
     ]
-  },
-  {
-    id: 'qbank', group: 'Question Bank', dot: '#2563a8', open: false,
-    meta: '9,969 questions · practice · wrong book · progress',
-    items: [
-      { p: 'qbank/index.html', t: 'Search & browse', n: 'Q' },
-      { p: 'qbank/practice.html', t: 'Practice mode', n: 'P' },
-      { p: 'qbank/wrong.html', t: 'Wrong book', n: 'W' },
-      { p: 'qbank/knowledge.html', t: 'By knowledge point', n: 'K' },
-      { p: 'qbank/exams.html', t: 'Exam papers', n: 'E' },
-      { p: 'qbank/collections.html', t: 'Collections', n: 'C' },
-      { p: 'qbank/progress.html', t: 'Progress', n: 'S' },
-      { p: 'qbank/books.html', t: 'Textbooks', n: 'B' }
-    ]
   }
 ];
 
@@ -157,7 +143,7 @@ function currentPath() {
   const full = location.pathname.split('/');
   const file = full[full.length - 1] || 'index.html';
   const parent = full[full.length - 2] || '';
-  const known = ['math', 'physics', 'cs', 'english', 'chinese', 'qbank'];
+  const known = ['math', 'physics', 'cs', 'english', 'chinese'];
   return known.includes(parent) ? parent + '/' + file : file;
 }
 
@@ -215,7 +201,7 @@ function hrefTo(target) {
   const rootIdx = segs.length ? -1 : 0;
   // count how many segments of `here` come after the site root:
   // site root is the folder containing assets/ -> find by known subject dirs
-  const known = ['math', 'physics', 'cs', 'english', 'chinese', 'qbank'];
+  const known = ['math', 'physics', 'cs', 'english', 'chinese'];
   let up = 0;
   for (let i = segs.length - 1; i >= 0; i--) { if (known.includes(segs[i])) up++; }
   return '../'.repeat(up) + target;
@@ -413,7 +399,7 @@ function wireTheme() {
 }
 
 /* ---------- Dashboard ------------------------------------------------------ */
-const SUBJ_COLORS = { start: '#42506b', math: '#3653d6', physics: '#0a6f80', cs: '#7a5a13', english: '#b03060', chinese: '#c0392b', business: '#1d7a4c', core: '#6d4c7d', qbank: '#2563a8' };
+const SUBJ_COLORS = { start: '#42506b', math: '#3653d6', physics: '#0a6f80', cs: '#7a5a13', english: '#b03060', chinese: '#c0392b', business: '#1d7a4c', core: '#6d4c7d' };
 function renderDashboard() {
   const el = document.getElementById('dashboard');
   if (!el) return;
