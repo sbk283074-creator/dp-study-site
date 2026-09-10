@@ -274,6 +274,129 @@ at SL and 20 % at HL: at HL the exams decide your grade, so do the IA well, fini
   part of the syllabus — and that is what a top-band IA looks like.</figcaption>
 </figure>
 
+<h2>Core concepts you must know</h2>
+
+<p>Computer science has more basic vocabulary than any other subject on this site, and the vocabulary is not
+decoration: half of Paper 1 is prose in which the mark is awarded for naming the right mechanism. Everything
+below is defined in one sentence here and treated in full on the topic pages. Learn the definitions tightly
+enough that you can say them out loud — then practise the harder skill, which is explaining <em>why</em> the
+mechanism has the consequence it has.</p>
+
+<h3>How a computer system works — A1 and A2</h3>
+
+<div class="wordlist">
+  <div><b>bit, byte and number bases</b> — <span>a bit is one binary digit; eight make a byte; binary, denary and hexadecimal are the same quantity written in base 2, 10 and 16, and hex exists because it compresses binary four bits to a digit.</span></div>
+  <div><b>two's complement</b> — <span>the way signed integers are stored: invert the bits and add one, so the leading bit is the sign and addition works unchanged for negative numbers.</span></div>
+  <div><b>floating-point representation</b> — <span>a number stored as mantissa × base<sup>exponent</sup>, which gives huge range at the cost of rounding error — the reason 0.1 + 0.2 is not exactly 0.3.</span></div>
+  <div><b>character set</b> — <span>the agreed mapping from numbers to symbols: ASCII for 128 characters, Unicode for every writing system, with UTF-8 the variable-length encoding that stores it efficiently.</span></div>
+  <div><b>Boolean logic and gates</b> — <span>AND, OR, NOT, XOR, NAND are the physical building blocks of decision; a truth table defines a circuit and Boolean algebra simplifies it.</span></div>
+  <div><b>Von Neumann architecture</b> — <span>one memory holding both instructions and data, fetched and executed in a cycle by the control unit, ALU and registers; the shared bus is why it is fast and also why it is a bottleneck.</span></div>
+  <div><b>fetch–decode–execute cycle</b> — <span>the processor repeatedly fetches the next instruction from memory, decodes what it means, and executes it; clock speed sets how often, cores let it happen in parallel.</span></div>
+  <div><b>cache and the memory hierarchy</b> — <span>small, fast memory sitting between the processor and RAM, holding recently used data because programs reuse it; hits are fast, misses cost a trip to main memory.</span></div>
+  <div><b>primary and secondary storage</b> — <span>primary (RAM, ROM, cache) is fast and volatile or firmware; secondary (magnetic, solid state, optical) is slower, cheaper and persistent.</span></div>
+  <div><b>operating system, scheduling and virtual memory</b> — <span>the OS allocates the processor, memory and devices; scheduling decides which process runs next; virtual memory lets a program use more address space than physical RAM by paging to disk.</span></div>
+  <div><b>interrupt</b> — <span>a signal that makes the processor stop, save its state, service the urgent event and resume — the mechanism that lets one processor appear to do several things.</span></div>
+  <div><b>translator: assembler, compiler, interpreter</b> — <span>three ways to turn source into action: assembler for one-to-one machine instructions, compiler for the whole program ahead of time, interpreter line by line at run time.</span></div>
+  <div><b>encryption, hashing and TLS</b> — <span>symmetric uses one shared key, asymmetric uses a public and a private key, and hashing is one-way and used to verify integrity; TLS combines them to secure a connection.</span></div>
+  <div><b>network, topology and the devices between nodes</b> — <span>a network connects devices; the topology is the shape of the connections; hubs repeat, switches forward to one port, routers join networks, gateways join unlike networks.</span></div>
+  <div><b>MAC address, IP address and subnetting</b> — <span>MAC is the hardware identity, IP is the routable logical address, and a subnet mask splits an address into network and host parts.</span></div>
+  <div><b>packet, routing, TCP and UDP</b> — <span>messages are chopped into packets and routed independently; TCP guarantees delivery with a handshake and retransmission, UDP is faster and does not.</span></div>
+  <div><b>application protocols: DNS, HTTP/S, FTP, SMTP</b> — <span>the named jobs at the top of the stack: names to addresses, web transfer, file transfer, email.</span></div>
+  <div><b>error detection: parity, checksum, Hamming</b> — <span>adding redundant bits so corruption can be detected, and in Hamming's case located and corrected without retransmission.</span></div>
+</div>
+
+<h3>Data at scale — A3 and A4</h3>
+
+<div class="wordlist">
+  <div><b>database, table, record, field</b> — <span>a database is a structured, persistent collection of data; tables hold records (rows) made of fields (columns).</span></div>
+  <div><b>primary, composite and foreign keys</b> — <span>a primary key uniquely identifies a record, a composite key needs two or more fields to do it, and a foreign key points at a primary key in another table, creating the relationship.</span></div>
+  <div><b>relationships</b> — <span>one-to-one, one-to-many and many-to-many; the last is implemented with a link table, which is the step students forget.</span></div>
+  <div><b>normalisation (1NF, 2NF, 3NF)</b> — <span>a procedure for removing redundancy and the anomalies it causes: atomic values, then no partial key dependence, then no transitive dependence.</span></div>
+  <div><b>SQL</b> — <span>the declarative language for asking questions of a database: SELECT with WHERE, ORDER BY, GROUP BY, aggregates and JOIN.</span></div>
+  <div><b>transaction and ACID</b> — <span>a unit of work that is Atomic, Consistent, Isolated and Durable, so a half-completed transfer can never be stored.</span></div>
+  <div><b>NoSQL and the CAP theorem</b> — <span>non-relational stores (document, key–value, column, graph) that trade some relational guarantees for scale; CAP says a distributed system cannot have full consistency and full availability during a partition.</span></div>
+  <div><b>machine learning</b> — <span>inverting programming: instead of writing the rules you supply data and answers, and the system infers a model that maps features to labels.</span></div>
+  <div><b>supervised, unsupervised, reinforcement</b> — <span>learning from labelled answers, from structure alone (clustering), or from reward and penalty.</span></div>
+  <div><b>classification vs regression</b> — <span>predicting a category versus predicting a number; examiners ask this distinction almost every session.</span></div>
+  <div><b>training, validation and test sets</b> — <span>separate data for fitting, tuning and final judgement; testing on training data is the classic way to fool yourself.</span></div>
+  <div><b>overfitting and underfitting</b> — <span>memorising noise versus missing the pattern; a model that is perfect on training data and poor on test data has overfitted.</span></div>
+  <div><b>bias in data and ethics</b> — <span>a model inherits the biases of its training data, so "the algorithm decided" is never an excuse and always an evaluation point.</span></div>
+</div>
+
+<h3>Computational thinking and programming — B1 to B4</h3>
+
+<div class="wordlist">
+  <div><b>abstraction</b> — <span>keeping the features that matter for the problem and discarding the rest; it is the single most examined idea in the course, and "vague" is not the same as "abstract".</span></div>
+  <div><b>decomposition</b> — <span>breaking a problem into sub-problems that can be solved, tested and named independently.</span></div>
+  <div><b>algorithm</b> — <span>a finite, ordered, unambiguous set of steps that solves a problem; it is the idea, not the code.</span></div>
+  <div><b>pseudocode, flowchart, structure chart, trace table</b> — <span>the four representations: prose-like code the IB defines, diagrams of flow and hierarchy, and a table for hand-executing an algorithm step by step.</span></div>
+  <div><b>the five strands of computational thinking</b> — <span>thinking procedurally (order and sub-tasks), logically (decisions), ahead (inputs, outputs, preconditions), concurrently (what can happen at once), abstractly (what to keep).</span></div>
+  <div><b>concurrency vs parallelism</b> — <span>concurrency is the structure of a program that manages several tasks; parallelism is actually running them simultaneously. Hazards arise when shared data is updated in an uncontrolled order.</span></div>
+  <div><b>variable, constant and data type</b> — <span>a named store whose value can change, one that cannot, and the kind of value each holds (integer, real, string, Boolean), which decides the operations allowed.</span></div>
+  <div><b>selection and iteration</b> — <span>branching on a condition, and repeating: definite iteration for a known number of times, conditional iteration until a condition changes.</span></div>
+  <div><b>array and list</b> — <span>a fixed-size indexed collection versus a resizable one; choosing between them is a decision about memory, insertion cost and access speed.</span></div>
+  <div><b>sub-procedure, function, parameter and return value</b> — <span>a named block you can call; parameters pass data in, a return value passes a result out, and the interface is the contract.</span></div>
+  <div><b>recursion</b> — <span>a procedure that calls itself, always with a base case that stops it; elegant for trees and for problems defined in terms of smaller versions of themselves.</span></div>
+  <div><b>testing: error types and test data</b> — <span>syntax, runtime and logic errors; normal, boundary and erroneous data. Validation checks the input is sensible, verification checks you built the right thing.</span></div>
+  <div><b>class, object, instance, constructor</b> — <span>the class is the blueprint, the object the thing built from it, an instance one such object, and the constructor sets its initial state.</span></div>
+  <div><b>encapsulation and access modifiers</b> — <span>bundling data with the methods that use it and hiding the internals, so state can only change through the intended interface.</span></div>
+  <div><b>inheritance, polymorphism, abstraction (OOP)</b> — <span>sharing structure down a hierarchy; one interface with many implementations (overloading versus overriding); abstract classes and interfaces that fix the contract and leave the behaviour.</span></div>
+  <div><b>abstract data type (ADT)</b> — <span>a structure defined by its operations and their contracts, independently of implementation: stack, queue, list, tree, graph, hash table.</span></div>
+  <div><b>stack, queue, tree, graph, hash table</b> — <span>LIFO, FIFO, hierarchical with traversals, networked with BFS and DFS, and key-to-index mapping with a collision strategy.</span></div>
+  <div><b>algorithm efficiency and Big-O</b> — <span>how the number of steps grows as the input grows, written O(n), O(n<sup>2</sup>), O(log n); it compares growth, not absolute speed on small inputs.</span></div>
+</div>
+
+<h3>How the two halves meet</h3>
+
+<p>Theme A and Theme B are not two courses. A program you write in
+<a href="B2-programming.html">B2</a> is stored as
+<a href="A1-computer-fundamentals.html">binary in two's complement and floating point</a>, compiled by a
+translator, scheduled by an <a href="A1-computer-fundamentals.html">operating system</a>, and — if it holds
+anything worth keeping — persists it through <a href="A3-databases.html">normalised tables and
+transactions</a>. The <a href="B1-computational-thinking.html">abstraction</a> you practised in B1 is exactly
+the skill that makes a <a href="A3-databases.html">database schema</a> or a
+<a href="A4-machine-learning.html">feature set</a> defensible, and the
+<a href="B4-abstract-data-types.html">complexity</a> you can state in B4 is the reason a choice of structure
+is a decision rather than a preference. The <a href="ia-solution.html">internal assessment</a> is where the
+examiner checks that you can do both at once, and the <a href="case-study.html">case study</a> is where you
+argue about what a real system does to real people.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Topic</th><th>The one idea</th><th>Page</th></tr></thead>
+  <tbody>
+    <tr><td><strong>A1</strong></td><td>Everything is represented, and every representation is a trade-off.</td><td><a href="A1-computer-fundamentals.html">Computer fundamentals</a></td></tr>
+    <tr><td><strong>A2</strong></td><td>Layers: each one solves a problem for the one above it.</td><td><a href="A2-networks.html">Networks</a></td></tr>
+    <tr><td><strong>A3</strong></td><td>Design the data so it cannot contradict itself.</td><td><a href="A3-databases.html">Databases</a></td></tr>
+    <tr><td><strong>A4</strong></td><td>Supply data instead of rules — then prove the model works.</td><td><a href="A4-machine-learning.html">Machine learning</a></td></tr>
+    <tr><td><strong>B1</strong></td><td>Decide what matters before you write anything.</td><td><a href="B1-computational-thinking.html">Computational thinking</a></td></tr>
+    <tr><td><strong>B2</strong></td><td>The same algorithm in any language, written so a human can trace it.</td><td><a href="B2-programming.html">Programming</a></td></tr>
+    <tr><td><strong>B3</strong></td><td>Model the world as objects with state and behaviour.</td><td><a href="B3-oop.html">Object-oriented programming</a></td></tr>
+    <tr><td><strong>B4</strong></td><td>Pick the structure whose operations match the problem.</td><td><a href="B4-abstract-data-types.html">Abstract data types</a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">"Explain" means mechanism plus consequence</span>
+  <p>The difference between a 2-mark and a 4-mark answer in this subject is almost always this: a
+  <em>describe</em> answer says what happens ("the router forwards the packet"), an <em>explain</em> answer
+  adds the mechanism and its consequence ("the router reads the destination IP, consults its routing table and
+  forwards the packet on the interface for that network, so the packet moves one hop closer without the
+  sender needing to know the path"). Build every explain answer as
+  <strong>mechanism → consequence</strong> and you stop losing the second mark.</p>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Three confusions that cap a 7</span>
+  <p><strong>Abstraction is not vagueness.</strong> "The app is easy to use" is vague; "the app exposes three
+  operations and hides the storage format" is abstraction. <strong>Big-O is growth, not speed.</strong> An
+  O(n<sup>2</sup>) sort can beat an O(n log n) sort on ten items, but not on ten million. <strong>A compiler is
+  not better than an interpreter.</strong> Compiled code runs faster; interpreted code is easier to debug and
+  more portable. Every technology answer in this course is a trade-off, and "which is better" is never the
+  question.</p>
+</div>
+
 <h2>3. Assessment overview</h2>
 
 <p>Four components; three of them carry marks. The single most useful thing to internalise is the last column — not
