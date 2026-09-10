@@ -25,7 +25,7 @@ those particles. Learn the counting argument and every equation in this theme fo
 <div class="page-meta">
   <span class="tag">B.1 Thermal transfers · B.2 Greenhouse effect · B.3 Gas laws · B.5 Circuits</span>
   <span class="tag tag--hl">B.4 Thermodynamics — HL only</span>
-  <span class="tag">~4,900 words</span>
+  <span class="tag">~12,000 words</span>
 </div>
 
 <div class="callout callout--why">
@@ -961,6 +961,760 @@ macroscopic state. Unit J K⁻¹.</p>
   </ul>
 </div>
 
+<h2 id="b1x">B.1 in depth — calorimetry, heat capacity and the error budget</h2>
+
+<p>Every calorimetry question in the IB boils down to one sentence: <strong>energy lost by the hot thing equals
+energy gained by the cold thing</strong>, provided nothing escapes. The exam tests whether you can write that
+sentence down with the right terms in it, and the IA tests whether you can make it true in a school laboratory.
+This section is about both, because each of them is where marks are actually lost.</p>
+
+<h3>Heat capacity versus specific heat capacity</h3>
+
+<p>Specific heat capacity \(c\) is a <em>material</em> property: the energy needed to raise the temperature of
+<em>one kilogram</em> by one kelvin, in \(\text{J kg}^{-1}\ \text{K}^{-1}\). Heat capacity \(C\) is an
+<em>object</em> property: the energy needed to raise the temperature of <em>that particular object</em> by one
+kelvin, in \(\text{J K}^{-1}\). They are related by</p>
+
+<p>\[C = mc \qquad\text{and}\qquad \Delta Q = C\,\Delta T = mc\,\Delta T\]</p>
+
+<p>Why the distinction matters: a copper calorimeter can, a beaker, a heating coil and a thermometer bulb all
+warm up along with the water you are measuring. Each of them absorbs energy that your \(mc\Delta T\) for the
+water alone does not account for. A careful experiment therefore writes</p>
+
+<p>\[\Delta Q_{\text{supplied}} = \left(m_w c_w + C_{\text{cal}}\right)\Delta T\]</p>
+
+<p>where \(C_{\text{cal}}\) is the <strong>heat capacity of the calorimeter and its fittings</strong> — a number
+determined in a separate calibration experiment. Neglecting it is the single biggest systematic error in school
+calorimetry, and it always biases your result in the same direction: the calculated \(c\) comes out
+<em>too large</em>, because some of the energy you think went into the water actually went into the metal.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>Water's specific heat capacity is 4180 J kg⁻¹ K⁻¹, but a typical 100 g aluminium calorimeter can has
+  \(C = mc = 0.100 \times 900 = 90\ \text{J K}^{-1}\), which is <em>21%</em> of the heat capacity of 100 g of
+  water (\(418\ \text{J K}^{-1}\)). That is not a rounding error; it is a fifth of your signal. If the question
+  gives you a calorimeter, use it.</p>
+</div>
+
+<h3>The electrical method: measuring \(c\) without mixing anything</h3>
+
+<p>The cleanest way to measure a specific heat capacity is not to mix two substances but to supply a
+<em>measured amount of electrical energy</em> to a single substance and watch its temperature rise:</p>
+
+<p>\[VIt = mc\,\Delta T \quad (\text{plus } C_{\text{cal}}\Delta T \text{ if you are being careful})\]</p>
+
+<p>Here \(V\) is the pd across the heater, \(I\) the current in it and \(t\) the heating time, so \(VIt\) is the
+electrical energy delivered in joules. The method is attractive because \(V\), \(I\) and \(t\) can all be
+measured to better than 1%, whereas the temperature rise is usually the weak link.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to run it</span>
+  <ol>
+    <li>Measure the mass of the liquid by weighing the calorimeter empty and then full; the difference is the
+    liquid's mass. This avoids the error from liquid clinging inside a measuring cylinder.</li>
+    <li>Start the stopwatch and the heater together, and record temperature every 30 s — before switch-on,
+    during heating, and for several minutes after switch-off.</li>
+    <li>Keep the current constant. A supply whose voltage drifts invalidates the assumption that the energy is
+    simply \(V \times I \times t\); log the ammeter reading and average it if it moves.</li>
+    <li>Stir continuously, and wait for the temperature to peak <em>after</em> switch-off before recording the
+    final value — the element is hotter than the liquid and keeps delivering energy for a while.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 13</span> IB-style · 6 marks · Electrical calorimetry with a calorimeter correction</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> An electrical heater is immersed in 0.150 kg of oil in a calorimeter of heat
+    capacity 45 J K⁻¹. The heater operates at 12.0 V with a current of 2.4 A for 300 s. The temperature of the
+    oil rises from 21.0 °C to 47.3 °C. Determine the specific heat capacity of the oil.</p>
+    <ol class="steps">
+      <li><strong>Energy supplied by the heater:</strong> \(E = VIt = 12.0 \times 2.4 \times 300 = 8640\ \text{J}\).</li>
+      <li><strong>Temperature rise:</strong> \(\Delta T = 47.3 - 21.0 = 26.3\ \text{K}\). A rise of 26.3 °C is a
+      rise of 26.3 K — the two scales have the same step size, so you never add 273 to a <em>difference</em>.</li>
+      <li><strong>Set up the balance:</strong> \(VIt = mc\,\Delta T + C_{\text{cal}}\Delta T\), so
+      \(8640 = (0.150\,c + 45)(26.3)\).</li>
+      <li><strong>Rearrange:</strong> \(0.150c + 45 = 8640/26.3 = 328.5\), hence \(0.150c = 283.5\) and
+      \(c = 1.89\times10^{3}\ \text{J kg}^{-1}\ \text{K}^{-1}\).</li>
+      <li><strong>Sanity check:</strong> oils typically have \(c \approx 2000\ \text{J kg}^{-1}\ \text{K}^{-1}\),
+      roughly half that of water, so a value just under 1900 is entirely plausible ✓. Ignoring the calorimeter
+      would have given \(c = 2190\), an error of 16%.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(c \approx 1.9\times10^{3}\ \text{J kg}^{-1}\ \text{K}^{-1}\); the
+    calorimeter term is worth about 16% of the result and must not be dropped.</div>
+  </div>
+</details>
+
+<h3>The cooling correction, and why you extrapolate backwards</h3>
+
+<p>A real calorimeter is never perfectly insulated. While the liquid is warming it is also losing energy to the
+room, and the rate of loss is proportional to the temperature <em>excess</em> above ambient (Newton's law of
+cooling). This means the temperature you read at the end is <em>lower</em> than the temperature you would have
+reached with perfect insulation, so \(\Delta T\) is underestimated and any \(c\) you calculate is too large.</p>
+
+<p>The standard fix is graphical. You record temperature for several minutes <em>after</em> the heater is
+switched off, plot temperature against time, and draw a straight line of best fit through the cooling section.
+You then extrapolate that line <em>backwards</em> to the mid-point of the heating interval. The corrected
+temperature rise is the difference between the extrapolated line and the starting temperature.</p>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique</span>
+  <p>If a data-based question gives you a temperature–time table and asks you to "determine a corrected value
+  for the temperature rise", you are being asked for exactly this construction. State the method in words
+  first — "extrapolate the post-heating cooling line back to the mid-point of heating" — then read the
+  intercept off your graph. Marks are awarded for the <em>method</em> even if your intercept is a couple of
+  degrees off.</p>
+</div>
+
+<h3>Where the uncertainty actually comes from</h3>
+
+<p>In a well-run calorimetry experiment the uncertainty budget looks roughly like this. Notice which term
+dominates — it is almost never the electrical measurements.</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Source</th><th>Typical size</th><th>Random or systematic?</th><th>How to reduce it</th></tr></thead>
+<tbody>
+<tr><td>Reading the thermometer or probe</td><td>±0.5 °C on a ±25 °C rise → 2%</td><td>Random</td><td>Digital probe; repeat; increase \(\Delta T\)</td></tr>
+<tr><td>Heat lost to the surroundings</td><td>3–10% of the energy</td><td>Systematic (always the same sign)</td><td>Insulation, lid, cooling correction</td></tr>
+<tr><td>Heat capacity of the calorimeter, if ignored</td><td>up to 20%</td><td>Systematic</td><td>Calibrate it, or include \(C_{\text{cal}}\)</td></tr>
+<tr><td>Current drift during heating</td><td>1–2%</td><td>Mostly random</td><td>Log \(I\) every 30 s and average</td></tr>
+<tr><td>Heating time</td><td>&lt;1%</td><td>Random</td><td>Use a longer run — 300 s rather than 60 s</td></tr>
+<tr><td>Incomplete stirring, thermal gradients</td><td>1–3%</td><td>Systematic</td><td>Stir continuously; read after the peak</td></tr>
+<tr><td>Evaporation from the surface</td><td>1–3% for hot water</td><td>Systematic</td><td>Fit a lid; keep \(\Delta T\) modest</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>The pattern is worth internalising, because it repeats across Theme B and across your IA:
+<strong>the dominant error is usually thermal exchange with the surroundings, and it is systematic</strong>.
+Repeating the experiment five times and averaging will not remove it. Only better insulation, a correction
+procedure, or a different method will.</p>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — calorimetry</span>
+  <p><em>calorimeter</em> — an insulated container used to measure heat transfer. ·
+  <em>heat capacity (C)</em> — energy to raise an object's temperature by 1 K, in J K⁻¹. ·
+  <em>specific heat capacity (c)</em> — energy per unit mass per kelvin, in J kg⁻¹ K⁻¹. ·
+  <em>extrapolate</em> — extend a graph beyond the measured data to find an intercept. ·
+  <em>thermal equilibrium</em> — the state in which no net energy flows between bodies in contact. ·
+  <em>Newton's law of cooling</em> — rate of heat loss proportional to temperature excess.</p>
+</div>
+
+<h2 id="b2x">B.2 in depth — planetary energy balance with an atmosphere</h2>
+
+<p>The bare-rock calculation of B.2 — absorb \((1-\alpha)S/4\), emit \(\sigma T^4\), solve for \(T\) — gives
+255 K for Earth, while the measured mean surface temperature is about 288 K. That 33 K gap <em>is</em> the
+greenhouse effect, and the simplest possible model of it, the <strong>single-layer atmosphere model</strong>,
+is one of the most satisfying pieces of physics in the course because it gets the right answer from almost
+nothing.</p>
+
+<h3>Building the one-layer model</h3>
+
+<p>Make three assumptions, and be ready to state them if asked:</p>
+
+<ol class="steps">
+  <li>The atmosphere is a single thin layer at a uniform temperature \(T_a\).</li>
+  <li>It is <em>transparent</em> to short-wavelength solar radiation (visible and near-infrared) and
+  <em>opaque</em> to long-wavelength terrestrial radiation.</li>
+  <li>Each layer — surface and atmosphere — is in steady state, so energy in equals energy out for each.</li>
+</ol>
+
+<p>Let \(S\) be the solar constant, \(\alpha\) the albedo and \(T_s\) the surface temperature. Work per unit
+area of surface, remembering that the incoming beam is spread over four times the collecting area:</p>
+
+<p>\[\text{solar energy absorbed at the surface per unit area} = \frac{(1-\alpha)S}{4}\]</p>
+
+<p>The surface radiates \(\sigma T_s^4\) upwards; all of it is absorbed by the atmosphere. The atmosphere
+radiates \(\sigma T_a^4\) from <em>both</em> faces — upwards to space and downwards back to the surface.
+Balancing each layer:</p>
+
+<p>\[\text{Atmosphere: } \sigma T_s^4 = 2\sigma T_a^4 \quad\Rightarrow\quad T_s^4 = 2T_a^4\]
+\[\text{Surface: } \frac{(1-\alpha)S}{4} + \sigma T_a^4 = \sigma T_s^4\]</p>
+
+<p>Substituting \(\sigma T_a^4 = \tfrac12 \sigma T_s^4\) into the surface balance gives the punchline:</p>
+
+<p>\[\frac{(1-\alpha)S}{4} = \tfrac{1}{2}\sigma T_s^4 \quad\Rightarrow\quad \sigma T_s^4 = \frac{(1-\alpha)S}{2}\]</p>
+
+<p>Compared with the bare-rock result \(\sigma T^4 = (1-\alpha)S/4\), the right-hand side has <em>doubled</em>,
+so \(T_s\) is larger by a factor of \(2^{1/4} = 1.19\). With \(T_{\text{bare}} = 255\ \text{K}\) this predicts
+\(T_s = 303\ \text{K}\), which overshoots the real 288 K. The model is crude, but it captures the mechanism and
+the direction — and it is the same physics as an emergency blanket: one extra reflective layer roughly doubles
+the effective insulation.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>The atmosphere emits <em>both</em> upwards and downwards, so it loses \(2\sigma T_a^4\) while receiving
+  \(\sigma T_s^4\). Students who write \(\sigma T_s^4 = \sigma T_a^4\) have forgotten the second face, and they
+  arrive at no greenhouse effect at all. Two faces, factor of two, factor of \(2^{1/4}\) on temperature.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 14</span> HL · 8 marks · One-layer model for a planet</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A planet receives a solar constant of \(S = 1600\ \text{W m}^{-2}\) and has
+    albedo 0.40. (a) Determine its effective radiating temperature neglecting any atmosphere. (b) The planet has
+    an atmosphere transparent to starlight and opaque to the planet's own infrared. Use the single-layer model
+    to estimate the surface temperature. (c) Comment on the result.</p>
+    <ol class="steps">
+      <li><strong>(a) Bare rock:</strong> \(\dfrac{(1-0.40)(1600)}{4} = 240\ \text{W m}^{-2}\). Set
+      \(\sigma T^4 = 240\): \(T = (240/5.67\times10^{-8})^{1/4}\). Compute the ratio first,
+      \(240/5.67\times10^{-8} = 4.23\times10^{9}\), then take the fourth root:
+      \(T \approx 255\ \text{K}\) (about −18 °C).</li>
+      <li><strong>(b) With one layer:</strong> \(\sigma T_s^4 = \dfrac{(1-\alpha)S}{2} =
+      \dfrac{0.60\times1600}{2} = 480\ \text{W m}^{-2}\). Then
+      \(T_s = (480/5.67\times10^{-8})^{1/4} = (8.47\times10^{9})^{1/4} \approx 303\ \text{K}\)
+      (about 30 °C).</li>
+      <li><strong>(c) Comment:</strong> the atmosphere raises the predicted surface temperature by 48 K. The
+      model is unrealistic because it assumes a single isothermal layer that is perfectly opaque to all
+      infrared. Real atmospheres are partly transparent in the infrared "window" and they transport energy
+      upward by convection as well as radiation. Both effects make the real surface cooler than this estimate,
+      which is why Earth sits at 288 K rather than the 303 K the model predicts.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 255 K; (b) 303 K; (c) the one-layer model overestimates because it
+    ignores the atmospheric window and convection.</div>
+  </div>
+</details>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 400" role="img" aria-label="Single-layer atmosphere energy balance diagram">
+    <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
+    <text x="20" y="26" font-size="15" font-family="system-ui, sans-serif" fill="#151923">Single-layer greenhouse model — fluxes in W m⁻²</text>
+    <rect x="0" y="38" width="640" height="24" fill="#eef2ff" stroke="#334155" stroke-width="1"/>
+    <text x="20" y="55" font-size="12" font-family="system-ui, sans-serif" fill="#151923">Top of atmosphere: 240 in from the star, 240 out to space</text>
+
+    <rect x="0" y="110" width="640" height="42" fill="#dceae8" stroke="#0a6f80" stroke-width="1.5"/>
+    <text x="20" y="136" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Atmosphere layer — transparent to visible, opaque to IR</text>
+
+    <rect x="0" y="272" width="640" height="58" fill="#e2e8f0" stroke="#334155" stroke-width="1.5"/>
+    <text x="20" y="306" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Surface at Tₛ, radiates σTₛ⁴ = 480</text>
+
+    <line x1="120" y1="62" x2="120" y2="270" stroke="#c98a00" stroke-width="3" stroke-linecap="round"/>
+    <text x="132" y="180" font-size="13" font-family="system-ui, sans-serif" fill="#8a6100">solar 240 passes through</text>
+
+    <line x1="420" y1="270" x2="420" y2="154" stroke="#b03060" stroke-width="3" stroke-linecap="round"/>
+    <text x="430" y="212" font-size="13" font-family="system-ui, sans-serif" fill="#8c1f45">480 up, all absorbed</text>
+
+    <line x1="300" y1="108" x2="300" y2="64" stroke="#0a6f80" stroke-width="3" stroke-linecap="round"/>
+    <text x="238" y="100" font-size="13" font-family="system-ui, sans-serif" fill="#0a6f80">240 out to space</text>
+
+    <line x1="560" y1="154" x2="560" y2="270" stroke="#0a6f80" stroke-width="3" stroke-linecap="round"/>
+    <text x="466" y="196" font-size="13" font-family="system-ui, sans-serif" fill="#0a6f80">back-radiation 240 down</text>
+
+    <text x="20" y="356" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Surface balance: 240 solar + 240 back-radiation = 480 = σTₛ⁴</text>
+    <text x="20" y="378" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Layer balance: 480 absorbed = 240 + 240 emitted from its two faces</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 3.</span> The one-layer greenhouse model. Because the atmosphere
+  radiates from two faces, the surface must radiate twice what the planet emits to space, and is hotter by a
+  factor of \(2^{1/4}\).</figcaption>
+</figure>
+
+<h3>Emissivity, the atmospheric window, and why Earth is not Venus</h3>
+
+<p>Real surfaces are not perfect black bodies. <strong>Emissivity</strong> \(e\) scales the Stefan–Boltzmann
+law, \(P = e\sigma A T^4\), with \(e = 1\) for a perfect emitter and \(e &lt; 1\) for everything else. Dark,
+rough surfaces — soot, soil, water, vegetation — have \(e \approx 0.9\) to 0.98. Polished metals have
+\(e \approx 0.05\) to 0.2, which is why a shiny survival blanket works and why the walls of a vacuum flask are
+silvered.</p>
+
+<p>Earth's <em>effective</em> emissivity in the infrared, measured from space, is about 0.61 — noticeably less
+than the ~0.95 of the surface itself. The difference is the <strong>atmospheric window</strong>: a band around
+8–13 μm where the atmosphere is largely transparent, so some surface radiation escapes directly to space
+without being absorbed and re-radiated. Adding greenhouse gases closes the window part by part, which is why
+effective emissivity is not a constant of nature but depends on composition.</p>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique</span>
+  <p>When a question gives you an emissivity you are expected to use it in \(P = e\sigma A T^4\), and you should
+  also state the assumption that <strong>absorptivity equals emissivity</strong> (Kirchhoff's radiation law): a
+  good absorber at a given wavelength is a good emitter at that wavelength. That is what licenses you to use the
+  same number for absorbing incoming radiation and for emitting outgoing radiation.</p>
+</div>
+
+<h3>Radiative forcing and climate sensitivity — what "discuss" questions want</h3>
+
+<p><strong>Radiative forcing</strong> is the change in net downward radiative flux at the tropopause, in
+W m⁻², caused by some perturbation: doubling CO₂, a volcanic eruption, a change in solar output. It is the
+currency of climate physics because it lets you compare very different causes on one scale. Doubling CO₂
+produces a forcing of about 3.7 W m⁻².</p>
+
+<p><strong>Climate sensitivity</strong> converts a forcing into a temperature change. The no-feedback value
+follows straight from differentiating \(\sigma T^4 = F\):</p>
+
+<p>\[\frac{\Delta T}{T} = \frac{1}{4}\frac{\Delta F}{F} \quad\Rightarrow\quad \Delta T \approx \frac{T\,\Delta F}{4F}\]</p>
+
+<p>With \(T = 255\ \text{K}\), \(F = 240\ \text{W m}^{-2}\) and \(\Delta F = 3.7\ \text{W m}^{-2}\) this gives
+\(\Delta T \approx 1.0\ \text{K}\) per CO₂ doubling. Feedbacks multiply it: water vapour — a strong greenhouse
+gas whose atmospheric concentration rises with temperature — amplifies the warming; melting ice reduces albedo
+and amplifies it; increased cloud cover has both a cooling effect (albedo) and a warming effect (blanket) and is
+the largest single source of uncertainty. Assessed equilibrium climate sensitivity is around 3 K per doubling,
+roughly three times the bare no-feedback number.</p>
+
+<div class="callout callout--link">
+  <span class="callout__label">Link</span>
+  <p>The \(\tfrac14\) in \(\Delta T/T = \tfrac14\,\Delta F/F\) is the same fourth root that makes temperature so
+  insensitive to the solar constant. It is why a 0.1% change in solar output gives only about 0.07 K of warming
+  — far too small to explain the observed warming since 1850, which is itself a standard exam argument against
+  a solar explanation for modern climate change.</p>
+</div>
+
+<h2 id="b3x">B.3 in depth — the Maxwell–Boltzmann distribution and real gases</h2>
+
+<p>The kinetic model of B.3 gives you the <em>average</em> molecular kinetic energy,
+\(\bar{E}_k = \tfrac32 k_BT\). But averages hide the most interesting physics: at any instant some molecules are
+almost stationary while others move at several times the rms speed. The <strong>Maxwell–Boltzmann
+distribution</strong> describes how the speeds are spread out, and it explains phenomena the average alone
+cannot — evaporation, reaction rates, and why a planet can lose its atmosphere.</p>
+
+<h3>Reading the distribution</h3>
+
+<p>Plot the number of molecules \(N(c)\) with speeds in a narrow band against speed \(c\). The curve starts at
+zero — essentially no molecule has exactly zero speed — rises to a single peak, and then has a long tail to the
+right. Three speeds are marked on it, and it is vital not to confuse them:</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Speed</th><th>Expression</th><th>Where it sits</th><th>Used for</th></tr></thead>
+<tbody>
+<tr><td>Most probable speed \(c_p\)</td><td>\(\sqrt{2k_BT/m}\)</td><td>At the peak</td><td>Describing the curve</td></tr>
+<tr><td>Mean speed \(\langle c\rangle\)</td><td>\(\sqrt{8k_BT/\pi m}\)</td><td>Slightly right of the peak</td><td>Mean free path, diffusion</td></tr>
+<tr><td>Rms speed \(c_{\text{rms}}\)</td><td>\(\sqrt{3k_BT/m}\)</td><td>Right of the mean</td><td>Kinetic theory: \(pV = \tfrac13 Nm\langle c^2\rangle\)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>The ordering is always \(c_p &lt; \langle c\rangle &lt; c_{\text{rms}}\), with ratios
+\(1 : 1.13 : 1.22\). You do not need the numerical ratios, but you must know which of the three appears in
+\(pV = \tfrac13 Nm\langle c^2\rangle\): it is the <strong>rms</strong> speed, because that formula comes from
+averaging \(c^2\), not from averaging \(c\).</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>\(\langle c^2\rangle \neq \langle c\rangle^2\). The mean of the squares is not the square of the mean; they
+  differ by the variance. When a question says "the mean square speed is 2.5 × 10⁵ m² s⁻²", take the square root
+  to get the rms speed. Do not square anything, and do not divide by two.</p>
+</div>
+
+<h3>What happens when you heat the gas</h3>
+
+<p>Raising \(T\) makes the peak move <em>right</em>, to higher speed, and <em>down</em>, because the
+distribution broadens so no single speed holds as large a share of the molecules. Because the curve is
+normalised — the area under it is the total number of molecules — it cannot simply move up; it must flatten as
+it spreads. The high-speed tail stretches dramatically.</p>
+
+<p>That asymmetry is the key to three classic explanations:</p>
+
+<ul>
+  <li><strong>Evaporation cools a liquid.</strong> Only molecules in the high-speed tail have enough energy to
+  escape the surface. Removing them lowers the average kinetic energy of those left behind, so the temperature
+  falls. Sweating works because of the shape of the tail, not because of the average.</li>
+  <li><strong>Reaction rates rise steeply with temperature.</strong> An activation energy sits out in the tail.
+  A modest rise in \(T\) can double or triple the fraction of molecules beyond it, even though the mean speed
+  rises only as \(\sqrt{T}\).</li>
+  <li><strong>Light gases escape from atmospheres.</strong> At the same temperature, hydrogen molecules move
+  four times faster than oxygen molecules — mass ratio 1:16, so speed ratio 4:1 — and a far larger fraction of
+  them exceed the escape speed. That is why Earth retains O₂ and N₂ but has essentially no free H₂.</li>
+</ul>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 15</span> HL · 6 marks · The tail of the distribution</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Explain, using the Maxwell–Boltzmann distribution, why a small increase in
+    temperature can produce a large increase in the rate of evaporation of a liquid, even though the mean
+    molecular speed increases only slightly.</p>
+    <ol class="steps">
+      <li>The distribution of molecular speeds has a long tail at high speed. Only molecules whose speed exceeds
+      the threshold corresponding to the energy needed to escape the surface can leave the liquid.</li>
+      <li>The fraction that can escape is the <em>area under the tail</em> beyond that speed — a small sliver of
+      the total area.</li>
+      <li>When \(T\) rises the curve flattens and shifts right. The peak moves only as \(\sqrt{T}\), but the
+      tail is exponential in character, so the area beyond a fixed high threshold grows far faster than the mean
+      speed does.</li>
+      <li>Hence a rise of a few kelvin can multiply the number of escaping molecules by a large factor, which is
+      what we observe as a sharp increase in evaporation rate.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> Escape selects the exponential tail, not the mean; the tail population
+    grows much faster with \(T\) than \(\langle c\rangle \propto \sqrt{T}\) does.</div>
+  </div>
+</details>
+
+<h3>When the ideal gas model breaks</h3>
+
+<p>The ideal gas rests on six assumptions, and each fails under a specific, predictable condition. Being able to
+name the failure mode is a standard 3-mark question.</p>
+
+<div class="grid grid--2">
+  <div class="card"><h4>High pressure</h4><p>Molecules are pushed close together, so the volume of the molecules
+  themselves is no longer negligible against the container volume. The gas becomes <em>less</em> compressible
+  than \(pV = nRT\) predicts, because the free volume is smaller than the measured volume.</p></div>
+  <div class="card"><h4>Low temperature</h4><p>Molecules move slowly enough that intermolecular attraction
+  matters. Attraction pulls molecules back as they approach a wall, so they deliver less momentum and the
+  measured pressure is <em>lower</em> than the ideal prediction.</p></div>
+  <div class="card"><h4>Near condensation</h4><p>Attraction binds molecules into clusters; the gas liquefies and
+  \(p\) becomes independent of \(V\) at constant \(T\), giving a horizontal isotherm. No smooth equation of
+  ideal-gas form can describe that.</p></div>
+  <div class="card"><h4>Very light gases at very low T</h4><p>Quantum effects appear: the de Broglie wavelength of
+  Theme E becomes comparable with the intermolecular spacing, and the classical counting of states fails. Helium
+  stays liquid at atmospheric pressure down to absolute zero for this reason.</p></div>
+</div>
+
+<p>Quantitatively the fix is the <strong>van der Waals equation</strong>, which you may meet as extension
+material but are not required to derive:</p>
+
+<p>\[\left(p + \frac{an^2}{V^2}\right)(V - nb) = nRT\]</p>
+
+<p>Read it as two corrections: \(an^2/V^2\) adds back the pressure lost to intermolecular attraction, and \(nb\)
+subtracts the volume actually occupied by the molecules themselves. Every term is a reminder of one broken
+assumption.</p>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — B.2 and B.3 extension</span>
+  <p><em>emissivity</em> — radiating power of a surface compared with a black body, 0 to 1. ·
+  <em>atmospheric window</em> — the infrared band the atmosphere does not absorb. ·
+  <em>radiative forcing</em> — change in net radiative flux at the tropopause, in W m⁻². ·
+  <em>climate sensitivity</em> — equilibrium temperature change per unit forcing. ·
+  <em>most probable speed</em> — the speed at the peak of the distribution. ·
+  <em>mean free path</em> — average distance travelled between collisions. ·
+  <em>van der Waals equation</em> — a corrected equation of state for real gases.</p>
+</div>
+
+<h2 id="b4x">B.4 in depth — entropy calculations and real engine cycles</h2>
+
+<p>Entropy is the one idea in Theme B that students routinely memorise a sentence about without ever
+<em>calculating</em> anything. That is a missed opportunity: entropy sums are simple arithmetic, and doing one
+or two makes the second law feel like bookkeeping rather than philosophy.</p>
+
+<h3>Calculating an entropy change</h3>
+
+<p>The definition is</p>
+
+<p>\[\Delta S = \frac{Q_{\text{rev}}}{T}\]</p>
+
+<p>with \(Q_{\text{rev}}\) the energy transferred <em>reversibly</em> — that is, through an infinitesimal
+temperature difference — at absolute temperature \(T\). Two cases cover every IB question.</p>
+
+<p><strong>Case 1: an isothermal process, or a phase change.</strong> \(T\) is constant, so the definition
+applies directly. Melting 2.0 kg of ice at 273 K, with \(L_f = 3.3\times10^5\ \text{J kg}^{-1}\):</p>
+
+<p>\[\Delta S = \frac{Q}{T} = \frac{2.0 \times 3.3\times10^5}{273} = 2.4\times10^3\ \text{J K}^{-1}\]</p>
+
+<p>The value is positive: a liquid is more disordered than a solid, as it should be.</p>
+
+<p><strong>Case 2: heating or cooling through a temperature range.</strong> Now \(T\) changes, so you integrate.
+For a substance of heat capacity \(C\) heated from \(T_1\) to \(T_2\):</p>
+
+<p>\[\Delta S = \int_{T_1}^{T_2}\frac{C\,dT}{T} = C\ln\!\left(\frac{T_2}{T_1}\right) = mc\ln\!\left(\frac{T_2}{T_1}\right)\]</p>
+
+<p>The logarithm is the fingerprint of all entropy work. It comes from the same place as the
+\(W = nRT\ln(V_2/V_1)\) of an isothermal gas process: in both cases you are summing a quantity divided by a
+changing denominator.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>Temperatures in \(\ln(T_2/T_1)\) must be in <strong>kelvin</strong>, and the ratio must be dimensionless.
+  Writing \(\ln(100\ ^\circ\text{C}/20\ ^\circ\text{C})\) is meaningless — converting both to kelvin gives
+  \(\ln(373/293)\), a very different number.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 16</span> HL · 9 marks · Entropy change of the universe</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> 1.0 kg of water at 80 °C is poured into 1.0 kg of water at 20 °C in an
+    insulated container. (a) Determine the final temperature. (b) Determine the entropy change of the hot water,
+    the cold water, and the universe. (c) Comment on the sign of your answer. Take
+    \(c = 4200\ \text{J kg}^{-1}\ \text{K}^{-1}\).</p>
+    <ol class="steps">
+      <li><strong>(a) Final temperature.</strong> Equal masses of the same substance, so the final temperature is
+      the mean: \(T_f = 50\ ^\circ\text{C} = 323\ \text{K}\). (Doing it formally:
+      \(mc(80-T) = mc(T-20)\) gives \(T = 50\ ^\circ\text{C}\).)</li>
+      <li><strong>(b) Hot water.</strong> It cools from 353 K to 323 K:
+      \(\Delta S_{\text{hot}} = mc\ln(323/353) = 1.0(4200)\ln(0.9150) = 4200(-0.0888) = -373\ \text{J K}^{-1}\).</li>
+      <li><strong>Cold water.</strong> It warms from 293 K to 323 K:
+      \(\Delta S_{\text{cold}} = mc\ln(323/293) = 4200\ln(1.1024) = 4200(0.0975) = +409\ \text{J K}^{-1}\).</li>
+      <li><strong>Universe.</strong> \(\Delta S_{\text{total}} = -373 + 409 = +36\ \text{J K}^{-1}\).</li>
+      <li><strong>(c) Comment.</strong> The total is positive, so the process is irreversible and spontaneous —
+      which is exactly what we observe: hot and cold water mix by themselves and never unmix. Note that the
+      <em>hot</em> water's entropy decreased; that is perfectly allowed. The second law constrains the total,
+      not the individual parts.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 323 K; (b) −373 J K⁻¹, +409 J K⁻¹, +36 J K⁻¹; (c) positive total
+    entropy change confirms the process is irreversible.</div>
+  </div>
+</details>
+
+<h3>The two statements of the second law, and why they are the same statement</h3>
+
+<p>The IB accepts either form, and the strongest answers give both:</p>
+
+<div class="grid grid--2">
+  <div class="card"><h4>Clausius form</h4><p>Heat cannot spontaneously pass from a colder body to a hotter body.
+  It is the everyday form: a cold spoon in hot tea warms up, and never the other way round.</p></div>
+  <div class="card"><h4>Kelvin–Planck form</h4><p>No device operating in a cycle can convert heat taken from a
+  single reservoir entirely into work. Some energy must always be rejected to a colder reservoir.</p></div>
+</div>
+
+<p>They are equivalent, and the equivalence is itself a nice exam argument. Suppose you could violate Clausius
+— move heat \(Q\) from cold to hot with no other effect. Run a normal heat engine between the same two
+reservoirs; it takes \(Q_H\) from the hot reservoir, does work \(W\) and rejects \(Q_C\) to the cold one. Now
+use your Clausius-violator to pump that \(Q_C\) straight back up to the hot reservoir. The cold reservoir has
+had no net change, and the sole result of the combined machine is that heat \(Q_H - Q_C\) has been converted
+entirely into work — a Kelvin–Planck violation. So if one falls, both fall.</p>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique</span>
+  <p>Questions about perpetual motion machines want you to name the specific law that forbids them. A machine
+  that produces work with no energy input violates the <em>first</em> law. A machine that takes heat from the
+  ocean and turns it entirely into work violates the <em>second</em> law — the energy is all accounted for, but
+  you cannot convert heat completely into work without a colder sink. Identifying which one applies is usually
+  the whole question.</p>
+</div>
+
+<h3>Work from a p–V loop, and the cycles real engines use</h3>
+
+<p>On a \(p\)–\(V\) diagram, the work done in a process is \(W = \int p\,dV\), which is the <em>area under the
+curve</em>. For a closed cycle the net work done by the gas is the <strong>area enclosed by the loop</strong>,
+positive if the cycle is traversed clockwise (expansion at high pressure, compression at low pressure) and
+negative if anticlockwise. This single fact turns a lot of intimidating diagrams into an area calculation.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 17</span> HL · 7 marks · Area of a p–V cycle</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> One mole of ideal gas is taken round the rectangular cycle A→B→C→D→A:
+    A\((V_1, p_1)\) to B\((V_2, p_1)\) at constant pressure; B to C\((V_2, p_2)\) at constant volume; C to
+    D\((V_1, p_2)\) at constant pressure; D back to A at constant volume, with \(V_2 &gt; V_1\) and
+    \(p_1 &gt; p_2\). (a) Identify which stages involve work. (b) Show that the net work done per cycle is
+    \((p_1-p_2)(V_2-V_1)\). (c) State the net work if the cycle is reversed.</p>
+    <ol class="steps">
+      <li><strong>(a)</strong> Work requires a change of volume, so only the constant-pressure stages A→B and
+      C→D do work. B→C and D→A are isochoric and do none.</li>
+      <li><strong>(b)</strong> A→B: \(W_{\text{AB}} = p_1(V_2-V_1)\), positive (expansion). C→D:
+      \(W_{\text{CD}} = p_2(V_1-V_2) = -p_2(V_2-V_1)\), negative (compression). Net:
+      \(W = p_1(V_2-V_1) - p_2(V_2-V_1) = (p_1-p_2)(V_2-V_1)\), which is exactly the area of the rectangle.</li>
+      <li><strong>(c)</strong> Reversed, the cycle runs anticlockwise and the net work is
+      \(-(p_1-p_2)(V_2-V_1)\): work must be done <em>on</em> the gas. This reversed rectangle is a refrigerator
+      — you pay work to move energy from low to high temperature.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) A→B and C→D only; (b) \(W = (p_1-p_2)(V_2-V_1)\); (c) the same
+    magnitude with the opposite sign.</div>
+  </div>
+</details>
+
+<p>Real engines do not use the Carnot cycle, because the Carnot cycle's isothermal stages would have to be
+carried out infinitely slowly. Practical cycles replace them with fast, near-adiabatic strokes:</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Cycle</th><th>Four strokes</th><th>Why it is used</th><th>Typical efficiency</th></tr></thead>
+<tbody>
+<tr><td>Otto (petrol)</td><td>adiabatic compression, isochoric heating (spark), adiabatic expansion, isochoric cooling</td><td>Combustion is so fast the volume barely changes during it — hence constant volume</td><td>25–30%</td></tr>
+<tr><td>Diesel</td><td>adiabatic compression, isobaric heating, adiabatic expansion, isochoric cooling</td><td>Fuel is injected over a longer period as the piston moves, so burning is at roughly constant pressure</td><td>35–40%</td></tr>
+<tr><td>Rankine (steam turbine)</td><td>pump liquid, boil at constant pressure, expand through turbine, condense at constant pressure</td><td>Uses a phase change to absorb and reject huge amounts of energy at fixed temperature</td><td>35–45%</td></tr>
+<tr><td>Brayton (jet / gas turbine)</td><td>adiabatic compression, isobaric heating, adiabatic expansion, isobaric cooling</td><td>Continuous flow rather than a piston; open cycle</td><td>30–40%</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>All of them are bounded by the Carnot efficiency \(\eta = 1 - T_C/T_H\) evaluated at their extreme
+temperatures, and all of them fall short of it for the same reason: every real compression has friction, every
+real combustion is turbulent, and every real heat transfer happens across a finite temperature difference —
+and each of those generates entropy.</p>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why this matters</span>
+  <p>The "energy crisis" is not really about energy. The first law guarantees that energy is conserved, so in a
+  strict sense we never run out of it. What we run out of is <em>low-entropy</em> energy — concentrated,
+  ordered energy such as a fossil fuel or a uranium nucleus that can still be degraded to spread itself out. The
+  second law says that once energy has spread out as low-temperature waste heat, no amount of clever engineering
+  will gather it back without paying more elsewhere. Useful energy is consumed; energy itself is not.</p>
+</div>
+
+<h2 id="b5x">B.5 in depth — Kirchhoff's laws, internal resistance and I–V characteristics</h2>
+
+<p>The potential-divider section of B.5 handles sensor circuits. But a large fraction of Paper 1 and 2 circuit
+questions do not yield to series/parallel reduction at all — you need two rules that work for <em>any</em>
+circuit, however tangled.</p>
+
+<h3>Kirchhoff's two laws</h3>
+
+<p><strong>Current law (KCL):</strong> the sum of currents entering a junction equals the sum leaving it. This
+is charge conservation, plus the observation that charge does not pile up at a junction.</p>
+
+<p><strong>Voltage law (KVL):</strong> round any closed loop, the sum of the emfs equals the sum of the pd
+drops. This is energy conservation: a coulomb that goes all the way round a loop ends where it started, so the
+energy it gained at the sources must equal the energy it gave up in the resistors.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to solve a two-loop circuit</span>
+  <ol>
+    <li>Mark a current in every branch, with an arrow. Do not worry about guessing the direction — if a current
+    comes out negative, it simply flows the other way.</li>
+    <li>Apply KCL at each junction to relate the branch currents; this usually reduces the number of unknowns
+    immediately.</li>
+    <li>Apply KVL to each independent loop, going round consistently: crossing a resistor <em>with</em> the
+    current is a drop of \(IR\), against it is a rise; crossing a cell from − to + is a rise of \(\varepsilon\).</li>
+    <li>Solve the simultaneous equations, then check: the pds round each loop should now balance, and the
+    currents at each junction should now add up.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 18</span> HL · 8 marks · Two-loop circuit with opposing cells</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Two cells of emf 12 V and 6 V, each of negligible internal resistance, are
+    connected as shown: the 12 V cell feeds a 4.0 Ω resistor in the top branch, the 6 V cell is in the middle
+    branch, and a 2.0 Ω resistor is common to the right-hand side. The 12 V and 6 V cells oppose each other.
+    Determine the current in the 6 V cell and state whether it is being charged or discharged.</p>
+    <ol class="steps">
+      <li><strong>Define currents.</strong> Let \(I_1\) be the current from the 12 V cell and \(I_2\) the current
+      from the 6 V cell, both flowing to the right. The current in the common 2.0 Ω resistor is then
+      \(I_1 + I_2\) by KCL.</li>
+      <li><strong>Loop 1</strong> (12 V cell, 4.0 Ω, 2.0 Ω): \(12 = 4I_1 + 2(I_1+I_2)\), so
+      \(12 = 6I_1 + 2I_2\).</li>
+      <li><strong>Loop 2</strong> (6 V cell, 2.0 Ω only): \(6 = 2(I_1+I_2)\), so \(I_1 + I_2 = 3\).</li>
+      <li><strong>Solve.</strong> From the second, \(I_2 = 3 - I_1\). Substituting:
+      \(12 = 6I_1 + 2(3 - I_1) = 6I_1 + 6 - 2I_1 = 4I_1 + 6\), so \(4I_1 = 6\) and \(I_1 = 1.5\ \text{A}\).
+      Then \(I_2 = 1.5\ \text{A}\).</li>
+      <li><strong>Interpret.</strong> Both currents are positive, so both flow as assumed — but the 6 V cell has
+      current leaving its positive terminal, which means the 12 V cell is driving current <em>through</em> it.
+      The 6 V cell is therefore being <strong>charged</strong>; it is a load, not a source.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 1.5 A flows from the 6 V cell's positive terminal, so it is being
+    charged. Note the two currents are equal here because the arithmetic happened to balance — always check that
+    your own numbers satisfy KCL before interpreting them.</div>
+  </div>
+</details>
+
+<h3>Internal resistance: emf versus terminal pd</h3>
+
+<p>A real cell is an ideal emf \(\varepsilon\) in series with an internal resistance \(r\). When current \(I\)
+flows, some of the emf is "lost" driving current through the cell's own resistance:</p>
+
+<p>\[\varepsilon = V_{\text{terminal}} + Ir \qquad\text{or}\qquad V_{\text{terminal}} = \varepsilon - Ir\]</p>
+
+<p>Three consequences are examined repeatedly:</p>
+
+<ul>
+  <li>The <strong>terminal pd falls as the current rises</strong>. This is why car headlights dim when you
+  operate the starter motor: the starter draws a huge current, \(Ir\) becomes large, and the pd available to
+  everything else collapses.</li>
+  <li>The <strong>emf is the open-circuit pd</strong>. With \(I = 0\), \(V = \varepsilon\). So a voltmeter with
+  very high resistance reads very nearly the emf — and a voltmeter with ordinary resistance does not, which
+  matters when you measure a high-resistance source.</li>
+  <li>The <strong>short-circuit current</strong> is \(I_{\text{sc}} = \varepsilon/r\), which is the largest
+  current the cell can deliver and is usually dangerously large.</li>
+</ul>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>Emf and terminal pd are <em>not</em> the same thing, and they are only equal when no current flows. Emf is
+  the energy per unit charge supplied by the source (including inside the cell); terminal pd is the energy per
+  unit charge delivered to the <em>external</em> circuit. Write \(\varepsilon\) and \(V\) differently in your
+  working so you cannot confuse them.</p>
+</div>
+
+<h4>Maximum power transfer</h4>
+
+<p>The power delivered to a load \(R\) is \(P = I^2R\) with
+\(I = \varepsilon/(R+r)\), so \(P = \varepsilon^2 R/(R+r)^2\). Differentiating with respect to \(R\) and
+setting the result to zero gives \(R = r\): <strong>maximum power is delivered when the load resistance equals
+the internal resistance</strong>. At that point \(P_{\max} = \varepsilon^2/4r\), and the efficiency is only 50%
+— half the power is dissipated inside the cell. Power stations deliberately work at the opposite extreme,
+\(R \gg r\), because they care about efficiency far more than about squeezing out the last watt.</p>
+
+<h3>I–V characteristics: reading the five graphs you must know</h3>
+
+<p>A component is <strong>ohmic</strong> if its current is proportional to the pd across it at constant
+temperature — a straight line through the origin on an \(I\)–\(V\) graph. Everything else is non-ohmic, and each
+non-ohmic component has a distinctive shape and a distinctive physical reason for it.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 400" role="img" aria-label="Current-voltage characteristic curves for five components">
+    <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
+    <text x="20" y="24" font-size="14" font-family="system-ui, sans-serif" fill="#151923">I–V characteristics</text>
+
+    <line x1="90" y1="340" x2="600" y2="340" stroke="#334155" stroke-width="2"/>
+    <line x1="300" y1="60" x2="300" y2="340" stroke="#334155" stroke-width="2"/>
+    <text x="596" y="360" font-size="13" font-family="system-ui, sans-serif" fill="#151923">V</text>
+    <text x="284" y="52" font-size="13" font-family="system-ui, sans-serif" fill="#151923">I</text>
+
+    <line x1="300" y1="340" x2="560" y2="120" stroke="#3653d6" stroke-width="3" fill="none"/>
+    <text x="470" y="150" font-size="13" font-family="system-ui, sans-serif" fill="#3653d6">ohmic resistor</text>
+
+    <line x1="300" y1="340" x2="200" y2="120" stroke="#c0392b" stroke-width="3" fill="none"/>
+    <text x="96" y="150" font-size="13" font-family="system-ui, sans-serif" fill="#c0392b">ohmic, reversed</text>
+
+    <path d="M300 340 Q 420 250 520 100" stroke="#0a6f80" stroke-width="3" fill="none"/>
+    <text x="440" y="235" font-size="13" font-family="system-ui, sans-serif" fill="#0a6f80">filament lamp</text>
+    <text x="440" y="252" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">resistance rises</text>
+
+    <path d="M300 340 Q 470 320 560 96" stroke="#7a5a13" stroke-width="3" fill="none"/>
+    <text x="480" y="300" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13">diode</text>
+    <text x="480" y="317" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">conducts above ~0.6 V</text>
+
+    <path d="M300 340 C 250 300 220 250 200 90" stroke="#b03060" stroke-width="3" fill="none"/>
+    <text x="96" y="200" font-size="12" font-family="system-ui, sans-serif" fill="#8c1f45">NTC thermistor</text>
+    <text x="96" y="217" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">resistance falls as it heats</text>
+
+    <text x="20" y="384" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">Slope of I–V = 1/R. A steepening curve means falling resistance; a flattening curve means rising resistance.</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 4.</span> Characteristic curves. On an \(I\)–\(V\) graph the
+  gradient is \(1/R\): the filament lamp flattens as it heats (metal: \(R\) rises), the thermistor steepens
+  (semiconductor: \(R\) falls), and the diode conducts in one direction only once the pd exceeds about 0.6 V.</figcaption>
+</figure>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Component</th><th>Shape on an I–V graph</th><th>Physics behind it</th><th>Circuit use</th></tr></thead>
+<tbody>
+<tr><td>Metal wire at constant T</td><td>Straight line through origin</td><td>Fixed lattice of ions; drift speed proportional to field</td><td>Standard resistor</td></tr>
+<tr><td>Filament lamp</td><td>Curves towards the V axis</td><td>Current heats the filament; ions vibrate more; more collisions; \(R\) rises</td><td>Demonstrating non-ohmic behaviour</td></tr>
+<tr><td>Diode</td><td>Zero until ~0.6 V, then steep; almost nothing in reverse</td><td>The p–n junction's depletion layer must be overcome</td><td>Rectification, protection</td></tr>
+<tr><td>NTC thermistor</td><td>Curves towards the I axis</td><td>Heating releases more charge carriers in a semiconductor, outweighing extra lattice vibration</td><td>Temperature sensors</td></tr>
+<tr><td>LDR</td><td>Straight at fixed light level; steeper in bright light</td><td>Photons release charge carriers</td><td>Light sensors, automatic lights</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique</span>
+  <p>Asked to "state and explain" the shape of a filament lamp's I–V graph, give the chain in full: increasing
+  \(V\) → increasing current → increased heating → greater amplitude of ion vibration → more frequent collisions
+  for the drifting electrons → lower drift speed for the same field → higher resistance → the graph flattens.
+  One link missing is one mark lost; the IB marks this chain link by link.</p>
+</div>
+
+<h3>Measuring resistance without fooling yourself</h3>
+
+<p>The voltmeter–ammeter method has two wiring variants and they are not equivalent. With the ammeter in series
+with the resistor and the voltmeter across the resistor only, the ammeter reads the sum of the resistor current
+and the voltmeter current — so the deduced \(R = V/I\) is too <em>small</em>. This matters only when the
+voltmeter's resistance is not huge compared with \(R\), i.e. for large \(R\). Conversely, with the voltmeter
+across both resistor and ammeter, the voltmeter includes the ammeter's pd, so the deduced \(R\) is too
+<em>large</em> — which matters for small \(R\).</p>
+
+<p>The clean way out for a low resistance is to use a four-terminal (Kelvin) connection: pass a known current
+through the outer pair of contacts and measure the pd on an inner pair. Since almost no current flows in the
+pd leads, their resistance is irrelevant. This is also the honest reason resistivity is a good IA topic: the
+technique itself is part of the physics.</p>
+
+<p>For the resistivity experiment, \(R = \rho L/A\) predicts a straight line through the origin for \(R\)
+against \(L\), with gradient \(\rho/A\). Measure the diameter \(d\) with a micrometer at several points and
+several orientations (wire is rarely perfectly circular), so \(A = \pi d^2/4\) and the fractional uncertainty in
+\(A\) is <em>twice</em> that in \(d\). Keep the current small and switch off between readings — a wire that
+warms up during the experiment has a rising \(\rho\), and your graph will curve upward at large \(L\) where the
+resistance, and hence the heating, is greatest.</p>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — B.4 and B.5 extension</span>
+  <p><em>reversible process</em> — one that can be reversed with no net change to system or surroundings. ·
+  <em>isochoric / isobaric</em> — constant volume / constant pressure. ·
+  <em>perpetual motion machine</em> — a hypothetical device violating the first or second law. ·
+  <em>Kirchhoff's laws</em> — current conservation at a junction; energy conservation round a loop. ·
+  <em>internal resistance</em> — a source's own series resistance, causing terminal pd to fall with current. ·
+  <em>terminal pd</em> — the pd across a source's terminals while current flows. ·
+  <em>ohmic / non-ohmic</em> — obeying / not obeying \(V \propto I\) at constant temperature. ·
+  <em>four-terminal sensing</em> — measuring pd on separate leads to eliminate lead resistance.</p>
+</div>
+
 <h2>Check yourself</h2>
 <ul class="checklist">
   <li><label><input type="checkbox"><span>I can explain the difference between temperature and internal energy with an example.</span></label></li>
@@ -975,6 +1729,14 @@ macroscopic state. Unit J K⁻¹.</p>
   <li><label><input type="checkbox"><span>I can explain the second law in both Clausius and entropy form.</span></label></li>
   <li><label><input type="checkbox"><span>I can analyse a potential divider sensor circuit and comment on its sensitivity.</span></label></li>
   <li><label><input type="checkbox"><span>I can distinguish emf from terminal pd and handle internal resistance.</span></label></li>
+  <li><label><input type="checkbox"><span>I can include a calorimeter's heat capacity in an energy balance and identify the resulting systematic error.</span></label></li>
+  <li><label><input type="checkbox"><span>I can describe and carry out a cooling correction by extrapolation.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive and use the single-layer greenhouse model, and state its three assumptions.</span></label></li>
+  <li><label><input type="checkbox"><span>I can read a Maxwell–Boltzmann distribution and distinguish most probable, mean and rms speed.</span></label></li>
+  <li><label><input type="checkbox"><span>I can calculate an entropy change using both Q/T and mc ln(T₂/T₁), and check the sign of the total.</span></label></li>
+  <li><label><input type="checkbox"><span>I can find the net work of a cycle from the area enclosed on a p–V diagram.</span></label></li>
+  <li><label><input type="checkbox"><span>I can apply Kirchhoff's two laws to a two-loop circuit and interpret a negative current.</span></label></li>
+  <li><label><input type="checkbox"><span>I can sketch and explain the I–V characteristic of a filament lamp, a diode and an NTC thermistor.</span></label></li>
 </ul>
 
 <h2>Practice</h2>
@@ -1078,6 +1840,80 @@ macroscopic state. Unit J K⁻¹.</p>
       depends on feedbacks (clouds, water vapour, ice albedo) that models handle with real uncertainty; and
       natural variability exists. Nonetheless the combination of mechanism, measurement and modelled
       attribution makes the enhanced greenhouse effect one of the best-supported results in applied physics.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> A 12 V heater carrying 3.0 A is used to heat 0.40 kg of water in a copper can
+    of heat capacity 80 J K⁻¹ for 200 s. Determine the temperature rise of the water.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Energy supplied: \(E = VIt = 12 \times 3.0 \times 200 = 7200\ \text{J}\).</p>
+      <p>Total heat capacity: \(C = mc + C_{\text{can}} = 0.40(4180) + 80 = 1672 + 80 = 1752\ \text{J K}^{-1}\).</p>
+      <p>\(\Delta T = E/C = 7200/1752 = 4.1\ \text{K}\).</p>
+      <p>Without the can you would get 4.3 K — a 5% overestimate, because the can absorbs some of the energy.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> State the three assumptions of the single-layer atmosphere model and hence
+    show that the surface must radiate \(\sigma T_s^4 = (1-\alpha)S/2\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p><strong>Assumptions:</strong> (i) one thin atmospheric layer at uniform temperature \(T_a\);
+      (ii) transparent to short-wave solar radiation, opaque to long-wave terrestrial radiation;
+      (iii) steady state, so each layer's energy input equals its output.</p>
+      <p>Atmosphere balance: it absorbs \(\sigma T_s^4\) from the surface and emits \(\sigma T_a^4\) from each of
+      its two faces, so \(\sigma T_s^4 = 2\sigma T_a^4\) and \(\sigma T_a^4 = \tfrac12\sigma T_s^4\).</p>
+      <p>Surface balance: \(\dfrac{(1-\alpha)S}{4} + \sigma T_a^4 = \sigma T_s^4\). Substituting the first result:
+      \(\dfrac{(1-\alpha)S}{4} + \tfrac12\sigma T_s^4 = \sigma T_s^4\), hence
+      \(\sigma T_s^4 = \dfrac{(1-\alpha)S}{2}\).</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> Two gases, helium and argon, are at the same temperature. Explain, with
+    reference to the Maxwell–Boltzmann distribution, which has the broader distribution of speeds and why.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>At equal temperature every gas has the same mean molecular kinetic energy, \(\tfrac32 k_BT\), so
+      \(\tfrac12 m\langle c^2\rangle\) is the same for both. Helium atoms are much lighter (\(m\) smaller), so
+      their speeds must be larger on average — \(c_{\text{rms}} = \sqrt{3k_BT/m}\) decreases with \(m\).</p>
+      <p>A larger typical speed means the distribution is stretched out along the speed axis, so helium's curve
+      is broader and flatter with its peak further right; argon's is narrower and taller. Because both curves are
+      normalised to the same number of molecules, the area is the same in each case.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[7 marks]</strong> 0.50 kg of water at 100 °C is mixed with 0.50 kg of water at 0 °C in an
+    insulated container. (a) Show that the final temperature is 50 °C. (b) Determine the total entropy change.
+    Take \(c = 4200\ \text{J kg}^{-1}\ \text{K}^{-1}\).</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) Equal masses, same substance: \(mc(100-T) = mc(T-0)\) gives \(T = 50\ ^\circ\text{C}\).</p>
+      <p>(b) Hot water cools 373 K → 323 K: \(\Delta S = 0.50(4200)\ln(323/373) = 2100(-0.1441)
+      = -303\ \text{J K}^{-1}\).</p>
+      <p>Cold water warms 273 K → 323 K: \(\Delta S = 2100\ln(323/273) = 2100(0.1680) = +353\ \text{J K}^{-1}\).</p>
+      <p>Total: \(+50\ \text{J K}^{-1}\). Positive, so the mixing is irreversible — it will not spontaneously
+      unmix.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A cell of emf 9.0 V and internal resistance 1.5 Ω is connected to a 6.0 Ω
+    resistor. Determine (a) the current, (b) the terminal pd, (c) the power wasted inside the cell.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) \(I = \varepsilon/(R+r) = 9.0/(6.0+1.5) = 1.2\ \text{A}\).</p>
+      <p>(b) \(V = \varepsilon - Ir = 9.0 - 1.2(1.5) = 7.2\ \text{V}\). (Check: \(V = IR = 1.2\times6.0 = 7.2\
+      \text{V}\) ✓.)</p>
+      <p>(c) \(P = I^2r = (1.2)^2(1.5) = 2.2\ \text{W}\) of the 10.8 W supplied — about 20% is lost inside the
+      cell, which is why cells warm up under load.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> Explain why the resistance of a metal filament lamp increases as the pd across
+    it increases, and sketch the shape you would expect for its I–V characteristic.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Increasing pd increases the current, which increases the rate of energy dissipation in the filament and
+      raises its temperature. The metal ions then vibrate with larger amplitude about their lattice sites, so
+      the drifting conduction electrons collide with them more frequently and their mean drift speed for a given
+      field falls. Lower drift speed for the same pd means lower current, i.e. higher resistance.</p>
+      <p>The I–V graph is therefore a curve through the origin that bends towards the <em>voltage</em> axis:
+      straight and steep at small \(V\), progressively flatter as \(V\) increases. It is symmetric about the
+      origin, because a metal is not polarity-dependent. (Contrast with a thermistor, which bends towards the
+      current axis.)</p>
     </div></details>
   </li>
 </ol>

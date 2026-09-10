@@ -26,7 +26,7 @@ behind every power station on Earth.</p>
 <div class="page-meta">
   <span class="tag">D.1 Gravitational fields · D.2 Electric &amp; magnetic fields · D.3 Motion in EM fields</span>
   <span class="tag tag--hl">D.4 Induction — HL only; potentials &amp; escape speed — HL only</span>
-  <span class="tag">~4,900 words</span>
+  <span class="tag">~12,000 words</span>
 </div>
 
 <div class="callout callout--why">
@@ -837,6 +837,699 @@ huge constant flux produces <em>nothing</em>.</p>
   </ul>
 </div>
 
+<h2 id="d1x">D.1 in depth — field strength, potential, and the gradient that joins them</h2>
+
+<p>Ask a class of strong physics students to define field strength and then to define potential, and you will get
+two correct definitions and a lot of quiet confusion about how they relate. That relationship is a favourite
+examiner target, because it is the point where "vector" and "scalar" stop being labels and start being
+techniques.</p>
+
+<h3>The rules for drawing field lines</h3>
+
+<p>Field lines are a diagram convention, not physical objects, but the convention is strict and examiners mark
+it. For <strong>electric</strong> field lines:</p>
+
+<ul>
+  <li>They start on positive charge and end on negative charge (or at infinity).</li>
+  <li>The tangent to a line gives the direction of the field — and therefore the direction of the force on a
+  <em>positive</em> test charge.</li>
+  <li>The <strong>spacing</strong> of the lines indicates the field strength: closer lines, stronger field.</li>
+  <li>They never cross or touch, because at a crossing the field would have two directions at once.</li>
+  <li>They meet the surface of a conductor at <em>right angles</em>, because a conductor in electrostatic
+  equilibrium is an equipotential surface.</li>
+</ul>
+
+<p>For <strong>gravitational</strong> field lines the rules are the same except that they always end on a mass and
+never start from infinity — gravity has no "negative mass" to emanate from. For <strong>magnetic</strong> field
+lines there is a crucial difference: they form <em>closed loops</em>, because there is no magnetic monopole. A
+bar magnet's field lines run from N to S outside the magnet and continue from S to N inside it.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 400" role="img" aria-label="Four field-line patterns: point charge, uniform field, bar magnet, straight wire">
+    <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
+    <text x="14" y="22" font-size="14" font-family="system-ui, sans-serif" fill="#151923">Field-line patterns</text>
+
+    <rect x="10" y="36" width="300" height="160" fill="#fbfcfe" stroke="#e2e8f0" stroke-width="1"/>
+    <circle cx="160" cy="116" r="10" fill="#c0392b" stroke="#8c1f45" stroke-width="1"/>
+    <text x="166" y="104" font-size="12" font-family="system-ui, sans-serif" fill="#8c1f45">+</text>
+    <line x1="160" y1="116" x2="290" y2="116" stroke="#c0392b" stroke-width="1.6"/>
+    <line x1="160" y1="116" x2="30" y2="116" stroke="#c0392b" stroke-width="1.6"/>
+    <line x1="160" y1="116" x2="262" y2="46" stroke="#c0392b" stroke-width="1.6"/>
+    <line x1="160" y1="116" x2="58" y2="46" stroke="#c0392b" stroke-width="1.6"/>
+    <line x1="160" y1="116" x2="262" y2="186" stroke="#c0392b" stroke-width="1.6"/>
+    <line x1="160" y1="116" x2="58" y2="186" stroke="#c0392b" stroke-width="1.6"/>
+    <line x1="160" y1="116" x2="220" y2="48" stroke="#c0392b" stroke-width="1.6"/>
+    <line x1="160" y1="116" x2="100" y2="48" stroke="#c0392b" stroke-width="1.6"/>
+    <line x1="160" y1="116" x2="220" y2="184" stroke="#c0392b" stroke-width="1.6"/>
+    <line x1="160" y1="116" x2="100" y2="184" stroke="#c0392b" stroke-width="1.6"/>
+    <text x="20" y="58" font-size="12" font-family="system-ui, sans-serif" fill="#151923">point charge: radial, 1/r²</text>
+
+    <rect x="330" y="36" width="300" height="160" fill="#fbfcfe" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="360" y="70" width="10" height="90" fill="#c0392b" stroke="#8c1f45" stroke-width="1"/>
+    <rect x="590" y="70" width="10" height="90" fill="#3653d6" stroke="#1d3183" stroke-width="1"/>
+    <line x1="380" y1="80" x2="580" y2="80" stroke="#0a6f80" stroke-width="1.6"/>
+    <line x1="380" y1="100" x2="580" y2="100" stroke="#0a6f80" stroke-width="1.6"/>
+    <line x1="380" y1="120" x2="580" y2="120" stroke="#0a6f80" stroke-width="1.6"/>
+    <line x1="380" y1="140" x2="580" y2="140" stroke="#0a6f80" stroke-width="1.6"/>
+    <text x="340" y="58" font-size="12" font-family="system-ui, sans-serif" fill="#151923">parallel plates: uniform</text>
+    <text x="500" y="188" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">equal spacing = constant E</text>
+
+    <rect x="10" y="212" width="300" height="160" fill="#fbfcfe" stroke="#e2e8f0" stroke-width="1"/>
+    <rect x="70" y="272" width="90" height="36" fill="#c0392b" stroke="#8c1f45" stroke-width="1"/>
+    <rect x="160" y="272" width="90" height="36" fill="#3653d6" stroke="#1d3183" stroke-width="1"/>
+    <text x="104" y="295" font-size="12" font-family="system-ui, sans-serif" fill="#ffffff">N</text>
+    <text x="194" y="295" font-size="12" font-family="system-ui, sans-serif" fill="#ffffff">S</text>
+    <path d="M115 268 C 150 240 210 240 245 268" stroke="#0a6f80" stroke-width="1.6" fill="none"/>
+    <path d="M115 310 C 150 340 210 340 245 310" stroke="#0a6f80" stroke-width="1.6" fill="none"/>
+    <path d="M108 264 C 170 200 220 200 252 264" stroke="#0a6f80" stroke-width="1.6" fill="none"/>
+    <path d="M108 314 C 170 378 220 378 252 314" stroke="#0a6f80" stroke-width="1.6" fill="none"/>
+    <text x="20" y="234" font-size="12" font-family="system-ui, sans-serif" fill="#151923">bar magnet: closed loops</text>
+    <text x="20" y="360" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">N to S outside, S to N inside</text>
+
+    <rect x="330" y="212" width="300" height="160" fill="#fbfcfe" stroke="#e2e8f0" stroke-width="1"/>
+    <line x1="480" y1="222" x2="480" y2="362" stroke="#334155" stroke-width="4"/>
+    <circle cx="480" cy="292" r="20" fill="none" stroke="#0a6f80" stroke-width="1.6"/>
+    <circle cx="480" cy="292" r="38" fill="none" stroke="#0a6f80" stroke-width="1.6"/>
+    <circle cx="480" cy="292" r="56" fill="none" stroke="#0a6f80" stroke-width="1.6"/>
+    <circle cx="480" cy="292" r="6" fill="#0a6f80" stroke="none"/>
+    <text x="340" y="234" font-size="12" font-family="system-ui, sans-serif" fill="#151923">straight wire: concentric circles</text>
+    <text x="340" y="360" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">right-hand grip rule; B ∝ 1/r</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 3.</span> The four patterns you must be able to draw. Note the
+  differences: electric lines begin and end on charge, magnetic lines close on themselves, and uniform-field lines
+  are equally spaced.</figcaption>
+</figure>
+
+<h3>Field strength and potential are two views of one thing</h3>
+
+<p>Field strength is a <strong>vector</strong>: the force per unit "charge" at a point, so
+\(g = F/m\) and \(E = F/q\). Potential is a <strong>scalar</strong>: the work done per unit charge bringing a
+test object from infinity to that point. They are connected by a derivative:</p>
+
+<p>\[g = -\frac{dV_g}{dr} \qquad E = -\frac{dV}{dr}\]</p>
+
+<p>Read this three ways, because each reading earns marks:</p>
+
+<ol class="steps">
+  <li><strong>Field strength is the gradient of the potential–distance graph.</strong> Where the \(V\)–\(r\) curve
+  is steep, the field is strong. Where it is flat, the field is zero. If a question hands you a graph of \(V\)
+  against \(r\), the field at any point is the negative of its gradient, and you find it by drawing a tangent.</li>
+  <li><strong>The minus sign means the field points downhill.</strong> Field lines run from high potential to low
+  potential (for gravity: towards the mass; for electricity: away from positive charge). A positive charge
+  released in a field accelerates "downhill", losing potential energy and gaining kinetic energy.</li>
+  <li><strong>Potential is the integral of the field.</strong> Equivalently, the area under a force–distance graph
+  is the work done, and the area under a field-strength–distance graph is the potential difference. This is how
+  you handle a field that is not uniform: integrate rather than multiply.</li>
+</ol>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>The three questions that lose most marks here:</p>
+  <ul>
+    <li>"The field strength is zero" does <strong>not</strong> mean "the potential is zero". Between two
+    identical positive charges the fields cancel at the mid-point, so \(E = 0\), but both potentials are
+    positive and add, so \(V\) is large and positive. Field zero means the potential graph is <em>flat</em>,
+    not that it is zero.</li>
+    <li>"The potential is zero" does <strong>not</strong> mean "the field is zero". Halfway between \(+Q\) and
+    \(-Q\) the potentials cancel exactly, but the fields point the same way and add.</li>
+    <li>Potential is a scalar sum: add the numbers with their signs, no components, no trigonometry. Field
+    strength is a vector sum: resolve, add components, recombine.</li>
+  </ul>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 13</span> HL · 8 marks · Two charges: zero field, non-zero potential</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Two point charges, \(+4.0\ \mu\text{C}\) and \(+9.0\ \mu\text{C}\), are placed
+    0.30 m apart. (a) Determine the position between them at which the electric field strength is zero.
+    (b) Determine the electric potential at that point. (c) Explain why the potential is not also zero.</p>
+    <ol class="steps">
+      <li><strong>(a) Set up.</strong> Let the point be a distance \(x\) from the \(+4.0\ \mu\text{C}\) charge, so
+      it is \(0.30 - x\) from the \(+9.0\ \mu\text{C}\) charge. For the fields to cancel, their magnitudes must
+      be equal and their directions opposite — which happens only <em>between</em> the charges, since both are
+      positive.</li>
+      <li>\(\dfrac{k(4.0)}{x^2} = \dfrac{k(9.0)}{(0.30-x)^2}\). The \(k\) and the \(\mu\) cancel:
+      \(\dfrac{2}{x} = \dfrac{3}{0.30-x}\) (taking the positive square root, since both sides are positive).</li>
+      <li>\(2(0.30 - x) = 3x\), so \(0.60 = 5x\) and \(x = 0.12\ \text{m}\). The point is 0.12 m from the 4 μC
+      charge — nearer the smaller charge, as you would expect.</li>
+      <li><strong>(b) Potential.</strong> \(V = \dfrac{kQ_1}{r_1} + \dfrac{kQ_2}{r_2}
+      = (8.99\times10^9)\left(\dfrac{4.0\times10^{-6}}{0.12} + \dfrac{9.0\times10^{-6}}{0.18}\right)
+      = (8.99\times10^9)(3.33\times10^{-5} + 5.00\times10^{-5}) = 7.5\times10^5\ \text{V}\).</li>
+      <li><strong>(c) Why not zero.</strong> Both charges are positive, so both contribute a positive potential;
+      scalars add with signs, and there is no way for two positive numbers to sum to zero. The field strength is
+      zero because the two <em>vectors</em> oppose, but potential has no direction and cannot cancel.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 0.12 m from the 4.0 μC charge; (b) \(7.5\times10^5\ \text{V}\);
+    (c) potential is a scalar sum of two positive contributions, so it cannot cancel.</div>
+  </div>
+</details>
+
+<h3>Gravity and electricity: the analogy, and where it breaks</h3>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Feature</th><th>Gravitational</th><th>Electric</th></tr></thead>
+<tbody>
+<tr><td>Force law</td><td>\(F = \dfrac{Gm_1m_2}{r^2}\), always attractive</td><td>\(F = \dfrac{kq_1q_2}{r^2}\), attractive or repulsive</td></tr>
+<tr><td>Source quantity</td><td>mass \(m\) (always positive)</td><td>charge \(q\) (±)</td></tr>
+<tr><td>Field strength</td><td>\(g = \dfrac{GM}{r^2}\), N kg⁻¹</td><td>\(E = \dfrac{kQ}{r^2}\), N C⁻¹</td></tr>
+<tr><td>Potential</td><td>\(V_g = -\dfrac{GM}{r}\), J kg⁻¹</td><td>\(V = \dfrac{kQ}{r}\), V</td></tr>
+<tr><td>Zero of potential</td><td>at infinity</td><td>at infinity</td></tr>
+<tr><td>Sign of potential near the source</td><td>always negative (a well)</td><td>positive near +, negative near −</td></tr>
+<tr><td>Potential energy</td><td>\(E_p = mV_g = -\dfrac{GMm}{r}\)</td><td>\(E_p = qV = \dfrac{kQq}{r}\)</td></tr>
+<tr><td>Field lines</td><td>only end on mass</td><td>begin on +, end on −</td></tr>
+<tr><td>Shielding</td><td>impossible — no negative mass</td><td>possible: a conductor screens the interior</td></tr>
+<tr><td>Relative strength (two protons)</td><td>1</td><td>about \(10^{36}\)</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>The analogy is close enough to be genuinely useful — every formula you learn for one field translates directly
+into the other — but the two differences in the last rows are the ones examiners probe. Gravity is always
+attractive, so gravitational potential is always negative and there is no gravitational screening; because
+charges come in two signs, electric potentials can cancel and conductors can shield.</p>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique</span>
+  <p>A very common question shows you a graph of potential against distance and asks for the field strength, or
+  asks where a particle released from rest would move. For the first: draw a tangent and take its gradient, with
+  the units and the sign. For the second: a positive charge or a mass moves towards <em>lower</em> potential
+  energy, which for a positive charge means lower potential, and for a mass means a more negative potential
+  (closer in). State which way it moves <em>and</em> what it does to its energy — "it moves towards lower
+  potential, gaining kinetic energy" — and you have both marks.</p>
+</div>
+
+<h2 id="d2x">D.2 in depth — equipotentials, conductors and shielding</h2>
+
+<p>An <strong>equipotential surface</strong> is one on which the potential is the same everywhere. Two properties
+follow immediately, and both are examined:</p>
+
+<ul>
+  <li><strong>No work is done moving along an equipotential.</strong> Since \(\Delta E_p = q\,\Delta V\) and
+  \(\Delta V = 0\), no energy is transferred. You can carry a charge around a conductor's surface for free.</li>
+  <li><strong>Equipotentials are perpendicular to field lines.</strong> If they were not, the field would have a
+  component along the surface, so work would be done moving along it, contradicting the definition.</li>
+</ul>
+
+<p>Near a point charge the equipotentials are concentric spheres; in a uniform field they are parallel planes
+spaced equally for equal potential steps. Where equipotentials crowd together, the field is strong — the same
+"closer means stronger" rule as for field lines, and the same reason as the gradient relation above.</p>
+
+<h3>What happens inside a conductor</h3>
+
+<p>Put a conductor into an external electric field and its free electrons move until they have arranged
+themselves so that:</p>
+
+<ol class="steps">
+  <li>The field <em>inside</em> the conducting material is zero. If it were not, the charges would still be
+  moving.</li>
+  <li>Any excess charge sits entirely on the <em>outer surface</em>.</li>
+  <li>The whole conductor is at a single potential — it is one equipotential volume.</li>
+  <li>Field lines meet the surface at right angles.</li>
+</ol>
+
+<p>That is <strong>electrostatic shielding</strong>, and it is why the electronics inside a metal box survive a
+nearby lightning strike, why you are safe inside a car in a thunderstorm, and why a coaxial cable's outer braid
+stops external fields from reaching the signal conductor. It is also why a Faraday cage keeps its interior at
+zero field no matter what happens outside.</p>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why this matters in the lab</span>
+  <p>Shielding is the reason sensitive experiments in Theme E and in your IA need grounded metal enclosures or
+  guarding. A stray electrostatic field can deflect an electron beam, shift a charge measurement, or inject
+  noise into a high-impedance circuit by orders of magnitude. Whenever a measurement seems unreasonably noisy,
+  suspect an unshielded lead before you suspect the physics.</p>
+</div>
+
+<h3>The uniform field: three equivalent statements</h3>
+
+<p>Between two parallel plates with a pd \(V\) across separation \(d\):</p>
+
+<p>\[E = \frac{V}{d} \qquad F = qE = \frac{qV}{d} \qquad \Delta E_p = qV\]</p>
+
+<p>The first is the field strength, in V m⁻¹ (equivalently N C⁻¹ — the same unit, and a useful check). The third
+says that a charge accelerated through a pd \(V\) gains kinetic energy \(qV\), which is where
+\(\tfrac12 mv^2 = qV\) comes from.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>\(E = V/d\) applies <em>only</em> to a uniform field, i.e. between parallel plates well away from the edges.
+  For a point charge the field varies as \(1/r^2\) and there is no single \(E\). Also watch the direction: \(E\)
+  points from the positive plate to the negative plate, so a <em>negative</em> charge accelerates the other way,
+  and its potential energy increases when it moves towards lower potential.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 14</span> IB-style · 6 marks · An electron between plates</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> An electron is accelerated from rest through a pd of 2500 V. (a) Determine its
+    final speed. (b) It then enters a uniform field of \(4.0\times10^4\ \text{V m}^{-1}\) at right angles to the
+    field. Determine its acceleration. Why is gravity negligible?</p>
+    <ol class="steps">
+      <li><strong>(a)</strong> \(\tfrac12 m v^2 = qV\), so
+      \(v = \sqrt{2qV/m} = \sqrt{2(1.60\times10^{-19})(2500)/9.11\times10^{-31}}
+      = \sqrt{8.78\times10^{14}} = 2.96\times10^7\ \text{m s}^{-1}\).</li>
+      <li>That is about 10% of the speed of light, so relativistic corrections would be at the 1% level — worth a
+      sentence in a "comment" part.</li>
+      <li><strong>(b)</strong> \(a = F/m = qE/m = (1.60\times10^{-19})(4.0\times10^4)/9.11\times10^{-31}
+      = 7.0\times10^{15}\ \text{m s}^{-2}\).</li>
+      <li><strong>Gravity:</strong> compare the forces rather than the accelerations: electric force
+      \(= 6.4\times10^{-15}\ \text{N}\) against weight \(= 8.9\times10^{-30}\ \text{N}\), a factor of about
+      \(10^{15}\). For a subatomic particle, gravity is never worth including — but you only know that because
+      you checked.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) \(3.0\times10^7\ \text{m s}^{-1}\); (b) \(7.0\times10^{15}\
+    \text{m s}^{-2}\); gravity is smaller by a factor of ~10¹⁵.</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — D.1 and D.2 extension</span>
+  <p><em>field line</em> — a line whose tangent gives the field direction. ·
+  <em>equipotential surface</em> — a surface of constant potential; no work to move along it. ·
+  <em>potential gradient</em> — the rate of change of potential with distance; equal to minus the field strength. ·
+  <em>electrostatic shielding</em> — using a conductor to make the interior field zero. ·
+  <em>Faraday cage</em> — a conducting enclosure that screens its interior from external fields. ·
+  <em>test charge</em> — a small positive charge used to probe a field without disturbing it.</p>
+</div>
+
+<h2 id="d3x">D.3 in depth — four machines built from \(F = qE\) and \(F = Bqv\)</h2>
+
+<p>The particle-physics section of D.3 becomes far more memorable once you see the devices it makes possible.
+Each of the four machines below uses only the two force laws you already have, and each is a standard IB
+context for a calculation or an "explain how it works" question.</p>
+
+<h3>The velocity selector</h3>
+
+<p>Place a uniform electric field and a uniform magnetic field at right angles to each other, and at right angles
+to the beam. A particle travelling at speed \(v\) feels an electric force \(qE\) one way and a magnetic force
+\(Bqv\) the other. Only when they are <em>equal</em> does the particle travel straight through the exit slit:</p>
+
+<p>\[qE = Bqv \quad\Rightarrow\quad v = \frac{E}{B}\]</p>
+
+<p>Everything faster is deflected one way, everything slower the other, so the device selects a single speed from
+a beam with a spread of speeds. Note what is <em>not</em> in the result: neither the charge nor the mass appears,
+so a velocity selector sorts by speed alone and works for any particle.</p>
+
+<h3>The Bainbridge mass spectrometer</h3>
+
+<p>A mass spectrometer answers the question "what is in this sample, and how much of each?" It does it in three
+stages: ionise the atoms, select their speed with a velocity selector, then let them curve in a magnetic field.
+In the final stage \(Bqv = mv^2/r\), so</p>
+
+<p>\[r = \frac{mv}{Bq} \quad\Rightarrow\quad m = \frac{Bqr}{v}\]</p>
+
+<p>With \(v\) fixed by the selector and \(B\) and \(q\) known, measuring the radius \(r\) gives the mass directly.
+Different isotopes land at different places on the detector, and the darkness of each line gives the abundance —
+which is exactly how the isotopic composition in a data booklet was measured.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 15</span> HL · 8 marks · Separating two isotopes</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Singly ionised neon atoms, \(^{20}\text{Ne}^+\) and \(^{22}\text{Ne}^+\), are
+    accelerated from rest through a pd of 5000 V and then enter a uniform magnetic field of 0.80 T at right
+    angles. (a) Show that the radius of the path is \(r = \sqrt{2mV/qB^2}\). (b) Determine the radius for each
+    isotope and hence the separation of the two lines on the detector, which records a semicircle.</p>
+    <ol class="steps">
+      <li><strong>(a)</strong> Acceleration: \(\tfrac12 mv^2 = qV\), so \(v = \sqrt{2qV/m}\). Substituting into
+      \(r = mv/Bq\): \(r = \dfrac{m}{Bq}\sqrt{\dfrac{2qV}{m}} = \sqrt{\dfrac{2mV}{qB^2}}\). (Square both sides if
+      the algebra is unclear: \(r^2 = 2mV/qB^2\).)</li>
+      <li><strong>(b) For \(^{20}\text{Ne}\):</strong> \(m = 20 \times 1.66\times10^{-27} = 3.32\times10^{-26}\
+      \text{kg}\). \(r = \sqrt{2(3.32\times10^{-26})(5000)/(1.60\times10^{-19}\times0.64)}
+      = \sqrt{3.32\times10^{-22}/1.024\times10^{-19}} = \sqrt{3.24\times10^{-3}} = 0.0569\ \text{m}\).</li>
+      <li><strong>For \(^{22}\text{Ne}\):</strong> \(m = 3.65\times10^{-26}\ \text{kg}\), and since \(r \propto
+      \sqrt{m}\), \(r = 0.0569\sqrt{22/20} = 0.0597\ \text{m}\).</li>
+      <li><strong>Separation.</strong> Each ion travels a semicircle, so the two lines are separated by
+      \(2(r_{22} - r_{20}) = 2(0.0597 - 0.0569) = 5.6\times10^{-3}\ \text{m}\), about 5.6 mm. Measurable, but
+      only just — which is why real instruments use larger fields and larger radii.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 56.9 mm and 59.7 mm radii, separated by about 5.6 mm on the detector.
+    The heavier isotope curves <em>more</em>, because \(r \propto \sqrt{m}\).</div>
+  </div>
+</details>
+
+<h3>The cyclotron</h3>
+
+<p>A cyclotron accelerates charged particles using a modest alternating voltage many times over. The particles
+spiral outward inside two hollow "dees" in a uniform magnetic field, and the key insight is that the
+<em>period</em> of the circular motion does not depend on the radius or the speed:</p>
+
+<p>\[T = \frac{2\pi m}{Bq} \qquad f = \frac{Bq}{2\pi m}\]</p>
+
+<p>So a fixed-frequency alternating pd stays in step with the particles as they speed up, giving them a kick each
+time they cross the gap. The particles leave when their radius reaches the edge of the machine, with</p>
+
+<p>\[E_{\max} = \tfrac12 mv_{\max}^2 = \frac{B^2q^2R^2}{2m}\]</p>
+
+<p>The limit is relativistic: as \(v\) approaches \(c\) the mass effectively increases, the period drifts, and the
+particles fall out of step with the fixed-frequency supply. That is why the next generation of machines —
+synchrotrons — vary the frequency and the field together.</p>
+
+<h3>The Hall effect</h3>
+
+<p>Push a current through a conductor in a magnetic field perpendicular to the current, and the charge carriers
+are deflected to one side. Charge builds up until the electric field it creates balances the magnetic force:
+\(qE_H = Bqv\), so \(E_H = Bv\). Across a slice of thickness \(t\) this gives the <strong>Hall voltage</strong></p>
+
+<p>\[V_H = \frac{BI}{nqt}\]</p>
+
+<p>where \(n\) is the number density of charge carriers. Two things make this worth knowing. First, it measures
+\(B\) directly — every Hall-probe magnetometer works this way. Second, the <em>sign</em> of the Hall voltage
+reveals the sign of the carriers: in some semiconductors the voltage is reversed, showing that the current is
+carried by positive holes rather than electrons. That is a genuinely surprising experimental result, and a nice
+one to cite.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>In the cyclotron, students often assume the particle speeds up continuously and therefore that the radius
+  grows smoothly. It does not: acceleration happens <em>only</em> in the gap between the dees. Inside each dee
+  the particle moves at constant speed in a semicircle, because the magnetic force does no work
+  (\(F\) is always perpendicular to \(v\)). The energy gain per crossing is \(qV\), and the radius increases in
+  discrete steps.</p>
+</div>
+
+<h2 id="d4x">D.4 in depth — transformers and power transmission</h2>
+
+<p>Everything in D.4 comes together in one device that you almost certainly walked past today: the transformer.
+It is the reason the National Grid uses alternating current, and the reason electricity arrives at your house at
+a usable voltage having travelled hundreds of kilometres.</p>
+
+<h3>How a transformer works</h3>
+
+<p>Two coils are wound on the same soft-iron core. An alternating current in the <strong>primary</strong> produces
+an alternating magnetic flux in the core. Because the core channels that flux through the
+<strong>secondary</strong>, the flux linkage of the secondary changes, and Faraday's law induces an emf in it:</p>
+
+<p>\[V_p = -N_p\frac{d\Phi}{dt} \qquad V_s = -N_s\frac{d\Phi}{dt}\]</p>
+
+<p>The same \(d\Phi/dt\) appears in both — that is the whole trick — so dividing gives the transformer
+equation:</p>
+
+<p>\[\frac{V_s}{V_p} = \frac{N_s}{N_p}\]</p>
+
+<p>A step-up transformer has more turns on the secondary; a step-down transformer has fewer. For an ideal
+transformer, power is conserved, so \(V_pI_p = V_sI_s\), which rearranges to
+\(\dfrac{I_s}{I_p} = \dfrac{N_p}{N_s}\): <strong>voltage up means current down</strong>, in inverse proportion.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Transformer with laminated iron core, primary and secondary coils">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <text x="16" y="24" font-size="14" font-family="system-ui, sans-serif" fill="#151923">The iron-cored transformer</text>
+
+    <rect x="250" y="90" width="140" height="150" fill="none" stroke="#334155" stroke-width="2"/>
+    <rect x="290" y="130" width="60" height="70" fill="none" stroke="#334155" stroke-width="2"/>
+    <rect x="252" y="106" width="136" height="10" fill="#e2e8f0" stroke="#6c7788" stroke-width="0.6"/>
+    <rect x="252" y="130" width="136" height="10" fill="#e2e8f0" stroke="#6c7788" stroke-width="0.6"/>
+    <rect x="252" y="154" width="136" height="10" fill="#e2e8f0" stroke="#6c7788" stroke-width="0.6"/>
+    <rect x="252" y="178" width="136" height="10" fill="#e2e8f0" stroke="#6c7788" stroke-width="0.6"/>
+    <rect x="252" y="202" width="136" height="10" fill="#e2e8f0" stroke="#6c7788" stroke-width="0.6"/>
+    <text x="252" y="262" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">laminated soft-iron core</text>
+
+    <path d="M60 120 L240 120" stroke="#c0392b" stroke-width="2" fill="none"/>
+    <g fill="#c0392b" stroke="none">
+      <circle cx="80" cy="120" r="5"/><circle cx="100" cy="120" r="5"/><circle cx="120" cy="120" r="5"/>
+      <circle cx="140" cy="120" r="5"/><circle cx="160" cy="120" r="5"/><circle cx="180" cy="120" r="5"/>
+      <circle cx="200" cy="120" r="5"/><circle cx="220" cy="120" r="5"/>
+    </g>
+    <text x="60" y="108" font-size="12" font-family="system-ui, sans-serif" fill="#8c1f45">primary, Nₚ turns</text>
+
+    <path d="M400 200 L580 200" stroke="#0a6f80" stroke-width="2" fill="none"/>
+    <g fill="#0a6f80" stroke="none">
+      <circle cx="420" cy="200" r="5"/><circle cx="440" cy="200" r="5"/><circle cx="460" cy="200" r="5"/>
+      <circle cx="480" cy="200" r="5"/><circle cx="500" cy="200" r="5"/><circle cx="520" cy="200" r="5"/>
+      <circle cx="540" cy="200" r="5"/><circle cx="560" cy="200" r="5"/>
+    </g>
+    <text x="420" y="228" font-size="12" font-family="system-ui, sans-serif" fill="#0a6f80">secondary, Nₛ turns</text>
+
+    <line x1="60" y1="140" x2="60" y2="240" stroke="#334155" stroke-width="1.5"/>
+    <line x1="580" y1="180" x2="580" y2="240" stroke="#334155" stroke-width="1.5"/>
+    <line x1="60" y1="240" x2="580" y2="240" stroke="#334155" stroke-width="1.5"/>
+    <circle cx="150" cy="240" r="14" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+    <path d="M141 240 Q 150 228 159 240 Q 168 252 177 240" stroke="#334155" stroke-width="1.6" fill="none"/>
+    <text x="128" y="272" font-size="12" font-family="system-ui, sans-serif" fill="#151923">AC supply, Vₚ</text>
+    <rect x="420" y="228" width="40" height="24" fill="#eef2ff" stroke="#334155" stroke-width="1.5"/>
+    <text x="472" y="272" font-size="12" font-family="system-ui, sans-serif" fill="#151923">load, Vₛ</text>
+
+    <text x="16" y="304" font-size="12" font-family="system-ui, sans-serif" fill="#151923">Vₛ/Vₚ = Nₛ/Nₚ and, for an ideal transformer, VₚIₚ = VₛIₛ.</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 4.</span> A transformer. The alternating current in the primary
+  creates a changing flux in the laminated core; the same changing flux links the secondary and induces an emf
+  there. The laminations reduce eddy-current losses.</figcaption>
+</figure>
+
+<h3>Why the core is iron, and why it is laminated</h3>
+
+<p>A soft-iron core has high magnetic permeability, so it channels almost all the flux from primary to secondary
+— without it, most of the flux would leak away through the air and the device would barely work. It is
+<em>soft</em> iron so that it magnetises and demagnetises easily each half-cycle, minimising hysteresis loss.</p>
+
+<p>It is <strong>laminated</strong> — built from thin sheets separated by insulating layers — because the changing
+flux induces circulating <strong>eddy currents</strong> in the core itself. Those currents dissipate energy as
+heat (\(I^2R\)) and can be large in a solid block of metal. Slicing the core into sheets, with the insulation
+between them perpendicular to the circulating paths, forces the eddy currents into narrow loops with much higher
+resistance, cutting the loss dramatically.</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Loss mechanism</th><th>Cause</th><th>How it is reduced</th></tr></thead>
+<tbody>
+<tr><td>Copper loss</td><td>\(I^2R\) heating in the windings</td><td>Thick, low-resistance copper wire</td></tr>
+<tr><td>Eddy-current loss</td><td>Induced circulating currents in the core</td><td>Laminate the core; use a high-resistivity alloy</td></tr>
+<tr><td>Hysteresis loss</td><td>Energy needed to reverse the domains each cycle</td><td>Use magnetically soft iron</td></tr>
+<tr><td>Flux leakage</td><td>Flux that does not link both coils</td><td>Closed core geometry; wind coils on the same limb</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>Why electricity is transmitted at high voltage</h3>
+
+<p>A transmission line of resistance \(R\) carrying current \(I\) wastes power \(P_{\text{loss}} = I^2R\). The
+power delivered is \(P = VI\), so for a fixed power you can choose a high \(V\) and a low \(I\), or the reverse.
+Since the loss scales as \(I^2\), halving the current quarters the loss. This is the entire argument for high
+voltage transmission, and it is a favourite 6-mark question.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 16</span> HL · 9 marks · Transmission losses</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A power station generates 500 MW. It is transmitted to a city through cables of
+    total resistance 4.0 Ω. (a) Calculate the power wasted if the transmission voltage is 25 kV. (b) Calculate
+    the power wasted if a step-up transformer raises the transmission voltage to 400 kV. (c) Explain why
+    alternating rather than direct current is used for the grid.</p>
+    <ol class="steps">
+      <li><strong>(a)</strong> \(I = P/V = 5.0\times10^8/2.5\times10^4 = 2.0\times10^4\ \text{A}\). Loss
+      \(= I^2R = (2.0\times10^4)^2(4.0) = 1.6\times10^9\ \text{W} = 1600\ \text{MW}\).</li>
+      <li>That is more than three times the power being delivered — the scheme is impossible. The result is
+      itself the point: it shows why 25 kV transmission over a long distance is not viable.</li>
+      <li><strong>(b)</strong> \(I = 5.0\times10^8/4.0\times10^5 = 1250\ \text{A}\). Loss
+      \(= (1250)^2(4.0) = 6.25\times10^6\ \text{W} = 6.3\ \text{MW}\), about 1.3% of the transmitted power.</li>
+      <li><strong>(c)</strong> Because transformers — which are what make high-voltage, low-current transmission
+      possible — only work with a <em>changing</em> flux, and therefore with alternating current. Stepping
+      voltage up and down efficiently is straightforward with AC and historically very difficult with DC, which
+      is why the grid developed as an AC system. (Modern high-voltage DC links exist for very long distances and
+      undersea cables, where they avoid capacitive and skin-effect losses, but they need sophisticated
+      electronic conversion at each end.)</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) 1600 MW — unworkable; (b) 6.3 MW, about 1.3%; (c) only AC can be
+    transformed up and down cheaply, and transformers require a changing flux.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique</span>
+  <p>Questions on this topic nearly always want the <em>comparison</em>, not just the number. Structure your
+  answer as: state \(P = VI\), deduce \(I\); state \(P_{\text{loss}} = I^2R\); note that raising \(V\) by a factor
+  \(n\) lowers \(I\) by \(n\) and therefore lowers the loss by \(n^2\). Finish with the physical reason — the
+  cables are heated by the current, not by the voltage — because that sentence is often the final mark.</p>
+</div>
+
+<h3>Root-mean-square: what "230 V" actually means</h3>
+
+<p>An alternating voltage \(V = V_0\sin\omega t\) spends as much time negative as positive, so its average is
+zero and the average is useless. What we actually care about is the <em>heating effect</em>, which depends on
+\(V^2\). The average of \(\sin^2\omega t\) over a full cycle is \(\tfrac12\), so</p>
+
+<p>\[V_{\text{rms}} = \frac{V_0}{\sqrt{2}} \qquad I_{\text{rms}} = \frac{I_0}{\sqrt{2}}\]</p>
+
+<p>and the mean power is \(P = V_{\text{rms}}I_{\text{rms}} = \tfrac12 V_0I_0\). The rms value is defined as the
+value of the direct current or voltage that would produce the same mean power in a resistor — which is why
+\(P = V_{\text{rms}}^2/R\) and \(P = I_{\text{rms}}^2R\) work exactly as they do for DC.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>Mains electricity quoted as "230 V" is an <em>rms</em> value, so the peak is \(230\sqrt2 = 325\ \text{V}\) and
+  the peak-to-peak is 650 V. Components must be rated for the peak, not the rms. And if a question asks for the
+  power dissipated using \(V^2/R\), you must use the rms value — using the peak gives a power twice too large.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — D.3 and D.4 extension</span>
+  <p><em>velocity selector</em> — crossed E and B fields that transmit only particles with \(v = E/B\). ·
+  <em>mass spectrometer</em> — an instrument separating ions by mass using magnetic deflection. ·
+  <em>cyclotron</em> — an accelerator using a fixed-frequency alternating pd and a magnetic field. ·
+  <em>Hall voltage</em> — the transverse voltage across a current-carrying conductor in a magnetic field. ·
+  <em>eddy current</em> — a circulating induced current in a bulk conductor. ·
+  <em>laminated core</em> — a core built from insulated sheets to suppress eddy currents. ·
+  <em>step-up / step-down</em> — a transformer that raises / lowers the voltage. ·
+  <em>rms value</em> — the DC-equivalent value giving the same mean power.</p>
+</div>
+
+<h2 id="d5x">Extension — orbits in practice, and the motor effect in machines</h2>
+
+<h3>Orbits: why a satellite does not fall, and where it is allowed to go</h3>
+
+<p>The single sentence that fixes most confusion about orbits is this: <strong>a satellite in orbit
+<em>is</em> falling; it is simply moving sideways fast enough that the surface curves away beneath it.</strong>
+Gravity provides the centripetal force and nothing else, so</p>
+
+<p>\[\frac{GMm}{r^2} = \frac{mv^2}{r} = m\omega^2 r = \frac{4\pi^2 m r}{T^2}\]</p>
+
+<p>Three results follow, each of which has an inverse relationship that students mix up. It is worth memorising
+the pattern as a single sentence: <strong>higher orbit means slower speed, longer period, but more total
+energy</strong>.</p>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Quantity</th><th>Dependence on radius</th><th>Higher orbit gives…</th></tr></thead>
+<tbody>
+<tr><td>Orbital speed \(v = \sqrt{GM/r}\)</td><td>\(r^{-1/2}\)</td><td>slower</td></tr>
+<tr><td>Period \(T = 2\pi\sqrt{r^3/GM}\)</td><td>\(r^{3/2}\)</td><td>longer</td></tr>
+<tr><td>Kinetic energy \(E_k = GMm/2r\)</td><td>\(r^{-1}\)</td><td>less</td></tr>
+<tr><td>Potential energy \(E_p = -GMm/r\)</td><td>\(-r^{-1}\)</td><td>more (less negative)</td></tr>
+<tr><td>Total energy \(E = -GMm/2r\)</td><td>\(-r^{-1}\)</td><td>more (less negative)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>"A higher orbit has more total energy but less kinetic energy" sounds contradictory until you do the
+  arithmetic. Raising an orbit requires work: you must fire a rocket to add energy. Once the satellite is higher,
+  the potential energy has increased by <em>twice</em> as much as the kinetic energy has decreased, so the total
+  has gone up while the speed has gone down. If a question asks why a satellite slows down when you boost it to
+  a higher orbit, this is the answer.</p>
+</div>
+
+<h4>Geostationary and polar orbits</h4>
+
+<p>A <strong>geostationary</strong> satellite has a period of exactly one sidereal day (23 h 56 min), orbits
+above the equator in the same direction as Earth's rotation, and therefore appears fixed in the sky. It is not a
+choice of altitude — it is forced. Setting \(T = 86160\ \text{s}\) in \(r^3 = GMT^2/4\pi^2\) gives
+\(r \approx 4.22\times10^7\ \text{m}\) from Earth's centre, i.e. an altitude of about 36 000 km. Three
+consequences are always examined: the orbit must be <em>equatorial</em> (otherwise the satellite would appear to
+move north and south), it must be <em>prograde</em>, and there is only <em>one</em> altitude that works — which
+is why geostationary slots are a scarce international resource.</p>
+
+<p>A <strong>polar</strong> orbit passes over or near both poles, at a much lower altitude (typically 700–900 km)
+with a period around 100 minutes. As Earth rotates beneath it, successive passes cover the whole globe, which is
+why polar orbits are used for weather satellites, Earth observation and spy satellites. Geostationary satellites
+are used for communications and broadcast, where a fixed dish is worth far more than global coverage.</p>
+
+<h3>The motor effect in three devices</h3>
+
+<p>Every device in this section uses the same force, \(F = BIL\sin\theta\), with the direction given by
+Fleming's left-hand rule. What differs is how the geometry converts that force into something useful.</p>
+
+<div class="grid grid--2">
+  <div class="card"><h4>The DC motor</h4><p>A current-carrying coil in a radial field experiences equal and
+  opposite forces on its two sides, forming a <strong>couple</strong> that rotates it. A split-ring commutator
+  reverses the current every half-turn so the torque never changes sign. Adding more turns, more current, or a
+  stronger field increases the torque; a soft-iron core concentrates the flux.</p></div>
+  <div class="card"><h4>The moving-coil meter</h4><p>A radial field and a hair-spring make the deflection
+  proportional to the current, so the scale is linear — the design detail that makes an analogue ammeter usable.
+  The same movement becomes a voltmeter with a large series resistor, or an ohmmeter with an internal cell.</p></div>
+  <div class="card"><h4>The loudspeaker</h4><p>A coil attached to a cone sits in the radial field of a permanent
+  magnet. The alternating current in the coil produces an alternating axial force, driving the cone back and
+  forth and pushing the air. The cone's area is what couples the small force to a large mass of air efficiently.</p></div>
+  <div class="card"><h4>The force between parallel wires</h4><p>Each wire sits in the other's magnetic field, so
+  currents in the same direction attract and opposite currents repel. This is the effect that makes busbars rattle
+  under fault conditions — and it is how the ampere was historically defined.</p></div>
+</div>
+
+<div class="callout callout--link">
+  <span class="callout__label">Link</span>
+  <p>Every one of these devices is reversible. Spin the motor's shaft and it becomes a generator (D.4). Push the
+  loudspeaker cone and it produces a voltage — it becomes a microphone. Move the meter's coil and the induced
+  current damps the motion, which is exactly why sensitive balances use electromagnetic damping. The symmetry is
+  not a coincidence: it is Lenz's law, and the reason is conservation of energy.</p>
+</div>
+
+<h2 id="d6x">Extension — the shell theorem, \(g\) inside a planet, and the three hand rules</h2>
+
+<h3>What the shell theorem says, and why it is useful</h3>
+
+<p>Newton's <strong>shell theorem</strong> has two parts, and together they let you treat spherical bodies as
+point masses:</p>
+
+<ol class="steps">
+  <li>A uniform spherical shell of matter attracts an external object as if all its mass were concentrated at its
+  centre.</li>
+  <li>A uniform spherical shell exerts <em>no net gravitational force</em> on an object anywhere inside it.</li>
+</ol>
+
+<p>The first part is why \(F = GMm/r^2\) works for planets at all — Earth is not a point, but for anything outside
+it, it behaves exactly as if it were. The second part is more surprising, and the argument is worth having ready:
+take a point inside the shell and draw a narrow double cone through it. The cone cuts out two patches of the
+shell, one near and one far. The near patch is smaller but closer; the far patch is larger but further away. The
+mass of each patch grows as \(r^2\) while its gravitational effect falls as \(1/r^2\), and the two effects cancel
+exactly. Summing over all directions, the forces from every pair of patches cancel, so the net field inside is
+zero.</p>
+
+<h3>Consequence: how \(g\) varies inside a planet</h3>
+
+<p>Stand on the surface of a planet of mass \(M\) and radius \(R\) and the field strength is \(g = GM/R^2\). Now
+descend a distance \(d\) below the surface, to radius \(r = R - d\). By the shell theorem, the shell of material
+<i>above</i> you contributes nothing, and the sphere of material below you acts as a point mass at the centre.
+If the planet has uniform density \(\rho\), that enclosed mass is \(M_{\text{enc}} = \tfrac43\pi r^3\rho\), so</p>
+
+<p>\[g(r) = \frac{G M_{\text{enc}}}{r^2} = \frac{G\cdot \tfrac43\pi r^3\rho}{r^2} = \frac{4\pi G\rho}{3}\,r\]</p>
+
+<p>Inside a uniform planet, \(g\) is <strong>proportional to \(r\)</strong>: it falls linearly to zero at the
+centre. Outside, it falls as \(1/r^2\). The two expressions agree at the surface, where they join smoothly.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap</span>
+  <p>At the centre of the Earth the gravitational field strength is <strong>zero</strong>, but the gravitational
+  <em>potential</em> is not — it is at its most negative, \(V_g = -3GM/2R\) for a uniform sphere. Students who
+  reason "no field, so no potential" have repeated the same scalar–vector confusion as in D.1. The field is the
+  gradient of the potential; at the centre the potential has a smooth minimum, so its gradient is zero.</p>
+</div>
+
+<p>Real planets are not uniform — Earth's core is far denser than its crust — so the real \(g(r)\) curve rises
+slightly above the straight line as you descend through the mantle before falling to zero. That discrepancy is
+itself evidence for the dense core, and seismology confirms it. A nice touch for an "evaluate the model"
+question.</p>
+
+<h3>The three hand rules, and when to use each</h3>
+
+<div class="table-wrap">
+<table>
+<thead><tr><th>Rule</th><th>Hand</th><th>What it gives</th><th>Used for</th></tr></thead>
+<tbody>
+<tr><td>Fleming's left-hand rule</td><td>Left</td><td>Force on a current-carrying conductor or a moving charge in a magnetic field</td><td>Motor effect, \(F = BIL\), \(F = Bqv\), beam deflection</td></tr>
+<tr><td>Fleming's right-hand rule</td><td>Right</td><td>Direction of the induced current in a conductor moving through a field</td><td>Generators, motional emf, \( \varepsilon = BLv\)</td></tr>
+<tr><td>Right-hand grip rule</td><td>Right</td><td>Direction of the magnetic field around a current</td><td>Straight wire, solenoid, electromagnet polarity</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>A memory aid that works: the <strong>left</strong> hand is for the <strong>motor</strong> effect (force out),
+the <strong>right</strong> hand for the <strong>generator</strong> effect (current out). They are mirror images
+because the physics is the mirror image — one converts electrical energy to mechanical, the other mechanical to
+electrical.</p>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique</span>
+  <p>Whenever you apply one of these rules, write down what each finger represents before you give an answer —
+  "First finger = field, second finger = current, thumb = force (FBI)". Examiners routinely award a mark for the
+  statement of the rule even when the final direction is wrong, and they routinely withhold the mark when a bare
+  "into the page" appears with no reasoning. One line of working buys you insurance.</p>
+</div>
+
+<p>There is one further sign trap worth drilling: for a <em>moving charge</em> the conventional current is in the
+direction of motion of a <em>positive</em> charge. For an electron, the equivalent current is opposite to its
+velocity, so the force is in the opposite direction to what your hand gives for the velocity. Every year, students
+correctly apply the left-hand rule to an electron beam and then forget to reverse it.</p>
+
 <h2>Check yourself</h2>
 <ul class="checklist">
   <li><label><input type="checkbox"><span>I can use F = GMm/r² with r measured from the centre, and g = GM/r².</span></label></li>
@@ -852,6 +1545,15 @@ huge constant flux produces <em>nothing</em>.</p>
   <li><label><input type="checkbox"><span>I can define flux and flux linkage and use Φ = BA cos θ with the correct angle.</span></label></li>
   <li><label><input type="checkbox"><span>I can derive ε = BANω sin ωt and explain the quarter-cycle phase difference with flux.</span></label></li>
   <li><label><input type="checkbox"><span>I can apply Lenz's law to a magnet entering and leaving a coil, and justify it by energy conservation.</span></label></li>
+  <li><label><input type="checkbox"><span>I can draw and interpret field-line and equipotential patterns for point charges, parallel plates, magnets and wires.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain why zero field strength does not imply zero potential, and vice versa.</span></label></li>
+  <li><label><input type="checkbox"><span>I can find field strength from the gradient of a potential–distance graph.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain electrostatic shielding and why the field inside a conductor is zero.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain how a velocity selector, a mass spectrometer, a cyclotron and a Hall probe work.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use V_s/V_p = N_s/N_p and explain the four loss mechanisms in a real transformer.</span></label></li>
+  <li><label><input type="checkbox"><span>I can justify high-voltage AC transmission quantitatively using P = VI and P_loss = I²R.</span></label></li>
+  <li><label><input type="checkbox"><span>I can use rms values and explain why the peak of a 230 V supply is 325 V.</span></label></li>
+  <li><label><input type="checkbox"><span>I can state the shell theorem and use it to show that g ∝ r inside a uniform planet.</span></label></li>
 </ul>
 
 <h2>Practice</h2>
@@ -947,7 +1649,106 @@ huge constant flux produces <em>nothing</em>.</p>
       then time a non-magnetic object of the same mass and shape. The magnet takes far longer. As it falls,
       the changing flux in the tube induces circulating (eddy) currents whose magnetic field opposes the
       magnet's motion, producing an upward force. The magnet's lost gravitational potential energy appears as
-      thermal energy in the tube, which warms slightly. A plastic tube gives no such delay — the control.</p>
+      thermal energy in the tube, which warms slightly.       A plastic tube gives no such delay — the control.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> Two identical positive charges are placed a distance \(d\) apart. At the
+    mid-point between them the electric field strength is zero but the electric potential is not. Explain this
+    carefully.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Field strength is a <em>vector</em>. At the mid-point the field due to each charge has the same magnitude
+      but points in opposite directions (away from each positive charge), so the two contributions cancel and
+      \(E = 0\).</p>
+      <p>Potential is a <em>scalar</em>. Each charge contributes \(kQ/(d/2) = 2kQ/d\), and both contributions are
+      positive, so they add: \(V = 4kQ/d\). There is no cancellation because potential has no direction.</p>
+      <p>The general lesson: zero field means the potential <em>graph</em> is flat at that point
+      (\(E = -dV/dr = 0\)), not that the potential is zero.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[5 marks]</strong> Explain why no work is done when a charge is moved along an equipotential
+    surface, and hence state the relationship between equipotential surfaces and field lines.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>On an equipotential surface the potential is constant, so \(\Delta V = 0\) and the change in potential
+      energy is \(\Delta E_p = q\,\Delta V = 0\). Since work done equals the change in energy, no work is done.</p>
+      <p>Equipotential surfaces are therefore everywhere <em>perpendicular</em> to the field lines. If they were
+      not, the field would have a component along the surface, work would be done moving a charge along it, and
+      the potential would change — contradicting the definition.</p>
+      <p>Practical use: field lines can be drawn as the family of curves crossing every equipotential at 90°, and
+      where equipotentials crowd together the field is strong.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A proton is accelerated from rest through a pd of 4.0 kV and then enters a
+    region where an electric field of \(2.0\times10^4\ \text{V m}^{-1}\) and a magnetic field of 0.50 T are at
+    right angles to each other and to its motion. (a) Determine the speed for which the proton passes through
+    undeflected. (b) Determine the speed it actually has, and state what happens.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) Undeflected means \(qE = Bqv\), so \(v = E/B = 2.0\times10^4/0.50 = 4.0\times10^4\
+      \text{m s}^{-1}\).</p>
+      <p>(b) Actual speed: \(\tfrac12 mv^2 = qV\), so
+      \(v = \sqrt{2(1.60\times10^{-19})(4000)/1.67\times10^{-27}} = \sqrt{7.66\times10^{11}}
+      = 8.75\times10^5\ \text{m s}^{-1}\).</p>
+      <p>This is far greater than \(4.0\times10^4\ \text{m s}^{-1}\), so the magnetic force \(Bqv\) exceeds the
+      electric force \(qE\) and the proton is deflected in the direction of the magnetic force. The arrangement
+      acts as a velocity selector.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A step-down transformer has 4000 turns on the primary and 200 turns on the
+    secondary. The primary is connected to a 240 V AC supply and the secondary delivers 3.0 A to a load.
+    (a) Determine the secondary voltage. (b) Determine the primary current, assuming an ideal transformer.
+    (c) State one reason why a real transformer is not ideal.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) \(V_s = V_p\,N_s/N_p = 240 \times 200/4000 = 12\ \text{V}\).</p>
+      <p>(b) Ideal: \(V_pI_p = V_sI_s\), so \(I_p = V_sI_s/V_p = 12\times3.0/240 = 0.15\ \text{A}\). (Check:
+      twenty times fewer turns, twenty times less voltage, twenty times more current ✓.)</p>
+      <p>(c) Real transformers lose energy to resistance in the windings (copper loss), to eddy currents induced in
+      the core, to hysteresis as the domains reverse each cycle, and to flux leakage. All of these appear as heat,
+      which is why a working transformer is warm.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> A small power station delivers 20 MW through cables of total resistance 5.0 Ω.
+    Compare the power wasted when the transmission voltage is 20 kV with the power wasted at 200 kV, and explain
+    the origin of the difference.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>At 20 kV: \(I = 2.0\times10^7/2.0\times10^4 = 1000\ \text{A}\); loss
+      \(= I^2R = (1000)^2(5.0) = 5.0\times10^6\ \text{W} = 5.0\ \text{MW}\), i.e. 25% of the power.</p>
+      <p>At 200 kV: \(I = 100\ \text{A}\); loss \(= (100)^2(5.0) = 5.0\times10^4\ \text{W} = 50\ \text{kW}\),
+      only 0.25%.</p>
+      <p>Ten times the voltage means one tenth of the current, and since the loss is \(I^2R\) it falls by a factor
+      of one hundred. The cables are heated by the current, not by the voltage, so transmitting the same power at
+      higher voltage and lower current is vastly more efficient.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[7 marks]</strong> A satellite is in a circular orbit of radius \(r\) around a planet of mass
+    \(M\). (a) Show that its orbital speed is \(v = \sqrt{GM/r}\). (b) A satellite is moved from a low orbit to a
+    higher one. Explain why its speed decreases even though energy must be supplied.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) Gravity provides the centripetal force: \(\dfrac{GMm}{r^2} = \dfrac{mv^2}{r}\). Cancelling \(m\) and
+      one \(r\): \(\dfrac{GM}{r} = v^2\), so \(v = \sqrt{GM/r}\).</p>
+      <p>(b) Total energy \(E = -\dfrac{GMm}{2r} = E_k + E_p\) with \(E_k = \dfrac{GMm}{2r}\) and
+      \(E_p = -\dfrac{GMm}{r}\). Increasing \(r\) makes \(E_k\) smaller — the satellite moves more slowly — but it
+      makes \(E_p\) larger (less negative) by twice that amount. The net total energy therefore increases, so
+      work must be done by the rocket motors to raise the orbit. Energy in, speed down, because most of the added
+      energy went into climbing out of the potential well.</p>
+    </div></details>
+  </li>
+  <li>
+    <p><strong>[6 marks]</strong> The UK mains supply is described as "230 V AC". (a) Determine the peak voltage.
+    (b) Explain what is meant by an rms value and why it is used. (c) A 100 W lamp is connected to the supply.
+    Determine the rms current and the peak current.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>(a) \(V_0 = 230\sqrt2 = 325\ \text{V}\).</p>
+      <p>(b) The rms value is the value of the direct current or voltage that would dissipate the same mean power
+      in a resistor. It is used because the average of a sinusoidal voltage over a whole cycle is zero and tells
+      you nothing, whereas power depends on \(V^2\), whose average is \(V_0^2/2\). Using rms values lets you apply
+      all the DC power formulas directly: \(P = V_{\text{rms}}I_{\text{rms}} = V_{\text{rms}}^2/R\).</p>
+      <p>(c) \(I_{\text{rms}} = P/V_{\text{rms}} = 100/230 = 0.435\ \text{A}\); peak
+      \(I_0 = 0.435\sqrt2 = 0.615\ \text{A}\).</p>
     </div></details>
   </li>
 </ol>
