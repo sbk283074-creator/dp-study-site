@@ -5,1084 +5,851 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>A2 · Networks — DP Computer Science HL</title>
 <link rel="stylesheet" href="../assets/css/main.css">
-<script>
-window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
-options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
-function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
 </head>
 <body>
 <div id="app-shell">
 
 <span class="eyebrow">Computer Science HL · Theme A · A2</span>
 <h1 class="page-title">A2 · Networks</h1>
-<p class="lede">A network is an agreement before it is a cable. Every device on the internet agrees on how to name
-every other device, how to chop a message into pieces, how to route those pieces across dozens of independent
-networks, and how to detect that a piece arrived corrupted. This topic is where the course stops being about one
-machine and starts being about systems — and it is the topic where Paper 1 most often asks you to
-<em>evaluate</em>, because every network design decision is a trade-off.</p>
+<p class="lede">A computer on its own is a calculator; a computer on a network is part of civilisation. This topic is about
+how machines talk — the rules (protocols) they obey, the addresses they use to find each other, the boxes that move data
+between them, and the ways that conversation can be attacked. The IB treats networks as applied theory: you are far more
+likely to be asked to explain <em>why</em> TCP exists than to memorise a port number. Learn the models (OSI and TCP/IP)
+as a map of responsibilities, learn the difference between an IP address and a MAC address as a difference between "where"
+and "who", and learn the three or four security mechanisms as a mechanism-plus-consequence story. The two traps are
+confusing the layers (a switch is layer 2, a router is layer 3 — never swap them) and treating security as a list of
+product names instead of a set of threats and the control that defeats each one.</p>
 <div class="page-meta">
-  <span class="tag">Theme A · examined in Paper 1 (and in the case study)</span>
-  <span class="tag">A2.1 Fundamentals · A2.2 Architecture · A2.3 Data transmissions · A2.4 Security</span>
-  <span class="tag tag--hl">HL and SL share the whole topic; HL depth is in the evaluation</span>
+  <span class="tag">A2.1 · Network principles &amp; topologies</span>
+  <span class="tag">A2.2 · The layered models</span>
+  <span class="tag">A2.3 · Addressing &amp; packets</span>
+  <span class="tag">A2.4 · Protocols &amp; wireless</span>
+  <span class="tag">A2.5 · Security &amp; error detection</span>
+  <span class="tag tag--hl">Paper 1 (theory)</span>
 </div>
-
-<h2>A2.1 · Network fundamentals</h2>
-
-<h3>Types of network by scale</h3>
-
-<div class="table-wrap">
-<table>
-  <thead><tr><th>Type</th><th>Full name</th><th>Scale and example</th><th>Typical technology</th></tr></thead>
-  <tbody>
-    <tr><td>PAN</td><td>Personal area network</td><td>Around one person, a few metres — phone to earbuds, watch, fitness band</td><td>Bluetooth, NFC, USB</td></tr>
-    <tr><td>LAN</td><td>Local area network</td><td>One building or site — a school, a home, an office floor</td><td>Ethernet, Wi-Fi, usually one organisation owns it</td></tr>
-    <tr><td>WLAN</td><td>Wireless LAN</td><td>A LAN whose access medium is radio</td><td>Wi-Fi (IEEE 802.11 family)</td></tr>
-    <tr><td>MAN</td><td>Metropolitan area network</td><td>A city or campus — university campuses, municipal CCTV</td><td>Fibre rings, microwave links</td></tr>
-    <tr><td>WAN</td><td>Wide area network</td><td>A country or the world — a bank's branches, the internet itself</td><td>Leased lines, fibre, satellite, MPLS; infrastructure usually rented from carriers</td></tr>
-    <tr><td>VPN</td><td>Virtual private network</td><td>Not a physical network at all: an encrypted tunnel over a public one</td><td>IPsec, WireGuard, OpenVPN, TLS</td></tr>
-  </tbody>
-</table>
-</div>
-
-<p>Two distinctions examiners like. <strong>Internet vs intranet:</strong> an <em>intranet</em> is a private network
-using internet technologies (web servers, browsers, TCP/IP) but accessible only to one organisation; the
-<em>internet</em> is the global public network of networks. An <strong>extranet</strong> is an intranet selectively
-opened to chosen outsiders (suppliers, customers). <strong>Client–server vs peer-to-peer</strong> is a different
-axis entirely — it describes who provides the service, not how big the network is. See below.</p>
 
 <div class="callout callout--why">
-  <span class="callout__label">Why a VPN is "virtual" and why that is the whole point</span>
-  <p>A company with offices in three cities cannot afford to lay its own cable between them, so it sends data over
-  the public internet — which anyone can observe. A VPN solves this by encrypting each packet at the sender's edge
-  and decrypting it at the receiver's edge, so the packet travels through the public internet as unreadable
-  ciphertext inside an ordinary IP packet. The <em>private network</em> therefore exists as a logical overlay with
-  no dedicated hardware: that is what "virtual" means. The trade-off is explicit: you gain confidentiality over an
-  untrusted medium at the cost of encryption overhead (slightly lower throughput, slightly higher latency) and of
-  all your traffic now passing through the VPN provider, who becomes a new party you must trust.</p>
+  <span class="callout__label">Why this exists</span>
+  <p>Two computers cannot simply "send a message". They must agree on which wire to use, how to address the receiver, how
+  to break a long message into pieces, what to do if a piece is lost, and how to know the sender is who they claim. Every
+  one of those agreements is a <em>protocol</em>, and protocols are arranged in <em>layers</em> so that you can change the
+  physical wire without rewriting the email program. Networks are the clearest example in the course of abstraction done
+  right: each layer hides the one below it, and the whole internet is just seven (or four) such layers stacked in agreement.
+  Learn the layers as a story — "how does a keystroke become a packet and back?" — and the facts fall into place.</p>
 </div>
 
-<h3>Topologies</h3>
+<h2>1 · What a network is, and the three scales</h2>
+<span class="badge badge--sl">SL / HL</span>
 
-<p>A <strong>topology</strong> is the arrangement of the connections: the graph of who is wired to whom. Physical
-topology is the actual cabling; logical topology is the path data takes (a network can be physically a star but
-logically a bus — early Ethernet over a hub did exactly that).</p>
+<h3>Intuition</h3>
 
-<figure class="viz">
-  <svg viewBox="0 0 640 400" role="img" aria-label="Four network topologies: bus, star, ring and mesh">
-    <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
+<p>A <strong>network</strong> is two or more devices that can exchange data. The scale determines the technology. A
+<strong>PAN</strong> (personal area network) is the bubble around one person — a phone talking to earbuds over Bluetooth,
+a few metres. A <strong>LAN</strong> (local area network) is one site — a school, an office — typically Ethernet and Wi-Fi,
+owned and managed by one organisation. A <strong>WAN</strong> (wide area network) spans cities or continents; the internet
+itself is a WAN of WANs, and no single entity owns it. The distinction matters because different scales have different
+speeds, ownership, and trust: you secure your LAN differently from a public WAN link.</p>
 
-    <text x="160" y="24" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">BUS</text>
-    <line x1="70" y1="70" x2="250" y2="70" stroke="#334155" stroke-width="4"/>
-    <circle cx="100" cy="70" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="145" cy="70" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="190" cy="70" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="235" cy="70" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <text x="160" y="100" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">one shared cable</text>
-    <text x="160" y="116" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">break = whole net down</text>
+<h3>Formal idea: the vocabulary of connection</h3>
 
-    <text x="480" y="24" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">STAR</text>
-    <rect x="452" y="58" width="56" height="26" rx="4" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <text x="480" y="75" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">switch</text>
-    <line x1="480" y1="84" x2="480" y2="130" stroke="#334155" stroke-width="2"/>
-    <line x1="452" y1="71" x2="400" y2="50" stroke="#334155" stroke-width="2"/>
-    <line x1="508" y1="71" x2="560" y2="50" stroke="#334155" stroke-width="2"/>
-    <line x1="452" y1="71" x2="395" y2="110" stroke="#334155" stroke-width="2"/>
-    <line x1="508" y1="71" x2="565" y2="110" stroke="#334155" stroke-width="2"/>
-    <circle cx="480" cy="138" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="393" cy="45" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="567" cy="45" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="388" cy="115" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="572" cy="115" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <text x="480" y="168" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">central device = single point of failure</text>
-
-    <text x="160" y="224" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">RING</text>
-    <circle cx="160" cy="300" r="62" fill="none" stroke="#334155" stroke-width="3"/>
-    <circle cx="160" cy="238" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="222" cy="300" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="160" cy="362" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="98" cy="300" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <path d="M212 262 L 196 250" stroke="#3653d6" stroke-width="2"/>
-    <path d="M212 262 L 200 254 L 206 268 Z" fill="#3653d6"/>
-    <text x="160" y="386" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">data passes one way; each node repeats</text>
-
-    <text x="480" y="224" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">MESH (partial shown)</text>
-    <circle cx="420" cy="262" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="540" cy="262" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="420" cy="362" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="540" cy="362" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <circle cx="480" cy="312" r="8" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <line x1="420" y1="262" x2="540" y2="262" stroke="#334155" stroke-width="2"/>
-    <line x1="420" y1="362" x2="540" y2="362" stroke="#334155" stroke-width="2"/>
-    <line x1="420" y1="262" x2="420" y2="362" stroke="#334155" stroke-width="2"/>
-    <line x1="540" y1="262" x2="540" y2="362" stroke="#334155" stroke-width="2"/>
-    <line x1="428" y1="268" x2="472" y2="306" stroke="#334155" stroke-width="2"/>
-    <line x1="532" y1="268" x2="488" y2="306" stroke="#334155" stroke-width="2"/>
-    <line x1="428" y1="356" x2="472" y2="318" stroke="#334155" stroke-width="2"/>
-    <line x1="532" y1="356" x2="488" y2="318" stroke="#334155" stroke-width="2"/>
-    <text x="480" y="386" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">many paths — no single point of failure</text>
-  </svg>
-  <figcaption><span class="viz__title">Figure 1.</span> The four topologies. The evaluation question almost always
-  turns on failure behaviour, cabling cost, and what happens as the network grows.</figcaption>
-</figure>
+<p>A <strong>node</strong> is any device on the network (computer, printer, phone). A <strong>host</strong> is a node with a
+full implementation of the internet protocols (usually a computer or server). A <strong>link</strong> is a single
+connection; a <strong>medium</strong> is what carries the signal (copper, fibre, radio). <strong>Bandwidth</strong> is
+the maximum data rate of a link (measured in bits per second); <strong>latency</strong> is the time for one bit to travel
+end to end; <strong>throughput</strong> is the actual achieved rate, always ≤ bandwidth, and reduced by congestion,
+errors and protocol overhead. A channel can be <strong>simplex</strong> (one way only, like a TV broadcast),
+<strong>half-duplex</strong> (either way but not both at once, like a walkie-talkie) or <strong>full-duplex</strong> (both
+ways at once, like a phone call).</p>
 
 <div class="table-wrap">
 <table>
-  <thead><tr><th>Topology</th><th>How it works</th><th>Advantages</th><th>Disadvantages</th><th>What happens if one link fails</th></tr></thead>
+  <thead><tr><th>Scale</th><th>Typical span</th><th>Owner</th><th>Typical medium</th><th>Example</th></tr></thead>
   <tbody>
-    <tr><td><strong>Bus</strong></td><td>All nodes share one cable (the backbone); every node sees every transmission and keeps only the ones addressed to it</td>
-        <td>Cheapest cabling; easy to extend a short segment</td>
-        <td>Collisions: only one device can transmit at a time or signals corrupt each other; performance collapses as nodes are added; hard to fault-find</td>
-        <td><strong>Whole network fails</strong> — the shared cable is a single point of failure, and a break also causes signal reflection</td></tr>
-    <tr><td><strong>Star</strong></td><td>Every node has its own cable to a central switch or hub</td>
-        <td>One cable failure affects one node only; no collisions on a switch; easy to add or remove nodes; easy to monitor centrally</td>
-        <td>Most cabling, so highest cost; the central device is a single point of failure; limited by the switch's port count and backplane capacity</td>
-        <td><strong>Only that node is disconnected</strong> — unless the central switch itself fails, in which case everything goes down</td></tr>
-    <tr><td><strong>Ring</strong></td><td>Nodes form a closed loop; data travels in one direction and each node repeats it onward</td>
-        <td>No collisions (only the token holder transmits in token ring); predictable performance under load</td>
-        <td>Adding a node breaks the ring temporarily; every node is a potential point of failure unless dual-ring</td>
-        <td><strong>Whole ring fails</strong> unless a dual-ring or a bypass switch exists</td></tr>
-    <tr><td><strong>Mesh</strong></td><td>Nodes connect to many (full mesh: every) other nodes</td>
-        <td>Most robust — many alternative routes; load can be spread; no single point of failure</td>
-        <td>Extremely expensive to cable; complex routing; full mesh is impractical beyond a handful of nodes</td>
-        <td><strong>Nothing</strong> — traffic reroutes. This is why the internet's core is a partial mesh</td></tr>
+    <tr><td><strong>PAN</strong></td><td>~10 m</td><td>An individual</td><td>Bluetooth / NFC radio</td><td>Phone → earbuds</td></tr>
+    <tr><td><strong>LAN</strong></td><td>One building / campus</td><td>One organisation</td><td>Ethernet, Wi-Fi</td><td>School network</td></tr>
+    <tr><td><strong>WAN</strong></td><td>Countries / globe</td><td>Many (ISPs, carriers)</td><td>Fibre, satellite, undersea cable</td><td>The internet</td></tr>
   </tbody>
 </table>
 </div>
-
-<details class="derivation">
-  <summary><span class="badge">Why</span> Why mesh is impossible to scale as a <em>full</em> mesh — the n(n−1)/2 argument</summary>
-  <div class="dbody">
-    <ol class="steps">
-      <li>In a full mesh every node needs a link to every other node. With n nodes, each node needs n − 1 links.</li>
-      <li>Counting each link once rather than twice gives \(\dfrac{n(n-1)}{2}\) links in total.</li>
-      <li>That is quadratic growth. 10 nodes → 45 links. 100 nodes → 4950 links. 1000 nodes → 499 500 links.</li>
-      <li>Cost, physical space for cable and the number of network interfaces per device all grow quadratically, so
-      a full mesh is only ever used for a small number of critical backbone routers.</li>
-      <li>The internet therefore uses a <strong>partial mesh</strong>: enough redundant links to survive failures,
-      few enough to be affordable and routable. Star is the opposite trade: linear cost (one link per node,
-      n − 1 links total) but a single point of failure.</li>
-    </ol>
-    <p><strong>What it means:</strong> "most reliable" and "most scalable" are different properties, and no topology
-    maximises both. <strong>When the argument is the wrong tool:</strong> for a home or a small classroom, the
-    theoretical failure advantage of mesh is irrelevant next to cost and simplicity — say so in your answer.</p>
-  </div>
-</details>
-
-<h3>Why standards and protocols are needed</h3>
-
-<div class="callout callout--why">
-  <span class="callout__label">Why this matters more than any single technology</span>
-  <p>The internet is not one network; it is about 70 000 independent networks (autonomous systems) operated by
-  competing companies that agreed to interconnect. Nothing forces them to. The only reason a packet from a phone in
-  Chengdu reaches a server in Frankfurt is that every one of those operators implements the same
-  <strong>standards</strong> — agreed, published rules — and the same <strong>protocols</strong>: agreed formats and
-  sequences for exchanging data. Standards also create a competitive market (you can buy any vendor's Wi-Fi router)
-  and let technologies evolve in layers independently (Wi-Fi 7 replaced Wi-Fi 6 without any change to HTTP).</p>
-</div>
-
-<p>Key standard bodies to be able to name: the <strong>IETF</strong> publishes the RFCs that define TCP/IP; the
-<strong>IEEE</strong> defines the 802 family (802.3 Ethernet, 802.11 Wi-Fi, 802.15 Bluetooth); the
-<strong>ITU-T</strong> handles international telecommunications; <strong>W3C</strong> handles the web's core
-languages; <strong>ISO</strong> published the OSI model.</p>
-
-<h2>A2.2 · Network architecture: the two models</h2>
-
-<p>Two layered models exist, and you need both. The <strong>OSI seven-layer model</strong> is a teaching and
-diagnostic tool — a conceptual reference that was never fully implemented as a protocol suite. The
-<strong>TCP/IP model</strong> is what the internet actually runs.</p>
-
-<figure class="viz">
-  <svg viewBox="0 0 640 400" role="img" aria-label="The OSI seven-layer model beside the TCP/IP four-layer model, with a message being encapsulated down one side and decapsulated up the other">
-    <rect x="0" y="0" width="640" height="400" fill="#ffffff"/>
-
-    <text x="150" y="24" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">OSI 7-layer model</text>
-    <text x="480" y="24" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">TCP/IP model</text>
-
-    <rect x="40" y="36" width="220" height="34" rx="4" fill="#eef2ff" stroke="#334155" stroke-width="2"/>
-    <text x="150" y="57" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">7 · Application — HTTP, SMTP, DNS</text>
-
-    <rect x="40" y="74" width="220" height="34" rx="4" fill="#eef2ff" stroke="#334155" stroke-width="2"/>
-    <text x="150" y="95" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">6 · Presentation — encoding, TLS</text>
-
-    <rect x="40" y="112" width="220" height="34" rx="4" fill="#eef2ff" stroke="#334155" stroke-width="2"/>
-    <text x="150" y="133" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">5 · Session — open / manage / close</text>
-
-    <rect x="40" y="150" width="220" height="34" rx="4" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <text x="150" y="171" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">4 · Transport — TCP, UDP, ports</text>
-
-    <rect x="40" y="188" width="220" height="34" rx="4" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <text x="150" y="209" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">3 · Network — IP, routing</text>
-
-    <rect x="40" y="226" width="220" height="34" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2"/>
-    <text x="150" y="247" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">2 · Data link — MAC, frames, switch</text>
-
-    <rect x="40" y="264" width="220" height="34" rx="4" fill="#ffffff" stroke="#334155" stroke-width="2"/>
-    <text x="150" y="285" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">1 · Physical — bits, cables, radio</text>
-
-    <rect x="370" y="36" width="220" height="112" rx="4" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <text x="480" y="60" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Application</text>
-    <text x="480" y="78" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">HTTP, DNS, SMTP, FTP, SSH</text>
-    <text x="480" y="100" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">(OSI layers 5, 6 and 7 combined)</text>
-    <text x="480" y="126" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">data: the actual message</text>
-
-    <rect x="370" y="150" width="220" height="34" rx="4" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
-    <text x="480" y="171" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Transport — TCP / UDP</text>
-
-    <rect x="370" y="188" width="220" height="34" rx="4" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
-    <text x="480" y="209" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Internet — IP</text>
-
-    <rect x="370" y="226" width="220" height="72" rx="4" fill="#ffffff" stroke="#7a5a13" stroke-width="2"/>
-    <text x="480" y="250" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Network access / link</text>
-    <text x="480" y="268" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Ethernet, Wi-Fi, ARP</text>
-    <text x="480" y="286" font-size="10" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">(OSI layers 1 and 2 combined)</text>
-
-    <text x="320" y="330" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Encapsulation going DOWN the sender's stack</text>
-    <text x="150" y="352" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">data → segment (+TCP hdr) → packet (+IP hdr)</text>
-    <text x="150" y="368" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">→ frame (+MAC hdr + trailer) → bits on the wire</text>
-    <text x="480" y="352" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Receiver reverses it: bits → frame → packet</text>
-    <text x="480" y="368" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">→ segment → data, checking each header in turn</text>
-  </svg>
-  <figcaption><span class="viz__title">Figure 2.</span> Each layer adds a header (and at layer 2, a trailer) as data
-  descends, and strips it as data ascends. The payload never changes — only the envelope around it.</figcaption>
-</figure>
-
-<h3>Layer by layer — what each one actually does</h3>
-
-<dl class="glossary">
-  <dt>7 · Application</dt>
-  <dd>The protocols the user's software speaks: <strong>HTTP/HTTPS</strong> (web), <strong>SMTP/IMAP</strong>
-  (email sending / retrieval), <strong>FTP</strong> (file transfer), <strong>DNS</strong> (name resolution),
-  <strong>SSH</strong> (secure shell). This is not the application itself (Chrome is not a layer) — it is the
-  network protocol the application uses.</dd>
-  <dt>6 · Presentation</dt>
-  <dd>Translation between the application's data format and a network form: character encoding (UTF-8), serialisation (JSON, XML), compression, and — crucially — <strong>encryption</strong>. TLS/SSL lives here, which is why HTTPS is transparent to the layers below and to the layers above.</dd>
-  <dt>5 · Session</dt>
-  <dd>Establishes, manages and terminates the dialogue between two applications: login sessions, checkpoints and recovery, keeping concurrent conversations separate.</dd>
-  <dt>4 · Transport</dt>
-  <dd>End-to-end delivery between <em>processes</em>, identified by port numbers. <strong>TCP</strong> is reliable and connection-oriented: it numbers segments, acknowledges them, retransmits losses, reorders out-of-order arrivals and throttles itself to avoid congestion. <strong>UDP</strong> is connectionless and unreliable: it sends and forgets. UDP wins where speed matters more than completeness — live voice, video calls, online gaming — because a late packet is worthless there.</dd>
-  <dt>3 · Network</dt>
-  <dd>Delivery between <em>hosts across different networks</em>, identified by IP address. This is the layer that makes the internet a network of networks: it adds the source and destination IP addresses and makes the routing decision that moves the packet one hop closer.</dd>
-  <dt>2 · Data link</dt>
-  <dd>Delivery between <em>adjacent</em> nodes on one link, identified by MAC address. It packages the packet into a frame, adds error detection (the frame check sequence), and manages access to a shared medium (CSMA/CD historically, CSMA/CA in Wi-Fi).</dd>
-  <dt>1 · Physical</dt>
-  <dd>The actual signals: voltage levels on copper, light pulses in fibre, radio waves in air. It defines connectors, pinouts, modulation and bit rates. It knows nothing about frames or addresses.</dd>
-</dl>
-
-<div class="callout callout--how">
-  <span class="callout__label">How to use it — the encapsulation story to memorise</span>
-  <p>You send a web request. At the <strong>application layer</strong> your browser forms an HTTP GET. At the
-  <strong>transport layer</strong> TCP wraps it in a segment with a source port (a random high port) and destination
-  port 443. At the <strong>network layer</strong> IP wraps that in a packet with your IP address and the server's IP
-  address. At the <strong>data link layer</strong> Ethernet wraps that in a frame with your MAC address and the MAC
-  address of your <em>router</em> — not the server's, because you can only reach the next hop. At the
-  <strong>physical layer</strong> it becomes signals on the cable. Your router strips the frame, reads the IP
-  packet, decides the next hop, builds a <em>new</em> frame addressed to the next router's MAC, and sends it on.
-  That last step is the bit students miss: <strong>MAC addresses change at every hop; IP addresses do not.</strong></p>
-</div>
-
-<div class="callout callout--trap">
-  <span class="callout__label">Trap — "TCP/IP" is two protocols, not one</span>
-  <p>Naming "TCP/IP" as if it were a single thing loses marks. IP delivers packets to a machine but does not
-  guarantee arrival, order or non-duplication; TCP adds all of that on top. A question asking "why does a video
-  call use UDP rather than TCP?" wants: TCP's retransmission of a lost packet introduces a delay that makes it
-  useless for real-time audio, whereas UDP accepts occasional loss in exchange for low, even latency — a missing
-  frame of video is a glitch, a two-second stall is a ruined call.</p>
-</div>
-
-<h2>Addressing</h2>
-
-<h3>MAC vs IP</h3>
-
-<div class="table-wrap">
-<table>
-  <thead><tr><th></th><th>MAC address</th><th>IP address</th></tr></thead>
-  <tbody>
-    <tr><td>Assigned by</td><td>The manufacturer, burned into the NIC (though it can be spoofed in software)</td><td>The network — statically by an administrator or dynamically by DHCP</td></tr>
-    <tr><td>Format</td><td>48 bits, 12 hex digits, e.g. <code>00:1A:2B:3C:4D:5E</code> (first half = vendor OUI)</td><td>IPv4: 32 bits, four dotted decimal octets, e.g. <code>192.168.1.42</code>. IPv6: 128 bits, eight hex groups, e.g. <code>2001:0db8:85a3:0000:0000:8a2e:0370:7334</code></td></tr>
-    <tr><td>Used at</td><td>Layer 2, within one link</td><td>Layer 3, across the whole internetwork</td></tr>
-    <tr><td>Changes?</td><td>Physically fixed to the device</td><td>Changes when you move network, join a different Wi-Fi, or when the lease expires</td></tr>
-    <tr><td>Purpose</td><td>Getting a frame to the next device on this wire</td><td>Getting a packet all the way to the destination host</td></tr>
-  </tbody>
-</table>
-</div>
-
-<details class="derivation">
-  <summary><span class="badge">Why</span> Why we need both — and why IP alone would not work</summary>
-  <div class="dbody">
-    <ol class="steps">
-      <li>Imagine addressing only by MAC. Every router on earth would need a table entry for every device on earth —
-      billions of entries, updated constantly as devices move. Routing tables would never converge.</li>
-      <li>IP addresses are <strong>hierarchical</strong>: the network portion lets a router in Frankfurt send
-      everything for <code>2001:db8:5::/48</code> in one direction without knowing anything about individual hosts.
-      This is exactly why a postcode works and a name alone does not.</li>
-      <li>But IP addresses are logical and assigned by whichever network you joined, so they give you no way to
-      deliver a frame across the actual physical link — the hardware needs a hardware address.</li>
-      <li>So: IP gets you across the internetwork hop by hop; MAC gets you across each individual hop.
-      <strong>ARP</strong> (Address Resolution Protocol) bridges them: "who owns 192.168.1.1? tell 192.168.1.42".</li>
-    </ol>
-    <p><strong>What it means:</strong> the two addressing schemes exist because routing needs hierarchy and delivery
-    needs physical reality. <strong>When it is the wrong lens:</strong> on a point-to-point link there is only one
-    possible next hop, so some technologies skip MAC addressing entirely.</p>
-  </div>
-</details>
-
-<h3>Why IPv6 was needed</h3>
-
-<p>IPv4 has 32 bits, so at most \(2^{32} \approx 4.3\) billion addresses — and because of the way blocks were
-allocated in the early days, a large fraction is unusable. Then three things happened at once: the number of
-devices exploded (phones, tablets, watches, sensors), always-on connections replaced dial-up (so an address is held
- continuously rather than shared), and the remaining free pool ran out. <strong>NAT</strong> delayed the crisis
- (see below) but at the cost of breaking the end-to-end principle. IPv6's 128-bit address gives
- \(2^{128} \approx 3.4 \times 10^{38}\) addresses — roughly 10<sup>28</sup> addresses per person alive.</p>
-
-<div class="table-wrap">
-<table>
-  <thead><tr><th></th><th>IPv4</th><th>IPv6</th></tr></thead>
-  <tbody>
-    <tr><td>Address size</td><td>32 bits</td><td>128 bits</td></tr>
-    <tr><td>Notation</td><td>Dotted decimal: 203.0.113.7</td><td>Eight hex groups: 2001:0db8:0000:0000:0000:ff00:0042:8329 (can be abbreviated with <code>::</code> and by dropping leading zeros)</td></tr>
-    <tr><td>Address space</td><td>≈ 4.3 × 10<sup>9</sup></td><td>≈ 3.4 × 10<sup>38</sup></td></tr>
-    <tr><td>Configuration</td><td>DHCP or manual</td><td>SLAAC — a device can configure itself from the router prefix plus its own MAC</td></tr>
-    <tr><td>Security</td><td>IPsec optional and bolted on</td><td>IPsec designed in from the start</td></tr>
-    <tr><td>Header</td><td>Variable length with options; routers must recompute the checksum at every hop</td><td>Simpler fixed header, no hop checksum — faster routing</td></tr>
-    <tr><td>Need for NAT</td><td>Essential in practice</td><td>Not needed — every device can have a globally routable address</td></tr>
-  </tbody>
-</table>
-</div>
-
-<div class="callout callout--link">
-  <span class="callout__label">Connection — the end-to-end principle</span>
-  <p>The original internet design assumed any host could open a connection to any other host. NAT broke that: a
-  device behind NAT has a private address and cannot accept unsolicited incoming connections, which is why peer-to-peer
-  applications such as video calls and file sharing need STUN, TURN or a relay server. IPv6 restores the original
-  design. This is a genuine architectural argument you can use in a 10-mark <em>evaluate the transition to IPv6</em>
-  question: the benefit is not just "more addresses", it is the restoration of end-to-end connectivity.</p>
-</div>
-
-<h3>Subnetting basics</h3>
-
-<p>An IPv4 address is split into a <strong>network part</strong> and a <strong>host part</strong> by the
-<strong>subnet mask</strong>. In <code>192.168.1.42/24</code> the <code>/24</code> means the first 24 bits are the
-network, leaving 8 bits for hosts: \(2^{8} - 2 = 254\) usable addresses (subtracting the network address itself and
-the broadcast address).</p>
-
-<details class="worked">
-  <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 6 marks · subnetting</summary>
-  <div class="dbody">
-    <p><strong>Question.</strong> A school is allocated <code>172.16.8.0/22</code>. Calculate (a) the number of host
-    addresses available, (b) the first and last usable host addresses, (c) how many /24 subnets can be created from
-    it.</p>
-    <ol class="steps">
-      <li>/22 means 22 network bits, so host bits = 32 − 22 = 10.</li>
-      <li>(a) Total addresses = \(2^{10} = 1024\); usable hosts = 1024 − 2 = <strong>1022</strong>.</li>
-      <li>(b) Network address 172.16.8.0, so the first usable host is <strong>172.16.8.1</strong>. The block spans
-      172.16.8.0 to 172.16.11.255 (because 10 host bits cover four /24s: .8, .9, .10, .11). The last address
-      172.16.11.255 is the broadcast, so the last usable host is <strong>172.16.11.254</strong>.</li>
-      <li>(c) A /24 subnet uses 24 network bits; we have 22, so 2 bits are available to vary → \(2^{2} = 4\)
-      subnets: 172.16.8.0/24, .9.0/24, .10.0/24, .11.0/24.</li>
-    </ol>
-    <div class="answerline"><b>Answer:</b> (a) 1022 hosts; (b) 172.16.8.1 to 172.16.11.254; (c) 4 subnets of 254 hosts each. The two marks most often lost: forgetting the −2 for network and broadcast, and failing to notice that /22 covers four consecutive /24s.</div>
-  </div>
-</details>
-
-<h3>DNS, DHCP and NAT</h3>
-
-<p><strong>DNS (Domain Name System)</strong> is the internet's phone book: it translates names humans remember into
-IP addresses machines route on. It is a distributed, hierarchical database — nobody holds the whole thing.</p>
-
-<div class="callout callout--how">
-  <span class="callout__label">How to use it — the DNS resolution walkthrough</span>
-  <ol class="steps">
-    <li>You type <code>www.example.com</code>. Your browser checks its own cache, then the OS cache, then the
-    <code>hosts</code> file. If no answer, it asks the <strong>recursive resolver</strong> (usually your ISP's, or
-    8.8.8.8 or 1.1.1.1).</li>
-    <li>The resolver checks its cache — most queries end here. If not, it asks a <strong>root name server</strong>
-    (13 clusters worldwide): "who handles <code>.com</code>?"</li>
-    <li>The root replies with the address of a <strong>TLD name server</strong> for <code>.com</code>.</li>
-    <li>The resolver asks that TLD server: "who handles <code>example.com</code>?" and receives the address of the
-    domain's <strong>authoritative name server</strong>.</li>
-    <li>The resolver asks the authoritative server for <code>www.example.com</code> and receives the A (IPv4) or
-    AAAA (IPv6) record.</li>
-    <li>The answer is returned to you and cached for the <strong>TTL</strong> (time to live) specified in the
-    record, so the next lookup is instant.</li>
-  </ol>
-  <p>The design insight worth stating in an exam: DNS is hierarchical and cached, which is why it scales to billions
-  of queries a day and why changing a record takes time to propagate.</p>
-</div>
-
-<p><strong>DHCP (Dynamic Host Configuration Protocol)</strong> automatically hands out IP addresses, subnet masks,
-default gateways and DNS server addresses when a device joins a network. Without it, an administrator would have to
-configure every device by hand and keep a register of used addresses. The address is <em>leased</em> for a period
-and must be renewed — which is why addresses can change between sessions.</p>
-
-<p><strong>NAT (Network Address Translation)</strong> lets many devices on a private network share one public IP
-address. The router rewrites the source IP (and port) of every outgoing packet to its own public address, records
-the mapping in a table, and reverses the process for the reply.</p>
-
-<details class="derivation">
-  <summary><span class="badge">Why</span> Why NAT is both a lifeline and a hack</summary>
-  <div class="dbody">
-    <ol class="steps">
-      <li><strong>The problem it solves:</strong> IPv4 exhaustion. A home with 20 devices needs one public address,
-      not 20. NAT multiplied the usable lifetime of IPv4 by roughly the average devices-per-household factor.</li>
-      <li><strong>The incidental benefit:</strong> because a NAT router drops unsolicited inbound traffic — there is
-      no table entry to translate — it acts as a crude default firewall.</li>
-      <li><strong>The cost:</strong> it destroys end-to-end connectivity. A device behind NAT cannot be reached from
-      outside without port forwarding or a relay, so peer-to-peer applications need extra machinery.</li>
-      <li><strong>The second cost:</strong> it hides many users behind one address, so abuse attribution is harder
-      and IP-based geolocation and blocking become blunt instruments that affect unrelated users.</li>
-      <li><strong>The conclusion:</strong> NAT was a workaround that worked so well it delayed the real fix by two
-      decades. Say that in an answer — examiners reward the observation that a successful workaround can create
-      its own problems.</li>
-    </ol>
-  </div>
-</details>
-
-<h2>A2.3 · Data transmission</h2>
-
-<h3>Packets</h3>
-
-<p>A message is not sent whole; it is broken into <strong>packets</strong>. Each packet carries a header with
-control information and a payload with a slice of data.</p>
-
-<pre><code>| Destination MAC | Source MAC | Type |  payload (IP packet)  | FCS |
-                  | Dest IP | Source IP | TTL | Protocol | payload (TCP segment) |
-                                                | Dest port | Source port | Seq | ACK | Flags | data |</code></pre>
-
-<div class="callout callout--why">
-  <span class="callout__label">Why split into packets at all</span>
-  <p>Three reasons, all worth marks. <strong>Fairness:</strong> if one machine could hold the line for a five-minute
-  transfer, nobody else could use it; packets interleave so many conversations share one link.
-  <strong>Error recovery:</strong> if a 100 MB transfer is one unit and one bit is corrupted, you retransmit 100 MB;
-  if it is 70 000 packets, you retransmit one packet. <strong>Routing flexibility:</strong> packets can take
-  different routes, so the network reroutes around failures automatically. The cost, of course, is the overhead of
-  a header on every packet, plus the need to reassemble in the right order at the far end.</p>
-</div>
-
-<h3>Packet switching vs circuit switching</h3>
-
-<div class="table-wrap">
-<table>
-  <thead><tr><th></th><th>Circuit switching</th><th>Packet switching</th></tr></thead>
-  <tbody>
-    <tr><td>Setup</td><td>A dedicated path is established and reserved before any data flows</td><td>No setup; each packet is routed independently</td></tr>
-    <tr><td>Resource use</td><td>Bandwidth is reserved for the whole call even during silence — wasted capacity</td><td>Bandwidth is used only when there is data — the link is shared statistically</td></tr>
-    <tr><td>Robustness</td><td>A break in the reserved path kills the call</td><td>Later packets are routed around the failure</td></tr>
-    <tr><td>Delay</td><td>Constant, predictable — good for real-time</td><td>Variable (jitter) as queues build; packets may arrive out of order</td></tr>
-    <tr><td>Classic example</td><td>The traditional telephone network</td><td>The internet</td></tr>
-  </tbody>
-</table>
-</div>
-
-<details class="derivation">
-  <summary><span class="badge">Why</span> Why packet switching wins on robustness and on cost — the two arguments separately</summary>
-  <div class="dbody">
-    <ol class="steps">
-      <li><strong>Robustness (Baran's argument).</strong> In a circuit-switched network the route is chosen once; if
-      a node on it dies, the connection dies with it. In a packet-switched network each packet is routed afresh, so
-      the routing tables converge on an alternative within seconds and the conversation continues, perhaps with a
-      brief pause. This was a military requirement — the original design brief was a network that survived a nuclear
-      attack.</li>
-      <li><strong>Bandwidth sharing (the statistical argument).</strong> Network traffic is <em>bursty</em>: a user
-      is silent while reading a page and then transfers a whole image. If you reserve capacity for each user's peak,
-      the link is idle most of the time. If you share it, the law of large numbers means a hundred bursty users
-      rarely peak simultaneously, so a much smaller link serves them all — this is <strong>statistical
-      multiplexing</strong> and it is why your broadband is affordable.</li>
-      <li><strong>What packet switching gives up:</strong> guaranteed quality of service. When the shared link is
-      congested, queues grow, delay and jitter rise, and routers drop packets. Voice over IP therefore needs extra
-      engineering (buffers, prioritisation, codecs tolerant to loss) that the old telephone network got for free
-      from its dedicated circuit.</li>
-    </ol>
-    <p><strong>Conclusion:</strong> packet switching sacrifices predictability for efficiency and resilience — the
-    right trade for data, a trade that must be engineered around for real-time media.</p>
-  </div>
-</details>
-
-<h3>Routing</h3>
-
-<p>A <strong>router</strong> is a layer-3 device that connects different networks and forwards packets between them
-using a <strong>routing table</strong>. For each incoming packet it reads the destination IP, finds the
-longest-matching network prefix in its table, and forwards the packet out of the corresponding interface toward the
-next hop. Two families of routing protocol maintain those tables:</p>
-
-<ul>
-  <li><strong>Distance-vector / RIP:</strong> each router tells its neighbours its entire table, and hop count is
-  the metric. Simple, but slow to converge and blind to link speed — a 10 Gbit/s fibre hop counts the same as a
-  slow satellite hop.</li>
-  <li><strong>Link-state / OSPF:</strong> each router floods information about the state of its own links, so every
-  router builds a complete map of the network and runs a shortest-path algorithm over it. Faster convergence and
-  better metrics, at the cost of more processing and memory.</li>
-  <li>Between organisations, <strong>BGP</strong> is used — a path-vector protocol whose "distance" is really a
-  policy: which routes an operator is willing to accept, prefer or announce.</li>
-</ul>
 
 <div class="callout callout--exam">
-  <span class="callout__label">Exam technique — "explain how a router forwards a packet"</span>
-  <p>Answer in this order: (1) the frame is received and its MAC destination checked; (2) the frame header and
-  trailer are stripped and the IP packet passed up; (3) the destination IP address is read; (4) the routing table is
-  searched for the longest matching prefix; (5) the packet's TTL is decremented (and the packet discarded with an
-  ICMP message if it reaches 0 — this is what stops packets looping for ever); (6) a new layer-2 frame is built with
-  the next hop's MAC address and sent out of the chosen interface. Step 6 is where the marks are: students forget
-  that the router rebuilds the frame.</p>
+  <span class="callout__label">Exam technique — bandwidth is a rate, not an amount</span>
+  <p>Bandwidth is bits <em>per second</em>, so a "100 Mbps" link is not "100 megabytes" — divide by 8 for bytes, and then
+  by a real factor for overhead. A 10 MB file (80 Mb) on a 100 Mbps link takes at least 0.8 s in a perfect world, but
+  usually longer because of protocol headers and congestion. The classic markscheme question is "how long to download
+  X", and the working is size ÷ bandwidth, with an explicit note that throughput is less than bandwidth.</p>
 </div>
 
-<h3>Transmission media and modes</h3>
+<h2>2 · Topologies and the devices between nodes</h2>
+<span class="badge badge--sl">SL / HL</span>
 
-<div class="table-wrap">
-<table>
-  <thead><tr><th>Medium</th><th>How the signal travels</th><th>Advantages</th><th>Disadvantages</th></tr></thead>
-  <tbody>
-    <tr><td><strong>Twisted-pair copper</strong> (Cat 5e/6/6a)</td><td>Electrical pulses; pairs are twisted so each wire picks up equal interference and the receiver cancels it (differential signalling)</td><td>Cheap, flexible, easy to terminate; PoE can carry power too</td><td>Attenuation limits runs to ~100 m; susceptible to electromagnetic interference; crosstalk between pairs</td></tr>
-    <tr><td><strong>Coaxial</strong></td><td>Electrical signal on a central conductor inside a braided shield</td><td>Better shielding than twisted pair; longer runs</td><td>Thick, expensive, largely replaced for data</td></tr>
-    <tr><td><strong>Fibre optic</strong></td><td>Pulses of light (laser or LED) totally internally reflected along a glass core</td><td>Enormous bandwidth; very low attenuation so runs of tens of km; immune to electromagnetic interference; very hard to tap undetected, so physically more secure</td><td>Expensive and fragile; requires skilled termination and specialist test equipment</td></tr>
-    <tr><td><strong>Wireless (radio/microwave)</strong></td><td>Electromagnetic waves through air</td><td>Mobility; no cabling cost; reaches places cable cannot</td><td>Shared medium, so capacity is contended; subject to interference, obstacles and weather; anyone in range can receive, so security depends entirely on encryption; lower and less consistent throughput</td></tr>
-    <tr><td><strong>Satellite</strong></td><td>Radio up to and down from an orbiting transponder</td><td>Covers remote areas and ships/aircraft with no other option</td><td>High latency (geostationary round trip ≈ 500 ms+); expensive; weather dependent</td></tr>
-  </tbody>
-</table>
-</div>
+<h3>Intuition</h3>
 
-<div class="callout callout--why">
-  <span class="callout__label">Why fibre is faster — the physics in one paragraph</span>
-  <p>Copper carries information as changes in voltage, and a long copper wire behaves like an antenna in both
-  directions: it picks up interference from motors, power lines and adjacent pairs, and it radiates its own signal.
-  The higher the frequency you push through it, the worse both effects become, so bandwidth is limited. Fibre carries
-  light in a glass core by total internal reflection. Glass does not conduct electricity, so electromagnetic
-  interference is simply irrelevant; attenuation is far lower, so signals travel tens of kilometres without
-  amplification; and the carrier frequency of light is around 200 THz, so there is vastly more room to modulate
-  information onto it. That is the whole argument — and it is also why the last hundred metres into your house is
-  still copper: it is cheap and good enough.</p>
-</div>
-
-<h4>Transmission modes</h4>
-
-<ul>
-  <li><strong>Serial</strong> — one bit at a time over one wire. <strong>Parallel</strong> — several bits at once
-  over several wires. Parallel sounds faster but suffers <strong>skew</strong>: the bits on different wires arrive at
-  slightly different times, and the faster and longer the link, the worse the skew. That is why USB, SATA, PCI
-  Express and Ethernet are all serial: one very fast lane beats eight slow ones that will not stay in step.</li>
-  <li><strong>Simplex</strong> — one direction only (a keyboard). <strong>Half-duplex</strong> — both directions but
-  one at a time (a walkie-talkie; classic Ethernet with CSMA/CD). <strong>Full-duplex</strong> — both directions
-  simultaneously (a telephone; modern switched Ethernet, which has separate transmit and receive pairs).</li>
-  <li><strong>USB (Universal Serial Bus)</strong> deserves its own line because it is both a physical medium and a
-  protocol: serial, host-controlled, with device detection, four transfer types, and power delivery over the same
-  cable. It replaced a zoo of legacy ports, which is the standards argument in miniature.</li>
-</ul>
-
-<h3>Wireless networking</h3>
-
-<dl class="glossary">
-  <dt>SSID</dt><dd>The network's human-readable name, broadcast by the access point in beacon frames so clients can find it. Hiding the SSID provides almost no security — it is still discoverable by listening for probe requests.</dd>
-  <dt>Channel</dt><dd>2.4 GHz Wi-Fi has 11–13 overlapping channels of which only 1, 6 and 11 do not overlap in most regions. Neighbouring networks on overlapping channels interfere, which is why channel selection matters in a dense building. 5 GHz has many more non-overlapping channels, and 6 GHz (Wi-Fi 6E/7) more again.</dd>
-  <dt>Wi-Fi standards</dt><dd>802.11n (2.4/5 GHz, MIMO), 802.11ac (5 GHz, wider channels, higher order modulation), 802.11ax / Wi-Fi 6 (OFDMA, better performance in crowded places), 802.11be / Wi-Fi 7 (6 GHz, multi-link). Higher frequency means more bandwidth but shorter range and worse penetration through walls.</dd>
-  <dt>Bluetooth</dt><dd>Low-power, short-range (≈10 m) PAN technology using adaptive frequency hopping across the 2.4 GHz band, which is how it coexists with Wi-Fi. Bluetooth Low Energy trades data rate for months of battery life on a coin cell.</dd>
-  <dt>WPA / WPA2 / WPA3</dt><dd>Wi-Fi encryption standards. WEP was broken and must never be used. WPA2 uses AES-CCMP and is still acceptable. WPA3 adds SAE (Simultaneous Authentication of Equals), which resists offline dictionary attacks, and forward secrecy, so a captured session cannot be decrypted later if the password is discovered.</dd>
-</dl>
-
-<div class="callout callout--trap">
-  <span class="callout__label">Trap — "wireless is less secure because radio can be intercepted"</span>
-  <p>The radio medium being shared is a real fact, but on its own it is not a security argument, because modern
-  Wi-Fi encryption protects the content. Write instead: the real risks are (i) a weak or reused pre-shared key
-  allowing an attacker to join the network, (ii) a rogue access point impersonating the legitimate SSID to harvest
-  credentials, (iii) legacy protocols such as WEP or WPA-TKIP that are genuinely broken, and (iv) the physical
-  perimeter extending beyond the building into the car park. "Anyone can hear the signal" is only a threat if
-  the signal is not encrypted.</p>
-</div>
-
-<h2>Client–server vs peer-to-peer</h2>
-
-<div class="table-wrap">
-<table>
-  <thead><tr><th></th><th>Client–server</th><th>Peer-to-peer (P2P)</th></tr></thead>
-  <tbody>
-    <tr><td>Who provides the service</td><td>Dedicated servers; clients request</td><td>Every node is both client and server</td></tr>
-    <tr><td>Data</td><td>Held centrally, one authoritative copy</td><td>Distributed; no single authoritative copy</td></tr>
-    <tr><td>Advantages</td><td>Centralised backup, security patching and access control; consistent data; scales by upgrading the server; easy to enforce policy</td><td>No single point of failure; no expensive server; capacity grows with users; hard to shut down</td></tr>
-    <tr><td>Disadvantages</td><td>Server is a single point of failure; bottleneck under heavy load; expensive hardware and administration</td><td>Hard to secure and back up; no central control of content or identity; performance depends on peers being online; legal and malware risks</td></tr>
-    <tr><td>Best for</td><td>Banking, school records, email, anything where consistency and control matter</td><td>File sharing, blockchain, distributed computation, resilient messaging</td></tr>
-  </tbody>
-</table>
-</div>
-
-<details class="worked">
-  <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 8 marks · evaluate a network architecture</summary>
-  <div class="dbody">
-    <p><strong>Question.</strong> A school with 1200 students is choosing between a client–server network and a
-    peer-to-peer network for storing student coursework. Evaluate the two options and recommend one.</p>
-    <ol class="steps">
-      <li><strong>Requirements in this context:</strong> work must not be lost; only the right student should see
-      their own file; teachers need access to their classes' work; the school must be able to back everything up and
-      to prove what was submitted and when.</li>
-      <li><strong>Case for P2P:</strong> no server cost; no single point of failure; each student's own machine
-      provides the storage.</li>
-      <li><strong>Case against P2P here:</strong> the files live on 1200 laptops that are switched off, at home, or
-      broken, so availability is poor; there is no central backup, so a lost laptop is permanently lost coursework;
-      access control cannot be enforced centrally, so a student can alter or delete another's work; and the school
-      cannot produce a reliable submission record.</li>
-      <li><strong>Case for client–server:</strong> one authoritative copy on backed-up servers; permissions enforced
-      centrally by the operating system; the school controls retention and can audit access; scaling is a matter of
-      adding storage.</li>
-      <li><strong>Case against client–server:</strong> capital and running cost, an IT administrator's time, and a
-      server outage that blocks everyone — mitigated by redundancy.</li>
-      <li><strong>Recommendation:</strong> client–server, because for assessed work the requirements of
-      <em>availability</em>, <em>integrity</em> and <em>auditability</em> dominate, and only a central server can
-      provide all three. P2P's cost advantage does not compensate for the risk of losing coursework that counts
-      towards a qualification.</li>
-    </ol>
-    <div class="answerline"><b>Where the marks are:</b> 1–2 for identifying requirements specific to the scenario, 2–3 for advantages and disadvantages of <em>both</em> options (not just the one you prefer), 1–2 for a clear recommendation, 1–2 for justification tied back to the requirements. The word "however" and the phrase "on balance" are worth a mark each in the examiner's mind.</div>
-  </div>
-</details>
-
-<h2>The cloud</h2>
-
-<p>"The cloud" means someone else's computer, reached over a network. The interesting content is the
-<em>service model</em> — how much of the stack you manage versus the provider.</p>
+<p>The <strong>topology</strong> is the shape of the connections. A <strong>bus</strong> runs one shared cable that every
+node taps into — cheap, but a break kills the whole network and only one device can speak at a time. A <strong>star</strong>
+wires every node to a central <em>switch</em>; one cable failing isolates only that node, and the switch lets several
+conversations happen at once — which is why nearly every modern LAN is a star. A <strong>ring</strong> passes a token
+around; a <strong>mesh</strong> connects many nodes to many others for redundancy (the internet's backbone is a mesh). A
+<strong>hybrid</strong> mixes them. The topology you choose trades cost, reliability and capacity.</p>
 
 <figure class="viz">
-  <svg viewBox="0 0 640 320" role="img" aria-label="Stack diagram comparing on-premises, IaaS, PaaS and SaaS by who manages each layer">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Three topologies: bus, star and mesh, showing nodes and the central device">
     <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <text x="20" y="22" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Bus (left), star (centre), mesh (right)</text>
 
-    <text x="180" y="26" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">Layer</text>
-    <text x="330" y="26" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">On-prem</text>
-    <text x="415" y="26" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">IaaS</text>
-    <text x="500" y="26" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">PaaS</text>
-    <text x="580" y="26" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">SaaS</text>
+    <text x="90" y="55" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Bus</text>
+    <line x1="30" y1="120" x2="150" y2="120" stroke="#334155" stroke-width="3"/>
+    <circle cx="30" cy="120" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="70" cy="120" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="110" cy="120" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="150" cy="120" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
 
-    <rect x="60" y="40" width="240" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <text x="180" y="64" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Application / data</text>
-    <rect x="300" y="40" width="60" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <rect x="360" y="40" width="60" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <rect x="420" y="40" width="60" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <rect x="480" y="40" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="540" y="40" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="320" y="55" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Star</text>
+    <rect x="305" y="100" width="30" height="30" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+    <text x="320" y="120" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">S</text>
+    <circle cx="260" cy="190" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="300" cy="210" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="345" cy="210" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="385" cy="190" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <line x1="320" y1="130" x2="260" y2="185" stroke="#334155" stroke-width="2"/>
+    <line x1="320" y1="130" x2="300" y2="205" stroke="#334155" stroke-width="2"/>
+    <line x1="320" y1="130" x2="345" y2="205" stroke="#334155" stroke-width="2"/>
+    <line x1="320" y1="130" x2="385" y2="185" stroke="#334155" stroke-width="2"/>
 
-    <rect x="60" y="80" width="240" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <text x="180" y="104" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Runtime / middleware</text>
-    <rect x="300" y="80" width="60" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <rect x="360" y="80" width="60" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <rect x="420" y="80" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="480" y="80" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="540" y="80" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-
-    <rect x="60" y="120" width="240" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <text x="180" y="144" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Operating system</text>
-    <rect x="300" y="120" width="60" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <rect x="360" y="120" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="420" y="120" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="480" y="120" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="540" y="120" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-
-    <rect x="60" y="160" width="240" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <text x="180" y="184" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Virtualisation</text>
-    <rect x="300" y="160" width="60" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <rect x="360" y="160" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="420" y="160" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="480" y="160" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="540" y="160" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-
-    <rect x="60" y="200" width="240" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <text x="180" y="224" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Servers, storage, networking</text>
-    <rect x="300" y="200" width="60" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
-    <rect x="360" y="200" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="420" y="200" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="480" y="200" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <rect x="540" y="200" width="60" height="38" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-
-    <text x="320" y="268" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Amber = you manage it ·  Blue = the provider manages it</text>
-    <text x="320" y="292" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Further right = less control and less maintenance, more dependence</text>
+    <text x="560" y="55" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">Mesh</text>
+    <circle cx="510" cy="120" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="610" cy="120" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="510" cy="210" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <circle cx="610" cy="210" r="7" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <line x1="510" y1="120" x2="610" y2="120" stroke="#334155" stroke-width="2"/>
+    <line x1="510" y1="120" x2="510" y2="210" stroke="#334155" stroke-width="2"/>
+    <line x1="510" y1="120" x2="610" y2="210" stroke="#334155" stroke-width="2"/>
+    <line x1="610" y1="120" x2="510" y2="210" stroke="#334155" stroke-width="2"/>
+    <line x1="610" y1="120" x2="610" y2="210" stroke="#334155" stroke-width="2"/>
+    <line x1="510" y1="210" x2="610" y2="210" stroke="#334155" stroke-width="2"/>
   </svg>
-  <figcaption><span class="viz__title">Figure 3.</span> The service-model ladder. Moving right buys you less
-  maintenance and pay-as-you-go scaling, and costs you control, customisation and independence.</figcaption>
+  <figcaption><span class="viz__title">Figure 1.</span> In a bus, one break is fatal; in a star, only the broken leg fails; in a mesh, traffic reroutes around a break.
+  The star dominates LANs because the switch gives it both resilience and concurrency.</figcaption>
 </figure>
 
-<div class="grid grid--2">
-  <div class="card"><h4>Advantages of cloud</h4>
-    <ul>
-      <li><strong>No capital expenditure</strong> — you rent instead of buying, turning a large upfront cost into a
-      monthly operating cost.</li>
-      <li><strong>Scalability and elasticity</strong> — capacity can grow at peak times and shrink afterwards,
-      which a purchased server cannot do.</li>
-      <li><strong>Availability and resilience</strong> — the provider replicates data across data centres in
-      different regions, which a school or small firm could never afford.</li>
-      <li><strong>Accessibility</strong> — anywhere with an internet connection, on any device.</li>
-      <li><strong>Automatic updates</strong> and professional security operations.</li>
-    </ul>
-  </div>
-  <div class="card"><h4>Risks of cloud</h4>
-    <ul>
-      <li><strong>Dependence on connectivity</strong> — no internet, no access to anything, including your own data.</li>
-      <li><strong>Vendor lock-in</strong> — proprietary APIs and data formats make migrating expensive, so
-      bargaining power shifts to the provider over time.</li>
-      <li><strong>Loss of control over data location</strong> — data may be stored in another jurisdiction with
-      different privacy laws, raising legal questions about which country's regulators can demand access.</li>
-      <li><strong>Shared-responsibility confusion</strong> — the provider secures the infrastructure; you are still
-      responsible for your accounts, permissions, encryption and configuration. Most cloud breaches are
-      misconfigurations by the customer, not failures by the provider.</li>
-      <li><strong>Cost unpredictability</strong> — metered pricing can rise sharply with unexpected traffic.</li>
-    </ul>
-  </div>
+<h3>The boxes: hub, switch, router, gateway</h3>
+
+<p>These are the most-confused terms. A <strong>hub</strong> is a dumb repeater: it copies any incoming frame to every port,
+so all nodes share one collision domain (obsolete). A <strong>switch</strong> is layer 2: it learns which MAC address lives
+on which port and forwards a frame only to the right port, so different pairs can talk at the same time. A
+<strong>router</strong> is layer 3: it connects different networks and forwards <em>packets</em> based on IP addresses,
+choosing a path across the internet. A <strong>gateway</strong> translates between different protocol families (e.g. your
+home router is really a router + switch + NAT gateway + firewall in one box, which is why the names blur at home).</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — switch vs router vs hub</span>
+  <p>A switch forwards by <em>MAC address</em> within one network (layer 2); a router forwards by <em>IP address</em>
+  between networks (layer 3); a hub floods everywhere. If a question says "connects the school LAN to the internet", that
+  is a router, not a switch. If it says "lets ten PCs share one collision-free segment", that is a switch. Swapping them
+  loses the mark.</p>
 </div>
 
-<h2>The internet of things</h2>
+<h3>Comparing the topologies</h3>
 
-<p><strong>IoT</strong> means everyday objects embedded with processors, sensors and network connectivity so they
-can report on and act in the physical world. An <strong>embedded system</strong> is a computer built into a larger
-device to perform a dedicated function — as opposed to a general-purpose computer that runs many applications.</p>
-
-<p>The pattern: <strong>sensors</strong> gather data from the environment → a microcontroller or small processor
-processes it → the device sends it over a network to a gateway and then the cloud → the service analyses and
-returns a decision → <strong>actuators</strong> act on it.</p>
-
-<div class="callout callout--why">
-  <span class="callout__label">Why IoT security is structurally worse than PC security</span>
-  <p>Name four reasons and you have a high-scoring answer. (1) <strong>No update path</strong> — a £15 smart plug
-  has no mechanism for the manufacturer to patch it, and no user will patch it anyway, so a vulnerability found
-  after sale is permanent. (2) <strong>Default credentials</strong> — devices ship with <code>admin/admin</code>,
-  are never changed, and are then swept up into botnets such as Mirai, which launched some of the largest denial of
-  service attacks ever seen using nothing but cameras and routers. (3) <strong>Constrained hardware</strong> — no
-  room for strong cryptography, secure boot, or an intrusion-detection agent. (4) <strong>Physical exposure and
-  long lifecycles</strong> — a smart meter or a door lock is installed for fifteen years, sits somewhere an attacker
-  can reach, and outlives the manufacturer's support window. Add the privacy dimension: these devices observe the
-  inside of people's homes, so a data breach is not just a data breach.</p>
-</div>
-
-<h2>Error detection and correction</h2>
-
-<p>No transmission medium is perfect: interference, attenuation and crosstalk flip bits. We cannot prevent that, so
-we detect it and ask for the data again.</p>
-
-<h3>Parity</h3>
-
-<p>Add one extra bit so the total number of 1s is even (<strong>even parity</strong>) or odd (<strong>odd
-parity</strong>). If a single bit flips in transit, the count changes and the receiver knows something is wrong.</p>
-
-<details class="worked">
-  <summary><span class="badge badge--easy">Worked example 3</span> Parity bits — and the failure the exam wants you to spot</summary>
-  <div class="dbody">
-    <p><strong>Question.</strong> (a) Add an even parity bit to <code>1011001</code>. (b) The received byte is
-    <code>10110011</code> — is it valid? (c) The transmitted byte was <code>10110011</code> and the received byte
-    was <code>10000011</code>. Is an error detected? Explain.</p>
-    <ol class="steps">
-      <li>(a) <code>1011001</code> has four 1s. Even parity needs an even count, so the parity bit is
-      <strong>0</strong> → <code>10110010</code>.</li>
-      <li>(b) Received <code>10110011</code>: that is five 1s — odd — so under even parity it is
-      <strong>invalid</strong>: an error is detected.</li>
-      <li>(c) <code>10110011</code> → <code>10000011</code>: count the differing bits. Positions 3 and 4 both
-      changed (1→0 and 1→0), so <em>two</em> bits flipped.</li>
-      <li>The number of 1s goes from five to three — still odd — so the parity check <strong>passes</strong> and
-      the error is <strong>not detected</strong>.</li>
-    </ol>
-    <div class="answerline"><b>Answer:</b> (a) 0; (b) invalid; (c) not detected. This is the limitation the examiner is fishing for: single parity detects any <em>odd</em> number of bit errors and misses any <em>even</em> number. It also cannot correct anything — it only detects.</div>
-  </div>
-</details>
-
-<h3>Check digits</h3>
-
-<p>A check digit is an extra digit computed from the others and appended to an identification number, so that a
-mistyped or mis-scanned number is rejected. The classic scheme is <strong>modulus-11</strong> or the weighted
-<strong>ISBN-10</strong> check digit.</p>
-
-<details class="worked">
-  <summary><span class="badge badge--medium">Worked example 4</span> IB-style · 6 marks · ISBN-10 check digit</summary>
-  <div class="dbody">
-    <p><strong>Question.</strong> The ISBN-10 check digit is computed by multiplying the first nine digits by
-    10, 9, 8, …, 2, summing the products, finding the remainder when divided by 11, and subtracting that remainder
-    from 11; a result of 11 becomes 0 and a result of 10 becomes X. Calculate the check digit for the first nine
-    digits 0-306-40615.</p>
-    <ol class="steps">
-      <li>Digits: 0, 3, 0, 6, 4, 0, 6, 1, 5. Weights: 10, 9, 8, 7, 6, 5, 4, 3, 2.</li>
-      <li>Products: 0 + 27 + 0 + 42 + 24 + 0 + 24 + 3 + 10 = <strong>130</strong>.</li>
-      <li>130 mod 11: 11 × 11 = 121, so remainder = <strong>9</strong>.</li>
-      <li>Check digit = 11 − 9 = <strong>2</strong>.</li>
-      <li>Full ISBN: 0-306-40615-<strong>2</strong>.</li>
-      <li><strong>Why the descending weights matter:</strong> if two adjacent digits are transposed, the sum changes
-      by the difference of the weights — a non-zero amount — so the error is caught. With equal weights, a
-      transposition would leave the sum unchanged and go undetected.</li>
-    </ol>
-    <div class="answerline"><b>Answer:</b> 2. The scheme catches all single-digit errors and all transpositions of adjacent digits, because 11 is prime and the weights are distinct. That "because" clause is the difference between a 4 and a 6.</div>
-  </div>
-</details>
-
-<h3>Checksums</h3>
-
-<p>A checksum is a value computed from a block of data — often a simple sum, or the ones-complement sum used in the
-IP header — and transmitted with it. The receiver recomputes it and compares. Checksums are stronger than
-single-bit parity because they depend on the values of all the bytes, but they are still not cryptographic: an
-attacker who modifies data can simply recompute the checksum. That is why integrity against a deliberate attacker
-needs a <strong>cryptographic hash</strong> (SHA-256) or a <strong>message authentication code</strong>, not a
-checksum.</p>
-
-<h3>ARQ — Automatic Repeat reQuest</h3>
-
-<p>Detection is only useful if you can recover. <strong>ARQ</strong> is the mechanism: the receiver acknowledges
-correctly received packets (ACK) and the sender retransmits anything not acknowledged before a timeout.
-<strong>Stop-and-wait ARQ</strong> sends one packet and waits — correct but slow, because the link is idle during
-the round trip. <strong>Sliding-window / Go-Back-N</strong> keeps several packets in flight, so the pipe stays
-full, and a loss causes the retransmission of the window. This is precisely what TCP implements at layer 4.</p>
-
-<div class="callout callout--link">
-  <span class="callout__label">Connection</span>
-  <p>Error detection and ARQ are the reason TCP is called "reliable" while the IP layer underneath it is not: IP
-  detects corruption via the header checksum but simply discards bad packets; TCP notices the gap in sequence
-  numbers and asks for the data again. The theme of layering is that each layer adds a guarantee the one below does
-  not provide.</p>
-</div>
-
-<h2>A2.4 · Network security</h2>
-
-<h3>Threats</h3>
+<p>The topology is a design choice with three consequences: <strong>cost</strong> (how much cable/equipment),
+<strong>reliability</strong> (what a single failure breaks), and <strong>performance</strong> (can several pairs talk at
+once, and is there contention?). The table collects the usual comparison; an evaluation question is almost always "recommend
+a topology for X and justify", and the justification is one of these three columns.</p>
 
 <div class="table-wrap">
 <table>
-  <thead><tr><th>Threat</th><th>What the attacker does</th><th>Defence</th></tr></thead>
+  <thead><tr><th>Topology</th><th>Cost</th><th>Failure impact</th><th>Contention</th></tr></thead>
   <tbody>
-    <tr><td><strong>Malware</strong> (virus, worm, trojan, ransomware, spyware)</td>
-        <td>A <em>virus</em> attaches to a host file and needs a human to run it; a <em>worm</em> spreads itself over the network with no user action; a <em>trojan</em> disguises itself as something desirable; <em>ransomware</em> encrypts the victim's files and demands payment; <em>spyware</em> observes silently</td>
-        <td>Anti-malware with signature and heuristic detection, keeping software patched, not running untrusted code, application allow-listing, and — for ransomware — offline, versioned backups (the only real recovery)</td></tr>
-    <tr><td><strong>Phishing</strong></td>
-        <td>Fraudulent messages impersonating a trusted organisation to harvest credentials or card numbers; <em>spear phishing</em> targets a named individual; <em>whaling</em> targets senior staff</td>
-        <td>User training, SPF/DKIM/DMARC email authentication, multi-factor authentication (which makes a stolen password useless), browser warnings, and reporting culture</td></tr>
-    <tr><td><strong>Denial of service (DoS / DDoS)</strong></td>
-        <td>Overwhelms a service with traffic so legitimate users cannot reach it; <em>distributed</em> means the traffic comes from thousands of compromised devices (a botnet), so blocking source addresses is useless</td>
-        <td>Rate limiting, traffic scrubbing and anycast distribution, over-provisioning, and upstream filtering by the ISP. Note that application-layer DoS needs a different defence from volumetric DoS</td></tr>
-    <tr><td><strong>Man-in-the-middle</strong></td>
-        <td>The attacker secretly relays and possibly alters communication between two parties who believe they are talking directly — via a rogue Wi-Fi access point, ARP spoofing, or DNS hijacking</td>
-        <td>Encryption with authenticated certificates (HTTPS/TLS), certificate pinning, HSTS, and not joining untrusted networks. Encryption without authentication does not stop MITM — that is why certificates matter as much as encryption</td></tr>
-    <tr><td><strong>SQL injection</strong></td>
-        <td>Untrusted input is concatenated into a database query, so the attacker's text is executed as SQL — e.g. entering <code>' OR '1'='1</code> to bypass a login</td>
-        <td><strong>Parameterised queries / prepared statements</strong> (see the A3 page), input validation and escaping, least-privilege database accounts, and never exposing database errors to users</td></tr>
-    <tr><td><strong>Social engineering</strong></td>
-        <td>Manipulating people rather than machines: pretexting (inventing a scenario), tailgating (following someone through a door), quid pro quo (offering a favour), baiting (leaving an infected USB stick)</td>
-        <td>Training and a verification culture, clear procedures for identity checks, and technical controls that remove the need to trust: MFA, badge systems, and a policy that nobody ever asks for your password</td></tr>
-    <tr><td><strong>Brute force</strong></td>
-        <td>Systematically trying passwords or keys until one works; offline brute force is much faster than online</td>
-        <td>Long, random, unique passwords; rate limiting and account lockout; password hashing with a slow, salted algorithm (bcrypt/Argon2) so offline guessing is expensive; MFA</td></tr>
+    <tr><td><strong>Bus</strong></td><td>Lowest (one cable)</td><td>One break isolates the whole network</td><td>All nodes share one medium (collisions)</td></tr>
+    <tr><td><strong>Star</strong></td><td>Moderate (cable per node + switch)</td><td>One node's cable fails alone; switch is a single point of failure</td><td>Switch enables concurrent pairs</td></tr>
+    <tr><td><strong>Ring</strong></td><td>Moderate</td><td>One break splits the ring (dual-ring fixes this)</td><td>Token grants one speaker at a time</td></tr>
+    <tr><td><strong>Mesh</strong></td><td>High (many links)</td><td>Very resilient; traffic reroutes around breaks</td><td>No single shared medium</td></tr>
+    <tr><td><strong>Hybrid</strong></td><td>Depends on mix</td><td>Depends on mix</td><td>Depends on mix</td></tr>
   </tbody>
 </table>
 </div>
 
-<div class="callout callout--how">
-  <span class="callout__label">How to use it — the SQL injection answer</span>
-  <p>If asked to explain SQL injection and how to prevent it, write this: a web form's input is concatenated into a
-  query string, so the query becomes
-  <code>SELECT * FROM users WHERE name = '' OR '1'='1' --' AND pw = ''</code>. The
-  <code>OR '1'='1'</code> makes the condition always true and <code>--</code> comments out the rest, so the
-  attacker is logged in as the first user without a password. The correct defence is a
-  <strong>parameterised query</strong>, in which the SQL text is fixed and the user's value is bound to it as data
-  that can never be parsed as code. Always say "parameterised queries", not "validate the input" — validation is
-  defence in depth, but parameterisation is the actual fix.</p>
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — recommend by the dominant constraint</span>
+  <p>"Recommend a topology for a small office" → star (cheap enough, resilient per-node, concurrent). "For a life-critical
+  control network" → mesh (survives failures). "For a temporary cheap link between two rooms" → bus (lowest cost). State the
+  constraint you are optimising (cost / resilience / capacity) and the topology follows; an answer with no stated constraint
+  is only half a mark.</p>
 </div>
 
-<h3>Defences</h3>
+<h2>3 · The layered models: OSI and TCP/IP</h2>
+<span class="badge badge--sl">SL / HL</span>
 
-<dl class="glossary">
-  <dt>Firewall</dt>
-  <dd>Filters traffic between networks against a rule set (by address, port, protocol). A <em>packet-filtering</em>
-  firewall examines headers only; a <em>stateful inspection</em> firewall tracks connections and only allows
-  apparently related inbound traffic. Firewalls do not inspect encrypted traffic and cannot stop an attack that
-  arrives through an allowed port.</dd>
-  <dt>Proxy server</dt>
-  <dd>An intermediary that makes requests on the client's behalf. It hides internal IP addresses, can cache
-  frequently requested content (saving bandwidth), filter content, and log usage. Because it terminates the
-  connection, it can inspect traffic a firewall cannot.</dd>
-  <dt>Encryption</dt>
-  <dd>Renders data unreadable without the key. <strong>Symmetric</strong> encryption (AES) uses one shared key — fast,
-  so it encrypts bulk data, but key distribution is a problem. <strong>Asymmetric</strong> encryption (RSA, ECC) uses
-  a public/private key pair — slow, so it is used to exchange a symmetric session key and to create digital
-  signatures. Real systems (TLS) use both: asymmetric to establish the session, symmetric to carry it.</dd>
-  <dt>Authentication</dt>
-  <dd>Proving identity. The three factors are <em>something you know</em> (password), <em>something you have</em>
-  (phone, security key) and <em>something you are</em> (biometric). <strong>Multi-factor authentication</strong>
-  combines two different <em>kinds</em> — two passwords is not MFA. It defeats phishing and password reuse, which is
-  why it is the single highest-value control available.</dd>
-  <dt>Digital certificate</dt>
-  <dd>An electronic document binding a public key to an identity, signed by a trusted <strong>certificate
-  authority</strong>. Your browser trusts the CA, so it trusts the certificate, so it trusts the key — that chain is
-  what lets you know the site really is your bank and not a man in the middle.</dd>
-  <dt>Physical security</dt>
-  <dd>Locked server rooms, badge access, CCTV, cable locks, screened network sockets, and secure disposal of
-  storage media. It is overlooked constantly, and it is decisive: anyone with physical access to an unencrypted disk
-  owns the data on it, no matter how good the firewall is.</dd>
-</dl>
+<h3>Intuition</h3>
 
-<details class="derivation">
-  <summary><span class="badge">Why</span> Why the CIA triad is the organising idea — and why it is a triangle of tensions</summary>
+<p>Networks are built in layers so each layer only has to please the one above and below it. The <strong>OSI model</strong>
+is the seven-layer teaching reference; the <strong>TCP/IP model</strong> is the four-layer stack the internet actually
+uses. You should know both and how they map. The golden rule: data is <em>encapsulated</em> as it goes down — each layer
+wraps the layer above's data in its own header — and <em>decapsulated</em> as it comes up.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>OSI layer</th><th>Job</th><th>TCP/IP layer</th><th>Protocols / devices</th></tr></thead>
+  <tbody>
+    <tr><td>7 Application</td><td>Services to the user</td><td rowspan="3">Application</td><td>HTTP, HTTPS, FTP, SMTP, DNS, DHCP</td></tr>
+    <tr><td>6 Presentation</td><td>Encoding, encryption, compression</td><td>TLS (within HTTPS), JPEG, ASCII</td></tr>
+    <tr><td>5 Session</td><td>Managing a conversation</td><td>APIs, session tokens</td></tr>
+    <tr><td>4 Transport</td><td>End-to-end delivery, ports</td><td>Transport</td><td>TCP, UDP</td></tr>
+    <tr><td>3 Network</td><td>Addressing &amp; routing</td><td>Internet</td><td>IP, routers</td></tr>
+    <tr><td>2 Data link</td><td>Frames on one link, MAC</td><td rowspan="2">Link / Network access</td><td>Ethernet, Wi-Fi, switches</td></tr>
+    <tr><td>1 Physical</td><td>Bits on the wire / air</td><td>Cables, radio, hubs</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why layers — the "letter in an envelope in a box" analogy</span>
+  <p>Think of sending a letter: you write the message (application), put it in an envelope with an address (transport/network),
+  hand it to a courier who puts it in a crate with a tracking label (data link), who drives a truck on a road (physical).
+  At the far end each wrapper is opened in reverse. No layer needs to know how the road works to deliver the message; that
+  is the whole point of layering. When you "explain the journey of a packet", walk down the layers adding headers and up
+  the layers removing them.</p>
+</div>
+
+<h3>What each OSI layer actually does</h3>
+
+<p>A short description of every layer helps you place any protocol or device:</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Layer</th><th>In one sentence</th><th>Key idea / example</th></tr></thead>
+  <tbody>
+    <tr><td><strong>7 Application</strong></td><td>Provides services to the user's software</td><td>HTTP, DNS, SMTP, the data you actually want</td></tr>
+    <tr><td><strong>6 Presentation</strong></td><td>Translates, encrypts and compresses</td><td>TLS encryption, character sets, JPEG</td></tr>
+    <tr><td><strong>5 Session</strong></td><td>Opens, manages and closes a dialogue</td><td>Keeping a login "session" alive</td></tr>
+    <tr><td><strong>4 Transport</strong></td><td>Splits, addresses to a port, ensures delivery</td><td>TCP (reliable) vs UDP (fast)</td></tr>
+    <tr><td><strong>3 Network</strong></td><td>Addresses and routes packets end to end</td><td>IP, routers, subnet masks</td></tr>
+    <tr><td><strong>2 Data link</strong></td><td>Framing and delivery on one link</td><td>Ethernet, Wi-Fi, MAC, switches</td></tr>
+    <tr><td><strong>1 Physical</strong></td><td>Turns bits into signals on a medium</td><td>Voltage, light, radio, cables, hubs</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — "the internet uses OSI"</span>
+  <p>The internet implements the <em>TCP/IP</em> model (four layers: Application, Transport, Internet, Link), not the seven-layer
+  OSI model. OSI is the teaching reference; TCP/IP is what runs. When a question says "which OSI layer?", answer in OSI terms
+  (it is testing the model); when it says "what does the internet use?", say TCP/IP. Conflating "the network layer" with a
+  specific OSI number is fine, but don't claim the real protocol stack has seven layers.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 6 marks · map a fault to a layer</summary>
   <div class="dbody">
+    <p><strong>Question.</strong> A user can ping a server (so the network and transport layers work) but cannot load its web page. (a) At which OSI layer is the fault most likely? (b) Name the protocol involved and one other fault that would sit at a different layer.</p>
     <ol class="steps">
-      <li><strong>Confidentiality</strong> — only authorised parties can read the data. <strong>Integrity</strong> —
-      data has not been altered, by accident or on purpose. <strong>Availability</strong> — authorised parties can
-      access it when they need it.</li>
-      <li>Every security measure serves one of the three, and every security question can be classified by asking
-      which one is at risk: encryption serves confidentiality; checksums, signatures and backups serve integrity;
-      redundancy and DDoS mitigation serve availability.</li>
-      <li>The tension: making data more confidential (strong encryption, air-gapping, complex approval) usually makes
-      it less available. Making it more available (many copies, wide access) makes confidentiality harder. Requiring
-      strict integrity checks adds latency.</li>
-      <li>Therefore security is not a state you reach but a set of trade-offs you choose, and the right choice
-      depends on the asset. A hospital's patient records need all three, and the correct answer to "which is most
-      important" is "they conflict, and here is how I would balance them for this asset".</li>
+      <li>(a) Because ICMP ping uses the network/transport layers successfully, the fault is at the <em>application layer</em> (layer 7) — most likely the web server's HTTP service is down, or a firewall is blocking port 80/443, or the DNS name did not resolve to the right address.</li>
+      <li>(b) The protocol is HTTP/HTTPS (application). A different-layer fault: a broken cable (layer 1 physical) would stop ping too; a wrong subnet mask (layer 3 network) would also stop ping. The key reasoning is "lower layers work, so the fault is higher".</li>
     </ol>
-    <p><strong>When it is the wrong frame:</strong> privacy is not the same as confidentiality — data can be
-    perfectly confidential yet used in a way the subject never agreed to. Keep the two ideas separate in your answer.</p>
+    <div class="answerline"><b>Marks:</b> 2 for correctly isolating the application layer with the reasoning that lower layers succeed, 2 for naming HTTP(S), 2 for a valid contrasting fault at another layer. The mark is in the <em>reasoning</em> (eliminate from the bottom up), not in naming a product.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — TLS sits across the boundary</span>
+  <p>TLS (the S in HTTPS) is often placed at OSI layer 6 (presentation) because it encrypts, but it is invoked by the
+  application. In the TCP/IP model it lives inside the application layer, beneath HTTP. If asked "which layer provides
+  confidentiality?", say "presentation (layer 6) in OSI, or within the application layer in TCP/IP" — naming only one model
+  is fine, but don't say "the network layer", which is IP and is not encrypted by default.</p>
+</div>
+
+<h3>Walking one message down and up the stack</h3>
+
+<p>To make the layers concrete, follow a web request from a laptop to a server. <strong>Down at the sender:</strong> the
+browser writes the HTTP request (application); TCP adds a port header and splits it into segments (transport); IP adds the
+source and destination addresses to make a packet (network); Ethernet adds the MAC addresses of the next hop and a frame
+check to make a frame (data link); the bits go onto the wire or air (physical). At each router, only the network and below
+are touched — the router reads the IP, decides the next hop, rewrites the Ethernet frame (new MACs) and forwards; the TCP
+and HTTP headers are untouched. <strong>Up at the receiver</strong> the process reverses: physical → data link (check
+frame, strip MAC) → network (check IP) → transport (reassemble segments, check port) → application (hand the HTTP response
+to the browser). Encapsulation is why a change at the physical layer (fibre instead of copper) requires no change to your
+code.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 1b</span> IB-style · 6 marks · which header changes at a router</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A packet travels from your laptop, through your home router, across three ISP routers, to a web server. (a) Which layer-3 and layer-2 headers change at each router, and which never change? (b) Why does the TCP header survive unchanged?</p>
+    <ol class="steps">
+      <li>(a) At each router the <em>data-link (Ethernet) header is rewritten</em> — the source and destination MAC addresses become those of the router's incoming and outgoing interfaces. The <em>IP (network) header stays the same</em> end to end (same source/destination IP), as does the TCP and HTTP content.</li>
+      <li>(b) The TCP header survives because routing is a network-layer function; routers do not open or modify transport-layer data. Only the frame wrapping changes per hop, which is exactly what lets IP provide end-to-end delivery while the link technology varies.</li>
+      <li>The takeaway: MAC addresses are hop-by-hop and reset each time; IP addresses are end-to-end and fixed for the journey.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 2 for "Ethernet/MAC header rewritten each hop", 2 for "IP/TCP/HTTP unchanged end to end", 2 for explaining routers act at layer 2/3 only. The single most-missed point is that the IP address does NOT change at a router — only the MAC does.</div>
+  </div>
+</details>
+
+<h2>4 · Addressing: MAC, IPv4, IPv6, and subnetting</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<h3>Intuition</h3>
+
+<p>Two addresses live on every networked device and students constantly confuse them. The <strong>MAC address</strong> is
+burned into the network card at manufacture — it identifies <em>who</em> the device is, and never changes. The
+<strong>IP address</strong> is assigned by the network — it identifies <em>where</em> the device is right now, and changes
+when you move. MAC is used for delivery on one local link (layer 2); IP is used for delivery across the whole internet
+(layer 3). A helpful image: the MAC is the device's face, the IP is its current postal address. The MAC gets a frame to the
+next hop; the IP gets the packet to the final destination, possibly across many hops.</p>
+
+<h3>Formal idea: IPv4, subnet masks, and the concept of subnetting</h3>
+
+<p>An <strong>IPv4</strong> address is 32 bits, written as four decimal octets (e.g. 192.168.1.20). A
+<strong>subnet mask</strong> (or CIDR suffix like /24) says which bits are the <em>network</em> part and which are the
+<em>host</em> part. In 192.168.1.20 with mask 255.255.255.0 (/24), the first 24 bits (192.168.1) are the network and the
+last 8 bits are the host, so this network holds host numbers 1–254 (0 is the network address, 255 is the broadcast). Two
+devices are on the same subnet if their network parts match; otherwise traffic must go via a router.
+<strong>Subnetting</strong> is splitting a large network into smaller ones, to limit broadcast traffic, improve security, and
+use addresses efficiently. <strong>IPv6</strong> uses 128 bits (written in hex groups like 2001:0db8::1) and exists because
+IPv4's ~4.3 billion addresses ran out; it has no need for NAT and includes features like stateless address
+auto-configuration.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="An IPv4 address split into network and host portions by a subnet mask, with the AND operation shown">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <text x="20" y="24" font-size="13" font-family="system-ui, sans-serif" fill="#151923">Subnet mask separates network bits from host bits; same network part ⇒ same subnet</text>
+
+    <rect x="30" y="60" width="300" height="40" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="180" y="84" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">IP: 192 . 168 . 1 . 20</text>
+    <rect x="30" y="115" width="300" height="40" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+    <text x="180" y="139" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Mask: 255 . 255 . 255 . 0  (/24)</text>
+
+    <rect x="30" y="175" width="225" height="34" fill="#cfe9d4" stroke="#334155" stroke-width="2"/>
+    <text x="142" y="197" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">network: 192.168.1 (24 bits)</text>
+    <rect x="255" y="175" width="75" height="34" fill="#f6d6d6" stroke="#334155" stroke-width="2"/>
+    <text x="292" y="197" font-size="11" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">host 20</text>
+
+    <text x="430" y="90" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788">AND the IP with the mask</text>
+    <text x="430" y="108" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788">to find the network:</text>
+    <text x="430" y="126" font-size="12" font-family="system-ui, sans-serif" fill="#151923">192.168.1.20</text>
+    <text x="430" y="144" font-size="12" font-family="system-ui, sans-serif" fill="#151923">AND 255.255.255.0</text>
+    <text x="430" y="162" font-size="12" font-family="system-ui, sans-serif" fill="#7a5a13">= 192.168.1.0 (network)</text>
+
+    <text x="320" y="260" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788">hosts range .1 to .254; .0 = network, .255 = broadcast</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> The subnet mask is applied with a bitwise AND to recover the network address. Two addresses whose
+  network parts match after this AND are on the same subnet and can talk directly; otherwise a router is required.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 2</span> IB-style · 8 marks · subnet mask and "same subnet?" test</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Host A is 10.0.2.30 /24. Host B is 10.0.3.40 /24. (a) State the network address of each. (b) Determine whether they are on the same subnet, and state what device must carry traffic between them if not. (c) How many host addresses does the /24 subnet provide?</p>
+    <ol class="steps">
+      <li>(a) Apply the /24 mask (255.255.255.0): keep the first three octets. A's network = 10.0.2.0. B's network = 10.0.3.0.</li>
+      <li>(b) The network parts differ (10.0.2 vs 10.0.3), so they are <em>not</em> on the same subnet. Traffic between them must pass through a <strong>router</strong>.</li>
+      <li>(c) A /24 has 8 host bits → 2⁸ = 256 addresses, minus the network address (.0) and the broadcast address (.255) = 254 usable host addresses.</li>
+      <li>Sanity check: if the mask had been /23 (255.255.254.0), the boundary falls between 10.0.2 and 10.0.3, and both could be in one subnet — which is exactly why the mask, not the IP, decides subnet membership.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 2 for the two network addresses, 3 for the correct "different subnet ⇒ router" conclusion with the AND reasoning, 2 for 254 usable hosts, 1 for the sanity note. The classic error is saying "they are on the same subnet because the first two octets match" — only the masked bits count.</div>
+  </div>
+</details>
+
+<h3>Why IPv6, and how it differs</h3>
+
+<p>IPv4's 32-bit space (about 4.3 × 10⁹ addresses) was exhausted as phones and devices multiplied, which is why NAT
+(network address translation) was invented to let many devices share one public IP. IPv6's 128-bit space (3.4 × 10³⁸
+addresses) removes that pressure; it also simplifies headers, mandates features like auto-configuration, and was designed
+with security (IPsec) in mind, though TLS is still used on top. You are not asked to configure IPv6 by hand, but you must
+explain <em>why</em> it exists (address exhaustion) and that it is written in hex, not dotted decimal.</p>
+
+<h3>The default gateway and a second subnetting example</h3>
+
+<p>A host that wants to reach another subnet does not send directly; it sends the packet to its <strong>default
+gateway</strong> — usually the router on its own LAN — which then routes it onward. The gateway's IP is in the same subnet
+as the host (so they can talk directly) and it knows how to reach the rest of the world. Subnetting is the administrative
+act of carving an allocated block; the size of the carved pieces is the mask. A smaller mask (e.g. /16) means fewer, larger
+subnets; a larger mask (e.g. /28) means many tiny subnets. The choice trades wasted addresses against routing table size
+and administrative separation.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 2b</span> IB-style · 7 marks · a /28 subnet and host count</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> An organisation is given 192.168.10.0 /28. (a) How many usable host addresses does this provide? (b) What are the network and broadcast addresses? (c) Could host 192.168.10.14 be on this subnet? Explain.</p>
+    <ol class="steps">
+      <li>(a) /28 leaves 32 − 28 = 4 host bits, so 2⁴ = 16 addresses total.</li>
+      <li>(b) Network address = 192.168.10.0 (all host bits 0). Broadcast = 192.168.10.15 (all host bits 1).</li>
+      <li>(c) Usable hosts are .1 to .14 — that is 14 addresses (16 total minus network and broadcast). So 192.168.10.14 IS a usable host address on this subnet (it is the last usable one, just below broadcast .15).</li>
+      <li>Check: .15 is broadcast, not a host, so the highest usable host is .14 — a common trap is calling .14 the broadcast.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 2 for 16 total / 14 usable, 2 for the network and broadcast addresses, 3 for correctly classifying .14 as usable with the reasoning (only .15 is broadcast). The "off-by-one" between the last usable host and the broadcast is the classic mark-loser.</div>
   </div>
 </details>
 
 <div class="callout callout--exam">
-  <span class="callout__label">Exam technique — the "evaluate a network choice" 6–8 mark answer</span>
-  <p>These questions are formulaic, and the formula scores. Write five short paragraphs:</p>
-  <ol class="steps">
-    <li><strong>Requirements.</strong> Restate what the scenario needs: how many users, how far apart, what is
-    carried, how sensitive, what the budget implies, whether mobility matters. Two sentences.</li>
-    <li><strong>Option A — advantages in this context.</strong> Two points, each with a consequence ("so
-    …", "which means …").</li>
-    <li><strong>Option A — disadvantages in this context.</strong> Two points, same treatment.</li>
-    <li><strong>Option B — the same four points.</strong> If you only evaluate the option you prefer, you have
-    written a justification, not an evaluation, and you cap your mark.</li>
-    <li><strong>Recommendation and justification</strong> that refers back to paragraph 1. "I recommend X because
-    the scenario's priority is Y, and X delivers Y while its main drawback, Z, can be mitigated by…"</li>
-  </ol>
-  <p>The final sentence is the one most answers omit and the one that carries the top-band mark.</p>
+  <span class="callout__label">Exam technique — "host bits" = 32 minus the prefix</span>
+  <p>For any CIDR question, the number of host bits is 32 − prefix. Total addresses = 2^(host bits); usable = total − 2
+  (reserve network and broadcast). For IPv6 the maths is the same but with 128-bit addresses and no broadcast (it uses
+  multicast instead). Write the exponent step explicitly — "32 − 24 = 8, so 2⁸ = 256, 254 usable" — because the marks sit
+  on the method, and a bare "254" with no working is capped.</p>
 </div>
 
 <div class="callout callout--vocab">
   <span class="callout__label">Vocabulary</span>
-  <p><strong>topology</strong><strong>bus / star / ring / mesh</strong> / / /<strong>node</strong><strong>packet / frame / segment</strong> / /<strong>protocol</strong><strong>standard</strong><strong>encapsulation</strong><strong>router / switch / hub</strong> / /<strong>MAC address / IP address</strong> / IP<strong>subnet mask</strong><strong>DNS / DHCP / NAT</strong> / /<strong>packet switching / circuit switching</strong> /<strong>bandwidth / latency / jitter</strong> / /<strong>serial / parallel transmission</strong> /<strong>simplex / half-duplex / full-duplex</strong> / /<strong>fibre optic / twisted pair</strong> /<strong>attenuation</strong><strong>interference</strong><strong>SSID / channel</strong> /<strong>encryption (WPA2 / WPA3)</strong><strong>client–server / peer-to-peer</strong> /<strong>cloud (IaaS / PaaS / SaaS)</strong> / /<strong>internet of things (IoT)</strong><strong>embedded system</strong><strong>parity bit / check digit / checksum</strong> / /<strong>ARQ (automatic repeat request)</strong><strong>malware / phishing / DoS / MITM / SQL injection</strong> / / / / SQL<strong>firewall / proxy server</strong> /<strong>authentication / MFA</strong> /<strong>confidentiality / integrity / availability</strong> / /</p>
+  <div class="wordlist">
+    <div><b>PAN / LAN / WAN</b> — <span>personal / local / wide area network, by physical span and ownership</span></div>
+    <div><b>bandwidth</b> — <span>the maximum data rate of a link, in bits per second</span></div>
+    <div><b>latency</b> — <span>the time for one bit (or packet) to travel end to end</span></div>
+    <div><b>throughput</b> — <span>the actual achieved data rate, always ≤ bandwidth</span></div>
+    <div><b>topology</b> — <span>the shape of the connections (bus, star, ring, mesh, hybrid)</span></div>
+    <div><b>switch</b> — <span>a layer-2 device that forwards frames by MAC address within a network</span></div>
+    <div><b>router</b> — <span>a layer-3 device that forwards packets by IP address between networks</span></div>
+    <div><b>MAC address</b> — <span>the burned-in hardware identifier of "who" a device is (layer 2)</span></div>
+    <div><b>IP address</b> — <span>the assigned "where" a device is, used for routing (layer 3)</span></div>
+    <div><b>subnet mask / CIDR</b> — <span>bits that mark the network portion of an IP address</span></div>
+    <div><b>subnetting</b> — <span>splitting a network into smaller ones for efficiency and control</span></div>
+    <div><b>encapsulation</b> — <span>each layer wraps the layer above's data in its own header</span></div>
+    <div><b>NAT</b> — <span>translating many private IPs to one public IP at a gateway</span></div>
+  </div>
 </div>
 
-<h2>Practice</h2>
+<h3>NAT and a quantitative throughput calculation</h3>
+
+<p><strong>NAT</strong> (network address translation) lets many devices on a private network (e.g. 192.168.x.x) share one public
+IP. The gateway rewrites the source address of outgoing packets to its public IP and remembers the mapping, so replies can
+be sent back to the right internal device. NAT postponed IPv4 exhaustion and adds a little obscurity, but it breaks the
+"every host has a unique IP" model (which is why incoming connections to a NATted device need port forwarding) and is
+largely unnecessary under IPv6. A companion calculation you should be able to do is <strong>transfer time = data size ÷
+throughput</strong>, remembering to convert units and that overhead reduces real throughput below the link's bandwidth.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 4b</span> IB-style · 6 marks · download time and NAT role</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A 50 MB file is downloaded over a 20 Mbps link whose real throughput is 80% of bandwidth. (a) Estimate the download time in seconds. (b) Explain the role of NAT if the downloading device is on a home 192.168.1.x network.</p>
+    <ol class="steps">
+      <li>(a) File = 50 × 8 = 400 Mb. Effective throughput = 20 × 0.8 = 16 Mbps. Time = 400 Mb ÷ 16 Mbps = 25 seconds.</li>
+      <li>(b) The home devices use private 192.168.1.x addresses that are not routable on the public internet. The gateway performs NAT: it replaces the device's private source IP with the home's single public IP as packets leave, and translates replies back, so all devices share that one public address. Without NAT (or IPv6), each device would need its own public IP.</li>
+      <li>Sanity: if you forgot the ×8 (MB→Mb), you would get 3.125 s, which is wrong — always convert bytes to bits when dividing by a bit-per-second bandwidth.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 3 for the 25 s with correct unit conversion (×8, ×0.8), 3 for NAT's address-translation role and why private addresses need it. The classic error is mixing MB and Mbps; state the conversion explicitly for the mark.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — always convert, then divide</span>
+  <p>Bandwidth is in bits/s; file sizes are usually in bytes. Step 1: bytes × 8 = bits. Step 2: apply any overhead factor
+  (throughput as a fraction of bandwidth). Step 3: size ÷ throughput = time. Write each step; the marks are on the
+  conversion, not on the final number, and a wrong unit is the most common way to lose all of them.</p>
+</div>
+
+<h2>5 · Packets, routing, and the transport protocols</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<h3>Intuition</h3>
+
+<p>No message crosses the internet whole. It is chopped into <strong>packets</strong>, each with its own source and
+destination IP, sent independently, and reassembled at the far end. This is robust: if one route is congested, packets take
+another; if one is lost, only it is resent. A <strong>router</strong> reads the destination IP of each packet and forwards
+it toward the next hop using a <strong>routing table</strong> (a list of "for destination network X, send via interface Y").
+Routing is the distributed decision of where each packet goes next; no router knows the whole path, only the next step —
+like posting a letter that gets forwarded city by city.</p>
+
+<h3>Formal idea: TCP vs UDP</h3>
+
+<p><strong>TCP</strong> (Transmission Control Protocol) is connection-oriented and reliable: it sets up a connection, numbers
+each byte, acknowledges receipt, and retransmits anything lost, presenting the receiver with a perfect, ordered stream. It
+is used for web pages, email and files, where correctness beats raw speed. <strong>UDP</strong> (User Datagram Protocol) is
+connectionless and unreliable: it fires datagrams and hopes; no ack, no retransmit, but far lower delay and overhead. It is
+used for live video, voice and games, where a late packet is worthless and dropping it beats waiting. The choice is a
+trade-off: reliability (TCP) versus latency (UDP). <strong>Ports</strong> (numbers like 80, 443, 25, 53) let one machine run
+many services; the IP gets the packet to the machine, the port gets it to the right application.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Protocol</th><th>Reliable?</th><th>Connection?</th><th>Use when</th><th>Examples</th></tr></thead>
+  <tbody>
+    <tr><td><strong>TCP</strong></td><td>Yes (acks, retransmit, order)</td><td>Yes (handshake)</td><td>Correctness matters more than delay</td><td>HTTP, HTTPS, SMTP, FTP</td></tr>
+    <tr><td><strong>UDP</strong></td><td>No</td><td>No</td><td>Low delay matters more than loss</td><td>Video call, DNS, gaming</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — justify TCP vs UDP by the cost of loss</span>
+  <p>The mark is for linking the protocol to the consequence of a lost packet. "A lost web byte corrupts the page, so use
+  TCP" earns it; "video uses UDP because it is faster" is weaker unless you add "a late video frame is useless, so
+  retransmitting is pointless". Always state what goes wrong if a packet is lost, then the protocol follows.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> IB-style · 6 marks · choose the protocol</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A stock-trading app must send buy/sell orders. (a) State whether TCP or UDP is appropriate and why. (b) Explain what would go wrong if the other were used. (c) Which port-level identifier gets the packet to the trading service?</p>
+    <ol class="steps">
+      <li>(a) TCP — a lost or reordered order could buy the wrong amount or duplicate a trade, so reliability is essential and the small extra delay is acceptable.</li>
+      <li>(b) With UDP, a dropped order might never arrive (the trade is missed) or arrive out of order (sell before buy), causing real financial loss; there is no automatic recovery.</li>
+      <li>(c) The destination <strong>port number</strong> (agreed with the server) directs the packet to the trading application after the IP delivers it to the machine.</li>
+    </ol>
+      <div class="answerline"><b>Marks:</b> 2 for TCP with the correctness reasoning, 2 for the concrete failure mode under UDP, 2 for the port. Note the two-level addressing: IP reaches the host, port reaches the process.</div>
+  </div>
+</details>
+
+<h3>The TCP three-way handshake and congestion control</h3>
+
+<p>TCP does not just send; it first agrees to talk. The <strong>three-way handshake</strong> is: (1) the client sends SYN
+(synchronise, "I want to connect, here is my initial sequence number"); (2) the server replies SYN-ACK (it acknowledges and
+proposes its own sequence number); (3) the client sends ACK. Only then does data flow. This sets up the sequence numbers
+that make reliable, ordered delivery possible and protects against old duplicate connection attempts. <strong>Congestion
+control</strong> is TCP's behaviour when the network is busy: it starts slow (slow start), increases the window until packets
+are lost, then backs off — the internet's way of being polite so no single flow floods everyone. UDP has none of this; it
+is fire-and-forget, which is why it is called "unreliable" without meaning "bad".</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3b</span> IB-style · 6 marks · read a routing table</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A router has this table: (i) 10.0.1.0/24 → port A; (ii) 10.0.2.0/24 → port B; (iii) 0.0.0.0/0 → port C (default). To which port does it forward a packet for (a) 10.0.1.55, (b) 10.0.2.7, (c) 8.8.8.8?</p>
+    <ol class="steps">
+      <li>(a) 10.0.1.55 matches rule (i) exactly (same /24 network) → forward out port A.</li>
+      <li>(b) 10.0.2.7 matches rule (ii) (same /24) → port B.</li>
+      <li>(c) 8.8.8.8 matches no specific rule, so the router uses the <strong>default route</strong> 0.0.0.0/0 (meaning "any address") → port C. The default is the catch-all for everything not otherwise listed, typically the link to the wider internet.</li>
+      <li>The longest-prefix (most specific) match wins; the default is the shortest (zero bits), so it is the last resort.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 1 each for A and B, 3 for C with the explanation that the default route catches all unmatched destinations. The mark is knowing the default route exists as the "otherwise" rule and that specific prefixes beat it.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — a router does not "know the whole path"</span>
+  <p>Routing is <em>next-hop</em> only. A router decides where to send the packet for the next step; it does not compute or
+  store the full route to the destination (that is what traceroute reveals hop by hop). Saying "the router looks up the
+  destination and sends it all the way" is wrong — each router along the path repeats the same local table lookup. The
+  end-to-end path is emergent from many local decisions.</p>
+</div>
+
+<h2>6 · Application protocols: DNS, HTTP/S, FTP, SMTP</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<h3>Intuition</h3>
+
+<p>These are the application-layer protocols you actually use. <strong>DNS</strong> (Domain Name System) translates a name
+like <em>example.com</em> into an IP address — the internet's phone book. <strong>HTTP</strong> (and its encrypted form
+<strong>HTTPS</strong>) is how browsers fetch web pages; the S adds TLS encryption. <strong>FTP</strong> (File Transfer
+Protocol) moves files between machines. <strong>SMTP</strong> (Simple Mail Transfer Protocol) sends email from your client
+to a server and between servers. Each sits on top of TCP (except some DNS, which may use UDP for small queries) and is
+identified by a well-known port.</p>
+
+<h3>Formal idea: what each one does step by step</h3>
+
+<p><strong>DNS resolution:</strong> you type a name; the resolver asks a root server, which points to a TLD server (.com),
+which points to the authoritative server, which returns the IP — often cached on the way back so the next lookup is
+instant. <strong>HTTP request/response:</strong> the browser sends a request with a method (GET to fetch, POST to submit)
+and a URL; the server returns a status code (200 OK, 404 not found, 301 redirect, 500 error) and the content.
+<strong>HTTPS</strong> wraps this in TLS so an eavesdropper sees only ciphertext. <strong>FTP</strong> opens a control
+connection (port 21) and a separate data connection, and transmits credentials and files in the clear unless FTPS/SFTP is
+used. <strong>SMTP</strong> pushes mail to port 25; retrieving it at the client uses POP3 or IMAP.</p>
+
+<div class="callout callout--note">
+  <span class="callout__label">Note — the port numbers are worth a mark, not a page</span>
+  <p>You should know the headline ports: HTTP 80, HTTPS 443, FTP 21 (control), SMTP 25, DNS 53, SSH 22. A question may ask
+  "which protocol and port for a secure web page?" → HTTPS on 443. But the deeper marks are for <em>what the protocol
+  achieves</em> (name→address, fetch, transfer, send), not for reciting numbers. Use the numbers to show you know which
+  layer/protocol, then explain the function.</p>
+</div>
+
+<h3>HTTP methods and status codes in detail</h3>
+
+<p>The method tells the server what to do. <strong>GET</strong> retrieves a resource (and should not change server state);
+<strong>POST</strong> submits data to create or update something; <strong>PUT</strong> replaces a resource;
+<strong>DELETE</strong> removes one; <strong>HEAD</strong> asks for just the headers. The status code tells what happened:
+<strong>2xx</strong> success (200 OK, 201 created), <strong>3xx</strong> redirection (301 moved permanently, 304 not
+modified — used for caching), <strong>4xx</strong> client error (400 bad request, 401 unauthorized, 403 forbidden, 404
+not found), <strong>5xx</strong> server error (500 internal, 503 unavailable). Knowing these lets you interpret what a
+browser or API is telling you, and they are a common source of "state the meaning of this response" marks. HTTPS adds a TLS
+handshake before any HTTP exchange, so the HTTP bytes are encrypted inside the TLS record — the method and URL are hidden
+from an on-path observer (though the server name can leak via SNI unless encrypted too).</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 6</span> IB-style · 5 marks · interpret a response</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A browser requests a page and receives (a) 404, then (b) 301 to a new URL, then (c) 200. Explain each, and state which of the three is an error the client caused.</p>
+    <ol class="steps">
+      <li>(a) 404 Not Found — the server has no resource at that URL. This is a client-side error (wrong address / broken link), a 4xx.</li>
+      <li>(b) 301 Moved Permanently — the resource now lives at a different URL; the browser should follow the Location header to the new address. Not an error, just redirection.</li>
+      <li>(c) 200 OK — the request succeeded and the response body is the page.</li>
+      <li>Only the 404 is a client-caused error (4xx); the 301 is redirection and the 200 is success. The 5xx class would be the server's fault instead.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 1 each for the three meanings, 2 for classifying 404 as the client error (4xx) and noting 5xx would be server-side. The markscheme rewards the class (2xx/3xx/4xx/5xx) as much as the specific number.</div>
+  </div>
+</details>
+
+<h2>7 · Wireless networking and Wi-Fi security</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<h3>Intuition</h3>
+
+<p>Wireless is the same layered stack with radio as the physical medium. <strong>Wi-Fi</strong> (the family of IEEE 802.11
+standards) is a LAN without cables; devices associate with an <strong>access point</strong> that acts as the layer-2 hub.
+Because anyone in range can hear the radio, Wi-Fi needs encryption at the link layer, and the schemes have a history of
+getting stronger: <strong>WEP</strong> (broken, do not use), <strong>WPA</strong>, <strong>WPA2</strong> (AES-based,
+still common), and <strong>WPA3</strong> (currently recommended). The lesson: wireless security is a moving target, and
+"it's password-protected" is only as good as the scheme — WEP with a password is still insecure.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — WEP is not secure, and "encrypted Wi-Fi" is vague</span>
+  <p>If a question asks about securing a wireless network, name the scheme: WPA2 or WPA3 with a strong passphrase, not
+  merely "use encryption". WEP has known flaws (short IV, weak key scheduling) and is explicitly insecure — saying "use WEP"
+  loses the mark. Also distinguish securing the <em>link</em> (WPA) from securing the <em>session</em> (TLS/HTTPS): WPA
+  protects your traffic from neighbours on the Wi-Fi, but the site still needs HTTPS to protect it from the internet
+  beyond the router.</p>
+</div>
+
+<h3>Serial vs parallel transmission</h3>
+
+<p><strong>Serial</strong> transmission sends one bit at a time along a single channel; <strong>parallel</strong> sends many
+bits at once along multiple wires (like the old parallel printer cable, or the lanes inside a bus). Serial won the modern
+world because at high speeds the parallel wires suffer from <em>skew</em> (bits on different wires arrive at slightly
+different times) and crosstalk, and serial is cheaper (fewer wires). So USB, SATA, PCIe and networking are all serial now,
+despite the intuitive "more wires = faster" assumption. The rule: parallel is simple and fast at low speeds over short
+distances; serial scales to higher speeds over longer distances.</p>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — "why serial not parallel today?"</span>
+  <p>The mark is for skew and crosstalk at high speed, plus cost (fewer wires). A common weak answer is "serial is faster",
+  which is backwards as a first principle — parallel is faster at low speed; serial wins at high speed because it avoids
+  timing problems. State the timing problem and you have the mark.</p>
+</div>
+
+<h3>How Wi-Fi shares the air: CSMA/CA and the bands</h3>
+
+<p>Unlike a wired switch, a wireless medium is shared by everyone in range and a node cannot hear its own collision while
+transmitting — so Wi-Fi uses <strong>CSMA/CA</strong> (Carrier Sense Multiple Access with Collision Avoidance): a device
+listens; if the channel is busy it waits a random back-off; before sending it may reserve the channel with a short
+request-to-send / clear-to-send exchange so others stay quiet. This "avoidance" is why Wi-Fi is half-duplex on a channel
+and why many devices on one access point slow each other down. The <strong>2.4 GHz</strong> band travels farther and
+penetrates walls better but is crowded (microwaves, Bluetooth share it) and has fewer non-overlapping channels; the
+<strong>5 GHz</strong> band is faster and less crowded but shorter range. The upcoming 6 GHz (Wi-Fi 6E/7) adds more room
+still. The evaluation point: higher frequency = more bandwidth but shorter range, a direct echo of the bandwidth-versus-
+latency-versus-physics trade-off everywhere in this topic.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 7</span> IB-style · 5 marks · choose a band and a scheme</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A café wants Wi-Fi that reaches the garden (through a wall) and is secure. (a) Which frequency band is the better default and why? (b) Which security scheme should they enable, and what does it protect against that HTTPS alone does not?</p>
+    <ol class="steps">
+      <li>(a) 2.4 GHz reaches farther through the wall, so as the default it serves the garden; 5 GHz would be faster but might not penetrate. The trade-off is range versus speed.</li>
+      <li>(b) Enable WPA2 or WPA3 (not WEP). WPA protects the link so a neighbour in the café cannot read the user's traffic over the air. HTTPS also encrypts, but only between the user and a specific website — WPA protects all traffic on the local link, including DNS and any plaintext site, and stops a local eavesdropper regardless of the site.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 2 for 2.4 GHz with the range/penetration reason, 3 for WPA2/3 plus the distinction that WPA secures the local link while HTTPS secures the end-to-end session. The point the markscheme wants is the two-level (link vs session) protection, not "use a password".</div>
+  </div>
+</details>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary</span>
+  <div class="wordlist">
+    <div><b>packet</b> — <span>a chunk of a message sent independently across the network</span></div>
+    <div><b>router / routing table</b> — <span>forwards packets by IP; a list of next-hop decisions</span></div>
+    <div><b>TCP</b> — <span>reliable, connection-oriented transport (acks, retransmit, order)</span></div>
+    <div><b>UDP</b> — <span>unreliable, connectionless transport (low delay, no recovery)</span></div>
+    <div><b>port</b> — <span>a number that directs a packet to a specific application on a host</span></div>
+    <div><b>DNS</b> — <span>translates domain names to IP addresses</span></div>
+    <div><b>HTTP / HTTPS</b> — <span>web fetch protocol, plain / TLS-encrypted</span></div>
+    <div><b>FTP / SMTP</b> — <span>file transfer / email sending protocols</span></div>
+    <div><b>access point</b> — <span>the wireless layer-2 device a Wi-Fi device associates with</span></div>
+    <div><b>WPA2 / WPA3</b> — <span>modern Wi-Fi security schemes (WEP is broken)</span></div>
+    <div><b>serial / parallel</b> — <span>one bit per channel / many bits at once</span></div>
+  </div>
+</div>
+
+<h2>8 · Network security: threats and the control that defeats each</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<h3>Intuition</h3>
+
+<p>Security is best learned as threat → control, not as a shopping list. Each attack has a specific defence, and the mark is
+almost always for pairing them. A <strong>firewall</strong> filters traffic by rules (block port 23, allow 443) — it defends
+against unauthorised access from outside. A <strong>proxy</strong> sits between client and server, forwarding requests (and
+can cache and filter content). A <strong>VPN</strong> (virtual private network) tunnels your traffic through an encrypted
+channel so an eavesdropper on the Wi-Fi or ISP cannot read it. A <strong>DoS / DDoS</strong> (denial of service / distributed
+DoS) floods a server with traffic to exhaust its resources — defended by filtering, rate-limiting and absorption
+(CDNs). A <strong>man-in-the-middle (MITM)</strong> attack intercepts and possibly alters traffic between two parties —
+defended by encryption (TLS) and, for identity, certificates. The through-line: encryption defeats eavesdropping and
+tampering; filtering defeats unauthorised access; redundancy defeats flooding.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Threat</th><th>What it does</th><th>Primary control</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Unauthorised access</strong></td><td>An outsider reaches a service they shouldn't</td><td>Firewall, access control lists</td></tr>
+    <tr><td><strong>Eavesdropping</strong></td><td>Someone reads your traffic in transit</td><td>Encryption (TLS/VPN)</td></tr>
+    <tr><td><strong>Man-in-the-middle</strong></td><td>Attacker relays and alters traffic</td><td>TLS + certificate validation</td></tr>
+    <tr><td><strong>DoS / DDoS</strong></td><td>Server overwhelmed with bogus traffic</td><td>Filtering, rate limits, CDN absorption</td></tr>
+    <tr><td><strong>Data tampering</strong></td><td>Contents changed in transit or at rest</td><td>Hashing + encryption + signatures</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 4</span> IB-style · 7 marks · MITM and its defence</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A user logs into a bank on public Wi-Fi without HTTPS. (a) Describe a man-in-the-middle attack that could result. (b) State what an attacker could obtain. (c) Explain how the attack is prevented.</p>
+    <ol class="steps">
+      <li>(a) The attacker sets up a rogue access point or poisons ARP/DNS so the user's traffic flows through the attacker's machine. The attacker relays it to the real bank, so neither side notices; the attacker sits "in the middle".</li>
+      <li>(b) Because the login is in plaintext (no HTTPS), the attacker reads the username and password directly as the packets pass through, and could also alter the page (e.g. inject a fake form) or silently redirect funds.</li>
+      <li>(c) HTTPS/TLS encrypts the session so the attacker sees only ciphertext they cannot read, and the bank's certificate lets the browser verify the server's identity, defeating the impersonation. Additionally, the user should avoid unknown Wi-Fi or use a VPN, which encrypts the link before the traffic leaves the device.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 2 for describing the interception/relay, 2 for the credentials-in-cleartext consequence, 3 for TLS encryption + certificate-based authentication (and optionally VPN). The mark is not "use a password" — it is "encrypt and authenticate the endpoint".</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — a firewall is not antivirus, and VPN is not anonymity</span>
+  <p>A firewall controls <em>network</em> traffic by rules; it does nothing about a malicious file already on the machine.
+  A VPN encrypts your link and hides your IP from the next hop, but it does not make you anonymous from the VPN provider
+  itself, and it does not protect you from a phishing site. Pair each control with the threat it actually addresses; a
+  generic "use a firewall and a VPN" answer scores little if the threat was eavesdropping (VPN yes, firewall only
+  indirectly).</p>
+</div>
+
+<h3>Defence in depth, phishing, and encryption at rest</h3>
+
+<p>No single control is enough, which is why real systems use <strong>defence in depth</strong>: layers so that if one fails,
+another still protects. A web service might combine TLS (confidentiality in transit), a firewall (perimeter access
+control), strong authentication (passwords plus a second factor), input validation (stopping injection), and encryption at
+rest (so a stolen database is unreadable). <strong>Phishing</strong> and <strong>social engineering</strong> are attacks on
+the <em>human</em>, not the maths: an attacker tricks a user into revealing a password or clicking a bad link, which
+bypasses every technical control. That is why training and multi-factor authentication (MFA) matter — MFA means a stolen
+password alone is useless. <strong>Encryption at rest</strong> (e.g. a full-disk-encrypted laptop, or a database whose
+columns are encrypted) protects data sitting on storage, complementing TLS which only protects data <em>moving</em>.
+Confidentiality, integrity and availability — the CIA triad — are the three goals these controls serve; a good evaluation
+names which of the three each control advances.</p>
+
+<div class="callout callout--note">
+  <span class="callout__label">Note — the CIA triad names the security goals</span>
+  <p><strong>Confidentiality</strong>: only authorised parties can read (TLS, encryption at rest, access control).
+  <strong>Integrity</strong>: data is not altered undetected (hashing, digital signatures, checksums).
+  <strong>Availability</strong>: the service works when needed (redundancy, DoS defence, backups). When an evaluation
+  question asks you to assess a security design, walk the CIA triad and say which control supports which goal — that
+  structure is what a top-band answer looks like, and it is the same triad used in the case-study and A4 ethics
+  discussions.</p>
+</div>
+
+<h2>9 · Error detection: parity, checksum, and Hamming</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<h3>Intuition</h3>
+
+<p>Bits get flipped by noise on a wire or in the air. Before you can <em>correct</em> an error you must <em>detect</em> it.
+<strong>Parity</strong> is the simplest: add one bit so the total number of 1s is even (even parity) or odd (odd parity); if a
+single bit flips, the parity is wrong and the error is spotted — but you can't tell which bit, and two flips cancel out and
+go undetected. A <strong>checksum</strong> (and its stronger cousin the CRC, cyclic redundancy check) folds the whole
+message into a short value; the receiver recomputes it and compares. <strong>Hamming code</strong> goes further: it adds
+enough parity bits in clever positions that a single-bit error can be both detected <em>and located</em>, so it can be
+corrected, not just flagged.</p>
+
+<h3>Formal idea: even parity and the Hamming layout</h3>
+
+<p>In a <strong>parity</strong> scheme, for the byte 1011001₁ (three 1s, odd), even parity appends a 0 to make four 1s
+(total even): 10110010. The receiver counts 1s; an odd count means an error occurred. For <strong>Hamming</strong>, parity
+bits live at positions that are powers of two (1, 2, 4, 8…) and each covers a specific set of data bits; by checking which
+parity bits fail, you compute the exact position of the single flipped bit and flip it back. Hamming can correct one error
+and detect two; it trades bandwidth for reliability, which matters on noisy channels.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 5</span> IB-style · 8 marks · even parity and a single-bit Hamming correction</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> (a) A system uses even parity on 7-bit ASCII. The received byte is 11001011 (8 bits, last bit parity). State whether an error is detected and explain. (b) In a Hamming (7,4) code the receiver finds parity bits at positions 1 and 2 in error but position 4 correct. State the position of the flipped bit and the corrected data bit.</p>
+    <ol class="steps">
+      <li>(a) The data bits are 1100101; count the 1s: positions with 1 are 1,2,5,7 → four 1s (even). The parity bit is 1, making five 1s total — odd. Even parity expects an even total, so an error is detected. (If instead total were even, no single-bit error is detected by parity.)</li>
+      <li>(b) In Hamming, the failing parity bits' positions are added: 1 + 2 = 3, so bit 3 is the one in error. Flip bit 3; the remaining bits are the corrected data. Position 4 being correct tells us the error is not in the half it covers, which is consistent with position 3.</li>
+      <li>The power of Hamming: the <em>set</em> of failing parity bits is a binary number giving the bad position — no guesswork, no resend needed for a single error.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 2 for detecting the parity error with the even-total reasoning, 2 for knowing parity can't locate the bit, 3 for "1+2=3 ⇒ bit 3" and flipping it, 1 for noting Hamming corrects (not just detects) single errors. The trap is claiming parity can say <em>which</em> bit broke — it cannot.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — say what each method can and cannot do</span>
+  <p>The markscheme loves the comparison: parity detects single-bit errors but not their location and misses double errors;
+  a checksum detects most multi-bit errors over a block but still only flags; Hamming detects <em>and corrects</em> single-bit
+  errors (and detects double). If asked "which to use on a noisy satellite link?", Hamming (correction avoids a costly
+  resend); on a wired LAN, a checksum is enough because errors are rare. Match the method to the channel.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 5b</span> IB-style · 9 marks · construct and decode a Hamming (7,4) code</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Encode the 4 data bits 1011 using Hamming (7,4) with parity bits at positions 1, 2, 4 (even parity). Then show how the receiver corrects the code if bit 6 is flipped in transmission.</p>
+    <ol class="steps">
+      <li><strong>Layout:</strong> positions 1,2,4 are parity; positions 3,5,6,7 hold data. Place data 1011: bit3=1, bit5=0, bit6=1, bit7=1.</li>
+      <li><strong>Compute parity:</strong> p1 covers bits 1,3,5,7 → bits 3,5,7 are 1,0,1 (two 1s, even) so p1=0. p2 covers 2,3,6,7 → 1,1,1 (three 1s, odd) so p2=1 to make even. p4 covers 4,5,6,7 → 0,1,1 (two 1s, even) so p4=0.</li>
+      <li><strong>Codeword:</strong> position 1=p1=0, 2=p2=1, 3=d=1, 4=p4=0, 5=d=0, 6=d=1, 7=d=1 → 0 1 1 0 0 1 1.</li>
+      <li><strong>Transmit with bit 6 flipped:</strong> received = 0 1 1 0 0 0 1 (bit6 now 0).</li>
+      <li><strong>Receiver checks:</strong> p1 covers 1,3,5,7 = 0,1,0,1 → two 1s, even, OK. p2 covers 2,3,6,7 = 1,1,0,1 → three 1s, odd → ERROR. p4 covers 4,5,6,7 = 0,0,0,1 → one 1, odd → ERROR.</li>
+      <li><strong>Locate:</strong> failing parity bits are p2 (position 2) and p4 (position 4); 2 + 4 = 6 → bit 6 is wrong. Flip it back to 1. Corrected codeword 0 1 1 0 0 1 1, data 1011 recovered.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 3 for the correct codeword, 3 for the parity checks identifying bits 2 and 4 as failing, 3 for "2+4=6 ⇒ flip bit 6" and recovering the data. The elegant part the markscheme rewards: the set of failing parity bits is a binary address of the bad bit — no resend needed for a single error.</div>
+  </div>
+</details>
+
+<h3>Checksums and CRC in brief</h3>
+
+<p>A <strong>checksum</strong> adds the bytes of a message (often with ones-complement addition) into a short sum sent alongside
+it; the receiver adds the same way and compares — a mismatch means corruption. It is simple and catches most errors but is
+weak against certain patterned errors. A <strong>CRC</strong> (cyclic redundancy check) treats the message as a polynomial
+and divides it by a standard generator polynomial, sending the remainder; the receiver divides and checks the remainder is
+zero. CRCs catch far more error patterns (including burst errors) and are what Ethernet and many storage formats actually
+use. Both detect but do not locate/correct (unlike Hamming); on detecting, the usual response is "ask the sender to
+retransmit that packet" — which is exactly what TCP's acknowledgement mechanism does.</p>
+
+<div class="callout callout--note">
+  <span class="callout__label">Note — detection triggers retransmission, not magic repair</span>
+  <p>Parity, checksum and CRC only tell you "something is wrong"; they do not know the original value. The recovery is a
+  retransmission (TCP resends the lost/corrupt segment) or, for Hamming, an in-place flip. So error control has two halves:
+  detection (these methods) and recovery (retransmit, or Hamming-correct). A complete answer names both; a detection-only
+  answer leaves the "then what?" unanswered.</p>
+</div>
+
+<h2>Self-check</h2>
 <ol class="practice">
-  <li><p>State two differences between a LAN and a WAN.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <p>A LAN covers a small geographic area (one building or site) and its infrastructure is usually owned by the
-      organisation using it; a WAN spans a large area (a country or the world) and the links are usually leased from
-      telecommunications carriers. Consequently a LAN typically offers higher bandwidth and lower latency at lower
-      cost, while a WAN is slower, more expensive, and less secure by default because it crosses infrastructure you
-      do not control.</p>
+  <li><p>State the difference between a MAC address and an IP address, and say which layer of the OSI model each belongs to.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <p>A MAC address identifies the device's hardware ("who", layer 2, data link) and is fixed; an IP address identifies where the device is on the network ("where", layer 3, network) and can change. MAC is used for delivery on one link, IP for routing across networks.</p>
+      <div class="answerline"><b>Why this matters:</b> the who/where analogy is the single most-tested distinction in the topic; getting the layers right is half the mark.</div>
     </div></details>
   </li>
-  <li><p>A small office uses a star topology with a single central switch. Describe what happens if (a) one
-  workstation's cable is cut, and (b) the switch fails. Hence explain why the switch is described as a single point
-  of failure.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <ol class="steps">
-        <li>(a) Only that workstation loses connectivity; every other node continues to work because each has its own
-        dedicated cable to the switch.</li>
-        <li>(b) All communication stops — no node can reach any other, and shared resources such as the printer or
-        server become unreachable.</li>
-        <li>A single point of failure is a component whose failure disables the whole system. In a star, the central
-        device carries all traffic, so its failure is total even though the cabling is individually robust.</li>
-        <li>Mitigation worth a mark: a second (redundant) switch, or a resilient stack, so that one device failure is
-        survivable.</li>
-      </ol>
+  <li><p>Host X is 172.16.5.10 /16 and host Y is 172.16.9.20 /16. Are they on the same subnet? How many usable host addresses does the subnet provide?</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <p>/16 keeps the first 16 bits (172.16) as the network. Both share 172.16, so they are on the same subnet and can talk directly. Host bits = 16, so 2¹⁶ = 65536 addresses, minus network (.0.0) and broadcast (.255.255) = 65534 usable.</p>
+      <div class="answerline"><b>Why this matters:</b> only the masked bits decide subnet membership; the third octet differing does not matter under /16.</div>
     </div></details>
   </li>
-  <li><p>Explain the role of the transport layer and the network layer when a file is sent from one computer to
-  another, and state which layer's address changes at each router.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <p>The <strong>transport layer</strong> (TCP) splits the file into segments, numbers them with sequence
-      numbers, adds source and destination port numbers to identify the sending and receiving applications,
-      acknowledges received segments, retransmits those that are lost, and reorders segments that arrive out of
-      sequence. The <strong>network layer</strong> (IP) places each segment in a packet with source and destination
-      IP addresses and makes the routing decision that moves it one hop closer to its destination.</p>
-      <p>At each router the <strong>layer-2 (MAC) addresses change</strong> — the router strips the incoming frame
-      and builds a new one addressed to the next hop — while the <strong>IP addresses remain unchanged</strong> for
-      the whole journey, because they identify the ultimate endpoints, not the current hop.</p>
+  <li><p>A video call and a file download start at the same time. Which transport protocol suits each, and why?</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <p>The call uses UDP (a late packet is useless, so low delay beats reliability, and retransmitting is pointless); the download uses TCP (a corrupted byte ruins the file, so reliability and ordering matter more than a little delay).</p>
+      <div class="answerline"><b>Why this matters:</b> always justify by "what happens if a packet is lost?" — that single question picks the protocol.</div>
     </div></details>
   </li>
-  <li><p>Describe how a DNS lookup resolves <code>www.school.edu</code> to an IP address, naming the servers
-  involved.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <ol class="steps">
-        <li>The client checks its own cache, then the operating system cache, then queries the configured
-        <strong>recursive resolver</strong>.</li>
-        <li>The resolver queries a <strong>root name server</strong>, which returns the address of the
-        <strong>TLD server</strong> for <code>.edu</code>.</li>
-        <li>The resolver queries that TLD server, which returns the address of the
-        <strong>authoritative name server</strong> for <code>school.edu</code>.</li>
-        <li>The resolver queries the authoritative server for <code>www.school.edu</code> and receives the A/AAAA
-        record.</li>
-        <li>The answer is returned to the client and cached for the record's TTL so subsequent lookups are answered
-        locally.</li>
-      </ol>
-      <div class="answerline"><b>Marks:</b> one each for the resolver, the root server, the TLD server, the authoritative server, and caching/TTL.</div>
+  <li><p>Explain the role of DNS and state what would happen if it failed.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <p>DNS translates domain names to IP addresses (the internet's directory). If it failed, you could still reach sites by typing their IP address directly, but names like example.com would not resolve, so normal browsing would break even though the network itself was fine.</p>
+      <div class="answerline"><b>Why this matters:</b> DNS is application-layer infrastructure; a DNS failure is not a cable failure, which is why "ping by IP works" is the tell-tale sign.</div>
     </div></details>
   </li>
-  <li><p>A company with 200 staff in two buildings 3 km apart must connect them. Evaluate the use of a wireless
-  link rather than a fibre link.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <ol class="steps">
-        <li><strong>Requirements:</strong> 200 staff, so substantial and continuous traffic; 3 km is short; this is
-        a permanent business-critical link between two fixed buildings.</li>
-        <li><strong>Wireless — for:</strong> no wayleave or digging required, so much lower installation cost and
-        much faster to deploy; the two buildings need line of sight but no road crossing or third-party permission.</li>
-        <li><strong>Wireless — against:</strong> throughput is lower and shared with other users of the band;
-        performance degrades in heavy rain, especially at higher frequencies; the signal is broadcast, so it depends
-        entirely on strong encryption and is vulnerable to interception or jamming; interference from other users is
-        outside the company's control; for 200 staff it is likely to be a bottleneck.</li>
-        <li><strong>Fibre — for:</strong> very high bandwidth, low latency, immune to electromagnetic interference,
-        unaffected by weather, and physically secure because tapping is detectable. For a 3 km permanent link
-        between fixed buildings, the civil-engineering cost is a one-off and the link will serve the company for
-        decades.</li>
-        <li><strong>Fibre — against:</strong> high initial cost and installation time; requires permission to dig and
-        skilled termination; the cable is a physical asset that could be cut by third-party works.</li>
-        <li><strong>Recommendation:</strong> fibre, because the buildings are fixed and close, so the one-off
-        installation cost is justified by capacity, reliability and security for 200 users — and a wireless link
-        could be retained as a backup for resilience.</li>
-      </ol>
-      <div class="answerline"><b>Where the marks are:</b> requirements stated, both options evaluated with a for and an against, a recommendation, and justification that returns to the scenario. Offering the hybrid (fibre primary, wireless backup) is the kind of synthesis that reaches the top band.</div>
+  <li><p>A school wants to stop students on the Wi-Fi reading each other's traffic and also stop outsiders reaching the admin server. Name one control for each goal.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <p>To stop neighbours reading traffic: use WPA2/WPA3 encryption on the Wi-Fi (link-layer confidentiality). To block outsiders from the admin server: a firewall rule that denies external access to the admin server's port, allowing only internal addresses.</p>
+      <div class="answerline"><b>Why this matters:</b> pair each threat with its control — encryption for eavesdropping, firewall for unauthorised access. Don't confuse them.</div>
     </div></details>
   </li>
-  <li><p>Using even parity, state whether each received byte contains a detectable error:
-  (a) <code>11010110</code>, (b) <code>10101010</code>, (c) <code>11110000</code>.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <ol class="steps">
-        <li>(a) 11010110 has five 1s — odd — so under even parity it is <strong>invalid</strong>; an error is
-        detected.</li>
-        <li>(b) 10101010 has four 1s — even — so it <strong>passes</strong>; no error is detected (though an even
-        number of bit errors could still be present).</li>
-        <li>(c) 11110000 has four 1s — even — so it also <strong>passes</strong>.</li>
-      </ol>
-      <div class="answerline"><b>Answer:</b> (a) error detected; (b) and (c) no error detected. Remember to add: parity cannot <em>correct</em> the error and cannot detect an even number of bit flips.</div>
+  <li><p>A 7-bit message 0110100 uses even parity as an 8th bit. What is the transmitted byte, and what does the receiver conclude if it gets 01101011?</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <p>Data 0110100 has three 1s (odd), so even parity appends 1 → 01101001 (four 1s, even). Received 01101011 has five 1s (odd), so the receiver detects a single-bit error. Parity cannot say which bit, only that something is wrong.</p>
+      <div class="answerline"><b>Why this matters:</b> parity detects but does not locate; that limitation is exactly why Hamming exists for correction.</div>
     </div></details>
   </li>
-  <li><p>Explain the difference between symmetric and asymmetric encryption, and explain why real systems such as
-  TLS use both.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <ol class="steps">
-        <li><strong>Symmetric</strong> encryption uses one shared secret key for both encryption and decryption. It
-        is fast and suitable for bulk data, but the key must be shared in advance over a secure channel — which is
-        exactly what you do not have when talking to a stranger on the internet.</li>
-        <li><strong>Asymmetric</strong> encryption uses a key pair: anything encrypted with the public key can only
-        be decrypted with the private key. The public key can be published freely, which solves key distribution,
-        but the mathematics is far slower.</li>
-        <li><strong>TLS uses both:</strong> asymmetric cryptography authenticates the server (via its certificate)
-        and securely agrees a fresh symmetric session key; then symmetric encryption carries the actual data at
-        speed.</li>
-        <li>A bonus point worth a mark: the session key is ephemeral, giving <strong>forward secrecy</strong> — if
-        the server's long-term private key is compromised later, previously recorded sessions cannot be decrypted.</li>
-      </ol>
+  <li><p>Explain why modern high-speed links use serial rather than parallel transmission.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <p>At high speeds, parallel wires suffer skew (bits on different wires arrive at different times) and crosstalk, and cost more; serial avoids these and scales to higher rates over longer distances, so USB/SATA/networking are serial despite the intuition that more wires is faster.</p>
+      <div class="answerline"><b>Why this matters:</b> the mark is the timing problem (skew), not "serial is faster" — parallel is faster at low speed.</div>
     </div></details>
   </li>
-  <li><p>Discuss the security implications of installing internet-connected cameras in a hospital.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <p>A four-part answer.</p>
-      <ol class="steps">
-        <li><strong>Stakeholders:</strong> patients, clinical staff, hospital management, IT, visitors, and insurers.</li>
-        <li><strong>Benefits and the security case for:</strong> footage deters theft of drugs and equipment, helps
-        investigate incidents, and can support patient safety in corridors and entrances.</li>
-        <li><strong>Risks:</strong> cameras in clinical areas may record patients in vulnerable moments, which is a
-        severe confidentiality breach and possibly unlawful; default credentials and unpatched firmware make IoT
-        cameras an easy entry point into the network, from which an attacker can move laterally to clinical systems;
-        a compromise of the recording server is a single point of failure for all footage; and continuous recording
-        of staff enables function creep into performance monitoring.</li>
-        <li><strong>Controls:</strong> network segmentation so cameras cannot reach clinical systems, unique
-        credentials and a patching regime, encryption in transit and at rest, retention limits, no cameras in
-        treatment or bathroom areas, visible signage, and a documented lawful basis for processing.</li>
-        <li><strong>Judgement:</strong> acceptable in public areas with the controls above; not acceptable in areas
-        where patients have a reasonable expectation of privacy, because there the security benefit does not
-        outweigh the harm.</li>
-      </ol>
+  <li><p>Compare a firewall and a VPN in the threats they address.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <p>A firewall filters traffic by rules to block unauthorised access (a perimeter control); a VPN encrypts a tunnel so an eavesdropper on the path cannot read your traffic. They address different threats — access control vs confidentiality — and are complementary, not substitutes.</p>
+      <div class="answerline"><b>Why this matters:</b> naming the threat each addresses is the mark; a vague "both improve security" scores nothing.</div>
     </div></details>
   </li>
 </ol>
@@ -1090,38 +857,12 @@ full, and a loss causes the retransmission of the window. This is precisely what
 <div class="conn">
   <span class="conn__title">Connections</span>
   <ul>
-    <li><strong>→ A1 Computer fundamentals:</strong> everything transmitted is the binary and character encoding of
-    A1; file-size and bit-rate arithmetic reappears as bandwidth and transmission-time questions.</li>
-    <li><strong>→ A3 Databases:</strong> a database server is the classic client–server service, and SQL injection is
-    the meeting point of A2.4 and A3.3.</li>
-    <li><strong>→ A4 Machine learning:</strong> ML-based intrusion detection, spam filtering and recommendation all
-    consume network data — and raise the privacy questions from A2.4 again.</li>
-    <li><strong>→ B2 Programming:</strong> sockets, file transfer and exception handling for network errors.</li>
-    <li><strong>→ Case study:</strong> nearly every emerging technology is networked, so A2 is the topic you will
-    quote most in Paper 1.</li>
-    <li><strong>→ IA:</strong> if your solution uses an API, a database server or any remote data, justify the
-    network design and the security of the data in transit.</li>
+    <li><strong>→ <a href="A1-computer-fundamentals.html">A1 Computer fundamentals:</a></strong> the encryption and hashing here are the TLS and integrity mechanisms A1 described conceptually.</li>
+    <li><strong>→ <a href="B1-computational-thinking.html">B1 Computational thinking:</a></strong> layering is abstraction; routing is the shortest-path / graph problem.</li>
+    <li><strong>→ <a href="A3-databases.html">A3 Databases:</a></strong> client–server queries travel over exactly the TCP/HTTP stack described here.</li>
+    <li><strong>→ <a href="A4-machine-learning.html">A4 Machine learning:</a></strong> models are trained and served over networks; bandwidth/latency bound what is feasible at the edge.</li>
   </ul>
 </div>
-
-<h2>Check yourself</h2>
-<ul class="checklist">
-  <li><label><input type="checkbox"><span>I can compare PAN, LAN, WAN and VPN with examples.</span></label></li>
-  <li><label><input type="checkbox"><span>I can draw and evaluate bus, star, ring and mesh topologies, including failure behaviour.</span></label></li>
-  <li><label><input type="checkbox"><span>I can state why standards and protocols are necessary.</span></label></li>
-  <li><label><input type="checkbox"><span>I can state what each of the seven OSI layers does and name a protocol at each.</span></label></li>
-  <li><label><input type="checkbox"><span>I can describe encapsulation and decapsulation down and up the stack.</span></label></li>
-  <li><label><input type="checkbox"><span>I can explain the roles of TCP and UDP and justify the choice between them.</span></label></li>
-  <li><label><input type="checkbox"><span>I can distinguish MAC and IP addresses and explain why both are needed.</span></label></li>
-  <li><label><input type="checkbox"><span>I can explain why IPv6 was needed and compare it with IPv4.</span></label></li>
-  <li><label><input type="checkbox"><span>I can resolve a name using DNS naming the four server types.</span></label></li>
-  <li><label><input type="checkbox"><span>I can explain DHCP and NAT, including why NAT is a workaround.</span></label></li>
-  <li><label><input type="checkbox"><span>I can compare packet and circuit switching using robustness and bandwidth-sharing arguments.</span></label></li>
-  <li><label><input type="checkbox"><span>I can compare copper, fibre and wireless with reasons grounded in physics.</span></label></li>
-  <li><label><input type="checkbox"><span>I can compute parity bits and explain the even-number-of-errors limitation.</span></label></li>
-  <li><label><input type="checkbox"><span>I can name six threats and match each to a specific defence.</span></label></li>
-  <li><label><input type="checkbox"><span>I can write a five-paragraph evaluate answer with a justified recommendation.</span></label></li>
-</ul>
 
 </div>
 <script src="../assets/js/app.js"></script>

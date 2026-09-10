@@ -9,30 +9,389 @@
 <body>
 <div id="app-shell">
 
-<span class="eyebrow">Computer Science HL · First assessment 2027</span>
-<h1 class="page-title">Computer Science HL (2027 guide)</h1>
-<p class="lede">You are sitting a <em>different course</em> from the one most IB resources describe. The 2014 guide — seven
-topics, four options, a standalone Paper 3 on the case study — is gone. The new course is two themes (A: how computing
-systems work; B: how you use them to solve problems), a pre-seen case study examined inside Paper 1, an internal
-assessment that is explicitly about the <em>computational thinking process</em>, and a ten-hour collaborative project
-shared with the sciences. Almost every free website you will find is still describing the old one. This page tells you
-what you are actually being examined on so the rest of this section makes sense.</p>
+<span class="eyebrow">Computer Science HL · 2027 guide · First assessment 2027 · Class of 2028</span>
+<h1 class="page-title">Computer science HL: the 2027 course</h1>
+<p class="lede">You are sitting a <em>different course</em> from the one nearly every free IB resource describes. The
+2014 guide — seven flat topics, four options, a standalone HL Paper 3 on the case study — is gone. What replaces it
+is two themes (A: how computing systems work; B: how you use them to solve problems), a pre-seen case study examined
+<em>inside</em> Paper 1, an internal assessment built explicitly around the computational thinking process, a paper
+you answer in real Java or Python, and a ten-hour collaborative project shared with the sciences. This page is the
+map: what you are examined on, how the marks are actually won, and where to go next for each topic. It is written
+for a May 2028 candidate, which means it is honest about one awkward fact — there is almost no past-paper bank for
+this course yet, so your technique has to come from the method rather than from repetition.</p>
 <div class="page-meta">
-  <span class="tag">HL: 240 teaching hours (SL: 150)</span>
-  <span class="tag tag--hl">HL only: A1.4 Translation · A3.4 Alternative databases · A4.2/A4.3 ML · B3.2 multiple classes · all of B4</span>
+  <span class="tag">HL: 240 teaching hours · SL: 150</span>
+  <span class="tag tag--hl">HL only: A1.4 · A3.4 · A4.2 · A4.3 · B3.2 · all of B4</span>
   <span class="tag">Paper 1: theme A + case study · Paper 2: theme B (Java or Python)</span>
+  <span class="tag">External / internal at HL: 80 / 20</span>
 </div>
 
 <div class="callout callout--why">
   <span class="callout__label">Why this page matters more than it looks</span>
   <p>Search "IB computer science topic 4" or "IB CS option D" and you will find thousands of pages describing content
-  that is <em>no longer examined</em>. Worse, the old guide's topic numbering (1 Systems, 2 Computer organisation,
-  3 Networks, 4 Computational thinking…) overlaps misleadingly with the new A/B codes. If you revise from an old
-  resource you will waste hours on object-oriented-option content that has moved, on a Paper 3 format that does not
-  exist, and on a case study that is now examined quite differently. Learn the new map first, then fill it in.</p>
+  that is <em>no longer examined</em>. Worse, the old guide's numbering (1 systems, 2 computer organisation,
+  3 networks, 4 computational thinking…) overlaps misleadingly with the new A/B codes, so a resource can look
+  current and be a decade stale. Revise from an old one and you will spend hours on an option that no longer exists,
+  a Paper 3 format that has been abolished, and a case study that is now examined completely differently — while
+  missing machine learning, sets and hash tables, translation and alternative databases, none of which appear in any
+  old index. Learn the new map first, then fill it in.</p>
+  <p>There is a second reason to read this page before the topic pages. Computer science HL is unusual among DP
+  sciences: the two papers reward almost opposite habits. Paper 1 wants developed prose about consequences and
+  trade-offs. Paper 2 wants surgical precision — the exact index, the exact value printed, a semicolon in the right
+  place. Students who are good at one are often careless at the other, and the fix is knowing which hat you are
+  wearing. That is what sections 5 to 8 of this page are for.</p>
 </div>
 
-<h2>What actually changed</h2>
+<h2>1. What the course actually is</h2>
+
+<p>Strip away the syllabus document and computer science HL is three things braided together. First, a body of
+<strong>knowledge about how computing systems work</strong>: what a bit is, how a processor fetches and executes an
+instruction, how a packet finds its way across a continent, how a database guarantees that two users cannot corrupt
+each other's data, how a program written in English-ish text becomes electrical signals. That is theme A, and it is
+mostly <em>facts with mechanisms</em>.</p>
+
+<p>Second, a <strong>practical craft</strong>: taking a messy problem somebody actually has, deciding what matters,
+designing an algorithm, writing it in a real language, testing it against data you did not choose, and judging it
+honestly. That is theme B plus the internal assessment, and it is mostly <em>decisions with reasons</em>.</p>
+
+<p>Third, and this is the part students underestimate, a <strong>habit of arguing about technology</strong>: who is
+affected, who benefits, who carries the risk, what the failure mode is, whether the trade-off is worth it. That is
+the case study and a large share of Paper 1, and it is where the difference between a 5 and a 7 actually lives,
+because almost everyone can define a router and very few can evaluate one.</p>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>What people expect it to be</h4>
+    <p>Learning to code. Students arrive expecting a programming course and are surprised that Paper 1 contains no
+    code at all, that roughly half the marks are prose, and that the hardest examinable skill is reading a
+    five-line algorithm they did not write and stating exactly what it prints.</p>
+  </div>
+  <div class="card">
+    <h4>What it really is</h4>
+    <p>A course in <em>precise thinking that happens to be checkable by a machine</em>. The programming is the
+    laboratory, not the subject. You can get a 7 while writing nothing more advanced than an array and a loop —
+    provided every answer you write has a mechanism, a consequence, and the right command term.</p>
+  </div>
+</div>
+
+<div class="callout callout--note">
+  <span class="callout__label">Be honest about what is hard</span>
+  <p>Three things reliably hurt HL candidates, and none of them is "coding is difficult". (i) <strong>B4 abstract
+  data types</strong> — HL-only, the largest single jump in the course, and it assumes you can already trace
+  recursion in your sleep. (ii) <strong>Handwriting code for two hours</strong> with no compiler, no autocomplete
+  and no error message, which is a completely different skill from writing code in an editor. (iii) <strong>Eight-
+  and twelve-mark evaluate questions</strong>, where accurate knowledge presented as description earns roughly half
+  the marks no matter how much of it there is. Everything on this page is arranged around those three.</p>
+</div>
+
+<h2>2. The course structure at a glance</h2>
+
+<p>Eight topics, four in each theme. Each one has its own page on this site with the full treatment; the one-liners
+below are there so you can see the shape of the whole thing before you dive into any part of it.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Code</th><th>Topic</th><th>One line</th><th>HL-only inside it</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>A1</strong></td>
+      <td><a href="A1-computer-fundamentals.html">Computer fundamentals</a></td>
+      <td>What a computer system is, how data is represented in binary, hex and two's complement, how logic gates
+      build decisions, what an operating system does, and how control systems sense and act.</td>
+      <td><span class="badge badge--hl">A1.4</span> Translation — compilers, interpreters, assemblers, bytecode,
+      virtual machines.</td>
+    </tr>
+    <tr>
+      <td><strong>A2</strong></td>
+      <td><a href="A2-networks.html">Networks</a></td>
+      <td>How devices name each other, chop messages into packets, route them, and detect corruption; the
+      layered model; security threats and the defences against them.</td>
+      <td>None by code, but HL is examined harder on <em>evaluation</em> of topologies, protocols and security
+      choices.</td>
+    </tr>
+    <tr>
+      <td><strong>A3</strong></td>
+      <td><a href="A3-databases.html">Databases</a></td>
+      <td>Why flat files break, how to normalise a messy situation into tables that cannot contradict themselves,
+      and how to interrogate them in SQL.</td>
+      <td><span class="badge badge--hl">A3.4</span> Alternative databases — non-relational models and data
+      warehouses.</td>
+    </tr>
+    <tr>
+      <td><strong>A4</strong></td>
+      <td><a href="A4-machine-learning.html">Machine learning</a></td>
+      <td>The inversion: instead of writing the rules you supply the data and the answers, and the system infers
+      the rules. Then you have to work out whether it inferred anything useful.</td>
+      <td><span class="badge badge--hl">A4.2</span> Data preprocessing · <span class="badge badge--hl">A4.3</span>
+      Machine learning approaches.</td>
+    </tr>
+    <tr>
+      <td><strong>B1</strong></td>
+      <td><a href="B1-computational-thinking.html">Computational thinking</a></td>
+      <td>The five strands (procedural, logical, ahead, concurrent, abstract), decomposition, pattern recognition,
+      the IB pseudocode convention, trace tables, standard algorithms and complexity. Do this first.</td>
+      <td>None by code; HL goes deeper into efficiency analysis.</td>
+    </tr>
+    <tr>
+      <td><strong>B2</strong></td>
+      <td><a href="B2-programming.html">Programming</a></td>
+      <td>Variables, types, selection, iteration, arrays, strings, sub-procedures, file processing and recursion —
+      in the language you will actually be examined in.</td>
+      <td>None by code; HL questions probe edge cases and efficiency harder.</td>
+    </tr>
+    <tr>
+      <td><strong>B3</strong></td>
+      <td><a href="B3-oop.html">Object-oriented programming</a></td>
+      <td>Organising a program around the things it deals with: classes, encapsulation, constructors, UML, and then
+      inheritance, polymorphism and aggregation between classes.</td>
+      <td><span class="badge badge--hl">B3.2</span> Fundamentals of OOP for multiple classes.</td>
+    </tr>
+    <tr>
+      <td><strong>B4</strong></td>
+      <td><a href="B4-abstract-data-types.html">Abstract data types</a> <span class="badge badge--hl">HL only</span></td>
+      <td>A separation between what a structure does and how it does it: arrays and records, stacks, queues,
+      circular queues, linked lists, binary search trees, sets and hash tables.</td>
+      <td>The entire topic. SL students do not sit it.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Learn that list of six HL-only codes — A1.4, A3.4, A4.2, A4.3, B3.2 and all of B4 — because it is the shortest
+possible answer to "what does HL add?" and it tells you exactly where an SL resource stops being enough.</p>
+
+<h3>2.1 Where the teaching time goes</h3>
+
+<p>Hours are recommended rather than compulsory, but they tell you how much exam weight each block can carry, and
+they explain one thing that surprises people: theme B is bigger than theme A at both levels.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Block</th><th>What it is</th><th>SL hours</th><th>HL hours</th></tr></thead>
+  <tbody>
+    <tr><td><strong>A · Concepts of computer science</strong><br>A1 · A2 · A3 · A4</td>
+        <td>How computing systems work: hardware, communication, stored data, learning from data</td>
+        <td>38</td><td><strong>72</strong></td></tr>
+    <tr><td><strong>B · Computational thinking and problem solving</strong><br>B1 · B2 · B3 · B4</td>
+        <td>How you use systems to solve real problems: decomposition, algorithms, code, design</td>
+        <td>52</td><td><strong>93</strong></td></tr>
+    <tr><td><strong>Case study</strong></td>
+        <td>A pre-seen emerging technology, published by the IBO, studied in class and examined in Paper 1</td>
+        <td>15</td><td><strong>30</strong></td></tr>
+    <tr><td><strong>Internal assessment — the computational solution</strong></td>
+        <td>A solution to a real problem for a real client, documented and evaluated; externally moderated</td>
+        <td>35</td><td><strong>35</strong></td></tr>
+    <tr><td><strong>Collaborative sciences project</strong></td>
+        <td>Ten hours, interdisciplinary, shared with the group 4 sciences; not externally assessed</td>
+        <td>10</td><td><strong>10</strong></td></tr>
+    <tr><td><strong>Total</strong></td><td></td><td><strong>150</strong></td><td><strong>240</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Two consequences you should actually act on. Theme B is the larger block and the more objectively marked one, so
+it is where disciplined practice converts into marks fastest. And the IA is 35 hours at both levels but worth 30 %
+at SL and 20 % at HL: at HL the exams decide your grade, so do the IA well, finish it early, and then move on.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Map of the eight topics in themes A and B and how they feed the case study, the internal assessment and the collaborative project">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+    <text x="20" y="20" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13">THEME A · Concepts of computer science (HL 72 h)</text>
+
+    <rect x="20" y="30" width="136" height="46" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="88" y="50" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">A1 Computer</text>
+    <text x="88" y="66" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">fundamentals</text>
+
+    <rect x="168" y="30" width="136" height="46" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="236" y="50" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">A2 Networks</text>
+    <text x="236" y="66" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">how machines talk</text>
+
+    <rect x="316" y="30" width="136" height="46" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="384" y="50" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">A3 Databases</text>
+    <text x="384" y="66" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">how data persists</text>
+
+    <rect x="464" y="30" width="136" height="46" rx="6" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+    <text x="532" y="50" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">A4 Machine</text>
+    <text x="532" y="66" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">learning</text>
+
+    <line x1="156" y1="53" x2="166" y2="53" stroke="#334155" stroke-width="2"/>
+    <path d="M166 53 L 160 49 L 160 57 Z" fill="#334155"/>
+    <line x1="304" y1="53" x2="314" y2="53" stroke="#334155" stroke-width="2"/>
+    <path d="M314 53 L 308 49 L 308 57 Z" fill="#334155"/>
+    <line x1="452" y1="53" x2="462" y2="53" stroke="#334155" stroke-width="2"/>
+    <path d="M462 53 L 456 49 L 456 57 Z" fill="#334155"/>
+
+    <text x="20" y="112" font-size="13" font-family="system-ui, sans-serif" fill="#7a5a13">THEME B · Computational thinking and problem solving (HL 93 h)</text>
+
+    <rect x="20" y="122" width="136" height="46" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="88" y="142" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">B1 Computational</text>
+    <text x="88" y="158" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">thinking</text>
+
+    <rect x="168" y="122" width="136" height="46" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="236" y="142" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">B2 Programming</text>
+    <text x="236" y="158" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">arrays, files, recursion</text>
+
+    <rect x="316" y="122" width="136" height="46" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="384" y="142" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">B3 OOP</text>
+    <text x="384" y="158" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">classes, inheritance</text>
+
+    <rect x="464" y="122" width="136" height="46" rx="6" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
+    <text x="532" y="142" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">B4 Abstract data</text>
+    <text x="532" y="158" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">types (HL only)</text>
+
+    <line x1="156" y1="145" x2="166" y2="145" stroke="#334155" stroke-width="2"/>
+    <path d="M166 145 L 160 141 L 160 149 Z" fill="#334155"/>
+    <line x1="304" y1="145" x2="314" y2="145" stroke="#334155" stroke-width="2"/>
+    <path d="M314 145 L 308 141 L 308 149 Z" fill="#334155"/>
+    <line x1="452" y1="145" x2="462" y2="145" stroke="#334155" stroke-width="2"/>
+    <path d="M462 145 L 456 141 L 456 149 Z" fill="#334155"/>
+
+    <rect x="20" y="216" width="180" height="52" rx="6" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <text x="110" y="238" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Pre-seen case study</text>
+    <text x="110" y="256" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">30 h · inside Paper 1</text>
+
+    <rect x="230" y="216" width="180" height="52" rx="6" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <text x="320" y="238" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">The computational solution</text>
+    <text x="320" y="256" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">35 h · 20 % of HL</text>
+
+    <rect x="440" y="216" width="180" height="52" rx="6" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <text x="530" y="238" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Collaborative project</text>
+    <text x="530" y="256" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">10 h · not graded</text>
+
+    <path d="M88 76 L 88 212" fill="none" stroke="#3653d6" stroke-width="2"/>
+    <path d="M88 216 L 84 208 L 92 208 Z" fill="#3653d6"/>
+    <path d="M532 168 L 532 196 L 320 196 L 320 212" fill="none" stroke="#3653d6" stroke-width="2"/>
+    <path d="M320 216 L 316 208 L 324 208 Z" fill="#3653d6"/>
+    <line x1="410" y1="242" x2="436" y2="242" stroke="#6c7788" stroke-width="2" stroke-dasharray="5 4"/>
+
+    <text x="20" y="300" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">Gold boxes = HL-only or HL-extended. Blue solid arrows = what each theme feeds. Dashed arrow = skills rehearsal.</text>
+    <text x="20" y="316" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">Theme A moves outwards from the machine; theme B moves from thinking to building. The IA is where they meet.</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> The whole course in one picture. A student who builds a
+  booking system (B2, B3) that stores records in a normalised database (A3), authenticates over a network (A2) and
+  forecasts demand with a small model (A4), documenting the decomposition that got them there (B1), has used every
+  part of the syllabus — and that is what a top-band IA looks like.</figcaption>
+</figure>
+
+<h2>3. Assessment overview</h2>
+
+<p>Four components; three of them carry marks. The single most useful thing to internalise is the last column — not
+what the component covers, but what it <em>rewards</em>, because that determines how you practise for it.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Component</th><th>Format</th><th>SL</th><th>HL</th><th>What it actually rewards</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Paper 1</strong><br>External, written<br><a href="case-study.html">case study</a> included</td>
+      <td>Theme A: concepts of computer science, <em>plus</em> questions on the pre-seen case study. Short-response
+      and extended-response. <strong>No code.</strong></td>
+      <td>1 h 15<br>35 %</td>
+      <td><strong>2 h<br>40 %</strong></td>
+      <td>Mechanism <em>plus</em> consequence. "A star topology uses a central switch" is one mark; "…so one cable
+      failure drops one node rather than the whole network, but the switch becomes a single point of failure" is
+      three.</td>
+    </tr>
+    <tr>
+      <td><strong>Paper 2</strong><br>External, written<br>see <a href="B2-programming.html">B2</a>,
+      <a href="B3-oop.html">B3</a>, <a href="B4-abstract-data-types.html">B4</a></td>
+      <td>Theme B: computational thinking and problem solving. You answer in <strong>either Java or Python</strong>.
+      Tracing, completing, writing and justifying algorithms; data structures; OOP; (HL) abstract data types.</td>
+      <td>1 h 15<br>35 %</td>
+      <td><strong>2 h<br>40 %</strong></td>
+      <td>Precision. Array indices, loop bounds, the exact value printed, the language's own syntax. This is the most
+      objective paper in the DP sciences: a trace either matches the markscheme or it does not.</td>
+    </tr>
+    <tr>
+      <td><strong>Internal assessment</strong><br><a href="ia-solution.html">The computational solution</a></td>
+      <td>A solution to a real problem of your own choosing, documented and evaluated. Marked by your teacher,
+      moderated by the IB.</td>
+      <td>35 h<br>30 %</td>
+      <td><strong>35 h<br>20 %</strong></td>
+      <td>Visible thinking. The program is the <em>evidence</em>, not the object of assessment. A modest program with
+      deliberate abstraction, a real client, systematic testing and honest evaluation beats a clever one with thin
+      documentation.</td>
+    </tr>
+    <tr>
+      <td><strong>Collaborative sciences project</strong><br><a href="collaborative-project.html">details</a></td>
+      <td>Ten hours, at least two group 4 subjects, one shared investigation and a presentation.</td>
+      <td>10 h<br>0 %</td>
+      <td><strong>10 h<br>0 %</strong></td>
+      <td>Nothing, directly — which is why it is valuable. It is a free rehearsal for the IA: interviewing a
+      non-specialist, agreeing a data schema, handling real data, defending a decision.</td>
+    </tr>
+    <tr>
+      <td colspan="3"><strong>External / internal split</strong></td>
+      <td><strong>80 / 20</strong></td>
+      <td>At HL your grade is decided mainly in May. Protect exam practice time accordingly.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Bar chart of HL assessment weighting: Paper 1 40 per cent, Paper 2 40 per cent, internal assessment 20 per cent, collaborative project ungraded">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <text x="20" y="28" font-size="14" font-family="system-ui, sans-serif" fill="#151923">Where your HL grade comes from</text>
+
+    <line x1="200" y1="46" x2="200" y2="262" stroke="#334155" stroke-width="2"/>
+    <line x1="200" y1="262" x2="620" y2="262" stroke="#334155" stroke-width="2"/>
+
+    <text x="200" y="278" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">0 %</text>
+    <text x="310" y="278" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">10 %</text>
+    <text x="420" y="278" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">20 %</text>
+    <text x="530" y="278" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">30 %</text>
+    <text x="620" y="278" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">40 %</text>
+
+    <text x="190" y="76" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="end">Paper 1 · 2 h</text>
+    <rect x="200" y="58" width="420" height="30" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <text x="610" y="78" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="end">40 %</text>
+
+    <text x="190" y="126" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="end">Paper 2 · 2 h</text>
+    <rect x="200" y="108" width="420" height="30" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <text x="610" y="128" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="end">40 %</text>
+
+    <text x="190" y="176" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="end">Internal assessment</text>
+    <rect x="200" y="158" width="210" height="30" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
+    <text x="400" y="178" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="end">20 %</text>
+
+    <text x="190" y="226" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="end">Collaborative project</text>
+    <rect x="200" y="208" width="420" height="30" fill="#ffffff" stroke="#6c7788" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="410" y="228" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">required, but no marks</text>
+
+    <path d="M200 92 L 200 100 L 620 100 L 620 92" fill="none" stroke="#7a5a13" stroke-width="2"/>
+    <text x="410" y="116" font-size="11" font-family="system-ui, sans-serif" fill="#7a5a13" text-anchor="middle">the case study questions sit inside Paper 1 — 30 h of teaching, no separate mark</text>
+
+    <text x="20" y="304" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">Four hours of external assessment against 35 hours of coursework: at HL, exam technique is worth more than any single piece of work.</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> The HL weightings drawn to scale. Note the asymmetry the
+  hour count hides: 35 hours of IA work buys 20 %, while four hours of exam sitting buys 80 %.</figcaption>
+</figure>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — the two-hour arithmetic</span>
+  <p>HL papers run about 60–70 marks in two hours, which is roughly <strong>1.7 minutes per mark</strong>. That
+  sounds generous until you meet a twelve-mark evaluate. Budget it deliberately: 90 seconds reading the whole paper
+  and ticking the questions you can do cold; do those first and fast; leave the big <em>evaluate</em>, <em>discuss</em>
+  and <em>to what extent</em> items for last with a ring-fenced 20–25 minutes. An unfinished eight-mark evaluation
+  costs far more than a slow three-mark explanation ever will, and writing the evaluation first is the classic way
+  to run out of time with six marks of SQL unwritten.</p>
+</div>
+
+<div class="callout callout--note">
+  <span class="callout__label">Confirm the numbers yourself</span>
+  <p>The figures on this page come from the IBO's published summary of the new course and the 2027 subject brief.
+  The IBO occasionally revises hours and weightings between publication and first assessment. Before your final
+  revision push, open the current <em>DP computer science subject brief</em> from ibo.org and check the two tables
+  above; anything there overrides this page. The <em>content</em> codes (A1.1, B4.1 …) are stable — the numbers are
+  the part that can move.</p>
+</div>
+
+<h2>4. What changed in the 2027 guide, and why it matters to you</h2>
+
+<p>This is worth knowing not for its own sake but because it tells you which resources are poisoned and where the
+unfamiliar content sits.</p>
 
 <div class="table-wrap">
 <table>
@@ -40,437 +399,1001 @@ what you are actually being examined on so the rest of this section makes sense.
   <tbody>
     <tr>
       <td>Topics 1–7 in one flat list</td>
-      <td>Two themes: <strong>A</strong> Concepts of computer science; <strong>B</strong> Computational thinking and problem solving</td>
-      <td>The split matches the two papers, so each exam paper maps cleanly onto one theme.</td>
+      <td>Two themes: <strong>A</strong> Concepts of computer science; <strong>B</strong> Computational thinking and
+      problem solving</td>
+      <td>The split matches the two papers, so each exam maps cleanly onto one theme.</td>
     </tr>
     <tr>
       <td>Four options (databases, modelling, web science, OOP), one examined in Paper 2</td>
-      <td><strong>Options removed.</strong> Their key ideas were folded into the core: OOP became B3, databases became A3</td>
-      <td>Options produced wildly unequal difficulty and made SL/HL hard to align. Everything is now core, with HL extension inside each topic.</td>
+      <td><strong>Options removed.</strong> Their key ideas were folded into the core: OOP became B3, databases
+      became A3</td>
+      <td>Options produced unequal difficulty and made SL/HL alignment hard. Everything is now core, with HL
+      extension inside each topic.</td>
     </tr>
     <tr>
       <td>Paper 3: the case study, HL only</td>
-      <td><strong>No Paper 3.</strong> The case study is examined inside <strong>Paper 1</strong>, and now exists at <strong>SL too</strong></td>
+      <td><strong>No Paper 3.</strong> The case study is examined inside <strong>Paper 1</strong>, and now exists at
+      <strong>SL too</strong></td>
       <td>Emerging technologies should be discussed by everyone, and a two-paper model is simpler to schedule.</td>
     </tr>
     <tr>
-      <td>No machine learning anywhere (except a little modelling)</td>
-      <td><strong>A4 Machine learning</strong> is a full topic, with HL-only data preprocessing and ML approaches</td>
-      <td>The IBO's stated aim: the course must be "future-facing" and about computer science, not information technology.</td>
+      <td>No machine learning anywhere</td>
+      <td><strong>A4 Machine learning</strong> is a full topic, with HL-only preprocessing and approaches</td>
+      <td>The stated aim: the course must be "future-facing" and about computer science, not information
+      technology.</td>
     </tr>
     <tr>
       <td>Pseudocode only; no named language in the exam</td>
-      <td>Students answer Paper 2 in <strong>Java or Python</strong> (the exam accepts either)</td>
-      <td>Employability and university readiness — you should leave able to write a real language, not only exam pseudocode.</td>
+      <td>Students answer Paper 2 in <strong>Java or Python</strong> — the exam accepts either</td>
+      <td>University and employment readiness: you should leave able to write a real language, not only exam
+      pseudocode.</td>
     </tr>
     <tr>
       <td>IA: the "solution" (dossier + product + evaluation)</td>
-      <td>IA: <strong>the computational solution</strong>, with a new, explicit weighting of the <em>computational thinking process</em></td>
-      <td>The IBO wants evidence of <em>how you thought</em>, not just that the program runs.</td>
+      <td>IA: <strong>the computational solution</strong>, explicitly built around the computational thinking
+      process</td>
+      <td>The IBO wants evidence of <em>how you thought</em>, not only that the program runs.</td>
     </tr>
     <tr>
       <td>No interdisciplinary requirement in CS</td>
       <td><strong>Collaborative sciences project</strong>, 10 hours, shared with the group 4 sciences</td>
-      <td>Cross-cutting requirement across DP sciences.</td>
+      <td>A cross-cutting requirement across the DP sciences.</td>
     </tr>
   </tbody>
 </table>
 </div>
 
+<h3>4.1 Why this matters specifically to a May 2028 candidate</h3>
+
+<p>Three practical consequences, in order of how much they should change your behaviour.</p>
+
+<ol class="steps">
+  <li><strong>There is nearly no past-paper bank for your course.</strong> The first assessment is 2027, so by the
+  time you sit Paper 1 in May 2028 there will be very few released papers in the new format, and the ones that exist
+  will be guarded by your school. You cannot revise by grinding past papers the way a physics or economics student
+  can. Substitute: specimen material, your teacher's own questions, and — most importantly — questions you write
+  yourself from the syllabus, because writing a markscheme is the highest-yield revision there is.</li>
+  <li><strong>Your resources will be a mixture, and you are the filter.</strong> Textbooks published before 2024,
+  websites with no update date, and even some school schemes of work describe the old course. Three tells that a
+  resource is old: it numbers topics 1–7; it mentions "the option" or "Option D"; it says Paper 3. Two tells it is
+  new: codes like <em>A1.2</em> or <em>B4.1</em>, and any mention of the collaborative sciences project.</li>
+  <li><strong>Content is the safe part; format is the risky part.</strong> Binary, SQL, OOP and networking all
+  survive, so old material on those is still useful for <em>learning</em>. What old material cannot give you is the
+  new content (A4, B4, A1.4, A3.4) and the new question styles. Treat any old exam question as content practice,
+  never as format practice.</li>
+</ol>
+
 <div class="callout callout--trap">
   <span class="callout__label">Trap — "but I found a great resource"</span>
-  <p>Three tells that a resource is for the old course: it numbers topics 1–7; it mentions "Option D" or "the
-  option"; it says Paper 3. Two tells it is for the new one: it uses codes like <em>A1.2</em> or <em>B4.1</em>, and it
-  mentions the collaborative sciences project. Content that survives from the old course (binary, SQL, OOP, networks)
-  is still valid — the danger is missing the <em>new</em> content (A4 machine learning, B4 sets and hash tables,
-  A1.4 translation, A3.4 alternative databases) because no old index lists it.</p>
+  <p>The most expensive version of this is a complete set of beautifully organised notes for the 2014 course. You
+  will read them, feel productive, and never notice that three topics you will be examined on are absent from the
+  index. Before you invest in any resource, open its contents page and look for four strings: <em>A4</em>,
+  <em>B4</em>, <em>collaborative</em>, and <em>Paper 1</em> (not Paper 3). If two of those four are missing, close
+  it.</p>
 </div>
 
-<h2>The shape of the course</h2>
+<h2>5. The three skills that carry the marks</h2>
 
-<p>Everything you learn sits inside one of five blocks. The teaching hours are recommended, not compulsory, but they
-tell you how much exam weight each block can carry.</p>
+<p>Almost every mark lost in computer science HL is lost in one of three ways, and none of them is "not knowing the
+content". Learn these three first and every topic page on this site becomes easier to use.</p>
 
-<div class="table-wrap">
-<table>
-  <thead><tr><th>Block</th><th>What it is</th><th>SL hours</th><th>HL hours</th></tr></thead>
-  <tbody>
-    <tr><td><strong>A · Concepts of computer science</strong><br>A1 Computer fundamentals · A2 Networks · A3 Databases · A4 Machine learning</td>
-        <td>How computing systems work: hardware, data, communication, storage of knowledge, and now learning from data</td><td>38</td><td><strong>72</strong></td></tr>
-    <tr><td><strong>B · Computational thinking and problem solving</strong><br>B1 Computational thinking · B2 Programming · B3 OOP · B4 Abstract data types (HL)</td>
-        <td>How you use systems to solve real problems: decomposition, algorithms, code, design</td><td>52</td><td><strong>93</strong></td></tr>
-    <tr><td><strong>Case study</strong></td>
-        <td>A pre-seen emerging technology, published by the IBO, studied in class and examined in Paper 1</td><td>15</td><td><strong>30</strong></td></tr>
-    <tr><td><strong>Internal assessment — the computational solution</strong></td>
-        <td>You choose a real client and a real problem, and build a solution. 20 % of HL (30 % of SL)</td><td>35</td><td><strong>35</strong></td></tr>
-    <tr><td><strong>Collaborative sciences project</strong></td>
-        <td>10 hours, interdisciplinary, shared with the sciences; internally assessed</td><td>10</td><td><strong>10</strong></td></tr>
-    <tr><td><strong>Total</strong></td><td></td><td><strong>150</strong></td><td><strong>240</strong></td></tr>
-  </tbody>
-</table>
-</div>
+<h3>5.1 Skill one — reading and tracing unfamiliar code</h3>
 
-<p>Notice the two things the hour count tells you. First, <strong>theme B is bigger than theme A at both levels</strong>
-(93 vs 72 at HL) — programming and problem solving are the centre of gravity, and that is where the marks are
-easiest to win because the questions are objective. Second, the IA is <em>35 hours at both levels</em> but worth
-20 % at HL and 30 % at SL: for you, the exams matter relatively more.</p>
+<p>Paper 2 will show you an algorithm you have never seen, possibly doing something pointless, and ask what it
+outputs or what it does. There is no trick to this beyond doing it slowly and on paper, but there is a procedure
+(section 6), and the habit of <em>never</em> answering a trace from a glance is worth several marks a paper.</p>
 
-<h2>The assessment model</h2>
-
-<div class="table-wrap">
-<table>
-  <thead><tr><th>Component</th><th>Format</th><th>SL</th><th>HL</th></tr></thead>
-  <tbody>
-    <tr><td><strong>Paper 1</strong><br>External, written</td>
-        <td>Theme A: concepts of computer science, <em>plus</em> questions on the pre-seen case study. Mix of short-response and extended-response questions. No code required.</td>
-        <td>1 h 15<br>35 %</td><td><strong>2 h<br>40 %</strong></td></tr>
-    <tr><td><strong>Paper 2</strong><br>External, written</td>
-        <td>Theme B: computational thinking and problem solving. You answer in <strong>either Java or Python</strong>. Tracing, writing, completing and explaining algorithms; data structures; OOP; (HL) abstract data types.</td>
-        <td>1 h 15<br>35 %</td><td><strong>2 h<br>40 %</strong></td></tr>
-    <tr><td><strong>Internal assessment</strong><br>The computational solution</td>
-        <td>A solution to a real-world problem of your own choosing, documented and evaluated. Externally moderated.</td>
-        <td>35 h<br>30 %</td><td><strong>35 h<br>20 %</strong></td></tr>
-    <tr><td colspan="2"><strong>External / internal split</strong></td><td>70 / 30</td><td><strong>80 / 20</strong></td></tr>
-  </tbody>
-</table>
-</div>
-
-<div class="callout callout--note">
-  <span class="callout__label">Confirm this yourself</span>
-  <p>Figures on this page come from the IBO's published summary of the new course and the 2027 subject brief. The IBO
-  occasionally revises hours and weightings between publication and first assessment. Before your final revision
-  push, open the current <em>DP computer science subject brief</em> from ibo.org and check the two tables above.
-  Anything you find there overrides this page. The <em>content</em> codes (A1.1, B4.1 …) are stable; the numbers are
-  the part that can move.</p>
-</div>
-
-<h2>How Paper 1 and Paper 2 differ — and what each actually rewards</h2>
-
-<div class="grid grid--2">
-  <div class="card">
-    <h4>Paper 1 — theme A + case study (2 hours, 40 %)</h4>
-    <p><strong>What it tests:</strong> whether you understand how systems work and can reason about their consequences.
-    Questions are <em>explain</em>, <em>describe</em>, <em>compare</em>, <em>evaluate</em>, <em>discuss</em>,
-    <em>to what extent</em>. No programming.</p>
-    <p><strong>What earns marks:</strong> correct technical mechanism <em>plus</em> a consequence. "A star topology
-    uses a central switch" is one mark; "…so a single cable failure disconnects one node rather than the whole
-    network, but the switch is a single point of failure" is three.</p>
-    <p><strong>What loses marks:</strong> writing a definition when the question said <em>explain</em>; giving one side
-    of an <em>evaluate</em>; describing a technology without ever connecting it to the stakeholders in the case study.</p>
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 1</span> Skill one · 4 marks · trace a DIV/MOD loop</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> State the output of this algorithm.</p>
+<pre><code>n = 5
+total = 0
+loop while n &gt; 0
+    total = total + (n MOD 2)
+    n = n DIV 2
+endloop
+output total</code></pre>
+    <ol class="steps">
+      <li><strong>Identify what changes.</strong> Two variables: <code>total</code> accumulates, <code>n</code> is
+      repeatedly halved with integer division. The loop runs while <code>n &gt; 0</code>.</li>
+      <li><strong>Iteration 1:</strong> n = 5. <code>5 MOD 2 = 1</code>, so total = 1. <code>5 DIV 2 = 2</code>,
+      so n = 2.</li>
+      <li><strong>Iteration 2:</strong> n = 2. <code>2 MOD 2 = 0</code>, so total stays 1. <code>2 DIV 2 = 1</code>,
+      so n = 1.</li>
+      <li><strong>Iteration 3:</strong> n = 1. <code>1 MOD 2 = 1</code>, so total = 2. <code>1 DIV 2 = 0</code>,
+      so n = 0.</li>
+      <li><strong>Exit:</strong> n = 0 fails <code>n &gt; 0</code>, so the loop ends and <code>output total</code>
+      prints once.</li>
+    </ol>
+    <div class="answerline"><b>Answer: 2.</b> The recognition worth having: repeated <code>MOD 2</code> plus
+    <code>DIV 2</code> counts the set bits in a binary number — 5 is 101, which has two 1s. That is an A1 idea
+    appearing inside a Paper 2 question, and candidates who see it answer in fifteen seconds.</div>
   </div>
-  <div class="card">
-    <h4>Paper 2 — theme B (2 hours, 40 %)</h4>
-    <p><strong>What it tests:</strong> whether you can read, trace, complete, write and justify algorithms in Java or
-    Python, and (HL) work with abstract data types.</p>
-    <p><strong>What earns marks:</strong> precision. Array indices, loop bounds, the exact value printed, the correct
-    keyword. This is the most <em>objective</em> paper in the DP sciences — a trace either matches the markscheme or
-    it does not.</p>
-    <p><strong>What loses marks:</strong> off-by-one errors in traces; writing pseudocode-ish half-code that is neither
-    Java nor Python; forgetting that the exam's own pseudocode is <em>not</em> what you should write when the
-    question asks for Java or Python.</p>
+</details>
+
+<h3>5.2 Skill two — explaining rather than describing</h3>
+
+<p>This is the difference between a 4 and a 7 in Paper 1, and it is a vocabulary problem more than a knowledge
+problem. A description says what a thing is. An explanation says how it works and therefore what follows. The
+reliable test: <strong>if your answer contains no "so", "therefore" or "because", it is probably a description.</strong></p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> Skill two · 4 marks · turn a description into an explanation</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Explain why a school might choose a star network topology rather than a bus
+    topology for its teaching block. [4 marks]</p>
+    <p><strong>A 1-mark answer (pure description):</strong> "A star topology has a central switch and every device
+    connects to it with its own cable." True, accurate, and worth one mark, because it answers "describe", not
+    "explain".</p>
+    <p><strong>A 4-mark answer (mechanism + consequence, twice):</strong></p>
+    <ol class="steps">
+      <li>"In a star topology each node has a dedicated cable to the central switch, <strong>so</strong> a break in
+      one cable disconnects only that node and the rest of the network keeps running." — mechanism 1 plus its
+      consequence.</li>
+      <li>"Collisions are also avoided because the switch forwards frames only to the intended recipient,
+      <strong>so</strong> adding more devices does not degrade performance the way it does on a shared bus where
+      every device contends for the same medium." — mechanism 2 plus its consequence.</li>
+      <li>"The cost is that the switch is a single point of failure, <strong>so</strong> if it fails the whole
+      network goes down — which is why a school would specify a managed switch with a spare." — the balancing
+      consequence, which is what pushes the answer into the top band.</li>
+    </ol>
+    <div class="answerline"><b>Where the marks are:</b> one per mechanism-consequence pair, and the fourth for the
+    counterweight. Notice that the strong answer contains <em>no fact</em> the weak answer did not already imply —
+    the difference is entirely in the connectives.</div>
   </div>
-</div>
+</details>
 
-<div class="callout callout--exam">
-  <span class="callout__label">Exam technique — the two-hour arithmetic</span>
-  <p>Two hours for roughly 60–70 marks of HL material is about <strong>1.7 minutes per mark</strong>. That sounds
-  generous until you meet a 12-mark evaluate question. Budget: spend the first 90 seconds reading the whole paper and
-  putting a tick next to the questions you can do cold; do those first, fast; leave the big <em>evaluate</em> and
-  <em>discuss</em> items for last with a ring-fenced 20 minutes. An unfinished 8-mark evaluation costs you more than
-  a slow 3-mark explanation ever will.</p>
-</div>
+<h3>5.3 Skill three — designing before coding</h3>
 
-<h2>Java or Python: how to choose</h2>
+<p>In Paper 2 and in the IA, marks are allocated for the <em>decision</em>, not the typing. "I used an array" scores
+nothing; "I used an array rather than a linked list because the number of elements is fixed at twelve and I need
+positional access, and a linked list would add pointer overhead for no benefit" scores the design mark and, usually,
+an efficiency mark alongside it.</p>
 
-<p>The IBO does not care which you pick; Paper 2 questions are set so either works. Your choice should be made on
-three grounds, in this order.</p>
-
-<ol class="steps">
-  <li><strong>Which one does your school actually teach through to the end of B3 and B4?</strong> This dominates
-  everything else. Self-teaching Java's type system and class syntax late in DP2 is a real cost.</li>
-  <li><strong>Which one do you write faster under time pressure?</strong> Python is terser — a hash table is a
-  dictionary literal, a list is built in, and you write maybe 40 % fewer characters. In a two-hour handwritten exam
-  that is a genuine advantage.</li>
-  <li><strong>Which one makes your IA stronger?</strong> If your computational solution needs a GUI, a web API, or a
-  data-science library, Python wins. If it needs a clean OO design with inheritance and interfaces to show off B3.2,
-  Java's explicitness helps — the marker can <em>see</em> <code>extends</code>, <code>implements</code> and
-  <code>private</code>.</li>
-</ol>
-
-<div class="callout callout--how">
-  <span class="callout__label">How to use it — write one language, read both</span>
-  <p>Pick one for the exam and write it exclusively from the moment you start B2. But you must be able to
-  <em>read</em> the other, because textbooks, Stack Overflow and past paper answers will use it. Concretely: by the
-  end of B2 you should be able to look at a Java <code>for (int i = 0; i &lt; a.length; i++)</code> and a Python
-  <code>for x in a:</code> and know instantly that the first gives you the index and the second gives you the value.
-  Every code box on the B2 and B3 pages of this site shows both, labelled, for exactly this reason.</p>
-</div>
-
-<div class="callout callout--trap">
-  <span class="callout__label">Trap — exam pseudocode is not a language</span>
-  <p>The IB uses its own pseudocode in exam questions (see the B1 page for the full convention). It looks like
-  English: <code>output</code>, <code>if ... then ... else ... endif</code>, <code>loop while ... endloop</code>,
-  <code>MOD</code>, <code>DIV</code>. When a question says "write pseudocode", write <em>that</em>. When it says
-  "write Java" or "write Python", write real, compilable code with semicolons, braces or indentation, and the
-  language's own keywords. Writing <code>output "x"</code> inside a Python answer is not a style choice; it is a
-  syntax error and it costs marks.</p>
-</div>
-
-<h2>How theme A and theme B connect</h2>
-
-<figure class="viz">
-  <svg viewBox="0 0 640 440" role="img" aria-label="Concept map of theme A and theme B and how they feed the case study, the internal assessment and the collaborative project">
-    <rect x="0" y="0" width="640" height="440" fill="#ffffff"/>
-
-    <text x="25" y="30" font-size="14" font-family="system-ui, sans-serif" fill="#7a5a13">THEME A · Concepts of computer science (HL 72 h)</text>
-    <text x="25" y="172" font-size="14" font-family="system-ui, sans-serif" fill="#7a5a13">THEME B · Computational thinking and problem solving (HL 93 h)</text>
-
-    <rect x="25" y="46" width="130" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <text x="90" y="70" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">A1 Computer</text>
-    <text x="90" y="88" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">fundamentals</text>
-
-    <rect x="180" y="46" width="130" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <text x="245" y="70" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">A2 Networks</text>
-    <text x="245" y="88" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">how machines talk</text>
-
-    <rect x="335" y="46" width="130" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <text x="400" y="70" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">A3 Databases</text>
-    <text x="400" y="88" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">how data persists</text>
-
-    <rect x="490" y="46" width="130" height="56" rx="6" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
-    <text x="555" y="70" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">A4 Machine</text>
-    <text x="555" y="88" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">learning</text>
-
-    <line x1="155" y1="74" x2="176" y2="74" stroke="#334155" stroke-width="2"/>
-    <path d="M176 74 L 168 70 L 168 78 Z" fill="#334155"/>
-    <line x1="310" y1="74" x2="331" y2="74" stroke="#334155" stroke-width="2"/>
-    <path d="M331 74 L 323 70 L 323 78 Z" fill="#334155"/>
-    <line x1="465" y1="74" x2="486" y2="74" stroke="#334155" stroke-width="2"/>
-    <path d="M486 74 L 478 70 L 478 78 Z" fill="#334155"/>
-
-    <rect x="25" y="188" width="130" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <text x="90" y="212" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">B1 Computational</text>
-    <text x="90" y="230" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">thinking</text>
-
-    <rect x="180" y="188" width="130" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <text x="245" y="212" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">B2 Programming</text>
-    <text x="245" y="230" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">arrays, files, recursion</text>
-
-    <rect x="335" y="188" width="130" height="56" rx="6" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
-    <text x="400" y="212" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">B3 OOP</text>
-    <text x="400" y="230" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">classes, inheritance</text>
-
-    <rect x="490" y="188" width="130" height="56" rx="6" fill="#fdf6e3" stroke="#7a5a13" stroke-width="2"/>
-    <text x="555" y="212" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">B4 Abstract data</text>
-    <text x="555" y="230" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">types</text>
-
-    <line x1="155" y1="216" x2="176" y2="216" stroke="#334155" stroke-width="2"/>
-    <path d="M176 216 L 168 212 L 168 220 Z" fill="#334155"/>
-    <line x1="310" y1="216" x2="331" y2="216" stroke="#334155" stroke-width="2"/>
-    <path d="M331 216 L 323 212 L 323 220 Z" fill="#334155"/>
-    <line x1="465" y1="216" x2="486" y2="216" stroke="#334155" stroke-width="2"/>
-    <path d="M486 216 L 478 212 L 478 220 Z" fill="#334155"/>
-
-    <line x1="90" y1="102" x2="90" y2="184" stroke="#6c7788" stroke-width="2" stroke-dasharray="5 4"/>
-    <text x="100" y="150" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">abstraction: hardware runs what you write</text>
-
-    <rect x="25" y="330" width="180" height="56" rx="6" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
-    <text x="115" y="354" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Pre-seen case study</text>
-    <text x="115" y="372" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">30 h · examined in Paper 1</text>
-
-    <rect x="250" y="330" width="180" height="56" rx="6" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
-    <text x="340" y="354" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">The computational solution</text>
-    <text x="340" y="372" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">35 h · 20 % of HL</text>
-
-    <rect x="470" y="330" width="150" height="56" rx="6" fill="#eef2ff" stroke="#3653d6" stroke-width="2"/>
-    <text x="545" y="354" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Collaborative</text>
-    <text x="545" y="372" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">sciences project · 10 h</text>
-
-    <path d="M25 74 L 10 74 L 10 358 L 21 358" fill="none" stroke="#3653d6" stroke-width="2"/>
-    <path d="M25 358 L 17 354 L 17 362 Z" fill="#3653d6"/>
-
-    <path d="M555 244 L 555 300 L 340 300 L 340 326" fill="none" stroke="#3653d6" stroke-width="2"/>
-    <path d="M340 330 L 336 322 L 344 322 Z" fill="#3653d6"/>
-
-    <line x1="430" y1="358" x2="466" y2="358" stroke="#6c7788" stroke-width="2" stroke-dasharray="5 4"/>
-
-    <text x="25" y="416" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788">Gold boxes = HL-only or HL-extended content. Solid arrows = teaching order. Dashed arrows = cross-links.</text>
-  </svg>
-  <figcaption><span class="viz__title">Figure 1.</span> The whole course in one picture. Theme A moves from the
-  machine outwards (hardware → communication → stored data → learning from data). Theme B moves from thinking to
-  building (decompose → program → design with objects → choose the right structure). The IA is where the two meet:
-  you build something (B) that runs on real hardware, stores real data and often talks over a real network (A).</figcaption>
-</figure>
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 3</span> Skill three · 6 marks · design before you write a line</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A sports club with 60 members wants a program that records who attended each
+    training session during a 12-week term and lists any member whose attendance falls below 50 %. (a) Decompose
+    the problem. (b) Choose a data structure for the attendance records and justify it against one alternative.
+    (c) Describe the algorithm.</p>
+    <ol class="steps">
+      <li><strong>(a) Decomposition — four independently testable sub-problems:</strong> (i) store the member list;
+      (ii) record attendance for one session (date plus the set of members present); (iii) for one member, count
+      sessions attended and compute a percentage; (iv) filter to those below 50 % and output. The test of the
+      decomposition: you can test (iii) on invented data without any of the rest existing.</li>
+      <li><strong>(b) Structure and justification.</strong> A dictionary (map) keyed by member ID whose value is a
+      <em>set</em> of session dates. Justification: membership tests in a set are constant-time, so counting
+      attendance for one member is immediate, and a set cannot contain the same date twice — which prevents the
+      double-counting bug a list would allow. <strong>Alternative rejected:</strong> a 60 × 84 two-dimensional
+      boolean array. It is fast and simple, but it wastes memory on absent members, it fixes the term length at
+      compile time, and it cannot record a session on an unexpected date without resizing.</li>
+      <li><strong>(c) Algorithm.</strong> For each member, divide the size of their date set by the number of
+      sessions held so far; if the result is below 0.5, add the member to the report list; sort the report list by
+      name and output. One pass, so the complexity is O(n) in the number of members — worth stating, because at HL
+      silence about efficiency is conspicuous.</li>
+      <li><strong>The design decisions that earn marks are the rejected alternative and the complexity statement.</strong>
+      Neither requires a single line of working code.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> a four-part decomposition, a dictionary-of-sets justified against a
+    2D array, and a single-pass algorithm with a stated complexity. Every mark came from a decision, not from
+    syntax.</div>
+  </div>
+</details>
 
 <div class="callout callout--link">
-  <span class="callout__label">Connection — the IA is the point of the course</span>
-  <p>The IBO describes the internal assessment as "a unifying assessment, bringing together both theme A and
-  theme B". Read the map above that way: a student who builds a booking system (B2, B3) that stores records in a
-  normalised database (A3), runs over a network with authentication (A2), maybe predicts demand with a small model
-  (A4), and documents the decomposition that got them there (B1) has used the entire course. That is what a
-  7-scoring IA looks like — not a clever program, but a program whose <em>documentation</em> shows every theme
-  being used deliberately.</p>
+  <span class="callout__label">Connection — the three skills are the same skill in different clothing</span>
+  <p>All three are forms of <em>making your reasoning visible</em>. A trace table shows the reader the steps you
+  took; an explanation shows the causal chain; a design shows the alternatives you weighed. The IA rewards exactly
+  the same thing, which is why students who are good at these three routinely finish the IA documentation faster.
+  See <a href="B1-computational-thinking.html">B1</a> for the formal version and
+  <a href="ia-solution.html">the IA page</a> for the long version.</p>
 </div>
 
-<h2>A study sequence that works</h2>
+<h2>6. How to read and trace code</h2>
 
-<p>You have roughly two years. The order below is not the order of the syllabus; it is the order that minimises the
-number of times you have to learn something twice.</p>
+<p>A trace table records the value of every variable after each significant step. It is the only reliable way to
+answer "state the output of this algorithm" and the only reliable way to debug a loop you have just written. Do it
+on paper every time, even when you think you can see the answer — most lost trace marks are from candidates who
+traced in their head and got one iteration out of step.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the tracing procedure</span>
+  <ol class="steps">
+    <li><strong>List the variables first.</strong> One column each, plus one column for output. Include the loop
+    counter and any accumulator — these are the two people forget.</li>
+    <li><strong>Write the initial values as row one</strong>, before any line has run. If a variable is never
+    initialised, write "?" — that is often the answer to a follow-up question.</li>
+    <li><strong>Work one line at a time, in order.</strong> Add a new row every time any variable changes. Do not
+    skip iterations because they look identical; the differences are usually where the question lives.</li>
+    <li><strong>Evaluate the loop condition separately from the body.</strong> Check the condition, then either
+    run the body or exit. Most off-by-one errors are made by running the body one more time after the condition
+    has gone false.</li>
+    <li><strong>Write output as it happens</strong>, in the output column, in the row where it happens. Output
+    inside a loop produces one value per iteration; output after the loop produces one value total.</li>
+    <li><strong>For a sub-procedure, start a fresh table</strong> and copy in the arguments. Note whether each
+    parameter is by value (the original cannot change) or by reference (it can) — in Java, objects and arrays are
+    passed by reference; in Python, lists and dictionaries are too.</li>
+    <li><strong>Sanity-check the last row.</strong> Does the final value have the right sign, the right magnitude,
+    the right type? A trace that ends with a count of −1 or an average of 0.5 when every input was an integer has
+    gone wrong somewhere.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked trace 1</span> Straight-line accumulation · 4 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> State the output.</p>
+<pre><code>total = 0
+loop for i = 1 to 4
+    total = total + i * 2
+endloop
+output total</code></pre>
+    <p><strong>Trace table.</strong></p>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>i</th><th>total before</th><th>i * 2</th><th>total after</th><th>output</th></tr></thead>
+      <tbody>
+        <tr><td>—</td><td>0</td><td>—</td><td>0</td><td></td></tr>
+        <tr><td>1</td><td>0</td><td>2</td><td>2</td><td></td></tr>
+        <tr><td>2</td><td>2</td><td>4</td><td>6</td><td></td></tr>
+        <tr><td>3</td><td>6</td><td>6</td><td>12</td><td></td></tr>
+        <tr><td>4</td><td>12</td><td>8</td><td>20</td><td></td></tr>
+        <tr><td>—</td><td>20</td><td>—</td><td>20</td><td>20</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="answerline"><b>Answer: 20.</b> The loop runs exactly four times because <code>loop for i = 1 to 4</code>
+    is inclusive at both ends, and the single <code>output</code> sits outside the loop, so one value is printed.
+    Candidates who print 2, 6, 12, 20 have put the output inside the loop.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked trace 2</span> A loop bound that depends on the outer counter · 6 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> State the output, and state how many times the inner loop body runs in total.</p>
+<pre><code>count = 0
+loop for i = 1 to 3
+    loop for j = 1 to i
+        count = count + 1
+    endfor
+endfor
+output count</code></pre>
+    <ol class="steps">
+      <li><strong>Spot the dependency.</strong> The inner loop runs <code>i</code> times, not a fixed number. This
+      is the whole difficulty; everything else is counting.</li>
+      <li><strong>i = 1:</strong> j runs 1 time → count = 1.</li>
+      <li><strong>i = 2:</strong> j runs 2 times → count = 3.</li>
+      <li><strong>i = 3:</strong> j runs 3 times → count = 6.</li>
+      <li><strong>Total inner iterations:</strong> 1 + 2 + 3 = 6, which equals the final value of count because the
+      body only increments. For n outer iterations the total is n(n + 1)/2, so the algorithm is O(n²) — the kind of
+      statement that turns a correct trace into full marks at HL.</li>
+    </ol>
+    <div class="answerline"><b>Answer: 6, with six inner iterations in total.</b> The general form
+    1 + 2 + … + n = n(n + 1)/2 is worth memorising; it appears whenever an inner bound depends on the outer
+    counter.</div>
+  </div>
+</details>
+
+<details class="derivation">
+  <summary><span class="badge">Why this works</span> Why 1 + 2 + … + n = n(n + 1) / 2, and why it matters for complexity</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Write the sum forwards and backwards beneath it:
+      S = 1 + 2 + … + (n − 1) + n, and S = n + (n − 1) + … + 2 + 1.</li>
+      <li>Add the two lines term by term. Every column sums to n + 1: the first is 1 + n, the second is
+      2 + (n − 1) = n + 1, and so on.</li>
+      <li>There are n columns, so 2S = n(n + 1), and therefore S = n(n + 1) / 2.</li>
+      <li><strong>Check with the trace:</strong> n = 3 gives 3 × 4 / 2 = 6, which is exactly the value the
+      algorithm printed.</li>
+      <li><strong>Why it matters:</strong> the formula has an n² term, so a loop whose inner bound depends on the
+      outer counter is quadratic. Doubling the input roughly quadruples the work — which is the whole content of
+      the O(n²) statement you are expected to make at HL.</li>
+      <li><strong>When it is the wrong tool:</strong> when the inner loop runs a <em>fixed</em> number of times
+      independent of the outer counter, the total is c × n, which is linear, not quadratic. Check the bound before
+      you quote a complexity.</li>
+    </ol>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked trace 3</span> Recursion: trace the call tree · 8 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> State the output, state how many times <code>puzzle</code> is called in total
+    (including the first call), and comment on the efficiency.</p>
+<pre><code>function puzzle(n)
+    if n &lt; 2 then
+        return n
+    else
+        return puzzle(n - 1) + puzzle(n - 2)
+    endif
+endfunction
+
+output puzzle(5)</code></pre>
+    <ol class="steps">
+      <li><strong>Identify the base case.</strong> When n &lt; 2 the function returns n immediately, with no further
+      calls. So puzzle(1) = 1 and puzzle(0) = 0.</li>
+      <li><strong>Expand from the top, but evaluate from the bottom.</strong> puzzle(5) = puzzle(4) + puzzle(3);
+      puzzle(4) = puzzle(3) + puzzle(2); and so on. Write the tree, then fill in values from the leaves upwards.</li>
+      <li><strong>Leaves:</strong> puzzle(1) = 1, puzzle(0) = 0.</li>
+      <li><strong>puzzle(2)</strong> = puzzle(1) + puzzle(0) = 1 + 0 = <strong>1</strong>.</li>
+      <li><strong>puzzle(3)</strong> = puzzle(2) + puzzle(1) = 1 + 1 = <strong>2</strong>.</li>
+      <li><strong>puzzle(4)</strong> = puzzle(3) + puzzle(2) = 2 + 1 = <strong>3</strong>.</li>
+      <li><strong>puzzle(5)</strong> = puzzle(4) + puzzle(3) = 3 + 2 = <strong>5</strong>. Output: 5.</li>
+      <li><strong>Call count.</strong> Counting every node in the tree: puzzle(5) once, puzzle(4) once, puzzle(3)
+      twice, puzzle(2) three times, puzzle(1) five times, puzzle(0) three times — 15 calls in total to compute the
+      fifth value.</li>
+      <li><strong>Efficiency comment.</strong> The same sub-problems are recomputed from scratch (puzzle(3) is
+      evaluated twice, puzzle(2) three times), so the number of calls grows exponentially with n. It is the
+      Fibonacci recurrence, and it is why this algorithm is unusable for large n — a point worth one or two marks on
+      its own if the question says "comment".</li>
+    </ol>
+    <div class="answerline"><b>Answer: output 5, fifteen calls in total, exponential behaviour.</b> The trap is
+    expanding the tree correctly and then reading the values in the wrong order: always evaluate the leaves
+    first.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — the four tracing errors that cost the most marks</span>
+  <ol class="steps">
+    <li><strong>Off-by-one on the loop bound.</strong> <code>loop for i = 0 to LENGTH(list) - 1</code> is right;
+    <code>loop for i = 0 to LENGTH(list)</code> runs one time too many and usually throws an out-of-range error or,
+    worse, silently processes a default value.</li>
+    <li><strong>Output inside versus outside the loop.</strong> One <code>output</code> statement inside a loop
+    prints once per iteration. Candidates routinely write a single value when the answer is a column of them.</li>
+    <li><strong>By reference versus by value.</strong> Passing an array or a list into a sub-procedure and modifying
+    it changes the caller's variable. Passing an integer does not. In Java and Python, arrays/lists/dictionaries
+    are the ones that change.</li>
+    <li><strong>Integer division.</strong> <code>1 DIV 4</code> is 0, not 0.25, and in Java <code>1 / 4</code> is
+    also 0 when both operands are <code>int</code>. This is the origin of "why is my average always zero?".</li>
+  </ol>
+</div>
+
+<h2>7. How to write an HL answer</h2>
+
+<p>Command terms are not decoration: they are instructions about the <em>shape</em> of the answer, and the
+markscheme is written to match them. The cheapest mark improvement available to you is knowing what
+<em>evaluate</em> asks for that <em>describe</em> does not.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Command term</th><th>What the examiner wants</th><th>What a full-mark answer contains</th><th>Trap</th></tr></thead>
+  <tbody>
+    <tr><td><strong>State</strong> / <strong>List</strong></td><td>A fact, or a number of facts, with no
+    development.</td><td>One clause per mark. "Two: a router and a switch."</td><td>Writing a paragraph. Extra
+    sentences cannot earn extra marks and they cost time.</td></tr>
+    <tr><td><strong>Define</strong></td><td>The precise meaning of a term.</td><td>A memorised definition plus,
+    usually, an example to show you understand it.</td><td>Defining by using the word itself: "a protocol is when
+    devices use a protocol".</td></tr>
+    <tr><td><strong>Describe</strong></td><td>The characteristics of something — what it is like, what it does,
+    what its parts are.</td><td>Two or three accurate features, each one specific to the thing named in the
+    question.</td><td>Describing when asked to explain. Features are not reasons.</td></tr>
+    <tr><td><strong>Explain</strong></td><td>Cause and effect: how or why something happens.</td><td>A mechanism
+    followed by its consequence, joined by "so" / "because" / "therefore". Two such pairs is typically 4 marks.</td>
+    <td>Giving the mechanism and stopping. "Encryption scrambles the data" is half a mark; "…so an attacker who
+    intercepts the packet cannot read it without the key" is the mark.</td></tr>
+    <tr><td><strong>Compare</strong></td><td>Similarities <em>and</em> differences.</td><td>At least one of each,
+    ideally in parallel sentences about the same dimension (cost, speed, reliability).</td><td>Listing differences
+    only — that is <em>contrast</em>.</td></tr>
+    <tr><td><strong>Contrast</strong></td><td>Differences only.</td><td>Two or more developed differences, each
+    attached to a consequence.</td><td>Including similarities, which are simply ignored.</td></tr>
+    <tr><td><strong>Construct</strong></td><td>Produce something: a table, a diagram, an algorithm, a query.</td>
+    <td>The artefact, correctly formed, with the notation the question asked for (IB pseudocode, SQL, UML, or real
+    Java/Python).</td><td>Producing the right idea in the wrong notation — a Python answer where Java was asked
+    for, or a picture where a table was requested.</td></tr>
+    <tr><td><strong>Justify</strong></td><td>Give reasons for a decision and reach a supported conclusion.</td>
+    <td>The decision, the reason, and — crucially — the alternative you rejected and why.</td><td>Stating the choice
+    and restating it in different words.</td></tr>
+    <tr><td><strong>Analyse</strong></td><td>Break something into parts and show how they relate, usually in a
+    specific context.</td><td>Named components, the relationship between them, and the consequence for the
+    stakeholder named in the question.</td><td>Writing about "people" in general when a stakeholder was named.</td></tr>
+    <tr><td><strong>Evaluate</strong></td><td>Weigh advantages against disadvantages and reach a judgement.</td>
+    <td>Criteria stated in context, both sides developed, and a conclusion that says which consideration wins
+    <em>here</em>.</td><td>No judgement. An evaluation without a conclusion caps at about half marks however
+    accurate it is.</td></tr>
+    <tr><td><strong>Discuss</strong></td><td>Consider different viewpoints; often no single right answer.</td>
+    <td>Two or more developed positions, each with a reason, and a balanced closing remark.</td><td>Arguing one
+    side only — that is <em>justify</em>.</td></tr>
+    <tr><td><strong>To what extent</strong></td><td>How far a statement is true, and where it breaks.</td>
+    <td>Where it holds, where it does not, and a reasoned verdict on the balance.</td><td>A yes/no answer. The term
+    is asking for a degree, so "partly, because…" is the expected opening.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>7.1 The same question answered badly and well</h3>
+
+<p><strong>Question.</strong> "Explain why a hospital might store patient records in a relational database rather
+than in a flat file. [4 marks]"</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Weak answer (1–2 marks)</th><th>Strong answer (4 marks)</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>"A relational database stores data in tables and uses primary keys and foreign keys. It is organised and
+      it uses SQL. Flat files are just one long list and they are not as good."</td>
+      <td>"In a relational database the patient is stored once in a PATIENT table and every appointment refers to
+      that row by foreign key, <strong>so</strong> changing a patient's address updates every appointment
+      automatically — in a flat file the address is repeated on each row and one update can leave contradictory
+      copies. <strong>Furthermore</strong>, the database can enforce referential integrity,
+      <strong>so</strong> an appointment cannot exist for a patient who is not in the system, which a flat file
+      cannot prevent. <strong>However</strong>, this comes at the cost of a fixed schema and the overhead of running
+      a DBMS."</td>
+    </tr>
+    <tr>
+      <td><strong>Why it fails:</strong> everything here is description of features. There is no mechanism–consequence
+      pair and no context, so it cannot access the higher markband even though every sentence is true.</td>
+      <td><strong>Why it works:</strong> two mechanism–consequence pairs, each anchored to the hospital context, plus
+      a balancing limitation. Note the connectives — "so", "furthermore", "however" — which are the surface evidence
+      of the reasoning.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 4</span> Rebuilding a 6-mark evaluate answer from a weak draft</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> "Evaluate the proposal to replace the school's on-site file server with a cloud
+    storage subscription. [6 marks]"</p>
+    <p><strong>Weak draft:</strong> "Cloud storage is when data is stored on remote servers and accessed over the
+    internet. It is very popular and many companies use it. It means you can access files from anywhere. The school
+    should do it because it is modern."</p>
+    <p><strong>Diagnosis:</strong> the first two sentences describe, the third states one advantage with no
+    mechanism, and the conclusion is an assertion with no criteria. Maximum about 2 of 6.</p>
+    <p><strong>Rebuilt answer:</strong></p>
+    <ol class="steps">
+      <li><strong>Criteria, in context:</strong> "The relevant criteria for a school are availability during
+      lesson time, ongoing cost, data protection obligations concerning pupils, and dependence on the internet
+      connection."</li>
+      <li><strong>Advantage with mechanism:</strong> "Cloud storage replicates data across multiple data centres,
+      so a single hardware failure or a fire in the server room does not lose work, whereas the current single
+      on-site server is a single point of failure."</li>
+      <li><strong>Advantage with mechanism:</strong> "Access from anywhere means staff can work from home without a
+      VPN, so the cost and complexity of remote access falls."</li>
+      <li><strong>Disadvantage with mechanism:</strong> "Access becomes dependent on the internet link, so a
+      WAN outage stops every lesson that uses shared files — currently teaching continues because the server is on
+      the LAN."</li>
+      <li><strong>Disadvantage with mechanism:</strong> "Pupil data would be processed by a third party, possibly
+      in another jurisdiction, so the school must satisfy its data protection obligations through contractual
+      safeguards, which is an ongoing administrative cost."</li>
+      <li><strong>Judgement:</strong> "On balance the proposal is worth adopting for staff collaboration and
+      disaster recovery, but the school should keep a local cache of lesson-critical resources and should only
+      proceed once the provider's data processing terms have been reviewed."</li>
+    </ol>
+    <div class="answerline"><b>Where the marks are:</b> 1–2 for contextualised criteria, 2–3 for developed
+    advantages and disadvantages with mechanisms, 2 for a supported judgement. The single move that converts a
+    2 into a 6 is adding the judgement paragraph — and noticing that a judgement must say <em>which</em>
+    consideration wins.</div>
+  </div>
+</details>
+
+<h2>8. Programming expectations: pseudocode, Java and Python</h2>
+
+<p>The exam uses two different notations and asks for three. Knowing which is which is worth several marks per
+paper.</p>
+
+<div class="grid grid--3">
+  <div class="card">
+    <h4>IB pseudocode — read and write it</h4>
+    <p>Questions are <em>set</em> in the IB's own pseudocode, and any question that says "write pseudocode" or
+    "construct an algorithm" wants it back in the same notation. It looks like English: <code>output</code>,
+    <code>input</code>, <code>if … then … else … endif</code>, <code>loop while … endloop</code>,
+    <code>MOD</code>, <code>DIV</code>. There are no semicolons, no braces and no type declarations.</p>
+  </div>
+  <div class="card">
+    <h4>Real Java <em>or</em> real Python — write one</h4>
+    <p>When a question says "write Java" or "write Python", it means real, syntactically valid code. You choose one
+    language and stay in it from B2 onwards. Both score full marks; the IBO sets Paper 2 so that either
+    works.</p>
+  </div>
+  <div class="card">
+    <h4>The other language — read it</h4>
+    <p>You must be able to <em>read</em> whichever one you did not choose, because textbooks, classmates and
+    published answers use both. The B2, B3 and B4 pages of this site show both, labelled, for exactly this
+    reason.</p>
+  </div>
+</div>
+
+<h3>8.1 What the IB pseudocode looks like</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Purpose</th><th>IB pseudocode</th><th>Note</th></tr></thead>
+  <tbody>
+    <tr><td>Output</td><td><code>output "Result: ", total</code></td><td>Comma-separated items, all printed.</td></tr>
+    <tr><td>Input</td><td><code>input name</code></td><td>Reads a value into the variable.</td></tr>
+    <tr><td>Assignment</td><td><code>total = 0</code> or <code>total ← 0</code></td><td><code>=</code> is
+    assignment, not comparison.</td></tr>
+    <tr><td>Selection</td><td><code>if mark &gt;= 50 then</code> … <code>else</code> … <code>endif</code></td>
+    <td>Every <code>if</code> needs a matching <code>endif</code>.</td></tr>
+    <tr><td>Pre-checked loop</td><td><code>loop while count &lt; 10</code> … <code>endloop</code></td><td>The body
+    may run zero times.</td></tr>
+    <tr><td>Post-checked loop</td><td><code>loop</code> … <code>until answer = "quit"</code></td><td>The body runs
+    at least once (Java's <code>do…while</code>).</td></tr>
+    <tr><td>Count-controlled loop</td><td><code>loop for i = 0 to 9</code> … <code>endfor</code></td><td>Inclusive
+    at both ends.</td></tr>
+    <tr><td>Sub-procedure</td><td><code>procedure greet(name)</code> … <code>endprocedure</code></td><td>Called with
+    <code>greet("Sam")</code>; returns nothing.</td></tr>
+    <tr><td>Function</td><td><code>function square(x)</code> … <code>return x * x</code> … <code>endfunction</code></td>
+    <td>Must contain <code>return</code>.</td></tr>
+    <tr><td>Arithmetic</td><td><code>MOD</code>, <code>DIV</code>, <code>^</code></td><td><code>17 MOD 5 = 2</code>;
+    <code>17 DIV 5 = 3</code>.</td></tr>
+    <tr><td>Comparison</td><td><code>=</code>, <code>&lt;&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></td>
+    <td><code>&lt;&gt;</code> means "not equal to".</td></tr>
+    <tr><td>Logical</td><td><code>AND</code>, <code>OR</code>, <code>NOT</code></td><td>Use parentheses when mixing
+    <code>AND</code> and <code>OR</code>.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Examiners are instructed to accept any unambiguous pseudocode, so you will not lose a mark for writing
+<code>endwhile</code> instead of <code>endloop</code>. You <em>will</em> lose marks for an ambiguous condition, a
+missing block terminator, or a variable that was never initialised.</p>
+
+<h3>8.2 One algorithm in three notations</h3>
+
+<p><strong>Task:</strong> count how many values in a collection exceed a given limit. This is the kind of four-mark
+"construct" question that appears constantly, and it is worth being able to produce in all three notations without
+thinking.</p>
+
+<p><strong>IB pseudocode</strong> — use this when the question says "construct an algorithm" or "write
+pseudocode":</p>
+<pre><code>function countAbove(list, limit)
+    total = 0
+    loop for i = 0 to LENGTH(list) - 1
+        if list[i] &gt; limit then
+            total = total + 1
+        endif
+    endfor
+    return total
+endfunction</code></pre>
+
+<p><strong>Python</strong>:</p>
+<pre><code>def count_above(values, limit):
+    total = 0
+    for value in values:        # iterate over values, not indices
+        if value &gt; limit:
+            total += 1
+    return total</code></pre>
+
+<p><strong>Java</strong>:</p>
+<pre><code>public static int countAbove(int[] values, int limit) {
+    int total = 0;
+    for (int value : values) {  // enhanced for-loop
+        if (value &gt; limit) {
+            total++;
+        }
+    }
+    return total;
+}</code></pre>
+
+<p>Notice what is identical across all three: the accumulator initialised before the loop, the comparison, the
+increment, the return. Notice what is not: how you say "for each element", whether you need an index at all, and
+where the block boundaries are. Learn the invariant, then the punctuation.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — the three language errors examiners see most</span>
+  <ol class="steps">
+    <li><strong>Pseudocode inside a real-language answer.</strong> <code>output "x"</code> in a Python script, or
+    <code>endif</code> in Java, is not a stylistic choice; it is a syntax error and it costs marks that are
+    otherwise free.</li>
+    <li><strong><code>==</code> on strings in Java.</strong> <code>a == b</code> compares references;
+    <code>a.equals(b)</code> compares content. This is the single most common Java bug in DP scripts.</li>
+    <li><strong>Mixing loop idioms.</strong> Writing <code>for (int i = 0; i &lt; a.length; i++)</code> and then
+    using <code>a</code> instead of <code>a[i]</code> inside the body — a habit formed by writing Python-style
+    <code>for x in a:</code> and translating it literally.</li>
+  </ol>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to choose Java or Python, in order of importance</span>
+  <ol class="steps">
+    <li><strong>Which one does your school teach through to the end of B3 and B4?</strong> This dominates.
+    Self-teaching Java's type system and class syntax late in DP2 is an expensive use of time.</li>
+    <li><strong>Which do you write faster by hand?</strong> Python is terser — a dictionary literal instead of a
+    <code>HashMap</code>, a list instead of an <code>ArrayList</code>, roughly 40 % fewer characters. In a
+    handwritten two-hour exam that is a genuine advantage.</li>
+    <li><strong>Which makes the IA stronger?</strong> If it needs a GUI, a web API or a data-science library,
+    Python wins. If it needs to show off inheritance, interfaces and encapsulation, Java's explicitness helps —
+    the marker can <em>see</em> <code>extends</code>, <code>implements</code> and <code>private</code>.</li>
+    <li><strong>What should not influence you:</strong> which language you imagine the examiner prefers. Neither
+    scores more.</li>
+  </ol>
+</div>
+
+<h2>9. The internal assessment and the case study</h2>
+
+<p>These are the two components that are not a paper, and they are the two students most often misunderstand. The
+IA is assessed work you control completely; the case study is examined work you prepare for but cannot predict.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th></th><th><a href="ia-solution.html">Internal assessment — the computational solution</a></th>
+  <th><a href="case-study.html">The case study</a></th></tr></thead>
+  <tbody>
+    <tr><td><strong>What it is</strong></td>
+      <td>You find a real client with a real problem, apply the computational thinking process, and produce a
+      working solution plus a document showing every step.</td>
+      <td>A document published by the IBO describing an emerging technology in use in a real setting — a hospital, a
+      port, a city, a farm.</td></tr>
+    <tr><td><strong>Time</strong></td><td>35 hours, same at SL and HL</td><td>30 teaching hours at HL (15 at SL)</td></tr>
+    <tr><td><strong>Weight</strong></td><td>20 % of HL (30 % of SL)</td><td>No separate mark — the questions sit
+    inside Paper 1, so inside your 40 %</td></tr>
+    <tr><td><strong>Assessed by</strong></td>
+      <td>Your teacher, moderated externally by the IB</td><td>Externally, in the exam</td></tr>
+    <tr><td><strong>What the marks come from</strong></td>
+      <td>Five strands: problem specification; abstraction; algorithm design and implementation; testing and
+      evaluation; documentation and reflection</td>
+      <td>Three recurring archetypes: describe/explain the technology in context (4–6 marks); analyse the impact on
+      a named stakeholder (6–8); evaluate a proposed change or competing solution (8–12)</td></tr>
+    <tr><td><strong>How to prepare</strong></td>
+      <td>Start early, keep a dated record, interview the client properly, write measurable success
+      criteria</td>
+      <td>Build a one-page crib sheet: system diagram, data flows, stakeholders, and the three archetypes answered
+      in advance</td></tr>
+    <tr><td><strong>The classic failure</strong></td>
+      <td>A clever program with thin documentation. The marker cannot reward thinking they cannot see.</td>
+      <td>Writing about "people" instead of the named stakeholder, and describing when asked to evaluate.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>9.1 Choosing an IA topic</h3>
+
+<p>Three filters, applied in order. If a candidate topic fails any of them, discard it before you write a line.</p>
 
 <ol class="steps">
-  <li><strong>B1 Computational thinking (first).</strong> You cannot program without it, and the pseudocode
-  convention you learn here is the language every exam question is written in. Do it before B2, not alongside it.</li>
-  <li><strong>B2 Programming.</strong> Variables → selection → iteration → arrays → strings → sub-procedures →
-  files → recursion. Write code every single week; reading code is not learning to code.</li>
-  <li><strong>A1 Computer fundamentals.</strong> Binary, hex, two's complement, logic gates. It is self-contained
-  and heavily examined in Paper 1, so doing it early banks easy marks.</li>
-  <li><strong>B3 OOP.</strong> Needs B2 to be solid. Do the single-class work (B3.1) before inheritance (B3.2).</li>
-  <li><strong>A3 Databases.</strong> SQL is a second language; give it a clean block of time. It pays for itself
-  because SQL questions are mechanical and therefore reliably scorable.</li>
-  <li><strong>A2 Networks.</strong> Heavy on terminology and on <em>evaluate</em> questions — better attempted once
-  your English is warmed up and you have written a few evaluations elsewhere.</li>
-  <li><strong>B4 Abstract data types (HL).</strong> This is the hardest topic in the course. Put it after B2, B3 and
-  B1, and only when you can already trace recursion comfortably.</li>
-  <li><strong>A4 Machine learning.</strong> New content, conceptually light but examinable in depth. Needs A3
-  (data) and B1 (thinking about algorithms) to land well.</li>
-  <li><strong>Case study + IA, interleaved from the middle of DP1.</strong> The case study is released once; study it
-  when your school says. The IA should be started early and finished early — see the IA page for a 12-week plan.</li>
+  <li><strong>Is there a real client who will answer questions?</strong> Not "my friend said it would be cool" — a
+  person with a measurable pain who can tell you what "solved" would look like and will sign a dated success
+  criteria list. Without a client voice, the specification and evaluation strands cannot reach the top band, and
+  those strands are a quarter of the marks.</li>
+  <li><strong>Is the scope right?</strong> Big enough to need real decomposition (four to eight sub-problems,
+  typically 300–800 lines of code, at least one non-trivial data structure), small enough to finish six weeks
+  before the deadline. The most common IA error is choosing something that would take a professional team a
+  month.</li>
+  <li><strong>Can you show off the syllabus deliberately?</strong> The strongest submissions use themes A and B
+  on purpose: a normalised database (A3) behind a program with classes and inheritance (B3), running over a
+  network with authentication (A2), with a documented decomposition (B1). The IBO calls the IA a "unifying
+  assessment" and means exactly this.</li>
 </ol>
 
-<div class="callout callout--exam">
-  <span class="callout__label">Exam technique — learn the command terms before you learn the content</span>
-  <p>The single cheapest mark-improvement available to you is knowing what <em>evaluate</em> asks for that
-  <em>describe</em> does not. Roughly: <strong>state</strong> = one fact; <strong>describe</strong> = give the
-  characteristics; <strong>explain</strong> = give reasons (cause → effect); <strong>compare</strong> = similarities
-  <em>and</em> differences; <strong>contrast</strong> = differences only; <strong>justify</strong> = give a reason
-  and reach a supported conclusion; <strong>evaluate</strong> = weigh advantages and disadvantages and reach a
-  judgement; <strong>discuss</strong> = consider different viewpoints, usually with no single right answer;
-  <strong>to what extent</strong> = how far is the statement true, and where does it break. An <em>evaluate</em>
-  answer with no judgement caps at about half marks no matter how accurate it is.</p>
+<div class="callout callout--link">
+  <span class="callout__label">Connection</span>
+  <p>Both components reward the same underlying habit: reasoning about a system you did not build for people who
+  are not you. The IA does it with a client you interview; the case study does it with stakeholders you are told
+  about. Practise the second on the <a href="case-study.html">case study page</a> and the first gets easier; do the
+  <a href="collaborative-project.html">collaborative project</a> seriously and both get easier.</p>
 </div>
 
-<div class="callout callout--vocab">
-  <span class="callout__label">Vocabulary</span>
-  <p><strong>theme</strong> A / B<strong>case study</strong><strong>internal assessment (IA)</strong><strong>computational solution</strong> IA<strong>collaborative sciences project</strong><strong>external assessment</strong><strong>weighting</strong><strong>pseudocode</strong><strong>abstraction</strong><strong>emerging technology</strong><strong>moderation</strong> IA<strong>command term</strong> evaluate / justify<strong>off-by-one error</strong><strong>stakeholder</strong><strong>syllabus</strong></p>
+<h2>10. The collaborative sciences project</h2>
+
+<p>Ten hours, a group containing students from at least two group 4 subjects, one shared investigation and a
+presentation. No marks go to the IB. The requirement exists so that no DP science student finishes two years
+without planning an investigation, handling real data, quantifying uncertainty and defending a conclusion
+<em>across</em> subject boundaries.</p>
+
+<p>For you it is the cheapest rehearsal available. Your value in the group is not "knowing Python" — it is turning a
+vague scientific question into a data pipeline that answers it: agreeing the schema before collection, automating
+the logging so you get two thousand rows instead of twenty, cleaning with a logged procedure, choosing an analysis
+the question actually justifies, and putting error bars on the chart. Students who take these ten hours seriously
+typically finish the IA weeks faster, because the expensive part of the IA is not the coding; it is knowing what
+to write down. The full method, a schema worked example and sixteen project ideas are on the
+<a href="collaborative-project.html">collaborative project page</a>.</p>
+
+<h2>11. How computer science connects to your other subjects</h2>
+
+<p>These overlaps are not trivia — they are free revision, because the same idea learned twice in two subjects
+sticks far better than learned twice in one, and because Paper 1 increasingly asks questions with one foot in
+another subject.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Subject</th><th>The real overlap</th><th>Where it pays in CS</th><th>Where CS pays there</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong><a href="../math/index.html">Mathematics AA HL</a></strong></td>
+      <td>Binary and modular arithmetic; logarithms (how many bits, how many comparisons); matrices and vectors
+      behind every ML model; graph theory behind networks and pathfinding; recurrence relations behind recursion
+      and complexity.</td>
+      <td>Log<sub>2</sub> n is the reason binary search is fast; O(n log n) needs the logarithm to mean anything;
+      A4's forward pass is matrix multiplication and a squashing function.</td>
+      <td>Proof by induction is the natural way to argue that a recursive algorithm is correct, and it is far easier
+      to believe once you have watched a recursion unwind.</td>
+    </tr>
+    <tr>
+      <td><strong><a href="../physics/index.html">Physics HL</a></strong></td>
+      <td>Sensors and actuators; analogue-to-digital conversion, sampling rate and resolution; uncertainty and
+      error bars; modelling and simulation.</td>
+      <td>A1's control systems and ADC questions are physics questions with a computer attached. Knowing that a
+      10-bit ADC over 0–5 V resolves about 4.9 mV makes the CS answer concrete instead of rehearsed.</td>
+      <td>The <a href="collaborative-project.html">collaborative project</a> is usually at its best with a physics
+      experiment attached: logging at 50 Hz and fitting the model the theory predicts.</td>
+    </tr>
+    <tr>
+      <td><strong><a href="../business/index.html">Business management HL</a></strong></td>
+      <td>Stakeholder analysis; cost structures (capital versus revenue expenditure); operations management;
+      information systems as a source of competitive advantage; change management.</td>
+      <td>Paper 1's <em>analyse the impact on a named stakeholder</em> is a business-studies move. Naming the
+      stakeholder, their interest, and the mechanism of the impact is worth two marks before you say anything
+      technical.</td>
+      <td>You can supply the honest answer to "why is the IT project late and over budget?" — scope, data migration,
+      integration — which is the operations-management case study in miniature.</td>
+    </tr>
+    <tr>
+      <td><strong><a href="../core/index.html">TOK and the EE</a></strong></td>
+      <td>How do we know a model is right? What counts as evidence? Who is responsible when a system
+      decides?</td>
+      <td>A4 machine learning ethics and the case study's governance questions are TOK questions with a technical
+      payload.</td>
+      <td>A TOK essay or an EE on algorithmic decision-making, simulation as a way of knowing, or the reliability of
+      data-driven claims, is far stronger with a worked example you actually understand.</td>
+    </tr>
+  </tbody>
+</table>
 </div>
 
-<h2>Where to go next</h2>
+<h2>12. How to revise for a course that is half knowledge and half code</h2>
+
+<p>Reading notes does not work for Paper 2, and writing code does not work for Paper 1. You need four different
+practices, and the mistake most students make is doing only the first.</p>
 
 <div class="grid grid--2">
-  <div class="card"><h4>Theme A — how systems work</h4>
-    <p><strong>A1</strong> hardware, data representation, logic · <strong>A2</strong> networks and security ·
-    <strong>A3</strong> databases and SQL · <strong>A4</strong> machine learning. Examined in Paper 1 with the case study.</p></div>
-  <div class="card"><h4>Theme B — how you solve problems</h4>
-    <p><strong>B1</strong> computational thinking and pseudocode · <strong>B2</strong> programming ·
-    <strong>B3</strong> object-oriented programming · <strong>B4</strong> abstract data types (HL). Examined in Paper 2.</p></div>
+  <div class="card">
+    <h4>1 · Recall the facts (theme A)</h4>
+    <p>Cover-and-write on terminology: what a router does, what normalisation removes, what a compiler emits. Make
+    a deck of one-term-per-card and do it in both directions (term → meaning, meaning → term). Ten minutes a day
+    from DP1 beats ten hours in the last week, because A2 and A1 are vocabulary-heavy and vocabulary decays.</p>
+  </div>
+  <div class="card">
+    <h4>2 · Trace by hand (Paper 2)</h4>
+    <p>Two traces a day in the last eight weeks, on paper, with a table, no compiler. Use the procedure in section
+    6. This is the single highest-yield habit in the course, because it trains exactly the skill Paper 2 tests and
+    nothing else trains it.</p>
+  </div>
+  <div class="card">
+    <h4>3 · Write full answers to real command terms (Paper 1)</h4>
+    <p>Never "make notes" on an evaluate question. Write the answer, timed, in full sentences, then mark it against
+    the command-term table in section 7. One timed eight-mark evaluation a week from the middle of DP1 changes your
+    grade more than anything else on this page.</p>
+  </div>
+  <div class="card">
+    <h4>4 · Write a markscheme</h4>
+    <p>With almost no past papers available, this is your substitute. Take a syllabus bullet, write the question
+    you think the IBO would ask, then write the markscheme. You cannot do this without knowing the content
+    properly, and it teaches you where the marks are — which is the same knowledge that makes you faster in the
+    exam.</p>
+  </div>
 </div>
 
-<h2>Check yourself</h2>
-<ul class="checklist">
-  <li><label><input type="checkbox"><span>I can explain three differences between the 2014 guide and the 2027 guide.</span></label></li>
-  <li><label><input type="checkbox"><span>I can name the four topics in theme A and the four in theme B from memory.</span></label></li>
-  <li><label><input type="checkbox"><span>I know which sub-topics are HL only (A1.4, A3.4, A4.2, A4.3, B3.2, B4).</span></label></li>
-  <li><label><input type="checkbox"><span>I can state the HL assessment model: two papers, durations and weightings.</span></label></li>
-  <li><label><input type="checkbox"><span>I know which theme each paper examines and whether I must write code.</span></label></li>
-  <li><label><input type="checkbox"><span>I have chosen Java or Python and can justify the choice.</span></label></li>
-  <li><label><input type="checkbox"><span>I can distinguish IB pseudocode from real Java and real Python.</span></label></li>
-  <li><label><input type="checkbox"><span>I know what the case study is, how many hours it gets, and where it is examined.</span></label></li>
-  <li><label><input type="checkbox"><span>I can explain what makes the new IA different from the old "solution".</span></label></li>
-  <li><label><input type="checkbox"><span>I know the 10-hour collaborative sciences project exists and with whom it is shared.</span></label></li>
-  <li><label><input type="checkbox"><span>I can define evaluate, justify, discuss and to what extent, and say how they differ.</span></label></li>
-</ul>
+<div class="io-plan">
+  <div class="io-plan__row"><div class="io-plan__t">0–5 min</div><div class="io-plan__c">
+    <strong>Set up.</strong> Paper copy of the question, a pencil, plenty of space, a timer. No computer, no
+    phone. Paper 2 is handwritten, so every practice session should be too.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">5–15 min</div><div class="io-plan__c">
+    <strong>Do the cold questions first.</strong> The traces, the SQL, the conversions — the ones with a right
+    answer. Write trace tables in full even when you can see the answer, because the table is what catches the
+    off-by-one.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">15–45 min</div><div class="io-plan__c">
+    <strong>The construction question.</strong> Write the algorithm in the notation asked for. Then check it
+    against three inputs: a normal case, a boundary case (empty collection, first or last element) and an
+    erroneous case (wrong type, out of range). If your answer has no boundary check, you have not finished.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">45–70 min</div><div class="io-plan__c">
+    <strong>The extended response.</strong> Plan it in forty words before writing: criteria, two developed
+    advantages, two developed disadvantages, judgement. Then write it in full sentences with connectives. Stop at
+    the time limit even if unfinished — an unfinished answer is data.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">70–90 min</div><div class="io-plan__c">
+    <strong>Mark it honestly.</strong> Use the command-term table. Give yourself a mark, then write one sentence
+    naming the single change that would have gained the most marks. That sentence is the product of the session.
+  </div></div>
+</div>
 
-<h2>Practice</h2>
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — the last eight weeks</span>
+  <p>Weekly rhythm that works: one full paper under exam conditions (two hours, no interruptions), one
+  ninety-minute skills session built from the plan above, and twenty minutes of terminology recall daily. In the
+  final fortnight, stop learning new content and instead write, from memory, a one-page summary of each topic: the
+  definitions, the standard algorithms in pseudocode, and one evaluation you have prepared in advance. Being able
+  to redraw that page on the morning of the exam is the difference between panic and routine. The
+  <a href="../exam-toolkit.html">exam toolkit</a> and the <a href="../study-plan.html">study plan</a> at the site
+  root have the scheduling detail.</p>
+</div>
+
+<h2>13. Practice</h2>
+
+<p>Answer these in full sentences, timed, before opening anything. The marks in brackets are the IB-style
+allocations.</p>
+
 <ol class="practice">
-  <li><p>A classmate says: "I'm revising from a 2019 website — it has topics 1 to 7, so it covers everything."
-  Give three specific reasons why that is a bad idea.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
+  <li><p>State the output of the following algorithm. [4 marks]</p>
+<pre><code>a = 7
+b = 2
+loop while a &gt; 0
+    a = a DIV b
+    b = b + 1
+endloop
+output a, b</code></pre>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
       <ol class="steps">
-        <li><strong>Missing content.</strong> Machine learning (A4) was not in the old core, and B4 sets and hash
-        tables, A1.4 translation and A3.4 alternative databases are new or re-scoped. No amount of old revision
-        produces those marks.</li>
-        <li><strong>Wrong assessment format.</strong> The old course had a Paper 3 for the case study at HL only.
-        There is no Paper 3 now, and the case study is examined inside Paper 1 at both levels.</li>
-        <li><strong>Wrong language expectation.</strong> Paper 2 now expects real Java or Python, where the old
-        course accepted IB-style pseudocode throughout. Practising only pseudocode leaves you unable to write
-        syntactically valid code under exam conditions.</li>
-        <li>(Bonus: option content was examined differently, so the depth and question style will not match.)</li>
+        <li><strong>Initial:</strong> a = 7, b = 2.</li>
+        <li><strong>Condition 1:</strong> a &gt; 0 is true. a = 7 DIV 2 = 3; b = 3.</li>
+        <li><strong>Condition 2:</strong> a &gt; 0 is true. a = 3 DIV 3 = 1; b = 4.</li>
+        <li><strong>Condition 3:</strong> a &gt; 0 is true. a = 1 DIV 4 = <strong>0</strong> (integer division —
+        not 0.25); b = 5.</li>
+        <li><strong>Condition 4:</strong> a &gt; 0 is now false, so the loop exits and the single
+        <code>output</code> prints once.</li>
       </ol>
-      <div class="answerline"><b>Marks:</b> one per specific, correct difference that names both the old and the new arrangement. A vague "it's outdated" scores nothing.</div>
+      <div class="answerline"><b>Answer: 0 and 5.</b> <b>Why this is worth knowing:</b> the divisor changes inside
+      the loop, so the condition must be re-checked with the <em>new</em> value of a each time, and
+      <code>1 DIV 4</code> is 0 — the two ideas this question exists to test.</div>
     </div></details>
   </li>
-  <li><p>State the HL teaching hours for each of: theme A, theme B, the case study, the internal assessment and the
-  collaborative project. Hence show that the HL total is 240 hours.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <p>Theme A = 72, theme B = 93, case study = 30, internal assessment = 35, collaborative project = 10.</p>
-      <p>72 + 93 + 30 + 35 + 10 = 240. ✓</p>
-      <div class="answerline"><b>Answer:</b> 240 hours. Also check the SL arithmetic: 38 + 52 + 15 + 35 + 10 = 150. ✓ Both totals matching is a good self-test that you have the right figures.</div>
+
+  <li><p>A question asks: "Evaluate the use of facial recognition for registering attendance at this school."
+  A student writes four accurate sentences describing how facial recognition works. Explain why this cannot score
+  high marks, and state what an <em>evaluate</em> answer must contain. [6 marks]</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li><strong>Why it caps:</strong> the command term is <em>evaluate</em>, which requires weighing advantages
+        against disadvantages and reaching a supported judgement. Description answers a different question, so the
+        answer cannot access the higher markband — the markscheme simply does not contain marks for features.</li>
+        <li><strong>What it must contain — criteria in context:</strong> for a school, accuracy across different
+        skin tones and lighting, the time saved in registration, pupil data protection and consent, cost, and what
+        happens when it fails.</li>
+        <li><strong>Developed advantages with mechanisms:</strong> registration becomes automatic, so teachers
+        regain several minutes per lesson; and the record is harder to falsify than a paper register, because a
+        pupil cannot sign in for a friend.</li>
+        <li><strong>Developed disadvantages with mechanisms:</strong> biometric data is special-category personal
+        data, so the school takes on significant storage and consent obligations; and false negatives fall
+        disproportionately on some groups of pupils, so an error means a pupil is marked absent when present.</li>
+        <li><strong>Judgement:</strong> a conclusion that names which consideration wins for <em>this</em> school —
+        for example, that the time saved does not justify the data protection burden unless the system processes
+        images locally and pupils can opt out.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> criteria, both sides with mechanisms, and a judgement. <b>Why this is
+      worth knowing:</b> an evaluation with no "however" and no "therefore" is not an evaluation, and this is the
+      most common single cause of lost Paper 1 marks.</div>
     </div></details>
   </li>
+
+  <li><p>Using the algorithm from Worked trace 3, state the output of <code>puzzle(6)</code> and the total number of
+  calls made, and explain why a programmer should be concerned. [6 marks]</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>puzzle(0) = 0 and puzzle(1) = 1 by the base case.</li>
+        <li>puzzle(2) = 1 + 0 = 1; puzzle(3) = 1 + 1 = 2; puzzle(4) = 2 + 1 = 3; puzzle(5) = 3 + 2 = 5;
+        puzzle(6) = 5 + 3 = <strong>8</strong>.</li>
+        <li><strong>Calls:</strong> the pattern is 1, 1, 3, 5, 9, 15 for n = 5 down the tree; for n = 6 the total
+        is 25 calls (1 + 1 + 3 + 5 + 9 + 15 for the distinct sub-problems, counted with multiplicity).</li>
+        <li><strong>Why it matters:</strong> the same sub-problems are recomputed from scratch, so the number of
+        calls grows exponentially with n. The sixth value already needs 25 calls; n = 40 would need hundreds of
+        millions. This is the Fibonacci recurrence and it is the standard classroom example of a recursive
+        solution that is correct and useless.</li>
+        <li><strong>The fix, stated:</strong> store each computed value (memoisation) or build upwards iteratively,
+        reducing the work to O(n). Naming either is what the "comment" mark is for.</li>
+      </ol>
+      <div class="answerline"><b>Answer: 8, with 25 calls; exponential growth.</b> <b>Why this is worth
+      knowing:</b> HL questions increasingly follow a correct trace with "comment on the efficiency" — the trace is
+      the easy half, the comment is the mark that separates candidates.</div>
+    </div></details>
+  </li>
+
+  <li><p>A student submits the following as a Python answer to a question that said "write Python". Identify four
+  distinct errors. [4 marks]</p>
+<pre><code>output "Enter a mark"
+input mark
+if mark &gt;= 50 then
+    print("Pass")
+else
+    print("Fail")
+endif</code></pre>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li><code>output</code> is IB pseudocode, not Python. It should be
+        <code>print("Enter a mark")</code>.</li>
+        <li><code>input mark</code> is pseudocode. Python is
+        <code>mark = int(input("Enter a mark"))</code> — and the <code>int()</code> matters, because
+        <code>input()</code> returns a string and comparing a string to 50 raises a TypeError.</li>
+        <li><code>then</code> is not Python. The line must end with a colon: <code>if mark &gt;= 50:</code>.</li>
+        <li><code>endif</code> does not exist in Python. Block structure is indentation, and the
+        <code>else:</code> needs its own colon.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> the four errors above. <b>Why this is worth knowing:</b> every one of
+      them is a habit carried over from pseudocode, and together they would reduce a four-mark answer to zero even
+      though the logic is perfect.</div>
+    </div></details>
+  </li>
+
+  <li><p>A program must store the words of a document and report how many times each word occurs, in
+  alphabetical order. Choose a data structure, justify it against one alternative, and state the complexity of
+  building it. [6 marks]</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li><strong>Choice:</strong> a dictionary (hash map) mapping word → count, then sort the keys.</li>
+        <li><strong>Justification:</strong> each word is looked up once per occurrence and the count incremented,
+        which is constant-time on average in a hash map. Building the structure is therefore O(n) in the number of
+        words.</li>
+        <li><strong>Alternative rejected:</strong> a two-dimensional array of (word, count) pairs with a linear
+        search for each occurrence. It needs no hashing and is easy to code, but each lookup costs O(m) in the
+        number of distinct words, giving O(nm) overall — and with a document of 10,000 words and 2,000 distinct
+        words that is twenty million comparisons instead of ten thousand operations.</li>
+        <li><strong>The ordering requirement:</strong> since the output must be alphabetical and a hash map has no
+        order, sort the keys once at the end: O(m log m). Total: O(n + m log m), which is dominated by the sort
+        when the vocabulary is large.</li>
+        <li><strong>At HL, say the last sentence.</strong> Stating the complexity in words or in O-notation, and
+        comparing two candidate designs, is exactly what the design mark and the efficiency mark ask for.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> a hash map, justified against a linear-search array, O(n) to build
+      plus O(m log m) to sort. <b>Why this is worth knowing:</b> the mark is for the rejected alternative and the
+      complexity, not for naming a structure.</div>
+    </div></details>
+  </li>
+
+  <li><p>Explain why a web server might keep recently requested pages in a cache rather than retrieving them from
+  disk each time. [4 marks]</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <p>A full-mark answer gives two mechanism–consequence pairs:</p>
+      <ol class="steps">
+        <li>"Cache memory (RAM) has access times orders of magnitude shorter than a disk, <strong>so</strong> a
+        cached page is returned to the client far more quickly, reducing the server's response time."</li>
+        <li>"Web requests are highly repetitive — a small number of pages account for most hits —
+        <strong>so</strong> storing the most recently used pages means a large fraction of requests never touch the
+        disk at all, which reduces disk I/O and lets the server handle more concurrent users."</li>
+        <li>"The cost is that the cache must be invalidated when the underlying page changes,
+        <strong>so</strong> without a suitable replacement policy the server can serve stale content."</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> two developed mechanism–consequence pairs (2 marks each), with the
+      third as a balancing remark. <b>Why this is worth knowing:</b> "it is faster" on its own scores one mark;
+      the mark is for saying <em>why</em> it is faster and what the consequence is.</div>
+    </div></details>
+  </li>
+
+  <li><p>Identify the six HL-only content codes in the 2027 guide and state, in one clause each, what each
+  adds. [6 marks]</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li><strong>A1.4 Translation</strong> — how high-level code becomes machine code: compilers, interpreters,
+        assemblers, bytecode and virtual machines.</li>
+        <li><strong>A3.4 Alternative databases and data warehouses</strong> — non-relational (NoSQL) models and why
+        they exist, plus warehouses for analysis.</li>
+        <li><strong>A4.2 Data preprocessing</strong> — cleaning, normalising, encoding and splitting data before a
+        model sees it.</li>
+        <li><strong>A4.3 Machine learning approaches</strong> — supervised, unsupervised and reinforcement
+        learning, and the algorithms associated with each.</li>
+        <li><strong>B3.2 OOP for multiple classes</strong> — inheritance, polymorphism, aggregation and composition,
+        and UML between classes.</li>
+        <li><strong>B4 Abstract data types</strong> — the whole topic: ADT principles, linked lists, binary search
+        trees, sets and hash tables.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> the six codes above. <b>Why this is worth knowing:</b> this list is the
+      shortest answer to "what does HL add?", it tells you precisely where an SL resource stops being enough, and
+      it is a ready-made recall test.</div>
+    </div></details>
+  </li>
+
   <li><p>Explain why the internal assessment is worth a smaller percentage at HL (20 %) than at SL (30 %) even
-  though both levels get the same 35 recommended hours.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
+  though both levels are given the same 35 recommended hours. [4 marks]</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
       <ol class="steps">
-        <li>HL students sit 4 hours of external assessment; SL students sit 2 hours 30 minutes.</li>
-        <li>Because the IA is the same size at both levels, it forms a smaller share of a larger total assessment
-        burden at HL.</li>
-        <li>The consequence for you: HL grades are decided more by the exams. Strong HL students should not
-        over-invest in the IA at the expense of Paper 1 and Paper 2 practice — but the IA is still 20 % and is the
-        component where careful work is most reliably rewarded.</li>
+        <li>HL candidates sit four hours of external assessment against SL's two and a half, so the total
+        assessment burden is larger at HL.</li>
+        <li>The IA is the same size at both levels, so it forms a smaller share of a larger total.</li>
+        <li>The consequence for you: HL grades are decided more by the exams, so a strong HL candidate should not
+        over-invest in the IA at the expense of Paper 1 and Paper 2 practice.</li>
+        <li>The counterweight: the IA is still 20 %, and it is the component where careful, visible work is most
+        reliably rewarded — so do it properly, then move on.</li>
       </ol>
-    </div></details>
-  </li>
-  <li><p>You are choosing between Java and Python for Paper 2. Discuss two factors that should influence your
-  choice and one that should not.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <p><strong>Should influence:</strong> (i) which language your school teaches to completion of B3/B4 —
-      self-teaching a type system late is expensive; (ii) how fast you write correct code by hand — Python's
-      terseness is a real advantage in a handwritten exam; (iii) which language suits your IA (libraries vs
-      explicit OO structure).</p>
-      <p><strong>Should not influence:</strong> which language you think the examiner prefers. The IBO sets Paper 2
-      so that either language scores full marks; there is no advantage either way in the markscheme.</p>
-    </div></details>
-  </li>
-  <li><p>A question says: "Evaluate the use of a relational database for this application." A student writes four
-  accurate sentences describing what a relational database is. Explain why this answer cannot score high marks, and
-  state what an <em>evaluate</em> answer must contain.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <ol class="steps">
-        <li>The command term is <em>evaluate</em>, which requires weighing advantages against disadvantages and
-        reaching a supported judgement. Description alone answers a different question ("describe"), so it cannot
-        access the higher markband.</li>
-        <li>An evaluate answer needs: (i) the advantages in <em>this</em> context (e.g. enforces referential
-        integrity, supports ad-hoc SQL queries, reduces redundancy); (ii) the disadvantages in this context (e.g.
-        fixed schema is inflexible, overhead of a DBMS, harder to scale horizontally than a document store);
-        (iii) a conclusion that says which consideration wins for this application and why.</li>
-      </ol>
-      <div class="answerline"><b>Rule of thumb:</b> if your answer has no "however" and no "therefore", it is not an evaluation.</div>
-    </div></details>
-  </li>
-  <li><p>Identify the two HL-only sub-topics inside theme A and the two HL-only sub-topics inside theme B, and state
-  what each adds.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <p><strong>Theme A:</strong> A1.4 Translation (HL only) — how high-level code becomes machine code: compilers,
-      interpreters, assemblers, bytecode and virtual machines. A3.4 Alternative databases and data warehouses
-      (HL only) — non-relational (NoSQL) models and why they exist, plus data warehouses for analysis.</p>
-      <p><strong>Theme B:</strong> B3.2 Fundamentals of OOP for multiple classes (HL only) — inheritance,
-      polymorphism, aggregation/composition, UML between classes. B4 Abstract data types (HL only, the entire
-      topic) — ADT principles, linked lists, binary search trees, sets, hash tables.</p>
-      <div class="answerline"><b>Also HL-only:</b> A4.2 Data preprocessing and A4.3 Machine learning approaches inside A4. That makes six HL-only codes in total — learn the list, because it tells you exactly where SL students stop.</div>
-    </div></details>
-  </li>
-  <li><p>Suggest why the IBO moved the case study from a separate HL Paper 3 into Paper 1, and why it introduced the
-  case study at SL too.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <ol class="steps">
-        <li>Paper 3 was removed; folding the case study into Paper 1 keeps assessment of theme A and its
-        real-world application in one paper, and reduces the number of separate papers to schedule and mark.</li>
-        <li>Emerging technologies affect every citizen, so restricting that discussion to HL was inconsistent with
-        the course's stated aim of producing informed users of technology.</li>
-        <li>Introducing it at SL raises the proportion of the course spent on social and ethical reasoning, which
-        aligns with the IBO's broader emphasis on ethical thinking across the DP.</li>
-      </ol>
-      <div class="answerline"><b>Marks:</b> one for each plausible, developed reason. "Because they wanted to" is not a reason.</div>
+      <div class="answerline"><b>Answer:</b> a larger exam burden at HL dividing the same 35 hours of coursework.
+      <b>Why this is worth knowing:</b> it is an <em>explain</em> question, so each mark needs a cause and an
+      effect, not just the two percentages.</div>
     </div></details>
   </li>
 </ol>
@@ -478,14 +1401,104 @@ number of times you have to learn something twice.</p>
 <div class="conn">
   <span class="conn__title">Connections</span>
   <ul>
-    <li><strong>→ A1 Computer fundamentals:</strong> the machine every B-topic program eventually runs on.</li>
-    <li><strong>→ B1 Computational thinking:</strong> the pseudocode convention used in every Paper 2 question — start here.</li>
-    <li><strong>→ Case study:</strong> theme A content applied to an unseen-but-pre-seen technology, examined in Paper 1.</li>
-    <li><strong>→ IA — the computational solution:</strong> the deliberate meeting point of both themes, 20 % of HL.</li>
-    <li><strong>→ Physics HL:</strong> sensors, actuators, signal transmission and the collaborative sciences project.</li>
-    <li><strong>→ Maths AA HL:</strong> binary and modular arithmetic, log<sub>2</sub> n complexity, matrices behind ML.</li>
+    <li><strong>→ <a href="A1-computer-fundamentals.html">A1 Computer fundamentals:</a></strong> the machine every
+    B-topic program eventually runs on. Start here for binary, logic and the fetch–decode–execute cycle.</li>
+    <li><strong>→ <a href="A2-networks.html">A2 Networks:</a></strong> protocols, layering and security — the
+    largest single source of Paper 1 <em>evaluate</em> questions.</li>
+    <li><strong>→ <a href="A3-databases.html">A3 Databases:</a></strong> normalisation and SQL; the most mechanical
+    marks in Paper 1.</li>
+    <li><strong>→ <a href="A4-machine-learning.html">A4 Machine learning:</a></strong> the newest topic and the one
+    no pre-2024 resource will have.</li>
+    <li><strong>→ <a href="B1-computational-thinking.html">B1 Computational thinking:</a></strong> the pseudocode
+    convention every Paper 2 question is written in — do this before B2.</li>
+    <li><strong>→ <a href="B2-programming.html">B2 Programming:</a></strong> the language you will be examined in,
+    shown in both Java and Python.</li>
+    <li><strong>→ <a href="B3-oop.html">B3 Object-oriented programming:</a></strong> classes, encapsulation and
+    (HL) inheritance and polymorphism.</li>
+    <li><strong>→ <a href="B4-abstract-data-types.html">B4 Abstract data types:</a></strong> HL only, the hardest
+    topic in the course, and the one SL students never meet.</li>
+    <li><strong>→ <a href="case-study.html">The case study:</a></strong> 30 hours of teaching, examined inside
+    Paper 1, with the three question archetypes.</li>
+    <li><strong>→ <a href="ia-solution.html">The computational solution (IA):</a></strong> 20 % of HL and the
+    component where visible thinking is worth most.</li>
+    <li><strong>→ <a href="collaborative-project.html">The collaborative sciences project:</a></strong> ten hours,
+    ungraded, and the best free rehearsal for the IA.</li>
+    <li><strong>→ <a href="../math/index.html">Mathematics AA HL:</a></strong> logarithms, modular arithmetic,
+    matrices and graph theory behind complexity, ML and networks.</li>
+    <li><strong>→ <a href="../physics/index.html">Physics HL:</a></strong> sensors, sampling, resolution and
+    uncertainty — the A1 control-systems material in its native subject.</li>
+    <li><strong>→ <a href="../business/index.html">Business management HL:</a></strong> stakeholder analysis and
+    cost structures, which is what a good Paper 1 evaluation is made of.</li>
+    <li><strong>→ <a href="../core/index.html">The DP core:</a></strong> where an EE or TOK essay on algorithmic
+    decision-making can be built on work you understand.</li>
+    <li><strong>→ <a href="../exam-toolkit.html">Exam toolkit</a> and <a href="../study-plan.html">study plan:</a></strong>
+    scheduling the four practices in section 12 across two years.</li>
+    <li><strong>→ <a href="../index.html">Site index:</a></strong> every subject in one place.</li>
   </ul>
 </div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary</span>
+  <div class="wordlist">
+    <div><b>theme</b> — <span>one of the two halves of the syllabus: A (concepts of computer science) or B (computational thinking and problem solving).</span></div>
+    <div><b>syllabus code</b> — <span>the identifier for a sub-topic, such as A1.4 or B3.2; the letter is the topic and the number is the sub-topic.</span></div>
+    <div><b>case study</b> — <span>an IBO-published description of an emerging technology in real use, studied in class and examined in Paper 1.</span></div>
+    <div><b>internal assessment (IA)</b> — <span>coursework marked by your teacher and moderated by the IB; here, the computational solution.</span></div>
+    <div><b>computational solution</b> — <span>the new name for the CS IA, emphasising the thinking process rather than the finished program.</span></div>
+    <div><b>collaborative sciences project</b> — <span>the ten-hour interdisciplinary group 4 investigation, shared with the sciences.</span></div>
+    <div><b>external assessment</b> — <span>the examined components: Paper 1 and Paper 2.</span></div>
+    <div><b>weighting</b> — <span>the share of the final grade a component carries.</span></div>
+    <div><b>moderation</b> — <span>the IB's check on your teacher's IA marks, using a sample of the cohort's work.</span></div>
+    <div><b>command term</b> — <span>the verb at the start of a question (state, explain, evaluate) that tells you the shape of the answer.</span></div>
+    <div><b>mechanism</b> — <span>how something works; half of what an <em>explain</em> answer needs.</span></div>
+    <div><b>consequence</b> — <span>what follows from the mechanism; the other half, and the part students omit.</span></div>
+    <div><b>evaluate</b> — <span>weigh advantages against disadvantages and reach a supported judgement.</span></div>
+    <div><b>to what extent</b> — <span>how far a statement is true, and where it breaks down.</span></div>
+    <div><b>stakeholder</b> — <span>a person or group affected by a system; always name the specific one.</span></div>
+    <div><b>trace table</b> — <span>a column per variable showing the value after each significant step.</span></div>
+    <div><b>trace</b> — <span>working through an algorithm line by line to find its output or behaviour.</span></div>
+    <div><b>off-by-one error</b> — <span>a loop that runs one time too many or too few, usually from a wrong bound.</span></div>
+    <div><b>pseudocode</b> — <span>a language-neutral way of writing an algorithm; the IB has its own convention.</span></div>
+    <div><b>by reference</b> — <span>a parameter through which the callee can change the caller's variable (arrays, lists, objects).</span></div>
+    <div><b>by value</b> — <span>a parameter that is a copy, so the caller's variable cannot change.</span></div>
+    <div><b>integer division</b> — <span>division that discards the remainder: 7 DIV 2 = 3.</span></div>
+    <div><b>modulo</b> — <span>the remainder after division: 7 MOD 2 = 1.</span></div>
+    <div><b>recursion</b> — <span>a function that calls itself, with a base case that stops the calls.</span></div>
+    <div><b>base case</b> — <span>the input for which a recursive function returns without calling itself.</span></div>
+    <div><b>complexity</b> — <span>how the work grows with the size of the input, written O(n), O(n²) and so on.</span></div>
+    <div><b>abstraction</b> — <span>deciding what to keep and what to discard, and naming what is left.</span></div>
+    <div><b>decomposition</b> — <span>breaking a problem into sub-problems that can each be solved and tested alone.</span></div>
+    <div><b>data structure</b> — <span>a way of organising data in memory: array, list, stack, queue, tree, hash table.</span></div>
+    <div><b>abstract data type (ADT)</b> — <span>what a structure does, separated from how it is implemented.</span></div>
+    <div><b>normalisation</b> — <span>restructuring tables to remove redundancy and the anomalies it causes.</span></div>
+    <div><b>relational database</b> — <span>data in linked tables with keys, queried with SQL.</span></div>
+    <div><b>emerging technology</b> — <span>a technology new enough that its consequences are still being worked out — the case study's subject.</span></div>
+    <div><b>client</b> — <span>the real person whose problem your IA solves; the source of your success criteria.</span></div>
+    <div><b>success criteria</b> — <span>measurable statements of what "solved" means, agreed with the client.</span></div>
+    <div><b>validation</b> — <span>checking that input matches its expected type and range.</span></div>
+    <div><b>specimen paper</b> — <span>an official example paper showing the format of a new course.</span></div>
+  </div>
+</div>
+
+<h2>14. Check yourself</h2>
+
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can explain three differences between the 2014 guide and the 2027 guide.</span></label></li>
+  <li><label><input type="checkbox"><span>I can name the four topics in theme A and the four in theme B from memory.</span></label></li>
+  <li><label><input type="checkbox"><span>I can list the six HL-only codes and say what each adds.</span></label></li>
+  <li><label><input type="checkbox"><span>I can state the HL assessment model: both papers' durations and weightings, plus the IA.</span></label></li>
+  <li><label><input type="checkbox"><span>I know which theme each paper examines and whether I must write code.</span></label></li>
+  <li><label><input type="checkbox"><span>I have chosen Java or Python and can justify the choice in three lines.</span></label></li>
+  <li><label><input type="checkbox"><span>I can distinguish IB pseudocode from real Java and real Python in both directions.</span></label></li>
+  <li><label><input type="checkbox"><span>I can trace a loop, a nested loop and a recursion with a table, on paper.</span></label></li>
+  <li><label><input type="checkbox"><span>I can define state, describe, explain, construct, justify, evaluate, discuss and to what extent.</span></label></li>
+  <li><label><input type="checkbox"><span>I can turn a description into an explanation by adding mechanism–consequence pairs.</span></label></li>
+  <li><label><input type="checkbox"><span>I can justify a data structure against a named alternative and state the complexity.</span></label></li>
+  <li><label><input type="checkbox"><span>I know what the case study is, how many hours it gets at HL, and where it is examined.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain what makes the new IA different from the old "solution".</span></label></li>
+  <li><label><input type="checkbox"><span>I know the collaborative sciences project exists, how long it is, and who must be in the group.</span></label></li>
+  <li><label><input type="checkbox"><span>I have a weekly revision rhythm that includes handwriting code and timed extended responses.</span></label></li>
+</ul>
 
 </div>
 <script src="../assets/js/app.js"></script>
