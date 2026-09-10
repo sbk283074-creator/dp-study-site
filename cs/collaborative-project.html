@@ -20,6 +20,7 @@ questions, not as a break.</p>
   <span class="tag">10 recommended hours, shared across the group 4 sciences</span>
   <span class="tag">Not externally assessed — but a required element of the course</span>
   <span class="tag tag--hl">Best done in DP1, before the IA</span>
+  <span class="tag">Skills: question design · schema · cleaning · uncertainty · presentation</span>
 </div>
 
 <div class="callout callout--why">
@@ -30,32 +31,54 @@ questions, not as a break.</p>
   with people who have a scientific question and no way to process the data, which is the situation every working
   programmer is actually in. Your value in the group is not "knowing Python"; it is turning a vague question into a
   data pipeline that answers it.</p>
+  <p>There is a second, colder reason to take it seriously. The skills rehearsed here — interviewing someone who does
+  not share your vocabulary, agreeing a data structure before you need it, quantifying how wrong you might be, and
+  reporting honestly — are exactly the skills the <a href="ia-solution.html">IA</a> and Paper 1 reward. Students who
+  treat these ten hours as a real investigation routinely finish the IA weeks faster, because the expensive part of
+  the IA is not the coding; it is knowing what to write down.</p>
 </div>
 
-<h2>What the IB expects, precisely</h2>
+<h2>1. What the IB expects, precisely</h2>
+
+<p>Read the requirements as a checklist against your plan. Most projects that "fail" do so because they quietly
+violate one of the first three rows while producing perfectly good work.</p>
 
 <div class="table-wrap">
 <table>
-  <thead><tr><th>Requirement</th><th>What it means in practice</th></tr></thead>
+  <thead><tr><th>Requirement</th><th>What it means in practice</th><th>How a group accidentally breaks it</th></tr></thead>
   <tbody>
     <tr><td><strong>Interdisciplinary</strong></td><td>Students from at least two group 4 subjects (computer
     science, physics, chemistry, biology, and the systems/ESS options). A group of four CS students is not a
-    collaborative sciences project.</td></tr>
+    collaborative sciences project.</td><td>Four CS students work beautifully together. Still inadmissible: there is
+    no second subject's standards of evidence in the room.</td></tr>
     <tr><td><strong>Collaborative</strong></td><td>One shared investigation with a shared output. Four parallel
-    mini-projects stapled together is the most common failure — see below.</td></tr>
+    mini-projects stapled together is the most common failure.</td><td>Each member writes "their section" of the
+    slides and nobody can explain anyone else's part.</td></tr>
     <tr><td><strong>Ten hours</strong></td><td>Recommended, and includes planning, data collection, processing,
-    preparation and presentation. It is not ten hours of coding.</td></tr>
+    preparation and presentation. It is not ten hours of coding.</td><td>One student writes 600 lines of code alone
+    at home; the rest of the group watches.</td></tr>
     <tr><td><strong>A presentation</strong></td><td>Usually 10–20 minutes plus questions, to an audience of
-    teachers and peers. Some schools run a whole-year science fair.</td></tr>
+    teachers and peers. Some schools run a whole-year science fair.</td><td>A slide deck of screenshots with no live
+    demonstration and no uncertainty discussed.</td></tr>
     <tr><td><strong>Not formally assessed</strong></td><td>No mark goes to the IB. Your school may record
-    participation. The real assessment is whether you learned the process.</td></tr>
+    participation. The real assessment is whether you learned the process.</td><td>Treated as a free period; nothing
+    documented; the IA then starts from zero.</td></tr>
     <tr><td><strong>Documented</strong></td><td>Keep a shared log, the data, the processing scripts and the slides.
-    This is the habit that makes the IA cheap later.</td></tr>
+    This is the habit that makes the IA cheap later.</td><td>Everything lives in one student's Downloads folder and
+    is lost by DP2.</td></tr>
   </tbody>
 </table>
 </div>
 
-<h2>How the group should work</h2>
+<div class="callout callout--note">
+  <span class="callout__label">A note on the 2027 guide</span>
+  <p>Computer science moved to a new guide with first assessment 2027. The collaborative sciences project remains a
+  group 4 shared element rather than a CS-specific assessment, so its weight and wording are set by your school's
+  science department as much as by the CS guide. Confirm the local arrangement — group size, deadline, presentation
+  format — with your teacher before you plan. The process below is worth doing regardless of the exact rules.</p>
+</div>
+
+<h2>2. How the group should work</h2>
 
 <p>The failure mode of interdisciplinary work is that the physicist asks the question, the biologist collects the
 data, the chemist writes it up, and the computer scientist is handed a spreadsheet at the end and asked to make a
@@ -92,7 +115,553 @@ chart. That is not collaboration, and it teaches you nothing.</p>
   </ol>
 </div>
 
-<h2>Twelve projects that genuinely need both computer science and a science</h2>
+<details class="derivation">
+  <summary><span class="badge">Why this works</span> Why schema-first is not bureaucracy</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Every later decision reads the data: the cleaning rules, the statistic, the chart, the conclusion. The
+      schema is the interface they all depend on.</li>
+      <li>If the interface changes after collection — a column renamed, units moved into cells, two measurements
+      merged into one cell — then every downstream artefact must be rewritten, and the rewrites are where errors
+      enter silently.</li>
+      <li>Changing a schema costs one minute before collection and one hour after. That asymmetry is the entire
+      argument.</li>
+      <li><strong>When this advice is wrong:</strong> if you are exploring a phenomenon with no hypothesis and will
+      throw the first dataset away anyway, a loose schema is fine. Label that dataset <em>exploratory</em> and keep
+      it out of the final analysis.</li>
+    </ol>
+  </div>
+</details>
+
+<h3>2.1 Running the group: the mechanics nobody tells you</h3>
+
+<p>Most group projects collapse for organisational reasons, not intellectual ones. Three habits prevent almost all
+of them.</p>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>A decision log, not a chat thread</h4>
+    <p>One shared document. Every meeting adds: date, present, decisions, who does what by when, and what was
+    rejected and why. When someone asks in week six "why are we measuring at 50 Hz?", the answer is on record rather
+    than reconstructed from memory.</p>
+  </div>
+  <div class="card">
+    <h4>Version control from hour one</h4>
+    <p>Put the scripts in a shared repository (GitHub, GitLab, or even a shared folder with numbered versions). Commit
+    with a message saying what changed. The first time someone overwrites the analysis, you will be glad. This is
+    also the habit Paper 2 and the IA assume.</p>
+  </div>
+  <div class="card">
+    <h4>A named fallback for every critical task</h4>
+    <p>If the person who owns the sensor falls ill, who collects? If the analysis script breaks, who fixes it? Naming
+    a second person costs thirty seconds and removes the single-point-of-failure that ruins most group work.</p>
+  </div>
+  <div class="card">
+    <h4>Divide by artefact, not by slide</h4>
+    <p>Splitting "you do slides 1–4, I do 5–8" produces parallel work. Splitting by artefact — one owns the raw data
+    file, one the cleaning script, one the chart, one the uncertainty paragraph — produces pieces that must connect,
+    which forces collaboration.</p>
+  </div>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — the three organisational failures</span>
+  <ol class="steps">
+    <li><strong>The "we'll meet next week" spiral.</strong> Three meetings cancelled, then a frantic weekend. Fix:
+    book the next four sessions in the first meeting, with a deliverable attached to each.</li>
+    <li><strong>One person becomes the bottleneck.</strong> Usually you, because only you can run the script. Fix:
+    pair with someone in session one and make them run it while you watch.</li>
+    <li><strong>The last-two-days rebuild.</strong> The analysis is thrown away and rewritten in panic, losing the
+    documented decisions. Fix: freeze the pipeline one week before the presentation and only fix bugs after that.</li>
+  </ol>
+</div>
+
+<h2>3. Choosing a question that data can answer</h2>
+
+<p>This is the single highest-leverage hour of the project. A vague question produces a vague dataset, which produces
+a chart that shows nothing, which produces a presentation where you apologise for your results.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — operationalising a question</span>
+  <ol class="steps">
+    <li><strong>Name the phenomenon</strong> in one sentence, without jargon: "the trolley slows down faster on
+    carpet than on the lab floor."</li>
+    <li><strong>Choose the independent variable</strong> — what you deliberately change (surface type: carpet,
+    vinyl, polished wood).</li>
+    <li><strong>Choose the dependent variable</strong> — what you measure (time for the trolley to travel 1.0 m).</li>
+    <li><strong>List the controlled variables</strong> — everything else you must hold still (trolley mass, release
+    height, gradient, wheel alignment, who releases it).</li>
+    <li><strong>State the precision of each measurement</strong> before collecting (time ±0.01 s on a light gate,
+    distance ±1 mm).</li>
+    <li><strong>Decide in advance what would count as an answer</strong> — "a difference larger than about 0.05 s,
+    given our timing uncertainty." This step is what separates an investigation from a demonstration.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 1</span> Operationalising "does caffeine affect reaction time?"</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A biology student proposes: "Does caffeine make people react faster?" Turn this
+    into a plan that produces answerable data.</p>
+    <ol class="steps">
+      <li><strong>Phenomenon:</strong> people who have consumed caffeine respond more quickly to a visual stimulus.</li>
+      <li><strong>Independent variable:</strong> caffeine condition — 0 mg (control), 100 mg, 200 mg. Crucially this
+      must be <em>blinded</em>: the participant and the person timing must not know which condition, or you measure
+      expectation rather than caffeine.</li>
+      <li><strong>Dependent variable:</strong> reaction time in milliseconds, measured with a computer-based test
+      (key press after a shape appears), recorded automatically — not with a stopwatch.</li>
+      <li><strong>Controlled variables:</strong> time of day, hours of sleep, time since last food, hand used,
+      screen brightness, practice trials discarded.</li>
+      <li><strong>Precision:</strong> the display refreshes at 60 Hz, so the timing resolution is about 17 ms — that
+      is your floor, and it must be stated.</li>
+      <li><strong>What counts as an answer:</strong> a difference in mean reaction time larger than roughly twice the
+      standard error, with a sufficient number of trials and participants.</li>
+      <li><strong>Ethics:</strong> human participants, so consent, no pressure to consume caffeine, medical
+      conditions respected, data anonymised and deletable.</li>
+    </ol>
+    <div class="answerline"><b>Why the CS contribution is structural here:</b> the test program must randomise trial
+    order, blind the condition, timestamp every response, and export one row per trial. Without that you have 15
+    handwritten numbers and no way to detect a practice effect.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 2</span> Operationalising "which light makes plants grow fastest?"</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> "Which light colour makes seedlings grow best?" — the most common vague biology
+    proposal, and the easiest to fix.</p>
+    <ol class="steps">
+      <li><strong>Problem with the original:</strong> "best" is undefined and "colour" is not a quantity. Red and blue
+      LEDs differ in wavelength <em>and</em> intensity, so if you only change colour you have confounded two
+      variables.</li>
+      <li><strong>Fixed independent variable:</strong> wavelength band (450 nm blue, 660 nm red, broad-spectrum
+      white control) <em>at matched photon flux</em>. Measure the flux and report it; do not trust the LED label.</li>
+      <li><strong>Dependent variable:</strong> stem height in mm, measured from a fixed reference in a photograph
+      taken daily at the same time and distance.</li>
+      <li><strong>Controlled:</strong> watering schedule, soil batch, temperature, photoperiod, pot position rotated
+      daily to remove the window-side advantage.</li>
+      <li><strong>Precision:</strong> ruler ±1 mm by hand; ±0.3 mm if you calibrate the photograph with a scale
+      object in frame.</li>
+      <li><strong>What counts as an answer:</strong> a difference in mean growth rate larger than the spread between
+      seedlings in the same tray — which is why you need several seedlings per condition, not one.</li>
+    </ol>
+    <div class="answerline"><b>Why the CS contribution is structural here:</b> daily automated photography plus
+    pixel-to-millimetre calibration gives you 30 days × N seedlings of measurements instead of three ruler readings,
+    and it lets you fit a growth <em>rate</em> rather than compare final heights. The rotation schedule also has to be
+    generated, not remembered.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — four ways to ruin the question</span>
+  <ol class="steps">
+    <li><strong>Confounding.</strong> You change two things at once and cannot attribute the effect. Always ask:
+    "what else changed when I changed this?"</li>
+    <li><strong>No control condition.</strong> Without a baseline you can only say the groups differ, not that your
+    variable caused it.</li>
+    <li><strong>Too few repeats.</strong> One seedling per condition measures that seedling, not the light. Repeats
+    are what let you estimate spread, and spread is what makes a conclusion defensible.</li>
+    <li><strong>A question with no possible negative result.</strong> If every outcome is "consistent with the
+    hypothesis", you have not designed a test. State in advance what result would surprise you.</li>
+  </ol>
+</div>
+
+<h2>4. Designing the data schema</h2>
+
+<p>The schema is the contract between the people collecting and the people analysing. Agree it before you collect a
+single number.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the schema rules</span>
+  <ol class="steps">
+    <li><strong>One row per observation.</strong> Not one row per participant with columns for each trial — that is
+    "wide" format and it breaks the moment the number of trials differs.</li>
+    <li><strong>Units live in the header, never in the cell.</strong> Write <code>time_s</code>, not
+    <code>time</code> with values like "1.23 s". A cell containing text cannot be averaged.</li>
+    <li><strong>Every column has a declared type</strong> — integer, real, category, timestamp, boolean — and a rule
+    for what is valid (e.g. <code>0 &lt; time_s &lt; 10</code>).</li>
+    <li><strong>Record metadata, not just measurements:</strong> who collected it, which instrument, the condition,
+    and any anomaly noticed at the time.</li>
+    <li><strong>Never overwrite the raw file.</strong> Cleaning writes a new file. This is the habit that makes your
+    IA defensible.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> A schema for the light-gate trolley experiment</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Design a CSV schema for measuring how long a trolley takes to travel 1.0 m over
+    three surfaces, with five repeats each.</p>
+    <p><strong>Schema:</strong></p>
+<pre>trial_id,surface_material,repeat_no,time_s,distance_m,gate_id,collected_by,anomaly_note
+1,carpet,1,1.42,1.000,A,lucas,
+2,carpet,2,1.39,1.000,A,lucas,
+3,carpet,3,1.51,1.000,A,lucas,released early
+4,vinyl,1,0.88,1.000,A,lucas,
+...</pre>
+    <ol class="steps">
+      <li><strong>Why <code>trial_id</code>:</strong> a stable key so a row can be discussed, excluded, or traced
+      without referring to "the third one".</li>
+      <li><strong>Why <code>anomaly_note</code>:</strong> the observation "released early" is worth more than the
+      number, and it is forgotten within minutes if not recorded.</li>
+      <li><strong>Validation rules:</strong> <code>time_s</code> real and between 0.2 and 5.0;
+      <code>surface_material</code> one of {carpet, vinyl, wood}; <code>repeat_no</code> integer 1–5;
+      <code>anomaly_note</code> may be empty, everything else must not be.</li>
+      <li><strong>A minimal validation check</strong> (Python):</li>
+    </ol>
+<pre>VALID_SURFACES = {"carpet", "vinyl", "wood"}
+for row in rows:
+    if row["surface_material"] not in VALID_SURFACES:
+        log("bad surface", row["trial_id"])
+    if not (0.2 &lt;= float(row["time_s"]) &lt;= 5.0):
+        log("implausible time", row["trial_id"])
+    if not row["collected_by"]:
+        log("missing collector", row["trial_id"])</pre>
+    <div class="answerline"><b>Answer:</b> a schema of eight columns with declared types, units in headers, and three
+    validation rules — agreed before collection, so that no downstream artefact needs rewriting.</div>
+  </div>
+</details>
+
+<div class="callout callout--link">
+  <span class="callout__label">Connection</span>
+  <p>This is <a href="A3-databases.html">A3 databases</a> in miniature: entity, attributes, data types, validation
+  rules, and a primary key. If you can design this CSV properly, normalisation and SQL constraints are the same idea
+  with more machinery. It is also the direct rehearsal for the <a href="ia-solution.html">IA</a> design section.</p>
+</div>
+
+<h2>5. Collecting data: sensors, sampling and precision</h2>
+
+<p>Hand-collected data is the main reason these projects produce nothing interesting. Automate wherever you can: a
+sensor logging at a fixed rate gives you more rows, a timestamp for every row, and an audit trail.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Concept</th><th>What it means</th><th>Why it matters for your analysis</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Sampling rate</strong></td><td>How many measurements per second (Hz).</td><td>Sample far faster
+    than the effect you are looking for. For a pendulum with period ~1 s, 50 Hz gives ~50 points per swing — ample.
+    For a collision lasting 20 ms, 50 Hz gives one point and you learn nothing.</td></tr>
+    <tr><td><strong>Resolution</strong></td><td>The smallest change the instrument can represent (e.g. a 10-bit ADC
+    over 0–5 V resolves ~4.9 mV).</td><td>Sets the floor on your precision. Quoting a mean to five decimal places
+    from a 10-bit sensor is dishonest.</td></tr>
+    <tr><td><strong>Accuracy vs precision</strong></td><td>Accuracy = closeness to the true value; precision =
+    repeatability.</td><td>A sensor can be precisely wrong (consistently offset). Calibration fixes accuracy;
+    repeated trials reveal precision.</td></tr>
+    <tr><td><strong>Calibration</strong></td><td>Comparing the instrument against a known standard.</td><td>Without
+    it you cannot distinguish "the effect" from "the sensor's offset". Record the calibration data too.</td></tr>
+    <tr><td><strong>Audit trail</strong></td><td>Raw file, unmodified, plus the script that cleaned it.</td><td>Lets
+    anyone — including you in six months — reproduce every number in the presentation.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 4</span> Choosing a sampling rate for a cooling curve</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> You are logging the temperature of hot water as it cools to room temperature. The
+    whole experiment runs for 20 minutes. What sampling rate do you choose, and why?</p>
+    <ol class="steps">
+      <li><strong>Identify the timescale of the effect.</strong> Newton's cooling is exponential with a time constant
+      of roughly 5–10 minutes here. The fastest meaningful change is therefore on the order of tens of seconds.</li>
+      <li><strong>Apply the rule of thumb:</strong> sample at least ten times faster than the fastest change you care
+      about. Tens of seconds → sample about once per second (1 Hz).</li>
+      <li><strong>Check the total volume:</strong> 1 Hz × 20 min × 60 s = 1,200 rows. Entirely manageable, and enough
+      to fit an exponential with confidence.</li>
+      <li><strong>Consider the alternative:</strong> 100 Hz would give 120,000 rows — no extra information about a
+      10-minute process, but a much larger file and slower processing. More data is not automatically better.</li>
+      <li><strong>Add margin for the unexpected:</strong> if you might later study the first two seconds (e.g. the
+      sensor's own response time), log at 10 Hz and downsample for the cooling fit.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 1 Hz is sufficient and 10 Hz is a safe choice; 100 Hz is wasted effort.
+    The reasoning is to match the sampling rate to the timescale of the effect, not to maximise the number of rows.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam link</span>
+  <p>Sampling, resolution and analogue-to-digital conversion are examined directly in
+  <a href="A1-computer-fundamentals.html">A1</a>. Being able to say "our 10-bit ADC over 0–5 V gives 4.9 mV
+  resolution, which is far below the 0.1 °C change we are studying, so resolution is not our limiting factor" is
+  exactly the kind of justified reasoning Paper 1 rewards.</p>
+</div>
+
+<h2>6. Cleaning and validating data</h2>
+
+<p>Real data is dirty. The professional habit is not to avoid that but to make every cleaning decision explicit,
+reversible and logged.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the cleaning procedure</span>
+  <ol class="steps">
+    <li><strong>Copy, never edit.</strong> <code>raw.csv</code> is read-only. All cleaning produces
+    <code>clean.csv</code>.</li>
+    <li><strong>Validate types first</strong> — anything that will not parse as its declared type is either a
+    collection error or a schema violation.</li>
+    <li><strong>Handle missing values explicitly.</strong> Decide per column: exclude the row, or impute, or leave
+    as missing and let the analysis skip it. Write the decision down.</li>
+    <li><strong>Find impossible values</strong> (negative mass, temperature of 900 °C in a water bath) and trace them
+    to the source before deciding.</li>
+    <li><strong>Treat outliers as questions, not as dirt.</strong> An outlier is often the most interesting
+    measurement. If you exclude it, say so, say why, and report what happens to the conclusion if you keep it.</li>
+    <li><strong>Log every exclusion</strong> with the trial id and the reason.</li>
+  </ol>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 5</span> Cleaning a temperature log with a sensor dropout</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A 1,200-row temperature log contains 14 rows where the sensor returned
+    <code>-999</code> (a standard "no reading" sentinel), 3 rows with the value <code>null</code>, and one run of
+    40 consecutive identical values followed by a jump of 2.4 °C. Clean it, justifying each decision.</p>
+    <ol class="steps">
+      <li><strong>Identify the sentinel.</strong> <code>-999</code> is not a temperature; it is the sensor reporting
+      failure. Replace with missing — never treat it as a number, because averaging it in would corrupt the mean
+      catastrophically.</li>
+      <li><strong>Count the damage.</strong> 14 + 3 = 17 of 1,200 rows = 1.4 %. Small enough to exclude rows without
+      biasing the fit, provided the dropouts are not clustered at a particular temperature.</li>
+      <li><strong>Check for clustering.</strong> If all dropouts occur in the first minute (sensor warming up), the
+      missingness is not random and excluding them is defensible only if you state it. Here they are scattered, so
+      exclusion is safe.</li>
+      <li><strong>The flat run and the jump.</strong> 40 identical values then a 2.4 °C jump is the signature of a
+      sensor that stalled and then re-synced. The flat values are not measurements and the jump is not a physical
+      event — water at this scale cannot change 2.4 °C instantaneously. Exclude the flat run and treat the first
+      value after the jump as suspect; verify against the neighbouring trend.</li>
+      <li><strong>Log it.</strong> Excluded: rows 412–425 (sentinel), 700, 811, 999 (null), 1040–1079 (stall).
+      Reason recorded for each.</li>
+      <li><strong>Sanity check:</strong> after cleaning, re-plot and confirm the remaining curve is smooth and
+      monotonic decreasing. If a jump survives, you have not finished.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 57 of 1,200 rows removed (4.8 %), every removal justified and logged, with
+    the raw file untouched. The key insight is that <code>-999</code> and a stalled sensor are <em>instrument
+    states</em>, not measurements, and the flat-run-plus-jump pattern identifies them.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — three cleaning sins</span>
+  <ol class="steps">
+    <li><strong>Deleting outliers to make the graph look better.</strong> This is scientific misconduct even at
+    school level, and examiners can smell it. Exclude only with a stated, instrument-based reason.</li>
+    <li><strong>Averaging in sentinel values.</strong> A single <code>-999</code> in 1,200 rows moves the mean by
+    about 0.8 °C — enough to manufacture or destroy an effect.</li>
+    <li><strong>Overwriting <code>raw.csv</code>.</strong> Once it is gone you cannot answer "what did the sensor
+    actually say?", and neither can anyone checking your work.</li>
+  </ol>
+</div>
+
+<h2>7. Choosing the analysis: match the method to the question</h2>
+
+<p>The most common analytical error in these projects is using a complicated method when a simple one answers the
+question, or a simple one when the question demands more. Decide from the question, not from the software you
+happen to have open.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>If your question is…</th><th>Use</th><th>Do not use</th></tr></thead>
+  <tbody>
+    <tr><td>"Is there a difference between groups?"</td><td>Mean or median per group <em>with a measure of spread</em>,
+    and error bars on the chart.</td><td>A single bar per group with no spread — this cannot support any conclusion.</td></tr>
+    <tr><td>"Do the two variables move together?"</td><td>Scatter plot first, then correlation, then a fitted line
+    if the relationship looks linear.</td><td>Correlation alone as evidence of causation.</td></tr>
+    <tr><td>"What is the underlying law?"</td><td>Fit the model your science predicts (exponential cooling, inverse
+    square, SIR curve) and inspect the residuals.</td><td>A high-degree polynomial that passes through every point
+    and predicts nothing.</td></tr>
+    <tr><td>"Can we predict a category?"</td><td>A simple classifier with a train/test split and a confusion matrix.</td>
+    <td>A deep neural network on 200 rows — it will memorise and you will not be able to explain it.</td></tr>
+    <tr><td>"How confident are we?"</td><td>Standard error, confidence interval, or bootstrapping.</td><td>A p-value
+    quoted with no effect size and no context.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="derivation">
+  <summary><span class="badge">Why this works</span> Why you fit the model your science predicts</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>A model is a claim about mechanism. Newton's law of cooling predicts an exponential approach to ambient
+      temperature; fitting an exponential therefore tests that claim.</li>
+      <li>A flexible curve (a high-degree polynomial) can follow any data, including noise. It fits the past
+      perfectly and predicts the future badly — it has memorised rather than learned.</li>
+      <li>The diagnostic is the <strong>residuals</strong>: the differences between data and model. If the residuals
+      show a pattern, your model is missing structure. If they look random, your model has captured what there is to
+      capture.</li>
+      <li><strong>When a flexible model is right:</strong> when you have no theory and only want interpolation
+      within the measured range. Say so explicitly, and do not extrapolate.</li>
+    </ol>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 6</span> Line or exponential? Choosing by residuals</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> You have 1,200 temperature readings over 20 minutes. Should you fit a straight line
+    or an exponential decay, and how do you decide?</p>
+    <ol class="steps">
+      <li><strong>Fit both.</strong> Straight line: residual pattern is a clear U-shape — the data lies below the
+      line at the start, above in the middle, below at the end. Exponential: residuals look like noise.</li>
+      <li><strong>Interpret.</strong> The U-shaped residual pattern is not bad luck; it is the signature of fitting
+      the wrong shape. A curve that bends is being forced through a straight model.</li>
+      <li><strong>Quantify.</strong> Compare the spread of residuals: the exponential leaves residuals roughly three
+      times smaller than the line. That is a large improvement for the same number of parameters.</li>
+      <li><strong>Check the physics.</strong> The exponential's fitted constant should be positive and the fitted
+      ambient temperature should be close to the room temperature you measured independently. If the fit says the
+      room is at 4 °C, something is wrong with the data, not with Newton.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> the exponential, chosen because its residuals are patternless and three
+    times smaller, and because its parameters correspond to measurable physical quantities.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — analysis errors that cost you the conclusion</span>
+  <ol class="steps">
+    <li><strong>Correlation stated as causation.</strong> "Ice cream sales and drownings both rise" does not mean
+    ice cream causes drowning; both track temperature. Always name the plausible third variable.</li>
+    <li><strong>No spread reported.</strong> "The mean was 1.42 s" with nothing else is not a result. A mean without
+    a spread cannot support "faster" or "slower".</li>
+    <li><strong>Testing until something is significant.</strong> Trying twenty variables and reporting the one that
+    reached significance is how false discoveries are manufactured. Decide the test in advance, or state that the
+    finding is exploratory.</li>
+  </ol>
+</div>
+
+<h2>8. Uncertainty: the part everyone skips</h2>
+
+<p>This is the section that separates a project worth presenting from a poster with a chart on it. Every measurement
+is wrong by some amount; the question is by how much, and whether that amount is small enough for your conclusion to
+survive.</p>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why this exists</span>
+  <p>A result without an uncertainty is a claim that cannot be checked. "The carpet was slower" is either a
+  measurement of the world or an artefact of your timing precision, and without the uncertainty you cannot tell which.
+  This is also precisely what Paper 1 asks you to <em>evaluate</em>: not "what did they find?" but "should we believe
+  it?"</p>
+</div>
+
+<details class="derivation">
+  <summary><span class="badge">Why this works</span> Why independent uncertainties combine in quadrature</summary>
+  <div class="dbody">
+    <ol class="steps">
+      <li>Suppose a quantity depends on two independent measurements, each with its own uncertainty. Sometimes the
+      first is high and the second low; sometimes the reverse.</li>
+      <li>Because the errors are independent, they partly cancel. Adding them directly (worst case) would assume both
+      are always at their extreme in the same direction, which is pessimistic and rarely true.</li>
+      <li>The honest combination is the square root of the sum of squares — <em>in quadrature</em> — which sits
+      between "they cancel" and "they both conspire against you".</li>
+      <li><strong>When this is wrong:</strong> if the errors are correlated (both come from the same mis-calibrated
+      instrument), they do not cancel, and you must add them directly. Identify shared sources and treat them
+      separately.</li>
+    </ol>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 7</span> Is the difference real? Error bars on the trolley data</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Five runs on carpet give times 1.42, 1.39, 1.51, 1.44, 1.48 s (one run flagged
+    "released early" and excluded, leaving four: 1.42, 1.39, 1.51, 1.44). Five runs on vinyl give 0.88, 0.91, 0.86,
+    0.90, 0.89 s. Is the carpet genuinely slower, given a timing precision of ±0.02 s?</p>
+    <ol class="steps">
+      <li><strong>Carpet mean:</strong> (1.42 + 1.39 + 1.51 + 1.44) / 4 = 5.76 / 4 = 1.44 s.</li>
+      <li><strong>Carpet spread:</strong> values range 1.39 to 1.51, so roughly ±0.06 s around the mean — three times
+      the instrument precision, meaning the <em>run-to-run variation</em> dominates, not the clock.</li>
+      <li><strong>Vinyl mean:</strong> (0.88 + 0.91 + 0.86 + 0.90 + 0.89) / 5 = 4.44 / 5 = 0.888 s, spread about
+      ±0.025 s.</li>
+      <li><strong>Compare:</strong> the difference is 1.44 − 0.89 = 0.55 s. The combined spread is roughly
+      0.06 + 0.03 = 0.09 s. The difference is about six times larger than the spread.</li>
+      <li><strong>Conclusion:</strong> yes — carpet is genuinely slower under these conditions. The effect is far
+      larger than the measurement variation, so the conclusion does not depend on the exact statistical test.</li>
+      <li><strong>Report it properly:</strong> "Carpet 1.44 ± 0.06 s, vinyl 0.89 ± 0.03 s (mean ± spread, n = 4 and 5).
+      The difference of 0.55 s is about six times the combined spread, so it is not attributable to measurement
+      variation. Run-to-run variation exceeded instrument precision, indicating the release mechanism is the dominant
+      source of uncertainty — repeating with a mechanical release would tighten this."</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> the difference is real, and — more usefully — the analysis identifies the
+    release mechanism, not the stopwatch, as the thing to fix next time.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam link</span>
+  <p>Questions that ask you to <strong>evaluate</strong> or <strong>discuss</strong> a data-based finding are really
+  asking about validity and uncertainty: was the sample big enough, was the variation controlled, could the
+  conclusion be an artefact? Practise writing that paragraph here, at no cost, and it becomes automatic in
+  <a href="case-study.html">Paper 1</a>.</p>
+</div>
+
+<h2>9. Visualisation that shows the effect</h2>
+
+<p>A chart is an argument. Choose the one that makes your point honestly, and refuse the ones that exaggerate it.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>You want to show</th><th>Use</th><th>Avoid</th></tr></thead>
+  <tbody>
+    <tr><td>Comparison between a few categories</td><td>Bar chart <em>with error bars</em>, or better, a dot plot
+    showing every measurement.</td><td>A bar chart whose axis starts at 0.8 to make a small difference look huge.</td></tr>
+    <tr><td>Relationship between two quantities</td><td>Scatter plot, with a fitted line if appropriate.</td><td>
+    Joining the points with a zig-zag line, which implies measurements between points you never took.</td></tr>
+    <tr><td>Change over time</td><td>Line graph with time on the horizontal axis.</td><td>Using an index-number
+    category axis that spaces unequal time intervals equally.</td></tr>
+    <tr><td>Distribution / spread</td><td>Histogram or box plot.</td><td>A single "average" bar that hides the
+    spread entirely.</td></tr>
+    <tr><td>Composition</td><td>Stacked bar (few categories only).</td><td>A pie chart with twelve slices and no
+    labels.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — four dishonest charts</span>
+  <ol class="steps">
+    <li><strong>Truncated axis.</strong> Starting the vertical axis above zero multiplies a small difference visually.
+    If you must truncate (e.g. to show variation around a baseline), label it unmistakably.</li>
+    <li><strong>No error bars.</strong> A bar with no spread invites the reader to over-trust it.</li>
+    <li><strong>No units on the axes.</strong> "Time" could be seconds or milliseconds; the reader should not have to
+    guess.</li>
+    <li><strong>3D effects and dual axes.</strong> Both distort perception for no informational gain. Two separate
+    charts are clearer than one chart with two y-axes.</li>
+  </ol>
+</div>
+
+<h2>10. The process, hour by hour</h2>
+
+<div class="io-plan">
+  <div class="io-plan__row"><div class="io-plan__t">0.5 h</div><div class="io-plan__c">
+    <strong>Form the group and pick a direction.</strong> Confirm at least two group 4 subjects are represented.
+    Brainstorm phenomena, not methods. Choose something where the volume of data is the point.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">1 h</div><div class="io-plan__c">
+    <strong>Operationalise the question.</strong> Independent, dependent and controlled variables written down;
+    measurement precision stated; "what would count as an answer" agreed. Ethics checked (human data? consent?).
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">0.5 h</div><div class="io-plan__c">
+    <strong>Agree the schema.</strong> Column names with units, types, validation rules, metadata columns. Everyone
+    signs off. Set up the shared repository and the decision log.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">3 h</div><div class="io-plan__c">
+    <strong>Collect.</strong> Automate wherever possible. Calibrate first. Record anomalies as they happen. Back up
+    the raw file immediately.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">3 h</div><div class="io-plan__c">
+    <strong>Process.</strong> Validate, clean with a log, choose the analysis from the question, quantify uncertainty,
+    and produce charts with error bars and units. Keep every script in version control.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">1 h</div><div class="io-plan__c">
+    <strong>Stress-test.</strong> Try to break your own conclusion: what is the strongest alternative explanation?
+    What would a sceptical teacher ask? Prepare those answers.
+  </div></div>
+  <div class="io-plan__row"><div class="io-plan__t">1 h</div><div class="io-plan__c">
+    <strong>Present.</strong> Question → method → what the data shows → what it does not show → what next. Include a
+    live run of the analysis.
+  </div></div>
+</div>
+
+<h2>11. Project ideas that genuinely need both computer science and a science</h2>
+
+<p>The test for a good project: if a scientist with a calculator could do it just as well, it is not
+interdisciplinary. Look for volume, repetition, or simulation.</p>
 
 <div class="table-wrap">
 <table>
@@ -122,6 +691,14 @@ chart. That is not collaboration, and it teaches you nothing.</p>
     <td>Spectrogram generation, simple classification, confusion matrix</td></tr>
     <tr><td>12</td><td>Battery discharge and internal resistance under load</td><td>Physics</td>
     <td>Automated load cycling, integration of current over time, degradation trend</td></tr>
+    <tr><td>13</td><td>Traffic or pedestrian flow modelling around the school gate</td><td>Physics / Geography</td>
+    <td>Agent-based simulation, queueing statistics, comparison against counted data</td></tr>
+    <tr><td>14</td><td>Water-quality time series from a local stream</td><td>Biology / Chemistry / ESS</td>
+    <td>Automated sampling log, trend and seasonality decomposition, rainfall correlation</td></tr>
+    <tr><td>15</td><td>Cryptography-adjacent: random number generator quality testing</td><td>Maths / Physics</td>
+    <td>Statistical test batteries (frequency, runs, autocorrelation) over millions of bits</td></tr>
+    <tr><td>16</td><td>Sports performance: shot trajectory from video</td><td>Physics / PE</td>
+    <td>Frame-by-frame tracking, projectile fitting, drag estimation</td></tr>
   </tbody>
 </table>
 </div>
@@ -134,32 +711,36 @@ chart. That is not collaboration, and it teaches you nothing.</p>
   your contribution is structural and the project is genuinely interdisciplinary.</p>
 </div>
 
-<h2>The process</h2>
+<h2>12. Ethics and safety</h2>
 
-<div class="io-plan">
-  <div class="io-plan__row"><div class="io-plan__t">1–2 h</div><div class="io-plan__c">
-    <strong>Plan.</strong> Research question that can be answered with data; variables identified (independent,
-    dependent, controlled); the schema agreed; roles assigned; risks and ethics checked (human data? animals?
-    consent?).
-  </div></div>
-  <div class="io-plan__row"><div class="io-plan__t">3–4 h</div><div class="io-plan__c">
-    <strong>Data collection.</strong> Automated wherever possible — a logging script or a sensor beats a human with
-    a stopwatch, and it gives you an audit trail. Record units, instrument precision and every anomaly at the time
-    it happens, not from memory later.
-  </div></div>
-  <div class="io-plan__row"><div class="io-plan__t">3–4 h</div><div class="io-plan__c">
-    <strong>Processing.</strong> This is your stage: validation and cleaning, handling missing values explicitly,
-    the analysis or model, uncertainty quantified, and visualisations that show the effect rather than decorate it.
-    Keep every script version-controlled in a shared folder.
-  </div></div>
-  <div class="io-plan__row"><div class="io-plan__t">1–2 h</div><div class="io-plan__c">
-    <strong>Presentation.</strong> Question → method → what the data shows → what it does not show → what we would
-    do next. Include a live run of the analysis, because "here is the script, let's run it now" is more persuasive
-    than any chart.
-  </div></div>
+<p>Check these before you collect anything, and record that you checked them. It takes fifteen minutes and it is the
+difference between a professional investigation and a careless one.</p>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>Human participants</h4>
+    <p>Informed consent, the right to withdraw, no coercion (especially with anything ingested), anonymised data,
+    and a stated deletion plan. If you are under 18, your school will have a specific procedure — follow it.</p>
+  </div>
+  <div class="card">
+    <h4>Animals and environment</h4>
+    <p>No harm, no distress, no removal from habitat. Observational studies are almost always the right choice at
+    school level. Check local rules before collecting from a natural environment.</p>
+  </div>
+  <div class="card">
+    <h4>Data privacy</h4>
+    <p>If you log location, images or identifiable data, you are handling personal data. Minimise it, anonymise it,
+    and do not publish raw identifiable records in your slides.</p>
+  </div>
+  <div class="card">
+    <h4>Academic honesty</h4>
+    <p>This project is genuinely collaborative and shared. Your <a href="ia-solution.html">IA</a> is not. Keep the
+    two clearly separate: do not reuse this dataset or these scripts for the IA without your teacher's explicit
+    permission, and never submit group work as individual work.</p>
+  </div>
 </div>
 
-<h2>What transfers — straight into Paper 1 and the IA</h2>
+<h2>13. What transfers — straight into Paper 1 and the IA</h2>
 
 <div class="table-wrap">
 <table>
@@ -183,6 +764,8 @@ chart. That is not collaboration, and it teaches you nothing.</p>
     <td>The single biggest IA mark-difference: client and success criteria</td></tr>
     <tr><td>Presenting and defending</td><td>Explaining a technical decision under questioning</td>
     <td>IA viva/checks; Paper 1 extended responses</td></tr>
+    <tr><td>Version control and a decision log</td><td>Reproducibility; audit trail</td>
+    <td>IA documentation; any real software team</td></tr>
   </tbody>
 </table>
 </div>
@@ -196,7 +779,7 @@ chart. That is not collaboration, and it teaches you nothing.</p>
   should be rehearsing here.</p>
 </div>
 
-<h2>How to document and present it</h2>
+<h2>14. How to document and present it</h2>
 
 <ul class="checklist">
   <li><label><input type="checkbox"><span>Shared log: date, who did what, decisions made, and what was discarded.</span></label></li>
@@ -206,6 +789,7 @@ chart. That is not collaboration, and it teaches you nothing.</p>
   <li><label><input type="checkbox"><span>Charts with labelled axes, units, error bars, and a one-sentence caption each.</span></label></li>
   <li><label><input type="checkbox"><span>A stated limitation for every claim — especially the ones you like.</span></label></li>
   <li><label><input type="checkbox"><span>Everyone in the group can explain every part, not only their own.</span></label></li>
+  <li><label><input type="checkbox"><span>The exclusion log: every removed row with its trial id and reason.</span></label></li>
 </ul>
 
 <div class="callout callout--how">
@@ -214,12 +798,15 @@ chart. That is not collaboration, and it teaches you nothing.</p>
   data (how much, how collected, what went wrong); three on the finding, with the chart and the uncertainty; two on
   what you would do differently. Then questions. Do not spend the time explaining your code — show it running and
   explain the <em>decision</em> behind it, in the same way you will in the IA.</p>
+  <p><strong>Prepare for three questions you will definitely be asked:</strong> "how do you know that is not just
+  noise?" (uncertainty), "what would you do differently?" (evaluation), and "what did <em>you</em> personally
+  contribute?" (your role). Have a specific answer ready for each, with a number in it.</p>
 </div>
 
-<h2>Common failure modes</h2>
+<h2>15. Common failure modes</h2>
 
 <div class="callout callout--trap">
-  <span class="callout__label">Trap — the five ways this goes wrong</span>
+  <span class="callout__label">Trap — the ways this goes wrong</span>
   <ol class="steps">
     <li><strong>Four parallel projects.</strong> Each student does their own thing and the slides are stapled
     together. Test: can any member of the group explain the whole investigation? If not, it is not collaborative.</li>
@@ -232,15 +819,13 @@ chart. That is not collaboration, and it teaches you nothing.</p>
     <li><strong>Over-engineering.</strong> A machine-learning model where a mean would do, or a web app nobody
     needs, built in the last two days. The brief is ten hours; a clean pipeline and an honest chart beats a
     half-finished system every time.</li>
+    <li><strong>Confusing the group project with the IA.</strong> The IA must be your own work. Keep the artefacts
+    separate and check with your teacher before reusing anything.</li>
   </ol>
 </div>
 
-<div class="callout callout--vocab">
-  <span class="callout__label">Vocabulary</span>
-  <p><strong>collaborative sciences project</strong><strong>interdisciplinary</strong><strong>group 4</strong><strong>research question</strong><strong>variable</strong><strong>schema</strong> /<strong>data collection</strong><strong>sampling rate</strong><strong>precision</strong><strong>uncertainty</strong><strong>error bars</strong><strong>outlier</strong><strong>missing value</strong><strong>validation</strong><strong>simulation</strong><strong>model fitting</strong><strong>visualisation</strong><strong>reproducible</strong><strong>audit trail</strong><strong>consent</strong><strong>peer / audience</strong> /<strong>limitation</strong><strong>live demo</strong></p>
-</div>
+<h2>16. Practice</h2>
 
-<h2>Practice</h2>
 <ol class="practice">
   <li><p>A group of four computer science students runs an excellent data-logging investigation and presents it
   together. Explain why this does not satisfy the requirement.</p>
@@ -286,7 +871,123 @@ chart. That is not collaboration, and it teaches you nothing.</p>
       session: a group that can all answer all questions clearly worked together, and it shows.</p>
     </div></details>
   </li>
+  <li><p>A sensor logs temperature with a 10-bit ADC over a range of 0–50 °C. Calculate the resolution in °C and
+  comment on whether it is adequate for detecting a 0.2 °C change.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>A 10-bit ADC has 2<sup>10</sup> = 1,024 levels.</li>
+        <li>Over 50 °C, the resolution is 50 / 1,024 ≈ 0.049 °C, i.e. about 0.05 °C.</li>
+        <li>A 0.2 °C change corresponds to about 0.2 / 0.049 ≈ 4 ADC levels.</li>
+        <li><strong>Adequate?</strong> Yes, but only just: four levels is enough to detect the change but too few to
+        measure it precisely. You would report the measured change to no better than about ±0.05 °C, and you should
+        state that noise may consume one or two of those levels.</li>
+      </ol>
+      <div class="answerline"><b>Answer:</b> ≈0.05 °C resolution; adequate to detect a 0.2 °C change but marginal for
+      measuring it precisely.</div>
+    </div></details>
+  </li>
+  <li><p>You fit a straight line to data that is really exponential. Describe what the residuals would look like and
+  explain why that pattern is diagnostic.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>The residuals would show a systematic curved pattern — below the line at one end, above in the middle,
+      below at the other (or the reverse). This is diagnostic because random error produces residuals scattered
+      without structure; a <em>pattern</em> means the model's shape is wrong, so part of the signal has been left in
+      the residuals. The fix is to fit the shape the science predicts (here an exponential), after which the
+      residuals should look like noise.</p>
+    </div></details>
+  </li>
+  <li><p>Explain the difference between accuracy and precision, and describe an experiment where a sensor could be
+  precise but inaccurate. How would you detect it?</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p><strong>Accuracy</strong> is closeness to the true value; <strong>precision</strong> is repeatability. A
+      thermometer with a constant +2 °C offset is precise (it gives the same reading every time) but inaccurate (that
+      reading is wrong by 2 °C). You detect it by <strong>calibration</strong> — measuring a known standard, such as
+      ice water at 0 °C or boiling water at 100 °C (corrected for altitude) — and comparing. Precision alone cannot
+      reveal this, which is why repeating a badly calibrated measurement only makes you consistently wrong.</p>
+    </div></details>
+  </li>
+  <li><p>Your dataset contains a value of <code>-999</code> in a temperature column. Give two things you should do
+  and one thing you must never do.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <ol class="steps">
+        <li><strong>Do:</strong> recognise it as a sentinel (an instrument "no reading" code, not a measurement) and
+        convert it to missing.</li>
+        <li><strong>Do:</strong> log the exclusion with the row id, and check whether the dropouts cluster in time —
+        clustered missingness is not random and must be stated.</li>
+        <li><strong>Never:</strong> include it in any average. A single −999 among 1,200 readings around 20 °C drags
+        the mean down by roughly 0.85 °C, which can manufacture or destroy an apparent effect.</li>
+      </ol>
+    </div></details>
+  </li>
+  <li><p>A group measures reaction times before and after a task and reports "the mean fell from 312 ms to 298 ms,
+  so the task improves reaction time." Identify the missing information and state what would make the claim
+  defensible.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p><strong>Missing:</strong> the spread within each condition, the number of trials and participants, the
+      measurement resolution, whether a control group did the same task, and whether practice effects were
+      controlled. <strong>To make it defensible:</strong> report mean ± spread with sample sizes (e.g. "312 ± 40 ms
+      before, 298 ± 38 ms after, n = 30 trials"), note that the difference (14 ms) is much smaller than the spread
+      (about 40 ms), and therefore conclude that the data do <em>not</em> support the claim without many more trials
+      or a control condition. The honest finding here is "no detectable effect", which is a legitimate and useful
+      result.</p>
+    </div></details>
+  </li>
+  <li><p>Explain why overwriting <code>raw.csv</code> is a serious problem even if you are confident your cleaning is
+  correct.</p>
+    <details class="answer"><summary>Show answer</summary><div class="dbody">
+      <p>Confidence is not the issue; <em>auditability</em> is. Once the raw file is gone, nobody — including you —
+      can verify that a cleaning decision was reasonable, reproduce the numbers, or recover from a mistaken
+      exclusion. A single overwritten file turns an investigation into an unverifiable claim. Keeping
+      <code>raw.csv</code> read-only and writing <code>clean.csv</code> costs nothing and makes every number
+      traceable, which is exactly the standard the IA and Paper 1 expect.</p>
+    </div></details>
+  </li>
 </ol>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary</span>
+  <div class="wordlist">
+    <div><b>collaborative sciences project</b> — <span>the shared group 4 investigation, about 10 hours, involving at least two DP sciences.</span></div>
+    <div><b>interdisciplinary</b> — <span>involving more than one subject area working on one problem.</span></div>
+    <div><b>group 4</b> — <span>the IB sciences subject group: physics, chemistry, biology, computer science, and related options.</span></div>
+    <div><b>research question</b> — <span>the specific question the investigation is designed to answer.</span></div>
+    <div><b>variable</b> — <span>a quantity that can change; independent (you change it), dependent (you measure it), controlled (you hold it fixed).</span></div>
+    <div><b>schema</b> — <span>the agreed structure of the data: column names, types, units and validation rules.</span></div>
+    <div><b>data collection</b> — <span>the process of gathering measurements.</span></div>
+    <div><b>sampling rate</b> — <span>how many measurements are taken per second, in hertz (Hz).</span></div>
+    <div><b>resolution</b> — <span>the smallest change an instrument can represent.</span></div>
+    <div><b>accuracy</b> — <span>how close a measurement is to the true value.</span></div>
+    <div><b>precision</b> — <span>how repeatable a measurement is.</span></div>
+    <div><b>calibration</b> — <span>comparing an instrument against a known standard to correct systematic error.</span></div>
+    <div><b>uncertainty</b> — <span>the range within which the true value is expected to lie.</span></div>
+    <div><b>error bars</b> — <span>marks on a chart showing the spread or uncertainty of each value.</span></div>
+    <div><b>outlier</b> — <span>a value far from the rest of the data; investigate before excluding.</span></div>
+    <div><b>missing value</b> — <span>a data point that was not recorded; handle explicitly, never silently.</span></div>
+    <div><b>sentinel value</b> — <span>a special code (e.g. −999) meaning "no reading", not a real measurement.</span></div>
+    <div><b>validation</b> — <span>checking that data matches its declared type and expected range.</span></div>
+    <div><b>residual</b> — <span>the difference between an observed value and the value a model predicts.</span></div>
+    <div><b>simulation</b> — <span>a computer model that imitates a system over time.</span></div>
+    <div><b>model fitting</b> — <span>choosing the parameters of a model so it best matches the data.</span></div>
+    <div><b>visualisation</b> — <span>representing data graphically.</span></div>
+    <div><b>reproducible</b> — <span>able to be run again by someone else and produce the same result.</span></div>
+    <div><b>audit trail</b> — <span>the record of what was done, in what order, and why.</span></div>
+    <div><b>consent</b> — <span>permission given by a participant before data is collected about them.</span></div>
+    <div><b>limitation</b> — <span>a stated weakness or boundary on what a result shows.</span></div>
+    <div><b>live demo</b> — <span>running the actual analysis during the presentation rather than showing screenshots.</span></div>
+  </div>
+</div>
+
+<ul class="checklist">
+  <li><label><input type="checkbox"><span>I can state the IB requirements for this project and check a plan against them.</span></label></li>
+  <li><label><input type="checkbox"><span>I can turn a vague question into variables, precisions and a stated "what counts as an answer".</span></label></li>
+  <li><label><input type="checkbox"><span>I can design a CSV schema with units in headers, declared types and validation rules.</span></label></li>
+  <li><label><input type="checkbox"><span>I can justify a sampling rate from the timescale of the effect.</span></label></li>
+  <li><label><input type="checkbox"><span>I can clean data with a logged, reversible procedure and never overwrite the raw file.</span></label></li>
+  <li><label><input type="checkbox"><span>I can choose an analysis from the question and justify it using residuals.</span></label></li>
+  <li><label><input type="checkbox"><span>I can quantify uncertainty and state whether a difference is larger than the spread.</span></label></li>
+  <li><label><input type="checkbox"><span>I can produce a chart with units, error bars and an honest axis.</span></label></li>
+  <li><label><input type="checkbox"><span>My group has a decision log, version control and a named fallback for each task.</span></label></li>
+</ul>
 
 <div class="conn">
   <span class="conn__title">Connections</span>

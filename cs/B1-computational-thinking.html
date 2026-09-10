@@ -5,149 +5,996 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>B1 · Computational thinking — DP Computer Science HL</title>
 <link rel="stylesheet" href="../assets/css/main.css">
-<script>
-window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']],processEscapes:true},
-options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
-function mjFallback(){var s=document.createElement('script');s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
 </head>
 <body>
 <div id="app-shell">
 
 <span class="eyebrow">Computer Science HL · Theme B · B1</span>
 <h1 class="page-title">B1 · Computational thinking</h1>
-<p class="lede">Computational thinking is not "thinking about computers" — it is the habit of taking a
-vague, messy real-world problem and reshaping it until a machine could carry it out. The five strands the syllabus
-names (think procedurally, logically, ahead, concurrently, abstractly) are not a list to memorise; they are five
-questions you ask yourself when you get stuck. Do this topic first, because every other B topic assumes it, and
-because the IB pseudocode you learn here is the language every Paper 2 question is written in.</p>
+<p class="lede">Computational thinking is not "thinking about computers" — it is the habit of taking a vague, messy
+real-world problem and reshaping it until a machine could carry it out. The five strands the syllabus names (think
+procedurally, logically, ahead, concurrently, abstractly) are not a list to memorise; they are five questions you ask
+yourself when you get stuck. Do this topic first, because every other B topic assumes it, because the IB pseudocode
+you learn here is the language most Paper 2 questions are written in, and because the four marks that separate a 5
+from a 7 in Paper 1 are almost always marks for <em>reasoning</em> rather than for facts.</p>
 <div class="page-meta">
-  <span class="tag">Theme B · examined in Paper 2</span>
-  <span class="tag">B1.1 Approaches to computational thinking</span>
-  <span class="tag tag--hl">HL and SL share B1; HL goes deeper in efficiency analysis</span>
+  <span class="tag">B1.1 · Approaches to computational thinking</span>
+  <span class="tag">B1.2 · Algorithm design, pseudocode, trace tables</span>
+  <span class="tag tag--hl">Paper 1 (theory) · Paper 2 (design &amp; trace) · IA (abstraction &amp; testing)</span>
 </div>
 
-<h2>The five strands</h2>
-
-<p>Each strand below is given with a worked example, because a definition alone earns nothing.</p>
-
-<h3>1 · Think procedurally</h3>
-
-<p>Break the problem into ordered steps, and notice where the same step repeats so it can become a procedure with
-parameters rather than being written twice.</p>
-
-<p><strong>Example.</strong> "Work out the student with the highest average mark." Procedural thinking turns this
-into: for each student, sum their marks and divide by how many there are; keep a record of the best average so far
-and the name that goes with it; whenever a student's average beats the best so far, replace both. Two sub-problems
-appear (average of one student; find the maximum over many), and the second is a pattern you will use for the rest
-of your life.</p>
-
-<h3>2 · Think logically</h3>
-
-<p>Decisions must be exhaustive and exclusive: every possible input must take exactly one path.</p>
-
-<p><strong>Example.</strong> "Grade the exam: A above 80, B above 70, C above 60, otherwise fail." Write it in
-descending order with a final catch-all:
-<code>if mark &gt; 80 then "A" else if mark &gt; 70 then "B" else if mark &gt; 60 then "C" else "Fail"</code>.
-Written in ascending order (<code>if mark &gt; 60 then "C"</code> first), a mark of 85 is caught by the first
-branch and graded C — a logic error, not a syntax error, so the program runs and silently gives wrong grades.
-That is the practical meaning of thinking logically.</p>
-
-<h3>3 · Think ahead</h3>
-
-<p>Design for inputs you have not seen yet, and for the consequences of your own choices.</p>
-
-<p><strong>Example.</strong> You write a program that reads a class list. Thinking ahead means asking: what if the
-file is empty? What if a name contains an apostrophe? What if there are 40 students rather than 30? What if someone
-runs it twice? What if the input is a number where you expected text? Every one of those is a decision you make
-<em>now</em>, cheaply, rather than a bug you find <em>later</em>, expensively. It is also what makes your IA strong:
-a testing table with boundary and erroneous data is "thinking ahead" written down.</p>
-
-<h3>4 · Think concurrently</h3>
-
-<p>Notice which parts of a task do not depend on each other, and could therefore happen at the same time.</p>
-
-<p><strong>Example.</strong> A program downloads ten images and then processes each one. Downloading is limited by
-the network; processing is limited by the CPU. They do not contend for the same resource, so while image 3 is
-downloading, images 1 and 2 can be processed. The parts that must stay in order are the ones with a genuine
-<em>dependency</em>: you cannot process an image before it has arrived. Concurrency is the study of which
-orderings are real constraints and which are accidents of how you happened to write the code.</p>
-
-<h3>5 · Think abstractly</h3>
-
-<p>Decide what to keep and what to discard, and give the thing you kept a name.</p>
-
-<p><strong>Example.</strong> A navigation app does not model roads. It models a graph: places as nodes, journeys as
-edges with a cost. It discards the road's surface, its width, its colour, whether it has a shop on it — and keeps
-exactly one number, the travel time. That act of discarding is what makes the problem solvable at all, and it is
-why the same shortest-path algorithm works for road networks, internet routing, and the number of edits between two
-words. Abstraction is the highest-value of the five strands and the one that most often appears in 6-mark
-"explain" questions.</p>
-
-<div class="callout callout--link">
-  <span class="callout__label">Connection</span>
-  <p>Abstraction is the same idea in every topic: it is the layer model in A1, the E-R model in A3, the feature
-  selection in A4, the class in B3, and the ADT in B4. In each case the pattern is identical — hide the
-  representation, expose the operations. If you can state that sentence and illustrate it with two examples from
-  different topics, you have the connections question in the bag.</p>
+<div class="callout callout--why">
+  <span class="callout__label">Why this exists</span>
+  <p>The 2027 guide moved the course away from "know a lot of definitions" and towards "solve an unfamiliar
+  problem and justify the solution". That is computational thinking by another name. A Paper 1 question about a
+  warehouse robot is not testing whether you have met warehouse robots before; it is testing whether you can
+  identify the inputs and outputs, spot the precondition that has been broken, decompose the task into testable
+  modules, and explain what you have decided to ignore. Every one of those moves lives on this page. If you can
+  only memorise five things from the whole CS course, memorise the five questions in the table below.</p>
 </div>
 
-<h3>Decomposition, pattern recognition and generalisation</h3>
+<h2>The five questions</h2>
 
-<dl class="glossary">
-  <dt>Decomposition</dt>
-  <dd>Breaking a large problem into smaller sub-problems, each of which is independently solvable and testable. The
-  test of a good decomposition: you can name each piece, you can test each piece on its own, and changing one piece
-  does not force changes in the others.</dd>
-  <dt>Pattern recognition</dt>
-  <dd>Noticing that sub-problems share a structure. If three parts of your program each "find the largest thing in
-  a collection", that is one sub-procedure with a parameter, not three pieces of code.</dd>
-  <dt>Generalisation / abstraction</dt>
-  <dd>Rewriting the solution to the shared structure so it works for <em>any</em> instance: not "find the highest
-  mark in Mr Lee's class" but "find the maximum value in an array of numbers", or better, "find the element that
-  ranks highest by a given comparison".</dd>
-</dl>
+<p>Before any machinery, here is the whole topic in one table. Read the middle column as a checklist you run
+whenever a question hands you a scenario you have never seen. The right-hand column is the artefact the examiner
+can actually mark — which is why "think about the problem" earns nothing but "construct a decision table" earns
+four.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Strand</th><th>The question you ask</th><th>The artefact you produce</th><th>Typical command term</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Think procedurally</strong></td>
+      <td>What are the pieces, in what order, and which pieces are the same piece?</td>
+      <td>Decomposition, structure (hierarchy) chart, pseudocode sub-procedures</td>
+      <td>Identify, construct, describe</td>
+    </tr>
+    <tr>
+      <td><strong>Think logically</strong></td>
+      <td>What are all the cases, and does every input land in exactly one of them?</td>
+      <td>Decision table, decision tree, compound Boolean condition</td>
+      <td>Construct, complete, state</td>
+    </tr>
+    <tr>
+      <td><strong>Think ahead</strong></td>
+      <td>What must be true before this runs, and what happens at the edges?</td>
+      <td>Input/output list, preconditions, test table, cached values</td>
+      <td>State, identify, justify</td>
+    </tr>
+    <tr>
+      <td><strong>Think concurrently</strong></td>
+      <td>Which parts may happen at once, and what breaks if they do?</td>
+      <td>Interleaving trace, mutex/lock protocol, deadlock analysis</td>
+      <td>Explain, analyse, evaluate</td>
+    </tr>
+    <tr>
+      <td><strong>Think abstractly</strong></td>
+      <td>What can I throw away and still get the right answer?</td>
+      <td>Abstract model, ADT, generalised procedure with parameters</td>
+      <td>Explain, justify, evaluate</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="map">
+  <span class="map__node">messy real problem</span>
+  <span class="map__arrow">→</span>
+  <span class="map__node">abstract model</span>
+  <span class="map__arrow">→</span>
+  <span class="map__node">decomposition</span>
+  <span class="map__arrow">→</span>
+  <span class="map__node">algorithm</span>
+  <span class="map__arrow">→</span>
+  <span class="map__node">pseudocode</span>
+  <span class="map__arrow">→</span>
+  <span class="map__node">trace &amp; test</span>
+</div>
+
+<p>Notice the order. Abstraction comes <em>before</em> decomposition, because you decompose the model you built, not
+the world. Students who skip straight to "write a loop" produce code that works on the example and fails on
+everything else, which is precisely what a markscheme punishes.</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — naming the strand is not answering the question</span>
+  <p>"This problem requires computational thinking, specifically thinking procedurally and thinking ahead."
+  is worth zero marks, even though every word of it is true. The marks are always for the artefact: the named
+  sub-problems, the completed decision table, the stated precondition. A reliable habit: never write the name of a
+  strand without writing the thing it produced on the next line.</p>
+</div>
+
+<h2>1 · Thinking procedurally</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<h3>Intuition</h3>
+
+<p>You cannot eat a whole cow. You can eat a steak. Procedural thinking is the realisation that every large problem
+is a bundle of small ones, and that the small ones are often problems you have already solved. The cook does not
+have a "make dinner" skill; she has boil, chop, season, fry, and she combines them differently each night. Programs
+work the same way.</p>
+
+<h3>Formal idea</h3>
+
+<p><strong>Decomposition</strong> is breaking a problem into sub-problems until each one is small enough to be
+solved, tested and understood on its own. <strong>Modularity</strong> is the property that results: the solution is
+built from separate, named units (sub-procedures, functions, modules, classes) that communicate through a narrow,
+well-defined interface. <strong>Top-down design</strong> (also called stepwise refinement) is the method: start
+with one sentence describing the whole task, split it into three to seven smaller sentences, then split each of
+those, and stop when a sentence can be written as five or six lines of pseudocode.</p>
+
+<p>Two criteria tell you when to stop decomposing:</p>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>Testability</h4>
+    <p>You can describe the input and expected output of the piece without referring to anything outside it. If you
+    need the whole system running to check one piece, the piece is too big or too entangled.</p>
+  </div>
+  <div class="card">
+    <h4>Single responsibility</h4>
+    <p>You can name the piece with one verb and one noun — "validate member", "calculate fine", "format report". If
+    the honest name contains "and", it is two pieces.</p>
+  </div>
+</div>
+
+<h3>The procedure</h3>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — top-down design in five moves</span>
+  <ol class="steps">
+    <li><strong>Write the one-sentence brief.</strong> "Work out which pupil has the highest average mark." No code,
+    no variables.</li>
+    <li><strong>Name the data.</strong> What exists before the program runs (inputs) and what must exist afterwards
+    (outputs)? This is thinking ahead; you cannot skip it.</li>
+    <li><strong>Split into three to seven steps</strong> at the top level, in order. Draw them as a structure chart
+    (below).</li>
+    <li><strong>Mark the repeated shapes.</strong> Any step that appears again with a different value is one
+    sub-procedure with a <em>parameter</em>, not two pieces of code.</li>
+    <li><strong>Refine until atomic.</strong> Stop when a box is a loop, a selection, or a call to something you
+    already have. Then write pseudocode bottom-up: the leaves first, so each is testable before it is used.</li>
+  </ol>
+</div>
+
+<h3>Parameters, return values and the interface</h3>
+
+<p>A sub-procedure is a contract, and the contract is written in three lines: what goes in (parameters), what comes
+out (return value, or nothing), and what must be true when it is called (its precondition). Everything else is
+private to the sub-procedure and no other part of the program is allowed to know about it.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th></th><th>Procedure</th><th>Function</th></tr></thead>
+  <tbody>
+    <tr><td><strong>IB pseudocode</strong></td><td><code>procedure greet(name)</code> … <code>endprocedure</code></td><td><code>function square(x)</code> … <code>return x * x</code> … <code>endfunction</code></td></tr>
+    <tr><td><strong>Returns a value?</strong></td><td>No — it does something</td><td>Yes — it computes something, and must contain <code>return</code></td></tr>
+    <tr><td><strong>Call it by</strong></td><td><code>greet("Sam")</code> on its own line</td><td><code>y = square(5)</code> — inside an expression</td></tr>
+    <tr><td><strong>Use when</strong></td><td>Output, file writing, updating a record — an action with a side effect</td><td>Calculation, validation, conversion — a question with an answer</td></tr>
+    <tr><td><strong>Testing advantage</strong></td><td>Assert on what changed in the outside world</td><td>Assert on the returned value; no state to set up</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--note">
+  <span class="callout__label">Note — pass by value and pass by reference</span>
+  <p>With <strong>pass by value</strong> the sub-procedure receives a <em>copy</em>, so the caller's variable cannot
+  change. With <strong>pass by reference</strong> it receives the <em>address</em> of the caller's variable, so
+  assignments inside do change it. The IB pseudocode model defaults to pass by value unless the question says
+  otherwise; Python passes immutable values (numbers, strings) by value-like semantics and mutable objects (lists,
+  dictionaries) by reference; Java passes primitives by value and object references by value. The exam mark often
+  sits on the sentence "I am assuming pass by value", so write it. See <a href="B2-programming.html">B2
+  Programming</a> for the implementation detail.</p>
+</div>
+
+<h3>Structure charts (hierarchy charts)</h3>
+
+<p>A structure chart shows the modules and the calls between them: a box for each module, a line from caller to
+called. It deliberately does <em>not</em> show sequence, selection or iteration — those belong in flowcharts and
+pseudocode. A structure chart answers one question: "who uses whom?" The tree shape is the point: a good design is
+a tree, because a cycle in the call graph means two modules that cannot be tested or changed independently.</p>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Structure chart for a library loans system: a top module calling Borrow, Return and Reports, each with sub-modules">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+    <rect x="240" y="16" width="160" height="40" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="320" y="41" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Library loans system</text>
+
+    <line x1="320" y1="56" x2="320" y2="80" stroke="#334155" stroke-width="2"/>
+    <line x1="110" y1="80" x2="530" y2="80" stroke="#334155" stroke-width="2"/>
+    <line x1="110" y1="80" x2="110" y2="104" stroke="#334155" stroke-width="2"/>
+    <line x1="320" y1="80" x2="320" y2="104" stroke="#334155" stroke-width="2"/>
+    <line x1="530" y1="80" x2="530" y2="104" stroke="#334155" stroke-width="2"/>
+
+    <rect x="25" y="104" width="170" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+    <text x="110" y="128" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">1 · Borrow a book</text>
+    <rect x="235" y="104" width="170" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+    <text x="320" y="128" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">2 · Return a book</text>
+    <rect x="445" y="104" width="170" height="38" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+    <text x="530" y="128" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">3 · Produce reports</text>
+
+    <line x1="110" y1="142" x2="110" y2="166" stroke="#334155" stroke-width="2"/>
+    <line x1="40" y1="166" x2="190" y2="166" stroke="#334155" stroke-width="2"/>
+    <line x1="40" y1="166" x2="40" y2="190" stroke="#334155" stroke-width="2"/>
+    <line x1="115" y1="166" x2="115" y2="190" stroke="#334155" stroke-width="2"/>
+    <line x1="190" y1="166" x2="190" y2="190" stroke="#334155" stroke-width="2"/>
+
+    <rect x="8" y="190" width="64" height="50" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="40" y="212" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">1.1</text>
+    <text x="40" y="227" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Validate</text>
+    <text x="40" y="238" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">member</text>
+
+    <rect x="83" y="190" width="64" height="50" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="115" y="212" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">1.2</text>
+    <text x="115" y="227" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Check</text>
+    <text x="115" y="238" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">copy free</text>
+
+    <rect x="158" y="190" width="64" height="50" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="190" y="212" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">1.3</text>
+    <text x="190" y="227" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Issue</text>
+    <text x="190" y="238" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">loan</text>
+
+    <line x1="320" y1="142" x2="320" y2="166" stroke="#334155" stroke-width="2"/>
+    <line x1="265" y1="166" x2="375" y2="166" stroke="#334155" stroke-width="2"/>
+    <line x1="265" y1="166" x2="265" y2="190" stroke="#334155" stroke-width="2"/>
+    <line x1="375" y1="166" x2="375" y2="190" stroke="#334155" stroke-width="2"/>
+
+    <rect x="233" y="190" width="64" height="50" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="265" y="212" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">2.1</text>
+    <text x="265" y="227" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Record</text>
+    <text x="265" y="238" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">return</text>
+
+    <rect x="343" y="190" width="64" height="50" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="375" y="212" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">2.2</text>
+    <text x="375" y="227" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Calculate</text>
+    <text x="375" y="238" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">fine</text>
+
+    <line x1="530" y1="142" x2="530" y2="166" stroke="#334155" stroke-width="2"/>
+    <line x1="475" y1="166" x2="585" y2="166" stroke="#334155" stroke-width="2"/>
+    <line x1="475" y1="166" x2="475" y2="190" stroke="#334155" stroke-width="2"/>
+    <line x1="585" y1="166" x2="585" y2="190" stroke="#334155" stroke-width="2"/>
+
+    <rect x="443" y="190" width="64" height="50" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="475" y="212" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">3.1</text>
+    <text x="475" y="227" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Overdue</text>
+    <text x="475" y="238" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">list</text>
+
+    <rect x="553" y="190" width="64" height="50" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <text x="585" y="212" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">3.2</text>
+    <text x="585" y="227" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Most-</text>
+    <text x="585" y="238" font-size="10" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">borrowed</text>
+
+    <text x="320" y="278" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">1.2 and 2.1 both need "find the loan record for a copy" — one shared module, called twice</text>
+    <text x="320" y="298" font-size="12" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">no arrows point upwards: the call graph is a tree, so every leaf is testable alone</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 1.</span> A structure chart for a library loans system. Boxes are
+  modules, lines are calls. Nothing here says "in what order" — that is what pseudocode is for. The repeated shape
+  (1.2 and 2.1 both look up a loan record) is the signal that a fourth shared module exists.</figcaption>
+</figure>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — three ways to lose procedural marks</span>
+  <p>(1) Drawing a structure chart with arrows showing <em>sequence</em> (1 → 2 → 3). Lines in a structure chart
+  mean "calls", nothing else; sequence goes in the pseudocode. (2) A decomposition with two or three giant pieces
+  ("read the data", "process the data", "output the data") — that is a description of every program ever written,
+  not a decomposition. Aim for five to eight named leaves. (3) Forgetting the shared module: if two branches of
+  your chart do the same lookup, say so, because "one parameterised sub-procedure used twice" is usually its own
+  mark.</p>
+</div>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 6 marks · decompose and abstract</summary>
+  <summary><span class="badge badge--medium">Worked example 1</span> IB-style · 8 marks · decompose a library loans system</summary>
   <div class="dbody">
-    <p><strong>Question.</strong> A school wants a program that, from a file of pupils each with a list of test
-    scores, prints the name of the top pupil in each year group and the school average. (a) Decompose the problem.
-    (b) Identify one place where pattern recognition reduces the work. (c) Identify one abstraction.</p>
+    <p><strong>Question.</strong> A school library lends books to pupils. A pupil may borrow up to four books at a
+    time and each loan lasts 14 days. A pupil with an overdue book may not borrow. The librarian wants a program
+    that records a loan, records a return, calculates any fine (10 cents per day late) and prints a weekly overdue
+    list. (a) Decompose the problem into modules. (b) Identify one module that is used by more than one branch.
+    (c) Explain two benefits of this decomposition.</p>
     <ol class="steps">
-      <li><strong>(a) Decomposition:</strong> (i) read the file into a collection of pupil records; (ii) for one
-      pupil, compute their average score; (iii) find the pupil with the highest average within one year group;
-      (iv) compute the mean across all pupils; (v) format and output the results.</li>
-      <li>Each sub-problem can be written and tested separately: you can test (ii) on a made-up pupil without any
-      file, and (iii) on a made-up list.</li>
-      <li><strong>(b) Pattern:</strong> "highest average within year 10", "highest average within year 11",
-      "highest average within year 12" are the same computation with a different filter. So write one sub-procedure
-      <code>topPupil(pupils, year)</code> and call it three times.</li>
-      <li><strong>(c) Abstraction:</strong> a pupil is reduced to just the attributes the problem needs — name,
-      year group, and the list of scores. Address, date of birth, medical notes and photo are discarded because
-      they cannot affect the answer. Equally, "the file" is abstracted into "a collection of pupil records", so the
-      rest of the program does not care whether the data came from a CSV, a database or a keyboard.</li>
+      <li><strong>(a) Decomposition.</strong> Top level: <em>record loan</em>, <em>record return</em>,
+      <em>produce weekly report</em>.</li>
+      <li><em>Record loan</em> refines to: validate the pupil ID exists and is not blocked; count the pupil's
+      current loans; check the copy is not already on loan; if all three pass, write a new loan record with today's
+      date and a due date 14 days later; otherwise output the reason for refusal.</li>
+      <li><em>Record return</em> refines to: find the loan record for this copy; mark it returned with today's
+      date; if today is after the due date, compute days late and fine = daysLate × 0.10 and add it to the pupil's
+      record.</li>
+      <li><em>Produce weekly report</em> refines to: scan all loan records; select those not returned whose due
+      date has passed; sort by pupil name; format as a table.</li>
+      <li><strong>(b) Shared module.</strong> Both <em>record return</em> and <em>record loan</em> need "find the
+      current loan record for a given copy ID", so write one function
+      <code>findLoanByCopy(copyID)</code> and call it from both. Also "is this pupil blocked?" is used by
+      <em>record loan</em> and could be used by the report.</li>
+      <li><strong>(c) Benefits.</strong> First, <em>independent testing</em>: <code>daysLate</code> and the fine
+      calculation can be tested with two dates and no library at all, so a wrong fine is found in seconds rather
+      than after a week of use. Second, <em>localised change</em>: when the school raises the fine to 20 cents, one
+      constant in one module changes and nothing else is touched, so the change cannot break the report.</li>
     </ol>
-    <div class="answerline"><b>Marks:</b> 2 for a decomposition with at least four named, independently testable sub-problems; 2 for recognising that the per-year computation is one parameterised procedure; 2 for identifying what is discarded and why. "It makes it simpler" is not an abstraction — say what is kept and what is thrown away.</div>
+    <div class="answerline"><b>Marks:</b> 3 for a decomposition with at least six named leaves that are individually meaningful; 2 for identifying a genuinely shared module (not "input" or "output"); 3 for two benefits each developed with a concrete consequence. "It makes it easier to debug" alone is worth 1; "…because the fine calculation can be tested with two dates and no file" is worth 2.</div>
   </div>
 </details>
 
-<h2>Algorithm design tools</h2>
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 2</span> IB-style · 6 marks · top-down design of a school timetable</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A school has 12 teachers, 20 classes and 30 rooms. Each class needs 30 lessons a
+    week; each teacher can teach at most 22; some rooms are laboratories needed only by science classes.
+    (a) State the decomposition into sub-problems. (b) State which sub-problem is the hard one and why.
+    (c) Explain why the decomposition does not by itself solve the problem.</p>
+    <ol class="steps">
+      <li><strong>(a)</strong> (i) model the data: a lesson is a triple
+      (class, teacher, room, period); (ii) collect the hard constraints — no teacher in two places at once, no
+      class in two places at once, no room double-booked, laboratories reserved for science; (iii) collect the soft
+      preferences — a teacher should not teach more than four lessons in a row, PE should not be first period;
+      (iv) generate an assignment of lessons to periods; (v) test the assignment against (ii); (vi) score it
+      against (iii); (vii) repeat (iv)–(vi) and keep the best; (viii) output the timetable in a readable form.</li>
+      <li><strong>(b)</strong> Step (iv) is the hard one. There are 30 periods and 20 classes, so 600 lesson slots
+      to fill; checking every possible arrangement is not feasible, so the generator must use a heuristic — most
+     -constrained-first is the usual choice: place the class or teacher with the fewest remaining legal periods
+      before the ones with many. Everything else on the list is bookkeeping.</li>
+      <li><strong>(c)</strong> Because decomposition splits the problem, it does not make the hard sub-problem
+      disappear. It makes the hard part <em>visible and isolated</em>: steps (v) and (vi) can be written and tested
+      first, so when you later improve the generator in (iv) you can prove immediately whether the new timetable is
+      still legal. That is the real payoff — the other 90% of the problem becomes reliable, and only 10% stays
+      difficult. An answer that says "decomposition makes it easier" scores 1; an answer that says "decomposition
+      isolates the hard part so the rest can be verified mechanically" scores 3.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> eight sub-problems, the generator is the hard one, and decomposition isolates rather than removes difficulty. Marks: 2 for the decomposition, 2 for identifying the generator with a reason tied to the size of the search space, 2 for the "isolates, does not solve" point.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — "input, process, output" is not a decomposition</span>
+  <p>Every program on Earth can be described as input → process → output, so a three-box answer of that shape
+  carries no information and examiners are instructed not to reward it. A real decomposition names the
+  <em>domain</em> pieces — validate member, check availability, calculate fine — and leaves the reader able to
+  guess what each one does without reading your code.</p>
+</div>
+
+<h2>2 · Thinking logically</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<h3>Intuition</h3>
+
+<p>Logic is the difference between "if it is raining I will take the bus" and a complete set of travel plans. The
+first sentence tells you nothing about what happens when it is sunny, or snowing, or raining but the buses are on
+strike. A program that is incomplete in that way does not crash — it quietly takes the wrong branch, which is far
+worse. Thinking logically is making the case analysis <em>exhaustive</em> (every input matches at least one case)
+and <em>exclusive</em> (no input matches two).</p>
+
+<h3>Formal idea: compound conditions</h3>
+
+<p>A condition is an expression that evaluates to true or false. Compound conditions combine simple ones with
+<strong>AND</strong>, <strong>OR</strong> and <strong>NOT</strong>, and the truth of the whole follows from the
+truth of the parts.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>A</th><th>B</th><th>A AND B</th><th>A OR B</th><th>NOT A</th></tr></thead>
+  <tbody>
+    <tr><td>true</td><td>true</td><td>true</td><td>true</td><td>false</td></tr>
+    <tr><td>true</td><td>false</td><td>false</td><td>true</td><td>false</td></tr>
+    <tr><td>false</td><td>true</td><td>false</td><td>true</td><td>true</td></tr>
+    <tr><td>false</td><td>false</td><td>false</td><td>false</td><td>true</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Three rules do almost all the work. <strong>NOT</strong> binds tightest, then <strong>AND</strong>, then
+<strong>OR</strong> — the same precedence as × before + in arithmetic — so use brackets whenever you mix them, for
+the reader's sake if not the machine's. <strong>De Morgan's laws</strong> let you push a negation inside:
+<code>NOT (A AND B)</code> is <code>(NOT A) OR (NOT B)</code>, and <code>NOT (A OR B)</code> is
+<code>(NOT A) AND (NOT B)</code>. And <strong>short-circuit evaluation</strong> means the second operand may never
+be evaluated: in <code>(i &lt; n) AND (A[i] = target)</code>, if <code>i &lt; n</code> is false the array access
+never happens, which is exactly why that ordering prevents an out-of-range error. Put the guard first, always.</p>
+
+<div class="callout callout--link">
+  <span class="callout__label">Connection</span>
+  <p>Boolean algebra in full — truth tables, logic gates, deriving an expression from a table and simplifying it —
+  lives in <a href="A1-computer-fundamentals.html">A1 Computer fundamentals</a>. Here you need only as much as
+  controls an <code>if</code>. The link worth remembering: every condition in a program is a Boolean expression, and
+  the CPU evaluates it with the physical gates you met in A1.</p>
+</div>
+
+<h3>Decision tables</h3>
+
+<p>A decision table lists every combination of conditions and the action each combination should trigger. It is the
+best tool the syllabus gives you for a specification written in prose, because prose hides cases and a table cannot.
+The layout is fixed, and examiners expect it:</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th></th><th>Rule 1</th><th>Rule 2</th><th>Rule 3</th><th>Rule 4</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Condition stub</strong> (each condition on its own row)</td><td colspan="4">Condition entries: Y, N or — (don't care)</td></tr>
+    <tr><td><strong>Action stub</strong> (each action on its own row)</td><td colspan="4">Action entries: X marks the action to take</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The two checks that turn a decision table from a drawing into an answer are <strong>completeness</strong> — with
+n yes/no conditions there are 2<sup>n</sup> rules, so check you have accounted for all of them, collapsing only
+those that genuinely share an outcome — and <strong>consistency</strong> — no two rules may have identical
+condition entries but different actions. Contradictions in the table are contradictions in the specification, and
+finding one is often exactly what the question is asking for.</p>
+
+<h3>Decision trees</h3>
+
+<p>The same information as a graph: each internal node tests one condition, each branch is an outcome, each leaf
+names an action. Trees are easier for a human to follow one case at a time; tables are easier to check for
+completeness. Convert table → tree when you are writing the selection; convert tree → table when you are auditing
+someone else's specification.</p>
+
+<h3>Validating input</h3>
+
+<p>Logical thinking applied at the boundary of the program. Every value arriving from outside is suspect until
+checked, and there is a named check for each kind of wrongness:</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Check</th><th>What it rejects</th><th>Example</th><th>Pseudocode shape</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Presence</strong></td><td>Nothing entered at all</td><td>An empty surname field</td><td><code>if length(s) = 0 then …</code></td></tr>
+    <tr><td><strong>Range</strong></td><td>A value outside the legal interval</td><td>Age 200; mark 105</td><td><code>if (m &gt;= 0) AND (m &lt;= 100) then …</code></td></tr>
+    <tr><td><strong>Type</strong></td><td>Text where a number is expected</td><td>"twelve" for an age</td><td>A conversion that fails produces an error you must handle</td></tr>
+    <tr><td><strong>Length</strong></td><td>Too few or too many characters</td><td>A 3-digit phone number</td><td><code>if length(s) &lt;&gt; 11 then …</code></td></tr>
+    <tr><td><strong>Format</strong></td><td>Right characters, wrong pattern</td><td>An email without "@"</td><td>A pattern/template comparison</td></tr>
+    <tr><td><strong>Check digit</strong></td><td>A transcription error in an ID</td><td>An ISBN with one digit mistyped</td><td>Recompute and compare — see A2</td></tr>
+    <tr><td><strong>Limit / consistency</strong></td><td>A value that contradicts another</td><td>Return date before loan date</td><td><code>if returnDate &lt; loanDate then …</code></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Validation is a loop, not an <code>if</code>: on failure you output a specific message and re-prompt, and you do
+not proceed until the value passes. "The program crashed" is never an acceptable outcome for invalid input, and the
+test table you build in section 3 is how you prove it.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 3</span> IB-style · 6 marks · build a decision table from prose</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A cinema sells tickets. A customer aged 65 or over pays the senior price. A
+    customer aged 15 or under pays the child price. A student with a valid card pays the student price. Anyone else
+    pays full price. Construct a decision table.</p>
+    <ol class="steps">
+      <li>There are three conditions: C1 age ≥ 65, C2 age ≤ 15, C3 holds a student card. Age ≥ 65 and age ≤ 15
+      cannot both be true, so instead of 2<sup>3</sup> = 8 rules some combinations are impossible — a good answer
+      says so.</li>
+      <li>Enumerate: senior (C1 true). Child (C2 true). Student (neither C1 nor C2, C3 true). Full price
+      (none true). Note the ambiguity: a 14-year-old with a student card — child or student? The specification does
+      not say. Flag it and choose a rule; the question is testing whether you notice.</li>
+    </ol>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>R1</th><th>R2</th><th>R3</th><th>R4</th></tr></thead>
+        <tbody>
+          <tr><td>C1: age ≥ 65</td><td>Y</td><td>N</td><td>N</td><td>N</td></tr>
+          <tr><td>C2: age ≤ 15</td><td>N</td><td>Y</td><td>N</td><td>N</td></tr>
+          <tr><td>C3: student card</td><td>—</td><td>N</td><td>Y</td><td>N</td></tr>
+          <tr><td><strong>Action</strong></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Senior price</td><td>X</td><td></td><td></td><td></td></tr>
+          <tr><td>Child price</td><td></td><td>X</td><td></td><td></td></tr>
+          <tr><td>Student price</td><td></td><td></td><td>X</td><td></td></tr>
+          <tr><td>Full price</td><td></td><td></td><td></td><td>X</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="answerline"><b>Answer:</b> the table above, plus the observation that R2 with C3 = Y is ambiguous, so the specification is incomplete and the programmer must ask the client whether a 14-year-old student pays the child or the student price. Marks: 2 for correct conditions, 2 for correct and consistent rules, 2 for spotting the ambiguity or the impossible combinations. Spotting the gap is usually the mark everyone misses.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 4</span> IB-style · 7 marks · find and fix an incomplete specification</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Here is a specification handed to a programmer: <em>"The program asks for a mark
+    out of 100. Below 40 is a fail. Above 60 is a pass. Above 80 is a distinction. Validate the input."</em>
+    Identify three defects in this specification and rewrite it so that it is complete.</p>
+    <ol class="steps">
+      <li><strong>Defect 1 — gaps.</strong> Exactly 40, exactly 60 and exactly 80 are not covered by any band:
+      40 is neither "below 40" nor "above 60", and 60 is neither "above 60" nor "below 40". The sets are not
+      exhaustive.</li>
+      <li><strong>Defect 2 — overlaps.</strong> A mark of 90 is "above 60" <em>and</em> "above 80", so two rules
+      match. If the conditions are written in ascending order the first one wins, so 90 is graded a pass and the
+      distinction band is unreachable. The sets are not exclusive.</li>
+      <li><strong>Defect 3 — "validate" is undefined.</strong> What is a valid mark? Presumably an integer from 0
+      to 100, but the specification never says, so the programmer must guess, and whether 87.5 or "abc" or an empty
+      entry is acceptable is undecided.</li>
+      <li><strong>Rewrite.</strong> "The program asks for a mark, which must be a whole number from 0 to 100
+      inclusive; any other entry produces the message 'Enter a whole number from 0 to 100' and the prompt repeats.
+      A mark from 0 to 39 is a fail, from 40 to 59 a pass, from 60 to 79 a merit, and from 80 to 100 a
+      distinction."</li>
+      <li><strong>Check.</strong> Every integer 0–100 now falls in exactly one band, and the boundaries 40, 60 and
+      80 are stated as belonging to the upper band. The corresponding test data are 0, 39, 40, 59, 60, 79, 80, 100
+      plus −1, 101, 45.5 and "abc".</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 1 per named defect developed with an example mark, 2 for a rewrite that is both exhaustive and exclusive, 1 for the validation clause. The trick in these questions is to test the boundary values out loud: "what happens at exactly 40?" will find two of the three defects in about ten seconds.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — ordering a chain of conditions</span>
+  <p>"Grade the exam: A above 80, B above 70, C above 60, otherwise fail." Written in descending order with a final
+  catch-all it is correct. Written in ascending order — <code>if mark &gt; 60 then "C"</code> first — a mark of 85
+  is caught by the first branch and graded C. The program runs, produces no error, and silently gives wrong grades
+  to the best students. That is a logic error, not a syntax error, and it is the practical meaning of this strand.
+  Rule of thumb: when bands are ordered, test them in one direction only, from the most restrictive to the least,
+  and always end with <code>else</code>.</p>
+</div>
+
+<h2>3 · Thinking ahead</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<h3>Intuition</h3>
+
+<p>A good chef lays out every ingredient before turning on the stove. Thinking ahead is deciding in advance what
+the program needs, what it promises, and what could go wrong — because a decision made before coding costs seconds
+and the same decision made after deployment costs a rewrite.</p>
+
+<h3>Formal idea: inputs, outputs, preconditions, postconditions</h3>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>Input / output specification</h4>
+    <p>Inputs are everything the program needs before it starts: values typed by the user, files, sensor readings,
+    the current date. Outputs are everything it must produce: printed text, a file, a screen, a signal to an
+    actuator. Writing them as a list (an IPO chart) before designing is what stops you discovering halfway through
+    that you never asked for the pupil's year group.</p>
+  </div>
+  <div class="card">
+    <h4>Preconditions and postconditions</h4>
+    <p>A <strong>precondition</strong> is what must be true for a module to work correctly: the array must be
+    sorted; the divisor must not be zero; the file must exist. A <strong>postcondition</strong> is what the module
+    guarantees when it finishes, provided the precondition held. Preconditions are a contract: whose job is it to
+    check? If every module checks everything, you have written the same code ten times; the disciplined answer is
+    to check once, at the boundary, and state the precondition everywhere else.</p>
+  </div>
+</div>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the pre-design checklist</span>
+  <ol class="steps">
+    <li><strong>List the inputs.</strong> For each, write the type, the legal range, and where it comes from.</li>
+    <li><strong>List the outputs.</strong> For each, write the format the user needs — "a table sorted by surname",
+    not "the data".</li>
+    <li><strong>State the preconditions</strong> for the whole program and for each module you intend to write.</li>
+    <li><strong>List the things that could go wrong</strong>: empty file, missing file, wrong type, zero, negative,
+    duplicate, too many, none at all, run twice.</li>
+    <li><strong>Decide the behaviour for each</strong>: reject and re-prompt, use a default, or stop with a
+    message. Any of the three is defensible; crashing is not.</li>
+    <li><strong>Ask what will change.</strong> The fine rate, the number of year groups, the file format. Put each
+    in one place (a constant, a parameter, a configuration file) so it can change without surgery.</li>
+    <li><strong>Ask what is reused.</strong> Anything appearing twice becomes a parameterised module or a library
+    function.</li>
+  </ol>
+</div>
+
+<h3>Caching and pre-fetching</h3>
+
+<p>A <strong>cache</strong> stores a computed or fetched value so that the next request for the same value is
+served from fast local storage instead of being recomputed or re-fetched. It is thinking ahead in its purest form:
+you predict what will be asked for and prepare it in advance. <strong>Pre-fetching</strong> goes one step further
+and fetches what you expect to need soon, before it is requested — a video buffer, the next map tile, the next
+page of results.</p>
+
+<p>The trade is always the same: cache size and freshness against speed. Three questions decide whether a cache is
+a good idea — how expensive is the original operation, how often is the same value requested, and how quickly does
+the underlying value change? A cache whose contents go stale is worse than no cache, because it is confidently
+wrong, so caches need an invalidation rule: a time-to-live, or an explicit update whenever the source changes.</p>
+
+<h3>Reusable components</h3>
+
+<p>Thinking ahead also means writing the second program before you have finished the first. If a module is likely
+to be needed again, it should not know anything about the current problem: <code>findMax(A, n)</code> is reusable,
+<code>findTopPupilInYearTen()</code> is not. The mechanism is the same one you met in section 1 — parameters
+instead of hard-coded values — and the payoff is that the reused module is already tested.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 5</span> IB-style · 6 marks · specify inputs, outputs and preconditions</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A program reads a file of pupils, each with a name, a year group and a list of
+    test scores, and writes a file containing the top pupil in each year group and the school average. State the
+    inputs, the outputs and two preconditions, and explain why each precondition matters.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Item</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Inputs</strong></td><td>Pupil file</td><td>One record per pupil: name (text), year group (integer 10–12), scores (list of integers 0–100)</td></tr>
+          <tr><td></td><td>Output file name</td><td>Where the report is to be written</td></tr>
+          <tr><td><strong>Outputs</strong></td><td>Report file</td><td>For each year group: the name of the pupil with the highest mean score and that mean, to one decimal place</td></tr>
+          <tr><td></td><td>School average</td><td>Mean of every pupil's mean, to one decimal place</td></tr>
+          <tr><td></td><td>Error messages</td><td>If the file is missing or a record is malformed</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ol class="steps">
+      <li><strong>Precondition 1 — the file exists and is readable.</strong> If it is not, the program cannot
+      produce any output at all, so this must be checked first and reported, not discovered halfway through
+      processing.</li>
+      <li><strong>Precondition 2 — every pupil has at least one score.</strong> Computing a mean requires a
+      non-zero count; a pupil with an empty list causes a division by zero, which is a runtime error on the one
+      record nobody thought about.</li>
+      <li><strong>Precondition 3 (worth a third mark) — year groups are drawn from a known set.</strong> If a
+      record says year 13, is that a new year group to report on, or corrupt data? Stating the set forces the
+      decision.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 2 for inputs with types and ranges, 2 for outputs with formats, 2 for preconditions each with a stated consequence of violation. "The file must be there" earns 1; "if it is not, the program must report it before processing rather than crashing midway" earns 2.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 6</span> IB-style · 7 marks · how caching changes a design</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A weather app displays the current temperature for a city. Each display calls an
+    API that takes 400 ms and is charged per call. The app refreshes the screen every second. (a) Explain the
+    problem. (b) Describe how caching changes the design. (c) State one new problem the cache introduces and how to
+    handle it.</p>
+    <ol class="steps">
+      <li><strong>(a)</strong> One call per second per user is 86 400 calls a day per user, each billed, for data
+      that changes every ten minutes. Ninety-nine per cent of the calls return a value the app already had. The
+      cost is financial and the responsiveness is poor, because the user waits 400 ms for a number that did not
+      change.</li>
+      <li><strong>(b)</strong> Insert a cache between the display and the API: the app asks the cache for the
+      temperature; if the cache holds a value, it is returned immediately; if not (a <em>cache miss</em>), the API
+      is called, the value is stored with a time stamp, and it is returned. A time-to-live of, say, five minutes
+      means at most 288 calls a day instead of 86 400 — a reduction of about 99.7%, with the screen updating
+      instantly.</li>
+      <li><strong>(c)</strong> The new problem is <strong>staleness</strong>: for up to five minutes the app shows
+      a temperature that is no longer correct, and the user has no way to tell. Handle it by choosing the TTL from
+      how fast the real value changes, by displaying the time of the reading next to it, and by providing a manual
+      refresh that bypasses the cache.</li>
+      <li>The general lesson: a cache trades <em>correctness of freshness</em> for <em>speed and cost</em>. An
+      answer that names both sides of the trade and then says which side wins in this context is an evaluate answer;
+      an answer that only lists the saving is a describe answer.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> cache with a five-minute TTL; roughly 288 calls/day instead of 86 400; the new hazard is stale data, handled by TTL, a visible time stamp and a manual bypass. Marks: 2 for (a) quantified, 3 for (b) describing hit/miss and TTL, 2 for (c) naming staleness and a mitigation.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — "state the precondition" is a free mark</span>
+  <p>Every binary search question, every array-processing question and every file question in this course has a
+  one-mark precondition attached to it, and it is the same sentence shape each time: "the array must be sorted in
+  ascending order", "the file must exist and be readable", "the divisor must be non-zero", "n must be at least 1".
+  Learn the shape rather than the list: <em>what would make this module fail, and who must guarantee it does
+  not?</em></p>
+</div>
+
+<h2>4 · Thinking concurrently</h2>
+<span class="badge badge--hl">HL only</span>
+
+<h3>Intuition</h3>
+
+<p>Two people editing the same paragraph of a shared document: if both type at once, one person's work vanishes.
+Nothing is wrong with either person — the problem is that "open, edit, save" is not a single indivisible action,
+and their two sequences interleaved. That is the entire subject of concurrency in one sentence.</p>
+
+<h3>Formal idea: concurrency versus parallelism</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th></th><th>Concurrency</th><th>Parallelism</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Definition</strong></td><td>Two or more tasks are <em>in progress</em> during the same period; their steps may interleave</td><td>Two or more tasks are <em>executing at the same instant</em></td></tr>
+    <tr><td><strong>Hardware needed</strong></td><td>One core is enough — the OS switches between tasks</td><td>Multiple cores or processors</td></tr>
+    <tr><td><strong>Goal</strong></td><td>Responsiveness and structure: no task waits on another that is idle</td><td>Throughput: more work finished per second</td></tr>
+    <tr><td><strong>Example</strong></td><td>One chef cooking three dishes, moving between them while water boils</td><td>Three chefs each cooking one dish</td></tr>
+    <tr><td><strong>Key point</strong></td><td>Concurrency is a property of the <em>design</em></td><td>Parallelism is a property of the <em>hardware</em>. A concurrent program runs correctly on one core and faster on four</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The benefits are worth stating precisely. <strong>Throughput</strong>: while one task waits for the disk or the
+network, another uses the CPU, so the machine is idle far less of the time. <strong>Responsiveness</strong>: a
+user interface that keeps redrawing while a file loads feels instant even when it is not fast.
+<strong>Modularity</strong>: some problems are naturally a set of independent agents — one thread per network
+connection, one per sensor — and forcing them into a single sequence makes the code worse. <strong>Resource
+utilisation</strong>: a pipeline (fetch, decode, execute in A1) is concurrency inside a single processor.</p>
+
+<h3>The hazards</h3>
+
+<p>The price is that the order of operations is no longer fixed by the program text, and any reasoning that assumed
+an order becomes invalid. Four named failures follow.</p>
+
+<dl class="glossary">
+  <dt>Race condition</dt>
+  <dd>The outcome depends on the interleaving of two or more threads' operations on shared data. Two threads
+  increment a counter; both read 7; both write 8; one increment is lost. The bug is real, it is not reproducible on
+  demand, and it disappears when you add a print statement to debug it — a <em>Heisenbug</em>.</dd>
+  <dt>Critical section / mutual exclusion</dt>
+  <dd>The critical section is the part of a program that touches shared data and must not be executed by more than
+  one thread at a time. <strong>Mutual exclusion</strong> is the property that guarantees it: at most one thread is
+  inside. Enforced by a <strong>lock</strong> (mutex) or a <strong>semaphore</strong>: acquire before entering,
+  release on leaving.</dd>
+  <dt>Deadlock</dt>
+  <dd>Two or more threads are each holding a resource the other needs and waiting for it, so none can proceed. The
+  program does not crash and does not error — it simply stops making progress, often at 3 a.m. in production.</dd>
+  <dt>Starvation</dt>
+  <dd>A thread is permanently denied a resource it needs, not because of a cycle but because other threads keep
+  being served first — an unfair scheduler, or a priority scheme that always favours the same jobs. Everything else
+  makes progress; one unlucky thread does not.</dd>
+</dl>
+
+<h3>The four Coffman conditions</h3>
+
+<p>Deadlock occurs if and only if all four of these hold simultaneously. They are worth memorising as a checklist,
+because a deadlock is prevented by breaking any <em>one</em> of them — and each gives you a named fix.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Condition</th><th>Meaning</th><th>How to break it</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Mutual exclusion</strong></td>
+      <td>At least one resource cannot be shared; only one thread may hold it</td>
+      <td>Make the resource shareable, or use copy-on-write so readers never block each other. Sometimes impossible — a printer really is exclusive</td>
+    </tr>
+    <tr>
+      <td><strong>Hold and wait</strong></td>
+      <td>A thread holding one resource requests another and waits without releasing the first</td>
+      <td>Acquire all resources at once, atomically; or require a thread to release everything before requesting more</td>
+    </tr>
+    <tr>
+      <td><strong>No preemption</strong></td>
+      <td>A resource can only be released voluntarily; it cannot be forcibly taken</td>
+      <td>Allow preemption: if a request is denied, the thread releases what it holds and retries later</td>
+    </tr>
+    <tr>
+      <td><strong>Circular wait</strong></td>
+      <td>There is a cycle: T1 waits for a resource held by T2, T2 for one held by T3, …, Tn for one held by T1</td>
+      <td><strong>Impose a global ordering</strong> on resources and require every thread to acquire them in that order. This is the practical, universal fix</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Deadlock cycle: process P1 holds lock A and waits for lock B, process P2 holds lock B and waits for lock A">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+
+    <rect x="70" y="60" width="150" height="56" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="145" y="84" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Process P1</text>
+    <text x="145" y="102" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">holds A, wants B</text>
+
+    <rect x="420" y="60" width="150" height="56" fill="#eef2ff" stroke="#7a5a13" stroke-width="2"/>
+    <text x="495" y="84" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Process P2</text>
+    <text x="495" y="102" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">holds B, wants A</text>
+
+    <rect x="70" y="210" width="150" height="56" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+    <text x="145" y="234" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Lock A</text>
+    <text x="145" y="252" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">resource</text>
+
+    <rect x="420" y="210" width="150" height="56" fill="#fdf6e3" stroke="#334155" stroke-width="2"/>
+    <text x="495" y="234" font-size="13" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">Lock B</text>
+    <text x="495" y="252" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788" text-anchor="middle">resource</text>
+
+    <line x1="145" y1="116" x2="145" y2="204" stroke="#334155" stroke-width="2"/>
+    <polygon points="145,210 139,198 151,198" fill="#334155"/>
+    <text x="158" y="166" font-size="11" font-family="system-ui, sans-serif" fill="#334155">holds</text>
+
+    <line x1="495" y1="116" x2="495" y2="204" stroke="#334155" stroke-width="2"/>
+    <polygon points="495,210 489,198 501,198" fill="#334155"/>
+    <text x="508" y="166" font-size="11" font-family="system-ui, sans-serif" fill="#334155">holds</text>
+
+    <path d="M 200 88 Q 330 40 420 78" fill="none" stroke="#c0392b" stroke-width="2"/>
+    <polygon points="420,78 405,70 412,84" fill="#c0392b"/>
+    <text x="300" y="46" font-size="11" font-family="system-ui, sans-serif" fill="#c0392b">requests B — blocked</text>
+
+    <path d="M 440 96 Q 320 150 205 108" fill="none" stroke="#c0392b" stroke-width="2"/>
+    <polygon points="205,108 220,100 214,114" fill="#c0392b"/>
+    <text x="240" y="150" font-size="11" font-family="system-ui, sans-serif" fill="#c0392b">requests A — blocked</text>
+
+    <text x="320" y="296" font-size="12" font-family="system-ui, sans-serif" fill="#151923" text-anchor="middle">a cycle in the wait-for graph: neither process can release, so neither can proceed</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 2.</span> Deadlock by circular wait. P1 holds A and waits for B; P2
+  holds B and waits for A. Both are blocked for ever. Imposing a global lock order (always A before B) makes the
+  cycle impossible.</figcaption>
+</figure>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 7</span> IB-style · 6 marks · trace a race condition on a shared variable</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A shared variable <code>BALANCE</code> holds 100. Two processes run at the same
+    time. P1 deposits 50; P2 withdraws 30. Each is written as three machine-level steps: read BALANCE into a local
+    register, update the register, write the register back. Show an interleaving in which the final balance is
+    wrong, and state the correct result.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Step</th><th>Process</th><th>Operation</th><th>P1 register</th><th>P2 register</th><th>BALANCE</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>—</td><td>initial</td><td>—</td><td>—</td><td>100</td></tr>
+          <tr><td>1</td><td>P1</td><td>READ</td><td>100</td><td>—</td><td>100</td></tr>
+          <tr><td>2</td><td>P1</td><td>add 50</td><td>150</td><td>—</td><td>100</td></tr>
+          <tr><td>3</td><td>P2</td><td>READ</td><td>150</td><td>100</td><td>100</td></tr>
+          <tr><td>4</td><td>P2</td><td>subtract 30</td><td>150</td><td>70</td><td>100</td></tr>
+          <tr><td>5</td><td>P2</td><td>WRITE</td><td>150</td><td>70</td><td><strong>70</strong></td></tr>
+          <tr><td>6</td><td>P1</td><td>WRITE</td><td>150</td><td>70</td><td><strong>150</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ol class="steps">
+      <li>P2 read the balance <em>before</em> P1 wrote its result, so P2's withdrawal was computed from the stale
+      value 100. P1 then overwrote 70 with 150. The deposit survived and the withdrawal was lost.</li>
+      <li>The correct final balance is 100 + 50 − 30 = <strong>120</strong>. The interleaving above gives 150; the
+      mirror-image interleaving (P2 writes first, then P1) gives 70. Two different wrong answers from the same
+      code, which is exactly why this bug is hard to find by testing.</li>
+      <li><strong>The fix:</strong> make read–modify–write <strong>atomic</strong> — indivisible — by putting it in
+      a critical section guarded by a lock: <code>lock(balanceLock)</code> … update … <code>unlock(balanceLock)</code>.
+      Then whichever process arrives first completes all three steps before the other may start, and the result is
+      120 whichever way round they go.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> 150 (or 70) instead of 120; the fix is mutual exclusion around the read–modify–write. Marks: 3 for a correct interleaved trace showing the lost update, 1 for the correct value 120, 2 for naming atomicity / a lock as the fix.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 8</span> IB-style · 8 marks · a deadlock scenario with two locks, and two fixes</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Two bank accounts, X and Y. To transfer money a thread locks both accounts,
+    moves the money, then unlocks both. Thread T1 transfers from X to Y and does
+    <code>lock(X); lock(Y); … unlock(Y); unlock(X)</code>. Thread T2 transfers from Y to X and does
+    <code>lock(Y); lock(X); … unlock(X); unlock(Y)</code>. (a) Explain how deadlock arises. (b) Show that all four
+    Coffman conditions hold. (c) Give two different fixes.</p>
+    <ol class="steps">
+      <li><strong>(a)</strong> Interleave: T1 locks X; T2 locks Y; T1 tries to lock Y and blocks because T2 holds
+      it; T2 tries to lock X and blocks because T1 holds it. Neither can proceed, neither releases, so both wait
+      for ever. Note it only happens if the interleaving is unlucky — the system can run correctly for days.</li>
+      <li><strong>(b)</strong> <em>Mutual exclusion:</em> a lock is held by one thread at a time. <em>Hold and
+      wait:</em> T1 holds X while waiting for Y. <em>No preemption:</em> a lock cannot be taken from a thread; it is
+      only released by its holder. <em>Circular wait:</em> T1 → Y → T2 → X → T1 is a cycle.</li>
+      <li><strong>(c) Fix 1 — lock ordering (breaks circular wait).</strong> Impose a global order, e.g. always
+      lock the account with the lower ID first. Both threads then lock X before Y, so T2 simply waits at X until T1
+      finishes; no cycle can form. This is the standard fix: cheap, and provably correct.</li>
+      <li><strong>(c) Fix 2 — acquire both atomically (breaks hold and wait).</strong> Provide a single
+      <code>lockBoth(a, b)</code> operation that either takes both locks or neither, so a thread never holds one
+      while waiting for the other.</li>
+      <li><strong>(c) Fix 3 — timeout and retry (breaks no preemption, in effect).</strong> If T1 cannot get Y
+      within 2 seconds it releases X, waits a random interval, and retries. This risks <em>livelock</em> if both
+      threads keep backing off in step, which is why the wait is randomised.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> deadlock by circular wait; all four conditions present; fix by imposing a global lock order, or by acquiring both locks atomically, or by timeout and retry. Marks: 2 for the interleaving, 3 for the four conditions each tied to the scenario, 3 for two fixes explained. Naming "lock ordering" without saying which order is only half a mark — say lower ID first.</div>
+  </div>
+</details>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Trap — concurrency buzzwords without a mechanism</span>
+  <p>"Use a semaphore to prevent the race condition" is worth one mark at best. The mark is for the mechanism:
+  <em>which</em> operations are in the critical section, <em>when</em> the lock is acquired and released, and what
+  happens to a thread that finds the lock taken. Likewise, do not write "deadlock is when two processes wait for
+  each other" and stop — that is the definition, and the question almost always asks you to show the interleaving
+  or name the condition you broke.</p>
+</div>
+
+<div class="callout callout--link">
+  <span class="callout__label">Connection</span>
+  <p>The same deadlock idea appears in <a href="A3-databases.html">A3 Databases</a> as two transactions locking rows
+  in opposite orders, and the database engine's fix is the same one you just learned: a lock timeout, or a
+  deadlock detector that aborts one transaction and rolls it back. Identical problem, different layer.</p>
+</div>
+
+<h2>5 · Thinking abstractly</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<h3>Intuition</h3>
+
+<p>A London Underground map is not London. It has no parks, no buildings, and the river is a blue line. Stations
+are evenly spaced even when they are not. Every one of those distortions is deliberate: the map throws away
+everything that does not help you decide which train to catch. That is abstraction — choosing what to discard so
+that what remains can be reasoned about.</p>
+
+<h3>Formal idea</h3>
+
+<p><strong>Abstraction</strong> is representing the essential features of a problem while ignoring the irrelevant
+detail. <strong>Representation</strong> is the choice of how to encode what you kept: a graph, a table, a number, a
+queue. <strong>Generalisation</strong> is rewriting the solution so it works for every instance of the pattern
+rather than the one you started with — usually by replacing hard-coded values with parameters. Abstraction discards;
+generalisation re-parameterises; they are usually done together.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Kind</th><th>What is hidden</th><th>What is exposed</th><th>Where you meet it</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Data abstraction</strong></td><td>How the data is stored in memory</td><td>A set of operations with defined behaviour</td><td>The ADT: stack, queue, list, tree — see <a href="B4-abstract-data-types.html">B4</a></td></tr>
+    <tr><td><strong>Procedural abstraction</strong></td><td>How a computation is carried out</td><td>Its name, parameters and result</td><td>A function: you call <code>sort(A)</code> without knowing it is a merge sort</td></tr>
+    <tr><td><strong>Control abstraction</strong></td><td>How the iteration is managed</td><td>"Do this to each element"</td><td>A for-each loop, higher-order functions</td></tr>
+    <tr><td><strong>Representational / layered abstraction</strong></td><td>Everything below the current layer</td><td>A service the layer above may call</td><td>The OSI and TCP/IP stacks in <a href="A2-networks.html">A2</a>; the machine layers in <a href="A1-computer-fundamentals.html">A1</a></td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Abstraction is what makes problems <em>tractable</em> rather than merely smaller. A road network with speed
+limits, traffic lights, roadworks and weather cannot be solved by any algorithm; a graph with one number per edge
+can be solved in milliseconds by one you already know. The abstraction is not a simplification you apologise for —
+it is the step that turns an impossible problem into a solved one. Its price is that anything you discarded cannot
+affect the answer, so choosing badly produces a fast, elegant solution to the wrong problem.</p>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why abstraction is the highest-value strand</span>
+  <p>It is the one that recurs everywhere and the one that separates a 4 from a 7 in Paper 1. It is also the
+  criterion the IA marks explicitly as <em>abstraction</em>, where the top band asks you to "demonstrate the
+  development of an abstraction from the raw problem" — literally the before-and-after picture of what you kept and
+  what you threw away. Practise stating it in one sentence of the form: "I model X as Y, keeping A and B, and
+  discarding C because it cannot affect the answer." That sentence is three marks.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 9</span> IB-style · 6 marks · strip a concrete problem to its abstract model</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A delivery company has 8 vans and 60 parcels to deliver across a city. Each
+    parcel has a weight and a destination; each van has a capacity; drivers must finish within an 8-hour shift.
+    The manager wants the fewest vans used and the shortest total distance. Identify a suitable abstraction,
+    stating what is kept and what is discarded.</p>
+    <ol class="steps">
+      <li><strong>Keep.</strong> (i) A set of 60 delivery points with coordinates, or with a distance between every
+      pair. (ii) The weight of each parcel, but only as a total per van, because only the sum matters against
+      capacity. (iii) Van capacity as a single number. (iv) The shift length, as a maximum route duration.</li>
+      <li><strong>Discard.</strong> What each parcel contains; the van's colour, registration and service history;
+      the driver's name and preferences; road surface and scenery; the shape of the streets between two
+      delivery points — all replaced by a single number, the travel time.</li>
+      <li><strong>The model.</strong> A <strong>weighted graph</strong>: 60 nodes (delivery points) plus one depot
+      node, edges labelled with travel time, plus a demand (weight) at each node and a capacity for each vehicle.
+      The problem becomes the classical <em>capacitated vehicle routing problem</em>: partition the nodes into at
+      most 8 tours starting and ending at the depot, each of total demand ≤ capacity and total edge weight ≤ 8
+      hours, minimising the sum of edge weights.</li>
+      <li><strong>Why it helps.</strong> The model is the same shape as a thousand other problems, so the whole
+      literature of graph algorithms, heuristics and lower bounds applies immediately. Nothing about parcels or
+      drivers needs to be rediscovered.</li>
+      <li><strong>The risk.</strong> Discarding traffic means the model assumes travel times are fixed. At 8 a.m.
+      they are not. That assumption must be stated, and it is a limitation to discuss in an evaluation.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> 2 for the model (weighted graph with capacities), 2 for a justified keep/discard list, 2 for a consequence — either the reuse of known algorithms or the stated limitation about fixed travel times.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 10</span> IB-style · 5 marks · the same abstraction in a second context</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> A printer receives jobs from 40 computers and prints them in the order they
+    arrive. (a) Name the abstract data type that models this. (b) Give a second, unrelated problem modelled by the
+    same abstraction, and explain why the same operations are enough.</p>
+    <ol class="steps">
+      <li><strong>(a)</strong> A <strong>queue</strong> — a first-in-first-out structure whose only operations are
+      <code>enqueue</code> (add at the rear), <code>dequeue</code> (remove from the front), <code>isEmpty</code> and
+      optionally <code>peek</code>. The printer does not care what is in a job, only which arrived first, so the
+      entire content of every document is abstracted away.</li>
+      <li><strong>(b) Second context: breadth-first search</strong> on a graph (see
+      <a href="B4-abstract-data-types.html">B4</a>). BFS needs to visit nodes in the order they were discovered, and
+      that is the same FIFO discipline: enqueue each newly discovered node, dequeue the next node to explore. The
+      queue operations are identical, and so is the code.</li>
+      <li><strong>(b) A third, if you want the extra mark:</strong> a keyboard buffer. Keystrokes must be processed
+      in the order typed, so a FIFO queue again — and again the content of the keystroke is irrelevant to the
+      structure.</li>
+      <li><strong>Why this is abstraction.</strong> The queue says nothing about printers, graphs or keyboards. It
+      specifies behaviour — "the first thing put in is the first thing taken out" — and says nothing about arrays,
+      linked lists or pointers, which is why the same ADT can be implemented three different ways and used in three
+      unrelated programs. That separation of <em>behaviour</em> from <em>implementation</em> is the whole point.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> a queue; also models BFS and a keyboard buffer, because all three need FIFO ordering only. Marks: 1 for naming the queue, 2 for a valid second context with the matching explained, 2 for identifying that the ADT specifies behaviour and hides implementation.</div>
+  </div>
+</details>
+
+<h2>6 · Algorithm design and representation</h2>
+<span class="badge badge--sl">SL / HL</span>
+
+<p>Once the model exists and the problem is decomposed, you still have to express the solution. There are three
+notations, and each has a job: <strong>structured English</strong> for agreeing the design with a human,
+<strong>flowcharts</strong> for seeing control flow, and <strong>pseudocode</strong> for the precision that leads
+to code. Then there is the fourth thing, which is not a notation but the skill that earns the most Paper 2 marks:
+the <strong>trace table</strong>.</p>
 
 <h3>Structured English</h3>
 
-<p>Numbered steps in plain language, precise enough to be unambiguous but without code syntax. It is the right
-first draft: you can show it to a non-programmer (your IA client!) and they can tell you whether it is correct.</p>
+<p>Numbered steps in plain language, precise enough to be unambiguous but free of syntax. It is the right first
+draft, because you can show it to a non-programmer — your IA client — and they can tell you whether it is correct
+before you have written a line of code. The test of good structured English: every step is an instruction with a
+verb, and no step could be carried out two different ways by two different readers.</p>
 
-<pre><code>1. Set bestAverage to 0 and bestName to an empty string.
-2. For each pupil in the list:
-   2.1 Add up all of that pupil's scores.
-   2.2 Divide the total by the number of scores to get the average.
-   2.3 If this average is greater than bestAverage:
+<pre><code>1.  Set bestAverage to 0 and bestName to an empty string.
+2.  For each pupil in the list:
+    2.1 Add up all of that pupil's scores.
+    2.2 Divide the total by the number of scores to get the average.
+    2.3 If this average is greater than bestAverage:
         set bestAverage to this average
         set bestName to this pupil's name.
-3. Output bestName and bestAverage.</code></pre>
+3.  Output bestName and bestAverage.</code></pre>
 
 <h3>Flowcharts</h3>
 
@@ -201,7 +1048,7 @@ first draft: you can show it to a non-programmer (your IA client!) and they can 
     <text x="560" y="276" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788">loop back until</text>
     <text x="560" y="292" font-size="11" font-family="system-ui, sans-serif" fill="#6c7788">i = 10, then output</text>
   </svg>
-  <figcaption><span class="viz__title">Figure 1.</span> The four symbols you must be able to draw and read. The
+  <figcaption><span class="viz__title">Figure 3.</span> The four symbols you must be able to draw and read. The
   rounded rectangle is start/stop, the rectangle is a process, the parallelogram is input/output, and the diamond is
   the only symbol with two outgoing arrows.</figcaption>
 </figure>
@@ -214,7 +1061,7 @@ first draft: you can show it to a non-programmer (your IA client!) and they can 
   every loop has a condition that can eventually become false.</p>
 </div>
 
-<h2>IB pseudocode conventions</h2>
+<h3>IB pseudocode conventions</h3>
 
 <p>This is the notation the IB uses in exam questions. It is deliberately language-neutral, so it has no
 semicolons, no braces and no type declarations. It is <em>not</em> Java and <em>not</em> Python — when a Paper 2
@@ -238,6 +1085,7 @@ question asks for Java or Python, write real code; when it asks for pseudocode, 
     <tr><td>Comparison</td><td><code>=</code>, <code>&lt;&gt;</code> or <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></td><td><code>&lt;&gt;</code> means "not equal to".</td></tr>
     <tr><td>Logical</td><td><code>AND</code>, <code>OR</code>, <code>NOT</code></td><td>Use parentheses when mixing <code>AND</code> and <code>OR</code>.</td></tr>
     <tr><td>Strings</td><td><code>length(s)</code>, <code>substring(s, start, len)</code>, <code>upper(s)</code>, <code>lower(s)</code></td><td>Questions define any function they expect you to use.</td></tr>
+    <tr><td>Comment</td><td><code>// comment</code></td><td>Annotations for the reader; ignored by the machine.</td></tr>
   </tbody>
 </table>
 </div>
@@ -255,13 +1103,12 @@ question asks for Java or Python, write real code; when it asks for pseudocode, 
   <span class="callout__label">Trap — MOD and DIV are not the same as / and %</span>
   <p><code>DIV</code> is integer division: it gives the whole-number quotient and throws away the remainder.
   <code>MOD</code> gives the remainder. So <code>17 DIV 5 = 3</code> and <code>17 MOD 5 = 2</code>, and the
-  identity \(a = (a \text{ DIV } b) \times b + (a \text{ MOD } b)\) always holds. In Python these are
-  <code>//</code> and <code>%</code>; in Java <code>/</code> on two <code>int</code>s is DIV and <code>%</code> is
-  MOD, but <code>/</code> on a <code>double</code> is ordinary division — the classic source of "why is my average
-  zero?" bugs.</p>
+  identity a = (a DIV b) × b + (a MOD b) always holds. In Python these are <code>//</code> and <code>%</code>; in
+  Java <code>/</code> on two <code>int</code>s is DIV and <code>%</code> is MOD, but <code>/</code> on a
+  <code>double</code> is ordinary division — the classic source of "why is my average zero?" bugs.</p>
 </div>
 
-<h2>Trace tables</h2>
+<h3>Trace tables</h3>
 
 <p>A trace table records the value of every variable after each significant step. It is the only reliable way to
 answer "state the output of this algorithm" and the only reliable way to debug a loop. The method:</p>
@@ -269,17 +1116,20 @@ answer "state the output of this algorithm" and the only reliable way to debug a
 <div class="callout callout--how">
   <span class="callout__label">How to use it — build the table mechanically</span>
   <ol class="steps">
-    <li>Make one column per variable <em>plus</em> one for output. Include loop counters and accumulators.</li>
+    <li>Make one column per variable <em>plus</em> one for output. Include loop counters, accumulators and any
+    condition that changes.</li>
     <li>Write the initial values as the first row.</li>
     <li>Walk the algorithm one line at a time. Every time a variable <em>changes</em>, add a row.</li>
-    <li>At a loop, evaluate the condition <em>before</em> each pass and stop when it is false.</li>
+    <li>At a loop, evaluate the condition <em>before</em> each pass and stop when it is false. Record the
+    condition's value as its own row if the question is about termination.</li>
     <li>Never do two steps in your head at once — that is where errors enter.</li>
-    <li>Sanity-check at the end: does the final value make sense?</li>
+    <li>Sanity-check at the end: does the final value make sense? If the algorithm counts something, count it by
+    hand a second, different way.</li>
   </ol>
 </div>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 2</span> IB-style · 5 marks · trace a nested loop</summary>
+  <summary><span class="badge badge--medium">Worked example 11</span> IB-style · 5 marks · trace a nested loop</summary>
   <div class="dbody">
     <p><strong>Question.</strong> State the output of the following pseudocode.</p>
 <pre><code>total = 0
@@ -310,40 +1160,89 @@ output total</code></pre>
         </tbody>
       </table>
     </div>
-    <div class="answerline"><b>Answer:</b> 18. Check by factorising: total = Σ i Σ j = (1+2+3)(1+2) = 6 × 3 = 18. ✓ Whenever the body is a product of a function of i and a function of j, the double sum factorises — a two-second check that catches most slips.</div>
+    <div class="answerline"><b>Answer:</b> 18. Check by factorising: total = (Σ i)(Σ j) = (1+2+3)(1+2) = 6 × 3 = 18. Whenever the body is a product of a function of i and a function of j, the double sum factorises — a two-second check that catches most slips.</div>
   </div>
 </details>
 
 <details class="worked">
-  <summary><span class="badge badge--hard">Worked example 3</span> IB-style · 7 marks · trace with a sub-procedure and by-reference parameters</summary>
+  <summary><span class="badge badge--medium">Worked example 12</span> IB-style · 6 marks · trace a while loop with a sentinel</summary>
   <div class="dbody">
-    <p><strong>Question.</strong> State the output.</p>
+    <p><strong>Question.</strong> State the output when the inputs are 4, 9, 2, −1.</p>
+<pre><code>count = 0
+total = 0
+input n
+loop while n &gt; 0
+    total = total + n
+    count = count + 1
+    input n
+endloop
+output count, total</code></pre>
+    <ol class="steps">
+      <li>Initial: count = 0, total = 0. The first <code>input n</code> reads 4.</li>
+      <li>Condition 4 &gt; 0 is true → total = 4, count = 1, read 9.</li>
+      <li>Condition 9 &gt; 0 is true → total = 13, count = 2, read 2.</li>
+      <li>Condition 2 &gt; 0 is true → total = 15, count = 3, read −1.</li>
+      <li>Condition −1 &gt; 0 is false → exit. The sentinel −1 is <em>not</em> added to the total and
+      <em>not</em> counted.</li>
+      <li>Output: 3 and 15.</li>
+    </ol>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>n at condition</th><th>n &gt; 0?</th><th>count</th><th>total</th></tr></thead>
+        <tbody>
+          <tr><td>4</td><td>true</td><td>1</td><td>4</td></tr>
+          <tr><td>9</td><td>true</td><td>2</td><td>13</td></tr>
+          <tr><td>2</td><td>true</td><td>3</td><td>15</td></tr>
+          <tr><td>−1</td><td>false</td><td>3</td><td>15</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="answerline"><b>Answer:</b> 3 and 15. The trap is counting the sentinel: it is read and tested but never added. Marks: 1 per correct row, 1 for the final pair, and the row where the condition is false must still appear — examiners look for it as evidence you understood the exit.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 13</span> IB-style · 7 marks · trace a sub-procedure with by-reference parameters and an array</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> State the output. Assume pass by reference.</p>
 <pre><code>procedure bump(a, b)
     a = a + 10
     b = b * 2
     output a, b
 endprocedure
 
+A = [5, 3, 8]
 x = 5
 y = 3
 bump(x, y)
-output x, y</code></pre>
+bump(A[1], x)
+output x, y, A[1]</code></pre>
     <ol class="steps">
-      <li>Initial: x = 5, y = 3.</li>
-      <li>Call <code>bump(x, y)</code> with <strong>pass by value</strong> (the default in the IB pseudocode model):
-      the procedure receives <em>copies</em>, so a = 5 and b = 3 locally.</li>
-      <li>Inside: a = 15, b = 6. Output: <code>15 6</code>.</li>
-      <li>Return. The copies are discarded; <code>x</code> and <code>y</code> in the main program are
-      <em>unchanged</em>.</li>
-      <li>Output: <code>5 3</code>.</li>
+      <li>Initial: A = [5, 3, 8], x = 5, y = 3.</li>
+      <li><code>bump(x, y)</code> with pass by reference: <code>a</code> <em>is</em> x and <code>b</code>
+      <em>is</em> y, so x becomes 15 and y becomes 6. Output: 15 6.</li>
+      <li><code>bump(A[1], x)</code>: <code>a</code> is now the array element A[1], so A[1] = 3 + 10 = 13 and
+      x = 15 × 2 = 30. Output: 13 30.</li>
+      <li>Final output: x = 30, y = 6, A[1] = 13.</li>
     </ol>
-    <div class="answerline"><b>Answer:</b> "15 6" then "5 3". The mark hinges on knowing the parameter-passing convention: with pass by value the caller's variables cannot change. If the question states (or your language uses) pass by reference — as Python does for mutable objects such as lists, and as Java does for arrays and objects — then y would be changed in the caller. Always state which convention you are assuming; that sentence is itself often awarded a mark.</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Step</th><th>x</th><th>y</th><th>A[0]</th><th>A[1]</th><th>A[2]</th><th>Output</th></tr></thead>
+        <tbody>
+          <tr><td>initial</td><td>5</td><td>3</td><td>5</td><td>3</td><td>8</td><td>—</td></tr>
+          <tr><td>bump(x, y)</td><td>15</td><td>6</td><td>5</td><td>3</td><td>8</td><td>15 6</td></tr>
+          <tr><td>bump(A[1], x)</td><td>30</td><td>6</td><td>5</td><td>13</td><td>8</td><td>13 30</td></tr>
+          <tr><td>final output</td><td>30</td><td>6</td><td>5</td><td>13</td><td>8</td><td>30 6 13</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="answerline"><b>Answer:</b> "15 6", then "13 30", then "30 6 13". With pass by value instead, x and y would be unchanged and the output would be "15 6", "13 30", "5 3 3" — the caller's variables cannot change. Always state the convention you are assuming; that sentence is often awarded a mark on its own.</div>
   </div>
 </details>
 
-<h2>Standard algorithms</h2>
+<h3>Standard algorithms</h3>
 
-<h3>Find maximum / minimum, count, sum, average</h3>
+<h4>Find maximum / minimum, count, sum, average</h4>
 
 <p>All four share one skeleton: initialise an accumulator, loop over the collection, update the accumulator, output
 it. The only thing that changes is the initial value and the update rule — and the initial value is where the bugs
@@ -363,11 +1262,11 @@ output maxVal</code></pre>
   <p><code>maxVal = 0</code> is wrong whenever all the values could be negative: with the array
   <code>[-5, -2, -9]</code> the algorithm would report 0, a value that is not in the array at all. Always seed the
   accumulator with the <em>first element</em> and start the loop at index 1. Symmetrically, when finding a minimum,
-  seed with the first element rather than 0 — otherwise an array of positive values reports 0. And when counting or
-  summing, seed with 0 and divide by the count, never by a hard-coded constant.</p>
+  seed with the first element rather than 0. And when counting or summing, seed with 0 and divide by the count,
+  never by a hard-coded constant.</p>
 </div>
 
-<h3>Linear search</h3>
+<h4>Linear search</h4>
 
 <pre><code>found = false
 index = -1
@@ -382,9 +1281,11 @@ endwhile
 output index</code></pre>
 
 <p>It examines elements one by one until it finds the target or runs out. It works on <strong>unsorted</strong>
-data, which is its main virtue. On average it examines half the elements; at worst all of them.</p>
+data, which is its main virtue. On average it examines half the elements; at worst all of them. Note the guard:
+<code>i &lt; n</code> is tested <em>before</em> <code>A[i]</code> is touched, which is what prevents an
+out-of-range error on the last pass.</p>
 
-<h3>Binary search</h3>
+<h4>Binary search</h4>
 
 <pre><code>low = 0
 high = n - 1
@@ -413,12 +1314,11 @@ endwhile</code></pre>
       small" tells you nothing at all about A[mid−1], so discarding half the array is unjustified and the algorithm
       can return "not found" for an element that is present. This is why "state the precondition" is a one-mark
       question that follows every binary search question.</li>
-      <li><strong>Why log₂ n.</strong> Each comparison halves the search space: n → n/2 → n/4 → … → 1. After k
-      comparisons the remaining space is \(n / 2^{k}\). The search ends when that reaches 1, so
-      \(n / 2^{k} = 1\), giving \(2^{k} = n\) and \(k = \log_{2} n\).</li>
-      <li>So 1 000 000 elements need at most about \(\log_{2}(10^{6}) \approx 20\) comparisons, against 1 000 000
-      for a linear search in the worst case. That is the entire argument for sorting data you intend to search
-      repeatedly.</li>
+      <li><strong>Why log<sub>2</sub> n.</strong> Each comparison halves the search space: n → n/2 → n/4 → … → 1.
+      After k comparisons the remaining space is n / 2<sup>k</sup>. The search ends when that reaches 1, so
+      n / 2<sup>k</sup> = 1, giving 2<sup>k</sup> = n and k = log<sub>2</sub> n.</li>
+      <li>So 1 000 000 elements need at most about 20 comparisons, against 1 000 000 for a linear search in the
+      worst case. That is the entire argument for sorting data you intend to search repeatedly.</li>
       <li><strong>The catch:</strong> sorting costs O(n log n), so if you search once it is not worth sorting
       first. Sort once, search many times — that is when binary search pays.</li>
     </ol>
@@ -429,10 +1329,10 @@ endwhile</code></pre>
 </details>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 4</span> IB-style · 6 marks · hand-trace a binary search</summary>
+  <summary><span class="badge badge--medium">Worked example 14</span> IB-style · 6 marks · hand-trace a binary search</summary>
   <div class="dbody">
     <p><strong>Question.</strong> Array <code>A = [3, 8, 14, 21, 27, 33, 40, 52]</code>, indices 0 to 7. Trace a
-    binary search for the target 33, showing low, high and mid at each step.</p>
+    binary search for the target 33, showing low, high and mid at each step. Then trace a search for 10.</p>
     <ol class="steps">
       <li>low = 0, high = 7. mid = (0 + 7) DIV 2 = 3. A[3] = 21 &lt; 33, so low = 4.</li>
       <li>low = 4, high = 7. mid = (4 + 7) DIV 2 = 5. A[5] = 33 = target. <strong>Found at index 5.</strong></li>
@@ -446,7 +1346,7 @@ endwhile</code></pre>
         </tbody>
       </table>
     </div>
-    <p>Two steps instead of six for a linear search. Now trace a search for 10 (not present):</p>
+    <p>Two steps instead of six for a linear search. Now the absent value 10:</p>
     <ol class="steps">
       <li>low = 0, high = 7, mid = 3, A[3] = 21 &gt; 10 → high = 2.</li>
       <li>low = 0, high = 2, mid = 1, A[1] = 8 &lt; 10 → low = 2.</li>
@@ -458,7 +1358,7 @@ endwhile</code></pre>
   </div>
 </details>
 
-<h3>Bubble sort</h3>
+<h4>Bubble sort</h4>
 
 <pre><code>swapped = true
 loop while swapped = true
@@ -478,7 +1378,7 @@ remaining value "bubbles" to the end. The <code>swapped</code> flag is the optim
 swap, the array is sorted and the algorithm can stop early.</p>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 5</span> IB-style · 6 marks · bubble sort pass by pass</summary>
+  <summary><span class="badge badge--medium">Worked example 15</span> IB-style · 6 marks · bubble sort pass by pass</summary>
   <div class="dbody">
     <p><strong>Question.</strong> Show the state of the array after each pass of bubble sort on
     <code>[5, 2, 9, 1, 3]</code>, and state how many comparisons and swaps occur in total.</p>
@@ -496,7 +1396,7 @@ swap, the array is sorted and the algorithm can stop early.</p>
   </div>
 </details>
 
-<h3>Selection sort</h3>
+<h4>Selection sort</h4>
 
 <pre><code>loop for i = 0 to n - 2
     minIndex = i
@@ -506,8 +1406,8 @@ swap, the array is sorted and the algorithm can stop early.</p>
         endif
     next j
     // swap A[i] with A[minIndex]
-    temp       = A[i]
-    A[i]       = A[minIndex]
+    temp        = A[i]
+    A[i]        = A[minIndex]
     A[minIndex] = temp
 next i</code></pre>
 
@@ -515,7 +1415,7 @@ next i</code></pre>
 at most once.</p>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 6</span> IB-style · 6 marks · selection sort pass by pass, and comparison with bubble sort</summary>
+  <summary><span class="badge badge--medium">Worked example 16</span> IB-style · 6 marks · selection sort pass by pass, and comparison with bubble sort</summary>
   <div class="dbody">
     <p><strong>Question.</strong> Show the array after each pass of selection sort on <code>[5, 2, 9, 1, 3]</code>
     and compare its efficiency with bubble sort on the same data.</p>
@@ -529,42 +1429,42 @@ at most once.</p>
       <li><strong>Pass 4:</strong> scan indices 3–4; the minimum is 5 at index 3; already in place →
       [1, 2, 3, <strong>5</strong>, 9]. Sorted.</li>
       <li><strong>Comparisons:</strong> 4 + 3 + 2 + 1 = 10 — the same as bubble sort, because both scan the
-      unsorted portion. <strong>Swaps: at most 2 here</strong> (indices 0 and 2), against 6 for bubble sort.</li>
+      unsorted portion. <strong>Swaps: 2 here</strong> (indices 0 and 2), against 6 for bubble sort.</li>
     </ol>
-    <div class="answerline"><b>Answer:</b> [1,2,9,5,3] → [1,2,9,5,3] → [1,2,3,5,9] → [1,2,3,5,9]. Both are O(n²) in comparisons, so neither is fast for large n. Selection sort does at most n−1 swaps, which makes it better when writing to memory is expensive (flash storage, or sorting records that are costly to move). Bubble sort is faster when the data is already nearly sorted, because its swapped flag detects that after a single pass — selection sort cannot.</div>
+    <div class="answerline"><b>Answer:</b> [1,2,9,5,3] → [1,2,9,5,3] → [1,2,3,5,9] → [1,2,3,5,9]. Both are O(n<sup>2</sup>) in comparisons, so neither is fast for large n. Selection sort does at most n−1 swaps, which makes it better when writing to memory is expensive (flash storage, or sorting records that are costly to move). Bubble sort is faster when the data is already nearly sorted, because its swapped flag detects that after a single pass — selection sort cannot.</div>
   </div>
 </details>
 
-<h2>Algorithm efficiency and Big-O</h2>
+<h3>Algorithm efficiency and Big-O</h3>
 
-<p>Big-O describes how the number of steps grows as the input size \(n\) grows. It deliberately ignores constants
-and lower-order terms, because at large \(n\) only the fastest-growing term matters.</p>
+<p>Big-O describes how the number of steps grows as the input size n grows. It deliberately ignores constants and
+lower-order terms, because at large n only the fastest-growing term matters.</p>
 
 <div class="table-wrap">
 <table>
   <thead><tr><th>Complexity</th><th>Name</th><th>What it means</th><th>Example</th><th>n = 1 000 000</th></tr></thead>
   <tbody>
-    <tr><td>\(O(1)\)</td><td>Constant</td><td>Independent of the input size</td><td>Accessing <code>A[5]</code>; pushing onto a stack</td><td>1 step</td></tr>
-    <tr><td>\(O(\log n)\)</td><td>Logarithmic</td><td>Halving the problem each step</td><td>Binary search; searching a balanced BST</td><td>≈ 20 steps</td></tr>
-    <tr><td>\(O(n)\)</td><td>Linear</td><td>Proportional to the input size</td><td>Linear search; summing an array; traversing a linked list</td><td>1 000 000 steps</td></tr>
-    <tr><td>\(O(n \log n)\)</td><td>Linearithmic</td><td>Split, sort the halves, merge</td><td>Merge sort, quicksort (average), heap sort</td><td>≈ 20 000 000 steps</td></tr>
-    <tr><td>\(O(n^{2})\)</td><td>Quadratic</td><td>Every element against every other</td><td>Bubble sort, selection sort, nested loops over the same array</td><td>10<sup>12</sup> steps</td></tr>
-    <tr><td>\(O(2^{n})\)</td><td>Exponential</td><td>Doubles with each addition to the input</td><td>Naive recursive Fibonacci; brute-force subset search</td><td>impossible</td></tr>
+    <tr><td>O(1)</td><td>Constant</td><td>Independent of the input size</td><td>Accessing <code>A[5]</code>; pushing onto a stack</td><td>1 step</td></tr>
+    <tr><td>O(log n)</td><td>Logarithmic</td><td>Halving the problem each step</td><td>Binary search; searching a balanced BST</td><td>≈ 20 steps</td></tr>
+    <tr><td>O(n)</td><td>Linear</td><td>Proportional to the input size</td><td>Linear search; summing an array; traversing a linked list</td><td>1 000 000 steps</td></tr>
+    <tr><td>O(n log n)</td><td>Linearithmic</td><td>Split, sort the halves, merge</td><td>Merge sort, quicksort (average), heap sort</td><td>≈ 20 000 000 steps</td></tr>
+    <tr><td>O(n<sup>2</sup>)</td><td>Quadratic</td><td>Every element against every other</td><td>Bubble sort, selection sort, nested loops over the same array</td><td>10<sup>12</sup> steps</td></tr>
+    <tr><td>O(2<sup>n</sup>)</td><td>Exponential</td><td>Doubles with each addition to the input</td><td>Naive recursive Fibonacci; brute-force subset search</td><td>impossible</td></tr>
   </tbody>
 </table>
 </div>
 
 <div class="callout callout--why">
   <span class="callout__label">Why the constants are ignored — and when that is misleading</span>
-  <p>An \(O(n^{2})\) algorithm that does one operation per iteration beats an \(O(n \log n)\) algorithm that does a
-  hundred, for every \(n\) you are likely to meet. Big-O describes the <em>shape</em> of the growth, not the
-  absolute time, and it is a statement about what happens as \(n\) becomes large. This is exactly why bubble sort
-  is still taught and still used: for \(n = 20\) it is perfectly fine, and it is three lines long. Say this in an
+  <p>An O(n<sup>2</sup>) algorithm that does one operation per iteration beats an O(n log n) algorithm that does a
+  hundred, for every n you are likely to meet. Big-O describes the <em>shape</em> of the growth, not the
+  absolute time, and it is a statement about what happens as n becomes large. This is exactly why bubble sort
+  is still taught and still used: for n = 20 it is perfectly fine, and it is three lines long. Say this in an
   answer and you sound like someone who understands the concept rather than someone reciting a table.</p>
 </div>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 7</span> IB-style · 6 marks · state the complexity of an algorithm</summary>
+  <summary><span class="badge badge--medium">Worked example 17</span> IB-style · 6 marks · state the complexity of an algorithm</summary>
   <div class="dbody">
     <p><strong>Question.</strong> State the time complexity of each fragment, with a reason.</p>
 <pre><code>(a)  total = 0
@@ -588,19 +1488,115 @@ and lower-order terms, because at large \(n\) only the fastest-growing term matt
 (d)  output A[0]</code></pre>
     <ol class="steps">
       <li>(a) One loop, n iterations, constant work each → <strong>O(n)</strong>, linear.</li>
-      <li>(b) A loop of n iterations inside a loop of n iterations → n × n = n² → <strong>O(n²)</strong>,
-      quadratic.</li>
+      <li>(b) A loop of n iterations inside a loop of n iterations → n × n = n<sup>2</sup> →
+      <strong>O(n<sup>2</sup>)</strong>, quadratic.</li>
       <li>(c) The search space halves each iteration → <strong>O(log n)</strong>, logarithmic.</li>
       <li>(d) A single array access with no loop → <strong>O(1)</strong>, constant.</li>
       <li>Extra credit that often carries a mark: if (a) and (d) appear in the same program, the total is
       O(n) + O(1) = <strong>O(n)</strong>, because the slower-growing term is discarded — the overall complexity of
       a program is determined by its dominant part.</li>
     </ol>
-    <div class="answerline"><b>Answer:</b> (a) O(n); (b) O(n²); (c) O(log n); (d) O(1). Always give the reason in words ("the search space halves", "a loop inside a loop"), not just the notation.</div>
+    <div class="answerline"><b>Answer:</b> (a) O(n); (b) O(n<sup>2</sup>); (c) O(log n); (d) O(1). Always give the reason in words ("the search space halves", "a loop inside a loop"), not just the notation.</div>
   </div>
 </details>
 
-<h2>Testing</h2>
+<h2>7 · Problem recognition: how this is actually examined</h2>
+
+<p>Paper 1 tests these strands as short-answer and extended-response questions on unseen scenarios; Paper 2 tests
+them as "read this pseudocode and state the output", "complete the trace table" and "construct an algorithm". The
+same thinking, different output format. What follows is the translation guide.</p>
+
+<h3>What the command terms ask for here</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Command term</th><th>What it wants on this topic</th><th>What a full-mark answer looks like</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Identify</strong></td>
+      <td>A named thing from the scenario — a precondition, an input, a shared module, a hazard</td>
+      <td>One clause per mark, each naming a <em>different</em> thing. "Sorted ascending" / "file exists" / "n ≥ 1".
+      No explanation needed, and none rewarded</td>
+    </tr>
+    <tr>
+      <td><strong>State</strong></td>
+      <td>A fact or a value, with no development</td>
+      <td>"O(n<sup>2</sup>), because there is a loop inside a loop." The reason is often the mark</td>
+    </tr>
+    <tr>
+      <td><strong>Construct</strong></td>
+      <td>An artefact: decision table, trace table, flowchart, pseudocode, test table</td>
+      <td>The artefact in the notation asked for, complete, with every case or row present. An incomplete table
+      scores roughly in proportion to its coverage</td>
+    </tr>
+    <tr>
+      <td><strong>Explain</strong></td>
+      <td>A mechanism and its consequence</td>
+      <td>"The array must be sorted, <strong>so</strong> discarding half is justified; on unsorted data the
+      inference fails and the search reports 'not found' for a value that is present"</td>
+    </tr>
+    <tr>
+      <td><strong>Evaluate</strong></td>
+      <td>Criteria, both sides, and a verdict</td>
+      <td>"Caching saves 99% of API calls and makes the screen instant, <strong>but</strong> the reading can be five
+      minutes stale; for a weather app the saving wins because the value changes slowly — with a manual refresh
+      provided"</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>The same 6-mark question, answered badly and well</h3>
+
+<p><strong>Question.</strong> "A supermarket self-checkout allows a customer to scan items, pay by card, and print
+a receipt. Two customers sometimes use adjacent machines at the same time and both are served from one shared
+queue of trolleys. Identify one problem with this arrangement and explain how it could be avoided. [6 marks]"</p>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 18</span> Weak vs strong — where the six marks actually sit</summary>
+  <div class="dbody">
+    <p><strong>Weak answer (2 of 6).</strong> "The problem is a race condition. Two people might take the same
+    trolley at the same time, which would be a problem. To avoid it they should use synchronisation or a
+    semaphore. This would make the system more reliable and prevent errors."</p>
+    <p><strong>Diagnosis.</strong> The right term is named — that is the two marks — but nothing is explained. What
+    is shared? What are the three steps? Which interleaving loses a trolley? Which operations are in the critical
+    section, and when is the lock released? None of that is there, and "more reliable" is not a mechanism.</p>
+    <p><strong>Strong answer (6 of 6).</strong></p>
+    <ol class="steps">
+      <li><strong>Name the hazard and the shared resource.</strong> "The trolley count is shared mutable state: each
+      machine performs read the count, decrement it, write it back. These three steps are not atomic."</li>
+      <li><strong>Show the interleaving.</strong> "If machine A reads 3 and machine B reads 3 before either writes,
+      both write 2. One trolley has been issued twice from a count that should now be 1, so a later customer is
+      told a trolley is available when it is not."</li>
+      <li><strong>Name the property needed.</strong> "Read–modify–write must be mutually exclusive: only one
+      machine may be inside that section at a time."</li>
+      <li><strong>Give the mechanism.</strong> "Guard the section with a lock: acquire the lock, read, decrement,
+      write, release. A machine that finds the lock taken waits."</li>
+      <li><strong>Note the cost and check for deadlock.</strong> "The cost is that the second machine waits a few
+      milliseconds, which is acceptable because the section is short. There is no deadlock risk here because only
+      one lock is involved, so no circular wait can form."</li>
+    </ol>
+    <div class="answerline"><b>Where the marks are:</b> 1 for naming the race condition, 2 for the interleaving with concrete numbers, 2 for mutual exclusion with a lock acquired and released around the right operations, 1 for the cost or the deadlock observation. The single move that turns a 2 into a 6 is replacing the word "synchronisation" with the three steps it protects.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam technique — the two-minute plan for any scenario question</span>
+  <ol class="steps">
+    <li><strong>Underline the data.</strong> Everything the scenario mentions that the system must remember becomes
+    an input or a stored value.</li>
+    <li><strong>Say what is shared, sorted or required.</strong> One of those three words is nearly always the
+    precondition the question wants.</li>
+    <li><strong>Decide the artefact.</strong> "Identify" → a list of nouns. "Construct" → a table. "Explain" →
+    mechanism + consequence. "Evaluate" → criteria + both sides + verdict.</li>
+    <li><strong>Write in the scenario's vocabulary.</strong> Say "pupil", "loan", "trolley", not "user" and
+    "record". Contextualised answers reach the top markband; generic ones do not.</li>
+    <li><strong>Answer the number of marks.</strong> Six marks means roughly three developed points or six
+    identified ones. If you have written one sentence for a six-mark question, you have not finished.</li>
+  </ol>
+</div>
+
+<h2>8 · Testing: thinking ahead written down</h2>
 
 <h3>Three kinds of error</h3>
 
@@ -625,7 +1621,7 @@ strategy exists to catch, and they are caught by choosing the right <em>data</em
   <thead><tr><th>Type</th><th>Purpose</th><th>Example for "enter an age between 0 and 120"</th></tr></thead>
   <tbody>
     <tr><td><strong>Normal (valid)</strong></td><td>Show that it works for ordinary, expected input</td><td>25, 47, 90</td></tr>
-    <tr><td><strong>Boundary / extreme</strong></td><td>Probe the edges of the valid range, where off-by-one bugs live</td><td>0, 120, and the just-invalid values 1 and 119 if the test is inclusive; also −1 and 121</td></tr>
+    <tr><td><strong>Boundary / extreme</strong></td><td>Probe the edges of the valid range, where off-by-one bugs live</td><td>0, 120, and the just-invalid values −1 and 121; also 1 and 119</td></tr>
     <tr><td><strong>Erroneous / invalid</strong></td><td>Check that bad input is rejected gracefully rather than crashing</td><td>−5, 200, "twenty", an empty string, 3.7</td></tr>
   </tbody>
 </table>
@@ -651,7 +1647,7 @@ strategy exists to catch, and they are caught by choosing the right <em>data</em
 </details>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 8</span> IB-style · 8 marks · construct a test table</summary>
+  <summary><span class="badge badge--medium">Worked example 19</span> IB-style · 8 marks · construct a test table</summary>
   <div class="dbody">
     <p><strong>Question.</strong> A program asks for a mark from 0 to 100 inclusive and outputs a grade:
     A for 80 and above, B for 60 to 79, C for 40 to 59, Fail below 40. Construct a test table with normal,
@@ -704,11 +1700,6 @@ strategy exists to catch, and they are caught by choosing the right <em>data</em
   both senses in one sentence and you cannot be wrong.</p>
 </div>
 
-<div class="callout callout--vocab">
-  <span class="callout__label">Vocabulary</span>
-  <p><strong>computational thinking</strong><strong>decomposition</strong><strong>abstraction</strong><strong>pattern recognition</strong><strong>generalisation</strong><strong>procedure</strong> /<strong>think procedurally / logically / ahead / concurrently / abstractly</strong> / / / /<strong>structured English</strong><strong>flowchart</strong><strong>terminator / process / decision</strong> / /<strong>pseudocode</strong><strong>trace table</strong><strong>variable</strong><strong>assignment</strong><strong>iteration / loop</strong> /<strong>selection</strong><strong>accumulator</strong><strong>counter</strong><strong>loop counter</strong><strong>boundary data</strong><strong>linear search / binary search</strong> /<strong>bubble sort / selection sort</strong> /<strong>pass</strong><strong>swap</strong><strong>efficiency</strong><strong>time complexity</strong><strong>Big-O notation</strong> O<strong>constant / linear / logarithmic / quadratic</strong> / / /<strong>syntax error / logic error / runtime error</strong> / /<strong>normal / boundary (extreme) / erroneous data</strong> / /<strong>validation / verification</strong> /<strong>off-by-one error</strong><strong>dry run</strong></p>
-</div>
-
 <h2>Practice</h2>
 <ol class="practice">
   <li><p>State the output of this pseudocode.</p>
@@ -718,14 +1709,15 @@ loop for i = 1 to n
     result = result * i
 next i
 output result</code></pre>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
-      <p>result = 1 × 1 × 2 × 3 × 4 × 5 = <strong>120</strong>. This is 5! (5 factorial). Trace: 1, 1, 2, 6, 24, 120.</p>
-      <div class="answerline"><b>Trap:</b> if the loop were <code>i = 0 to n</code>, the first multiplication would be by 0 and the answer would be 0 — a single-character difference with a completely different result.</div>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <p>result = 1 × 1 × 2 × 3 × 4 × 5 = <strong>120</strong>. This is 5! (5 factorial). Trace: 1, 1, 2, 6, 24,
+      120.</p>
+      <div class="answerline"><b>Why this is worth knowing:</b> if the loop were <code>i = 0 to n</code>, the first multiplication would be by 0 and the answer would be 0 — a single-character difference with a completely different result. Loop bounds are the most common single-mark error in Paper 2.</div>
     </div></details>
   </li>
   <li><p>Explain the difference between a syntax error, a logic error and a runtime error, giving an example of
   each.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
       <p>A <strong>syntax error</strong> breaks the grammar of the language (missing colon in Python, missing
       semicolon in Java) and is reported before or immediately at run time.</p>
       <p>A <strong>logic error</strong> is valid code that computes the wrong thing (using <code>&gt;</code> where
@@ -733,6 +1725,7 @@ output result</code></pre>
       <p>A <strong>runtime error</strong> crashes during execution because of a specific situation
       (division by zero, index out of bounds, opening a file that does not exist). It only appears on the input that
       triggers it, which is why erroneous test data matters.</p>
+      <div class="answerline"><b>Why this is worth knowing:</b> the three categories tell you where to look. Syntax errors are found by the machine, logic errors by comparison with expected output, runtime errors by testing the edges. A testing strategy that only uses normal data catches none of the third kind.</div>
     </div></details>
   </li>
   <li><p>State the output of the following, and explain what the algorithm does.</p>
@@ -743,17 +1736,17 @@ loop for i = 1 to 20
     endif
 next i
 output count</code></pre>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
       <ol class="steps">
         <li>The condition is true when i is divisible by both 3 and 5, i.e. by 15.</li>
         <li>Between 1 and 20, only 15 qualifies.</li>
       </ol>
       <p><strong>Output: 1.</strong> The algorithm counts numbers in the range that are multiples of 15.</p>
-      <div class="answerline"><b>Trap:</b> AND means both conditions must hold. With OR, the count would be 6+4−1 = 9 (multiples of 3 or 5, remembering 15 is counted once).</div>
+      <div class="answerline"><b>Why this is worth knowing:</b> AND means both conditions must hold. With OR, the count would be 6 + 4 − 1 = 9 (multiples of 3 or 5, remembering that 15 must not be counted twice). Mixing up AND and OR is the single most common error in compound conditions.</div>
     </div></details>
   </li>
   <li><p>Explain why binary search cannot be used on unsorted data, using a concrete example.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
       <p>Take the array <code>[9, 3, 7, 1, 5]</code> and search for 1. Binary search computes mid = 2, sees
       A[2] = 7 &gt; 1, and concludes the target must be in the left half — so it discards indices 3 and 4. But the
       target, 1, is at index 3, which was just thrown away. The algorithm reports "not found" for an element that
@@ -761,25 +1754,66 @@ output count</code></pre>
       <p>The inference "A[mid] &gt; target, therefore everything to the right is also too big" is valid only because
       of the sorted-order property. Without it, the value at one position tells you nothing about any other
       position, so halving is unjustified.</p>
+      <div class="answerline"><b>Why this is worth knowing:</b> "state the precondition" follows almost every binary search question and is a free mark. The precondition is not a technicality — it is the assumption the halving inference depends on.</div>
+    </div></details>
+  </li>
+  <li><p>A cinema gives a 20% discount to anyone aged under 16 or over 64, and a 10% discount to students who
+  are not already eligible. Construct a decision table for the discount, and state one case the specification
+  leaves unclear.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>R1</th><th>R2</th><th>R3</th><th>R4</th></tr></thead>
+          <tbody>
+            <tr><td>C1: age &lt; 16 or age &gt; 64</td><td>Y</td><td>N</td><td>N</td><td>N</td></tr>
+            <tr><td>C2: student</td><td>—</td><td>Y</td><td>N</td><td>N</td></tr>
+            <tr><td><strong>Action</strong></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td>20% discount</td><td>X</td><td></td><td></td><td></td></tr>
+            <tr><td>10% discount</td><td></td><td>X</td><td></td><td></td></tr>
+            <tr><td>No discount</td><td></td><td></td><td>X</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Unclear case:</strong> exactly 16 and exactly 64 — "under 16" and "over 64" exclude both, so a
+      16-year-old gets nothing while a 15-year-old gets 20%. Also unclear: does a student card have to be shown, and
+      is a 70-year-old student counted once or twice?</p>
+      <div class="answerline"><b>Why this is worth knowing:</b> the R4 column shows what a decision table is for — forcing you to say what happens when nothing is true. And the ambiguity at exactly 16/64 is exactly the kind of gap an examiner rewards you for spotting, because real specifications are full of them.</div>
     </div></details>
   </li>
   <li><p>An array of 1024 sorted values is searched. State the maximum number of comparisons needed by
   (a) linear search and (b) binary search, and explain the difference.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
       <ol class="steps">
         <li>(a) Linear search: 1024 in the worst case (the target is the last element or absent).</li>
-        <li>(b) Binary search: \(\log_{2} 1024 = 10\), so at most 11 comparisons in practice (ten halvings plus the
-        final equality check that terminates the loop).</li>
+        <li>(b) Binary search: log<sub>2</sub> 1024 = 10, so at most 11 comparisons in practice (ten halvings plus
+        the final equality check that terminates the loop).</li>
         <li>The difference arises because binary search halves the search space at each step:
         1024 → 512 → 256 → 128 → 64 → 32 → 16 → 8 → 4 → 2 → 1.</li>
         <li>The precondition is that the data is sorted, and the cost of achieving that must be counted if the data
         is not already sorted.</li>
       </ol>
+      <div class="answerline"><b>Why this is worth knowing:</b> 1024 → 10 is the whole argument for sorting. But say the caveat too: sorting costs O(n log n), so binary search only pays when the data is sorted once and searched many times.</div>
+    </div></details>
+  </li>
+  <li><p>Two threads run the following at the same time on a shared variable <code>COUNT</code>, initially 0.
+  Each thread executes <code>temp = COUNT; temp = temp + 1; COUNT = temp</code> once. (a) State the correct final
+  value. (b) Give an interleaving that produces a different value. (c) State the term for this situation and
+  describe a fix.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>(a) 2.</li>
+        <li>(b) T1 reads 0; T2 reads 0; T1 sets temp = 1; T2 sets temp = 1; T1 writes 1; T2 writes 1. Final
+        value 1.</li>
+        <li>(c) A <strong>race condition</strong> — specifically a lost update, because read–modify–write is not
+        atomic. Fix: place the three steps inside a critical section guarded by a lock or semaphore, so one thread
+        completes all three before the other begins; then the result is 2 whichever interleaving occurs.</li>
+      </ol>
+      <div class="answerline"><b>Why this is worth knowing:</b> the trace is the answer. Naming "race condition" without showing the interleaving scores about a third of the marks; the numbers are what convince the examiner you understand why the update is lost.</div>
     </div></details>
   </li>
   <li><p>Show the state of <code>[7, 3, 5, 3]</code> after each pass of bubble sort, and state the total number of
   comparisons.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
       <ol class="steps">
         <li><strong>Pass 1:</strong> 7,3 swap → [3,7,5,3]; 7,5 swap → [3,5,7,3]; 7,3 swap → [3,5,3,7].
         (3 comparisons, 3 swaps.)</li>
@@ -787,26 +1821,26 @@ output count</code></pre>
         <li><strong>Pass 3:</strong> 3,3 no swap. (1 comparison, 0 swaps.) No swaps, so stop.</li>
         <li>Total comparisons = 3 + 2 + 1 = 6 = n(n−1)/2 with n = 4.</li>
       </ol>
-      <div class="answerline"><b>Answer:</b> [3,5,3,7] → [3,3,5,7] → sorted; 6 comparisons. Note that the two 3s are not swapped when they meet, which is what makes this variant <em>stable</em> — equal elements keep their relative order.</div>
+      <div class="answerline"><b>Why this is worth knowing:</b> the two 3s are not swapped when they meet, which is what makes this variant <em>stable</em> — equal elements keep their relative order. Stability matters when you sort records by one field while preserving an earlier sort by another.</div>
     </div></details>
   </li>
-  <li><p>State the time complexity of an algorithm whose running time is
-  \(T(n) = 4n^{2} + 100n + 50\), and justify your answer.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
+  <li><p>State the time complexity of an algorithm whose running time is T(n) = 4n<sup>2</sup> + 100n + 50, and
+  justify your answer.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
       <ol class="steps">
         <li>Big-O keeps only the fastest-growing term and drops constant multipliers.</li>
-        <li>The terms are \(4n^{2}\), \(100n\) and \(50\). As \(n\) grows, \(n^{2}\) dominates \(n\), and the
-        constant 50 does not grow at all.</li>
-        <li>So \(T(n) = 4n^{2} + 100n + 50\) is <strong>O(n²)</strong>.</li>
-        <li>Check: at n = 1000, the \(4n^{2}\) term is 4 000 000, the \(100n\) term is 100 000, and the constant is
-        50 — the quadratic term is already 97 % of the total, and the proportion grows.</li>
+        <li>The terms are 4n<sup>2</sup>, 100n and 50. As n grows, n<sup>2</sup> dominates n, and the constant 50
+        does not grow at all.</li>
+        <li>So T(n) = 4n<sup>2</sup> + 100n + 50 is <strong>O(n<sup>2</sup>)</strong>.</li>
+        <li>Check: at n = 1000, the 4n<sup>2</sup> term is 4 000 000, the 100n term is 100 000, and the constant is
+        50 — the quadratic term is already 97% of the total, and the proportion grows.</li>
       </ol>
-      <div class="answerline"><b>Answer:</b> O(n²), quadratic. Stating that the constants are dropped because they do not affect the <em>shape</em> of the growth is what earns the justification mark.</div>
+      <div class="answerline"><b>Why this is worth knowing:</b> stating that the constants are dropped because they do not affect the <em>shape</em> of the growth is what earns the justification mark. Just writing "O(n<sup>2</sup>)" earns half.</div>
     </div></details>
   </li>
   <li><p>A program reads a positive integer n and prints the first n terms of the sequence 1, 1, 2, 3, 5, 8, …
-  Construct a test table with normal, boundary and erroneous data.</p>
-    <details class="answer"><summary>Show answer</summary><div class="dbody">
+  Construct a test table with normal, boundary and erroneous data, and state one precondition.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
       <div class="table-wrap">
         <table>
           <thead><tr><th>Type</th><th>Input</th><th>Expected output</th></tr></thead>
@@ -815,14 +1849,16 @@ output count</code></pre>
             <tr><td>Normal</td><td>7</td><td>1 1 2 3 5 8 13</td></tr>
             <tr><td>Boundary</td><td>1</td><td>1</td></tr>
             <tr><td>Boundary</td><td>2</td><td>1 1</td></tr>
-            <tr><td>Boundary</td><td>0</td><td>nothing printed, or a clear message (this is the value that must be defined)</td></tr>
+            <tr><td>Boundary</td><td>0</td><td>nothing printed, or a clear message — this is the value that must be defined</td></tr>
             <tr><td>Erroneous</td><td>−3</td><td>rejection message, no crash</td></tr>
             <tr><td>Erroneous</td><td>2.5</td><td>rejection message (not an integer)</td></tr>
             <tr><td>Erroneous</td><td>"five"</td><td>rejection message, no crash</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="answerline"><b>Marks:</b> normal cases with exact expected output, boundary cases covering the smallest valid inputs and the ambiguous case n = 0, and erroneous cases of both wrong range and wrong type. The best answers note that n = 0 reveals an <em>underspecified requirement</em> — the specification says "positive", so 0 should probably be rejected, and the test exposes that the programmer must decide.</div>
+      <p><strong>Precondition:</strong> n must be a positive whole number — that is, n ≥ 1 and n must have no
+      fractional part.</p>
+      <div class="answerline"><b>Why this is worth knowing:</b> n = 0 reveals an <em>underspecified requirement</em>. The specification says "positive", so 0 should probably be rejected — but the programmer must decide, and a good test table exposes the decision instead of hiding it.</div>
     </div></details>
   </li>
 </ol>
@@ -830,39 +1866,124 @@ output count</code></pre>
 <div class="conn">
   <span class="conn__title">Connections</span>
   <ul>
-    <li><strong>→ B2 Programming:</strong> every construct you write is an implementation of something on this page.
-    The pseudocode here is the design; B2 is the code.</li>
-    <li><strong>→ B3 OOP:</strong> abstraction at the level of objects — a class is a set of decisions about what to
-    hide.</li>
-    <li><strong>→ B4 Abstract data types:</strong> the efficiency table here is the vocabulary you need to compare
-    stacks, queues, linked lists, trees and hash tables.</li>
-    <li><strong>→ A1 Computer fundamentals:</strong> Boolean logic underpins every condition; the fetch–decode–execute
-    cycle is itself an algorithm.</li>
-    <li><strong>→ A3 Databases:</strong> normalisation is decomposition applied to data.</li>
-    <li><strong>→ A4 Machine learning:</strong> the ML workflow is this page's decomposition applied to data
-    problems.</li>
-    <li><strong>→ IA:</strong> the testing table and the trace table are exactly the evidence the IA asks for; a
-    strong testing section is mostly this page executed carefully.</li>
+    <li><strong>→ <a href="B2-programming.html">B2 Programming:</a></strong> every construct you write is an
+    implementation of something on this page. The pseudocode here is the design; B2 is the code, including
+    parameter-passing, recursion and exception handling.</li>
+    <li><strong>→ <a href="B3-oop.html">B3 OOP:</a></strong> abstraction at the level of objects — a class is a set
+    of decisions about what to hide, and encapsulation is abstraction enforced by the compiler.</li>
+    <li><strong>→ <a href="B4-abstract-data-types.html">B4 Abstract data types:</a></strong> the abstraction strand
+    made concrete: stacks, queues, lists, trees and hash tables are all "behaviour specified, implementation
+    hidden", and the Big-O table here is the vocabulary you need to compare them.</li>
+    <li><strong>→ <a href="A1-computer-fundamentals.html">A1 Computer fundamentals:</a></strong> Boolean logic
+    underpins every condition; the fetch–decode–execute cycle is itself an algorithm; the machine layers are
+    abstraction.</li>
+    <li><strong>→ <a href="A2-networks.html">A2 Networks:</a></strong> the TCP/IP stack is layered abstraction,
+    and packet routing is the shortest-path problem you met in section 5.</li>
+    <li><strong>→ <a href="A3-databases.html">A3 Databases:</a></strong> normalisation is decomposition applied to
+    data, and transaction locking is the deadlock problem of section 4 one layer up.</li>
+    <li><strong>→ <a href="A4-machine-learning.html">A4 Machine learning:</a></strong> feature selection is
+    abstraction — choosing which attributes of the world to keep — and the ML workflow is this page's
+    decomposition applied to data problems.</li>
+    <li><strong>→ <a href="ia-solution.html">The IA:</a></strong> the abstraction section, the algorithm in
+    pseudocode, and the test table are all graded criteria. A strong testing section is mostly this page executed
+    carefully.</li>
+    <li><strong>→ <a href="case-study.html">The case study:</a></strong> stakeholder analysis is decomposition of a
+    social system, and every "evaluate a proposal" question is the section 7 technique applied to new technology.</li>
+    <li><strong>→ Mathematics:</strong> Big-O is the language of limits, and logarithms appear because halving n
+    times divides by 2<sup>n</sup>. The reasoning is identical to the maths course's treatment of exponential
+    growth.</li>
   </ul>
+</div>
+
+<h2>Vocabulary</h2>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary</span>
+  <div class="wordlist">
+    <div><b>computational thinking</b> — <span>reshaping a real problem until a machine could carry it out</span></div>
+    <div><b>decomposition</b> — <span>breaking a problem into smaller, independently solvable sub-problems</span></div>
+    <div><b>composition</b> — <span>putting solved sub-problems back together into a whole</span></div>
+    <div><b>modularity</b> — <span>the property of being built from separate, named, replaceable units</span></div>
+    <div><b>top-down design</b> — <span>splitting one sentence into steps, then splitting each step, until each is atomic</span></div>
+    <div><b>stepwise refinement</b> — <span>another name for top-down design; each pass adds detail</span></div>
+    <div><b>structure chart</b> — <span>a diagram of modules and which module calls which; shows no sequence</span></div>
+    <div><b>parameter</b> — <span>a value passed into a sub-procedure so it can work on different data</span></div>
+    <div><b>return value</b> — <span>the result a function hands back to its caller</span></div>
+    <div><b>pass by value</b> — <span>the sub-procedure gets a copy, so the caller's variable cannot change</span></div>
+    <div><b>pass by reference</b> — <span>the sub-procedure gets the caller's variable itself, so it can change it</span></div>
+    <div><b>abstraction</b> — <span>keeping the essential features and discarding the irrelevant detail</span></div>
+    <div><b>generalisation</b> — <span>rewriting a solution so it works for every instance, usually with parameters</span></div>
+    <div><b>representation</b> — <span>the choice of how to encode what the abstraction kept</span></div>
+    <div><b>data abstraction / ADT</b> — <span>specifying behaviour through operations while hiding how data is stored</span></div>
+    <div><b>procedural abstraction</b> — <span>using a computation by name without knowing how it is carried out</span></div>
+    <div><b>pattern recognition</b> — <span>noticing that two sub-problems share the same structure</span></div>
+    <div><b>decision table</b> — <span>conditions against rules, with an X marking the action for each rule</span></div>
+    <div><b>decision tree</b> — <span>the same information as a graph: condition nodes, outcome branches, action leaves</span></div>
+    <div><b>compound condition</b> — <span>two or more conditions joined by AND, OR or NOT</span></div>
+    <div><b>exhaustive</b> — <span>every possible input matches at least one case</span></div>
+    <div><b>exclusive</b> — <span>no input matches more than one case</span></div>
+    <div><b>short-circuit evaluation</b> — <span>skipping the second operand when the first already decides the answer</span></div>
+    <div><b>precondition</b> — <span>what must be true before a module is called for it to work correctly</span></div>
+    <div><b>postcondition</b> — <span>what the module guarantees when it finishes, provided the precondition held</span></div>
+    <div><b>validation (of input)</b> — <span>checking a value is acceptable before using it</span></div>
+    <div><b>verification</b> — <span>checking the product was built to its specification</span></div>
+    <div><b>caching</b> — <span>storing a result so the next request for it does not recompute or re-fetch</span></div>
+    <div><b>cache miss / hit</b> — <span>the value was not / was already stored</span></div>
+    <div><b>time-to-live (TTL)</b> — <span>how long a cached value may be served before it must be refreshed</span></div>
+    <div><b>pre-fetching</b> — <span>fetching data before it is asked for, because you predict it will be</span></div>
+    <div><b>concurrency</b> — <span>tasks in progress at the same time, with steps that may interleave</span></div>
+    <div><b>parallelism</b> — <span>tasks executing at the same instant, on separate cores</span></div>
+    <div><b>race condition</b> — <span>the result depends on the interleaving of operations on shared data</span></div>
+    <div><b>critical section</b> — <span>the part of a program that must not run in more than one thread at once</span></div>
+    <div><b>mutual exclusion</b> — <span>the guarantee that at most one thread is inside the critical section</span></div>
+    <div><b>lock / mutex / semaphore</b> — <span>the mechanism that enforces mutual exclusion</span></div>
+    <div><b>atomic</b> — <span>indivisible: it either happened completely or not at all</span></div>
+    <div><b>deadlock</b> — <span>threads blocked for ever, each holding what another needs</span></div>
+    <div><b>circular wait</b> — <span>a cycle in the wait-for graph; one of the four Coffman conditions</span></div>
+    <div><b>starvation</b> — <span>a thread is permanently denied a resource though the system keeps running</span></div>
+    <div><b>structured English</b> — <span>numbered plain-language steps, unambiguous but free of syntax</span></div>
+    <div><b>flowchart</b> — <span>a diagram of control flow using four standard symbols</span></div>
+    <div><b>pseudocode</b> — <span>language-neutral code-like notation used to state an algorithm</span></div>
+    <div><b>trace table</b> — <span>a record of every variable's value after each significant step</span></div>
+    <div><b>dry run</b> — <span>executing an algorithm by hand, usually as a trace table</span></div>
+    <div><b>accumulator</b> — <span>a variable that gathers a running total</span></div>
+    <div><b>sentinel</b> — <span>a special input value that signals "no more data"</span></div>
+    <div><b>off-by-one error</b> — <span>a mistake at the edge of a range: wrong bound, wrong comparison</span></div>
+    <div><b>boundary data</b> — <span>test inputs at the edge of the valid range and just outside it</span></div>
+    <div><b>erroneous data</b> — <span>test inputs that are invalid and must be rejected gracefully</span></div>
+    <div><b>Big-O notation</b> — <span>how the number of steps grows as the input size grows</span></div>
+  </div>
 </div>
 
 <h2>Check yourself</h2>
 <ul class="checklist">
-  <li><label><input type="checkbox"><span>I can explain the five strands of computational thinking with an example each.</span></label></li>
-  <li><label><input type="checkbox"><span>I can decompose a problem into independently testable sub-problems.</span></label></li>
-  <li><label><input type="checkbox"><span>I can explain abstraction as deciding what to keep and what to discard.</span></label></li>
-  <li><label><input type="checkbox"><span>I can draw the four flowchart symbols and a flowchart with a loop.</span></label></li>
-  <li><label><input type="checkbox"><span>I can write IB pseudocode for selection, both loop types, arrays and sub-procedures.</span></label></li>
-  <li><label><input type="checkbox"><span>I can build a trace table for nested loops and for sub-procedure calls.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain the five strands and give the artefact each one produces.</span></label></li>
+  <li><label><input type="checkbox"><span>I can decompose a scenario into six or more named, independently testable modules.</span></label></li>
+  <li><label><input type="checkbox"><span>I can draw a structure chart and explain why lines mean "calls", not "order".</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain the difference between a procedure and a function, and between pass by value and pass by reference.</span></label></li>
+  <li><label><input type="checkbox"><span>I can build a decision table from prose, and check it for completeness and consistency.</span></label></li>
+  <li><label><input type="checkbox"><span>I can spot an ambiguous or incomplete specification and rewrite it so every input matches exactly one case.</span></label></li>
+  <li><label><input type="checkbox"><span>I can name six kinds of input validation check and write the pseudocode for each.</span></label></li>
+  <li><label><input type="checkbox"><span>I can list inputs, outputs and preconditions for an unseen problem.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain how caching changes a design and name the hazard it introduces.</span></label></li>
+  <li><label><input type="checkbox"><span>I can distinguish concurrency from parallelism, and state the benefits of each.</span></label></li>
+  <li><label><input type="checkbox"><span>I can trace a race condition on a shared variable and show the lost update.</span></label></li>
+  <li><label><input type="checkbox"><span>I can state the four Coffman conditions and give a fix for each.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain deadlock with two processes and two locks, and fix it by lock ordering.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain abstraction as deciding what to keep and what to discard, with a worked example.</span></label></li>
+  <li><label><input type="checkbox"><span>I can show the same abstraction reused in a second, unrelated context.</span></label></li>
+  <li><label><input type="checkbox"><span>I can draw the four flowchart symbols and a flowchart containing a loop.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write IB pseudocode for selection, both loop types, arrays, procedures and functions.</span></label></li>
+  <li><label><input type="checkbox"><span>I can build a trace table for a nested loop, a while loop and a sub-procedure call.</span></label></li>
   <li><label><input type="checkbox"><span>I can write find-maximum, count, sum and average without seeding bugs.</span></label></li>
   <li><label><input type="checkbox"><span>I can trace linear and binary search and state binary search's precondition.</span></label></li>
   <li><label><input type="checkbox"><span>I can trace bubble sort and selection sort pass by pass and count comparisons.</span></label></li>
-  <li><label><input type="checkbox"><span>I can derive why binary search is O(log n).</span></label></li>
-  <li><label><input type="checkbox"><span>I can state the Big-O of a code fragment with a reason.</span></label></li>
+  <li><label><input type="checkbox"><span>I can derive why binary search is O(log n) and state the Big-O of a fragment with a reason.</span></label></li>
   <li><label><input type="checkbox"><span>I can distinguish syntax, logic and runtime errors.</span></label></li>
   <li><label><input type="checkbox"><span>I can construct a test table with normal, boundary and erroneous data.</span></label></li>
   <li><label><input type="checkbox"><span>I can explain why boundary data catches off-by-one errors.</span></label></li>
-  <li><label><input type="checkbox"><span>I can distinguish validation from verification.</span></label></li>
+  <li><label><input type="checkbox"><span>I can explain what identify, state, construct and evaluate ask for on this topic.</span></label></li>
+  <li><label><input type="checkbox"><span>I can turn a two-mark answer into a six-mark answer by adding the mechanism.</span></label></li>
 </ul>
 
 </div>

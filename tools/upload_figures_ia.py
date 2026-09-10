@@ -1,118 +1,183 @@
 #!/usr/bin/env python3
 """Upload the question-bank figures to the Internet Archive (free, no credit card).
 
-Mirrors `qbank/figures/**` into an IA item under the `figures/` prefix so the live
-site just needs:
+Robust, resumable uploader:
+  * Uses the official `internetarchive` library. `Item.upload_file` PUTs straight
+    to s3.us.archive.org and strips `transfer-encoding: chunked` (IA-S3 rejects it),
+    so it works where raw boto3 gets HTTP 411.
+  * Uploads ONLY the figures referenced by the question bank (tools/figures_manifest.txt),
+    mirroring each file to `figures/<rel>` so the live site just needs:
+        QB.FIGURE_BASE = "https://archive.org/download/<IDENT>/figures/"
+  * Resumable: files already present on IA are skipped (safe to re-run).
+  * The IA *metadata* endpoint (archive.org/metadata/...) is pathologically slow
+    right now (~60s for the item's JSON), so we touch it exactly ONCE at startup
+    (to learn what's already there) and NEVER inside the upload loop. A separate
+    monitor thread polls the live count in the background so progress stays visible
+    without throttling the upload workers.
+  * Logs chunked progress to tools/ia_upload.log and prints a summary.
 
-    QB.FIGURE_BASE = "https://archive.org/download/<IDENTIFIER>/figures/"
-
-Uses concurrent uploads (boto3 threads) against IA's S3 endpoint for speed; the
-item is created first via the IA metadata API.
-
-Credentials from the environment (NEVER hard-coded):
-
-  IA_EMAIL        archive.org account email
-  IA_PASSWORD     archive.org account password
-  IA_IDENTIFIER   item identifier (default: dp-qbank-figures)
-  FIGURES_DIR     local figures root (default: <repo>/qbank/figures)
-
-Requires: pip install internetarchive boto3
-
-Run:
-  IA_EMAIL=you@x.com IA_PASSWORD='...' IA_IDENTIFIER=dp-qbank-figures \
-      python3 tools/upload_figures_ia.py
+Credentials (NEVER hard-coded) come from ~/.config/ia.ini (or env). Run:
+  python3 tools/upload_figures_ia.py
 """
 import os
 import sys
-import mimetypes
+import time
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 try:
-    from internetarchive import get_session
+    from internetarchive import get_item
 except ImportError:
     sys.exit("internetarchive is required: pip install internetarchive")
-try:
-    import boto3
-    from botocore.config import Config
-except ImportError:
-    sys.exit("boto3 is required: pip install boto3")
 
-EMAIL = os.environ.get("IA_EMAIL")
-PASSWORD = os.environ.get("IA_PASSWORD")
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FIGURES_DIR = os.environ.get("FIGURES_DIR") or os.path.join(REPO, "qbank", "figures")
+MANIFEST = os.environ.get("MANIFEST") or os.path.join(REPO, "tools", "figures_manifest.txt")
 IDENT = os.environ.get("IA_IDENTIFIER", "dp-qbank-figures")
-FIGURES_DIR = os.environ.get("FIGURES_DIR") or os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "qbank", "figures"
-)
-
-if not (EMAIL and PASSWORD):
-    sys.exit("Missing env vars: IA_EMAIL, IA_PASSWORD")
-os.environ.setdefault("IAS3_ACCESS_KEY", EMAIL)
-os.environ.setdefault("IAS3_SECRET_KEY", PASSWORD)
-
-if not os.path.isdir(FIGURES_DIR):
-    sys.exit(f"No figures found under {FIGURES_DIR}")
-
-# 1) Create the item (IA metadata API)
-print(f"Creating IA item '{IDENT}' ...")
-session = get_session()
-meta = {
+CHUNK = int(os.environ.get("IA_CHUNK", "500"))
+WORKERS = int(os.environ.get("IA_WORKERS", "24"))
+RETRIES_SLEEP = int(os.environ.get("IA_RETRIES_SLEEP", "5"))
+SHARD = int(os.environ.get("IA_SHARD", "-1"))
+SHARDS = int(os.environ.get("IA_SHARDS", "1"))
+LOG = os.environ.get("IA_LOG") or os.path.join(REPO, "tools", "ia_upload.log")
+TIMEOUT = (15, 120)
+RK = {"request_kwargs": {"timeout": TIMEOUT}}
+META = {
     "collection": "opensource_media",
     "mediatype": "dataset",
     "title": "DP Question Bank Figures",
     "creator": "DP Learning",
     "license": "other",
 }
-resp = session.post(f"https://archive.org/metadata/{IDENT}", json=meta)
-print("item create status:", resp.status_code, resp.text[:200] if resp.status_code >= 400 else "")
 
-# 2) Collect local files
-files = []
-for root, _, names in os.walk(FIGURES_DIR):
-    for n in names:
-        p = os.path.join(root, n)
-        rel = os.path.relpath(p, FIGURES_DIR).replace(os.sep, "/")
-        files.append((p, rel))
-total = len(files)
-if total == 0:
-    sys.exit("No figure files to upload")
-print(f"Uploading {total} figures -> s3.us.archive.org / bucket '{IDENT}'")
-
-# 3) Concurrent upload
-s3 = boto3.client(
-    "s3",
-    endpoint_url="https://s3.us.archive.org",
-    aws_access_key_id=EMAIL,
-    aws_secret_access_key=PASSWORD,
-    region_name="us-east-1",
-    config=Config(retries={"max_attempts": 6}, max_pool_connections=16),
-)
+if not os.path.isfile(MANIFEST):
+    sys.exit(f"No manifest at {MANIFEST}. Generate it first.")
+if not os.path.isdir(FIGURES_DIR):
+    sys.exit(f"No figures dir at {FIGURES_DIR}")
 
 
-def upload_one(item):
-    p, rel = item
-    ct = mimetypes.guess_type(rel)[0] or "application/octet-stream"
-    s3.upload_file(p, IDENT, f"figures/{rel}", ExtraArgs={"ContentType": ct})
-    return rel
+def load_manifest():
+    with open(MANIFEST, "r", encoding="utf-8") as fh:
+        return [ln.strip() for ln in fh if ln.strip()]
 
 
-done = 0
-failed = []
-with ThreadPoolExecutor(max_workers=16) as ex:
-    futs = [ex.submit(upload_one, f) for f in files]
-    for f in as_completed(futs):
+def fetch_item(ident):
+    last = None
+    for i in range(6):
         try:
-            f.result()
-            done += 1
-            if done % 2000 == 0 or done == total:
-                print(f"  {done}/{total} uploaded")
+            it = get_item(ident, **RK)
+            _ = it.metadata  # surface metadata errors early; tolerates ~60s slowness
+            return it
         except Exception as e:  # noqa
-            failed.append(str(e))
+            last = e
+            print(f"  get_item attempt {i + 1}/6 failed: {e}")
+            time.sleep(3 * (i + 1))
+    raise last
 
-if failed:
-    print(f"\n{len(failed)} uploads failed. First errors:")
-    for e in failed[:5]:
-        print("  ", e)
-    sys.exit(f"{len(failed)} uploads failed — re-run to resume (IA is resumable per file).")
 
-print("\nDONE.")
-print(f"Set in qbank/qbank.js:  QB.FIGURE_BASE = \"https://archive.org/download/{IDENT}/figures/\"")
+def existing_remote_names(item):
+    """One (slow) metadata call at startup to learn what's already uploaded."""
+    try:
+        return set(f.name for f in item.get_files(**RK))
+    except Exception:
+        return set()
+
+
+def main():
+    rels = load_manifest()
+    if SHARDS > 1 and SHARD >= 0:
+        rels = [r for i, r in enumerate(rels) if i % SHARDS == SHARD]
+        print(f"[shard {SHARD}/{SHARDS}] this process handles {len(rels)} figures")
+
+    print("Fetching IA item + existing file list (slow metadata endpoint, once)…")
+    item = fetch_item(IDENT)
+    have = existing_remote_names(item)
+
+    todo = []
+    for rel in rels:
+        remote = "figures/" + rel
+        local = os.path.join(FIGURES_DIR, rel)
+        if not os.path.isfile(local):
+            print(f"  WARN local missing, skip: {rel}")
+            continue
+        if remote in have:
+            continue
+        todo.append((remote, local))
+
+    print(f"Manifest: {len(rels)} | already on IA: {len(have)} | to upload: {len(todo)}")
+    if not todo:
+        print("Nothing to upload — all referenced figures are already on IA.")
+        finish(item)
+        return
+
+    log = open(LOG, "w", encoding="utf-8")
+    stop = threading.Event()
+    cnt = {"done": 0, "failed": 0, "total": len(todo)}
+
+    def monitor():
+        while not stop.is_set():
+            time.sleep(60)
+            try:
+                live = len([f.name for f in item.get_files(**RK)
+                            if f.name.startswith("figures/")])
+            except Exception:
+                live = -1
+            msg = (f"[{time.strftime('%H:%M:%S')}] MONITOR "
+                   f"done={cnt['done']} failed={cnt['failed']} "
+                   f"IA_live_figures={live}")
+            print(msg)
+            log.write(msg + "\n")
+            log.flush()
+
+    t0 = time.time()
+    with ThreadPoolExecutor(max_workers=WORKERS) as ex:
+        mt = threading.Thread(target=monitor, daemon=True)
+        mt.start()
+        futs = {}
+        for remote, local in todo:
+            futs[ex.submit(item.upload_file, local, remote,
+                          metadata=META, retries=8,
+                          retries_sleep=RETRIES_SLEEP,
+                          queue_derive=False, verify=False, **RK)] = (remote, local)
+        for fut in as_completed(futs):
+            remote, _ = futs[fut]
+            try:
+                resp = fut.result()
+                if getattr(resp, "status_code", None) in (200, 201):
+                    cnt["done"] += 1
+                else:
+                    cnt["failed"] += 1
+            except Exception as e:  # noqa
+                cnt["failed"] += 1
+            compl = cnt["done"] + cnt["failed"]
+            if compl % CHUNK == 0 or compl == cnt["total"]:
+                elapsed = time.time() - t0
+                rate = compl / elapsed if elapsed else 0
+                msg = (f"[{time.strftime('%H:%M:%S')}] {cnt['done']}/{cnt['total']} ok, "
+                       f"{cnt['failed']} failed, {elapsed / 60:.1f} min, {rate:.2f}/s")
+                print(msg)
+                log.write(msg + "\n")
+                log.flush()
+    stop.set()
+    finish(item, cnt["done"], cnt["failed"])
+
+
+def finish(item, done=0, failed=0):
+    print("\n" + "=" * 60)
+    if done:
+        print(f"Uploaded {done} new files this run.")
+    if failed:
+        print(f"{failed} FAILURES occurred (re-run to retry; resumable).")
+    try:
+        live = len([f.name for f in item.get_files(**RK)
+                    if f.name.startswith("figures/")])
+    except Exception:
+        live = -1
+    print(f"Authoritative figure count on IA now: {live}")
+    print("Set in qbank/qbank.js:")
+    print(f'  QB.FIGURE_BASE = "https://archive.org/download/{IDENT}/figures/"')
+    print("=" * 60)
+
+
+if __name__ == "__main__":
+    main()

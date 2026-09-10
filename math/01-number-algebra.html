@@ -23,7 +23,7 @@ model in Topic 4; and complex numbers turn trigonometric identities into one-lin
 here, you are slow everywhere.</p>
 <div class="page-meta">
   <span class="tag">39 teaching hours (HL)</span>
-  <span class="tag">HL only: counting, partial fractions, complex numbers, proof</span>
+  <span class="tag">HL only: counting, partial fractions, complex numbers, logic &amp; proof</span>
   <span class="tag tag--hl">Paper 1 · Paper 2 · Paper 3</span>
 </div>
 
@@ -730,15 +730,746 @@ z_k = r^{1/n}\!\left(\cos\frac{\theta+2k\pi}{n}+i\sin\frac{\theta+2k\pi}{n}\righ
   <p><strong>complex number</strong><strong>real / imaginary part</strong> /<strong>conjugate</strong><strong>modulus</strong><strong>argument</strong><strong>Argand diagram</strong><strong>Cartesian form</strong><strong>polar / modulus–argument form</strong> /<strong>Euler's form</strong><strong>De Moivre's theorem</strong><strong>roots of unity</strong><strong>quadrant</strong></p>
 </div>
 
-<h2>1.7 Proof</h2>
+<h2>1.7 Logic and mathematical statements</h2>
+<span class="badge badge--hl">HL only</span>
+
+<p>Before you can prove anything, you need to know exactly what the thing you are proving <em>says</em>. Most
+proof failures in the exam are not algebra failures — they are reading failures. A student proves the converse
+of what was asked. Or "disproves" a claim by listing five cases that support it. Or negates a "for all"
+statement with another "for all" statement. This section is the grammar behind every method in §1.8, and it is
+worth twenty minutes of your life because it is entirely mechanical: once you can read a statement correctly,
+you already know which weapon to reach for.</p>
+
+<div class="callout callout--why">
+  <span class="callout__label">Why this is on a maths page</span>
+  <p>Mathematics is the only subject where a statement can be settled completely — no evidence, no opinion, no
+  "to some extent". That is because mathematical statements are built out of pieces with fixed meanings:
+  \(\Rightarrow\) always means the same thing, \(\forall\) always means the same thing, and \(\neg\) always flips
+  the truth value. Once the grammar is fixed, a chain of reasoning either holds or it does not. Everything you
+  do in §1.8 — contradiction, contrapositive, counterexample — is a move in this grammar. Learn the grammar
+  once and the four proof methods stop being four separate things to memorise.</p>
+</div>
+
+<h3>Statements (propositions)</h3>
+
+<p>A <strong>statement</strong> (or <strong>proposition</strong>) is a sentence with a definite
+<strong>truth value</strong>: it is either true or false, and not both. That is the <em>only</em> test. Note
+that "false" is a perfectly good truth value — \(2+2=5\) is a statement, just a false one. What is not a
+statement is anything whose truth you cannot pin down.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Sentence</th><th>Statement?</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>\(7\) is a prime number</td><td>Yes — true</td><td>Definitely true; no ambiguity.</td></tr>
+    <tr><td>\(2+2=5\)</td><td>Yes — false</td><td>False is still a truth value.</td></tr>
+    <tr><td>Is 15 divisible by 3?</td><td>No</td><td>A question has no truth value.</td></tr>
+    <tr><td>Factorise \(x^2-4\).</td><td>No</td><td>A command (imperative) is neither true nor false.</td></tr>
+    <tr><td>\(x+3=7\)</td><td>No — <em>open sentence</em></td><td>True when \(x=4\), false otherwise. \(x\) is a free variable.</td></tr>
+    <tr><td>\(x\) is large.</td><td>No</td><td>"Large" has no definition, so no truth value.</td></tr>
+    <tr><td>This sentence is false.</td><td>No</td><td>The liar paradox: if true it is false, if false it is true.</td></tr>
+    <tr><td>There are infinitely many primes.</td><td>Yes — true</td><td>Euclid proved it (see §1.8).</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>An <strong>open sentence</strong> such as \(x+3=7\) or "\(n\) is divisible by 6" is also called a
+<strong>predicate</strong>, written \(P(x)\) or \(P(n)\). It becomes a statement in exactly two ways: you
+<em>substitute</em> a value (\(P(4)\) is "\(4+3=7\)", true), or you <em>quantify</em> the variable ("for all
+\(n\), \(P(n)\)" or "there exists \(n\) such that \(P(n)\)"). Quantifiers are the subject of the last part of
+this section, and they are where exam marks are won and lost.</p>
+
+<div class="callout callout--note">
+  <span class="callout__label">Notation</span>
+  <p>Statements are labelled with lowercase letters \(p,q,r,\dots\) and their truth values are written
+  \(\mathrm{T}\) and \(\mathrm{F}\) (or 1 and 0). A true statement is worth 1 in the tables below; this is why
+  "and" behaves like multiplication and "or" behaves like addition in Topic 4 probability — the same logic,
+  wearing different clothes.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 15</span> Is it a statement? · 4 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> For each sentence, say whether it is a mathematical statement. If it is not,
+    explain what would turn it into one.</p>
+    <ol class="steps">
+      <li>\(x^2\ge 0\) — <strong>not a statement as written</strong> (\(x\) is free). Quantify it: "for all
+      \(x\in\mathbb{R}\), \(x^2\ge 0\)" is a statement, and it is true.</li>
+      <li>\(\sin 30^\circ = \frac12\) — <strong>statement</strong>, true.</li>
+      <li>Prove that \(\sqrt2\) is irrational. — <strong>not a statement</strong>; it is a command. The
+      sentence "\(\sqrt2\) is irrational" is the statement, and it is true.</li>
+      <li>\(n^2+n+41\) is prime. — <strong>not a statement</strong> until \(n\) is given. "For all
+      \(n\in\mathbb{Z}^+\), \(n^2+n+41\) is prime" is a statement — and it is <em>false</em> (see §1.8).</li>
+      <li>\(\pi\) is a rational number. — <strong>statement</strong>, false.</li>
+      <li>There exists a real number \(x\) with \(x^2+1=0\). — <strong>statement</strong>, false over
+      \(\mathbb{R}\) (but true over \(\mathbb{C}\), which is exactly why the domain matters).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> only (b), (e) and (f) are statements as written. The recurring move is: spot the free variable, then either pin it down or quantify it. Notice (f) — "there exists \(x\in\mathbb{R}\)" is doing real work; over \(\mathbb{C}\) the same sentence flips to true.</div>
+  </div>
+</details>
+
+<h3>Negation \(\neg p\)</h3>
+
+<p>The <strong>negation</strong> of \(p\), written \(\neg p\) (read "not \(p\)"), is the statement that is true
+exactly when \(p\) is false.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>\(p\)</th><th>\(\neg p\)</th></tr></thead>
+  <tbody>
+    <tr><td>T</td><td>F</td></tr>
+    <tr><td>F</td><td>T</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Two consequences that you will use constantly: \(\neg(\neg p)\equiv p\) (double negation cancels), and
+\(p\) and \(\neg p\) cannot both be true and cannot both be false — this is the <strong>law of the excluded
+middle</strong>, and it is the engine of proof by contradiction.</p>
+
+<p>The skill is not the table; it is writing the negation in a <em>usable</em> form. "It is not the case that
+\(x\) is greater than 3" is true but useless. The useful form is \(x\le 3\).</p>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Common trap</span>
+  <p>The negation of "all swans are white" is <strong>not</strong> "all swans are black" and
+  <strong>not</strong> "no swans are white". It is "there is at least one swan that is not white". In general:
+  the negation of a universal claim is an <em>existential</em> claim. To destroy "every \(x\) has property
+  \(P\)" you only need <em>one</em> \(x\) that fails — you do not need to show that everything fails.</p>
+</div>
+
+<p><strong>De Morgan's laws</strong> tell you how \(\neg\) passes through \(\wedge\) and \(\vee\), and they are
+worth memorising because they are the house style for negating compound conditions:</p>
+\[\neg(p\wedge q)\ \equiv\ (\neg p)\vee(\neg q),\qquad \neg(p\vee q)\ \equiv\ (\neg p)\wedge(\neg q).\]
+<p>Read it as: "break the bracket, flip the connector, negate both parts."</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(\neg(p\wedge q)\)</th><th>\((\neg p)\vee(\neg q)\)</th></tr></thead>
+  <tbody>
+    <tr><td>T</td><td>T</td><td>F</td><td>F</td></tr>
+    <tr><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+    <tr><td>F</td><td>T</td><td>T</td><td>T</td></tr>
+    <tr><td>F</td><td>F</td><td>T</td><td>T</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 16</span> Writing negations in usable form · 5 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Write the negation of each statement, simplified.</p>
+    <ol class="steps">
+      <li>\(p\): "\(x&gt;3\)". \(\neg p\): \(x\le 3\). (Note the boundary: \(x=3\) makes \(p\) false, so it
+      must make \(\neg p\) true. Writing \(x&lt;3\) is the classic error.)</li>
+      <li>\(p\): "\(n\) is divisible by 6". \(\neg p\): "\(n\) is <em>not</em> divisible by 6" — i.e. 6 does
+      not divide \(n\). Do <em>not</em> write "\(n\) is divisible by 3 but not by 2"; that is one way to fail,
+      not the negation.</li>
+      <li>\(p\): "\(a&gt;0\) and \(b&gt;0\)". By De Morgan, \(\neg p\): "\(a\le 0\) <em>or</em> \(b\le 0\)".
+      The "and" has become "or".</li>
+      <li>\(p\): "\(x=3\)". \(\neg p\): \(x\neq 3\). Trivial, but easily over-complicated.</li>
+      <li>\(p\): "all primes are odd". \(\neg p\): "there exists a prime that is not odd" — true, because
+      \(n=2\).</li>
+      <li>\(p\): "the function \(f\) is differentiable at \(x=0\)". \(\neg p\): "\(f\) is <em>not</em>
+      differentiable at \(x=0\)". Nothing more specific is justified.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> as above. The two habits worth drilling: (i) inequalities flip and <em>keep</em> the boundary point, so \(\neg(x&gt;3)\) is \(x\le3\); (ii) "and" swaps to "or" under negation. Both lose marks constantly.</div>
+  </div>
+</details>
+
+<h3>Conjunction \(\wedge\) and disjunction \(\vee\)</h3>
+
+<p>\(p\wedge q\) ("\(p\) and \(q\)") is true only when <em>both</em> are true. \(p\vee q\) ("\(p\) or \(q\)") is
+true when <em>at least one</em> is true — this is the <strong>inclusive or</strong>, and it is the default in
+mathematics. English is sloppier: "you may have cake or ice cream" usually means one but not both.
+Mathematicians write the exclusive version separately as \(p\oplus q\) and read it "\(p\) xor \(q\)".</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p\wedge q\)</th><th>\(p\vee q\)</th><th>\(p\oplus q\)</th></tr></thead>
+  <tbody>
+    <tr><td>T</td><td>T</td><td>T</td><td>T</td><td>F</td></tr>
+    <tr><td>T</td><td>F</td><td>F</td><td>T</td><td>T</td></tr>
+    <tr><td>F</td><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+    <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Where you meet this in the syllabus: the solution of \((x-1)(x+2)&gt;0\) is "\(x&gt;1\) <em>or</em>
+\(x&lt;-2\)" — inclusive, though here the two conditions cannot hold at once anyway. The solution of
+\((x-1)(x+2)=0\) is "\(x=1\) <em>or</em> \(x=-2\)". And in Topic 4,
+\(P(A\cup B)=P(A)+P(B)-P(A\cap B)\) is the probability version of the same table: the overlap is subtracted
+because inclusive-or does not exclude it.</p>
+
+<h3>Implication \(p\Rightarrow q\)</h3>
+
+<p>\(p\Rightarrow q\) is read "\(p\) implies \(q\)", "if \(p\) then \(q\)", or "\(p\) only if \(q\)". It is the
+single most important — and most misunderstood — object on this page.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p\Rightarrow q\)</th><th>\((\neg p)\vee q\)</th><th>\(p\wedge\neg q\)</th></tr></thead>
+  <tbody>
+    <tr><td>T</td><td>T</td><td>T</td><td>T</td><td>F</td></tr>
+    <tr><td>T</td><td>F</td><td><strong>F</strong></td><td>F</td><td><strong>T</strong></td></tr>
+    <tr><td>F</td><td>T</td><td>T</td><td>T</td><td>F</td></tr>
+    <tr><td>F</td><td>F</td><td>T</td><td>T</td><td>F</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Read the third and fifth columns together: \(p\Rightarrow q\) is false in exactly one row, and in that same
+row \(p\wedge\neg q\) is true. This is the key equivalence, and it is worth memorising:</p>
+\[p\Rightarrow q\ \equiv\ (\neg p)\vee q,\qquad\qquad \neg(p\Rightarrow q)\ \equiv\ p\wedge\neg q.\]
+
+<div class="callout callout--why">
+  <span class="callout__label">Why a false antecedent makes the implication true</span>
+  <p>Think of \(p\Rightarrow q\) as a <strong>promise</strong>: "if it rains, I will bring an umbrella." The
+  promise is broken in exactly one situation: it rains <em>and</em> I have no umbrella. If it does not rain, I
+  have not broken my promise whether or not I happen to be carrying an umbrella. So "no rain" makes the
+  implication true — <strong>vacuously</strong>.</p>
+  <p>The formal reason is the same. We define \(p\Rightarrow q\) to mean "you will never see the combination
+  \(p\) true, \(q\) false". That is the whole content of the statement. When \(p\) is false, that combination
+  cannot arise, so the statement stands. This convention is not arbitrary: it is what makes
+  "\(\forall x\in\mathbb{R},\ x&gt;2\Rightarrow x^2&gt;4\)" true even though most real numbers fail \(x&gt;2\),
+  and it is what makes modus ponens work without exception.</p>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">\(\Rightarrow\) is not "causes"</span>
+  <p>In English, "if \(p\) then \(q\)" often suggests that \(p\) <em>brings about</em> \(q\). Logic requires
+  neither causation nor even relevance. "If \(1+1=3\) then Paris is the capital of France" is a <em>true</em>
+  implication (false antecedent), and "if \(1+1=2\) then Paris is the capital of France" is also true — the two
+  halves have nothing to do with each other. What \(\Rightarrow\) really says is only: <em>you cannot have the
+  left side true and the right side false.</em> In a proof, your job is therefore exactly one thing: rule out
+  that combination.</p>
+</div>
+
+<figure class="viz">
+  <svg viewBox="0 0 640 320" role="img" aria-label="Set diagram showing that p implies q means the region p and not q is empty">
+    <rect x="0" y="0" width="640" height="320" fill="#ffffff"/>
+    <rect x="40" y="40" width="560" height="240" fill="#fafbfd" stroke="#e3e8f0" stroke-width="1"/>
+    <circle cx="250" cy="160" r="95" fill="#eef2ff" stroke="none"/>
+    <circle cx="360" cy="160" r="95" fill="#ffffff" stroke="#334155" stroke-width="2"/>
+    <circle cx="250" cy="160" r="95" fill="none" stroke="#3653d6" stroke-width="2"/>
+    <text x="140" y="156" font-size="13" font-family="system-ui, sans-serif" fill="#151923">p and not q</text>
+    <text x="140" y="176" font-size="12" font-family="system-ui, sans-serif" fill="#b02a1f">the forbidden region</text>
+    <text x="300" y="156" font-size="13" font-family="system-ui, sans-serif" fill="#151923">p and q</text>
+    <text x="408" y="156" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">not p, but q</text>
+    <text x="60" y="296" font-size="13" font-family="system-ui, sans-serif" fill="#6c7788">outside both: not p and not q — the implication says nothing here</text>
+    <text x="60" y="70" font-size="14" font-family="system-ui, sans-serif" fill="#151923">p implies q  means:  the shaded part is empty</text>
+    <text x="60" y="92" font-size="13" font-family="system-ui, sans-serif" fill="#3653d6">one single point in the shaded part would make p =&gt; q false</text>
+  </svg>
+  <figcaption><span class="viz__title">Figure 5.</span> The picture behind the truth table. To assert \(p\Rightarrow q\) is to claim the shaded lune \(p\wedge\neg q\) is empty. A counterexample is precisely a point in that lune; a proof is an argument that no such point exists.</figcaption>
+</figure>
+<h3>Equivalence \(p\Leftrightarrow q\)</h3>
+
+<p>\(p\Leftrightarrow q\) ("\(p\) if and only if \(q\)", often abbreviated "\(p\) iff \(q\)") means
+\(p\Rightarrow q\) <em>and</em> \(q\Rightarrow p\) simultaneously. It is true when \(p\) and \(q\) have the
+same truth value.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p\Leftrightarrow q\)</th></tr></thead>
+  <tbody>
+    <tr><td>T</td><td>T</td><td>T</td></tr>
+    <tr><td>T</td><td>F</td><td>F</td></tr>
+    <tr><td>F</td><td>T</td><td>F</td></tr>
+    <tr><td>F</td><td>F</td><td>T</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Vocabulary you will be examined on: in \(p\Rightarrow q\), \(p\) is a <strong>sufficient</strong> condition
+for \(q\) (having \(p\) is enough to guarantee \(q\)), and \(q\) is a <strong>necessary</strong> condition for
+\(p\) (you cannot have \(p\) without \(q\)). When both directions hold, \(p\) is <em>necessary and
+sufficient</em> for \(q\).</p>
+
+<div class="callout callout--exam">
+  <span class="callout__label">Exam habit</span>
+  <p>"Prove that \(A\) if and only if \(B\)" is <strong>two</strong> questions wearing one hat. Write them out
+  as separate labelled parts — "<strong>(\(\Rightarrow\))</strong> Assume \(A\)…" and
+  "<strong>(\(\Leftarrow\))</strong> Assume \(B\)…" — and make sure each half is complete. A candidate who
+  proves only one direction typically scores half the marks and cannot understand why. Equally, a chain of
+  equivalences \(A\Leftrightarrow B\Leftrightarrow C\) is acceptable as one argument <em>only if every link
+  genuinely works in both directions</em>; a single one-way link quietly turns the whole chain into a
+  one-directional proof.</p>
+</div>
+
+<h3>Converse, inverse and contrapositive</h3>
+
+<p>From a single implication you can manufacture three others. Two of them are <em>not</em> equivalent to the
+original. Knowing which is which saves you from the most common proof error in the whole course.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Name</th><th>Form</th><th>Equivalent to \(p\Rightarrow q\)?</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Implication</strong></td><td>\(p\Rightarrow q\)</td><td>— (the original)</td></tr>
+    <tr><td><strong>Converse</strong></td><td>\(q\Rightarrow p\)</td><td><strong>No.</strong> Independent truth value.</td></tr>
+    <tr><td><strong>Inverse</strong></td><td>\(\neg p\Rightarrow \neg q\)</td><td><strong>No</strong> — but it <em>is</em> equivalent to the converse.</td></tr>
+    <tr><td><strong>Contrapositive</strong></td><td>\(\neg q\Rightarrow \neg p\)</td><td><strong>Yes.</strong> Always, with no exceptions.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Here is the truth-table proof that an implication and its contrapositive are the same statement, and that
+the converse is a different one. Build all four columns and compare them row by row.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(\neg p\)</th><th>\(\neg q\)</th><th>\(p\Rightarrow q\)</th><th>converse \(q\Rightarrow p\)</th><th>inverse \(\neg p\Rightarrow\neg q\)</th><th>contrapositive \(\neg q\Rightarrow\neg p\)</th></tr></thead>
+  <tbody>
+    <tr><td>T</td><td>T</td><td>F</td><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+    <tr><td>T</td><td>F</td><td>F</td><td>T</td><td><strong>F</strong></td><td>T</td><td>T</td><td><strong>F</strong></td></tr>
+    <tr><td>F</td><td>T</td><td>T</td><td>F</td><td><strong>T</strong></td><td><strong>F</strong></td><td><strong>F</strong></td><td><strong>T</strong></td></tr>
+    <tr><td>F</td><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>Look at the fifth and eighth columns: identical in all four rows, so \(p\Rightarrow q\) and
+\(\neg q\Rightarrow\neg p\) are <strong>logically equivalent</strong> — the same statement in different words.
+Now look at rows 2 and 3, where the fifth and sixth columns <em>disagree</em>. That disagreement is proof that
+the converse is not equivalent: an implication can be true while its converse is false, and vice versa.</p>
+
+<p>The mathematics version, which is the one you will actually be asked about:</p>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>Implication (true)</h4>
+    <p>If \(n\) is divisible by 4, then \(n\) is even. \(n=4m\Rightarrow n=2(2m)\). ✓</p>
+  </div>
+  <div class="card">
+    <h4>Converse (false!)</h4>
+    <p>If \(n\) is even, then \(n\) is divisible by 4. Counterexample: \(n=6\) is even but
+    \(6/4\notin\mathbb{Z}\). ✗</p>
+  </div>
+  <div class="card">
+    <h4>Inverse (false!)</h4>
+    <p>If \(n\) is not divisible by 4, then \(n\) is not even. Same counterexample: \(n=6\). ✗</p>
+  </div>
+  <div class="card">
+    <h4>Contrapositive (true)</h4>
+    <p>If \(n\) is not even (i.e. odd), then \(n\) is not divisible by 4. True, and equivalent to the
+    original. ✓</p>
+  </div>
+</div>
+
+<div class="callout callout--note">
+  <span class="callout__label">Why the inverse always shares the converse's fate</span>
+  <p>The inverse \(\neg p\Rightarrow\neg q\) is the <em>contrapositive of the converse</em>: take the converse
+  \(q\Rightarrow p\) and contrapose it, giving \(\neg p\Rightarrow\neg q\). Since a statement and its
+  contrapositive are equivalent, the inverse is equivalent to the converse — so if the converse is false, the
+  inverse is false too. You only ever need to test two of the four: the implication and the converse.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 17</span> Four forms of a real statement · 6 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Let \(p\) be "\(n\) is odd" and \(q\) be "\(n^2\) is odd". Write the
+    implication, converse, inverse and contrapositive in words, and decide which are true.</p>
+    <ol class="steps">
+      <li><strong>Implication \(p\Rightarrow q\):</strong> "if \(n\) is odd then \(n^2\) is odd". True:
+      \(n=2k+1\Rightarrow n^2=4k^2+4k+1=2(2k^2+2k)+1\), which is odd.</li>
+      <li><strong>Converse \(q\Rightarrow p\):</strong> "if \(n^2\) is odd then \(n\) is odd". Also true —
+      and the quickest way to see it is to prove the <em>contrapositive</em>: "if \(n\) is even then \(n^2\) is
+      even", i.e. \(n=2k\Rightarrow n^2=4k^2=2(2k^2)\). Even. ✓</li>
+      <li><strong>Inverse \(\neg p\Rightarrow\neg q\):</strong> "if \(n\) is even then \(n^2\) is even". True
+      — this is the contrapositive of the converse, which we just proved.</li>
+      <li><strong>Contrapositive \(\neg q\Rightarrow\neg p\):</strong> "if \(n^2\) is even then \(n\) is
+      even". True — it is equivalent to the original implication.</li>
+      <li>Because both the implication and the converse are true here, we may write: \(n\) is odd
+      \(\Leftrightarrow\) \(n^2\) is odd.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> all four are true in this particular case, so the two statements are equivalent. Contrast it with the divisible-by-4 example, where the implication is true and the converse is false. The logic never tells you <em>which</em> are true — only which must share a truth value.</div>
+  </div>
+</details>
+
+<h3>Tautologies and contradictions</h3>
+
+<ul>
+  <li>A <strong>tautology</strong> is a compound statement that is true in <em>every</em> row of its truth
+  table. Example: \(p\vee\neg p\), the law of the excluded middle.</li>
+  <li>A <strong>contradiction</strong> is false in every row. Example: \(p\wedge\neg p\).</li>
+  <li>Anything else — true in at least one row and false in at least one — is a <strong>contingency</strong>,
+  and its truth depends on the actual values of the variables.</li>
+</ul>
+
+<p>To identify one, you do the same thing every time: build the truth table and look at the final column. All T
+means tautology; all F means contradiction; mixed means contingency.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 18</span> Tautology, contradiction or neither? · 6 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Classify each statement.</p>
+    <p><strong>(a)</strong> \(p\vee\neg p\).</p>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>\(p\)</th><th>\(\neg p\)</th><th>\(p\vee\neg p\)</th></tr></thead>
+      <tbody>
+        <tr><td>T</td><td>F</td><td>T</td></tr>
+        <tr><td>F</td><td>T</td><td>T</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>All T: <strong>tautology</strong>.</p>
+    <p><strong>(b)</strong> \(p\wedge\neg p\).</p>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>\(p\)</th><th>\(\neg p\)</th><th>\(p\wedge\neg p\)</th></tr></thead>
+      <tbody>
+        <tr><td>T</td><td>F</td><td>F</td></tr>
+        <tr><td>F</td><td>T</td><td>F</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>All F: <strong>contradiction</strong>.</p>
+    <p><strong>(c)</strong> \((p\wedge(p\Rightarrow q))\Rightarrow q\) — this is <em>modus ponens</em>, the rule
+    that drives the whole of deductive proof.</p>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p\Rightarrow q\)</th><th>\(p\wedge(p\Rightarrow q)\)</th><th>\((p\wedge(p\Rightarrow q))\Rightarrow q\)</th></tr></thead>
+      <tbody>
+        <tr><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+        <tr><td>T</td><td>F</td><td>F</td><td>F</td><td>T</td></tr>
+        <tr><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td></tr>
+        <tr><td>F</td><td>F</td><td>T</td><td>F</td><td>T</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>All T: <strong>tautology</strong>. Read it as "if \(p\) is true and \(p\) implies \(q\), then \(q\) is
+    true" — that sentence is the definition of a valid deduction.</p>
+    <p><strong>(d)</strong> \((p\Rightarrow q)\Leftrightarrow(\neg q\Rightarrow\neg p)\). The two sides are
+    logically equivalent, so the biconditional is true in every row: <strong>tautology</strong>.</p>
+    <p><strong>(e)</strong> \((p\vee q)\wedge\neg p\). Row \(p=\)F, \(q=\)T gives T; row \(p=\)T, \(q=\)T gives
+    F. Mixed: <strong>contingency</strong>.</p>
+    <div class="answerline"><b>Answer:</b> (a) tautology, (b) contradiction, (c) tautology, (d) tautology, (e) contingency. The only way to be sure is to write the table — do not guess from the shape of the expression.</div>
+  </div>
+</details>
+
+<h3>Quantifiers: \(\forall\) and \(\exists\)</h3>
+
+<p>Two symbols convert an open sentence into a statement.</p>
+<ul>
+  <li>\(\forall x,\ P(x)\) — "for all \(x\), \(P(x)\)" (the <strong>universal quantifier</strong>).</li>
+  <li>\(\exists x,\ P(x)\) — "there exists an \(x\) such that \(P(x)\)" (the
+  <strong>existential quantifier</strong>).</li>
+</ul>
+
+<p>Nearly every theorem you own is really a quantified statement. "The sum of two odd numbers is even" means
+\(\forall m,n\in\mathbb{Z},\ (m\ \text{odd}\wedge n\ \text{odd})\Rightarrow m+n\ \text{is even}\). Writing the
+quantifier in explicitly is often the difference between understanding a question and staring at it.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Statement</th><th>Reading</th><th>Truth</th></tr></thead>
+  <tbody>
+    <tr><td>\(\forall x\in\mathbb{R},\ x^2\ge 0\)</td><td>Every real square is non-negative.</td><td>True</td></tr>
+    <tr><td>\(\exists x\in\mathbb{Z},\ x^2=2\)</td><td>Some integer has square 2.</td><td>False</td></tr>
+    <tr><td>\(\forall x\in\mathbb{R},\ \exists y\in\mathbb{R},\ y&gt;x\)</td><td>For every real there is a bigger one.</td><td>True</td></tr>
+    <tr><td>\(\exists y\in\mathbb{R},\ \forall x\in\mathbb{R},\ y&gt;x\)</td><td>There is a real bigger than every real.</td><td><strong>False</strong></td></tr>
+    <tr><td>\(\forall n\in\mathbb{Z},\ \exists m\in\mathbb{Z},\ m&gt;n\)</td><td>Every integer is beaten by some integer.</td><td>True</td></tr>
+    <tr><td>\(\exists m\in\mathbb{Z},\ \forall n\in\mathbb{Z},\ m&gt;n\)</td><td>Some integer beats every integer.</td><td><strong>False</strong></td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--trap">
+  <span class="callout__label">Order of quantifiers matters</span>
+  <p>Compare rows 3 and 4. \(\forall x\ \exists y\) says "whoever you pick, I can respond" — the \(y\) may
+  depend on \(x\). \(\exists y\ \forall x\) says "there is one \(y\) that works for everybody" — a far stronger
+  claim. Swapping the order changes the meaning and usually flips the truth value. The same trap appears in
+  Topic 5: "for every \(\varepsilon&gt;0\) there exists \(\delta&gt;0\)…" is the definition of a limit, and
+  reversing the quantifiers would describe something completely different.</p>
+</div>
+
+<h4>How to negate a quantified statement</h4>
+
+<p>This is the highest-value skill in this section, because it tells you what a counterexample has to do. The
+rule is two lines long:</p>
+\[\neg\bigl(\forall x,\ P(x)\bigr)\ \equiv\ \exists x,\ \neg P(x),\qquad\qquad
+\neg\bigl(\exists x,\ P(x)\bigr)\ \equiv\ \forall x,\ \neg P(x).\]
+
+<p>Mechanically: <strong>push the negation through the quantifier, flipping \(\forall\) to \(\exists\) and
+\(\exists\) to \(\forall\); then negate what is left.</strong> With nested quantifiers you just keep going —
+every quantifier flips.</p>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>Statement</th><th>Negation</th><th>Which is true?</th></tr></thead>
+  <tbody>
+    <tr><td>\(\forall x\in\mathbb{R},\ x^2\ge 0\)</td><td>\(\exists x\in\mathbb{R},\ x^2&lt;0\)</td><td>Statement true</td></tr>
+    <tr><td>\(\exists n\in\mathbb{Z}^+,\ n\ \text{is prime and even}\)</td><td>\(\forall n\in\mathbb{Z}^+,\ n\ \text{is not prime or } n\ \text{is odd}\)</td><td>Statement true (\(n=2\))</td></tr>
+    <tr><td>\(\forall n\in\mathbb{Z},\ n^2+n\ \text{is even}\)</td><td>\(\exists n\in\mathbb{Z},\ n^2+n\ \text{is odd}\)</td><td>Statement true</td></tr>
+    <tr><td>\(\exists x\in\mathbb{R},\ x^2+1=0\)</td><td>\(\forall x\in\mathbb{R},\ x^2+1\neq 0\)</td><td>Statement false</td></tr>
+    <tr><td>Every continuous function is differentiable.</td><td>There exists a continuous function that is not differentiable.</td><td>Statement false — \(f(x)=|x|\) at \(0\)</td></tr>
+    <tr><td>\(\forall\varepsilon&gt;0\ \exists\delta&gt;0\ \forall x,\ |x-a|&lt;\delta\Rightarrow|f(x)-L|&lt;\varepsilon\)</td><td>\(\exists\varepsilon&gt;0\ \forall\delta&gt;0\ \exists x,\ |x-a|&lt;\delta\wedge|f(x)-L|\ge\varepsilon\)</td><td>(the shape of a Topic 5 limit)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 19</span> Negating quantified statements · 6 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Negate each statement, simplifying as far as possible, and state which of the
+    two is true.</p>
+    <ol class="steps">
+      <li>\(A\): "For all \(n\in\mathbb{Z}^+\), \(n^2+n+41\) is prime."
+      \(\neg A\): "There exists \(n\in\mathbb{Z}^+\) such that \(n^2+n+41\) is <em>not</em> prime."
+      \(\neg A\) is true: \(n=41\) gives \(41^2+41+41=41\times43\). So \(A\) is false.</li>
+      <li>\(B\): "There is a real number \(x\) with \(x^2=2\)."
+      \(\neg B\): "For all real \(x\), \(x^2\neq 2\)." \(B\) is true (\(x=\sqrt2\)), so \(\neg B\) is false.</li>
+      <li>\(C\): "Every quadratic equation has two real roots."
+      \(\neg C\): "There exists a quadratic equation that does not have two real roots." \(\neg C\) is true:
+      \(x^2+1=0\) has none at all, and \(x^2-2x+1=0\) has one repeated root.</li>
+      <li>\(D\): "For every real \(x\) there is a real \(y\) with \(y&gt;x\)."
+      \(\neg D\): "There exists a real \(x\) such that for every real \(y\), \(y\le x\)." (Every quantifier
+      flips: \(\forall\to\exists\), \(\exists\to\forall\), and \(&gt;\) becomes \(\le\).) \(D\) is true, so
+      \(\neg D\) is false.</li>
+      <li>\(E\): "For all \(a,b\in\mathbb{Z}\), if \(a^2=b^2\) then \(a=b\)." Write it as
+      \(\forall a,b\ (a^2=b^2\Rightarrow a=b)\). Negating gives \(\exists a,b\) with
+      \((a^2=b^2)\wedge(a\neq b)\). That is true: \(a=1,\ b=-1\). So \(E\) is false.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> as above. Part (e) is the pattern to internalise: the negation of an implication is <em>not</em> another implication, it is a conjunction — \(p\wedge\neg q\). That single line is exactly what a counterexample has to exhibit.</div>
+  </div>
+</details>
+
+<h3>Why any of this matters for proof</h3>
+
+<p>Everything above collapses into four practical rules, and each one maps onto a method in §1.8.</p>
+
+<div class="grid grid--2">
+  <div class="card card--accent">
+    <h4>1. Proof by contradiction</h4>
+    <p>To prove \(P\), assume \(\neg P\) and derive a contradiction \(R\wedge\neg R\). Since \(\neg P\) has been
+    shown impossible, \(P\) is true. This works <em>because</em> of the excluded middle and <em>because</em>
+    \(\neg\) flips truth values — nothing else.</p>
+  </div>
+  <div class="card card--accent">
+    <h4>2. Proving the contrapositive</h4>
+    <p>To prove \(p\Rightarrow q\), you may instead prove \(\neg q\Rightarrow\neg p\). They are the same
+    statement. Use it when \(\neg q\) gives you more to work with than \(p\) does — typically when \(q\) is
+    "\(n\) is odd" or "\(x\) is irrational".</p>
+  </div>
+  <div class="card card--accent">
+    <h4>3. Counterexample</h4>
+    <p>To disprove \(\forall x,\ P(x)\) you need exactly one \(x\) with \(\neg P(x)\), because
+    \(\neg(\forall x\ P(x))\equiv\exists x\ \neg P(x)\). One counterexample is worth infinitely many
+    confirming cases: ten thousand supporting examples prove nothing, one failure ends the discussion.</p>
+  </div>
+  <div class="card card--accent">
+    <h4>4. "Show that" and "hence"</h4>
+    <p>"Show that \(X\)" means give a valid deduction of \(X\) from what is known — it is not an invitation to
+    check a value. "Hence" means the next part <em>must</em> use the previous result: it is a logical
+    dependency, and the markscheme withholds the mark if you restart from scratch.</p>
+  </div>
+</div>
+
+<div class="callout callout--link">
+  <span class="callout__label">Where else this appears</span>
+  <p>Logic is not an isolated HL extra. In <strong>Computer Science</strong> the same \(\wedge,\vee,\neg\) are
+  the gates inside every processor, and De Morgan's laws are how you simplify a boolean expression. In
+  <strong>TOK</strong>, confusing a statement with its converse is the "affirming the consequent" fallacy. In
+  <strong>Topic 5</strong>, every limit definition is a nest of three quantifiers, and students who cannot
+  negate them cannot do an \(\varepsilon\)-\(\delta\) argument at all.</p>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — logic</span>
+  <div class="wordlist">
+    <div><b>statement / proposition</b> — <span>a sentence that is definitely true or definitely false, not both</span></div>
+    <div><b>truth value</b> — <span>the "true" or "false" attached to a statement; written T or F</span></div>
+    <div><b>open sentence / predicate</b> — <span>a sentence with a free variable, e.g. \(x+3=7\); not yet a statement</span></div>
+    <div><b>negation</b> — <span>\(\neg p\), "not \(p\)": true exactly when \(p\) is false</span></div>
+    <div><b>conjunction</b> — <span>\(p\wedge q\), "p and q": true only when both are true</span></div>
+    <div><b>disjunction</b> — <span>\(p\vee q\), "p or q": true when at least one is true (inclusive)</span></div>
+    <div><b>exclusive or</b> — <span>\(p\oplus q\): true when exactly one of \(p,q\) is true</span></div>
+    <div><b>implication</b> — <span>\(p\Rightarrow q\), "if p then q": false only when \(p\) is true and \(q\) is false</span></div>
+    <div><b>antecedent / consequent</b> — <span>in \(p\Rightarrow q\), the "if" part \(p\) and the "then" part \(q\)</span></div>
+    <div><b>converse</b> — <span>\(q\Rightarrow p\); <em>not</em> equivalent to the original implication</span></div>
+    <div><b>inverse</b> — <span>\(\neg p\Rightarrow\neg q\); equivalent to the converse</span></div>
+    <div><b>contrapositive</b> — <span>\(\neg q\Rightarrow\neg p\); always equivalent to the original implication</span></div>
+    <div><b>equivalence / biconditional</b> — <span>\(p\Leftrightarrow q\), "p if and only if q": same truth value</span></div>
+    <div><b>necessary condition</b> — <span>\(q\) in \(p\Rightarrow q\): must hold for \(p\) to hold</span></div>
+    <div><b>sufficient condition</b> — <span>\(p\) in \(p\Rightarrow q\): enough on its own to guarantee \(q\)</span></div>
+    <div><b>tautology</b> — <span>true in every row of its truth table, e.g. \(p\vee\neg p\)</span></div>
+    <div><b>contradiction</b> — <span>false in every row, e.g. \(p\wedge\neg p\)</span></div>
+    <div><b>contingency</b> — <span>true in some rows and false in others</span></div>
+    <div><b>truth table</b> — <span>a table giving the value of a compound statement for every combination of inputs</span></div>
+    <div><b>universal quantifier</b> — <span>\(\forall\), "for all" / "for every"</span></div>
+    <div><b>existential quantifier</b> — <span>\(\exists\), "there exists" / "there is at least one"</span></div>
+    <div><b>counterexample</b> — <span>one object that makes a "for all" statement false</span></div>
+    <div><b>De Morgan's laws</b> — <span>\(\neg(p\wedge q)\equiv\neg p\vee\neg q\) and \(\neg(p\vee q)\equiv\neg p\wedge\neg q\)</span></div>
+    <div><b>logically equivalent</b> — <span>two statements with identical truth tables, written \(\equiv\)</span></div>
+  </div>
+</div>
+<h2>1.8 Proof</h2>
 <span class="badge badge--hl">HL only</span>
 
 <p>Proof is not a topic you revise; it is a reflex you build. The IB can ask you to prove something from any
 topic, at any time, in any paper. There are four weapons: <strong>induction</strong> (for statements indexed by
 an integer \(n\)), <strong>contradiction</strong> (for "there is no…" or "this is irrational"),
 <strong>counterexample</strong> (to destroy a universal claim), and <strong>direct deduction</strong>
-(the everyday algebra you have always done).</p>
+(the everyday algebra you have always done). Section 1.7 told you how to read the statement; this section
+tells you how to settle it.</p>
 
+<h3>What proof is — and what it is not</h3>
+
+<p>A <strong>proof</strong> is a chain of logical deductions that starts from things already accepted
+(definitions, axioms, previously proved theorems) and ends at the claim. Each link must be justified. There is
+no appeal to authority, no "it works for the numbers I tried", and no "it looks right on the graph".</p>
+
+<div class="grid grid--2">
+  <div class="card">
+    <h4>Definition</h4>
+    <p>An agreed meaning, not something to be proved: "an integer \(n\) is <em>even</em> if \(n=2k\) for some
+    \(k\in\mathbb{Z}\)". Every parity proof begins by writing this down.</p>
+  </div>
+  <div class="card">
+    <h4>Axiom</h4>
+    <p>A starting assumption accepted without proof, e.g. "through any two points there is exactly one
+    straight line". Mathematics is the study of what follows from the axioms.</p>
+  </div>
+  <div class="card">
+    <h4>Conjecture</h4>
+    <p>A statement you believe is true and have tested, but have <em>not</em> proved. It has no authority at
+    all. Goldbach's conjecture ("every even integer above 2 is the sum of two primes") has been checked past
+    \(10^{18}\) and is still a conjecture.</p>
+  </div>
+  <div class="card">
+    <h4>Theorem</h4>
+    <p>A conjecture that now has a proof. Once proved, it is permanently true and you may quote it. A
+    <strong>lemma</strong> is a small theorem proved on the way to a big one; a <strong>corollary</strong> is
+    something that follows immediately from a theorem.</p>
+  </div>
+</div>
+
+<div class="callout callout--why">
+  <span class="callout__label">Ten examples prove nothing</span>
+  <p>Checking \(n=1,2,\dots,10\) and finding that the pattern holds is <em>not</em> a proof — it is a
+  conjecture with ten data points. Two famous warnings.</p>
+  <ul>
+    <li><strong>\(n^2+n+41\).</strong> This is prime for \(n=0,1,2,\dots,39\) — forty consecutive successes.
+    At \(n=40\) it gives \(40^2+40+41=1681=41^2\). It was never a theorem.</li>
+    <li><strong>Fermat numbers \(2^{2^n}+1\).</strong> Fermat checked \(n=0,1,2,3,4\) — all prime — and
+    conjectured that all of them are. Euler found that \(n=5\) gives
+    \(4\,294\,967\,297=641\times6\,700\,417\). Fermat was the best number theorist of his century, and he was
+    wrong.</li>
+  </ul>
+  <p>Conversely, <strong>a single counterexample is final</strong>. One value of \(n\) kills a "for all \(n\)"
+  claim completely, however many cases support it. That asymmetry — examples are cheap, proof is absolute,
+  disproof is instant — is the reason proof exists.</p>
+</div>
+
+<h3>Direct (deductive) proof and the LHS → RHS layout</h3>
+<span class="badge badge--sl">SL / HL</span>
+
+<p>A <strong>direct proof</strong> starts from the hypotheses and walks forwards to the conclusion, one
+justified line at a time. For "show that" identities the IB expects a specific shape: start from
+<strong>LHS</strong> (left-hand side), rewrite it legally until it becomes <strong>RHS</strong> (right-hand
+side), and never touch the RHS on the way.</p>
+
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the LHS → RHS discipline</span>
+  <ol class="steps">
+    <li>Write "\(\text{LHS} = \dots\)" on the first line, copying the left-hand side exactly.</li>
+    <li>Work down the page, one legal operation per line: expand, factorise, substitute a definition, cancel.
+    Do <em>not</em> move terms across the equals sign — that is solving an equation, not proving an
+    identity.</li>
+    <li>Every line must be equal to the one above it. If you need a side calculation, do it in brackets.</li>
+    <li>End with "\(\dots = \text{RHS}\) ■" and, if there is a domain condition (a denominator, a square root),
+    state it.</li>
+  </ol>
+  <p>This is what "show that" means on every paper: no calculator, no hand-waving, every line visible. A
+  candidate who writes the answer with no working on a "show that" scores zero even when the answer is
+  correct.</p>
+</div>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 20</span> Sum of two odd numbers is even · 4 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove that the sum of two odd integers is even.</p>
+    <ol class="steps">
+      <li>Start from the <em>definition</em>: an integer is odd if it has the form \(2k+1\) for some
+      \(k\in\mathbb{Z}\), and even if it has the form \(2k\).</li>
+      <li>Let \(m=2a+1\) and \(n=2b+1\) with \(a,b\in\mathbb{Z}\). Now I have two <em>general</em> odd numbers
+      — not two particular ones, which is what makes this a proof rather than an example.</li>
+      <li>\(m+n = (2a+1)+(2b+1) = 2a+2b+2\).</li>
+      <li>Factorise: \(=2(a+b+1)\).</li>
+      <li>Since \(a+b+1\in\mathbb{Z}\), this has the form \(2k\): it is even. ■</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one for writing \(2a+1\) and \(2b+1\), one for the addition, one for factorising out the 2, and one for the concluding sentence "and \(a+b+1\) is an integer, so \(m+n\) is even". That last sentence is the mark most often dropped: "it's obviously even" is not a reason, "it is 2 times an integer" is.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 21</span> \((n+1)^2-n^2 = 2n+1\) · 4 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Show that the difference between consecutive square numbers is \(2n+1\), and
+    comment on what this says about the sequence \(1,4,9,16,\dots\).</p>
+    <ol class="steps">
+      <li>LHS \(= (n+1)^2 - n^2\).</li>
+      <li>Expand: \(= (n^2+2n+1) - n^2\).</li>
+      <li>Collect: \(= 2n+1\).</li>
+      <li>\(= \) RHS ■</li>
+      <li><strong>Comment:</strong> the first differences of \(n^2\) are \(3,5,7,9,\dots\), i.e. the odd
+      numbers. The <em>second</em> differences are constant at 2, which is the discrete version of
+      \(\frac{\mathrm{d}^2}{\mathrm{d}n^2}(n^2)=2\) — the same fact you use in Topic 5 and in the
+      finite-difference work of Topic 4.</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> shown. This is a two-line proof and it is worth memorising, because "consecutive squares differ by \(2n+1\)" is exactly the observation that makes the next proof work.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 22</span> Sum of the first \(n\) odd numbers is \(n^2\) · 5 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove that \(1+3+5+\cdots+(2n-1)=n^2\) for all \(n\in\mathbb{Z}^+\).</p>
+    <ol class="steps">
+      <li>Recognise the left side: \(1,3,5,\dots,2n-1\) is an <em>arithmetic</em> sequence with first term
+      \(u_1=1\), common difference \(d=2\), and \(n\) terms (the \(r\)th term is \(2r-1\)).</li>
+      <li>Use the sum formula from §1.2: \(S_n=\dfrac{n}{2}\bigl(2u_1+(n-1)d\bigr)\).</li>
+      <li>Substitute: \(S_n = \dfrac{n}{2}\bigl(2(1)+(n-1)2\bigr) = \dfrac{n}{2}\bigl(2+2n-2\bigr)
+      = \dfrac{n}{2}(2n) = n^2\). ■</li>
+      <li><strong>Alternative (telescoping):</strong> from Worked example 21, \(r^2-(r-1)^2 = 2r-1\). Summing
+      from \(r=1\) to \(n\): \(\sum_{r=1}^{n}(2r-1) = \sum_{r=1}^{n}\bigl(r^2-(r-1)^2\bigr) = n^2-0^2 = n^2\).
+      Every intermediate square cancels. ■</li>
+      <li>Check: \(n=4\) gives \(1+3+5+7=16=4^2\). ✓</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(n^2\), by two independent routes. The first is a direct/deductive proof because it uses an already-established formula; you could equally be asked for induction (see below). Knowing both is ideal — the telescoping version is the one that explains <em>why</em>.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 23</span> A surd identity, then "hence" · 6 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> (a) Show that \(\sqrt{n+1}-\sqrt{n} = \dfrac{1}{\sqrt{n+1}+\sqrt{n}}\) for
+    \(n\ge0\). (b) Hence evaluate \(\displaystyle\sum_{r=1}^{99}\left(\sqrt{r+1}-\sqrt{r}\right)\).</p>
+    <ol class="steps">
+      <li>LHS \(= \sqrt{n+1}-\sqrt{n}\). Multiply by 1 in the form
+      \(\dfrac{\sqrt{n+1}+\sqrt{n}}{\sqrt{n+1}+\sqrt{n}}\) (rationalising).</li>
+      <li>\(= \dfrac{(\sqrt{n+1}-\sqrt{n})(\sqrt{n+1}+\sqrt{n})}{\sqrt{n+1}+\sqrt{n}}\).</li>
+      <li>Difference of two squares in the numerator: \((\sqrt{n+1})^2-(\sqrt n)^2 = (n+1)-n = 1\).</li>
+      <li>So LHS \(= \dfrac{1}{\sqrt{n+1}+\sqrt{n}} = \) RHS ■ (valid for \(n\ge0\), so the denominator is never
+      zero).</li>
+      <li><strong>(b)</strong> The sum telescopes:
+      \((\sqrt2-\sqrt1)+(\sqrt3-\sqrt2)+\cdots+(\sqrt{100}-\sqrt{99})\).</li>
+      <li>Every intermediate surd cancels: \(= \sqrt{100}-\sqrt{1} = 10-1 = 9\).</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> (a) shown; (b) \(9\). "Show that … hence …" always means the second part is the first part applied. Never start part (b) from scratch — the "hence" mark is for using what you just proved.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">How to spot a direct proof</span>
+  <p>Use direct deduction when the claim is an <em>identity</em> or an "if…then" with an algebraic conclusion,
+  with <strong>no integer \(n\) to induct on</strong> and no "there is no…" / "is irrational" wording. Signals:
+  "show that", "express … in the form …", "hence". First line to write: "\(\text{LHS}=\dots\)", or "Let
+  \(n=2k+1\)…" when parity is involved. If you find yourself wanting to write "and similarly for \(n+1\)", you
+  actually want induction.</p>
+</div>
 <h3>Proof by induction</h3>
 
 <p><strong>Intuition:</strong> dominoes. If the first domino falls, and every domino that falls knocks over the
@@ -758,7 +1489,7 @@ next, then all of them fall. The "first domino" is the base case; the "knocking"
 </div>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 15</span> IB-style · 7 marks · Summation by induction</summary>
+  <summary><span class="badge badge--medium">Worked example 24</span> IB-style · 7 marks · Summation by induction</summary>
   <div class="dbody">
     <p><strong>Question.</strong> Prove by induction that \(\displaystyle\sum_{r=1}^{n} r\,2^{r} = (n-1)2^{n+1}+2\) for all \(n\in\mathbb{Z}^+\).</p>
     <ol class="steps">
@@ -774,7 +1505,7 @@ next, then all of them fall. The "first domino" is the base case; the "knocking"
 </details>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 16</span> IB-style · 7 marks · Divisibility by induction</summary>
+  <summary><span class="badge badge--medium">Worked example 25</span> IB-style · 7 marks · Divisibility by induction</summary>
   <div class="dbody">
     <p><strong>Question.</strong> Prove that \(7^{n}-3^{n}\) is divisible by 4 for all \(n\in\mathbb{Z}^+\).</p>
     <ol class="steps">
@@ -790,7 +1521,7 @@ next, then all of them fall. The "first domino" is the base case; the "knocking"
 </details>
 
 <details class="worked">
-  <summary><span class="badge badge--hard">Worked example 17</span> IB-style · 8 marks · Inductive proof of a derivative and of De Moivre</summary>
+  <summary><span class="badge badge--hard">Worked example 26</span> IB-style · 8 marks · Inductive proof of a derivative and of De Moivre</summary>
   <div class="dbody">
     <p><strong>Question (a).</strong> Prove by induction that \(\frac{\mathrm{d}}{\mathrm{d}x}(x^{n}) = nx^{n-1}\) for \(n\in\mathbb{Z}^+\), using the product rule.</p>
     <ol class="steps">
@@ -812,14 +1543,156 @@ next, then all of them fall. The "first domino" is the base case; the "knocking"
   </div>
 </details>
 
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 27</span> The classic: \(\sum r = \frac{n(n+1)}{2}\) · 6 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove by induction that \(\displaystyle\sum_{r=1}^{n} r = \frac{n(n+1)}{2}\)
+    for all \(n\in\mathbb{Z}^+\).</p>
+    <ol class="steps">
+      <li><strong>Proposition:</strong> let \(P(n)\) be "\(\sum_{r=1}^{n} r = \dfrac{n(n+1)}{2}\)".</li>
+      <li><strong>Base case \(n=1\):</strong> LHS \(=1\); RHS \(=\dfrac{1\cdot2}{2}=1\). Equal, so \(P(1)\) is
+      true.</li>
+      <li><strong>Hypothesis:</strong> assume \(P(k)\): \(\sum_{r=1}^{k} r = \dfrac{k(k+1)}{2}\).</li>
+      <li><strong>Target:</strong> \(P(k+1)\) is \(\sum_{r=1}^{k+1} r = \dfrac{(k+1)(k+2)}{2}\). Write it down
+      now, before doing any algebra.</li>
+      <li><strong>Step:</strong> \(\sum_{r=1}^{k+1} r = \left(\sum_{r=1}^{k} r\right) + (k+1)
+      = \dfrac{k(k+1)}{2} + (k+1)\) — this is where the hypothesis is used.</li>
+      <li>Put over a common denominator: \(= \dfrac{k(k+1)+2(k+1)}{2} = \dfrac{(k+1)(k+2)}{2}\). ■</li>
+      <li>Conclusion: \(P(1)\) is true and \(P(k)\Rightarrow P(k+1)\), so by induction \(P(n)\) is true for all
+      \(n\in\mathbb{Z}^+\).</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one for the base case with numbers, one for the stated hypothesis, one for the \(n=k+1\) target, two for the algebra, one for the conclusion. Factoring out \((k+1)\) rather than expanding is what keeps this clean — expanding gives \(k^2+3k+2\), which you then have to re-factorise.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 28</span> \(\sum r^2\) by induction · 7 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove that \(\displaystyle\sum_{r=1}^{n} r^2 = \frac{n(n+1)(2n+1)}{6}\) for
+    all \(n\in\mathbb{Z}^+\).</p>
+    <ol class="steps">
+      <li><strong>Base case \(n=1\):</strong> LHS \(=1^2=1\); RHS \(=\dfrac{1\cdot2\cdot3}{6}=1\). ✓</li>
+      <li><strong>Hypothesis:</strong> \(\sum_{r=1}^{k} r^2 = \dfrac{k(k+1)(2k+1)}{6}\).</li>
+      <li><strong>Target:</strong> \(\sum_{r=1}^{k+1} r^2 = \dfrac{(k+1)(k+2)(2k+3)}{6}\).</li>
+      <li><strong>Step:</strong> \(\sum_{r=1}^{k+1} r^2 = \dfrac{k(k+1)(2k+1)}{6} + (k+1)^2\).</li>
+      <li>Common denominator 6: \(= \dfrac{k(k+1)(2k+1) + 6(k+1)^2}{6}\).</li>
+      <li>Factor out \((k+1)\): \(= \dfrac{(k+1)\bigl[k(2k+1)+6(k+1)\bigr]}{6}\).</li>
+      <li>Expand the bracket: \(k(2k+1)+6(k+1) = 2k^2+k+6k+6 = 2k^2+7k+6\).</li>
+      <li>Factorise the quadratic: \(2k^2+7k+6 = (k+2)(2k+3)\). (Check:
+      \((k+2)(2k+3)=2k^2+3k+4k+6\). ✓)</li>
+      <li>So \(\sum_{r=1}^{k+1} r^2 = \dfrac{(k+1)(k+2)(2k+3)}{6}\), which is exactly the target. ■</li>
+      <li>Conclusion sentence.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one base case, one hypothesis, one target, four for the algebra (common denominator, factorising \((k+1)\), expanding, re-factorising), one conclusion. Resist expanding \((k+1)(k+2)(2k+3)\): the target is already factorised, so keep yours factorised too and compare.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 29</span> Divisibility: \(n^3-n\) is a multiple of 6 · 7 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove that \(n^3-n\) is divisible by 6 for all \(n\in\mathbb{Z}^+\).</p>
+    <ol class="steps">
+      <li><strong>Base case \(n=1\):</strong> \(1-1=0=6\times0\). ✓ (Zero is a multiple of 6 — do not panic
+      here.)</li>
+      <li><strong>Hypothesis:</strong> \(k^3-k = 6m\) for some \(m\in\mathbb{Z}\).</li>
+      <li><strong>Step:</strong> \((k+1)^3-(k+1) = (k^3+3k^2+3k+1)-(k+1) = k^3+3k^2+3k+1-k-1\).</li>
+      <li>Regroup to expose the hypothesis: \(= (k^3-k) + 3k^2+3k = 6m + 3k(k+1)\).</li>
+      <li>Now \(k(k+1)\) is the product of two consecutive integers, so one of them is even: \(k(k+1)=2j\) for
+      some \(j\in\mathbb{Z}\). Hence \(3k(k+1) = 6j\).</li>
+      <li>Therefore \((k+1)^3-(k+1) = 6m+6j = 6(m+j)\), a multiple of 6. ■</li>
+      <li>Conclusion sentence.</li>
+    </ol>
+    <p><strong>Alternative direct proof (one line, and worth knowing):</strong>
+    \(n^3-n = n(n^2-1)=n(n-1)(n+1)\), the product of three consecutive integers. Among any three consecutive
+    integers one is a multiple of 3 and at least one is even, so the product is divisible by both 3 and 2,
+    hence by 6. ■</p>
+    <div class="answerline"><b>Marks:</b> one base case, one for "\(=6m\)", two for the regrouping and expansion, two for the "product of consecutive integers is even" step, one conclusion. The exam expects you to justify "\(k(k+1)\) is even" in words — simply asserting it is how marks go missing.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 30</span> An inequality: \(2^n&gt;n^2\) for \(n\ge5\) · 8 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove by induction that \(2^{n}&gt;n^{2}\) for all integers \(n\ge5\).</p>
+    <ol class="steps">
+      <li>Note first that the claim is false for \(n=3\) (\(8&lt;9\)) and is an equality at \(n=4\)
+      (\(16=16\)), so the base case cannot be \(n=1\). <strong>Base case \(n=5\):</strong> LHS \(=2^5=32\),
+      RHS \(=25\), and \(32&gt;25\). ✓</li>
+      <li><strong>Hypothesis:</strong> assume \(2^{k}&gt;k^{2}\) for some integer \(k\ge5\).</li>
+      <li><strong>Target:</strong> \(2^{k+1}&gt;(k+1)^2\).</li>
+      <li><strong>Step:</strong> \(2^{k+1} = 2\cdot 2^{k} &gt; 2k^{2}\), using the hypothesis.</li>
+      <li>So it is enough to show \(2k^{2}\ge (k+1)^2\). Compare them by subtracting:
+      \(2k^2-(k+1)^2 = 2k^2-(k^2+2k+1) = k^2-2k-1\).</li>
+      <li>Complete the square: \(k^2-2k-1 = (k-1)^2-2\). For \(k\ge5\), \((k-1)^2\ge16\), so
+      \((k-1)^2-2\ge14&gt;0\).</li>
+      <li>Hence \(2k^2&gt;(k+1)^2\), and chaining the inequalities: \(2^{k+1}&gt;2k^2&gt;(k+1)^2\). ■</li>
+      <li>Conclusion: \(P(5)\) is true and \(P(k)\Rightarrow P(k+1)\) for all \(k\ge5\), so \(P(n)\) is true for
+      all \(n\ge5\).</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one for choosing \(n=5\) as the base case, one for the check, one hypothesis, one for \(2^{k+1}=2\cdot2^k\), two for the \(2k^2-(k+1)^2\) comparison, one for the "\(k\ge5\)" justification, one conclusion. The subtle point: the sub-result you need is only true for \(k\ge3\), so you must say why it holds for your \(k\).</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 31</span> A matrix power by induction · 7 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Let \(M=\begin{pmatrix}1&amp;1\\0&amp;1\end{pmatrix}\). Prove by induction
+    that \(M^{n}=\begin{pmatrix}1&amp;n\\0&amp;1\end{pmatrix}\) for all \(n\in\mathbb{Z}^+\).</p>
+    <ol class="steps">
+      <li><strong>Base case \(n=1\):</strong> \(M^1=\begin{pmatrix}1&amp;1\\0&amp;1\end{pmatrix}\), which is
+      the claimed form with \(n=1\). ✓</li>
+      <li><strong>Hypothesis:</strong> \(M^{k}=\begin{pmatrix}1&amp;k\\0&amp;1\end{pmatrix}\).</li>
+      <li><strong>Step:</strong> \(M^{k+1} = M^{k}M = \begin{pmatrix}1&amp;k\\0&amp;1\end{pmatrix}
+      \begin{pmatrix}1&amp;1\\0&amp;1\end{pmatrix}\).</li>
+      <li>Multiply row by column: top-left \(=1\cdot1+k\cdot0=1\); top-right \(=1\cdot1+k\cdot1 = 1+k\);
+      bottom-left \(=0\cdot1+1\cdot0=0\); bottom-right \(=0\cdot1+1\cdot1=1\).</li>
+      <li>So \(M^{k+1}=\begin{pmatrix}1&amp;k+1\\0&amp;1\end{pmatrix}\), the target with \(n=k+1\). ■</li>
+      <li>Conclusion sentence.</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one base case, one hypothesis, three for the matrix multiplication (show at least one entry explicitly), one for identifying the target, one conclusion. Sanity check: \(M\) represents a shear, and applying a shear \(n\) times shifts by \(n\) — the algebra matches the geometry. Induction on matrices and on derivatives both appear in Paper 3, and the template is identical.</div>
+  </div>
+</details>
+
+<div class="callout callout--note">
+  <span class="callout__label">The base case is wherever the statement starts</span>
+  <p>There is no rule that the base case is \(n=1\). If the claim is "for all \(n\ge5\)" (Worked example 30)
+  then the base case is \(n=5\), and your conclusion must say "for all \(n\ge5\)". If the claim is about
+  \(n\in\mathbb{N}\) including 0, start at \(n=0\). Students lose a mark by proving \(P(1)\) for a statement
+  that was never asserted at \(n=1\), or by concluding "for all \(n\ge1\)" when they only proved it from 5.</p>
+</div>
+
+<div class="callout callout--exam">
+  <span class="callout__label">How to spot induction</span>
+  <p>Reach for induction when the statement is indexed by an integer and has the shape "for all
+  \(n\in\mathbb{Z}^+\)": sums (\(\sum_{r=1}^{n}\)), divisibility ("\(f(n)\) is a multiple of \(k\)"), powers and
+  matrix powers, inequalities in \(n\), and derivative formulas. It is <em>not</em> for statements about all
+  real \(x\) — there is no "next" real number, so there is nothing to step to. First line to write:
+  "Let \(P(n)\) be …". Then write the \(n=k+1\) target before doing any algebra.</p>
+</div>
 <h3>Proof by contradiction</h3>
 
 <p><strong>Intuition:</strong> assume the opposite of what you want, follow the logic honestly, and arrive at
 something impossible. Since your reasoning was valid, the assumption must have been false — so the original
 claim is true.</p>
 
+<div class="callout callout--how">
+  <span class="callout__label">How to use it — the four moves</span>
+  <ol class="steps">
+    <li><strong>Assume \(\neg P\).</strong> Write the negation carefully — this is where §1.7 pays off. For
+    "\(\sqrt2\) is irrational" the negation is "\(\sqrt2\) is rational", i.e. \(\sqrt2=\frac{p}{q}\) with
+    \(p,q\in\mathbb{Z}\), \(q\neq0\), in lowest terms.</li>
+    <li><strong>Do honest algebra</strong> with that assumption.</li>
+    <li><strong>Reach a contradiction</strong> — ideally an explicit statement of the form \(R\wedge\neg R\)
+    (e.g. "\(p\) and \(q\) are both even, yet the fraction was in lowest terms").</li>
+    <li><strong>Conclude:</strong> "This is a contradiction, so the assumption is false; therefore \(P\) is
+    true. ■"</li>
+  </ol>
+  <p>The phrase "in lowest terms" is not decoration — it is the bomb you detonate at the end. Always include it
+  when you write a rational number as \(\frac{p}{q}\).</p>
+</div>
+
 <details class="worked">
-  <summary><span class="badge badge--hard">Worked example 18</span> IB-style · 7 marks · \(\sqrt2\) is irrational</summary>
+  <summary><span class="badge badge--hard">Worked example 32</span> IB-style · 7 marks · \(\sqrt2\) is irrational</summary>
   <div class="dbody">
     <p><strong>Question.</strong> Prove that \(\sqrt2\) is irrational.</p>
     <ol class="steps">
@@ -836,7 +1709,79 @@ claim is true.</p>
 </details>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 19</span> IB-style · 4 marks · Counterexample</summary>
+  <summary><span class="badge badge--hard">Worked example 33</span> Infinitely many primes (Euclid) · 7 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove that there are infinitely many prime numbers.</p>
+    <ol class="steps">
+      <li>Assume the contrary: there are only finitely many primes. List them all:
+      \(p_1,p_2,\dots,p_N\).</li>
+      <li>Build the number \(Q = p_1p_2\cdots p_N + 1\). This is the clever step: \(Q\) is one more than a
+      multiple of every prime on the list.</li>
+      <li>\(Q&gt;1\), so \(Q\) has at least one prime factor — call it \(q\). (Every integer greater than 1 is
+      either prime or a product of primes.)</li>
+      <li>\(q\) cannot be any of the \(p_i\): dividing \(Q\) by \(p_i\) leaves remainder 1, so no \(p_i\)
+      divides \(Q\).</li>
+      <li>So \(q\) is a prime that is not in the list — contradicting the assumption that the list contained
+      <em>every</em> prime.</li>
+      <li>Therefore the assumption is false: there are infinitely many primes. ■</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one for the assumption with a finite list, two for constructing \(Q\), two for the remainder-1 argument, one for the contradiction, one for the conclusion. Common error: saying "\(Q\) is prime". It need not be — it only needs <em>some</em> prime factor, and that factor cannot be on the list.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 34</span> \(\sqrt3\) is irrational · 6 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove that \(\sqrt3\) is irrational.</p>
+    <ol class="steps">
+      <li>Assume \(\sqrt3=\dfrac{p}{q}\) with \(p,q\in\mathbb{Z}^+\) and \(\gcd(p,q)=1\) (lowest terms).</li>
+      <li>Square and rearrange: \(3=\dfrac{p^2}{q^2}\Rightarrow p^2=3q^2\).</li>
+      <li>So \(3\mid p^2\), hence \(3\mid p\). <em>Justification:</em> if \(3\nmid p\) then \(p\equiv1\) or
+      \(2\pmod 3\), so \(p^2\equiv1\pmod3\), giving \(3\nmid p^2\) — this is the contrapositive. Write
+      \(p=3r\).</li>
+      <li>Substitute: \((3r)^2 = 3q^2\Rightarrow 9r^2=3q^2\Rightarrow q^2=3r^2\).</li>
+      <li>So \(3\mid q^2\), hence \(3\mid q\) by the same argument.</li>
+      <li>Thus \(3\mid p\) and \(3\mid q\), contradicting \(\gcd(p,q)=1\).</li>
+      <li>Therefore \(\sqrt3\) is irrational. ■</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one assumption with "lowest terms", one for \(p^2=3q^2\), two for the divisibility-by-3 step (with the mod-3 justification), one for reaching the shared factor, one conclusion. The same proof works verbatim for \(\sqrt p\) with any prime \(p\); for \(\sqrt6\) you need both "\(2\mid p\)" and "\(3\mid p\)".</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--hard">Worked example 35</span> \(\log_2 3\) is irrational · 6 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Prove that \(\log_2 3\) is irrational.</p>
+    <ol class="steps">
+      <li>Assume the negation: \(\log_2 3 = \dfrac{p}{q}\) for some \(p,q\in\mathbb{Z}^+\).</li>
+      <li>Rewrite in exponential form: \(3 = 2^{p/q}\).</li>
+      <li>Raise both sides to the power \(q\): \(3^{q} = 2^{p}\).</li>
+      <li>The left side is odd (a power of 3). The right side is even (a power of 2, and \(p\ge1\) because
+      \(\log_2 3&gt;1\)).</li>
+      <li>An integer cannot be both odd and even. Contradiction.</li>
+      <li>Therefore \(\log_2 3\) is irrational. ■</li>
+    </ol>
+    <div class="answerline"><b>Marks:</b> one for the assumption \(p/q\), one for converting to \(3^q=2^p\), two for the odd/even argument, one for the contradiction, one conclusion. This is the shortest irrationality proof on the syllabus: turn a log statement into an integer equation, then compare prime factorisations — unique factorisation is doing the real work.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">How to spot contradiction</span>
+  <p>Use it when the conclusion is <em>negative</em>: "there is no…", "there are no integers…", "\(x\) is
+  irrational", "there are infinitely many…", "cannot be expressed as…". Anything beginning "prove that there
+  does not exist" is asking for contradiction almost by definition. First line to write: "Assume, for
+  contradiction, that …". If instead the question says "is it true that…", try a counterexample <em>first</em> —
+  test \(n=1,2,3\) before attempting any proof at all.</p>
+</div>
+
+<h3>Proof by counterexample</h3>
+
+<p>To disprove a statement of the form \(\forall x,\ P(x)\) you need exactly one object \(a\) for which
+\(P(a)\) is false. That is it. One line, one number, full marks — provided you actually <em>evaluate</em> it and
+show the failure.</p>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 36</span> IB-style · 4 marks · Counterexample</summary>
   <div class="dbody">
     <p><strong>Question.</strong> Anna claims that \(n^2+n+41\) is prime for every positive integer \(n\).
     Disprove her claim.</p>
@@ -844,20 +1789,151 @@ claim is true.</p>
       <li>A single counterexample is enough. Choose \(n=41\) (chosen so that 41 factors out).</li>
       <li>\(41^2+41+41 = 41(41+1+1) = 41\times43\), which is composite.</li>
     </ol>
-    <div class="answerline"><b>Answer:</b> \(n=41\) gives \(1763 = 41\times43\), not prime. The claim is false. Note: \(n=40\) gives \(40^2+40+41 = 1681 = 41^2\) also composite — one counterexample suffices, never try to list them all.</div>
+    <div class="answerline"><b>Answer:</b> \(n=41\) gives \(1763 = 41\times43\), not prime. The claim is false. Note: \(n=40\) gives \(40^2+40+41 = 1681 = 41^2\), also composite — one counterexample suffices, so never try to list them all.</div>
   </div>
 </details>
 
-<div class="callout callout--trap">
-  <span class="callout__label">Common trap</span>
-  <p>(1) Induction without a base case, or a base case with no numbers written — both lose marks. (2) Assuming
-  what you are trying to prove inside the inductive step: you may use only \(P(k)\), not \(P(k+1)\). (3) Not
-  stating the conclusion ("therefore, by induction…"). (4) Confusing an example with a proof: checking
-  \(n=1,2,3,4\) proves nothing. (5) In a contradiction proof, forgetting to say <em>why</em> the conclusion is
-  impossible.</p>
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 37</span> Every quadratic has two real roots? · 3 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Disprove: "every quadratic equation has two real roots".</p>
+    <ol class="steps">
+      <li>One counterexample: \(x^2+1=0\).</li>
+      <li>Its discriminant is \(\Delta = b^2-4ac = 0-4(1)(1) = -4 &lt; 0\), so it has no real roots at all
+      (the roots are \(\pm i\)).</li>
+      <li>So the claim is false. ■</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> false, by the counterexample \(x^2+1=0\). A second, sharper counterexample is \(x^2-2x+1=0\): \(\Delta=0\), so it has <em>one</em> repeated real root, which also breaks the word "two".</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--medium">Worked example 38</span> Mersenne's near-miss · 4 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Disprove: "if \(p\) is prime then \(2^{p}-1\) is prime".</p>
+    <ol class="steps">
+      <li>Test small primes first: \(p=2\Rightarrow 3\) prime; \(p=3\Rightarrow 7\) prime;
+      \(p=5\Rightarrow 31\) prime; \(p=7\Rightarrow 127\) prime. The claim looks excellent — and is still
+      false.</li>
+      <li>Take \(p=11\): \(2^{11}-1 = 2048-1 = 2047\).</li>
+      <li>Factorise: \(2047 = 23\times89\). (Check: \(23\times89 = 23\times90-23 = 2070-23 = 2047\). ✓)</li>
+      <li>So \(p=11\) is prime but \(2^{11}-1\) is composite. The claim is false. ■</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> \(p=11\) is a counterexample. This is the moral of §1.8 in one example: four confirming cases, and the statement is still false. Numbers of the form \(2^p-1\) are called Mersenne numbers and they still hold the record for the largest known primes — but most of them are composite.</div>
+  </div>
+</details>
+
+<details class="worked">
+  <summary><span class="badge badge--easy">Worked example 39</span> A trig identity that fails at a boundary · 3 marks</summary>
+  <div class="dbody">
+    <p><strong>Question.</strong> Disprove: "\(\sin 2x = 2\sin x\) for all real \(x\)".</p>
+    <ol class="steps">
+      <li>Take \(x=\dfrac{\pi}{2}\).</li>
+      <li>LHS \(= \sin\pi = 0\). RHS \(= 2\sin\dfrac{\pi}{2} = 2\times1 = 2\).</li>
+      <li>\(0\neq2\), so the statement is false. ■</li>
+    </ol>
+    <div class="answerline"><b>Answer:</b> false; \(x=\pi/2\) is a counterexample. The correct identity is \(\sin 2x = 2\sin x\cos x\), which only "looks like" the false one when \(\cos x=1\). Testing at \(x=0\) would have fooled you — always test an awkward value, and prefer boundaries like \(\pi/2\) where a factor vanishes or equals 1.</div>
+  </div>
+</details>
+
+<div class="callout callout--exam">
+  <span class="callout__label">How to spot a counterexample</span>
+  <p>Watch for the words "every", "all", "always", "for any", "prove or disprove", "is it true that…". Before
+  writing a proof of a "for all" claim, spend thirty seconds testing \(n=0,1,2\) and one awkward value (a
+  negative, a fraction, a boundary such as \(\pi/2\)). If a counterexample turns up, write the substitution,
+  show the two sides disagreeing, and finish with "so the statement is false" — three lines, full marks. Do not
+  write "the statement is false because I found one case where it fails" without showing the arithmetic.</p>
 </div>
 
-<h2>1.8 Systems of linear equations</h2>
+<h3>Common mistakes</h3>
+
+<div class="callout callout--trap">
+  <span class="callout__label">The seven ways proof questions go wrong</span>
+  <ol class="steps">
+    <li><strong>Assuming the conclusion.</strong> Circling back to where you started and declaring victory:
+    to prove \(a=b\), starting from \(a=b\), deriving \(0=0\), then concluding \(a=b\). You must start from what
+    is <em>given</em> and reach what is <em>claimed</em> — never the reverse. (Working backwards on scrap paper
+    to find the route is fine; then write the proof forwards.)</li>
+    <li><strong>Forgetting the base case</strong> — or writing "base case: true" with no numbers. In
+    Worked example 27 the base case reads "LHS \(=1\), RHS \(=1\)". That is what the mark is for.</li>
+    <li><strong>Assuming \(P(k+1)\) while proving it.</strong> The only thing you may use in the inductive step
+    is \(P(k)\). If your "proof" contains the line you are trying to reach, it is not a proof.</li>
+    <li><strong>Dividing by a quantity that could be zero.</strong> The classic fake proof:
+    <ol class="steps">
+      <li>Let \(a=b\). Then \(a^2 = ab\).</li>
+      <li>Subtract \(b^2\): \(a^2-b^2 = ab-b^2\).</li>
+      <li>Factorise: \((a-b)(a+b) = b(a-b)\).</li>
+      <li>"Divide by \((a-b)\)": \(a+b = b\).</li>
+      <li>Since \(a=b\): \(2b=b\), so \(2=1\). ✗</li>
+    </ol>
+    The error is in step 4: \(a-b=0\). Before cancelling anything, ask "could this be zero?" — and if it could,
+    split into cases instead.</li>
+    <li><strong>Confusing a statement with its converse.</strong> "If \(n\) is divisible by 4 then \(n\) is
+    even" is true; its converse is false. Proving the easy direction and stopping is the most common way to
+    score 3 out of 7.</li>
+    <li><strong>"It is obvious."</strong> That word is where marks go to die. Replace it with the reason: not
+    "\(k(k+1)\) is obviously even" but "one of \(k\), \(k+1\) is even, so their product is even".</li>
+    <li><strong>Checking examples instead of proving.</strong> "It works for \(n=1,2,3,4,5\), therefore…" is
+    not a proof (see the \(n^2+n+41\) and Fermat warnings). If the question says "prove", examples earn
+    nothing.</li>
+  </ol>
+</div>
+
+<h3>Which method should I use?</h3>
+
+<div class="table-wrap">
+<table>
+  <thead><tr><th>What you see</th><th>Use</th><th>First line to write</th></tr></thead>
+  <tbody>
+    <tr><td>"Show that …" with an identity, no integer index</td><td>Direct, LHS → RHS</td><td>\(\text{LHS} = \dots\)</td></tr>
+    <tr><td>"For all \(n\in\mathbb{Z}^+\)", a \(\sum\), a divisibility claim, \(u_n\), \(A^n\)</td><td>Induction</td><td>"Let \(P(n)\) be …. Base case \(n=\dots\):"</td></tr>
+    <tr><td>"Prove there is no…", "prove … is irrational", "infinitely many…"</td><td>Contradiction</td><td>"Assume, for contradiction, that …"</td></tr>
+    <tr><td>"Prove or disprove", "is it true that…", "for all \(x\), …"</td><td>Try a counterexample first</td><td>"Take \(n = \dots\)" and evaluate both sides</td></tr>
+    <tr><td>"Prove … if and only if …", "necessary and sufficient"</td><td>Direct, in both directions</td><td>"(\(\Rightarrow\)) Assume … (\(\Leftarrow\)) Assume …"</td></tr>
+    <tr><td>"If \(A\) then \(B\)" where \(B\) is awkward to work from</td><td>Contrapositive</td><td>"We prove instead: not \(B\) \(\Rightarrow\) not \(A\)."</td></tr>
+    <tr><td>"Hence …" after a "show that"</td><td>Direct, reusing the previous result</td><td>"Using part (a) with \(n=\dots\)"</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout callout--note">
+  <span class="callout__label">A 30-second routine for any proof question</span>
+  <ol class="steps">
+    <li>Underline the quantifier. Is it "for all \(n\)" (induction or direct), "there exists" (construct one),
+    or "there does not exist" (contradiction)?</li>
+    <li>Test three values. If one fails, you have a counterexample and the question is finished.</li>
+    <li>If none fail, choose the method from the table and write the opening line before thinking further. The
+    opening line is 20% of the marks and it decides the shape of everything after it.</li>
+    <li>Finish with a conclusion sentence. Every single time.</li>
+  </ol>
+</div>
+
+<div class="callout callout--vocab">
+  <span class="callout__label">Vocabulary — proof</span>
+  <div class="wordlist">
+    <div><b>proof</b> — <span>a chain of logically valid steps from what is known to the claim</span></div>
+    <div><b>axiom</b> — <span>a starting assumption accepted without proof</span></div>
+    <div><b>definition</b> — <span>an agreed meaning; usually the first line of a proof</span></div>
+    <div><b>conjecture</b> — <span>a statement believed true but not yet proved</span></div>
+    <div><b>theorem</b> — <span>a statement that has been proved</span></div>
+    <div><b>lemma</b> — <span>a small result proved on the way to a bigger one</span></div>
+    <div><b>corollary</b> — <span>a result that follows immediately from a theorem</span></div>
+    <div><b>direct proof</b> — <span>deducing the conclusion from the hypotheses in one forward chain</span></div>
+    <div><b>deductive</b> — <span>a conclusion that must be true if the premises are true</span></div>
+    <div><b>proof by induction</b> — <span>base case plus \(P(k)\Rightarrow P(k+1)\) proves \(P(n)\) for all \(n\)</span></div>
+    <div><b>base case</b> — <span>the starting value of \(n\), checked directly</span></div>
+    <div><b>inductive hypothesis</b> — <span>the assumption that \(P(k)\) is true</span></div>
+    <div><b>inductive step</b> — <span>the proof that \(P(k)\) implies \(P(k+1)\)</span></div>
+    <div><b>proof by contradiction</b> — <span>assume the negation, derive an impossibility, conclude the claim</span></div>
+    <div><b>counterexample</b> — <span>one case showing a general claim is false</span></div>
+    <div><b>deduce</b> — <span>use a previous result to reach the next one (IB command term)</span></div>
+    <div><b>hence</b> — <span>you must use the preceding result; restarting loses the mark</span></div>
+    <div><b>show that</b> — <span>give the full reasoning; the answer alone scores nothing</span></div>
+    <div><b>valid / invalid argument</b> — <span>an argument whose logic holds / fails, whatever the conclusion</span></div>
+    <div><b>Q.E.D. (■)</b> — <span>"which was to be demonstrated"; marks the end of a proof</span></div>
+  </div>
+</div>
+<h2>1.9 Systems of linear equations</h2>
 <span class="badge badge--sl">SL / HL</span>
 
 <p><strong>Intuition:</strong> two equations in two unknowns describe two lines: one intersection, none
@@ -876,7 +1952,7 @@ are the same story.</p>
 </div>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 20</span> IB-style · 7 marks · GDC allowed</summary>
+  <summary><span class="badge badge--medium">Worked example 40</span> IB-style · 7 marks · GDC allowed</summary>
   <div class="dbody">
     <p><strong>Question.</strong> Find the value of \(k\) for which the system
     \(\begin{cases} x+2y-z = 4 \\ 2x-y+3z = 1 \\ 3x+y+kz = 5 \end{cases}\)
@@ -896,7 +1972,7 @@ are the same story.</p>
 </details>
 
 <details class="worked">
-  <summary><span class="badge badge--medium">Worked example 21</span> IB-style · 6 marks · GDC allowed</summary>
+  <summary><span class="badge badge--medium">Worked example 41</span> IB-style · 6 marks · GDC allowed</summary>
   <div class="dbody">
     <p><strong>Question.</strong> Solve \(\begin{cases} x+y+z = 6 \\ 2x-y = 1 \\ x+2y-3z = -9 \end{cases}\).</p>
     <ol class="steps">
@@ -923,6 +1999,7 @@ are the same story.</p>
     logs linearise exponential models so that regression applies; \(\mathrm{e}\) appears in the normal pdf.</li>
     <li><strong>→ Topic 2 (Functions):</strong> partial fractions and the remainder theorem are the same
     algebraic skill applied to different objects; logs and exponentials are inverse functions.</li>
+    <li><strong>→ §1.7 and §1.8 (Logic &amp; proof):</strong> the definitions of limit, continuity and differentiability in Topic 5 are nested \(\forall\)/\(\exists\) statements; being able to negate them is what makes an \(\varepsilon\)-\(\delta\) argument possible.</li>
     <li><strong>→ Physics HL:</strong> \(\mathrm{e}^{i\omega t}\) for oscillations, complex impedance, and
     standard-form SI units all come straight from this topic.</li>
     <li><strong>→ Computer Science HL:</strong> the division algorithm in the \(\sqrt2\) proof mod 2, recursion
@@ -943,6 +2020,16 @@ are the same story.</p>
   <li><label><input type="checkbox"><span>I can write a complete induction proof for sums, divisibility, derivatives and De Moivre.</span></label></li>
   <li><label><input type="checkbox"><span>I can prove \(\sqrt2\) is irrational and construct a counterexample to a false conjecture.</span></label></li>
   <li><label><input type="checkbox"><span>I can decide whether a \(3\times3\) system has a unique solution, none, or infinitely many, and say what that means for three planes.</span></label></li>
+  <li><label><input type="checkbox"><span>I can decide whether a sentence is a mathematical statement, and write its negation in a usable form.</span></label></li>
+  <li><label><input type="checkbox"><span>I can build a truth table for any compound proposition and identify a tautology, a contradiction and a contingency.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write the converse, inverse and contrapositive of an implication, and I know which ones are logically equivalent to the original.</span></label></li>
+  <li><label><input type="checkbox"><span>I can negate statements containing \(\forall\) and \(\exists\), including two nested quantifiers, and I know how to disprove a universal claim with one counterexample.</span></label></li>
+  <li><label><input type="checkbox"><span>I can prove an "if and only if" statement in both directions without confusing one direction with the other.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write a direct LHS → RHS deductive proof of an algebraic or surd identity.</span></label></li>
+  <li><label><input type="checkbox"><span>I can write a complete induction proof — proposition, base case, hypothesis, step, conclusion — for sums, divisibility, inequalities and matrix powers.</span></label></li>
+  <li><label><input type="checkbox"><span>I can prove that \(\sqrt2\), \(\sqrt3\) and \(\log_2 3\) are irrational, and that there are infinitely many primes.</span></label></li>
+  <li><label><input type="checkbox"><span>I can construct a counterexample to a false "for all" claim and write it up in three lines.</span></label></li>
+  <li><label><input type="checkbox"><span>I can spot a false proof that divides by zero or assumes the conclusion, and say exactly which line is wrong.</span></label></li>
 </ul>
 
 <h2>Practice</h2>
@@ -1025,6 +2112,178 @@ are the same story.</p>
         <li>\(\frac{1}{\alpha}+\frac{1}{\beta}+\frac{1}{\gamma} = \dfrac{\beta\gamma+\gamma\alpha+\alpha\beta}{\alpha\beta\gamma} = \dfrac{11}{6}\).</li>
       </ol>
       <div class="answerline"><b>Answer:</b> 6, 11, 6, and \(\frac{11}{6}\). Check: the cubic factors as \((x-1)(x-2)(x-3)\), and \(\frac11+\frac12+\frac13 = \frac{11}{6}\). ✓ This is Vieta's formulas — see Topic 2 for the general statement.</div>
+    </div></details>
+  </li>
+  <li><p>Write down the negation of each statement and state which of the two is true.
+  (a) \(\forall x\in\mathbb{R},\ x^2+1&gt;0\). (b) \(\exists n\in\mathbb{Z}^+\) such that \(n\) is prime and
+  \(n&gt;100\). (c) For every real number \(x\) there is a real number \(y\) with \(xy=1\).</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>(a) Negation: \(\exists x\in\mathbb{R}\) such that \(x^2+1\le 0\). The original is
+        <strong>true</strong> (since \(x^2\ge0\) for every real \(x\), \(x^2+1\ge1\)), so the negation is
+        false.</li>
+        <li>(b) Negation: \(\forall n\in\mathbb{Z}^+\), \(n\) is not prime or \(n\le100\) — De Morgan on the
+        "and". The original is <strong>true</strong> (take \(n=101\)), so the negation is false.</li>
+        <li>(c) Negation: \(\exists x\in\mathbb{R}\) such that for all \(y\in\mathbb{R}\), \(xy\neq 1\). The
+        original is <strong>false</strong>, because \(x=0\) can never satisfy \(0\cdot y=1\); the negation is
+        true, exhibited by \(x=0\).</li>
+        <li>Notice in (c) what happened: both quantifiers flipped (\(\forall\to\exists\), \(\exists\to\forall\))
+        and the final condition was negated.</li>
+      </ol>
+      <div class="answerline"><b>Why this is worth knowing:</b> negating quantified statements is the most useful logic skill in the course. It tells you what a counterexample has to look like, it is the first line of every contradiction proof, and it is how the \(\varepsilon\)-\(\delta\) definitions in Topic 5 are manipulated.</div>
+    </div></details>
+  </li>
+  <li><p>Show, by means of a truth table, that \((p\Rightarrow q)\vee(q\Rightarrow p)\) is a tautology.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <div class="table-wrap">
+      <table>
+        <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p\Rightarrow q\)</th><th>\(q\Rightarrow p\)</th><th>\((p\Rightarrow q)\vee(q\Rightarrow p)\)</th></tr></thead>
+        <tbody>
+          <tr><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+          <tr><td>T</td><td>F</td><td>F</td><td>T</td><td>T</td></tr>
+          <tr><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td></tr>
+          <tr><td>F</td><td>F</td><td>T</td><td>T</td><td>T</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <ol class="steps">
+        <li>\(p\Rightarrow q\) is false only in row 2 (\(p\) true, \(q\) false).</li>
+        <li>\(q\Rightarrow p\) is false only in row 3 (\(q\) true, \(p\) false).</li>
+        <li>The two implications are never false in the same row, so their disjunction is true in all four
+        rows: a tautology.</li>
+      </ol>
+      <div class="answerline"><b>Why this is worth knowing:</b> it is a genuinely surprising result — of any two statements, at least one must imply the other in the truth-table sense. It is the clearest reminder that \(\Rightarrow\) is a truth-functional symbol, not a claim about causation or relevance.</div>
+    </div></details>
+  </li>
+  <li><p>(a) State the converse and the contrapositive of "if \(n^2\) is even then \(n\) is even", and say
+  whether each is true. (b) Do the same for "if \(x&gt;2\) then \(x^2&gt;4\)".</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>(a) Original: \(n^2\) even \(\Rightarrow\) \(n\) even. <strong>Converse:</strong> "if \(n\) is even
+        then \(n^2\) is even" — true (\(n=2k\Rightarrow n^2=4k^2=2(2k^2)\)). <strong>Contrapositive:</strong>
+        "if \(n\) is odd then \(n^2\) is odd" — true, and logically equivalent to the original.</li>
+        <li>(b) Original: \(x&gt;2\Rightarrow x^2&gt;4\) — true, since \(x&gt;2&gt;0\) allows you to multiply the
+        inequality \(x&gt;2\) by the positive number \(x\). <strong>Converse:</strong> "if \(x^2&gt;4\) then
+        \(x&gt;2\)" — <strong>false</strong>: \(x=-3\) gives \(x^2=9&gt;4\) but \(-3\not&gt;2\).</li>
+        <li><strong>Contrapositive of (b):</strong> "if \(x^2\le4\) then \(x\le2\)" — true (indeed
+        \(x^2\le4\) means \(-2\le x\le2\)), and equivalent to the original statement.</li>
+      </ol>
+      <div class="answerline"><b>Why this is worth knowing:</b> part (b) is the trap. Students happily "square both sides" and then assume the reverse also works — that is exactly the error of confusing a statement with its converse, and it costs marks in inequality questions throughout Topics 2 and 5.</div>
+    </div></details>
+  </li>
+  <li><p>Prove by induction that \(\displaystyle\sum_{r=1}^{n} r(r+1) = \frac{n(n+1)(n+2)}{3}\) for all
+  \(n\in\mathbb{Z}^+\).</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li><strong>Base case \(n=1\):</strong> LHS \(=1\cdot2=2\); RHS \(=\dfrac{1\cdot2\cdot3}{3}=2\). ✓</li>
+        <li><strong>Hypothesis:</strong> \(\sum_{r=1}^{k} r(r+1) = \dfrac{k(k+1)(k+2)}{3}\).</li>
+        <li><strong>Target:</strong> \(\sum_{r=1}^{k+1} r(r+1) = \dfrac{(k+1)(k+2)(k+3)}{3}\).</li>
+        <li><strong>Step:</strong> \(\sum_{r=1}^{k+1} r(r+1) = \dfrac{k(k+1)(k+2)}{3} + (k+1)(k+2)\).</li>
+        <li>Factor out \((k+1)(k+2)\): \(= (k+1)(k+2)\left(\dfrac{k}{3}+1\right)
+        = (k+1)(k+2)\cdot\dfrac{k+3}{3}\).</li>
+        <li>\(= \dfrac{(k+1)(k+2)(k+3)}{3}\), the target. ■</li>
+        <li>Conclusion sentence.</li>
+      </ol>
+      <p><strong>Check by a different route:</strong>
+      \(\sum r(r+1)=\sum r^2+\sum r = \frac{n(n+1)(2n+1)}{6}+\frac{n(n+1)}{2}
+      = \frac{n(n+1)}{6}\bigl[(2n+1)+3\bigr] = \frac{n(n+1)(2n+4)}{6} = \frac{n(n+1)(n+2)}{3}\). ■</p>
+      <div class="answerline"><b>Why this is worth knowing:</b> having two derivations is the best exam insurance you can buy. If your induction algebra goes wrong, the direct check catches it — and "verify your answer another way" is a habit that pays in every topic.</div>
+    </div></details>
+  </li>
+  <li><p>Prove by induction that \(3^{2n}-1\) is divisible by 8 for all \(n\in\mathbb{Z}^+\).</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Rewrite first: \(3^{2n} = (3^2)^n = 9^n\), so the claim is "\(9^n-1\) is divisible by 8".</li>
+        <li><strong>Base case \(n=1\):</strong> \(9^1-1 = 8 = 8\times1\). ✓</li>
+        <li><strong>Hypothesis:</strong> \(9^{k}-1 = 8m\) for some \(m\in\mathbb{Z}\), i.e. \(9^{k}=8m+1\).</li>
+        <li><strong>Step:</strong> \(9^{k+1}-1 = 9\cdot 9^{k} - 1\).</li>
+        <li>Substitute: \(= 9(8m+1)-1 = 72m+9-1 = 72m+8\).</li>
+        <li>\(= 8(9m+1)\), a multiple of 8. ■</li>
+        <li>Conclusion sentence.</li>
+      </ol>
+      <p><strong>One-line alternative:</strong> \(9\equiv1\pmod 8\), so \(9^n\equiv1^n\equiv1\pmod8\), giving
+      \(9^n-1\equiv0\pmod8\). Modular arithmetic is not in the AA syllabus, but the idea — "replace 9 by 1
+      because they differ by a multiple of 8" — is exactly what the induction step is doing.</p>
+      <div class="answerline"><b>Why this is worth knowing:</b> divisibility inductions are a Paper 3 staple. The move that unlocks them is always the same: rewrite the hypothesis as "<em>the big thing</em> = multiple + remainder" so that you can substitute it into the \(k+1\) expression.</div>
+    </div></details>
+  </li>
+  <li><p>Prove by induction that \(n!&gt;2^{n}\) for all integers \(n\ge4\).</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li><strong>Base case \(n=4\):</strong> LHS \(=4!=24\); RHS \(=2^4=16\), and \(24&gt;16\). ✓
+        (Check \(n=3\): \(6&lt;8\), which is why the claim starts at 4.)</li>
+        <li><strong>Hypothesis:</strong> \(k!&gt;2^{k}\) for some integer \(k\ge4\).</li>
+        <li><strong>Target:</strong> \((k+1)!&gt;2^{k+1}\).</li>
+        <li><strong>Step:</strong> \((k+1)! = (k+1)\,k! &gt; (k+1)\,2^{k}\), using the hypothesis (and
+        \(k+1&gt;0\), so the inequality direction is preserved).</li>
+        <li>Since \(k\ge4\), we have \(k+1\ge5&gt;2\), so \((k+1)2^{k} &gt; 2\cdot 2^{k} = 2^{k+1}\).</li>
+        <li>Chaining: \((k+1)! &gt; (k+1)2^k &gt; 2^{k+1}\). ■</li>
+        <li>Conclusion: \(P(4)\) is true and \(P(k)\Rightarrow P(k+1)\) for all \(k\ge4\), so \(P(n)\) holds for
+        all \(n\ge4\).</li>
+      </ol>
+      <div class="answerline"><b>Why this is worth knowing:</b> inequality inductions are the hardest flavour, because you have to <em>combine</em> the hypothesis with a separate inequality. Write the chain on its own line and check the direction of every arrow — one reversed sign and the whole proof is worthless.</div>
+    </div></details>
+  </li>
+  <li><p>Prove by contradiction that the sum of a rational number and an irrational number is irrational.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Let \(r\in\mathbb{Q}\) and let \(x\) be irrational. Assume, for contradiction, that \(r+x\) is
+        rational: write \(r+x=s\) with \(s\in\mathbb{Q}\).</li>
+        <li>Then \(x = s-r\).</li>
+        <li>The rational numbers are closed under subtraction, so \(s-r\in\mathbb{Q}\).</li>
+        <li>Therefore \(x\in\mathbb{Q}\), contradicting the given fact that \(x\) is irrational.</li>
+        <li>Hence the assumption is false: \(r+x\) is irrational. ■</li>
+      </ol>
+      <p><strong>Note what is <em>not</em> true:</strong> the sum of two irrationals need not be irrational —
+      \(\sqrt2+(-\sqrt2)=0\), which is rational. So the result cannot be strengthened, and a proof that
+      "obviously" works for two irrationals is wrong.</p>
+      <div class="answerline"><b>Why this is worth knowing:</b> this is the model four-line contradiction. It also shows why "assume the negation" must be written precisely: the negation of "\(r+x\) is irrational" is "\(r+x\) is rational", and that single word is what turns the problem into algebra.</div>
+    </div></details>
+  </li>
+  <li><p>Disprove: "\(\sin(x+y)=\sin x+\sin y\) for all real \(x\) and \(y\)".</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>Take \(x=y=\dfrac{\pi}{2}\).</li>
+        <li>LHS \(= \sin\pi = 0\).</li>
+        <li>RHS \(= \sin\dfrac{\pi}{2}+\sin\dfrac{\pi}{2} = 1+1 = 2\).</li>
+        <li>\(0\neq2\), so the statement is false. ■</li>
+      </ol>
+      <p><strong>Why \(x=0\) would have fooled you:</strong> at \(x=y=0\) both sides are 0, so the identity
+      appears to hold. Always test a value where the functions are not at a zero or a maximum.</p>
+      <div class="answerline"><b>Why this is worth knowing:</b> "false at a boundary, true at the easy point" is the signature of a broken identity. The correct addition formula is \(\sin(x+y)=\sin x\cos y+\cos x\sin y\) (Topic 3), and one counterexample is all it takes to show the shortened version is wrong.</div>
+    </div></details>
+  </li>
+  <li><p>(a) Negate the statement \(\forall x\in\mathbb{R},\ \exists y\in\mathbb{R},\ y&gt;x\).
+  (b) Explain why swapping the order of the two quantifiers changes the truth value.</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li>(a) Push the negation through: \(\exists x\in\mathbb{R},\ \forall y\in\mathbb{R},\ y\le x\). In
+        words: "there is a real number that is at least as large as every real number".</li>
+        <li>The original is true — given any \(x\), take \(y=x+1\). So its negation is false.</li>
+        <li>(b) Swapping gives \(\exists y\in\mathbb{R},\ \forall x\in\mathbb{R},\ y&gt;x\): "there is a single
+        real number bigger than every real number". That is false — if such a \(y\) existed, \(y+1\) would be a
+        real number with \(y+1&gt;y\), a contradiction.</li>
+        <li>So the order matters: \(\forall x\ \exists y\) lets \(y\) depend on \(x\); \(\exists y\ \forall x\)
+        demands one \(y\) that works for all \(x\) simultaneously.</li>
+      </ol>
+      <div class="answerline"><b>Why this is worth knowing:</b> this is the exact shape of the limit definition in Topic 5 (\( \forall\varepsilon&gt;0\ \exists\delta&gt;0\ \forall x\dots\)). If you cannot tell these two sentences apart, \(\varepsilon\)-\(\delta\) work is impossible; if you can, it is mechanical.</div>
+    </div></details>
+  </li>
+  <li><p>Prove by induction that \(\displaystyle\sum_{r=1}^{n} r\cdot r! = (n+1)!-1\) for all
+  \(n\in\mathbb{Z}^+\).</p>
+    <details class="answer"><summary>Show the answer</summary><div class="dbody">
+      <ol class="steps">
+        <li><strong>Base case \(n=1\):</strong> LHS \(=1\cdot1!=1\); RHS \(=2!-1 = 2-1 = 1\). ✓</li>
+        <li><strong>Hypothesis:</strong> \(\sum_{r=1}^{k} r\cdot r! = (k+1)!-1\).</li>
+        <li><strong>Target:</strong> \(\sum_{r=1}^{k+1} r\cdot r! = (k+2)!-1\).</li>
+        <li><strong>Step:</strong> \(\sum_{r=1}^{k+1} r\cdot r! = \bigl[(k+1)!-1\bigr] + (k+1)(k+1)!\).</li>
+        <li>Factor out \((k+1)!\): \(= (k+1)!\bigl[1+(k+1)\bigr] - 1 = (k+1)!(k+2)-1\).</li>
+        <li>Since \((k+1)!(k+2) = (k+2)!\), this is \(= (k+2)!-1\), the target. ■</li>
+        <li>Conclusion sentence.</li>
+      </ol>
+      <p><strong>Sanity check with \(n=3\):</strong> LHS \(=1\cdot1+2\cdot2+3\cdot6 = 1+4+18 = 23\);
+      RHS \(=4!-1 = 23\). ✓</p>
+      <div class="answerline"><b>Why this is worth knowing:</b> factorials appear in the binomial theorem, in Maclaurin series and in counting, and the identity \((k+1)!(k+2)=(k+2)!\) is the one piece of factorial algebra that induction questions keep testing. Memorise it.</div>
     </div></details>
   </li>
 </ol>
