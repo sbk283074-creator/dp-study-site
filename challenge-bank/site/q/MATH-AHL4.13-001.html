@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL4.13-001 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>4.13 Bayes&#x27; theorem</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL4.13-001</p>
+<div class="meta"><span class="chip chip-key">AHL 4.13 (Bayes&#x27; theorem for a maximum of three events); SL 4.9 (binomial distribution)</span><span class="chip">P2 · Section A</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: required</span><span class="chip">Find</span><span class="chip">Determine</span><span class="chip">Explain</span></div>
+<div class="box"><h4>Stimulus</h4><p>A factory has three machines that produce the same component.</p>
+<ul><li>Machine $M_{1}$ produces 40% of output; 2% of its components are defective.</li><li>Machine $M_{2}$ produces 35% of output; 3% of its components are defective.</li><li>Machine $M_{3}$ produces 25% of output; 5% of its components are defective.</li></ul>
+<p>Finished components are mixed together before packing, so a component gives no visual clue as to which machine made it.</p></div>
+
+<h2>Question</h2>
+<p>A component is selected at random from a day's output.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Find the probability that the component is defective.</p> <em>(Find)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Given that the component is defective, determine the probability that it was made by machine $M_{2}$.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Components are packed in boxes of 20. Find the probability that a box contains at least one defective component.</p> <em>(Find)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>A quality-control inspector tests components one at a time until a defective one is found. Given that the <strong>fifth</strong> component tested is the first defective one, find the probability that it was made by machine $M_{3}$, and explain why the answer is the same as if the <strong>first</strong> component tested had been defective.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong>  Let $D$ be the event 'defective'.</p>
+<p>$$P(D)=P(M_{1})P(D\mid M_{1})+P(M_{2})P(D\mid M_{2})+P(M_{3})P(D\mid M_{3})$$  <strong>(M1)</strong></p>
+<p>$$=0.40(0.02)+0.35(0.03)+0.25(0.05)$$  <strong>(A1)</strong></p>
+<p>$$=0.008+0.0105+0.0125$$  <strong>(A1)</strong></p>
+<p>$$P(D)=0.031\ \ (3.1\%).$$  <strong>(A1)</strong></p>
+<p><strong>(b)</strong>  By Bayes' theorem:</p>
+<p>$$P(M_{2}\mid D)=\frac{P(M_{2}\cap D)}{P(D)}=\frac{P(M_{2})P(D\mid M_{2})}{P(D)}$$  <strong>(M1)</strong></p>
+<p>$$=\frac{0.35(0.03)}{0.031}=\frac{0.0105}{0.031}$$  <strong>(A1)</strong></p>
+<p>$$=0.3387\ldots$$  <strong>(A1)</strong></p>
+<p>$$P(M_{2}\mid D)=0.339\ (3\ \text{s.f.})$$  <strong>(A1)</strong></p>
+<p><strong>(c)</strong>  Let $X$ be the number of defectives in a box. Then $X\sim\mathrm{B}(20,\,0.031)$.  <strong>(M1)(A1)</strong></p>
+<p>$$P(X\ge1)=1-P(X=0)=1-(1-0.031)^{20}$$  <strong>(M1)</strong></p>
+<p>$$=1-0.969^{20}=1-0.5326$$  <strong>(A1)</strong></p>
+<p>$$=0.467\ (3\ \text{s.f.})$$</p>
+<p><strong>(d)</strong>  The fifth component tested is defective, and components 1 to 4 are not. Let $F$ be this event.</p>
+<p>$$P(M_{3}\mid F)=\frac{P(M_{3}\cap F)}{P(F)}=\frac{P(M_{3}\cap D)}{P(D)}$$  <strong>(M1)(A1)</strong></p>
+<p>because $F$ says exactly two things about component 5 — that it is defective, and that components 1–4 are not — and the machine that made component 5 is <strong>independent</strong> of what was found in components 1–4. So the information about components 1–4 is irrelevant to the question asked, and $F$ reduces to '$D$' for the fifth component.</p>
+<p>$$=\frac{0.25(0.05)}{0.031}=\frac{0.0125}{0.031}=0.4032\ldots$$  <strong>(A1)</strong></p>
+<p>$$P(M_{3}\mid F)=0.403\ (3\ \text{s.f.})$$</p>
+<p><strong>Why it is the same as for the first component:</strong> whether the defective component turns up first, fifth or fiftieth, the only fact that carries information about its origin is that it *is* defective. The positions of the earlier non-defective components depend on the overall defective rate $P(D)=0.031$, which is the same for every machine's output because the components are mixed before packing; they therefore tell us nothing new about which machine made the one we eventually found.  <strong>(R1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award (M1) for the total-probability structure. Accept a correctly labelled tree diagram in place of the formula. Follow through on an arithmetic slip in the sum.</p>
+<p>(b) Bayes' theorem must be *identified* (by formula or by reading the tree diagram backwards). Candidates who compute $P(D\mid M_{2})=0.03$ have answered a different question and earn nothing here.</p>
+<p>(c) The binomial model is the key step: $n=20$ independent components, constant $p=0.031$. Candidates who use $1-0.031^{20}$ (confusing 'all defective' with 'none defective') forfeit the method mark. Accept $0.467$–$0.468$.</p>
+<p>(d) This is the discriminating part. Full marks require recognising that the stopping rule is irrelevant; award (M1) for setting up the conditional probability, (A1) for the correct reduction to $P(M_3\cap D)/P(D)$, (A1) for $0.403$, and (R1) for the independence argument. A candidate who attempts the full computation<br>    $$P(F)=\bigl(P(\text{not }D)\bigr)^{4}P(D)=0.969^{4}(0.031)$$<br>    and $P(M_{3}\cap F)=0.969^{4}\times0.0125$ should be given full credit — it gives the same answer, and the cancellation of the $0.969^{4}$ factor *is* the explanation.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Parts (a)–(c) are a conventional Bayes-and-binomial exercise. Part (d) is the question.</p>
+<p>On seeing 'the fifth component tested is the first defective one', most candidates reach for a geometric distribution and start computing $(0.969)^{4}(0.031)$. That calculation is not wrong, but it is unnecessary: the factor $0.969^{4}$ appears in both the numerator and the denominator and cancels. What survives is exactly the answer to (b)-style question for $M_3$.</p>
+<p>The reason is structural, and it is what the question is testing. The components are mixed before packing, so the machine that made any given component is independent of the machine that made any other. Learning that components 1–4 were *not* defective tells you something about the overall defective rate — but that rate is already known ($0.031$) and is the same whichever machine made component 5. So the extra information is genuinely irrelevant to the question asked.</p>
+<p>This is the same reason a gambler's 'the roulette wheel hasn't landed on red for ten spins, so red is due' reasoning fails — and it is worth saying out loud in class after marking this.</p>
+<p>Classic wrong turns: answering $P(M_3)=0.25$ (ignoring the conditioning entirely); using $P(D\mid M_3)=0.05$ as the answer; and, most commonly, computing the full geometric expression in (d), getting the right number, and then being unable to say *why* the 5 is irrelevant — which forfeits the reasoning mark.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>Part (d) embeds a red herring: a stopping rule that looks as though it must change the conditional probability and does not. Recognising that requires understanding what independence means, not applying a formula.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 4.13 (Bayes&#x27; theorem for a maximum of three events); SL 4.9 (binomial distribution)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the AHL 4.13 bullet (Bayes&#x27; theorem, maximum three events) and SL 4.9 (binomial). The three-machine setup is conventional; the part (d) stopping-rule twist — where the $0.969^{4}$ factor cancels and the answer is independent of the stopping position — is the original element.</dd></div>
+  <div><dt>Verification</dt><dd>P(D) recomputed from the tree; full geometric computation of part (d) checked to give the identical 0.4032 via cancellation of 0.969^4; 0.969^20 recomputed</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MA_HL_topic_Topic5_HL-paper2_q100 (similarity 0.009)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL4.14-001 (similarity 0.003)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-10</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

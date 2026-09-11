@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B2.3-001 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A loop that is linear only while the data keeps moving</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B2.3-001</p>
+<div class="meta"><span class="chip chip-key">B2.3 Programming constructs (sequence, selection, iteration, nested loops, loop conditions and termination, tracing the execution of a loop)</span><span class="chip">P2 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">python</span><span class="chip">Explain</span><span class="chip">Construct</span><span class="chip">Evaluate</span></div>
+<div class="box"><h4>PulseTrack - steady-run detection</h4><p>PulseTrack is a wearable heart-rate monitor. It samples the wearer's heart rate once per second and stores each day's readings as a list of integers.</p>
+<p>For every reading the device reports the length of the <strong>steady run</strong> ending at that reading: the number of immediately preceding readings such that every step between consecutive readings in that run differs by no more than a tolerance of 5 beats per minute. A reading with no steady predecessor has run length 0. So for the series <code>[70, 72, 71, 90, 89, 88, 87]</code> the run lengths are <code>[0, 1, 2, 0, 1, 2, 3]</code>.</p>
+<p>A developer wrote the function below and claims it runs in linear time: "the while loop stops as soon as it reaches a reading that differs from the one before it by more than the tolerance, and in a real recording that happens after a step or two."</p>
+<p>The device records 86,400 readings per day, one per second for 24 hours, and runs the analysis each night on the day's readings. The analysis must finish within a few seconds.</p></div>
+<pre><code>def steady_runs(readings, tol=5):
+    runs = []
+    for i in range(len(readings)):
+        count = 0
+        j = i
+        while j &gt; 0 and abs(readings[j] - readings[j - 1]) &lt;= tol:
+            count += 1
+            j -= 1
+        runs.append(count)
+    return runs</code></pre>
+<h2>Question</h2>
+<p>The readings are stored as a list of integers, one per second. The nightly analysis must finish in a few seconds on the device, and it must report the run lengths exactly.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain, by tracing the loop, what steady_runs returns for the readings [70, 72, 71, 90, 89, 88, 87] with the default tolerance of 5.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Explain why the developer's claim that the function runs in linear time is unsound. State the property of the input that the claim assumes, and describe the input pattern on which the function performs the greatest number of steps.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Construct a Python function that returns exactly the same result as steady_runs but runs in linear time. You may not import any module and you may not use the abs function. A Java version of this paper requires the same algorithm, so write the algorithm rather than a demonstration of syntax.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>A colleague proposes to fix the performance by adding a limit inside the while loop so that it stops after at most 1,000 steps. Evaluate this proposal, using your answers to parts (b) and (c).</p> <em>(Evaluate)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Tracing the loop for <code>readings = [70, 72, 71, 90, 89, 88, 87]</code> with <code>tol = 5</code>:</p>
+<p>| <code>i</code> | <code>readings[i]</code> | comparisons in the <code>while</code> | result |<br>|---|---|---|---|<br>| 0 | 70 | <code>j = 0</code>, loop does not run | 0 |<br>| 1 | 72 | $\lvert 72-70 \rvert = 2 \le 5 \rightarrow 1$ | 1 |<br>| 2 | 71 | $\lvert 71-72 \rvert = 1$, then $\lvert 71-70 \rvert = 1$ | 2 |<br>| 3 | 90 | $\lvert 90-71 \rvert = 19 &gt; 5$ | 0 |<br>| 4 | 89 | $\lvert 89-90 \rvert = 1$, then $\lvert 89-71 \rvert = 18 &gt; 5$ | 1 |<br>| 5 | 88 | $1$, then $2$, then $\lvert 88-71 \rvert = 17 &gt; 5$ | 2 |<br>| 6 | 87 | $1$, then $2$, then $3$, then $\lvert 87-71 \rvert = 16 &gt; 5$ | 3 |</p>
+<p>The function returns <code>[0, 1, 2, 0, 1, 2, 3]</code>. <strong>(M1)</strong> for tracing the loop as a walk backwards while consecutive differences stay within the tolerance, <strong>(A1)</strong> for the correct values, <strong>(A1)</strong> for the list as a whole, including the reset to <code>0</code> at index 3 and the growing run at the end.</p>
+<p><strong>(b)</strong> The claim is unsound because the number of steps the inner loop performs is not a constant — it is the length of the steady run, which is a property of the *data*, not of the code. <strong>(M1)</strong> The claim assumes that consecutive readings almost always differ by more than the tolerance, so that the loop exits after one or two steps. <strong>(A1)</strong> That assumption is false for this application: heart rate sampled once a second during steady exercise changes by far less than 5 beats per minute between consecutive samples, so long runs are the normal case and the loop walks back a long way. <strong>(A1)</strong> The greatest number of steps occurs when every consecutive difference is within tolerance — a constant series, or a slow monotonic drift. For each $i$ the loop then runs all the way back to index 0, giving $0+1+2+\dots+(n-1) = \frac{n(n-1)}{2}$ steps, which is quadratic rather than linear. <strong>(A1)</strong></p>
+<p><strong>(c)</strong></p>
+<pre><code>def steady_runs(readings, tol=5):
+    n = len(readings)
+    runs = [0] * n
+    for i in range(1, n):
+        step = readings[i] - readings[i - 1]
+        if -tol &lt;= step &lt;= tol:
+            runs[i] = runs[i - 1] + 1
+    return runs
+</code></pre>
+<p><strong>(M1)</strong> for a single pass that keeps no inner loop. <strong>(A1)</strong> for the observation that makes it work: the steady run ending at <code>i</code> is either empty or it is the run ending at <code>i - 1</code> extended by exactly one reading, so the answer for <code>i</code> can be read off the answer for <code>i - 1</code>. <strong>(A1)</strong> for <code>runs[i] = runs[i - 1] + 1</code> and <strong>(A1)</strong> for initialising every entry to <code>0</code>, which is what makes the run reset after a step larger than the tolerance. <strong>(A1)</strong> for using no library module and no <code>abs</code>, expressing the tolerance as the two-sided test <code>-tol &lt;= step &lt;= tol</code>.</p>
+<p>The work done is $n-1$ comparisons and one assignment per reading, so the time is $O(n)$ and the extra memory is $O(n)$ for the output. A Java version of this paper asks for the same algorithm; the translation is a <code>for</code> loop over the array indices and the identical recurrence, so the language is irrelevant to the reasoning.</p>
+<p><strong>(d)</strong> The proposal should be rejected, for three reasons.</p>
+<p>First, it does not change the complexity. The inner loop can still run up to 1,000 steps for every reading, so the worst case is still proportional to $1000n$; capping the loop divides the running time by a constant, and a constant factor is not a change of order. <strong>(M1)</strong> With 86,400 readings a day the uncapped worst case is $86{,}400 \times 86{,}399 / 2 = 3{,}732{,}436{,}800$ inner steps, the capped version still performs up to $86{,}400 \times 1000 = 86{,}400{,}000$, and the linear version performs 86,399. <strong>(A1)</strong></p>
+<p>Second, and more seriously, the cap makes the result *wrong* precisely where the app matters. A steady run of 1,500 readings would be reported as 1,000, and a run of 4,000 as 1,000; the error is silent, it is always an under-report, and it is concentrated on the longest runs — which are exactly the steady states the app exists to find. <strong>(A1)</strong></p>
+<p>Third, the trade is unnecessary, because part (c) already gives an exact linear algorithm. Capping the loop trades a correctness guarantee for a constant factor when a change of order was available at the same cost. <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Accept any trace, as a table or as prose. The essential marks are the mechanism (walk backwards while *each consecutive pair* is within tolerance) and the result. A candidate who compares every earlier reading against the current reading rather than against its own predecessor has misread the function and forfeits the trace marks — this is the single most common error.</p>
+<p>(b) The two discriminating marks are the unstated assumption (that consecutive readings usually differ by more than the tolerance) and the worst-case count $n(n-1)/2$. A candidate who writes "it is actually O(n squared)" without naming the assumption earns one mark only. Accept a description of the worst case as "a constant series", "a steady recording" or "a slow drift"; require the recognition that the loop runs to index 0 each time.</p>
+<p>(c) Accept any single-pass algorithm that returns the same list, including one that builds the list by appending rather than pre-allocating it. Do not award the linear mark to a candidate who keeps a nested loop, even a faster one — the question is about the order of growth. A candidate who uses <code>abs</code> despite the prohibition should be told the constraint was stated; the reasoning marks may still be awarded. A candidate who uses the <code>csv</code>-style two-pointer scan but does not derive the recurrence should be capped at two marks.</p>
+<p>(d) The evaluation must distinguish a constant-factor improvement from a change of order. A candidate who says "1,000 is small enough" has missed that the cap silently corrupts the longest runs, and that those runs are the app's output. Award the final mark only when the answer connects the cap to a correctness loss rather than to performance alone.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The question is built around a claim that is easy to believe and easy to falsify: "the inner loop breaks almost immediately, so the function is linear". The claim is not about the code at all; it is about the input. A complexity statement is a statement about *all* inputs, and one input family is enough to destroy it. The family here is a steady recording, and the irony is that steady recordings are exactly what the app is designed to detect. The algorithm is slowest on the data it exists to find.</p>
+<p>The mechanism is worth stating in general terms because it recurs everywhere. When a loop's work per iteration depends on the data, the total work is the sum of those per-iteration amounts, and the average tells you nothing about the maximum. Here the per-iteration amount is the run length; if run lengths are bounded by a small constant the total is linear, and if a single run can be as long as the input the total is quadratic. The programmer's sentence — "in a real recording that happens after a step or two" — is the unstated assumption, and it is the whole question. Students are used to reasoning about the *average* case implicitly and calling it the complexity; this item forces them to notice that they have done so.</p>
+<p>Part (c) is where the algorithmic insight has to appear. The nested loop is recomputing something that is already known: the run ending at <code>i</code> is the run ending at <code>i - 1</code>, plus one, whenever the last step is small enough. Recognising that the answer for one input can be read off the answer for the previous one — dynamic programming in its smallest form — turns the quadratic scan into a single pass. The two-line recurrence is easy to write once the observation is made, and almost impossible to reach by optimising the loop.</p>
+<p>The classic wrong turns are all present. Measuring on one typical recording and concluding "it is fast"; fixing the performance by adding a <code>break</code> or a cap, which corrupts the longest runs; assuming that <code>abs()</code> or function-call overhead is the bottleneck; and confusing the *amortised* case with the worst case. A further subtlety is worth noting for the strongest answers: the linear algorithm is correct only because the run is defined by *consecutive* differences. If the definition were "all earlier readings within the tolerance of the current reading", a running counter would be wrong, and the fix would be a different data structure. The recurrence is not a trick; it depends on the definition, and saying so is part of understanding why it works.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>A performance claim carries an unstated assumption about the input: the nested loop is fast only when consecutive readings differ by more than the tolerance, so it degenerates to quadratic behaviour on exactly the steady data the application exists to detect.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B2.3 Programming constructs (sequence, selection, iteration, nested loops, loop conditions and termination, tracing the execution of a loop)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the B2.3 bullets on iteration, nested loops and loop termination. The steady-run definition, the 5 bpm tolerance, the 1 Hz sampling rate and the 86,400-reading day were chosen together so that the recurrence in part (c) is exact and the worst case is a clean n(n-1)/2 that the student can compute.</dd></div>
+  <div><dt>Verification</dt><dd>The naive and linear functions were executed and cross-checked on the worked example and on 200 random series of up to 60 readings; both returned identical lists in every case. The worst-case step count n(n-1)/2 was confirmed by counting the inner-loop steps on constant series of length 5, 10 and 50, which took 10, 45 and 1225 steps.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MAAQB_20N_1_SL_TZ0_T_7 (similarity 0.009)</dd></div>
+  <div><dt>Nearest item here</dt><dd>CS-B2.1-001 (similarity 0.022)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

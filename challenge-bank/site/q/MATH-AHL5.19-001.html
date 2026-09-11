@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL5.19-001 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A Maclaurin expansion whose cubic term vanishes</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL5.19-001</p>
+<div class="meta"><span class="chip chip-key">AHL 5.19 (Maclaurin series to obtain expansions for composite functions), AHL 5.13 (evaluation of limits of the form 0/0)</span><span class="chip">P1 · Section B</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">State</span><span class="chip">Hence</span></div>
+
+
+<h2>Question</h2>
+<p>Let $f(x)=\mathrm{e}^{\sin x}$.</p>
+<ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>Using the Maclaurin expansions of $\mathrm{e}^{u}$ and $\sin x$, show that the Maclaurin expansion of $f$ begins $f(x)=1+x+\dfrac{x^{2}}{2}+a x^{3}-\dfrac{x^{4}}{8}+\cdots$ and state the value of $a$.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Determine the coefficient of $x^{5}$ in the Maclaurin expansion of $f$.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Hence state the values of $f'''(0)$ and $f''''(0)$, justifying briefly how the expansion gives them.</p> <em>(State)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Hence determine $\lim\limits_{x\to 0}\dfrac{\mathrm{e}^{\sin x}-1-x}{x^{2}}$.</p> <em>(Hence)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>$\sin x=x-\dfrac{x^{3}}{6}+\dfrac{x^{5}}{120}-\cdots$ and $\mathrm{e}^{u}=1+u+\dfrac{u^{2}}{2}+\dfrac{u^{3}}{6}+\dfrac{u^{4}}{24}+\cdots$ <strong>(M1)</strong></p>
+<p>With $u=\sin x$: $u^{2}=x^{2}-\dfrac{x^{4}}{3}+\cdots$, $u^{3}=x^{3}+\cdots$, $u^{4}=x^{4}+\cdots$ <strong>(M1)</strong></p>
+<p>Substituting and collecting like powers: $1+\left(x-\dfrac{x^{3}}{6}\right)+\left(\dfrac{x^{2}}{2}-\dfrac{x^{4}}{6}\right)+\dfrac{x^{3}}{6}+\dfrac{x^{4}}{24}$ <strong>(M1)</strong></p>
+<p>The $x^{3}$ terms are $-\dfrac{1}{6}+\dfrac{1}{6}=0$, and the $x^{4}$ terms are $-\dfrac{1}{6}+\dfrac{1}{24}=-\dfrac{1}{8}$, so<br>$$f(x)=1+x+\dfrac{x^{2}}{2}-\dfrac{x^{4}}{8}+\cdots$$<strong>(A1)</strong></p>
+<p>hence $a=0$. <strong>(A1)</strong></p>
+<p><strong>(b)</strong> Only three powers of $u$ contribute to $x^{5}$: the $x^{5}$ term of $u$ itself, of $u^{3}/6$, and of $u^{5}/120$. <strong>(M1)</strong></p>
+<p>$u^{3}=\left(x-\dfrac{x^{3}}{6}\right)^{3}+\cdots=x^{3}-3x^{2}\cdot\dfrac{x^{3}}{6}+\cdots=x^{3}-\dfrac{x^{5}}{2}+\cdots$, so $\dfrac{u^{3}}{6}$ contributes $-\dfrac{1}{12}$; $u^{5}=x^{5}+\cdots$ so $\dfrac{u^{5}}{120}$ contributes $+\dfrac{1}{120}$. <strong>(M1)</strong></p>
+<p>The $x^{5}$ term of $u$ is $+\dfrac{1}{120}$ and $u^{2}$, $u^{4}$ contribute nothing. <strong>(A1)</strong></p>
+<p>Coefficient $=\dfrac{1}{120}-\dfrac{1}{12}+\dfrac{1}{120}=\dfrac{2-20+2}{240}=-\dfrac{16}{240}=-\dfrac{1}{15}$ <strong>(A1)</strong></p>
+<p><strong>(c)</strong> If $f(x)=\sum \dfrac{f^{(n)}(0)}{n!}x^{n}$ then the coefficient of $x^{n}$ equals $\dfrac{f^{(n)}(0)}{n!}$. <strong>(M1)</strong></p>
+<p>The coefficient of $x^{3}$ is $0$, so $f'''(0)=3!\times 0=0$. <strong>(A1)</strong></p>
+<p>The coefficient of $x^{4}$ is $-\dfrac{1}{8}$, so $f''''(0)=24\times\left(-\dfrac{1}{8}\right)=-3$. <strong>(A1)</strong></p>
+<p><strong>(d)</strong> Writing $\mathrm{e}^{\sin x}-1-x=\dfrac{x^{2}}{2}-\dfrac{x^{4}}{8}+\cdots$ <strong>(M1)</strong> and dividing by $x^{2}$ gives $\dfrac{1}{2}-\dfrac{x^{2}}{8}+\cdots$ <strong>(A1)</strong>, so the limit is $\dfrac{1}{2}$. <strong>(A1)</strong></p>
+<p>The vanishing cubic term is what makes the limit finite and non-zero: had $a\neq 0$ the quotient would still have a term in $x$ and would diverge.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>Award <strong>(M1)</strong> for each of the two series substitutions and once more for collecting terms; an answer that differentiates $f$ three or four times to reach the same coefficients is fully acceptable and should be credited with <strong>(M1)(M1)(M1)</strong> for the differentiation chain, provided the product and chain rules are handled. Condonation: a candidate who writes $u^{2}=x^{2}-x^{4}/3$ without justification keeps the <strong>(M1)</strong>; the term in $x^{6}$ is not required. In (b), follow-through applies: a candidate with the wrong $u^{3}$ still earns the final <strong>(A1)</strong> for a consistent sum of three contributions. The most common error is omitting the $u^{5}/120$ contribution, which alone gives $-1/12+1/120=-9/120$; this loses the last <strong>(A1)</strong> but keeps both <strong>(M1)</strong>. In (c) do not accept a bare 'because the coefficient is zero' without the $n!$ relationship. In (d), accepting $1/2$ with no working after part (a) earns the <strong>(A1)</strong> only. Two further condonations. A candidate who states $a=0$ in (a) and then uses $f'''(0)=0$ in (c) without recomputing the coefficient has still demonstrated the required link, so the <strong>(R1)</strong> is earned; the <strong>(A1)</strong> in (c) depends only on reading the two coefficients off the series correctly. And in (d) a candidate who reaches $1/2$ by substituting the truncated series rather than by L'Hôpital should be credited equally, since the expansion is the intended route.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The lever is that the expansion of a composite function is not obtained by differentiating the composite, but by substituting one series into another and multiplying series together. Students who try to differentiate $\mathrm{e}^{\sin x}$ four times meet the product rule applied to a growing product of trigonometric factors, and the work collapses. The composition route makes the essential difficulty visible instead: every power of $u$ is itself a series, so each coefficient of the final expansion receives contributions from several different powers of $u$, and the account has to be kept accurately.</p>
+<p>The cancellation at $x^{3}$ is the reason the question is built around $\sin x$ rather than $x$. The $-x^{3}/6$ inside $u$ is exactly cancelled by the $x^{3}/6$ that arrives from $u^{3}/6$, and a student who keeps only the leading term of $u$ — writing $u\approx x$ and stopping — will report an $x^{3}$ coefficient of zero for the wrong reason, then get the $x^{5}$ coefficient wrong as well. The classic wrong turn is to treat $\mathrm{e}^{\sin x}$ as $\mathrm{e}^{x}$, giving $1+x+x^{2}/2+x^{3}/6$, which is the familiar expansion and is wrong here.</p>
+<p>The question also tests whether the relationship between a Maclaurin coefficient and the value of a derivative is understood as a two-way street. Part (c) is trivial once that relationship is clear and impossible otherwise. Part (d) is the payoff: a limit that would need three applications of l'Hopital's rule, and that a student cannot evaluate from the derived derivatives without more differentiation, collapses in two lines once the expansion is known.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The expansion has to be built by composing two series rather than by differentiating, and the cubic coefficient cancels only if every contribution to it is tracked correctly; the last part then demands the same bookkeeping one order higher, where contributions arrive from three separate powers of u = sin x.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 5.19 (Maclaurin series to obtain expansions for composite functions), AHL 5.13 (evaluation of limits of the form 0/0)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>The device of a composite Maclaurin expansion with a cancelling term is standard in the STEP/Further Mathematics tradition rather than in IB papers, which usually ask only for the expansion of a single standard function. The choice of f(x) = e^(sin x), the vanishing cubic term, the derivative-recovery part and the final limit are all constructed here; the arithmetic was checked with an exact rational power-series computation.</dd></div>
+  <div><dt>Verification</dt><dd>The expansion was recomputed exactly with rational-arithmetic power-series composition: coefficients of x^0..x^7 are 1, 1, 1/2, 0, -1/8, -1/15, -1/240, 1/90. Derivatives follow as n! times coefficient: f&#x27;&#x27;&#x27;(0)=0, f&#x27;&#x27;&#x27;&#x27;(0)=-3.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P1_2011May_TZ1_q13 (similarity 0.011)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL4.14-001 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A card game whose expected value hides in a parameter</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL4.14-001</p>
+<div class="meta"><span class="chip chip-key">AHL 4.14 (variance of a discrete random variable; E(X^2) - (E(X))^2), SL 4.7 (concept of discrete random variables and their probability distributions)</span><span class="chip">P2 · Section A</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: permitted</span><span class="chip">Show that</span><span class="chip">Find</span><span class="chip">Determine</span></div>
+
+
+<h2>Question</h2>
+<p>A bag contains five cards numbered $1,\ 2,\ 3,\ 4$ and $k$, where $k$ is an integer greater than $4$. Two cards are drawn at random without replacement, and $S$ denotes the sum of the numbers on the two cards.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>The two cards are drawn at random and the sum is recorded. Show that the expected value of this sum is $\mathrm{E}(S)=4+\dfrac{2k}{5}$.</p> <em>(Show that)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>Find the least value of $k$ for which the expected value of $S$ exceeds $10$.</p> <em>(Find)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>For the case $k=10$, calculate the variance of the sum $S$, showing the values of $\mathrm{E}(S)$ and $\mathrm{E}(S^{2})$ that you use.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>For $k=10$ a player pays $9$ (in the currency units of the game) to play and receives the value of $S$. Determine whether the game favours the player, and find the probability that the player makes a profit.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> There are $\dbinom{5}{2}=10$ equally likely pairs, so each has probability $0.1$. <strong>(M1)</strong></p>
+<p>The six pairs that avoid $k$ give sums $1+2=3$, $1+3=4$, $1+4=5$, $2+3=5$, $2+4=6$, $3+4=7$, whose total is $30$. <strong>(M1)</strong></p>
+<p>The four pairs containing $k$ give $(1+k)+(2+k)+(3+k)+(4+k)=10+4k$. <strong>(A1)</strong></p>
+<p>So $\displaystyle\sum S=30+10+4k=40+4k$ and $\mathrm{E}(S)=\dfrac{40+4k}{10}=4+\dfrac{2k}{5}$. <strong>(AG)</strong></p>
+<p><strong>Check, by linearity of expectation.</strong> Each of the five values appears in $4$ of the $10$ pairs, so the two drawn cards have the same marginal distribution; its mean is $\dfrac{1+2+3+4+k}{5}=\dfrac{10+k}{5}$. Hence</p>
+<p>$$\mathrm{E}(S)=2\times\frac{10+k}{5}=4+\frac{2k}{5}\quad\checkmark$$</p>
+<p><strong>(b)</strong> $4+\dfrac{2k}{5}&gt;10\Rightarrow \dfrac{2k}{5}&gt;6\Rightarrow k&gt;15$. <strong>(M1)(A1)</strong> As $k$ is an integer, the least such value is $k=16$. <strong>(A1)</strong></p>
+<p><strong>(c)</strong> With $k=10$ the ten sums are $3,\ 4,\ 5,\ 11,\ 5,\ 6,\ 12,\ 7,\ 13,\ 14$, so $\mathrm{E}(S)=\dfrac{80}{10}=8$. <strong>(M1)</strong></p>
+<p>$\displaystyle\mathrm{E}(S^{2})=\dfrac{9+16+25+121+25+36+144+49+169+196}{10}=\dfrac{790}{10}=79$. <strong>(M1)(A1)</strong></p>
+<p>$\mathrm{Var}(S)=\mathrm{E}(S^{2})-\left[\mathrm{E}(S)\right]^{2}=79-64=15$. <strong>(M1)(A1)</strong></p>
+<p><strong>(d)</strong> $\mathrm{E}(S)=8&lt;9$, so the player pays more on average than they receive and the game favours the organiser. <strong>(A1)</strong> The organiser's expected margin is $9-8=1$ unit per game, and over many plays the player's losses converge to that figure.</p>
+<p>The expectation is therefore below the stake, and the arithmetic has not yet said anything about how often a player wins.</p>
+<p>A profit requires $S&gt;9$, that is $S\in\{11,12,13,14\}$, which occurs in $4$ of the $10$ equally likely outcomes. <strong>(M1)</strong> So $\mathrm{P}(\text{profit})=0.4$. <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>Part (a): the <strong>(AG)</strong> requires the total to be exhibited, not merely asserted. A candidate who lists the distribution correctly earns both <strong>(M1)</strong> marks even if the algebra afterwards slips; do not condone an answer that treats the draw as ordered and then divides by 20 as well. Part (b): accept $k=15$ only if the candidate explicitly notes that the strict inequality excludes it — otherwise the answer mark is lost. Part (c): accept the grouped distribution $\mathrm{P}(S=5)=0.2$, $\mathrm{P}(S=3)=\mathrm{P}(S=4)=\mathrm{P}(S=6)=\mathrm{P}(S=7)=0.1$, $\mathrm{P}(S=11)=\mathrm{P}(S=13)=0.1$ and so on, provided the total probability is 1. Follow-through: a candidate whose $\mathrm{E}(S)$ from part (a) is wrong but consistent still earns the two method marks and the first accuracy mark in (c). A very common error is to compute $\mathrm{E}(S^{2})$ with $\mathrm{E}(S)^{2}$ substituted — this forfeits both <strong>(M1)</strong> marks in (c). In (d) accept a correct comparison of the expectation with the stake in either direction; the probability mark is independent of the judgement.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>There is no distribution to look up. The random variable comes from a physical process, so the first task is combinatorial: ten equally likely pairs, four of which contain $k$ and six of which do not. The parameter then behaves in a way that rewards a student who keeps it symbolic rather than substituting early, because the pairs not containing $k$ contribute a constant $30$ and only the pair sums involving $k$ change.</p>
+<p>Part (b) tests a small but real distinction: the inequality is strict, and since $k$ is an integer the answer is $16$ rather than $15$. This is the kind of boundary case in which a technically correct piece of algebra produces the wrong answer if the domain of $k$ is forgotten.</p>
+<p>Part (c) is where most of the marks sit, and it is deliberately unglamorous. The distribution of $S$ is not uniform — the value $5$ occurs twice — and $\mathrm{E}(S^{2})$ must be formed from the ten ungrouped values or from a carefully grouped table. Students who reach for the binomial variance formula or who assume $\mathrm{Var}(S)=\mathrm{Var}(X_{1})+\mathrm{Var}(X_{2})$ for the two drawn cards get a wrong answer, because the draws are without replacement and therefore not independent. That is the classic wrong turn and the most useful thing in the question: it separates students who understand what variance of a sum requires from students who have memorised a formula.</p>
+<p>The final part makes a point that matters beyond the examination. An expected value below the stake tells you the game is unfavourable on average, but it says nothing about how often a player wins: here a player profits 40% of the time and still loses money overall. That gap between a favourable expectation and a likely outcome is exactly the gap that makes gambling attractive, and a question that stops at '$8&lt;9$, do not play' has missed half of it.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The distribution is never written down: it must be constructed from ten equally likely draws, and the parameter then has to be carried through the expectation before the variance can be evaluated at a specific value. The final part inverts the problem, asking what the expectation being below the stake does and does not tell you about the chance of profit.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 4.14 (variance of a discrete random variable; E(X^2) - (E(X))^2), SL 4.7 (concept of discrete random variables and their probability distributions)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Expected-value games are common in IB statistics, but they almost always supply the probability distribution as a table. Here the distribution must be built from a without-replacement draw, the expectation is required in terms of a parameter, and the final part is inverted to separate the mean from the probability of profit. The card set, the parameter k, the value k = 10 and the profit probability are original; every figure was recomputed in exact rational arithmetic.</dd></div>
+  <div><dt>Verification</dt><dd>All ten pair sums were enumerated exactly. E(S) = (40 + 4k)/10 was checked symbolically and at k = 10, giving 8. E(S^2) = 790/10 = 79 and Var(S) = 79 - 64 = 15, sd = 3.8730. P(S &gt; 9) = 4/10.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2013May_TZ1_q09 (similarity 0.011)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL1.16-001 (similarity 0.008)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

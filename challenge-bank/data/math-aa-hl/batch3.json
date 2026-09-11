@@ -1,0 +1,373 @@
+{
+  "questions": [
+    {
+      "id": "MATH-AHL1.10-001",
+      "title": "A counting formula that fails on the regular hexagon",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.10 (counting principles, including permutations and combinations)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "1.10 Counting principles, permutations and combinations",
+      "paper": "P2",
+      "section": "B",
+      "technology": "required",
+      "language": null,
+      "marks": 16,
+      "difficulty": 5,
+      "challenge_mechanism": "A general-position formula is proved and used, but the final part breaks its own hypothesis: in a regular hexagon three chords are concurrent at the centre, and the student must locate the coincident intersections and correct the count by exactly the right amount rather than by a guess.",
+      "command_terms": [
+        "Show that",
+        "Determine",
+        "Explain",
+        "Hence"
+      ],
+      "tags": [
+        "counting",
+        "combinations",
+        "chords",
+        "degenerate case",
+        "Paper 2"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "$n$ points are placed on a circle and every pair of points is joined by a straight chord. Throughout, assume first that the points are in general position, meaning that no three of the chords are concurrent at a point strictly inside the circle.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that, for $n\\geq4$ points in general position, the number of intersection points of the chords that lie strictly inside the circle is $\\dbinom{n}{4}$."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Hence determine the least value of $n$ for which the number of interior intersection points exceeds $1000$."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Now suppose the six points are the vertices of a regular hexagon. Explain why $\\dbinom{6}{4}=15$ is not the number of distinct interior intersection points, identifying precisely which intersections coincide."
+        },
+        {
+          "label": "d",
+          "marks": 5,
+          "command_term": "Hence",
+          "text": "Hence determine the number of distinct interior intersection points for the regular hexagon, justifying why no further coincidences occur."
+        }
+      ],
+      "answer": "**(a)** Take any set of four of the points. The four points form a cyclic quadrilateral, and the two diagonals of that quadrilateral are chords which cross at a point strictly inside the circle. **(M1)** So each $4$-element subset of the points produces at least one interior intersection point.\n\nConversely, take any interior intersection point. It is the meeting of two chords, and those two chords have four distinct endpoints among the given points, so they determine a unique $4$-element subset. **(M1)** Within that subset the two crossing chords must be the diagonals rather than the sides, so the intersection produced by the subset is exactly the one we started with.\n\nThe correspondence between $4$-element subsets and interior intersection points is therefore a bijection. **(A1)** Hence the number of interior intersection points equals the number of ways of choosing four points from $n$, namely $\\dbinom{n}{4}$. **(A1)** *(AG)*\n\n**(b)** We need the least integer $n$ with $\\dbinom{n}{4}>1000$. **(M1)** Now $\\dbinom{13}{4}=715$ and $\\dbinom{14}{4}=1001$. **(A1)** Since $\\dbinom{n}{4}$ increases with $n$ for $n\\geq4$, the least such value is $n=14$. **(A1)**\n\n**(c)** Label the vertices $V_0,V_1,\\dots,V_5$ in order. The three chords $V_0V_3$, $V_1V_4$ and $V_2V_5$ join opposite vertices, so each is a diameter of the circumcircle and all three pass through the centre $O$. **(M1)** The general-position formula counts each *pair* of crossing chords separately: these three chords contribute the three crossing pairs $(V_0V_3,V_1V_4)$, $(V_0V_3,V_2V_5)$ and $(V_1V_4,V_2V_5)$ to $\\dbinom{6}{4}$. **(A1)** But all three pairs meet at the single point $O$, so the formula counts $O$ three times when it should count it once, an overcount of $2$. **(A1)** Checking the remaining crossing pairs shows that no two of them meet at the same interior point, so this is the only coincidence. **(A1)**\n\n**(d)** Start from the $\\dbinom{6}{4}=15$ crossing pairs. The three crossing pairs of diameters do not give three points but one, so replacing those three points by the single point $O$ reduces the total by $3-1=2$. **(M1)(A1)** Therefore the number of distinct interior intersection points is $15-2=13$, that is $15-3+1=13$. **(M1)(A1)(A1)** The twelve remaining crossing pairs each give a distinct point, and none of them lies at $O$, so the correction is complete.",
+      "markscheme_notes": "(a) The whole part is the bijection. Award **(M1)** for the forward direction (four points give a crossing) and **(M1)** for the reverse (a crossing gives four endpoints); the two **(A1)** marks are for stating that the correspondence is one-to-one and concluding $\\dbinom{n}{4}$. A candidate who writes $\\dbinom{\\binom{n}{2}}{2}$ has counted pairs of chords that share an endpoint and pairs that meet outside the circle; that earns nothing in (a). An argument phrased as 'each interior intersection needs four points and any four points give one intersection' should be fully credited even if the word bijection is absent.\n\n(b) The **(M1)** is for setting up $\\dbinom{n}{4}>1000$. A candidate who finds $n=14$ by trial but does not exhibit $\\dbinom{13}{4}=715$ and $\\dbinom{14}{4}=1001$ forfeits one **(A1)**. Follow-through is allowed if the formula from (a) is wrong: credit the method of solving their inequality.\n\n(c) The essential marks are (i) naming the three diameters and (ii) explaining that the formula counts crossing *pairs*, not distinct points. A candidate who says only 'some chords meet at the centre' without identifying the three chords loses one **(A1)**. The final **(A1)** requires the statement that no other coincidence occurs; inspection, symmetry or computation are all acceptable.\n\n(d) Award **(M1)** for the correction strategy and **(A1)** for the reduction of $2$; the remaining marks are for the arithmetic $15-3+1=13$. Follow-through from (c) is allowed. The answer $12$, obtained by subtracting $3$ instead of $2$, is the commonest error and loses only the final **(A1)**.",
+      "explanation": "Two ideas are tested here, and they pull in opposite directions. The first is that counting can be done by finding the right bijection rather than by counting objects directly: instead of counting intersections, count the $4$-element subsets that produce them. The second is that a formula proved under a general-position hypothesis can fail the moment the hypothesis is dropped, and the failure has to be quantified rather than guessed.\n\nThe general-position hypothesis, that no three chords are concurrent, is exactly what makes the bijection exact. It is easy to forget that the hypothesis is doing work. Most candidates use it in part (a) without noticing, then apply $\\dbinom{6}{4}$ to the regular hexagon in part (c) as though nothing had changed. That is the trap.\n\nWhy the regular hexagon rather than, say, a pentagon? Because the hexagon is the smallest regular polygon in which three diagonals are concurrent at an interior point. For $n=4$ and $n=5$ there is no such concurrence and the formula is exact, and the heptagon and nonagon also happen to have no interior triple points. The hexagon is therefore the first genuine counterexample, and it is small enough to draw and check by hand.\n\nThe correction is a small inclusion-exclusion. Three crossing pairs collapse onto one point, so three points become one and the count drops by two. The answer is $15-3+1=13$, not $15-3=12$: the difference is whether the surviving centre point is counted at all. Candidates who write $12$ have removed the centre entirely.\n\nThe classic wrong turns are: counting all $\\dbinom{\\binom{n}{2}}{2}$ pairs of chords, which includes chords sharing an endpoint and chords meeting outside the circle; assuming the hexagon has the same count as the general-position case; and subtracting three rather than two. A useful check is that the hexagon must have fewer than $15$ distinct interior points but more than $10$, since the only collapse is at the centre.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Built from the AHL 1.10 bullet on counting principles. The design proves the general-position bijection $\\binom{n}{4}$, then deliberately breaks its own hypothesis with a regular hexagon in which three diameters are concurrent at the centre; the student must locate the coincidence and correct the count. The chord-intersection context, the hexagon degeneracy and the correction are constructed here, and the hexagon count was verified by exact coordinate computation.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.019,
+        "nearest_bank_id": "MATH_AAHL_P2_2018May_TZ2_q05",
+        "max_internal_similarity": 0.0,
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": null
+      },
+      "verification": {
+        "method": "Exact computation: the general-position bijection is the standard $\\binom{n}{4}$ argument; the regular hexagon was checked by intersecting all $\\binom{15}{2}$ pairs of chords at exact vertex coordinates, giving 15 crossing pairs and 13 distinct points, with the centre carrying multiplicity 3.",
+        "assertions": [
+          "approx(14*13*12*11/24, 1001)",
+          "approx(13*12*11*10/24, 715)",
+          "715 <= 1000 and 1000 < 1001",
+          "approx(15 - 3 + 1, 13)",
+          "approx(15 - 2, 13)",
+          "13 < 15 and 13 > 10"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-AHL1.11-001",
+      "title": "Partial fractions that do not telescope in the obvious form",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.11 (partial fractions)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "1.11 Partial fractions",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 14,
+      "difficulty": 4,
+      "challenge_mechanism": "The natural partial-fraction decomposition of the term into three linear pieces is not the decomposition that telescopes, so the student must construct a different one, a difference of two consecutive blocks, before the sum collapses, and then repeat the construction one order higher.",
+      "command_terms": [
+        "Show that",
+        "Hence",
+        "Write down",
+        "Determine"
+      ],
+      "tags": [
+        "partial fractions",
+        "telescoping series",
+        "series",
+        "Paper 1"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "For each integer $n\\geq1$, let $u_n=\\dfrac{1}{n(n+1)(n+2)}$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $u_n$ can be written in the form $\\dfrac{A}{n}+\\dfrac{B}{n+1}+\\dfrac{C}{n+2}$ and state the values of $A$, $B$ and $C$."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Hence show that $\\displaystyle\\sum_{n=1}^{N}u_n=\\dfrac14-\\dfrac{1}{2(N+1)(N+2)}$ for every positive integer $N$."
+        },
+        {
+          "label": "c",
+          "marks": 2,
+          "command_term": "Write down",
+          "text": "Hence write down the value of the infinite sum $\\displaystyle\\sum_{n=1}^{\\infty}u_n$."
+        },
+        {
+          "label": "d",
+          "marks": 5,
+          "command_term": "Determine",
+          "text": "Hence determine the value of $\\displaystyle\\sum_{n=1}^{\\infty}\\dfrac{1}{n(n+1)(n+2)(n+3)}$."
+        }
+      ],
+      "answer": "**(a)** Write $\\dfrac{1}{n(n+1)(n+2)}=\\dfrac{A}{n}+\\dfrac{B}{n+1}+\\dfrac{C}{n+2}$. Multiplying through by $n(n+1)(n+2)$ gives\n\n$$1=A(n+1)(n+2)+Bn(n+2)+Cn(n+1).$$ **(M1)**\n\nSetting $n=0$: $1=2A$, so $A=\\tfrac12$. Setting $n=-1$: $1=(-1)(1)B$, so $B=-1$. Setting $n=-2$: $1=(-2)(-1)C$, so $C=\\tfrac12$. **(A1)(A1)**\n\nHence $u_n=\\dfrac{1}{2n}-\\dfrac{1}{n+1}+\\dfrac{1}{2(n+2)}$. **(A1)** *(AG)*\n\n**(b)** The three-term form does not telescope cleanly, so regroup it. Note that\n\n$$\\frac{1}{n(n+1)}-\\frac{1}{(n+1)(n+2)}=\\frac{(n+2)-n}{n(n+1)(n+2)}=\\frac{2}{n(n+1)(n+2)}.$$ **(M1)**\n\nTherefore\n\n$$u_n=\\frac12\\left(\\frac{1}{n(n+1)}-\\frac{1}{(n+1)(n+2)}\\right),$$ **(A1)**\n\na difference of two consecutive values of $w_n=\\dfrac{1}{n(n+1)}$. Summing,\n\n$$\\sum_{n=1}^{N}u_n=\\frac12\\sum_{n=1}^{N}\\left(w_n-w_{n+1}\\right)=\\frac12\\left(w_1-w_{N+1}\\right)$$ **(M1)**\n\n$$=\\frac12\\left(\\frac{1}{1\\cdot2}-\\frac{1}{(N+1)(N+2)}\\right)=\\frac14-\\frac{1}{2(N+1)(N+2)}.$$ **(A1)** *(AG)*\n\n**(c)** As $N\\to\\infty$ the fraction $\\dfrac{1}{2(N+1)(N+2)}$ tends to $0$, so the tail disappears. **(A1)** Hence $\\displaystyle\\sum_{n=1}^{\\infty}u_n=\\frac14$. **(A1)**\n\n**(d)** Let $v_n=\\dfrac{1}{n(n+1)(n+2)(n+3)}$. Use the same device one order higher, taking the difference of two consecutive blocks of three factors:\n\n$$\\frac{1}{n(n+1)(n+2)}-\\frac{1}{(n+1)(n+2)(n+3)}=\\frac{(n+3)-n}{n(n+1)(n+2)(n+3)}=\\frac{3}{n(n+1)(n+2)(n+3)}.$$ **(M1)**\n\nHence $v_n=\\dfrac13\\left(\\dfrac{1}{n(n+1)(n+2)}-\\dfrac{1}{(n+1)(n+2)(n+3)}\\right)$. **(A1)** Summing from $n=1$ to $N$ telescopes to\n\n$$\\sum_{n=1}^{N}v_n=\\frac13\\left(\\frac{1}{1\\cdot2\\cdot3}-\\frac{1}{(N+1)(N+2)(N+3)}\\right).$$ **(M1)**\n\nAs $N\\to\\infty$ the second term vanishes, so $\\displaystyle\\sum_{n=1}^{\\infty}v_n=\\frac13\\cdot\\frac16=\\frac{1}{18}$. **(A1)(A1)**",
+      "markscheme_notes": "(a) The cover-up (substitution) method is intended, but credit any correct route, including solving the resulting $3\\times3$ system. The *(AG)* requires the three coefficients to be exhibited and the identity stated; a candidate who gives $A=\\tfrac12$, $B=-1$, $C=\\tfrac12$ without restating the identity still earns the accuracy marks.\n\n(b) This is where the marks are won or lost. The three-term form from (a) does telescope, but only with careful bookkeeping of the $\\tfrac12$ coefficients; a candidate who telescopes it directly and correctly should receive full credit. The cleaner route is the regrouping displayed above, in which $u_n$ is the difference of two consecutive values of $w_n=\\frac{1}{n(n+1)}$. Award **(M1)** for the regrouping, **(A1)** for the constant $\\tfrac12$, **(M1)** for recognising the telescoping, and **(A1)** for the closed form. Condone $N\\geq1$ written as $N>0$.\n\n(c) The two **(A1)** marks are for taking the limit and for the value $\\frac14$. A candidate who substitutes $N=\\infty$ without comment keeps both marks.\n\n(d) The same construction one order higher: the difference of two consecutive *triple* blocks has numerator $3$, giving the factor $\\tfrac13$. Follow-through applies from (b): a candidate whose method is structurally correct but whose constant is wrong keeps the two method marks. The common errors are using $\\tfrac12$ instead of $\\tfrac13$, and telescoping over the wrong block, which leaves the wrong first term. The final answer $\\frac{1}{18}$ follows from $\\tfrac13\\cdot\\tfrac16$.",
+      "explanation": "The question looks like a routine partial-fractions exercise, and part (a) is exactly that. The difficulty begins in part (b), and it is a difficulty of structure rather than of algebra.\n\nThe three-term decomposition produced in (a) is correct, but it is not the form in which the sum collapses. Summing $\\frac{1}{2n}-\\frac{1}{n+1}+\\frac{1}{2(n+2)}$ from $n=1$ to $N$ does telescope, but three interleaved sequences have to be tracked and the boundary terms are easy to mis-assign. The intended observation is that the product $n(n+1)(n+2)$ can be split as a difference of two consecutive blocks, $\\frac{1}{n(n+1)}-\\frac{1}{(n+1)(n+2)}$. This is one quantity evaluated at $n$ and at $n+1$, so the sum over $n$ collapses at once to first term minus last term.\n\nThis is the lever. The student must construct a decomposition that part (a) did not ask for, and must recognise that a partial-fraction decomposition and a telescoping decomposition are not the same thing. Many candidates never make this distinction and grind through the three-term sum, usually losing a boundary term.\n\nPart (d) tests whether the construction was understood or merely memorised. The four-factor denominator needs the same idea one order up: the difference of two consecutive blocks of three factors has numerator $3$, so the constant is $\\tfrac13$, and the surviving first term is $\\frac{1}{1\\cdot2\\cdot3}=\\frac16$. A candidate who has memorised the answer $\\frac14$ will reach for a similar-looking fraction and produce nonsense.\n\nThe classic wrong turns are: treating the three-term form as already telescoping and dropping the $n+2$ tail; forgetting that the first term is the only survivor as $N\\to\\infty$; and, in (d), reusing the constant $\\tfrac12$ from part (b). A useful check is the general identity $\\sum_{n\\geq1}\\frac{1}{n(n+1)\\cdots(n+k)}=\\frac{1}{k\\cdot k!}$; for $k=2$ it gives $\\frac14$ and for $k=3$ it gives $\\frac{1}{18}$, both confirmed by the parts above.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Built from the AHL 1.11 bullet on partial fractions. Rather than stopping at the decomposition, the design makes the decomposition a tool: the three-term form is deliberately not the telescoping form, so the student must construct a difference of consecutive blocks and then repeat the construction one order higher for a four-factor denominator. The sequence, the regrouping and the final sum are original, and all values were checked in exact rational arithmetic.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.022,
+        "nearest_bank_id": "MAAQB_21N_1_SL_TZ0_1",
+        "max_internal_similarity": 0.005,
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "nearest_internal_id": "MATH-AHL1.14-001"
+      },
+      "verification": {
+        "method": "Exact rational arithmetic: the decomposition was verified at $n=1,2,3,5$; the closed form $\\frac14-\\frac{1}{2(N+1)(N+2)}$ was checked against direct summation for $N=1,2,3,5,10$; and the four-factor telescoping identity was checked at $n=1,3,7$, giving the limit $\\frac{1}{18}$.",
+        "assertions": [
+          "approx(1/4 - 1/(2*2*3), 1/6)",
+          "approx(1/4 - 1/(2*6*7), 5/21)",
+          "approx(1/3 * (1/6), 1/18)",
+          "approx(1/18, 0.0555555556, 1e-6)",
+          "approx(1/4, 0.25)"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-AHL1.12-001",
+      "title": "Which powers n make z^n = conj(z) reachable at real part one half",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.12 (complex numbers: the number i, where i^2 = -1), AHL 1.13 (modulus-argument form and Euler form)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "1.12 Complex numbers; 1.13 Modulus-argument form",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 16,
+      "difficulty": 5,
+      "challenge_mechanism": "A single equation is first solved by real and imaginary parts, then understood structurally as a statement about roots of unity, and the final part inverts the problem: the student must find which n admit a solution with a prescribed real part, and the answer is an arithmetic progression rather than a single value.",
+      "command_terms": [
+        "Solve",
+        "Show that",
+        "Hence",
+        "Determine"
+      ],
+      "tags": [
+        "complex numbers",
+        "conjugate",
+        "roots of unity",
+        "modulus-argument form",
+        "Paper 1"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "Let $z$ be a complex number and let $\\bar z$ denote its complex conjugate.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Solve",
+          "text": "By writing $z=a+bi$, where $a,b\\in\\mathbb{R}$, solve the equation $z^{2}=\\bar z$, giving every solution in the form $a+bi$."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that every non-zero solution of $z^{2}=\\bar z$ satisfies $|z|=1$, and deduce that every non-zero solution is a cube root of unity."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Hence",
+          "text": "Hence, using modulus-argument form, solve the equation $z^{n}=\\bar z$ for a general integer $n\\geq1$, and state how many solutions it has."
+        },
+        {
+          "label": "d",
+          "marks": 5,
+          "command_term": "Determine",
+          "text": "Determine the smallest positive integer $n$ for which $z^{n}=\\bar z$ has a solution whose real part is exactly $\\dfrac12$, and describe all such integers $n$."
+        }
+      ],
+      "answer": "**(a)** Put $z=a+bi$ with $a,b\\in\\mathbb{R}$. Then $z^{2}=(a^{2}-b^{2})+2abi$ and $\\bar z=a-bi$. **(M1)** Equating real and imaginary parts,\n\n$$a^{2}-b^{2}=a,\\qquad 2ab=-b.$$ **(A1)**\n\nThe second equation gives $b(2a+1)=0$, so either $b=0$ or $a=-\\tfrac12$.\n\nIf $b=0$, then $a^{2}=a$, so $a=0$ or $a=1$, giving $z=0$ and $z=1$. **(A1)**\n\nIf $a=-\\tfrac12$, then $a^{2}-b^{2}=a$ gives $\\tfrac14-b^{2}=-\\tfrac12$, so $b^{2}=\\tfrac34$ and $b=\\pm\\tfrac{\\sqrt3}{2}$, giving $z=-\\tfrac12\\pm\\tfrac{\\sqrt3}{2}i$. **(A1)**\n\nThe solutions are $z=0$, $z=1$, $z=-\\tfrac12+\\tfrac{\\sqrt3}{2}i$ and $z=-\\tfrac12-\\tfrac{\\sqrt3}{2}i$.\n\n**(b)** Let $z\\neq0$ satisfy $z^{2}=\\bar z$. Taking moduli, $|z^{2}|=|\\bar z|$, so $|z|^{2}=|z|$. Since $|z|\\neq0$ we may divide, giving $|z|=1$. **(M1)(A1)** Then\n\n$$z^{3}=z\\cdot z^{2}=z\\bar z=|z|^{2}=1.$$ **(A1)**\n\nSo every non-zero solution satisfies $z^{3}=1$, that is, is a cube root of unity. Indeed the three non-zero solutions found in (a) are $1$, $e^{2\\pi i/3}$ and $e^{4\\pi i/3}$.\n\n**(c)** Write $z=re^{i\\theta}$ with $r\\geq0$. Then $z^{n}=r^{n}e^{in\\theta}$ and $\\bar z=re^{-i\\theta}$. **(M1)** Equating moduli gives $r^{n}=r$, so $r=0$ or $r=1$. **(A1)**\n\nIf $r=0$ then $z=0$, which satisfies the equation. If $r=1$ then $e^{in\\theta}=e^{-i\\theta}$, so $e^{i(n+1)\\theta}=1$, giving $\\theta=\\dfrac{2\\pi k}{n+1}$ for $k=0,1,\\dots,n$. **(A1)** Hence the non-zero solutions are the $n+1$ roots of $z^{n+1}=1$, and together with $z=0$ the equation has $n+2$ solutions. **(A1)**\n\n**(d)** A solution with real part $\\tfrac12$ cannot be $z=0$, so by the argument in (b) it has $|z|=1$. **(M1)** Writing $z=e^{i\\theta}$ with $\\cos\\theta=\\tfrac12$ gives $\\theta=\\pm\\tfrac{\\pi}{3}+2\\pi m$, so $z=e^{\\pm i\\pi/3}$, a primitive sixth root of unity. **(A1)**\n\nFrom (c), the solutions of $z^{n}=\\bar z$ are $0$ together with the $(n+1)$th roots of unity. So $e^{i\\pi/3}$ is a solution exactly when it is an $(n+1)$th root of unity, that is when $\\left(e^{i\\pi/3}\\right)^{n+1}=1$, which is $e^{i\\pi(n+1)/3}=1$, so $\\dfrac{n+1}{3}$ must be an even integer. **(M1)**\n\nHence $n+1$ is a multiple of $6$, that is $n\\equiv5\\pmod6$. **(A1)** The smallest such integer is $n=5$; indeed $z=e^{i\\pi/3}$ satisfies $z^{5}=e^{i5\\pi/3}=e^{-i\\pi/3}=\\bar z$. All integers $n=5,11,17,23,\\dots$ work. **(A1)**",
+      "markscheme_notes": "(a) Equating real and imaginary parts must be explicit for the first **(M1)**. The case split $b=0$ or $a=-\\tfrac12$ is essential: a candidate who divides the imaginary equation by $b$ without considering $b=0$ loses the solutions $z=0$ and $z=1$ and forfeits the corresponding **(A1)**. Accept the solutions in any order.\n\n(b) The modulus argument requires dividing by $|z|$, justified by $z\\neq0$; a candidate who writes $|z|^{2}=|z|$ and concludes $|z|=1$ without noting $|z|\\neq0$ loses the second **(A1)**. The deduction $z^{3}=1$ must use $z\\bar z=|z|^{2}$; a candidate who multiplies $z^{2}=\\bar z$ by $z$ and writes $z^{3}=1$ directly has skipped the key step and should be asked to justify it.\n\n(c) Award **(M1)** for the polar substitution, **(A1)** for $r=0$ or $r=1$, **(A1)** for the arguments, and **(A1)** for the count. Accept 'the $(n+1)$th roots of unity together with zero'. A candidate who forgets $z=0$ loses the final **(A1)**.\n\n(d) The critical step is realising that a non-zero solution has modulus $1$, so $\\mathrm{Re}(z)=\\tfrac12$ forces $z=e^{\\pm i\\pi/3}$. Award **(M1)** for this, **(A1)** for identifying a primitive sixth root, **(M1)** for the divisibility condition, and **(A1)(A1)** for $n\\equiv5\\pmod6$ and the smallest value. Follow-through from a wrong count in (c) is allowed, but a candidate who gives only $n=5$ and misses the infinite family loses the last **(A1)**.",
+      "explanation": "Parts (a) and (b) are algebraic and accessible; the question becomes hard at (c) and (d), where the same equation has to be understood structurally rather than solved case by case.\n\nThe unifying observation is that $\\bar z=\\dfrac{|z|^{2}}{z}$ for $z\\neq0$. Substituting into $z^{n}=\\bar z$ gives $z^{n+1}=|z|^{2}$, so on taking moduli $|z|^{n+1}=|z|^{2}$, which forces $|z|=1$ (or $z=0$). Once $|z|=1$ we have $\\bar z=\\dfrac1z$, and the equation becomes $z^{n+1}=1$. The whole problem collapses to a statement about roots of unity: the solutions are $0$ together with the $(n+1)$th roots of unity. This is the insight that part (c) is designed to make unavoidable, and it explains why part (b) asks about $|z|=1$: that is the hinge.\n\nPart (d) inverts the question. Instead of solving for $z$ given $n$, it fixes a property of $z$, namely real part $\\tfrac12$, and asks which $n$ allow it. The set of solutions is a cyclic group of order $n+1$; a real part of $\\tfrac12$ means the solution is $e^{\\pm i\\pi/3}$, a primitive sixth root of unity. For this element to lie in the group of order $n+1$, the order must be divisible by $6$, giving $n\\equiv5\\pmod6$. The answer is an arithmetic progression, which is the kind of result that appears only once the group structure is visible.\n\nClassic wrong turns: dividing the imaginary equation by $b$ in (a) and losing two solutions; using polar form in (c) but forgetting $z=0$; assuming in (d) that a solution with real part $\\tfrac12$ must be found by solving one fixed equation rather than searching over $n$; and concluding that only $n=5$ works, missing the infinite family. A useful check is that $n=1$ gives $z=\\bar z$, whose solutions are all real, so none has real part $\\tfrac12$, consistent with $1\\not\\equiv5\\pmod6$.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Built from the AHL 1.12 bullet on the number $i$ and extended into AHL 1.13 on modulus-argument form. The equation $z^n=\\bar z$ is solved first by real and imaginary parts, then structurally, and the final part inverts it to ask which $n$ admit a solution of prescribed real part. The equation family, the generalisation and the arithmetic-progression answer are original, and every solution was verified numerically.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.012,
+        "nearest_bank_id": "MATH_AAHL_P2_2024_11_q08",
+        "max_internal_similarity": 0.0,
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": null
+      },
+      "verification": {
+        "method": "Numerical verification with complex arithmetic: the four solutions of $z^{2}=\\bar z$ were checked against $z^{2}-\\bar z$; the non-zero ones satisfy $z^{3}=1$ and $|z|=1$; for $n=1,\\dots,5$ the solution set $\\{0\\}\\cup\\{z^{n+1}=1\\}$ was checked to satisfy $z^{n}=\\bar z$ and has $n+2$ elements; and the values of $n$ admitting real part $\\tfrac12$ were found to be exactly $n\\equiv5\\pmod6$.",
+        "assertions": [
+          "abs((-0.5 + (sqrt(3)/2)*1j)**2 - (-0.5 + (sqrt(3)/2)*1j).conjugate()) < 1e-9",
+          "abs((0.5 + (sqrt(3)/2)*1j)**3 + 1) < 1e-9",
+          "abs((0.5 + (sqrt(3)/2)*1j)**5 - (0.5 - (sqrt(3)/2)*1j)) < 1e-9",
+          "abs((0.5 + (sqrt(3)/2)*1j)**6 - 1) < 1e-9",
+          "approx(cos(pi/3), 0.5)",
+          "5 % 6 == 5 and 11 % 6 == 5 and 17 % 6 == 5",
+          "1 % 6 != 5 and 2 % 6 != 5 and 3 % 6 != 5"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-AHL1.14-001",
+      "title": "The condition for a real cubic to have a purely imaginary root",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.14 (complex conjugate roots of quadratic and polynomial equations with real coefficients), AHL 1.12 (the number i, where i^2 = -1)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "1.14 Complex conjugate roots of polynomial equations",
+      "paper": "P2",
+      "section": "B",
+      "technology": "required",
+      "language": null,
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "The student must derive the condition r = pq for a real cubic to have a purely imaginary root, and then apply it to a family where the algebraic condition alone admits two candidate parameters but the companion inequality q > 0 rejects one of them, a degenerate case that breaks the naive claim.",
+      "command_terms": [
+        "Explain",
+        "Show that",
+        "Hence",
+        "Determine"
+      ],
+      "tags": [
+        "conjugate roots",
+        "cubic",
+        "Vieta",
+        "complex numbers",
+        "Paper 2"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "Let $P(z)=z^{3}+pz^{2}+qz+r$, where $p$, $q$ and $r$ are real numbers.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why, if $z_{0}$ is a non-real root of $P$, then $\\bar z_{0}$ is also a root of $P$, and deduce that $P$ has exactly one real root."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Suppose $P$ has a root of the form $z_{0}=ti$, where $t$ is a non-zero real number. Show that $r=pq$ and that $q>0$."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Hence",
+          "text": "Hence determine the value of $k$ for which $z^{3}-3z^{2}+kz-12$ has a root of the form $ti$ with $t\\neq0$, and find all three roots in that case."
+        },
+        {
+          "label": "d",
+          "marks": 5,
+          "command_term": "Determine",
+          "text": "Determine all real values of $m$ for which $z^{3}+mz^{2}+mz+1$ has a non-real purely imaginary root, and find all the roots of the cubic in each such case."
+        }
+      ],
+      "answer": "**(a)** Since $p$, $q$ and $r$ are real, conjugating the equation $P(z_{0})=0$ gives $\\overline{P(z_{0})}=0$. Conjugation respects sums and products with real coefficients, so $\\overline{P(z_{0})}=P(\\bar z_{0})$. **(M1)** Hence $P(\\bar z_{0})=0$, so $\\bar z_{0}$ is also a root. **(A1)**\n\nIf $z_{0}$ is non-real then $z_{0}\\neq\\bar z_{0}$, so $P$ has at least the two distinct non-real roots $z_{0}$ and $\\bar z_{0}$. A cubic has exactly three roots counted with multiplicity; if the third root were also non-real, its conjugate would be a fourth root. Hence the third root is real, so $P$ has exactly one real root. **(R1)(A1)**\n\n**(b)** Let $z_{0}=ti$ with $t\\in\\mathbb{R}$ and $t\\neq0$. Substituting,\n\n$$P(ti)=(ti)^{3}+p(ti)^{2}+q(ti)+r=-t^{3}i-pt^{2}+qti+r.$$ **(M1)**\n\nSo $P(ti)=\\left(r-pt^{2}\\right)+\\left(qt-t^{3}\\right)i=0$, and both the real and imaginary parts must vanish. **(A1)**\n\nThe imaginary part gives $t(q-t^{2})=0$; since $t\\neq0$ this forces $t^{2}=q$, and therefore $q=t^{2}>0$. **(A1)** The real part gives $r-pt^{2}=0$, so $r=pt^{2}=pq$. **(A1)** *(AG)*\n\n**(c)** Here $p=-3$, $q=k$ and $r=-12$. The condition $r=pq$ becomes $-12=-3k$, so $k=4$, and $q=k=4>0$ is satisfied. **(M1)(A1)** Then $t^{2}=q=4$, so the purely imaginary roots are $\\pm2i$. The third root is real and equals $-p=3$, since the sum of the roots of $z^{3}+pz^{2}+qz+r$ is $-p$. **(M1)** Indeed $(z-3)(z^{2}+4)=z^{3}-3z^{2}+4z-12$, so the roots are $3$, $2i$ and $-2i$. **(A1)**\n\n**(d)** For $z^{3}+mz^{2}+mz+1$ we have $p=m$, $q=m$ and $r=1$. The necessary condition $r=pq$ gives $1=m^{2}$, so $m=\\pm1$. **(M1)(A1)** But the condition from (b) also requires $q>0$, that is $m>0$, so $m=-1$ must be rejected. **(M1)**\n\nIndeed for $m=-1$ the cubic is $z^{3}-z^{2}-z+1=(z-1)^{2}(z+1)$, whose roots $1$, $1$ and $-1$ are all real, so it has no purely imaginary root. **(A1)** Hence the only admissible value is $m=1$, and then $z^{3}+z^{2}+z+1=(z+1)(z^{2}+1)$, with roots $-1$, $i$ and $-i$. **(A1)**",
+      "markscheme_notes": "(a) The **(M1)** is for the conjugation argument; the **(R1)** is for the counting argument that a cubic cannot have exactly one non-real root. A candidate who asserts 'non-real roots come in pairs' without mentioning multiplicity still earns the **(R1)**, provided the cubic is named. Do not accept 'it must have one real root because the graph crosses the axis', which assumes what is being proved.\n\n(b) The substitution must be shown with the real and imaginary parts separated; a candidate who writes down $r=pq$ with no working earns nothing. The hypothesis $t\\neq0$ is used to divide, and its use should be visible. A candidate who also considers $t=0$ and notes that then $z=0$ is real rather than purely imaginary should be credited.\n\n(c) Award **(M1)** for substituting into $r=pq$ and **(A1)** for $k=4$; the check $q>0$ is required for the second **(A1)**. The third root may be found by division, by Vieta, or by the factorisation; accept any. A candidate who mis-signs Vieta and writes the sum of the roots as $p$ will get $3$ anyway here, so look for the reasoning rather than the value.\n\n(d) This is the discriminating part. Both $m=\\pm1$ satisfy $r=pq$, but only $m=1$ has $q=m>0$. A candidate who answers $m=\\pm1$ loses the final three marks. Award **(M1)(A1)** for the two candidates, **(M1)** for invoking $q>0$, **(A1)** for exhibiting the real-root factorisation of the rejected case, and **(A1)** for the roots in the valid case. Follow-through is allowed only within (d).",
+      "explanation": "The conjugate-root theorem is usually met as a fact to quote. Here it is used three times in different ways, and the last use separates candidates who understand it from those who have memorised it.\n\nPart (a) is the theorem itself, with a small but real subtlety: the deduction that there is exactly one real root uses the fact that a cubic has three roots counted with multiplicity, so a non-real root consumes its conjugate as a second root and leaves precisely one. Students who argue from the graph, or who say 'the other roots are complex' without counting, miss the point.\n\nPart (b) is the technical heart. Substituting $z=ti$ splits the cubic into a real part and an imaginary part, and the imaginary part factors as $t(q-t^{2})$. Because the root is assumed non-zero, $t\\neq0$, and this forces $q=t^{2}>0$. The real part then forces $r=pt^{2}=pq$. So the single algebraic condition $r=pq$, together with the inequality $q>0$, is necessary for a purely imaginary root.\n\nPart (c) applies the condition to a concrete cubic and produces the clean factorisation $(z-3)(z^{2}+4)$.\n\nPart (d) is the lever. The condition $r=pq$ alone admits two values, $m=\\pm1$, because $r=pq$ becomes $1=m^{2}$. The inequality $q>0$ is not decoration: it is what removes $m=-1$. And the reason is visible when the rejected case is factored, since $z^{3}-z^{2}-z+1$ has roots $1,1,-1$, all real, so it has no purely imaginary root at all. A candidate who treats $r=pq$ as sufficient will confidently answer $m=\\pm1$ and be wrong.\n\nThe classic wrong turns are: forgetting that a non-real root is a pair; dividing by $t$ without recording that $t\\neq0$; using only $r=pq$ and ignoring $q>0$ in (d); and mis-signing Vieta, since the sum of the roots of $z^{3}+pz^{2}+qz+r$ is $-p$, not $p$. A useful check is that $(z+p)(z^{2}+q)=z^{3}+pz^{2}+qz+pq$ reproduces the cubic exactly, which is why the condition is both necessary and sufficient.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Built from the AHL 1.14 bullet on complex conjugate roots of polynomials with real coefficients. The design derives the condition $r=pq$ for a real cubic to have a purely imaginary root, then uses the companion inequality $q>0$ to reject one of the two candidate parameters in the final family. The cubic family, the $r=pq$ criterion and the $m=-1$ rejection are original, and all factorisations were verified by substitution.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.013,
+        "nearest_bank_id": "MAAQB_22M_1_AHL_TZ2_7",
+        "max_internal_similarity": 0.005,
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "nearest_internal_id": "MATH-AHL1.11-001"
+      },
+      "verification": {
+        "method": "Substitution and exact factorisation: the criterion $r=pq$, $q>0$ was verified by substituting $z=ti$ for several parameter pairs; $k=4$ was checked by evaluating $z^{3}-3z^{2}+4z-12$ at $3$ and $\\pm2i$; and the family $z^{3}+mz^{2}+mz+1$ was checked to have a purely imaginary root only at $m=1$, with the case $m=-1$ factoring as $(z-1)^{2}(z+1)$.",
+        "assertions": [
+          "approx((-3)*4, -12)",
+          "abs((2j)**3 - 3*(2j)**2 + 4*(2j) - 12) < 1e-9",
+          "abs((-2j)**3 - 3*(-2j)**2 + 4*(-2j) - 12) < 1e-9",
+          "approx(3**3 - 3*3**2 + 4*3 - 12, 0)",
+          "abs((1j)**3 + (1j)**2 + (1j) + 1) < 1e-9",
+          "abs((-1j)**3 + (-1j)**2 + (-1j) + 1) < 1e-9",
+          "abs(1**3 - 1**2 - 1 + 1) < 1e-9",
+          "abs(-1*(1 + 1)) > 0"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    }
+  ]
+}

@@ -1,0 +1,362 @@
+{
+  "questions": [
+    {
+      "id": "MATH-AHL5.19-001",
+      "title": "A Maclaurin expansion whose cubic term vanishes",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 5.19 (Maclaurin series to obtain expansions for composite functions), AHL 5.13 (evaluation of limits of the form 0/0)",
+      "topic": "Topic 5: Calculus",
+      "subtopic": "5.19 Maclaurin series",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 15,
+      "difficulty": 4,
+      "challenge_mechanism": "The expansion has to be built by composing two series rather than by differentiating, and the cubic coefficient cancels only if every contribution to it is tracked correctly; the last part then demands the same bookkeeping one order higher, where contributions arrive from three separate powers of u = sin x.",
+      "command_terms": [
+        "Show that",
+        "Determine",
+        "State",
+        "Hence"
+      ],
+      "tags": [
+        "maclaurin series",
+        "composite functions",
+        "limits"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "Let $f(x)=\\mathrm{e}^{\\sin x}$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 5,
+          "command_term": "Show that",
+          "text": "Using the Maclaurin expansions of $\\mathrm{e}^{u}$ and $\\sin x$, show that the Maclaurin expansion of $f$ begins $f(x)=1+x+\\dfrac{x^{2}}{2}+a x^{3}-\\dfrac{x^{4}}{8}+\\cdots$ and state the value of $a$."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine the coefficient of $x^{5}$ in the Maclaurin expansion of $f$."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "State",
+          "text": "Hence state the values of $f'''(0)$ and $f''''(0)$, justifying briefly how the expansion gives them."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Hence",
+          "text": "Hence determine $\\lim\\limits_{x\\to 0}\\dfrac{\\mathrm{e}^{\\sin x}-1-x}{x^{2}}$."
+        }
+      ],
+      "answer": "$\\sin x=x-\\dfrac{x^{3}}{6}+\\dfrac{x^{5}}{120}-\\cdots$ and $\\mathrm{e}^{u}=1+u+\\dfrac{u^{2}}{2}+\\dfrac{u^{3}}{6}+\\dfrac{u^{4}}{24}+\\cdots$ **(M1)**\n\nWith $u=\\sin x$: $u^{2}=x^{2}-\\dfrac{x^{4}}{3}+\\cdots$, $u^{3}=x^{3}+\\cdots$, $u^{4}=x^{4}+\\cdots$ **(M1)**\n\nSubstituting and collecting like powers: $1+\\left(x-\\dfrac{x^{3}}{6}\\right)+\\left(\\dfrac{x^{2}}{2}-\\dfrac{x^{4}}{6}\\right)+\\dfrac{x^{3}}{6}+\\dfrac{x^{4}}{24}$ **(M1)**\n\nThe $x^{3}$ terms are $-\\dfrac{1}{6}+\\dfrac{1}{6}=0$, and the $x^{4}$ terms are $-\\dfrac{1}{6}+\\dfrac{1}{24}=-\\dfrac{1}{8}$, so\n$$f(x)=1+x+\\dfrac{x^{2}}{2}-\\dfrac{x^{4}}{8}+\\cdots$$**(A1)**\n\nhence $a=0$. **(A1)**\n\n**(b)** Only three powers of $u$ contribute to $x^{5}$: the $x^{5}$ term of $u$ itself, of $u^{3}/6$, and of $u^{5}/120$. **(M1)**\n\n$u^{3}=\\left(x-\\dfrac{x^{3}}{6}\\right)^{3}+\\cdots=x^{3}-3x^{2}\\cdot\\dfrac{x^{3}}{6}+\\cdots=x^{3}-\\dfrac{x^{5}}{2}+\\cdots$, so $\\dfrac{u^{3}}{6}$ contributes $-\\dfrac{1}{12}$; $u^{5}=x^{5}+\\cdots$ so $\\dfrac{u^{5}}{120}$ contributes $+\\dfrac{1}{120}$. **(M1)**\n\nThe $x^{5}$ term of $u$ is $+\\dfrac{1}{120}$ and $u^{2}$, $u^{4}$ contribute nothing. **(A1)**\n\nCoefficient $=\\dfrac{1}{120}-\\dfrac{1}{12}+\\dfrac{1}{120}=\\dfrac{2-20+2}{240}=-\\dfrac{16}{240}=-\\dfrac{1}{15}$ **(A1)**\n\n**(c)** If $f(x)=\\sum \\dfrac{f^{(n)}(0)}{n!}x^{n}$ then the coefficient of $x^{n}$ equals $\\dfrac{f^{(n)}(0)}{n!}$. **(M1)**\n\nThe coefficient of $x^{3}$ is $0$, so $f'''(0)=3!\\times 0=0$. **(A1)**\n\nThe coefficient of $x^{4}$ is $-\\dfrac{1}{8}$, so $f''''(0)=24\\times\\left(-\\dfrac{1}{8}\\right)=-3$. **(A1)**\n\n**(d)** Writing $\\mathrm{e}^{\\sin x}-1-x=\\dfrac{x^{2}}{2}-\\dfrac{x^{4}}{8}+\\cdots$ **(M1)** and dividing by $x^{2}$ gives $\\dfrac{1}{2}-\\dfrac{x^{2}}{8}+\\cdots$ **(A1)**, so the limit is $\\dfrac{1}{2}$. **(A1)**\n\nThe vanishing cubic term is what makes the limit finite and non-zero: had $a\\neq 0$ the quotient would still have a term in $x$ and would diverge.",
+      "markscheme_notes": "Award **(M1)** for each of the two series substitutions and once more for collecting terms; an answer that differentiates $f$ three or four times to reach the same coefficients is fully acceptable and should be credited with **(M1)(M1)(M1)** for the differentiation chain, provided the product and chain rules are handled. Condonation: a candidate who writes $u^{2}=x^{2}-x^{4}/3$ without justification keeps the **(M1)**; the term in $x^{6}$ is not required. In (b), follow-through applies: a candidate with the wrong $u^{3}$ still earns the final **(A1)** for a consistent sum of three contributions. The most common error is omitting the $u^{5}/120$ contribution, which alone gives $-1/12+1/120=-9/120$; this loses the last **(A1)** but keeps both **(M1)**. In (c) do not accept a bare 'because the coefficient is zero' without the $n!$ relationship. In (d), accepting $1/2$ with no working after part (a) earns the **(A1)** only. Two further condonations. A candidate who states $a=0$ in (a) and then uses $f'''(0)=0$ in (c) without recomputing the coefficient has still demonstrated the required link, so the **(R1)** is earned; the **(A1)** in (c) depends only on reading the two coefficients off the series correctly. And in (d) a candidate who reaches $1/2$ by substituting the truncated series rather than by L'Hôpital should be credited equally, since the expansion is the intended route.",
+      "explanation": "The lever is that the expansion of a composite function is not obtained by differentiating the composite, but by substituting one series into another and multiplying series together. Students who try to differentiate $\\mathrm{e}^{\\sin x}$ four times meet the product rule applied to a growing product of trigonometric factors, and the work collapses. The composition route makes the essential difficulty visible instead: every power of $u$ is itself a series, so each coefficient of the final expansion receives contributions from several different powers of $u$, and the account has to be kept accurately.\n\nThe cancellation at $x^{3}$ is the reason the question is built around $\\sin x$ rather than $x$. The $-x^{3}/6$ inside $u$ is exactly cancelled by the $x^{3}/6$ that arrives from $u^{3}/6$, and a student who keeps only the leading term of $u$ — writing $u\\approx x$ and stopping — will report an $x^{3}$ coefficient of zero for the wrong reason, then get the $x^{5}$ coefficient wrong as well. The classic wrong turn is to treat $\\mathrm{e}^{\\sin x}$ as $\\mathrm{e}^{x}$, giving $1+x+x^{2}/2+x^{3}/6$, which is the familiar expansion and is wrong here.\n\nThe question also tests whether the relationship between a Maclaurin coefficient and the value of a derivative is understood as a two-way street. Part (c) is trivial once that relationship is clear and impossible otherwise. Part (d) is the payoff: a limit that would need three applications of l'Hopital's rule, and that a student cannot evaluate from the derived derivatives without more differentiation, collapses in two lines once the expansion is known.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "The device of a composite Maclaurin expansion with a cancelling term is standard in the STEP/Further Mathematics tradition rather than in IB papers, which usually ask only for the expansion of a single standard function. The choice of f(x) = e^(sin x), the vanishing cubic term, the derivative-recovery part and the final limit are all constructed here; the arithmetic was checked with an exact rational power-series computation.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.011,
+        "nearest_bank_id": "MATH_AAHL_P1_2011May_TZ1_q13",
+        "max_internal_similarity": 0.0,
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": null
+      },
+      "verification": {
+        "method": "The expansion was recomputed exactly with rational-arithmetic power-series composition: coefficients of x^0..x^7 are 1, 1, 1/2, 0, -1/8, -1/15, -1/240, 1/90. Derivatives follow as n! times coefficient: f'''(0)=0, f''''(0)=-3.",
+        "assertions": [
+          "approx(6 * 0.0, 0.0)",
+          "approx(24 * (-1/8), -3.0)",
+          "approx(-1/15, -0.0666666667, 1e-6)",
+          "approx(24 * (-1/8), -3)"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-AHL1.16-001",
+      "title": "Three planes that never meet in more than a line",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.16 (solutions of systems of linear equations: unique, no solution, infinitely many), AHL 3.18 (intersections of three planes), AHL 3.14 (vector equation of a line)",
+      "topic": "Topic 3: Geometry and trigonometry",
+      "subtopic": "3.18 Intersections of a line with a plane, two planes, three planes",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 15,
+      "difficulty": 4,
+      "challenge_mechanism": "The parameter sits in exactly one plane and the second and third planes are rigged so that the system is consistent for every value except one; the student must therefore derive the general solution first and only then discover that the exceptional case is a genuine geometric configuration, not an arithmetic slip.",
+      "command_terms": [
+        "Show that",
+        "Find",
+        "Explain",
+        "State",
+        "Determine"
+      ],
+      "tags": [
+        "planes",
+        "linear systems",
+        "vectors",
+        "prism configuration"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "Three planes are given by\n$$\\Pi_{1}:\\ x+y+z=2,\\qquad \\Pi_{2}:\\ 2x+3y+2z=5,\\qquad \\Pi_{3}:\\ x+y+kz=k+2$$ where $k$ is a real constant.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $\\Pi_{1}$ and $\\Pi_{2}$ intersect in a line $L$, and give a vector equation for $L$."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Find",
+          "text": "For $k\\neq 1$, find the position vector of the single point of intersection of the three planes, in terms of $k$."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain why there is exactly one value of $k$ for which the three planes have no common point. State that value and describe the geometric configuration of the three planes in that case."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "For the value of $k$ found in part (c), determine the distance between the two lines in which $\\Pi_{2}$ cuts $\\Pi_{1}$ and $\\Pi_{3}$."
+        }
+      ],
+      "answer": "**(a)** Eliminating $x$: $\\Pi_{2}-2\\Pi_{1}$ gives $y=1$. **(M1)** Substituting into $\\Pi_{1}$ gives $x+z=1$, so the two planes do meet in a line, with direction vector perpendicular to both normals $(1,1,1)$ and $(2,3,2)$, for example $(-1,\\,0,\\,1)$. **(M1)**\n\nTaking the point $x=1,\\ y=1,\\ z=0$: $L:\\ \\mathbf{r}=\\begin{pmatrix}1\\\\1\\\\0\\end{pmatrix}+t\\begin{pmatrix}-1\\\\0\\\\1\\end{pmatrix}$. **(A1)**\n\n**(b)** On $L$, $y=1$ and $x=1-z$. Substituting into $\\Pi_{3}$: $(1-z)+1+kz=k+2$ **(M1)**, so $z(k-1)=k$ **(M1)**, giving $z=\\dfrac{k}{k-1}$ **(A1)** and $x=1-\\dfrac{k}{k-1}=-\\dfrac{1}{k-1}$ **(A1)**.\n\nThe point of intersection is therefore $\\left(-\\dfrac{1}{k-1},\\ 1,\\ \\dfrac{k}{k-1}\\right)$. **(A1)**\n\n*(Check with $k=2$: $(-1,1,2)$, and $-1+1+2=2$, $2(-1)+3+4=5$, $-1+1+4=4=k+2$. Correct.)*\n\n**(c)** The equation $z(k-1)=k$ determines $z$ for every $k$ except $k=1$: at $k=1$ it becomes $0\\cdot z=1$, which has no solution. **(M1)**\n\nAt $k=1$, $\\Pi_{3}$ becomes $x+y+z=3$, which has the same normal as $\\Pi_{1}$: $x+y+z=2$. The two planes are parallel and distinct, so they share no point and the three planes have no common point. **(A1)**\n\nSince $z(k-1)=k$ has a solution for every other value of $k$, this is the only such value. **(A1)**\n\nThe configuration is a triangular prism: $\\Pi_{1}$ and $\\Pi_{3}$ are parallel, and $\\Pi_{2}$ cuts them in two distinct parallel lines. Each pair of planes still meets in a line, so the system is not 'inconsistent because two planes are parallel to each other alone' — every plane meets every other plane. **(A1)**\n\n**(d)** $L_{1}=\\Pi_{1}\\cap\\Pi_{2}$: subtracting twice $\\Pi_{1}$ from $\\Pi_{2}$ gives $y=1$, then $x+z=1$. **(M1)**\n\n$L_{2}=\\Pi_{3}\\cap\\Pi_{2}$: subtracting twice $\\Pi_{3}$ from $\\Pi_{2}$ gives $y=-1$, then $x+z=4$. **(M1)**\n\nBoth have direction $(-1,0,1)$. With $A(1,1,0)$ on $L_{1}$ and $B(3,-1,1)$ on $L_{2}$, $\\overrightarrow{AB}=(2,-2,1)$ and $\\overrightarrow{AB}\\times(-1,0,1)=(-2,-3,-2)$, whose magnitude is $\\sqrt{17}$; dividing by $\\left|(-1,0,1)\\right|=\\sqrt{2}$ gives a distance of $\\dfrac{\\sqrt{17}}{\\sqrt{2}}=\\sqrt{\\dfrac{17}{2}}\\approx 2.92$. **(A1)**",
+      "markscheme_notes": "Part (a): accept any correct direction vector parallel to $(-1,0,1)$ and any point on the line; the **(M1)** for the elimination should be given even if the candidate then uses a different method, provided the inconsistency is not hidden. Part (b): a candidate who solves by full row reduction of the augmented matrix earns **(M1)(M1)** and follows through for the point marks. Part (c): the essential mark is the geometric description, not the word 'prism' — accept 'two parallel planes cut by a third' or 'the planes form a prism with no common point'. A candidate who simply states $k=1$ and 'no solution' without explaining why it is unique loses the third **(A1)**. Part (d): accept any valid method, including projecting $\\overrightarrow{AB}$ perpendicular to the common direction, or using the formula for the distance between parallel lines with a normal obtained from the cross product. Follow-through: a candidate using $\\sqrt{17}$ as the final answer has divided by the wrong magnitude and loses the last **(A1)** only. Beware of candidates who treat the two lines as skew and compute a shortest distance between them without noticing they are parallel.",
+      "explanation": "The trap is structural rather than algebraic. Two of the three planes are fixed, so their line of intersection can be found once and used for everything else; the whole question is then a one-variable problem in $k$. Students who set up a $3\\times3$ determinant and expand it will reach the same conclusion after considerably more work, and are more likely to make a sign error, but they should not be penalised.\n\nTwo ideas carry the marks. The first is that a system of three equations in three unknowns can be consistent for every value of a parameter except one, and that the exceptional value is found by asking when the final equation degenerates rather than by trial. The second is that 'no solution' has more than one geometric cause. Here it is not a parallel-plane stack in which one pair fails to meet — all three planes meet each other; the failure is that the three pairwise lines are parallel, which is why each pair still intersects. A student who writes 'the planes are parallel so there is no intersection' has the right answer for the wrong reason and should lose the explanation mark.\n\nPart (d) reuses the same line direction and asks for a distance between two parallel lines, which is a cross-product computation. The classic error is to compute the distance from a point to a plane instead, or to omit the normalisation by the magnitude of the direction vector and report $\\sqrt{17}$. The check is dimensional: the answer must be shorter than the separation of the two planes themselves, and $\\sqrt{8.5}\\approx 2.92$ is comfortably smaller than $\\dfrac{1}{\\sqrt{3}}\\approx 0.577$.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Three-plane classification with a parameter is a standard IB idea, but it is normally set so that the parameter produces a parallel-stack failure. Here the planes are arranged so that $\\Pi_{3}$ passes through the line $\\Pi_{1}\\cap\\Pi_{2}$ for one value only, inverting the usual case: the system is consistent almost everywhere, and the prism configuration arises from a genuine degeneracy. The specific planes, the parameterisation $x+y+kz=k+2$, the prism configuration and the distance part are original; the cross-check at k=2 was computed symbolically.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.022,
+        "nearest_bank_id": "MATH_AAHL_P2_2021May_TZ1_q08",
+        "max_internal_similarity": 0.008,
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-AHL4.14-001"
+      },
+      "verification": {
+        "method": "The general solution was verified exactly in rational arithmetic for k = 0, 2, -3, 1/2 and 5 by substituting the closed-form point into all three plane equations. The k = 1 case was checked by substituting y = -1 into Pi_3 to obtain x + z = 4, a line parallel to x + z = 1 with y = 1. The distance was computed from the cross product: |AB x d|/|d| = sqrt(17)/sqrt(2) = 2.91548.",
+        "assertions": [
+          "approx((-1/(2-1)) + 1 + (2/(2-1)), 2)",
+          "approx(2*(-1/(2-1)) + 3 + 2*(2/(2-1)), 5)",
+          "approx((-1/(2-1)) + 1 + 2*(2/(2-1)), 4)",
+          "approx(sqrt(17)/sqrt(2), 2.9154759, 1e-6)",
+          "approx(3 + 1, 4)"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-AHL4.14-001",
+      "title": "A card game whose expected value hides in a parameter",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 4.14 (variance of a discrete random variable; E(X^2) - (E(X))^2), SL 4.7 (concept of discrete random variables and their probability distributions)",
+      "topic": "Topic 4: Statistics and probability",
+      "subtopic": "4.14 Variance of a discrete random variable",
+      "paper": "P2",
+      "section": "A",
+      "technology": "permitted",
+      "language": null,
+      "marks": 15,
+      "difficulty": 4,
+      "challenge_mechanism": "The distribution is never written down: it must be constructed from ten equally likely draws, and the parameter then has to be carried through the expectation before the variance can be evaluated at a specific value. The final part inverts the problem, asking what the expectation being below the stake does and does not tell you about the chance of profit.",
+      "command_terms": [
+        "Show that",
+        "Find",
+        "Determine"
+      ],
+      "tags": [
+        "discrete random variables",
+        "expectation",
+        "variance",
+        "decision"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "A bag contains five cards numbered $1,\\ 2,\\ 3,\\ 4$ and $k$, where $k$ is an integer greater than $4$. Two cards are drawn at random without replacement, and $S$ denotes the sum of the numbers on the two cards.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "The two cards are drawn at random and the sum is recorded. Show that the expected value of this sum is $\\mathrm{E}(S)=4+\\dfrac{2k}{5}$."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Find",
+          "text": "Find the least value of $k$ for which the expected value of $S$ exceeds $10$."
+        },
+        {
+          "label": "c",
+          "marks": 5,
+          "command_term": "Calculate",
+          "text": "For the case $k=10$, calculate the variance of the sum $S$, showing the values of $\\mathrm{E}(S)$ and $\\mathrm{E}(S^{2})$ that you use."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "For $k=10$ a player pays $9$ (in the currency units of the game) to play and receives the value of $S$. Determine whether the game favours the player, and find the probability that the player makes a profit."
+        }
+      ],
+      "answer": "**(a)** There are $\\dbinom{5}{2}=10$ equally likely pairs, so each has probability $0.1$. **(M1)**\n\nThe six pairs that avoid $k$ give sums $1+2=3$, $1+3=4$, $1+4=5$, $2+3=5$, $2+4=6$, $3+4=7$, whose total is $30$. **(M1)**\n\nThe four pairs containing $k$ give $(1+k)+(2+k)+(3+k)+(4+k)=10+4k$. **(A1)**\n\nSo $\\displaystyle\\sum S=30+10+4k=40+4k$ and $\\mathrm{E}(S)=\\dfrac{40+4k}{10}=4+\\dfrac{2k}{5}$. **(AG)**\n\n**Check, by linearity of expectation.** Each of the five values appears in $4$ of the $10$ pairs, so the two drawn cards have the same marginal distribution; its mean is $\\dfrac{1+2+3+4+k}{5}=\\dfrac{10+k}{5}$. Hence\n\n$$\\mathrm{E}(S)=2\\times\\frac{10+k}{5}=4+\\frac{2k}{5}\\quad\\checkmark$$\n\n**(b)** $4+\\dfrac{2k}{5}>10\\Rightarrow \\dfrac{2k}{5}>6\\Rightarrow k>15$. **(M1)(A1)** As $k$ is an integer, the least such value is $k=16$. **(A1)**\n\n**(c)** With $k=10$ the ten sums are $3,\\ 4,\\ 5,\\ 11,\\ 5,\\ 6,\\ 12,\\ 7,\\ 13,\\ 14$, so $\\mathrm{E}(S)=\\dfrac{80}{10}=8$. **(M1)**\n\n$\\displaystyle\\mathrm{E}(S^{2})=\\dfrac{9+16+25+121+25+36+144+49+169+196}{10}=\\dfrac{790}{10}=79$. **(M1)(A1)**\n\n$\\mathrm{Var}(S)=\\mathrm{E}(S^{2})-\\left[\\mathrm{E}(S)\\right]^{2}=79-64=15$. **(M1)(A1)**\n\n**(d)** $\\mathrm{E}(S)=8<9$, so the player pays more on average than they receive and the game favours the organiser. **(A1)** The organiser's expected margin is $9-8=1$ unit per game, and over many plays the player's losses converge to that figure.\n\nThe expectation is therefore below the stake, and the arithmetic has not yet said anything about how often a player wins.\n\nA profit requires $S>9$, that is $S\\in\\{11,12,13,14\\}$, which occurs in $4$ of the $10$ equally likely outcomes. **(M1)** So $\\mathrm{P}(\\text{profit})=0.4$. **(A1)**",
+      "markscheme_notes": "Part (a): the **(AG)** requires the total to be exhibited, not merely asserted. A candidate who lists the distribution correctly earns both **(M1)** marks even if the algebra afterwards slips; do not condone an answer that treats the draw as ordered and then divides by 20 as well. Part (b): accept $k=15$ only if the candidate explicitly notes that the strict inequality excludes it — otherwise the answer mark is lost. Part (c): accept the grouped distribution $\\mathrm{P}(S=5)=0.2$, $\\mathrm{P}(S=3)=\\mathrm{P}(S=4)=\\mathrm{P}(S=6)=\\mathrm{P}(S=7)=0.1$, $\\mathrm{P}(S=11)=\\mathrm{P}(S=13)=0.1$ and so on, provided the total probability is 1. Follow-through: a candidate whose $\\mathrm{E}(S)$ from part (a) is wrong but consistent still earns the two method marks and the first accuracy mark in (c). A very common error is to compute $\\mathrm{E}(S^{2})$ with $\\mathrm{E}(S)^{2}$ substituted — this forfeits both **(M1)** marks in (c). In (d) accept a correct comparison of the expectation with the stake in either direction; the probability mark is independent of the judgement.",
+      "explanation": "There is no distribution to look up. The random variable comes from a physical process, so the first task is combinatorial: ten equally likely pairs, four of which contain $k$ and six of which do not. The parameter then behaves in a way that rewards a student who keeps it symbolic rather than substituting early, because the pairs not containing $k$ contribute a constant $30$ and only the pair sums involving $k$ change.\n\nPart (b) tests a small but real distinction: the inequality is strict, and since $k$ is an integer the answer is $16$ rather than $15$. This is the kind of boundary case in which a technically correct piece of algebra produces the wrong answer if the domain of $k$ is forgotten.\n\nPart (c) is where most of the marks sit, and it is deliberately unglamorous. The distribution of $S$ is not uniform — the value $5$ occurs twice — and $\\mathrm{E}(S^{2})$ must be formed from the ten ungrouped values or from a carefully grouped table. Students who reach for the binomial variance formula or who assume $\\mathrm{Var}(S)=\\mathrm{Var}(X_{1})+\\mathrm{Var}(X_{2})$ for the two drawn cards get a wrong answer, because the draws are without replacement and therefore not independent. That is the classic wrong turn and the most useful thing in the question: it separates students who understand what variance of a sum requires from students who have memorised a formula.\n\nThe final part makes a point that matters beyond the examination. An expected value below the stake tells you the game is unfavourable on average, but it says nothing about how often a player wins: here a player profits 40% of the time and still loses money overall. That gap between a favourable expectation and a likely outcome is exactly the gap that makes gambling attractive, and a question that stops at '$8<9$, do not play' has missed half of it.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Expected-value games are common in IB statistics, but they almost always supply the probability distribution as a table. Here the distribution must be built from a without-replacement draw, the expectation is required in terms of a parameter, and the final part is inverted to separate the mean from the probability of profit. The card set, the parameter k, the value k = 10 and the profit probability are original; every figure was recomputed in exact rational arithmetic.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.011,
+        "nearest_bank_id": "MATH_AAHL_P2_2013May_TZ1_q09",
+        "max_internal_similarity": 0.008,
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-AHL1.16-001"
+      },
+      "verification": {
+        "method": "All ten pair sums were enumerated exactly. E(S) = (40 + 4k)/10 was checked symbolically and at k = 10, giving 8. E(S^2) = 790/10 = 79 and Var(S) = 79 - 64 = 15, sd = 3.8730. P(S > 9) = 4/10.",
+        "assertions": [
+          "approx((40 + 4*10)/10, 4 + 2*10/5)",
+          "approx((40 + 4*16)/10, 10.4)",
+          "4 + 2*15/5 <= 10",
+          "approx(79 - 8**2, 15)",
+          "approx(sqrt(15), 3.8729833, 1e-6)",
+          "approx(4/10, 0.4)"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-AHL2.16-001",
+      "title": "Two reflections that agree on a set",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 2.16 (graphs of y = |f(x)|, y = f(|x|) and y = 1/f(x)), AHL 2.15 (solutions of g(x) >= f(x) graphically and analytically)",
+      "topic": "Topic 2: Functions",
+      "subtopic": "2.16 Graphs of y = |f(x)|, y = f(|x|) and y = 1/f(x)",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 15,
+      "difficulty": 4,
+      "challenge_mechanism": "The equation |f(x)| = f(|x|) looks like a single case but splits into two because the two transformations act on different sides of the axis, and the negative branch turns out to have no solutions at all; the final part then requires the minimum value of f to be used as the endpoint of the range of 1/f rather than the obvious asymptote.",
+      "command_terms": [
+        "Sketch",
+        "Solve",
+        "Write down"
+      ],
+      "tags": [
+        "modulus",
+        "composite graph",
+        "reciprocal graph",
+        "inequalities"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "Let $f(x)=x^{2}-4x+3$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Sketch",
+          "text": "On the same axes, sketch the graphs of $y=|f(x)|$ and $y=f(|x|)$, stating the coordinates of all intercepts and of every local minimum or maximum."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Solve",
+          "text": "Solve the equation $|f(x)|=f(|x|)$, giving your answer as a union of intervals."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Solve",
+          "text": "Solve the inequality $f(|x|)<2$, giving exact values in your answer."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine the range of $g(x)=\\dfrac{1}{f(x)}$ and the equations of all three asymptotes of its graph."
+        }
+      ],
+      "answer": "**(a)** $f(x)=(x-1)(x-3)$, so the parabola has roots at $x=1$ and $x=3$ and its minimum is $f(2)=-1$.\n\n$y=|f(x)|$: the part of the parabola below the axis is reflected upwards. Intercepts $(1,0)$, $(3,0)$, $(0,3)$; local maxima at $(1,0)$ and $(3,0)$; local minimum $(2,1)$. **(M1)(A1)**\n\n$y=f(|x|)$: the right-hand half is reflected in the $y$-axis. Intercepts $(-3,0)$, $(-1,0)$, $(1,0)$, $(3,0)$ and $(0,3)$; local minima at $(-2,-1)$ and $(2,-1)$; local maximum $(0,3)$. **(M1)(A1)**\n\n**(b)** For $x\\geq 0$, $f(|x|)=f(x)$, so the equation becomes $|f(x)|=f(x)$, which holds exactly when $f(x)\\geq 0$, i.e. $x\\leq 1$ or $x\\geq 3$. **(M1)(A1)** On $[0,\\infty)$ this gives $[0,1]\\cup[3,\\infty)$.\n\nFor $x<0$, $f(|x|)=f(-x)=x^{2}+4x+3$ while $|f(x)|=x^{2}-4x+3$, since $f(x)>0$ for all $x<0$. Equating gives $x^{2}+4x+3=x^{2}-4x+3$, so $8x=0$ and $x=0$, which is not negative. **(M1)** There are therefore no negative solutions, and the solution set is $[0,1]\\cup[3,\\infty)$. **(A1)**\n\n**(c)** With $u=|x|\\geq 0$, $f(|x|)<2$ becomes $u^{2}-4u+1<0$. **(M1)** The roots are $u=2\\pm\\sqrt{3}$, so $2-\\sqrt{3}<u<2+\\sqrt{3}$. **(A1)** Since $u=|x|$, the solution is $x\\in\\left(-\\left(2+\\sqrt{3}\\right),-\\left(2-\\sqrt{3}\\right)\\right)\\cup\\left(2-\\sqrt{3},\\ 2+\\sqrt{3}\\right)$. **(A1)**\n\n**(d)** $f$ has minimum value $-1$ at $x=2$ and $f(x)\\to\\infty$ as $x\\to\\pm\\infty$, so the range of $f$ is $[-1,\\infty)$. Therefore the range of $g$ is $(-\\infty,-1]\\cup(0,\\infty)$. **(M1)(A1)**\n\nThe vertical asymptotes are $x=1$ and $x=3$; the horizontal asymptote is $y=0$. **(A1)(A1)**",
+      "markscheme_notes": "Part (a): accept sketches that show the correct shape and the stated key points; a candidate who reflects only one branch, or who draws $y=f(|x|)$ with the minimum at $(2,-1)$ only on the right, loses one **(M1)**. Do not require accurate curvature. Part (b): the crucial mark is the split at $x=0$; a candidate who solves only the positive case and writes $[0,1]\\cup[3,\\infty)$ with no mention of $x<0$ earns **(M1)(A1)** and loses the remaining two marks. Accept an argument from the sketch that the two graphs coincide precisely where the parabola is above the axis and $x\\geq0$, provided the negativity of $x$ on the other side is addressed. Part (c): accept $0.27<|x|<3.73$ as an intermediate, and condone a final answer in the form $|x|\\in(2-\\sqrt{3},2+\\sqrt{3})$ only if the resulting $x$-interval is also given. Part (d): the **(A1)** for the range depends on identifying the minimum of $f$; a candidate who gives $(-\\infty,0)\\cup(0,\\infty)$ has missed the upper bound of the negative branch entirely and loses both range marks but keeps the three asymptote marks.",
+      "explanation": "Two different transformations are applied to the same function, and the whole question turns on noticing that they are not the same transformation. $|f(x)|$ acts on the output and therefore lifts the part of the graph below the axis; $f(|x|)$ acts on the input and therefore discards the left half and mirrors the right half across the $y$-axis. Students who conflate them produce a single curve and then cannot see why part (b) has two cases.\n\nPart (b) is the pivot. Because $f$ is positive for every $x<0$, the modulus on the left is inert there, while the reflection on the right changes the function completely; equating the two branches forces $x=0$, which lies outside the interval being considered. The correct conclusion — that the equation is satisfied exactly where $f(x)\\geq0$ and $x\\geq0$ — is a genuine piece of reasoning, and the answer is a union of two intervals rather than the single interval most students write.\n\nPart (c) is a routine substitution $u=|x|$ and then a careful unwinding, and it is included because the unwinding is where marks are lost: the interval in $u$ must become two intervals in $x$, and the exact surds should survive to the final answer.\n\nPart (d) is the part of the question most likely to be got wrong by a strong student. The range of $1/f$ is not determined by the asymptotes but by the minimum value of $f$, which is $-1$. Because $f$ attains $-1$, the reciprocal attains $-1$ as its largest negative value, and the range has a closed upper end at $-1$. Students who reason 'as $f\\to 0^{+}$, $1/f\\to+\\infty$, and as $f\\to 0^{-}$, $1/f\\to-\\infty$' and conclude that the range is all real numbers except zero have drawn the right asymptotes and reached the wrong conclusion.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Modulus and reciprocal graph questions in the IB bank almost always ask for a sketch or for the asymptotes alone. Here the two different modulus transformations are set against each other in an equation, the reciprocal graph's range depends on a finite minimum rather than an asymptote, and the inequality reuses the transformation from part (a). The function, all four parts and the exact surd answer are original.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.028,
+        "nearest_bank_id": "MATH_AAHL_P2_2011May_TZ2_q07",
+        "max_internal_similarity": 0.006,
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-T2-001"
+      },
+      "verification": {
+        "method": "Solved analytically. f(x) = (x-1)(x-3) with minimum -1 at x = 2. On x < 0, f(x) > 0 and f(|x|) = x^2 + 4x + 3, so equality forces 8x = 0. The inequality u^2 - 4u + 1 < 0 has roots 2 -/+ sqrt(3) = 0.2679492 and 3.7320508. The range of 1/f follows from the minimum of f being -1.",
+        "assertions": [
+          "approx(2**2 - 4*2 + 3, -1)",
+          "approx(2 - sqrt(3), 0.2679491924, 1e-9)",
+          "approx(2 + sqrt(3), 3.7320508076, 1e-9)",
+          "approx(0.0, 0.0)",
+          "1/(-1) == -1"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A3.2-001 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A3 Databases</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A3.2-001</p>
+<div class="meta"><span class="chip chip-key">A3.2 Database design (schemas, ERDs, normalisation), A3.3 Database programming (SQL joins, views HL only)</span><span class="chip">P1 · Section A</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">sql</span><span class="chip">Explain</span><span class="chip">Construct</span><span class="chip">State</span></div>
+<div class="box"><h4>Stimulus</h4><p>A small music festival stores all of its booking data in a <strong>single</strong> table:</p>
+<p>PERFORMANCE_BOOKING</p>
+<p>| BookingID | CustomerName | CustomerEmail | PerformanceName | VenueName | SeatCategory | PricePerTicket | Quantity |<br>|---|---|---|---|---|---|---|---|<br>| 1001 | A. Ferrer | a.ferrer@mail | Midnight Chorus | East Stage | Premium | 85.00 | 2 |<br>| 1002 | A. Ferrer | a.ferrer@mail | Midnight Chorus | East Stage | Standard | 45.00 | 4 |<br>| 1003 | L. Oyeka | l.oyeka@mail | Brass Quartet | West Barn | Standard | 40.00 | 2 |<br>| 1004 | R. Duval | r.duval@mail | Midnight Chorus | East Stage | Premium | 85.00 | 1 |<br>| 1005 | R. Duval | r.duval@mail | Brass Quartet | West Barn | Standard | 40.00 | 3 |</p>
+<p>BookingID is unique. A customer may make several bookings, and a performance runs in exactly one venue.</p></div>
+
+<h2>Question</h2>
+<p>The festival is expanding and the table is causing problems.</p>
+<ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>Explain <strong>two</strong> specific problems with this design, using the data above to illustrate each. For each, name the type of anomaly it represents.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a set of tables in third normal form (3NF) to replace PERFORMANCE_BOOKING. State the primary key of each table and show the foreign-key links between them.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Using your 3NF design, write an SQL query that lists the customer name, the performance name and the total cost of each booking (quantity × price), for bookings of <strong>more than two</strong> tickets, ordered by total cost from highest to lowest.</p> <em>(Construct)</em></li><li><span class="marks">[2 marks]</span><strong>(d)</strong> <p>Box-office staff need to see booking details but must not see customer email addresses or prices. Explain how a database <strong>view</strong> solves this. (HL only)</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong>  Award two from:</p>
+<ul><li><strong>Update (modification) anomaly.</strong> 'Midnight Chorus' and its venue 'East Stage' are repeated in rows 1001, 1002 and 1004. If the performance is moved to another venue, every one of those rows must be changed; if even one is missed, the database holds contradictory answers and a report cannot say where the performance is.  <strong>(A1)(A1)</strong></li><li><strong>Insertion anomaly.</strong> A newly announced performance cannot be added to the database until someone books it, because the only place a performance name can exist is inside a booking row — and BookingID is the key, so there is no way to store a performance with no bookings.  <strong>(A1)(A1)</strong></li><li><strong>Deletion anomaly.</strong> If customer L. Oyeka cancels booking 1003, that row is the only record of 'Brass Quartet' at the West Barn; deleting the booking destroys the performance record as well.  <strong>(A1)(A1)</strong></li><li><strong>Redundancy / wasted storage.</strong> Customer name and email are repeated across every booking that customer makes, so A. Ferrer's details are stored twice and R. Duval's twice, and the repetition grows with the festival.  <strong>(A1)(A1)</strong></li></ul>
+<p>(Maximum 5 marks; at least one answer must name the anomaly type for the higher band.)</p>
+<p><strong>(b)</strong>  A correct 3NF decomposition:</p>
+<p><strong>CUSTOMER</strong>(CustomerID <strong>PK</strong>, CustomerName, CustomerEmail)</p>
+<p><strong>PERFORMANCE</strong>(PerformanceID <strong>PK</strong>, PerformanceName, VenueName)</p>
+<p><strong>SEAT_PRICE</strong>(PerformanceID <strong>FK</strong>, SeatCategory <strong>PK</strong> *(composite with PerformanceID)*, PricePerTicket)</p>
+<p><strong>BOOKING</strong>(BookingID <strong>PK</strong>, CustomerID <strong>FK</strong>, PerformanceID <strong>FK</strong>, SeatCategory <strong>FK</strong>, Quantity)</p>
+<p>Award <strong>(A1)</strong> for separating CUSTOMER, <strong>(A1)</strong> for separating PERFORMANCE, <strong>(A1)</strong> for recognising that PricePerTicket depends on the *performance and seat category* pair rather than on the booking (so it needs its own table), <strong>(A1)</strong> for correct primary keys, <strong>(A1)</strong> for correct foreign keys linking BOOKING to CUSTOMER and PERFORMANCE.</p>
+<p>Why this is 3NF: in every table, each non-key attribute depends on the key, the whole key, and nothing but the key. In particular, PricePerTicket is no longer stored against BookingID (a transitive/partial dependency), and VenueName is no longer repeated per booking.</p>
+<p>Note: the original table has no CustomerID or PerformanceID, so surrogate keys must be introduced — credit this explicitly if done.</p>
+<p><strong>(c)</strong>  One correct solution:</p>
+<pre><code>SELECT c.CustomerName,
+       p.PerformanceName,
+       b.Quantity * s.PricePerTicket AS TotalCost
+FROM BOOKING b
+JOIN CUSTOMER    c ON b.CustomerID    = c.CustomerID
+JOIN PERFORMANCE p ON b.PerformanceID = p.PerformanceID
+JOIN SEAT_PRICE  s ON b.PerformanceID = s.PerformanceID
+                  AND b.SeatCategory  = s.SeatCategory
+WHERE b.Quantity &gt; 2
+ORDER BY TotalCost DESC;
+</code></pre>
+<p>Award <strong>(A1)</strong> for joining the three or four tables correctly, <strong>(A1)</strong> for the composite join to SEAT_PRICE (both PerformanceID *and* SeatCategory — joining on SeatCategory alone is the common error and returns wrong prices), <strong>(A1)</strong> for the computed total and the <code>WHERE b.Quantity &gt; 2</code> filter, <strong>(A1)</strong> for <code>ORDER BY TotalCost DESC</code>.</p>
+<p><strong>(d)</strong>  A <strong>view</strong> is a stored, named query that behaves like a virtual table.  <strong>(A1)</strong>  The administrator creates a view exposing only BookingID, CustomerName, PerformanceName, SeatCategory and Quantity, grants box-office staff <code>SELECT</code> on that view, and grants them no privileges at all on the underlying tables. Staff then query the view and cannot reach the excluded columns or the base tables, so security is enforced by the database itself rather than by trusting an application or a member of staff.  <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Two problems, each illustrated from the data, each named. A problem described without reference to the data is capped at one mark per problem; a problem described without naming the anomaly type is likewise capped. Do not credit 'it is not normalised' as an explanation.</p>
+<p>(b) Accept any correct 3NF decomposition, including one that keeps PricePerTicket in BOOKING *if* the candidate has defined the price as a property of the individual transaction (e.g. historic pricing) and says so — but push for the four-table version, since price is a property of the (performance, category) pair. The composite join in (c) is what discriminates.</p>
+<p>(c) Credit equivalent SQL: implicit joins in the WHERE clause, <code>INNER JOIN</code> spelled out, or an alias for the computed column. Minor syntax slips (missing semicolon, <code>AS</code> omitted) should not be penalised. Do not credit a query that omits the SEAT_PRICE join and uses a literal price.</p>
+<p>(d) One mark for what a view is, one for the security mechanism (granting privileges on the view and withholding them from the base tables). Candidates who say 'a view hides the data' without explaining the grant mechanism earn only the first.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Normalisation is one of the topics students can define flawlessly and apply badly. This question is built so that definitions are not enough.</p>
+<p>In (a) the anomalies have to be *demonstrated* on the five rows given. 'Repetition causes problems' is not an answer; 'Midnight Chorus is stored three times, so moving it to a different venue means editing three rows, and missing one leaves the database contradicting itself' is. Naming it as an update anomaly is what lifts the answer into the top band.</p>
+<p>Part (b) is where the design decisions live, and there are two of them:</p>
+<p>1. <strong>Customer and performance must be split out</strong> — that part is routine.<br>2. <strong>Price is the interesting one.</strong> PricePerTicket looks like it belongs to the booking, but it is a property of the (performance, seat category) *pair*: Premium seats for Midnight Chorus cost 85.00 in rows 1001 and 1004, identical because they are the same pair, not because they are the same booking. Leaving price in BOOKING leaves a transitive dependency and the table is not in 3NF. Most candidates miss this.</p>
+<p>Part (c) then punishes the mistake automatically: if SEAT_PRICE was not separated out, the query cannot be written correctly, and if it was, the join must be on <strong>both</strong> PerformanceID and SeatCategory. Joining on SeatCategory alone silently returns several prices per row and a wrong total — the kind of error that produces a plausible-looking report and no error message.</p>
+<p>Classic wrong turns: introducing CustomerID but then never using it as a foreign key; writing <code>SELECT</code> with no <code>JOIN</code> conditions (a Cartesian product); and describing a view as a copy of the data (it is not — it is a stored query, and it reflects changes to the base tables immediately).</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>Normalisation is usually tested by asking for a definition; here it has to be diagnosed from an unnormalised table, justified by naming the anomalies it causes, and then carried out — and the SQL that follows only works if the decomposition was done correctly.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A3.2 Database design (schemas, ERDs, normalisation), A3.3 Database programming (SQL joins, views HL only)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the A3.2 (design, normalisation, ERDs) and A3.3 (SQL joins; views, HL only) bullets. The festival-booking table was constructed so that it exhibits a clear update, insertion and deletion anomaly simultaneously, and — critically — so that PricePerTicket depends on the (performance, seat category) pair, which is the step most students miss.</dd></div>
+  <div><dt>Verification</dt><dd>3NF decomposition checked for transitive and partial dependencies; SQL validated logically against the sample rows (bookings 1002, 1003, 1005 qualify with quantity &gt; 2)</dd></div>
+  <div><dt>Nearest bank match</dt><dd>CS_HL_P2_2025May_TZ2_q03 (similarity 0.002)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-10</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

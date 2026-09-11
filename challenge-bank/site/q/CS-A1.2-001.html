@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A1.2-001 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A 12-bit temperature log and the arithmetic that breaks it</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A1.2-001</p>
+<div class="meta"><span class="chip chip-key">A1.2 Data representation and computer logic (A1.2.1 representation of integers in binary and hexadecimal, A1.2.2 binary encoding and its impact on storage, A1.2.3 logic gates, A1.2.4 truth tables)</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Determine</span><span class="chip">Explain</span><span class="chip">Show that</span><span class="chip">State</span></div>
+<div class="box"><h4>A field temperature logger</h4><p>A logger records temperature once per minute for a week. The sensing element produces a signed integer that is stored in a 12-bit two's complement register, in units of 0.0625 degrees Celsius per least significant bit. A separate summation register accumulates consecutive readings so that a rolling average can be reported, using the same 12-bit width as the readings themselves.</p>
+<p>The logger also drives an alarm output from three inputs: P (pressure above the safe limit), T (temperature above the safe limit) and O (operator override enabled). The designer's first attempt at the alarm logic is</p>
+<p>F = P.T + P.T' + P'.T.O</p>
+<p>where the prime denotes NOT, the dot denotes AND and + denotes OR. The alarm output is available only at a single-frequency clock, so reducing the number of gates is worth doing.</p></div>
+
+<h2>Question</h2>
+<p>The 12-bit register stores values in units of 0.0625 degrees Celsius per least significant bit, with the most significant bit carrying the sign.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Determine the 12-bit two's complement representation of a reading of -37.5 degrees Celsius, giving your answer in binary and in hexadecimal.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Explain why the summation register can overflow even when every individual reading is representable, and determine the minimum register width needed to sum any 16 consecutive readings without overflow.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain why converting a stored reading to degrees Celsius by multiplying by 0.0625 introduces no error, whereas converting it to degrees Fahrenheit does, in both cases assuming the arithmetic itself is performed exactly.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Show that F simplifies to P + T.O, and state the number of two-input gates needed for the reduced expression.</p> <em>(Show that)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> One least significant bit represents $0.0625$ degrees Celsius, so the stored integer is the temperature divided by $0.0625$: $-37.5/0.0625=-600$. <strong>(M1)</strong></p>
+<p>To store $-600$ in 12-bit two's complement, represent $+600$ first. $600=512+64+16+8$, which is $001001011000$ in 12 bits. <strong>(A1)</strong></p>
+<p>Inverting every bit gives $110110100111$ and adding 1 gives $110110101000$, so $-600$ is stored as $1101\,1010\,1000$. Grouping into fours from the right: $1101$ is D, $1010$ is A, $1000$ is 8, so the answer is $\mathrm{0xDA8}$. <strong>(A1)</strong></p>
+<p>*Check: $1101\,1010\,1000$ is $3496$ unsigned, and $3496-4096=-600$. Correct.*</p>
+<p>*Representable: $-600$ lies inside the 12-bit signed range $-2048$ to $+2047$, so no clamping is needed.*</p>
+<p><strong>(b)</strong> A 12-bit two's complement register holds values from $-2048$ to $+2047$. Each individual reading is comfortably inside this range because the largest magnitude the sensor can report is about $128$ degrees Celsius. <strong>(M1)</strong></p>
+<p>Overflow is a property of the accumulator, not of the sensor. Two readings of $+2047$ already sum to $4094$, which is more than the largest 12-bit signed value, so the sum wraps and a positive result can appear negative. In practice the readings are far smaller than the maximum, but the accumulator has no way of knowing that: it is only 12 bits wide, so any pair of readings above about $1023$ will overflow it. <strong>(M1)(A1)</strong></p>
+<p>Sixteen readings can each be as large as $2047$, so the largest possible sum is $16\times 2047=32\,752$. <strong>(M1)</strong> A 15-bit two's complement register reaches only $+16\,383$, which is not enough; a 16-bit register reaches $+32\,767$, which is. The minimum width is therefore 16 bits. <strong>(A1)</strong></p>
+<p>In general an accumulator summing $k$ readings of width $w$ must satisfy $2^{W-1}-1\ge k(2^{w-1}-1)$; for $w=12$ and $k=16$ the smallest satisfying width is $W=16$, which is why the answer is 16 and not 15.</p>
+<p><strong>(c)</strong> $0.0625=2^{-4}$. Multiplication by a power of two does not change the digits of a binary number, it only moves the binary point, so the multiplication can be performed by a shift and the result is exact. Every value the sensor can produce is mapped to an exact value in degrees Celsius. <strong>(M1)(A1)</strong></p>
+<p>The conversion to Fahrenheit is $F=1.8C+32$, so it requires multiplication by $1.8$, which is $9/5$. In binary, $9/5$ is the recurring fraction $1.1100110011\ldots$, which cannot be stored in a fixed number of bits. <strong>(M1)</strong> Rounding that factor introduces an error that grows with the magnitude of the reading, and because $1/5$ has a factor of 5 in the denominator it can never be represented exactly in binary. <strong>(A1)</strong></p>
+<p>The Celsius conversion is therefore exact by construction, while the Fahrenheit error is one of representation rather than arithmetic: using more bits shrinks the rounding error but never removes it, because the expansion of $9/5$ does not terminate.</p>
+<p><strong>(d)</strong> $P.T+P.T'=P.(T+T')=P.1=P$ by the distributive and complement laws. <strong>(M1)</strong></p>
+<p>Substituting: $F=P+P'.T.O$. <strong>(M1)</strong></p>
+<p>By the rule $A+A'.B=A+B$ (absorption, or the consensus theorem), with $A=P$ and $B=T.O$, this becomes $F=P+T.O$. <strong>(A1)</strong></p>
+<p>The reduced expression needs one AND gate for $T.O$ and one OR gate to combine it with $P$, so two two-input gates. <strong>(A1)</strong> The two inverters required by the original expression are no longer needed, so the gate count falls from five to two and the propagation delay falls as well.</p>
+<p>A truth-table cross-check over all eight combinations of $P$, $T$ and $O$ gives identical outputs for the original expression and for $P+T.O$, confirming the simplification.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>Part (a): the <strong>(M1)</strong> is for dividing by 0.0625; accept a candidate who works in the other direction by converting 37.5 to binary fractionally, provided the two's complement step is shown. Do not accept a sign-magnitude representation where two's complement was asked for. Part (b): the key discriminator is whether the candidate identifies the accumulator as the source of overflow. An answer that merely states 'the sum gets too big' without connecting this to the fixed 12-bit width earns one <strong>(M1)</strong>. For the width, accept 16-bit or 'four extra bits'; do not accept 15-bit, and do not accept a candidate who computes $16 \times 2048$ and obtains $32\,768$, because that value is not achievable and the conclusion for the width happens to be the same but the reasoning is wrong. Part (c): credit any answer that identifies 0.0625 as a power of two and 1.8 as a non-terminating binary fraction. A candidate who says '1.8 is not an integer' has not addressed the question and should not receive the last <strong>(A1)</strong>. Part (d): accept a truth-table proof, an algebraic proof, or a Karnaugh map. If a truth table is used it must have eight rows and all four minterms correctly placed. A candidate who writes 'F = P + TO' with no working earns one mark only.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Three separate ideas about fixed-width arithmetic are packed into one device, and they are usually taught separately.</p>
+<p>The first is that the representable range depends on the declared width, not on the physical sensor. A 12-bit signed register spans $-2048$ to $+2047$, which comfortably covers a temperature sensor, so a student may reasonably conclude that overflow is impossible. It is not: the accumulator is the same width, and summing is exactly the operation that pushes values out of range. This is why real systems widen the accumulator or use saturating arithmetic, and it is worth knowing that the failure mode of wrapping is silent — a plausible-looking wrong number rather than an error.</p>
+<p>The second idea is that exactness in conversion depends on the base representation, not on the size of the number. Multiplying by 0.0625 is exact because it is a power of two. Multiplying by 1.8 is not, and no amount of extra precision fixes it, because 1/5 has no finite binary expansion. This is the same reason that 0.1 cannot be stored exactly as a binary floating-point number, and it is the root cause of a large class of reported bugs in software that handles money.</p>
+<p>The third is that a Boolean expression can look as though it needs every term it contains. The term $P.T'$ appears to add information about temperature, but it is redundant: whenever $P$ is true the whole expression is already true, and whenever $P$ is false the term contributes nothing. Recognising this is what the absorption rule formalises. The practical consequence is two gates instead of five, which matters because the alarm output is clocked and every extra gate adds propagation delay.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The word length is fixed and small enough that representable range, scaled range and accumulator overflow all interact; the student must recognise that the overflow point depends on the number of readings rather than on the sensor, and then explain why one conversion factor is exact and a superficially similar one is not.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A1.2 Data representation and computer logic (A1.2.1 representation of integers in binary and hexadecimal, A1.2.2 binary encoding and its impact on storage, A1.2.3 logic gates, A1.2.4 truth tables)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Two&#x27;s complement conversion and Boolean simplification are standard IB content, and they are normally examined as separate, short items. Here they share one device, and the middle two parts are constructed so that the same fixed width causes a representation question (is -37.5 representable?) and an arithmetic question (does the sum overflow?), with the conversion part distinguishing an exact scaling factor from an inexact one. The logger, the 12-bit width, the 0.0625 scaling, the 16-reading accumulation bound and the alarm expression are original; every value was recomputed.</dd></div>
+  <div><dt>Verification</dt><dd>Checked by computation. -37.5 / 0.0625 = -600; -600 in 12-bit two&#x27;s complement is 4096 - 600 = 3496 = 1101 1010 1000 = 0xDA8, and 3496 - 4096 = -600. The 12-bit signed range is -2048..2047, equal to -128.0..127.9375 degrees Celsius. 16 x 2047 = 32752, which is within the 16-bit signed range -32768..32767 but outside the 15-bit range. The Boolean simplification was verified by evaluating both expressions over all eight input combinations.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>CS_HL_P1_2007May_q09 (similarity 0.003)</dd></div>
+  <div><dt>Nearest item here</dt><dd>CS-B3.1-001 (similarity 0.006)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

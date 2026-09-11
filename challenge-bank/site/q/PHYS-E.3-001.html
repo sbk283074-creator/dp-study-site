@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PHYS-E.3-001 — Physics HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>E.3 Radioactive decay</h1>
+<p class="lede"><a href="../physics-hl/index.html">Physics HL</a> · PHYS-E.3-001</p>
+<div class="meta"><span class="chip chip-key">E.3 Radioactive decay (AHL): decay constant, activity, half-life, exponential decay</span><span class="chip">P2</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: permitted</span><span class="chip">Write down</span><span class="chip">Determine</span><span class="chip">Calculate</span></div>
+
+
+<h2>Question</h2>
+<p>A sample contains a mixture of two radioactive isotopes, P and Q. Isotope P has a half-life of $4.0\ \mathrm{h}$ and isotope Q has a half-life of $32\ \mathrm{h}$.</p>
+<p>At time $t=0$ the <strong>total</strong> activity of the sample is $1200\ \mathrm{kBq}$. At $t=16\ \mathrm{h}$ the total activity is $300\ \mathrm{kBq}$.</p>
+<p>Assume that the decay products are stable and that the two isotopes decay independently.</p>
+<ol class="parts"><li><span class="marks">[2 marks]</span><strong>(a)</strong> <p>Write down an expression for the activity of each isotope at time $t$, in terms of its initial activity.</p> <em>(Write down)</em></li><li><span class="marks">[6 marks]</span><strong>(b)</strong> <p>Determine the initial activity of each isotope, showing the pair of simultaneous equations you solve. Give both values in $\mathrm{kBq}$.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Calculate the activity of each isotope at $t=16\ \mathrm{h}$ and hence verify that the total is $300\ \mathrm{kBq}$.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Determine the time at which the two isotopes contribute equally to the total activity.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong>  Using $A=A_{0}2^{-t/T_{1/2}}$:</p>
+<p>$$A_{P}(t)=A_{P0}\,2^{-t/4.0},\qquad A_{Q}(t)=A_{Q0}\,2^{-t/32}$$  <strong>(A1)(A1)</strong></p>
+<p>(with $t$ in hours)</p>
+<p>Equivalently $A(t)=A_{0}e^{-\lambda t}$ with $\lambda=\ln2/T_{1/2}$; the two forms are identical because $2^{-t/T_{1/2}}=e^{-(\ln2)t/T_{1/2}}$. For P, $\lambda_{P}=\ln2/4.0=0.173\ \mathrm{h^{-1}}$; for Q, $\lambda_{Q}=\ln2/32=0.0217\ \mathrm{h^{-1}}$.  <strong>(R1)</strong></p>
+<p><strong>(b)</strong>  Let $A_{P0}=a$ and $A_{Q0}=b$.</p>
+<p>At $t=0$:  $a+b=1200$  <strong>(A1)</strong></p>
+<p>At $t=16\ \mathrm{h}$: P has undergone $\dfrac{16}{4}=4$ half-lives and Q has undergone $\dfrac{16}{32}=0.5$ half-lives:</p>
+<p>$$a\,2^{-4}+b\,2^{-0.5}=300$$  <strong>(M1)(A1)</strong></p>
+<p>$$\frac{a}{16}+0.7071\,b=300$$</p>
+<p>Substituting $b=1200-a$:</p>
+<p>$$0.0625a+0.7071(1200-a)=300$$  <strong>(M1)</strong></p>
+<p>$$0.0625a+848.5-0.7071a=300 \Rightarrow -0.6446a=-548.5$$</p>
+<p>$$a=851\ \mathrm{kBq},\qquad b=1200-851=349\ \mathrm{kBq}$$  <strong>(A1)(A1)</strong></p>
+<p>Because the decay factors are known numbers, these two equations are linear in $a$ and $b$, which is why two total-activity readings suffice to recover both initial activities. If the two half-lives were equal the equations would be linearly dependent and no unique solution would exist; the eightfold separation of the half-lives is what makes the recovery possible.  <strong>(R1)</strong></p>
+<p><strong>(c)</strong>  At $t=16\ \mathrm{h}$:</p>
+<p>$$A_{P}=851\times2^{-4}=\frac{851}{16}=53.2\ \mathrm{kBq}$$  <strong>(A1)</strong></p>
+<p>$$A_{Q}=349\times2^{-0.5}=\frac{349}{1.414}=246.8\ \mathrm{kBq}$$  <strong>(A1)</strong></p>
+<p>$$\text{Total}=53.2+246.8=300\ \mathrm{kBq}\ \checkmark$$  <strong>(A1)</strong></p>
+<p><strong>(d)</strong>  Set the two contributions equal:</p>
+<p>$$a\,2^{-t/4}=b\,2^{-t/32}$$  <strong>(M1)</strong></p>
+<p>$$\frac{a}{b}=2^{\,t/4-t/32}=2^{\,7t/32}$$  <strong>(A1)</strong></p>
+<p>$$\frac{851}{349}=2.438=2^{\,7t/32}$$</p>
+<p>$$\frac{7t}{32}=\log_{2}(2.438)=\frac{\ln 2.438}{\ln 2}=\frac{0.8913}{0.6931}=1.286$$  <strong>(M1)</strong></p>
+<p>$$t=\frac{32}{7}(1.286)=5.88\ \mathrm{h}\approx5.9\ \mathrm{h}$$  <strong>(A1)</strong></p>
+<p>Check:  $A_{P}=851\times2^{-5.88/4}=851\times0.361=307\ \mathrm{kBq}$ and $A_{Q}=349\times2^{-5.88/32}=349\times0.880=307\ \mathrm{kBq}$ ✓</p>
+<p>As a limiting check, the crossover must fall after both isotopes are still appreciable and before the fast isotope dominates: $t=5.9\ \mathrm{h}$ lies between $T_{1/2,P}=4.0\ \mathrm{h}$ and $T_{1/2,Q}=32\ \mathrm{h}$, as required. Physically this is the time at which the sample stops behaving like P and starts behaving like Q.  <strong>(R1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Accept the equivalent exponential forms $A=A_{0}e^{-\lambda t}$ with $\lambda_{P}=\ln2/4.0=0.173\ \mathrm{h^{-1}}$ and $\lambda_{Q}=\ln2/32=0.0217\ \mathrm{h^{-1}}$.</p>
+<p>(b) Award (M1) for recognising 4 and 0.5 half-lives respectively — a candidate who uses 16/32 = 0.5 correctly but writes $2^{-16/32}$ as $2^{-2}$ has mis-handled the exponent. Follow through on small rounding differences; accept $a$ in the range 845–855 kBq and $b$ in 345–355 kBq. The pair must sum to 1200.</p>
+<p>(c) Follow through on the candidate's values from (b); the verification is the point of this part, so a total that does not come to 300 kBq signals an error in (b) and should not be credited here either.</p>
+<p>(d) The discriminating step is combining the exponents: $2^{-t/4}/2^{-t/32}=2^{-7t/32}$. Candidates who write $2^{-t/4-t/32}$ (adding instead of subtracting) will get a negative time. Award (M1) for equating the two expressions, (A1) for the correct exponent arithmetic, (M1) for taking logs, (A1) for 5.9 h. Allow 5.8–6.0 h.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Single-isotope decay questions are routine; this one is not, because there are two unknowns and only one decay curve's worth of data — the *total* activity at two times. That forces a simultaneous solution, and the exponential terms cannot be combined, so there is no shortcut.</p>
+<p>The two places where work collapses:</p>
+<p>1. <strong>Part (b) is really a pair of simultaneous equations.</strong> Recognising that 16 h is 4 half-lives for P but only half a half-life for Q is straightforward; the difficulty is then carrying $2^{-0.5}=0.7071$ through the algebra without rounding it to 0.7 (which shifts the answer by about 20 kBq).<br>2. <strong>Part (d) needs the exponent law applied to a difference.</strong> $\dfrac{2^{-t/4}}{2^{-t/32}}=2^{-t/4+t/32}=2^{-7t/32}$ — most candidates either add the exponents or subtract them the wrong way round and obtain a negative time, which they then either report or 'fix' by changing a sign without understanding why.</p>
+<p>Worth noticing afterwards: the fast isotope P starts with the larger activity (851 vs 349 kBq) but by 16 h it contributes almost nothing (53 kBq against 247 kBq). That is what the crossover time of 5.9 h means physically — the mixture's behaviour is dominated by P early on and by Q later, and any measurement of 'the' half-life of the sample would give a value that drifts continuously from near 4 h towards 32 h. That is why mixed sources are awkward in practice, and why a single half-life measurement on an unknown sample is not enough to identify it.</p>
+<p>Classic wrong turns: treating the sample as having a single effective half-life; using $A=A_{0}e^{-\lambda t}$ with $\lambda$ in hours but $t$ in seconds; and rounding $2^{-0.5}$ prematurely.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>A two-component decay: two isotopes with half-lives differing by a factor of eight are mixed, and their separate initial activities have to be recovered from only the total activity at two times — which means solving simultaneous equations in exponentials, then solving a logarithmic equation for the crossover time.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>E.3 Radioactive decay (AHL): decay constant, activity, half-life, exponential decay</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the E.3 bullets on activity, half-life and exponential decay. The two-isotope mixture with half-lives in a 1:8 ratio, the pair of total-activity measurements, and the crossover-time part were constructed together so that the simultaneous solution yields $a=851$ kBq and $b=349$ kBq and the crossover falls at a checkable 5.9 h.</dd></div>
+  <div><dt>Verification</dt><dd>simultaneous equations re-solved algebraically; crossover verified by direct substitution of t = 5.88 h into both decay expressions</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PHYS_HL_P1_2008May_TZ2_q35 (similarity 0.016)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-10</dd></div>
+</dl>
+<div class="pager"><a href="../physics-hl/index.html">← All Physics HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>
