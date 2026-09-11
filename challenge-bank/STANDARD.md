@@ -59,7 +59,7 @@ Two coherence rules, because mismatches are the clearest sign a question was not
 
 ## 3. Length contract — floors, not targets
 
-Calibrated against the published corpus (now 90 items). These are **absolute floors**: a new question
+Calibrated against the published corpus (now 100 items). These are **absolute floors**: a new question
 may not be materially thinner than the thinnest existing one in its subject.
 
 | Subject | `answer` | `markscheme_notes` | `explanation` | total context¹ |
