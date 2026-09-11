@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B3.2-001 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A constructor that prices every team as a single seat</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B3.2-001</p>
+<div class="meta"><span class="chip chip-key">B3.2 Fundamentals of OOP for multiple classes (HL only) (inheritance, superclass and subclass relationships, method overriding and polymorphism, composition as an alternative to inheritance)</span><span class="chip">P2 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">python</span><span class="chip">Explain</span><span class="chip">Construct</span><span class="chip">Calculate</span><span class="chip">Evaluate</span></div>
+<div class="box"><h4>Rowan Software - annual seat pricing</h4><p>Rowan Software bills teams for a subscription. Every plan has a term in months and an annual fee, and the annual fee is computed once, when the plan object is created, so that invoices can be issued later without recomputing prices.</p>
+<p>The code below defines a base class Plan and a subclass SeatPlan, whose price depends on how many seats the team has bought. A seat costs 9 pounds per month. The class attribute seats = 1 is a default for plans that have not specified a seat count.</p>
+<p>The developer tested the class with the three tests shown, and all three pass. The service has about 900 team customers; the average team buys 20 seats and signs a 12-month term. The finance team reconciles annual fees once a year and has never queried an individual customer's monthly fee.</p></div>
+<pre><code>class Plan:
+    PER_SEAT = 9                      # pounds per seat per month
+
+    def __init__(self, months):
+        self.months = months
+        self.annual_fee = self.monthly_fee() * months
+
+    def monthly_fee(self):
+        return 0
+
+class SeatPlan(Plan):
+    seats = 1                         # default for plans with no seat count
+
+    def __init__(self, seats, months):
+        super().__init__(months)
+        self.seats = seats
+
+    def monthly_fee(self):
+        return self.seats * Plan.PER_SEAT
+
+# the developer&#x27;s tests - all three pass
+def test_one_seat():
+    assert SeatPlan(1, 12).annual_fee == 108
+
+def test_monthly_fee_scales():
+    assert SeatPlan(20, 12).monthly_fee() == 180
+
+def test_seats_are_recorded():
+    assert SeatPlan(20, 12).seats == 20</code></pre>
+<h2>Question</h2>
+<p>The finance team has asked you to review the pricing code before the catalogue is extended. The reconciliation compares each customer's stored annual_fee with the invoice total.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain what annual_fee holds for SeatPlan(20, 12) and why it is not equal to monthly_fee() * months. Refer to the order in which the statements in SeatPlan.__init__ and Plan.__init__ run.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a corrected design in which the annual fee is always computed from the plan's own seat count and no constructor reads a field of an object that is not yet fully initialised. Use composition: a plan must hold a separate pricing object rather than inherit its price. Write the classes and state the annual fee for 20 seats over 12 months.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Calculate the annual fee that every SeatPlan caches, the fee that a 20-seat 12-month plan should be charged, and the total annual shortfall across all 900 customers. State how many of those customers are billed incorrectly.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Evaluate the two ways of removing the bug - patching the inheritance hierarchy so the field is set before the superclass constructor runs, or replacing the hierarchy with composition - and recommend one for a catalogue that will soon combine seats, usage and region.</p> <em>(Evaluate)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> For <code>SeatPlan(20, 12)</code> the attribute <code>annual_fee</code> holds <code>108</code>. <strong>(A1)</strong> It is not <code>2160</code> because of the order in which the two constructors run. The first statement of <code>SeatPlan.__init__</code> is <code>super().__init__(months)</code>, and inside <code>Plan.__init__</code> the assignment <code>self.annual_fee = self.monthly_fee() * months</code> calls <code>self.monthly_fee()</code>. <strong>(M1)</strong> Because <code>monthly_fee</code> is overridden, that call dispatches to <code>SeatPlan.monthly_fee</code>, which reads <code>self.seats</code>. At that moment the instance has only <code>months</code> in its attribute dictionary - the statement <code>self.seats = seats</code> has not run yet - so the lookup falls back to the class attribute <code>seats = 1</code>. The fee is therefore computed for a one-seat plan: $1 \times 9 = 9$ per month and $9 \times 12 = 108$ per year. <strong>(A1)</strong> Only after the superclass constructor returns is the instance attribute set to 20, and by then <code>annual_fee</code> has already been stored and is never recomputed; a later call to <code>monthly_fee()</code> correctly returns $20 \times 9 = 180$, so the live query and the cached value disagree.</p>
+<p><strong>(b)</strong> The defect is not that a constructor calls a method. It is that a constructor calls a method on an object that is only partly built, so the method can observe a field that does not exist yet. Composition removes the half-built object by making the pricing rule a separate, fully constructed collaborator:</p>
+<pre><code>class SeatPricing:
+    PER_SEAT = 9
+    def __init__(self, seats):
+        self.seats = seats
+    def monthly_fee(self):
+        return self.seats * self.PER_SEAT</code></pre>
+<p>class Plan:<br>    def __init__(self, months, pricing):<br>        self.months = months<br>        self.pricing = pricing<br>        self.annual_fee = pricing.monthly_fee() * months</p>
+<p>p = Plan(12, SeatPricing(20))<br>print(p.annual_fee)   # 2160<br>```</p>
+<p><strong>(M1)</strong> for giving <code>Plan</code> a pricing collaborator instead of a subclass that overrides a price method. <strong>(A1)</strong> for constructing that collaborator completely before the plan uses it, so no method ever reads a field that has not been set. <strong>(A1)</strong> for computing the annual fee from the collaborator's result. <strong>(A1)</strong> for the correct value, $180 \times 12 = 2160$. <strong>(A1)</strong> for noting that <code>Plan.__init__</code> still calls a method, but on a different object that is already finished, which is why the same line is now safe.</p>
+<p>Two inheritance-preserving fixes also work and are acceptable. Assigning the subclass field before the superclass constructor runs:</p>
+<pre><code>class SeatPlan(Plan):
+    def __init__(self, seats, months):
+        self.seats = seats        # set first
+        super().__init__(months)  # monthly_fee() now sees 20
+</code></pre>
+<p>and passing the already-computed fee up to the base constructor, so the base never calls an overridable method at all:</p>
+<pre><code>class Plan:
+    def __init__(self, months, monthly_fee):
+        self.months = months
+        self.annual_fee = monthly_fee * months
+</code></pre>
+<p>All three produce <code>annual_fee == 2160</code>. <strong>(A1)</strong></p>
+<p><strong>(c)</strong> During construction <code>self.seats</code> always falls back to the class attribute <code>1</code>, so every <code>SeatPlan</code> caches $9 \times 12 = 108$ per year, whatever its seat count. <strong>(M1)</strong> At an average of 20 seats the correct fee is $20 \times 9 = 180$ per month, which is $180 \times 12 = 2160$ per year. <strong>(A1)</strong> The undercharge is therefore $2160 - 108 = 2052$ per customer per year. <strong>(A1)</strong> Across 900 customers the shortfall is $900 \times 2052 = 1{,}846{,}800$, and all 900 are billed incorrectly: a customer is billed correctly only if it happens to have exactly one seat, which the 20-seat average rules out. The cached fee is one twentieth of the true fee at 20 seats, which is why 108 looks like a plausible annual price for a small team rather than an obvious error. <strong>(A1)</strong></p>
+<p><strong>(d)</strong> Both remedies remove the bug, so the choice is about the next change rather than this one. Patching the hierarchy - assign <code>seats</code> before <code>super().__init__</code>, or pass the fee up - is a one- or two-line change with no runtime cost, but it leaves the base constructor calling an overridable method, so the trap stays armed for the next subclass whose fields are set after <code>super()</code>. <strong>(M1)</strong> The composition design removes the trap: <code>Plan</code> depends on a <code>SeatPricing</code> object, so a subclass cannot observe an unset field. Its cost is one small object per plan - 900 <code>SeatPricing</code> objects of 48 bytes each, about 309,600 bytes once their instance dictionaries are counted, or roughly 0.31 MB - against a shortfall of 1,846,800. <strong>(A1)</strong> That is a ratio of about six to one between the money and the memory, so the memory argument is irrelevant at this scale. <strong>(A1)</strong> The decisive argument is growth: the catalogue will combine seats, usage and region, and inheritance multiplies subclasses (three independent pricing features give up to $2^3 = 8$ subclasses, and each new feature doubles that), while composition adds one collaborator per feature. Recommend adopting composition for the extended catalogue. <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) The mark is for the mechanism, not the number. The candidate must say that super().__init__ runs before self.seats = seats, that the call to monthly_fee() inside the base constructor dispatches to the override, and that the attribute lookup then finds the class attribute seats = 1. A candidate who writes only that the constructor uses the wrong seat count, without the order of the statements, earns at most one mark. Accept a trace table. Do not accept the claim that the class attribute is overwritten: it is not; the instance attribute is created later and shadows it only from that point on.</p>
+<p>(b) Accept any design that removes the read of a not-yet-assigned field, including composition, assigning the field before super().__init__, or passing the computed fee into the base constructor; code in Java or another language is acceptable if the syllabus version being sat requires it. The value 2160 must appear. A candidate who keeps the original hierarchy and merely adds a recompute() call after construction has treated the symptom; award at most two marks unless they also explain why the base constructor still calls an overridable method.</p>
+<p>(c) Follow through on any consistent seat average; the marks are for the method (a cached 108 against a correct 180 per month, times 12) and for the totals 2052 and 1,846,800. A candidate who forgets that the cached fee is 108 for every plan and uses 20 seats in both terms obtains a shortfall of zero; this forfeits the first mark. Accept all 900, or every customer with more than one seat, for the count, provided the candidate notes the one-seat exception.</p>
+<p>(d) This is an evaluate question, so a recommendation is required; a candidate who describes both fixes without choosing earns at most two of the four marks. The memory comparison must be present for the third mark and must be tied to the 1,846,800 figure. The final mark is for the growth argument - combinatorial subclass explosion under inheritance against one collaborator per feature under composition. Do not accept composition is always better without the growth reasoning, and do not accept keep inheritance because it is shorter without acknowledging the fragile base class.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The question hides a value error inside a language feature that students are taught to admire. Polymorphism is presented as the way a subclass customises behaviour; here it is the mechanism that makes the bug invisible. When Plan.__init__ evaluates self.monthly_fee(), the method that runs belongs to SeatPlan, but the object it runs on is only half built. The field the method needs, seats, does not exist yet, and Python's attribute lookup silently supplies the class attribute instead of raising an error. Nothing crashes, no warning is printed, and the object afterwards looks completely correct: p.seats is 20 and p.monthly_fee() is 180. Only p.annual_fee is wrong, and only for plans whose seat count is not 1.</p>
+<p>That last detail is what makes the bug survive testing. The author's tests are not careless - they check that seats are recorded and that the monthly fee scales - but each one either calls the method on demand or uses the single-seat case that the class default happens to match. The failing field is the one computed once, early, and then trusted forever. This is the general shape of a constructor bug: a value is computed at the worst possible moment, cached, and never recomputed, so the error is frozen into the object while every live query returns the truth.</p>
+<p>The classic wrong turns are worth naming. The first is to look for the fault in monthly_fee, which is correct. The second is to treat the class attribute seats = 1 as a harmless default and conclude that the value is overwritten before use; it is overwritten, but not before monthly_fee reads it. The third is to fix the symptom by recomputing annual_fee after construction, which hides this instance of the bug while leaving the base constructor's virtual call in place for the next subclass. The fourth, and the most expensive, is to assume that because the object constructs without error the design is sound.</p>
+<p>The design lesson is the fragile base class. A superclass that calls an overridable method from its constructor hands every future subclass a hidden ordering constraint that is documented nowhere and enforced by nothing. Composition removes the constraint because the collaborator is finished before it is used: the same line, pricing.monthly_fee() * months, is now safe, which is the point the last part tests. Composition is not free - it costs one object per plan - but at 900 plans the cost is a fraction of a megabyte against a shortfall of nearly two million, so the trade is not close. The remaining judgement is about growth: with three independent pricing dimensions inheritance would need up to eight subclasses, and each new dimension would double that.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>A superclass constructor calls a method that the subclass overrides, so the subclass&#x27;s own field is read before it has been assigned; the object passes every test the author wrote because the single-seat case the tests use happens to match the class-level default.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B3.2 Fundamentals of OOP for multiple classes (HL only) (inheritance, superclass and subclass relationships, method overriding and polymorphism, composition as an alternative to inheritance)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the B3.2 bullets on multiple classes, inheritance, method overriding and composition. The subscription-pricing setting, the 9-pound seat rate, the single-seat class default, the three passing tests, the 900-customer / 20-seat / 12-month scale and the composition remedy were chosen together so that the cached fee is exactly one twentieth of the correct fee and the shortfall resolves to an exact figure. The item is not a reskin of the single-class buffer item: there the bug is an arithmetic divisor inside one class, here it is a virtual dispatch during construction across two classes, and the remedy is a structural change from inheritance to composition.</dd></div>
+  <div><dt>Verification</dt><dd>The buggy hierarchy, the three tests and all three candidate fixes were executed in Python 3. SeatPlan(20, 12) caches annual_fee = 108 while monthly_fee() returns 180 and seats is 20; the three tests all pass; each fix produces annual_fee = 2160. Object sizes were measured with sys.getsizeof: a SeatPricing object is 48 bytes and its instance dictionary is 296 bytes, so 900 collaborators need 309,600 bytes. The shortfall is 900 x (2160 - 108) = 1,846,800, which is about six times the memory cost.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MA_HL_topic_Topic10_HL-paper3_q85 (similarity 0.003)</dd></div>
+  <div><dt>Nearest item here</dt><dd>CS-A3.1-001 (similarity 0.003)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

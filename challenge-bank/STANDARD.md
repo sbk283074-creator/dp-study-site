@@ -120,9 +120,10 @@ cases where the obvious Toolkit tool is the wrong one.
 
 They are evaluated by `validate.py` in a restricted namespace (`math`, plus `G`, `g`, `c`, `e_charge`,
 and the helpers `approx(a, b, tol)` and `pct(a, b)`). **Mandatory for every new maths and physics
-question** — it is the only mechanical check that the arithmetic in the answer is right. All 26
-maths and physics items now carry them, as do all 16 batch-3 items in the other two subjects; the
-10 remaining CS and BM items from batches 1–2 are backfilled as they are next touched.
+question** — it is the only mechanical check that the arithmetic in the answer is right. All 62 items
+in the bank now carry them (558 assertions in total), including the CS and BM items, where the check
+is optional but has already repaid the cost: backfilling the original BM items exposed a €24 slip in
+an expected-value difference and a volume gap quoted against the wrong price pair.
 
 ---
 
@@ -211,5 +212,6 @@ unless something breaks.
 4. **Status:** new items are `draft` until the gates pass, then `published`.
 5. **Re-brief:** coverage is re-measured after every batch; the next brief comes from the new gaps.
 
-Current state: 52 questions · **88 / 166 nodes covered (53%)** — Maths 23/83, Physics 15/24, CS 24/25,
-BM 26/34. All 52 are `published` and `validate.py --strict` reports 0 failures and 0 warnings.
+Current state: 62 questions · **105 / 166 nodes covered (63%)** — Maths 32/83, Physics 22/24, CS 25/25
+(complete), BM 26/34. All 62 are `published`, `validate.py --strict` reports 0 failures and 0 warnings,
+and all 62 items carry `verification.assertions` (558 assertions in total).

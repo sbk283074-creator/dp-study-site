@@ -1,7 +1,7 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 52 questions across the four subjects, all published, all gates passing.**
+**Status: live. 62 questions across the four subjects, all published, all gates passing.**
 
 New folder: `challenge-bank/` (inside `dp learning final/`). It holds the question data and a
 standalone static website that collects and presents the questions.
@@ -401,11 +401,37 @@ similarity score, and no BM item ships containing HL-only content.
   The whole bank is now **52 questions · 88/166 nodes covered (53%)**, with `validate.py --strict`
   reporting **0 failures and 0 warnings** and the originality gate clean at a highest external score
   of 0.049 and a highest internal score of 0.022.
-- **Batch 4+:** continue from `coverage.py --next`. The largest remaining gaps are Maths Topic 5
-  (calculus — 8/83 nodes) and Physics C (waves) and E (atomic, nuclear and particle physics), both
-  still carrying must-cover nodes. CS is essentially complete at 24/25 and BM is 26/34 with the
-  Toolkit nodes (SWOT, Ansoff, STEEPLE, BCG, business plan, decision trees, descriptive statistics,
-  circular business models) still uncovered as standalone nodes.
+- **Batch 4 — DONE.** Ten more items (62 total), drawn from the top of the gap list. Maths (5):
+  1.15 an induction whose naive hypothesis is provably too weak, so the student must strengthen it to
+  $S_n\le\frac32-\frac1n$ (15, d5) · 2.12+2.14 symmetry stated as $f(2+t)+f(2-t)=4$, i.e. oddness about
+  $(2,2)$, with the coefficient pinned by a repeated root (15, d5) · 3.10+3.11 a compound-angle
+  expansion that reproduces the double-angle factor and whose squaring invents two extraneous roots
+  (15, d5) · 3.12+3.15 a scalar triple product of $k(k-1)$, so a zero determinant occurs at two values
+  of $k$ for different reasons and can never settle the classification (16, d5) · 5.16+5.17 an implicit
+  circle offset from both axes, where the $y$-axis area exists only after rejecting a branch (15, d4).
+  Physics (4): C.1+C.2 coupled gliders in which the coupling spring never stretches, so the period is
+  set by the wall springs alone and the stiffness cancels (16, d5) · C.4 touching a string at $3/8$ of
+  its length forces the node condition $d=jL/n$, so the lowest note is the eighth harmonic, not the
+  third (16, d5) · D.2+D.3 an undeflected reading that fixes only $E/B$, leaving the trajectory blind to
+  a common rescaling (15, d5) · E.1+E.2 two stopping voltages, each one equation in two unknowns, where
+  only their difference cancels the work function (16, d5). CS (1): B3.2 a superclass constructor that
+  calls an overridden method, so the subclass field is read before assignment and the cached fee
+  silently falls back to the class default — the bug survives every test its author wrote (16, d5).
+  **CS is now complete at 25/25.**
+  Whole bank: **62 questions · 105/166 nodes (63%)**, `validate.py --strict` clean at 0 failures and
+  0 warnings, originality clean at 0.048 external / 0.022 internal.
+- **Assertions backfilled across the whole bank — DONE.** All 62 items now carry
+  `verification.assertions` (558 assertions). Making the machine check universal repaid its cost
+  immediately by exposing three genuine defects that had survived review: `CS-B4.1-001` quoted the
+  *average* comparison count (8×10⁸) where its own part asks for the worst case (1.6×10⁹) — the very
+  error its explanation warns against; `BM-5.5-001` stated an expected-value gain of €17 040 where its
+  own two EVs give €17 064; and `BM-4.5-001` illustrated the revenue/contribution conflict with a
+  5 000-bottle gap taken from the wrong pair of prices. All three are corrected.
+- **Batch 5+:** continue from `coverage.py --next`. Maths Topic 5 is still the largest hole
+  (32/83 overall), with 3.9, 5.12 and 5.15 the next must-cover nodes, and Physics E.4/E.5
+  (fission, fusion and stars) the only must-cover Physics nodes left. BM is 26/34: its remaining eight
+  nodes are all priority-2 Toolkit tools (SWOT, Ansoff, STEEPLE, BCG, business plan, decision trees,
+  descriptive statistics, circular business models), which the brief orders after every priority-1 node.
 - **Printables:** assemble `site/papers/` (printable practice papers plus matching answer booklets)
   once a subject reaches roughly 20 items; at 13 per subject the bank is close but not there yet.
 
