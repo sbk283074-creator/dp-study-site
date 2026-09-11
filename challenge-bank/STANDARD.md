@@ -120,8 +120,8 @@ cases where the obvious Toolkit tool is the wrong one.
 
 They are evaluated by `validate.py` in a restricted namespace (`math`, plus `G`, `g`, `c`, `e_charge`,
 and the helpers `approx(a, b, tol)` and `pct(a, b)`). **Mandatory for every new maths and physics
-question** — it is the only mechanical check that the arithmetic in the answer is right. All 90 items
-in the bank now carry them (961 assertions in total), including the CS and BM items, where the check
+question** — it is the only mechanical check that the arithmetic in the answer is right. All 111 items
+in the bank now carry them (1108 assertions in total), including the CS and BM items, where the check
 is optional but has already repaid the cost: backfilling the original BM items exposed a €24 slip in
 an expected-value difference and a volume gap quoted against the wrong price pair.
 

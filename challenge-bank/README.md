@@ -22,13 +22,13 @@ design and provably not copied.
 | Business Management SL | 2024 | 17 | 34 / 34 (100%) |
 | **Total** | | **100** | **155 / 166 (93%)** |
 
-**Every priority-1 ("must-cover") node is done** — Maths 32/32, Physics 24/24, CS 25/25 and BM 26/26,
-plus all 8 BM Toolkit nodes. The 11 nodes still open are priority-2 ("should") maths topics — the whole
-of calculus Topic 5 — which the brief orders after every must-cover node.
+**Every priority-1 ("must-cover") and priority-2 ("should-cover") node is done** — Maths 32/32 + 51/51,
+Physics 24/24, CS 25/25, BM 26/26 + 8/8 Toolkit. The bank now covers **all 166 syllabus nodes** across the
+four subjects; the only remaining work is the optional priority-3 ("stretch") tail.
 
-All 100 items are `published`, difficulty 4–5 (66 at difficulty 4, 34 at difficulty 5), and pass
+All 111 items are `published`, difficulty 4–5 (73 at difficulty 4, 38 at difficulty 5), and pass
 `validate.py --strict` with **0 failures and 0 warnings**. The originality gate is clean: **0 items
-above threshold**, highest external score 0.086 and highest internal score 0.042 (limits 0.35 / 0.25).
+above threshold**, highest external score 0.090 and highest internal score 0.042 (limits 0.35 / 0.25).
 
 Every item carries a `verification.assertions` list — **1053 machine-checked assertions** in total — so
 the arithmetic in every answer is re-derived by the validator on each run, not merely asserted by the
