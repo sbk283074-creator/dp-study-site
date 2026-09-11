@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A2.3-001 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A2 Networks</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A2.3-001</p>
+<div class="meta"><span class="chip chip-key">A2.1 Network fundamentals, A2.3 Data transmissions, A2.4 Network security (HL only elements), A2.2 Network architecture</span><span class="chip">P1 · Section A</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">Calculate</span><span class="chip">Explain</span><span class="chip">Evaluate</span></div>
+<div class="box"><h4>Stimulus</h4><p>A hospital radiology department stores medical images on a central server. Staff at a clinic 4 km away need to retrieve these images over the hospital network. A typical study is 1.2 GB. The clinical standard requires that a study be available within 15 seconds of a request.</p>
+<p>The existing link between the clinic and the server is 100 Mbps. Network protocol overhead consumes 8% of the available bandwidth. 1 GB is taken as $10^{9}$ bytes and 1 Mbps as $10^{6}$ bits per second.</p></div>
+
+<h2>Question</h2>
+<p>The network is also used for staff email, VoIP telephony and building-management sensors.</p>
+<ol class="parts"><li><span class="marks">[6 marks]</span><strong>(a)</strong> <p>Calculate the time to transfer one 1.2 GB study over the existing 100 Mbps link. Hence evaluate whether upgrading the link to 1 Gbps would allow the 15-second clinical standard to be met.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Explain how packet switching allows the link to be shared with the other traffic listed, and describe <strong>one</strong> consequence of this sharing for the image transfer.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>The network is segmented into a clinical VLAN, a guest Wi-Fi VLAN and an IoT VLAN for building sensors. Explain the purpose of this segmentation and how a firewall enforces it.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Patient data are encrypted in transit. Distinguish between symmetric and asymmetric encryption, and explain the role of a digital certificate.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong>  Data: $1.2\ \mathrm{GB}=1.2\times10^{9}\ \text{bytes}=9.6\times10^{9}$ bits.  <strong>(A1)</strong></p>
+<p>Usable bandwidth $=100\times10^{6}\times0.92=92\times10^{6}$ bits per second.  <strong>(A1)</strong></p>
+<p>$$\text{time}=\frac{9.6\times10^{9}}{92\times10^{6}}=104\ \mathrm{s}$$  <strong>(A1)</strong></p>
+<p>At 1 Gbps:  usable $=1000\times10^{6}\times0.92=920\times10^{6}$ bps, so</p>
+<p>$$\text{time}=\frac{9.6\times10^{9}}{920\times10^{6}}=10.4\ \mathrm{s}$$  <strong>(A1)</strong></p>
+<p><strong>Evaluation:</strong> the existing link takes about 104 s, roughly seven times the 15 s standard — the requirement is not met and cannot be met by any reasonable tuning.  <strong>(A1)</strong>  Upgrading to 1 Gbps gives 10.4 s, which meets the standard but with only about 4.6 s of margin. Since the link is shared with email, VoIP and sensor traffic (see part b), that margin could be eroded at busy times, so a 1 Gbps upgrade is justified but may not on its own be sufficient; the hospital should also consider prioritising (QoS) or transferring studies outside peak hours.  <strong>(A1)</strong></p>
+<p><strong>(b)</strong>  In a packet-switched network the data is broken into <strong>packets</strong>, each carrying a destination address and a sequence number.  <strong>(A1)</strong>  Packets from different applications are interleaved on the same link, so the link is never idle waiting for one transfer to finish; routers forward each packet independently, possibly by different routes, and the receiving device reassembles them using the sequence numbers.  <strong>(A1)(A1)</strong></p>
+<p><strong>Consequence:</strong> the transfer time becomes <strong>variable</strong> rather than fixed — competing traffic reduces the share of bandwidth available to the image transfer, and because packets may take different routes they can arrive out of order or with varying delay (jitter), so the effective throughput fluctuates and the 104 s figure in (a) is a best case, not a guarantee.  <strong>(A1)</strong></p>
+<p><strong>(c)</strong>  Segmentation divides one physical network into separate logical networks so that traffic in one segment cannot reach another.  <strong>(A1)</strong>  Its purpose here is to contain risk: a compromised guest device or an insecure building sensor cannot reach the clinical network holding patient records, and broadcast traffic is confined.  <strong>(A1)</strong></p>
+<p>A <strong>firewall</strong> sits between segments and enforces the separation by applying rules — it inspects each packet's source, destination, port and protocol, permits traffic that matches an allowed rule (for example, a clinical workstation on VLAN 10 reaching the image server on TCP port 443) and drops or logs everything else by default.  <strong>(A1)</strong></p>
+<p><strong>(d)</strong>  <strong>Symmetric</strong> encryption uses the *same* key to encrypt and decrypt. It is fast and suitable for bulk data, but the key must be shared securely in advance — if it is intercepted, all communication is compromised.  <strong>(A1)</strong></p>
+<p><strong>Asymmetric</strong> encryption uses a mathematically related *key pair*: a public key for encrypting and a private key (kept secret) for decrypting. No shared secret needs to be exchanged, but it is far slower, so in practice it is used to exchange a symmetric *session* key, which then encrypts the data.  <strong>(A1)</strong></p>
+<p>A <strong>digital certificate</strong> solves the remaining problem — how the client knows the public key really belongs to the hospital server and not to an impostor. A trusted certificate authority signs a document binding the server's identity to its public key; the client verifies the signature against the CA's own certificate, and only then uses the public key.  <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award (A1) for the byte-to-bit conversion, (A1) for applying the 8% overhead, (A1) for 104 s, (A1) for 10.4 s. The last two marks are evaluative: one for stating clearly that 100 Mbps fails the standard, one for a judgement that recognises 10.4 s meets it *but with limited margin* — a bare 'yes, upgrade' earns only one of the two.</p>
+<p>(b) Three of the four marks are for the mechanism (packetising, interleaving/sharing, independent routing and reassembly); the fourth is for a consequence. Accept latency, jitter, out-of-order arrival, variable throughput or the need for retransmission. Do not credit 'it is more efficient' on its own.</p>
+<p>(c) One mark for what segmentation is, one for why (containment of risk/broadcast), one for the firewall's rule-based enforcement. Naming 'VLAN' without explaining the separation earns nothing.</p>
+<p>(d) Each of the three marks is a separate idea: the shared-key/public-key distinction, the performance consequence (hybrid use), and the certificate's role in binding identity to a public key. Candidates who say 'a certificate encrypts the data' have misunderstood and forfeit the last mark.</p>
+<p>Additional guidance. In (a) accept 'about 100 s' for 104 s, and follow through on the candidate's own bit conversion: both evaluation marks are awarded on their figures provided the 15 s comparison is explicit. In (b) credit 'packets can be routed around a failed link' as a consequence of independent routing.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The arithmetic in (a) is easy to get wrong in three specific ways, and each gives an answer that looks plausible: forgetting the 8% overhead (giving 96 s), forgetting that bandwidth is in bits while file size is in bytes (giving 13 s), or applying the overhead by adding rather than multiplying. Only the correct treatment yields 104 s, and without it the evaluation is guesswork.</p>
+<p>But the evaluation mark is the real target. '1 Gbps is faster, so upgrade' is not an argument. The student has to notice that 10.4 s leaves under 5 s of headroom on a link that is explicitly shared, and therefore that the upgrade is necessary but possibly not sufficient. That is the difference between describing a network and designing one.</p>
+<p>Part (b) is where the two halves of the question connect. The 104 s in (a) is the *unshared* best case. Once packet switching is understood as interleaving rather than queueing, it follows that the real figure will be worse and less predictable — which is exactly why part (a)'s margin matters.</p>
+<p>Parts (c) and (d) are deliberately sequenced: segmentation limits *who* can reach the data, and encryption protects it *in transit*. Students commonly conflate the two, or assume that because data are encrypted, network segmentation is unnecessary — it is not, since encryption does nothing to stop an attacker on the clinical VLAN from reaching a server they should not be able to see.</p>
+<p>Classic wrong turns: treating 1.2 GB as 1.2 × 2^30 bytes while the question states 10^9; describing circuit switching instead of packet switching; and claiming that a firewall 'encrypts' traffic.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The evaluation is only defensible if the arithmetic is done first: whether a link upgrade is &#x27;worth it&#x27; is decided by comparing two computed transfer times against a stated deadline, not by asserting that faster is better.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A2.1 Network fundamentals, A2.3 Data transmissions, A2.4 Network security (HL only elements), A2.2 Network architecture</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the A2.1, A2.2, A2.3 and A2.4 bullets. The hospital-imaging scenario, the 1.2 GB study, the 8% overhead, the 15-second clinical standard and the 1 Gbps comparison were constructed together so that the transfer times come to 104 s and 10.4 s — close enough to the deadline to make the evaluation genuinely arguable.</dd></div>
+  <div><dt>Verification</dt><dd>both transfer times recomputed; margin 15 - 10.4 = 4.6 s confirmed</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PH_HL_Option_C_HL-paper3_q20 (similarity 0.003)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-10</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

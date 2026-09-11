@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B2.1-001 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Forty ten-pence subtractions that never reach sixteen pounds</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B2.1-001</p>
+<div class="meta"><span class="chip chip-key">B2.1 Programming fundamentals (data types, variables and constants, operators, expressions, type conversion, input and output)</span><span class="chip">P2 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">python</span><span class="chip">Explain</span><span class="chip">Construct</span><span class="chip">Justify</span></div>
+<div class="box"><h4>Rivergate car park - the season-ticket balance</h4><p>A multi-storey car park in Rivergate sells season tickets. A driver's account holds a cash balance, and every exit deducts the charge for that stay. The tariff is 2 pence per minute, so a stay is charged exactly with no rounding, and a loyalty discount of one penny per point is subtracted from the charge but never exceeds it, so the amount due is never negative.</p>
+<p>The current Python implementation holds the balance, the charge and the discount in pounds as floating-point numbers. A driver tops up £20.00 and then makes forty short stays, each deducting exactly £0.10. The true remaining balance is exactly £16.00, and the car park sells a £16.00 annual pass that may be bought only when the balance is at least £16.00.</p>
+<p>The car park handles about 250,000 exits a day. The payment system is being rewritten and must never refuse a driver whose balance is genuinely sufficient.</p></div>
+<pre><code>BALANCE = 20.00            # pounds
+CHARGE = 0.10              # pounds, one short stay
+
+for _ in range(40):
+    BALANCE = BALANCE - CHARGE
+
+def can_buy_pass(balance):
+    return balance &gt;= 16.00
+
+print(BALANCE)                 # 15.999999999999945
+print(can_buy_pass(BALANCE))   # False</code></pre>
+<h2>Question</h2>
+<p>The rewritten system must be available in both Python and Java, and the two versions must behave identically.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain the difference between a floating-point number and an integer as a way of storing an amount of money, and state why the balance in this system should be held in pence rather than pounds.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a Python function settle(balance_pence, minutes, points) that returns the balance remaining after the stay, or None if the balance is insufficient. The tariff is 2 pence per minute and the discount is one penny per point, capped so that the amount due is never negative. Money must be handled as integer pence: you may not use round, the decimal module, float or any imported module. A Java version of this paper requires the same algorithm, so write the algorithm rather than a demonstration of syntax.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain why the loop above prints 15.999999999999945 rather than 16.00, and why can_buy_pass therefore returns False. Explain why the same forty deductions are exact when the balance is held in integer pence.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Justify holding every amount as integer pence rather than as floating-point pounds, referring to the 250,000 exits a day, and state the one change that must be made where amounts enter and leave the program.</p> <em>(Justify)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> A floating-point number stores a value as a sign, a mantissa and a binary exponent. It can hold an enormous range, but only approximately: a value is rounded to the nearest representable binary fraction, and most decimal fractions — including $0.10$ — have no exact binary representation. <strong>(M1)</strong> An integer stores an exact whole number with no fractional part, and integer addition and subtraction produce exact results as long as the result is inside the representable range. <strong>(A1)</strong> Money should therefore be held as a whole number of pence, because every amount charged is an exact whole number of pence; pounds are only a presentation convention applied when the value is displayed. <strong>(A1)</strong></p>
+<p><strong>(b)</strong></p>
+<pre><code>def settle(balance_pence, minutes, points):
+    charge = minutes * 2          # 2 pence per minute, exact
+    discount = points             # 1 penny per point
+    if discount &gt; charge:
+        discount = charge         # the amount due is never negative
+    due = charge - discount
+    if balance_pence &lt; due:
+        return None               # insufficient: the barrier stays down
+    return balance_pence - due    # exact remaining balance, 0 when equal
+</code></pre>
+<p><strong>(M1)</strong> for computing the charge as an integer product rather than a floating-point rate. <strong>(A1)</strong> for capping the discount at the charge, so the amount due cannot become negative. <strong>(A1)</strong> for the balance test. <strong>(A1)</strong> for returning the remaining balance, including the boundary case <code>balance_pence == due</code>, which must return <code>0</code> and not <code>None</code>. <strong>(A1)</strong> for using only integer arithmetic throughout.</p>
+<p>A Java version of this paper asks for the same algorithm. The translation is structural: <code>int</code> parameters and return type, and the same three statements. Java would give the same wrong answers if the amounts were held as <code>double</code>, so the algorithm, not the syntax, is what is being assessed.</p>
+<p><strong>(c)</strong> The literal <code>0.10</code> is not exactly one tenth. The nearest 64-bit floating-point value is slightly larger than $0.1$, and each subtraction leaves a small residue, so after forty subtractions the stored balance is <code>15.999999999999945</code> rather than <code>16.00</code>. <strong>(M1)(A1)</strong> The comparison <code>balance &gt;= 16.00</code> is then false even though the true balance is exactly sixteen pounds, so a driver who is entitled to the pass is refused. <strong>(A1)</strong> The error is around $5\times10^{-17}$ — far too small for a display to show — but it is not a rounding artefact of the *display*: it is stored in the value, and it decides a comparison. In integer pence the same forty deductions are $2000 - 40 \times 10 = 1600$, every intermediate value is exact, and <code>1600 &gt;= 1600</code> is true. <strong>(A1)</strong></p>
+<p>Note how well the bug hides. The arithmetic expression <code>20.00 - 40 * 0.10</code> evaluates to exactly <code>16.0</code>, so a developer who checks the calculation on a calculator, or who rewrites the loop as one multiplication, sees nothing wrong. Only the *accumulation* — one subtraction per exit, forty times — produces the residue. That is why the fault survives the obvious test.</p>
+<p><strong>(d)</strong> Holding amounts in integer pence is justified by exactness, and the exactness has a measurable cost when it is absent. In a scan of 1,440,000 combinations of stay length and loyalty points, 315,902 — about 22% — produce a floating-point amount due that is strictly greater than the exact amount due, so an exactly sufficient balance is rejected. <strong>(M1)(A1)</strong> The car park handles 250,000 exits a day. If one exit in a hundred presents a balance that is exactly sufficient, that is 2,500 exits a day, and at the observed rate about 550 of them a day — some 200,000 a year — would be wrongly refused and would need a manual override. <strong>(A1)</strong> That is the cost of the wrong data type, and it is not a cost that can be paid down by testing harder, because the failing inputs are a scattered subset that no test suite will enumerate.</p>
+<p>One change is needed where the value crosses the boundary of the program. On input, the amount must be converted to pence immediately and by integer arithmetic — parsing <code>"12.30"</code> as <code>1230</code>, never as <code>float("12.30") * 100</code>, which reintroduces the error. On output, pence must be formatted back into a decimal string with the point inserted. Inside the program, every amount is an integer. <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Accept any answer that distinguishes exactness from range; the essential contrast is that an integer is exact within its range while a binary floating-point value is a rounded approximation. Do not credit "floats are inaccurate" as a complete answer unless a consequence for money is stated. A candidate who recommends <code>decimal</code> or <code>Fraction</code> instead of integer pence should be credited fully *provided* they say why those types are exact and note the cost (slower, and a library dependency) — the question's marks are for exactness, not for one particular representation.</p>
+<p>(b) Code in a language other than Python should be accepted if the syllabus version being sat requires it. The boundary mark is the discriminating one: a candidate whose <code>settle</code> returns <code>None</code> when the balance exactly equals the amount due has introduced the same class of bug in the opposite direction. Do not award the integer-arithmetic mark to a function that multiplies by <code>0.02</code> or <code>0.01</code>, even if the rest is correct.</p>
+<p>(c) The two marks for the diagnosis require the mechanism (a decimal fraction has no exact binary representation, so repeated subtraction accumulates a residue) and the observed value. A candidate who says only "floating-point rounding" without connecting it to the comparison earns one mark. Accept the value <code>15.999999999999945</code> or any value strictly below <code>16.00</code> obtained by tracing the loop. Do not accept "the computer is broken" or "Python is imprecise" as a mechanism.</p>
+<p>(d) Follow through on the arithmetic. Accept any well-argued frequency assumption for exact-balance exits, provided the candidate states it; the marks are for the *structure* of the argument (a verified rate of misjudgement multiplied by a stated daily volume) and for the conclusion. The final mark is for naming the input/output conversion as the place the change must be made; a candidate who says "store it as an integer" without saying where the conversion happens has not closed the loop.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The lever here is a correctness bug that survives the obvious test, and the reason it survives is worth stating precisely: the error is far too small to see, but it is compared, not displayed.</p>
+<p>A developer testing this system would try a single stay. <code>20.00 - 0.10</code> gives <code>19.9</code>, which prints as <code>19.9</code>, and the balance check works. They might also check the total with a calculator, or rewrite the loop as <code>20.00 - 40 * 0.10</code> — and that expression is exactly <code>16.0</code>, so it passes too. The fault appears only when the balance is *accumulated*, one subtraction at a time, which is what a real system does. The discrepancy between <code>20.00 - 40 * 0.10</code> and forty separate subtractions is the whole question: floating-point arithmetic is not associative, so the order of operations changes the answer, and the order is fixed by the program's control flow rather than by the mathematics.</p>
+<p>The deeper point is that <code>&gt;=</code> on computed floating-point values is not a reliable test, and no amount of care in choosing the comparison operator fixes it. A tolerance comparison (<code>abs(balance - due) &lt; 0.005</code>) looks like the standard remedy and is the most tempting wrong turn: it hides this bug by accepting a balance that is a fraction of a penny short, which is a different defect — the system now lets a driver through who has not paid. The requirement is exactness, so the representation has to be exact, and the only exact representation of a whole number of pence is an integer.</p>
+<p>Two further wrong turns are common. The first is using <code>round(x, 2)</code> on the balance after each subtraction; rounding a float does not remove the residue, and Python's <code>round</code> uses banker's rounding, so <code>round(2.5)</code> is <code>2</code> and <code>round(0.5)</code> is <code>0</code>, which introduces a new and equally silent error. The second is believing that Python's 64-bit floats are "precise enough"; they are precise enough to *display* money, which is why the bug is invisible, and not precise enough to *compare* it, which is why it matters. The same reasoning applies to Java's <code>double</code>, and that is why the fix is a change of data type rather than a change of language.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>A correctness bug survives the obvious test because the error is far too small to display yet is decisive in a comparison: money accumulated by repeated floating-point subtraction drifts below an exact balance, so the program is only correct for the inputs a developer happens to try.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B2.1 Programming fundamentals (data types, variables and constants, operators, expressions, type conversion, input and output)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the B2.1 bullets on data types, operators and type conversion. The car park, the 2-pence-per-minute tariff, the one-penny loyalty point, the forty £0.10 deductions from £20.00 and the £16.00 pass threshold were chosen together so that the exact arithmetic is trivial in pence and the floating-point drift is reproduced exactly (15.999999999999945) rather than approximated.</dd></div>
+  <div><dt>Verification</dt><dd>The draft loop and the corrected integer function were executed in Python 3. The loop of forty subtractions produces 15.999999999999945, so 15.999999999999945 &gt;= 16.00 is False, while the integer balance 2000 - 40*10 = 1600 satisfies 1600 &gt;= 1600. A scan of all 1,440,000 (minutes, points) pairs in the ranges 1-2400 and 0-599 found 315,902 pairs (about 22%) whose floating-point amount due exceeds the exact amount due.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>AI-CS-V031 (similarity 0.003)</dd></div>
+  <div><dt>Nearest item here</dt><dd>CS-B2.3-001 (similarity 0.022)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

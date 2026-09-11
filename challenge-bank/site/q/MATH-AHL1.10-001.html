@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL1.10-001 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A counting formula that fails on the regular hexagon</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL1.10-001</p>
+<div class="meta"><span class="chip chip-key">AHL 1.10 (counting principles, including permutations and combinations)</span><span class="chip">P2 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: required</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">Explain</span><span class="chip">Hence</span></div>
+
+
+<h2>Question</h2>
+<p>$n$ points are placed on a circle and every pair of points is joined by a straight chord. Throughout, assume first that the points are in general position, meaning that no three of the chords are concurrent at a point strictly inside the circle.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Show that, for $n\geq4$ points in general position, the number of intersection points of the chords that lie strictly inside the circle is $\dbinom{n}{4}$.</p> <em>(Show that)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>Hence determine the least value of $n$ for which the number of interior intersection points exceeds $1000$.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Now suppose the six points are the vertices of a regular hexagon. Explain why $\dbinom{6}{4}=15$ is not the number of distinct interior intersection points, identifying precisely which intersections coincide.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(d)</strong> <p>Hence determine the number of distinct interior intersection points for the regular hexagon, justifying why no further coincidences occur.</p> <em>(Hence)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Take any set of four of the points. The four points form a cyclic quadrilateral, and the two diagonals of that quadrilateral are chords which cross at a point strictly inside the circle. <strong>(M1)</strong> So each $4$-element subset of the points produces at least one interior intersection point.</p>
+<p>Conversely, take any interior intersection point. It is the meeting of two chords, and those two chords have four distinct endpoints among the given points, so they determine a unique $4$-element subset. <strong>(M1)</strong> Within that subset the two crossing chords must be the diagonals rather than the sides, so the intersection produced by the subset is exactly the one we started with.</p>
+<p>The correspondence between $4$-element subsets and interior intersection points is therefore a bijection. <strong>(A1)</strong> Hence the number of interior intersection points equals the number of ways of choosing four points from $n$, namely $\dbinom{n}{4}$. <strong>(A1)</strong> *(AG)*</p>
+<p><strong>(b)</strong> We need the least integer $n$ with $\dbinom{n}{4}&gt;1000$. <strong>(M1)</strong> Now $\dbinom{13}{4}=715$ and $\dbinom{14}{4}=1001$. <strong>(A1)</strong> Since $\dbinom{n}{4}$ increases with $n$ for $n\geq4$, the least such value is $n=14$. <strong>(A1)</strong></p>
+<p><strong>(c)</strong> Label the vertices $V_0,V_1,\dots,V_5$ in order. The three chords $V_0V_3$, $V_1V_4$ and $V_2V_5$ join opposite vertices, so each is a diameter of the circumcircle and all three pass through the centre $O$. <strong>(M1)</strong> The general-position formula counts each *pair* of crossing chords separately: these three chords contribute the three crossing pairs $(V_0V_3,V_1V_4)$, $(V_0V_3,V_2V_5)$ and $(V_1V_4,V_2V_5)$ to $\dbinom{6}{4}$. <strong>(A1)</strong> But all three pairs meet at the single point $O$, so the formula counts $O$ three times when it should count it once, an overcount of $2$. <strong>(A1)</strong> Checking the remaining crossing pairs shows that no two of them meet at the same interior point, so this is the only coincidence. <strong>(A1)</strong></p>
+<p><strong>(d)</strong> Start from the $\dbinom{6}{4}=15$ crossing pairs. The three crossing pairs of diameters do not give three points but one, so replacing those three points by the single point $O$ reduces the total by $3-1=2$. <strong>(M1)(A1)</strong> Therefore the number of distinct interior intersection points is $15-2=13$, that is $15-3+1=13$. <strong>(M1)(A1)(A1)</strong> The twelve remaining crossing pairs each give a distinct point, and none of them lies at $O$, so the correction is complete.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) The whole part is the bijection. Award <strong>(M1)</strong> for the forward direction (four points give a crossing) and <strong>(M1)</strong> for the reverse (a crossing gives four endpoints); the two <strong>(A1)</strong> marks are for stating that the correspondence is one-to-one and concluding $\dbinom{n}{4}$. A candidate who writes $\dbinom{\binom{n}{2}}{2}$ has counted pairs of chords that share an endpoint and pairs that meet outside the circle; that earns nothing in (a). An argument phrased as 'each interior intersection needs four points and any four points give one intersection' should be fully credited even if the word bijection is absent.</p>
+<p>(b) The <strong>(M1)</strong> is for setting up $\dbinom{n}{4}&gt;1000$. A candidate who finds $n=14$ by trial but does not exhibit $\dbinom{13}{4}=715$ and $\dbinom{14}{4}=1001$ forfeits one <strong>(A1)</strong>. Follow-through is allowed if the formula from (a) is wrong: credit the method of solving their inequality.</p>
+<p>(c) The essential marks are (i) naming the three diameters and (ii) explaining that the formula counts crossing *pairs*, not distinct points. A candidate who says only 'some chords meet at the centre' without identifying the three chords loses one <strong>(A1)</strong>. The final <strong>(A1)</strong> requires the statement that no other coincidence occurs; inspection, symmetry or computation are all acceptable.</p>
+<p>(d) Award <strong>(M1)</strong> for the correction strategy and <strong>(A1)</strong> for the reduction of $2$; the remaining marks are for the arithmetic $15-3+1=13$. Follow-through from (c) is allowed. The answer $12$, obtained by subtracting $3$ instead of $2$, is the commonest error and loses only the final <strong>(A1)</strong>.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Two ideas are tested here, and they pull in opposite directions. The first is that counting can be done by finding the right bijection rather than by counting objects directly: instead of counting intersections, count the $4$-element subsets that produce them. The second is that a formula proved under a general-position hypothesis can fail the moment the hypothesis is dropped, and the failure has to be quantified rather than guessed.</p>
+<p>The general-position hypothesis, that no three chords are concurrent, is exactly what makes the bijection exact. It is easy to forget that the hypothesis is doing work. Most candidates use it in part (a) without noticing, then apply $\dbinom{6}{4}$ to the regular hexagon in part (c) as though nothing had changed. That is the trap.</p>
+<p>Why the regular hexagon rather than, say, a pentagon? Because the hexagon is the smallest regular polygon in which three diagonals are concurrent at an interior point. For $n=4$ and $n=5$ there is no such concurrence and the formula is exact, and the heptagon and nonagon also happen to have no interior triple points. The hexagon is therefore the first genuine counterexample, and it is small enough to draw and check by hand.</p>
+<p>The correction is a small inclusion-exclusion. Three crossing pairs collapse onto one point, so three points become one and the count drops by two. The answer is $15-3+1=13$, not $15-3=12$: the difference is whether the surviving centre point is counted at all. Candidates who write $12$ have removed the centre entirely.</p>
+<p>The classic wrong turns are: counting all $\dbinom{\binom{n}{2}}{2}$ pairs of chords, which includes chords sharing an endpoint and chords meeting outside the circle; assuming the hexagon has the same count as the general-position case; and subtracting three rather than two. A useful check is that the hexagon must have fewer than $15$ distinct interior points but more than $10$, since the only collapse is at the centre.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>A general-position formula is proved and used, but the final part breaks its own hypothesis: in a regular hexagon three chords are concurrent at the centre, and the student must locate the coincident intersections and correct the count by exactly the right amount rather than by a guess.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 1.10 (counting principles, including permutations and combinations)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the AHL 1.10 bullet on counting principles. The design proves the general-position bijection $\binom{n}{4}$, then deliberately breaks its own hypothesis with a regular hexagon in which three diameters are concurrent at the centre; the student must locate the coincidence and correct the count. The chord-intersection context, the hexagon degeneracy and the correction are constructed here, and the hexagon count was verified by exact coordinate computation.</dd></div>
+  <div><dt>Verification</dt><dd>Exact computation: the general-position bijection is the standard $\binom{n}{4}$ argument; the regular hexagon was checked by intersecting all $\binom{15}{2}$ pairs of chords at exact vertex coordinates, giving 15 crossing pairs and 13 distinct points, with the centre carrying multiplicity 3.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2018May_TZ2_q05 (similarity 0.019)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

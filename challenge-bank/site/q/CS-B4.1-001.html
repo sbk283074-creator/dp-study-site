@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B4.1-001 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>B4 Abstract data types</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B4.1-001</p>
+<div class="meta"><span class="chip chip-key">B4.1 Fundamentals of ADTs (B4.1.3 linked lists, B4.1.4 binary search trees), B2.2 Data structures, B2.4 Programming algorithms, B1.1 Approaches to computational thinking</span><span class="chip">P2</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">pseudocode</span><span class="chip">Explain</span><span class="chip">Describe</span><span class="chip">Evaluate</span></div>
+<div class="box"><h4>Stimulus</h4><p>This is the Paper 2 *algorithmic-thinking* question type, for which the IB expects a solution without reading or writing Python or Java. Pseudocode below uses the conventions <code>=</code> for assignment, <code>//</code> for a comment, and indentation-delimited blocks.</p>
+<p>---</p>
+<p>A national road-tolling system uses overhead gantries that read number plates automatically. Most gantries have no permanent network connection, so each gantry records sightings in local memory and uploads them as a single batch once every 15 minutes. Within a batch, sightings are already in chronological order.</p>
+<p>The central system receives batches from thousands of gantries. Batches may arrive late, and they may arrive out of order relative to one another. Before a journey can be billed, all sightings for a single plate must be assembled into one chronological sequence.</p></div>
+<figure><table><thead><tr><th>Plates held, n</th><th>Design 1: array + linear search (comparisons, worst case)</th><th>Design 2: binary search tree (comparisons, worst case)</th></tr></thead><tbody><tr><td>1 000</td><td>1 000</td><td>≈ 10</td></tr><tr><td>10 000</td><td>10 000</td><td>≈ 14</td></tr><tr><td>100 000</td><td>100 000</td><td>≈ 17</td></tr><tr><td>1 000 000</td><td>1 000 000</td><td>≈ 20</td></tr></tbody></table><figcaption>Indicative performance of the two membership-test designs as n, the number of plates held, grows.</figcaption></figure>
+<h2>Question</h2>
+<p>The central system must (i) buffer sightings at the gantry, (ii) discard duplicate sightings of the same plate within a 24-hour window, and (iii) merge batches that arrive out of order into one chronological list.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Explain why a queue is a suitable abstract data type for the gantry's local buffer, and explain one advantage of implementing that queue as a <strong>circular</strong> queue rather than a non-circular one in this context.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Two designs are proposed for discarding duplicates. <strong>Design 1</strong> keeps accepted plates in an array and uses linear search. <strong>Design 2</strong> keeps accepted plates in a binary search tree keyed on the plate.</p>
+<p>For $n$ accepted plates, state the worst-case time complexity of a single membership test for each design, and evaluate which design is preferable for a system handling 40 000 plates per day.</p> <em>(Evaluate)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Describe, using pseudocode or structured English, an algorithm that merges two batches, each already sorted by timestamp, into a single chronological list. State the time complexity of your algorithm in terms of the batch sizes $p$ and $q$.</p> <em>(Describe)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Number plates are issued in blocks, so plates arriving at a gantry are often already in near-alphabetical order. Explain the consequence of this for the shape and performance of the binary search tree in Design 2, and describe one change that would avoid the problem.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong>  A queue is suitable because sightings must be removed in the same order in which they arrive: FIFO matches exactly the behaviour of a buffer that is filled by the plate reader and drained by the upload process, whereas a stack would upload the most recent sighting first and destroy the chronological order.  <strong>(A1)(A1)</strong></p>
+<p>The buffer is drained completely every 15 minutes and then refilled, so with a non-circular (linear) queue the front and rear pointers march steadily towards the end of the array; the array appears full even when the queue is nearly empty, and the pointers must be reset or the contents shifted.  <strong>(M1)</strong>  In a circular queue the vacated positions at the front are reused as the rear wraps around, so no shifting is needed and the fixed memory allocated to the buffer is used repeatedly — important on an embedded gantry controller with limited RAM.  <strong>(A1)</strong></p>
+<p><strong>(b)</strong>  Design 1: $O(n)$ — in the worst case (a plate that is not present, or the last element) every one of the $n$ entries must be examined.  <strong>(A1)</strong></p>
+<p>Design 2: $O(\log n)$ for a balanced tree — each comparison halves the remaining search space, so the number of comparisons grows as $\log_{2}n$.  <strong>(A1)</strong></p>
+<p>At 40 000 plates, $\log_{2}(40\,000)\approx15.3$, so Design 2 needs about 15 comparisons per test against up to 40 000 for Design 1 — roughly a factor of 2 600.  <strong>(M1)</strong>  Across 40 000 tests per day this is the difference between about $8\times10^{8}$ and about $6\times10^{5}$ comparisons per day, so Design 1 is not viable at this volume; Design 2 is clearly preferable.  <strong>(A1)</strong></p>
+<p><strong>(c)</strong>  Two pointers walk the two batches together, always taking the smaller of the two current timestamps:</p>
+<pre><code>MERGE(A, B)                       // A has p items, B has q items, each sorted by timestamp
+    i = 0
+    j = 0
+    C = empty list
+    while i &lt; p and j &lt; q         // both batches still have items
+        if A[i].timestamp &lt;= B[j].timestamp
+            append A[i] to C
+            i = i + 1
+        else
+            append B[j] to C
+            j = j + 1
+        end if
+    end while
+    while i &lt; p                   // copy any remainder of A
+        append A[i] to C
+        i = i + 1
+    end while
+    while j &lt; q                   // copy any remainder of B
+        append B[j] to C
+        j = j + 1
+    end while
+    return C
+end MERGE
+</code></pre>
+<p>Award up to <strong>(M1)</strong> for the two-pointer idea, <strong>(A1)</strong> for comparing the two current timestamps and appending the smaller, <strong>(M1)</strong> for terminating when one batch is exhausted, <strong>(A1)</strong> for correctly copying the remainder of the other batch, and <strong>(A1)</strong> for stable handling of equal timestamps (using <code>&lt;=</code> rather than <code>&lt;</code>).</p>
+<p>Each item is examined and appended exactly once, so the time complexity is $O(p+q)$; the space complexity is also $O(p+q)$ for the merged list.  No sorting is required, because both inputs are already sorted.</p>
+<p><strong>(d)</strong>  Inserting keys that are already in order makes every new key the rightmost (or leftmost) node, so the tree never branches: it degenerates into a structure with one node per level — effectively a linked list of height $n$.  <strong>(A1)</strong>  The search cost then becomes $O(n)$ rather than $O(\log n)$, so Design 2 loses the entire advantage identified in (b) precisely when the data are easiest to predict.  <strong>(A1)</strong></p>
+<p>One fix: build the tree from the sorted keys by choosing the <strong>median</strong> as the root and recursing on each half, which produces a balanced tree of height $\lceil\log_{2}n\rceil$.  Alternative acceptable fixes: use a self-balancing tree (AVL or red-black) that rebalances on insertion, or shuffle the insertion order.  <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) The reason must mention first-in-first-out / preserving arrival order; 'a queue stores things in order' is too vague for the second mark. For the circular-queue mark, credit reusing vacated space or avoiding shifting; do not credit 'it is faster' on its own.</p>
+<p>(b) Credit $O(\log n)$ only if the candidate has reasoned about halving; a bare 'binary search tree is $O(\log n)$' with no justification earns the complexity mark but not the evaluation mark. Candidates who compute the ratio $n/\log_{2}n$ should be credited even if the arithmetic is imperfect.</p>
+<p>(c) Accept structured English of equivalent precision, and accept a recursive solution that compares the two head elements and recurses on the remainder (complexity $O(p+q)$, with $O(p+q)$ recursion depth — note this as a weakness if the candidate does not). Do not penalise 1-based indexing. Candidates who sort the concatenated list instead earn at most (M1) for producing a correct result at higher cost ($O((p+q)\log(p+q))$).</p>
+<p>(d) The consequence must be stated in terms of both shape (height $\approx n$, degenerate / list-like) and performance (search $O(n)$). Credit any balancing strategy; self-balancing trees go beyond the syllabus but should be credited as extension knowledge.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The question looks like an ADT-recall question and is not one. The marking points that separate candidates are all quantitative or conditional:</p>
+<ul><li>In (b) the phrase 'a binary search tree is faster' is worth nothing on its own; the marks are for turning $\log_{2}(40\,000)\approx15$ into a comparison count and then into a per-day total. Students habitually state complexity classes without evaluating them against a real data volume, which is exactly what the command term asks for here.</li><li>In (c) the trap is to sort. Both inputs are already sorted, so the merge is linear; a candidate who concatenates and sorts gets the right answer for the wrong reason and at much greater cost. The stability detail (<code>&lt;=</code> rather than <code>&lt;</code>) matters in practice because two gantries can legitimately record the same plate within the same second.</li><li>In (d) the intended insight is that an ADT's advertised complexity is conditional on an assumption about the data. Keys arriving in sorted order is the canonical case where a binary search tree silently degrades to $O(n)$ — the structure students are taught as 'the efficient one' becomes the worst possible shape. Recognising that complexity claims carry assumptions is the transferable idea.</li></ul>
+<p>Classic wrong turns: describing a stack rather than a queue in (a); claiming a circular queue 'has no limit'; and answering (d) with 'use a hash table' without explaining why that helps.</p>
+<p>Two further wrong turns recur. In (b) candidates quote the *average* case — 'linear search finds the plate about halfway, so $O(n/2)$' — when the question asks for the worst case; halving $n$ does not change the complexity class, and the two designs stay separated by orders of magnitude. In (c) candidates reach for a sort because 'merging' sounds like 'ordering', when the whole point is that each batch is already ordered: a solution that concatenates and re-sorts has thrown away the only structure the question supplied.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The ADT choice is not the point — quantifying what the wrong choice costs at a stated data volume is. Students must turn &#x27;a binary search tree is faster&#x27; into a number, and then explain the one situation in which it is not faster at all.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B4.1 Fundamentals of ADTs (B4.1.3 linked lists, B4.1.4 binary search trees), B2.2 Data structures, B2.4 Programming algorithms, B1.1 Approaches to computational thinking</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the B4.1 bullets (linked lists, BST properties) and B2.4 algorithm construction. The tolling/gantry scenario, the quantitative 40 000-plates evaluation, the out-of-order merge requirement and the sorted-insertion degeneration part are all original. The merge algorithm is the standard two-finger merge, which is syllabus content rather than borrowed material.</dd></div>
+  <div><dt>Verification</dt><dd>merge algorithm traced by hand on equal, interleaved and disjoint timestamps; complexity figures recomputed (log2(40000) = 15.3)</dd></div>
+  <div><dt>Nearest bank match</dt><dd>AI-CS-T5-06 (similarity 0.011)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-10</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

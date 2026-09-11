@@ -1,0 +1,402 @@
+{
+  "questions": [
+    {
+      "id": "CS-A3.1-001",
+      "title": "A flat-file timetable that deletes its own history",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "A3.1 Database fundamentals (data types, primary keys and foreign keys, referential integrity, flat-file and relational databases, the role of the DBMS)",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A3.1 Database fundamentals",
+      "paper": "P1",
+      "section": "A",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "The cost of the wrong schema is quantified at a stated annual scale, and the obvious remedy of cascading deletes so the database stays tidy silently destroys the very history the report depends on.",
+      "command_terms": [
+        "Explain",
+        "Calculate",
+        "Evaluate"
+      ],
+      "tags": [
+        "database",
+        "flat file",
+        "primary key",
+        "foreign key",
+        "referential integrity",
+        "data types",
+        "DBMS"
+      ],
+      "stimulus": {
+        "title": "Veloway bike share - the TRIPS spreadsheet",
+        "body": "Veloway runs a city bike-share scheme. Its entire operation is held in one spreadsheet table called `TRIPS`, which has one row for each completed journey. The scheme has 1,200,000 registered members and 15,000 bikes, and it records about 12,000,000 journeys in a year.\n\nEvery row of `TRIPS` repeats the member's name, phone number and email address, which together occupy about 50 bytes. The amount charged for a journey is held in a column called `ChargeCents`, declared as text, so a charge of one thousand and fifty pence is stored as the characters \"1,050\".\n\nThe operator intends to replace the spreadsheet with a relational database that has a `MEMBER` table, a `BIKE` table and a `TRIP` table. A developer has suggested that the bike column in `TRIP` should carry a referential rule that deletes a bike's journey rows automatically when the bike is removed from `BIKE`, because retired bikes would otherwise leave rows behind. About 2% of the fleet is retired each year.",
+        "table": null
+      },
+      "figure": {
+        "type": "table",
+        "content": "| TripID | MemberID | MemberName | MemberPhone | MemberEmail | BikeID | BikeModel | StartDock | EndDock | DurationMinutes | ChargeCents |\n|---|---|---|---|---|---|---|---|---|---|---|\n| 8841001 | M00417 | A. Okonkwo | 07700 900118 | a.okonkwo@mail | B1123 | City-3 | Central | Riverside | 14 | \"0\" |\n| 8841002 | M00417 | A. Okonkwo | 07700 900118 | a.okonkwo@mail | B0884 | E-City | Riverside | Market | 27 | \"125\" |\n| 8841003 | M90188 | R. Duarte | 07700 900573 | r.duarte@mail | B1123 | City-3 | Market | Central | 9 | \"0\" |\n| 8841004 | M90188 | R. Duarte | 07700 900573 | r.duarte@mail | B0451 | Cargo-2 | Central | Depot | 63 | \"1,050\" |\n| 8841005 | M00417 | A. Okonkwo | 07700 900118 | a.okonkwo@mail | B0451 | Cargo-2 | Depot | Riverside | 41 | \"525\" |"
+      },
+      "question": "The scheme is expanding to five more cities and the spreadsheet is becoming unworkable. The operator has asked you to review the design before the data is migrated to a relational database management system.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain the difference between a primary key and a foreign key, and identify the primary key of the table above. Explain why MemberID cannot serve as the primary key of this table."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Calculate",
+          "text": "Calculate the volume of duplicated member-contact data held in one year of rows, and the number of rows that must be edited when 10% of members change their phone number, given that a member makes an average of ten journeys a year. Explain one way in which storing ChargeCents as text prevents a report from working correctly."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain how replacing the single table with MEMBER, BIKE and TRIP tables removes the two problems you calculated in part (b). Name the primary key and the foreign keys of each table, and state one referential-integrity rule the DBMS should enforce."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Evaluate",
+          "text": "The developer proposes that deleting a bike from BIKE should automatically delete that bike's rows from TRIP. Evaluate this proposal using the figures above, and recommend what the referential rule should be instead."
+        }
+      ],
+      "answer": "**(a)** A **primary key** is the column, or the smallest set of columns, whose value uniquely identifies one row of a table; it must be unique and it cannot be null. **(M1)** A **foreign key** is a column in one table whose values must match the primary key of another table, and it is how a relationship between two tables is recorded. **(A1)** In `TRIPS` the primary key is `TripID`, because one row is one completed journey. `MemberID` cannot be the primary key because one member makes many journeys: 12,000,000 journeys are made by 1,200,000 members, an average of ten rows per member, so `MemberID` is repeated and does not identify a single row. **(A1)**\n\n**(b)** Each row repeats the member's name, phone number and email address, which occupy about 50 bytes, and there are 12,000,000 rows in a year. **(M1)** The duplicated volume is\n\n$$12{,}000{,}000 \\times 50 = 600{,}000{,}000\\ \\text{bytes} = 600\\ \\text{MB per year}$$\n\nand because the redundancy is stored once per journey it grows by 600 MB every year, reaching about 3 GB after five years. **(A1)** In a relational design the same 50 bytes are stored once per member, so the redundancy disappears.\n\nTen per cent of 1,200,000 members is 120,000 members. **(M1)** Because each of them makes about ten journeys a year, those members appear in $120{,}000 \\times 10 = 1{,}200{,}000$ rows, so a change of phone number needs 1,200,000 edits in the spreadsheet against 120,000 — one per member — in the relational design. **(A1)**\n\n`ChargeCents` is declared as text, so the DBMS treats `\"1,050\"` as four characters rather than as a number. **(A1)** It cannot be summed to give total revenue, it cannot be compared numerically, and it sorts by character order, so `\"1,050\"` is placed before `\"525\"`; any report must parse every one of the 12,000,000 values before it can add them.\n\n**(c)** A relational design stores each fact once and links the tables by key:\n\n- `MEMBER(`**`MemberID`**` PK, MemberName, MemberPhone, MemberEmail)`\n- `BIKE(`**`BikeID`**` PK, BikeModel, CommissionedDate)`\n- `TRIP(`**`TripID`**` PK, MemberID FK, BikeID FK, StartDock, EndDock, DurationMinutes, ChargeCents)`\n\n**(A1)** for splitting `MEMBER` and `BIKE` out of `TRIPS`; **(A1)** for placing the two foreign keys in `TRIP` and pointing them at the correct primary keys. Changing a phone number is now one row in `MEMBER`, not 1,200,000 rows, and the 50 bytes of contact data are held 1,200,000 times rather than 12,000,000 times, which removes both problems from part (b). **(A1)** The DBMS should enforce referential integrity: every value of `TRIP.MemberID` must exist in `MEMBER`, and every value of `TRIP.BikeID` must exist in `BIKE`, so a journey cannot be recorded against a member or a bike that does not exist. **(A1)**\n\n**(d)** The proposal is technically correct and wrong for this requirement. If deleting a row from `BIKE` cascades to `TRIP`, then retiring a bike destroys its journeys:\n\n- 2% of the 15,000 bikes is 300 bikes retired each year. **(M1)**\n- Each bike averages $12{,}000{,}000 / 15{,}000 = 800$ journeys a year. **(A1)**\n- So $300 \\times 800 = 240{,}000$ journey records would be silently deleted every year. **(A1)**\n\nNothing would raise an error. Ridership totals, revenue history and the city-to-city comparisons the operator is about to need would simply lose 240,000 true facts a year, and no later query could recover them, because the facts would no longer exist. The proposal confuses two different things. Cascading deletes are appropriate for rows that have no meaning without their parent — a saved payment method, for example, is meaningless once the member is gone. A journey is not like that: it happened, it was paid for, and it is the data the scheme reports on. The referential rule should therefore **refuse** to delete a bike while journeys still reference it (`RESTRICT` or `NO ACTION`), or, better, the bike should never be deleted at all: a `Status` column set to `retired` keeps the row, keeps the foreign key valid and keeps the history intact. A nullable foreign key with `SET NULL` is a weaker third option: it preserves the journey but loses the link to the bike, so the record can no longer say which bike was used. **(A1)** for a recommendation that is justified by the requirement to preserve history rather than by tidiness.",
+      "markscheme_notes": "(a) Accept any correct definitions; do not accept \"the first column\". A candidate may argue for a composite key such as (`MemberID`, `StartTime`) — credit this if they then accept that `TripID` is the simpler unique key. The `MemberID` mark requires the *reason* (repetition, one row per journey), not merely the assertion that it is not unique.\n\n(b) Follow through on all arithmetic. The 600 MB mark is for the method (bytes per row x rows) and the result; accept 572 MiB if the candidate states the binary convention. In the edits calculation, a candidate who uses 12,000,000 rows rather than ten rows per member has confused the two multiplicities and loses that **(A1)**. The `ChargeCents` mark requires a *consequence* — cannot sum, cannot sort numerically, character ordering, the embedded comma — not just \"it is stored as text\".\n\n(c) Accept any schema that stores member and bike facts once and links them by foreign keys; table and column names need not match. The foreign keys must be in `TRIP` and point at `MEMBER` and `BIKE`. A candidate who puts `BikeID` as a foreign key inside `MEMBER`, or who leaves `MemberName` in `TRIP`, has not removed the redundancy and loses the relevant mark. Accept a statement of referential integrity in words instead of SQL.\n\n(d) This is an evaluate question, so a recommendation is required. A candidate who writes \"cascade is bad practice\" without the 240,000 figure earns at most the **(M1)**. Accept `RESTRICT`, `NO ACTION`, a soft-delete `Status` column, or a nullable key with `SET NULL` *provided* the candidate acknowledges that `SET NULL` loses the link to the bike. Do not accept \"take a backup first\" — it does not change the integrity rule and the backup is itself a copy of data the rule would delete. Award the final **(A1)** only when the recommendation follows from the requirement to preserve history.",
+      "explanation": "The question is built so that the cost of a design decision can be counted, and so that the decision that looks tidiest is the destructive one.\n\nThe flat file's real problem is not that it is a spreadsheet. It is that facts about members and bikes are stored *inside* journey rows, so their multiplicity becomes the journey count. Every number in part (b) follows from that single structural fact: 50 bytes multiplied by 12,000,000, and 1,200,000 edits instead of 120,000 for the same administrative event. A student who thinks the problem is \"the file is big\" has not found the mechanism, and their answer to part (c) will be a list of table names rather than an explanation of why the multiplicity changed.\n\nPart (d) is where the trap is. Cascading deletes are widely taught as good practice because they prevent orphan rows, and a student who has learned that rule will recommend the cascade without hesitating. But preventing an orphan has two implementations with opposite consequences: `RESTRICT` refuses the delete and keeps the child; `CASCADE` allows the delete and destroys the child. Cascade is right only when the child row has no independent meaning. A journey has independent meaning — it is the thing the scheme measures — so the \"clean\" option is the one that quietly deletes 240,000 records a year. That is the sense in which the obvious answer is wrong.\n\nTwo further wrong turns are common. The first is treating 600 MB as too small to matter; the argument is not the bytes but the unbounded growth and the 1,200,000-row update multiplicity. The second is treating `ChargeCents` as text as a cosmetic issue, because in a spreadsheet the value is right-aligned and looks like a number. It only fails when a query tries to aggregate it — which is exactly when the report is due. Data types are not decoration; they determine which questions the database can answer at all.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Built from the A3.1 bullets on data types, keys and referential integrity. The Veloway scheme, the 1,200,000-member / 15,000-bike / 12,000,000-journey scale, the 50-byte contact block, the text ChargeCents column and the 2% retirement rate were chosen together so that the redundancy, the update multiplicity and the cascading data loss all resolve to exact figures.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.003,
+        "nearest_bank_id": "AI-CS-V031",
+        "max_internal_similarity": 0.001,
+        "nearest_bank_label": "generated:expand3_cs.json",
+        "nearest_internal_id": "CS-B2.1-001"
+      },
+      "verification": {
+        "method": "Every figure recomputed in Python: 12,000,000 x 50 bytes = 600 MB a year and 3 GB over five years; 10% of 1,200,000 = 120,000 members x 10 journeys = 1,200,000 row edits against 120,000; 12,000,000 / 15,000 = 800 journeys per bike per year; 2% of 15,000 = 300 bikes x 800 = 240,000 rows destroyed by a cascading delete.",
+        "assertions": [
+          "approx(12000000*50/1e6, 600)",
+          "approx(12000000*50*5/1e9, 3)",
+          "approx(0.10*1200000*10, 1200000)",
+          "approx(12000000/15000, 800)",
+          "approx(0.02*15000*800, 240000)",
+          "approx(12000000/1200000, 10)"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "CS-B2.1-001",
+      "title": "Forty ten-pence subtractions that never reach sixteen pounds",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "B2.1 Programming fundamentals (data types, variables and constants, operators, expressions, type conversion, input and output)",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B2.1 Programming fundamentals",
+      "paper": "P2",
+      "section": "B",
+      "technology": "not allowed",
+      "language": "python",
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "A correctness bug survives the obvious test because the error is far too small to display yet is decisive in a comparison: money accumulated by repeated floating-point subtraction drifts below an exact balance, so the program is only correct for the inputs a developer happens to try.",
+      "command_terms": [
+        "Explain",
+        "Construct",
+        "Justify"
+      ],
+      "tags": [
+        "data types",
+        "floating point",
+        "integer arithmetic",
+        "operators",
+        "money",
+        "debugging"
+      ],
+      "stimulus": {
+        "title": "Rivergate car park - the season-ticket balance",
+        "body": "A multi-storey car park in Rivergate sells season tickets. A driver's account holds a cash balance, and every exit deducts the charge for that stay. The tariff is 2 pence per minute, so a stay is charged exactly with no rounding, and a loyalty discount of one penny per point is subtracted from the charge but never exceeds it, so the amount due is never negative.\n\nThe current Python implementation holds the balance, the charge and the discount in pounds as floating-point numbers. A driver tops up £20.00 and then makes forty short stays, each deducting exactly £0.10. The true remaining balance is exactly £16.00, and the car park sells a £16.00 annual pass that may be bought only when the balance is at least £16.00.\n\nThe car park handles about 250,000 exits a day. The payment system is being rewritten and must never refuse a driver whose balance is genuinely sufficient.",
+        "table": null
+      },
+      "figure": {
+        "type": "code",
+        "content": "BALANCE = 20.00            # pounds\nCHARGE = 0.10              # pounds, one short stay\n\nfor _ in range(40):\n    BALANCE = BALANCE - CHARGE\n\ndef can_buy_pass(balance):\n    return balance >= 16.00\n\nprint(BALANCE)                 # 15.999999999999945\nprint(can_buy_pass(BALANCE))   # False"
+      },
+      "question": "The rewritten system must be available in both Python and Java, and the two versions must behave identically.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain the difference between a floating-point number and an integer as a way of storing an amount of money, and state why the balance in this system should be held in pence rather than pounds."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Construct",
+          "text": "Construct a Python function settle(balance_pence, minutes, points) that returns the balance remaining after the stay, or None if the balance is insufficient. The tariff is 2 pence per minute and the discount is one penny per point, capped so that the amount due is never negative. Money must be handled as integer pence: you may not use round, the decimal module, float or any imported module. A Java version of this paper requires the same algorithm, so write the algorithm rather than a demonstration of syntax."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain why the loop above prints 15.999999999999945 rather than 16.00, and why can_buy_pass therefore returns False. Explain why the same forty deductions are exact when the balance is held in integer pence."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Justify",
+          "text": "Justify holding every amount as integer pence rather than as floating-point pounds, referring to the 250,000 exits a day, and state the one change that must be made where amounts enter and leave the program."
+        }
+      ],
+      "answer": "**(a)** A floating-point number stores a value as a sign, a mantissa and a binary exponent. It can hold an enormous range, but only approximately: a value is rounded to the nearest representable binary fraction, and most decimal fractions — including $0.10$ — have no exact binary representation. **(M1)** An integer stores an exact whole number with no fractional part, and integer addition and subtraction produce exact results as long as the result is inside the representable range. **(A1)** Money should therefore be held as a whole number of pence, because every amount charged is an exact whole number of pence; pounds are only a presentation convention applied when the value is displayed. **(A1)**\n\n**(b)**\n\n```python\ndef settle(balance_pence, minutes, points):\n    charge = minutes * 2          # 2 pence per minute, exact\n    discount = points             # 1 penny per point\n    if discount > charge:\n        discount = charge         # the amount due is never negative\n    due = charge - discount\n    if balance_pence < due:\n        return None               # insufficient: the barrier stays down\n    return balance_pence - due    # exact remaining balance, 0 when equal\n```\n\n**(M1)** for computing the charge as an integer product rather than a floating-point rate. **(A1)** for capping the discount at the charge, so the amount due cannot become negative. **(A1)** for the balance test. **(A1)** for returning the remaining balance, including the boundary case `balance_pence == due`, which must return `0` and not `None`. **(A1)** for using only integer arithmetic throughout.\n\nA Java version of this paper asks for the same algorithm. The translation is structural: `int` parameters and return type, and the same three statements. Java would give the same wrong answers if the amounts were held as `double`, so the algorithm, not the syntax, is what is being assessed.\n\n**(c)** The literal `0.10` is not exactly one tenth. The nearest 64-bit floating-point value is slightly larger than $0.1$, and each subtraction leaves a small residue, so after forty subtractions the stored balance is `15.999999999999945` rather than `16.00`. **(M1)(A1)** The comparison `balance >= 16.00` is then false even though the true balance is exactly sixteen pounds, so a driver who is entitled to the pass is refused. **(A1)** The error is around $5\\times10^{-17}$ — far too small for a display to show — but it is not a rounding artefact of the *display*: it is stored in the value, and it decides a comparison. In integer pence the same forty deductions are $2000 - 40 \\times 10 = 1600$, every intermediate value is exact, and `1600 >= 1600` is true. **(A1)**\n\nNote how well the bug hides. The arithmetic expression `20.00 - 40 * 0.10` evaluates to exactly `16.0`, so a developer who checks the calculation on a calculator, or who rewrites the loop as one multiplication, sees nothing wrong. Only the *accumulation* — one subtraction per exit, forty times — produces the residue. That is why the fault survives the obvious test.\n\n**(d)** Holding amounts in integer pence is justified by exactness, and the exactness has a measurable cost when it is absent. In a scan of 1,440,000 combinations of stay length and loyalty points, 315,902 — about 22% — produce a floating-point amount due that is strictly greater than the exact amount due, so an exactly sufficient balance is rejected. **(M1)(A1)** The car park handles 250,000 exits a day. If one exit in a hundred presents a balance that is exactly sufficient, that is 2,500 exits a day, and at the observed rate about 550 of them a day — some 200,000 a year — would be wrongly refused and would need a manual override. **(A1)** That is the cost of the wrong data type, and it is not a cost that can be paid down by testing harder, because the failing inputs are a scattered subset that no test suite will enumerate.\n\nOne change is needed where the value crosses the boundary of the program. On input, the amount must be converted to pence immediately and by integer arithmetic — parsing `\"12.30\"` as `1230`, never as `float(\"12.30\") * 100`, which reintroduces the error. On output, pence must be formatted back into a decimal string with the point inserted. Inside the program, every amount is an integer. **(A1)**",
+      "markscheme_notes": "(a) Accept any answer that distinguishes exactness from range; the essential contrast is that an integer is exact within its range while a binary floating-point value is a rounded approximation. Do not credit \"floats are inaccurate\" as a complete answer unless a consequence for money is stated. A candidate who recommends `decimal` or `Fraction` instead of integer pence should be credited fully *provided* they say why those types are exact and note the cost (slower, and a library dependency) — the question's marks are for exactness, not for one particular representation.\n\n(b) Code in a language other than Python should be accepted if the syllabus version being sat requires it. The boundary mark is the discriminating one: a candidate whose `settle` returns `None` when the balance exactly equals the amount due has introduced the same class of bug in the opposite direction. Do not award the integer-arithmetic mark to a function that multiplies by `0.02` or `0.01`, even if the rest is correct.\n\n(c) The two marks for the diagnosis require the mechanism (a decimal fraction has no exact binary representation, so repeated subtraction accumulates a residue) and the observed value. A candidate who says only \"floating-point rounding\" without connecting it to the comparison earns one mark. Accept the value `15.999999999999945` or any value strictly below `16.00` obtained by tracing the loop. Do not accept \"the computer is broken\" or \"Python is imprecise\" as a mechanism.\n\n(d) Follow through on the arithmetic. Accept any well-argued frequency assumption for exact-balance exits, provided the candidate states it; the marks are for the *structure* of the argument (a verified rate of misjudgement multiplied by a stated daily volume) and for the conclusion. The final mark is for naming the input/output conversion as the place the change must be made; a candidate who says \"store it as an integer\" without saying where the conversion happens has not closed the loop.",
+      "explanation": "The lever here is a correctness bug that survives the obvious test, and the reason it survives is worth stating precisely: the error is far too small to see, but it is compared, not displayed.\n\nA developer testing this system would try a single stay. `20.00 - 0.10` gives `19.9`, which prints as `19.9`, and the balance check works. They might also check the total with a calculator, or rewrite the loop as `20.00 - 40 * 0.10` — and that expression is exactly `16.0`, so it passes too. The fault appears only when the balance is *accumulated*, one subtraction at a time, which is what a real system does. The discrepancy between `20.00 - 40 * 0.10` and forty separate subtractions is the whole question: floating-point arithmetic is not associative, so the order of operations changes the answer, and the order is fixed by the program's control flow rather than by the mathematics.\n\nThe deeper point is that `>=` on computed floating-point values is not a reliable test, and no amount of care in choosing the comparison operator fixes it. A tolerance comparison (`abs(balance - due) < 0.005`) looks like the standard remedy and is the most tempting wrong turn: it hides this bug by accepting a balance that is a fraction of a penny short, which is a different defect — the system now lets a driver through who has not paid. The requirement is exactness, so the representation has to be exact, and the only exact representation of a whole number of pence is an integer.\n\nTwo further wrong turns are common. The first is using `round(x, 2)` on the balance after each subtraction; rounding a float does not remove the residue, and Python's `round` uses banker's rounding, so `round(2.5)` is `2` and `round(0.5)` is `0`, which introduces a new and equally silent error. The second is believing that Python's 64-bit floats are \"precise enough\"; they are precise enough to *display* money, which is why the bug is invisible, and not precise enough to *compare* it, which is why it matters. The same reasoning applies to Java's `double`, and that is why the fix is a change of data type rather than a change of language.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Built from the B2.1 bullets on data types, operators and type conversion. The car park, the 2-pence-per-minute tariff, the one-penny loyalty point, the forty £0.10 deductions from £20.00 and the £16.00 pass threshold were chosen together so that the exact arithmetic is trivial in pence and the floating-point drift is reproduced exactly (15.999999999999945) rather than approximated.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.003,
+        "nearest_bank_id": "AI-CS-V031",
+        "max_internal_similarity": 0.022,
+        "nearest_bank_label": "generated:expand3_cs.json",
+        "nearest_internal_id": "CS-B2.3-001"
+      },
+      "verification": {
+        "method": "The draft loop and the corrected integer function were executed in Python 3. The loop of forty subtractions produces 15.999999999999945, so 15.999999999999945 >= 16.00 is False, while the integer balance 2000 - 40*10 = 1600 satisfies 1600 >= 1600. A scan of all 1,440,000 (minutes, points) pairs in the ranges 1-2400 and 0-599 found 315,902 pairs (about 22%) whose floating-point amount due exceeds the exact amount due.",
+        "assertions": [
+          "0.1 + 0.2 != 0.3",
+          "not ((10.0 - 0.1 - 0.1 - 0.1) == 9.70)",
+          "not (0.09 >= 0.1 - 0.01)",
+          "20.0 - 40*0.1 == 16.0",
+          "approx(5*2 - 1, 9)",
+          "approx(2000 - 40*10, 1600)",
+          "approx(315902/1440000, 0.2194, 1e-3)",
+          "approx(250000*0.01*365*0.219, 199837.5, 1e-3)",
+          "round(2.5) == 2"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "CS-B2.3-001",
+      "title": "A loop that is linear only while the data keeps moving",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "B2.3 Programming constructs (sequence, selection, iteration, nested loops, loop conditions and termination, tracing the execution of a loop)",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B2.3 Programming constructs",
+      "paper": "P2",
+      "section": "B",
+      "technology": "not allowed",
+      "language": "python",
+      "marks": 16,
+      "difficulty": 5,
+      "challenge_mechanism": "A performance claim carries an unstated assumption about the input: the nested loop is fast only when consecutive readings differ by more than the tolerance, so it degenerates to quadratic behaviour on exactly the steady data the application exists to detect.",
+      "command_terms": [
+        "Explain",
+        "Construct",
+        "Evaluate"
+      ],
+      "tags": [
+        "nested loops",
+        "while loop",
+        "complexity",
+        "worst case",
+        "algorithm design",
+        "tracing"
+      ],
+      "stimulus": {
+        "title": "PulseTrack - steady-run detection",
+        "body": "PulseTrack is a wearable heart-rate monitor. It samples the wearer's heart rate once per second and stores each day's readings as a list of integers.\n\nFor every reading the device reports the length of the **steady run** ending at that reading: the number of immediately preceding readings such that every step between consecutive readings in that run differs by no more than a tolerance of 5 beats per minute. A reading with no steady predecessor has run length 0. So for the series `[70, 72, 71, 90, 89, 88, 87]` the run lengths are `[0, 1, 2, 0, 1, 2, 3]`.\n\nA developer wrote the function below and claims it runs in linear time: \"the while loop stops as soon as it reaches a reading that differs from the one before it by more than the tolerance, and in a real recording that happens after a step or two.\"\n\nThe device records 86,400 readings per day, one per second for 24 hours, and runs the analysis each night on the day's readings. The analysis must finish within a few seconds.",
+        "table": null
+      },
+      "figure": {
+        "type": "code",
+        "content": "def steady_runs(readings, tol=5):\n    runs = []\n    for i in range(len(readings)):\n        count = 0\n        j = i\n        while j > 0 and abs(readings[j] - readings[j - 1]) <= tol:\n            count += 1\n            j -= 1\n        runs.append(count)\n    return runs"
+      },
+      "question": "The readings are stored as a list of integers, one per second. The nightly analysis must finish in a few seconds on the device, and it must report the run lengths exactly.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain, by tracing the loop, what steady_runs returns for the readings [70, 72, 71, 90, 89, 88, 87] with the default tolerance of 5."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain why the developer's claim that the function runs in linear time is unsound. State the property of the input that the claim assumes, and describe the input pattern on which the function performs the greatest number of steps."
+        },
+        {
+          "label": "c",
+          "marks": 5,
+          "command_term": "Construct",
+          "text": "Construct a Python function that returns exactly the same result as steady_runs but runs in linear time. You may not import any module and you may not use the abs function. A Java version of this paper requires the same algorithm, so write the algorithm rather than a demonstration of syntax."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Evaluate",
+          "text": "A colleague proposes to fix the performance by adding a limit inside the while loop so that it stops after at most 1,000 steps. Evaluate this proposal, using your answers to parts (b) and (c)."
+        }
+      ],
+      "answer": "**(a)** Tracing the loop for `readings = [70, 72, 71, 90, 89, 88, 87]` with `tol = 5`:\n\n| `i` | `readings[i]` | comparisons in the `while` | result |\n|---|---|---|---|\n| 0 | 70 | `j = 0`, loop does not run | 0 |\n| 1 | 72 | $\\lvert 72-70 \\rvert = 2 \\le 5 \\rightarrow 1$ | 1 |\n| 2 | 71 | $\\lvert 71-72 \\rvert = 1$, then $\\lvert 71-70 \\rvert = 1$ | 2 |\n| 3 | 90 | $\\lvert 90-71 \\rvert = 19 > 5$ | 0 |\n| 4 | 89 | $\\lvert 89-90 \\rvert = 1$, then $\\lvert 89-71 \\rvert = 18 > 5$ | 1 |\n| 5 | 88 | $1$, then $2$, then $\\lvert 88-71 \\rvert = 17 > 5$ | 2 |\n| 6 | 87 | $1$, then $2$, then $3$, then $\\lvert 87-71 \\rvert = 16 > 5$ | 3 |\n\nThe function returns `[0, 1, 2, 0, 1, 2, 3]`. **(M1)** for tracing the loop as a walk backwards while consecutive differences stay within the tolerance, **(A1)** for the correct values, **(A1)** for the list as a whole, including the reset to `0` at index 3 and the growing run at the end.\n\n**(b)** The claim is unsound because the number of steps the inner loop performs is not a constant — it is the length of the steady run, which is a property of the *data*, not of the code. **(M1)** The claim assumes that consecutive readings almost always differ by more than the tolerance, so that the loop exits after one or two steps. **(A1)** That assumption is false for this application: heart rate sampled once a second during steady exercise changes by far less than 5 beats per minute between consecutive samples, so long runs are the normal case and the loop walks back a long way. **(A1)** The greatest number of steps occurs when every consecutive difference is within tolerance — a constant series, or a slow monotonic drift. For each $i$ the loop then runs all the way back to index 0, giving $0+1+2+\\dots+(n-1) = \\frac{n(n-1)}{2}$ steps, which is quadratic rather than linear. **(A1)**\n\n**(c)**\n\n```python\ndef steady_runs(readings, tol=5):\n    n = len(readings)\n    runs = [0] * n\n    for i in range(1, n):\n        step = readings[i] - readings[i - 1]\n        if -tol <= step <= tol:\n            runs[i] = runs[i - 1] + 1\n    return runs\n```\n\n**(M1)** for a single pass that keeps no inner loop. **(A1)** for the observation that makes it work: the steady run ending at `i` is either empty or it is the run ending at `i - 1` extended by exactly one reading, so the answer for `i` can be read off the answer for `i - 1`. **(A1)** for `runs[i] = runs[i - 1] + 1` and **(A1)** for initialising every entry to `0`, which is what makes the run reset after a step larger than the tolerance. **(A1)** for using no library module and no `abs`, expressing the tolerance as the two-sided test `-tol <= step <= tol`.\n\nThe work done is $n-1$ comparisons and one assignment per reading, so the time is $O(n)$ and the extra memory is $O(n)$ for the output. A Java version of this paper asks for the same algorithm; the translation is a `for` loop over the array indices and the identical recurrence, so the language is irrelevant to the reasoning.\n\n**(d)** The proposal should be rejected, for three reasons.\n\nFirst, it does not change the complexity. The inner loop can still run up to 1,000 steps for every reading, so the worst case is still proportional to $1000n$; capping the loop divides the running time by a constant, and a constant factor is not a change of order. **(M1)** With 86,400 readings a day the uncapped worst case is $86{,}400 \\times 86{,}399 / 2 = 3{,}732{,}436{,}800$ inner steps, the capped version still performs up to $86{,}400 \\times 1000 = 86{,}400{,}000$, and the linear version performs 86,399. **(A1)**\n\nSecond, and more seriously, the cap makes the result *wrong* precisely where the app matters. A steady run of 1,500 readings would be reported as 1,000, and a run of 4,000 as 1,000; the error is silent, it is always an under-report, and it is concentrated on the longest runs — which are exactly the steady states the app exists to find. **(A1)**\n\nThird, the trade is unnecessary, because part (c) already gives an exact linear algorithm. Capping the loop trades a correctness guarantee for a constant factor when a change of order was available at the same cost. **(A1)**",
+      "markscheme_notes": "(a) Accept any trace, as a table or as prose. The essential marks are the mechanism (walk backwards while *each consecutive pair* is within tolerance) and the result. A candidate who compares every earlier reading against the current reading rather than against its own predecessor has misread the function and forfeits the trace marks — this is the single most common error.\n\n(b) The two discriminating marks are the unstated assumption (that consecutive readings usually differ by more than the tolerance) and the worst-case count $n(n-1)/2$. A candidate who writes \"it is actually O(n squared)\" without naming the assumption earns one mark only. Accept a description of the worst case as \"a constant series\", \"a steady recording\" or \"a slow drift\"; require the recognition that the loop runs to index 0 each time.\n\n(c) Accept any single-pass algorithm that returns the same list, including one that builds the list by appending rather than pre-allocating it. Do not award the linear mark to a candidate who keeps a nested loop, even a faster one — the question is about the order of growth. A candidate who uses `abs` despite the prohibition should be told the constraint was stated; the reasoning marks may still be awarded. A candidate who uses the `csv`-style two-pointer scan but does not derive the recurrence should be capped at two marks.\n\n(d) The evaluation must distinguish a constant-factor improvement from a change of order. A candidate who says \"1,000 is small enough\" has missed that the cap silently corrupts the longest runs, and that those runs are the app's output. Award the final mark only when the answer connects the cap to a correctness loss rather than to performance alone.",
+      "explanation": "The question is built around a claim that is easy to believe and easy to falsify: \"the inner loop breaks almost immediately, so the function is linear\". The claim is not about the code at all; it is about the input. A complexity statement is a statement about *all* inputs, and one input family is enough to destroy it. The family here is a steady recording, and the irony is that steady recordings are exactly what the app is designed to detect. The algorithm is slowest on the data it exists to find.\n\nThe mechanism is worth stating in general terms because it recurs everywhere. When a loop's work per iteration depends on the data, the total work is the sum of those per-iteration amounts, and the average tells you nothing about the maximum. Here the per-iteration amount is the run length; if run lengths are bounded by a small constant the total is linear, and if a single run can be as long as the input the total is quadratic. The programmer's sentence — \"in a real recording that happens after a step or two\" — is the unstated assumption, and it is the whole question. Students are used to reasoning about the *average* case implicitly and calling it the complexity; this item forces them to notice that they have done so.\n\nPart (c) is where the algorithmic insight has to appear. The nested loop is recomputing something that is already known: the run ending at `i` is the run ending at `i - 1`, plus one, whenever the last step is small enough. Recognising that the answer for one input can be read off the answer for the previous one — dynamic programming in its smallest form — turns the quadratic scan into a single pass. The two-line recurrence is easy to write once the observation is made, and almost impossible to reach by optimising the loop.\n\nThe classic wrong turns are all present. Measuring on one typical recording and concluding \"it is fast\"; fixing the performance by adding a `break` or a cap, which corrupts the longest runs; assuming that `abs()` or function-call overhead is the bottleneck; and confusing the *amortised* case with the worst case. A further subtlety is worth noting for the strongest answers: the linear algorithm is correct only because the run is defined by *consecutive* differences. If the definition were \"all earlier readings within the tolerance of the current reading\", a running counter would be wrong, and the fix would be a different data structure. The recurrence is not a trick; it depends on the definition, and saying so is part of understanding why it works.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Built from the B2.3 bullets on iteration, nested loops and loop termination. The steady-run definition, the 5 bpm tolerance, the 1 Hz sampling rate and the 86,400-reading day were chosen together so that the recurrence in part (c) is exact and the worst case is a clean n(n-1)/2 that the student can compute.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.009,
+        "nearest_bank_id": "MAAQB_20N_1_SL_TZ0_T_7",
+        "max_internal_similarity": 0.022,
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "nearest_internal_id": "CS-B2.1-001"
+      },
+      "verification": {
+        "method": "The naive and linear functions were executed and cross-checked on the worked example and on 200 random series of up to 60 readings; both returned identical lists in every case. The worst-case step count n(n-1)/2 was confirmed by counting the inner-loop steps on constant series of length 5, 10 and 50, which took 10, 45 and 1225 steps.",
+        "assertions": [
+          "approx(86400*(86400-1)/2, 3732436800)",
+          "approx(86400-1, 86399)",
+          "approx(86400*1000, 86400000)",
+          "approx(50*49/2, 1225)",
+          "approx(10*9/2, 45)",
+          "approx(5*4/2, 10)"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "CS-B2.5-001",
+      "title": "A forty-gigabyte file that will not fit in memory twice",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "B2.5 File processing (reading and writing files, line-by-line and whole-file processing, parsing records, detecting malformed data, memory and error handling)",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B2.5 File processing",
+      "paper": "P2",
+      "section": "B",
+      "technology": "not allowed",
+      "language": "python",
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "Three requirements conflict - one pass, bounded memory and a complete error report - so the design must decide what it will give up, and the resolution is to move the error report out of memory rather than weaken any of the three.",
+      "command_terms": [
+        "Explain",
+        "Construct",
+        "Evaluate"
+      ],
+      "tags": [
+        "file processing",
+        "streaming",
+        "memory",
+        "parsing",
+        "error handling",
+        "CSV"
+      ],
+      "stimulus": {
+        "title": "Northwind Climate Archive ingestion",
+        "body": "A weather service ingests a daily archive from a national network of 500 stations. The archive is a single text file of 40 GB. Each record is one line of about 100 bytes holding four comma-separated fields: station code, timestamp, temperature and humidity.\n\nThe file arrives as a compressed stream over a socket. The stream cannot be rewound and the raw file is never written to disk, because the service has no room for it. The machine that runs the ingestion has 8 GB of RAM.\n\nThe service must produce, for each station, the number of valid readings, the minimum and maximum temperature and the mean temperature. It must also report every malformed record to the provider so that the archive can be corrected, and the provider needs the line number of each bad record. The provider has warned that a corrupt upload can contain millions of malformed lines.",
+        "table": null
+      },
+      "figure": {
+        "type": "code",
+        "content": "def ingest(stream):\n    data = stream.read()                      # 40 GB, held in memory\n    errors = []\n    summary = {}\n    for lineno, line in enumerate(data.split(\"\\n\"), start=1):\n        fields = line.split(\",\")\n        if len(fields) != 4:\n            errors.append((lineno, line))     # keeps every bad line\n            continue\n        station, timestamp, temp, humidity = fields\n        ...\n    return summary, errors"
+      },
+      "question": "The ingestion runs once a night on a single machine, must not exhaust memory, and must finish before the next upload arrives.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why stream.read() cannot be used here, referring to the size of the file and the memory available, and state what a streaming implementation does instead."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain why data.split(\"\\n\") followed by line.split(\",\") produces errors that the developer would not see when testing on a small file. Describe how a record containing a comma inside a quoted field must be parsed."
+        },
+        {
+          "label": "c",
+          "marks": 5,
+          "command_term": "Construct",
+          "text": "Construct a Python function ingest(stream, max_errors) that consumes the stream exactly once and returns a summary, an error report and an error count. stream is a file-like object that supports iteration and cannot be rewound. The summary must give, for each station, the count, minimum, maximum and sum of temperatures. The error report must hold the line number and a reason for at most max_errors malformed records, and the count must be the exact total of malformed records. You may not import any module, and you may not call stream.read() or stream.seek(). A Java version of this paper requires the same algorithm."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Evaluate",
+          "text": "Evaluate the decision to keep only the first max_errors malformed records while still counting all of them, against the provider's requirement to receive the line number of every malformed record. State what is given up and recommend a design."
+        }
+      ],
+      "answer": "**(a)** The file is 40 GB and the machine has 8 GB of RAM, so `stream.read()` tries to build a string five times larger than the memory available; the process would be killed before any summary was produced, and the failure would happen after the whole file had been transferred. **(M1)** The stream also cannot be rewound: it arrives compressed over a socket and the raw file is never written to disk, so the program cannot read part of it, release the memory and then return to the beginning. **(A1)** A streaming implementation reads one record at a time and keeps only the running state it needs — for each station a count, a minimum, a maximum and a running total — so its memory use is proportional to the number of stations, not to the size of the file, and 500 stations need only a few tens of kilobytes. **(A1)**\n\n**(b)** There are two faults, and neither is visible on a small test file.\n\nThe first is `data.split(\"\\n\")`. It splits the entire 40 GB string and, because a text file normally ends with a newline character, it produces a final empty element. That empty element is counted as a malformed record, so the reported error count is wrong by one before any real error is found. **(M1)(A1)** Iterating the file object directly avoids this, because a text stream yields one line per record and never yields a phantom line at the end.\n\nThe second is `line.split(\",\")`, which splits on every comma, including a comma that is inside a quoted field. A record such as `ST04,\"North, West\",4.0,60` contains four fields, but `split(\",\")` returns five pieces, so a perfectly valid record is rejected and the field boundaries of the following fields are wrong. **(M1)(A1)** A correct parser scans the line character by character, keeps a flag for whether it is inside a quoted field, treats a doubled quote as a literal quote character, and splits only on commas seen outside quotes.\n\n**(c)**\n\n```python\ndef ingest(stream, max_errors):\n    summary = {}\n    errors = []\n    total_errors = 0\n\n    for lineno, raw in enumerate(stream, start=1):\n        line = raw.rstrip(\"\\r\\n\")\n        if line == \"\":\n            total_errors += 1\n            if len(errors) < max_errors:\n                errors.append((lineno, \"empty line\"))\n            continue\n\n        fields = split_csv(line)\n        if len(fields) != 4:\n            total_errors += 1\n            if len(errors) < max_errors:\n                errors.append((lineno, \"field count %d\" % len(fields)))\n            continue\n\n        station, timestamp, temp, humidity = fields\n        try:\n            t = float(temp)\n        except ValueError:\n            total_errors += 1\n            if len(errors) < max_errors:\n                errors.append((lineno, \"non-numeric temperature\"))\n            continue\n\n        if station in summary:\n            count, low, high, total = summary[station]\n            summary[station] = (count + 1, min(low, t), max(high, t), total + t)\n        else:\n            summary[station] = (1, t, t, t)\n\n    return summary, errors, total_errors\n\n\ndef split_csv(line):\n    fields, current, in_quotes = [], [], False\n    i = 0\n    while i < len(line):\n        ch = line[i]\n        if ch == '\"':\n            if in_quotes and i + 1 < len(line) and line[i + 1] == '\"':\n                current.append('\"')\n                i += 2\n                continue\n            in_quotes = not in_quotes\n        elif ch == \",\" and not in_quotes:\n            fields.append(\"\".join(current))\n            current = []\n        else:\n            current.append(ch)\n        i += 1\n    fields.append(\"\".join(current))\n    return fields\n```\n\n**(M1)** for consuming the stream exactly once, with `enumerate` supplying the line number, and never calling `read()` or `seek()`. **(A1)** for holding only bounded state per station — a count, a minimum, a maximum and a running total — so memory is proportional to the number of stations. **(A1)** for capping `errors` at `max_errors` while `total_errors` still counts every malformed record, so the exact scale of the corruption is preserved. **(A1)** for the quoted-field parser, which is what makes the field count correct for records such as `ST04,\"North, West\",4.0,60`. **(A1)** for validating the numeric field and continuing rather than crashing, so that one bad record does not abandon the remaining 400,000,000.\n\nThe time is $O(n)$ in the number of records and the memory is $O(S)$ for $S$ stations plus at most `max_errors` small tuples. A Java version of this paper asks for the same algorithm: a `BufferedReader` read line by line, a `HashMap` of running statistics, and the identical two-state parser.\n\n**(d)** The requirement and the cap are in direct conflict. The provider must receive the line number of *every* malformed record, and a corrupt upload can contain millions of them, so an in-memory list capped at `max_errors` will be full almost immediately and the line numbers beyond the cap are lost. **(M1)** The cap does bound memory — `max_errors` tuples of an integer and a short string is a few tens of kilobytes, which is safe on an 8 GB machine — so the design trades completeness for a memory guarantee. **(A1)**\n\nThat trade is unnecessary, because the error report does not have to live in memory. Each malformed record can be written to a **second output stream** as it is found: memory stays bounded at one record, and the provider receives every line number. **(A1)** The costs are a second output to manage and the throughput the writes consume, but the error file is normally tiny — it is only large when the upload is genuinely corrupt, which is exactly when the provider needs it in full. The running `total_errors` count should be kept regardless, so that the summary can state the scale of the corruption even if the provider's tooling truncates the error file.\n\nThe recommendation is therefore to stream the errors out, and to fall back to a capped in-memory list only when no second output is available. In that fallback the report must say so: it must state that line numbers beyond the cap are missing while the total count remains exact, so that the provider knows how much of the report is absent rather than believing the report is complete. **(A1)**",
+      "markscheme_notes": "(a) Require either the arithmetic (40 GB against 8 GB, a factor of five) or an equivalent statement of impossibility. A candidate who proposes adding RAM or using a bigger machine has not engaged with the design and should be redirected; credit is not awarded for hardware. \"Streaming\" must be described as reading one record at a time with bounded state, not merely as \"using a loop\".\n\n(b) Each fault needs its mechanism. For the trailing-newline fault, accept a description of the phantom final empty element; a candidate who says only \"split is wrong\" earns nothing. For the quoting fault, accept a prose description or code. A candidate who says \"use the csv module\" earns the description mark only if they also say what a CSV parser must do about quoted delimiters.\n\n(c) The marks are for structure, not for library knowledge. Accept any single-pass function returning equivalent summary, error and count objects; a dictionary of tuples, a dictionary of lists, or a small class are all acceptable. Do not award the capped-list mark to a candidate who stores every malformed line, and do not award the parser mark to a candidate who still calls `split(\",\")` on a raw line. `try/except`, an explicit numeric test, or a regular expression are all acceptable for the validation mark. A candidate who reads the stream twice loses the single-pass mark even if the results are correct.\n\n(d) The evaluation must name the conflict and then choose. A candidate who says \"increase max_errors\" has not engaged with the memory bound and should be capped at one mark. The strongest answers propose the second output stream; a candidate who defends the cap can still earn two marks if the loss of line numbers is stated explicitly and the exact count is retained. Do not accept \"store the errors in a database\" as a free answer — it is a second output stream in disguise, and it should be credited only if the candidate says that the writes are streamed rather than batched.",
+      "explanation": "Three requirements appear to conflict: process the file in one pass, keep memory bounded, and report every malformed record. The obvious way to satisfy any two of them is to break the third, and most students will break the third — they will cap the error list and accept that some line numbers are lost. The insight the question is testing is that the conflict is not real: it exists only because the error report was assumed to be an in-memory object. Move it to a different sink and all three requirements hold at once. That is a design move, not a coding trick, and it is the reason the final part carries the marks.\n\nThe memory arithmetic is the part that must be done rather than estimated. Forty gigabytes against eight gigabytes is a factor of five, and that is *before* the overhead of a Python string object; a list of 400,000,000 line objects would need several times the raw file size. A student who says \"the file is large\" has not established that the naive approach is impossible, and the difference between \"slow\" and \"impossible\" matters, because a slow program can be left to run and an impossible one cannot.\n\nThe two parsing faults are the classic reasons that file-processing code passes its tests and fails in production. A small test file written by hand often has no trailing newline and no quoted commas; a real 40 GB export has both. `split(\"\\n\")` on a file that ends with a newline produces a phantom empty record, which inflates the error count by one and, worse, trains the developer to ignore the error report. And splitting on commas is only correct for files whose fields never contain commas — which is a property of the data, not a guarantee, and CSV quoting exists precisely because that property fails. Both faults are invisible on the obvious test and both are trivially avoided by the right primitive: iterate the file object, and parse fields with a state machine that knows about quotes.\n\nThe final wrong turn is worth naming because it is the most reasonable-looking. A student who caps the error list has correctly identified that memory must be bounded and has made a defensible engineering trade. What they have missed is that the requirement they sacrificed was the one the *user* cared about, and that it could be satisfied at almost no cost. Recognising which constraint is genuinely binding — and which one is an artefact of an implementation choice — is the transferable skill.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Built from the B2.5 bullets on line-by-line and whole-file processing, record parsing and error handling. The 40 GB file, the 100-byte records, the 8 GB machine, the 500 stations, the non-seekable socket stream and the requirement to report every malformed line were chosen together so that the memory arithmetic is exact, the single-pass requirement is forced, and the capped-list design is a genuine trade rather than an oversight.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.002,
+        "nearest_bank_id": "PHYS_HL_P3_2019Nov_HL_OPT_D_q16",
+        "max_internal_similarity": 0.016,
+        "nearest_bank_label": "bank:Physics/Physics HL",
+        "nearest_internal_id": "CS-B2.3-001"
+      },
+      "verification": {
+        "method": "The streaming function and its quoted-field parser were executed on a seven-line sample containing a quoted comma, a non-numeric field, a short record, an empty line and a final line with no trailing newline; the summary, the capped error list and the total error count were checked by hand. Memory arithmetic: 40 GB at 100 bytes per record is 400,000,000 records, and the file is five times the 8 GB available.",
+        "assertions": [
+          "approx(40*10**9/100, 400000000)",
+          "approx(40/8, 5)",
+          "approx((40*10**9)/(8*10**9), 5)",
+          "1000*100 < 8*10**9"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    }
+  ]
+}

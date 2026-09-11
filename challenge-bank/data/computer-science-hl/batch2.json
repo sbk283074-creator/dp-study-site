@@ -1,0 +1,384 @@
+{
+  "questions": [
+    {
+      "id": "CS-A1.2-001",
+      "title": "A 12-bit temperature log and the arithmetic that breaks it",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "A1.2 Data representation and computer logic (A1.2.1 representation of integers in binary and hexadecimal, A1.2.2 binary encoding and its impact on storage, A1.2.3 logic gates, A1.2.4 truth tables)",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A1.2 Data representation and computer logic",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "The word length is fixed and small enough that representable range, scaled range and accumulator overflow all interact; the student must recognise that the overflow point depends on the number of readings rather than on the sensor, and then explain why one conversion factor is exact and a superficially similar one is not.",
+      "command_terms": [
+        "Determine",
+        "Explain",
+        "Show that",
+        "State"
+      ],
+      "tags": [
+        "two's complement",
+        "overflow",
+        "fixed point",
+        "Boolean simplification",
+        "logic gates"
+      ],
+      "stimulus": {
+        "title": "A field temperature logger",
+        "body": "A logger records temperature once per minute for a week. The sensing element produces a signed integer that is stored in a 12-bit two's complement register, in units of 0.0625 degrees Celsius per least significant bit. A separate summation register accumulates consecutive readings so that a rolling average can be reported, using the same 12-bit width as the readings themselves.\n\nThe logger also drives an alarm output from three inputs: P (pressure above the safe limit), T (temperature above the safe limit) and O (operator override enabled). The designer's first attempt at the alarm logic is\n\n    F = P.T + P.T' + P'.T.O\n\nwhere the prime denotes NOT, the dot denotes AND and + denotes OR. The alarm output is available only at a single-frequency clock, so reducing the number of gates is worth doing.",
+        "table": null
+      },
+      "figure": null,
+      "question": "The 12-bit register stores values in units of 0.0625 degrees Celsius per least significant bit, with the most significant bit carrying the sign.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the 12-bit two's complement representation of a reading of -37.5 degrees Celsius, giving your answer in binary and in hexadecimal."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Explain",
+          "text": "Explain why the summation register can overflow even when every individual reading is representable, and determine the minimum register width needed to sum any 16 consecutive readings without overflow."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain why converting a stored reading to degrees Celsius by multiplying by 0.0625 introduces no error, whereas converting it to degrees Fahrenheit does, in both cases assuming the arithmetic itself is performed exactly."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that F simplifies to P + T.O, and state the number of two-input gates needed for the reduced expression."
+        }
+      ],
+      "answer": "**(a)** One least significant bit represents $0.0625$ degrees Celsius, so the stored integer is the temperature divided by $0.0625$: $-37.5/0.0625=-600$. **(M1)**\n\nTo store $-600$ in 12-bit two's complement, represent $+600$ first. $600=512+64+16+8$, which is $001001011000$ in 12 bits. **(A1)**\n\nInverting every bit gives $110110100111$ and adding 1 gives $110110101000$, so $-600$ is stored as $1101\\,1010\\,1000$. Grouping into fours from the right: $1101$ is D, $1010$ is A, $1000$ is 8, so the answer is $\\mathrm{0xDA8}$. **(A1)**\n\n*Check: $1101\\,1010\\,1000$ is $3496$ unsigned, and $3496-4096=-600$. Correct.*\n\n*Representable: $-600$ lies inside the 12-bit signed range $-2048$ to $+2047$, so no clamping is needed.*\n\n**(b)** A 12-bit two's complement register holds values from $-2048$ to $+2047$. Each individual reading is comfortably inside this range because the largest magnitude the sensor can report is about $128$ degrees Celsius. **(M1)**\n\nOverflow is a property of the accumulator, not of the sensor. Two readings of $+2047$ already sum to $4094$, which is more than the largest 12-bit signed value, so the sum wraps and a positive result can appear negative. In practice the readings are far smaller than the maximum, but the accumulator has no way of knowing that: it is only 12 bits wide, so any pair of readings above about $1023$ will overflow it. **(M1)(A1)**\n\nSixteen readings can each be as large as $2047$, so the largest possible sum is $16\\times 2047=32\\,752$. **(M1)** A 15-bit two's complement register reaches only $+16\\,383$, which is not enough; a 16-bit register reaches $+32\\,767$, which is. The minimum width is therefore 16 bits. **(A1)**\n\nIn general an accumulator summing $k$ readings of width $w$ must satisfy $2^{W-1}-1\\ge k(2^{w-1}-1)$; for $w=12$ and $k=16$ the smallest satisfying width is $W=16$, which is why the answer is 16 and not 15.\n\n**(c)** $0.0625=2^{-4}$. Multiplication by a power of two does not change the digits of a binary number, it only moves the binary point, so the multiplication can be performed by a shift and the result is exact. Every value the sensor can produce is mapped to an exact value in degrees Celsius. **(M1)(A1)**\n\nThe conversion to Fahrenheit is $F=1.8C+32$, so it requires multiplication by $1.8$, which is $9/5$. In binary, $9/5$ is the recurring fraction $1.1100110011\\ldots$, which cannot be stored in a fixed number of bits. **(M1)** Rounding that factor introduces an error that grows with the magnitude of the reading, and because $1/5$ has a factor of 5 in the denominator it can never be represented exactly in binary. **(A1)**\n\nThe Celsius conversion is therefore exact by construction, while the Fahrenheit error is one of representation rather than arithmetic: using more bits shrinks the rounding error but never removes it, because the expansion of $9/5$ does not terminate.\n\n**(d)** $P.T+P.T'=P.(T+T')=P.1=P$ by the distributive and complement laws. **(M1)**\n\nSubstituting: $F=P+P'.T.O$. **(M1)**\n\nBy the rule $A+A'.B=A+B$ (absorption, or the consensus theorem), with $A=P$ and $B=T.O$, this becomes $F=P+T.O$. **(A1)**\n\nThe reduced expression needs one AND gate for $T.O$ and one OR gate to combine it with $P$, so two two-input gates. **(A1)** The two inverters required by the original expression are no longer needed, so the gate count falls from five to two and the propagation delay falls as well.\n\nA truth-table cross-check over all eight combinations of $P$, $T$ and $O$ gives identical outputs for the original expression and for $P+T.O$, confirming the simplification.",
+      "markscheme_notes": "Part (a): the **(M1)** is for dividing by 0.0625; accept a candidate who works in the other direction by converting 37.5 to binary fractionally, provided the two's complement step is shown. Do not accept a sign-magnitude representation where two's complement was asked for. Part (b): the key discriminator is whether the candidate identifies the accumulator as the source of overflow. An answer that merely states 'the sum gets too big' without connecting this to the fixed 12-bit width earns one **(M1)**. For the width, accept 16-bit or 'four extra bits'; do not accept 15-bit, and do not accept a candidate who computes $16 \\times 2048$ and obtains $32\\,768$, because that value is not achievable and the conclusion for the width happens to be the same but the reasoning is wrong. Part (c): credit any answer that identifies 0.0625 as a power of two and 1.8 as a non-terminating binary fraction. A candidate who says '1.8 is not an integer' has not addressed the question and should not receive the last **(A1)**. Part (d): accept a truth-table proof, an algebraic proof, or a Karnaugh map. If a truth table is used it must have eight rows and all four minterms correctly placed. A candidate who writes 'F = P + TO' with no working earns one mark only.",
+      "explanation": "Three separate ideas about fixed-width arithmetic are packed into one device, and they are usually taught separately.\n\nThe first is that the representable range depends on the declared width, not on the physical sensor. A 12-bit signed register spans $-2048$ to $+2047$, which comfortably covers a temperature sensor, so a student may reasonably conclude that overflow is impossible. It is not: the accumulator is the same width, and summing is exactly the operation that pushes values out of range. This is why real systems widen the accumulator or use saturating arithmetic, and it is worth knowing that the failure mode of wrapping is silent — a plausible-looking wrong number rather than an error.\n\nThe second idea is that exactness in conversion depends on the base representation, not on the size of the number. Multiplying by 0.0625 is exact because it is a power of two. Multiplying by 1.8 is not, and no amount of extra precision fixes it, because 1/5 has no finite binary expansion. This is the same reason that 0.1 cannot be stored exactly as a binary floating-point number, and it is the root cause of a large class of reported bugs in software that handles money.\n\nThe third is that a Boolean expression can look as though it needs every term it contains. The term $P.T'$ appears to add information about temperature, but it is redundant: whenever $P$ is true the whole expression is already true, and whenever $P$ is false the term contributes nothing. Recognising this is what the absorption rule formalises. The practical consequence is two gates instead of five, which matters because the alarm output is clocked and every extra gate adds propagation delay.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Two's complement conversion and Boolean simplification are standard IB content, and they are normally examined as separate, short items. Here they share one device, and the middle two parts are constructed so that the same fixed width causes a representation question (is -37.5 representable?) and an arithmetic question (does the sum overflow?), with the conversion part distinguishing an exact scaling factor from an inexact one. The logger, the 12-bit width, the 0.0625 scaling, the 16-reading accumulation bound and the alarm expression are original; every value was recomputed.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.003,
+        "nearest_bank_id": "CS_HL_P1_2007May_q09",
+        "max_internal_similarity": 0.006,
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Computer Science/CS HL",
+        "nearest_internal_id": "CS-B3.1-001"
+      },
+      "verification": {
+        "method": "Checked by computation. -37.5 / 0.0625 = -600; -600 in 12-bit two's complement is 4096 - 600 = 3496 = 1101 1010 1000 = 0xDA8, and 3496 - 4096 = -600. The 12-bit signed range is -2048..2047, equal to -128.0..127.9375 degrees Celsius. 16 x 2047 = 32752, which is within the 16-bit signed range -32768..32767 but outside the 15-bit range. The Boolean simplification was verified by evaluating both expressions over all eight input combinations.",
+        "assertions": [
+          "approx(-37.5/0.0625, -600)",
+          "approx(3496 - 4096, -600)",
+          "approx(int('110110101000', 2), 3496)",
+          "approx(int('DA8', 16), 3496)",
+          "16 * 2047 <= 32767",
+          "16 * 2047 > 16383",
+          "approx(-2048*0.0625, -128)",
+          "approx(2047*0.0625, 127.9375)"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "CS-A1.3-001",
+      "title": "An irrigation gateway choosing how to share its processor",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "A1.3 Operating systems and control systems (A1.3.2 functions of an operating system, A1.3.3 comparison of scheduling approaches, A1.3.4 evaluation of polling and interrupt handling, A1.3.6 open-loop and closed-loop control)",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A1.3 Operating systems and control systems",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "Two scheduling policies must be compared not by reputation but by computed average waiting time, and the intuitively fairer policy turns out to be worse on that measure here; the student then has to justify the choice on the basis of worst-case behaviour instead, which requires reading the numbers in a way that the average conceals.",
+      "command_terms": [
+        "Describe",
+        "Calculate",
+        "Evaluate",
+        "Explain"
+      ],
+      "tags": [
+        "operating systems",
+        "scheduling",
+        "polling",
+        "interrupts",
+        "control systems"
+      ],
+      "stimulus": {
+        "title": "A field irrigation gateway",
+        "body": "A solar-powered gateway controller sits in a field and manages irrigation for sixteen plots. It runs a small operating system on a single-core processor and executes four periodic tasks, described as A, B, C and D. Each task becomes ready at the same moment when the controller wakes from sleep, and their processor requirements are 5 ms, 3 ms, 8 ms and 2 ms respectively. The controller must also handle two inputs: a soil-moisture probe that is read on a fixed schedule every 30 seconds, and a rain sensor that triggers a shutdown and must be acted on within 5 milliseconds of the first drop reaching it. The device is battery-backed and mains-charged, and is connected to the farm network so that readings can be uploaded.",
+        "table": null
+      },
+      "figure": null,
+      "question": "The four tasks A, B, C and D all become ready simultaneously when the controller wakes. Their processor requirements are 5 ms, 3 ms, 8 ms and 2 ms.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Describe",
+          "text": "Describe how a closed-loop control system would maintain soil moisture at a target level, identifying the input, the process, the output and the feedback in your answer."
+        },
+        {
+          "label": "b",
+          "marks": 6,
+          "command_term": "Calculate",
+          "text": "Calculate the average waiting time for the four tasks under first-come-first-served scheduling and under round-robin scheduling with a time quantum of 3 ms, then recalculate each total if every context switch costs 0.5 ms and the tasks are executed in the order A, B, C, D."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why the average waiting time alone is a misleading basis for choosing between the two policies, using your figures, and state which policy you would deploy."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Evaluate",
+          "text": "Evaluate the use of polling for the soil-moisture probe against the use of interrupts for the rain sensor, and explain one additional operating system function that the network connection makes necessary."
+        }
+      ],
+      "answer": "**(a)** In a closed-loop system the controller measures the actual soil moisture, compares it with the target value, and uses the difference to decide how much water to release; the measurement is then repeated so that the effect of the action is observed and corrected. **(M1)**\n\nInput: the reading from the soil-moisture probe, converted to a digital value. Process: the controller compares this reading with the target and computes the valve opening and the duration of watering. Output: the signal that opens the irrigation valve, and the water delivered to the plot. Feedback: the next reading from the same probe, which shows whether the moisture has reached the target and allows the next decision to be adjusted. **(M1)(A1)(A1)**\n\nThe feedback path is what makes the system closed-loop and is what distinguishes it from an open-loop system, which would water for a fixed time regardless of the resulting moisture level.\n\n**(b)** First-come-first-served, executing in the order A, B, C, D:\n\n| Task | Starts | Runs | Completes | Waiting time |\n|---|---|---|---|---|\n| A | 0 | 5 | 5 | 0 |\n| B | 5 | 3 | 8 | 5 |\n| C | 8 | 8 | 16 | 8 |\n| D | 16 | 2 | 18 | 16 |\n\nAverage waiting time $=(0+5+8+16)/4=7.25$ ms. **(M1)(A1)**\n\nRound robin with a quantum of 3 ms, queue order A, B, C, D:\n\n| Slice | Task | Runs | Remaining |\n|---|---|---|---|\n| 1 | A | 3 | 2 |\n| 2 | B | 3 | 0 completes at 6 ms |\n| 3 | C | 3 | 5 |\n| 4 | D | 2 | 0 completes at 11 ms |\n| 5 | A | 2 | 0 completes at 13 ms |\n| 6 | C | 3 | 2 |\n| 7 | C | 2 | 0 completes at 18 ms |\n\nWaiting times are A 8 ms, B 3 ms, C 10 ms and D 9 ms, so the average is $(8+3+10+9)/4=7.50$ ms. **(M1)(A1)**\n\nBoth schedules take 18 ms of processing. First-come-first-served needs 3 context switches, adding 1.5 ms, for a total of 19.5 ms. Round robin needs 7 switches, adding 3.5 ms, for a total of 21.5 ms. **(M1)(A1)**\n\n**(c)** Under round robin the average waiting time is 0.25 ms worse and the total time is 2 ms worse, so on the average the two policies are almost indistinguishable and the familiar claim that round robin is fairer is not visible. **(M1)**\n\nWhat the average hides is the distribution. Under first-come-first-served the shortest task waits 16 ms, eight times its own running time, and a task that became ready just after a long one would wait longer still. Round robin bounds the wait for any task that is ready: with four tasks and a 3 ms quantum, no task is ever bypassed for more than three slices, so the worst case is 9 ms of other work. **(A1)**\n\nFor a controller whose main job is to keep the valves responding, the bounded worst case is worth more than a marginally better average, so round robin is the defensible choice, with the caveat that the context-switch cost should be reduced before the quantum is made smaller. **(A1)**\n\n**(d)** Polling the moisture probe every 30 seconds is cheap and predictable. The probe changes slowly, the event rate is two checks per minute, and the processor overhead of reading a value on a timer is negligible; an interrupt-driven design would add hardware complexity for no benefit. **(M1)(A1)**\n\nPolling the rain sensor is not acceptable. Drops arrive unpredictably and the required response is within 5 ms, so a polling loop would need a period shorter than 5 ms, consuming processor time continuously and still risking a missed event between samples. An interrupt lets the processor sleep until a drop arrives, which also suits a battery-backed device, and it guarantees the latency requirement rather than merely making it likely. **(A1)**\n\nThe network connection makes authentication and access control necessary: the gateway must be able to accept uploads and possibly commands from the farm network, so the operating system must identify who is allowed to talk to it and protect its memory from a malicious or faulty remote message.",
+      "markscheme_notes": "Part (a): the four components must be identified in the context of this device, not defined generically; a candidate who writes 'input: a sensor' without saying which quantity is being sensed earns at most two of the four marks. Part (b): accept a correctly drawn Gantt chart as a substitute for the table. The trace marks are for the completion times and the waiting times respectively; a candidate with correct completion times but who reports waiting time as completion time minus start time should be corrected and given the trace mark only. Do not require the context-switch calculation to be presented in the same form as here, but do require an explicit count of switches; a candidate who counts 15 switches for round robin rather than 7 has counted slices rather than switches and loses the last **(A1)**. Part (c): the essential argument is the difference between an average and a worst case; a candidate who merely repeats the average figures without discussing the shortest task's wait does not reach the explanation mark. Part (d): award the two marks for the moisture probe for the low event rate and predictability, and the mark for the rain sensor for the latency guarantee; a candidate who argues only on cost does not address the requirement. The final mark is for any plausible security function tied to the network connection, such as authentication, encryption of the upload, or memory protection from a malformed network packet.",
+      "explanation": "The scheduling part of this question is arranged so that the standard intuition fails. Round robin is usually described as fairer, and it is, in the sense that no task is starved. But on this specific workload the average waiting time is very slightly worse and the total time is worse once the context-switch cost is included, because the longest task is interrupted and restarted and the switching overhead is not free. A student who answers 'round robin is fairer' without computing anything has not answered the question, and a student who computes only the averages is forced to choose round robin for a reason the numbers do not support.\n\nThe way out is to look at the distribution rather than the mean. Under first-come-first-served the two-millisecond task waits sixteen milliseconds; under round robin nothing waits more than about nine milliseconds. For a device whose purpose is to keep responding to field conditions, the bound matters more than the mean, and that is a genuine engineering judgement rather than a textbook answer.\n\nThe second half of the question is about matching a mechanism to an event's statistics. Polling and interrupts are not better or worse in themselves: polling is simpler, has no hardware setup, and is entirely adequate when the event rate is low and the latency requirement is loose, which is exactly the situation of a moisture probe read twice a minute. Interrupts become necessary when the event is rare but must be handled quickly, because a polling loop fast enough to guarantee five-millisecond latency would run continuously and defeat the low-power design. The fact that the two sensors sit on the same device and require opposite answers is the point of the question, and it is the reason a blanket rule such as 'interrupts are more efficient' is unhelpful.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Scheduling comparison is a standard IB topic but is usually examined by asking for a Gantt chart of one policy. Here two policies are computed on the same workload and the workload is chosen so that the fairer policy loses on the average, forcing the comparison onto worst-case behaviour; the polling and interrupt parts are then tied to the same device with two sensors that demand opposite answers, and the closed-loop control part reuses the syllabus content in A1.3.6. The gateway, the task set, the quantum and the two sensors are original; both schedules were traced programmatically.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.006,
+        "nearest_bank_id": "AI-CS-T7-03",
+        "max_internal_similarity": 0.0,
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "generated:cs_ai_batch3.json",
+        "nearest_internal_id": null
+      },
+      "verification": {
+        "method": "Both schedules were traced programmatically. FCFS completion times A 5, B 8, C 16, D 18 ms give waiting times 0, 5, 8, 16 and an average of 7.25 ms. Round robin with quantum 3 gives completion times B 6, D 11, A 13, C 18 ms and waiting times 8, 3, 10, 9, averaging 7.50 ms. FCFS uses 3 context switches and round robin 7, costing 1.5 ms and 3.5 ms respectively.",
+        "assertions": [
+          "approx((0 + 5 + 8 + 16)/4, 7.25)",
+          "approx((8 + 3 + 10 + 9)/4, 7.5)",
+          "approx((5+3+8+2) + 3*0.5, 19.5)",
+          "approx((5+3+8+2) + 7*0.5, 21.5)",
+          "5 + 3 + 8 + 2 == 18"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "CS-A3.4-001",
+      "title": "A relational store that cannot answer the question",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "A3.4 Alternative databases and data warehouses (A3.4.1 NoSQL, cloud, spatial and in-memory databases, A3.4.2 objectives of data warehouses, A3.4.3 OLAP and data mining, A3.4.4 distributed databases and ACID)",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A3.4 Alternative databases and data warehouses (HL only)",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "language": "sql",
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "The operational store and the analytical store impose opposite requirements on the same data, so the student must explain why the working system fails at reporting rather than simply stating that a warehouse is faster, and must then design a schema whose grain is stated precisely enough to make the measures unambiguous.",
+      "command_terms": [
+        "Explain",
+        "Design",
+        "Calculate",
+        "Justify"
+      ],
+      "tags": [
+        "NoSQL",
+        "data warehouse",
+        "star schema",
+        "OLAP",
+        "ACID"
+      ],
+      "stimulus": {
+        "title": "Nightline Couriers",
+        "body": "Nightline Couriers operates 340 vans from 12 depots. Every van reports its position, speed and load temperature once every 0.4 seconds while the ignition is on, an average of 14 hours a day. Each report is stored as a fixed-length record of 80 bytes. The reports are written to a relational database on a single server, and the same database holds the tables that the dispatch system reads and writes many times per second.\n\nAt the end of each month the operations director asks for a report showing, for every depot and every month, the number of completed deliveries, the average delivery time per parcel, the total distance driven and the number of temperature excursions, defined as any period in which a load temperature left the permitted range for more than 90 seconds.\n\nThe report currently takes nine hours to produce and, while it runs, drivers report that the dispatch screen stops responding.",
+        "table": null
+      },
+      "figure": null,
+      "question": "The operations director wants the monthly report produced without the dispatch system losing responsiveness. The data described above is available, and management accepts that the reporting and dispatch workloads must be separated.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain why the monthly report is slow and why running it affects the dispatch system, referring to the difference between the workloads the two stores must support."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Design",
+          "text": "Design a star schema for the monthly report. State the grain of the fact table, name the fact table and three dimension tables, and give two measures that the fact table must hold."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Calculate",
+          "text": "Calculate the volume of raw report data generated in one year, and the volume if every record is stored with a replication factor of three. State one consequence of your answer for the choice of database."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Justify",
+          "text": "Justify the use of a key-value or wide-column store for the incoming position reports rather than the relational database, and state one capability that is given up by doing so."
+        }
+      ],
+      "answer": "**(a)** The dispatch system performs online transaction processing: many small reads and writes, each touching a few rows, each required to complete almost immediately. The monthly report performs online analytical processing: it reads almost every row that exists and aggregates it, and it does not care whether the answer arrives in a millisecond. **(M1)(A1)**\n\nThe relational store is organised to make the first workload fast. Its indexes are built on the columns the dispatch system filters on, and those indexes are of no use to a query that must scan the whole of a large table. The monthly report therefore degenerates into a full scan of the position reports, and because the tables are also being written to continuously, the scan has to take locks or work against a moving target. **(M1)**\n\nRunning both workloads on one server means they compete for the same resources: the report's long scan occupies processor time, memory for buffers and disk bandwidth, so the transactional queries queue behind it and the dispatch screen stops responding. This is the standard argument for separating the operational store from a reporting store. **(A1)**\n\n**(b)** The grain must be stated before anything else can be decided, because a fact table is only meaningful at one level of detail. **Grain:** one row per van per completed delivery. **(M1)**\n\n**Fact table:** `fact_delivery`, with one row per delivery and foreign keys to each dimension. **(M1)**\n\n**Dimension tables:** `dim_date` (day, month, year, weekday), `dim_depot` (depot identifier, depot name, region), and `dim_van` (van identifier, model, refrigeration capability). A fourth, `dim_route`, would be defensible if routes are named rather than being defined by origin and destination, and should be accepted. **(M1)**\n\n**Measures:** at least two numeric, additive quantities such as `delivery_duration_minutes` and `distance_km`, together with `temperature_excursions`, which is stored as a count of qualifying events rather than as a duration so that it can be summed. **(M1)(A1)**\n\nStoring the delivery duration as a measure rather than deriving it from timestamps is what makes the average delivery time per depot obtainable without touching the raw reports at all.\n\n**(c)** 340 vans write one report every 0.4 seconds for 14 hours a day: each van produces $14\\times 3600/0.4=126\\,000$ reports per day, so the fleet produces $340\\times 126\\,000=42\\,840\\,000$ reports per day. **(M1)**\n\nAt 80 bytes each, that is $42\\,840\\,000\\times 80=3.43\\times 10^{9}$ bytes, which is 3.43 GB per day. **(A1)**\n\nOver 365 days the raw volume is $3.43\\times 365=1\\,251$ GB, approximately 1.25 TB per year. **(A1)** With a replication factor of three the stored volume is about 3.75 TB. **(A1)**\n\nOne consequence follows directly: a single relational server cannot be the store for this data, because the write rate alone is over a million rows per minute across the fleet at peak and the table grows by terabytes annually. A distributed store that partitions the data across nodes is required, and retention policy becomes a design decision rather than an afterthought.\n\n**(d)** The incoming reports have a very simple shape and an extremely high write rate, and the query pattern is almost always 'give me the reports for this van between these two times'. **(M1)** A key-value or wide-column store matches this exactly: the key is the van identifier combined with the timestamp, writes are append-only and can be spread across nodes, and a time-range read is a contiguous scan within one partition. No joins are required, so the relational model's main advantage is not being used.\n\nThe capability given up is transactional consistency across records: ACID guarantees are weakened in exchange for availability and partition tolerance, so a system reading the store may see data that is not yet complete or not yet consistent everywhere. **(A1)(A1)** For position reports this is acceptable; for the financial records of the same company it would not be, which is why the two stores coexist rather than one replacing the other.",
+      "markscheme_notes": "Part (a): the essential contrast is workload shape — many small transactions against few large aggregations — rather than raw speed. A candidate who writes only 'the report is slow because there is a lot of data' earns one mark. The resource-contention mark requires the report and the transactions to be identified as competing for the same server. Part (b): a candidate who states the grain as 'per depot per month' has designed an aggregated table, not a star schema, and cannot earn the grain or the fact-table mark; the grain must be at the level of the individual event. The dimension requirement is for three sensible dimensions, not for specific names, but each must have plausible attributes and not be a copy of the fact table. Accept `dim_route` in place of `dim_van` if the delivery context makes it meaningful. Part (c): the calculation marks are for the daily figure, the annual figure and the replicated figure separately; a candidate who reaches 3.75 TB has all three and earns full marks. Follow-through applies to arithmetic. Reject an answer that ignores the 14 hours per day and assumes 24-hour reporting, though the method marks should still be awarded. Part (d): the justification must refer to the access pattern or the write rate; 'NoSQL is faster' alone is not a justification. The final mark is for a specific consistency, join or query capability that is lost, with ACID named or described.",
+      "explanation": "The question turns on a distinction that is easy to state and hard to apply: the same data can require two different storage systems because the two workloads have opposite shapes. The dispatch system does many small operations that must each finish quickly; the monthly report does one enormous aggregation that nobody minds waiting for. A schema optimised for the first is actively hostile to the second, because the indexes that make row lookups fast are irrelevant to a full scan, and because the scan competes for resources with the transactions.\n\nPart (b) is the part most likely to be attempted without the necessary discipline. A star schema is defined by its grain, and the grain must be the finest thing the measures are meaningful at. Writing 'per depot per month' produces a table that already contains the answer and cannot be re-aggregated differently, which defeats the purpose of a warehouse. Stating the grain as one row per van per completed delivery keeps the table re-aggregatable by any dimension, and that is precisely the flexibility a warehouse is bought for. The dimension tables exist so that the query can group by month, depot or van without a join to the operational database.\n\nPart (c) is arithmetic with a design consequence. Roughly 43 million reports a day at 80 bytes gives about 3.4 GB daily and about 1.25 TB a year before replication; the moment a replication factor is added, the figure is well beyond what a single server should hold. The useful observation is not the number itself but what it rules out: the storage decision is forced by the write rate, not by a preference for novel technology.\n\nPart (d) closes the argument. A time-series access pattern with no joins is exactly what a key-value or wide-column store is good at, and choosing it costs the transactional guarantees that the financial system still needs. Both stores therefore exist, and the fact that they hold overlapping data is a deliberate redundancy rather than a design failure.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "IB questions on this topic typically ask students to list database types or state what OLAP is. Here the second half of the same scenario is used to force a schema design with a stated grain, a volume calculation with a replication factor, and a justification that must name what is given up. The fleet size, report rate, record size and reporting requirement are original; the storage arithmetic was computed.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.006,
+        "nearest_bank_id": "CS_HL_P1_2010May_q14",
+        "max_internal_similarity": 0.0,
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Computer Science/CS HL",
+        "nearest_internal_id": null
+      },
+      "verification": {
+        "method": "Storage arithmetic recomputed: 14 h x 3600 s / 0.4 s = 126000 reports per van per day; x 340 vans = 42 840 000 reports per day; x 80 bytes = 3.4272e9 bytes = 3.43 GB per day; x 365 = 1250.9 GB = 1.25 TB per year; x 3 for replication = 3.75 TB.",
+        "assertions": [
+          "approx(14*3600/0.4, 126000)",
+          "approx(340*126000, 42840000)",
+          "approx(42840000*80/1e9, 3.4272, 1e-4)",
+          "approx(42840000*80*365/1e12, 1.250928, 1e-6)",
+          "approx(42840000*80*365*3/1e12, 3.752784, 1e-6)"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "CS-B3.1-001",
+      "title": "A bounded buffer class where the bug is in the average",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "B3.1 Fundamentals of OOP for a single class (B3.1.2 class design, B3.1.3 static and non-static members, B3.1.4 defining classes and instantiating objects, B3.1.5 encapsulation and information hiding)",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B3.1 Fundamentals of OOP for a single class",
+      "paper": "P2",
+      "section": "B",
+      "technology": "not allowed",
+      "language": "python",
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "The class must hold a fixed number of readings and report the average of those currently held, so the count and the capacity are different quantities that are easily confused; a version that divides by the capacity produces a plausible wrong answer that only shows up before the buffer is full.",
+      "command_terms": [
+        "Explain",
+        "Construct"
+      ],
+      "tags": [
+        "OOP",
+        "encapsulation",
+        "class design",
+        "circular buffer",
+        "debugging"
+      ],
+      "stimulus": {
+        "title": "SensorReadings",
+        "body": "A weather station holds the most recent readings from a thermometer in a fixed-size window so that a rolling average can be displayed. The class must never store more than CAPACITY readings: when it is full and a new reading arrives, the oldest reading is discarded to make room.\n\nA first attempt at part of the class is shown below.\n\n    class SensorReadings:\n        def __init__(self, capacity):\n            self.values = []\n            self.capacity = capacity\n\n        def add(self, reading):\n            self.values.append(reading)\n\n        def mean(self):\n            total = 0\n            for v in self.values:\n                total += v\n            return total / self.capacity\n\nThe class works when tested with a single reading, and gives a value that looks reasonable for the first few readings after that.",
+        "table": null
+      },
+      "figure": null,
+      "question": "The window size is a property of the device, not of any individual object, and several SensorReadings objects may exist at once for different sensors.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why CAPACITY should be a class-level constant rather than an instance variable set by __init__, and state one invariant that the class must maintain."
+        },
+        {
+          "label": "b",
+          "marks": 6,
+          "command_term": "Construct",
+          "text": "Construct the completed class, including __init__, add, mean and __len__, so that it maintains the invariant you stated and never holds more than CAPACITY readings."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain the error in the draft mean method and the effect it has after three readings have been added to a buffer whose capacity is five, and state the corrected line."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why a method that returns self.values directly breaks encapsulation, and describe one way of giving the caller the data without doing so."
+        }
+      ],
+      "answer": "**(a)** The window size is a property of the device, is the same for every object created, and must not vary between objects; making it a class-level constant expresses that and prevents one instance from being given a different capacity from another. **(M1)** It also removes the risk that the value is reassigned after construction, which would make the buffer's behaviour depend on when a method was called. **(A1)**\n\nAn invariant the class must maintain: the number of readings held is never greater than CAPACITY, and the values held are always the most recent ones added, in order. **(A1)**\n\n**(b)**\n\n```python\nclass SensorReadings:\n    CAPACITY = 5\n\n    def __init__(self):\n        self._values = []\n\n    def add(self, reading):\n        if len(self._values) == self.CAPACITY:\n            self._values.pop(0)\n        self._values.append(reading)\n\n    def mean(self):\n        if not self._values:\n            return None\n        return sum(self._values) / len(self._values)\n\n    def __len__(self):\n        return len(self._values)\n```\n\nThe critical construction is the eviction in `add`: the oldest reading is removed before the new one is appended, which is what keeps the length bounded. **(M1)(A1)** The guard inside `mean` handles the empty buffer, which would otherwise raise a division by zero; the guard must be present because the class is usable before any reading arrives. **(M1)(A1)**\n\nUsing `len(self._values)` rather than a stored count means the count cannot fall out of step with the list. **(M1)** The attributes are prefixed with a single underscore to signal that they are internal, and `__len__` gives callers the size without exposing the list. **(A1)**\n\n**(c)** The error is that `mean` divides the total by `self.capacity`, the maximum number of readings the buffer can hold, instead of by the number of readings it actually holds. **(M1)**\n\nWith a capacity of five and three readings added, say 10, 20 and 30, the total is 60 and the correct mean is $60/3=20$. The draft returns $60/5=12$. **(M1)(A1)** The error is therefore not a failure but an understatement: the displayed average is too low by a factor of 3/5, and because the divisor is fixed, the error shrinks as the buffer fills and disappears entirely once five readings have been added. That is why testing with a single reading and then a few more gives values that look plausible. **(A1)**\n\nThe corrected line is:\n\n```python\n        return total / len(self.values)\n```\n\nThe same correction is what makes the earlier version of `mean` safe against an empty buffer, since a division of zero by zero would otherwise raise an exception.\n\n**(d)** Returning `self.values` hands the caller a reference to the internal list, not a copy. **(M1)** The caller can then append to it, sort it in place or clear it, and every one of those operations changes the state of the object without going through `add`, which is the only method that enforces the capacity limit. The invariant established in part (b) is then broken from outside the class, and the object can end up holding more readings than CAPACITY or in an order that no longer reflects when they arrived. **(A1)**\n\nOne way to avoid this is to return a copy of the list, for example `return list(self._values)`, so that the caller's changes affect only their own copy. **(A1)** A generator that yields each reading in turn achieves the same protection while avoiding the cost of copying a large buffer.",
+      "markscheme_notes": "Part (a): the explanation must connect the class-level constant to the fact that the value is shared and fixed; an answer that only says 'it is a constant' with no reason earns one mark. Accept any genuine invariant, including the one given here, provided it constrains the state rather than describing a method. Part (b): code in a language other than the one indicated should be accepted if the syllabus version being sat requires it, but the eviction logic must be present and correct. Do not award the invariant-preservation marks to a candidate whose `add` simply appends, even if the rest of the class is correct, because the stated invariant is then violated. The empty-buffer guard is worth its marks even though it is one line; a candidate who omits it should be told that the class is usable before any reading arrives. Part (c): the mark is for identifying the divisor rather than for restating the method. Require the numerical example — a candidate who says 'it divides by the wrong thing' without showing the effect on a value earns the first mark only. Part (d): the explanation must refer to the caller modifying the internal state; 'it is not good practice' is not an answer. Any concrete remedy, such as returning a copy, returning a tuple, or yielding items from a generator, earns the last mark.",
+      "explanation": "This question is built around a bug that a cursory test will not find. When only one reading has been added, the draft's mean divides by the capacity and returns a number that is wrong but not obviously so; as more readings arrive the divisor becomes closer to the truth, and once the buffer is full the bug disappears entirely. A student who tests with a full buffer will conclude that the class works. That is exactly the failure mode of real code that maintains a rolling statistic, and it is why the question asks for the effect after three readings out of five rather than at the end.\n\nThe design issue underneath is the difference between the capacity and the count. They are equal only when the buffer is full, and code that uses them interchangeably is correct in the case people test and wrong in the case that matters. Writing the class so that the count is always derived from the data, rather than stored separately, removes the possibility of the two drifting apart — a small decision with a large effect on how many bugs the class can have.\n\nThe encapsulation part is not a formality. Returning the internal list gives the caller a reference, and the caller can then violate the invariant that `add` was written to protect. This is the most common way that a class with a carefully written interface is broken from the outside, and the fix is not to document the danger but to remove it by returning a copy or yielding values. The same reasoning explains why the attributes are private: the capacity rule lives in `add`, and nothing should be able to bypass it.\n\nFinally, making the capacity a class-level constant expresses something true about the problem — the window size belongs to the device, not to an individual window object — and it makes the invariant checkable, since a value that cannot be reassigned per object cannot be violated per object.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Class design questions in the IB bank typically ask for a UML diagram or for a definition of encapsulation. Here a deliberately plausible bug is embedded in a rolling-average method, and the question requires the failure to be demonstrated numerically at a partly filled state before the fix is stated; the class design part then requires the invariant to be upheld rather than merely described. The weather station, the buffer and the bug are original.",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.002,
+        "nearest_bank_id": "PHYS_HL_P2_2004May_TZ2_q01",
+        "max_internal_similarity": 0.006,
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Physics/Physics HL",
+        "nearest_internal_id": "CS-A1.2-001"
+      },
+      "verification": {
+        "method": "The draft and corrected methods were executed. With capacity 5 and readings 10, 20, 30 the draft returns 60/5 = 12 and the correction returns 60/3 = 20. The completed class was run with five readings and checked to hold no more than five, and the eviction behaviour was checked by adding a sixth reading.",
+        "assertions": [
+          "approx(60/5, 12.0)",
+          "approx(60/3, 20.0)",
+          "approx(60/5 / (60/3), 0.6)",
+          "approx(sum([10,20,30,40,50])/5, 30.0)"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    }
+  ]
+}

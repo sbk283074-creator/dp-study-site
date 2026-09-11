@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PHYS-C.5-001 — Physics HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>C.5 Doppler effect</h1>
+<p class="lede"><a href="../physics-hl/index.html">Physics HL</a> · PHYS-C.5-001</p>
+<div class="meta"><span class="chip chip-key">C.5 Doppler effect (AHL): moving source, moving observer, reflection</span><span class="chip">P2</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: permitted</span><span class="chip">Calculate</span><span class="chip">Show that</span><span class="chip">Determine</span></div>
+
+
+<h2>Question</h2>
+<p>A bat flies in a straight line at $6.0\ \mathrm{m\,s^{-1}}$ towards a vertical wall, emitting ultrasound of frequency $40.0\ \mathrm{kHz}$. The speed of sound in still air is $340\ \mathrm{m\,s^{-1}}$. Assume the air is still and the bat flies perpendicular to the wall.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Calculate the frequency of the ultrasound that arrives at the wall.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>The ultrasound reflects from the wall. Calculate the frequency of the reflected sound received back at the bat.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Show that the received frequency is given by $f''=f\dfrac{v+u}{v-u}$, where $u$ is the speed of the bat and $v$ the speed of sound.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Determine the exact difference between the emitted and received frequencies. Show further that when $u\ll v$ this difference is approximately $\dfrac{2fu}{v}$, and comment on the accuracy of the approximation here.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong>  The source (bat) moves towards a stationary observer (the wall):</p>
+<p>$$f'=f\frac{v}{v-u}=40.0\times10^{3}\times\frac{340}{340-6.0}$$  <strong>(M1)(A1)</strong></p>
+<p>$$=40.0\times10^{3}\times\frac{340}{334}=40.0\times10^{3}(1.01796)=40.7\ \mathrm{kHz}$$  <strong>(A1)</strong></p>
+<p>(more precisely $40\,719\ \mathrm{Hz}$)</p>
+<p>As a check, the shift is small and positive: $u/v=0.0176$, so a $1.8\%$ increase in frequency is physically reasonable.  <strong>(R1)</strong></p>
+<p><strong>(b)</strong>  The wall reflects the sound; it behaves as a <strong>stationary source</strong> emitting frequency $f'$. The bat is now a moving <strong>observer</strong> approaching that source:</p>
+<p>$$f''=f'\frac{v+u}{v}=40\,719\times\frac{340+6.0}{340}=40\,719\times1.01765$$  <strong>(M1)(A1)</strong></p>
+<p>$$=41\,437\ \mathrm{Hz}=41.4\ \mathrm{kHz}$$  <strong>(A1)(A1)</strong></p>
+<p>Cross-check: the two successive factors multiply, $1.01796\times1.01765=1.03593$, which equals $346/334$ directly, confirming that the shifts compose multiplicatively.  <strong>(R1)</strong></p>
+<p><strong>(c)</strong>  Combining the two shifts:</p>
+<p>$$f''=\left(f\frac{v}{v-u}\right)\left(\frac{v+u}{v}\right)=f\frac{v+u}{v-u}$$  <strong>(M1)(A1)(A1)(A1)</strong></p>
+<p>— the $v$ factors cancel, which is why the two shifts <strong>multiply</strong> rather than add.</p>
+<p><strong>(d)</strong>  Exact difference:  $f''-f=41\,437-40\,000=1437\ \mathrm{Hz}\approx1.44\ \mathrm{kHz}$.  <strong>(A1)</strong></p>
+<p>For $u\ll v$:</p>
+<p>$$\frac{v+u}{v-u}=\frac{1+u/v}{1-u/v}=\left(1+\frac{u}{v}\right)\left(1-\frac{u}{v}\right)^{-1}\approx\left(1+\frac{u}{v}\right)\left(1+\frac{u}{v}\right)$$  <strong>(M1)</strong></p>
+<p>using the binomial expansion $(1-x)^{-1}\approx1+x$ for small $x$. Hence</p>
+<p>$$f''\approx f\left(1+\frac{u}{v}\right)^{2}\approx f\left(1+\frac{2u}{v}\right),$$</p>
+<p>neglecting the $(u/v)^{2}$ term, so</p>
+<p>$$f''-f\approx\frac{2fu}{v}.$$  <strong>(A1)</strong></p>
+<p>Numerically:  $\dfrac{2fu}{v}=\dfrac{2(40\,000)(6.0)}{340}=1412\ \mathrm{Hz}$.  <strong>(A1)</strong></p>
+<p>Compared with the exact $1437\ \mathrm{Hz}$, the approximation is low by about $1.7\%$ — reasonable, since $u/v=0.0176$ and the neglected term is of order $(u/v)^{2}\approx3\times10^{-4}$ relative to the leading correction, i.e. roughly $1.8\%$ of the shift. The approximation is excellent for $u/v&lt;0.01$.</p>
+<p>The approximation is the first two terms of the expansion $\left(1+\frac{u}{v}\right)^{2}=1+\frac{2u}{v}+\left(\frac{u}{v}\right)^{2}+\dots$, so the leading neglected term is $(u/v)^{2}$ relative to unity — about $1.8\%$ of the $2u/v$ shift, as quoted. In the limit $u\to v$ the exact ratio $(v+u)/(v-u)$ diverges while the linear form $1+2u/v$ stays finite, which shows the approximation must not be used at high speed.  <strong>(R1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award (M1) for selecting the moving-source formula $f'=fv/(v-u)$. Candidates who use the moving-observer formula here forfeit the method mark. Accept 40.7 kHz.</p>
+<p>(b) The crucial idea is that the reflection makes the wall a *source* of frequency $f'$ (not $f$). Award (M1) for that step, (A1) for the moving-observer formula, (A1) for substitution, (A1) for 41.4 kHz. Candidates who apply the shift a second time to $f$ instead of $f'$ get $43.4$ kHz and forfeit everything after the first mark.</p>
+<p>(c) Award full marks for the cancellation argument. A candidate who writes 'the shifts add: $f''=f(1+2u/v)$' as an identity has not shown the exact result and earns at most one mark.</p>
+<p>(d) Accept 1437–1440 Hz for the exact value and 1410–1415 Hz for the approximation. The comment must be quantitative (a percentage or a comparison of the two numbers); 'it is quite accurate' alone is not creditworthy.</p>
+<p>(b) Alternative method: quote the combined result $f''=f(v+u)/(v-u)$ from (c) and substitute directly; award full marks even if the two stages are not shown separately. Follow through from (a): a candidate with an incorrect $f'$ who nevertheless applies the correct moving-observer factor keeps the later marks. Accept 41.3–41.5 kHz, and allow three or four significant figures throughout.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The single idea that separates correct from incorrect here is that a reflection applies the Doppler shift <strong>twice</strong>: once because the source is moving relative to the wall, and once again because the bat is moving relative to the sound coming back. The two shifts compose multiplicatively, and the speed of sound cancels out of the product — which is why the clean result is $f''=f\frac{v+u}{v-u}$ and not something involving $v^{2}$.</p>
+<p>Students typically make one of two errors. Either they apply the shift only once (getting 40.7 kHz, which is the answer to part (a) and not to part (b)), or they apply the *same* formula twice to the original frequency $f$, getting $f(v/(v-u))^{2}=43.4$ kHz — a plausible-looking number that is wrong because the wall is not a moving source.</p>
+<p>Part (d) then asks for something rarely practised: deriving the small-speed approximation rather than being handed it. The trick is to write the ratio as $\frac{1+u/v}{1-u/v}$ and expand the denominator binomially. Doing it the other way round — expanding $f(v+u)/(v-u)$ directly — is messier and most students who try it lose the factor of 2.</p>
+<p>The physical context matters too: this is exactly how bat echolocation and police speed radar work. The measured quantity is not the absolute frequency but the *beat* between emitted and received signals, and for $u\ll v$ that beat is $2fu/v$ — linear in the target speed, which is what makes it a useful speed measurement.</p>
+<p>Classic wrong turns: adding $u$ instead of subtracting it in the denominator; using $v-u$ for the approaching observer in (b); and forgetting that $u/v$ must be dimensionless (all speeds in the same units).</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The Doppler shift has to be applied twice — once for the outgoing trip and once for the reflection — and the two shifts compose multiplicatively, not additively. The final part asks for a small-speed approximation to be derived, which most students can only do by guessing.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>C.5 Doppler effect (AHL): moving source, moving observer, reflection</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the C.5 bullets on the Doppler effect for moving source and moving observer. The reflection scenario and the requirement to derive the $2fu/v$ approximation via binomial expansion are the original elements; the numbers ($u=6.0$, $v=340$) were chosen so the approximation is accurate to about 2%, making the final comment meaningful rather than trivially exact.</dd></div>
+  <div><dt>Verification</dt><dd>both stages recomputed independently; exact 41437 Hz cross-checked against f(346/334) = 40000 x 1.035928 = 41437 Hz</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PHYS_HL_P1_2005May_TZ2_q19 (similarity 0.024)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-10</dd></div>
+</dl>
+<div class="pager"><a href="../physics-hl/index.html">← All Physics HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

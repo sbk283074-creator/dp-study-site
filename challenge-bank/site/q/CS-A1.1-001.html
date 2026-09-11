@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A1.1-001 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A1 Computer fundamentals</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A1.1-001</p>
+<div class="meta"><span class="chip chip-key">A1.1 Computer hardware and operation, A1.1.8 compression, A1.4 Translation (HL only)</span><span class="chip">P1 · Section A</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">Describe</span><span class="chip">Explain</span><span class="chip">Calculate</span><span class="chip">Evaluate</span></div>
+<div class="box"><h4>Stimulus</h4><p>An autonomous inspection drone flies a fixed route inside a warehouse, checking stock on high shelves. It carries a forward-facing camera, a distance sensor array, and a flight controller that must respond to obstacles within 20 ms. Video is stored on the drone and analysed after the flight.</p></div>
+
+<h2>Question</h2>
+<p>The drone's on-board computer has a general-purpose CPU and a separate GPU.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Describe how the control unit, the ALU and the registers interact during one fetch–decode–execute cycle.</p> <em>(Describe)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>The obstacle-detection workload runs on the GPU rather than the CPU. Explain <strong>two</strong> architectural differences between a CPU and a GPU and, for each, why it matters for this task. (HL only)</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>The camera produces $1280\times720$ pixel frames at 24 bits per pixel and 30 frames per second.</p>
+<p>(i) Calculate the uncompressed data rate in MB per second.</p>
+<p>(ii) A codec compresses the video by a factor of 40. Calculate the storage required for a 90-second flight.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>The flight-control software is written in a high-level language. Evaluate whether it should be <strong>compiled</strong> or <strong>interpreted</strong> for the deployed drone. (HL only)</p> <em>(Evaluate)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong>  Award up to four points from:</p>
+<ul><li>The <strong>program counter / control unit</strong> holds the address of the next instruction and copies it into the memory address register; the instruction is fetched from memory into the memory data register and then into the <strong>instruction register</strong>.  <strong>(A1)</strong></li><li>The <strong>control unit decodes</strong> the instruction — determining the opcode and the operands — and sends control signals along the control bus to coordinate the other components.  <strong>(A1)</strong></li><li>The <strong>ALU</strong> performs the actual operation (arithmetic such as adding a sensor offset, or a logical comparison such as testing whether a distance is below a threshold) on data held in registers, setting <strong>status/flag bits</strong> as a result.  <strong>(A1)</strong></li><li><strong>Registers</strong> hold the instruction, the operands and the intermediate results, giving much faster access than main memory; the result is written back to a register or to memory and the cycle repeats.  <strong>(A1)</strong></li></ul>
+<p><strong>(b)</strong>  Award two differences, each with a reason:</p>
+<p>| | CPU | GPU | Why it matters here |<br>|---|---|---|---|<br>| Core design | Few cores, each large, complex and optimised for sequential tasks with heavy branching | Many hundreds or thousands of small, simple cores optimised for throughput | Obstacle detection applies the *same* operation to every pixel; thousands of cores work on different pixels simultaneously |<br>| Control vs compute | Much of the silicon is devoted to control logic, branch prediction and large caches | Far more of the silicon is devoted to arithmetic units | Image processing is data-parallel with almost no branching, so spending silicon on control logic is wasteful |</p>
+<p>Other acceptable differences: SIMD/single-instruction-multiple-data execution; the GPU's higher memory bandwidth; the CPU's higher clock speed and lower latency per task.  <strong>(A1)(A1)(A1)(A1)</strong></p>
+<p><strong>(c)</strong>  (i)  Bits per frame $=1280\times720\times24=22\,118\,400$ bits  <strong>(A1)</strong></p>
+<p>$$=\frac{22\,118\,400}{8}=2\,764\,800\ \text{bytes}\approx2.76\ \text{MB per frame}$$  <strong>(A1)</strong></p>
+<p>Data rate $=2.7648\times30=82.9\ \mathrm{MB\,s^{-1}}$  <strong>(A1)</strong></p>
+<p>(ii)  Compressed rate $=\dfrac{82.9}{40}=2.07\ \mathrm{MB\,s^{-1}}$;  for 90 s:  $2.07\times90=187\ \mathrm{MB}$  <strong>(A1)</strong></p>
+<p>(Allow 186–188 MB. If 1 MB is taken as $2^{20}$ bytes throughout, the answers are 79.1 MB/s and 178 MB — credit both conventions if used consistently.)</p>
+<p><strong>(d)</strong>  Indicative content:</p>
+<ul><li><strong>Compiled:</strong> translated once into machine code before deployment; execution is fast and predictable because there is no translation at run time; the executable can be optimised for the specific target processor; the source code is not distributed, which protects intellectual property.  <strong>(A1)(A1)</strong></li><li><strong>Interpreted:</strong> translated line by line at run time; slower (typically by an order of magnitude) and with less predictable timing; but easier to test and modify, and the same source runs on any hardware with a suitable interpreter.  <strong>(A1)</strong></li><li><strong>Evaluation:</strong> the drone has fixed, known hardware and a hard real-time constraint of 20 ms, and the code will not be modified in flight. Compilation is therefore clearly preferable: the worst-case response time is shorter and, critically, more *predictable* — an interpreter introduces run-time translation delays that could cause a missed deadline and a collision.  <strong>(A1)</strong></li></ul>
+<p>Accept a contrary conclusion only if justified by a specific constraint (for example, if the software had to be updated in flight).</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Credit a clear description even if the register names differ (MAR/MDR/PC/IR/CIR/accumulator are all acceptable). The four marks are for: fetch, decode, execute, and the role of registers/speed of access. A purely list-like answer naming components without describing interaction is capped at two marks.</p>
+<p>(b) Each difference must be paired with a reason relating to the *task* (image processing / parallelism). A generic 'GPUs are faster' earns nothing. Credit any two well-explained differences.</p>
+<p>(c) Award (A1) for the bits-per-frame figure, (A1) for the byte conversion, (A1) for the per-second rate, (A1) for applying the 40:1 ratio and the 90 s. Follow through on an arithmetic slip.</p>
+<p>(d) This is an evaluate question, so a conclusion is required and must follow from the reasoning. Credit the comparison marks for either option, but the final (A1) requires a justified recommendation tied to a stated constraint (real-time deadline, fixed hardware, or IP protection).</p>
+<p>Additional guidance. In (b) credit the SIMD framing ('one instruction applied to many pixels at once'), provided the consequence is stated. In (c) apply the candidate's figure from (i) consistently in (ii) and award the method marks even if that figure is wrong; mixing decimal and binary megabytes forfeits the final (A1). In (d) a hybrid answer — compile the control loop, interpret the mission scripts — earns full credit if both options are assessed against the 20 ms deadline.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Theme A questions are usually pure recall dressed up in a context, and this one is built to resist that. Three things make it harder than it looks:</p>
+<ul><li>In (a), 'describe the interaction' is not 'list the components'. The fetch–decode–execute cycle is a *sequence* with data moving between named registers, and answers that simply define the control unit, the ALU and the registers separately cannot access the top marks.</li><li>In (b) the mark scheme is explicitly looking for a difference <strong>and</strong> a consequence for this workload. 'A GPU has more cores' is a fact; 'obstacle detection applies one operation to every pixel, so thousands of cores each handle a different pixel at the same time' is an explanation.</li><li>Part (c) is the pivot. Without the number, part (d) is an opinion. With it, students can see that 82.9 MB/s of raw video cannot be stored or processed casually — the compression ratio is doing real work, and any architecture that has to move uncompressed frames around is in trouble.</li></ul>
+<p>The evaluation in (d) then has something to bite on. The 20 ms deadline is the decisive constraint: it is not that compilation is 'faster' in some abstract sense, it is that interpretation makes the *worst-case* timing unpredictable, and a hard real-time control loop is governed by its worst case, not its average case.</p>
+<p>Classic wrong turns: describing the GPU as 'a faster CPU'; confusing compression ratio with compression *factor* (dividing by 40 when they should, or multiplying); and in (d), describing both options competently and then never choosing.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>A quantitative constraint sits in the middle of an otherwise qualitative question: a data-rate calculation determines whether the proposed architecture is even possible, so the evaluation in the last part has to be grounded in a number rather than in general preference.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A1.1 Computer hardware and operation, A1.1.8 compression, A1.4 Translation (HL only)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the A1.1 learning statements (CPU components, GPU role, compression) and A1.4 (translation, HL only). The warehouse-drone scenario, the 1280x720/24-bit/30 fps figures, the 40:1 codec and the 20 ms deadline were all chosen so that the data-rate calculation is exact and the compilation argument has a concrete constraint to rest on.</dd></div>
+  <div><dt>Verification</dt><dd>1280x720x24 bits recomputed; 82.9 MB/s and 187 MB cross-checked in both decimal and binary MB conventions</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PH_HL_Option_B_HL-paper2_q03 (similarity 0.004)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-10</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>
