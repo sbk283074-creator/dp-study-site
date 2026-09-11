@@ -31,7 +31,7 @@
 <p>The buffer is drained completely every 15 minutes and then refilled, so with a non-circular (linear) queue the front and rear pointers march steadily towards the end of the array; the array appears full even when the queue is nearly empty, and the pointers must be reset or the contents shifted.  <strong>(M1)</strong>  In a circular queue the vacated positions at the front are reused as the rear wraps around, so no shifting is needed and the fixed memory allocated to the buffer is used repeatedly — important on an embedded gantry controller with limited RAM.  <strong>(A1)</strong></p>
 <p><strong>(b)</strong>  Design 1: $O(n)$ — in the worst case (a plate that is not present, or the last element) every one of the $n$ entries must be examined.  <strong>(A1)</strong></p>
 <p>Design 2: $O(\log n)$ for a balanced tree — each comparison halves the remaining search space, so the number of comparisons grows as $\log_{2}n$.  <strong>(A1)</strong></p>
-<p>At 40 000 plates, $\log_{2}(40\,000)\approx15.3$, so Design 2 needs about 15 comparisons per test against up to 40 000 for Design 1 — roughly a factor of 2 600.  <strong>(M1)</strong>  Across 40 000 tests per day this is the difference between about $8\times10^{8}$ and about $6\times10^{5}$ comparisons per day, so Design 1 is not viable at this volume; Design 2 is clearly preferable.  <strong>(A1)</strong></p>
+<p>At 40 000 plates, $\log_{2}(40\,000)\approx15.3$, so Design 2 needs about 15 comparisons per test against up to 40 000 for Design 1 — roughly a factor of 2 600.  <strong>(M1)</strong>  Across 40 000 tests per day this is the difference between about $1.6\times10^{9}$ and about $6\times10^{5}$ comparisons per day, so Design 1 is not viable at this volume; Design 2 is clearly preferable.  <strong>(A1)</strong></p>
 <p><strong>(c)</strong>  Two pointers walk the two batches together, always taking the smaller of the two current timestamps:</p>
 <pre><code>MERGE(A, B)                       // A has p items, B has q items, each sorted by timestamp
     i = 0
@@ -75,7 +75,7 @@ end MERGE
   <div><dt>Syllabus reference</dt><dd>B4.1 Fundamentals of ADTs (B4.1.3 linked lists, B4.1.4 binary search trees), B2.2 Data structures, B2.4 Programming algorithms, B1.1 Approaches to computational thinking</dd></div>
   <div><dt>Inspiration</dt><dd>original</dd></div>
   <div><dt>Adaptation</dt><dd>Built from the B4.1 bullets (linked lists, BST properties) and B2.4 algorithm construction. The tolling/gantry scenario, the quantitative 40 000-plates evaluation, the out-of-order merge requirement and the sorted-insertion degeneration part are all original. The merge algorithm is the standard two-finger merge, which is syllabus content rather than borrowed material.</dd></div>
-  <div><dt>Verification</dt><dd>merge algorithm traced by hand on equal, interleaved and disjoint timestamps; complexity figures recomputed (log2(40000) = 15.3)</dd></div>
+  <div><dt>Verification</dt><dd>merge algorithm traced by hand on equal, interleaved and disjoint timestamps; complexity figures recomputed (log2(40000) = 15.3, worst-case 40000 comparisons per test so 1.6e9 comparisons per day against 6.1e5 for Design 2)</dd></div>
   <div><dt>Nearest bank match</dt><dd>AI-CS-T5-06 (similarity 0.011)</dd></div>
   <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
   <div><dt>Status</dt><dd>published · authored by ai · 2026-09-10</dd></div>

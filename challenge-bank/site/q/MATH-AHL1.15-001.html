@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL1.15-001 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>An induction that only closes once the hypothesis is strengthened</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL1.15-001</p>
+<div class="meta"><span class="chip chip-key">AHL 1.15 (proof by mathematical induction)</span><span class="chip">P1 · Section B</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">Show that</span><span class="chip">Explain</span><span class="chip">Prove</span><span class="chip">Determine</span></div>
+
+
+<h2>Question</h2>
+<p>For each integer $n\ge1$, let $S_n=\sum_{k=1}^{n}\dfrac{1}{k^{2}+1}$.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Show that $\dfrac{1}{(k+1)^{2}+1}\le\dfrac{1}{k}-\dfrac{1}{k+1}$ for every integer $k\ge1$.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>A student tries to prove by induction that $S_n&lt;\dfrac32$ for all $n\ge1$. Explain why the inductive step cannot succeed when the hypothesis is only $S_k&lt;\dfrac32$, writing down the strongest inequality that the step actually gives.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Prove by induction that $S_n\le\dfrac32-\dfrac1n$ for every integer $n\ge1$, and deduce that $S_n&lt;\dfrac32$ for every integer $n\ge1$.</p> <em>(Prove)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Determine the greatest real constant $c$ for which the inequality $S_n\le\dfrac32-\dfrac{c}{n}$ holds for every integer $n\ge1$, justifying your answer.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> For $k\ge1$,<br>$$\frac{1}{k}-\frac{1}{k+1}=\frac{(k+1)-k}{k(k+1)}=\frac{1}{k(k+1)}.$$ <strong>(M1)</strong> Now $(k+1)^{2}+1=k^{2}+2k+2$ and $k(k+1)=k^{2}+k$, so $$(k+1)^{2}+1-k(k+1)=k+2&gt;0,$$ hence $(k+1)^{2}+1&gt;k(k+1)$ and therefore $$\frac{1}{(k+1)^{2}+1}&lt;\frac{1}{k(k+1)}=\frac1k-\frac1{k+1}.$$ <strong>(A1)(A1)</strong> *(AG)*</p>
+<p><strong>(b)</strong> With the hypothesis $S_k&lt;\frac32$ the step gives $$S_{k+1}=S_k+\frac{1}{(k+1)^{2}+1}&lt;\frac32+\frac{1}{(k+1)^{2}+1}.$$ <strong>(M1)(A1)</strong> The right-hand side is strictly greater than $\frac32$ because $\frac{1}{(k+1)^{2}+1}&gt;0$, so this does not establish $S_{k+1}&lt;\frac32$. <strong>(R1)</strong> No rearrangement of a hypothesis of the form $S_k&lt;\frac32$ can remove a positive increment, so the hypothesis has to be strengthened to one that leaves a gap larger than the increment. <strong>(A1)</strong></p>
+<p><strong>(c)</strong> Claim: $S_n\le\frac32-\frac1n$ for all $n\ge1$. Base case $n=1$: $S_1=\frac12$ and $\frac32-1=\frac12$, so the claim holds, with equality. <strong>(M1)</strong> Inductive step: assume $S_k\le\frac32-\frac1k$. Then $$S_{k+1}=S_k+\frac{1}{(k+1)^{2}+1}\le\frac32-\frac1k+\frac{1}{(k+1)^{2}+1}.$$ <strong>(M1)</strong> By part (a), $\frac{1}{(k+1)^{2}+1}\le\frac1k-\frac1{k+1}$, so $$S_{k+1}\le\frac32-\frac1k+\frac1k-\frac1{k+1}=\frac32-\frac1{k+1}.$$ <strong>(A1)</strong> This is the claim with $n=k+1$, so by induction the claim holds for every $n\ge1$. <strong>(A1)</strong> *(AG)* Finally $\frac1n&gt;0$, so $S_n\le\frac32-\frac1n&lt;\frac32$ for every $n\ge1$. <strong>(A1)</strong></p>
+<p><strong>(d)</strong> We want the largest $c$ with $S_n\le\frac32-\frac{c}{n}$ for all $n\ge1$. <strong>(M1)</strong> The case $n=1$ reads $\frac12\le\frac32-c$, that is $c\le1$, so no $c&gt;1$ is admissible; part (c) shows that $c=1$ is admissible. <strong>(A1)</strong> Therefore the greatest such constant is $c=1$. <strong>(A1)</strong> For example, $c=\frac{3}{2}$ would demand $S_1\le0$, which is false because $S_1=\frac12$, so values above $1$ genuinely fail and the answer is not merely the largest value tested.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) The <strong>(M1)</strong> is for combining the right-hand side into the single fraction $\frac{1}{k(k+1)}$; the two <strong>(A1)</strong> marks are for the comparison $(k+1)^{2}+1&gt;k(k+1)$ and for concluding the inequality. A candidate who checks several values of $k$ without proving the general comparison earns at most <strong>(M1)</strong>: the point is the identity $(k+1)^{2}+1-k(k+1)=k+2&gt;0$. Accept the equivalent form $\frac{1}{(k+1)^{2}+1}\le\frac{1}{k(k+1)}$ with no further work required.</p>
+<p>(b) The step must be written out with the positive increment visible. Award <strong>(M1)</strong> for the decomposition $S_{k+1}=S_k+\frac{1}{(k+1)^{2}+1}$, <strong>(A1)</strong> for substituting the hypothesis, <strong>(R1)</strong> for observing that the resulting bound exceeds $\frac32$, and the final <strong>(A1)</strong> for the structural remark that a strictly positive increment cannot be absorbed by a bound with no slack. A candidate who writes only 'it does not work' with no inequality earns just the first two marks.</p>
+<p>(c) The strengthened statement must be stated, not assumed. The base case is checked with equality, which is acceptable. Award <strong>(M1)</strong> for the base case, <strong>(M1)</strong> for the inductive hypothesis and the decomposition, <strong>(A1)</strong> for applying the inequality from (a), <strong>(A1)</strong> for the algebra reaching $\frac32-\frac1{k+1}$, and <strong>(A1)</strong> for the concluding deduction $S_n&lt;\frac32$. Follow-through is allowed: a candidate who carries an incorrect constant from (a) but applies it consistently keeps the method marks.</p>
+<p>(d) The base case gives $c\le1$ and part (c) gives admissibility at $c=1$. A candidate who simply states $c=1$ without the inequality $\frac12\le\frac32-c$ loses the <strong>(M1)</strong>. Condone a brief note that smaller values of $c$ give a weaker, hence also true, inequality; the question asks for the greatest constant.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Part (a) is a small algebraic fact, but it is the engine of the whole question: it is exactly the telescoping difference $\frac1k-\frac1{k+1}$, which is slightly larger than the increment $\frac{1}{(k+1)^{2}+1}$. The denominator $k^{2}+1$ was chosen so that $(k+1)^{2}+1=k^{2}+2k+2$ exceeds $k(k+1)=k^{2}+k$ by exactly $k+2$, giving the clean comparison. Had the denominator been $k^{2}$, the comparison would point the wrong way and the argument would need a different tail entirely.</p>
+<p>Part (b) is the conceptual heart. Induction is usually presented as 'assume it for $k$, prove it for $k+1$', and students expect the hypothesis to be used verbatim. Here the hypothesis $S_k&lt;\frac32$ gives $S_{k+1}&lt;\frac32+\frac{1}{(k+1)^{2}+1}$, a bound that has moved the wrong way. The bound is not merely inconvenient: because the increment is strictly positive, no amount of algebra starting from $S_k&lt;\frac32$ can produce $S_{k+1}&lt;\frac32$. The only way forward is to prove something stronger, a statement with a margin that grows and can therefore absorb the increment.</p>
+<p>Part (c) supplies that margin. The tail $-\frac1n$ is chosen so that the slack between consecutive values, $\frac1k-\frac1{k+1}$, is at least the increment; part (a) is precisely that statement. The base case holds with equality and the step preserves the bound, so the stronger claim is established. Part (d) pins the constant: the base case forces $c\le1$, so $c=1$ is the best possible tail of this shape, and larger constants fail immediately at $n=1$.</p>
+<p>The classic wrong turns are: assuming the hypothesis $S_k&lt;\frac32$ is enough and writing a circular step; treating the inequality in (a) as an equality; trying to prove the weaker $S_n&lt;2$ instead, which is true but does not answer the question; and in (d) forgetting that the base case, not the step, is what bounds $c$ from above. A useful check is that $S_1=\frac12$ exactly, which is why the constant $\frac32$ and the tail $\frac1n$ meet at $n=1$.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The natural inductive hypothesis $S_n&lt;\frac32$ is too weak to carry the step, because the step adds a strictly positive term; the student must notice this, construct the stronger statement $S_n\le\frac32-\frac1n$ whose tail absorbs the increment, and prove that stronger statement instead of the one asked for.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 1.15 (proof by mathematical induction)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the AHL 1.15 bullet on proof by mathematical induction. The design chooses a sum whose natural induction hypothesis is provably too weak, so the student must construct the stronger statement $S_n\le\frac32-\frac1n$ and then use it; the summand $1/(k^2+1)$, the constant $\frac32$, the tail $\frac1n$ and the final part pinning the greatest constant are all constructed here, and every value was checked by direct summation in exact rational arithmetic.</dd></div>
+  <div><dt>Verification</dt><dd>Exact rational and numerical checks: the telescoping identity in (a) was verified for $k=1,\dots,8$; the base case and the strengthened bound $S_n\le\frac32-\frac1n$ were checked against direct summation for $n=1,\dots,10$; and the bound $c\le1$ from the base case together with the limiting value of $k(k+1)/((k+1)^2+1)\to1$ were verified numerically.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>AIH-MA-8801 (similarity 0.01)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL1.11-001 (similarity 0.01)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>
