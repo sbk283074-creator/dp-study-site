@@ -147,9 +147,17 @@ input[type=search]{flex:1;min-width:200px}
 .kv div:last-child{border-bottom:0}
 .kv dt{flex:0 0 150px;color:var(--muted)}
 .kv dd{margin:0;flex:1}
+.paper-q{margin:0 0 34px;padding-top:14px;border-top:2px solid var(--line);page-break-inside:avoid}
+.paper-q h3{margin-top:0}
+.paper-marks{float:right;color:var(--muted);font-weight:400;font-size:14px}
+.paper-ref{color:var(--muted);font-size:12.5px;margin:-6px 0 12px}
+.paper-switch{font-size:14px}
 @media print{
-  header.site nav,footer.site,.controls,input[type=search],select{display:none}
+  header.site nav,footer.site,.controls,input[type=search],select,.paper-switch,.pager{display:none}
   details{border:0} details .body{border-top:0}
+  details[open] .body{border-top:0}
+  body{font-size:11.5pt}
+  .paper-q{border-top:1px solid #999}
 }
 """
 
@@ -409,6 +417,53 @@ def build_question_page(q, slug):
                 mathjax=SUBJECTS[slug]["mathjax"])
 
 
+def build_paper(slug, qs, answers=False):
+    """A printable paper, or its matching answer booklet, for one subject."""
+    meta = SUBJECTS[slug]
+    total = sum(q["marks"] for q in qs)
+    blocks = []
+    for i, q in enumerate(qs, 1):
+        if answers:
+            blocks.append(f"""<section class="paper-q">
+<h3>{i}. {html.escape(q['id'])} <span class="paper-marks">{q['marks']} marks</span></h3>
+{md(q.get('answer'))}
+<h4>Markscheme notes</h4>
+{md(q.get('markscheme_notes'))}
+</section>""")
+        else:
+            parts = "".join(
+                '<li><span class="marks">[%s mark%s]</span><strong>(%s)</strong> %s%s</li>'
+                % (p["marks"], "" if p["marks"] == 1 else "s",
+                   html.escape(p["label"]), md(p["text"]),
+                   " <em>(%s)</em>" % html.escape(p["command_term"]) if p.get("command_term") else "")
+                for p in q.get("parts") or []
+            )
+            blocks.append(f"""<section class="paper-q">
+<h3>{i}. {html.escape(q.get('title') or q['subtopic'])} <span class="paper-marks">{q['marks']} marks</span></h3>
+<p class="paper-ref">{html.escape(q['id'])} · {html.escape(q.get('syllabus_ref', ''))} · difficulty {q['difficulty']}</p>
+{stimulus_html(q.get('stimulus'))}
+{figure_html(q.get('figure'))}
+{md(q.get('question'))}
+<ol class="parts">{parts}</ol>
+</section>""")
+    kind = "Answer booklet" if answers else "Question paper"
+    lede = ("Answers, markschemes and examiner notes. Do not open this until you have written your own "
+            "answers." if answers else
+            "No answers are printed in this paper. Attempt every question in writing before opening the "
+            "matching answer booklet.")
+    switch = ('<a href="%s-paper.html">&#8592; Question paper</a>' % slug if answers
+              else '<a href="%s-answers.html">Answer booklet &#8594;</a>' % slug)
+    body = f"""
+<h1>{html.escape(meta['name'])} — Challenge {kind}</h1>
+<p class="lede">{len(qs)} questions · {total} marks · difficulty 4–5 · May 2028 cohort</p>
+<p class="reveal-note">{lede}</p>
+<p class="paper-switch">{switch}</p>
+{''.join(blocks)}
+"""
+    return page("%s — Challenge %s" % (meta["short"], kind), body, subject=slug,
+                mathjax=meta["mathjax"])
+
+
 def build_subject_page(slug, qs):
     meta = SUBJECTS[slug]
     diffs = sorted({q["difficulty"] for q in qs})
@@ -423,6 +478,7 @@ def build_subject_page(slug, qs):
   <div class="stat"><b>{total}</b>marks in total</div>
   <div class="stat"><b>{min(diffs) if diffs else '–'}–{max(diffs) if diffs else '–'}</b>difficulty range</div>
 </div>
+<p class="paper-switch">Printable: <a href="../papers/{slug}-paper.html">question paper</a> · <a href="../papers/{slug}-answers.html">answer booklet</a></p>
 <div class="controls">
   <input type="search" id="q" placeholder="Search topic, syllabus reference, tag…" aria-label="Search questions">
   <select id="f-paper" aria-label="Filter by paper"><option value="">All papers</option>
@@ -465,6 +521,18 @@ question with the numbers changed, and nothing is a one-step recall item. Each q
 how it was verified.</p>
 <h2>Browse by subject</h2>
 <div class="cards">{''.join(cards)}</div>
+<h2>Printable papers</h2>
+<p>Each subject is also assembled into a printable question paper and a matching answer booklet, so a
+whole set can be attempted under exam conditions away from the screen. Open the paper, print it, then
+mark against the booklet.</p>
+<ul>{''.join(
+    '<li><strong>%s</strong> — %d questions, %d marks · '
+    '<a href="papers/%s-paper.html">question paper</a> · '
+    '<a href="papers/%s-answers.html">answer booklet</a></li>'
+    % (html.escape(SUBJECTS[s]['short']), len(all_qs.get(s, [])),
+       sum(q['marks'] for q in all_qs.get(s, [])), s, s)
+    for s in SUBJECTS if all_qs.get(s)
+)}</ul>
 <h2>Search all questions</h2>
 <div class="controls"><input type="search" id="g" placeholder="Type at least two characters…" aria-label="Search all questions"></div>
 <div id="gresults"></div>
@@ -563,6 +631,7 @@ def main():
 
     (SITE / "assets").mkdir(parents=True, exist_ok=True)
     (SITE / "q").mkdir(parents=True, exist_ok=True)
+    (SITE / "papers").mkdir(parents=True, exist_ok=True)
     put(SITE / "assets" / "site.css", CSS)
     put(SITE / "assets" / "site.js", JS)
 
@@ -571,6 +640,8 @@ def main():
         put(SITE / slug / "index.html", build_subject_page(slug, qs))
         for q in qs:
             put(SITE / "q" / ("%s.html" % q["id"]), build_question_page(q, slug))
+        put(SITE / "papers" / ("%s-paper.html" % slug), build_paper(slug, qs))
+        put(SITE / "papers" / ("%s-answers.html" % slug), build_paper(slug, qs, answers=True))
 
     pruned = 0
     if SITE.exists():
