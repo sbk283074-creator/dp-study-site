@@ -59,7 +59,7 @@ Two coherence rules, because mismatches are the clearest sign a question was not
 
 ## 3. Length contract — floors, not targets
 
-Calibrated against the published corpus (now 80 items). These are **absolute floors**: a new question
+Calibrated against the published corpus (now 90 items). These are **absolute floors**: a new question
 may not be materially thinner than the thinnest existing one in its subject.
 
 | Subject | `answer` | `markscheme_notes` | `explanation` | total context¹ |
@@ -120,8 +120,8 @@ cases where the obvious Toolkit tool is the wrong one.
 
 They are evaluated by `validate.py` in a restricted namespace (`math`, plus `G`, `g`, `c`, `e_charge`,
 and the helpers `approx(a, b, tol)` and `pct(a, b)`). **Mandatory for every new maths and physics
-question** — it is the only mechanical check that the arithmetic in the answer is right. All 80 items
-in the bank now carry them (819 assertions in total), including the CS and BM items, where the check
+question** — it is the only mechanical check that the arithmetic in the answer is right. All 90 items
+in the bank now carry them (961 assertions in total), including the CS and BM items, where the check
 is optional but has already repaid the cost: backfilling the original BM items exposed a €24 slip in
 an expected-value difference and a volume gap quoted against the wrong price pair.
 
@@ -212,7 +212,7 @@ unless something breaks.
 4. **Status:** new items are `draft` until the gates pass, then `published`.
 5. **Re-brief:** coverage is re-measured after every batch; the next brief comes from the new gaps.
 
-Current state: 80 questions · **132 / 166 nodes covered (79%)**, and **every priority-1 node is done** —
-Maths 32/32 (49/83 overall), Physics 24/24 (complete), CS 25/25 (complete), BM 34/34 (complete,
-including all 8 Toolkit nodes). All 80 are `published`, `validate.py --strict` reports 0 failures and
-0 warnings, and all 80 items carry `verification.assertions` (819 assertions in total).
+Current state: 90 questions · **145 / 166 nodes covered (87%)**, and **every priority-1 node is done** —
+Maths 32/32 (62/83 overall), Physics 24/24 (complete), CS 25/25 (complete), BM 34/34 (complete,
+including all 8 Toolkit nodes). All 90 are `published`, `validate.py --strict` reports 0 failures and
+0 warnings, and all 90 items carry `verification.assertions` (961 assertions in total).
