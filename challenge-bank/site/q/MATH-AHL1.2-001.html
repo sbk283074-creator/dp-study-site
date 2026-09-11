@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL1.2-001 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>The differences are the geometric part</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL1.2-001</p>
+<div class="meta"><span class="chip chip-key">SL 1.2 (arithmetic sequences and series) and SL 1.3 (geometric sequences and series)</span><span class="chip">P1 · Section B</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Calculate</span><span class="chip">Show that</span><span class="chip">Hence</span><span class="chip">Find</span></div>
+
+
+<h2>Question</h2>
+<p>A sequence $(u_n)$ is defined by $u_1 = 5$ and $u_{n+1} = u_n + 3 \times 2^{n-1}$ for every integer $n \ge 1$.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Calculate $u_2$, $u_3$ and $u_4$, and explain why the sequence $(u_n)$ is neither arithmetic nor geometric.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Show that the general term is $u_n = 3 \times 2^{n-1} + 2$ for every integer $n \ge 1$.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Hence find the smallest value of $n$ for which $u_n &gt; 10^{6}$.</p> <em>(Hence)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Find the sum of the first $20$ terms, giving your answer in the form $3 \times 2^{k} + c$.</p> <em>(Find)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Applying the recurrence, $u_2 = 5 + 3 \times 2^{0} = 8$ <strong>(M1)</strong>, $u_3 = 8 + 3 \times 2^{1} = 14$ <strong>(A1)</strong> and $u_4 = 14 + 3 \times 2^{2} = 26$ <strong>(A1)</strong>. The successive differences are $3$, $6$ and $12$, which are not constant, so the sequence is not arithmetic; the successive ratios $8/5$, $14/8$ and $26/14$ are not constant either, so it is not geometric. <strong>(R1)</strong></p>
+<p><strong>(b)</strong> The successive differences are $u_{k+1} - u_k = 3 \times 2^{k-1}$ for $k \ge 1$, so they form the geometric sequence $3$, $6$, $12$ and so on. <strong>(M1)</strong> Summing the first $n-1$ of them, $u_n = u_1 + \sum_{k=1}^{n-1} 3 \times 2^{k-1} = 5 + 3(2^{n-1} - 1)$. <strong>(M1)</strong> Expanding, $u_n = 5 + 3 \times 2^{n-1} - 3 = 3 \times 2^{n-1} + 2$. <strong>(A1)(AG)</strong></p>
+<p><strong>(c)</strong> Setting $3 \times 2^{n-1} + 2 &gt; 10^{6}$ gives $2^{n-1} &gt; 333332.66$ and so on. <strong>(M1)</strong> Since $2^{18} = 262144$ and $2^{19} = 524288$, the smallest integer with $2^{n-1}$ above that threshold has $n - 1 = 19$. <strong>(M1)</strong> Hence $n = 20$. <strong>(A1)</strong> Checking, $u_{19} = 3 \times 2^{18} + 2 = 786434$, which is below $10^{6}$, while $u_{20} = 3 \times 2^{19} + 2 = 1572866$, which is above it. <strong>(R1)</strong></p>
+<p><strong>(d)</strong> The sum of the first $20$ terms is $\sum_{n=1}^{20} (3 \times 2^{n-1} + 2)$. <strong>(M1)</strong> The geometric part sums to $3(2^{20} - 1) = 3 \times 1048575 = 3145725$, and the constant part contributes $2 \times 20 = 40$. <strong>(M1)</strong> Adding, the total is $3145725 + 40 = 3145765 = 3 \times 2^{20} + 37$. <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>Part (a): the <strong>(M1)</strong> is for substituting into the recurrence at least twice, and the two <strong>(A1)</strong> marks are for the correct values $u_3 = 14$ and $u_4 = 26$. The <strong>(R1)</strong> requires both negative conclusions, so a candidate who shows only that the differences are not constant earns nothing unless the ratios are also dismissed. Part (b): the first <strong>(M1)</strong> is for identifying the differences as $3 \times 2^{k-1}$ and the second for summing that geometric series; the <strong>(A1)</strong> is for the simplified form and the <strong>(AG)</strong> confirms the printed result, so an answer that stops at $5 + 3(2^{n-1} - 1)$ must still be simplified. Part (c): the <strong>(M1)</strong> is for the inequality $2^{n-1} &gt; 333332.66$ and the second <strong>(M1)</strong> for locating $2^{18}$ and $2^{19}$; the <strong>(A1)</strong> is for $n = 20$. The <strong>(R1)</strong> is for the numerical check of both sides, which is what rules out $n = 19$. Part (d): the two <strong>(M1)</strong> marks are for splitting the sum into its geometric and constant parts, and the <strong>(A1)</strong> for the exact total. Accept $3 \times 2^{20} + 37$, $3145765$ or $3(2^{20} - 1) + 40$ as equivalent. Follow-through from an incorrect $u_n$ is allowed in parts (c) and (d) if the candidate uses it consistently.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The sequence is built so that it looks like a standard geometric or arithmetic question and is in fact neither. The recurrence adds a term that doubles each time, so the sequence itself grows too quickly to be arithmetic and too irregularly to be geometric. Part (a) asks the candidate to say this with evidence: the differences $3$, $6$, $12$ are themselves a geometric sequence, while the ratios $1.6$, $1.75$, $1.857$ are plainly not constant.</p>
+<p>The structural idea is that the differences are geometric even though the sequence is not. Part (b) exploits this: summing the first $n-1$ differences, which form $3$, $6$, $12$ and so on, gives $3(2^{n-1} - 1)$, and adding the initial value $5$ produces $u_n = 3 \times 2^{n-1} + 2$. The closed form is therefore a geometric term plus a constant, and this drives every later part.</p>
+<p>Part (c) is a threshold question. Because the constant $2$ is negligible beside $10^{6}$, the candidate solves $2^{n-1} &gt; 333332.66$, finds $2^{18} = 262144$ and $2^{19} = 524288$, and concludes $n = 20$. The check matters: $u_{19} = 786434$ lies below the threshold and $u_{20} = 1572866$ lies above it, so the answer is $n = 20$.</p>
+<p>Part (d) uses the closed form to sum a series that is neither arithmetic nor geometric. Splitting the sum into the geometric part $3(2^{20} - 1)$ and the constant part $40$ is the clean route, and the answer $3 \times 2^{20} + 37$ is exact. The classic errors are assuming the sequence is geometric with ratio $2$, forgetting the constant $2$ when summing, and answering $n = 19$ by misreading the index shift. Each traces back to treating the sequence itself as geometric instead of its differences.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The recurrence adds a geometric term to the previous value, so the sequence is neither arithmetic nor geometric itself, yet its successive differences are exactly the geometric series that must be summed to close the form.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>SL 1.2 (arithmetic sequences and series) and SL 1.3 (geometric sequences and series)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the SL 1.2 bullet on arithmetic sequences and series and the SL 1.3 bullet on geometric sequences and series. The design makes the sequence itself neither arithmetic nor geometric while its successive differences are exactly geometric, so the student must construct the difference sequence before the general term can be closed. The recurrence u_(n+1) = u_n + 3 × 2^(n-1), the seed u_1 = 5, the threshold 10^6 and the requested form 3 × 2^k + c are all constructed here, and the closing sum cannot be reached from either standard formula.</dd></div>
+  <div><dt>Verification</dt><dd>The terms, threshold and series sum were recomputed in Python from the recurrence and the closed form, and each assertion checks one of those integers.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MAAQB_19N_1_SL_TZ0_S_1 (similarity 0.036)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL3.16-001 (similarity 0.012)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

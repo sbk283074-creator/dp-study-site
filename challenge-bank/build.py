@@ -402,14 +402,14 @@ def build_question_page(q, slug):
 <details><summary>Why this question is hard</summary><div class="body">{md(q.get('explanation'))}</div></details>
 <h2>Metadata</h2>
 <dl class="kv">
-  <div><dt>Challenge lever</dt><dd>{html.escape(q.get('challenge_mechanism',''))}</dd></div>
-  <div><dt>Syllabus reference</dt><dd>{html.escape(q.get('syllabus_ref',''))}</dd></div>
-  <div><dt>Inspiration</dt><dd>{html.escape(prov.get('inspired_by','original'))}</dd></div>
-  <div><dt>Adaptation</dt><dd>{html.escape(prov.get('adaptation',''))}</dd></div>
-  <div><dt>Verification</dt><dd>{html.escape(ver.get('method',''))}</dd></div>
+  <div><dt>Challenge lever</dt><dd>{html.escape(q.get('challenge_mechanism') or '')}</dd></div>
+  <div><dt>Syllabus reference</dt><dd>{html.escape(q.get('syllabus_ref') or '')}</dd></div>
+  <div><dt>Inspiration</dt><dd>{html.escape(prov.get('inspired_by') or 'original')}</dd></div>
+  <div><dt>Adaptation</dt><dd>{html.escape(prov.get('adaptation') or '')}</dd></div>
+  <div><dt>Verification</dt><dd>{html.escape(ver.get('method') or '')}</dd></div>
   <div><dt>Nearest bank match</dt><dd>{nearest}</dd></div>
   <div><dt>Nearest item here</dt><dd>{nearest_internal}</dd></div>
-  <div><dt>Status</dt><dd>{html.escape(q.get('status',''))} · authored by {html.escape(q.get('authored_by',''))} · {html.escape(q.get('updated_at',''))}</dd></div>
+  <div><dt>Status</dt><dd>{html.escape(q.get('status') or '')} · authored by {html.escape(q.get('authored_by') or '')} · {html.escape(q.get('updated_at') or '')}</dd></div>
 </dl>
 <div class="pager"><a href="../{slug}/index.html">← All {html.escape(SUBJECTS[slug]['short'])} questions</a></div>
 """
