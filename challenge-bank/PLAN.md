@@ -1,7 +1,8 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 62 questions across the four subjects, all published, all gates passing.**
+**Status: live. 70 questions across the four subjects, all published, all gates passing, and every
+priority-1 syllabus node covered.**
 
 New folder: `challenge-bank/` (inside `dp learning final/`). It holds the question data and a
 standalone static website that collects and presents the questions.
@@ -427,11 +428,30 @@ similarity score, and no BM item ships containing HL-only content.
   error its explanation warns against; `BM-5.5-001` stated an expected-value gain of €17 040 where its
   own two EVs give €17 064; and `BM-4.5-001` illustrated the revenue/contribution conflict with a
   5 000-bottle gap taken from the wrong pair of prices. All three are corrected.
-- **Batch 5+:** continue from `coverage.py --next`. Maths Topic 5 is still the largest hole
-  (32/83 overall), with 3.9, 5.12 and 5.15 the next must-cover nodes, and Physics E.4/E.5
-  (fission, fusion and stars) the only must-cover Physics nodes left. BM is 26/34: its remaining eight
-  nodes are all priority-2 Toolkit tools (SWOT, Ansoff, STEEPLE, BCG, business plan, decision trees,
-  descriptive statistics, circular business models), which the brief orders after every priority-1 node.
+- **Batch 5 — DONE.** Eight more items (70 total), and with them **every priority-1 node in the bank is
+  covered**. Maths (2): 3.9 the reciprocal ratios, where multiplying $\csc x-\cot x=1$ through by
+  $\sin x$ is irreversible at the zero of $\sin x$ and so invents the root $x=0$, after which the
+  reduced form in $\tan(x/2)$ gives $k=0$ no solution at all (15, d5) · 5.12+5.15 a piecewise function
+  where continuity at each join forces one parameter relation and differentiability an independent
+  slope relation, so a whole parameter family is continuous but **not** differentiable (15, d5).
+  Physics (2): E.4 fission, where the energy per fission is fixed by the mass defect and so is *not*
+  moved by enrichment or moderation — only the reaction rate is (16, d5) · E.5 fusion and stars, where
+  the triple-alpha yield is a difference of *total* binding energies, so each per-nucleon figure must
+  first be multiplied by its mass number (16, d5). BM (4, covering the eight Toolkit nodes 6.1–6.8):
+  the factor management calls its leading strength is reclassified as a threat once STEEPLE is run
+  (6.1+6.3, 15, d4) · BCG says harvest the cash cow while Ansoff makes the same product's market
+  development the only low-risk growth, and the BCG label flips from cash cow to dog with the market
+  definition (6.2+6.4, 15, d4) · a bimodal twelve-month trial gives an empirical probability of 5/12
+  that replaces management's assumed 0.6 and reverses the expected-value ranking (6.6+6.7, 16, d5) ·
+  a 3.8-year payback resting on twenty reuses per bottle against six achieved and a break-even of
+  seven, setting the bank's payback rule against the founders' zero-waste goal (6.5+6.8, 15, d4).
+  Whole bank: **70 questions · 118/166 nodes (71%)**, `validate.py --strict` clean, 680 machine-checked
+  assertions. Physics, CS and BM are each at **100% of their must-cover nodes**; only maths priority-2
+  topics remain.
+- **Batch 6+:** the remaining 48 nodes are all priority-2 ("should") maths topics, plus the priority-3
+  tail. Maths Topic 5 (calculus) and Topic 4 (statistics and probability) carry most of them.
+  **Printables:** with Physics at 19 and Maths at 20 items, `site/papers/` (printable practice papers
+  plus matching answer booklets) is now worth assembling for Maths and Physics.
 - **Printables:** assemble `site/papers/` (printable practice papers plus matching answer booklets)
   once a subject reaches roughly 20 items; at 13 per subject the bank is close but not there yet.
 

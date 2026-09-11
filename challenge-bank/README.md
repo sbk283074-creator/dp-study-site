@@ -16,17 +16,21 @@ design and provably not copied.
 
 | Subject | Guide in force | Questions | Nodes covered |
 |---|---|---:|---:|
-| Math AA HL | 2021 (runs to Nov 2028) | 18 | 32 / 83 (38%) |
-| Physics HL | 2025 | 17 | 22 / 24 (91%) |
+| Math AA HL | 2021 (runs to Nov 2028) | 20 | 35 / 83 (42%) |
+| Physics HL | 2025 | 19 | 24 / 24 (100%) |
 | Computer Science HL | 2027 (new Theme A/B) | 14 | 25 / 25 (100%) |
-| Business Management SL | 2024 | 13 | 26 / 34 (76%) |
-| **Total** | | **62** | **105 / 166 (63%)** |
+| Business Management SL | 2024 | 17 | 34 / 34 (100%) |
+| **Total** | | **70** | **118 / 166 (71%)** |
 
-All 62 items are `published`, difficulty 4–5, and pass `validate.py --strict` with **0 failures and
-0 warnings**. The originality gate is clean: **0 items above threshold**, highest external score 0.048
-and highest internal score 0.022 (limits 0.35 and 0.25).
+**Every priority-1 ("must-cover") node is done** — Maths 32/32, Physics 24/24, CS 25/25 and BM 26/26,
+plus all 8 BM Toolkit nodes. The 48 nodes still open are priority-2 ("should") maths topics, which the
+brief orders after every must-cover node.
 
-Every item carries a `verification.assertions` list — **558 machine-checked assertions** in total — so
+All 70 items are `published`, difficulty 4–5 (49 at difficulty 4, 21 at difficulty 5), and pass
+`validate.py --strict` with **0 failures and 0 warnings**. The originality gate is clean: **0 items
+above threshold**, highest external score 0.048 and highest internal score 0.026 (limits 0.35 / 0.25).
+
+Every item carries a `verification.assertions` list — **680 machine-checked assertions** in total — so
 the arithmetic in every answer is re-derived by the validator on each run, not merely asserted by the
 author.
 
@@ -58,6 +62,8 @@ challenge-bank/
     index.html              home: cohort note, difficulty legend, subject cards
     <subject>/index.html    topic list with filters (topic, paper, difficulty, command term)
     q/<id>.html             one page per question, with collapsed answer / markscheme / why-it's-hard
+    papers/<subject>-paper.html     printable question paper (no answers printed)
+    papers/<subject>-answers.html   matching answer booklet (answers + markscheme notes)
     assets/                 local CSS + JS; MathJax is loaded from CDN with a local fallback
   export/<subject>.json     the same questions in the shape backend/src/import.js accepts
 ```

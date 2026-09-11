@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS HL — Challenge Question paper — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Computer science HL — Challenge Question paper</h1>
+<p class="lede">14 questions · 224 marks · difficulty 4–5 · May 2028 cohort</p>
+<p class="reveal-note">No answers are printed in this paper. Attempt every question in writing before opening the matching answer booklet.</p>
+<p class="paper-switch"><a href="computer-science-hl-answers.html">Answer booklet &#8594;</a></p>
+<section class="paper-q">
+<h3>1. A loop that is linear only while the data keeps moving <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-B2.3-001 · B2.3 Programming constructs (sequence, selection, iteration, nested loops, loop conditions and termination, tracing the execution of a loop) · difficulty 5</p>
+<div class="box"><h4>PulseTrack - steady-run detection</h4><p>PulseTrack is a wearable heart-rate monitor. It samples the wearer's heart rate once per second and stores each day's readings as a list of integers.</p>
+<p>For every reading the device reports the length of the <strong>steady run</strong> ending at that reading: the number of immediately preceding readings such that every step between consecutive readings in that run differs by no more than a tolerance of 5 beats per minute. A reading with no steady predecessor has run length 0. So for the series <code>[70, 72, 71, 90, 89, 88, 87]</code> the run lengths are <code>[0, 1, 2, 0, 1, 2, 3]</code>.</p>
+<p>A developer wrote the function below and claims it runs in linear time: "the while loop stops as soon as it reaches a reading that differs from the one before it by more than the tolerance, and in a real recording that happens after a step or two."</p>
+<p>The device records 86,400 readings per day, one per second for 24 hours, and runs the analysis each night on the day's readings. The analysis must finish within a few seconds.</p></div>
+<pre><code>def steady_runs(readings, tol=5):
+    runs = []
+    for i in range(len(readings)):
+        count = 0
+        j = i
+        while j &gt; 0 and abs(readings[j] - readings[j - 1]) &lt;= tol:
+            count += 1
+            j -= 1
+        runs.append(count)
+    return runs</code></pre>
+<p>The readings are stored as a list of integers, one per second. The nightly analysis must finish in a few seconds on the device, and it must report the run lengths exactly.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain, by tracing the loop, what steady_runs returns for the readings [70, 72, 71, 90, 89, 88, 87] with the default tolerance of 5.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Explain why the developer's claim that the function runs in linear time is unsound. State the property of the input that the claim assumes, and describe the input pattern on which the function performs the greatest number of steps.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Construct a Python function that returns exactly the same result as steady_runs but runs in linear time. You may not import any module and you may not use the abs function. A Java version of this paper requires the same algorithm, so write the algorithm rather than a demonstration of syntax.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>A colleague proposes to fix the performance by adding a limit inside the while loop so that it stops after at most 1,000 steps. Evaluate this proposal, using your answers to parts (b) and (c).</p> <em>(Evaluate)</em></li></ol>
+</section><section class="paper-q">
+<h3>2. A constructor that prices every team as a single seat <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-B3.2-001 · B3.2 Fundamentals of OOP for multiple classes (HL only) (inheritance, superclass and subclass relationships, method overriding and polymorphism, composition as an alternative to inheritance) · difficulty 5</p>
+<div class="box"><h4>Rowan Software - annual seat pricing</h4><p>Rowan Software bills teams for a subscription. Every plan has a term in months and an annual fee, and the annual fee is computed once, when the plan object is created, so that invoices can be issued later without recomputing prices.</p>
+<p>The code below defines a base class Plan and a subclass SeatPlan, whose price depends on how many seats the team has bought. A seat costs 9 pounds per month. The class attribute seats = 1 is a default for plans that have not specified a seat count.</p>
+<p>The developer tested the class with the three tests shown, and all three pass. The service has about 900 team customers; the average team buys 20 seats and signs a 12-month term. The finance team reconciles annual fees once a year and has never queried an individual customer's monthly fee.</p></div>
+<pre><code>class Plan:
+    PER_SEAT = 9                      # pounds per seat per month
+
+    def __init__(self, months):
+        self.months = months
+        self.annual_fee = self.monthly_fee() * months
+
+    def monthly_fee(self):
+        return 0
+
+class SeatPlan(Plan):
+    seats = 1                         # default for plans with no seat count
+
+    def __init__(self, seats, months):
+        super().__init__(months)
+        self.seats = seats
+
+    def monthly_fee(self):
+        return self.seats * Plan.PER_SEAT
+
+# the developer&#x27;s tests - all three pass
+def test_one_seat():
+    assert SeatPlan(1, 12).annual_fee == 108
+
+def test_monthly_fee_scales():
+    assert SeatPlan(20, 12).monthly_fee() == 180
+
+def test_seats_are_recorded():
+    assert SeatPlan(20, 12).seats == 20</code></pre>
+<p>The finance team has asked you to review the pricing code before the catalogue is extended. The reconciliation compares each customer's stored annual_fee with the invoice total.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain what annual_fee holds for SeatPlan(20, 12) and why it is not equal to monthly_fee() * months. Refer to the order in which the statements in SeatPlan.__init__ and Plan.__init__ run.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a corrected design in which the annual fee is always computed from the plan's own seat count and no constructor reads a field of an object that is not yet fully initialised. Use composition: a plan must hold a separate pricing object rather than inherit its price. Write the classes and state the annual fee for 20 seats over 12 months.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Calculate the annual fee that every SeatPlan caches, the fee that a 20-seat 12-month plan should be charged, and the total annual shortfall across all 900 customers. State how many of those customers are billed incorrectly.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Evaluate the two ways of removing the bug - patching the inheritance hierarchy so the field is set before the superclass constructor runs, or replacing the hierarchy with composition - and recommend one for a catalogue that will soon combine seats, usage and region.</p> <em>(Evaluate)</em></li></ol>
+</section><section class="paper-q">
+<h3>3. B4 Abstract data types <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-B4.1-001 · B4.1 Fundamentals of ADTs (B4.1.3 linked lists, B4.1.4 binary search trees), B2.2 Data structures, B2.4 Programming algorithms, B1.1 Approaches to computational thinking · difficulty 4</p>
+<div class="box"><h4>Stimulus</h4><p>This is the Paper 2 *algorithmic-thinking* question type, for which the IB expects a solution without reading or writing Python or Java. Pseudocode below uses the conventions <code>=</code> for assignment, <code>//</code> for a comment, and indentation-delimited blocks.</p>
+<p>---</p>
+<p>A national road-tolling system uses overhead gantries that read number plates automatically. Most gantries have no permanent network connection, so each gantry records sightings in local memory and uploads them as a single batch once every 15 minutes. Within a batch, sightings are already in chronological order.</p>
+<p>The central system receives batches from thousands of gantries. Batches may arrive late, and they may arrive out of order relative to one another. Before a journey can be billed, all sightings for a single plate must be assembled into one chronological sequence.</p></div>
+<figure><table><thead><tr><th>Plates held, n</th><th>Design 1: array + linear search (comparisons, worst case)</th><th>Design 2: binary search tree (comparisons, worst case)</th></tr></thead><tbody><tr><td>1 000</td><td>1 000</td><td>≈ 10</td></tr><tr><td>10 000</td><td>10 000</td><td>≈ 14</td></tr><tr><td>100 000</td><td>100 000</td><td>≈ 17</td></tr><tr><td>1 000 000</td><td>1 000 000</td><td>≈ 20</td></tr></tbody></table><figcaption>Indicative performance of the two membership-test designs as n, the number of plates held, grows.</figcaption></figure>
+<p>The central system must (i) buffer sightings at the gantry, (ii) discard duplicate sightings of the same plate within a 24-hour window, and (iii) merge batches that arrive out of order into one chronological list.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Explain why a queue is a suitable abstract data type for the gantry's local buffer, and explain one advantage of implementing that queue as a <strong>circular</strong> queue rather than a non-circular one in this context.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Two designs are proposed for discarding duplicates. <strong>Design 1</strong> keeps accepted plates in an array and uses linear search. <strong>Design 2</strong> keeps accepted plates in a binary search tree keyed on the plate.</p>
+<p>For $n$ accepted plates, state the worst-case time complexity of a single membership test for each design, and evaluate which design is preferable for a system handling 40 000 plates per day.</p> <em>(Evaluate)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Describe, using pseudocode or structured English, an algorithm that merges two batches, each already sorted by timestamp, into a single chronological list. State the time complexity of your algorithm in terms of the batch sizes $p$ and $q$.</p> <em>(Describe)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Number plates are issued in blocks, so plates arriving at a gantry are often already in near-alphabetical order. Explain the consequence of this for the shape and performance of the binary search tree in Design 2, and describe one change that would avoid the problem.</p> <em>(Explain)</em></li></ol>
+</section><section class="paper-q">
+<h3>4. A1 Computer fundamentals <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-A1.1-001 · A1.1 Computer hardware and operation, A1.1.8 compression, A1.4 Translation (HL only) · difficulty 4</p>
+<div class="box"><h4>Stimulus</h4><p>An autonomous inspection drone flies a fixed route inside a warehouse, checking stock on high shelves. It carries a forward-facing camera, a distance sensor array, and a flight controller that must respond to obstacles within 20 ms. Video is stored on the drone and analysed after the flight.</p></div>
+
+<p>The drone's on-board computer has a general-purpose CPU and a separate GPU.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Describe how the control unit, the ALU and the registers interact during one fetch–decode–execute cycle.</p> <em>(Describe)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>The obstacle-detection workload runs on the GPU rather than the CPU. Explain <strong>two</strong> architectural differences between a CPU and a GPU and, for each, why it matters for this task. (HL only)</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>The camera produces $1280\times720$ pixel frames at 24 bits per pixel and 30 frames per second.</p>
+<p>(i) Calculate the uncompressed data rate in MB per second.</p>
+<p>(ii) A codec compresses the video by a factor of 40. Calculate the storage required for a 90-second flight.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>The flight-control software is written in a high-level language. Evaluate whether it should be <strong>compiled</strong> or <strong>interpreted</strong> for the deployed drone. (HL only)</p> <em>(Evaluate)</em></li></ol>
+</section><section class="paper-q">
+<h3>5. A2 Networks <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-A2.3-001 · A2.1 Network fundamentals, A2.3 Data transmissions, A2.4 Network security (HL only elements), A2.2 Network architecture · difficulty 4</p>
+<div class="box"><h4>Stimulus</h4><p>A hospital radiology department stores medical images on a central server. Staff at a clinic 4 km away need to retrieve these images over the hospital network. A typical study is 1.2 GB. The clinical standard requires that a study be available within 15 seconds of a request.</p>
+<p>The existing link between the clinic and the server is 100 Mbps. Network protocol overhead consumes 8% of the available bandwidth. 1 GB is taken as $10^{9}$ bytes and 1 Mbps as $10^{6}$ bits per second.</p></div>
+
+<p>The network is also used for staff email, VoIP telephony and building-management sensors.</p>
+<ol class="parts"><li><span class="marks">[6 marks]</span><strong>(a)</strong> <p>Calculate the time to transfer one 1.2 GB study over the existing 100 Mbps link. Hence evaluate whether upgrading the link to 1 Gbps would allow the 15-second clinical standard to be met.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Explain how packet switching allows the link to be shared with the other traffic listed, and describe <strong>one</strong> consequence of this sharing for the image transfer.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>The network is segmented into a clinical VLAN, a guest Wi-Fi VLAN and an IoT VLAN for building sensors. Explain the purpose of this segmentation and how a firewall enforces it.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Patient data are encrypted in transit. Distinguish between symmetric and asymmetric encryption, and explain the role of a digital certificate.</p> <em>(Explain)</em></li></ol>
+</section><section class="paper-q">
+<h3>6. A3 Databases <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-A3.2-001 · A3.2 Database design (schemas, ERDs, normalisation), A3.3 Database programming (SQL joins, views HL only) · difficulty 4</p>
+<div class="box"><h4>Stimulus</h4><p>A small music festival stores all of its booking data in a <strong>single</strong> table:</p>
+<p>PERFORMANCE_BOOKING</p>
+<p>| BookingID | CustomerName | CustomerEmail | PerformanceName | VenueName | SeatCategory | PricePerTicket | Quantity |<br>|---|---|---|---|---|---|---|---|<br>| 1001 | A. Ferrer | a.ferrer@mail | Midnight Chorus | East Stage | Premium | 85.00 | 2 |<br>| 1002 | A. Ferrer | a.ferrer@mail | Midnight Chorus | East Stage | Standard | 45.00 | 4 |<br>| 1003 | L. Oyeka | l.oyeka@mail | Brass Quartet | West Barn | Standard | 40.00 | 2 |<br>| 1004 | R. Duval | r.duval@mail | Midnight Chorus | East Stage | Premium | 85.00 | 1 |<br>| 1005 | R. Duval | r.duval@mail | Brass Quartet | West Barn | Standard | 40.00 | 3 |</p>
+<p>BookingID is unique. A customer may make several bookings, and a performance runs in exactly one venue.</p></div>
+
+<p>The festival is expanding and the table is causing problems.</p>
+<ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>Explain <strong>two</strong> specific problems with this design, using the data above to illustrate each. For each, name the type of anomaly it represents.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a set of tables in third normal form (3NF) to replace PERFORMANCE_BOOKING. State the primary key of each table and show the foreign-key links between them.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Using your 3NF design, write an SQL query that lists the customer name, the performance name and the total cost of each booking (quantity × price), for bookings of <strong>more than two</strong> tickets, ordered by total cost from highest to lowest.</p> <em>(Construct)</em></li><li><span class="marks">[2 marks]</span><strong>(d)</strong> <p>Box-office staff need to see booking details but must not see customer email addresses or prices. Explain how a database <strong>view</strong> solves this. (HL only)</p> <em>(Explain)</em></li></ol>
+</section><section class="paper-q">
+<h3>7. A4 Machine learning <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-A4.2-001 · A4.1 Machine learning fundamentals, A4.2 Data preprocessing (HL only), A4.3 Machine learning approaches (HL only), A4.4 Ethical considerations · difficulty 4</p>
+<div class="box"><h4>Stimulus</h4><p>A bank builds a machine learning system to decide whether to approve personal loan applications. The training dataset contains 40 000 previous applications with the outcome (repaid or defaulted) recorded.</p>
+<p>The dataset includes the following fields: applicant age, annual income, the postcode district of the applicant's home address (2 800 distinct values), years in current employment, loan amount requested, and existing debt.</p>
+<p>Known issues with the data: 12% of the income values are missing; income ranges from 0 to 4 000 000 across the dataset while age ranges from 18 to 75; and the postcode district correlates strongly with the ethnic composition of the neighbourhood.</p></div>
+
+<p>The bank intends to deploy the model to make automated decisions.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Distinguish between supervised and unsupervised learning. Identify which type this system uses and justify your answer.</p> <em>(Distinguish)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>For <strong>each</strong> of the three data issues identified above, describe one appropriate preprocessing step and justify why it is needed. (HL only)</p> <em>(Describe)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>The model is trained on 80% of the data and tested on the remaining 20%. Training accuracy is 98% while test accuracy is 71%. Explain what these two figures tell you and what should be done about it. (HL only)</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>After deployment, the model rejects applications from one postcode district at four times the average rate. Discuss <strong>two</strong> ethical issues this raises and one action the bank should take.</p> <em>(Discuss)</em></li></ol>
+</section><section class="paper-q">
+<h3>8. A 12-bit temperature log and the arithmetic that breaks it <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-A1.2-001 · A1.2 Data representation and computer logic (A1.2.1 representation of integers in binary and hexadecimal, A1.2.2 binary encoding and its impact on storage, A1.2.3 logic gates, A1.2.4 truth tables) · difficulty 4</p>
+<div class="box"><h4>A field temperature logger</h4><p>A logger records temperature once per minute for a week. The sensing element produces a signed integer that is stored in a 12-bit two's complement register, in units of 0.0625 degrees Celsius per least significant bit. A separate summation register accumulates consecutive readings so that a rolling average can be reported, using the same 12-bit width as the readings themselves.</p>
+<p>The logger also drives an alarm output from three inputs: P (pressure above the safe limit), T (temperature above the safe limit) and O (operator override enabled). The designer's first attempt at the alarm logic is</p>
+<p>F = P.T + P.T' + P'.T.O</p>
+<p>where the prime denotes NOT, the dot denotes AND and + denotes OR. The alarm output is available only at a single-frequency clock, so reducing the number of gates is worth doing.</p></div>
+
+<p>The 12-bit register stores values in units of 0.0625 degrees Celsius per least significant bit, with the most significant bit carrying the sign.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Determine the 12-bit two's complement representation of a reading of -37.5 degrees Celsius, giving your answer in binary and in hexadecimal.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Explain why the summation register can overflow even when every individual reading is representable, and determine the minimum register width needed to sum any 16 consecutive readings without overflow.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain why converting a stored reading to degrees Celsius by multiplying by 0.0625 introduces no error, whereas converting it to degrees Fahrenheit does, in both cases assuming the arithmetic itself is performed exactly.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Show that F simplifies to P + T.O, and state the number of two-input gates needed for the reduced expression.</p> <em>(Show that)</em></li></ol>
+</section><section class="paper-q">
+<h3>9. An irrigation gateway choosing how to share its processor <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-A1.3-001 · A1.3 Operating systems and control systems (A1.3.2 functions of an operating system, A1.3.3 comparison of scheduling approaches, A1.3.4 evaluation of polling and interrupt handling, A1.3.6 open-loop and closed-loop control) · difficulty 4</p>
+<div class="box"><h4>A field irrigation gateway</h4><p>A solar-powered gateway controller sits in a field and manages irrigation for sixteen plots. It runs a small operating system on a single-core processor and executes four periodic tasks, described as A, B, C and D. Each task becomes ready at the same moment when the controller wakes from sleep, and their processor requirements are 5 ms, 3 ms, 8 ms and 2 ms respectively. The controller must also handle two inputs: a soil-moisture probe that is read on a fixed schedule every 30 seconds, and a rain sensor that triggers a shutdown and must be acted on within 5 milliseconds of the first drop reaching it. The device is battery-backed and mains-charged, and is connected to the farm network so that readings can be uploaded.</p></div>
+
+<p>The four tasks A, B, C and D all become ready simultaneously when the controller wakes. Their processor requirements are 5 ms, 3 ms, 8 ms and 2 ms.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Describe how a closed-loop control system would maintain soil moisture at a target level, identifying the input, the process, the output and the feedback in your answer.</p> <em>(Describe)</em></li><li><span class="marks">[6 marks]</span><strong>(b)</strong> <p>Calculate the average waiting time for the four tasks under first-come-first-served scheduling and under round-robin scheduling with a time quantum of 3 ms, then recalculate each total if every context switch costs 0.5 ms and the tasks are executed in the order A, B, C, D.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Explain why the average waiting time alone is a misleading basis for choosing between the two policies, using your figures, and state which policy you would deploy.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Evaluate the use of polling for the soil-moisture probe against the use of interrupts for the rain sensor, and explain one additional operating system function that the network connection makes necessary.</p> <em>(Evaluate)</em></li></ol>
+</section><section class="paper-q">
+<h3>10. A relational store that cannot answer the question <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-A3.4-001 · A3.4 Alternative databases and data warehouses (A3.4.1 NoSQL, cloud, spatial and in-memory databases, A3.4.2 objectives of data warehouses, A3.4.3 OLAP and data mining, A3.4.4 distributed databases and ACID) · difficulty 4</p>
+<div class="box"><h4>Nightline Couriers</h4><p>Nightline Couriers operates 340 vans from 12 depots. Every van reports its position, speed and load temperature once every 0.4 seconds while the ignition is on, an average of 14 hours a day. Each report is stored as a fixed-length record of 80 bytes. The reports are written to a relational database on a single server, and the same database holds the tables that the dispatch system reads and writes many times per second.</p>
+<p>At the end of each month the operations director asks for a report showing, for every depot and every month, the number of completed deliveries, the average delivery time per parcel, the total distance driven and the number of temperature excursions, defined as any period in which a load temperature left the permitted range for more than 90 seconds.</p>
+<p>The report currently takes nine hours to produce and, while it runs, drivers report that the dispatch screen stops responding.</p></div>
+
+<p>The operations director wants the monthly report produced without the dispatch system losing responsiveness. The data described above is available, and management accepts that the reporting and dispatch workloads must be separated.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Explain why the monthly report is slow and why running it affects the dispatch system, referring to the difference between the workloads the two stores must support.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Design a star schema for the monthly report. State the grain of the fact table, name the fact table and three dimension tables, and give two measures that the fact table must hold.</p> <em>(Design)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Calculate the volume of raw report data generated in one year, and the volume if every record is stored with a replication factor of three. State one consequence of your answer for the choice of database.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Justify the use of a key-value or wide-column store for the incoming position reports rather than the relational database, and state one capability that is given up by doing so.</p> <em>(Justify)</em></li></ol>
+</section><section class="paper-q">
+<h3>11. A bounded buffer class where the bug is in the average <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-B3.1-001 · B3.1 Fundamentals of OOP for a single class (B3.1.2 class design, B3.1.3 static and non-static members, B3.1.4 defining classes and instantiating objects, B3.1.5 encapsulation and information hiding) · difficulty 4</p>
+<div class="box"><h4>SensorReadings</h4><p>A weather station holds the most recent readings from a thermometer in a fixed-size window so that a rolling average can be displayed. The class must never store more than CAPACITY readings: when it is full and a new reading arrives, the oldest reading is discarded to make room.</p>
+<p>A first attempt at part of the class is shown below.</p>
+<p>class SensorReadings:<br>        def __init__(self, capacity):<br>            self.values = []<br>            self.capacity = capacity</p>
+<p>def add(self, reading):<br>            self.values.append(reading)</p>
+<p>def mean(self):<br>            total = 0<br>            for v in self.values:<br>                total += v<br>            return total / self.capacity</p>
+<p>The class works when tested with a single reading, and gives a value that looks reasonable for the first few readings after that.</p></div>
+
+<p>The window size is a property of the device, not of any individual object, and several SensorReadings objects may exist at once for different sensors.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain why CAPACITY should be a class-level constant rather than an instance variable set by __init__, and state one invariant that the class must maintain.</p> <em>(Explain)</em></li><li><span class="marks">[6 marks]</span><strong>(b)</strong> <p>Construct the completed class, including __init__, add, mean and __len__, so that it maintains the invariant you stated and never holds more than CAPACITY readings.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain the error in the draft mean method and the effect it has after three readings have been added to a buffer whose capacity is five, and state the corrected line.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Explain why a method that returns self.values directly breaks encapsulation, and describe one way of giving the caller the data without doing so.</p> <em>(Explain)</em></li></ol>
+</section><section class="paper-q">
+<h3>12. A flat-file timetable that deletes its own history <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-A3.1-001 · A3.1 Database fundamentals (data types, primary keys and foreign keys, referential integrity, flat-file and relational databases, the role of the DBMS) · difficulty 4</p>
+<div class="box"><h4>Veloway bike share - the TRIPS spreadsheet</h4><p>Veloway runs a city bike-share scheme. Its entire operation is held in one spreadsheet table called <code>TRIPS</code>, which has one row for each completed journey. The scheme has 1,200,000 registered members and 15,000 bikes, and it records about 12,000,000 journeys in a year.</p>
+<p>Every row of <code>TRIPS</code> repeats the member's name, phone number and email address, which together occupy about 50 bytes. The amount charged for a journey is held in a column called <code>ChargeCents</code>, declared as text, so a charge of one thousand and fifty pence is stored as the characters "1,050".</p>
+<p>The operator intends to replace the spreadsheet with a relational database that has a <code>MEMBER</code> table, a <code>BIKE</code> table and a <code>TRIP</code> table. A developer has suggested that the bike column in <code>TRIP</code> should carry a referential rule that deletes a bike's journey rows automatically when the bike is removed from <code>BIKE</code>, because retired bikes would otherwise leave rows behind. About 2% of the fleet is retired each year.</p></div>
+<figure><table><tbody></tbody></table></figure>
+<p>The scheme is expanding to five more cities and the spreadsheet is becoming unworkable. The operator has asked you to review the design before the data is migrated to a relational database management system.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain the difference between a primary key and a foreign key, and identify the primary key of the table above. Explain why MemberID cannot serve as the primary key of this table.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Calculate the volume of duplicated member-contact data held in one year of rows, and the number of rows that must be edited when 10% of members change their phone number, given that a member makes an average of ten journeys a year. Explain one way in which storing ChargeCents as text prevents a report from working correctly.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain how replacing the single table with MEMBER, BIKE and TRIP tables removes the two problems you calculated in part (b). Name the primary key and the foreign keys of each table, and state one referential-integrity rule the DBMS should enforce.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>The developer proposes that deleting a bike from BIKE should automatically delete that bike's rows from TRIP. Evaluate this proposal using the figures above, and recommend what the referential rule should be instead.</p> <em>(Evaluate)</em></li></ol>
+</section><section class="paper-q">
+<h3>13. Forty ten-pence subtractions that never reach sixteen pounds <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-B2.1-001 · B2.1 Programming fundamentals (data types, variables and constants, operators, expressions, type conversion, input and output) · difficulty 4</p>
+<div class="box"><h4>Rivergate car park - the season-ticket balance</h4><p>A multi-storey car park in Rivergate sells season tickets. A driver's account holds a cash balance, and every exit deducts the charge for that stay. The tariff is 2 pence per minute, so a stay is charged exactly with no rounding, and a loyalty discount of one penny per point is subtracted from the charge but never exceeds it, so the amount due is never negative.</p>
+<p>The current Python implementation holds the balance, the charge and the discount in pounds as floating-point numbers. A driver tops up £20.00 and then makes forty short stays, each deducting exactly £0.10. The true remaining balance is exactly £16.00, and the car park sells a £16.00 annual pass that may be bought only when the balance is at least £16.00.</p>
+<p>The car park handles about 250,000 exits a day. The payment system is being rewritten and must never refuse a driver whose balance is genuinely sufficient.</p></div>
+<pre><code>BALANCE = 20.00            # pounds
+CHARGE = 0.10              # pounds, one short stay
+
+for _ in range(40):
+    BALANCE = BALANCE - CHARGE
+
+def can_buy_pass(balance):
+    return balance &gt;= 16.00
+
+print(BALANCE)                 # 15.999999999999945
+print(can_buy_pass(BALANCE))   # False</code></pre>
+<p>The rewritten system must be available in both Python and Java, and the two versions must behave identically.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain the difference between a floating-point number and an integer as a way of storing an amount of money, and state why the balance in this system should be held in pence rather than pounds.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a Python function settle(balance_pence, minutes, points) that returns the balance remaining after the stay, or None if the balance is insufficient. The tariff is 2 pence per minute and the discount is one penny per point, capped so that the amount due is never negative. Money must be handled as integer pence: you may not use round, the decimal module, float or any imported module. A Java version of this paper requires the same algorithm, so write the algorithm rather than a demonstration of syntax.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain why the loop above prints 15.999999999999945 rather than 16.00, and why can_buy_pass therefore returns False. Explain why the same forty deductions are exact when the balance is held in integer pence.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Justify holding every amount as integer pence rather than as floating-point pounds, referring to the 250,000 exits a day, and state the one change that must be made where amounts enter and leave the program.</p> <em>(Justify)</em></li></ol>
+</section><section class="paper-q">
+<h3>14. A forty-gigabyte file that will not fit in memory twice <span class="paper-marks">16 marks</span></h3>
+<p class="paper-ref">CS-B2.5-001 · B2.5 File processing (reading and writing files, line-by-line and whole-file processing, parsing records, detecting malformed data, memory and error handling) · difficulty 4</p>
+<div class="box"><h4>Northwind Climate Archive ingestion</h4><p>A weather service ingests a daily archive from a national network of 500 stations. The archive is a single text file of 40 GB. Each record is one line of about 100 bytes holding four comma-separated fields: station code, timestamp, temperature and humidity.</p>
+<p>The file arrives as a compressed stream over a socket. The stream cannot be rewound and the raw file is never written to disk, because the service has no room for it. The machine that runs the ingestion has 8 GB of RAM.</p>
+<p>The service must produce, for each station, the number of valid readings, the minimum and maximum temperature and the mean temperature. It must also report every malformed record to the provider so that the archive can be corrected, and the provider needs the line number of each bad record. The provider has warned that a corrupt upload can contain millions of malformed lines.</p></div>
+<pre><code>def ingest(stream):
+    data = stream.read()                      # 40 GB, held in memory
+    errors = []
+    summary = {}
+    for lineno, line in enumerate(data.split(&quot;\n&quot;), start=1):
+        fields = line.split(&quot;,&quot;)
+        if len(fields) != 4:
+            errors.append((lineno, line))     # keeps every bad line
+            continue
+        station, timestamp, temp, humidity = fields
+        ...
+    return summary, errors</code></pre>
+<p>The ingestion runs once a night on a single machine, must not exhaust memory, and must finish before the next upload arrives.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain why stream.read() cannot be used here, referring to the size of the file and the memory available, and state what a streaming implementation does instead.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Explain why data.split("\n") followed by line.split(",") produces errors that the developer would not see when testing on a small file. Describe how a record containing a comma inside a quoted field must be parsed.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Construct a Python function ingest(stream, max_errors) that consumes the stream exactly once and returns a summary, an error report and an error count. stream is a file-like object that supports iteration and cannot be rewound. The summary must give, for each station, the count, minimum, maximum and sum of temperatures. The error report must hold the line number and a reason for at most max_errors malformed records, and the count must be the exact total of malformed records. You may not import any module, and you may not call stream.read() or stream.seek(). A Java version of this paper requires the same algorithm.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Evaluate the decision to keep only the first max_errors malformed records while still counting all of them, against the provider's requirement to receive the line number of every malformed record. State what is given up and recommend a design.</p> <em>(Evaluate)</em></li></ol>
+</section>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>
