@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL5.11-001 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>The area trapped between a parabola and a line</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL5.11-001</p>
+<div class="meta"><span class="chip chip-key">SL 5.11 (definite integrals, including analytical approach to areas between curves)</span><span class="chip">P2 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: permitted</span><span class="chip">Find</span><span class="chip">Show that</span></div>
+
+
+<h2>Question</h2>
+<p>The region $R$ is bounded by the parabola $y=x^{2}-4$ and the line $y=2x-1$.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Find the $x$-coordinates of the points where the two curves intersect.</p> <em>(Find)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Show that the line $y=2x-1$ is the upper curve on the interval between the intersection points.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Find the total area enclosed by the two curves.</p> <em>(Find)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Find the area of the part of the region with $x\ge 0$.</p> <em>(Find)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Set the two curves equal: $x^{2}-4=2x-1$ rearranges to $x^{2}-2x-3=0$ <strong>(M1)</strong>. Factoring gives $(x-3)(x+1)=0$, so the intersection $x$-coordinates are $x=-1$ and $x=3$ <strong>(A1)(AG)</strong>. Solving the quadratic is the necessary first step, because the limits of the area integral are exactly these $x$-values, and no other points bound the enclosed region between the two graphs.</p>
+<p><strong>(b)</strong> On the interval $[-1,3]$ compare the curves at a test point, for example $x=0$: the line gives $2(0)-1=-1$ while the parabola gives $0^{2}-4=-4$ <strong>(M1)</strong>. Since $-1&gt;-4$, the line lies above the parabola <strong>(A1)</strong>. Equivalently the difference $(2x-1)-(x^{2}-4)=-x^{2}+2x+3=-(x-3)(x+1)$ is non-negative on $[-1,3]$ <strong>(A1)(AG)</strong>. Confirming the upper curve matters, since integrating the lower minus the upper would give a negative result, and the non-negativity of the difference on the whole interval removes any doubt about which curve to subtract.</p>
+<p><strong>(c)</strong> The area is $\int_{-1}^{3}[(2x-1)-(x^{2}-4)]\,\mathrm{d}x=\int_{-1}^{3}(-x^{2}+2x+3)\,\mathrm{d}x$ <strong>(M1)</strong>. The antiderivative is $-\frac{x^{3}}{3}+x^{2}+3x$ <strong>(A1)</strong>, so evaluating gives $\left(-9+9+9\right)-\left(\frac{1}{3}+1-3\right)=9-\left(-\frac{5}{3}\right)=\frac{32}{3}$ <strong>(A1)</strong>. The antiderivative is a simple cubic, so only arithmetic remains once the setup is correct, and the positive value confirms the orientation of the integration was chosen properly, which is why the answer is $\frac{32}{3}$.</p>
+<p><strong>(d)</strong> For the part with $x\ge 0$ the region runs from $0$ to $3$, so the area is $\int_{0}^{3}(-x^{2}+2x+3)\,\mathrm{d}x$ <strong>(M1)</strong>. Using the same antiderivative gives $\left(-9+9+9\right)-0=9$ <strong>(A1)(AG)</strong>. Restricting to $x$ at least zero simply changes the lower limit and leaves the integrand unchanged, and this sub-region is a clean integer, which makes the comparison with the full area instructive, so the area is exactly $9$ and not the full $\frac{32}{3}$.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award (M1) for forming the equation $x^{2}-2x-3=0$ and (A1)(AG) for the roots $x=-1$ and $x=3$. A candidate who solves correctly but writes the factors wrongly earns at most the method mark.</p>
+<p>(b) Award (M1) for a comparison at a test point or for writing the difference expression, (A1) for concluding the line is above the parabola, and (A1)(AG) for showing the difference $-(x-3)(x+1)$ is non-negative on $[-1,3]$. A sketch alone is not enough; the inequality must be justified algebraically or numerically.</p>
+<p>(c) Award (M1) for setting up the integral of upper minus lower, (A1) for the antiderivative $-\frac{x^{3}}{3}+x^{2}+3x$, and (A1) for the value $\frac{32}{3}$. The subtraction at the lower limit must give $9-(-5/3)$; a candidate who forgets to subtract the lower value forfeits the final mark. The arithmetic $-5/3$ at the lower limit is the step most often dropped.</p>
+<p>(d) Award (M1) for the integral from $0$ to $3$ and (A1)(AG) for the value $9$. Follow through from an incorrect part (c) integrand is allowed if the working is consistent. A candidate who integrates from $-1$ to $0$ instead of $0$ to $3$ earns no credit for this part.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The item is built on the area between two curves, where the limits of integration come from the intersection of a parabola and a line. Setting $x^{2}-4=2x-1$ gives $x^{2}-2x-3=0$, which factors as $(x-3)(x+1)=0$, so the curves meet at $x=-1$ and $x=3$. The trap is to integrate the parabola minus the line, or to skip the check of which curve is on top; on $[-1,3]$ the line $y=2x-1$ lies above the parabola, because their difference $-x^{2}+2x+3=-(x-3)(x+1)$ is non-negative between the roots. The intended route is to integrate upper minus lower: $\int_{-1}^{3}(-x^{2}+2x+3)\,\mathrm{d}x$, whose antiderivative is $-\frac{x^{3}}{3}+x^{2}+3x$, giving $9-(-5/3)=32/3$. Part (d) then asks only for the right-hand portion with $x\ge 0$, which is $\int_{0}^{3}$ of the same integrand and equals $9$. Establishing the upper curve by the sign of the difference is the key step, because reversing the subtraction produces a negative area that no absolute value can later fix. The classic error is to use the wrong lower limit in part (d) by integrating from $-1$ to $0$, or to forget to subtract the antiderivative at the lower limit and write $9$ for the whole region instead of $32/3$. Another slip is to treat the two curves as if they cross again inside the interval. The numbers were chosen so the intersection roots are small integers and the two areas are the clean fractions $32/3$ and $9$, so a correct method produces exact values while a sign error does not. The clean integer sub-region makes the contrast with the full fractional area especially clear.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The region is bounded by a parabola and a line whose intersection gives two limits, and the area is the integral of the upper curve minus the lower over that interval.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>SL 5.11 (definite integrals, including analytical approach to areas between curves)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the SL 5.11 bullet on definite integrals and the analytical approach to areas between curves. The lever is the region bounded by the parabola y = x^2 - 4 and the line y = 2x - 1; those equations were chosen so that equating them gives x^2 - 2x - 3 = 0 = (x-3)(x+1), yielding intersection limits minus 1 and 3, so that the upper curve is the line with a clean non-negative difference, and so that the total area is 32/3 while the right-hand portion with x at least 0 is exactly 9. The item is not a reskin because it requires establishing which curve is upper by sign of the difference and then computing a sub-region area from a shifted lower limit, which a single-curve area question never demands.</dd></div>
+  <div><dt>Verification</dt><dd>Every value was recomputed independently: the intersection equation x^2 - 2x - 3 = 0 with roots minus 1 and 3, the antiderivative -x^3/3 + x^2 + 3x evaluated at 3 giving 9 and at minus 1 giving minus 5/3, the total area 9 - (-5/3) = 32/3, and the right-hand area from 0 to 3 giving 9.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P1_2018May_TZ2_q04 (similarity 0.034)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-T2-001 (similarity 0.013)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>
