@@ -16,21 +16,21 @@ design and provably not copied.
 
 | Subject | Guide in force | Questions | Nodes covered |
 |---|---|---:|---:|
-| Math AA HL | 2021 (runs to Nov 2028) | 20 | 35 / 83 (42%) |
+| Math AA HL | 2021 (runs to Nov 2028) | 30 | 49 / 83 (59%) |
 | Physics HL | 2025 | 19 | 24 / 24 (100%) |
 | Computer Science HL | 2027 (new Theme A/B) | 14 | 25 / 25 (100%) |
 | Business Management SL | 2024 | 17 | 34 / 34 (100%) |
-| **Total** | | **70** | **118 / 166 (71%)** |
+| **Total** | | **80** | **132 / 166 (79%)** |
 
 **Every priority-1 ("must-cover") node is done** — Maths 32/32, Physics 24/24, CS 25/25 and BM 26/26,
-plus all 8 BM Toolkit nodes. The 48 nodes still open are priority-2 ("should") maths topics, which the
+plus all 8 BM Toolkit nodes. The 34 nodes still open are priority-2 ("should") maths topics, which the
 brief orders after every must-cover node.
 
-All 70 items are `published`, difficulty 4–5 (49 at difficulty 4, 21 at difficulty 5), and pass
+All 80 items are `published`, difficulty 4–5 (54 at difficulty 4, 26 at difficulty 5), and pass
 `validate.py --strict` with **0 failures and 0 warnings**. The originality gate is clean: **0 items
-above threshold**, highest external score 0.048 and highest internal score 0.026 (limits 0.35 / 0.25).
+above threshold**, highest external score 0.086 and highest internal score 0.042 (limits 0.35 / 0.25).
 
-Every item carries a `verification.assertions` list — **680 machine-checked assertions** in total — so
+Every item carries a `verification.assertions` list — **819 machine-checked assertions** in total — so
 the arithmetic in every answer is re-derived by the validator on each run, not merely asserted by the
 author.
 

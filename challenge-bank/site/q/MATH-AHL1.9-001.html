@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL1.9-001 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>The greatest coefficient, attained twice</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL1.9-001</p>
+<div class="meta"><span class="chip chip-key">SL 1.9 (the binomial theorem: expansion of (a + b)^n and the general term)</span><span class="chip">P2 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: permitted</span><span class="chip">Show that</span><span class="chip">Find</span><span class="chip">Hence</span></div>
+
+
+<h2>Question</h2>
+<p>In the expansion of $(1 + x/2)^n$, where $n$ is a positive integer, the coefficients of $x^4$ and $x^5$ are equal.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Given that the coefficients of $x^4$ and $x^5$ are equal, show that $n = 14$.</p> <em>(Show that)</em></li><li><span class="marks">[6 marks]</span><strong>(b)</strong> <p>Find the greatest coefficient in the expansion, stating the term or terms at which it occurs.</p> <em>(Find)</em></li><li><span class="marks">[6 marks]</span><strong>(c)</strong> <p>Hence find the coefficient of $x^6$ in the expansion of $(1 + x/2)^{14}(1 - x)^3$.</p> <em>(Hence)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The general term of the expansion is $\binom{n}{r}(x/2)^r$, so the coefficient of $x^r$ is $\binom{n}{r}/2^r$. <strong>(M1)</strong> Equating the coefficients of $x^4$ and $x^5$ gives $\binom{n}{4}/2^4 = \binom{n}{5}/2^5$. <strong>(M1)</strong> Multiplying by $2^5$ and dividing by $\binom{n}{5}$ gives $\binom{n}{4}/\binom{n}{5} = 1/2$. <strong>(M1)</strong> Now $\binom{n}{4}/\binom{n}{5} = 5/(n-4)$, so $5/(n-4) = 1/2$. <strong>(A1)</strong> Hence $n - 4 = 10$ and $n = 14$, as required. <strong>(AG)</strong></p>
+<p><strong>(b)</strong> Write $t_r = \binom{14}{r}/2^r$ for the coefficient of $x^r$. <strong>(M1)</strong> The ratio of consecutive coefficients is $t_{r+1}/t_r = (1/2)\binom{14}{r+1}/\binom{14}{r} = (1/2)(14-r)/(r+1)$. <strong>(M1)</strong> This ratio is at least $1$ exactly when $14 - r \ge 2(r+1)$, that is $14 - r \ge 2r + 2$, so $r \le 4$. <strong>(A1)</strong> The coefficients therefore increase up to $r = 4$, and at $r = 4$ the ratio equals $1$, so $t_4 = t_5$; for $r &gt; 4$ the ratio is below $1$ and the coefficients decrease. <strong>(R1)</strong> The greatest coefficient is thus $t_4 = \binom{14}{4}/2^4 = 1001/16 = 62.5625$. <strong>(A1)</strong> It is attained twice, by the terms in $x^4$ and $x^5$, since $t_5 = \binom{14}{5}/2^5 = 2002/32 = 1001/16$. <strong>(A1)</strong> Because the ratio equals exactly $1$ at $r = 4$, the two largest coefficients are equal and every other coefficient is strictly smaller. For comparison, $t_3 = 364/8 = 45.5$ and $t_6 = 3003/64 = 46.921875$, both smaller. <strong>(R1)</strong></p>
+<p><strong>(c)</strong> Expanding, $(1 - x)^3 = 1 - 3x + 3x^2 - x^3$. <strong>(M1)</strong> If $a_r$ denotes the coefficient of $x^r$ in $(1 + x/2)^{14}$, then the coefficient of $x^6$ in the product is $a_6 - 3a_5 + 3a_4 - a_3$. <strong>(M1)</strong> Substituting, this is $3003/64 - 3(1001/16) + 3(1001/16) - 364/8$. <strong>(A1)</strong> The two middle terms cancel exactly, leaving $3003/64 - 364/8$. <strong>(A1)</strong> Writing over the common denominator $64$, this is $3003/64 - 2912/64 = 91/64$. <strong>(A1)</strong> Hence the coefficient is $91/64 = 1.421875$. <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>Part (a) awards <strong>(M1)</strong> for writing the general term $\binom{n}{r}(x/2)^r$, <strong>(M1)</strong> for equating the two coefficients, and <strong>(M1)</strong> for using the ratio $\binom{n}{4}/\binom{n}{5} = 5/(n-4)$; the <strong>(A1)</strong> is for $n - 4 = 10$ and the <strong>(AG)</strong> confirms $n = 14$. A candidate who equates $\binom{n}{4}$ and $\binom{n}{5}$ without the factors $2^4$ and $2^5$ obtains $n = 9$ and loses the <strong>(A1)</strong> and the <strong>(AG)</strong>. In part (b) the <strong>(M1)</strong> marks are for defining $t_r$ and for forming the ratio $t_{r+1}/t_r = (1/2)(14-r)/(r+1)$, and the <strong>(A1)</strong> is for the inequality $r \le 4$. The <strong>(R1)</strong> is for the deduction that the coefficients rise to $r = 4$ and fall afterwards, which forces $t_4 = t_5$; a candidate who merely states a maximum at $r = 4$ without the increase-then-decrease argument loses that mark. The two <strong>(A1)</strong> marks are for the value $1001/16$ and for naming both terms, and the final <strong>(R1)</strong> rewards the numerical comparison with $t_3$ and $t_6$. Part (c) awards <strong>(M1)</strong> for the expansion of $(1-x)^3$ and <strong>(M1)</strong> for the convolution $a_6 - 3a_5 + 3a_4 - a_3$; the <strong>(A1)</strong> marks are for the correct substitution, the exact cancellation of the two middle terms, and the value $91/64$. A candidate who drops the signs on the odd terms obtains a value near $125$, so the signs must be preserved.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The stem is a coefficient-matching problem, but the equality of two coefficients is only the entry point; the real work is deciding where the coefficients stop growing. In part (a) the factors $2^r$ from $(x/2)^r$ must be carried into the comparison, and it is the ratio $\binom{n}{4}/\binom{n}{5} = 5/(n-4)$ that reduces the condition to a one-line equation. The common error is to compare binomial coefficients alone, which shifts the answer from $n = 14$ to $n = 9$ and destroys the later parts.</p>
+<p>Part (b) turns on the ratio of consecutive coefficients, $t_{r+1}/t_r = (1/2)(14-r)/(r+1)$. The coefficients increase while this ratio exceeds $1$ and decrease once it falls below $1$, and the critical case is when the ratio equals $1$ exactly: that happens at $r = 4$, so the maximum is shared by the terms in $x^4$ and $x^5$. This tie is the twist, because a candidate who assumes a single greatest term will report only one of the two.</p>
+<p>Part (c) hides a designed cancellation. Multiplying by $(1-x)^3$ mixes four consecutive coefficients with alternating signs, and because $a_4 = a_5$ the two middle contributions cancel exactly, leaving only $a_6 - a_3$. The result $91/64$ is far smaller than the individual coefficients, which is a strong signal that the cancellation was intended. Truncating the product or mis-signed terms give answers of a completely different size. The candidate is also expected to recognise that the tie at $r = 4$ is exact rather than approximate, because the ratio equals $1$ precisely there; this is why the maximum is shared by two terms and not attained at a single index. Reporting only $t_4$ or only $t_5$ therefore answers only half of the question, and the markscheme requires both to be named explicitly.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The lever is that the ratio of consecutive coefficients equals one at a particular index, so the largest coefficient is shared by two adjacent terms rather than held by a single one.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>SL 1.9 (the binomial theorem: expansion of (a + b)^n and the general term)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the SL 1.9 bullet on the binomial theorem and the general term. The design makes the ratio of consecutive coefficients equal to one at an integer index, so the largest coefficient is shared by two adjacent terms rather than held by a single one. The expansion of (1 + x/2)^n, the equality of the coefficients of x^4 and x^5, the resulting n = 14, the doubled maximum 1001/16, and the closing coefficient 91/64, in which the two middle contributions cancel exactly, are all constructed here.</dd></div>
+  <div><dt>Verification</dt><dd>Every binomial coefficient was recomputed in Python, the consecutive-coefficient ratios were checked at the decisive indices, and the cancellation in the product was verified numerically.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2024_11_q02 (similarity 0.086)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>
