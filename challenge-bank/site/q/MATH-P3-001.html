@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-P3-001 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Iteration, convergence and deductive proof</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-P3-001</p>
+<div class="meta"><span class="chip chip-key">AHL 1.6 (simple deductive proof), AHL 1.15 (proof by mathematical induction), AHL 5.13 (limits of sequences)</span><span class="chip">P3</span><span class="chip">19 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: allowed</span><span class="chip">Show that</span><span class="chip">Deduce</span><span class="chip">Explain</span><span class="chip">Determine</span></div>
+
+
+<h2>Question</h2>
+<p>A machine estimates $\sqrt{2}$ by iterating</p>
+<p>$$x_{n+1}=\frac{1}{2}\left(x_n+\frac{2}{x_n}\right),\qquad x_1=\frac{3}{2}.$$</p>
+<p>This question asks you to justify the method exactly rather than to trust the digits on a display.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Show that $x_{n+1}-\sqrt{2}=\dfrac{\left(x_n-\sqrt{2}\right)^2}{2x_n}$.</p> <em>(Show that)</em></li><li><span class="marks">[2 marks]</span><strong>(b)</strong> <p>Deduce that $x_{n}&gt;\sqrt{2}$ for every $n\ge 1$.</p> <em>(Deduce)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Show that $x_{n+1}&lt;x_{n}$ for every $n\ge 1$.</p> <em>(Show that)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Explain why the sequence $(x_n)$ converges, and determine its limit.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(e)</strong> <p>Prove that if $p$ and $q$ are positive integers with $p^2-2q^2=1$, then the integers $p'=p^2+2q^2$ and $q'=2pq$ also satisfy $(p')^2-2(q')^2=1$. Hence show that $577^2-2\times 408^2=1$.</p> <em>(Prove)</em></li><li><span class="marks">[4 marks]</span><strong>(f)</strong> <p>Show that $\dfrac{577}{408}-\sqrt{2}=\dfrac{1}{408\left(577+408\sqrt{2}\right)}$, and hence show that $0&lt;\dfrac{577}{408}-\sqrt{2}&lt;2.2\times 10^{-6}$.</p> <em>(Show that)</em></li></ol>
+<p class="reveal-note">Total: 19 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Starting from the definition,</p>
+<p>$$x_{n+1}-\sqrt2=\frac{x_n}{2}+\frac{1}{x_n}-\sqrt2=\frac{x_n^2+2-2\sqrt2\,x_n}{2x_n}=\frac{(x_n-\sqrt2)^2}{2x_n}.$$</p>
+<p><strong>(M1)(A1)(AG)</strong></p>
+<p><strong>(b)</strong> $x_1=\tfrac32$ and $\left(\tfrac32\right)^2=\tfrac94&gt;2$, so $x_1-\sqrt2&gt;0$. <strong>(A1)</strong> The numerator in (a) is a perfect square and every $x_n$ is positive, so $x_{n+1}-\sqrt2\ge 0$; equality would force $x_n=\sqrt2$, impossible because each $x_n$ is rational while $\sqrt2$ is irrational. Hence $x_n&gt;\sqrt2$ for all $n\ge1$. <strong>(M1)</strong></p>
+<p><strong>(c)</strong> $x_{n+1}-x_n=\dfrac{1}{2}\left(\dfrac{2}{x_n}-x_n\right)=\dfrac{2-x_n^2}{2x_n}$. By (b), $x_n^2&gt;2$, so the numerator is negative and the denominator positive, giving $x_{n+1}&lt;x_n$. <strong>(M1)(A1)(AG)</strong></p>
+<p><strong>(d)</strong> By (c) the sequence is strictly decreasing and by (b) it is bounded below by $\sqrt2$, so it converges to a limit $L\ge\sqrt2$. <strong>(M1)</strong> Passing to the limit in the recurrence, $L=\tfrac12\left(L+\tfrac{2}{L}\right)$, so $L^2=2$ and $L=\sqrt2$ since $L&gt;0$. <strong>(A1)(R1)</strong></p>
+<p><strong>(e)</strong> $(p')^2-2(q')^2=(p^2+2q^2)^2-2(2pq)^2=p^4+4p^2q^2+4q^4-8p^2q^2=p^4-4p^2q^2+4q^4=(p^2-2q^2)^2=1$. <strong>(M1)(A1)(AG)</strong> Starting from $(p,q)=(3,2)$, which gives $9-8=1$, one application gives $(17,12)$ and a second gives $(17^2+2\cdot12^2,\,2\cdot17\cdot12)=(577,408)$. Therefore $577^2-2\times408^2=1$. <strong>(M1)(A1)</strong></p>
+<p><strong>(f)</strong> By (e), $577^2-2\cdot408^2=1$, so dividing by $408^2$,</p>
+<p>$$\left(\frac{577}{408}-\sqrt2\right)\left(\frac{577}{408}+\sqrt2\right)=\frac{1}{408^2},$$</p>
+<p>hence $\dfrac{577}{408}-\sqrt2=\dfrac{1}{408^2}\cdot\dfrac{408}{577+408\sqrt2}=\dfrac{1}{408\left(577+408\sqrt2\right)}$, which is positive. <strong>(M1)(A1)(AG)</strong> Since $\sqrt2&gt;1.4$, we have $577+408\sqrt2&gt;577+571.2=1148.2&gt;1150-2$; more sharply $408\sqrt2&gt;408(1.414)=576.9$, so $577+408\sqrt2&gt;1153.9$ and $408(577+408\sqrt2)&gt;470\,790$. Therefore</p>
+<p>$$0&lt;\frac{577}{408}-\sqrt2&lt;\frac{1}{470\,790}&lt;2.2\times10^{-6}.$$</p>
+<p><strong>(M1)(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>In (b) credit the positivity of $x_n$ only if it is justified at least briefly; a bald statement that the square is positive earns the first mark only. Candidates who instead note that $x_1&gt;\sqrt2$ and then quote part (a) as an inductive step are equally acceptable, and this route should be condoned in full. In (c) allow the equivalent form $2-x_n^2&lt;0$ reached from part (b) rather than re-derived. In (d) the monotone convergence statement is the mark: a candidate who simply solves $L=\tfrac12(L+2/L)$ without first establishing convergence forfeits the method mark, since the fixed-point equation is meaningless until the limit is known to exist. In (e) the identity is a perfect square and should be recognised as such; a candidate who expands without spotting $(p^2-2q^2)^2$ still earns the marks but is far more likely to slip. In (f) accept any correct explicit lower bound on $577+408\sqrt2$ that yields the stated inequality, including a decimal evaluation from a calculator, provided the direction of the inequality is respected. Note that $1/470832$ is very slightly below the true value and must not be offered as an upper bound.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The whole point of the item is that a calculator display is not a proof. Every candidate can press the iteration a few times and read $1.414213562$, but almost none can say how far that is from $\sqrt2$, and the machinery that answers the question is the Pell invariant in (e) together with the conjugate-product identity in (f). The most common collapse is to assume the sequence is decreasing because 'it looks like it', which forfeits (c) and then (d) with it; a second common error is to claim in (b) that $x_n&gt;\sqrt2$ because the numerator is a square, forgetting that a square may be zero. Part (e) is the transferable prize: $(p^2-2q^2)^2$ is the norm of the square in $\mathbb{Z}[\sqrt2]$, and recognising it turns an ugly expansion into one line. A strong student finishes (f) and sees that four iterations of a two-line rule buys six decimal places, which is the real content of quadratic convergence.  What makes the item worth its marks is that the transferable object is not the square root but the norm. Once a student has seen $(p^2-2q^2)^2$ appear from the expansion in (e), the same trick generates the convergents of $\sqrt3$ from $p^2-3q^2=1$, and the conjugate-product step in (f) then produces a rigorous error bound in every case. A candidate who finishes early can be asked why the iteration converges so much faster than bisection; the honest answer is the squaring in part (a), which doubles the number of correct digits at each step.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The student must turn a calculator iteration into an exact rational recursion and then prove a Pell invariant they have never met, because the display alone proves nothing about the error.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 1.6 (simple deductive proof), AHL 1.15 (proof by mathematical induction), AHL 5.13 (limits of sequences)</dd></div>
+  <div><dt>Inspiration</dt><dd>Classical Pell-approximation technique as it appears in Chinese 强基计划 (Strong Foundation Program) entrance material on recursive rational approximation</dd></div>
+  <div><dt>Adaptation</dt><dd>Recast as an IB Paper 3 chain: added the convergence argument (d), split the invariant into an explicit two-step application, and replaced the usual &#x27;show the error is small&#x27; request with a fully quantified bound that must be proved without a calculator. Numbers and part structure are original; no source problem copied.</dd></div>
+  <div><dt>Verification</dt><dd>Every iterate recomputed as an exact rational in Python (fractions.Fraction); the Pell invariant checked for (3,2), (17,12), (577,408), (665857,470832); the error identity and the stated bound compared to full precision.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P1_2023Nov_TZ1_q03 (similarity 0.005)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-P3-009 (similarity 0.004)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

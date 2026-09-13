@@ -1,0 +1,492 @@
+{
+  "questions": [
+    {
+      "id": "MATH-P3-005",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 5.13 (evaluation of limits), AHL 5.14 (implicit differentiation, related rates), SL 5.8 (local maximum and minimum points)",
+      "topic": "Topic 5: Calculus",
+      "subtopic": "P3 extended problem: parameter range for an inequality",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 16,
+      "difficulty": 5,
+      "challenge_mechanism": "The parameter is not found by solving an equation but by a two-stage optimisation: the minimum of the function over x is itself a function of the parameter, and that function has to be maximised in turn; the answer is a single value because the derived function is bounded above by its own maximum.",
+      "command_terms": [
+        "Show that",
+        "Determine",
+        "Hence"
+      ],
+      "tags": [
+        "inequality",
+        "parameter",
+        "optimisation",
+        "logarithm",
+        "P3"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "Let $a$ be a real constant and let\n$$f(x) = x\\ln x - a(x-1), \\qquad x > 0.$$\nThe problem is to determine every value of $a$ for which $f(x) \\ge 0$ for all $x > 0$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $f'(x) = \\ln x + 1 - a$, and hence show that $f$ has exactly one stationary point on $x>0$ and that this point is a minimum."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Show that",
+          "text": "Show that the minimum value of $f$ is $a - e^{a-1}$."
+        },
+        {
+          "label": "c",
+          "marks": 7,
+          "command_term": "Determine",
+          "text": "Determine all values of $a$ for which $f(x) \\ge 0$ for all $x > 0$, justifying carefully why no other value works."
+        }
+      ],
+      "answer": "**(a)** Differentiating, using the product rule on $x\\ln x$:\n$$f'(x) = \\ln x + x\\cdot\\frac{1}{x} - a = \\ln x + 1 - a$$ **(M1)(A1)**\nSetting $f'(x)=0$ gives $\\ln x = a-1$, so $x = e^{a-1}$. Since $\\ln x$ is strictly increasing on $x>0$, there is exactly one solution for any real $a$, and it is positive, so it lies in the domain. **(A1)**\n$$f''(x) = \\frac{1}{x} > 0 \\quad \\text{for all } x>0$$\nso the single stationary point is a minimum. **(A1)**\n\n**(b)** At $x = e^{a-1}$ we have $\\ln x = a-1$, so **(M1)**\n$$f\\bigl(e^{a-1}\\bigr) = e^{a-1}(a-1) - a\\bigl(e^{a-1}-1\\bigr)$$ **(A1)**\n$$= e^{a-1}\\bigl[(a-1)-a\\bigr] + a$$ **(M1)**\n$$= -e^{a-1} + a = a - e^{a-1}$$ **(A1)(AG)**\n\n**(c)** Because $f$ has a single minimum and $f(x)\\to\\infty$ as $x\\to\\infty$, the condition $f(x)\\ge 0$ for all $x>0$ is equivalent to the minimum being at least zero. **(M1)** (The left-hand endpoint needs a separate check: as $x\\to0^{+}$, $x\\ln x\\to0$ and $-a(x-1)\\to a$, so $f(x)\\to a$, and so we also need $a\\ge 0$.) **(A1)**\n\nSo we require\n$$g(a) = a - e^{a-1} \\ge 0.$$\nNow treat $g$ as a function of $a$ and maximise it. **(M1)**\n$$g'(a) = 1 - e^{a-1}, \\qquad g''(a) = -e^{a-1} < 0$$\nso $g'(a) = 0$ at $a = 1$ and this is a maximum. **(M1)(A1)**\n$$g(1) = 1 - e^{0} = 1 - 1 = 0$$\nTherefore $g(a) \\le 0$ for every real $a$, with equality **only** at $a=1$. **(A1)**\n\nSince we need $g(a)\\ge 0$ and $g(a)\\le 0$ always, the only possibility is $g(a)=0$, which forces $a=1$. This also satisfies the endpoint condition $a\\ge0$. **(A1)**\n\n**Answer: $a=1$ is the only value.** For this value $f(x) = x\\ln x - x + 1 \\ge 0$ for all $x>0$, which is the standard inequality $x\\ln x \\ge x-1$ with equality at $x=1$.",
+      "markscheme_notes": "(a) The (M1) is for the product rule on $x\\ln x$. The uniqueness argument needs the monotonicity of $\\ln$, not merely a sketch; award the final (A1) only if $f''>0$ or an equivalent sign argument is given. (b) Follow-through applies from an incorrect stationary point. The subtraction in the second line is where most errors occur: award (M1) for collecting the $e^{a-1}$ terms even if the bracket is wrong. (c) This part is where the question is won. Award (M1) for recognising that a single minimum reduces the condition to one inequality, and a further (A1) for the separate $x\\to0^{+}$ check, which is easy to miss because the minimum does not occur at the endpoint. The crucial step is maximising $g$; a candidate who solves $g(a)=0$ numerically and reports $a=1$ without showing it is the only root has not justified uniqueness. Note that $a=1$ also satisfies $a\\ge0$, so the endpoint condition is consistent rather than additional. Accept a graphical argument for the maximisation provided the shape of $g$ is established analytically.",
+      "explanation": "The structure here is two optimisations in sequence, which is what makes it a Paper 3 problem rather than a Paper 1 one. First the function is minimised over $x$, and the result is not a number but a function of the parameter: the least value of $f$ is $a - e^{a-1}$. Then that function has to be maximised over $a$. Most students stop after the first stage and try to solve $a - e^{a-1} \\ge 0$ by inspection or on a calculator, which gives the right answer for the wrong reason and, more importantly, cannot establish that it is the only answer.\n\nThe reason uniqueness falls out so cleanly is that $g(a) = a - e^{a-1}$ is concave, with a single maximum of zero at $a=1$. So $g(a)\\le 0$ everywhere and touches zero exactly once. The inequality $f(x)\\ge0$ for all $x$ therefore has exactly one solution value of the parameter, and for every other value the function dips below the axis somewhere. That is a stronger and more surprising conclusion than the usual 'range of values of $a$' answer, and it is worth being explicit about why: the second optimisation converts an inequality into an equality.\n\nThe endpoint check at $x\\to0^{+}$ is the part most often omitted. The minimum is interior, so it is tempting to ignore the boundary, but $f(x)\\to a$ there, and for negative $a$ the function is negative near zero regardless of what happens at the stationary point. In this instance the final answer survives the check, but only because $a=1\\ge0$; a candidate who omits the check has an incomplete argument even though the right answer.\n\nThis is a standard shape in the final problem of the Chinese national entrance examination, where a one-parameter family is tested against an inequality on a half-line. The adaptation here keeps the two-stage structure but replaces the usual polynomial family with $x\\ln x$, which puts the logarithm and the exponential in the syllabus foreground and makes the second stage analytic rather than requiring a calculator.",
+      "provenance": {
+        "inspired_by": "Adapted from a standard Chinese national entrance examination (高考) final-problem structure: determine the range of a parameter for which a one-parameter family is non-negative on an interval.",
+        "adaptation": "The original genre uses polynomial or rational families. Here the family is $x\\ln x - a(x-1)$, which moves the work onto logarithmic differentiation and makes the second-stage function $a-e^{a-1}$ concave with an exact maximum of zero, so the answer is a single value rather than an interval. Context, the function used, and the analytic form of the conclusion all differ from any specific source problem.",
+        "resource_origin": "Chinese national higher education entrance examination (高考), final-problem genre on parameter ranges",
+        "source_url": null,
+        "rights": "original adaptation"
+      },
+      "originality": {
+        "max_similarity": 0.015,
+        "nearest_bank_id": "MATH_AAHL_P2_2021May_TZ2_q04",
+        "max_internal_similarity": 0.01,
+        "max_approach_similarity": 0.183,
+        "nearest_approach_id": "MATH-AHL5.2-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-AHL3.9-001"
+      },
+      "verification": {
+        "method": "Stationary point and minimum value derived symbolically and checked in Python: f'(x)=ln x+1-a, minimum value a-e^(a-1) evaluated at a = 0, 0.5, 1, 1.5, 2, 3 giving -0.3679, -0.1065, 0.0000, -0.1487, -0.7183, -4.3891, confirming that only a=1 gives a non-negative minimum; f(x) for a=1 checked at x = 0.2, 0.5, 1, 2, 5 and found non-negative with equality at x=1.",
+        "assertions": [
+          "approx(1 - exp(0), 0)",
+          "0.0 - exp(-1) < 0",
+          "1.5 - exp(0.5) < 0",
+          "approx(0.2*log(0.2) - (0.2-1), 0.478112, 1e-6)",
+          "approx(1*log(1) - (1-1), 0)",
+          "approx(5*log(5) - (5-1), 4.047190, 1e-6)",
+          "approx(exp(1-1), 1)"
+        ],
+        "solution_skeleton": [
+          "differentiate the family and locate its single stationary point",
+          "confirm the stationary point is a minimum from the second derivative",
+          "evaluate the function there to get the least value as a function of the parameter",
+          "check the open endpoint of the domain separately",
+          "maximise that least value over the parameter and use the bound to force a single value"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-P3-006",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.11 (partial fractions), SL 1.8 (sum of infinite convergent geometric sequences), AHL 1.10 (counting principles)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "P3 extended problem: generating functions",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 16,
+      "difficulty": 5,
+      "challenge_mechanism": "The recurrence is easy to write down and hopeless to iterate, so the student has to encode the whole sequence as a single formal power series, turn the recurrence into an algebraic equation for that series, and then recover the coefficient by partial fractions; the two-colour and three-colour tiles are chosen so that the denominator factorises into distinct linear factors with one negative root, which puts a sign-alternating term in the closed form that is easy to get wrong.",
+      "command_terms": [
+        "Show that",
+        "Determine",
+        "Hence"
+      ],
+      "tags": [
+        "generating-function",
+        "recurrence",
+        "partial-fractions",
+        "combinatorics",
+        "P3"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "A strip consists of $n$ cells in a row. It is to be tiled using two kinds of tile: a square tile covering one cell, available in $2$ colours, and a domino covering two adjacent cells, available in $3$ colours. Let $u_n$ be the number of different tilings of a strip of $n$ cells, with $u_0 = 1$ corresponding to the empty strip.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $u_1 = 2$ and $u_2 = 7$, and show that $u_n = 2u_{n-1} + 3u_{n-2}$ for every integer $n \\ge 2$."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Show that",
+          "text": "Let $F(x) = \\sum_{n=0}^{\\infty} u_n x^n$. By multiplying the recurrence by $x^n$ and summing over $n \\ge 2$, show that\n$$F(x) = \\frac{1}{1 - 2x - 3x^{2}}.$$"
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Express $F(x)$ in partial fractions and hence determine a closed form for $u_n$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Hence",
+          "text": "Hence find $u_{10}$, and determine the limiting value of $\\dfrac{u_{n}}{3^{n}}$ as $n \\to \\infty$."
+        }
+      ],
+      "answer": "**(a)** A strip of one cell can only be covered by a square, in $2$ colours, so $u_1 = 2$. **(A1)** A strip of two cells is either two squares ($2\\times2 = 4$ ways) or one domino ($3$ ways), so $u_2 = 4+3 = 7$. **(A1)**\n\nFor $n\\ge2$, look at the first cell. **(M1)** If it is covered by a square, there are $2$ choices of colour and the remaining $n-1$ cells can be tiled in $u_{n-1}$ ways, giving $2u_{n-1}$. If it is covered by a domino, that domino covers the first two cells, there are $3$ colour choices, and the remaining $n-2$ cells can be tiled in $u_{n-2}$ ways, giving $3u_{n-2}$. **(A1)** These cases are exhaustive and disjoint, so $u_n = 2u_{n-1} + 3u_{n-2}$. **(AG)**\n\n**(b)** Multiply the recurrence by $x^n$ and sum from $n=2$ to $\\infty$: **(M1)**\n$$\\sum_{n\\ge2} u_n x^n = 2\\sum_{n\\ge2} u_{n-1}x^n + 3\\sum_{n\\ge2} u_{n-2}x^n$$\nThe left side is $F(x) - u_0 - u_1 x = F(x) - 1 - 2x$. **(A1)** The first sum on the right is\n$$2x\\sum_{n\\ge2} u_{n-1}x^{n-1} = 2x\\sum_{m\\ge1} u_m x^m = 2x\\bigl(F(x)-1\\bigr)$$\nand the second is\n$$3x^{2}\\sum_{n\\ge2} u_{n-2}x^{n-2} = 3x^{2}F(x).$$ **(A1)(A1)**\nHence\n$$F - 1 - 2x = 2x(F-1) + 3x^{2}F$$\n$$F\\bigl(1 - 2x - 3x^{2}\\bigr) = 1 - 2x + 2x = 1$$\n$$F(x) = \\frac{1}{1-2x-3x^{2}}$$ **(A1)(AG)**\n\n**(c)** Factorising, $1-2x-3x^{2} = (1-3x)(1+x)$. **(M1)** Write\n$$\\frac{1}{(1-3x)(1+x)} = \\frac{A}{1-3x} + \\frac{B}{1+x}$$\n$$1 = A(1+x) + B(1-3x)$$\nPutting $x = -1$: $1 = B(1+3) = 4B$, so $B = \\tfrac14$. **(A1)**\nPutting $x = \\tfrac13$: $1 = A(1+\\tfrac13) = \\tfrac43 A$, so $A = \\tfrac34$. **(A1)**\nTherefore\n$$F(x) = \\frac{3/4}{1-3x} + \\frac{1/4}{1+x} = \\frac34\\sum_{n\\ge0}(3x)^{n} + \\frac14\\sum_{n\\ge0}(-x)^{n}$$\nand comparing coefficients, $u_n = \\tfrac34\\,3^{n} + \\tfrac14(-1)^{n}$, that is **(A1)**\n$$u_n = \\frac{3^{n+1} + (-1)^{n}}{4}.$$\n\n**(d)** $u_{10} = \\dfrac{3^{11} + 1}{4} = \\dfrac{177147 + 1}{4} = \\dfrac{177148}{4} = 44287$. **(M1)(A1)**\n$$\\frac{u_n}{3^{n}} = \\frac34 + \\frac{(-1)^{n}}{4\\cdot3^{n}} \\to \\frac34 \\quad \\text{as } n\\to\\infty$$ **(M1)(A1)**",
+      "markscheme_notes": "(a) The recurrence mark is for the case analysis on the first cell; a candidate who merely asserts the recurrence without the two cases earns nothing. Award the $u_2$ mark even if obtained from the recurrence rather than directly, provided $u_0$ and $u_1$ were established first. (b) The index-shifting is the technical hurdle: award (M1) for setting up the summed equation and the (A1)s for correctly expressing each of the three sums in terms of $F$. A common error is to write the first right-hand sum as $2xF$ instead of $2x(F-1)$; condone only if corrected later. Convergence need not be discussed at this level, but a candidate who notes that the series is being treated formally should not be penalised. (c) Award (M1) for the factorisation, which is the step students most often fail to see. Accept any valid route to $A$ and $B$, including equating coefficients. The final (A1) is for reading off the coefficient, which requires recognising both geometric series. (d) Accept $44287$; the limit mark is for noticing that the sign-alternating term is divided by $3^n$ and so vanishes, leaving the coefficient of the dominant term.",
+      "explanation": "The generating function is one of the few techniques that turns a recurrence into algebra, and this problem is built so that the technique does something a student cannot easily do by other means. The recurrence $u_n = 2u_{n-1}+3u_{n-2}$ is trivial to iterate for ten terms with a calculator, but the question asks for a closed form and for a limit, and iterated numbers give neither.\n\nThe move that matters is treating the entire sequence as one object. Multiplying by $x^n$ and summing over $n\\ge2$ converts each shifted copy of the sequence into $F$ multiplied by a power of $x$, and the recurrence becomes a linear equation in $F$ that can be solved in three lines. The two places this goes wrong are both index shifts: $\\sum_{n\\ge2}u_{n-1}x^{n}$ is $x(F-1)$ and not $xF$, because the term $u_0$ is missing from the shifted sum. Getting that wrong produces a rational function with a spurious constant in the numerator and a closed form that fails at $n=0$, which is a useful thing for a student to notice.\n\nThe choice of $2$ square colours and $3$ domino colours is deliberate. The denominator factors as $(1-3x)(1+x)$, so one root is positive and one negative, and the closed form contains a term $(-1)^n/4$ that oscillates. That term is small compared with $3^{n+1}/4$ but it is not zero, and it is what makes $u_n$ alternately just above and just below $\\tfrac14\\,3^{n+1}$. Asking for the limit of $u_n/3^{n}$ as well as the closed form forces a student to confront it: the limit is $\\tfrac34$, not $\\tfrac34$ plus something, and the oscillating term dies because it is divided by $3^{n}$.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original. The tile colours were chosen so that the generating-function denominator factorises over the integers with one positive and one negative root, producing a closed form with a sign-alternating term and a clean limit.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.017,
+        "nearest_bank_id": "AI-MATH-T7-CHL-03",
+        "max_internal_similarity": 0.004,
+        "max_approach_similarity": 0.148,
+        "nearest_approach_id": "MATH-AHL3.12-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "generated:math_ai_batch4.json",
+        "nearest_internal_id": "MATH-AHL1.2-001"
+      },
+      "verification": {
+        "method": "Recurrence iterated in Python to n = 10 giving 1, 2, 7, 20, 61, 182, 547, 1640, 4921, 14762, 44287 and confirmed identical to the closed form (3^(n+1)+(-1)^n)/4 for every n; the partial-fraction decomposition verified numerically at x = 0.01; u_10 and the limit checked.",
+        "assertions": [
+          "approx(2*2 + 3*1, 7)",
+          "approx(2*7 + 3*2, 20)",
+          "approx((3**11 + 1)/4, 44287)",
+          "approx((3**3 + 1)/4, 7)",
+          "approx((3**2 - 1)/4, 2)",
+          "approx(0.75/(1-3*0.01) + 0.25/(1+0.01), 1/(1-2*0.01-3*0.01**2), 1e-12)",
+          "3/4 > 0"
+        ],
+        "solution_skeleton": [
+          "split the tiling on what covers the first cell to obtain a linear recurrence",
+          "define the generating function and multiply the recurrence by a power of the variable",
+          "sum over the recurrence range and re-index each shifted sum",
+          "solve the resulting equation for the generating function",
+          "factor the denominator, decompose into partial fractions and read off the coefficient"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-P3-007",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "SL 1.6 (simple deductive proof), AHL 1.15 (proof by mathematical induction), SL 1.5 (laws of exponents)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "P3 extended problem: exponential Diophantine equation",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 15,
+      "difficulty": 5,
+      "challenge_mechanism": "Nothing in the equation suggests a modulus, so the first step is a non-obvious choice of modulus eight; that forces the exponent of three to be even, which turns the equation into a difference of two squares, which in turn forces two powers of two differing by exactly two, and that pair is unique.",
+      "command_terms": [
+        "Determine",
+        "Show that",
+        "Hence"
+      ],
+      "tags": [
+        "number-theory",
+        "modular-arithmetic",
+        "difference-of-squares",
+        "proof",
+        "P3"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "Determine all pairs of positive integers $(m,\\,n)$ satisfying\n$$2^{m} + 1 = 3^{n}.$$",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine all solutions with $m = 1$ or $m = 2$, and write down the solutions of the equation that you have found so far."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Show that",
+          "text": "Suppose $m \\ge 3$. By working modulo $8$, show that $n$ must be even."
+        },
+        {
+          "label": "c",
+          "marks": 7,
+          "command_term": "Hence",
+          "text": "Hence show that the only solution with $m \\ge 3$ is $(m,\\,n) = (3,\\,2)$, and therefore state all solutions of the equation."
+        }
+      ],
+      "answer": "**(a)** If $m=1$ then $2^{1}+1 = 3 = 3^{1}$, giving $(m,n) = (1,1)$. **(A1)**\nIf $m=2$ then $2^{2}+1 = 5$, which is not a power of $3$, so there is no solution with $m=2$. **(A1)**\nSo far: $(m,n) = (1,1)$. **(A1)**\n\n**(b)** Assume $m\\ge3$. Then $2^{m}$ is divisible by $8$, so $2^{m}\\equiv 0 \\pmod 8$ and the equation gives **(M1)**\n$$3^{n} = 2^{m}+1 \\equiv 1 \\pmod 8.$$\nNow compute powers of $3$ modulo $8$: **(M1)**\n$$3^{1}\\equiv 3, \\quad 3^{2} = 9 \\equiv 1, \\quad 3^{3} \\equiv 3, \\quad 3^{4}\\equiv 1 \\pmod 8.$$\nSince $3^{2}\\equiv1$, the pattern has period $2$: $3^{n}\\equiv 1 \\pmod 8$ when $n$ is even and $3^{n}\\equiv 3 \\pmod 8$ when $n$ is odd. **(A1)(A1)**\nTherefore $n$ must be even. **(A1)**\n\n**(c)** Write $n = 2k$ with $k$ a positive integer. Then **(M1)**\n$$2^{m} = 3^{2k} - 1 = \\bigl(3^{k}-1\\bigr)\\bigl(3^{k}+1\\bigr).$$\nBoth factors are positive integers whose product is a power of $2$, so each factor is itself a power of $2$: **(M1)(A1)**\n$$3^{k}-1 = 2^{a}, \\qquad 3^{k}+1 = 2^{b}, \\qquad b > a \\ge 1.$$\nSubtracting, **(M1)**\n$$2 = 2^{b} - 2^{a} = 2^{a}\\bigl(2^{\\,b-a} - 1\\bigr).$$\nThe second factor is odd, so it must divide $2$; being odd and positive it equals $1$, giving $2^{b-a}-1 = 1$, so $b-a = 1$. Then $2^{a}\\cdot 1 = 2$, so $a = 1$ and $b = 2$. **(A1)**\nHence $3^{k}-1 = 2$, so $3^{k} = 3$ and $k = 1$. Then $n = 2$ and $2^{m} = 3^{2}-1 = 8$, so $m = 3$. **(A1)**\n\nChecking: $2^{3}+1 = 9 = 3^{2}$. Therefore the complete set of solutions in positive integers is **(A1)**\n$$\\boxed{(m,\\,n) = (1,\\,1)\\ \\text{ and }\\ (m,\\,n) = (3,\\,2).}$$",
+      "markscheme_notes": "(a) Award the marks for the two substitutions; the conclusion mark is for listing $(1,1)$ only. (b) The (M1)s are for reducing the equation modulo $8$ and for computing the cycle of powers of $3$ modulo $8$. A candidate who uses modulo $4$ instead will find that $3^n\\equiv1\\pmod4$ also forces $n$ even when $m\\ge2$, which is valid and should be credited in full; modulo $3$ gives nothing useful and earns nothing. Award the final (A1) only if the parity conclusion is stated. (c) The difference-of-two-squares step is essential and earns (M1). The inference that each factor is a power of $2$ needs justification: it follows because the only divisors of a power of two are powers of two. The equation $2^{a}(2^{b-a}-1)=2$ is the crux; award generously for any correct treatment of it, including an argument by inspection of small cases provided it is exhaustive. Note that $a\\ge1$ because $3^{k}-1\\ge2$ for $k\\ge1$. A candidate who finds $(3,2)$ but fails to exclude other $k$ has not completed the problem.",
+      "explanation": "This is a complete solution of an exponential Diophantine equation, and its difficulty is entirely concentrated in the choice of modulus. Nothing in $2^{m}+1=3^{n}$ suggests working modulo $8$; the student has to try something, and the reason $8$ is the right choice is that it is the first power of $2$ large enough to annihilate $2^{m}$ while still producing a short cycle for $3^{n}$. Modulo $4$ also works, modulo $3$ does nothing, and modulo $5$ leads nowhere. Recognising which modulus carries information is the real skill being tested.\n\nOnce $n$ is known to be even, the rest is forced. Writing $n=2k$ converts the equation into a difference of two squares, and the product $(3^{k}-1)(3^{k}+1)$ is a power of $2$. That means each factor is a power of $2$, and the two factors differ by exactly $2$. The only pair of powers of two differing by $2$ is $2$ and $4$, which pins $3^{k}=3$ and hence $k=1$. Every step after the modulus is a consequence of the previous one, which is why the problem is worth doing: there is no search, only deduction.\n\nThe structure is characteristic of the written tests used for the Chinese strengthening-basic-disciplines admissions route (强基计划), where a short exponential equation is solved by a modular reduction followed by a factorisation. The adaptation keeps both stages intact but adds the explicit small-case check in part (a), because $m\\ge3$ is needed before the modulus argument applies and students routinely apply it without checking. The answer, two isolated solutions rather than a family, is the point: the equation looks as though it should have many solutions and has exactly two.",
+      "provenance": {
+        "inspired_by": "Adapted from the 强基计划 (Strengthening Basic Disciplines Programme) written-test genre: solve a short exponential Diophantine equation by a modular reduction followed by a factorisation.",
+        "adaptation": "The modular-then-factorise skeleton is the standard one for this genre. The specific equation $2^m+1=3^n$, the choice of modulus $8$, and the three-part structure with an explicit small-case preamble are original to this item. No specific source problem is reproduced.",
+        "resource_origin": "Chinese 强基计划 (Strengthening Basic Disciplines Programme) written tests, exponential Diophantine genre",
+        "source_url": null,
+        "rights": "original adaptation"
+      },
+      "originality": {
+        "max_similarity": 0.008,
+        "nearest_bank_id": "MA_HL_topic_Topic6_HL-paper2_q116",
+        "max_internal_similarity": 0.0,
+        "max_approach_similarity": 0.089,
+        "nearest_approach_id": "MATH-AHL1.9-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/Topic 6",
+        "nearest_internal_id": null
+      },
+      "verification": {
+        "method": "Brute-force search in Python over 1 <= m <= 24 and 1 <= n <= 15 returns exactly (1,1) and (3,2); the cycle of 3^n modulo 8 verified for n = 1..8 giving 3,1,3,1,3,1,3,1; the factorisation step checked: with k=1, 3^1-1=2 and 3^1+1=4, differing by 2, and 2^1 * (2^1 - 1) = 2.",
+        "assertions": [
+          "2**1 + 1 == 3**1",
+          "2**3 + 1 == 3**2",
+          "2**2 + 1 == 5",
+          "3**2 % 8 == 1",
+          "3**1 % 8 == 3",
+          "3**3 % 8 == 3",
+          "3**4 % 8 == 1",
+          "(3**1 - 1) == 2",
+          "(3**1 + 1) == 4",
+          "2**1 * (2**1 - 1) == 2"
+        ],
+        "solution_skeleton": [
+          "test the small exponents directly before applying any modulus argument",
+          "reduce the equation modulo a power of two that annihilates the leading term",
+          "compute the cycle of the other base modulo that modulus to force parity",
+          "rewrite the even exponent as a square and factor as a difference of two squares",
+          "use the fact that two powers of two differing by two are unique to pin the exponent"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-P3-008",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "SL 5.8 (local maximum and minimum points), SL 5.4 (tangents and normals), AHL 5.14 (related rates)",
+      "topic": "Topic 5: Calculus",
+      "subtopic": "P3 extended problem: constrained optimisation with a cost parameter",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "allowed",
+      "language": null,
+      "marks": 15,
+      "difficulty": 4,
+      "challenge_mechanism": "The volume constraint has to be used to eliminate a variable before differentiating, and the answer is asked for as a ratio so that the cost parameter survives cleanly; a student who substitutes numbers early obtains a correct radius and height but loses the result, which is that the optimal shape depends only on the ratio of the two material costs and not on the volume at all.",
+      "command_terms": [
+        "Show that",
+        "Determine",
+        "Hence"
+      ],
+      "tags": [
+        "optimisation",
+        "constraint",
+        "differentiation",
+        "modelling",
+        "P3"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "A closed cylindrical can is to be manufactured with a fixed volume $V$. The curved surface is made from a material costing $p$ per unit area. The two circular ends are made from a thicker material costing $kp$ per unit area, where $k > 0$ is a constant. Let the can have base radius $r$ and height $h$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that the total material cost can be written as\n$$C(r) = 2\\pi p k r^{2} + \\frac{2pV}{r}, \\qquad r > 0.$$"
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Determine",
+          "text": "Determine the value of $r$ that minimises $C$, and show that it is indeed a minimum. Give your answer in terms of $V$, $k$ and $\\pi$."
+        },
+        {
+          "label": "c",
+          "marks": 6,
+          "command_term": "Hence",
+          "text": "Hence show that the ratio of the height to the radius at the optimum is $2k$, independent of $V$ and $p$. Comment on what this predicts when $k=1$ and when $k$ is very large, and explain why both predictions are physically sensible."
+        }
+      ],
+      "answer": "**(a)** The two circular ends have total area $2\\pi r^{2}$ and cost $kp$ per unit area, contributing $2\\pi r^{2}\\cdot kp$. **(A1)** The curved surface has area $2\\pi r h$, contributing $2\\pi r h\\cdot p$. **(A1)** The volume is fixed: $\\pi r^{2}h = V$, so $h = \\dfrac{V}{\\pi r^{2}}$. **(M1)**\n$$C = 2\\pi p k r^{2} + 2\\pi r p\\cdot\\frac{V}{\\pi r^{2}} = 2\\pi p k r^{2} + \\frac{2pV}{r}$$ **(A1)(AG)**\n\n**(b)** Differentiating with respect to $r$: **(M1)**\n$$C'(r) = 4\\pi p k r - \\frac{2pV}{r^{2}}$$\nSetting $C'(r) = 0$: **(M1)**\n$$4\\pi p k r = \\frac{2pV}{r^{2}} \\quad\\Rightarrow\\quad r^{3} = \\frac{2pV}{4\\pi p k} = \\frac{V}{2\\pi k}$$\n$$r = \\left(\\frac{V}{2\\pi k}\\right)^{1/3}$$ **(A1)**\nTo confirm it is a minimum: **(M1)**\n$$C''(r) = 4\\pi p k + \\frac{4pV}{r^{3}} > 0 \\quad \\text{for all } r>0$$\nsince $p$, $k$ and $V$ are all positive, so the stationary point is a minimum. **(A1)** (It is the only stationary point on $r>0$, and $C\\to\\infty$ both as $r\\to0^{+}$ and as $r\\to\\infty$, so it is the global minimum.)\n\n**(c)** Using $h = \\dfrac{V}{\\pi r^{2}}$ and $r^{3} = \\dfrac{V}{2\\pi k}$: **(M1)**\n$$\\frac{h}{r} = \\frac{V}{\\pi r^{3}} = \\frac{V}{\\pi\\cdot\\dfrac{V}{2\\pi k}} = \\frac{V\\cdot 2\\pi k}{\\pi V} = 2k$$ **(M1)(A1)(AG)**\nThe ratio depends on $k$ only: $V$ and $p$ both cancel. **(A1)**\n\nWhen $k=1$ the ends and the curved surface cost the same per unit area, and the optimum has $h = 2r$, so the height equals the diameter: the can is as tall as it is wide. **(A1)** This is the familiar equal-cost result and is sensible because the shape is then equally 'spread' in every direction.\n\nWhen $k$ is very large the ends are very expensive relative to the curved surface, so the optimum makes the ends small and the can tall and thin, consistent with $h/r = 2k$ growing without bound. **(A1)** Conversely, if the ends were very cheap, $k\\to0$ and the can becomes short and wide, which also matches intuition. The limiting cases therefore both confirm the result.",
+      "markscheme_notes": "(a) Award (M1) for using the volume constraint to eliminate $h$; a candidate who leaves the cost in terms of both $r$ and $h$ has not completed the reduction. (b) Accept the unsimplified form of $r$ provided it is equivalent. The second-derivative check must be shown, not asserted; a candidate who argues from the shape of $C$ should be credited only if they state that $C\\to\\infty$ at both ends of the domain. Watch for the error of differentiating $2pV/r$ as $+2pV/r^{2}$. (c) The ratio derivation earns (M1)(A1) and the observation that $V$ and $p$ cancel earns a further mark, since it is the insight the question exists to produce. Accept any sensible physical commentary for the final two marks; the key point for $k=1$ is $h=2r$ and for large $k$ is that the can becomes tall and thin. A candidate who says the can becomes short and wide for large $k$ has the direction inverted. Watch for the candidate who differentiates with respect to $h$ after eliminating $r$ instead: the algebra is valid but the resulting ratio is harder to read, so credit the equivalent form. A useful check the examiner can invite is dimensional: $r^{3}=V/(2\\pi k)$ has dimensions of volume, so the cube root is obligatory, and a candidate who reports $r=V/(2\\pi k)$ has lost a power. A candidate who treats $k$ as multiplying the curved surface rather than the ends has inverted the ratio and will report $h/r=2/k$; the limiting case test in (c) catches this immediately, which is why the commentary marks are not free.",
+      "explanation": "The interesting result here is not the optimal radius but the optimal *shape*, and the question is arranged so that the shape is what survives. Once the volume constraint is used to eliminate the height, the cost is a function of one variable and differentiating it is routine. What is not routine is noticing that the answer should be expressed as a ratio: dividing $h$ by $r$ makes both $V$ and $p$ cancel, leaving $h/r = 2k$. That is a genuinely useful engineering statement, because it says the proportions of the cheapest can depend only on how much more the end material costs than the side material, and not at all on how big the can is or on the absolute price of the material.\n\nThis is why a student who reaches for a calculator early is punished. If $V$ and $p$ are given numerical values, the arithmetic goes through and produces a correct radius and height, but the cancellation is invisible and the general result is lost. The question deliberately withholds numerical values for $V$ and $p$ and supplies only the dimensionless parameter $k$, which is a strong hint about what the answer should look like. Getting a dimensionless quantity on one side of an equation and only dimensionless quantities on the other is a reliable way to check that an optimisation has been set up correctly.\n\nThe two limiting cases are not decorative. At $k=1$ the answer $h=2r$ reproduces the well-known result that the cheapest equal-cost can has its height equal to its diameter, which gives a student something to recognise. As $k$ grows the can becomes tall and thin, which is what a manufacturer would do if the end material were very expensive; as $k$ shrinks it becomes short and wide. That both limits behave sensibly is a check on the algebra that costs nothing and catches sign errors.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original. The standard textbook version fixes the cost ratio at one and asks only for the shape; introducing the parameter $k$ and asking for the ratio $h/r$ turns a routine exercise into a result about how the optimum depends on relative material cost.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.01,
+        "nearest_bank_id": "MATH_AAHL_P1_2022Nov_q08",
+        "max_internal_similarity": 0.004,
+        "max_approach_similarity": 0.158,
+        "nearest_approach_id": "MATH-P3-005",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-AHL3.4-001"
+      },
+      "verification": {
+        "method": "Objective differentiated symbolically and the critical radius checked numerically in Python: for V = 1 and k = 0.5, 1, 2, 3 the computed optimal r gives h/r of exactly 1, 2, 4, 6 respectively, matching 2k, and a central-difference derivative of C at the critical radius is zero to within numerical precision.",
+        "assertions": [
+          "approx((1/(2*1*pi))**(1/3), 0.541926, 1e-6)",
+          "approx(1/(pi*(1/(2*pi))**(2/3))/(1/(2*pi))**(1/3), 2.0, 1e-9)",
+          "approx(1/(pi*(1/(4*pi))**(2/3))/(1/(4*pi))**(1/3), 4.0, 1e-9)",
+          "approx(1/(pi*(1/(6*pi))**(2/3))/(1/(6*pi))**(1/3), 6.0, 1e-9)",
+          "approx(1/(pi*(1/(1*pi))**(2/3))/(1/(1*pi))**(1/3), 1.0, 1e-9)"
+        ],
+        "solution_skeleton": [
+          "use the fixed-volume constraint to eliminate the height from the cost expression",
+          "differentiate the resulting single-variable objective",
+          "solve for the critical radius and confirm it minimises using the second derivative",
+          "form the ratio of height to radius so that the volume and unit price cancel",
+          "test the limiting values of the cost ratio against physical intuition"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-P3-009",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "SL 1.9 (the binomial theorem), AHL 1.10 (counting principles), SL 1.6 (simple deductive proof)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "P3 extended problem: binomial identities by coefficient extraction",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 16,
+      "difficulty": 5,
+      "challenge_mechanism": "All three identities come from one device, comparing two ways of writing the same coefficient, and the student has to supply the device: there is no routine to apply, only the recognition that a sum of products of binomial coefficients is the coefficient of something.",
+      "command_terms": [
+        "Show that",
+        "Hence",
+        "Determine"
+      ],
+      "tags": [
+        "binomial",
+        "coefficient-extraction",
+        "identity",
+        "proof",
+        "P3"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "Throughout, $n$ is a positive integer and $\\dbinom{n}{k}$ denotes the binomial coefficient. The three parts below are linked: each is obtained by comparing two different ways of writing the coefficient of $x^{n}$ in a product or power of binomials.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 5,
+          "command_term": "Show that",
+          "text": "By considering the coefficient of $x^{n}$ in $(1+x)^{2n}$ written as $(1+x)^{n}(1+x)^{n}$, show that\n$$\\sum_{k=0}^{n} \\binom{n}{k}^{2} = \\binom{2n}{n}.$$"
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Hence",
+          "text": "Hence, by using the symmetry $\\dbinom{n}{k} = \\dbinom{n}{n-k}$, determine $\\displaystyle\\sum_{k=0}^{n} k\\binom{n}{k}^{2}$."
+        },
+        {
+          "label": "c",
+          "marks": 6,
+          "command_term": "Determine",
+          "text": "Determine $\\displaystyle\\sum_{k=0}^{n} (-1)^{k}\\binom{n}{k}^{2}$, giving separate answers according to whether $n$ is odd or even."
+        }
+      ],
+      "answer": "**(a)** Consider $(1+x)^{2n}$. By the binomial theorem the coefficient of $x^{n}$ is $\\dbinom{2n}{n}$. **(M1)(A1)**\n\nOn the other hand $(1+x)^{2n} = (1+x)^{n}(1+x)^{n}$, and expanding each factor separately, **(M1)**\n$$(1+x)^{n}(1+x)^{n} = \\left(\\sum_{i=0}^{n}\\binom{n}{i}x^{i}\\right)\\left(\\sum_{j=0}^{n}\\binom{n}{j}x^{j}\\right).$$\nThe coefficient of $x^{n}$ in the product comes from all pairs with $i+j=n$, so $j = n-i$ and **(M1)**\n$$[x^{n}] = \\sum_{i=0}^{n}\\binom{n}{i}\\binom{n}{n-i}.$$\nUsing $\\dbinom{n}{n-i} = \\dbinom{n}{i}$, this is $\\displaystyle\\sum_{i=0}^{n}\\binom{n}{i}^{2}$. **(A1)**\n\nThe two expressions are coefficients of $x^{n}$ in the same polynomial, so they are equal:\n$$\\sum_{k=0}^{n}\\binom{n}{k}^{2} = \\binom{2n}{n}.$$ **(AG)**\n\n**(b)** Let $S = \\displaystyle\\sum_{k=0}^{n} k\\binom{n}{k}^{2}$. **(M1)**\nSubstitute $k \\mapsto n-k$; as $k$ runs from $0$ to $n$ so does $n-k$, and $\\dbinom{n}{n-k} = \\dbinom{n}{k}$, so **(M1)(A1)**\n$$S = \\sum_{k=0}^{n}(n-k)\\binom{n}{n-k}^{2} = \\sum_{k=0}^{n}(n-k)\\binom{n}{k}^{2}.$$\nAdding the two expressions for $S$: **(M1)**\n$$2S = \\sum_{k=0}^{n}\\bigl(k + n - k\\bigr)\\binom{n}{k}^{2} = n\\sum_{k=0}^{n}\\binom{n}{k}^{2} = n\\binom{2n}{n},$$\nusing part (a). Hence **(A1)**\n$$S = \\frac{n}{2}\\binom{2n}{n}.$$\n\n**(c)** Consider $(1-x)^{n}(1+x)^{n} = (1-x^{2})^{n}$. **(M1)**\nExpanding the two factors separately and extracting the coefficient of $x^{n}$, exactly as in (a): **(M1)**\n$$[x^{n}]\\,(1-x)^{n}(1+x)^{n} = \\sum_{k=0}^{n}\\left[(-1)^{k}\\binom{n}{k}\\right]\\binom{n}{n-k} = \\sum_{k=0}^{n}(-1)^{k}\\binom{n}{k}^{2},$$\nwhich is the required sum. **(A1)**\n\nOn the other hand, $(1-x^{2})^{n} = \\displaystyle\\sum_{j=0}^{n}\\binom{n}{j}(-1)^{j}x^{2j}$, which contains only **even** powers of $x$. **(M1)**\n\nIf $n$ is odd, the coefficient of $x^{n}$ is therefore $0$. **(A1)**\n\nIf $n$ is even, say $n = 2m$, the coefficient of $x^{2m}$ is $(-1)^{m}\\dbinom{n}{m} = (-1)^{n/2}\\dbinom{n}{n/2}$. **(A1)**\n\nHence\n$$\\sum_{k=0}^{n}(-1)^{k}\\binom{n}{k}^{2} = \\begin{cases} 0, & n \\text{ odd},\\[4pt] (-1)^{n/2}\\dbinom{n}{n/2}, & n \\text{ even}.\\end{cases}$$",
+      "markscheme_notes": "(a) The (M1)s are for writing the single power as a product of two expansions and for identifying the pairs with $i+j=n$; the symmetry $\\binom{n}{n-i}=\\binom{n}{i}$ must be stated. A candidate who tries induction will find the inductive step intractable and should be credited only for the base case. (b) The substitution $k\\mapsto n-k$ is the whole idea and earns (M1); the second (M1) is for adding the two forms. Award the final (A1) only if part (a) is used, since the question says 'hence'. (c) The recognition that $(1-x)^n(1+x)^n=(1-x^2)^n$ earns (M1) and is the crux. The parity split must be explicit: a candidate who gives only the even case has lost half the marks. Check the sign of the even case carefully, since $(-1)^{n/2}$ is positive when $n/2$ is even and negative when $n/2$ is odd; a candidate who writes $(-1)^n$ has the wrong period. Candidates may verify small cases, and doing so is encouraged. Numerical checking is a legitimate route to the answer in (c) but never to the proof: for $n=2$ the sum is $1-4+1=-2$, which is $-\\binom{2}{1}$, and for $n=3$ it is $1-9+9-1=0$; a candidate who spots the parity from these two cases but gives no argument for general $n$ has guessed, not shown. In (b) the final value is $\\frac{n}{2}\\binom{2n}{n}$, which is an integer, and a candidate who reports $\\frac{n}{2}$ times the part (a) sum without simplifying has not used 'hence' as instructed. Do not penalise index notation differences between $i$, $j$ and $k$.",
+      "explanation": "This problem is about one idea used three times: if two expressions are the same polynomial, then corresponding coefficients are equal. Nothing more than the binomial theorem is required, and yet each part produces a result that looks, on the page, as though it ought to need heavy machinery. That gap between the simplicity of the method and the unobviousness of the results is exactly what makes coefficient extraction worth examining.\n\nPart (a) is the template. Writing $(1+x)^{2n}$ as $(1+x)^{n}(1+x)^{n}$ and extracting $x^{n}$ two ways gives $\\sum\\binom{n}{k}^{2}=\\binom{2n}{n}$ immediately. Part (b) then adds a twist that is not coefficient extraction at all: the substitution $k\\mapsto n-k$ shows that the weighted sum equals itself with $k$ replaced by $n-k$, and adding the two forms makes the weight collapse to $n$. It is a symmetrisation argument, and it is the standard trick for summing $k$ times a symmetric summand.\n\nPart (c) is the most demanding, because the student has to see that changing the sign in one factor turns the product into $(1-x^{2})^{n}$, which contains only even powers. That single observation disposes of the whole problem: for odd $n$ the sum is zero, and for even $n$ it is one signed binomial coefficient. It is worth dwelling on why this is surprising, because the sum $\\sum(-1)^{k}\\binom{n}{k}^{2}$ has $n+1$ terms of rapidly increasing size that cancel almost completely, and no amount of numerical checking would lead a student to guess that the total is zero for every odd $n$. The method explains a fact that computation cannot.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original. The three identities are classical, but the three-part structure, in which a single coefficient-extraction device is applied and then extended twice, is constructed so that each part depends on the previous one and the final parity split is derived rather than quoted.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.006,
+        "nearest_bank_id": "PHYS_HL_P1_2023May_TZ1_q14",
+        "max_internal_similarity": 0.006,
+        "max_approach_similarity": 0.103,
+        "nearest_approach_id": "MATH-AHL1.9-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Physics/Physics HL",
+        "nearest_internal_id": "MATH-AHL1.9-001"
+      },
+      "verification": {
+        "method": "All three identities verified in Python for n = 1 to 8 by direct summation against the stated closed forms: sum of squared binomial coefficients equals C(2n,n); the weighted sum equals (n/2)C(2n,n) with values 1, 6, 30, 140, 630, 2772, 12012, 51480; the alternating sum equals 0 for odd n and -2, 6, -20, 70 for n = 2, 4, 6, 8, matching (-1)^(n/2) C(n, n/2).",
+        "assertions": [
+          "sum(comb(4,k)**2 for k in range(5)) == comb(8,4)",
+          "sum(comb(6,k)**2 for k in range(7)) == comb(12,6)",
+          "sum(k*comb(4,k)**2 for k in range(5)) == 4*comb(8,4)//2",
+          "sum(k*comb(5,k)**2 for k in range(6)) == 630",
+          "sum((-1)**k*comb(3,k)**2 for k in range(4)) == 0",
+          "sum((-1)**k*comb(2,k)**2 for k in range(3)) == -2",
+          "sum((-1)**k*comb(4,k)**2 for k in range(5)) == 6",
+          "sum((-1)**k*comb(6,k)**2 for k in range(7)) == -20"
+        ],
+        "solution_skeleton": [
+          "write a single power as a product of two binomial expansions",
+          "extract the coefficient by summing over all pairs of indices with the required total",
+          "use the symmetry of binomial coefficients to convert the summand into a square",
+          "symmetrise a weighted sum by substituting the complementary index and adding",
+          "change the sign in one factor to obtain a polynomial in the square of the variable and read off the parity"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    }
+  ]
+}

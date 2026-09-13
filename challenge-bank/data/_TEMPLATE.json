@@ -1,4 +1,5 @@
 {
+  "_note": "Authoring skeleton. Files whose name starts with _ are skipped by build.py, validate.py, coverage.py and similarity_check.py. Three examples follow: (1) a standard extended-response item, (2) an MCQ cluster for Physics P1A, (3) a data-based item for Physics P1B. Copy whichever matches the paper you are writing for.",
   "questions": [
     {
       "id": "MATH-AHL0.0-001",
@@ -9,6 +10,7 @@
       "subtopic": "5.18 First order differential equations",
       "paper": "P1",
       "section": "B",
+      "question_type": "extended_response",
       "technology": "not allowed",
       "language": null,
       "marks": 15,
@@ -45,6 +47,7 @@
       "provenance": {
         "inspired_by": "original",
         "adaptation": "Required unless inspired_by is 'original'. State what was borrowed and what changed.",
+        "resource_origin": null,
         "source_url": null,
         "rights": "original"
       },
@@ -52,6 +55,8 @@
         "max_similarity": null,
         "nearest_bank_id": null,
         "max_internal_similarity": null,
+        "max_approach_similarity": null,
+        "nearest_approach_id": null,
         "checked_at": null
       },
       "verification": {
@@ -59,6 +64,195 @@
         "assertions": [
           "approx(sqrt(2) ** 2, 2)",
           "0 < 1"
+        ],
+        "solution_skeleton": [
+          "state the physical or mathematical model being assumed",
+          "derive the governing relation from that model",
+          "solve for the target quantity",
+          "check the result against a limiting case"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "draft",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+
+    {
+      "id": "PHYS-X.0-001",
+      "subject": "Physics HL",
+      "level": "HL",
+      "syllabus_ref": "A.4 (Rigid body mechanics)",
+      "topic": "Theme A: Space, time and motion",
+      "subtopic": "A.4 Rigid body mechanics",
+      "paper": "P1",
+      "section": "A",
+      "question_type": "mcq",
+      "technology": "allowed",
+      "language": null,
+      "marks": 4,
+      "difficulty": 5,
+      "challenge_mechanism": "One sentence naming the discriminating step. For MCQ this is usually the move that separates the correct option from the strongest distractor, not simply 'it is multi-step'.",
+      "command_terms": ["Calculate", "Determine"],
+      "tags": ["rotation", "mcq"],
+      "stimulus": null,
+      "figure": null,
+      "question": "Optional shared preamble for the cluster. Each MCQ below is self-contained and answerable on its own, as in a real Paper 1A.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 1,
+          "command_term": "Calculate",
+          "text": "A self-contained multiple-choice question. No reference to other parts.",
+          "options": [
+            {
+              "label": "A",
+              "text": "The correct option, written in the same register as the others.",
+              "correct": true,
+              "rationale": "Why this is right, stated as a complete line of reasoning, not just 'correct substitution'."
+            },
+            {
+              "label": "B",
+              "text": "A distractor that encodes a specific, predictable error.",
+              "correct": false,
+              "rationale": "Name the error: e.g. 'uses the diameter where the radius is required'. Every distractor must be there for a reason."
+            },
+            {
+              "label": "C",
+              "text": "A distractor from a sign, unit or proportionality slip.",
+              "correct": false,
+              "rationale": "Name the slip explicitly."
+            },
+            {
+              "label": "D",
+              "text": "A distractor from applying a valid formula in the wrong regime.",
+              "correct": false,
+              "rationale": "Name why the formula does not apply here."
+            }
+          ]
+        }
+      ],
+      "answer": "Worked solution for every MCQ in the cluster, in order. For each: the shortest reliable route to the answer, the value, and why the nearest distractor is wrong. Annotate (A1) at the point the correct option is fixed.",
+      "markscheme_notes": "One mark per MCQ, no negative marking. Note any option that is condoned, any that require a unit conversion, and the common elimination route a strong student would use.",
+      "explanation": "What the cluster discriminates. Name the misconception each distractor targets and why a guessing student is unlikely to land on the key.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original. Distractor set designed from the known error patterns for this subtopic.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": null,
+        "nearest_bank_id": null,
+        "max_internal_similarity": null,
+        "max_approach_similarity": null,
+        "nearest_approach_id": null,
+        "checked_at": null
+      },
+      "verification": {
+        "method": "Each option recomputed independently in Python to full precision; distractors verified to be the result of the named error.",
+        "assertions": [
+          "approx(1, 1)"
+        ],
+        "solution_skeleton": [
+          "identify the conserved quantity or governing law",
+          "express the target in terms of given quantities",
+          "compute and match to an option"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "draft",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+
+    {
+      "id": "PHYS-X.0-002",
+      "subject": "Physics HL",
+      "level": "HL",
+      "syllabus_ref": "A.1 (Kinematics) / experimental skills",
+      "topic": "Theme A: Space, time and motion",
+      "subtopic": "Data-based question",
+      "paper": "P1",
+      "section": "B",
+      "question_type": "data_based",
+      "technology": "allowed",
+      "language": null,
+      "marks": 12,
+      "difficulty": 5,
+      "challenge_mechanism": "One sentence: what the data hides. Typically the relationship is only visible after a non-obvious linearisation, or one row is anomalous and must be defended rather than discarded.",
+      "command_terms": ["State", "Describe", "Calculate", "Determine", "Suggest", "Evaluate"],
+      "tags": ["data-based", "uncertainties", "graph"],
+      "stimulus": {
+        "title": "Student investigation",
+        "body": "Describe the apparatus and method in the past tense, as a student report. Include the controlled variables and the measurement resolution of each instrument, because later parts will ask about them.",
+        "table": {
+          "caption": "Measured values, with units in the column headers.",
+          "columns": ["quantity / unit", "quantity / unit"],
+          "rows": [["1.00", "2.00"], ["2.00", "4.00"]]
+        }
+      },
+      "figure": null,
+      "question": "Short lead-in. The data and the method are in the stimulus.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 2,
+          "command_term": "State",
+          "text": "State the uncertainty in a quantity derived from two instruments in series, with a reason."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Describe",
+          "text": "Describe how a resolution limit can be beaten by repeating or by timing over N intervals."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Linearise the proposed relationship, determine the constant from the gradient, and give its unit."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Evaluate",
+          "text": "Evaluate whether the data support the model, referring to a specific anomalous row."
+        }
+      ],
+      "answer": "Worked answers with (M1)(A1)(R1) where earned. Gradient taken from widely separated points on the best-fit line, not adjacent table rows. Units carried through.",
+      "markscheme_notes": "Allow the alternative linearisation. Note where follow-through applies from an earlier part and what forfeits the unit mark.",
+      "explanation": "What the question is really testing: usually that the student must choose the transformation, not be told it.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original dataset generated from the model with deliberate scatter and one seeded anomaly.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": null,
+        "nearest_bank_id": null,
+        "max_internal_similarity": null,
+        "max_approach_similarity": null,
+        "nearest_approach_id": null,
+        "checked_at": null
+      },
+      "verification": {
+        "method": "Dataset generated in Python from the stated model with known parameters, then rounded to the instrument resolution; the seeded anomaly confirmed to fall outside the residuals.",
+        "assertions": [
+          "approx(1, 1)"
+        ],
+        "solution_skeleton": [
+          "combine instrument uncertainties for the derived quantity",
+          "choose the linearising transformation",
+          "take the gradient from separated best-fit points",
+          "compare the intercept and residuals against the model"
         ],
         "checked_by": "ai",
         "status": "pass"

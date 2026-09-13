@@ -80,7 +80,9 @@
         "nearest_bank_id": "AI-CS-V031",
         "max_internal_similarity": 0.003,
         "nearest_bank_label": "generated:expand3_cs.json",
-        "nearest_internal_id": "CS-B3.2-001"
+        "nearest_internal_id": "CS-B3.2-001",
+        "max_approach_similarity": 0.091,
+        "nearest_approach_id": "PHYS-B.1-001"
       },
       "verification": {
         "method": "Every figure recomputed in Python: 12,000,000 x 50 bytes = 600 MB a year and 3 GB over five years; 10% of 1,200,000 = 120,000 members x 10 journeys = 1,200,000 row edits against 120,000; 12,000,000 / 15,000 = 800 journeys per bike per year; 2% of 15,000 = 300 bikes x 800 = 240,000 rows destroyed by a cascading delete.",
@@ -93,12 +95,19 @@
           "approx(12000000/1200000, 10)"
         ],
         "checked_by": "ai",
-        "status": "pass"
+        "status": "pass",
+        "solution_skeleton": [
+          "identify the entities and attributes hidden in the flat file",
+          "explain why the flat file produces update and deletion anomalies",
+          "quantify the redundancy or the storage cost of the current arrangement",
+          "evaluate the case for migrating to a relational design"
+        ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "structured"
     },
     {
       "id": "CS-B2.1-001",
@@ -179,7 +188,9 @@
         "nearest_bank_id": "AI-CS-V031",
         "max_internal_similarity": 0.022,
         "nearest_bank_label": "generated:expand3_cs.json",
-        "nearest_internal_id": "CS-B2.3-001"
+        "nearest_internal_id": "CS-B2.3-001",
+        "max_approach_similarity": 0.122,
+        "nearest_approach_id": "BM-4.5-001"
       },
       "verification": {
         "method": "The draft loop and the corrected integer function were executed in Python 3. The loop of forty subtractions produces 15.999999999999945, so 15.999999999999945 >= 16.00 is False, while the integer balance 2000 - 40*10 = 1600 satisfies 1600 >= 1600. A scan of all 1,440,000 (minutes, points) pairs in the ranges 1-2400 and 0-599 found 315,902 pairs (about 22%) whose floating-point amount due exceeds the exact amount due.",
@@ -195,12 +206,19 @@
           "round(2.5) == 2"
         ],
         "checked_by": "ai",
-        "status": "pass"
+        "status": "pass",
+        "solution_skeleton": [
+          "explain why the two languages differ in how they realise the same construct",
+          "construct the equivalent code in both languages",
+          "explain the typing or evaluation difference that could change behaviour",
+          "justify which language better meets the stated constraint"
+        ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "case_study"
     },
     {
       "id": "CS-B2.3-001",
@@ -281,7 +299,9 @@
         "nearest_bank_id": "MAAQB_20N_1_SL_TZ0_T_7",
         "max_internal_similarity": 0.022,
         "nearest_bank_label": "bank:Math AA/AA HL",
-        "nearest_internal_id": "CS-B2.1-001"
+        "nearest_internal_id": "CS-B2.1-001",
+        "max_approach_similarity": 0.114,
+        "nearest_approach_id": "BM-2.4-001"
       },
       "verification": {
         "method": "The naive and linear functions were executed and cross-checked on the worked example and on 200 random series of up to 60 readings; both returned identical lists in every case. The worst-case step count n(n-1)/2 was confirmed by counting the inner-loop steps on constant series of length 5, 10 and 50, which took 10, 45 and 1225 steps.",
@@ -294,12 +314,19 @@
           "approx(5*4/2, 10)"
         ],
         "checked_by": "ai",
-        "status": "pass"
+        "status": "pass",
+        "solution_skeleton": [
+          "explain why a single pass is required rather than a nested scan",
+          "describe the state that must be carried between iterations",
+          "construct the run-length routine",
+          "evaluate its complexity against the device constraint"
+        ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "case_study"
     },
     {
       "id": "CS-B2.5-001",
@@ -380,7 +407,9 @@
         "nearest_bank_id": "PHYS_HL_P3_2019Nov_HL_OPT_D_q16",
         "max_internal_similarity": 0.016,
         "nearest_bank_label": "bank:Physics/Physics HL",
-        "nearest_internal_id": "CS-B2.3-001"
+        "nearest_internal_id": "CS-B2.3-001",
+        "max_approach_similarity": 0.143,
+        "nearest_approach_id": "CS-A1.3-001"
       },
       "verification": {
         "method": "The streaming function and its quoted-field parser were executed on a seven-line sample containing a quoted comma, a non-numeric field, a short record, an empty line and a final line with no trailing newline; the summary, the capped error list and the total error count were checked by hand. Memory arithmetic: 40 GB at 100 bytes per record is 400,000,000 records, and the file is five times the 8 GB available.",
@@ -391,12 +420,19 @@
           "1000*100 < 8*10**9"
         ],
         "checked_by": "ai",
-        "status": "pass"
+        "status": "pass",
+        "solution_skeleton": [
+          "explain why the file must be streamed rather than read into memory whole",
+          "describe the buffering and error handling the ingestion requires",
+          "construct the streaming parser",
+          "evaluate the design against the memory and time limits given"
+        ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "case_study"
     }
   ]
 }

@@ -1,0 +1,411 @@
+{
+  "questions": [
+    {
+      "id": "CS-A1.1-002",
+      "title": "Where the cycles actually go",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "A1.1 Computer hardware and operation (A1.1.4 the role of cache memory, A1.1.5 the machine instruction cycle, A1.1.6 the effect of clock speed and cache on performance)",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A1 Computer fundamentals",
+      "paper": "P1",
+      "section": null,
+      "question_type": "structured",
+      "technology": null,
+      "language": null,
+      "marks": 15,
+      "difficulty": 5,
+      "challenge_mechanism": "Three separate performance proposals are each met with a calculation that refuses to flatter them: a 5x accelerator on 40% of the work buys 1.47x, and a 25% clock increase buys 1.06x because the memory latency does not shrink with the cycle time. The candidate has to do both computations and then say which number the marketing claim was referring to.",
+      "command_terms": [
+        "Calculate",
+        "Calculate",
+        "Explain",
+        "Evaluate"
+      ],
+      "tags": [
+        "cache",
+        "hit-rate",
+        "CPI",
+        "Amdahl's law",
+        "clock speed",
+        "memory wall",
+        "HL"
+      ],
+      "stimulus": {
+        "title": "A processor whose clock speed is not the problem",
+        "body": "An embedded vision system processes a stream of images. Measurements on the running system give the following. Of all memory accesses, $95\\%$ are satisfied by the level-1 cache in $1$ clock cycle. Of the accesses that miss in level 1, $80\\%$ are satisfied by the level-2 cache, and the whole level-2 path, including the level-1 miss, takes $12$ clock cycles. An access that misses in both caches goes to main memory, and that path takes $200$ clock cycles in total. The instruction mix is fixed, and apart from memory accesses the processor completes one instruction per clock cycle.",
+        "table": null
+      },
+      "figure": null,
+      "question": "Two upgrade proposals are on the table. Both are advertised with a large number on the box, and neither number is the one the system will actually see.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Calculate",
+          "text": "Calculate the average number of clock cycles spent on memory per instruction, showing how each level of the hierarchy contributes."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Calculate",
+          "text": "A hardware accelerator can execute $40\\%$ of the workload five times faster than the processor does now. Calculate the overall speedup of the system, and state the largest speedup that could ever be obtained by accelerating this same $40\\%$, however fast the accelerator is made."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "A second proposal is to raise the clock frequency by $25\\%$. The memory chips are unchanged, so their latency stays the same number of nanoseconds and therefore becomes a larger number of clock cycles. Calculate the resulting average cycles per instruction and hence the real speedup, and explain why it falls so far short of $25\\%$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Evaluate",
+          "text": "Evaluate which of the two proposals is the better use of the engineering budget, referring to your answers to (b) and (c) and to one further consideration that the numbers do not capture."
+        }
+      ],
+      "answer": "**(a)** Work through the hierarchy from the fastest level outwards. An access hits in level 1 with probability $0.95$ and costs $1$ cycle. It misses level 1 with probability $0.05$; of those, $0.80$ are satisfied by level 2 at $12$ cycles and $0.20$ go to main memory at $200$ cycles. **(M1)(A1)**\n$$\\text{average cycles} = 0.95(1) + 0.05\\bigl[0.80(12) + 0.20(200)\\bigr]$$\n$$= 0.95 + 0.05\\bigl[9.6 + 40\\bigr] = 0.95 + 0.05(49.6) = 0.95 + 2.48 = 3.43$$ **(A1)(A1)**\nSo the processor spends about $3.43$ clock cycles per instruction, of which only $0.95$ is the level-1 access itself. The tail dominates: level-2 hits add $0.48$ cycles in total, while main-memory accesses add $2.00$ cycles, so the $1\\%$ of all accesses that miss in both caches accounts for $2.00$ of the $3.43$, which is more than half the average and more than twice what the level-1 hits contribute.\n\n**(b)** Amdahl's law gives the speedup as **(M1)**\n$$S = \\frac{1}{(1-f) + \\dfrac{f}{s}} = \\frac{1}{0.60 + \\dfrac{0.40}{5}} = \\frac{1}{0.60 + 0.08} = \\frac{1}{0.68} = 1.47$$ **(A1)(A1)**\nThe limiting case is $s \\to \\infty$, which gives $S_{\\max} = 1/(1-0.40) = 1.67$. **(A1)** However fast the accelerator becomes, the remaining $60\\%$ of the workload is untouched, so the system can never be more than $1.67$ times faster by this route.\n\n**(c)** With the clock $25\\%$ faster, a fixed nanosecond latency corresponds to $1.25$ times as many clock cycles, so the level-2 path becomes $12 \\times 1.25 = 15$ cycles and the main-memory path becomes $200 \\times 1.25 = 250$ cycles. **(M1)**\n$$\\text{average cycles} = 0.95(1) + 0.05\\bigl[0.80(15) + 0.20(250)\\bigr] = 0.95 + 0.05\\bigl[12 + 50\\bigr] = 0.95 + 3.10 = 4.05$$ **(A1)**\nExecution time is cycles divided by frequency, so with the new frequency $1.25$ times the old one, **(M1)**\n$$\\frac{T_{\\text{new}}}{T_{\\text{old}}} = \\frac{4.05/1.25}{3.43/1.00} = \\frac{3.24}{3.43} = 0.945,\\qquad \\text{speedup} = 1.06$$ **(A1)**\nThe speedup is about $6\\%$ rather than $25\\%$ because the extra cycles are being spent waiting, and waiting does not get faster when the clock does. As the clock rises, the proportion of time spent stalled on memory grows, so the gap between the advertised figure and the delivered figure widens.\n\n**(d)** The accelerator is the better buy on these numbers: $1.47$ against $1.06$, and the accelerator's figure is also closer to its own ceiling of $1.67$, whereas the clock increase delivers under a quarter of what its name promises. **(A1)(A1)** One thing the numbers do not capture is cost and risk: an accelerator is new hardware, new drivers and a new failure mode in a system that already works, while a clock change is a configuration setting. If the accelerator's development cost is more than a few times the cost of the clock change, the safer option may be worth its smaller return, and a decision that rests only on the two ratios above would be incomplete. **(A1)**\n\nIt is worth stating what the $3.43$ means before using it in later parts: it is an average over the whole instruction stream, so it already includes the instructions that hit in level 1 and cost almost nothing. Any proposal that changes the miss rates or the path latencies changes this average, and that is the only way an upgrade can help.",
+      "markscheme_notes": "(a) Award (M1) for the weighted-sum structure and (A1) for each of the three contributions; accept $3.4$ to $3.5$. A candidate who adds $1 + 12 + 200$ weighted by $0.95$, $0.04$ and $0.01$ has understood the structure but has applied the level-2 probability to all accesses rather than to level-1 misses, and should lose one of the accuracy marks. (b) Accept $1.46$ to $1.48$ and $1.67$; the ceiling mark is separate and is for understanding that the limit comes from the unaccelerated fraction. Do not credit a speedup of $5$ or of $1.40$ obtained by multiplying the fraction by the speedup. (c) Accept average cycles $4.0$ to $4.1$ and speedup $1.05$ to $1.07$; the mark is for dividing by $1.25$ as well as for recomputing the cycles, and a candidate who reports $4.05/3.43 = 1.18$ as a slowdown has forgotten the frequency change entirely. (d) Accept either proposal if it is argued from the calculations and names a non-numerical factor; the comparison must be made, not merely asserted. A candidate who computes $3.43$ correctly and then describes the main-memory contribution as small has misread their own arithmetic and should be corrected in feedback, since the tail is the dominant term and the rest of the question depends on noticing that.",
+      "explanation": "The point of this item is that the number printed on a component is almost never the number the system experiences, and that the gap between the two is calculable rather than mysterious. Part (a) sets up the arithmetic by showing where the cycles go: a $95\\%$ hit rate sounds excellent, and it is, but $5\\%$ of accesses still reach the next level and a fifth of those reach main memory, so $1\\%$ of all accesses contributes $0.40$ of the $3.43$ cycles. That small tail dominates the average, and it is the first place a student should look when asked to make something faster.\n\nParts (b) and (c) then apply that observation to two proposals, and they fail in different ways. The accelerator fails because of Amdahl's law: only $40\\%$ of the work can be moved, so the ceiling is $1.67$ no matter how good the hardware is, and a fivefold improvement on that fraction buys $1.47$. The clock increase fails for a different and more interesting reason. Raising the clock shortens the cycle, but the memory chips do not know about the clock, so their latency in nanoseconds is unchanged and their latency in cycles grows. The processor therefore spends a larger fraction of each instruction waiting, and the delivered speedup is $1.06$ against an advertised $1.25$. This is the mechanism behind the phrase 'the memory wall', and it is worth naming, because it explains why clock speeds stopped rising long before transistor counts did.\n\nPart (d) is where the item stops being arithmetic. Both numbers are now on the table and the comparison looks decisive, but a real decision also involves risk, development cost, and whether the system can be taken offline. A candidate who says 'the accelerator, because $1.47 > 1.06$' has answered the question they were asked and missed the one that matters; the evaluation mark is reserved for someone who makes the comparison and then says what it leaves out.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original item written around the Amdahl and memory-wall calculations rather than adapted from a past paper. The hit rates, path latencies and the 25% clock figure were chosen so that the two proposals deliver 1.47 and 1.06, close enough to look comparable and far enough apart to force a judgement; the crossover arithmetic was checked in Python.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.0,
+        "nearest_bank_id": null,
+        "nearest_bank_label": null,
+        "max_internal_similarity": 0.002,
+        "nearest_internal_id": "PHYS-D.2-102",
+        "max_approach_similarity": 0.099,
+        "nearest_approach_id": "MATH-AHL1.11-001"
+      },
+      "verification": {
+        "method": "Both cycle counts, the Amdahl speedup, the limiting speedup, the rescaled latencies and the final time ratio were recomputed in Python to full precision and compared with the values printed in the answer.",
+        "assertions": [
+          "approx(0.95*1 + 0.05*(0.80*12 + 0.20*200), 3.43)",
+          "approx(0.05*0.80*12, 0.48)",
+          "approx(1/(0.60 + 0.40/5), 1.4706, 1e-4)",
+          "approx(1/0.60, 1.6667, 1e-4)",
+          "approx(12*1.25, 15)",
+          "approx(200*1.25, 250)",
+          "approx(0.95*1 + 0.05*(0.80*15 + 0.20*250), 4.05)",
+          "approx(4.05/1.25, 3.24)",
+          "approx(3.43/3.24, 1.0586, 1e-4)",
+          "approx(0.05*0.20*200, 2.00)"
+        ],
+        "solution_skeleton": [
+          "weight the latency of each level of the memory hierarchy by the probability of reaching it and sum",
+          "apply Amdahl's law to a partially accelerated workload and take the limit as the accelerator becomes infinitely fast",
+          "rescale fixed nanosecond latencies into the larger number of cycles that a faster clock produces",
+          "convert cycles per instruction into time by dividing by the clock frequency before comparing",
+          "compare the two delivered speedups and name a factor outside the arithmetic that could reverse the decision"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11",
+      "authored_by": "ai"
+    },
+    {
+      "id": "CS-A2.2-001",
+      "title": "Fitting four departments into one /24",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "A2.1 Network fundamentals, A2.2 Network architecture (A2.1.6 the role of IP and MAC addresses, A2.2.2 the structure of a network, subnetting)",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A2 Networks",
+      "paper": "P1",
+      "section": null,
+      "question_type": "structured",
+      "technology": null,
+      "language": null,
+      "marks": 15,
+      "difficulty": 4,
+      "challenge_mechanism": "The obvious answer, four equal subnets, wastes more than half the address space, and the candidate has to notice that before being asked. The design task then forces the blocks to be allocated in descending size order and to start on boundaries that their own prefix length divides, which is the constraint students break when they place a /27 at .64 and a /26 at .96.",
+      "command_terms": [
+        "Design",
+        "Determine",
+        "Explain",
+        "Evaluate"
+      ],
+      "tags": [
+        "subnetting",
+        "VLSM",
+        "CIDR",
+        "subnet mask",
+        "routing",
+        "HL"
+      ],
+      "stimulus": {
+        "title": "One /24 and four departments",
+        "body": "A school has been allocated the block $192.168.40.0/24$ and must divide it between four departments and two router links. The required numbers of hosts are: science $60$, humanities $28$, administration $12$, and the library $6$. In addition, two point-to-point links between the department routers each need exactly two usable addresses. Addresses are assigned from the start of the block upwards, and no two subnets may overlap.",
+        "table": {
+          "caption": "Address requirements",
+          "columns": [
+            "purpose",
+            "hosts required"
+          ],
+          "rows": [
+            [
+              "science",
+              "60"
+            ],
+            [
+              "humanities",
+              "28"
+            ],
+            [
+              "administration",
+              "12"
+            ],
+            [
+              "library",
+              "6"
+            ],
+            [
+              "WAN link 1",
+              "2"
+            ],
+            [
+              "WAN link 2",
+              "2"
+            ]
+          ]
+        }
+      },
+      "figure": null,
+      "question": "There is more than enough address space for all six requirements, but only if the block is divided unevenly. Design the division, then justify it.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 5,
+          "command_term": "Design",
+          "text": "Design a subnetting scheme using variable-length subnet masks. For each of the six requirements give the network address in dotted decimal, the prefix length, and the number of usable host addresses it provides."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine how many addresses in the /24 block remain unused by your scheme, and compare this with the number that would remain if the block had instead been divided into four equal subnets."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain how a host uses its own address and subnet mask to decide whether a destination address is on its own subnet, and what it does if it is not."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Evaluate",
+          "text": "Evaluate one advantage and one disadvantage of the variable-length scheme compared with using four equal subnets, in a network that may grow."
+        }
+      ],
+      "answer": "**(a)** Work downwards in size so that each block starts on a boundary its own prefix length divides. A prefix that leaves $h$ host bits provides $2^{h} - 2$ usable addresses. **(M1)**\n\n| requirement | network address | prefix | usable hosts |\n|---|---|---|---|\n| science, needs 60 | $192.168.40.0$ | $/26$ | $62$ |\n| humanities, needs 28 | $192.168.40.64$ | $/27$ | $30$ |\n| administration, needs 12 | $192.168.40.96$ | $/28$ | $14$ |\n| library, needs 6 | $192.168.40.112$ | $/29$ | $6$ |\n| WAN link 1, needs 2 | $192.168.40.120$ | $/30$ | $2$ |\n| WAN link 2, needs 2 | $192.168.40.124$ | $/30$ | $2$ |\n\n**(A1) for each correct prefix, (A1) for the complete set of addresses, (A1) for the usable-host counts.** The blocks occupy $0$–$63$, $64$–$95$, $96$–$111$, $112$–$119$, $120$–$123$ and $124$–$127$ with no overlap, because each block begins at an address divisible by its own size.\n\n**(b)** The six blocks consume $64 + 32 + 16 + 8 + 4 + 4 = 128$ addresses, so $256 - 128 = 128$ addresses remain free for growth. **(M1)(A1)** Four equal subnets would each be a $/26$, giving $4 \\times 64 = 256$ addresses and leaving none at all; in that scheme $62 + 30 + 14 + 6 = 112$ required hosts are spread across $248$ usable addresses, so $136$ are wasted inside the subnets, and the two WAN links would not fit. **(M1)(A1)**\n\n**(c)** The host performs a bitwise AND between its own address and its subnet mask to obtain its network address, then does the same to the destination address using its own mask. **(M1)** If the two network addresses are equal, the destination is local and the host sends the frame directly, using ARP to find the destination's MAC address. **(A1)** If they differ, the host sends the frame to its default gateway instead, addressing the frame to the gateway's MAC address while leaving the destination IP address untouched; the gateway then routes the packet onwards. **(A1)**\n\n**(d)** The advantage is that the variable-length scheme leaves $128$ addresses free and can absorb growth in any department by allocating from that pool, or by renumbering only the department that has outgrown its block. **(A1)** The disadvantage is that it is harder to manage and harder to read: the six prefixes have to be recorded in the routing table individually rather than summarised, and a technician who sees a $/29$ and a $/30$ side by side has more to hold in their head than one who sees four identical entries. **(A1)** If the network is expected to grow unevenly, or to need small links like these, the extra complexity is worth it; if all four departments are likely to grow at the same rate, the simpler scheme is the better choice. **(A1)**\n\nA useful check on any scheme is to write the blocks out in order and confirm that each one finishes exactly where the next one begins: $0$ to $63$, $64$ to $95$, $96$ to $111$, $112$ to $119$, $120$ to $123$ and $124$ to $127$. A scheme that leaves a gap or overlaps two blocks has placed a block on a boundary its own size does not divide, and the check takes seconds.",
+      "markscheme_notes": "(a) Award the method mark for allocating in descending order of size. Accept any scheme that meets every requirement without overlap, provided each block starts on a boundary divisible by its own size; a scheme that places the /27 at .96 and the /28 at .64 is invalid because a /27 cannot start at .96 and should lose the address mark even though the sizes are right. Do not require the dotted-decimal subnet masks to be written out if the prefix lengths are given. (b) Accept $128$ and any figure from $120$ to $140$ for the equal-subnet comparison depending on how the candidate treats the two WAN links, which do not fit in that scheme at all; the observation that the WAN links cannot be accommodated is worth a mark on its own. (c) The AND operation must be named; 'it compares the first three octets' is not sufficient because it is false for these prefixes. (d) Credit only advantages and disadvantages that follow from the design rather than from networking in general. That adjacency check is worth teaching explicitly, because it catches the boundary error immediately and does not depend on remembering a rule.",
+      "explanation": "Subnetting is usually taught as a procedure and examined as an arithmetic exercise, and this item is built to make the procedure itself the thing under examination. The constraint that does the work is that a block of size $2^{k}$ must start at an address divisible by $2^{k}$. Students who have memorised 'work out how many host bits you need' will compute the correct prefix lengths and then place the blocks in the wrong order, putting the $/27$ at $.96$ where it cannot legally start. Allocating in descending size order avoids the problem automatically, which is why part (a) awards a method mark for it.\n\nPart (b) is the part that justifies variable-length masks at all. Four equal $/26$ subnets consume the entire $/24$, give $62$ usable addresses to a library that needs $6$, and leave nothing for the two router links. The variable-length scheme consumes $128$ addresses and leaves $128$ free. The comparison is not subtle, but it is invisible unless someone asks for it, and a student who produces a valid scheme has still not explained why the scheme is worth producing.\n\nPart (c) addresses a different and equally common gap. Many candidates can calculate a subnet mask and cannot say what it is for, and the honest answer is that it is the operand of a single bitwise AND. Once the mask is understood as something the host applies to both addresses to answer one yes-or-no question — is the destination local — the rest of the behaviour, including why the frame goes to the gateway while the packet keeps its original destination address, follows without being memorised. That is also why the follow-up distinction matters: the MAC address changes at every hop and the IP address does not, and students who have not separated the two will say that the router rewrites the destination.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original item. The host counts 60, 28, 12, 6, 2, 2 were chosen so that each requirement maps to exactly one prefix length with no slack to argue about, so that the blocks tile .0 to .127 exactly, and so that the equal-subnet alternative demonstrably cannot hold the two router links. All boundaries were checked in Python for divisibility and overlap.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.013,
+        "nearest_bank_id": "CS_HL_P1_2012Nov_q16",
+        "nearest_bank_label": "bank:Computer Science/CS HL",
+        "max_internal_similarity": 0.002,
+        "nearest_internal_id": "PHYS-B.3-101",
+        "max_approach_similarity": 0.0,
+        "nearest_approach_id": null
+      },
+      "verification": {
+        "method": "Every block boundary checked in Python for divisibility by its own size and for pairwise non-overlap; usable host counts recomputed as 2^(32-prefix) - 2; the totals in part (b) recomputed from the block sizes.",
+        "assertions": [
+          "approx(2**(32-26) - 2, 62)",
+          "approx(2**(32-27) - 2, 30)",
+          "approx(2**(32-28) - 2, 14)",
+          "approx(2**(32-29) - 2, 6)",
+          "approx(2**(32-30) - 2, 2)",
+          "approx(64+32+16+8+4+4, 128)",
+          "approx(256-128, 128)",
+          "approx(62+30+14+6, 112)",
+          "approx(4*62 - 112, 136)",
+          "approx(0 % 64, 0)",
+          "approx(64 % 32, 0)",
+          "approx(96 % 16, 0)",
+          "approx(112 % 8, 0)",
+          "approx(120 % 4, 0)",
+          "approx(124 % 4, 0)"
+        ],
+        "solution_skeleton": [
+          "convert each host requirement into a prefix length from the number of usable addresses it must supply",
+          "allocate the blocks in descending size order so each begins at an address its own size divides",
+          "total the consumed addresses and compare with the equal-subnet alternative",
+          "use the subnet mask as the operand of a bitwise AND that decides whether a destination is local",
+          "weigh the address efficiency of variable-length masks against the extra management and routing complexity"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11",
+      "authored_by": "ai"
+    },
+    {
+      "id": "CS-B2.4-001",
+      "title": "The algorithm that wins on paper and loses on the machine",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "B2.4 Programming algorithms (B2.4.1 the complexity of an algorithm, B2.4.2 searching and sorting algorithms, B2.4.3 the suitability of an algorithm for a given task)",
+      "topic": "Theme B: Computational thinking and programming",
+      "subtopic": "B2 Programming",
+      "paper": "P1",
+      "section": null,
+      "question_type": "structured",
+      "technology": null,
+      "language": null,
+      "marks": 15,
+      "difficulty": 5,
+      "challenge_mechanism": "Binary search is asymptotically better and measurably worse for every list shorter than 214 records, and the item makes the candidate compute the crossover before deciding which to use. The constant factor is not a rounding error here: it is two orders of magnitude, and it comes from cache behaviour rather than from the comparison count.",
+      "command_terms": [
+        "Determine",
+        "Calculate",
+        "Explain",
+        "Evaluate"
+      ],
+      "tags": [
+        "binary search",
+        "linear search",
+        "complexity",
+        "constant factor",
+        "cache",
+        "crossover",
+        "HL"
+      ],
+      "stimulus": {
+        "title": "Two ways to find one record",
+        "body": "A library catalogue holds $n$ records sorted by accession number, stored contiguously in memory. Two search routines are available. Linear search examines records in order from the start of the list; in the worst case it makes $n$ comparisons. Binary search repeatedly compares against the middle of the remaining range; in the worst case it makes $\\lfloor \\log_{2} n \\rfloor + 1$ comparisons. Profiling on this machine gives a realistic cost model rather than a comparison count: a linear-search comparison costs $3\\ \\mathrm{ns}$, because consecutive records are already in the cache, while a binary-search comparison costs $30\\ \\mathrm{ns}$, because each probe lands far from the last one and usually misses the cache. A binary search also pays a one-off $400\\ \\mathrm{ns}$ of setup before its first comparison.",
+        "table": {
+          "caption": "Worst-case comparison counts",
+          "columns": [
+            "$n$",
+            "linear search",
+            "binary search"
+          ],
+          "rows": [
+            [
+              "16",
+              "$16$",
+              "$5$"
+            ],
+            [
+              "256",
+              "$256$",
+              "$9$"
+            ],
+            [
+              "65\\,536",
+              "$65\\,536$",
+              "$17$"
+            ],
+            [
+              "16\\,777\\,216",
+              "$16\\,777\\,216$",
+              "$25$"
+            ]
+          ]
+        }
+      },
+      "figure": null,
+      "question": "The table appears to settle the matter. This question asks whether it does.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the worst-case number of comparisons binary search makes for each value of $n$ in the table, showing how $\\lfloor \\log_{2} n \\rfloor + 1$ gives the stated figures, and state the complexity class of each algorithm."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Calculate",
+          "text": "Using the cost model in the stimulus, calculate the worst-case time taken by each algorithm for each value of $n$ in the table. Hence determine the smallest value of $n$ for which binary search is the faster of the two, showing your method."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain why the comparison counts in the table give the opposite ranking to the timings for small $n$, referring to the cost model and to the way each algorithm accesses memory."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Evaluate",
+          "text": "Evaluate whether a programmer should implement a hybrid routine that uses linear search below the crossover value and binary search above it, giving one reason for and one reason against."
+        }
+      ],
+      "answer": "**(a)** For $n = 16$, $\\lfloor\\log_{2} 16\\rfloor + 1 = 4 + 1 = 5$; for $n = 256$, $8 + 1 = 9$; for $n = 65\\,536$, $16 + 1 = 17$; for $n = 16\\,777\\,216$, $24 + 1 = 25$. **(A1) for the method, (A1) for the four values.** Linear search is $\\mathrm{O}(n)$ and binary search is $\\mathrm{O}(\\log n)$. **(A1)**\n\n**(b)** Linear search takes $3n$ nanoseconds. Binary search takes $400 + 30(\\lfloor\\log_{2} n\\rfloor + 1)$ nanoseconds. **(M1)**\n\n| $n$ | linear search | binary search |\n|---|---|---|\n| $16$ | $48\\ \\mathrm{ns}$ | $400 + 30(5) = 550\\ \\mathrm{ns}$ |\n| $256$ | $768\\ \\mathrm{ns}$ | $400 + 30(9) = 670\\ \\mathrm{ns}$ |\n| $65\\,536$ | $196\\,608\\ \\mathrm{ns}$ | $400 + 30(17) = 910\\ \\mathrm{ns}$ |\n| $16\\,777\\,216$ | $50\\,331\\,648\\ \\mathrm{ns}$ | $400 + 30(25) = 1150\\ \\mathrm{ns}$ |\n\n**(A1) for each column.** For the crossover, note that between $n = 128$ and $n = 255$ the binary-search comparison count is fixed at $8$, so the binary-search time is constant at $400 + 30(8) = 640\\ \\mathrm{ns}$ across that range. **(M1)** Solving $3n = 640$ gives $n = 213.3$, so **(M1)** at $n = 213$ linear search takes $639\\ \\mathrm{ns}$ and binary takes $640\\ \\mathrm{ns}$, and at $n = 214$ linear takes $642\\ \\mathrm{ns}$ and binary still takes $640\\ \\mathrm{ns}$. The smallest $n$ for which binary search is faster is therefore $n = 214$. **(A1)**\n\n**(c)** The comparison count measures one cost, and it is not the cost that dominates for small $n$. Binary search has a fixed setup of $400\\ \\mathrm{ns}$, which at $n = 16$ is more than eight times the entire cost of the linear search, and each of its comparisons costs ten times as much because the probes jump around the array and usually miss the cache. **(A1)(A1)** Linear search walks along the array, so after the first access every subsequent record is already in a cache line that has been fetched, and each comparison costs $3\\ \\mathrm{ns}$. **(A1)** Complexity classes describe how the time grows as $n$ becomes large, and they deliberately discard constant factors; for $n$ below a few hundred the constants here decide the outcome, and the asymptotically worse algorithm wins. **(A1)**\n\n**(d)** In favour: the hybrid takes the better of the two routines at every size, so it is never worse than either, and the crossover is a single comparison against a constant, which is almost free. **(A1)** Against: it is two code paths to write, test and maintain instead of one, and the crossover of $214$ is specific to this machine's cache behaviour and this record size — on different hardware the threshold moves, so the constant becomes a tuning parameter that someone has to keep valid. **(A1)** Whether it is worth it depends on how often the routine runs: in a loop executed millions of times the gain is real, and in a function called once per user action it is not worth the complexity. **(A1)**",
+      "markscheme_notes": "(a) Accept the four values with or without the working; the complexity classes must be stated in big-O form. (b) Accept the table entries to two significant figures. For the crossover, credit any systematic method — tabulation, bisection or solving $3n = 640$ on the correct interval — and accept $214$; a candidate who solves $3n = 400 + 30(\\log_{2} n + 1)$ treating the logarithm as continuous gets about $n = 200$ and should not be penalised provided the method is shown, since the floor function is what makes the true answer a little higher. (c) The explanation must refer to the fixed setup cost and to the per-comparison cost difference; a candidate who says only that binary search has overhead has not used the model. The cache explanation is the more valuable of the two and should be credited generously. (d) Credit a reason for and a reason against; a candidate who argues only one side cannot reach the top mark. The point that the threshold is machine-specific is the strongest objection and should be looked for. Do not accept 'binary search is O(log n) so it is always faster' as an answer to any part: the item exists to show that this is false, and a candidate who restates it has not engaged with the model at all.",
+      "explanation": "Complexity analysis is taught because it survives changes of hardware, and this item exists to show what it costs to be that general. Big-O deliberately throws away constant factors and lower-order terms, and for large inputs that is exactly right: at $n = 16$ million, binary search is about forty thousand times faster and no constant could close the gap. At $n = 16$, binary search is more than eleven times slower, and the same analysis predicts nothing about that. The crossover sits at $214$, which is small enough that a working programmer will meet it.\n\nThe mechanism is worth being precise about, because 'overhead' is not an explanation. Binary search probes the middle of the array, then the middle of a half, then the middle of a quarter, and those addresses are far apart. Each probe is therefore very likely to miss every level of cache and cost a full memory access, which is why the model charges $30\\ \\mathrm{ns}$ per comparison against linear search's $3\\ \\mathrm{ns}$. Linear search reads consecutive records, so the first access pulls in a cache line containing the next several records and the following comparisons are almost free. The asymptotic advantage of binary search is real; the per-comparison advantage of linear search is also real; which one wins depends on how many comparisons there are, and that is a question with a numerical answer.\n\nPart (d) resists the tidy conclusion. Having computed the crossover, the natural response is to implement the hybrid, and for a hot loop that is correct. But the threshold of $214$ is not a fact about searching — it is a fact about this cache, this record size and this clock speed, and it will be different on the next machine. Embedding it in source code turns a measured quantity into a magic number that nobody will re-measure. A candidate who sees that has understood something about software engineering that the complexity analysis was never going to teach them, which is the reason the item ends there rather than at the arithmetic.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original item. The cost model (3 ns against 30 ns per comparison, plus 400 ns of setup) was chosen so that the crossover falls at a plausible list length where both algorithms are in everyday use, and the four values of n in the table were chosen as successive powers of 16 so that the binary-search comparison count rises by four each time and the floor function is exercised. Every timing and the crossover were verified in Python.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.009,
+        "nearest_bank_id": "MATH_AAHL_P3_2008Nov_TZ0_q03",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "max_internal_similarity": 0.008,
+        "nearest_internal_id": "MATH-AHL1.2-001",
+        "max_approach_similarity": 0.078,
+        "nearest_approach_id": "PHYS-E.4-102"
+      },
+      "verification": {
+        "method": "Comparison counts, both sets of timings and the crossover were recomputed in Python; the crossover was located by scanning n from 1 upwards for the first value at which the binary-search time falls below the linear-search time, and separately by solving 3n = 400 + 30*8 on the interval 128 to 255.",
+        "assertions": [
+          "approx(3*16, 48)",
+          "approx(400 + 30*5, 550)",
+          "approx(3*256, 768)",
+          "approx(400 + 30*9, 670)",
+          "approx(3*65536, 196608)",
+          "approx(400 + 30*17, 910)",
+          "approx(3*16777216, 50331648)",
+          "approx(400 + 30*25, 1150)",
+          "approx(400 + 30*8, 640)",
+          "approx(3*213, 639)",
+          "approx(3*214, 642)",
+          "3*213 < 400 + 30*8",
+          "3*214 > 400 + 30*8"
+        ],
+        "solution_skeleton": [
+          "evaluate the worst-case comparison count of each search from its recurrence or its loop structure",
+          "convert comparison counts into times using a per-comparison cost model rather than assuming all comparisons cost the same",
+          "hold the binary-search comparison count constant across an interval where the floor of the logarithm does not change, and solve for the crossover",
+          "attribute the difference between the two rankings to fixed setup cost and to memory access locality",
+          "judge whether a machine-specific threshold should be embedded in code, weighing the gain against the maintenance cost"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11",
+      "authored_by": "ai"
+    }
+  ]
+}

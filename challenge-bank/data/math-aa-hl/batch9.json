@@ -69,10 +69,12 @@
       "originality": {
         "max_similarity": 0.02,
         "nearest_bank_id": "MATH_AAHL_P1_2011May_TZ1_q12",
-        "max_internal_similarity": 0.014,
+        "max_internal_similarity": 0.013,
         "checked_at": "2026-09-11",
         "nearest_bank_label": "bank:Mathematics/AA HL",
-        "nearest_internal_id": "MATH-AHL5.6-001"
+        "nearest_internal_id": "MATH-AHL5.8-001",
+        "max_approach_similarity": 0.107,
+        "nearest_approach_id": "MATH-AHL5.7-001"
       },
       "verification": {
         "method": "Every value was recomputed independently: the undefined form 0/0 at x=1, the simplification x+1 for x>1 giving a right-hand limit of 2, the simplification -(x+1) for x<1 giving a left-hand limit of -2, and the inequality 2 is not -2 confirming the two-sided limit does not exist, together with the numerical checks at x=1.001 and x=0.999.",
@@ -82,12 +84,19 @@
           "approx((1.001**2-1)/abs(1.001-1), 2, 1e-2)",
           "approx((0.999**2-1)/abs(0.999-1), -2, 1e-2)",
           "approx(int(2 != -2), 1, 1e-9)"
+        ],
+        "solution_skeleton": [
+          "split the definition at the point where the modulus changes sign",
+          "evaluate the left-hand and right-hand limits separately",
+          "compare the one-sided limits to decide whether the two-sided limit exists",
+          "discuss continuity and whether the discontinuity could be removed"
         ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "structured"
     },
     {
       "id": "MATH-AHL5.2-001",
@@ -161,7 +170,9 @@
         "max_internal_similarity": 0.032,
         "checked_at": "2026-09-11",
         "nearest_bank_label": "generated:math_ai_batch1.json",
-        "nearest_internal_id": "MATH-AHL5.8-001"
+        "nearest_internal_id": "MATH-AHL5.8-001",
+        "max_approach_similarity": 0.234,
+        "nearest_approach_id": "MATH-AHL5.8-001"
       },
       "verification": {
         "method": "Every value was recomputed independently: the derivative 3x^2-6x-9, its factorisation 3(x-3)(x+1), the two roots x=-1 and x=3, the y-values f(-1)=10 and f(3)=-22, and the gradient at x=1 which is 3-6-9=-12.",
@@ -171,12 +182,19 @@
           "approx((-1)**3-3*(-1)**2-9*(-1)+5, 10, 1e-9)",
           "approx(3**3-3*3**2-9*3+5, -22, 1e-9)",
           "approx(3*1-6*1-9, -12, 1e-9)"
+        ],
+        "solution_skeleton": [
+          "differentiate the cubic and find its critical points",
+          "use the sign of the derivative to determine the intervals of increase and decrease",
+          "classify each critical point with a sign table or the second derivative",
+          "sketch the curve using the stationary points and the intercepts"
         ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "structured"
     },
     {
       "id": "MATH-AHL5.3-001",
@@ -250,7 +268,9 @@
         "max_internal_similarity": 0.04,
         "checked_at": "2026-09-11",
         "nearest_bank_label": "bank:Mathematics/AA HL",
-        "nearest_internal_id": "MATH-AHL5.4-001"
+        "nearest_internal_id": "MATH-AHL5.4-001",
+        "max_approach_similarity": 0.234,
+        "nearest_approach_id": "MATH-AHL4.12-001"
       },
       "verification": {
         "method": "Every value was recomputed independently: the derivative 12x^3-10x-6x^-4, its value -4 at x=1, its value 75.625 at x=2 from 96-20-6/16, its value -8 at x=-1, and the sign of that value being negative.",
@@ -259,12 +279,19 @@
           "approx(12*2**3-10*2-6*2**(-4), 75.625, 1e-9)",
           "approx(12*(-1)**3-10*(-1)-6*(-1)**(-4), -8, 1e-9)",
           "approx(int(12*(-1)**3-10*(-1)-6 < 0), 1, 1e-9)"
+        ],
+        "solution_skeleton": [
+          "rewrite the reciprocal term as a negative power",
+          "differentiate term by term with the power rule",
+          "evaluate the derivative at the given point to obtain the gradient",
+          "use the gradient to find the tangent or normal required"
         ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "structured"
     },
     {
       "id": "MATH-AHL5.4-001",
@@ -338,7 +365,9 @@
         "max_internal_similarity": 0.04,
         "checked_at": "2026-09-11",
         "nearest_bank_label": "bank:Mathematics/AA HL",
-        "nearest_internal_id": "MATH-AHL5.3-001"
+        "nearest_internal_id": "MATH-AHL5.3-001",
+        "max_approach_similarity": 0.225,
+        "nearest_approach_id": "MATH-AHL5.3-001"
       },
       "verification": {
         "method": "Every value was recomputed independently: the curve value y=-1 at x=1, the derivative 4x+3/x^2 at x=1 giving 7, the tangent y=7x-8 whose intercept at x=0 is -8, and the normal y=-x/7-6/7 whose intercept at x=0 is -6/7.",
@@ -347,12 +376,19 @@
           "approx(4*1+3/1**2, 7, 1e-9)",
           "approx(2*0-8, -8, 1e-9)",
           "approx(-0/7-6/7, -6/7, 1e-9)"
+        ],
+        "solution_skeleton": [
+          "differentiate to obtain the gradient function",
+          "evaluate the gradient and the coordinate to form the tangent or normal",
+          "find where that line meets an axis or another curve",
+          "compute the required length or area from the intersection"
         ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "structured"
     },
     {
       "id": "MATH-AHL5.5-001",
@@ -426,7 +462,9 @@
         "max_internal_similarity": 0.034,
         "checked_at": "2026-09-11",
         "nearest_bank_label": "bank:Mathematics/AA HL",
-        "nearest_internal_id": "MATH-AHL5.10-001"
+        "nearest_internal_id": "MATH-AHL5.10-001",
+        "max_approach_similarity": 0.111,
+        "nearest_approach_id": "MATH-AHL5.10-001"
       },
       "verification": {
         "method": "Every value was recomputed independently: the general antiderivative 2x^3-2x^2+C, the condition f(1)=5 giving 2-2+5=5, the value f(2)=16-8+5=13, the derivative 6x^2-4x at x=2 giving 16, and the net change 2(1)^3-2(1)^2=0.",
@@ -435,100 +473,130 @@
           "approx(2*2**3-2*2**2+5, 13, 1e-9)",
           "approx(6*2**2-4*2, 16, 1e-9)",
           "approx(2*1**3-2*1**2, 0, 1e-9)"
+        ],
+        "solution_skeleton": [
+          "integrate the given derivative to recover the function up to a constant",
+          "use the given point to fix the constant",
+          "evaluate the function at the argument required",
+          "find where the function is stationary or takes a stated value"
         ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "structured"
     },
     {
       "id": "MATH-AHL5.6-001",
-      "title": "The product of a power and a logarithm whose stationary point is irrational",
+      "title": "A logarithmic inequality proved from the sign of a derivative",
       "subject": "Math AA HL",
       "level": "HL",
-      "syllabus_ref": "SL 5.6 (derivative of x^n, n in Q; derivative of sin x, cos x, e^x and ln x)",
+      "syllabus_ref": "SL 5.6 (derivative of x^n, n in Q; derivative of sin x, cos x, e^x and ln x); AHL 5.13 (evaluation of limits)",
       "topic": "Topic 5: Calculus",
       "subtopic": "5.6 Derivative of x^n, sin x, cos x, e^x and ln x",
       "paper": "P2",
       "section": "B",
+      "question_type": "extended_response",
       "technology": "permitted",
       "language": null,
       "marks": 16,
       "difficulty": 5,
-      "challenge_mechanism": "The product rule yields f'(x)=x^3(4 ln x +1), whose stationary point sits at the irrational coordinate x=e^{-1/4} and requires solving 4 ln x +1=0 rather than factorising.",
+      "challenge_mechanism": "The derivative collapses to a perfect square over a positive denominator, so the sign of the difference function is settled without ever locating a turning point, and the inequality reverses at x = 1 because the function is increasing and vanishes there. The limit part then exposes that a bound can be exact at one point and useless at infinity.",
       "command_terms": [
         "Show that",
-        "Find",
+        "Show that",
         "Determine",
-        "Find"
+        "Determine"
       ],
       "tags": [
-        "product rule",
         "logarithm",
-        "stationary point",
+        "inequality",
+        "monotonicity",
         "derivative",
-        "exponential"
+        "limit",
+        "proof"
       ],
       "stimulus": null,
       "figure": null,
-      "question": "Consider the function $f(x)=x^{4}\\ln x$ for $x>0$.",
+      "question": "For $x>0$, define $\\displaystyle h(x)=\\ln x-\\frac{2(x-1)}{x+1}$. The four parts below use the derivative of $h$ to compare $\\ln x$ with a rational function of $x$, and then ask whether that comparison is worth much once $x$ is large.",
       "parts": [
         {
           "label": "a",
           "marks": 4,
           "command_term": "Show that",
-          "text": "By using the product rule on the two factors, show that $f'(x)=x^{3}(4\\ln x+1)$."
+          "text": "Show that $h(1)=0$, and show that $\\displaystyle h'(x)=\\frac{(x-1)^{2}}{x(x+1)^{2}}$."
         },
         {
           "label": "b",
           "marks": 4,
-          "command_term": "Find",
-          "text": "Find the values of $f'(1)$ and $f'(e)$."
+          "command_term": "Show that",
+          "text": "Show that $h'(x)\\ge 0$ for every $x>0$. Hence determine, giving a reason in each case, which of $\\ln x$ and $\\dfrac{2(x-1)}{x+1}$ is the larger when $x>1$ and when $0<x<1$."
         },
         {
           "label": "c",
           "marks": 4,
           "command_term": "Determine",
-          "text": "Determine the exact x-coordinate of the stationary point of $f$."
+          "text": "Determine $\\displaystyle\\lim_{x\\to\\infty} h(x)$, and hence comment on whether the comparison established in part (b) gives a useful bound on $\\ln x$ for large values of $x$."
         },
         {
           "label": "d",
           "marks": 4,
-          "command_term": "Find",
-          "text": "Find the value of $f$ at this stationary point."
+          "command_term": "Determine",
+          "text": "Hence, without using a calculator, determine which of $\\ln 2$ and $\\dfrac{2}{3}$ is the larger, justifying your answer."
         }
       ],
-      "answer": "(a) By the product rule, $f'(x)=4x^{3}\\ln x+x^{4}\\cdot\\frac{1}{x}=4x^{3}\\ln x+x^{3}=x^{3}(4\\ln x+1)$ **(M1)(A1)(A1)(AG)**. The derivative of $\\ln x$ is $\\frac{1}{x}$, which cancels one factor of $x$ in $x^{4}$ and leaves the $x^{3}$ term **(R1)**. The factorised derivative is therefore confirmed as a product of $x^{3}$ and a logarithmic bracket. This structure is what makes the stationary point easy to locate once the factorisation is seen.\n\n(b) At $x=1$, we have $\\ln 1=0$, so $f'(1)=1^{3}(4\\cdot0+1)=1$ **(M1)(A1)**. At $x=e$, we have $\\ln e=1$, so $f'(e)=e^{3}(4\\cdot1+1)=5e^{3}$ **(A1)**. The two gradient values are therefore $1$ and $5e^{3}$ **(R1)**. The logarithm evaluates to $0$ at $1$ and to $1$ at $e$, which is exactly why these two inputs give such clean results.\n\n(c) A stationary point satisfies $f'(x)=0$, so $x^{3}(4\\ln x+1)=0$ **(M1)**. Since the domain is $x>0$, the factor $x^{3}$ is never zero, leaving $4\\ln x+1=0$, hence $\\ln x=-\\frac{1}{4}$ and $x=e^{-1/4}$ **(A1)(A1)**. The coordinate is irrational because it is a non-integer power of $e$ **(R1)**. The exact $x$-coordinate is therefore $e^{-1/4}$, a value that cannot be found by simple inspection.\n\n(d) Substituting $x=e^{-1/4}$ gives $f(e^{-1/4})=(e^{-1/4})^{4}\\ln(e^{-1/4})=e^{-1}\\cdot(-\\frac{1}{4})=-\\frac{1}{4e}$ **(M1)(A1)**, so the value is $-\\frac{1}{4e}$ **(A1)**. The power and the logarithm combine to produce a single negative fraction **(R1)**. The value is therefore $-\\frac{1}{4e}$, which is approximately $-0.09197$ and confirms the stationary point lies below the axis.",
-      "markscheme_notes": "(a) Award (M1) for applying the product rule to $x^{4}$ and $\\ln x$, (A1) for $4x^{3}\\ln x+x^{3}$, and (A1)(AG) for the factorised $x^{3}(4\\ln x+1)$. The (R1) is for explaining that the $1/x$ from $\\ln x$ cancels one power of $x$. A candidate who writes $x^{4}(1/x)$ as $x^{3}$ earns the simplification mark. The logarithm must remain inside the bracket for the stationary point to be found.\n\n(b) The (M1) is for substituting $x=1$, (A1) for $f'(1)=1$, (A1) for $f'(e)=5e^{3}$, and (R1) for the logarithm values at $1$ and $e$. Accept $5e^{3}$ in exact form or as a decimal approximation.\n\n(c) Award (M1) for setting the derivative to zero, (A1) for $4\\ln x+1=0$, (A1) for $x=e^{-1/4}$, and (R1) for noting the coordinate is irrational. Follow through from an incorrect derivative is allowed.\n\n(d) Award (M1) for substituting $x=e^{-1/4}$, (A1) for $e^{-1}(-1/4)$, (A1) for $-1/(4e)$, and (R1) for the simplified negative fraction. A candidate who gives only the decimal forfeits the exact-value mark. The exact form $-1/(4e)$ is required at HL.",
-      "explanation": "This item combines the product rule with the derivative of $\\ln x$ and then forces the candidate to solve for a stationary point that is not a nice rational number. The function $x^{4}\\ln x$ differentiates, by the product rule, to $x^{3}(4\\ln x+1)$, where the $1/x$ from $\\ln x$ cancels one power of $x$. The intended route is to factor the derivative, evaluate it at $x=1$ and $x=e$ to get $1$ and $5e^{3}$, then set the derivative to zero; because $x^{3}$ is never zero for $x>0$, the stationary point comes from $4\\ln x+1=0$, giving the irrational $x=e^{-1/4}$. The final value is $e^{-1}$ times $-1/4$, a negative fraction. The classic wrong turn is to mis-apply the product rule, writing $4x^{3}\\ln x+4x^{3}$ or forgetting the $1/x$ factor, which destroys the factorisation. Candidates also try to factor out $x^{4}$ or to solve $x^{3}=0$ and claim a stationary point at $x=0$, ignoring the domain $x>0$. Another error is to evaluate $\\ln(e^{-1/4})$ incorrectly, or to stop at $\\ln x=-1/4$ without exponentiating to recover $x$. The numbers were chosen so that $x=1$ and $x=e$ give clean values and the stationary coordinate is a pure power of $e$, isolating the logarithm-solving skill as the genuine difficulty. The irrational answer is the feature that separates this item from a routine product-rule exercise, and the requirement to express the final value exactly as $-1/(4e)$ rather than as a rounded decimal is the final test of precision.",
+      "answer": "**(a)** $h(1)=\\ln 1-\\dfrac{2(1-1)}{1+1}=0-0=0$. **(A1)** For the derivative, differentiate the rational term by the quotient rule:\n$$\\frac{d}{dx}\\left(\\frac{2(x-1)}{x+1}\\right)=\\frac{2(x+1)-2(x-1)}{(x+1)^{2}}=\\frac{4}{(x+1)^{2}}$$ **(M1)(A1)**\nso, since $\\dfrac{d}{dx}\\ln x=\\dfrac{1}{x}$, **(M1)**\n$$h'(x)=\\frac{1}{x}-\\frac{4}{(x+1)^{2}}=\\frac{(x+1)^{2}-4x}{x(x+1)^{2}}=\\frac{x^{2}-2x+1}{x(x+1)^{2}}=\\frac{(x-1)^{2}}{x(x+1)^{2}}$$ **(A1)(AG)**\nThe numerator completes to a perfect square, which is the fact the rest of the question depends on.\n\n**(b)** For $x>0$ we have $x>0$ and $(x+1)^{2}>0$, so the denominator $x(x+1)^{2}$ is positive, while $(x-1)^{2}\\ge 0$ for every real $x$. Hence $h'(x)\\ge 0$ on the whole domain, with equality only at $x=1$. **(M1)(A1)** Therefore $h$ is increasing on $(0,\\infty)$. **(R1)** Since $h(1)=0$, it follows that\n$$x>1 \\Rightarrow h(x)>0 \\Rightarrow \\ln x>\\frac{2(x-1)}{x+1},\\qquad 0<x<1 \\Rightarrow h(x)<0 \\Rightarrow \\ln x<\\frac{2(x-1)}{x+1}.$$ **(A1)(A1)**\nThe inequality reverses at $x=1$, and that reversal is the point: the two expressions are equal at $x=1$ and the comparison changes direction there rather than holding one way throughout.\n\n**(c)** As $x\\to\\infty$, the rational term satisfies $\\dfrac{2(x-1)}{x+1}=\\dfrac{2-2/x}{1+1/x}\\to 2$, whereas $\\ln x\\to\\infty$. **(M1)(A1)** Hence $h(x)\\to\\infty$. **(A1)** The bound is therefore true but increasingly weak: it never exceeds $2$, so for large $x$ it says only that $\\ln x$ is bigger than a quantity that has stopped growing. **(R1)** What makes the inequality interesting is the opposite end. At $x=1$ the two sides are equal and, since $h'(1)=0$, their first derivatives agree as well, so near $x=1$ the rational expression approximates $\\ln x$ to second order and the bound is excellent; the same statement degrades steadily as $x$ moves away from $1$.\n\n**(d)** Put $x=2$, which is greater than $1$, so the first case of part (b) applies: **(M1)**\n$$\\ln 2>\\frac{2(2-1)}{2+1}=\\frac{2}{3}.$$ **(A1)**\nHence $\\ln 2$ is the larger of the two. **(A1)** No decimal value is needed, and none is available without a calculator, which is exactly why the inequality is worth having; the conclusion is rigorous even though the gap is only about $0.026$. **(R1)**",
+      "markscheme_notes": "(a) The quotient rule must be shown rather than quoted, because the simplification to a single square is where the mark is earned. Award (A1) for $4/(x+1)^{2}$ and do not accept an unsimplified $\\big[(x+1)^{2}-4x\\big]$ numerator as final. (b) The sign argument must name both factors: positivity of the denominator and non-negativity of the square. A candidate who says only 'the derivative is positive' has skipped the case $x=1$ and should not receive the final mark. Award the reversal in full only if both directions are given; a candidate who states the $x>1$ case alone has done half the question. (c) Accept any correct evaluation of the limit; the comment mark is for noticing that a bound that tends to $2$ cannot track a function that tends to infinity. Credit the observation about agreement of value and gradient at $x=1$ as an alternative acceptable comment. (d) The word 'hence' is load-bearing: the mark is for substituting $x=2$ into the part (b) result, not for quoting a decimal for $\\ln 2$. A candidate who writes $\\ln 2 \\approx 0.693$ and compares has not answered the question as set and should be credited only for the conclusion.",
+      "explanation": "This question is built around a move that students meet early and rarely see used seriously: if a function is increasing and you know its value at one point, you know an inequality everywhere. Nothing here needs a turning point. The derivative of $h$ happens to be a perfect square divided by a quantity that is positive on the whole domain, so its sign is settled by inspection, and because $h(1)=0$ the sign of $h$ itself follows immediately on either side of $1$. The result is a clean comparison between a logarithm and a rational function, obtained without evaluating anything.\n\nThe detail that makes the item worth sixteen marks is the reversal. Students expect an inequality proved by monotonicity to hold in one direction throughout, and here it does not: the two expressions are equal at $x=1$ and the comparison swaps over. A candidate who establishes $h'(x)\\ge 0$ and then reports a single direction has done the hard part and then thrown away the most interesting consequence. This is why part (b) asks for both cases explicitly.\n\nPart (c) is included because a proved inequality is not automatically a useful one, and judging usefulness is a separate skill from proving. The rational bound tends to $2$, so it cannot possibly track a function that grows without limit; the inequality is exact at $x=1$, excellent nearby, and steadily less informative as $x$ grows. Part (d) then puts the inequality to work in the one situation where it is at its best: comparing $\\ln 2$ with $2/3$ is a question about a number close to $1$, and it can be settled rigorously with no calculator at all. The genre is a standard one in Chinese school mathematics, where inequalities of the form $\\ln x \\gtrless 2(x-1)/(x+1)$ are proved by exactly this square-over-positive-denominator argument, and it transfers cleanly to IB command terms because the reasoning is short enough to write out in full.\n\nThere is a broader lesson in the structure. Proving an inequality by differentiating a carefully chosen auxiliary function is a technique that appears across the syllabus, and the auxiliary function here is chosen so that its derivative factorises as a square. Recognising that a derivative *might* do that, and choosing the function accordingly, is the transferable skill; the particular inequality is not.",
       "provenance": {
-        "inspired_by": "original",
-        "adaptation": "Built from the SL 5.6 bullet on the derivative of x^n for rational n together with the derivatives of ln x and e^x. The lever is the product f(x)=x^4 ln x, whose derivative by the product rule is x^3(4 ln x+1); the points x=1 and x=e were chosen to give the clean values f'(1)=1 and f'(e)=5e^3, and the stationary point is forced to the irrational coordinate x=e^{-1/4} by solving 4 ln x+1=0, with value -1/(4e). The item is not a reskin because the stationary point is irrational and requires solving a logarithmic equation rather than factorising.",
+        "inspired_by": "Chinese 高考/强基 logarithmic-inequality genre (bounding ln x by a rational function)",
+        "adaptation": "Original question written in the genre rather than translated from a source paper. The four-part structure is new: the derivative-as-square step is standard in that genre, but the explicit limit part, the reversal case for 0 < x < 1, the comment on where the bound is sharp, and the calculator-free comparison of ln 2 with 2/3 were constructed for this item. Context, numbers and command terms are IB-specific.",
+        "resource_origin": "China (高考 / 强基计划 logarithmic inequality tradition)",
         "source_url": null,
         "rights": "original"
       },
       "originality": {
-        "max_similarity": 0.03,
-        "nearest_bank_id": "MATH_AAHL_P1_2011May_TZ1_q12",
-        "max_internal_similarity": 0.022,
+        "max_similarity": 0.005,
+        "nearest_bank_id": "MATH_AAHL_P3_2015Nov_TZ0_q05",
+        "max_internal_similarity": 0.005,
         "checked_at": "2026-09-11",
         "nearest_bank_label": "bank:Mathematics/AA HL",
-        "nearest_internal_id": "MATH-AHL5.7-001"
+        "nearest_internal_id": "MATH-AHL5.8-001",
+        "max_approach_similarity": 0.083,
+        "nearest_approach_id": "MATH-AHL5.15-001"
       },
       "verification": {
-        "method": "Every value was recomputed independently: the derivative x^3(4 ln x+1) at x=1 giving 1, at x=e giving 5e^3, the stationary coordinate e^{-0.25}, and the stationary value e^{-1} times -0.25.",
+        "method": "h(1), the closed form of h'(x), the sign argument and the numerical comparisons were all recomputed in Python to full precision; h'(x) was additionally checked against a central-difference approximation of h at nine points spanning 0.25 to 100.",
         "assertions": [
-          "approx(1**3*(4*log(1)+1), 1, 1e-9)",
-          "approx(e**3*(4*1+1), 5*e**3, 1e-9)",
-          "approx(e**(-0.25), 0.778800783, 1e-6)",
-          "approx(e**(-1)*(-0.25), -0.091969860, 1e-6)"
-        ]
+          "approx(log(1), 0)",
+          "approx(2*(1-1)/(1+1), 0)",
+          "approx(1/2 - 4/9, 1/18)",
+          "approx((2-1)**2/(2*3**2), 1/18)",
+          "approx(1/3 - 4/16, 1/12)",
+          "approx((3-1)**2/(3*4**2), 1/12)",
+          "approx(1/10 - 4/121, (10-1)**2/(10*121))",
+          "approx(log(2), 0.693147, 1e-5)",
+          "approx(2*(2-1)/(2+1), 0.666667, 1e-5)",
+          "log(2) > 2*(2-1)/(2+1)",
+          "approx(log(0.5), -0.693147, 1e-5)",
+          "approx(2*(0.5-1)/(0.5+1), -0.666667, 1e-5)",
+          "log(0.5) < 2*(0.5-1)/(0.5+1)"
+        ],
+        "solution_skeleton": [
+          "differentiate the logarithmic term and the rational term and combine them over a common denominator",
+          "complete the square in the numerator so the derivative is a square over a positive quantity",
+          "deduce the sign of the difference function from the sign of its derivative together with one known value",
+          "compare the growth of the logarithmic and rational parts in the limit to judge whether the bound is sharp",
+          "apply the inequality at a particular value to compare two numbers without a calculator"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
       },
       "status": "published",
-      "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "authored_by": "ai"
     }
   ]
 }

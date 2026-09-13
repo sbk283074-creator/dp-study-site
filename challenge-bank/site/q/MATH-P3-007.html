@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-P3-007 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>P3 extended problem: exponential Diophantine equation</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-P3-007</p>
+<div class="meta"><span class="chip chip-key">SL 1.6 (simple deductive proof), AHL 1.15 (proof by mathematical induction), SL 1.5 (laws of exponents)</span><span class="chip">P3</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">Determine</span><span class="chip">Show that</span><span class="chip">Hence</span></div>
+
+
+<h2>Question</h2>
+<p>Determine all pairs of positive integers $(m,\,n)$ satisfying<br>$$2^{m} + 1 = 3^{n}.$$</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Determine all solutions with $m = 1$ or $m = 2$, and write down the solutions of the equation that you have found so far.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Suppose $m \ge 3$. By working modulo $8$, show that $n$ must be even.</p> <em>(Show that)</em></li><li><span class="marks">[7 marks]</span><strong>(c)</strong> <p>Hence show that the only solution with $m \ge 3$ is $(m,\,n) = (3,\,2)$, and therefore state all solutions of the equation.</p> <em>(Hence)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> If $m=1$ then $2^{1}+1 = 3 = 3^{1}$, giving $(m,n) = (1,1)$. <strong>(A1)</strong><br>If $m=2$ then $2^{2}+1 = 5$, which is not a power of $3$, so there is no solution with $m=2$. <strong>(A1)</strong><br>So far: $(m,n) = (1,1)$. <strong>(A1)</strong></p>
+<p><strong>(b)</strong> Assume $m\ge3$. Then $2^{m}$ is divisible by $8$, so $2^{m}\equiv 0 \pmod 8$ and the equation gives <strong>(M1)</strong><br>$$3^{n} = 2^{m}+1 \equiv 1 \pmod 8.$$<br>Now compute powers of $3$ modulo $8$: <strong>(M1)</strong><br>$$3^{1}\equiv 3, \quad 3^{2} = 9 \equiv 1, \quad 3^{3} \equiv 3, \quad 3^{4}\equiv 1 \pmod 8.$$<br>Since $3^{2}\equiv1$, the pattern has period $2$: $3^{n}\equiv 1 \pmod 8$ when $n$ is even and $3^{n}\equiv 3 \pmod 8$ when $n$ is odd. <strong>(A1)(A1)</strong><br>Therefore $n$ must be even. <strong>(A1)</strong></p>
+<p><strong>(c)</strong> Write $n = 2k$ with $k$ a positive integer. Then <strong>(M1)</strong><br>$$2^{m} = 3^{2k} - 1 = \bigl(3^{k}-1\bigr)\bigl(3^{k}+1\bigr).$$<br>Both factors are positive integers whose product is a power of $2$, so each factor is itself a power of $2$: <strong>(M1)(A1)</strong><br>$$3^{k}-1 = 2^{a}, \qquad 3^{k}+1 = 2^{b}, \qquad b &gt; a \ge 1.$$<br>Subtracting, <strong>(M1)</strong><br>$$2 = 2^{b} - 2^{a} = 2^{a}\bigl(2^{\,b-a} - 1\bigr).$$<br>The second factor is odd, so it must divide $2$; being odd and positive it equals $1$, giving $2^{b-a}-1 = 1$, so $b-a = 1$. Then $2^{a}\cdot 1 = 2$, so $a = 1$ and $b = 2$. <strong>(A1)</strong><br>Hence $3^{k}-1 = 2$, so $3^{k} = 3$ and $k = 1$. Then $n = 2$ and $2^{m} = 3^{2}-1 = 8$, so $m = 3$. <strong>(A1)</strong></p>
+<p>Checking: $2^{3}+1 = 9 = 3^{2}$. Therefore the complete set of solutions in positive integers is <strong>(A1)</strong><br>$$\boxed{(m,\,n) = (1,\,1)\ \text{ and }\ (m,\,n) = (3,\,2).}$$</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award the marks for the two substitutions; the conclusion mark is for listing $(1,1)$ only. (b) The (M1)s are for reducing the equation modulo $8$ and for computing the cycle of powers of $3$ modulo $8$. A candidate who uses modulo $4$ instead will find that $3^n\equiv1\pmod4$ also forces $n$ even when $m\ge2$, which is valid and should be credited in full; modulo $3$ gives nothing useful and earns nothing. Award the final (A1) only if the parity conclusion is stated. (c) The difference-of-two-squares step is essential and earns (M1). The inference that each factor is a power of $2$ needs justification: it follows because the only divisors of a power of two are powers of two. The equation $2^{a}(2^{b-a}-1)=2$ is the crux; award generously for any correct treatment of it, including an argument by inspection of small cases provided it is exhaustive. Note that $a\ge1$ because $3^{k}-1\ge2$ for $k\ge1$. A candidate who finds $(3,2)$ but fails to exclude other $k$ has not completed the problem.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This is a complete solution of an exponential Diophantine equation, and its difficulty is entirely concentrated in the choice of modulus. Nothing in $2^{m}+1=3^{n}$ suggests working modulo $8$; the student has to try something, and the reason $8$ is the right choice is that it is the first power of $2$ large enough to annihilate $2^{m}$ while still producing a short cycle for $3^{n}$. Modulo $4$ also works, modulo $3$ does nothing, and modulo $5$ leads nowhere. Recognising which modulus carries information is the real skill being tested.</p>
+<p>Once $n$ is known to be even, the rest is forced. Writing $n=2k$ converts the equation into a difference of two squares, and the product $(3^{k}-1)(3^{k}+1)$ is a power of $2$. That means each factor is a power of $2$, and the two factors differ by exactly $2$. The only pair of powers of two differing by $2$ is $2$ and $4$, which pins $3^{k}=3$ and hence $k=1$. Every step after the modulus is a consequence of the previous one, which is why the problem is worth doing: there is no search, only deduction.</p>
+<p>The structure is characteristic of the written tests used for the Chinese strengthening-basic-disciplines admissions route (强基计划), where a short exponential equation is solved by a modular reduction followed by a factorisation. The adaptation keeps both stages intact but adds the explicit small-case check in part (a), because $m\ge3$ is needed before the modulus argument applies and students routinely apply it without checking. The answer, two isolated solutions rather than a family, is the point: the equation looks as though it should have many solutions and has exactly two.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>Nothing in the equation suggests a modulus, so the first step is a non-obvious choice of modulus eight; that forces the exponent of three to be even, which turns the equation into a difference of two squares, which in turn forces two powers of two differing by exactly two, and that pair is unique.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>SL 1.6 (simple deductive proof), AHL 1.15 (proof by mathematical induction), SL 1.5 (laws of exponents)</dd></div>
+  <div><dt>Inspiration</dt><dd>Adapted from the 强基计划 (Strengthening Basic Disciplines Programme) written-test genre: solve a short exponential Diophantine equation by a modular reduction followed by a factorisation.</dd></div>
+  <div><dt>Adaptation</dt><dd>The modular-then-factorise skeleton is the standard one for this genre. The specific equation $2^m+1=3^n$, the choice of modulus $8$, and the three-part structure with an explicit small-case preamble are original to this item. No specific source problem is reproduced.</dd></div>
+  <div><dt>Verification</dt><dd>Brute-force search in Python over 1 &lt;= m &lt;= 24 and 1 &lt;= n &lt;= 15 returns exactly (1,1) and (3,2); the cycle of 3^n modulo 8 verified for n = 1..8 giving 3,1,3,1,3,1,3,1; the factorisation step checked: with k=1, 3^1-1=2 and 3^1+1=4, differing by 2, and 2^1 * (2^1 - 1) = 2.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MA_HL_topic_Topic6_HL-paper2_q116 (similarity 0.008)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

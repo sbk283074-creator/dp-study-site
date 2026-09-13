@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-P3-010 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>The probability that nobody gets their own coat back</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-P3-010</p>
+<div class="meta"><span class="chip chip-key">AHL 1.10 (counting principles, including permutations and combinations); SL 1.8 (sum of infinite convergent geometric sequences — used here as the series for e)</span><span class="chip">P3</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: permitted</span><span class="chip">Show that</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">Show that</span></div>
+
+
+<h2>Question</h2>
+<p>At the end of a party, $n$ guests collect their coats at random from a rack. A <strong>derangement</strong> of $n$ objects is a permutation in which no object is left in its original position. Let $D_{n}$ be the number of derangements of $n$ objects, and let $p_{n} = D_{n}/n!$ be the probability that no guest takes their own coat. This problem derives three descriptions of the same sequence and asks what they tell you about each other.</p>
+<ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>Let $A_{i}$ be the set of permutations that fix object $i$. By applying the inclusion–exclusion principle to the union of the $A_{i}$, show that<br>$$D_{n} = n!\sum_{k=0}^{n}\frac{(-1)^{k}}{k!}.$$</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>By conditioning on what happens to object 1, show that for $n \ge 2$<br>$$D_{n} = (n-1)\bigl(D_{n-1} + D_{n-2}\bigr),$$<br>with $D_{0} = 1$ and $D_{1} = 0$. Hence verify that your formula from part (a) satisfies this recurrence for $n = 4$.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Determine $\displaystyle\lim_{n\to\infty} p_{n}$, giving your answer in terms of $e$. Determine also the smallest value of $n$ for which $p_{n}$ is within $0.001$ of this limit, justifying your answer with a bound on the error.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Show that for every $n \ge 1$, $D_{n}$ is the nearest integer to $\dfrac{n!}{e}$.</p> <em>(Show that)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> A permutation fails to be a derangement exactly when at least one object is fixed, so $D_{n} = n! - \bigl|\bigcup_{i} A_{i}\bigr|$. <strong>(M1)</strong> For any $k$ distinct indices, $\bigl|A_{i_{1}} \cap \cdots \cap A_{i_{k}}\bigr| = (n-k)!$, since those $k$ objects are fixed and the remaining $n-k$ may be arranged freely. <strong>(A1)</strong> There are $\dbinom{n}{k}$ ways to choose the $k$ indices, so by inclusion–exclusion <strong>(M1)</strong><br>$$\Bigl|\bigcup_{i} A_{i}\Bigr| = \sum_{k=1}^{n} (-1)^{k+1}\binom{n}{k}(n-k)!$$<br>Therefore <strong>(M1)</strong><br>$$D_{n} = n! - \sum_{k=1}^{n}(-1)^{k+1}\frac{n!}{k!(n-k)!}(n-k)! = n!\sum_{k=0}^{n}\frac{(-1)^{k}}{k!}$$ <strong>(A1)(AG)</strong></p>
+<p><strong>(b)</strong> Consider object 1. In a derangement it must land in some position $j \neq 1$, and there are $n-1$ choices of $j$. <strong>(M1)</strong> Now consider where object $j$ goes.</p>
+<p>*Case 1.* Object $j$ lands in position 1. Then objects 1 and $j$ have swapped, and the remaining $n-2$ objects must be deranged among themselves: $D_{n-2}$ arrangements. <strong>(A1)</strong></p>
+<p>*Case 2.* Object $j$ does not land in position 1. Then, regarding position 1 as the 'forbidden' position for object $j$ and every other remaining object as forbidden from its own position, the remaining $n-1$ objects must be deranged: $D_{n-1}$ arrangements. <strong>(A1)</strong></p>
+<p>Hence $D_{n} = (n-1)(D_{n-1} + D_{n-2})$. For $n = 4$: the formula in (a) gives $D_{4} = 24\left(1 - 1 + \tfrac{1}{2} - \tfrac{1}{6} + \tfrac{1}{24}\right) = 24 \times \tfrac{9}{24} = 9$, and $D_{3} = 2$, $D_{2} = 1$, so $(4-1)(D_{3} + D_{2}) = 3(2 + 1) = 9$, which agrees. <strong>(A1)</strong></p>
+<p><strong>(c)</strong> $p_{n} = \dfrac{D_{n}}{n!} = \displaystyle\sum_{k=0}^{n}\frac{(-1)^{k}}{k!}$, which is the $n$th partial sum of the Maclaurin series for $e^{x}$ at $x = -1$. <strong>(M1)</strong> Hence <strong>(A1)</strong><br>$$\lim_{n\to\infty} p_{n} = e^{-1} = \frac{1}{e} \approx 0.3679$$<br>The series is alternating with terms decreasing in magnitude, so the error after $n$ terms is at most the first neglected term: $|p_{n} - 1/e| \le \dfrac{1}{(n+1)!}$. <strong>(M1)</strong> We need $\dfrac{1}{(n+1)!} &lt; 0.001$, i.e. $(n+1)! &gt; 1000$. Since $6! = 720$ and $7! = 5040$, we need $n + 1 \ge 7$, so the smallest such $n$ is $n = 6$. <strong>(A1)</strong> Checking directly: $p_{5} = 1 - 1 + \tfrac{1}{2} - \tfrac{1}{6} + \tfrac{1}{24} - \tfrac{1}{120} = 0.36667$, which differs from $1/e$ by about $0.0012$, while $p_{6} = p_{5} + \tfrac{1}{720} = 0.36806$, which differs by about $0.00018$.</p>
+<p><strong>(d)</strong> From (a), $D_{n} = n!\displaystyle\sum_{k=0}^{n}\frac{(-1)^{k}}{k!}$, while $\dfrac{n!}{e} = n!\displaystyle\sum_{k=0}^{\infty}\frac{(-1)^{k}}{k!}$. <strong>(M1)</strong> Subtracting, <strong>(M1)</strong><br>$$\left|\frac{n!}{e} - D_{n}\right| = n!\left|\sum_{k=n+1}^{\infty}\frac{(-1)^{k}}{k!}\right| \le \frac{n!}{(n+1)!} = \frac{1}{n+1}$$<br>using the alternating-series bound again. For $n \ge 1$ this is at most $\tfrac{1}{2}$, and in fact strictly less than $\tfrac{1}{2}$ for $n \ge 2$. <strong>(A1)</strong> A number within $\tfrac{1}{2}$ of $D_{n}$ has $D_{n}$ as its nearest integer, so $D_{n}$ is the nearest integer to $n!/e$. For $n = 1$, $1!/e \approx 0.368$ and $D_{1} = 0$, which is indeed the nearest integer.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award (M1) for setting up the complement, (A1) for the count $(n-k)!$ of a $k$-fold intersection, and (M1) for the inclusion-exclusion sum with alternating signs. The final (AG) is generous with follow-through: a candidate whose signs are reversed throughout has made one error and should lose only the accuracy mark. (b) The two cases are the entire argument and each earns a mark; the most common failure is to treat case 2 as $D_{n-2}$, which double-counts the swap. Accept any explicit verification for $n = 4$, including a direct listing of the nine derangements. (c) The identification of the partial sum with the series for $e^{-1}$ is the key step and is worth a mark on its own; a candidate who computes several values and guesses the limit cannot reach the error-bound mark. Accept $n = 6$ with the alternating-series bound; do not accept a value obtained by comparing decimals without a bound. (d) Award (M1) for writing both expressions as sums and (M1) for the subtraction; the mark is for the bound $1/(n+1)$ and the conclusion that it is below a half. Candidates who note that the $n=1$ case is borderline should not be penalised for mentioning it.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This problem is a study in how much two descriptions of the same sequence can differ in what they let you see. The inclusion-exclusion formula in part (a) is exact, closed-form, and almost useless for computation: it is an alternating sum of nearly cancelling terms, so evaluating $D_{20}$ from it on a calculator loses most of the significant figures. The recurrence in part (b) is computationally perfect and conceptually opaque: it lets you generate $D_{n}$ for any $n$ without ever explaining why the answer behaves the way it does. Neither hints that $p_{n}$ settles down at all, let alone that it settles on $1/e$.</p>
+<p>The moment of the problem is part (c), and it only works because of the closed form. Once $p_{n}$ is recognised as the $n$th partial sum of $\sum (-1)^{k}/k!$, the limit is $e^{-1}$ immediately and the error bound follows from the alternating series estimate, which is a theorem students meet early and rarely apply. The answer to 'how large must $n$ be' is $6$, which is startlingly small: with seven guests the probability that nobody gets their own coat is already within a tenth of a percentage point of its limiting value. That is a genuinely counter-intuitive fact, and it is worth saying out loud, because most people guess that convergence to $1/e$ would be slow.</p>
+<p>Part (d) ties the two formulas together in a way neither suggests alone. Since $D_{n}$ is the $n$th partial sum multiplied by $n!$, and $n!/e$ is the full sum multiplied by $n!$, the difference is the tail, and the alternating bound puts that tail below $1/(n+1)$, hence below a half. So $D_{n}$ is the nearest integer to $n!/e$. This is a memorable and slightly absurd statement — a counting problem whose answer is obtained by dividing by $e$ and rounding — and it is the kind of result that makes the whole investigation worth doing. It is also the reason the problem asks for all three methods: the recurrence proves nothing about $e$, and the limit proves nothing about integers, but together they prove something neither could reach alone.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>Three methods are forced in sequence and each is harder to start than the last: inclusion-exclusion gives a closed form with alternating signs, a conditioning argument gives a recurrence with no alternating signs, and only the closed form reveals that the answer is the nearest integer to n!/e, which is a statement no recurrence would suggest. The convergence to 1/e is surprising enough that a candidate who computes it correctly still has to be told why it should be true.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 1.10 (counting principles, including permutations and combinations); SL 1.8 (sum of infinite convergent geometric sequences — used here as the series for e)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Original problem written around the standard derangement sequence rather than adapted from a past paper. The four-part structure is constructed so that the closed form, the recurrence, the limit and the rounding result each depend on the previous one; the specific demand in part (c) for the smallest n within 0.001 was chosen because it falls at n = 6, small enough to check by hand. All values of D_n and both error bounds were recomputed in Python.</dd></div>
+  <div><dt>Verification</dt><dd>D_n computed from the inclusion-exclusion formula and independently by brute-force enumeration of all permutations for n up to 8; the recurrence checked for n = 2 to 8; the limit and the smallest n within 0.001 obtained from the alternating-series bound; the rounding claim checked for n = 1 to 8 against n!/e.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P3_2008Nov_TZ0_q03 (similarity 0.011)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL1.2-001 (similarity 0.01)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

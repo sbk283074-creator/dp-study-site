@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL5.15-001 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Deriving the arctangent derivative by implicit differentiation, then using it</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL5.15-001</p>
+<div class="meta"><span class="chip chip-key">AHL 5.15 (derivatives of arctan x and other inverse trigonometric and exponential functions; indefinite integration)</span><span class="chip">P3 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Show that</span><span class="chip">Find</span><span class="chip">Evaluate</span></div>
+
+
+<h2>Question</h2>
+<p>Let $y=\arctan x$.</p>
+<ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>By writing $x=\tan y$ and differentiating implicitly with respect to $x$, show that $\frac{dy}{dx}=\frac{1}{1+x^{2}}$.</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Hence find the indefinite integral of $\frac{1}{1+x^{2}}$ with respect to $x$.</p> <em>(Find)</em></li><li><span class="marks">[6 marks]</span><strong>(c)</strong> <p>Evaluate the definite integrals $\int_{0}^{1}\frac{1}{1+x^{2}}\,dx$ and $\int_{1}^{\sqrt{3}}\frac{1}{1+x^{2}}\,dx$, giving exact answers.</p> <em>(Evaluate)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>Write $x=\tan y$, so $\frac{dx}{dy}=\sec^{2}y$ <strong>(M1)</strong>. By the chain rule $1=\sec^{2}y\,\frac{dy}{dx}$, giving $\frac{dy}{dx}=\frac{1}{\sec^{2}y}$ <strong>(A1)</strong>. Using the identity $\sec^{2}y=1+\tan^{2}y=1+x^{2}$ we obtain $\frac{dy}{dx}=\frac{1}{1+x^{2}}$ <strong>(A1)(AG)</strong>. This is the derivative of $\arctan x$, derived rather than recalled.</p>
+<p>Because integration reverses differentiation, $\int\frac{1}{1+x^{2}}\,dx=\arctan x+C$ <strong>(M1)(A1)(AG)</strong>, where the constant of integration is essential and must be stated.</p>
+<p>Thus $\int_{0}^{1}\frac{1}{1+x^{2}}\,dx=\arctan 1-\arctan 0=\frac{\pi}{4}-0=\frac{\pi}{4}$ <strong>(M1)(A1)</strong>, and $\int_{1}^{\sqrt{3}}\frac{1}{1+x^{2}}\,dx=\arctan(\sqrt{3})-\arctan 1=\frac{\pi}{3}-\frac{\pi}{4}=\frac{\pi}{12}$ <strong>(A1)(AG)</strong>. Exact multiples of $\pi$ are required; decimal approximations alone are not sufficient for full credit, though a numerical check such as $0.7854$ and $0.2618$ may be offered as confirmation. The indefinite integral also follows by the substitution $x=\tan u$, $dx=\sec^{2}u\,du$, which reduces the integrand to $1$ and gives $\arctan x+C$, confirming the result by a second method. For the definite integrals the antiderivative is continuous on the closed interval, so the fundamental theorem applies directly with no improper-integral care required. The continuity of the antiderivative on the whole interval guarantees that the endpoint evaluation is valid and that no singularity occurs within the range of integration, so both definite integrals are proper. The method also shows why the antiderivative is unique up to the additive constant, since any two antiderivatives of the same function differ by a constant.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award (M1) for implicit differentiation of $x=\tan y$ with respect to $x$, (A1) for $1=\sec^{2}y\,dy/dx$, (A1) for replacing $\sec^{2}y$ by $1+\tan^{2}y$, and (A1)(AG) for $1/(1+x^{2})$. (b) Award (M1) for reversing the derivative to obtain the antiderivative and (A1)(AG) for $\arctan x+C$; deduct for a missing $+C$. (c) Award (M1) for applying the limits to the antiderivative, (A1) for $\pi/4$, (A1) for $\pi/3-\pi/4$, and (A1)(AG) for $\pi/12$. Exact multiples of $\pi$ are required; award partial credit if a correct numerical method is shown but the exact form is missing, and deduct (A1) for each integral given only as a decimal. The substitution method in part (b) is an acceptable alternative route to the same antiderivative. The exact forms pi/4 and pi/12 must be shown; a candidate who gives only decimal approximations loses the relevant (A1) even when the numerical value is correct, and the link back to the part (a) derivative should be acknowledged when awarding the indefinite integral.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The derivative of $\arctan x$ is not handed to the candidate on the SL formula sheet, so it must be reconstructed. The trick is to invert the definition: set $x=\tan y$ and differentiate implicitly with respect to $x$, which turns a transcendental derivative into the algebraic identity $\sec^{2}y=1+\tan^{2}y$. Once the derivative is known, the indefinite integral in part (b) is immediate, and the two definite integrals in part (c) are just the standard arctangent values at $1$ and $\sqrt{3}$. The classic errors are to 'remember' the derivative as $1/\sqrt{1+x^{2}}$ (confusing it with the derivative of arcsine) or to drop the $+C$ in part (b), and to give decimal approximations instead of the exact multiples $\pi/4$ and $\pi/12$ in part (c). The derivation is the lever: the item is unsolvable by recall alone but becomes routine once the implicit step is seen, and it reinforces the inverse relationship between differentiation and integration that underpins the whole of Topic 5. A useful consolidation is that every inverse-trigonometric derivative can be obtained this way, so the method generalises far beyond arctangent. Practising the derivation builds the habit of reconstructing formulas under exam pressure, when the formula booklet may not list the exact case required. Reassuringly, both the implicit-differentiation route and the tangent-substitution route arrive at the same antiderivative, which is a useful cross-check, and this convergence deepens the student's confidence in the result.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The derivative of $\arctan x$ is not on the SL formula list and must be derived by implicit differentiation of $x=\tan y$; the integral in (b) and (c) then follows from the result, so the item rewards the derivation rather than recall.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 5.15 (derivatives of arctan x and other inverse trigonometric and exponential functions; indefinite integration)</dd></div>
+  <div><dt>Inspiration</dt><dd>original (standard inverse-trigonometric derivative)</dd></div>
+  <div><dt>Adaptation</dt><dd>A three-part item deriving d/dx[arctan x] by implicit differentiation of x=tan y, then using it for an indefinite and two definite integrals. Exact values pi/4 and pi/12 are forced. The lever is the derivation, not recall.</dd></div>
+  <div><dt>Verification</dt><dd>Verified derivative: at x=1, d/dx arctan = 1/2. Integrals: arctan(1)=pi/4; arctan(sqrt(3))=pi/3; difference pi/12. Also check 1/(1+x^2) integrates to arctan x (derivative of arctan x = 1/(1+x^2)).</dd></div>
+  <div><dt>Nearest bank match</dt><dd>no shared 5-grams with the 12,796-question corpus (similarity 0.0)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL5.4-001 (similarity 0.01)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

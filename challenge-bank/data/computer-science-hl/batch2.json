@@ -76,7 +76,9 @@
         "max_internal_similarity": 0.006,
         "checked_at": "2026-09-11",
         "nearest_bank_label": "bank:Computer Science/CS HL",
-        "nearest_internal_id": "CS-B3.1-001"
+        "nearest_internal_id": "CS-B3.1-001",
+        "max_approach_similarity": 0.122,
+        "nearest_approach_id": "BM-4.5-001"
       },
       "verification": {
         "method": "Checked by computation. -37.5 / 0.0625 = -600; -600 in 12-bit two's complement is 4096 - 600 = 3496 = 1101 1010 1000 = 0xDA8, and 3496 - 4096 = -600. The 12-bit signed range is -2048..2047, equal to -128.0..127.9375 degrees Celsius. 16 x 2047 = 32752, which is within the 16-bit signed range -32768..32767 but outside the 15-bit range. The Boolean simplification was verified by evaluating both expressions over all eight input combinations.",
@@ -91,12 +93,19 @@
           "approx(2047*0.0625, 127.9375)"
         ],
         "checked_by": "ai",
-        "status": "pass"
+        "status": "pass",
+        "solution_skeleton": [
+          "interpret the register layout including the sign bit and the scaling factor",
+          "convert a given bit pattern into the temperature it represents",
+          "explain how the sign convention restricts the representable range",
+          "show the quantisation error for the stated value"
+        ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "structured"
     },
     {
       "id": "CS-A1.3-001",
@@ -174,7 +183,9 @@
         "max_internal_similarity": 0.0,
         "checked_at": "2026-09-11",
         "nearest_bank_label": "generated:cs_ai_batch3.json",
-        "nearest_internal_id": null
+        "nearest_internal_id": null,
+        "max_approach_similarity": 0.143,
+        "nearest_approach_id": "CS-B2.5-001"
       },
       "verification": {
         "method": "Both schedules were traced programmatically. FCFS completion times A 5, B 8, C 16, D 18 ms give waiting times 0, 5, 8, 16 and an average of 7.25 ms. Round robin with quantum 3 gives completion times B 6, D 11, A 13, C 18 ms and waiting times 8, 3, 10, 9, averaging 7.50 ms. FCFS uses 3 context switches and round robin 7, costing 1.5 ms and 3.5 ms respectively.",
@@ -186,12 +197,19 @@
           "5 + 3 + 8 + 2 == 18"
         ],
         "checked_by": "ai",
-        "status": "pass"
+        "status": "pass",
+        "solution_skeleton": [
+          "state the scheduling policy and the execution order it produces",
+          "compute the completion and turnaround times of each task under that policy",
+          "compare the mean turnaround time with that of an alternative policy",
+          "evaluate the policy against the real-time deadline given"
+        ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "structured"
     },
     {
       "id": "CS-A3.4-001",
@@ -269,7 +287,9 @@
         "max_internal_similarity": 0.0,
         "checked_at": "2026-09-11",
         "nearest_bank_label": "bank:Computer Science/CS HL",
-        "nearest_internal_id": null
+        "nearest_internal_id": null,
+        "max_approach_similarity": 0.115,
+        "nearest_approach_id": "CS-A1.1-001"
       },
       "verification": {
         "method": "Storage arithmetic recomputed: 14 h x 3600 s / 0.4 s = 126000 reports per van per day; x 340 vans = 42 840 000 reports per day; x 80 bytes = 3.4272e9 bytes = 3.43 GB per day; x 365 = 1250.9 GB = 1.25 TB per year; x 3 for replication = 3.75 TB.",
@@ -281,12 +301,19 @@
           "approx(42840000*80*365*3/1e12, 3.752784, 1e-6)"
         ],
         "checked_by": "ai",
-        "status": "pass"
+        "status": "pass",
+        "solution_skeleton": [
+          "distinguish the transactional and analytical workloads by their access patterns",
+          "design a separation that isolates reporting from the dispatch path",
+          "quantify the reporting query cost or the data volume involved",
+          "justify the chosen store against the consistency and latency requirements"
+        ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "structured"
     },
     {
       "id": "CS-B3.1-001",
@@ -362,7 +389,9 @@
         "max_internal_similarity": 0.006,
         "checked_at": "2026-09-11",
         "nearest_bank_label": "bank:Physics/Physics HL",
-        "nearest_internal_id": "CS-A1.2-001"
+        "nearest_internal_id": "CS-A1.2-001",
+        "max_approach_similarity": 0.091,
+        "nearest_approach_id": "CS-B3.2-001"
       },
       "verification": {
         "method": "The draft and corrected methods were executed. With capacity 5 and readings 10, 20, 30 the draft returns 60/5 = 12 and the correction returns 60/3 = 20. The completed class was run with five readings and checked to hold no more than five, and the eviction behaviour was checked by adding a sixth reading.",
@@ -373,12 +402,19 @@
           "approx(sum([10,20,30,40,50])/5, 30.0)"
         ],
         "checked_by": "ai",
-        "status": "pass"
+        "status": "pass",
+        "solution_skeleton": [
+          "explain the distinction between a class attribute and an instance attribute",
+          "construct the class with the shared window and the per-object state",
+          "explain how encapsulation is enforced for the shared value",
+          "explain the effect of the shared attribute when several objects exist at once"
+        ]
       },
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "question_type": "case_study"
     }
   ]
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-P3-005 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>P3 extended problem: parameter range for an inequality</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-P3-005</p>
+<div class="meta"><span class="chip chip-key">AHL 5.13 (evaluation of limits), AHL 5.14 (implicit differentiation, related rates), SL 5.8 (local maximum and minimum points)</span><span class="chip">P3</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">Hence</span></div>
+
+
+<h2>Question</h2>
+<p>Let $a$ be a real constant and let<br>$$f(x) = x\ln x - a(x-1), \qquad x &gt; 0.$$<br>The problem is to determine every value of $a$ for which $f(x) \ge 0$ for all $x &gt; 0$.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Show that $f'(x) = \ln x + 1 - a$, and hence show that $f$ has exactly one stationary point on $x&gt;0$ and that this point is a minimum.</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Show that the minimum value of $f$ is $a - e^{a-1}$.</p> <em>(Show that)</em></li><li><span class="marks">[7 marks]</span><strong>(c)</strong> <p>Determine all values of $a$ for which $f(x) \ge 0$ for all $x &gt; 0$, justifying carefully why no other value works.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Differentiating, using the product rule on $x\ln x$:<br>$$f'(x) = \ln x + x\cdot\frac{1}{x} - a = \ln x + 1 - a$$ <strong>(M1)(A1)</strong><br>Setting $f'(x)=0$ gives $\ln x = a-1$, so $x = e^{a-1}$. Since $\ln x$ is strictly increasing on $x&gt;0$, there is exactly one solution for any real $a$, and it is positive, so it lies in the domain. <strong>(A1)</strong><br>$$f''(x) = \frac{1}{x} &gt; 0 \quad \text{for all } x&gt;0$$<br>so the single stationary point is a minimum. <strong>(A1)</strong></p>
+<p><strong>(b)</strong> At $x = e^{a-1}$ we have $\ln x = a-1$, so <strong>(M1)</strong><br>$$f\bigl(e^{a-1}\bigr) = e^{a-1}(a-1) - a\bigl(e^{a-1}-1\bigr)$$ <strong>(A1)</strong><br>$$= e^{a-1}\bigl[(a-1)-a\bigr] + a$$ <strong>(M1)</strong><br>$$= -e^{a-1} + a = a - e^{a-1}$$ <strong>(A1)(AG)</strong></p>
+<p><strong>(c)</strong> Because $f$ has a single minimum and $f(x)\to\infty$ as $x\to\infty$, the condition $f(x)\ge 0$ for all $x&gt;0$ is equivalent to the minimum being at least zero. <strong>(M1)</strong> (The left-hand endpoint needs a separate check: as $x\to0^{+}$, $x\ln x\to0$ and $-a(x-1)\to a$, so $f(x)\to a$, and so we also need $a\ge 0$.) <strong>(A1)</strong></p>
+<p>So we require<br>$$g(a) = a - e^{a-1} \ge 0.$$<br>Now treat $g$ as a function of $a$ and maximise it. <strong>(M1)</strong><br>$$g'(a) = 1 - e^{a-1}, \qquad g''(a) = -e^{a-1} &lt; 0$$<br>so $g'(a) = 0$ at $a = 1$ and this is a maximum. <strong>(M1)(A1)</strong><br>$$g(1) = 1 - e^{0} = 1 - 1 = 0$$<br>Therefore $g(a) \le 0$ for every real $a$, with equality <strong>only</strong> at $a=1$. <strong>(A1)</strong></p>
+<p>Since we need $g(a)\ge 0$ and $g(a)\le 0$ always, the only possibility is $g(a)=0$, which forces $a=1$. This also satisfies the endpoint condition $a\ge0$. <strong>(A1)</strong></p>
+<p><strong>Answer: $a=1$ is the only value.</strong> For this value $f(x) = x\ln x - x + 1 \ge 0$ for all $x&gt;0$, which is the standard inequality $x\ln x \ge x-1$ with equality at $x=1$.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) The (M1) is for the product rule on $x\ln x$. The uniqueness argument needs the monotonicity of $\ln$, not merely a sketch; award the final (A1) only if $f''&gt;0$ or an equivalent sign argument is given. (b) Follow-through applies from an incorrect stationary point. The subtraction in the second line is where most errors occur: award (M1) for collecting the $e^{a-1}$ terms even if the bracket is wrong. (c) This part is where the question is won. Award (M1) for recognising that a single minimum reduces the condition to one inequality, and a further (A1) for the separate $x\to0^{+}$ check, which is easy to miss because the minimum does not occur at the endpoint. The crucial step is maximising $g$; a candidate who solves $g(a)=0$ numerically and reports $a=1$ without showing it is the only root has not justified uniqueness. Note that $a=1$ also satisfies $a\ge0$, so the endpoint condition is consistent rather than additional. Accept a graphical argument for the maximisation provided the shape of $g$ is established analytically.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The structure here is two optimisations in sequence, which is what makes it a Paper 3 problem rather than a Paper 1 one. First the function is minimised over $x$, and the result is not a number but a function of the parameter: the least value of $f$ is $a - e^{a-1}$. Then that function has to be maximised over $a$. Most students stop after the first stage and try to solve $a - e^{a-1} \ge 0$ by inspection or on a calculator, which gives the right answer for the wrong reason and, more importantly, cannot establish that it is the only answer.</p>
+<p>The reason uniqueness falls out so cleanly is that $g(a) = a - e^{a-1}$ is concave, with a single maximum of zero at $a=1$. So $g(a)\le 0$ everywhere and touches zero exactly once. The inequality $f(x)\ge0$ for all $x$ therefore has exactly one solution value of the parameter, and for every other value the function dips below the axis somewhere. That is a stronger and more surprising conclusion than the usual 'range of values of $a$' answer, and it is worth being explicit about why: the second optimisation converts an inequality into an equality.</p>
+<p>The endpoint check at $x\to0^{+}$ is the part most often omitted. The minimum is interior, so it is tempting to ignore the boundary, but $f(x)\to a$ there, and for negative $a$ the function is negative near zero regardless of what happens at the stationary point. In this instance the final answer survives the check, but only because $a=1\ge0$; a candidate who omits the check has an incomplete argument even though the right answer.</p>
+<p>This is a standard shape in the final problem of the Chinese national entrance examination, where a one-parameter family is tested against an inequality on a half-line. The adaptation here keeps the two-stage structure but replaces the usual polynomial family with $x\ln x$, which puts the logarithm and the exponential in the syllabus foreground and makes the second stage analytic rather than requiring a calculator.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The parameter is not found by solving an equation but by a two-stage optimisation: the minimum of the function over x is itself a function of the parameter, and that function has to be maximised in turn; the answer is a single value because the derived function is bounded above by its own maximum.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 5.13 (evaluation of limits), AHL 5.14 (implicit differentiation, related rates), SL 5.8 (local maximum and minimum points)</dd></div>
+  <div><dt>Inspiration</dt><dd>Adapted from a standard Chinese national entrance examination (高考) final-problem structure: determine the range of a parameter for which a one-parameter family is non-negative on an interval.</dd></div>
+  <div><dt>Adaptation</dt><dd>The original genre uses polynomial or rational families. Here the family is $x\ln x - a(x-1)$, which moves the work onto logarithmic differentiation and makes the second-stage function $a-e^{a-1}$ concave with an exact maximum of zero, so the answer is a single value rather than an interval. Context, the function used, and the analytic form of the conclusion all differ from any specific source problem.</dd></div>
+  <div><dt>Verification</dt><dd>Stationary point and minimum value derived symbolically and checked in Python: f&#x27;(x)=ln x+1-a, minimum value a-e^(a-1) evaluated at a = 0, 0.5, 1, 1.5, 2, 3 giving -0.3679, -0.1065, 0.0000, -0.1487, -0.7183, -4.3891, confirming that only a=1 gives a non-negative minimum; f(x) for a=1 checked at x = 0.2, 0.5, 1, 2, 5 and found non-negative with equality at x=1.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2021May_TZ2_q04 (similarity 0.015)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL3.9-001 (similarity 0.01)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

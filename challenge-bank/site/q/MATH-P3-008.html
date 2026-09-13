@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-P3-008 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>P3 extended problem: constrained optimisation with a cost parameter</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-P3-008</p>
+<div class="meta"><span class="chip chip-key">SL 5.8 (local maximum and minimum points), SL 5.4 (tangents and normals), AHL 5.14 (related rates)</span><span class="chip">P3</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: allowed</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">Hence</span></div>
+
+
+<h2>Question</h2>
+<p>A closed cylindrical can is to be manufactured with a fixed volume $V$. The curved surface is made from a material costing $p$ per unit area. The two circular ends are made from a thicker material costing $kp$ per unit area, where $k &gt; 0$ is a constant. Let the can have base radius $r$ and height $h$.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Show that the total material cost can be written as<br>$$C(r) = 2\pi p k r^{2} + \frac{2pV}{r}, \qquad r &gt; 0.$$</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Determine the value of $r$ that minimises $C$, and show that it is indeed a minimum. Give your answer in terms of $V$, $k$ and $\pi$.</p> <em>(Determine)</em></li><li><span class="marks">[6 marks]</span><strong>(c)</strong> <p>Hence show that the ratio of the height to the radius at the optimum is $2k$, independent of $V$ and $p$. Comment on what this predicts when $k=1$ and when $k$ is very large, and explain why both predictions are physically sensible.</p> <em>(Hence)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The two circular ends have total area $2\pi r^{2}$ and cost $kp$ per unit area, contributing $2\pi r^{2}\cdot kp$. <strong>(A1)</strong> The curved surface has area $2\pi r h$, contributing $2\pi r h\cdot p$. <strong>(A1)</strong> The volume is fixed: $\pi r^{2}h = V$, so $h = \dfrac{V}{\pi r^{2}}$. <strong>(M1)</strong><br>$$C = 2\pi p k r^{2} + 2\pi r p\cdot\frac{V}{\pi r^{2}} = 2\pi p k r^{2} + \frac{2pV}{r}$$ <strong>(A1)(AG)</strong></p>
+<p><strong>(b)</strong> Differentiating with respect to $r$: <strong>(M1)</strong><br>$$C'(r) = 4\pi p k r - \frac{2pV}{r^{2}}$$<br>Setting $C'(r) = 0$: <strong>(M1)</strong><br>$$4\pi p k r = \frac{2pV}{r^{2}} \quad\Rightarrow\quad r^{3} = \frac{2pV}{4\pi p k} = \frac{V}{2\pi k}$$<br>$$r = \left(\frac{V}{2\pi k}\right)^{1/3}$$ <strong>(A1)</strong><br>To confirm it is a minimum: <strong>(M1)</strong><br>$$C''(r) = 4\pi p k + \frac{4pV}{r^{3}} &gt; 0 \quad \text{for all } r&gt;0$$<br>since $p$, $k$ and $V$ are all positive, so the stationary point is a minimum. <strong>(A1)</strong> (It is the only stationary point on $r&gt;0$, and $C\to\infty$ both as $r\to0^{+}$ and as $r\to\infty$, so it is the global minimum.)</p>
+<p><strong>(c)</strong> Using $h = \dfrac{V}{\pi r^{2}}$ and $r^{3} = \dfrac{V}{2\pi k}$: <strong>(M1)</strong><br>$$\frac{h}{r} = \frac{V}{\pi r^{3}} = \frac{V}{\pi\cdot\dfrac{V}{2\pi k}} = \frac{V\cdot 2\pi k}{\pi V} = 2k$$ <strong>(M1)(A1)(AG)</strong><br>The ratio depends on $k$ only: $V$ and $p$ both cancel. <strong>(A1)</strong></p>
+<p>When $k=1$ the ends and the curved surface cost the same per unit area, and the optimum has $h = 2r$, so the height equals the diameter: the can is as tall as it is wide. <strong>(A1)</strong> This is the familiar equal-cost result and is sensible because the shape is then equally 'spread' in every direction.</p>
+<p>When $k$ is very large the ends are very expensive relative to the curved surface, so the optimum makes the ends small and the can tall and thin, consistent with $h/r = 2k$ growing without bound. <strong>(A1)</strong> Conversely, if the ends were very cheap, $k\to0$ and the can becomes short and wide, which also matches intuition. The limiting cases therefore both confirm the result.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award (M1) for using the volume constraint to eliminate $h$; a candidate who leaves the cost in terms of both $r$ and $h$ has not completed the reduction. (b) Accept the unsimplified form of $r$ provided it is equivalent. The second-derivative check must be shown, not asserted; a candidate who argues from the shape of $C$ should be credited only if they state that $C\to\infty$ at both ends of the domain. Watch for the error of differentiating $2pV/r$ as $+2pV/r^{2}$. (c) The ratio derivation earns (M1)(A1) and the observation that $V$ and $p$ cancel earns a further mark, since it is the insight the question exists to produce. Accept any sensible physical commentary for the final two marks; the key point for $k=1$ is $h=2r$ and for large $k$ is that the can becomes tall and thin. A candidate who says the can becomes short and wide for large $k$ has the direction inverted. Watch for the candidate who differentiates with respect to $h$ after eliminating $r$ instead: the algebra is valid but the resulting ratio is harder to read, so credit the equivalent form. A useful check the examiner can invite is dimensional: $r^{3}=V/(2\pi k)$ has dimensions of volume, so the cube root is obligatory, and a candidate who reports $r=V/(2\pi k)$ has lost a power. A candidate who treats $k$ as multiplying the curved surface rather than the ends has inverted the ratio and will report $h/r=2/k$; the limiting case test in (c) catches this immediately, which is why the commentary marks are not free.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The interesting result here is not the optimal radius but the optimal *shape*, and the question is arranged so that the shape is what survives. Once the volume constraint is used to eliminate the height, the cost is a function of one variable and differentiating it is routine. What is not routine is noticing that the answer should be expressed as a ratio: dividing $h$ by $r$ makes both $V$ and $p$ cancel, leaving $h/r = 2k$. That is a genuinely useful engineering statement, because it says the proportions of the cheapest can depend only on how much more the end material costs than the side material, and not at all on how big the can is or on the absolute price of the material.</p>
+<p>This is why a student who reaches for a calculator early is punished. If $V$ and $p$ are given numerical values, the arithmetic goes through and produces a correct radius and height, but the cancellation is invisible and the general result is lost. The question deliberately withholds numerical values for $V$ and $p$ and supplies only the dimensionless parameter $k$, which is a strong hint about what the answer should look like. Getting a dimensionless quantity on one side of an equation and only dimensionless quantities on the other is a reliable way to check that an optimisation has been set up correctly.</p>
+<p>The two limiting cases are not decorative. At $k=1$ the answer $h=2r$ reproduces the well-known result that the cheapest equal-cost can has its height equal to its diameter, which gives a student something to recognise. As $k$ grows the can becomes tall and thin, which is what a manufacturer would do if the end material were very expensive; as $k$ shrinks it becomes short and wide. That both limits behave sensibly is a check on the algebra that costs nothing and catches sign errors.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The volume constraint has to be used to eliminate a variable before differentiating, and the answer is asked for as a ratio so that the cost parameter survives cleanly; a student who substitutes numbers early obtains a correct radius and height but loses the result, which is that the optimal shape depends only on the ratio of the two material costs and not on the volume at all.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>SL 5.8 (local maximum and minimum points), SL 5.4 (tangents and normals), AHL 5.14 (related rates)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Original. The standard textbook version fixes the cost ratio at one and asks only for the shape; introducing the parameter $k$ and asking for the ratio $h/r$ turns a routine exercise into a result about how the optimum depends on relative material cost.</dd></div>
+  <div><dt>Verification</dt><dd>Objective differentiated symbolically and the critical radius checked numerically in Python: for V = 1 and k = 0.5, 1, 2, 3 the computed optimal r gives h/r of exactly 1, 2, 4, 6 respectively, matching 2k, and a central-difference derivative of C at the critical radius is zero to within numerical precision.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P1_2022Nov_q08 (similarity 0.01)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL3.4-001 (similarity 0.004)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

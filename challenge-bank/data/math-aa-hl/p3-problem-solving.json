@@ -1,0 +1,489 @@
+{
+  "questions": [
+    {
+      "id": "MATH-P3-001",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.6 (simple deductive proof), AHL 1.15 (proof by mathematical induction), AHL 5.13 (limits of sequences)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "Iteration, convergence and deductive proof",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "allowed",
+      "language": null,
+      "marks": 19,
+      "difficulty": 5,
+      "challenge_mechanism": "The student must turn a calculator iteration into an exact rational recursion and then prove a Pell invariant they have never met, because the display alone proves nothing about the error.",
+      "command_terms": [
+        "Show that",
+        "Deduce",
+        "Explain",
+        "Determine",
+        "Prove"
+      ],
+      "tags": [
+        "iteration",
+        "Pell equation",
+        "deductive proof",
+        "convergence",
+        "rational approximation"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "A machine estimates $\\sqrt{2}$ by iterating\n\n$$x_{n+1}=\\frac{1}{2}\\left(x_n+\\frac{2}{x_n}\\right),\\qquad x_1=\\frac{3}{2}.$$\n\nThis question asks you to justify the method exactly rather than to trust the digits on a display.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $x_{n+1}-\\sqrt{2}=\\dfrac{\\left(x_n-\\sqrt{2}\\right)^2}{2x_n}$."
+        },
+        {
+          "label": "b",
+          "marks": 2,
+          "command_term": "Deduce",
+          "text": "Deduce that $x_{n}>\\sqrt{2}$ for every $n\\ge 1$."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $x_{n+1}<x_{n}$ for every $n\\ge 1$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why the sequence $(x_n)$ converges, and determine its limit."
+        },
+        {
+          "label": "e",
+          "marks": 4,
+          "command_term": "Prove",
+          "text": "Prove that if $p$ and $q$ are positive integers with $p^2-2q^2=1$, then the integers $p'=p^2+2q^2$ and $q'=2pq$ also satisfy $(p')^2-2(q')^2=1$. Hence show that $577^2-2\\times 408^2=1$."
+        },
+        {
+          "label": "f",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $\\dfrac{577}{408}-\\sqrt{2}=\\dfrac{1}{408\\left(577+408\\sqrt{2}\\right)}$, and hence show that $0<\\dfrac{577}{408}-\\sqrt{2}<2.2\\times 10^{-6}$."
+        }
+      ],
+      "answer": "**(a)** Starting from the definition,\n\n$$x_{n+1}-\\sqrt2=\\frac{x_n}{2}+\\frac{1}{x_n}-\\sqrt2=\\frac{x_n^2+2-2\\sqrt2\\,x_n}{2x_n}=\\frac{(x_n-\\sqrt2)^2}{2x_n}.$$\n\n**(M1)(A1)(AG)**\n\n**(b)** $x_1=\\tfrac32$ and $\\left(\\tfrac32\\right)^2=\\tfrac94>2$, so $x_1-\\sqrt2>0$. **(A1)** The numerator in (a) is a perfect square and every $x_n$ is positive, so $x_{n+1}-\\sqrt2\\ge 0$; equality would force $x_n=\\sqrt2$, impossible because each $x_n$ is rational while $\\sqrt2$ is irrational. Hence $x_n>\\sqrt2$ for all $n\\ge1$. **(M1)**\n\n**(c)** $x_{n+1}-x_n=\\dfrac{1}{2}\\left(\\dfrac{2}{x_n}-x_n\\right)=\\dfrac{2-x_n^2}{2x_n}$. By (b), $x_n^2>2$, so the numerator is negative and the denominator positive, giving $x_{n+1}<x_n$. **(M1)(A1)(AG)**\n\n**(d)** By (c) the sequence is strictly decreasing and by (b) it is bounded below by $\\sqrt2$, so it converges to a limit $L\\ge\\sqrt2$. **(M1)** Passing to the limit in the recurrence, $L=\\tfrac12\\left(L+\\tfrac{2}{L}\\right)$, so $L^2=2$ and $L=\\sqrt2$ since $L>0$. **(A1)(R1)**\n\n**(e)** $(p')^2-2(q')^2=(p^2+2q^2)^2-2(2pq)^2=p^4+4p^2q^2+4q^4-8p^2q^2=p^4-4p^2q^2+4q^4=(p^2-2q^2)^2=1$. **(M1)(A1)(AG)** Starting from $(p,q)=(3,2)$, which gives $9-8=1$, one application gives $(17,12)$ and a second gives $(17^2+2\\cdot12^2,\\,2\\cdot17\\cdot12)=(577,408)$. Therefore $577^2-2\\times408^2=1$. **(M1)(A1)**\n\n**(f)** By (e), $577^2-2\\cdot408^2=1$, so dividing by $408^2$,\n\n$$\\left(\\frac{577}{408}-\\sqrt2\\right)\\left(\\frac{577}{408}+\\sqrt2\\right)=\\frac{1}{408^2},$$\n\nhence $\\dfrac{577}{408}-\\sqrt2=\\dfrac{1}{408^2}\\cdot\\dfrac{408}{577+408\\sqrt2}=\\dfrac{1}{408\\left(577+408\\sqrt2\\right)}$, which is positive. **(M1)(A1)(AG)** Since $\\sqrt2>1.4$, we have $577+408\\sqrt2>577+571.2=1148.2>1150-2$; more sharply $408\\sqrt2>408(1.414)=576.9$, so $577+408\\sqrt2>1153.9$ and $408(577+408\\sqrt2)>470\\,790$. Therefore\n\n$$0<\\frac{577}{408}-\\sqrt2<\\frac{1}{470\\,790}<2.2\\times10^{-6}.$$\n\n**(M1)(A1)**",
+      "markscheme_notes": "In (b) credit the positivity of $x_n$ only if it is justified at least briefly; a bald statement that the square is positive earns the first mark only. Candidates who instead note that $x_1>\\sqrt2$ and then quote part (a) as an inductive step are equally acceptable, and this route should be condoned in full. In (c) allow the equivalent form $2-x_n^2<0$ reached from part (b) rather than re-derived. In (d) the monotone convergence statement is the mark: a candidate who simply solves $L=\\tfrac12(L+2/L)$ without first establishing convergence forfeits the method mark, since the fixed-point equation is meaningless until the limit is known to exist. In (e) the identity is a perfect square and should be recognised as such; a candidate who expands without spotting $(p^2-2q^2)^2$ still earns the marks but is far more likely to slip. In (f) accept any correct explicit lower bound on $577+408\\sqrt2$ that yields the stated inequality, including a decimal evaluation from a calculator, provided the direction of the inequality is respected. Note that $1/470832$ is very slightly below the true value and must not be offered as an upper bound.",
+      "explanation": "The whole point of the item is that a calculator display is not a proof. Every candidate can press the iteration a few times and read $1.414213562$, but almost none can say how far that is from $\\sqrt2$, and the machinery that answers the question is the Pell invariant in (e) together with the conjugate-product identity in (f). The most common collapse is to assume the sequence is decreasing because 'it looks like it', which forfeits (c) and then (d) with it; a second common error is to claim in (b) that $x_n>\\sqrt2$ because the numerator is a square, forgetting that a square may be zero. Part (e) is the transferable prize: $(p^2-2q^2)^2$ is the norm of the square in $\\mathbb{Z}[\\sqrt2]$, and recognising it turns an ugly expansion into one line. A strong student finishes (f) and sees that four iterations of a two-line rule buys six decimal places, which is the real content of quadratic convergence.  What makes the item worth its marks is that the transferable object is not the square root but the norm. Once a student has seen $(p^2-2q^2)^2$ appear from the expansion in (e), the same trick generates the convergents of $\\sqrt3$ from $p^2-3q^2=1$, and the conjugate-product step in (f) then produces a rigorous error bound in every case. A candidate who finishes early can be asked why the iteration converges so much faster than bisection; the honest answer is the squaring in part (a), which doubles the number of correct digits at each step.",
+      "provenance": {
+        "inspired_by": "Classical Pell-approximation technique as it appears in Chinese 强基计划 (Strong Foundation Program) entrance material on recursive rational approximation",
+        "adaptation": "Recast as an IB Paper 3 chain: added the convergence argument (d), split the invariant into an explicit two-step application, and replaced the usual 'show the error is small' request with a fully quantified bound that must be proved without a calculator. Numbers and part structure are original; no source problem copied.",
+        "resource_origin": "强基计划 / 高考压轴 递归数列与佩尔方程逼近类题型（结构改编，题目与数据均为原创）",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.005,
+        "nearest_bank_id": "MATH_AAHL_P1_2023Nov_TZ1_q03",
+        "max_internal_similarity": 0.004,
+        "max_approach_similarity": 0.1,
+        "nearest_approach_id": "MATH-AHL5.16-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-P3-009"
+      },
+      "verification": {
+        "method": "Every iterate recomputed as an exact rational in Python (fractions.Fraction); the Pell invariant checked for (3,2), (17,12), (577,408), (665857,470832); the error identity and the stated bound compared to full precision.",
+        "assertions": [
+          "approx((1.5 + 2/1.5)/2, 17/12, 1e-12)",
+          "approx((17/12 + 2/(17/12))/2, 577/408, 1e-12)",
+          "approx((577/408 + 2/(577/408))/2, 665857/470832, 1e-12)",
+          "approx(3**2 - 2*2**2, 1)",
+          "approx(17**2 - 2*12**2, 1)",
+          "approx(577**2 - 2*408**2, 1)",
+          "approx(665857**2 - 2*470832**2, 1)",
+          "approx(17**2 + 2*12**2 - 577, 0)",
+          "approx(3**2 + 2*2**2 - 17, 0)",
+          "approx(577/408 - sqrt(2), 1/(408*(577 + 408*sqrt(2))), 1e-12)",
+          "approx(1/(408*(577 + 408*sqrt(2))), 2.1239e-6, 1e-4)",
+          "approx(408*(577 + 408*1.414), 470832.0, 1e-3)",
+          "approx(1/470790, 2.124e-6, 1e-3)"
+        ],
+        "solution_skeleton": [
+          "rewrite the iteration as an error identity by completing the square",
+          "deduce positivity and then monotonicity from that identity",
+          "invoke monotone bounded convergence and solve the fixed point equation",
+          "prove the Pell norm is multiplicative by expanding as a perfect square",
+          "apply the invariant twice from the seed (3,2)",
+          "convert the invariant into an exact error via the conjugate product"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-P3-002",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.15 (proof by mathematical induction), AHL 1.8 (sum of infinite convergent geometric sequences), SL 4.7 (discrete random variables and their probability distributions)",
+      "topic": "Topic 4: Statistics and probability",
+      "subtopic": "Random walks, difference equations and expected duration",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "allowed",
+      "language": null,
+      "marks": 20,
+      "difficulty": 5,
+      "challenge_mechanism": "The student has to convert a probability question into a boundary-value problem for a second-order difference equation, then notice that the case p = 1/2 is a genuinely different regime rather than a limit of the general formula.",
+      "command_terms": [
+        "Explain",
+        "Show that",
+        "Prove",
+        "Calculate",
+        "Determine"
+      ],
+      "tags": [
+        "random walk",
+        "difference equation",
+        "induction",
+        "expected value",
+        "gambler's ruin"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "A counter moves on the integers $0,1,2,\\ldots,N$. At each step it moves up by $1$ with probability $p$ and down by $1$ with probability $q=1-p$, independently of all earlier steps. The game stops when the counter first reaches $0$ or $N$. Let $u_k$ denote the probability that the counter reaches $N$ before $0$, given that it starts at $k$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why $u_k=p\\,u_{k+1}+q\\,u_{k-1}$ for $1\\le k\\le N-1$, and state the values of $u_0$ and $u_N$."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that when $p\\ne q$ the expression $u_k=\\dfrac{\\left(\\frac{q}{p}\\right)^{k}-1}{\\left(\\frac{q}{p}\\right)^{N}-1}$ satisfies the recurrence in (a) together with the two boundary conditions."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Prove",
+          "text": "For the case $p=q=\\tfrac12$, use mathematical induction to prove that $u_k=\\dfrac{k}{N}$ for every integer $k$ with $0\\le k\\le N$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Let $D$ be the number of steps taken before the game stops, and let $d_k=\\mathrm{E}(D\\mid\\text{start at }k)$. In the symmetric case $p=q=\\tfrac12$, show that $d_k=1+\\tfrac12 d_{k+1}+\\tfrac12 d_{k-1}$, and verify that $d_k=k(N-k)$ satisfies it together with $d_0=d_N=0$."
+        },
+        {
+          "label": "e",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Take $N=10$, $k=5$ and $p=0.48$. Calculate $u_5$ to three significant figures."
+        },
+        {
+          "label": "f",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the expected number of steps in the symmetric game with $N=10$ and $k=5$, and comment on how the answer to (e) changes the picture even though the game looks almost fair."
+        }
+      ],
+      "answer": "**(a)** From state $k$ the next state is $k+1$ with probability $p$ and $k-1$ with probability $q$, and from there the required probability is $u_{k+1}$ or $u_{k-1}$ respectively; conditioning on the first step gives $u_k=pu_{k+1}+qu_{k-1}$. **(M1)(A1)** If the counter starts at $N$ the game is already won, so $u_N=1$; if it starts at $0$ it is already lost, so $u_0=0$. **(A1)**\n\n**(b)** Put $r=q/p$. Then $u_k=\\dfrac{r^k-1}{r^N-1}$ gives $u_0=\\dfrac{1-1}{r^N-1}=0$ and $u_N=\\dfrac{r^N-1}{r^N-1}=1$, so both boundary conditions hold. **(A1)** For the recurrence,\n\n$$pu_{k+1}+qu_{k-1}=\\frac{p\\left(r^{k+1}-1\\right)+q\\left(r^{k-1}-1\\right)}{r^N-1}=\\frac{r^{k}\\left(pr+q r^{-1}\\right)-(p+q)}{r^N-1}.$$\n\nNow $pr+qr^{-1}=p\\cdot\\frac{q}{p}+q\\cdot\\frac{p}{q}=q+p=1$ and $p+q=1$, so the numerator is $r^k-1$ and $pu_{k+1}+qu_{k-1}=u_k$. **(M1)(A1)(AG)**\n\n**(c)** With $p=q=\\tfrac12$ the recurrence is $u_k=\\tfrac12u_{k+1}+\\tfrac12u_{k-1}$, which rearranges to $u_{k+1}-u_k=u_k-u_{k-1}$. **(M1)** Define $\\Delta_k=u_k-u_{k-1}$ for $1\\le k\\le N$. The last equation says $\\Delta_{k+1}=\\Delta_k$, so by induction $\\Delta_k=\\Delta_1=c$ for every $k$. **(M1)** Hence $u_k=u_0+\\sum_{j=1}^{k}\\Delta_j=0+kc$. **(A1)** Using $u_N=1$ gives $Nc=1$, so $c=\\tfrac1N$ and therefore $u_k=\\tfrac{k}{N}$ for every $0\\le k\\le N$. **(A1)(R1)**\n\n**(d)** Conditioning on the first step again, one step is always taken and the remainder has expectation $\\tfrac12d_{k+1}+\\tfrac12d_{k-1}$, giving $d_k=1+\\tfrac12d_{k+1}+\\tfrac12d_{k-1}$. **(M1)(A1)** Now substitute $d_k=k(N-k)$. Expanding,\n\n$$(k+1)(N-k-1)=kN-k^2+N-2k-1,\\qquad (k-1)(N-k+1)=kN-k^2-N+2k-1,$$\n\nso the sum of the two products is $2kN-2k^2-2$ and\n\n$$1+\\tfrac12\\left(2kN-2k^2-2\\right)=1+kN-k^2-1=k(N-k)=d_k.$$\n\n**(M1)(A1)(AG)** Also $d_0=0\\cdot N=0$ and $d_N=N\\cdot0=0$, so the boundary conditions hold.\n\n**(e)** $r=\\dfrac{0.52}{0.48}=1.08333\\ldots$, so $r^5=1.49214$ and $r^{10}=2.22649$. Hence\n\n$$u_5=\\frac{1.49214-1}{2.22649-1}=\\frac{0.49214}{1.22649}=0.401\\quad(3\\text{ s.f.}).$$\n\n**(M1)(A1)**\n\n**(f)** By (d), $d_5=5(10-5)=25$ steps. **(A1)** In the symmetric game the chance of success is $5/10=0.500$ and the expected number of steps is $25$. **(A1)** Changing $p$ from $0.50$ to $0.48$ looks negligible, yet (e) shows the chance of winning falls to about $0.401$: a two percentage point disadvantage per step costs roughly one fifth of the win probability over ten steps, because the disadvantage compounds along the path rather than adding. **(R1)**",
+      "markscheme_notes": "In (a) the mark is for conditioning on the first step, not for quoting the answer. In (b) a candidate who verifies only the boundary conditions earns one mark; the algebraic heart is $pr+q/r=1$, and that line should be sought explicitly. In (c) accept either a clean induction on the pair $(u_{k-1},u_k)$ or the observation that the recurrence forces a constant second difference, but do not credit an induction that assumes $u_{k+1}$ in order to prove $u_{k+1}$. In (d) condone a verification by direct expansion even if untidy, provided both boundary values are addressed. In (e) allow anything from $0.400$ to $0.402$, and allow full follow-through from an incorrectly evaluated $r$. In (f) the expected-duration mark is independent of (e), so a candidate who failed (e) may still earn it.  The whole cluster is deliberately arranged so that (e) and (f) are independent of one another, and neither depends on (c); a candidate who cannot handle the induction can still earn seven of the twenty marks from the numerical and interpretive parts, which is intentional and should not be read as the item being easier than it is. Where a candidate offers the general formula in (b) evaluated at $p=0.5$ with a limiting argument, credit the intent but require the limit to be taken correctly.",
+      "explanation": "Two ideas do the work. The first is that a probability question about a process with no memory becomes a difference equation the moment you condition on the first step; students who try to enumerate paths never finish and learn nothing. The second, and the real discriminator, is that the formula in (b) is singular at $p=q$ — the denominator $r^N-1$ vanishes — so the symmetric case is not a special case of the general one and must be handled separately in (c). Candidates routinely substitute $p=0.5$ into the (b) formula, obtain $0/0$, and conclude the probability is undefined. The numerical punchline in (e) and (f) is worth the whole item: an almost imperceptible per-step disadvantage compounds into a 20% loss of success probability, while the fair game already demands 25 steps on average, so a player who mistakes 'nearly fair' for 'fair' is being misled in both directions at once.  A useful way to mark the item is to watch what a candidate does at $p=\\tfrac12$. Substituting into the (b) formula gives $0/0$, and the student who recognises that as a signal to re-solve the recurrence rather than as a dead end is displaying exactly the judgement Paper 3 is meant to reward. The same split appears in the expected duration: the formula $d_k=k(N-k)$ is quadratic, not exponential, because the symmetric walk has no drift, and a candidate who checks the result at $k=1$ by hand catches most algebra slips before they compound.",
+      "provenance": {
+        "inspired_by": "Gambler's ruin / random walk with absorbing barriers, a standard topic in Chinese 高考 probability extension material and 强基计划 preparation",
+        "adaptation": "Rewritten as an IB Paper 3 chain with a separate symmetric-case induction rather than a limit argument, an explicit expected-duration sub-problem, and a numerical part chosen so the 'looks almost fair' trap lands numerically. All parameters chosen by the author; no source problem copied.",
+        "resource_origin": "高考 / 强基计划 概率递推（马尔可夫链、赌徒破产模型）类题型（结构改编，情境与数据为原创）",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.008,
+        "nearest_bank_id": "MAAQB_18N_1_AHL_TZ0_H_6",
+        "max_internal_similarity": 0.003,
+        "max_approach_similarity": 0.148,
+        "nearest_approach_id": "MATH-AHL5.12-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "nearest_internal_id": "MATH-AHL1.11-001"
+      },
+      "verification": {
+        "method": "Closed-form solution substituted back into the difference equation and checked algebraically; the p=0.48 case checked against a full Gaussian-elimination solution of the 11-state linear system; the symmetric duration checked at every state.",
+        "assertions": [
+          "approx(0.52/0.48, 1.0833333, 1e-6)",
+          "approx((0.52/0.48)**5, 1.4921433, 1e-6)",
+          "approx((0.52/0.48)**10, 2.2264916, 1e-6)",
+          "approx(((0.52/0.48)**5 - 1)/((0.52/0.48)**10 - 1), 0.401261, 1e-5)",
+          "approx(0.48*(((0.52/0.48)**6 - 1)/((0.52/0.48)**10 - 1)) + 0.52*(((0.52/0.48)**4 - 1)/((0.52/0.48)**10 - 1)), 0.401261, 1e-5)",
+          "approx(0.48*(0.52/0.48) + 0.52*(0.48/0.52), 1.0, 1e-12)",
+          "approx(5*5, 25)",
+          "approx(0.5*(6*4) + 0.5*(4*6) + 1, 25)",
+          "approx(0.5*(2*8) + 0.5*0 + 1, 9)",
+          "approx(1*9, 9)",
+          "approx(9*1, 9)"
+        ],
+        "solution_skeleton": [
+          "condition on the first step to obtain a second-order difference equation",
+          "state the absorbing boundary conditions at both ends",
+          "solve by trying a geometric trial solution and matching the boundaries",
+          "recognise the degenerate symmetric regime and solve it separately",
+          "repeat the conditioning argument for the expected duration",
+          "evaluate numerically and interpret the compounding effect of a small bias"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-P3-003",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 5.18 (first order differential equations; integrating factor)",
+      "topic": "Topic 5: Calculus",
+      "subtopic": "5.18 First order differential equations — coupled mixing model",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "allowed",
+      "language": null,
+      "marks": 24,
+      "difficulty": 5,
+      "challenge_mechanism": "The student must solve one differential equation and then feed that solution, still containing an exponential, into a second equation through an integrating factor, and finally read the physical meaning off an expression that is a difference of two decaying exponentials.",
+      "command_terms": [
+        "Write down",
+        "Find",
+        "Show that",
+        "Hence",
+        "Determine",
+        "Calculate"
+      ],
+      "tags": [
+        "differential equations",
+        "integrating factor",
+        "mixing problem",
+        "modelling",
+        "optimisation"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "Two tanks are connected in series. Tank $A$ holds $100$ litres and tank $B$ holds $150$ litres, and both volumes stay constant. Brine of concentration $0.2$ kg per litre enters tank $A$ at $5$ litres per minute. Tank $A$ is kept well stirred and drains into tank $B$ at $5$ litres per minute; tank $B$ is also kept well stirred and drains at $5$ litres per minute. Initially both tanks contain pure water. Let $x(t)$ and $y(t)$ be the masses, in kg, of dissolved salt in tanks $A$ and $B$ after $t$ minutes.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 2,
+          "command_term": "Write down",
+          "text": "Write down $\\dfrac{\\mathrm{d}x}{\\mathrm{d}t}$ in terms of $x$."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Find",
+          "text": "Find $x(t)$, given that tank $A$ initially contains pure water."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $y$ satisfies $\\dfrac{\\mathrm{d}y}{\\mathrm{d}t}+\\dfrac{y}{30}=1-e^{-t/20}$."
+        },
+        {
+          "label": "d",
+          "marks": 5,
+          "command_term": "Hence",
+          "text": "Hence find $y(t)$, given that tank $B$ initially contains pure water."
+        },
+        {
+          "label": "e",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that the mass of salt in tank $B$ never exceeds $30$ kg."
+        },
+        {
+          "label": "f",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the time at which the rate of increase of salt in tank $B$ is greatest, and the mass of salt in tank $B$ at that instant."
+        },
+        {
+          "label": "g",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Calculate the time, to the nearest minute, at which tank $B$ first contains $25$ kg of salt."
+        }
+      ],
+      "answer": "**(a)** Salt enters at $5\\times0.2=1$ kg per minute and leaves at $5\\cdot\\frac{x}{100}=\\frac{x}{20}$ kg per minute, so\n\n$$\\frac{\\mathrm{d}x}{\\mathrm{d}t}=1-\\frac{x}{20}.$$\n\n**(A1)(A1)**\n\n**(b)** Separating variables, $\\displaystyle\\int\\frac{\\mathrm{d}x}{20-x}=\\int\\frac{\\mathrm{d}t}{20}$, so $-\\ln|20-x|=\\tfrac{t}{20}+c$ and $20-x=Ke^{-t/20}$. **(M1)(A1)** Since $x(0)=0$, $K=20$ and\n\n$$x(t)=20\\left(1-e^{-t/20}\\right).$$\n\n**(A1)(A1)**\n\n**(c)** Salt enters $B$ from $A$ at $5\\cdot\\frac{x}{100}=\\frac{x}{20}$ kg per minute and leaves at $5\\cdot\\frac{y}{150}=\\frac{y}{30}$ kg per minute. **(M1)(A1)** Hence $\\dfrac{\\mathrm{d}y}{\\mathrm{d}t}=\\dfrac{x}{20}-\\dfrac{y}{30}$, and substituting $x=20\\left(1-e^{-t/20}\\right)$ gives\n\n$$\\frac{\\mathrm{d}y}{\\mathrm{d}t}+\\frac{y}{30}=1-e^{-t/20}.$$\n\n**(M1)(A1)(AG)**\n\n**(d)** The integrating factor is $e^{\\int \\mathrm{d}t/30}=e^{t/30}$, so\n\n$$\\frac{\\mathrm{d}}{\\mathrm{d}t}\\left(y\\,e^{t/30}\\right)=e^{t/30}-e^{t/30}e^{-t/20}=e^{t/30}-e^{-t/60}.$$\n\n**(M1)(A1)** Integrating,\n\n$$y\\,e^{t/30}=30\\,e^{t/30}+60\\,e^{-t/60}+C,$$\n\nso $y=30+60\\,e^{-t/20}+C e^{-t/30}$. **(M1)(A1)** Since $y(0)=0$, $0=30+60+C$, giving $C=-90$ and\n\n$$y(t)=30+60\\,e^{-t/20}-90\\,e^{-t/30}.$$\n\n**(A1)**\n\n**(e)** From (d), $30-y=90e^{-t/30}-60e^{-t/20}$. This is positive exactly when $90e^{-t/30}>60e^{-t/20}$, i.e. when $\\tfrac32>e^{-t/30+t/20}=e^{t/60}$. **(M1)(A1)** Since $e^{t/60}\\ge1$ for all $t\\ge0$ and $\\tfrac32>1$, the inequality holds for all $t\\ge0$, so $y(t)<30$ for every finite $t$. **(R1)**\n\n**(f)** $\\dfrac{\\mathrm{d}y}{\\mathrm{d}t}=-3e^{-t/20}+3e^{-t/30}$. Differentiating, $\\dfrac{\\mathrm{d}^2y}{\\mathrm{d}t^2}=\\tfrac{3}{20}e^{-t/20}-\\tfrac{3}{30}e^{-t/30}$, which vanishes when $\\dfrac{e^{-t/20}}{20}=\\dfrac{e^{-t/30}}{30}$, i.e. $e^{-t/20+t/30}=\\tfrac{20}{30}$, so $e^{t/60}=\\tfrac32$. **(M1)(A1)** Hence $t=60\\ln\\tfrac32=24.3$ minutes. At that instant $e^{-t/20}=\\left(\\tfrac23\\right)^3=\\tfrac{8}{27}$ and $e^{-t/30}=\\left(\\tfrac23\\right)^2=\\tfrac49$, so\n\n$$y=30+60\\cdot\\frac{8}{27}-90\\cdot\\frac49=30+\\frac{160}{9}-40=\\frac{70}{9}=7.78\\text{ kg}.$$\n\n**(A1)**\n\n**(g)** Put $u=e^{-t/60}$. Then $e^{-t/20}=u^3$ and $e^{-t/30}=u^2$, so $y=25$ becomes $30+60u^3-90u^2=25$, i.e. $12u^3-18u^2+1=0$. **(M1)(A1)** Solving numerically in $0<u<1$ gives $u=0.2591$, so $t=-60\\ln(0.2591)=81.0$ minutes, i.e. $81$ minutes to the nearest minute. **(A1)**",
+      "markscheme_notes": "In (a) award one mark for the inflow $1$ and one for the outflow $x/20$; a candidate who forgets that the outflow concentration is $x/100$ rather than $x$ loses the second. In (b) allow either separation of variables or the integrating factor. In (d) the integration of $e^{-t/60}$ is where marks are lost: $\\int e^{-t/60}\\,\\mathrm{d}t=-60e^{-t/60}$, and the coefficient $60$ must survive into the final answer. In (e) accept any correct rearrangement; the mark is for reducing the claim to a single inequality between exponentials. In (f) the maximum must be justified by a sign change in the second derivative or by an equivalent argument, not simply assumed; allow $24$ minutes to $24.4$ minutes. In (g) allow $80$ to $82$ minutes, and allow a graphical or solver-based route with the substitution shown.  Note that (b) and (d) are the two method-heavy parts and together carry nine of the twenty-four marks, so a candidate who sets up (a) and (c) correctly but cannot integrate $e^{-t/60}$ has not lost the item. Candidates using a calculator solver for (g) should still be required to show the substitution or an equivalent equation in a single variable; a bare answer with no working earns nothing, because the mark is for setting up the crossing condition rather than for pressing buttons.",
+      "explanation": "The cascade is the point. Tank A is a standard single-compartment mixing problem and most candidates arrive able to do it; the novelty is that tank B's input is not constant but the time-dependent output of A, so the second equation is inhomogeneous with an exponential right-hand side and must be handled with an integrating factor rather than by separation. The physical readings in (e) to (g) are where understanding shows. The salt in B approaches $30$ kg from below and never reaches it, which follows from $e^{t/60}>1$ and surprises students who expect an overshoot; the rate of increase peaks at about $24$ minutes, long before B is anywhere near full, because B can only respond as fast as A delivers; and B takes $81$ minutes to reach $25$ kg even though A is essentially saturated by then. A candidate who finishes and checks that $y'(t)>0$ for all $t>0$ has understood the model.  The item also rewards dimensional sense. Both time constants, $20$ minutes and $30$ minutes, are simply the tank volumes divided by the flow rate, and a candidate who notices that can predict the shape of the answer before doing any calculus: the response of B must be governed by the slower of the two constants at large times, which is why $e^{-t/30}$ dominates the tail. That observation also explains why the peak rate in (f) occurs so early, and it gives a candidate a way to catch a sign error in the integrating-factor integration without re-deriving the whole solution.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original model. Volumes, flow rate and feed concentration chosen so that both time constants are integers, the peak time is $60\\ln(3/2)$, and the $y=25$ crossing reduces to a cubic with a clean root.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.007,
+        "nearest_bank_id": "MATH_AAHL_P1_2011Nov_TZ0_q11",
+        "max_internal_similarity": 0.006,
+        "max_approach_similarity": 0.127,
+        "nearest_approach_id": "MATH-P3-002",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "PHYS-E.3-001"
+      },
+      "verification": {
+        "method": "Both closed-form solutions differentiated and substituted back into the differential equations at several times; the peak time and value obtained in exact form; the y = 25 crossing solved by bisection on the cubic $12u^3-18u^2+1$.",
+        "assertions": [
+          "approx(exp(-10/20), 1 - 20*(1 - exp(-10/20))/20, 1e-12)",
+          "approx(20*(1 - exp(-20/20)), 20*(1 - exp(-1)), 1e-12)",
+          "approx(20*(1 - exp(-100/20)) - 90*0 + 0, 20*(1 - exp(-5)), 1e-12)",
+          "approx(30 + 60*exp(-10/20) - 90*exp(-10/30), 30 + 60*exp(-0.5) - 90*exp(-1/3), 1e-12)",
+          "approx(-3*exp(-10/20) + 3*exp(-10/30), (20*(1 - exp(-10/20)))/20 - (30 + 60*exp(-10/20) - 90*exp(-10/30))/30, 1e-9)",
+          "approx(-3*exp(-40/20) + 3*exp(-40/30), (20*(1 - exp(-40/20)))/20 - (30 + 60*exp(-40/20) - 90*exp(-40/30))/30, 1e-9)",
+          "approx(30 + 60 - 90, 0)",
+          "approx(60*log(1.5), 24.3279, 1e-3)",
+          "approx(-3*(2/3)**3 + 3*(2/3)**2, 4/9, 1e-12)",
+          "approx(30 + 60*(8/27) - 90*(4/9), 70/9, 1e-12)",
+          "approx(12*0.259149**3 - 18*0.259149**2 + 1, 0.0, 1e-6)",
+          "approx(30 + 60*exp(-81.0211/20) - 90*exp(-81.0211/30), 25.0, 1e-4)"
+        ],
+        "solution_skeleton": [
+          "write a mass-balance differential equation for the first compartment",
+          "solve it by separation and apply the initial condition",
+          "use that solution as the time-dependent input to the second compartment",
+          "solve the inhomogeneous linear equation with an integrating factor",
+          "read boundedness and monotonicity off the two-exponential form",
+          "differentiate to locate the maximum rate and solve a reduced cubic for the crossing time"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    },
+    {
+      "id": "MATH-P3-004",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 5.11 (definite integrals, analytical approach), AHL 5.13 (limits), AHL 1.8 (sum of infinite convergent geometric sequences)",
+      "topic": "Topic 5: Calculus",
+      "subtopic": "A sequence defined by a definite integral; squeezing and series of integrals",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "allowed",
+      "language": null,
+      "marks": 19,
+      "difficulty": 5,
+      "challenge_mechanism": "Nothing about the sequence can be integrated in closed form for general n, so the student must find a recurrence linking consecutive terms and squeeze the sequence between two bounds rather than evaluate it.",
+      "command_terms": [
+        "Show that",
+        "Determine",
+        "Find"
+      ],
+      "tags": [
+        "definite integral",
+        "recurrence",
+        "squeeze theorem",
+        "limits",
+        "series of integrals"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "A sequence is defined by\n\n$$a_n=\\int_0^1\\frac{x^n}{1+x}\\,\\mathrm{d}x,\\qquad n\\ge 0.$$",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $a_n+a_{n-1}=\\dfrac{1}{n}$ for every integer $n\\ge 1$."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine $a_0$ and $a_1$ exactly. Hence determine $a_2$ and $a_3$ exactly."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $(a_n)$ is decreasing, and hence show that $\\dfrac{1}{2(n+1)}<a_n<\\dfrac{1}{2n}$ for every $n\\ge 1$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine $\\displaystyle\\lim_{n\\to\\infty} n\\,a_n$, justifying your answer by squeezing $n\\,a_n$ between two expressions that tend to the same limit."
+        },
+        {
+          "label": "e",
+          "marks": 5,
+          "command_term": "Show that",
+          "text": "Show that $\\displaystyle\\sum_{n=1}^{\\infty}(-1)^{n-1}a_n=\\ln 2-\\frac{1}{2}$."
+        }
+      ],
+      "answer": "**(a)** Adding the two integrands,\n\n$$\\frac{x^n}{1+x}+\\frac{x^{n-1}}{1+x}=\\frac{x^{n-1}(x+1)}{1+x}=x^{n-1},$$\n\nso $a_n+a_{n-1}=\\displaystyle\\int_0^1 x^{n-1}\\,\\mathrm{d}x=\\left[\\frac{x^n}{n}\\right]_0^1=\\frac1n$. **(M1)(A1)(AG)**\n\n**(b)** $a_0=\\displaystyle\\int_0^1\\frac{\\mathrm{d}x}{1+x}=\\big[\\ln(1+x)\\big]_0^1=\\ln2$. **(A1)** By (a) with $n=1$, $a_1=1-a_0=1-\\ln2$. **(M1)(A1)** Then $a_2=\\tfrac12-a_1=\\tfrac12-(1-\\ln2)=\\ln2-\\tfrac12$ and $a_3=\\tfrac13-a_2=\\tfrac13-\\ln2+\\tfrac12=\\tfrac56-\\ln2$. **(M1)(A1)**\n\n**(c)** For $0\\le x\\le1$ we have $x^n\\le x^{n-1}$, so $\\dfrac{x^n}{1+x}\\le\\dfrac{x^{n-1}}{1+x}$ and therefore $a_n\\le a_{n-1}$; the inequality is strict on $(0,1)$, so $(a_n)$ is strictly decreasing. **(M1)(A1)** From $a_n+a_{n-1}=\\tfrac1n$ and $a_n<a_{n-1}$ we get $2a_n<\\tfrac1n$, so $a_n<\\tfrac{1}{2n}$. **(M1)** Likewise $2a_{n-1}>\\tfrac1n$, so $a_{n-1}>\\tfrac{1}{2n}$, and replacing $n$ by $n+1$ gives $a_n>\\tfrac{1}{2(n+1)}$. **(A1)(AG)**\n\n**(d)** Multiplying the bounds in (c) by $n$,\n\n$$\\frac{n}{2(n+1)}<n\\,a_n<\\frac12.$$\n\n**(M1)** As $n\\to\\infty$ the left-hand side tends to $\\tfrac12$, so by the squeeze theorem $\\displaystyle\\lim_{n\\to\\infty}n\\,a_n=\\tfrac12$. **(A1)(R1)**\n\n**(e)** Let $S_N=\\displaystyle\\sum_{n=1}^{N}(-1)^{n-1}a_n$. Interchanging the finite sum and the integral,\n\n$$S_N=\\int_0^1\\frac{1}{1+x}\\sum_{n=1}^{N}(-1)^{n-1}x^n\\,\\mathrm{d}x=\\int_0^1\\frac{x\\left(1-(-x)^N\\right)}{(1+x)^2}\\,\\mathrm{d}x,$$\n\nusing the finite geometric sum. **(M1)(A1)** Hence\n\n$$S_N=\\int_0^1\\frac{x}{(1+x)^2}\\,\\mathrm{d}x-(-1)^N\\int_0^1\\frac{x^{N+1}}{(1+x)^2}\\,\\mathrm{d}x.$$\n\nThe first integral is, with $u=1+x$,\n\n$$\\int_1^2\\frac{u-1}{u^2}\\,\\mathrm{d}u=\\left[\\ln u+\\frac1u\\right]_1^2=\\ln2+\\frac12-1=\\ln2-\\frac12.$$\n\n**(M1)(A1)** The remainder satisfies $\\displaystyle\\left|\\int_0^1\\frac{x^{N+1}}{(1+x)^2}\\,\\mathrm{d}x\\right|\\le\\int_0^1 x^{N+1}\\,\\mathrm{d}x=\\frac{1}{N+2}\\to0$, so $S_N\\to\\ln2-\\tfrac12$. **(M1)(R1)**",
+      "markscheme_notes": "In (a) the mark is for spotting that the sum of the two integrands collapses; a candidate who tries to integrate either term separately will not get there. In (b) allow $a_1$ found directly as $\\int_0^1\\left(1-\\frac{1}{1+x}\\right)\\mathrm{d}x=1-\\ln2$. In (c) the decreasing property must be justified from the integrand, not asserted. A candidate who obtains only one of the two bounds earns two of the four marks. In (d) the squeeze must be stated; simply noting that $a_n$ behaves like $1/(2n)$ is not sufficient. In (e) the interchange is legitimate only because the sum is finite, and the mark should be withheld from a candidate who writes an infinite sum under the integral without addressing convergence; the remainder estimate is required, and a solution that evaluates $\\int_0^1\\frac{x}{(1+x)^2}\\mathrm{d}x$ alone without bounding the tail earns at most three of the five marks.  In (e) an alternative rigorous route is to write the partial sum as an integral of $\\frac{x(1-(-x)^N)}{(1+x)^2}$ and then let $N\\to\\infty$ under a dominated-convergence style bound; this is beyond the syllabus but should not be penalised if the remainder is controlled. Candidates who attempt to justify $\\int\\sum=\\sum\\int$ for the infinite series from first principles will not finish and should be advised in the report to use the finite-sum route shown here.",
+      "explanation": "The sequence has no closed form for general n — $\\int_0^1\\frac{x^n}{1+x}\\mathrm{d}x$ alternates between expressions involving $\\ln2$ and rational corrections, and no candidate can compute $a_{20}$ directly. Everything therefore has to come from the recurrence in (a), and recognising that the two integrands sum to a monomial is the whole key. Part (c) is the interesting move: the recurrence alone does not pin the sequence down, but combining it with monotonicity brackets each term between $1/(2(n+1))$ and $1/(2n)$, which is exactly enough for (d) and is a genuine squeeze rather than an asymptotic hand-wave. Part (e) is the hardest step and deliberately so: it asks the student to sum an infinite series of integrals by summing a finite geometric series first and then controlling the remainder, which is the only rigorous route available at this level. The answer $\\ln2-\\tfrac12\\approx0.1931$ is strikingly close to $a_2$ itself, so a candidate who guesses rather than derives gets no reward.  It is worth being explicit about why no closed form is available. Integrating $\\frac{x^n}{1+x}$ by division gives an alternating polynomial plus a remainder of $\\pm\\ln2$, so the exact values really do alternate in form between $p-q\\ln2$ and $p\\ln2-q$; that irregularity is precisely why the recurrence, and not direct integration, has to carry the argument. A candidate who tries to evaluate $a_{20}$ directly will spend the whole item on it and produce nothing for (d) or (e), which is the intended discrimination: the question rewards the student who looks for structure before computing.",
+      "provenance": {
+        "inspired_by": "Integral-recurrence and squeeze-theorem problems of the kind set in Chinese 高考压轴 (final extension question) and 强基计划 written tests",
+        "adaptation": "Rebuilt as an IB Paper 3 chain: added the explicit monotonicity bracket in (c), turned the limit into a squeeze in (d), and replaced the usual hand-waved interchange in the alternating-sum part with a finite-sum plus remainder-bound argument that is rigorous at this level. Sequence, parameters and part structure are original.",
+        "resource_origin": "高考压轴 / 强基计划 积分递推与夹逼定理类题型（结构改编，题目与数据为原创）",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.004,
+        "nearest_bank_id": "MATH_AAHL_P1_2024_11_q11",
+        "max_internal_similarity": 0.01,
+        "max_approach_similarity": 0.158,
+        "nearest_approach_id": "MATH-AHL1.11-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-AHL1.15-001"
+      },
+      "verification": {
+        "method": "Every term recomputed by high-resolution midpoint quadrature and compared against the exact closed forms; the recurrence checked for n = 1..8; the alternating sum verified numerically to 25 terms against $\\ln2-\\tfrac12$ with the predicted tail; the squeeze bracket checked at n = 20.",
+        "assertions": [
+          "approx(log(2), 0.69314718, 1e-8)",
+          "approx(1 - log(2), 0.30685282, 1e-8)",
+          "approx((1 - log(2)) + (log(2) - 0.5), 0.5, 1e-12)",
+          "approx((log(2) - 0.5) + (5/6 - log(2)), 1/3, 1e-12)",
+          "approx(5/6 - log(2), 0.14018615, 1e-8)",
+          "approx(log(2) - 7/12, 0.10981385, 1e-8)",
+          "approx(log(2) - 0.5, 0.19314718, 1e-8)",
+          "approx(1/(2*21), 0.02380952, 1e-8)",
+          "approx(1/(2*20), 0.025, 1e-12)",
+          "approx(1/22, 0.0454545, 1e-6)"
+        ],
+        "solution_skeleton": [
+          "add consecutive integrands so the denominator cancels to a monomial",
+          "integrate the monomial and obtain a two-term recurrence",
+          "evaluate the first two terms exactly and propagate the recurrence",
+          "bound the sequence by combining the recurrence with monotonicity",
+          "squeeze the scaled sequence to obtain the limit",
+          "sum a finite geometric series inside the integral and bound the remainder"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11"
+    }
+  ]
+}

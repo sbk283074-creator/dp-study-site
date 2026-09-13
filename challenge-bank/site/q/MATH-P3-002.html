@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-P3-002 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Random walks, difference equations and expected duration</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-P3-002</p>
+<div class="meta"><span class="chip chip-key">AHL 1.15 (proof by mathematical induction), AHL 1.8 (sum of infinite convergent geometric sequences), SL 4.7 (discrete random variables and their probability distributions)</span><span class="chip">P3</span><span class="chip">20 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: allowed</span><span class="chip">Explain</span><span class="chip">Show that</span><span class="chip">Prove</span><span class="chip">Calculate</span></div>
+
+
+<h2>Question</h2>
+<p>A counter moves on the integers $0,1,2,\ldots,N$. At each step it moves up by $1$ with probability $p$ and down by $1$ with probability $q=1-p$, independently of all earlier steps. The game stops when the counter first reaches $0$ or $N$. Let $u_k$ denote the probability that the counter reaches $N$ before $0$, given that it starts at $k$.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain why $u_k=p\,u_{k+1}+q\,u_{k-1}$ for $1\le k\le N-1$, and state the values of $u_0$ and $u_N$.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Show that when $p\ne q$ the expression $u_k=\dfrac{\left(\frac{q}{p}\right)^{k}-1}{\left(\frac{q}{p}\right)^{N}-1}$ satisfies the recurrence in (a) together with the two boundary conditions.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>For the case $p=q=\tfrac12$, use mathematical induction to prove that $u_k=\dfrac{k}{N}$ for every integer $k$ with $0\le k\le N$.</p> <em>(Prove)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Let $D$ be the number of steps taken before the game stops, and let $d_k=\mathrm{E}(D\mid\text{start at }k)$. In the symmetric case $p=q=\tfrac12$, show that $d_k=1+\tfrac12 d_{k+1}+\tfrac12 d_{k-1}$, and verify that $d_k=k(N-k)$ satisfies it together with $d_0=d_N=0$.</p> <em>(Show that)</em></li><li><span class="marks">[3 marks]</span><strong>(e)</strong> <p>Take $N=10$, $k=5$ and $p=0.48$. Calculate $u_5$ to three significant figures.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(f)</strong> <p>Determine the expected number of steps in the symmetric game with $N=10$ and $k=5$, and comment on how the answer to (e) changes the picture even though the game looks almost fair.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 20 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> From state $k$ the next state is $k+1$ with probability $p$ and $k-1$ with probability $q$, and from there the required probability is $u_{k+1}$ or $u_{k-1}$ respectively; conditioning on the first step gives $u_k=pu_{k+1}+qu_{k-1}$. <strong>(M1)(A1)</strong> If the counter starts at $N$ the game is already won, so $u_N=1$; if it starts at $0$ it is already lost, so $u_0=0$. <strong>(A1)</strong></p>
+<p><strong>(b)</strong> Put $r=q/p$. Then $u_k=\dfrac{r^k-1}{r^N-1}$ gives $u_0=\dfrac{1-1}{r^N-1}=0$ and $u_N=\dfrac{r^N-1}{r^N-1}=1$, so both boundary conditions hold. <strong>(A1)</strong> For the recurrence,</p>
+<p>$$pu_{k+1}+qu_{k-1}=\frac{p\left(r^{k+1}-1\right)+q\left(r^{k-1}-1\right)}{r^N-1}=\frac{r^{k}\left(pr+q r^{-1}\right)-(p+q)}{r^N-1}.$$</p>
+<p>Now $pr+qr^{-1}=p\cdot\frac{q}{p}+q\cdot\frac{p}{q}=q+p=1$ and $p+q=1$, so the numerator is $r^k-1$ and $pu_{k+1}+qu_{k-1}=u_k$. <strong>(M1)(A1)(AG)</strong></p>
+<p><strong>(c)</strong> With $p=q=\tfrac12$ the recurrence is $u_k=\tfrac12u_{k+1}+\tfrac12u_{k-1}$, which rearranges to $u_{k+1}-u_k=u_k-u_{k-1}$. <strong>(M1)</strong> Define $\Delta_k=u_k-u_{k-1}$ for $1\le k\le N$. The last equation says $\Delta_{k+1}=\Delta_k$, so by induction $\Delta_k=\Delta_1=c$ for every $k$. <strong>(M1)</strong> Hence $u_k=u_0+\sum_{j=1}^{k}\Delta_j=0+kc$. <strong>(A1)</strong> Using $u_N=1$ gives $Nc=1$, so $c=\tfrac1N$ and therefore $u_k=\tfrac{k}{N}$ for every $0\le k\le N$. <strong>(A1)(R1)</strong></p>
+<p><strong>(d)</strong> Conditioning on the first step again, one step is always taken and the remainder has expectation $\tfrac12d_{k+1}+\tfrac12d_{k-1}$, giving $d_k=1+\tfrac12d_{k+1}+\tfrac12d_{k-1}$. <strong>(M1)(A1)</strong> Now substitute $d_k=k(N-k)$. Expanding,</p>
+<p>$$(k+1)(N-k-1)=kN-k^2+N-2k-1,\qquad (k-1)(N-k+1)=kN-k^2-N+2k-1,$$</p>
+<p>so the sum of the two products is $2kN-2k^2-2$ and</p>
+<p>$$1+\tfrac12\left(2kN-2k^2-2\right)=1+kN-k^2-1=k(N-k)=d_k.$$</p>
+<p><strong>(M1)(A1)(AG)</strong> Also $d_0=0\cdot N=0$ and $d_N=N\cdot0=0$, so the boundary conditions hold.</p>
+<p><strong>(e)</strong> $r=\dfrac{0.52}{0.48}=1.08333\ldots$, so $r^5=1.49214$ and $r^{10}=2.22649$. Hence</p>
+<p>$$u_5=\frac{1.49214-1}{2.22649-1}=\frac{0.49214}{1.22649}=0.401\quad(3\text{ s.f.}).$$</p>
+<p><strong>(M1)(A1)</strong></p>
+<p><strong>(f)</strong> By (d), $d_5=5(10-5)=25$ steps. <strong>(A1)</strong> In the symmetric game the chance of success is $5/10=0.500$ and the expected number of steps is $25$. <strong>(A1)</strong> Changing $p$ from $0.50$ to $0.48$ looks negligible, yet (e) shows the chance of winning falls to about $0.401$: a two percentage point disadvantage per step costs roughly one fifth of the win probability over ten steps, because the disadvantage compounds along the path rather than adding. <strong>(R1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>In (a) the mark is for conditioning on the first step, not for quoting the answer. In (b) a candidate who verifies only the boundary conditions earns one mark; the algebraic heart is $pr+q/r=1$, and that line should be sought explicitly. In (c) accept either a clean induction on the pair $(u_{k-1},u_k)$ or the observation that the recurrence forces a constant second difference, but do not credit an induction that assumes $u_{k+1}$ in order to prove $u_{k+1}$. In (d) condone a verification by direct expansion even if untidy, provided both boundary values are addressed. In (e) allow anything from $0.400$ to $0.402$, and allow full follow-through from an incorrectly evaluated $r$. In (f) the expected-duration mark is independent of (e), so a candidate who failed (e) may still earn it.  The whole cluster is deliberately arranged so that (e) and (f) are independent of one another, and neither depends on (c); a candidate who cannot handle the induction can still earn seven of the twenty marks from the numerical and interpretive parts, which is intentional and should not be read as the item being easier than it is. Where a candidate offers the general formula in (b) evaluated at $p=0.5$ with a limiting argument, credit the intent but require the limit to be taken correctly.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Two ideas do the work. The first is that a probability question about a process with no memory becomes a difference equation the moment you condition on the first step; students who try to enumerate paths never finish and learn nothing. The second, and the real discriminator, is that the formula in (b) is singular at $p=q$ — the denominator $r^N-1$ vanishes — so the symmetric case is not a special case of the general one and must be handled separately in (c). Candidates routinely substitute $p=0.5$ into the (b) formula, obtain $0/0$, and conclude the probability is undefined. The numerical punchline in (e) and (f) is worth the whole item: an almost imperceptible per-step disadvantage compounds into a 20% loss of success probability, while the fair game already demands 25 steps on average, so a player who mistakes 'nearly fair' for 'fair' is being misled in both directions at once.  A useful way to mark the item is to watch what a candidate does at $p=\tfrac12$. Substituting into the (b) formula gives $0/0$, and the student who recognises that as a signal to re-solve the recurrence rather than as a dead end is displaying exactly the judgement Paper 3 is meant to reward. The same split appears in the expected duration: the formula $d_k=k(N-k)$ is quadratic, not exponential, because the symmetric walk has no drift, and a candidate who checks the result at $k=1$ by hand catches most algebra slips before they compound.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The student has to convert a probability question into a boundary-value problem for a second-order difference equation, then notice that the case p = 1/2 is a genuinely different regime rather than a limit of the general formula.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 1.15 (proof by mathematical induction), AHL 1.8 (sum of infinite convergent geometric sequences), SL 4.7 (discrete random variables and their probability distributions)</dd></div>
+  <div><dt>Inspiration</dt><dd>Gambler&#x27;s ruin / random walk with absorbing barriers, a standard topic in Chinese 高考 probability extension material and 强基计划 preparation</dd></div>
+  <div><dt>Adaptation</dt><dd>Rewritten as an IB Paper 3 chain with a separate symmetric-case induction rather than a limit argument, an explicit expected-duration sub-problem, and a numerical part chosen so the &#x27;looks almost fair&#x27; trap lands numerically. All parameters chosen by the author; no source problem copied.</dd></div>
+  <div><dt>Verification</dt><dd>Closed-form solution substituted back into the difference equation and checked algebraically; the p=0.48 case checked against a full Gaussian-elimination solution of the 11-state linear system; the symmetric duration checked at every state.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MAAQB_18N_1_AHL_TZ0_H_6 (similarity 0.008)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL1.11-001 (similarity 0.003)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

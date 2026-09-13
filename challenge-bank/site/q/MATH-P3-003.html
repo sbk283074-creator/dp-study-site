@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-P3-003 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>5.18 First order differential equations — coupled mixing model</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-P3-003</p>
+<div class="meta"><span class="chip chip-key">AHL 5.18 (first order differential equations; integrating factor)</span><span class="chip">P3</span><span class="chip">24 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: allowed</span><span class="chip">Write down</span><span class="chip">Find</span><span class="chip">Show that</span><span class="chip">Hence</span></div>
+
+
+<h2>Question</h2>
+<p>Two tanks are connected in series. Tank $A$ holds $100$ litres and tank $B$ holds $150$ litres, and both volumes stay constant. Brine of concentration $0.2$ kg per litre enters tank $A$ at $5$ litres per minute. Tank $A$ is kept well stirred and drains into tank $B$ at $5$ litres per minute; tank $B$ is also kept well stirred and drains at $5$ litres per minute. Initially both tanks contain pure water. Let $x(t)$ and $y(t)$ be the masses, in kg, of dissolved salt in tanks $A$ and $B$ after $t$ minutes.</p>
+<ol class="parts"><li><span class="marks">[2 marks]</span><strong>(a)</strong> <p>Write down $\dfrac{\mathrm{d}x}{\mathrm{d}t}$ in terms of $x$.</p> <em>(Write down)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Find $x(t)$, given that tank $A$ initially contains pure water.</p> <em>(Find)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Show that $y$ satisfies $\dfrac{\mathrm{d}y}{\mathrm{d}t}+\dfrac{y}{30}=1-e^{-t/20}$.</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(d)</strong> <p>Hence find $y(t)$, given that tank $B$ initially contains pure water.</p> <em>(Hence)</em></li><li><span class="marks">[3 marks]</span><strong>(e)</strong> <p>Show that the mass of salt in tank $B$ never exceeds $30$ kg.</p> <em>(Show that)</em></li><li><span class="marks">[3 marks]</span><strong>(f)</strong> <p>Determine the time at which the rate of increase of salt in tank $B$ is greatest, and the mass of salt in tank $B$ at that instant.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(g)</strong> <p>Calculate the time, to the nearest minute, at which tank $B$ first contains $25$ kg of salt.</p> <em>(Calculate)</em></li></ol>
+<p class="reveal-note">Total: 24 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Salt enters at $5\times0.2=1$ kg per minute and leaves at $5\cdot\frac{x}{100}=\frac{x}{20}$ kg per minute, so</p>
+<p>$$\frac{\mathrm{d}x}{\mathrm{d}t}=1-\frac{x}{20}.$$</p>
+<p><strong>(A1)(A1)</strong></p>
+<p><strong>(b)</strong> Separating variables, $\displaystyle\int\frac{\mathrm{d}x}{20-x}=\int\frac{\mathrm{d}t}{20}$, so $-\ln|20-x|=\tfrac{t}{20}+c$ and $20-x=Ke^{-t/20}$. <strong>(M1)(A1)</strong> Since $x(0)=0$, $K=20$ and</p>
+<p>$$x(t)=20\left(1-e^{-t/20}\right).$$</p>
+<p><strong>(A1)(A1)</strong></p>
+<p><strong>(c)</strong> Salt enters $B$ from $A$ at $5\cdot\frac{x}{100}=\frac{x}{20}$ kg per minute and leaves at $5\cdot\frac{y}{150}=\frac{y}{30}$ kg per minute. <strong>(M1)(A1)</strong> Hence $\dfrac{\mathrm{d}y}{\mathrm{d}t}=\dfrac{x}{20}-\dfrac{y}{30}$, and substituting $x=20\left(1-e^{-t/20}\right)$ gives</p>
+<p>$$\frac{\mathrm{d}y}{\mathrm{d}t}+\frac{y}{30}=1-e^{-t/20}.$$</p>
+<p><strong>(M1)(A1)(AG)</strong></p>
+<p><strong>(d)</strong> The integrating factor is $e^{\int \mathrm{d}t/30}=e^{t/30}$, so</p>
+<p>$$\frac{\mathrm{d}}{\mathrm{d}t}\left(y\,e^{t/30}\right)=e^{t/30}-e^{t/30}e^{-t/20}=e^{t/30}-e^{-t/60}.$$</p>
+<p><strong>(M1)(A1)</strong> Integrating,</p>
+<p>$$y\,e^{t/30}=30\,e^{t/30}+60\,e^{-t/60}+C,$$</p>
+<p>so $y=30+60\,e^{-t/20}+C e^{-t/30}$. <strong>(M1)(A1)</strong> Since $y(0)=0$, $0=30+60+C$, giving $C=-90$ and</p>
+<p>$$y(t)=30+60\,e^{-t/20}-90\,e^{-t/30}.$$</p>
+<p><strong>(A1)</strong></p>
+<p><strong>(e)</strong> From (d), $30-y=90e^{-t/30}-60e^{-t/20}$. This is positive exactly when $90e^{-t/30}&gt;60e^{-t/20}$, i.e. when $\tfrac32&gt;e^{-t/30+t/20}=e^{t/60}$. <strong>(M1)(A1)</strong> Since $e^{t/60}\ge1$ for all $t\ge0$ and $\tfrac32&gt;1$, the inequality holds for all $t\ge0$, so $y(t)&lt;30$ for every finite $t$. <strong>(R1)</strong></p>
+<p><strong>(f)</strong> $\dfrac{\mathrm{d}y}{\mathrm{d}t}=-3e^{-t/20}+3e^{-t/30}$. Differentiating, $\dfrac{\mathrm{d}^2y}{\mathrm{d}t^2}=\tfrac{3}{20}e^{-t/20}-\tfrac{3}{30}e^{-t/30}$, which vanishes when $\dfrac{e^{-t/20}}{20}=\dfrac{e^{-t/30}}{30}$, i.e. $e^{-t/20+t/30}=\tfrac{20}{30}$, so $e^{t/60}=\tfrac32$. <strong>(M1)(A1)</strong> Hence $t=60\ln\tfrac32=24.3$ minutes. At that instant $e^{-t/20}=\left(\tfrac23\right)^3=\tfrac{8}{27}$ and $e^{-t/30}=\left(\tfrac23\right)^2=\tfrac49$, so</p>
+<p>$$y=30+60\cdot\frac{8}{27}-90\cdot\frac49=30+\frac{160}{9}-40=\frac{70}{9}=7.78\text{ kg}.$$</p>
+<p><strong>(A1)</strong></p>
+<p><strong>(g)</strong> Put $u=e^{-t/60}$. Then $e^{-t/20}=u^3$ and $e^{-t/30}=u^2$, so $y=25$ becomes $30+60u^3-90u^2=25$, i.e. $12u^3-18u^2+1=0$. <strong>(M1)(A1)</strong> Solving numerically in $0&lt;u&lt;1$ gives $u=0.2591$, so $t=-60\ln(0.2591)=81.0$ minutes, i.e. $81$ minutes to the nearest minute. <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>In (a) award one mark for the inflow $1$ and one for the outflow $x/20$; a candidate who forgets that the outflow concentration is $x/100$ rather than $x$ loses the second. In (b) allow either separation of variables or the integrating factor. In (d) the integration of $e^{-t/60}$ is where marks are lost: $\int e^{-t/60}\,\mathrm{d}t=-60e^{-t/60}$, and the coefficient $60$ must survive into the final answer. In (e) accept any correct rearrangement; the mark is for reducing the claim to a single inequality between exponentials. In (f) the maximum must be justified by a sign change in the second derivative or by an equivalent argument, not simply assumed; allow $24$ minutes to $24.4$ minutes. In (g) allow $80$ to $82$ minutes, and allow a graphical or solver-based route with the substitution shown.  Note that (b) and (d) are the two method-heavy parts and together carry nine of the twenty-four marks, so a candidate who sets up (a) and (c) correctly but cannot integrate $e^{-t/60}$ has not lost the item. Candidates using a calculator solver for (g) should still be required to show the substitution or an equivalent equation in a single variable; a bare answer with no working earns nothing, because the mark is for setting up the crossing condition rather than for pressing buttons.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The cascade is the point. Tank A is a standard single-compartment mixing problem and most candidates arrive able to do it; the novelty is that tank B's input is not constant but the time-dependent output of A, so the second equation is inhomogeneous with an exponential right-hand side and must be handled with an integrating factor rather than by separation. The physical readings in (e) to (g) are where understanding shows. The salt in B approaches $30$ kg from below and never reaches it, which follows from $e^{t/60}&gt;1$ and surprises students who expect an overshoot; the rate of increase peaks at about $24$ minutes, long before B is anywhere near full, because B can only respond as fast as A delivers; and B takes $81$ minutes to reach $25$ kg even though A is essentially saturated by then. A candidate who finishes and checks that $y'(t)&gt;0$ for all $t&gt;0$ has understood the model.  The item also rewards dimensional sense. Both time constants, $20$ minutes and $30$ minutes, are simply the tank volumes divided by the flow rate, and a candidate who notices that can predict the shape of the answer before doing any calculus: the response of B must be governed by the slower of the two constants at large times, which is why $e^{-t/30}$ dominates the tail. That observation also explains why the peak rate in (f) occurs so early, and it gives a candidate a way to catch a sign error in the integrating-factor integration without re-deriving the whole solution.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The student must solve one differential equation and then feed that solution, still containing an exponential, into a second equation through an integrating factor, and finally read the physical meaning off an expression that is a difference of two decaying exponentials.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 5.18 (first order differential equations; integrating factor)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Original model. Volumes, flow rate and feed concentration chosen so that both time constants are integers, the peak time is $60\ln(3/2)$, and the $y=25$ crossing reduces to a cubic with a clean root.</dd></div>
+  <div><dt>Verification</dt><dd>Both closed-form solutions differentiated and substituted back into the differential equations at several times; the peak time and value obtained in exact form; the y = 25 crossing solved by bisection on the cubic $12u^3-18u^2+1$.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P1_2011Nov_TZ0_q11 (similarity 0.007)</dd></div>
+  <div><dt>Nearest item here</dt><dd>PHYS-E.3-001 (similarity 0.006)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

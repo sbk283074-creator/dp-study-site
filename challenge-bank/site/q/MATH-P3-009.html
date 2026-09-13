@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-P3-009 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>P3 extended problem: binomial identities by coefficient extraction</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-P3-009</p>
+<div class="meta"><span class="chip chip-key">SL 1.9 (the binomial theorem), AHL 1.10 (counting principles), SL 1.6 (simple deductive proof)</span><span class="chip">P3</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">Show that</span><span class="chip">Hence</span><span class="chip">Determine</span></div>
+
+
+<h2>Question</h2>
+<p>Throughout, $n$ is a positive integer and $\dbinom{n}{k}$ denotes the binomial coefficient. The three parts below are linked: each is obtained by comparing two different ways of writing the coefficient of $x^{n}$ in a product or power of binomials.</p>
+<ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>By considering the coefficient of $x^{n}$ in $(1+x)^{2n}$ written as $(1+x)^{n}(1+x)^{n}$, show that<br>$$\sum_{k=0}^{n} \binom{n}{k}^{2} = \binom{2n}{n}.$$</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Hence, by using the symmetry $\dbinom{n}{k} = \dbinom{n}{n-k}$, determine $\displaystyle\sum_{k=0}^{n} k\binom{n}{k}^{2}$.</p> <em>(Hence)</em></li><li><span class="marks">[6 marks]</span><strong>(c)</strong> <p>Determine $\displaystyle\sum_{k=0}^{n} (-1)^{k}\binom{n}{k}^{2}$, giving separate answers according to whether $n$ is odd or even.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Consider $(1+x)^{2n}$. By the binomial theorem the coefficient of $x^{n}$ is $\dbinom{2n}{n}$. <strong>(M1)(A1)</strong></p>
+<p>On the other hand $(1+x)^{2n} = (1+x)^{n}(1+x)^{n}$, and expanding each factor separately, <strong>(M1)</strong><br>$$(1+x)^{n}(1+x)^{n} = \left(\sum_{i=0}^{n}\binom{n}{i}x^{i}\right)\left(\sum_{j=0}^{n}\binom{n}{j}x^{j}\right).$$<br>The coefficient of $x^{n}$ in the product comes from all pairs with $i+j=n$, so $j = n-i$ and <strong>(M1)</strong><br>$$[x^{n}] = \sum_{i=0}^{n}\binom{n}{i}\binom{n}{n-i}.$$<br>Using $\dbinom{n}{n-i} = \dbinom{n}{i}$, this is $\displaystyle\sum_{i=0}^{n}\binom{n}{i}^{2}$. <strong>(A1)</strong></p>
+<p>The two expressions are coefficients of $x^{n}$ in the same polynomial, so they are equal:<br>$$\sum_{k=0}^{n}\binom{n}{k}^{2} = \binom{2n}{n}.$$ <strong>(AG)</strong></p>
+<p><strong>(b)</strong> Let $S = \displaystyle\sum_{k=0}^{n} k\binom{n}{k}^{2}$. <strong>(M1)</strong><br>Substitute $k \mapsto n-k$; as $k$ runs from $0$ to $n$ so does $n-k$, and $\dbinom{n}{n-k} = \dbinom{n}{k}$, so <strong>(M1)(A1)</strong><br>$$S = \sum_{k=0}^{n}(n-k)\binom{n}{n-k}^{2} = \sum_{k=0}^{n}(n-k)\binom{n}{k}^{2}.$$<br>Adding the two expressions for $S$: <strong>(M1)</strong><br>$$2S = \sum_{k=0}^{n}\bigl(k + n - k\bigr)\binom{n}{k}^{2} = n\sum_{k=0}^{n}\binom{n}{k}^{2} = n\binom{2n}{n},$$<br>using part (a). Hence <strong>(A1)</strong><br>$$S = \frac{n}{2}\binom{2n}{n}.$$</p>
+<p><strong>(c)</strong> Consider $(1-x)^{n}(1+x)^{n} = (1-x^{2})^{n}$. <strong>(M1)</strong><br>Expanding the two factors separately and extracting the coefficient of $x^{n}$, exactly as in (a): <strong>(M1)</strong><br>$$[x^{n}]\,(1-x)^{n}(1+x)^{n} = \sum_{k=0}^{n}\left[(-1)^{k}\binom{n}{k}\right]\binom{n}{n-k} = \sum_{k=0}^{n}(-1)^{k}\binom{n}{k}^{2},$$<br>which is the required sum. <strong>(A1)</strong></p>
+<p>On the other hand, $(1-x^{2})^{n} = \displaystyle\sum_{j=0}^{n}\binom{n}{j}(-1)^{j}x^{2j}$, which contains only <strong>even</strong> powers of $x$. <strong>(M1)</strong></p>
+<p>If $n$ is odd, the coefficient of $x^{n}$ is therefore $0$. <strong>(A1)</strong></p>
+<p>If $n$ is even, say $n = 2m$, the coefficient of $x^{2m}$ is $(-1)^{m}\dbinom{n}{m} = (-1)^{n/2}\dbinom{n}{n/2}$. <strong>(A1)</strong></p>
+<p>Hence<br>$$\sum_{k=0}^{n}(-1)^{k}\binom{n}{k}^{2} = \begin{cases} 0, &amp; n \text{ odd},\[4pt] (-1)^{n/2}\dbinom{n}{n/2}, &amp; n \text{ even}.\end{cases}$$</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) The (M1)s are for writing the single power as a product of two expansions and for identifying the pairs with $i+j=n$; the symmetry $\binom{n}{n-i}=\binom{n}{i}$ must be stated. A candidate who tries induction will find the inductive step intractable and should be credited only for the base case. (b) The substitution $k\mapsto n-k$ is the whole idea and earns (M1); the second (M1) is for adding the two forms. Award the final (A1) only if part (a) is used, since the question says 'hence'. (c) The recognition that $(1-x)^n(1+x)^n=(1-x^2)^n$ earns (M1) and is the crux. The parity split must be explicit: a candidate who gives only the even case has lost half the marks. Check the sign of the even case carefully, since $(-1)^{n/2}$ is positive when $n/2$ is even and negative when $n/2$ is odd; a candidate who writes $(-1)^n$ has the wrong period. Candidates may verify small cases, and doing so is encouraged. Numerical checking is a legitimate route to the answer in (c) but never to the proof: for $n=2$ the sum is $1-4+1=-2$, which is $-\binom{2}{1}$, and for $n=3$ it is $1-9+9-1=0$; a candidate who spots the parity from these two cases but gives no argument for general $n$ has guessed, not shown. In (b) the final value is $\frac{n}{2}\binom{2n}{n}$, which is an integer, and a candidate who reports $\frac{n}{2}$ times the part (a) sum without simplifying has not used 'hence' as instructed. Do not penalise index notation differences between $i$, $j$ and $k$.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This problem is about one idea used three times: if two expressions are the same polynomial, then corresponding coefficients are equal. Nothing more than the binomial theorem is required, and yet each part produces a result that looks, on the page, as though it ought to need heavy machinery. That gap between the simplicity of the method and the unobviousness of the results is exactly what makes coefficient extraction worth examining.</p>
+<p>Part (a) is the template. Writing $(1+x)^{2n}$ as $(1+x)^{n}(1+x)^{n}$ and extracting $x^{n}$ two ways gives $\sum\binom{n}{k}^{2}=\binom{2n}{n}$ immediately. Part (b) then adds a twist that is not coefficient extraction at all: the substitution $k\mapsto n-k$ shows that the weighted sum equals itself with $k$ replaced by $n-k$, and adding the two forms makes the weight collapse to $n$. It is a symmetrisation argument, and it is the standard trick for summing $k$ times a symmetric summand.</p>
+<p>Part (c) is the most demanding, because the student has to see that changing the sign in one factor turns the product into $(1-x^{2})^{n}$, which contains only even powers. That single observation disposes of the whole problem: for odd $n$ the sum is zero, and for even $n$ it is one signed binomial coefficient. It is worth dwelling on why this is surprising, because the sum $\sum(-1)^{k}\binom{n}{k}^{2}$ has $n+1$ terms of rapidly increasing size that cancel almost completely, and no amount of numerical checking would lead a student to guess that the total is zero for every odd $n$. The method explains a fact that computation cannot.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>All three identities come from one device, comparing two ways of writing the same coefficient, and the student has to supply the device: there is no routine to apply, only the recognition that a sum of products of binomial coefficients is the coefficient of something.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>SL 1.9 (the binomial theorem), AHL 1.10 (counting principles), SL 1.6 (simple deductive proof)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Original. The three identities are classical, but the three-part structure, in which a single coefficient-extraction device is applied and then extended twice, is constructed so that each part depends on the previous one and the final parity split is derived rather than quoted.</dd></div>
+  <div><dt>Verification</dt><dd>All three identities verified in Python for n = 1 to 8 by direct summation against the stated closed forms: sum of squared binomial coefficients equals C(2n,n); the weighted sum equals (n/2)C(2n,n) with values 1, 6, 30, 140, 630, 2772, 12012, 51480; the alternating sum equals 0 for odd n and -2, 6, -20, 70 for n = 2, 4, 6, 8, matching (-1)^(n/2) C(n, n/2).</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PHYS_HL_P1_2023May_TZ1_q14 (similarity 0.006)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL1.9-001 (similarity 0.006)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-11</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

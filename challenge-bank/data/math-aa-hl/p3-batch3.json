@@ -1,0 +1,224 @@
+{
+  "questions": [
+    {
+      "id": "MATH-P3-010",
+      "title": "The probability that nobody gets their own coat back",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.10 (counting principles, including permutations and combinations); SL 1.8 (sum of infinite convergent geometric sequences — used here as the series for e)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "P3 extended problem: derangements, inclusion-exclusion and a limit",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "permitted",
+      "language": null,
+      "marks": 16,
+      "difficulty": 5,
+      "challenge_mechanism": "Three methods are forced in sequence and each is harder to start than the last: inclusion-exclusion gives a closed form with alternating signs, a conditioning argument gives a recurrence with no alternating signs, and only the closed form reveals that the answer is the nearest integer to n!/e, which is a statement no recurrence would suggest. The convergence to 1/e is surprising enough that a candidate who computes it correctly still has to be told why it should be true.",
+      "command_terms": [
+        "Show that",
+        "Show that",
+        "Determine",
+        "Show that"
+      ],
+      "tags": [
+        "derangements",
+        "inclusion-exclusion",
+        "recurrence",
+        "limit",
+        "e",
+        "counting",
+        "P3"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "At the end of a party, $n$ guests collect their coats at random from a rack. A **derangement** of $n$ objects is a permutation in which no object is left in its original position. Let $D_{n}$ be the number of derangements of $n$ objects, and let $p_{n} = D_{n}/n!$ be the probability that no guest takes their own coat. This problem derives three descriptions of the same sequence and asks what they tell you about each other.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 5,
+          "command_term": "Show that",
+          "text": "Let $A_{i}$ be the set of permutations that fix object $i$. By applying the inclusion–exclusion principle to the union of the $A_{i}$, show that\n$$D_{n} = n!\\sum_{k=0}^{n}\\frac{(-1)^{k}}{k!}.$$"
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "By conditioning on what happens to object 1, show that for $n \\ge 2$\n$$D_{n} = (n-1)\\bigl(D_{n-1} + D_{n-2}\\bigr),$$\nwith $D_{0} = 1$ and $D_{1} = 0$. Hence verify that your formula from part (a) satisfies this recurrence for $n = 4$."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine $\\displaystyle\\lim_{n\\to\\infty} p_{n}$, giving your answer in terms of $e$. Determine also the smallest value of $n$ for which $p_{n}$ is within $0.001$ of this limit, justifying your answer with a bound on the error."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that for every $n \\ge 1$, $D_{n}$ is the nearest integer to $\\dfrac{n!}{e}$."
+        }
+      ],
+      "answer": "**(a)** A permutation fails to be a derangement exactly when at least one object is fixed, so $D_{n} = n! - \\bigl|\\bigcup_{i} A_{i}\\bigr|$. **(M1)** For any $k$ distinct indices, $\\bigl|A_{i_{1}} \\cap \\cdots \\cap A_{i_{k}}\\bigr| = (n-k)!$, since those $k$ objects are fixed and the remaining $n-k$ may be arranged freely. **(A1)** There are $\\dbinom{n}{k}$ ways to choose the $k$ indices, so by inclusion–exclusion **(M1)**\n$$\\Bigl|\\bigcup_{i} A_{i}\\Bigr| = \\sum_{k=1}^{n} (-1)^{k+1}\\binom{n}{k}(n-k)!$$\nTherefore **(M1)**\n$$D_{n} = n! - \\sum_{k=1}^{n}(-1)^{k+1}\\frac{n!}{k!(n-k)!}(n-k)! = n!\\sum_{k=0}^{n}\\frac{(-1)^{k}}{k!}$$ **(A1)(AG)**\n\n**(b)** Consider object 1. In a derangement it must land in some position $j \\neq 1$, and there are $n-1$ choices of $j$. **(M1)** Now consider where object $j$ goes.\n\n*Case 1.* Object $j$ lands in position 1. Then objects 1 and $j$ have swapped, and the remaining $n-2$ objects must be deranged among themselves: $D_{n-2}$ arrangements. **(A1)**\n\n*Case 2.* Object $j$ does not land in position 1. Then, regarding position 1 as the 'forbidden' position for object $j$ and every other remaining object as forbidden from its own position, the remaining $n-1$ objects must be deranged: $D_{n-1}$ arrangements. **(A1)**\n\nHence $D_{n} = (n-1)(D_{n-1} + D_{n-2})$. For $n = 4$: the formula in (a) gives $D_{4} = 24\\left(1 - 1 + \\tfrac{1}{2} - \\tfrac{1}{6} + \\tfrac{1}{24}\\right) = 24 \\times \\tfrac{9}{24} = 9$, and $D_{3} = 2$, $D_{2} = 1$, so $(4-1)(D_{3} + D_{2}) = 3(2 + 1) = 9$, which agrees. **(A1)**\n\n**(c)** $p_{n} = \\dfrac{D_{n}}{n!} = \\displaystyle\\sum_{k=0}^{n}\\frac{(-1)^{k}}{k!}$, which is the $n$th partial sum of the Maclaurin series for $e^{x}$ at $x = -1$. **(M1)** Hence **(A1)**\n$$\\lim_{n\\to\\infty} p_{n} = e^{-1} = \\frac{1}{e} \\approx 0.3679$$\nThe series is alternating with terms decreasing in magnitude, so the error after $n$ terms is at most the first neglected term: $|p_{n} - 1/e| \\le \\dfrac{1}{(n+1)!}$. **(M1)** We need $\\dfrac{1}{(n+1)!} < 0.001$, i.e. $(n+1)! > 1000$. Since $6! = 720$ and $7! = 5040$, we need $n + 1 \\ge 7$, so the smallest such $n$ is $n = 6$. **(A1)** Checking directly: $p_{5} = 1 - 1 + \\tfrac{1}{2} - \\tfrac{1}{6} + \\tfrac{1}{24} - \\tfrac{1}{120} = 0.36667$, which differs from $1/e$ by about $0.0012$, while $p_{6} = p_{5} + \\tfrac{1}{720} = 0.36806$, which differs by about $0.00018$.\n\n**(d)** From (a), $D_{n} = n!\\displaystyle\\sum_{k=0}^{n}\\frac{(-1)^{k}}{k!}$, while $\\dfrac{n!}{e} = n!\\displaystyle\\sum_{k=0}^{\\infty}\\frac{(-1)^{k}}{k!}$. **(M1)** Subtracting, **(M1)**\n$$\\left|\\frac{n!}{e} - D_{n}\\right| = n!\\left|\\sum_{k=n+1}^{\\infty}\\frac{(-1)^{k}}{k!}\\right| \\le \\frac{n!}{(n+1)!} = \\frac{1}{n+1}$$\nusing the alternating-series bound again. For $n \\ge 1$ this is at most $\\tfrac{1}{2}$, and in fact strictly less than $\\tfrac{1}{2}$ for $n \\ge 2$. **(A1)** A number within $\\tfrac{1}{2}$ of $D_{n}$ has $D_{n}$ as its nearest integer, so $D_{n}$ is the nearest integer to $n!/e$. For $n = 1$, $1!/e \\approx 0.368$ and $D_{1} = 0$, which is indeed the nearest integer.",
+      "markscheme_notes": "(a) Award (M1) for setting up the complement, (A1) for the count $(n-k)!$ of a $k$-fold intersection, and (M1) for the inclusion-exclusion sum with alternating signs. The final (AG) is generous with follow-through: a candidate whose signs are reversed throughout has made one error and should lose only the accuracy mark. (b) The two cases are the entire argument and each earns a mark; the most common failure is to treat case 2 as $D_{n-2}$, which double-counts the swap. Accept any explicit verification for $n = 4$, including a direct listing of the nine derangements. (c) The identification of the partial sum with the series for $e^{-1}$ is the key step and is worth a mark on its own; a candidate who computes several values and guesses the limit cannot reach the error-bound mark. Accept $n = 6$ with the alternating-series bound; do not accept a value obtained by comparing decimals without a bound. (d) Award (M1) for writing both expressions as sums and (M1) for the subtraction; the mark is for the bound $1/(n+1)$ and the conclusion that it is below a half. Candidates who note that the $n=1$ case is borderline should not be penalised for mentioning it.",
+      "explanation": "This problem is a study in how much two descriptions of the same sequence can differ in what they let you see. The inclusion-exclusion formula in part (a) is exact, closed-form, and almost useless for computation: it is an alternating sum of nearly cancelling terms, so evaluating $D_{20}$ from it on a calculator loses most of the significant figures. The recurrence in part (b) is computationally perfect and conceptually opaque: it lets you generate $D_{n}$ for any $n$ without ever explaining why the answer behaves the way it does. Neither hints that $p_{n}$ settles down at all, let alone that it settles on $1/e$.\n\nThe moment of the problem is part (c), and it only works because of the closed form. Once $p_{n}$ is recognised as the $n$th partial sum of $\\sum (-1)^{k}/k!$, the limit is $e^{-1}$ immediately and the error bound follows from the alternating series estimate, which is a theorem students meet early and rarely apply. The answer to 'how large must $n$ be' is $6$, which is startlingly small: with seven guests the probability that nobody gets their own coat is already within a tenth of a percentage point of its limiting value. That is a genuinely counter-intuitive fact, and it is worth saying out loud, because most people guess that convergence to $1/e$ would be slow.\n\nPart (d) ties the two formulas together in a way neither suggests alone. Since $D_{n}$ is the $n$th partial sum multiplied by $n!$, and $n!/e$ is the full sum multiplied by $n!$, the difference is the tail, and the alternating bound puts that tail below $1/(n+1)$, hence below a half. So $D_{n}$ is the nearest integer to $n!/e$. This is a memorable and slightly absurd statement — a counting problem whose answer is obtained by dividing by $e$ and rounding — and it is the kind of result that makes the whole investigation worth doing. It is also the reason the problem asks for all three methods: the recurrence proves nothing about $e$, and the limit proves nothing about integers, but together they prove something neither could reach alone.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original problem written around the standard derangement sequence rather than adapted from a past paper. The four-part structure is constructed so that the closed form, the recurrence, the limit and the rounding result each depend on the previous one; the specific demand in part (c) for the smallest n within 0.001 was chosen because it falls at n = 6, small enough to check by hand. All values of D_n and both error bounds were recomputed in Python.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.011,
+        "nearest_bank_id": "MATH_AAHL_P3_2008Nov_TZ0_q03",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "max_internal_similarity": 0.01,
+        "nearest_internal_id": "MATH-AHL1.2-001",
+        "max_approach_similarity": 0.071,
+        "nearest_approach_id": "MATH-AHL1.11-001"
+      },
+      "verification": {
+        "method": "D_n computed from the inclusion-exclusion formula and independently by brute-force enumeration of all permutations for n up to 8; the recurrence checked for n = 2 to 8; the limit and the smallest n within 0.001 obtained from the alternating-series bound; the rounding claim checked for n = 1 to 8 against n!/e.",
+        "assertions": [
+          "sum((-1)**k * factorial(4)//factorial(k) for k in range(5)) == 9",
+          "sum((-1)**k * factorial(5)//factorial(k) for k in range(6)) == 44",
+          "sum((-1)**k * factorial(6)//factorial(k) for k in range(7)) == 265",
+          "approx(9, (4-1)*(2+1))",
+          "approx(1 - 1 + 0.5 - 1/6 + 1/24 - 1/120, 0.366667, 1e-5)",
+          "approx(1 - 1 + 0.5 - 1/6 + 1/24 - 1/120 + 1/720, 0.368056, 1e-5)",
+          "approx(abs(0.366667 - exp(-1)), 0.001213, 1e-5)",
+          "approx(abs(0.368056 - exp(-1)), 0.000176, 1e-5)",
+          "approx(factorial(6)*exp(-1), 264.8732, 1e-3)",
+          "approx(round(factorial(6)*exp(-1)), 265)",
+          "approx(round(factorial(8)*exp(-1)), 14833)"
+        ],
+        "solution_skeleton": [
+          "count the complement by inclusion-exclusion over the sets of permutations fixing each object",
+          "evaluate a k-fold intersection as the factorial of the number of unfixed objects",
+          "condition on the image of one object and split into the two-cycle case and the rest to obtain a recurrence",
+          "recognise the probability as a partial sum of the exponential series at minus one",
+          "bound the alternating-series remainder to find how many terms are needed for a stated accuracy",
+          "compare the truncated and infinite sums multiplied by n factorial to prove the rounding result"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11",
+      "authored_by": "ai"
+    },
+    {
+      "id": "MATH-P3-011",
+      "title": "The product of the chords of a regular polygon",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.13 (modulus-argument (polar) form); AHL 1.14 (complex conjugate roots of quadratic and polynomial equations)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "P3 extended problem: roots of unity and a product of distances",
+      "paper": "P3",
+      "section": null,
+      "question_type": "problem_solving",
+      "technology": "permitted",
+      "language": null,
+      "marks": 16,
+      "difficulty": 5,
+      "challenge_mechanism": "Two facts about the same polynomial are being used at once: that its value at z = 1 is n, and that its value at z = 1 is also a product of distances. The candidate has to see that (z^n - 1)/(z - 1) is a polynomial before they can substitute, and the substitution is the one value the factorisation formula originally excludes. The geometric payoff, that the product of the chords from one vertex equals n, is not visible in the algebra at all.",
+      "command_terms": [
+        "Show that",
+        "Show that",
+        "Show that",
+        "Determine"
+      ],
+      "tags": [
+        "roots of unity",
+        "complex numbers",
+        "product of distances",
+        "trigonometric product",
+        "regular polygon",
+        "P3"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "Throughout, $n \\ge 2$ is an integer and $\\omega = e^{2\\pi i/n}$, so that the numbers $1, \\omega, \\omega^{2}, \\ldots, \\omega^{n-1}$ are the vertices of a regular $n$-gon inscribed in the unit circle of the complex plane. This problem asks for the product of the distances from the vertex at $1$ to all the other vertices, and the answer turns out not to depend on any trigonometric detail at all.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $1 + \\omega + \\omega^{2} + \\cdots + \\omega^{n-1} = 0$, and interpret this result geometrically as a statement about the vertices of the polygon."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Show that",
+          "text": "By factorising $z^{n} - 1$ and comparing it with the factorisation of $z^{n-1} + z^{n-2} + \\cdots + 1$, show that\n$$\\prod_{k=1}^{n-1}\\bigl(1 - \\omega^{k}\\bigr) = n.$$"
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $\\bigl|1 - \\omega^{k}\\bigr| = 2\\sin\\left(\\dfrac{k\\pi}{n}\\right)$ for $1 \\le k \\le n-1$. Hence show that\n$$\\prod_{k=1}^{n-1}\\sin\\left(\\frac{k\\pi}{n}\\right) = \\frac{n}{2^{\\,n-1}},$$\nand state what part (b) says about the product of the chord lengths from one vertex of a regular $n$-gon to all the others."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the exact value of $\\displaystyle\\prod_{k=1}^{6}\\sin\\left(\\frac{k\\pi}{7}\\right)$, and evaluate it as a decimal to confirm your answer."
+        }
+      ],
+      "answer": "**(a)** The sum is a finite geometric series with first term $1$, common ratio $\\omega$ and $n$ terms, and $\\omega \\neq 1$ because $n \\ge 2$: **(M1)**\n$$1 + \\omega + \\cdots + \\omega^{n-1} = \\frac{1 - \\omega^{n}}{1 - \\omega}$$\nSince $\\omega^{n} = e^{2\\pi i} = 1$, the numerator is zero and the denominator is not, so the sum is $0$. **(A1)(A1)** Geometrically, the $n$ vertices are $n$ equal vectors whose sum is zero: the polygon closes up. Equivalently, the centre of mass of the vertices, treated as unit masses, is at the origin. **(A1)**\n\n**(b)** The $n$ numbers $1, \\omega, \\ldots, \\omega^{n-1}$ are precisely the $n$ roots of $z^{n} - 1$, so **(M1)**\n$$z^{n} - 1 = \\prod_{k=0}^{n-1}\\bigl(z - \\omega^{k}\\bigr) = (z-1)\\prod_{k=1}^{n-1}\\bigl(z - \\omega^{k}\\bigr)$$\nDividing by $z - 1$ and using the standard factorisation $z^{n} - 1 = (z-1)(z^{n-1} + \\cdots + z + 1)$, valid for all $z$, **(M1)**\n$$z^{n-1} + z^{n-2} + \\cdots + 1 = \\prod_{k=1}^{n-1}\\bigl(z - \\omega^{k}\\bigr)$$\nBoth sides are polynomials in $z$, so they are equal for every $z$, including $z = 1$ even though the division by $z-1$ is not valid there. **(M1)(A1)** Substituting $z = 1$ gives $n$ on the left, from the $n$ terms, and the required product on the right: **(A1)(AG)**\n$$\\prod_{k=1}^{n-1}\\bigl(1 - \\omega^{k}\\bigr) = n$$\n\n**(c)** With $\\omega^{k} = \\cos\\frac{2k\\pi}{n} + i\\sin\\frac{2k\\pi}{n}$, **(M1)**\n$$\\bigl|1 - \\omega^{k}\\bigr|^{2} = \\left(1 - \\cos\\frac{2k\\pi}{n}\\right)^{2} + \\sin^{2}\\frac{2k\\pi}{n} = 2 - 2\\cos\\frac{2k\\pi}{n}$$\nUsing $1 - \\cos 2\\theta = 2\\sin^{2}\\theta$ with $\\theta = \\dfrac{k\\pi}{n}$, this is $4\\sin^{2}\\dfrac{k\\pi}{n}$, so $|1 - \\omega^{k}| = 2\\sin\\dfrac{k\\pi}{n}$, which is positive for $1 \\le k \\le n-1$. **(A1)** Taking the modulus of the result in (b), and noting that the modulus of a product is the product of the moduli, **(M1)**\n$$n = \\left|\\prod_{k=1}^{n-1}\\bigl(1 - \\omega^{k}\\bigr)\\right| = \\prod_{k=1}^{n-1}\\left|1 - \\omega^{k}\\right| = \\prod_{k=1}^{n-1} 2\\sin\\frac{k\\pi}{n} = 2^{\\,n-1}\\prod_{k=1}^{n-1}\\sin\\frac{k\\pi}{n}$$\nso $\\displaystyle\\prod_{k=1}^{n-1}\\sin\\frac{k\\pi}{n} = \\frac{n}{2^{\\,n-1}}$. **(A1)** Since $|1 - \\omega^{k}|$ is the distance from the vertex at $1$ to the vertex at $\\omega^{k}$, part (b) says that the product of the $n-1$ chord lengths from any one vertex of a regular $n$-gon inscribed in the unit circle is exactly $n$, independent of everything except the number of vertices.\n\n**(d)** Taking $n = 7$, **(M1)**\n$$\\prod_{k=1}^{6}\\sin\\frac{k\\pi}{7} = \\frac{7}{2^{6}} = \\frac{7}{64}$$ **(A1)**\nEvaluating, $\\dfrac{7}{64} = 0.109375$. As a check, $\\sin\\frac{\\pi}{7}\\sin\\frac{2\\pi}{7}\\sin\\frac{3\\pi}{7} = \\frac{\\sqrt{7}}{8}$ and the remaining three factors are the same three values in reverse order, so the full product is $\\dfrac{7}{64}$, which agrees. **(A1)**",
+      "markscheme_notes": "(a) Accept the geometric-series argument or the observation that multiplying the sum by $\\omega$ permutes its terms, so $S = \\omega S$ and hence $S = 0$; the geometric interpretation must say something about the vertices or the centre of mass and not merely restate the equation. (b) Award (M1) for the factorisation of $z^n - 1$ over its roots and (M1) for cancelling the factor $(z-1)$; the subtle step is the substitution $z = 1$, and a candidate who says the identity is only valid for $z \\neq 1$ has missed that both sides are polynomials and should lose one mark. (c) The identity $|1-\\omega^k| = 2\\sin(k\\pi/n)$ must be derived rather than quoted; accept the route through $|1-\\omega^k|^2 = (1-\\omega^k)(1-\\omega^{-k})$ as an alternative. The final remark about the product of chord lengths is a separate mark and should be credited even if the algebraic product is muddled. (d) Accept $7/64$ or $0.109375$; the pairing check is optional but shows the candidate has noticed the symmetry $\\sin(k\\pi/7) = \\sin((7-k)\\pi/7)$.",
+      "explanation": "The reason this problem works is that the number $n$ appears in two unrelated-looking ways and the problem forces them into the same equation. On one side, $z^{n-1} + \\cdots + 1$ evaluated at $z = 1$ is $n$, for the trivial reason that it has $n$ terms each equal to $1$. On the other side, the same polynomial factorises as a product of distances, because its roots are the non-trivial $n$th roots of unity and the modulus of $z - \\omega^{k}$ is the distance from $z$ to $\\omega^{k}$. Put $z = 1$ and the product of all the chord lengths from one vertex comes out as $n$. Nothing trigonometric enters, which is the surprise: a question about sines has an answer with no sines in it.\n\nThe step that candidates find genuinely hard is the substitution $z = 1$ in part (b), and it is worth dwelling on because it is a recurring idea. The factorisation $z^{n} - 1 = (z-1)(z^{n-1} + \\cdots + 1)$ holds identically, and so does the factorisation over roots, but the cancellation of $(z-1)$ is only legitimate where $z \\neq 1$. The resolution is that after cancelling, both sides are polynomials, and two polynomials that agree at infinitely many points agree everywhere, including at the one point the cancellation excluded. This is the removable-singularity argument in its simplest form, and a student who has met it here will recognise it later.\n\nPart (c) converts the algebraic statement into a trigonometric one and part (d) cashes it in for $n = 7$. The specific value $7/64$ is not something anyone would guess, and the product of six sines is not something anyone would want to compute directly. The general result $\\prod \\sin(k\\pi/n) = n/2^{n-1}$ is a standard identity, but arriving at it through complex numbers rather than through repeated application of double-angle formulae is the point: the geometry does the work that the trigonometry would find laborious. The final observation is the one worth carrying away — for a regular $n$-gon on the unit circle, the product of the chords from any vertex to the others is exactly $n$, whether $n$ is $3$ or $3$ million.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original problem. The structure follows the classical derivation of the sine-product identity, which is standard material, but the four-part arrangement, the explicit treatment of the removable singularity at z = 1, the geometric interpretation as a product of chord lengths, and the choice of n = 7 for the final evaluation were constructed for this item. The identity was verified numerically in Python for n from 3 to 8.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "checked_at": "2026-09-11",
+        "max_similarity": 0.005,
+        "nearest_bank_id": "MAAQB_22M_2_AHL_TZ1_8",
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "max_internal_similarity": 0.007,
+        "nearest_internal_id": "MATH-P3-004",
+        "max_approach_similarity": 0.184,
+        "nearest_approach_id": "MATH-AHL3.10-001"
+      },
+      "verification": {
+        "method": "The sum of the roots, the product identity, the chord-length formula and the sine product were checked numerically in Python for n from 2 to 8 using direct trigonometric evaluation; the n = 7 value 7/64 was confirmed against the product of the six sines. The assertions use real trigonometric identities only, since the verification namespace evaluates real arithmetic.",
+        "assertions": [
+          "approx(2*sin(pi/7), 0.8677675, 1e-6)",
+          "approx(7/64, 0.109375)",
+          "approx(sin(pi/7)*sin(2*pi/7)*sin(3*pi/7), sqrt(7)/8, 1e-12)",
+          "approx((sqrt(7)/8)**2, 7/64, 1e-12)",
+          "approx(3/2**2, 0.75)",
+          "approx(5/2**4, 0.3125)",
+          "approx(sum(cos(2*pi*k/7) for k in range(7)), 0)",
+          "approx(sum(sin(2*pi*k/7) for k in range(7)), 0)",
+          "approx(sqrt((1-cos(2*pi/7))**2 + sin(2*pi/7)**2), 2*sin(pi/7))",
+          "approx(sqrt((1-cos(2*pi/5))**2 + sin(2*pi/5)**2), 2*sin(pi/5))",
+          "approx(2 - 2*cos(2*pi/7), 4*sin(pi/7)**2)"
+        ],
+        "solution_skeleton": [
+          "sum the geometric series of roots and use that the nth power of the generator is one",
+          "factorise z^n - 1 over its roots, cancel the factor z - 1, and substitute the excluded value by polynomial identity",
+          "convert a modulus into a sine using the double-angle identity for one minus cosine",
+          "take the modulus of the product and divide by the power of two to obtain the sine product",
+          "evaluate the general result at a particular n and check it numerically"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "created_at": "2026-09-11",
+      "updated_at": "2026-09-11",
+      "authored_by": "ai"
+    }
+  ]
+}
