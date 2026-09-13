@@ -4,14 +4,23 @@
  * Talks to the Cloudflare Worker /api/ask backend (CORS: *).
  * Self-contained: injects its own styles, no external dependencies.
  *
- * Controls exposed to the student (the "AI control panel"):
- *   Reply length   short | medium | long   -> token budget + length instruction
- *   Thinking depth quick | standard | deep  -> temperature + reasoning instruction
- *   Task difficulty easy | medium | hard    -> which free model is chosen
- *   Model          Auto (best for choices) | any free model
- * The backend maps these onto the best-fit free Groq model so the org's quota
- * is spent where it helps most (reasoning models for hard/deep, unlimited-token
- * models for long answers, high-quota models for many short easy questions).
+ * The control bar sits directly on top of the input bar and is ALWAYS visible,
+ * so the student can find and change it on every single question:
+ *
+ *   Reply length    short | medium | long     -> token budget + length instruction
+ *   Thinking depth  quick | standard | deep   -> temperature + reasoning instruction
+ *   Task difficulty easy  | medium   | hard   -> model quality tier
+ *   Model           Auto (best fit) | any free model  (explicit Auto option)
+ *
+ * "Auto" weighs three indexes — how LONG the answer must be, how COMPLEX the
+ * task is, and how SCARCE or ABUNDANT each model's quota is — to spend the
+ * org's free Groq quota where it helps most:
+ *   - token-rich / request-poor models (Compound: 250 req/day, unlimited tokens)
+ *       -> long answers and the most complex tasks
+ *   - request-rich / token-poor models (Allam: 7,000 req/day, 6K tok/min)
+ *       -> many short, simple questions
+ *   - balanced models (GPT-OSS 120B / Qwen3.8-27B: 1,000 req/day, 200K tok/day)
+ *       -> the everyday middle
  * ==========================================================================*/
 (function () {
   "use strict";
@@ -53,26 +62,29 @@
     try { localStorage.setItem(LS_SET, JSON.stringify(s)); } catch (e) {}
   }
 
-  // Client-side mirror of the backend's model resolver — gives instant "which
-  // model will answer" feedback as the student toggles the controls.
+  // --- Client-side mirror of the backend's AUTO resolver ---------------------
+  // Kept in exact lock-step with resolveAsk() in backend/src/ai.js, so the live
+  // "which model will answer" hint never disagrees with what the server does.
+  var LEN_NEED = { short: 1, medium: 2, long: 3 };
+  var DIFF_NEED = { easy: 1, medium: 2, hard: 3 };
+  var DEPTH_NEED = { quick: 1, standard: 2, deep: 3 };
+  var REASONS = {
+    "groq/compound": "Long + complex \u2192 Compound: unlimited daily tokens plus tools (only 250 req/day, so reserved for the heaviest asks).",
+    "groq/compound-mini": "Long reply \u2192 Compound Mini: unlimited daily tokens at 70K tok/min (250 req/day).",
+    "openai/gpt-oss-120b": "Hard / deep task \u2192 GPT-OSS 120B: the strongest reasoning model, 200K tokens/day.",
+    "allam-2-7b": "Short + simple \u2192 Allam 2 7B: the largest request quota (7,000/day), for many quick questions.",
+    "qwen/qwen3.8-27b": "Standard task \u2192 Qwen3.8-27B: the strongest general model, best for Chinese (200K tokens/day)."
+  };
+
   function predictModel(s) {
-    var d = s.depth, f = s.difficulty, l = s.length;
-    var tier = (f === "hard" || d === "deep") ? 2 : ((f === "easy" && d === "quick") ? 0 : 1);
-    if (tier === 2) return "openai/gpt-oss-120b";
-    if (tier === 0) return (l === "long") ? "openai/gpt-oss-20b" : "allam-2-7b";
-    return (l === "long") ? "groq/compound-mini" : "qwen/qwen3.8-27b";
+    var lenNeed = LEN_NEED[s.length] || 2;
+    var cplx = Math.max(DIFF_NEED[s.difficulty] || 2, DEPTH_NEED[s.depth] || 2);
+    if (lenNeed === 3) return cplx >= 3 ? "groq/compound" : "groq/compound-mini";
+    if (cplx >= 3) return "openai/gpt-oss-120b";
+    if (cplx <= 1 && lenNeed <= 1) return "allam-2-7b";
+    return "qwen/qwen3.8-27b";
   }
-  function predictReason(s) {
-    var d = s.depth, f = s.difficulty, l = s.length;
-    var tier = (f === "hard" || d === "deep") ? 2 : ((f === "easy" && d === "quick") ? 0 : 1);
-    if (tier === 2) return "Hard task / deep thinking → GPT-OSS 120B, the strongest reasoning model (65K output, 200K tokens/day).";
-    if (tier === 0) return (l === "long")
-      ? "Easy + quick but a longer answer → GPT-OSS 20B handles the length without spending the reasoning models."
-      : "Easy + quick, short answer → Allam 2 7B has the largest request quota (7,000/day) — ideal for many short questions.";
-    return (l === "long")
-      ? "Standard task, long answer → Compound Mini has unlimited daily tokens, built for detailed explanations."
-      : "Standard task → Qwen3.8-27B, the strongest general model on Groq and best for Chinese (200K tokens/day).";
-  }
+  function labelFor(id) { return MODEL_LABELS[id] || id || "AI"; }
 
   // --- infer the subject/space from the current URL path ---
   function inferSubject() {
@@ -115,6 +127,17 @@
     try { localStorage.setItem(LS_CHAT, JSON.stringify(arr.slice(-40))); } catch (e) {}
   }
 
+  // one labelled segmented row:  <label> <btn><btn><btn>
+  function segRow(axis, label, opts) {
+    var btns = opts.map(function (o) {
+      return '<button type="button" data-v="' + o.v + '">' + escapeHtml(o.t) + '</button>';
+    }).join("");
+    return '<div class="dp-ai-ctrl-row">' +
+      '<span class="dp-ai-ctrl-lab">' + escapeHtml(label) + '</span>' +
+      '<div class="dp-ai-seg" data-axis="' + axis + '">' + btns + '</div>' +
+      '</div>';
+  }
+
   function build() {
     if (document.getElementById("dp-ai-root")) return;
 
@@ -128,8 +151,8 @@
       "cursor:pointer;box-shadow:0 6px 20px rgba(54,83,214,.35);transition:transform .15s ease,box-shadow .15s ease}",
       ".dp-ai-btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(54,83,214,.45)}",
       ".dp-ai-btn__dot{width:8px;height:8px;border-radius:50%;background:#9affc4;box-shadow:0 0 0 3px rgba(154,255,196,.25)}",
-      ".dp-ai-panel{position:fixed;right:18px;bottom:78px;z-index:2147483000;width:min(390px,calc(100vw - 36px));",
-      "height:min(580px,calc(100vh - 110px));display:none;flex-direction:column;background:#fff;border:1px solid #e3e8f0;",
+      ".dp-ai-panel{position:fixed;right:18px;bottom:78px;z-index:2147483000;width:min(400px,calc(100vw - 36px));",
+      "height:min(640px,calc(100vh - 96px));display:none;flex-direction:column;background:#fff;border:1px solid #e3e8f0;",
       "border-radius:16px;overflow:hidden;box-shadow:0 18px 50px rgba(16,24,40,.18);font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#151923}",
       ".dp-ai-panel.open{display:flex}",
       ".dp-ai-head{display:flex;align-items:center;gap:8px;padding:14px 14px;background:linear-gradient(135deg,#3653d6,#5b73e8);color:#fff}",
@@ -145,9 +168,21 @@
       ".dp-ai-msg.bot{align-self:flex-start;background:#fff;border:1px solid #e3e8f0;border-bottom-left-radius:4px}",
       ".dp-ai-msg.bot strong{color:#2a44b8}",
       ".dp-ai-msg.err{align-self:flex-start;background:#fdeceb;color:#b02a1f;border:1px solid #f5c4bf;border-bottom-left-radius:4px}",
-      ".dp-ai-foot{padding:8px 12px;font-size:11px;color:#6c7788;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #eef1f6;background:#fff}",
-      ".dp-ai-foot a{color:#3653d6;text-decoration:none;font-weight:600}",
-      ".dp-ai-input{display:flex;gap:8px;padding:12px;border-top:1px solid #eef1f6;background:#fff}",
+      // ---- always-visible control bar, attached to the input ----
+      ".dp-ai-ctrl{padding:10px 12px 8px;border-top:1px solid #eef1f6;background:#fff}",
+      ".dp-ai-ctrl-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}",
+      ".dp-ai-ctrl-lab{flex:0 0 46px;font-size:10px;font-weight:700;color:#7a8398;text-transform:uppercase;letter-spacing:.04em}",
+      ".dp-ai-seg{flex:1;display:flex;gap:3px;background:#eef1f6;border-radius:9px;padding:3px}",
+      ".dp-ai-seg button{flex:1;border:none;background:transparent;padding:6px 2px;border-radius:7px;font:600 11.5px/1 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#5a6577;cursor:pointer;transition:all .12s}",
+      ".dp-ai-seg button:hover{color:#3653d6}",
+      ".dp-ai-seg button.on{background:#fff;color:#3653d6;box-shadow:0 1px 3px rgba(16,24,40,.14)}",
+      "select.dp-ai-sel{flex:1;padding:7px 9px;border:1px solid #ccd5e4;border-radius:9px;font:600 12px -apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:#151923;cursor:pointer}",
+      ".dp-ai-hint{font-size:11px;color:#5a6577;background:#f4f6fb;border:1px solid #e6eaf3;border-radius:8px;padding:6px 9px;line-height:1.45;margin-top:2px}",
+      ".dp-ai-hint b{color:#2a44b8}",
+      ".dp-ai-foot{padding:7px 12px;font-size:11px;color:#6c7788;display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #eef1f6;background:#fff}",
+      ".dp-ai-foot .meta{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
+      ".dp-ai-foot a{color:#3653d6;text-decoration:none;font-weight:600;white-space:nowrap}",
+      ".dp-ai-input{display:flex;gap:8px;padding:10px 12px 12px;background:#fff}",
       ".dp-ai-input textarea{flex:1;resize:none;border:1px solid #ccd5e4;border-radius:10px;padding:9px 11px;font:14px/1.4 -apple-system,Segoe UI,Roboto,Arial,sans-serif;outline:none;max-height:120px}",
       ".dp-ai-input textarea:focus{border-color:#3653d6;box-shadow:0 0 0 3px #eef1ff}",
       ".dp-ai-input button{background:#3653d6;color:#fff;border:none;border-radius:10px;padding:0 16px;font-weight:700;cursor:pointer}",
@@ -155,23 +190,7 @@
       ".dp-ai-typing{display:inline-flex;gap:4px;padding:4px 2px}",
       ".dp-ai-typing span{width:6px;height:6px;border-radius:50%;background:#94a0b2;animation:dpai-b 1s infinite ease-in-out}",
       ".dp-ai-typing span:nth-child(2){animation-delay:.15s}.dp-ai-typing span:nth-child(3){animation-delay:.3s}",
-      "@keyframes dpai-b{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}",
-      // ---- settings sheet ----
-      ".dp-ai-set{position:absolute;left:0;right:0;top:53px;bottom:0;background:#fff;display:none;flex-direction:column;padding:14px 16px;overflow-y:auto;z-index:3}",
-      ".dp-ai-set.open{display:flex}",
-      ".dp-ai-set-h{display:flex;align-items:center;font-weight:700;font-size:14px;margin-bottom:4px}",
-      ".dp-ai-set-h button{margin-left:auto;background:#eef1f6;border:none;color:#46506a;width:26px;height:26px;border-radius:8px;cursor:pointer;font-size:15px;line-height:1}",
-      ".dp-ai-set-h button:hover{background:#e1e6f2}",
-      ".dp-ai-set-sub{font-size:11.5px;color:#8a93a6;margin:0 0 14px;line-height:1.5}",
-      ".dp-ai-set-row{margin-bottom:14px}",
-      ".dp-ai-set-row>label{display:block;font-size:12px;font-weight:700;color:#46506a;margin-bottom:6px}",
-      ".dp-ai-seg{display:flex;gap:4px;background:#eef1f6;border-radius:10px;padding:3px}",
-      ".dp-ai-seg button{flex:1;border:none;background:transparent;padding:7px 4px;border-radius:8px;font:600 12px/1 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#5a6577;cursor:pointer;transition:all .12s}",
-      ".dp-ai-seg button:hover{color:#3653d6}",
-      ".dp-ai-seg button.on{background:#fff;color:#3653d6;box-shadow:0 1px 3px rgba(16,24,40,.14)}",
-      "select.dp-ai-sel{width:100%;padding:9px 10px;border:1px solid #ccd5e4;border-radius:10px;font:13px -apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:#151923;cursor:pointer}",
-      ".dp-ai-set-note{font-size:11.5px;color:#5a6577;background:#f4f6fb;border:1px solid #e6eaf3;border-radius:10px;padding:10px 12px;line-height:1.55}",
-      ".dp-ai-set-note b{color:#2a44b8}"
+      "@keyframes dpai-b{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}"
     ].join("");
 
     var styleEl = document.createElement("style");
@@ -188,35 +207,24 @@
         '<div class="dp-ai-head">' +
           '<h3>AI Study Assistant</h3>' +
           (subject ? '<span class="chip" id="dpAiSubj">' + escapeHtml(subject) + '</span>' : '') +
-          '<button id="dpAiGear" aria-label="AI settings" title="AI settings">⚙</button>' +
-          '<button id="dpAiClose" aria-label="Close">×</button>' +
+          '<button id="dpAiClose" aria-label="Close">\u00d7</button>' +
         '</div>' +
         '<div class="dp-ai-msgs" id="dpAiMsgs"></div>' +
-        '<div class="dp-ai-set" id="dpAiSet">' +
-          '<div class="dp-ai-set-h">AI settings<button id="dpAiSetClose" aria-label="Close settings">×</button></div>' +
-          '<p class="dp-ai-set-sub">Tune how the AI answers. These pick the best free model so the answer fits your need and the quota is used well.</p>' +
-          '<div class="dp-ai-set-row"><label>Reply length</label>' +
-            '<div class="dp-ai-seg" data-axis="length">' +
-              '<button data-v="short">Short</button><button data-v="medium">Medium</button><button data-v="long">Long</button>' +
-            '</div></div>' +
-          '<div class="dp-ai-set-row"><label>Thinking depth</label>' +
-            '<div class="dp-ai-seg" data-axis="depth">' +
-              '<button data-v="quick">Quick</button><button data-v="standard">Standard</button><button data-v="deep">Deep</button>' +
-            '</div></div>' +
-          '<div class="dp-ai-set-row"><label>Task difficulty</label>' +
-            '<div class="dp-ai-seg" data-axis="difficulty">' +
-              '<button data-v="easy">Easy</button><button data-v="medium">Medium</button><button data-v="hard">Hard</button>' +
-            '</div></div>' +
-          '<div class="dp-ai-set-row"><label>Model</label>' +
-            '<select class="dp-ai-sel" id="dpAiModel"><option value="">Auto (best for your choices)</option></select>' +
+        '<div class="dp-ai-ctrl">' +
+          segRow("length", "Length", [{ v: "short", t: "Short" }, { v: "medium", t: "Medium" }, { v: "long", t: "Long" }]) +
+          segRow("depth", "Think", [{ v: "quick", t: "Quick" }, { v: "standard", t: "Standard" }, { v: "deep", t: "Deep" }]) +
+          segRow("difficulty", "Task", [{ v: "easy", t: "Easy" }, { v: "medium", t: "Medium" }, { v: "hard", t: "Hard" }]) +
+          '<div class="dp-ai-ctrl-row">' +
+            '<span class="dp-ai-ctrl-lab">Model</span>' +
+            '<select class="dp-ai-sel" id="dpAiModel"><option value="">Auto \u2014 best fit for my choices</option></select>' +
           '</div>' +
-          '<div class="dp-ai-set-note" id="dpAiReason"></div>' +
+          '<div class="dp-ai-hint" id="dpAiHint"></div>' +
         '</div>' +
         '<div class="dp-ai-input">' +
-          '<textarea id="dpAiText" rows="1" placeholder="Ask anything about ' + (subject || "your IB subjects") + '…"></textarea>' +
+          '<textarea id="dpAiText" rows="1" placeholder="Ask anything about ' + (subject || "your IB subjects") + '\u2026"></textarea>' +
           '<button id="dpAiSend">Send</button>' +
         '</div>' +
-        '<div class="dp-ai-foot"><span id="dpAiMeta"></span><a href="' + HUB + '" target="_blank" rel="noopener">⌂ Hub</a></div>' +
+        '<div class="dp-ai-foot"><span class="meta" id="dpAiMeta"></span><a href="' + HUB + '" target="_blank" rel="noopener">\u2302 Hub</a></div>' +
       '</div>';
     document.body.appendChild(root);
 
@@ -227,11 +235,9 @@
     var send = document.getElementById("dpAiSend");
     var meta = document.getElementById("dpAiMeta");
     var closeBtn = document.getElementById("dpAiClose");
-    var gearBtn = document.getElementById("dpAiGear");
-    var setEl = document.getElementById("dpAiSet");
-    var setClose = document.getElementById("dpAiSetClose");
+    var ctrl = root.querySelector(".dp-ai-ctrl");
     var modelSel = document.getElementById("dpAiModel");
-    var reasonEl = document.getElementById("dpAiReason");
+    var hintEl = document.getElementById("dpAiHint");
 
     function scrollDown() { msgs.scrollTop = msgs.scrollHeight; }
 
@@ -260,26 +266,20 @@
     }
     function closePanel() {
       panel.classList.remove("open");
-      setEl.classList.remove("open");
       btn.setAttribute("aria-expanded", "false");
     }
-    function openSettings() { setEl.classList.add("open"); refreshReason(); }
-    function closeSettings() { setEl.classList.remove("open"); }
 
     btn.addEventListener("click", function () {
       if (panel.classList.contains("open")) closePanel(); else openPanel();
     });
     closeBtn.addEventListener("click", closePanel);
-    gearBtn.addEventListener("click", function (e) { e.stopPropagation(); openSettings(); });
-    setClose.addEventListener("click", closeSettings);
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && panel.classList.contains("open")) { if (setEl.classList.contains("open")) closeSettings(); else closePanel(); }
+      if (e.key === "Escape" && panel.classList.contains("open")) closePanel();
     });
 
-    // --- settings controls ---
+    // --- control bar wiring ---
     function syncSegs() {
-      var segs = setEl.querySelectorAll(".dp-ai-seg");
-      segs.forEach(function (seg) {
+      ctrl.querySelectorAll(".dp-ai-seg").forEach(function (seg) {
         var axis = seg.getAttribute("data-axis");
         seg.querySelectorAll("button").forEach(function (b) {
           b.classList.toggle("on", b.getAttribute("data-v") === settings[axis]);
@@ -287,61 +287,64 @@
       });
       modelSel.value = settings.model || "";
     }
-    function refreshReason() {
-      var m = settings.model;
-      if (m) {
-        reasonEl.innerHTML = "<b>Fixed model:</b> " + escapeHtml(MODEL_LABELS[m] || m) +
-          ". The Auto routing below is overridden.";
+    function refreshHint() {
+      if (settings.model) {
+        hintEl.innerHTML = "<b>Fixed model:</b> " + escapeHtml(labelFor(settings.model)) +
+          " \u2014 the Auto routing is overridden.";
         return;
       }
       var picked = predictModel(settings);
-      reasonEl.innerHTML = "<b>Will use:</b> " + escapeHtml(MODEL_LABELS[picked] || picked) +
-        ".<br>" + escapeHtml(predictReason(settings));
+      hintEl.innerHTML = "<b>Auto \u2192 " + escapeHtml(labelFor(picked)) + "</b> \u00b7 " + escapeHtml(REASONS[picked] || "");
     }
-    setEl.querySelectorAll(".dp-ai-seg button").forEach(function (b) {
+    ctrl.querySelectorAll(".dp-ai-seg button").forEach(function (b) {
       b.addEventListener("click", function () {
         var axis = b.parentNode.getAttribute("data-axis");
         settings[axis] = b.getAttribute("data-v");
         saveSettings(settings);
         syncSegs();
-        refreshReason();
+        refreshHint();
       });
     });
     modelSel.addEventListener("change", function () {
       settings.model = modelSel.value || "";
       saveSettings(settings);
-      refreshReason();
+      refreshHint();
     });
 
     // populate model picker from the live status endpoint (fallback to known pool)
     function fillModels() {
       var ids = Object.keys(MODEL_LABELS);
+      function apply(list) {
+        list.forEach(function (id) {
+          if (!id) return;
+          var o = document.createElement("option");
+          o.value = id;
+          o.textContent = labelFor(id);
+          modelSel.appendChild(o);
+        });
+        syncSegs();
+        refreshHint();
+      }
       try {
         fetch(STATUS, { method: "GET", headers: { "content-type": "application/json" } })
           .then(function (r) { return r.ok ? r.json() : null; })
           .then(function (d) {
-            if (d && Array.isArray(d.pool) && d.pool.length) {
-              ids = d.pool.map(function (m) { return m.id; });
-            }
-            ids.forEach(function (id) {
-              var o = document.createElement("option");
-              o.value = id;
-              o.textContent = MODEL_LABELS[id] || id;
-              modelSel.appendChild(o);
-            });
-            syncSegs();
+            var list = (d && Array.isArray(d.pool) && d.pool.length)
+              ? d.pool.map(function (m) { return m.id; })
+              : ids;
+            apply(list);
           })
-          .catch(function () { syncSegs(); });
-      } catch (e) { syncSegs(); }
+          .catch(function () { apply(ids); });
+      } catch (e) { apply(ids); }
     }
     fillModels();
     syncSegs();
-    refreshReason();
+    refreshHint();
 
     function setLoading(on) {
       send.disabled = on;
       text.disabled = on;
-      if (on) meta.textContent = "Thinking…";
+      if (on) meta.textContent = "Thinking\u2026";
       else if (!meta.dataset.keep) meta.textContent = "";
     }
 
@@ -390,8 +393,9 @@
       fetch(API, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(payload)
-      }, { signal: controller.signal })
+        body: JSON.stringify(payload),
+        signal: controller.signal
+      })
         .then(function (r) {
           return r.json().then(function (data) { return { status: r.status, data: data }; });
         })
@@ -403,19 +407,17 @@
             addMsg("bot", botHtml);
             pushHistory("bot", botHtml);
             if (d.intent) {
-              var lbl = MODEL_LABELS[d.model] || d.model || "AI";
-              meta.textContent = "via " + lbl + " · " + d.intent.depth + " · " + d.intent.difficulty + " · " + d.intent.length;
+              meta.textContent = "via " + labelFor(d.model) + " \u00b7 " + d.intent.depth + " \u00b7 " + d.intent.difficulty + " \u00b7 " + d.intent.length;
               meta.title = d.intent.reason || "";
             } else if (d.model) {
-              meta.textContent = "via " + (MODEL_LABELS[d.model] || d.model);
+              meta.textContent = "via " + labelFor(d.model);
               meta.title = "";
             } else {
               meta.textContent = "";
               meta.title = "";
             }
           } else if (d.error === "rate_limited" || d.error === "quota_exceeded") {
-            var eh = format(d.message || "Rate limit reached. Please try again shortly.");
-            addMsg("err", eh);
+            addMsg("err", format(d.message || "Rate limit reached. Please try again shortly."));
             meta.textContent = "";
             meta.title = "";
           } else {
@@ -443,9 +445,9 @@
 
     // first-run hint
     if (history.length === 0) {
-      var hint = "Hi — I'm your AI study assistant. Tap ⚙ to set reply length, thinking depth and task difficulty" +
+      var hint = "Hi \u2014 I'm your AI study assistant. Use the controls just above the box to set how long the reply should be, how hard I should think, and how hard the task is" +
         (subject ? " for " + subject : "") +
-        ", then ask me to explain a concept, work through a problem, or quiz you. Your conversation is saved on this device.";
+        ". Leave Model on Auto and I'll pick the best free model for those choices. Ask me to explain a concept, work through a problem, or quiz you. Your conversation is saved on this device.";
       addMsg("bot", format(hint));
     }
   }
