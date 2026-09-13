@@ -465,11 +465,16 @@
       } catch (e) { fallback(s); }
     }
 
-    // plain text of a rendered answer, for when no raw text was stored
+    // plain text of a rendered answer, for when no raw text was stored.
+    // Line breaks are re-inserted (a <br> or a block boundary becomes a newline)
+    // because the splitter below works line by line — without this, a heading
+    // that was alone on its line in the reply would run into the text before it.
     function toPlain(html) {
       var d = document.createElement("div");
-      d.innerHTML = html;
-      return (d.textContent || "").trim();
+      d.innerHTML = String(html == null ? "" : html)
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\/(?:p|div|li|h[1-6]|tr|section|article|blockquote|pre)>/gi, "\n");
+      return (d.textContent || "").replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
     }
 
     // The server already separates thinking from the answer (splitThinking() in
