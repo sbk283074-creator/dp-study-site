@@ -472,6 +472,42 @@
       return (d.textContent || "").trim();
     }
 
+    // The server already separates thinking from the answer (splitThinking() in
+    // backend/src/ai.js). This is the client-side twin, kept for two reasons:
+    //   - a cached API build that predates the split still returns them merged;
+    //   - conversations saved BEFORE the split existed are still in localStorage.
+    // It handles the same three shapes: <think> blocks, raw reasoning channels,
+    // and a plain-text "Thinking:" section.
+    var PLAIN_THINK_HEADING =
+      /^[ \t]*(?:#{1,6}[ \t]*)?(?:\*\*|__)?[ \t]*(?:thinking|chain[ -]of[ -]thought|internal reasoning|reasoning process|thought process|scratchpad)[ \t]*(?:\*\*|__)?[ \t]*:[ \t]*(?:\*\*|__)?[ \t]*$/im;
+
+    function splitInlineThinking(text) {
+      var t = text == null ? "" : String(text);
+      var parts = [];
+      function grab(inner) {
+        inner = String(inner).trim();
+        if (inner) parts.push(inner);
+        return "\n";
+      }
+      t = t.replace(/<think(?:ing)?\b[^>]*>([\s\S]*?)<\/think(?:ing)?>/gi, function (_m, inner) { return grab(inner); });
+      t = t.replace(/<analysis\b[^>]*>([\s\S]*?)<\/analysis>/gi, function (_m, inner) { return grab(inner); });
+      t = t.replace(/<\|(?:start|end|channel|message|constrain|return|call|tool)\|>/gi, "");
+      var h = PLAIN_THINK_HEADING.exec(t);
+      if (h) {
+        var before = t.slice(0, h.index).trim();
+        var after = t.slice(h.index + h[0].length).trim();
+        // only when a real answer already precedes the heading
+        if (before.length >= 20 && after.length >= 40) {
+          parts.push(after);
+          t = before;
+        }
+      }
+      return {
+        answer: t.replace(/\n{3,}/g, "\n\n").trim(),
+        thinking: parts.join("\n\n").trim()
+      };
+    }
+
     // A bot reply carries two extra things: the model's chain of thought, in a
     // block that stays COLLAPSED (so thinking is separated from the answer, the
     // way a normal assistant does it), and a row of copy controls.
@@ -538,11 +574,19 @@
       return el;
     }
 
-    // restore history
+    // restore history — anything saved before the thinking/answer split is
+    // migrated on the way in, so old replies no longer show reasoning inline
     var history = loadHistory();
     history.forEach(function (m) {
-      if (m.role === "bot") addMsg("bot", m.html, { text: m.text, thinking: m.thinking });
-      else addMsg(m.role, m.html);
+      if (m.role === "bot") {
+        var raw = m.text || toPlain(m.html);
+        var sp = splitInlineThinking(raw);
+        var ans = sp.answer || raw;
+        var think = m.thinking || sp.thinking || "";
+        addMsg("bot", format(ans), { text: ans, thinking: think });
+      } else {
+        addMsg(m.role, m.html);
+      }
     });
 
     function pushHistory(role, html, meta) {
@@ -738,8 +782,13 @@
           removeTyping();
           var d = res.data || {};
           if (res.status === 200 && d.ok) {
-            var botHtml = format(d.answer || "(no answer)");
-            var botMeta = { text: d.answer || "", thinking: d.thinking || "" };
+            // Belt and braces: the server splits thinking from the answer, and
+            // we split again here, so nothing that is reasoning can ever render
+            // as part of the answer.
+            var sp = splitInlineThinking(d.answer || "");
+            var cleanAnswer = sp.answer || d.answer || "(no answer)";
+            var botMeta = { text: cleanAnswer, thinking: d.thinking || sp.thinking || "" };
+            var botHtml = format(cleanAnswer);
             addMsg("bot", botHtml, botMeta);
             pushHistory("bot", botHtml, botMeta);
             if (d.intent) {
