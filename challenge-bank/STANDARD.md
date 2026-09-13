@@ -24,7 +24,8 @@ Four subjects, pinned to the guides a May 2028 candidate actually sits:
 
 Topic maps live in `tools/syllabus.json`, generated from the guide PDFs by `tools/extract_syllabus.py`.
 **166 nodes**: Maths 83, Physics 24, CS 25, BM SL 34. The validator rejects any syllabus code that is
-not in that map.
+not in that map, and separately rejects a non-empty `syllabus_ref` that yields no recognised code at all
+— a malformed code must not pass on the strength of the code carried in `topic`.
 
 ---
 

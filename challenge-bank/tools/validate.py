@@ -347,6 +347,14 @@ def check(q, seen_ids, medians):
     for c in codes:
         if c not in nodes:
             fail.append("syllabus code %s not in the %s map" % (c, subj))
+    # The field itself must yield a recognised code. Checking the haystack alone
+    # is not enough: a malformed ref such as "Z.9" never matches the subject
+    # pattern, so it is silently skipped and the item passes on whatever code
+    # `topic` happens to carry. Kept separate from the loop above so a malformed
+    # ref and an out-of-map code stay distinguishable in the report.
+    ref = str(q.get("syllabus_ref", "") or "").strip()
+    if pat and ref and not pat.findall(ref):
+        fail.append("syllabus_ref %r yields no %s syllabus code" % (ref, subj))
     if subj == "Business Management SL":
         hl_only = SYLLABUS["subjects"][subj].get("hl_only", {})
         for c in codes:
