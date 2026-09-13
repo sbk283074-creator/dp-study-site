@@ -74,6 +74,7 @@
       "explanation": "The circuit is deliberately unremarkable: one cell, two resistors, one meter. The difficulty is entirely in keeping three different potential differences apart. The electromotive force of the cell is 6.0 V, the terminal potential difference is the e.m.f. minus the lost volts across the internal resistance, and the voltmeter reads neither of those, because it is connected across $R_2$ alone. With a current of 0.571 A the three are 6.00 V, 5.71 V and 3.43 V respectively, and the distractors in parts (a) and (b) are exactly the values a candidate gets by confusing them.\n\nPart (c) is the part that separates a candidate who has met a real voltmeter from one who has only met an ideal one. Adding a resistance in parallel always lowers the resistance of the branch, so the total resistance falls, the current rises, and the potential difference across the parallel pair falls. The reading therefore decreases slightly. Because the voltmeter resistance of 1.0 k$\\Omega$ is nearly two hundred times $R_2$, the change is only 0.26%, which is why an ideal voltmeter is a good approximation here and a poor one if $R_2$ were larger.\n\nPart (d) has a shortcut worth seeing. Efficiency here is the fraction of the power that ends up in the external resistors rather than in the cell, and since every term in both powers carries a factor $I^2$, the current cancels and the efficiency is just the ratio of the external resistance to the total resistance, $10.0/10.5$. That is 95.2%, and it does not depend on the e.m.f. at all.\n\nPart (e) asks for a maximum, not a value, so it cannot be answered by substituting into the equations already set up; the candidate has to decide what is varying. With $R$ as the variable, the power is $E^2R/(R+4.5)^2$, and the maximum falls at $R = 4.5$ $\\Omega$, that is at $R_1 + r$. The result generalises: the power transferred to a load is greatest when the load resistance equals the resistance of everything else in the circuit. The maximum is 2.0 W, which is less than the 1.96 W + 1.31 W the two original resistors were dissipating between them, because the load here is a single resistor carrying the whole current.",
       "provenance": {
         "inspired_by": "original",
+        "source_family": "original",
         "adaptation": "Original item. The component values were chosen so that the terminal p.d., the e.m.f. and the voltmeter reading are all distinct to three significant figures, and so that the maximum-power answer in part (e) is exactly 2.0 W. The non-ideal-voltmeter part uses a meter resistance that changes the reading by a small but calculable amount rather than an obvious one.",
         "resource_origin": null,
         "source_url": null,
@@ -124,7 +125,13 @@
       "status": "reviewed",
       "authored_by": "ai",
       "created_at": "2026-09-13",
-      "updated_at": "2026-09-13"
+      "updated_at": "2026-09-13",
+      "difficulty_evidence": {
+        "lever_type": "non_governing_variable",
+        "naive_path": "Take the cell's e.m.f. of 6.0 V as the potential difference across the external resistors and leave the 0.50 ohm internal resistance out of the total, giving I = 6.0/10.0 = 0.600 A and a voltmeter reading of 3.60 V; then, in part (e), assume the power in R increases with R.",
+        "failure_point": "The e.m.f. is the energy supplied per unit charge by the source, not the potential difference available to the external circuit. The internal resistance is in series with the load, so the total is 10.5 ohm and the current is 0.571 A, not 0.600 A. In part (e) the power is not monotonic in R: dividing through gives P = E^2/(R + 9.0 + 20.25/R), which is greatest when R = 4.5 ohm, the value of R1 + r, and the maximum is 2.0 W.",
+        "wrong_answer": "I = 0.600 A and V = 3.60 V from dropping the internal resistance, with the power in R taken to grow without bound as R increases."
+      }
     }
   ]
 }

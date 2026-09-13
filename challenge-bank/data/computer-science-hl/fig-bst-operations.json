@@ -75,6 +75,7 @@
       "explanation": "The figure makes one point very clearly: two trees can hold the same data and behave completely differently. Tree A and tree B contain the same five accession numbers, and an in-order traversal of either returns 20, 30, 35, 45, 50. Nothing about the contents of the trees distinguishes them. What differs is their shape, and shape is what determines the cost of every operation performed on them.\n\nThe traversal part of the question is the part that shape cannot affect, and that is worth seeing. The ordering property guarantees that the left subtree of any node holds only smaller keys and the right subtree only larger ones, so visiting left, node, right emits the keys in ascending order regardless of how the tree is arranged. This is the property that makes a binary search tree useful for the library's third requirement, printing the catalogue in order, which is the requirement a hash table cannot meet.\n\nInsertion follows one path from the root, turning left or right at each node, and the new key always becomes a leaf. In tree A the key 40 travels 30, then 45, then 35, and lands to the right of 35. The tree's height becomes 4, which is worth noting because insertion can change the height without changing the number of nodes on the old longest path.\n\nDeletion is the operation that cannot be inferred from insertion. Removing a leaf is trivial, and removing a node with one child is easy, but a node with two children has two subtrees to preserve and only one slot to put them in. The standard solution is to overwrite the node's key with its in-order successor, the smallest key in its right subtree, and then delete that successor, which by construction has at most one child. Here the successor of 45 is 50, and after the operation the tree has 50 where 45 was, with 35 still as its left child.\n\nThe comparison in part (d) is the reason any of this matters. A balanced tree of 200 000 keys has height about 18, so a search visits at most 18 nodes. A tree shaped like a chain visits up to 200 000. Both are valid binary search trees, so the structure guarantees nothing on its own; the guarantee comes from controlling the shape. Part (e) closes the argument by asking whether a different structure would avoid the problem, and the answer is that a hash table solves the lookup problem while creating a new one, because it has no notion of order.",
       "provenance": {
         "inspired_by": "original",
+        "source_family": "original",
         "adaptation": "Original item. The figure was generated from the same insertion orders the answers use, so the drawn shapes and the stated heights cannot disagree. The questions were chosen to avoid the ground already covered by CS-B4.1-001, which asks for the effect of near-sorted insertion on a binary search tree and how to avoid it; this item asks instead for traversal, insertion, deletion and the cost comparison between two given shapes.",
         "resource_origin": null,
         "source_url": null,
@@ -117,7 +118,13 @@
       "status": "reviewed",
       "authored_by": "ai",
       "created_at": "2026-09-13",
-      "updated_at": "2026-09-13"
+      "updated_at": "2026-09-13",
+      "difficulty_evidence": {
+        "lever_type": "non_governing_variable",
+        "naive_path": "Compare the two trees by their contents - the same keys, therefore the same in-order traversal, therefore equivalent - answer part (d) by quoting the average logarithmic search cost for both, and prefer the hash table in part (e) because lookup, insertion and deletion are all constant-time on average.",
+        "failure_point": "Identical keys say nothing about cost. Tree B is a chain, so a search may visit all 200000 nodes, which is roughly 11000 times the 18 comparisons a balanced shape needs; the shape, not the data, governs the cost. The hash table also fails the third requirement, because its order is set by the hash function and an ascending listing costs O(n log n) every time it is produced. The structure that satisfies all three operations is the balanced tree, not the faster-looking one.",
+        "wrong_answer": "The two trees treated as equivalent because their in-order traversals agree, with the hash table preferred on the grounds that all three of its operations are constant-time on average."
+      }
     }
   ]
 }

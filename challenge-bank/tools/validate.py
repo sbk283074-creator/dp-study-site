@@ -52,7 +52,7 @@ MIN_CONTEXT = {"Math AA HL": 30, "Physics HL": 100,
 REQUIRED = ["id", "subject", "level", "syllabus_ref", "topic", "subtopic", "paper", "marks",
             "difficulty", "challenge_mechanism", "command_terms", "question", "parts",
             "answer", "markscheme_notes", "explanation", "provenance", "originality",
-            "verification", "status"]
+            "verification", "status", "created_at"]
 
 # ---------------------------------------------------------------------------
 # Question type: which paper carries which kinds of question, and what each
@@ -127,6 +127,59 @@ VAGUE_MECHANISM = {"multi-step", "multi step", "challenging", "hard", "difficult
                    "long", "synthesis", "application", "requires thinking", "advanced",
                    "synoptic", "demanding"}
 
+# ---------------------------------------------------------------------------
+# Difficulty evidence (introduced 2026-09-13, STANDARD.md 2.2-2.5).
+#
+# Until this point `difficulty` was a self-declared 3/4/5 backed by nothing but
+# a >=10-word string -- a check that a claim had been *typed*, not that it was
+# *true*. Measured on introduction: 46% of the bank (79/172) claimed difficulty
+# 5, Physics HL claimed 62%, no item claimed 3, and not one item carried any
+# evidence. These rules make the label something an item has to earn.
+# ---------------------------------------------------------------------------
+LEVER_TYPES = {
+    "implicit_dependence", "variable_swap", "exceptional_parameter",
+    "decoy_technique", "binding_constraint", "partial_cancellation",
+    "non_governing_variable", "derived_limit", "aggregate_recovery",
+    "wrong_design_cost", "quant_vs_judgement", "non_obvious_tool",
+    "seeded_anomaly",
+}
+SOURCE_FAMILIES = {
+    "original", "ib", "china-gaokao", "china-qiangji", "china-competition",
+    "uk-alevel", "uk-further-maths", "us-ap", "singapore-alevel", "other",
+}
+# The rubric of STANDARD.md 2.3, as a table: label -> the score it needs.
+# The maximum is 9, not 10: the mark-distribution test that used to carry the
+# tenth point was withdrawn (see the note in difficulty_score), so the same
+# thresholds are now a slightly larger fraction of what is attainable. That is
+# the correct direction -- the withdrawn test could be passed without evidence.
+DIFFICULTY_MIN_SCORE = {3: 4, 4: 6, 5: 8}
+DIFFICULTY_MAX_SCORE = 9
+# Assertions per mark. The bank median is 0.62, so 0.5 is a real discriminator
+# rather than a formality: it separates items whose numbers were machine-checked
+# in proportion to the marks on offer from those where they were not.
+ASSERTION_DENSITY = 0.5
+# Two evidence fields this similar are one statement written twice.
+PARAPHRASE_LIMIT = 0.60
+EVIDENCE_MIN_WORDS = 8
+# The date the difficulty standard took force (STANDARD.md 2.2-2.5, 4.7). Items
+# written before it are grandfathered: their label is unbacked and they warn.
+# Items written from this date onwards must carry difficulty_evidence, or they
+# fail -- otherwise "no new batch may add to the backlog" is a slogan rather
+# than a rule. All 172 items in the bank carry created_at, and the 164
+# grandfathered ones are dated 2026-09-10 and 2026-09-11.
+STANDARD_EFFECTIVE = "2026-09-13"
+NUMBER = re.compile(r"-?\d+(?:\.\d+)?")
+STOPWORDS = {
+    "a", "an", "the", "and", "or", "but", "if", "then", "than", "so", "as", "of", "to", "in",
+    "on", "at", "by", "for", "with", "from", "into", "is", "are", "was", "were", "be", "been",
+    "it", "its", "this", "that", "these", "those", "there", "here", "not", "no", "do", "does",
+    "did", "can", "cannot", "will", "would", "must", "should", "may", "might", "you", "your",
+    "they", "their", "them", "we", "our", "he", "she", "his", "her", "one", "two", "both",
+    "which", "what", "when", "where", "why", "how", "all", "any", "each", "every", "some",
+    "more", "most", "less", "least", "other", "same", "such", "only", "also", "very", "just",
+    "because", "instead", "however", "therefore", "thus", "hence", "about", "after", "before",
+}
+
 MARK_ANNOTATION = re.compile(r"\(\s*(?:M|A|R|C)\d+\s*\)|\(\s*AG\s*\)")
 ENTITY = re.compile(r"&[a-zA-Z]{2,10};|&#\d{1,5};")
 CODE_PATTERNS = {
@@ -157,6 +210,210 @@ def stimulus_text(q):
 
 def normalise_term(term):
     return " ".join(str(term or "").lower().split())
+
+
+def _toks(s):
+    """Content words only, so two statements that say the same thing in
+    different grammar land on the same token set."""
+    return {w for w in re.findall(r"[a-z0-9.]+", str(s).lower()) if w not in STOPWORDS}
+
+
+def _overlap(a, b):
+    """Jaccard over content words; 0.0 when either side is empty."""
+    a, b = _toks(a), _toks(b)
+    if not a or not b:
+        return 0.0
+    return len(a & b) / len(a | b)
+
+
+def difficulty_score(q):
+    """Score an item out of DIFFICULTY_MAX_SCORE (STANDARD.md 2.3).
+
+    Returns (score, breakdown, notes, info). `notes` are defects that surface as
+    warnings and therefore fail a --strict run; `info` is observation for the
+    audit report only, because a --strict batch must not fail on a hint.
+    """
+    br, notes, info = {}, [], []
+    ev = q.get("difficulty_evidence") or {}
+    np_ = str(ev.get("naive_path") or "").strip()
+    fp = str(ev.get("failure_point") or "").strip()
+    wa = str(ev.get("wrong_answer") or "").strip()
+    parts = q.get("parts") or []
+    marks = q.get("marks") or 0
+
+    # 1 -- the trap is located, and is not the path written twice.
+    if words(fp) >= EVIDENCE_MIN_WORDS and _overlap(fp, np_) < PARAPHRASE_LIMIT:
+        br["failure_point"] = 2
+    else:
+        br["failure_point"] = 0
+        if not fp:
+            notes.append("no failure_point")
+        elif words(fp) < EVIDENCE_MIN_WORDS:
+            notes.append("failure_point under %d words" % EVIDENCE_MIN_WORDS)
+        else:
+            notes.append("failure_point restates naive_path")
+
+    # 2 -- the trap has a stated outcome, and it is a third distinct statement
+    #      rather than the path or the failure written again.
+    #
+    #      An earlier version of this test FAILED any item whose wrong_answer
+    #      reused a number from the answer. That was unsound and was caught by
+    #      the first batch of real evidence: PHYS-A.1-102 is a 5-mark MCQ
+    #      cluster whose distractors are all readings of the same graph, so its
+    #      trap values (0, 70.5, 73.5 m s^-1 and m) are necessarily also
+    #      intermediates inside a 400-word worked answer. A check that fires on
+    #      correct work is worse than no check. The overlap is now a warning to
+    #      confirm by hand.
+    if not wa:
+        br["wrong_answer"] = 0
+        notes.append("no wrong_answer")
+    elif words(wa) < EVIDENCE_MIN_WORDS:
+        br["wrong_answer"] = 0
+        notes.append("wrong_answer under %d words" % EVIDENCE_MIN_WORDS)
+    elif _overlap(wa, np_) >= PARAPHRASE_LIMIT or _overlap(wa, fp) >= PARAPHRASE_LIMIT:
+        br["wrong_answer"] = 0
+        notes.append("wrong_answer restates naive_path or failure_point")
+    else:
+        br["wrong_answer"] = 2
+        nums = NUMBER.findall(wa)
+        ans_nums = set(NUMBER.findall(str(q.get("answer") or "")))
+        if nums and all(n in ans_nums for n in nums):
+            info.append("every number in wrong_answer also appears in the answer -- "
+                        "worth confirming by hand that the trap does not actually yield "
+                        "the right result")
+
+    # 3 -- the claim names an actual first move.
+    if words(np_) >= EVIDENCE_MIN_WORDS:
+        br["naive_path"] = 2
+    else:
+        br["naive_path"] = 0
+        notes.append("naive_path missing or under %d words" % EVIDENCE_MIN_WORDS)
+
+    # 4 -- structure. "Long lead-in, trivial finish" is the commonest way a
+    #      question is easier than it reads; only 10 of the 172 pre-standard
+    #      items have a strictly heaviest first part, so this test bites.
+    if len(parts) >= 2:
+        first = parts[0].get("marks") or 0
+        rest = max((p.get("marks") or 0) for p in parts[1:])
+        if first > rest:
+            br["arc"] = 0
+            notes.append("the first part is the heaviest -- no arc")
+        else:
+            br["arc"] = 2
+    else:
+        br["arc"] = 0
+        notes.append("fewer than two parts, so no arc to judge")
+
+    # 5 -- WITHDRAWN from scoring. This test used to require the final part to
+    #      carry at least its equal share of the marks, and it was worth one
+    #      point. It was withdrawn after it fired on the first eight items to
+    #      carry real evidence: MATH-AHL4.9-101, CS-A2.2-101 and CS-B4.1-101
+    #      all end on 3 marks against an average of 3.2 to 3.4, and in every
+    #      one of them the short final part is the conceptual climax -- the
+    #      hash-table judgement, the "looks like a simplification and is not"
+    #      redesign, the "judge the model rather than use it" question.
+    #
+    #      The test measured mark distribution, not difficulty, and it measured
+    #      it anti-correlated: across the bank it flags 20% of the difficulty-5
+    #      items against 9% of the difficulty-4 items, so keeping it would have
+    #      systematically penalised the hardest work. The mark-shape signal is
+    #      real and is reported, but a --strict batch must not fail on it, so it
+    #      goes to `info`. Test 4 already catches the anti-pattern that matters
+    #      (a heavy first part).
+    if parts:
+        last = parts[-1].get("marks") or 0
+        share = sum((p.get("marks") or 0) for p in parts) / len(parts)
+        if last < share:
+            info.append("the final part is lighter than an average part "
+                        "(%.1f vs %.1f marks) -- a shape note, not a difficulty "
+                        "finding" % (last, share))
+
+    # 6 -- verification density.
+    n_assert = len((q.get("verification") or {}).get("assertions") or [])
+    if marks and n_assert / marks >= ASSERTION_DENSITY:
+        br["assertions"] = 1
+    else:
+        br["assertions"] = 0
+        notes.append("assertions per mark %.2f < %.2f"
+                     % ((n_assert / marks) if marks else 0.0, ASSERTION_DENSITY))
+
+    return sum(br.values()), br, notes, info
+
+
+def max_label_for(score):
+    """The highest `difficulty` the rubric permits at this score (None if the
+    evidence does not reach even difficulty 3)."""
+    best = None
+    for label in sorted(DIFFICULTY_MIN_SCORE):
+        if score >= DIFFICULTY_MIN_SCORE[label]:
+            best = label
+    return best
+
+
+def check_difficulty(q, fail, warn):
+    """The label must be earned. Absent evidence on an item written before the
+    standard is grandfathered as a warning -- the backlog belongs to
+    tools/difficulty_audit.py -- but an item written from STANDARD_EFFECTIVE
+    onwards must carry it, and evidence that is present but does not support
+    the label is a failure whatever the date."""
+    ev = q.get("difficulty_evidence")
+    label = q.get("difficulty")
+    if not isinstance(ev, dict) or not ev:
+        created = str(q.get("created_at") or "")[:10]
+        if created >= STANDARD_EFFECTIVE:
+            fail.append("no difficulty_evidence, and this item was created %s -- the "
+                        "standard has been in force since %s, so it may not ship "
+                        "(STANDARD.md 4.7)" % (created, STANDARD_EFFECTIVE))
+        else:
+            warn.append("no difficulty_evidence (pre-standard item, created %s; "
+                        "difficulty %r is unbacked -- see tools/difficulty_audit.py)"
+                        % (created or "unknown", label))
+        return
+    lt = str(ev.get("lever_type") or "").strip()
+    if lt not in LEVER_TYPES:
+        fail.append("difficulty_evidence.lever_type %r is not in the taxonomy" % lt)
+    for k in ("naive_path", "failure_point", "wrong_answer"):
+        if not str(ev.get(k) or "").strip():
+            fail.append("difficulty_evidence.%s is empty" % k)
+    score, br, notes, _info = difficulty_score(q)
+    allowed = max_label_for(score)
+    # A claim of difficulty 4 or more is a claim that the item defeats a
+    # prepared student, and that claim is only complete if all three evidence
+    # fields do their own job: the path, the break, and the outcome it yields.
+    # A rubric that merely sums to a threshold lets one hollow field be
+    # absorbed by the others -- a verbatim restatement of naive_path still
+    # scored 7 of 9, which permitted difficulty 4. That is how a label becomes
+    # a slogan again, so completeness is a floor of its own, not a summand.
+    if isinstance(label, int) and label >= 4:
+        hollow = [k for k in ("naive_path", "failure_point", "wrong_answer")
+                  if br.get(k) != 2]
+        if hollow:
+            fail.append("difficulty %d requires all three evidence fields to be "
+                        "substantive and mutually distinct; hollow: %s"
+                        % (label, ", ".join(hollow)))
+    if allowed is None:
+        fail.append("difficulty_evidence scores %d/%d, below the floor for any label"
+                    % (score, DIFFICULTY_MAX_SCORE))
+    elif isinstance(label, int) and label > allowed:
+        fail.append("difficulty %d is not earned: the evidence scores %d/%d, which permits at most %d"
+                    % (label, score, DIFFICULTY_MAX_SCORE, allowed))
+    for n in notes:
+        warn.append("difficulty_evidence: " + n)
+
+
+def check_sourcing(q, fail, warn):
+    """Sourcing must be recorded, and a non-original claim must name its
+    origin -- otherwise "we draw on other syllabuses" is untestable."""
+    prov = q.get("provenance") or {}
+    fam = prov.get("source_family")
+    if fam is None or not str(fam).strip():
+        warn.append("provenance.source_family missing (pre-standard item)")
+        return
+    fam = str(fam).strip()
+    if fam not in SOURCE_FAMILIES:
+        fail.append("provenance.source_family %r is not in the list" % fam)
+    elif fam != "original" and not str(prov.get("resource_origin") or "").strip():
+        fail.append("source_family %r with no provenance.resource_origin naming the source" % fam)
 
 
 def check(q, seen_ids, medians):
@@ -211,6 +468,10 @@ def check(q, seen_ids, medians):
 
     if q.get("difficulty") not in (3, 4, 5):
         fail.append("difficulty %r not in 3-5" % q.get("difficulty"))
+
+    # ---- difficulty must be earned, and sourcing must be recorded ---------
+    check_difficulty(q, fail, warn)
+    check_sourcing(q, fail, warn)
 
     # ---- length contract -------------------------------------------------
     # MCQ clusters are judged per MCQ, not against a 15-mark extended response.

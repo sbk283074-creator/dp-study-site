@@ -66,6 +66,7 @@
       "explanation": "The figure fixes the item's centre of gravity. It shows the standard normal curve with the band between $z = -1.2$ and $z = 1.6$ shaded, and the shaded area is the number $0.830$. That number is a probability about $Z$, not about the mass of an egg, and part (a) is the step that converts between the two. The conversion is the standardisation run backwards: instead of taking a mass, subtracting the mean and dividing by the standard deviation, the candidate takes a z-value, multiplies by the standard deviation and adds the mean. The two masses are $55.4$ g and $70.8$ g, and the probability of landing between them is the shaded area.\n\nPart (b) reverses the direction again. Here the probability is given and the mass is wanted, so the candidate needs the inverse normal. The one thing that reliably goes wrong is the tail: the question says that $12\\%$ are heavier than $m$, so the area to the left of $m$ is $0.88$, not $0.12$. Taking $z$ from a lower tail of $0.12$ gives $z = -1.175$ and a mass of $55.5$ g, which is a plausible-looking number answering a question nobody asked.\n\nPart (c) keeps the population and changes the random variable. The mass of a single egg has standard deviation $5.5$ g, but the mean mass of six eggs has standard deviation $\\frac{5.5}{\\sqrt{6}} = 2.245$ g. Everything else is the same calculation. This is the part that separates a candidate who has understood the standard error from one who has memorised a procedure, because the two routes look identical until the division by $\\sqrt{n}$ either happens or does not.\n\nPart (d) is a judgement, not a calculation, and the honest answer has two halves. The central limit theorem makes the mean of six observations more normal than a single observation, which supports the model. But six is a small sample, so the improvement is modest, and the assumption that the six masses are independent is doing at least as much work as the normality does. A candidate who says only that the sample mean is normally distributed has not engaged with the question.",
       "provenance": {
         "inspired_by": "original",
+        "source_family": "original",
         "adaptation": "Original item. The figure is given as a z-interval rather than a mass interval so that the standardisation has to be run in the less practised direction, and the sample-mean part reuses the same population so that the only change is the standard error.",
         "resource_origin": null,
         "source_url": null,
@@ -106,7 +107,13 @@
       "status": "reviewed",
       "authored_by": "ai",
       "created_at": "2026-09-13",
-      "updated_at": "2026-09-13"
+      "updated_at": "2026-09-13",
+      "difficulty_evidence": {
+        "lever_type": "non_governing_variable",
+        "naive_path": "In part (c), standardise the sample mean with the population standard deviation: z = (65.0 - 62.0)/5.5 = 0.5455, and read a probability of about 0.293 off the tables.",
+        "failure_point": "The mean of six independent eggs has standard deviation sigma/sqrt(n) = 5.5/sqrt(6) = 2.2454 g, not sigma. The correct standardised value is 1.3361 and the probability is 0.0908, so reusing the population standard deviation understates z by a factor of sqrt(6) and overstates the probability by more than a factor of three. The population standard deviation is a real quantity from part (a) and it is the wrong one here.",
+        "wrong_answer": "P = 0.293, from standardising with the population standard deviation 5.5 g in place of the standard error 2.2454 g."
+      }
     }
   ]
 }

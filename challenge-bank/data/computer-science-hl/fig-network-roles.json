@@ -73,6 +73,7 @@
       "explanation": "The figure looks unremarkable, and that is the point: there is no trick in the topology, so every mark depends on knowing what each device actually does. A switch is a link-layer device. It learns which MAC address is reachable through which port and forwards frames accordingly, and it neither reads nor rewrites IP addresses. A router is an internet-layer device. It reads the destination IP address of every packet, chooses an outgoing interface from its routing table, and forwards the packet on. Because of that difference, a switch cannot separate two subnets and a router is the boundary of a broadcast domain.\n\nPart (b) is arithmetic, but the arithmetic is where candidates lose marks. A /26 leaves six host bits, so each subnet holds 64 addresses, but the first is the network address and the last is the broadcast address, and neither may be given to a host. The answer is 62, not 64. The mask is 255.255.255.192, which is the first three octets set plus the top two bits of the fourth, since 26 = 8 + 8 + 8 + 2.\n\nPart (c) is about a constraint that is easy to state and easy to get wrong. A computer with an address in 192.168.10.0/26 can send a frame directly to any device in 192.168.10.1 to 192.168.10.62, because they share a link. A computer in the other subnet is not on that link, so the frame has to be addressed to a router that is, and the router then forwards the packet onwards. That is why the gateway must lie inside the computer's own subnet: a computer reaches its gateway by the same direct mechanism it uses for any local device. A gateway outside the subnet would be unreachable, because reaching it would itself require a gateway.\n\nPart (d) connects the addressing decision to the traffic. Splitting the block in two halves the size of each broadcast domain, so a broadcast from PC1 reaches the other two computers on switch A and stops at the router. In a network of six computers that saves very little, but the principle scales: in a single flat network of several hundred hosts, every broadcast interrupts every host.\n\nPart (e) is the part that separates understanding from vocabulary. Removing the switches looks like a simplification, but a single switch carrying all six computers creates one broadcast domain, not two. The two subnets could only be preserved by configuring the switch with VLANs, which is exactly the work the second switch was doing for free. A candidate who says the network would simply be faster has not understood what a switch does.",
       "provenance": {
         "inspired_by": "original",
+        "source_family": "original",
         "adaptation": "Original item. The figure was generated from the same subnet arithmetic the answers use. The questions deliberately avoid the two themes the bank already covers in this area: this item does not ask the candidate to design a variable-length subnetting scheme, and it does not ask how a host decides whether a destination is local, both of which are already tested by CS-A2.2-001.",
         "resource_origin": null,
         "source_url": null,
@@ -114,7 +115,13 @@
       "status": "reviewed",
       "authored_by": "ai",
       "created_at": "2026-09-13",
-      "updated_at": "2026-09-13"
+      "updated_at": "2026-09-13",
+      "difficulty_evidence": {
+        "lever_type": "wrong_design_cost",
+        "naive_path": "Answer each part by naming the device and its job - a switch forwards frames, a router joins networks - and in part (e) treat replacing the router and the two switches with one switch as a simplification that leaves both subnets working.",
+        "failure_point": "A switch forwards within a single broadcast domain and never partitions broadcast traffic, so one switch would put all six computers in one broadcast domain and a broadcast from any of them would reach the other five. The two /26 subnets cannot simply be kept as they are once the router is gone: either the hosts must be re-addressed into one subnet, or the switch must be configured with VLANs and the router given an interface in each. The addresses do not create the split; the devices do.",
+        "wrong_answer": "A single switch treated as a simplification that leaves both subnets intact, because the split is attributed to the addresses rather than to the broadcast domains the devices create."
+      }
     }
   ]
 }
