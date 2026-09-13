@@ -54,6 +54,51 @@ REQUIRED = ["id", "subject", "level", "syllabus_ref", "topic", "subtopic", "pape
             "answer", "markscheme_notes", "explanation", "provenance", "originality",
             "verification", "status"]
 
+# ---------------------------------------------------------------------------
+# Question type: which paper carries which kinds of question, and what each
+# kind must look like. Added 2026-09-11 once topic coverage hit 100%: the live
+# gap is paper and question type, not syllabus bullet.
+#
+# Legacy items carry no `question_type`. Those are left completely alone, so an
+# item only enters these rules when it declares a type.
+# ---------------------------------------------------------------------------
+QUESTION_TYPES = {"mcq", "data_based", "structured", "extended_response",
+                  "case_study", "problem_solving"}
+
+# (subject, paper) -> the types that paper actually contains.
+PAPER_TYPES = {
+    ("Physics HL", "P1"): {"mcq", "data_based"},
+    ("Physics HL", "P2"): {"structured", "extended_response"},
+    ("Math AA HL", "P1"): {"structured", "extended_response"},
+    ("Math AA HL", "P2"): {"structured", "extended_response"},
+    ("Math AA HL", "P3"): {"problem_solving"},
+    ("Computer Science HL", "P1"): {"structured", "extended_response"},
+    ("Computer Science HL", "P2"): {"case_study"},
+    ("Business Management SL", "P1"): {"case_study"},
+    ("Business Management SL", "P2"): {"structured", "extended_response", "data_based"},
+}
+
+# Per-type overrides. Anything not listed falls back to the subject rule.
+# MCQ floors scale with the size of the cluster: an MCQ cluster has to give a
+# real route to every key, not just "B".
+TYPE_RULES = {
+    "mcq": {"min_marks": 1, "min_parts": 1, "per_part_answer": 45,
+            "base_notes": 80, "per_part_notes": 15,
+            "base_expl": 110, "per_part_expl": 15,
+            "per_part_context": 35, "min_context": 40},
+    "data_based": {"min_marks": 8, "min_parts": 4},
+    "problem_solving": {"min_marks": 12, "min_parts": 3},
+    "case_study": {"min_marks": 10, "min_parts": 3},
+}
+
+# A data-based question is not a data-based question without data, and not
+# without at least one part on uncertainty, graphing or experimental critique.
+DATA_BASED_TERMS = {"state", "describe", "suggest", "evaluate", "determine", "calculate",
+                    "plot", "draw", "estimate", "justify", "comment", "explain"}
+DATA_BASED_EVIDENCE = ("uncertainty", "error bar", "resolution", "best-fit", "gradient",
+                       "intercept", "anomal", "linearis", "lineariz", "scatter",
+                       "significant figure", "random error", "systematic")
+
 # Recognised IB command terms. Anything outside this list is flagged: an
 # invented command term is a question that does not know what it is asking for.
 COMMAND_TERMS = {
@@ -137,14 +182,21 @@ def check(q, seen_ids, medians):
 
     marks = q.get("marks", 0) or 0
     parts = q.get("parts") or []
+    # Type-aware floors. A question that declares no type is a legacy item and
+    # keeps the plain subject floor.
+    qtype = q.get("question_type")
+    trule = TYPE_RULES.get(qtype, {}) if qtype else {}
+    min_marks = trule.get("min_marks", rule["min_marks"])
+    min_parts = trule.get("min_parts", rule["min_parts"])
+    nparts = max(1, len(parts))
 
-    if marks < rule["min_marks"]:
-        fail.append("marks %s < floor %s" % (marks, rule["min_marks"]))
+    if marks < min_marks:
+        fail.append("marks %s < floor %s" % (marks, min_marks))
     if subj == "Math AA HL" and q.get("paper") == "P3" and marks < 12:
         fail.append("P3 maths item under 12 marks")
 
-    if len(parts) < rule["min_parts"]:
-        fail.append("%d parts < %d required" % (len(parts), rule["min_parts"]))
+    if len(parts) < min_parts:
+        fail.append("%d parts < %d required" % (len(parts), min_parts))
     psum = sum(p.get("marks", 0) or 0 for p in parts)
     if parts and psum != marks:
         fail.append("part marks sum %d != marks %d" % (psum, marks))
@@ -161,11 +213,23 @@ def check(q, seen_ids, medians):
         fail.append("difficulty %r not in 3-5" % q.get("difficulty"))
 
     # ---- length contract -------------------------------------------------
-    for field, floor in MIN_WORDS.get(subj, {}).items():
+    # MCQ clusters are judged per MCQ, not against a 15-mark extended response.
+    if qtype == "mcq":
+        floors = {
+            "answer": trule["per_part_answer"] * nparts,
+            "markscheme_notes": trule["base_notes"] + trule["per_part_notes"] * nparts,
+            "explanation": trule["base_expl"] + trule["per_part_expl"] * nparts,
+        }
+        use_median = False
+    else:
+        floors = MIN_WORDS.get(subj, {})
+        use_median = True
+
+    for field, floor in floors.items():
         n = words(q.get(field))
         if n < floor:
             fail.append("%s %d words < %d" % (field, n, floor))
-        else:
+        elif use_median:
             med = (medians.get(subj) or {}).get(field)
             if med and n < med * MEDIAN_FRACTION:
                 warn.append("%s %d words < %.0f%% of subject median (%d)"
@@ -176,9 +240,84 @@ def check(q, seen_ids, medians):
     # which is the normal shape for maths and physics.
     context = (words(q.get("question")) + words(stimulus_text(q))
                + sum(words(p.get("text")) for p in parts))
-    floor_ctx = MIN_CONTEXT.get(subj, 60)
+    if qtype == "mcq":
+        floor_ctx = max(trule["min_context"], trule["per_part_context"] * nparts)
+    else:
+        floor_ctx = MIN_CONTEXT.get(subj, 60)
     if context < floor_ctx:
         fail.append("total context %d words < %d" % (context, floor_ctx))
+
+    # ---- question type ---------------------------------------------------
+    # Only items that declare a type are checked here; the 114 legacy items
+    # predate the field and are deliberately left untouched.
+    if qtype is not None:
+        if qtype not in QUESTION_TYPES:
+            fail.append("unknown question_type %r" % qtype)
+        else:
+            allowed = PAPER_TYPES.get((subj, q.get("paper")))
+            if allowed and qtype not in allowed:
+                fail.append("%s on %s %s: that paper contains %s"
+                            % (qtype, subj, q.get("paper"), "/".join(sorted(allowed))))
+
+        if qtype == "mcq":
+            for p in parts:
+                lab = p.get("label", "?")
+                opts = p.get("options") or []
+                if len(opts) != 4:
+                    fail.append("part (%s): MCQ needs exactly 4 options, has %d"
+                                % (lab, len(opts)))
+                labels = [str(o.get("label", "")) for o in opts]
+                if labels != ["A", "B", "C", "D"]:
+                    fail.append("part (%s): option labels must be A,B,C,D not %s"
+                                % (lab, ",".join(labels) or "none"))
+                ncorrect = sum(1 for o in opts if o.get("correct"))
+                if ncorrect != 1:
+                    fail.append("part (%s): %d options marked correct, need exactly 1"
+                                % (lab, ncorrect))
+                for o in opts:
+                    # Reject a genuinely blank option only. A bare number is a
+                    # perfectly good MCQ option ("A. 1.33"), and `words()`
+                    # would strip the LaTeX from "1.71 $\Omega$" and leave one
+                    # token, so neither count is the right test here.
+                    if not str(o.get("text") or "").strip():
+                        fail.append("part (%s) option %s: empty text"
+                                    % (lab, o.get("label", "?")))
+                    # A distractor with no stated purpose is not a distractor,
+                    # it is noise. This is what makes an MCQ hard rather than
+                    # merely guessable.
+                    if words(o.get("rationale")) < 8:
+                        fail.append("part (%s) option %s: rationale under 8 words"
+                                    % (lab, o.get("label", "?")))
+                if (p.get("marks") or 0) != 1:
+                    fail.append("part (%s): MCQ worth %s mark(s), must be 1"
+                                % (lab, p.get("marks")))
+
+        if qtype == "data_based":
+            stim = q.get("stimulus")
+            has_data = isinstance(stim, dict) and bool(stim.get("table"))
+            has_fig = isinstance(q.get("figure"), dict)
+            if not (has_data or has_fig):
+                fail.append("data_based item with no data table and no figure")
+            blob = " ".join(str(x) for x in (
+                q.get("question", ""), stimulus_text(q), q.get("answer", ""),
+                " ".join(p.get("text", "") for p in parts))).lower()
+            if not any(e in blob for e in DATA_BASED_EVIDENCE):
+                fail.append("data_based item with no uncertainty/graph/anomaly language")
+            if not any(e in blob for e in ("uncertainty", "error bar", "resolution")):
+                warn.append("data_based item never mentions uncertainty")
+
+        # ---- solution skeleton (drives the approach-level similarity gate) --
+        skel = (q.get("verification") or {}).get("solution_skeleton")
+        if not isinstance(skel, list) or not skel:
+            fail.append("no verification.solution_skeleton (required once question_type is set)")
+        else:
+            if not (3 <= len(skel) <= 6):
+                fail.append("solution_skeleton has %d steps, need 3-6" % len(skel))
+            for i, s in enumerate(skel):
+                if words(s) < 3:
+                    fail.append("solution_skeleton step %d too vague: %r" % (i + 1, s))
+            if len(set(" ".join(str(s).lower().split()) for s in skel)) < len(skel):
+                fail.append("solution_skeleton has duplicate steps")
 
     # ---- command terms ---------------------------------------------------
     terms = [normalise_term(t) for t in (q.get("command_terms") or [])]
@@ -227,7 +366,9 @@ def check(q, seen_ids, medians):
                 warn.append("possible HL-only toolkit tool: '%s'" % tool)
 
     # ---- the answer must actually be a markscheme ------------------------
-    if subj in ("Math AA HL", "Physics HL"):
+    # MCQ keys are one mark each and carry no method marks, so the annotation
+    # discipline does not apply; the per-option rationale is the markscheme.
+    if subj in ("Math AA HL", "Physics HL") and qtype != "mcq":
         n_ann = len(MARK_ANNOTATION.findall(q.get("answer", "") or ""))
         if n_ann == 0:
             fail.append("answer has no IB mark annotations ((M1)(A1)(R1)(AG))")
@@ -295,8 +436,12 @@ def check(q, seen_ids, medians):
 
 def evaluate(expr):
     """Run one verification assertion. Returns (bool, error_or_None)."""
+    # Curated namespace: pure functions only, no builtins. `comb` and `factorial`
+    # are included so that combinatorial identities can be machine-checked the
+    # same way arithmetic ones are.
     env = {"__builtins__": {}, "abs": abs, "min": min, "max": max, "round": round,
-           "sum": sum, "pow": pow, "float": float, "int": int}
+           "sum": sum, "pow": pow, "float": float, "int": int, "len": len,
+           "range": range, "comb": math.comb, "factorial": math.factorial}
     env.update({k: getattr(math, k) for k in
                 ("sqrt", "sin", "cos", "tan", "asin", "acos", "atan", "atan2", "log",
                  "log10", "exp", "radians", "degrees", "pi", "e", "hypot", "fabs")})

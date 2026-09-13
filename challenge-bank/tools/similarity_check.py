@@ -81,6 +81,105 @@ def question_text(q):
     return " ".join(str(p) for p in parts)
 
 
+# ---------------------------------------------------------------------------
+# Approach-level similarity.
+#
+# Word 5-grams cannot see that "Maclaurin series of e^(sin x)" and "Taylor
+# expansion of e^(cos x) at 0" are the same question by method: the shared
+# words are function words, so the Jaccard is ~0.02 and the lexical gate waves
+# both through. Conversely two flywheel questions, one solved by energy and one
+# by angular impulse, share almost all their nouns and get flagged while being
+# genuinely different questions.
+#
+# The remedy is to compare the declared solution skeleton instead: each item
+# states the 3-6 steps of its own solution, and we match those steps to each
+# other. Two questions that walk the same steps are the same question however
+# they are dressed up; two that reach similar-looking answers by different
+# routes are not.
+#
+# Only items that declare a skeleton take part, so this is purely additive and
+# leaves the pre-existing bank exactly as it was.
+# ---------------------------------------------------------------------------
+STEP_MATCH = 0.34          # above this, two steps count as the same step
+APPROACH_REJECT = 0.50     # shared fraction of solution structure that is too much
+
+# Function words carry no method signal and would inflate every comparison.
+STOP = {"the", "a", "an", "of", "to", "in", "for", "and", "or", "with", "by",
+        "from", "as", "is", "are", "it", "that", "this", "then", "be", "on",
+        "at", "its", "into", "over", "under", "each", "per"}
+
+
+SUFFIXES = ("ations", "ation", "tion", "sion", "ions", "ing", "ings", "ed",
+            "es", "al", "ive", "ment", "ance", "ence", "ly", "ity", "ies", "s")
+
+
+def stem(w):
+    """Crude suffix stripper. Enough to land 'expand', 'expands', 'expanding'
+    and 'expansion' on the same token, which is the whole point here: the same
+    step described with a different part of speech is still the same step."""
+    for suf in SUFFIXES:
+        if w.endswith(suf) and len(w) - len(suf) >= 4:
+            return w[:-len(suf)]
+    return w
+
+
+def tok_match(a, b):
+    """True if two tokens name the same idea."""
+    if a == b:
+        return True
+    sa, sb = stem(a), stem(b)
+    if len(sa) >= 4 and sa == sb:
+        return True
+    n = min(len(sa), len(sb))
+    return n >= 4 and sa[:n] == sb[:n]
+
+
+def step_tokens(step):
+    return {w for w in normalise(step) if w not in STOP and len(w) > 2}
+
+
+def skeleton_of(q):
+    skel = (q.get("verification") or {}).get("solution_skeleton")
+    if not isinstance(skel, list) or not skel:
+        return []
+    return [step_tokens(s) for s in skel]
+
+
+def step_sim(a, b):
+    """Fuzzy Jaccard between two steps: the fraction of tokens on each side
+    that name something the other side also names."""
+    if not a or not b:
+        return 0.0
+    ab = sum(1 for x in a if any(tok_match(x, y) for y in b))
+    ba = sum(1 for y in b if any(tok_match(y, x) for x in a))
+    return (ab + ba) / (len(a) + len(b))
+
+
+def approach_similarity(sa, sb):
+    """Overlap of two solution skeletons, 0..1.
+
+    Each step in A is matched greedily to its best unused step in B; matches
+    below STEP_MATCH are discarded. The score is the matched weight as a
+    fraction of the combined length of both skeletons, so a short skeleton
+    matching a short one scores the same as a long one matching a long one.
+    """
+    if not sa or not sb:
+        return 0.0
+    used, total = set(), 0.0
+    for a in sa:
+        best, bj = 0.0, -1
+        for j, b in enumerate(sb):
+            if j in used:
+                continue
+            s = step_sim(a, b)
+            if s > best:
+                best, bj = s, j
+        if bj >= 0 and best >= STEP_MATCH:
+            used.add(bj)
+            total += best
+    return 2 * total / (len(sa) + len(sb))
+
+
 def load_corpus():
     """Return [(id, subject_family, label, gram_set), ...]"""
     corpus = []
@@ -125,7 +224,8 @@ def main():
     for f in files:
         payload = json.loads(f.read_text(encoding="utf-8"))
         for q in payload.get("questions", []):
-            mine.append((q["id"], q.get("subject"), grams(normalise(question_text(q)))))
+            mine.append((q["id"], q.get("subject"), grams(normalise(question_text(q))),
+                         skeleton_of(q)))
 
     # Pass 2: external comparison, then internal comparison.
     failures = 0
@@ -144,7 +244,7 @@ def main():
             score, oid, label = best
 
             best_int = (0.0, None)
-            for oid2, osubj, ograms in mine:
+            for oid2, osubj, ograms, _oskel in mine:
                 if oid2 == q["id"]:
                     continue
                 s = jaccard(own, ograms)
@@ -152,26 +252,46 @@ def main():
                     best_int = (s, oid2)
             internal, internal_id = best_int
 
+            # Approach-level comparison: same method, different words.
+            best_app = (0.0, None)
+            my_skel = skeleton_of(q)
+            if my_skel:
+                for oid2, osubj, _ograms, oskel in mine:
+                    if oid2 == q["id"] or not oskel:
+                        continue
+                    s = approach_similarity(my_skel, oskel)
+                    if s > best_app[0]:
+                        best_app = (s, oid2)
+            approach, approach_id = best_app
+
             q.setdefault("originality", {})
             q["originality"]["max_similarity"] = round(score, 3)
             q["originality"]["nearest_bank_id"] = str(oid) if oid else None
             q["originality"]["nearest_bank_label"] = label
             q["originality"]["max_internal_similarity"] = round(internal, 3)
             q["originality"]["nearest_internal_id"] = internal_id
+            if my_skel:
+                q["originality"]["max_approach_similarity"] = round(approach, 3)
+                q["originality"]["nearest_approach_id"] = approach_id
             q["originality"]["checked_at"] = "2026-09-11"
             changed = True
 
             external_fail = score >= SAME_SUBJECT_REJECT
             internal_fail = internal >= INTERNAL_REJECT
-            if external_fail or internal_fail:
+            approach_fail = bool(my_skel) and approach >= APPROACH_REJECT
+            if external_fail or internal_fail or approach_fail:
                 failures += 1
-            verdict = "FAIL" if (external_fail or internal_fail) else "PASS"
-            print("%-22s ext %.3f  int %.3f (%s)  %s  [nearest ext: %s]"
-                  % (q["id"], score, internal, internal_id, verdict, oid))
+            verdict = "FAIL" if (external_fail or internal_fail or approach_fail) else "PASS"
+            app_str = ("  appr %.3f (%s)" % (approach, approach_id)) if my_skel else ""
+            print("%-22s ext %.3f  int %.3f (%s)%s  %s  [nearest ext: %s]"
+                  % (q["id"], score, internal, internal_id, app_str, verdict, oid))
             if internal_fail:
                 print("      ! too close to %s inside this bank" % internal_id)
             if external_fail:
                 print("      ! too close to %s in the existing corpus" % oid)
+            if approach_fail:
+                print("      ! same solution approach as %s (%.3f >= %.2f)"
+                      % (approach_id, approach, APPROACH_REJECT))
         if args.write and changed:
             f.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
