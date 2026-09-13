@@ -16,24 +16,53 @@ design and provably not copied.
 
 | Subject | Guide in force | Questions | Nodes covered |
 |---|---|---:|---:|
-| Math AA HL | 2021 (runs to Nov 2028) | 75 | 83 / 83 (100%) |
-| Physics HL | 2025 | 46 | 24 / 24 (100%) |
-| Computer Science HL | 2027 (new Theme A/B) | 24 | 25 / 25 (100%) |
+| Math AA HL | 2021 (runs to Nov 2028) | 77 | 83 / 83 (100%) |
+| Physics HL | 2025 | 50 | 24 / 24 (100%) |
+| Computer Science HL | 2027 (new Theme A/B) | 26 | 25 / 25 (100%) |
 | Business Management SL | 2024 | 19 | 34 / 34 (100%) |
-| **Total** | | **164** | **166 / 166 (100%)** |
+| **Total** | | **172** | **166 / 166 (100%)** |
 
 **Every priority-1 ("must-cover") and priority-2 ("should-cover") node is done** — Maths 32/32 + 51/51,
-Physics 24/24, CS 25/25, BM 26/26 + 8/8 Toolkit. The bank now covers **all 166 syllabus nodes** across the
+Physics 24/24, CS 25/25, BM 26/26 + 8/8 Toolkit. The bank covers **all 166 syllabus nodes** across the
 four subjects; the only remaining work is the optional priority-3 ("stretch") tail.
 
-All 164 items are `published`, difficulty 4–5 (85 at difficulty 4, 79 at difficulty 5), and pass
-`validate.py --strict` with **0 failures and 0 warnings**. The originality gate is clean: **0 items
-above threshold**, highest external score 0.090, highest internal score 0.073 and highest approach
-score 0.356 (limits 0.35 / 0.25 / 0.50).
+All 172 items are difficulty 4–5 (**93 at difficulty 4, 79 at difficulty 5**), and pass `validate.py`
+with **0 failures**. The originality gate is clean: **0 items above threshold**, highest external score
+0.090, highest internal score 0.073 and highest approach score 0.356 (limits 0.35 / 0.25 / 0.50).
 
-Every item carries a `verification.assertions` list — **1652 machine-checked assertions** in total — so
+Every item carries a `verification.assertions` list — **1762 machine-checked assertions** in total — so
 the arithmetic in every answer is re-derived by the validator on each run, not merely asserted by the
 author.
+
+### The difficulty label is measured, not declared
+
+From 2026-09-13 every item must **earn** its difficulty label with a `difficulty_evidence` block naming
+the lever, the first move a prepared student makes, the exact step where that move breaks, and the wrong
+answer it yields instead. `tools/difficulty_audit.py` then checks the claims *together* — the thing
+`validate.py` structurally cannot see.
+
+What the audit reports today:
+
+| | now | at the 2026-09-13 baseline |
+|---|---|---|
+| items with evidence for the label | **8 / 172** | 0 / 172 |
+| difficulty 5 with no evidence | **79** | 79 |
+| labels the evidence does not permit | **0** | — |
+| items claiming difficulty 5 | 46% | 46% |
+| items claiming difficulty 3 | 0% | 0% |
+
+Only the first row has moved, and that is the honest reading. What changed on 2026-09-13 is not the
+distribution but the fact that the bank now *states its backlog as a number* instead of passing every
+per-item rule while telling the student nothing. Evidence is being backfilled subject by subject, by
+reading each item — **never mass-generated**, which would reproduce the exact defect. Two calibration
+rules are still breached (Physics HL puts 62% of its items at difficulty 5 against a 50% limit, and no
+item claims difficulty 3); the audit prints both as debts on every run, and `--check --strict` fails
+until they are paid down. Plain `--check`, which the pipeline runs, fails only if the bank gets *worse*
+than its 2026-09-13 baseline.
+
+`tools/prove_difficulty_gates.py` guards the gates themselves: it injects one defect at a time — an
+invented `lever_type`, a `wrong_answer` that restates `naive_path`, a difficulty 5 with no evidence — and
+fails if any of them gets through.
 
 ---
 
@@ -53,10 +82,13 @@ challenge-bank/
     business-management-sl/*.json
   tools/
     validate.py             the quality gate (difficulty, marks, parts, lengths, assertions)
+    difficulty_audit.py     the calibration gate: does the label discriminate, and is it earned?
+    prove_difficulty_gates.py  regression test for the gates themselves
     similarity_check.py     the originality gate (20,266-item corpus + all internal pairs)
     coverage.py             the gap list that the next batch is drawn from
     fix_json.py             repairs stray backslashes and HTML entities
     ship.py                 runs the whole pipeline in one command
+    backfill_source_family.py  one-time migration recording provenance.source_family
     extract_syllabus.py     rebuilds tools/syllabus.json from the guide PDFs
     syllabus.json           166 syllabus nodes, the validator's reference map
   site/                     generated output (committed, so it serves from Pages or file://)
@@ -96,6 +128,11 @@ python3 tools/validate.py               # the quality gate
 python3 tools/validate.py --strict      # warnings count as failures (use for new batches)
 python3 tools/validate.py --subject "Physics HL"
 python3 tools/validate.py --stats       # length distribution + subject medians
+python3 tools/difficulty_audit.py       # the difficulty report: distribution, levers, backlog
+python3 tools/difficulty_audit.py --check   # exit non-zero only if the bank regressed
+python3 tools/difficulty_audit.py --check --strict   # also fail on the outstanding debt
+python3 tools/difficulty_audit.py --id MATH-AHL5.11-101   # score one item, to choose its label
+python3 tools/prove_difficulty_gates.py # prove the gates still reject what they should
 python3 tools/similarity_check.py --write   # originality gate, record scores in data/
 python3 tools/coverage.py --next 12     # the brief for the next batch
 ```
@@ -108,26 +145,43 @@ The order matters — writing the question before knowing its lever produces a r
 
 1. **Brief.** `python3 tools/coverage.py --next 12` returns the gap list. A batch takes its targets
    from the top of that list; it does not start from whatever topic is easiest.
-2. **Choose the lever first.** Name the mechanism before writing anything. A lever is something the
-   student must *notice, reject or invert* — not "it has several parts". See STANDARD.md §5.1.
-3. **Design the arc.** Parts interlock: the answer to (a) is needed for (b), and (c) is where the
-   lever bites.
-4. **Write the answer as a markscheme**, annotating every award `(M1)(A1)(R1)(AG)` at the point it is
+2. **Choose the lever first.** Name the mechanism before writing anything, and pick its `lever_type` from
+   the taxonomy in STANDARD.md §2.4 at the same time. A lever is something the student must *notice,
+   reject or invert* — not "it has several parts". See STANDARD.md §5.1.
+3. **Write the difficulty evidence before the question.** `naive_path` is the first thing a prepared
+   student tries; `failure_point` is the exact step where it breaks; `wrong_answer` is what that path
+   yields instead. If you cannot state all three, you do not yet have a hard question — you have a long
+   one, and the rubric will score it accordingly.
+4. **Design the arc.** Parts interlock: the answer to (a) is needed for (b), and (c) is where the lever
+   bites. The heaviest part must not be the first.
+5. **Write the answer as a markscheme**, annotating every award `(M1)(A1)(R1)(AG)` at the point it is
    earned.
-5. **Write `markscheme_notes`** — alternatives, condonations, follow-through, what forfeits a mark.
-6. **Write `explanation`** — the insight, why it is hard, and the classic wrong turns.
-7. **Add assertions** and a one-line `verification.method`.
-8. **Gate it.** New items are `draft` until the gates pass, then `published`.
+6. **Write `markscheme_notes`** — alternatives, condonations, follow-through, what forfeits a mark.
+7. **Write `explanation`** — the insight, why it is hard, and the classic wrong turns.
+8. **Add assertions** and a one-line `verification.method`.
+9. **Record the sourcing.** `provenance.source_family` is one of the closed list in STANDARD.md §4.5; if
+   it is anything other than `original`, `provenance.resource_origin` must name the source. Cross-syllabus
+   material (A-Level, AP, 高考, 强基, 竞赛) is encouraged — but the difficulty must survive the adaptation,
+   and difficulty is never borrowed from a harder syllabus's *content* that this one does not examine.
+10. **Score it before labelling it.** `python3 tools/difficulty_audit.py --id <ID>` prints the rubric
+    breakdown; label it no higher than the score permits, and never higher than 4 or 5 unless all three
+    evidence fields are substantive and mutually distinct. **Lower the label, not the score.**
+11. **Gate it.** New items are `draft` until the gates pass, then `published`.
 
 One file per batch per subject: `data/<subject>/batchN.json`. Nothing ships at difficulty 1–2, nothing
 ships below the mark floor, and nothing ships without a passing similarity score.
 
-### The two gates
+### The three gates
 
 | Gate | Command | Rejects |
 |---|---|---|
-| Quality | `tools/validate.py --strict` | difficulty 1–2, below the marks floor, part marks that do not sum to `marks`, thin fields, missing markscheme annotations, failed assertions |
+| Quality | `tools/validate.py --strict` | difficulty 1–2, below the marks floor, part marks that do not sum to `marks`, thin fields, missing markscheme annotations, failed assertions, an unearned difficulty label, a `lever_type` outside the taxonomy, an unrecorded or unattributable `source_family` |
+| Calibration | `tools/difficulty_audit.py --check` | a subject with > 50% of items at difficulty 5, a bank that never uses difficulty 3, evidence coverage below the ratchet floor |
 | Originality | `tools/similarity_check.py` | ≥ 0.35 vs the external corpus (same subject), ≥ 0.25 vs any other item in this bank, ≥ 0.50 on the `solution_skeleton` approach gate |
+
+The quality gate checks that a difficulty claim was *made*. The calibration gate checks whether the
+bank's claims, taken together, are *credible* — a bank where 46% of items claim difficulty 5 and none
+claim 3 passes every per-item rule while telling the student nothing.
 
 The originality gate is measured, not asserted: `tools/similarity_check.py` scores every item against
 the **20,266-item external corpus** (past-paper rows, un-imported generated batches and every other

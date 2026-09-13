@@ -37,9 +37,12 @@ not in that map, and separately rejects a non-empty `syllabus_ref` that yields n
 | Internal originality | < 0.25 vs every other question **in this bank** | `similarity_check.py` (fail) |
 | Not a reskin | No number-swap, name-swap, unit-swap, part-reordering or notation change of any existing question | `provenance.adaptation` (fail if borrowed without a note) |
 | Difficulty | 3, 4 or 5. Nothing ships at 1–2 | `validate.py` (fail) |
+| **Difficulty is earned** | The label must be supported by `difficulty_evidence` and by the rubric score of §2.3. A label the evidence does not support is a failure | `validate.py` (fail) |
+| **Calibration** | No subject may place more than 50% of its items at difficulty 5, and the bank must actually use the whole 3–5 range | `tools/difficulty_audit.py` (fail) |
 | Marks floor | Maths 6 (P3: 12) · Physics 6 · CS 6 · BM SL 10 | `validate.py` (fail) |
 | Part count | Maths ≥ 3 · Physics ≥ 3 · CS ≥ 2 · BM SL ≥ 3 | `validate.py` (fail) |
-| Named lever | One specific mechanism in `challenge_mechanism`, ≥ 10 words | `validate.py` (fail) |
+| Named lever | `difficulty_evidence.lever_type` from the closed taxonomy of §2.4, plus `challenge_mechanism` ≥ 10 words naming the specific mechanism | `validate.py` (fail) |
+| **Sourcing recorded** | `provenance.source_family` from the closed list of §4.5 | `validate.py` (fail) |
 | Real markscheme | Maths/physics answers carry `(M1)(A1)(R1)(AG)` at each award | `validate.py` (fail if zero) |
 | Command terms | Recognised IB terms; marks matched to the demand of the term | `validate.py` (warn) |
 | Verification | Method named; arithmetic re-checked by machine where numbers exist | `validate.py` (fail if no method) |
@@ -55,6 +58,126 @@ Two coherence rules, because mismatches are the clearest sign a question was not
   `Evaluate`, `Justify`, `To what extent` need ≥ 3.
 - Every **BM SL** item must contain at least one AO3/AO4 term (analyse / evaluate / discuss / justify /
   to what extent). A BM question that only describes is not an IB question.
+
+### 2.2 Difficulty must be earned, not declared
+
+The rule this replaces was `difficulty` ∈ {3,4,5} plus a `challenge_mechanism` of ≥ 10 words. That is a
+slogan check: it verifies that a claim was **typed**, not that it is **true**. Measured on 2026-09-13 it
+had produced exactly the failure you would predict — **46% of the bank (79/172) claimed difficulty 5**,
+Physics HL claimed **62%**, and **not one item** claimed difficulty 3. A scale on which almost
+everything sits at the top carries no information, and the words attached to it were unfalsifiable.
+
+Difficulty is now a claim with four parts, written so that each can be **falsified**:
+
+```json
+"difficulty_evidence": {
+  "lever_type": "binding_constraint",
+  "naive_path": "what a well-prepared student does first, concretely enough to be tried",
+  "failure_point": "the exact step where that path breaks, and why",
+  "wrong_answer": "the plausible result the naive path produces"
+}
+```
+
+These are not decoration. §2.3 turns them into checks that can **contradict** the claim. The purpose of
+`naive_path` is that a reviewer can attempt it; the purpose of `wrong_answer` is that it commits to a
+plausible outcome that differs from the right one, so that a reviewer can check the trap does not in fact
+yield the answer. Prose that could be about any question in the subject fails all three.
+
+### 2.3 The difficulty rubric
+
+`validate.py` scores every item out of 9. Four of the five tests read the evidence, and are worth
+nothing without it; one reads the item's structure and can be settled by arithmetic:
+
+| # | Test | Pts | Why it is not gameable |
+|---|---|---|---|
+| 1 | `failure_point` ≥ 8 words, and not a paraphrase of `naive_path` | 2 | A trap that cannot be located separately from the path is not a trap |
+| 2 | `wrong_answer` ≥ 8 words, and not a paraphrase of either of the other two fields | 2 | Three fields must be three distinct statements; reusing one is the tell |
+| 3 | `naive_path` ≥ 8 words | 2 | The claim has to name an actual first move |
+| 4 | The **heaviest part is not the first part** | 2 | Pure structure. "Long lead-in, trivial finish" is the commonest way a question is easier than it reads |
+| 5 | Assertions per mark ≥ 0.5 | 1 | The numbers are machine-checked in proportion to the marks on offer |
+
+**Difficulty 4 and above is a floor, not a sum.** A claim of difficulty 4 or more is a claim that the
+item defeats a prepared student, and that claim is only complete if all three evidence fields do their
+own job — the path, the break, and the outcome it yields. Tests 1–3 must therefore each score in full;
+the total may not be reached by letting two strong fields carry a hollow one. The floor was added
+because the sum alone did not hold: with `wrong_answer` reduced to a verbatim copy of `naive_path`, an
+item still scored 7 of 9, which permitted difficulty 4. A difficulty-3 label is not subject to the
+floor, because it claims a single clean lever rather than a complete defeat.
+
+The thresholds were set **from the data, not chosen**. Assertion density 0.5 splits the bank (median
+0.62) rather than passing everything. Four earlier tests were replaced or **withdrawn**, all for the
+same reason: they did not measure difficulty.
+
+- An earlier draft required ≥ 1 assertion per mark, and a fourth-or-later part. The first passed
+  172/172; the second failed most of the bank. Neither measured anything, and both were replaced.
+- A test failed any item whose `wrong_answer` reused a number from `answer`, on the reasoning that a
+  trap which yields the right value is not a trap. `PHYS-A.1-102` disproved it: a 5-mark MCQ cluster's
+  distractors are all readings of the same graph, so its trap values are necessarily also intermediates
+  inside the worked answer. The overlap is now a warning that asks for confirmation by hand.
+- A test required the final part to carry at least its equal share of the marks. It was **withdrawn**
+  after the first eight items carrying real evidence were scored: three of them — `MATH-AHL4.9-101`,
+  `CS-A2.2-101`, `CS-B4.1-101` — end on 3 marks against an average of 3.2 to 3.4, and in every one of
+  them the short final part *is* the conceptual climax: the hash-table judgement, the "looks like a
+  simplification and is not" redesign, the "judge the model rather than use it" question. The test
+  measured mark distribution rather than difficulty, and it measured it anti-correlated — across the
+  bank it flags 20% of the difficulty-5 items against 9% of the difficulty-4 items — so keeping it
+  would have systematically penalised the hardest work. The shape signal is still reported, but it can
+  no longer fail a run. The tenth point it carried went with it, which is why the maximum is 9.
+
+**A check that fires on good work is worse than no check** — and it is the same failure mode as the
+label inflation this section exists to fix.
+
+The declared label must be **earned by the score**:
+
+| `difficulty` | minimum score | what that means |
+|---|---|---|
+| 5 | 8 of 9 | every test passes, and the three evidence fields are complete and mutually distinct |
+| 4 | 6 of 9 | the arc and the trap are both real, and the evidence is complete |
+| 3 | 4 of 9 | a real challenge, but the lever is a single clean idea |
+
+A question that scores 6 may not be labelled 5. **Lower the label, not the score.** If a question feels
+like a 5 and scores 6, the honest reading is that the evidence has not been written down yet.
+
+### 2.4 The lever taxonomy
+
+`challenge_mechanism` states the lever in prose; `difficulty_evidence.lever_type` states it as a term
+from a closed list. The term is what makes the bank's difficulty **countable** — so that "our questions
+are varied and hard" becomes a number, and so that a bank quietly built on one trick is visible.
+
+| `lever_type` | The student must… |
+|---|---|
+| `implicit_dependence` | solve for a quantity that appears inside its own operator, or construct a quantity before it can be used |
+| `variable_swap` | exchange the dependent and independent variables |
+| `exceptional_parameter` | notice a parameter behaves one way for every value except one, or that a family degenerates at one member |
+| `decoy_technique` | see that a result looks like it needs a technique and does not, or the reverse |
+| `binding_constraint` | find the constraint that binds only in combination, or the pair of constraints that cannot both hold |
+| `partial_cancellation` | handle two effects that partially cancel |
+| `non_governing_variable` | realise the quantity is *not* set by the variable they reach for |
+| `derived_limit` | derive a limit or approximation instead of quoting it |
+| `aggregate_recovery` | recover two unknowns from two aggregate readings |
+| `wrong_design_cost` | quantify what the wrong design costs at a stated scale — covers the degenerate "better" structure and the bug that survives the obvious test |
+| `quant_vs_judgement` | reconcile a quantitative answer with the stakeholder or ethical answer that disagrees with it |
+| `non_obvious_tool` | use the correct tool when it is not the obvious one — covers opposing indicators and criteria that cannot both be satisfied |
+| `seeded_anomaly` | find, explain and attribute a seeded anomaly in data |
+
+An unknown term is a **failure, not a warning**. A lever outside the list is either a typo or a genuinely
+new kind of difficulty, and both should stop the batch so the taxonomy is extended deliberately.
+
+### 2.5 Calibration — the anti-inflation rule
+
+A label is informative only if it discriminates. `tools/difficulty_audit.py` therefore enforces:
+
+- **No subject may place more than 50% of its items at difficulty 5.** Above that the label is
+  describing the bank's self-image rather than its questions.
+- **The bank must use the whole 3–5 range.** A bank with 0% at difficulty 3 is, in effect, a two-point
+  scale wearing three labels.
+- **Coverage floor.** Every item must carry `difficulty_evidence`. The audit prints the exact backlog;
+  items written before 2026-09-13 are grandfathered as warnings rather than failures, but the backlog is
+  a measured number that must fall, and **no batch may add to it**.
+
+Measured 2026-09-13, before this standard: difficulty 5 = 46% of the bank (Physics 62%), difficulty 3 =
+0%, `difficulty_evidence` coverage = **0 / 172**. Those are the numbers this section exists to move, and
+the audit reports them on every run so that they cannot quietly drift back.
 
 ---
 
@@ -86,8 +209,8 @@ Words are counted after stripping LaTeX commands and delimiters, so `$x^2$` coun
 Full skeleton: **`data/_TEMPLATE.json`** (ignored by the tools because of the leading underscore).
 
 - **Required fields:** `id, subject, level, syllabus_ref, topic, subtopic, paper, marks, difficulty,
-  challenge_mechanism, command_terms, question, parts, answer, markscheme_notes, explanation,
-  provenance, originality, verification, status`.
+  challenge_mechanism, difficulty_evidence, command_terms, question, parts, answer, markscheme_notes,
+  explanation, provenance, originality, verification, status`.
 - **`parts[]`:** each has `label` (a, b, c…), `marks`, `command_term`, `text`, ≥ 8 words. Part marks must
   sum **exactly** to `marks`.
 - **IDs:** `MATH-<ref>-NNN`, `PHYS-<theme>-NNN`, `CS-<topic>-NNN`, `BM-<unit>-NNN`.
@@ -195,15 +318,41 @@ data-based Physics items both built on "linearise, fit, exclude the anomaly, eva
 against each other — under the threshold, but a warning that the next P1B items need deliberately
 different treatments (residual analysis, log-log, area under a graph, comparison of two datasets).
 
-### 4.5 Sourcing
+### 4.5 Cross-syllabus sourcing
 
-Chinese material (高考压轴题, 强基计划 written tests, 数学/物理竞赛) is a good source of difficulty and
-is encouraged. Adapt rather than translate: rebuild the context, convert to IB command terms and IB
-mark-scheme conventions, enforce units and significant figures, and state the chain of reasoning the
-markscheme will reward. Record what you borrowed in `provenance.resource_origin` and
-`provenance.adaptation` — citing the origin is fine and useful. Difficulty must survive the adaptation;
-if the hard step was an algebraic trick that IB does not examine, replace the trick rather than the
-difficulty.
+Difficulty does not have to be invented. Other systems examine the same mathematics and physics at
+comparable or greater demand, and their hard questions are a legitimate source of *ideas*. Chinese
+material (高考压轴题, 强基计划 written tests, 数学/物理竞赛) is already used, but the list is deliberately
+wider than that: a bank fed from one system inherits that system's blind spots, and the same lever
+appears over and over in the same accent.
+
+Every item declares `provenance.source_family` from this closed list, and `difficulty_audit.py` reports
+the mix — so "we draw on other syllabuses" is a measured fact rather than an intention. (Measured
+2026-09-13: only **6 of 172** items name any source at all — the other 166 record `original` — so the
+claim was untestable in either direction.)
+
+| `source_family` | What it is good for | What must change on adaptation |
+|---|---|---|
+| `original` | constructed from the guide's own bullets | nothing — this is the default |
+| `ib` | other IB sessions, P3, specimen papers | the originality gate bites hardest here; rebuild, never reproduce |
+| `china-gaokao` | 高考 including 压轴题: parameter discussion, multi-step algebra, hard inequalities, sequences | convert to IB command terms; keep the algebra inside AA HL content; add IB markscheme annotations and significant figures |
+| `china-qiangji` | 强基计划 written tests: more abstract, more proof-like | keep the idea, rebuild at IB content level — these routinely exceed the guide |
+| `china-competition` | 数学/物理竞赛 (联赛 and above) | the technique is usually outside IB. Use the *situation*, replace the trick |
+| `uk-alevel` | A-Level Maths / Physics: long structured arcs, disciplined "show that" parts | check the data booklet — IB supplies fewer formulae than A-Level; physics sign and *g* conventions differ |
+| `uk-further-maths` | Further Maths: matrices, complex numbers, polar form, differential equations | mostly *inside* AA HL — the single best source for P3 |
+| `us-ap` | AP Calculus BC, Physics C, CS A, Micro/Macro: FRQ structure is close to IB extended response | Physics C uses calculus IB Physics HL does not — strip it; AP CS A is Java-specific, so keep the algorithmic reasoning and drop the language |
+| `singapore-alevel` | H2: dense, rigorous, strong multi-part structure | heavy content overlap; check for topics outside the IB guide |
+| `other` | any other system | say which, in `resource_origin` |
+
+**Rights and originality.** Adapting an idea is legitimate; reproducing a question is not. Never copy a
+question, diagram or dataset verbatim from any source. Record the origin in `provenance.resource_origin`,
+name what inspired the item in `provenance.inspired_by`, and state in `provenance.adaptation` what
+changed — at least two of {context, structure, what is given vs what is asked, the reasoning chain}
+(§5.2). `provenance.rights` stays `original` for a rebuilt question.
+
+**The rule that matters most: difficulty must survive the adaptation.** If the source's hard step was an
+algebraic trick IB does not examine, replace the trick rather than the difficulty. A question that drops
+its own lever while keeping the source's name is a reskin with a citation attached.
 
 ### 4.6 Approach ledger
 
@@ -230,6 +379,45 @@ theoretical — backfilling skeletons onto the 164 legacy items immediately expo
 questions on different functions that had been sitting in the bank as an apparent 0-failure state.
 **Any legacy item without a skeleton is invisible to the approach gate.** Do not leave one that way.
 
+### 4.7 Difficulty evidence — schema and migration state
+
+```json
+"difficulty_evidence": {
+  "lever_type": "binding_constraint",
+  "naive_path": "…",
+  "failure_point": "…",
+  "wrong_answer": "…"
+}
+```
+
+`lever_type` comes from the closed taxonomy in §2.4; each of the three prose fields is ≥ 8 words;
+`failure_point` must not restate `naive_path`; `wrong_answer` must differ from the answer. The rubric of
+§2.3 then decides which label the item is allowed to carry.
+
+**Migration state.** The field was introduced on 2026-09-13. Items written before it are grandfathered:
+`validate.py` warns rather than fails, and `difficulty_audit.py` prints the backlog. Two consequences,
+both deliberate:
+
+- **The bank's advertised `0 failures · 0 warnings [strict]` invariant no longer holds in full.** That is
+  the honest reading, not a regression: the difficulty label on the grandfathered items is currently
+  unbacked, and the number is published rather than hidden behind a passing gate.
+- **No new batch may add to the backlog.** An item written from 2026-09-13 onwards carries
+  `difficulty_evidence`, or it does not ship.
+
+The first eight items to carry evidence were the figure questions — one per figure-bearing file, chosen
+because their answers are fully worked and the trap could be read out of the item rather than invented.
+All eight score 9 of 9 and every label they carried was earned, so none had to be lowered; the audit's
+`labels the evidence does not permit` count is the number to watch as the backlog is cleared. One of the
+eight, `MATH-AHL1.13-101`, had a `challenge_mechanism` asserting a trap the item does not contain — it
+claimed the second root of the quadratic sits on the opposite half-line, when both roots are positive and
+the item's own answer says so. The mechanism was corrected to the real lever rather than the evidence
+bent to match the false claim. **Where the prose and the answer disagree, the answer wins.**
+
+**Do not mass-generate the prose.** Writing plausible `naive_path` / `failure_point` / `wrong_answer`
+text for 164 items without reading each one reproduces precisely the failure this section exists to fix.
+Clear the backlog subject by subject, reading the item, and **lower any label the evidence does not
+support** rather than inventing evidence to protect the label.
+
 ---
 
 ## 5. How to author one
@@ -237,16 +425,26 @@ questions on different functions that had been sitting in the bank as an apparen
 The order matters. Writing the question before knowing its lever produces a reskin.
 
 1. **Pick the node.** `python3 tools/coverage.py --next 12` gives the highest-priority gaps.
-2. **Choose the lever first.** Name the mechanism before writing anything. A lever is something the
-   student must *notice, reject or invert* — not "it has several parts".
-3. **Design the arc.** Parts interlock: the answer to (a) is needed for (b), and (c) is where the lever
-   bites. The last part should be where the marks are.
-4. **Give the data a reason.** Numbers are chosen so the arithmetic comes out clean *only if* the
+2. **Choose the lever first.** Name the mechanism before writing anything, and pick its `lever_type`
+   from the taxonomy in §2.4 at the same time. A lever is something the student must *notice, reject or
+   invert* — not "it has several parts".
+3. **Write the difficulty evidence before the question.** `naive_path` is the first thing a prepared
+   student tries; `failure_point` is the exact step where it breaks; `wrong_answer` is what that path
+   yields instead. If you cannot state all three, you do not yet have a hard question — you have a long
+   one, and the rubric will score it accordingly.
+4. **Design the arc.** Parts interlock: the answer to (a) is needed for (b), and (c) is where the lever
+   bites. The rubric checks that the heaviest part is not the first. It does **not** require the final
+   part to be the heaviest — a short closing part that asks the candidate to judge rather than compute
+   is one of the strongest ways to finish, and the audit reports the shape without scoring it.
+5. **Give the data a reason.** Numbers are chosen so the arithmetic comes out clean *only if* the
    reasoning is right.
-5. **Write the answer as a markscheme**, annotating every award at the point it is earned.
-6. **Write `markscheme_notes`** — alternatives, condonations, follow-through, what forfeits a mark.
-7. **Write `explanation`** — the insight, why it is hard, and the classic wrong turns.
-8. **Add assertions** and a one-line `verification.method`.
+6. **Write the answer as a markscheme**, annotating every award at the point it is earned.
+7. **Write `markscheme_notes`** — alternatives, condonations, follow-through, what forfeits a mark.
+8. **Write `explanation`** — the insight, why it is hard, and the classic wrong turns.
+9. **Add assertions** and a one-line `verification.method`.
+10. **Score it before labelling it.** `python3 tools/difficulty_audit.py --id <ID>` prints the rubric
+    score; set `difficulty` to the highest value that score permits (§2.3). Label inflation is the
+    failure mode this bank has actually suffered, not a hypothetical one.
 
 ### 5.1 Lever banks
 
@@ -289,8 +487,26 @@ python3 tools/ship.py                 the whole thing, stops on first failure
 | 1. repair | `tools/fix_json.py` | doubles stray backslashes, converts HTML entities |
 | 2. build | `build.py` | renders `site/` from `data/` |
 | 3. quality gate | `tools/validate.py` | §2, §3, §4. **This is the gate.** |
-| 4. originality gate | `tools/similarity_check.py --write` | 20,266 external + all internal pairs |
-| 5. rebuild | `build.py` | re-renders so similarity scores appear in the metadata |
+| 4. difficulty gate | `tools/difficulty_audit.py --check` | §2.2–§2.5: evidence coverage, the rubric, the lever taxonomy, the anti-inflation rule, the source-family mix |
+| 5. originality gate | `tools/similarity_check.py --write` | 20,266 external + all internal pairs |
+| 6. rebuild | `build.py` | re-renders so similarity scores appear in the metadata |
+
+Stage 4 exists because stage 3 cannot see difficulty. Stage 3 checks that a claim was *made*; stage 4
+checks whether the bank's claims, taken together, are *credible* — a bank where 46% of items claim
+difficulty 5 and none claim 3 passes every per-item rule while telling the student nothing.
+
+Stage 4 blocks on a **regression**, not on the backlog. The distinction matters: a gate that refuses to
+let a batch ship until 164 unrelated items have been rewritten is a gate that gets switched off, and a
+gate that is switched off is a slogan. So the calibration rules are enforced against the state measured
+on 2026-09-13:
+
+- **Regression — blocks.** Evidence coverage below the ratchet floor, a subject whose difficulty-5 share
+  has *risen* above its recorded baseline, a `source_family` outside the list, a difficulty-3 count that
+  has fallen. These mean the bank got worse, and that is always the batch's fault.
+- **Debt — reported, does not block.** Physics HL at 62% difficulty 5, and no item claiming difficulty 3.
+  Both are pre-existing, both are printed on every run with the baseline beside them, and both are paid
+  down by backfilling evidence and re-labelling. `--check --strict` fails on the debt as well, which is
+  the mode to use when asking "is this bank calibrated?" rather than "did this batch break anything?".
 
 Useful variants:
 
@@ -298,12 +514,23 @@ Useful variants:
 python3 tools/validate.py --strict              # warnings count as failures (new batches)
 python3 tools/validate.py --subject "Physics HL"
 python3 tools/validate.py --stats               # length distribution + subject medians
+python3 tools/difficulty_audit.py               # the difficulty report: distribution, levers, backlog
+python3 tools/difficulty_audit.py --check       # exit non-zero only if the bank regressed
+python3 tools/difficulty_audit.py --check --strict   # also fail on the outstanding debt
+python3 tools/difficulty_audit.py --id MATH-AHL5.11-101   # score one item, to choose its label
+python3 tools/prove_difficulty_gates.py         # regression test: prove the gates still bite
 python3 tools/coverage.py --next 12             # the batch brief
-python3 tools/ship.py --skip-similarity         # stage 4 costs ~1 min; skip while drafting
+python3 tools/ship.py --skip-similarity         # stage 5 costs ~1 min; skip while drafting
 ```
 
 Exit codes are non-zero on failure at any stage, so a batch can be shipped without reading the output
 unless something breaks.
+
+`prove_difficulty_gates.py` is the guard on the guards. It injects one defect at a time into a real
+item — an invented `lever_type`, a `wrong_answer` that restates `naive_path`, a difficulty 5 with no
+evidence, a borrowed `source_family` with no origin — and fails if the gate lets any of them through.
+It found a real hole on its first run, and it is the reason difficulty ≥ 4 is a completeness floor
+rather than only a sum. Run it after any change to the rubric.
 
 ---
 
