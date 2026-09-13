@@ -45,7 +45,7 @@ SUBJECTS = {
         "guide": "2027 guide (first assessment 2027) — Theme A / Theme B",
         "blurb": "Algorithmic thinking and ADT reasoning against the new syllabus, including the "
                  "Paper 2 question type that requires no code.",
-        "mathjax": False,
+        "mathjax": True,
     },
     "business-management-sl": {
         "name": "Business management SL",
@@ -53,7 +53,7 @@ SUBJECTS = {
         "guide": "2024 guide (first assessment 2024)",
         "blurb": "Original case studies and quantitative stimuli where the numbers point one way "
                  "and the judgement points another. SL content boundaries strictly observed.",
-        "mathjax": False,
+        "mathjax": True,
     },
 }
 
