@@ -456,6 +456,170 @@ def standing_wave():
                       "four nodes marked", "".join(body))
 
 
+def cubic_three_roots():
+    """f(x) = x^3 - 3x + 1 cut by y = a at a = 3, a = 1 and a = -1.
+
+    The geometry has to be honest, because the whole question is that the widest
+    three-root interval is the one in the MIDDLE of the range, not the two
+    tangency levels at its ends. The three span bars at the bottom are drawn
+    from the same roots the answer uses, so the picture cannot claim a width the
+    arithmetic does not give: 2*sqrt(3) = 3.46 against 3 and 3.
+    """
+    W, H = 470, 340
+    cx, cy = 235, 160
+    sx, sy = 52.0, 26.0
+    px = lambda x: cx + x * sx
+    py = lambda y: cy - y * sy
+    r3 = math.sqrt(3.0)
+
+    body = [_arrow_defs()]
+    for k in range(-2, 3):
+        body.append(_l(px(k), 34, px(k), 250, PANEL2, 1))
+        body.append(_t(px(k), 318, str(k), 10.5, MUTED))
+    for k in range(-3, 5):
+        body.append(_l(96, py(k), 382, py(k), PANEL2, 1))
+        body.append(_t(88, py(k) + 4, str(k), 10.5, MUTED, anchor="end"))
+    body.append(_l(96, py(0), 382, py(0), INK, 1.6))
+    body.append(_l(px(0), 30, px(0), 250, INK, 1.6))
+    body.append(_t(392, py(0) + 4, "x", 11.5, INK))
+    body.append(_t(px(0) + 15, 36, "y", 11.5, INK))
+
+    pts = []
+    for i in range(481):
+        x = -2.15 + 4.3 * i / 480.0
+        pts.append((px(x), py(x ** 3 - 3 * x + 1)))
+    body.append(_p("M " + " L ".join(f"{a:.1f},{b:.1f}" for a, b in pts), stroke=ACCENT, w=2))
+
+    for a, col, wide in ((3.0, MUTED, False), (1.0, HOT, True), (-1.0, MUTED, False)):
+        body.append(_l(px(-2.3), py(a), px(2.3), py(a), col, 1.2, dash="6 4"))
+        body.append(_t(px(2.42), py(a) + 4, "y = %d" % int(a), 11, col, anchor="end"))
+    for x, y in ((-1.0, 3.0), (1.0, -1.0)):
+        body.append(_c(px(x), py(y), 3.6, fill=INK, stroke=INK, w=1))
+    for x, y in ((-1.0, 3.0), (1.0, -1.0)):
+        lab = "local max" if y > 0 else "local min"
+        body.append(_t(px(x) + (46 if y > 0 else -52), py(y) + (14 if y > 0 else -12),
+                       lab, 10, INK))
+    for x in (-r3, 0.0, r3):
+        body.append(_c(px(x), py(1.0), 4.0, fill=HOT, stroke=HOT, w=1))
+
+    body.append(_t(120, 272, "width of the three-root interval:", 10.5, MUTED, anchor="start"))
+    spans = ((262, -r3, r3, HOT, "a = 1  ->  2*sqrt(3) = 3.46"),
+             (284, -1.0, 2.0, MUTED, "a = 3  ->  3"),
+             (304, -2.0, 1.0, MUTED, "a = -1 ->  3"))
+    for ypix, xa, xb, col, lab in spans:
+        body.append(_l(px(xa), ypix, px(xb), ypix, col, 3.4))
+        body.append(_l(px(xa), ypix - 5, px(xa), ypix + 5, col, 1.6))
+        body.append(_l(px(xb), ypix - 5, px(xb), ypix + 5, col, 1.6))
+        body.append(_t(px(xb) + 12, ypix + 4, lab, 10.5, col, anchor="start"))
+    return _svg(W, H, "The cubic y = x cubed minus three x plus one, cut by horizontal lines at "
+                      "y equals three, y equals one and y equals minus one. The middle line "
+                      "gives the widest three-root interval, two root three, while both "
+                      "tangency levels give a width of three.", "".join(body))
+
+
+def spool_pull():
+    """A spool on a rough surface, pulled by a string leaving the underside of the hub.
+
+    The angle is drawn to scale and the tangent point is computed from the same
+    construction the answer uses (radius perpendicular to the string), so the
+    figure cannot imply a moment arm the mechanics does not have.
+    """
+    W, H = 500, 300
+    cx, cy, R, r = 215, 150, 80, 32
+    th = math.radians(42.0)
+    tx, ty = cx + r * math.sin(th), cy + r * math.cos(th)     # SVG y grows downward
+    ux, uy = math.cos(th), -math.sin(th)                       # string direction in SVG
+
+    body = [_arrow_defs()]
+    for i in range(14):
+        body.append(_l(46 + i * 30, 230, 36 + i * 30, 244, PANEL2, 1.2))
+    body.append(_l(40, 230, 468, 230, INK, 2.2))
+    body.append(_c(cx, cy, R, fill=PANEL, stroke=INK, w=1.8))
+    body.append(_c(cx, cy, r, fill=PANEL2, stroke=MUTED, w=1.4))
+    body.append(_c(cx, cy, 3.0, fill=INK, stroke=INK, w=1))
+    body.append(_t(cx, cy - 6, "C", 10.5, MUTED))
+
+    body.append(_l(cx, cy, cx, 230, MUTED, 1.2, dash="5 4"))
+    body.append(_t(cx + 8, 200, "R", 11, INK, anchor="start"))
+    body.append(_l(cx, cy, tx, ty, MUTED, 1.2, dash="5 4"))
+    body.append(_t(cx + 0.5 * (tx - cx) + 16, cy + 0.5 * (ty - cy) + 4, "r", 11, INK))
+
+    body.append(_l(tx, ty, tx + 96 * ux, ty + 96 * uy, HOT, 2.2))
+    body.append(_t(tx + 108 * ux, ty + 108 * uy, "T", 12.5, HOT))
+    body.append(_l(tx, ty, tx + 74, ty, MUTED, 1, dash="4 4"))
+    arc = []
+    for i in range(13):
+        a = th * i / 12.0
+        arc.append(f"{tx + 30 * math.cos(a):.1f},{ty + 30 * math.sin(a):.1f}")
+    body.append(_p("M " + " L ".join(arc), stroke=MUTED, w=1))
+    body.append(_t(tx + 40, ty - 12, "theta", 11.5, INK, anchor="start"))
+
+    body.append(_l(cx, 230, cx, 186, GOOD, 2))
+    body.append(_t(cx + 34, 196, "N", 12, GOOD))
+    body.append(_l(cx, cy, cx, cy + 58, INK, 1.8))
+    body.append(_t(cx - 24, cy + 62, "mg", 11.5, INK))
+    body.append(_c(cx, 230, 3.2, fill=INK, stroke=INK, w=1))
+    body.append(_t(404, 250, "rough surface", 11, MUTED))
+    body.append(_t(96, 44, "string leaves the hub at its underside", 11, MUTED, anchor="start"))
+    return _svg(W, H, "A spool of outer radius R resting on a rough horizontal surface. A string "
+                      "wound on an inner hub of radius r leaves the underside of the hub and is "
+                      "pulled with tension T at an angle theta above the horizontal. The weight "
+                      "and the normal reaction at the contact point are shown.", "".join(body))
+
+
+def jit_cost_curves():
+    """Total time against number of executions: pure interpretation vs JIT compilation.
+
+    Both lines are computed from the model the question states, so the crossing
+    the candidate reads off the figure is the break-even the algebra gives, and
+    the shaded region is where the compiled route actually wins.
+    """
+    W, H = 470, 300
+    ox, oy = 92, 236
+    sx, sy = 0.78, 8.0                       # px per execution, px per millisecond
+    n_max = 440.0
+    interp = lambda n: 0.05 * n              # ms
+    jit = lambda n: 6.0 + 0.01 * n           # ms: fixed compile cost, cheaper per run
+    n_star = 150.0                           # 0.05n = 6 + 0.01n
+
+    body = [_arrow_defs()]
+    for k in range(0, 6):
+        body.append(_l(ox, oy - k * 40, ox + n_max * sx, oy - k * 40, PANEL2, 1))
+        body.append(_t(ox - 10, oy - k * 40 + 4, "%g" % (k * 5), 10.5, MUTED, anchor="end"))
+    for n in (0, 150, 300, 420):
+        body.append(_l(ox + n * sx, oy, ox + n * sx, oy + 6, INK, 1.2))
+        body.append(_t(ox + n * sx, oy + 22, str(n), 10.5, MUTED))
+    body.append(_l(ox - 14, oy, ox + n_max * sx + 12, oy, INK, 1.6, ))
+    body.append(_l(ox, oy + 10, ox, 30, INK, 1.6))
+    body.append(_t(ox + n_max * sx + 4, oy + 22, "N", 12, INK))
+    body.append(_t(ox - 22, 50, "time /ms", 11, INK, anchor="start"))
+    body.append(_t(ox + n_max * sx / 2, 288, "number of executions of the loop body", 11, MUTED))
+
+    x0, x1 = ox, ox + n_max * sx
+    body.append(_l(x0, oy - interp(0) * sy, x1, oy - interp(n_max) * sy, INK, 2))
+    body.append(_l(x0, oy - jit(0) * sy, x1, oy - jit(n_max) * sy, ACCENT, 2))
+    by = oy - interp(n_star) * sy
+    bx = ox + n_star * sx
+    body.append(_c(bx, by, 4.2, fill=HOT, stroke=HOT, w=1))
+    body.append(_l(bx, by, bx, oy, HOT, 1, dash="4 4"))
+    body.append(_t(bx - 8, by - 14, "break-even, N = 150", 11, HOT, anchor="end"))
+    body.append(_t(x1 - 6, oy - interp(n_max) * sy - 12, "interpreted", 11.5, INK, anchor="end"))
+    body.append(_t(x1 - 6, oy - jit(n_max) * sy + 20, "compiled once, then run", 11.5,
+                   ACCENT, anchor="end"))
+    body.append(_t(ox + 16, oy - jit(0) * sy - 12, "compile cost 6 ms", 10.5, ACCENT,
+                   anchor="start"))
+    for i in range(9):
+        xx = bx + 6 + i * 16
+        if xx < x1:
+            body.append(_l(xx, by + 10 + i * 1.4, xx, oy - 4, BAND, 6))
+    body.append(_t(ox + (x1 - bx) / 2 + 40, oy - 16, "compiling is faster", 10.5, HOT))
+    return _svg(W, H, "Total running time against the number of times a loop body executes. "
+                      "The interpreted line starts at the origin and rises steeply; the "
+                      "just-in-time line starts at six milliseconds and rises gently. They "
+                      "cross at one hundred and fifty executions, after which compiling is "
+                      "faster.", "".join(body))
+
+
 FIGURES = {
     "normal_shaded": normal_shaded,
     "argand_locus": argand_locus,
@@ -465,6 +629,9 @@ FIGURES = {
     "network_topology": network_topology,
     "bst_chain": bst_chain,
     "standing_wave": standing_wave,
+    "cubic_three_roots": cubic_three_roots,
+    "spool_pull": spool_pull,
+    "jit_cost_curves": jit_cost_curves,
 }
 
 

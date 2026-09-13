@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-P3-012 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>5.19 Maclaurin series used to solve a first order differential equation</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-P3-012</p>
+<div class="meta"><span class="chip chip-key">AHL 5.19 (Maclaurin series), AHL 5.18 (first order differential equations)</span><span class="chip">P3</span><span class="chip">14 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: allowed</span><span class="chip">Show that</span><span class="chip">Hence</span><span class="chip">Determine</span></div>
+
+
+<h2>Question</h2>
+<p>A function $f$ satisfies<br>$$\frac{\mathrm{d}y}{\mathrm{d}x} = 1 + xy, \qquad y = f(x), \qquad f(0) = 1,$$<br>and $f$ has a Maclaurin series $f(x) = \sum_{n=0}^{\infty} a_n x^n$ that converges for all real $x$.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Show that $a_0 = 1$, that $a_1 = 1$, and that $(n+1)a_{n+1} = a_{n-1}$ for every integer $n \ge 1$. Hence write down $a_2$, $a_3$ and $a_4$.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Show that $a_{2k} = \dfrac{1}{2^k k!}$ and that $a_{2k+1} = \dfrac{1}{(2k+1)!!}$ for every integer $k \ge 0$, where $(2k+1)!! = 1 \times 3 \times 5 \times \cdots \times (2k+1)$.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Hence show that, for all real $x$,<br>$$f(x) = e^{x^2/2} + \sum_{k=0}^{\infty} \frac{x^{2k+1}}{(2k+1)!!}.$$</p> <em>(Hence)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Determine $f(1)$ to four significant figures, showing that your answer is reliable to that accuracy.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 14 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) With $f(x)=\sum_{n\ge0}a_nx^n$ we have $f'(x)=\sum_{n\ge1}na_nx^{n-1}=\sum_{n\ge0}(n+1)a_{n+1}x^n$ (M1), while $1+xf(x)=1+\sum_{n\ge0}a_nx^{n+1}=1+\sum_{n\ge1}a_{n-1}x^n$ (M1). Equating constant terms gives $a_1=1$ (A1) and equating coefficients of $x^n$ for $n\ge1$ gives $(n+1)a_{n+1}=a_{n-1}$ (A1). Since $f(0)=1$ we also have $a_0=1$. Therefore $2a_2=a_0=1$, so $a_2=\tfrac12$; $3a_3=a_1=1$, so $a_3=\tfrac13$; and $4a_4=a_2=\tfrac12$, so $a_4=\tfrac18$ (A1).</p>
+<p>(b) Putting $n=2k-1$ in the recurrence gives $2k\,a_{2k}=a_{2k-2}$, that is $a_{2k}=\dfrac{a_{2k-2}}{2k}$ for $k\ge1$ (M1). Iterating down to $a_0=1$ gives $a_{2k}=\dfrac{1}{(2k)(2k-2)\cdots 2}=\dfrac{1}{2^k\,k!}$ (A1) (AG), because the descending product of $k$ even numbers carries a factor $2$ from each of them. Putting $n=2k$ gives $(2k+1)a_{2k+1}=a_{2k-1}$, that is $a_{2k+1}=\dfrac{a_{2k-1}}{2k+1}$ (M1), and iterating down to $a_1=1$ gives $a_{2k+1}=\dfrac{1}{(2k+1)(2k-1)\cdots 3\cdot 1}=\dfrac{1}{(2k+1)!!}$ (A1) (AG), with the convention $(-1)!!=1$ covering $k=0$.</p>
+<p>(c) Split the convergent series into its even-indexed and odd-indexed parts (M1):<br>$$f(x)=\sum_{k\ge0}a_{2k}x^{2k}+\sum_{k\ge0}a_{2k+1}x^{2k+1}.$$<br>The even part is $\sum_{k\ge0}\dfrac{x^{2k}}{2^k k!}=\sum_{k\ge0}\dfrac{(x^2/2)^k}{k!}$ (M1), which is the exponential series evaluated at $x^2/2$ and so equals $e^{x^2/2}$ (A1). The odd part is $\sum_{k\ge0}\dfrac{x^{2k+1}}{(2k+1)!!}$ (A1). Adding the two parts gives the stated result (AG).</p>
+<p>(d) At $x=1$ the even part is $e^{1/2}=1.6487212707$ (A1) and the odd part is $1+\tfrac13+\tfrac1{15}+\tfrac1{105}+\tfrac1{945}+\tfrac1{10395}+\tfrac1{135135}+\tfrac1{2027025}+\tfrac1{34459425}$ (M1), which evaluates to $1.4106861$ (A1). Consecutive odd terms satisfy $\dfrac{t_{k+1}}{t_k}=\dfrac{1}{2k+3}$, so beyond the last term retained every ratio is at most $\tfrac1{19}$ and the discarded tail is smaller than $\dfrac{1}{34459425}\times\dfrac{19}{18}=3.1\times10^{-8}$ (R1). The tail is therefore far too small to disturb the fourth significant figure, and $f(1)=1.6487212707+1.4106861=3.0594074$, so $f(1)=3.059$ to four significant figures (A1).</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Accept the recurrence stated with the index shifted, for example $(n+2)a_{n+2}=a_n$ for $n\ge0$, provided the range of validity is given. A candidate who writes the derivative as $\sum na_nx^n$ forfeits the first (M1) but may earn the later marks on follow-through from their own (wrong) recurrence, so long as it is used consistently. $a_0=1$ must be justified from $f(0)=1$, not assumed.</p>
+<p>(b) The closed forms must be established, not merely conjectured from the first few terms: a candidate who states $a_{2k}=1/(2^kk!)$ without the iteration forfeits (A1). Condone $\dfrac{1}{2\cdot4\cdots(2k)}$ for $a_{2k}$ and any correct descending odd product for $a_{2k+1}$. Do not require the word 'induction'; a correctly explained iteration is sufficient.</p>
+<p>(c) The exponential series must be identified as such: writing $\sum (x^2/2)^k/k!$ without naming $e^{x^2/2}$ earns (M1) only. Follow-through applies to a candidate whose part (b) is wrong, provided they split the series into two parts and sum the one they have.</p>
+<p>(d) Award (M1) for setting up the odd sum with at least five terms, (A1) for a value correct to five decimal places, and (R1) only for a genuine bound on the discarded tail — a bare assertion that 'the terms get small' earns nothing. Accept any correct alternative route, including numerical quadrature of $e^{1/2}\left(1+\int_0^1 e^{-t^2/2}\,dt\right)$, provided an error estimate accompanies it.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The trap is that this differential equation is exactly the kind a strong candidate solves without thinking: it is linear, so the integrating factor is $e^{-x^2/2}$ and the solution is $f(x)=e^{x^2/2}\left(1+\int_0^x e^{-t^2/2}\,dt\right)$. That is correct and completely useless for part (d), because $\int e^{-t^2/2}\,dt$ is not elementary — it is an error-function integral. The item is built so that the 'exact' method dead-ends at precisely the point where a number is required.</p>
+<p>The recurrence route looks like a retreat to approximation and is in fact the stronger method, because it separates into two subseries with completely different characters. The even part is the exponential series in $x^2/2$ and sums in closed form; the odd part is a double-factorial series that does not, but whose consecutive-term ratio $1/(2k+3)$ shrinks fast enough to bound its own tail. Recognising that one half of the series is elementary and the other half is not — and then treating each with the tool that suits it — is the whole problem.</p>
+<p>The classic wrong turn is to compute $a_0, a_2, a_4$ first, spot $1,\tfrac12,\tfrac18$, recognise $e^{x^2/2}$, and carry that through as the whole answer, reporting $f(1)=1.649$. That discards the odd subseries, which at $x=1$ contributes $1.4107$ — nearly as much again. A second wrong turn is to sum the two subseries together under one rule and produce a single spurious closed form. Thirdly, candidates who do reach the correct series often quote $f(1)$ with no error bound, which is not an answer to a question that asks for a stated accuracy.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The equation is linear, so the first move a prepared student makes is the integrating factor, and that move is a dead end: it produces an error-function integral with no elementary antiderivative, so the closed form yields no number at all. The route that looks like a last resort — grinding out a coefficient recurrence — turns out to be exact in a way the closed form is not, because the even subseries is precisely an exponential while the odd subseries is not, and only the odd subseries has a ratio that bounds its own tail. A candidate who recognises the even coefficients and assumes the same closed form covers the whole function reports a value that is short by the entire odd contribution.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 5.19 (Maclaurin series), AHL 5.18 (first order differential equations)</dd></div>
+  <div><dt>Inspiration</dt><dd>UK Further Mathematics — series solution of differential equations</dd></div>
+  <div><dt>Adaptation</dt><dd>The source archetype is the Further Maths exercise in which a linear or non-linear first order equation is attacked with a Maclaurin recurrence because no closed form exists. Two of the four permitted changes were made: the equation was replaced by y&#x27; = 1 + xy, chosen because its even and odd coefficient subsequences have different closed forms, and the requested output was inverted — instead of the first few terms, the item asks for a numerical value with a tail bound, so the recurrence has to be summed rather than listed. The context, the part decomposition and the reasoning chain are all new. Nothing is quoted from a source; the coefficients, the double-factorial form and the break-even of the tail were derived here.</dd></div>
+  <div><dt>Verification</dt><dd>Recurrence re-derived symbolically and the first eight coefficients checked against it; the even subseries summed in closed form and cross-checked numerically against e^0.5 to 1e-9; the odd sum evaluated to nine terms and cross-checked against the independent quadrature form e^0.5 * (1 + integral of e^(-t^2/2) from 0 to 1) computed from its own alternating series; the discarded tail bounded by the geometric ratio 1/19.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>no shared 5-grams with the 12,796-question corpus (similarity 0.0)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL1.2-001 (similarity 0.019)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-13</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

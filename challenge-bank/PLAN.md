@@ -1,9 +1,9 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 172 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 178 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 8 of 172 do. The remaining 164 are
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 14 of 178 do. The remaining 164 are
 a published, ratcheting backlog — see `STANDARD.md` §2.2–§2.5 and `tools/difficulty_audit.py`.**
 
 New folder: `challenge-bank/` (inside `dp learning final/`). It holds the question data and a
@@ -580,12 +580,53 @@ similarity score, and no BM item ships containing HL-only content.
   - The bank's advertised `0 failures · 0 warnings [strict]` invariant is **deliberately broken** by this
     batch: the grandfathered items now warn (164 of them) instead of silently passing. The backlog is a
     published number that must fall, and no batch may add to it.
+- **Batch 13 — DONE (cross-syllabus sourcing + the figure pipeline).** Six items took the bank to
+  **178** questions, **1833** assertions and **32** figure-bearing items. The brief for this batch was
+  explicit: keep the Batch 12 quality bar, take material from *other* syllabuses rather than inventing
+  everything, and make some — not all — of the items graphic.
+  - **Where the six come from.** Only one of the six is `original`; the other five are adaptations, and
+    each names `provenance.resource_origin` and `provenance.adaptation`. `uk-further-maths` supplied the
+    Maclaurin-recurrence item, `china-gaokao` supplied two (the root-interval width and the rod on
+    rails), `china-competition` supplied the spool, and `uk-alevel` supplied two (translation strategies
+    and the purchase-intent survey). In every case at least two of context, structure, given-vs-asked and
+    reasoning chain were changed, so the difficulty is carried by the rewrite and not borrowed from a
+    harder syllabus's content.
+  - **The six items.** `MATH-P3-012` (P3, 14, d5, `decoy_technique`): $y' = 1 + xy$ is solved by a
+    Maclaurin recurrence rather than by the integrating-factor routine the chapter teaches, and the two
+    subseries have to be recognised separately — the even one is $e^{x^2/2}$ — before $f(1) = 3.059$ is
+    reachable. `MATH-AHL2.12-101` (P1, 13, d4, `non_governing_variable`): the interval on which
+    $x^3-3x+1 = k$ has three roots is widest at the *middle* level, $2\sqrt3$ at $k = 1$, not at the ends
+    where the graph looks widest. `PHYS-A.4-103` (P2, 15, d5, `binding_constraint`): a spool pulled at
+    the underside of the hub reverses its rolling direction at $\cos\theta = r/R$, and the constraint
+    that actually binds is slipping at $T = 4.42$ N, not $\mu_s mg$. `PHYS-D.4-102` (P2, 15, d5,
+    `non_governing_variable`): a rod on rails travels a distance proportional to $R$ while the charge
+    that flows does not depend on $R$ at all, and the impulse route avoids integrating $I(t)$.
+    `CS-A1.4-001` (P1, 16, d4, `wrong_design_cost`): the obvious comparison is $0.010$ ms against
+    $0.050$ ms; the comparison that decides the question is their difference, $0.040$ ms, which puts the
+    interpreter/compiler break-even at $N = 150$ and makes compiling roughly $120\times$ *slower* for a
+    script run once. `BM-4.4-001` (P2, 15, d4, `non_obvious_tool`): a purchase-intent survey in which the
+    headline rate falls from 29.5% to 25.5% even though every age band rose five points, so the rate has
+    to be standardised before it is forecast — 270,000 buyers, not the director's 229,500.
+  - **Three of the six are graphic, three are not**, which was the requirement. `tools/make_figures.py`
+    gained three generators — `cubic_three_roots`, `spool_pull` and `jit_cost_curves` — and
+    `data/_figures.json` now holds 11 SVGs. Authoring uses an `@@name@@` placeholder in
+    `question.figure.content`, which is replaced by the generated SVG before the batch is validated, so
+    the figure is data rather than a hand-edited blob.
+  - **All six score 9 of 9** on the difficulty rubric, so no label had to be lowered, and the six add
+    **71** machine-checked assertions. Originality is clean at 0.030 external / 0.025 internal / 0.127
+    approach for the new items; the bank-wide maxima are unchanged at 0.090 / 0.073 / 0.356.
+  - **One debt got slightly worse and it is recorded.** Physics HL moved from 62% to 63% of its items at
+    difficulty 5, because two Physics items shipped and both genuinely earn d5. That is inside the 2-point
+    regression slack, so `--check` still passes, but only **0.5 points of headroom remain** before it
+    becomes a hard failure. The rule is now written down: the next Physics item may not claim difficulty 5
+    until the share is back at or below 62%. The labels were left alone deliberately — lowering a label
+    that the evidence supports would fix a statistic and break the standard.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
-  answers and no markscheme notes; the   booklet carries the full answers. Current headers: maths 77 questions / 1215 marks, physics 50 / 615,
-  CS 26 / 426, BM SL 19 / 277 — all difficulty 4–5, May 2028 cohort.
+  answers and no markscheme notes; the   booklet carries the full answers. Current headers: maths 79 questions / 1242 marks, physics 52 / 645,
+  CS 27 / 442, BM SL 20 / 292 — all difficulty 4–5, May 2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that
 means a batch of three, it ships three.
