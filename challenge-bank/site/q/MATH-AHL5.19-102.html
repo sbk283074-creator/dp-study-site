@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL5.19-102 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>5.19 Summing a series whose general term must be split into shifted factorials</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL5.19-102</p>
+<div class="meta"><span class="chip chip-key">AHL 5.19 (Maclaurin series to obtain expansions for e^x, sin x, cos x, ln(1+x) and (1+x)^p; use of simple substitution, products, integration and differentiation to obtain other series)</span><span class="chip">P3 · Section B</span><span class="chip">14 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: allowed</span><span class="chip">Show that</span><span class="chip">Hence</span><span class="chip">Find</span></div>
+
+
+<h2>Question</h2>
+<p>The Maclaurin series for $e^x$ is</p>
+<p>$$\sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots,$$</p>
+<p>and it converges to $e^x$ for every real value of $x$. In particular<br>$\sum_{n=0}^{\infty} \frac{1}{n!} = e$.</p>
+<p>A student is asked to find the exact value of</p>
+<p>$$S = \sum_{n=1}^{\infty} \frac{n^2}{(n+1)!} = \frac{1}{2!} + \frac{4}{3!} + \frac{9}{4!} + \cdots .$$</p>
+<p>The student argues as follows.</p>
+<p>&gt; "For large $n$ the term $\frac{n^2}{(n+1)!}$ behaves like $\frac{n}{n!}$, and<br>&gt; $\sum_{n=1}^{\infty} \frac{n}{n!} = \sum_{n=1}^{\infty} \frac{1}{(n-1)!} = e$.<br>&gt; So $S = e$."</p>
+<p>(a) Show that, for every integer $n \ge 1$,</p>
+<p>$$\frac{n^2}{(n+1)!} = \frac{1}{(n-1)!} - \frac{1}{n!} + \frac{1}{(n+1)!}. \tag{3}$$</p>
+<p>(b) Hence find the exact value of $S$. \tag{5}</p>
+<p>(c) Find the exact value of $T = \sum_{n=1}^{\infty} \frac{n(n+2)}{(n+1)!}$. \tag{3}</p>
+<p>(d) Show that $\sum_{n=1}^{\infty} \frac{n^2}{n!} = 2e$. \tag{3}</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Show that $\frac{n^2}{(n+1)!} = \frac{1}{(n-1)!} - \frac{1}{n!} + \frac{1}{(n+1)!}$ for $n \ge 1$.</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Hence find the exact value of $S$.</p> <em>(Hence)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Find the exact value of $T = \sum_{n=1}^{\infty} \frac{n(n+2)}{(n+1)!}$.</p> <em>(Find)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Show that $\sum_{n=1}^{\infty} \frac{n^2}{n!} = 2e$.</p> <em>(Show that)</em></li></ol>
+<p class="reveal-note">Total: 14 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) Write $n^2 = n(n+1) - (n+1) + 1$ (M1), which is an identity because<br>$n(n+1) - (n+1) + 1 = n^2 + n - n - 1 + 1 = n^2$. Dividing each term by $(n+1)!$ and using<br>$(n+1)! = (n+1)n!$ gives</p>
+<p>$$\frac{n(n+1)}{(n+1)!} = \frac{n}{n!} = \frac{1}{(n-1)!}, \qquad<br>\frac{n+1}{(n+1)!} = \frac{1}{n!}, \qquad \frac{1}{(n+1)!} = \frac{1}{(n+1)!},$$</p>
+<p>so $\frac{n^2}{(n+1)!} = \frac{1}{(n-1)!} - \frac{1}{n!} + \frac{1}{(n+1)!}$ (A1)(AG). The<br>final mark is (AG) because the result is given; the working, not the answer, earns the marks.</p>
+<p>(b) Summing the identity in (a) over $n \ge 1$ (M1),</p>
+<p>$$S = \sum_{n=1}^{\infty} \frac{1}{(n-1)!} - \sum_{n=1}^{\infty} \frac{1}{n!}<br>+ \sum_{n=1}^{\infty} \frac{1}{(n+1)!}.$$</p>
+<p>Each of the three is the exponential series with a shifted index (A1): the first is<br>$\sum_{m=0}^{\infty} \frac{1}{m!} = e$, the second is $\sum_{m=1}^{\infty} \frac{1}{m!} = e - 1$ and<br>the third is $\sum_{m=2}^{\infty} \frac{1}{m!} = e - 2$. Hence</p>
+<p>$$S = e - (e-1) + (e-2) = e - 1 \quad (\text{approximately } 1.71828) \tag{A1}$$</p>
+<p>and the student's value $e$ is wrong by exactly $1$. The shift is the whole question: two of<br>the three sums are the full series with its first term or first two terms removed, and it is<br>those missing terms that survive into the answer (R1).</p>
+<p>(c) Here $n(n+2) = (n+1)^2 - 1$ (M1), so</p>
+<p>$$\frac{n(n+2)}{(n+1)!} = \frac{(n+1)^2}{(n+1)!} - \frac{1}{(n+1)!}<br>= \frac{n+1}{n!} - \frac{1}{(n+1)!} = \frac{1}{(n-1)!} + \frac{1}{n!} - \frac{1}{(n+1)!},$$</p>
+<p>where $\frac{n+1}{n!} = \frac{n}{n!} + \frac{1}{n!} = \frac{1}{(n-1)!} + \frac{1}{n!}$ (A1).<br>Summing as before, $T = e + (e-1) - (e-2) = e + 1$, which is approximately $3.71828$ (A1).</p>
+<p>(d) For $n \ge 2$, $\frac{n^2}{n!} = \frac{n}{(n-1)!} = \frac{(n-1)+1}{(n-1)!}<br>= \frac{1}{(n-2)!} + \frac{1}{(n-1)!}$ (M1). The $n = 1$ term must be treated separately and<br>equals $\frac{1}{1!} = 1$ (A1). Therefore</p>
+<p>$$\sum_{n=1}^{\infty} \frac{n^2}{n!} = 1 + \sum_{n=2}^{\infty} \frac{1}{(n-2)!}<br>+ \sum_{n=2}^{\infty} \frac{1}{(n-1)!} = 1 + e + (e-1) = 2e \quad \text{(approximately } 5.43656)$$</p>
+<p>as required (AG). Note the contrast with (b): here the denominator keeps pace with the<br>numerator, no shift survives, and the answer is a whole multiple of $e$ rather than $e$<br>displaced by an integer.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) is for producing a decomposition of $n^2$ into terms each of which cancels against<br>$(n+1)!$; any correct decomposition earns it, not only the one printed. (A1) is for the three<br>factorials in the right places. (AG): no mark is available for merely restating the given<br>identity. Condone a verification by cross-multiplication instead of a derivation from<br>$n^2 = n(n+1) - (n+1) + 1$.</p>
+<p>(b) (M1) for summing the identity term by term. (A1) for the three shifted series, with<br>follow-through allowed from an incorrect identity in (a) provided the shifts are consistent<br>with it. (A1) for $e - 1$; accept $1.71828$ only if the exact value also appears. A candidate<br>who writes $S = e$ earns at most the (M1).</p>
+<p>(c) Follow-through from (a) applies. (A1) for the algebraic split, (A1) for $e + 1$. Note that<br>a candidate who incorrectly reuses the identity from (a) unchanged obtains $e - 1$ again and<br>loses the second (A1) only.</p>
+<p>(d) (M1) for $\frac{n^2}{n!} = \frac{n}{(n-1)!}$ or equivalent. (A1) for spotting that the<br>$n = 1$ term does not fit the general pattern, since $\frac{1}{(n-2)!}$ is undefined there.<br>Do not award this (A1) to a candidate who silently starts the sum at $n = 2$ and omits the<br>unit term: the omission changes the answer by exactly $1$, which is the difference between<br>$2e - 1$ and $2e$. Condonation: a candidate who writes $\frac{1}{(-1)!} = 0$ and obtains $2e - 1$<br>loses the final (AG) but keeps the (M1).</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The student's argument is not careless; it is the natural thing to say. The term<br>$\frac{n^2}{(n+1)!}$ does behave like $\frac{n}{n!}$ for large $n$, in the sense that the ratio<br>of the two tends to $1$. What the argument misses is that summing a series is not a statement<br>about the tail. The first few terms are not negligible here: the $n = 1$ term alone is<br>$\frac{1}{2}$, which is $29$ per cent of the true total. An asymptotic comparison that is<br>correct term by term throws away exactly the part of the series that decides the answer.</p>
+<p>What makes the item hard is that no standard series has this shape. A candidate who has<br>practised Maclaurin manipulations has three moves available — differentiate a known series,<br>integrate one, or substitute into one — and each of them changes the *numerator* or the<br>*argument*, never the offset between the numerator and the factorial. Differentiating<br>$\sum \frac{x^{n+1}}{(n+1)!}$ produces $\frac{x^n}{n!}$, which has the factorial one step<br>*behind* rather than one step ahead. The required move is the opposite direction and has no<br>name: rewrite the polynomial numerator in the basis of falling factorials adapted to the<br>denominator. Once $n^2$ is written as $n(n+1) - (n+1) + 1$ the denominator is defeated term by<br>term, and the answer is decided by which leading terms the shifts remove.</p>
+<p>Part (d) is there to stop the item being a single trick. It looks like the same question — a<br>quadratic over a factorial — and it is the same question with the shift removed. There the<br>answer is a clean multiple of $e$ and no integer correction appears. Putting the two side by<br>side is what tells a candidate whether the shift, and not some general property of quadratic<br>numerators, was doing the work.</p>
+<p>Numerically the trap is well disguised. $S = e - 1 \approx 1.718$ and the student's value is<br>$e \approx 2.718$; both are of the same order, both involve $e$, and a partial sum on a<br>calculator confirms $e$ just as readily as $e - 1$ if the candidate has rounded to one decimal<br>place. Only the exact argument separates them.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The term is one index out of step with every standard series: the numerator carries $n^2$ while the denominator carries $(n+1)!$. Nothing in the candidate&#x27;s repertoire reproduces that shape, so the sum is inaccessible until $n^2$ is rewritten as $n(n+1) - (n+1) + 1$, after which the term splits into three shifted copies of the exponential series and the cancellation is immediate.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 5.19 (Maclaurin series to obtain expansions for e^x, sin x, cos x, ln(1+x) and (1+x)^p; use of simple substitution, products, integration and differentiation to obtain other series)</dd></div>
+  <div><dt>Inspiration</dt><dd>UK A-Level Further Mathematics: summing series by expressing the general term in factorials</dd></div>
+  <div><dt>Adaptation</dt><dd>The source exercises sit entirely inside the pattern the student&#x27;s argument assumes: the factorial matches the numerator&#x27;s degree, so the answer is a multiple of $e$. Here the denominator is deliberately shifted to $(n+1)!$, which removes every standard move and forces the falling-factorial rewrite. The wrong argument is then stated in the stem as the student&#x27;s own words so that the candidate must refute a specific claim, and part (d) restores the unshifted version as a control. Context, structure, given-versus-asked and the reasoning chain all differ from the source.</dd></div>
+  <div><dt>Verification</dt><dd>Each series is summed numerically to $n = 39$ and compared with the closed forms $e - 1$, $e + 1$, $2e$ and $e$; the identity in part (a) is checked at $n = 1$ and $n = 3$.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P1_2015Nov_TZ0_q03 (similarity 0.022)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL5.5-001 (similarity 0.009)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-14</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

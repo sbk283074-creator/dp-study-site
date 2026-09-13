@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL4.13-102 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>4.13 Bayes&#x27; theorem with two screening tests that are correlated given the disease status</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL4.13-102</p>
+<div class="meta"><span class="chip chip-key">AHL 4.13 (use of Bayes&#x27; theorem for a maximum of three events)</span><span class="chip">P2 · Section B</span><span class="chip">14 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: permitted</span><span class="chip">Find</span><span class="chip">State</span><span class="chip">Calculate</span><span class="chip">Explain</span></div>
+
+
+<h2>Question</h2>
+<p>A rare condition affects $0.8\%$ of a population. Two screening tests, $A$ and $B$, are<br>available. Test $A$ has sensitivity $0.95$ (that is, $\mathrm{P}(A^{+} \mid D) = 0.95$) and<br>false positive rate $0.04$ (that is, $\mathrm{P}(A^{+} \mid \overline{D}) = 0.04$), where $D$<br>denotes having the condition.</p>
+<p>Test $B$ probes the same biomarker as test $A$, so the two results are correlated even among<br>people with the same disease status. Trial data for test $B$ are reported twice: once for the<br>whole population, and once for the subgroup who tested positive on test $A$.</p>
+<p>$$\begin{array}{l|cc}<br> &amp; \mathrm{P}(B^{+} \mid D) &amp; \mathrm{P}(B^{+} \mid \overline{D}) \\ \hline<br>\text{whole population} &amp; 0.86 &amp; 0.18 \\<br>\text{subgroup with } A^{+} &amp; 0.90 &amp; 0.15<br>\end{array}$$</p>
+<p>A person is selected at random, tests positive on test $A$, and is then given test $B$, on<br>which they also test positive.</p>
+<p>(a) Find the probability that the person has the condition given the positive result on test<br>$A$ alone. \tag{3}</p>
+<p>(b) State, with a reason, which row of the table is the appropriate one to use when combining<br>the two results. \tag{3}</p>
+<p>(c) Calculate the probability that the person has the condition given that both tests are<br>positive. \tag{5}</p>
+<p>(d) Explain why using the other row of the table gives a different answer. \tag{3}</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Find the probability that the person has the condition given the positive result on test $A$ alone.</p> <em>(Find)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>State, with a reason, which row of the table is the appropriate one to use.</p> <em>(State)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Calculate $\mathrm{P}(D \mid A^{+} \cap B^{+})$.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Explain why using the other row of the table gives a different answer.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 14 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) By Bayes' theorem,</p>
+<p>$$\mathrm{P}(D \mid A^{+}) = \frac{\mathrm{P}(D)\mathrm{P}(A^{+} \mid D)}<br>{\mathrm{P}(D)\mathrm{P}(A^{+} \mid D) + \mathrm{P}(\overline{D})\mathrm{P}(A^{+} \mid \overline{D})}<br>\tag{M1}$$</p>
+<p>With $\mathrm{P}(D) = 0.008$ and $\mathrm{P}(\overline{D}) = 0.992$,</p>
+<p>$$\mathrm{P}(D \mid A^{+}) = \frac{0.008 \times 0.95}{0.008 \times 0.95 + 0.992 \times 0.04}<br>= \frac{0.0076}{0.0076 + 0.03968} = \frac{0.0076}{0.04728} = 0.1607 \text{ (4 s.f.)} \tag{A1}$$</p>
+<p>So a single positive result leaves the probability at about $16.1\%$ (A1) — still far more<br>likely than not that the person does *not* have the condition, because the condition is rare.</p>
+<p>(b) The subgroup row, $\mathrm{P}(B^{+} \mid D) = 0.90$ and<br>$\mathrm{P}(B^{+} \mid \overline{D}) = 0.15$, is the appropriate one (A1). The reason is that<br>the relevant likelihoods are conditional on what is already known, namely that the person<br>tested positive on $A$ (R1): the quantity needed in part (c) is<br>$\mathrm{P}(B^{+} \mid A^{+} \cap D)$, not $\mathrm{P}(B^{+} \mid D)$ (A1). The population<br>row averages over people who tested negative on $A$, and those people are never given test<br>$B$.</p>
+<p>(c) Applying Bayes' theorem with the two pieces of evidence,</p>
+<p>$$\mathrm{P}(D \mid A^{+} \cap B^{+}) =<br>\frac{\mathrm{P}(D)\mathrm{P}(A^{+} \mid D)\mathrm{P}(B^{+} \mid A^{+} \cap D)}<br>{\mathrm{P}(D)\mathrm{P}(A^{+} \mid D)\mathrm{P}(B^{+} \mid A^{+} \cap D)<br>+ \mathrm{P}(\overline{D})\mathrm{P}(A^{+} \mid \overline{D})\mathrm{P}(B^{+} \mid A^{+} \cap \overline{D})}<br>\tag{M1}$$</p>
+<p>Substituting the subgroup row (M1),</p>
+<p>$$= \frac{0.008 \times 0.95 \times 0.90}{0.008 \times 0.95 \times 0.90 + 0.992 \times 0.04 \times 0.15}<br>= \frac{0.00684}{0.00684 + 0.005952} = \frac{0.00684}{0.012792} \tag{A1}$$</p>
+<p>$$= 0.535 \text{ (3 s.f.)} \tag{A1}$$</p>
+<p>Two positive results therefore raise the probability from about $16\%$ to about $53\%$ — a<br>substantial improvement, but still short of even odds (A1). Note that the two tests are *not*<br>treated as unconditionally independent: the subgroup figures already incorporate the<br>dependence between them.</p>
+<p>(d) Using the population row instead gives</p>
+<p>$$\frac{0.008 \times 0.95 \times 0.86}{0.008 \times 0.95 \times 0.86 + 0.992 \times 0.04 \times 0.18}<br>= \frac{0.006536}{0.006536 + 0.0071424} = 0.478 \text{ (3 s.f.)} \tag{A1}$$</p>
+<p>which is about $5.7$ percentage points lower than the correct value (A1). The two rows differ<br>because the tests probe the same biomarker, so their outcomes are correlated even after the<br>disease status is fixed (R1). The subgroup with $A^{+}$ is not a random sample of the<br>population: selecting on a positive result from $A$ enriches it for people in whom the<br>biomarker is easy to detect, and test $B$ performs differently in that group. Using the<br>population figures tacitly assumes conditional independence of $A$ and $B$ given $D$, and that<br>assumption is exactly what the stem rules out.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) for the correct statement of Bayes' theorem with the total probability expanded in<br>the denominator. (A1) for the correct substitution of all four numbers. (A1) for $0.1607$;<br>accept $0.161$ or $16.1\%$. Award follow-through for an arithmetic slip in the denominator.</p>
+<p>(b) (A1) for identifying the subgroup row. (R1) for a reason that refers to conditioning on<br>what is known. (A1) for stating that the required likelihood is<br>$\mathrm{P}(B^{+} \mid A^{+} \cap D)$ rather than $\mathrm{P}(B^{+} \mid D)$. A candidate who<br>picks the correct row but gives no reason earns (A1) only. A candidate who says "because the<br>person tested positive on $A$" without distinguishing the two conditional probabilities earns<br>(A1) and (R1) but not the final (A1).</p>
+<p>(c) (M1) for the structure of Bayes' theorem with two pieces of evidence. (M1) for using the<br>subgroup figures identified in (b); this mark is forfeited if the population figures appear<br>here even if the arithmetic is then correct. (A1) for $0.00684$ and $0.005952$, (A1) for<br>$0.535$. (A1) for the interpretation. Follow-through from (b) is available: a candidate who<br>chose the population row in (b) and uses it consistently may earn (M1), both arithmetic (A1)s<br>and the interpretation mark, losing only the second (M1).</p>
+<p>(d) (A1) for $0.478$. (A1) for the size of the discrepancy. (R1) for identifying the<br>correlation between the tests — or equivalently for explaining that the subgroup is a selected<br>sample — as the cause. A candidate who merely says "the numbers are different" earns neither<br>of the last two marks. Condonation: allow "the two rows are different because the tests are<br>correlated" without a full account of the selection mechanism.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The item is built on a distinction that is easy to state and easy to lose track of: the<br>accuracy of a test measured on a population, and the accuracy of the same test measured on the<br>subgroup who actually get it.</p>
+<p>A candidate who has met two-stage screening before will reach for the pattern<br>$\mathrm{P}(D)\mathrm{P}(A^{+} \mid D)\mathrm{P}(B^{+} \mid D)$ in the numerator, because that<br>is what conditional independence looks like. Here that pattern is wrong twice over. It is<br>wrong as stated, because the likelihood needed is conditional on $A^{+}$ as well as on $D$; and<br>the number it tempts the candidate to substitute, $0.86$, is a population figure that has<br>already averaged over the people who never took test $B$.</p>
+<p>The prevalence is doing quiet work throughout. Because only $0.8\%$ of the population has the<br>condition, the $4\%$ false positive rate on test $A$ generates $0.03968$ in the denominator<br>against $0.0076$ in the numerator — more than five times as much. A single positive test<br>therefore moves the probability only from $0.8\%$ to $16.1\%$, and even two positive tests<br>leave it at $53\%$. Candidates routinely find this counter-intuitive, and it is the reason the<br>item quotes a rare condition rather than a common one: the arithmetic has to fight the<br>prevalence, and the fight is the point.</p>
+<p>Part (d) is where the two rows are reconciled. The reason they differ is that the tests are<br>correlated conditional on $D$, which is a physical claim about what they measure, not a<br>statistical technicality. Two tests for the same biomarker will tend to agree with each other<br>for reasons that have nothing to do with the disease, and that residual agreement means the<br>second test carries less fresh information than its headline accuracy suggests. Selecting on<br>$A^{+}$ makes the correlation visible as a difference between the two rows.</p>
+<p>The $5.7$ percentage point gap between $0.478$ and $0.535$ is not a rounding artefact, and it<br>is large enough to matter in the setting the question describes: it is the difference between<br>a clinician who treats and one who does not.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>Two figures are given for the accuracy of the second test and only one of them is usable. The population-level accuracy averages over people who tested negative on the first test, and the second test is never administered to those people. Because the two tests probe the same biomarker their outcomes are correlated even within a fixed disease status, so the subgroup figures differ from the population figures and the choice between them moves the answer by nearly six percentage points.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 4.13 (use of Bayes&#x27; theorem for a maximum of three events)</dd></div>
+  <div><dt>Inspiration</dt><dd>AP Statistics: conditional probability and screening tests; two-stage Bayes</dd></div>
+  <div><dt>Adaptation</dt><dd>The source&#x27;s central simplifying assumption — conditional independence of the two tests given disease status — is explicitly removed, and replaced by two reported accuracy tables that disagree. The candidate must therefore choose between them rather than multiply, and part (b) asks for the choice before any arithmetic is done. A rare prevalence of $0.8\%$ replaces the source&#x27;s more typical $1\%$ to $5\%$ so that the false positives dominate the denominator even after two positive results. Context, structure, given-versus-asked and the reasoning chain all change.</dd></div>
+  <div><dt>Verification</dt><dd>Both numerators and both denominators are recomputed from the quoted sensitivities and false positive rates, and the two resulting posterior probabilities are compared.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MAAQB_18N_2_SL_TZ0_S_9 (similarity 0.008)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL4.5-001 (similarity 0.006)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-14</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

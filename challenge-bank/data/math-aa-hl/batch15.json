@@ -1,0 +1,654 @@
+{
+  "questions": [
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-14",
+      "updated_at": "2026-09-14",
+      "subject": "Math AA HL",
+      "topic": "Topic 5: Calculus",
+      "id": "MATH-AHL5.19-102",
+      "syllabus_ref": "AHL 5.19 (Maclaurin series to obtain expansions for e^x, sin x, cos x, ln(1+x) and (1+x)^p; use of simple substitution, products, integration and differentiation to obtain other series)",
+      "subtopic": "5.19 Summing a series whose general term must be split into shifted factorials",
+      "paper": "P3",
+      "section": "B",
+      "technology": "allowed",
+      "marks": 14,
+      "difficulty": 5,
+      "question_type": "problem_solving",
+      "command_terms": [
+        "Show that",
+        "Hence",
+        "Find"
+      ],
+      "tags": [
+        "Maclaurin series",
+        "exponential series",
+        "summation",
+        "factorials",
+        "partial cancellation",
+        "exact value"
+      ],
+      "challenge_mechanism": "The term is one index out of step with every standard series: the numerator carries $n^2$ while the denominator carries $(n+1)!$. Nothing in the candidate's repertoire reproduces that shape, so the sum is inaccessible until $n^2$ is rewritten as $n(n+1) - (n+1) + 1$, after which the term splits into three shifted copies of the exponential series and the cancellation is immediate.",
+      "question": "The Maclaurin series for $e^x$ is\n\n$$\\sum_{n=0}^{\\infty} \\frac{x^n}{n!} = 1 + x + \\frac{x^2}{2!} + \\frac{x^3}{3!} + \\cdots,$$\n\nand it converges to $e^x$ for every real value of $x$. In particular\n$\\sum_{n=0}^{\\infty} \\frac{1}{n!} = e$.\n\nA student is asked to find the exact value of\n\n$$S = \\sum_{n=1}^{\\infty} \\frac{n^2}{(n+1)!} = \\frac{1}{2!} + \\frac{4}{3!} + \\frac{9}{4!} + \\cdots .$$\n\nThe student argues as follows.\n\n> \"For large $n$ the term $\\frac{n^2}{(n+1)!}$ behaves like $\\frac{n}{n!}$, and\n> $\\sum_{n=1}^{\\infty} \\frac{n}{n!} = \\sum_{n=1}^{\\infty} \\frac{1}{(n-1)!} = e$.\n> So $S = e$.\"\n\n(a) Show that, for every integer $n \\ge 1$,\n\n$$\\frac{n^2}{(n+1)!} = \\frac{1}{(n-1)!} - \\frac{1}{n!} + \\frac{1}{(n+1)!}. \\tag{3}$$\n\n(b) Hence find the exact value of $S$. \\tag{5}\n\n(c) Find the exact value of $T = \\sum_{n=1}^{\\infty} \\frac{n(n+2)}{(n+1)!}$. \\tag{3}\n\n(d) Show that $\\sum_{n=1}^{\\infty} \\frac{n^2}{n!} = 2e$. \\tag{3}",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $\\frac{n^2}{(n+1)!} = \\frac{1}{(n-1)!} - \\frac{1}{n!} + \\frac{1}{(n+1)!}$ for $n \\ge 1$."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Hence",
+          "text": "Hence find the exact value of $S$."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Find",
+          "text": "Find the exact value of $T = \\sum_{n=1}^{\\infty} \\frac{n(n+2)}{(n+1)!}$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $\\sum_{n=1}^{\\infty} \\frac{n^2}{n!} = 2e$."
+        }
+      ],
+      "answer": "(a) Write $n^2 = n(n+1) - (n+1) + 1$ (M1), which is an identity because\n$n(n+1) - (n+1) + 1 = n^2 + n - n - 1 + 1 = n^2$. Dividing each term by $(n+1)!$ and using\n$(n+1)! = (n+1)n!$ gives\n\n$$\\frac{n(n+1)}{(n+1)!} = \\frac{n}{n!} = \\frac{1}{(n-1)!}, \\qquad\n\\frac{n+1}{(n+1)!} = \\frac{1}{n!}, \\qquad \\frac{1}{(n+1)!} = \\frac{1}{(n+1)!},$$\n\nso $\\frac{n^2}{(n+1)!} = \\frac{1}{(n-1)!} - \\frac{1}{n!} + \\frac{1}{(n+1)!}$ (A1)(AG). The\nfinal mark is (AG) because the result is given; the working, not the answer, earns the marks.\n\n(b) Summing the identity in (a) over $n \\ge 1$ (M1),\n\n$$S = \\sum_{n=1}^{\\infty} \\frac{1}{(n-1)!} - \\sum_{n=1}^{\\infty} \\frac{1}{n!}\n+ \\sum_{n=1}^{\\infty} \\frac{1}{(n+1)!}.$$\n\nEach of the three is the exponential series with a shifted index (A1): the first is\n$\\sum_{m=0}^{\\infty} \\frac{1}{m!} = e$, the second is $\\sum_{m=1}^{\\infty} \\frac{1}{m!} = e - 1$ and\nthe third is $\\sum_{m=2}^{\\infty} \\frac{1}{m!} = e - 2$. Hence\n\n$$S = e - (e-1) + (e-2) = e - 1 \\quad (\\text{approximately } 1.71828) \\tag{A1}$$\n\nand the student's value $e$ is wrong by exactly $1$. The shift is the whole question: two of\nthe three sums are the full series with its first term or first two terms removed, and it is\nthose missing terms that survive into the answer (R1).\n\n(c) Here $n(n+2) = (n+1)^2 - 1$ (M1), so\n\n$$\\frac{n(n+2)}{(n+1)!} = \\frac{(n+1)^2}{(n+1)!} - \\frac{1}{(n+1)!}\n= \\frac{n+1}{n!} - \\frac{1}{(n+1)!} = \\frac{1}{(n-1)!} + \\frac{1}{n!} - \\frac{1}{(n+1)!},$$\n\nwhere $\\frac{n+1}{n!} = \\frac{n}{n!} + \\frac{1}{n!} = \\frac{1}{(n-1)!} + \\frac{1}{n!}$ (A1).\nSumming as before, $T = e + (e-1) - (e-2) = e + 1$, which is approximately $3.71828$ (A1).\n\n(d) For $n \\ge 2$, $\\frac{n^2}{n!} = \\frac{n}{(n-1)!} = \\frac{(n-1)+1}{(n-1)!}\n= \\frac{1}{(n-2)!} + \\frac{1}{(n-1)!}$ (M1). The $n = 1$ term must be treated separately and\nequals $\\frac{1}{1!} = 1$ (A1). Therefore\n\n$$\\sum_{n=1}^{\\infty} \\frac{n^2}{n!} = 1 + \\sum_{n=2}^{\\infty} \\frac{1}{(n-2)!}\n+ \\sum_{n=2}^{\\infty} \\frac{1}{(n-1)!} = 1 + e + (e-1) = 2e \\quad \\text{(approximately } 5.43656)$$\n\nas required (AG). Note the contrast with (b): here the denominator keeps pace with the\nnumerator, no shift survives, and the answer is a whole multiple of $e$ rather than $e$\ndisplaced by an integer.",
+      "markscheme_notes": "(a) (M1) is for producing a decomposition of $n^2$ into terms each of which cancels against\n$(n+1)!$; any correct decomposition earns it, not only the one printed. (A1) is for the three\nfactorials in the right places. (AG): no mark is available for merely restating the given\nidentity. Condone a verification by cross-multiplication instead of a derivation from\n$n^2 = n(n+1) - (n+1) + 1$.\n\n(b) (M1) for summing the identity term by term. (A1) for the three shifted series, with\nfollow-through allowed from an incorrect identity in (a) provided the shifts are consistent\nwith it. (A1) for $e - 1$; accept $1.71828$ only if the exact value also appears. A candidate\nwho writes $S = e$ earns at most the (M1).\n\n(c) Follow-through from (a) applies. (A1) for the algebraic split, (A1) for $e + 1$. Note that\na candidate who incorrectly reuses the identity from (a) unchanged obtains $e - 1$ again and\nloses the second (A1) only.\n\n(d) (M1) for $\\frac{n^2}{n!} = \\frac{n}{(n-1)!}$ or equivalent. (A1) for spotting that the\n$n = 1$ term does not fit the general pattern, since $\\frac{1}{(n-2)!}$ is undefined there.\nDo not award this (A1) to a candidate who silently starts the sum at $n = 2$ and omits the\nunit term: the omission changes the answer by exactly $1$, which is the difference between\n$2e - 1$ and $2e$. Condonation: a candidate who writes $\\frac{1}{(-1)!} = 0$ and obtains $2e - 1$\nloses the final (AG) but keeps the (M1).",
+      "explanation": "The student's argument is not careless; it is the natural thing to say. The term\n$\\frac{n^2}{(n+1)!}$ does behave like $\\frac{n}{n!}$ for large $n$, in the sense that the ratio\nof the two tends to $1$. What the argument misses is that summing a series is not a statement\nabout the tail. The first few terms are not negligible here: the $n = 1$ term alone is\n$\\frac{1}{2}$, which is $29$ per cent of the true total. An asymptotic comparison that is\ncorrect term by term throws away exactly the part of the series that decides the answer.\n\nWhat makes the item hard is that no standard series has this shape. A candidate who has\npractised Maclaurin manipulations has three moves available — differentiate a known series,\nintegrate one, or substitute into one — and each of them changes the *numerator* or the\n*argument*, never the offset between the numerator and the factorial. Differentiating\n$\\sum \\frac{x^{n+1}}{(n+1)!}$ produces $\\frac{x^n}{n!}$, which has the factorial one step\n*behind* rather than one step ahead. The required move is the opposite direction and has no\nname: rewrite the polynomial numerator in the basis of falling factorials adapted to the\ndenominator. Once $n^2$ is written as $n(n+1) - (n+1) + 1$ the denominator is defeated term by\nterm, and the answer is decided by which leading terms the shifts remove.\n\nPart (d) is there to stop the item being a single trick. It looks like the same question — a\nquadratic over a factorial — and it is the same question with the shift removed. There the\nanswer is a clean multiple of $e$ and no integer correction appears. Putting the two side by\nside is what tells a candidate whether the shift, and not some general property of quadratic\nnumerators, was doing the work.\n\nNumerically the trap is well disguised. $S = e - 1 \\approx 1.718$ and the student's value is\n$e \\approx 2.718$; both are of the same order, both involve $e$, and a partial sum on a\ncalculator confirms $e$ just as readily as $e - 1$ if the candidate has rounded to one decimal\nplace. Only the exact argument separates them.",
+      "provenance": {
+        "inspired_by": "UK A-Level Further Mathematics: summing series by expressing the general term in factorials",
+        "source_family": "uk-further-maths",
+        "resource_origin": "UK A-Level Further Mathematics (Core / Further Pure) exercise on summing series of the form sum of a polynomial over a factorial, typically asking for sum n/n! or sum n^2/n!.",
+        "adaptation": "The source exercises sit entirely inside the pattern the student's argument assumes: the factorial matches the numerator's degree, so the answer is a multiple of $e$. Here the denominator is deliberately shifted to $(n+1)!$, which removes every standard move and forces the falling-factorial rewrite. The wrong argument is then stated in the stem as the student's own words so that the candidate must refute a specific claim, and part (d) restores the unshifted version as a control. Context, structure, given-versus-asked and the reasoning chain all differ from the source."
+      },
+      "difficulty_evidence": {
+        "lever_type": "partial_cancellation",
+        "naive_path": "Match the term against a known Maclaurin series by inspection, arguing that $\\frac{n^2}{(n+1)!}$ behaves like $\\frac{n}{n!}$ for large $n$ and therefore sums to $e$.",
+        "failure_point": "The factorial in the denominator is one step ahead of the numerator, so differentiating, integrating or substituting into a known series cannot produce this term; the sum is only reachable once $n^2$ is rewritten as $n(n+1) - (n+1) + 1$.",
+        "wrong_answer": "$S = e \\approx 2.718$ against the true $e - 1 \\approx 1.718$; the two differ by exactly $1$, and a partial sum rounded to one decimal place does not distinguish them."
+      },
+      "verification": {
+        "solution_skeleton": [
+          "Rewrite n squared as n(n+1) minus (n+1) plus 1",
+          "Divide by (n+1)! to split the term into three shifted factorials",
+          "Sum each shifted series against the exponential series at x = 1",
+          "Combine the three values, tracking which leading terms the shifts remove",
+          "Repeat the split for n(n+2) and for the unshifted series in part (d)"
+        ],
+        "method": "Each series is summed numerically to $n = 39$ and compared with the closed forms $e - 1$, $e + 1$, $2e$ and $e$; the identity in part (a) is checked at $n = 1$ and $n = 3$.",
+        "assertions": [
+          "approx(1/factorial(0) - 1/factorial(1) + 1/factorial(2), 1/factorial(2), 1e-12)",
+          "approx(1/factorial(2) - 1/factorial(3) + 1/factorial(4), 9/factorial(4), 1e-12)",
+          "approx(sum([n**2/factorial(n+1) for n in range(1,30)]), e-1, 1e-9)",
+          "approx(sum([n*(n+2)/factorial(n+1) for n in range(1,30)]), e+1, 1e-9)",
+          "approx(sum([n**2/factorial(n) for n in range(1,30)]), 2*e, 1e-9)",
+          "approx(sum([n/factorial(n) for n in range(1,30)]), e, 1e-9)",
+          "approx(sum([1/factorial(n) for n in range(0,30)]), e, 1e-9)",
+          "approx(e-1, 1.718281828459045, 1e-9)",
+          "approx(e+1, 3.718281828459045, 1e-9)",
+          "approx(2*e, 5.43656365691809, 1e-9)"
+        ]
+      },
+      "originality": {
+        "max_similarity": 0.022,
+        "max_internal_similarity": 0.009,
+        "max_approach_similarity": 0.084,
+        "nearest_bank_id": "MATH_AAHL_P1_2015Nov_TZ0_q03",
+        "nearest_internal_id": "MATH-AHL5.5-001",
+        "nearest_approach_id": "MATH-P3-010",
+        "note": "filled by tools/similarity_check.py --write",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "checked_at": "2026-09-11"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-14",
+      "updated_at": "2026-09-14",
+      "subject": "Math AA HL",
+      "topic": "Topic 1: Number and algebra",
+      "id": "MATH-AHL1.15-102",
+      "syllabus_ref": "AHL 1.15 (proof by mathematical induction; forming a conjecture for the nth term of a sequence and proving it)",
+      "subtopic": "1.15 Induction where the base case is set by the step, not by the domain",
+      "paper": "P3",
+      "section": "B",
+      "technology": "not allowed",
+      "marks": 14,
+      "difficulty": 5,
+      "question_type": "problem_solving",
+      "command_terms": [
+        "State",
+        "Prove",
+        "Hence",
+        "Determine"
+      ],
+      "tags": [
+        "proof by induction",
+        "inequalities",
+        "exponential growth",
+        "base case",
+        "isolated exception",
+        "integers"
+      ],
+      "challenge_mechanism": "The step and the statement have different thresholds, and the item turns on the candidate noticing that there are two of them. The implication $2^k > k^3 \\Rightarrow 2^{k+1} > (k+1)^3$ is valid from $k = 4$ onwards, while the statement itself is false for every integer from $2$ to $9$. The induction can therefore only start at $10$, and the single value $n = 1$ that also satisfies the inequality is unreachable by induction from anywhere.",
+      "question": "Consider the statement\n\n$$P(n): \\quad 2^n > n^3, \\qquad n \\in \\mathbb{Z}^{+}.$$\n\n(a) By evaluating both sides for $n = 1, 2, \\ldots, 10$, state the set of values of $n$ in\n$\\{1, 2, \\ldots, 10\\}$ for which $P(n)$ is true. \\tag{2}\n\n(b) Prove that, for every integer $k \\ge 4$,\n\n$$2^k > k^3 \\quad \\Longrightarrow \\quad 2^{k+1} > (k+1)^3. \\tag{5}$$\n\n(c) Hence prove that $P(n)$ is true for every integer $n \\ge 10$. \\tag{3}\n\n(d) Determine, with full justification, the set of positive integers $n$ for which $P(n)$ is\ntrue. \\tag{4}",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 2,
+          "command_term": "State",
+          "text": "State the set of values of $n$ in $\\{1,2,\\ldots,10\\}$ for which $P(n)$ is true."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Prove",
+          "text": "Prove that $2^k > k^3 \\Rightarrow 2^{k+1} > (k+1)^3$ for every integer $k \\ge 4$."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Hence",
+          "text": "Hence prove that $P(n)$ is true for every integer $n \\ge 10$."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine, with full justification, the set of positive integers $n$ for which $P(n)$ is true."
+        }
+      ],
+      "answer": "(a) Computing both sides:\n\n$$\\begin{array}{c|cccccccccc}\nn & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\\\ \\hline\n2^n & 2 & 4 & 8 & 16 & 32 & 64 & 128 & 256 & 512 & 1024 \\\\\nn^3 & 1 & 8 & 27 & 64 & 125 & 216 & 343 & 512 & 729 & 1000\n\\end{array}$$\n\n$P(n)$ is true only for $n = 1$ and $n = 10$ among these values (A1)(A1). Note particularly\n$n = 8$, where $2^8 = 256$ and $8^3 = 512$, and $n = 9$, where $2^9 = 512$ against $9^3 = 729$;\nthe inequality fails throughout $2 \\le n \\le 9$ and then turns round between $n = 9$ and\n$n = 10$.\n\n(b) Assume $2^k > k^3$ for some integer $k \\ge 4$. Then\n\n$$2^{k+1} = 2 \\cdot 2^k > 2k^3 \\tag{M1}$$\n\nusing the induction hypothesis. It is therefore sufficient to prove that $2k^3 \\ge (k+1)^3$\nfor $k \\ge 4$ (M1). Dividing by $k^3 > 0$, this is equivalent to\n\n$$2 \\ge \\left(1 + \\frac{1}{k}\\right)^3.$$\n\nNow $\\left(1 + \\frac{1}{k}\\right)^3$ is strictly decreasing in $k$ for $k > 0$ (A1), so for\n$k \\ge 4$\n\n$$\\left(1 + \\frac{1}{k}\\right)^3 \\le \\left(1 + \\frac{1}{4}\\right)^3 = \\left(\\frac{5}{4}\\right)^3\n= \\frac{125}{64} = 1.953125 < 2 \\tag{A1}$$\n\nand hence $2k^3 > (k+1)^3$ strictly. Combining, $2^{k+1} > 2k^3 > (k+1)^3$, which is\n$P(k+1)$ (AG). The condition $k \\ge 4$ is used exactly once, at the point where\n$\\left(1 + \\frac{1}{k}\\right)^3$ is bounded above by its value at $k = 4$ (R1).\n\n(c) Take $n = 10$ as the base case. By part (a), $2^{10} = 1024 > 1000 = 10^3$, so $P(10)$\nholds (A1). By part (b) the implication $P(k) \\Rightarrow P(k+1)$ holds for every $k \\ge 4$,\nand in particular for every $k \\ge 10$ (M1). By the principle of mathematical induction\n$P(n)$ is true for all integers $n \\ge 10$ (A1).\n\n(d) From (c), every $n \\ge 10$ satisfies $P(n)$. From (a), among $1 \\le n \\le 10$ only\n$n = 1$ and $n = 10$ do (A1). Therefore the complete set is\n\n$$\\{n \\in \\mathbb{Z}^{+} : 2^n > n^3\\} = \\{1\\} \\cup \\{n \\in \\mathbb{Z}^{+} : n \\ge 10\\} \\tag{A1}$$\n\nThe value $n = 1$ is isolated: $P(1)$ and $P(2)$ differ in truth value and no induction\nconnects them, so the answer cannot be written as a single inequality $n \\ge N$ (R1). A\ncandidate who answers $n \\ge 10$ has missed one value; a candidate who answers $n \\ge 4$ has\nused the threshold of the *step* rather than the threshold of the *statement* and is wrong at\n$n = 4, 5, 6, 7, 8, 9$.",
+      "markscheme_notes": "(a) (A1) for identifying $n = 1$, (A1) for identifying $n = 10$. Award both only if the\ncandidate has also established that no other value in the range works; a bare statement of\n$\\{1, 10\\}$ with no supporting arithmetic earns (A1) at most.\n\n(b) (M1) for using the induction hypothesis to obtain $2^{k+1} > 2k^3$. (M1) for recognising\nthat the remaining task is $2k^3 \\ge (k+1)^3$. (A1) for the monotonicity of\n$\\left(1 + \\frac{1}{k}\\right)^3$ — or for any other correct route to the bound, such as\nexpanding $2k^3 - (k+1)^3 = k^3 - 3k^2 - 3k - 1$ and showing it is positive for $k \\ge 4$.\n(A1) for the numerical bound $\\frac{125}{64} < 2$. (AG) for concluding $P(k+1)$: no mark for\nrestating the conclusion.\n\nCondonation: a candidate who works with $2k^3 \\ge (k+1)^3$ as a non-strict inequality and\nthen notes that equality never occurs at $k = 4$ earns full marks. Forfeiture: a candidate who\nasserts the step holds for all $k \\ge 1$ without checking loses both the monotonicity (A1) and\nthe (AG).\n\n(c) (A1) for verifying $P(10)$. (M1) for observing that the implication from (b) is available\nat every $k \\ge 10$. (A1) for the inductive conclusion. Follow-through: a candidate who\nchooses the base case $n = 4$ in (c) despite having proved in (a) that $P(4)$ is false must\nnot be awarded the final (A1), even if the rest of the structure is sound — the induction is\nproving a statement that is false.\n\n(d) (A1) for combining the two ranges, (A1) for the explicit set notation or an unambiguous\nequivalent such as \"$n = 1$ and all $n \\ge 10$\". (R1) for recognising that the value $n = 1$\nis isolated and that the set is therefore not an interval. Do not penalise a candidate who\nwrites the answer as $n = 1$ or $n \\ge 10$.",
+      "explanation": "The item looks like a routine induction and is not one, because the induction has two\nthresholds and the candidate has to find both.\n\nThe first threshold belongs to the implication. For $2^{k+1} > (k+1)^3$ to follow from\n$2^k > k^3$, the factor of $2$ gained on the left has to outrun the factor\n$\\left(1 + \\frac{1}{k}\\right)^3$ gained on the right, and that happens from $k = 4$ onwards.\nBelow $k = 4$ the step is simply false: at $k = 3$, $2 \\cdot 8 = 16$ is not greater than\n$4^3 = 64$.\n\nThe second threshold belongs to the statement, and it is much later. Exponential growth\neventually beats any power, but \"$n^3$\" holds out for a surprisingly long time: $2^n$ is behind\n$n^3$ at every integer from $2$ to $9$, catches up only at $10$, and the two are within\n$2.4$ per cent of each other there. So the base case has to be $10$, not $4$, even though the\nstep would have worked from $4$.\n\nThe general principle is that an induction proves statements from a base case *using* a step,\nso the base case must satisfy two independent conditions: the statement has to be true there,\nand the step has to be valid from there. The correct starting point is the larger of the two\nthresholds, and an item is only interesting when the two thresholds disagree — which is\nexactly what happens here.\n\nThe isolated value $n = 1$ is the part candidates lose most often, and it is not a trick.\n$P(1)$ says $2 > 1$, which is true, and $P(2)$ says $4 > 8$, which is not. An induction\nstarted anywhere cannot reach $n = 1$ going forwards, and there is nothing to induct on going\nbackwards. The answer set genuinely has two components, and the reason it feels wrong is that\nmost school induction questions have an answer of the form \"all $n \\ge N$\". Writing the set as\n$\\{1\\} \\cup \\{n \\ge 10\\}$ is the only honest description.\n\nFinally, note what the arithmetic in (a) is for. It is not busywork to pad the question: it\nestablishes both thresholds empirically before the candidate is asked to prove anything about\neither, and it is the only place where the failure at $n = 8$ — where the two sides are in the\nratio $1:2$ — becomes visible. A candidate who skips (a) and guesses has no way to know that\n$n = 9$ fails.",
+      "provenance": {
+        "inspired_by": "UK A-Level Further Mathematics / STEP: induction with an inequality whose base case is not 1",
+        "source_family": "uk-further-maths",
+        "resource_origin": "UK A-Level Further Mathematics and STEP-style items on proof by induction applied to inequalities such as 2^n > n^2 or n! > 2^n, where the base case is displaced from n = 1.",
+        "adaptation": "Standard versions ask for $2^n > n^2$ from $n = 5$, where the step and the statement share a threshold and nothing interesting happens. Raising the power to $n^3$ pushes the statement's threshold to $10$ while leaving the step's threshold at $4$, so the two disagree by six integers. The isolated value $n = 1$ is then a genuine feature rather than an artefact, and part (d) asks for the full set rather than a bound. Structure, given-versus-asked and the reasoning chain all change; the context is kept deliberately abstract, as in the source."
+      },
+      "difficulty_evidence": {
+        "lever_type": "seeded_anomaly",
+        "naive_path": "Start the induction at $n = 1$, the smallest value in the domain, and carry the step from $k$ to $k+1$ in the usual way.",
+        "failure_point": "There are two thresholds and they are six apart: the step needs $k \\ge 4$ while the statement is false for every $n$ from $2$ to $9$, so the base case must be the larger of the two, and the isolated true case $n = 1$ is unreachable by induction.",
+        "wrong_answer": "$n \\ge 4$, reading the threshold of the inductive step as the threshold of the statement; or $n \\ge 10$, which is right about every value from $10$ upwards and silently drops the isolated case $n = 1$."
+      },
+      "verification": {
+        "solution_skeleton": [
+          "Evaluate both sides for n = 1 to 10 and record where the inequality holds",
+          "Assume P(k) and multiply by 2 to get a lower bound for 2^(k+1)",
+          "Show 2k^3 exceeds (k+1)^3 by bounding (1 + 1/k)^3 above at k = 4",
+          "Take n = 10 as the base case and apply the principle of induction",
+          "Union the inductive range with the isolated value n = 1"
+        ],
+        "method": "The truth of $P(n)$ is enumerated for $1 \\le n \\le 39$; the bound $(5/4)^3 < 2$ and the monotonicity claim are checked numerically at $k = 4$ and $k = 5$; the endpoint values $2^{10} = 1024 > 1000$ and $2^9 = 512 < 729$ are recomputed.",
+        "assertions": [
+          "sum([1 for n in range(2,10) if 2**n > n**3]) == 0",
+          "sum([1 for n in range(1,10) if 2**n > n**3]) == 1",
+          "sum([1 for n in range(10,40) if 2**n > n**3]) == 30",
+          "approx(2**10, 1024, 1e-12)",
+          "approx(10**3, 1000, 1e-12)",
+          "approx(2**9, 512, 1e-12)",
+          "approx(9**3, 729, 1e-12)",
+          "approx((1+1/4)**3, 125/64, 1e-12)",
+          "approx((1+1/5)**3, 216/125, 1e-12)",
+          "approx(2*4**3, 128, 1e-12)",
+          "approx(5**3, 125, 1e-12)"
+        ]
+      },
+      "originality": {
+        "max_similarity": 0.013,
+        "max_internal_similarity": 0.01,
+        "max_approach_similarity": 0.081,
+        "nearest_bank_id": "MATH_AAHL_P1_2008May_TZ1_q07",
+        "nearest_internal_id": "MATH-T2-001",
+        "nearest_approach_id": "MATH-AHL1.15-001",
+        "note": "filled by tools/similarity_check.py --write",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "checked_at": "2026-09-11"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-14",
+      "updated_at": "2026-09-14",
+      "subject": "Math AA HL",
+      "topic": "Topic 4: Statistics and probability",
+      "id": "MATH-AHL4.13-102",
+      "syllabus_ref": "AHL 4.13 (use of Bayes' theorem for a maximum of three events)",
+      "subtopic": "4.13 Bayes' theorem with two screening tests that are correlated given the disease status",
+      "paper": "P2",
+      "section": "B",
+      "technology": "permitted",
+      "marks": 14,
+      "difficulty": 4,
+      "question_type": "extended_response",
+      "command_terms": [
+        "Find",
+        "State",
+        "Calculate",
+        "Explain"
+      ],
+      "tags": [
+        "Bayes' theorem",
+        "conditional probability",
+        "screening",
+        "sensitivity",
+        "false positive rate",
+        "conditional independence",
+        "selection"
+      ],
+      "challenge_mechanism": "Two figures are given for the accuracy of the second test and only one of them is usable. The population-level accuracy averages over people who tested negative on the first test, and the second test is never administered to those people. Because the two tests probe the same biomarker their outcomes are correlated even within a fixed disease status, so the subgroup figures differ from the population figures and the choice between them moves the answer by nearly six percentage points.",
+      "question": "A rare condition affects $0.8\\%$ of a population. Two screening tests, $A$ and $B$, are\navailable. Test $A$ has sensitivity $0.95$ (that is, $\\mathrm{P}(A^{+} \\mid D) = 0.95$) and\nfalse positive rate $0.04$ (that is, $\\mathrm{P}(A^{+} \\mid \\overline{D}) = 0.04$), where $D$\ndenotes having the condition.\n\nTest $B$ probes the same biomarker as test $A$, so the two results are correlated even among\npeople with the same disease status. Trial data for test $B$ are reported twice: once for the\nwhole population, and once for the subgroup who tested positive on test $A$.\n\n$$\\begin{array}{l|cc}\n & \\mathrm{P}(B^{+} \\mid D) & \\mathrm{P}(B^{+} \\mid \\overline{D}) \\\\ \\hline\n\\text{whole population} & 0.86 & 0.18 \\\\\n\\text{subgroup with } A^{+} & 0.90 & 0.15\n\\end{array}$$\n\nA person is selected at random, tests positive on test $A$, and is then given test $B$, on\nwhich they also test positive.\n\n(a) Find the probability that the person has the condition given the positive result on test\n$A$ alone. \\tag{3}\n\n(b) State, with a reason, which row of the table is the appropriate one to use when combining\nthe two results. \\tag{3}\n\n(c) Calculate the probability that the person has the condition given that both tests are\npositive. \\tag{5}\n\n(d) Explain why using the other row of the table gives a different answer. \\tag{3}",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Find",
+          "text": "Find the probability that the person has the condition given the positive result on test $A$ alone."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "State",
+          "text": "State, with a reason, which row of the table is the appropriate one to use."
+        },
+        {
+          "label": "c",
+          "marks": 5,
+          "command_term": "Calculate",
+          "text": "Calculate $\\mathrm{P}(D \\mid A^{+} \\cap B^{+})$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why using the other row of the table gives a different answer."
+        }
+      ],
+      "answer": "(a) By Bayes' theorem,\n\n$$\\mathrm{P}(D \\mid A^{+}) = \\frac{\\mathrm{P}(D)\\mathrm{P}(A^{+} \\mid D)}\n{\\mathrm{P}(D)\\mathrm{P}(A^{+} \\mid D) + \\mathrm{P}(\\overline{D})\\mathrm{P}(A^{+} \\mid \\overline{D})}\n\\tag{M1}$$\n\nWith $\\mathrm{P}(D) = 0.008$ and $\\mathrm{P}(\\overline{D}) = 0.992$,\n\n$$\\mathrm{P}(D \\mid A^{+}) = \\frac{0.008 \\times 0.95}{0.008 \\times 0.95 + 0.992 \\times 0.04}\n= \\frac{0.0076}{0.0076 + 0.03968} = \\frac{0.0076}{0.04728} = 0.1607 \\text{ (4 s.f.)} \\tag{A1}$$\n\nSo a single positive result leaves the probability at about $16.1\\%$ (A1) — still far more\nlikely than not that the person does *not* have the condition, because the condition is rare.\n\n(b) The subgroup row, $\\mathrm{P}(B^{+} \\mid D) = 0.90$ and\n$\\mathrm{P}(B^{+} \\mid \\overline{D}) = 0.15$, is the appropriate one (A1). The reason is that\nthe relevant likelihoods are conditional on what is already known, namely that the person\ntested positive on $A$ (R1): the quantity needed in part (c) is\n$\\mathrm{P}(B^{+} \\mid A^{+} \\cap D)$, not $\\mathrm{P}(B^{+} \\mid D)$ (A1). The population\nrow averages over people who tested negative on $A$, and those people are never given test\n$B$.\n\n(c) Applying Bayes' theorem with the two pieces of evidence,\n\n$$\\mathrm{P}(D \\mid A^{+} \\cap B^{+}) =\n\\frac{\\mathrm{P}(D)\\mathrm{P}(A^{+} \\mid D)\\mathrm{P}(B^{+} \\mid A^{+} \\cap D)}\n{\\mathrm{P}(D)\\mathrm{P}(A^{+} \\mid D)\\mathrm{P}(B^{+} \\mid A^{+} \\cap D)\n+ \\mathrm{P}(\\overline{D})\\mathrm{P}(A^{+} \\mid \\overline{D})\\mathrm{P}(B^{+} \\mid A^{+} \\cap \\overline{D})}\n\\tag{M1}$$\n\nSubstituting the subgroup row (M1),\n\n$$= \\frac{0.008 \\times 0.95 \\times 0.90}{0.008 \\times 0.95 \\times 0.90 + 0.992 \\times 0.04 \\times 0.15}\n= \\frac{0.00684}{0.00684 + 0.005952} = \\frac{0.00684}{0.012792} \\tag{A1}$$\n\n$$= 0.535 \\text{ (3 s.f.)} \\tag{A1}$$\n\nTwo positive results therefore raise the probability from about $16\\%$ to about $53\\%$ — a\nsubstantial improvement, but still short of even odds (A1). Note that the two tests are *not*\ntreated as unconditionally independent: the subgroup figures already incorporate the\ndependence between them.\n\n(d) Using the population row instead gives\n\n$$\\frac{0.008 \\times 0.95 \\times 0.86}{0.008 \\times 0.95 \\times 0.86 + 0.992 \\times 0.04 \\times 0.18}\n= \\frac{0.006536}{0.006536 + 0.0071424} = 0.478 \\text{ (3 s.f.)} \\tag{A1}$$\n\nwhich is about $5.7$ percentage points lower than the correct value (A1). The two rows differ\nbecause the tests probe the same biomarker, so their outcomes are correlated even after the\ndisease status is fixed (R1). The subgroup with $A^{+}$ is not a random sample of the\npopulation: selecting on a positive result from $A$ enriches it for people in whom the\nbiomarker is easy to detect, and test $B$ performs differently in that group. Using the\npopulation figures tacitly assumes conditional independence of $A$ and $B$ given $D$, and that\nassumption is exactly what the stem rules out.",
+      "markscheme_notes": "(a) (M1) for the correct statement of Bayes' theorem with the total probability expanded in\nthe denominator. (A1) for the correct substitution of all four numbers. (A1) for $0.1607$;\naccept $0.161$ or $16.1\\%$. Award follow-through for an arithmetic slip in the denominator.\n\n(b) (A1) for identifying the subgroup row. (R1) for a reason that refers to conditioning on\nwhat is known. (A1) for stating that the required likelihood is\n$\\mathrm{P}(B^{+} \\mid A^{+} \\cap D)$ rather than $\\mathrm{P}(B^{+} \\mid D)$. A candidate who\npicks the correct row but gives no reason earns (A1) only. A candidate who says \"because the\nperson tested positive on $A$\" without distinguishing the two conditional probabilities earns\n(A1) and (R1) but not the final (A1).\n\n(c) (M1) for the structure of Bayes' theorem with two pieces of evidence. (M1) for using the\nsubgroup figures identified in (b); this mark is forfeited if the population figures appear\nhere even if the arithmetic is then correct. (A1) for $0.00684$ and $0.005952$, (A1) for\n$0.535$. (A1) for the interpretation. Follow-through from (b) is available: a candidate who\nchose the population row in (b) and uses it consistently may earn (M1), both arithmetic (A1)s\nand the interpretation mark, losing only the second (M1).\n\n(d) (A1) for $0.478$. (A1) for the size of the discrepancy. (R1) for identifying the\ncorrelation between the tests — or equivalently for explaining that the subgroup is a selected\nsample — as the cause. A candidate who merely says \"the numbers are different\" earns neither\nof the last two marks. Condonation: allow \"the two rows are different because the tests are\ncorrelated\" without a full account of the selection mechanism.",
+      "explanation": "The item is built on a distinction that is easy to state and easy to lose track of: the\naccuracy of a test measured on a population, and the accuracy of the same test measured on the\nsubgroup who actually get it.\n\nA candidate who has met two-stage screening before will reach for the pattern\n$\\mathrm{P}(D)\\mathrm{P}(A^{+} \\mid D)\\mathrm{P}(B^{+} \\mid D)$ in the numerator, because that\nis what conditional independence looks like. Here that pattern is wrong twice over. It is\nwrong as stated, because the likelihood needed is conditional on $A^{+}$ as well as on $D$; and\nthe number it tempts the candidate to substitute, $0.86$, is a population figure that has\nalready averaged over the people who never took test $B$.\n\nThe prevalence is doing quiet work throughout. Because only $0.8\\%$ of the population has the\ncondition, the $4\\%$ false positive rate on test $A$ generates $0.03968$ in the denominator\nagainst $0.0076$ in the numerator — more than five times as much. A single positive test\ntherefore moves the probability only from $0.8\\%$ to $16.1\\%$, and even two positive tests\nleave it at $53\\%$. Candidates routinely find this counter-intuitive, and it is the reason the\nitem quotes a rare condition rather than a common one: the arithmetic has to fight the\nprevalence, and the fight is the point.\n\nPart (d) is where the two rows are reconciled. The reason they differ is that the tests are\ncorrelated conditional on $D$, which is a physical claim about what they measure, not a\nstatistical technicality. Two tests for the same biomarker will tend to agree with each other\nfor reasons that have nothing to do with the disease, and that residual agreement means the\nsecond test carries less fresh information than its headline accuracy suggests. Selecting on\n$A^{+}$ makes the correlation visible as a difference between the two rows.\n\nThe $5.7$ percentage point gap between $0.478$ and $0.535$ is not a rounding artefact, and it\nis large enough to matter in the setting the question describes: it is the difference between\na clinician who treats and one who does not.",
+      "provenance": {
+        "inspired_by": "AP Statistics: conditional probability and screening tests; two-stage Bayes",
+        "source_family": "us-ap",
+        "resource_origin": "AP Statistics items and university biostatistics treatments of two-stage screening, where sensitivity and false positive rates are given for each test and the tests are assumed conditionally independent given the disease status.",
+        "adaptation": "The source's central simplifying assumption — conditional independence of the two tests given disease status — is explicitly removed, and replaced by two reported accuracy tables that disagree. The candidate must therefore choose between them rather than multiply, and part (b) asks for the choice before any arithmetic is done. A rare prevalence of $0.8\\%$ replaces the source's more typical $1\\%$ to $5\\%$ so that the false positives dominate the denominator even after two positive results. Context, structure, given-versus-asked and the reasoning chain all change."
+      },
+      "difficulty_evidence": {
+        "lever_type": "implicit_dependence",
+        "naive_path": "Apply Bayes' theorem twice in succession, multiplying the likelihoods and using the population-level accuracy of test $B$ as if the two tests were independent once the disease status is known.",
+        "failure_point": "The two tests probe the same biomarker, so they are correlated even within a fixed disease status; the population figures for test $B$ average over people who tested negative on $A$, and test $B$ is never administered to those people.",
+        "wrong_answer": "$0.478$ instead of $0.535$ — a $5.7$ percentage point understatement of the probability of the condition after two positive results, which in the setting described is the difference between discharging the patient and treating them."
+      },
+      "verification": {
+        "solution_skeleton": [
+          "Apply Bayes' theorem with the prevalence and test A's sensitivity and false positive rate",
+          "Note that the required likelihood is conditional on A positive as well as on D",
+          "Select the subgroup row of the accuracy table",
+          "Form the ratio of the two joint probabilities and evaluate it",
+          "Repeat with the population row to quantify the discrepancy"
+        ],
+        "method": "Both numerators and both denominators are recomputed from the quoted sensitivities and false positive rates, and the two resulting posterior probabilities are compared.",
+        "assertions": [
+          "approx(0.008*0.95, 0.0076, 1e-9)",
+          "approx(0.992*0.04, 0.03968, 1e-9)",
+          "approx(0.008*0.95 + 0.992*0.04, 0.04728, 1e-9)",
+          "approx(0.0076/0.04728, 0.1607445, 1e-6)",
+          "approx(0.008*0.95*0.90, 0.00684, 1e-9)",
+          "approx(0.992*0.04*0.15, 0.005952, 1e-9)",
+          "approx(0.00684/(0.00684+0.005952), 0.5347092, 1e-6)",
+          "approx(0.008*0.95*0.86, 0.006536, 1e-9)",
+          "approx(0.992*0.04*0.18, 0.0071424, 1e-9)",
+          "approx(0.006536/(0.006536+0.0071424), 0.4778337, 1e-6)"
+        ]
+      },
+      "originality": {
+        "max_similarity": 0.008,
+        "max_internal_similarity": 0.006,
+        "max_approach_similarity": 0.121,
+        "nearest_bank_id": "MAAQB_18N_2_SL_TZ0_S_9",
+        "nearest_internal_id": "MATH-AHL4.5-001",
+        "nearest_approach_id": "MATH-AHL1.9-001",
+        "note": "filled by tools/similarity_check.py --write",
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "checked_at": "2026-09-11"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-14",
+      "updated_at": "2026-09-14",
+      "subject": "Math AA HL",
+      "topic": "Topic 5: Calculus",
+      "id": "MATH-AHL5.11-102",
+      "syllabus_ref": "AHL 5.11 (definite integrals, including analytical approach; areas between curves)",
+      "subtopic": "5.11 The fundamental theorem applied across a point where the integrand does not exist",
+      "paper": "P3",
+      "section": "B",
+      "technology": "allowed",
+      "marks": 13,
+      "difficulty": 4,
+      "question_type": "problem_solving",
+      "command_terms": [
+        "Explain",
+        "Show that",
+        "Find"
+      ],
+      "tags": [
+        "definite integral",
+        "improper integral",
+        "fundamental theorem of calculus",
+        "singularity",
+        "limits",
+        "divergence"
+      ],
+      "challenge_mechanism": "The integrand is positive at every point where it is defined, and the evaluation of the antiderivative at the two endpoints nevertheless returns a negative number. The contradiction is the lever: it is visible without any analysis, and resolving it requires noticing that the interval of integration contains a point at which the function does not exist, so the fundamental theorem does not apply on the interval as a whole.",
+      "figure": {
+        "type": "svg",
+        "content": "<svg viewBox=\"0 0 660 300\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Graph of y equals 1 over x squared, showing the two branches and the vertical asymptote at x equals 0\"><rect x=\"0\" y=\"0\" width=\"660\" height=\"300\" fill=\"#ffffff\"/><line x1=\"70.0\" y1=\"26.0\" x2=\"70.0\" y2=\"262.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"163.3\" y1=\"26.0\" x2=\"163.3\" y2=\"262.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"350.0\" y1=\"26.0\" x2=\"350.0\" y2=\"262.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"443.3\" y1=\"26.0\" x2=\"443.3\" y2=\"262.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"536.7\" y1=\"26.0\" x2=\"536.7\" y2=\"262.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"630.0\" y1=\"26.0\" x2=\"630.0\" y2=\"262.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"70.0\" y1=\"222.7\" x2=\"630.0\" y2=\"222.7\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"70.0\" y1=\"183.3\" x2=\"630.0\" y2=\"183.3\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"70.0\" y1=\"144.0\" x2=\"630.0\" y2=\"144.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"70.0\" y1=\"104.7\" x2=\"630.0\" y2=\"104.7\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"70.0\" y1=\"65.3\" x2=\"630.0\" y2=\"65.3\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"70.0\" y1=\"26.0\" x2=\"630.0\" y2=\"26.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><line x1=\"62.0\" y1=\"262.0\" x2=\"630.0\" y2=\"262.0\" stroke=\"#1e293b\" stroke-width=\"1.6\"/><line x1=\"256.7\" y1=\"262.0\" x2=\"256.7\" y2=\"20.0\" stroke=\"#1e293b\" stroke-width=\"1.6\"/><path d=\"M 630.0 262.0 l -7 -3 l 0 6 z\" fill=\"#1e293b\"/><path d=\"M 256.7 20.0 l -3 7 l 6 0 z\" fill=\"#1e293b\"/><path d=\"M 70.0 222.7 L 70.7 222.4 L 71.4 222.1 L 72.2 221.7 L 72.9 221.4 L 73.6 221.1 L 74.3 220.8 L 75.0 220.5 L 75.8 220.1 L 76.5 219.8 L 77.2 219.4 L 77.9 219.1 L 78.6 218.8 L 79.4 218.4 L 80.1 218.1 L 80.8 217.7 L 81.5 217.3 L 82.2 217.0 L 82.9 216.6 L 83.7 216.2 L 84.4 215.8 L 85.1 215.4 L 85.8 215.0 L 86.5 214.6 L 87.3 214.2 L 88.0 213.8 L 88.7 213.4 L 89.4 213.0 L 90.1 212.6 L 90.9 212.1 L 91.6 211.7 L 92.3 211.3 L 93.0 210.8 L 93.7 210.4 L 94.5 209.9 L 95.2 209.4 L 95.9 209.0 L 96.6 208.5 L 97.3 208.0 L 98.1 207.5 L 98.8 207.0 L 99.5 206.5 L 100.2 206.0 L 100.9 205.5 L 101.7 205.0 L 102.4 204.4 L 103.1 203.9 L 103.8 203.3 L 104.5 202.8 L 105.3 202.2 L 106.0 201.6 L 106.7 201.1 L 107.4 200.5 L 108.1 199.9 L 108.8 199.3 L 109.6 198.7 L 110.3 198.0 L 111.0 197.4 L 111.7 196.8 L 112.4 196.1 L 113.2 195.4 L 113.9 194.8 L 114.6 194.1 L 115.3 193.4 L 116.0 192.7 L 116.8 192.0 L 117.5 191.3 L 118.2 190.5 L 118.9 189.8 L 119.6 189.0 L 120.4 188.2 L 121.1 187.4 L 121.8 186.6 L 122.5 185.8 L 123.2 185.0 L 124.0 184.2 L 124.7 183.3 L 125.4 182.5 L 126.1 181.6 L 126.8 180.7 L 127.6 179.8 L 128.3 178.9 L 129.0 177.9 L 129.7 177.0 L 130.4 176.0 L 131.2 175.0 L 131.9 174.0 L 132.6 173.0 L 133.3 171.9 L 134.0 170.9 L 134.8 169.8 L 135.5 168.7 L 136.2 167.6 L 136.9 166.4 L 137.6 165.3 L 138.3 164.1 L 139.1 162.9 L 139.8 161.7 L 140.5 160.4 L 141.2 159.2 L 141.9 157.9 L 142.7 156.5 L 143.4 155.2 L 144.1 153.8 L 144.8 152.4 L 145.5 151.0 L 146.3 149.6 L 147.0 148.1 L 147.7 146.6 L 148.4 145.0 L 149.1 143.5 L 149.9 141.9 L 150.6 140.2 L 151.3 138.6 L 152.0 136.9 L 152.7 135.1 L 153.5 133.3 L 154.2 131.5 L 154.9 129.7 L 155.6 127.8 L 156.3 125.9 L 157.1 123.9 L 157.8 121.9 L 158.5 119.8 L 159.2 117.7 L 159.9 115.5 L 160.6 113.3 L 161.4 111.1 L 162.1 108.8 L 162.8 106.4 L 163.5 104.0 L 164.2 101.5 L 165.0 99.0 L 165.7 96.4 L 166.4 93.8 L 167.1 91.1 L 167.8 88.3 L 168.6 85.4 L 169.3 82.5 L 170.0 79.5 L 170.7 76.5 L 171.4 73.3 L 172.2 70.1 L 172.9 66.8 L 173.6 63.4 L 174.3 59.9 L 175.0 56.3 L 175.8 52.6 L 176.5 48.9 L 177.2 45.0 L 177.9 41.0 L 178.6 36.9 L 179.4 32.7 L 180.1 28.4 L 180.8 26.0 L 181.5 26.0 L 182.2 26.0 L 183.0 26.0 L 183.7 26.0 L 184.4 26.0 L 185.1 26.0 L 185.8 26.0 L 186.6 26.0 L 187.3 26.0 L 188.0 26.0 L 188.7 26.0 L 189.4 26.0 L 190.1 26.0 L 190.9 26.0 L 191.6 26.0 L 192.3 26.0 L 193.0 26.0 L 193.7 26.0 L 194.5 26.0 L 195.2 26.0 L 195.9 26.0 L 196.6 26.0 L 197.3 26.0 L 198.1 26.0 L 198.8 26.0 L 199.5 26.0 L 200.2 26.0 L 200.9 26.0 L 201.7 26.0 L 202.4 26.0 L 203.1 26.0 L 203.8 26.0 L 204.5 26.0 L 205.3 26.0 L 206.0 26.0 L 206.7 26.0 L 207.4 26.0 L 208.1 26.0 L 208.9 26.0 L 209.6 26.0 L 210.3 26.0 L 211.0 26.0 L 211.7 26.0 L 212.5 26.0 L 213.2 26.0 L 213.9 26.0 L 214.6 26.0 L 215.3 26.0 L 216.0 26.0 L 216.8 26.0 L 217.5 26.0 L 218.2 26.0 L 218.9 26.0 L 219.6 26.0 L 220.4 26.0 L 221.1 26.0 L 221.8 26.0 L 222.5 26.0 L 223.2 26.0 L 224.0 26.0 L 224.7 26.0 L 225.4 26.0 L 226.1 26.0 L 226.8 26.0 L 227.6 26.0 L 228.3 26.0 L 229.0 26.0 L 229.7 26.0 L 230.4 26.0 L 231.2 26.0 L 231.9 26.0 L 232.6 26.0 L 233.3 26.0 L 234.0 26.0 L 234.8 26.0 L 235.5 26.0 L 236.2 26.0 L 236.9 26.0 L 237.6 26.0 L 238.4 26.0 L 239.1 26.0 L 239.8 26.0 L 240.5 26.0 L 241.2 26.0 L 241.9 26.0 L 242.7 26.0\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2.2\"/><path d=\"M 270.7 26.0 L 272.2 26.0 L 273.7 26.0 L 275.2 26.0 L 276.7 26.0 L 278.2 26.0 L 279.6 26.0 L 281.1 26.0 L 282.6 26.0 L 284.1 26.0 L 285.6 26.0 L 287.1 26.0 L 288.6 26.0 L 290.1 26.0 L 291.6 26.0 L 293.1 26.0 L 294.6 26.0 L 296.1 26.0 L 297.6 26.0 L 299.1 26.0 L 300.6 26.0 L 302.1 26.0 L 303.6 26.0 L 305.1 26.0 L 306.6 26.0 L 308.1 26.0 L 309.6 26.0 L 311.1 26.0 L 312.6 26.0 L 314.1 26.0 L 315.6 26.0 L 317.1 26.0 L 318.6 26.0 L 320.1 26.0 L 321.6 26.0 L 323.1 26.0 L 324.6 26.0 L 326.1 26.0 L 327.6 26.0 L 329.1 26.0 L 330.6 26.0 L 332.1 26.0 L 333.6 30.1 L 335.0 38.9 L 336.5 47.2 L 338.0 55.0 L 339.5 62.4 L 341.0 69.5 L 342.5 76.1 L 344.0 82.4 L 345.5 88.4 L 347.0 94.1 L 348.5 99.6 L 350.0 104.7 L 351.5 109.7 L 353.0 114.4 L 354.5 118.8 L 356.0 123.1 L 357.5 127.2 L 359.0 131.1 L 360.5 134.9 L 362.0 138.5 L 363.5 141.9 L 365.0 145.2 L 366.5 148.4 L 368.0 151.4 L 369.5 154.3 L 371.0 157.1 L 372.5 159.8 L 374.0 162.4 L 375.5 164.9 L 377.0 167.3 L 378.5 169.6 L 380.0 171.8 L 381.5 174.0 L 383.0 176.1 L 384.5 178.1 L 386.0 180.0 L 387.4 181.9 L 388.9 183.7 L 390.4 185.4 L 391.9 187.1 L 393.4 188.7 L 394.9 190.3 L 396.4 191.8 L 397.9 193.3 L 399.4 194.8 L 400.9 196.1 L 402.4 197.5 L 403.9 198.8 L 405.4 200.1 L 406.9 201.3 L 408.4 202.5 L 409.9 203.6 L 411.4 204.8 L 412.9 205.9 L 414.4 206.9 L 415.9 207.9 L 417.4 208.9 L 418.9 209.9 L 420.4 210.9 L 421.9 211.8 L 423.4 212.7 L 424.9 213.6 L 426.4 214.4 L 427.9 215.2 L 429.4 216.1 L 430.9 216.8 L 432.4 217.6 L 433.9 218.4 L 435.4 219.1 L 436.9 219.8 L 438.4 220.5 L 439.9 221.2 L 441.3 221.8 L 442.8 222.5 L 444.3 223.1 L 445.8 223.7 L 447.3 224.3 L 448.8 224.9 L 450.3 225.5 L 451.8 226.0 L 453.3 226.6 L 454.8 227.1 L 456.3 227.6 L 457.8 228.1 L 459.3 228.6 L 460.8 229.1 L 462.3 229.6 L 463.8 230.1 L 465.3 230.5 L 466.8 231.0 L 468.3 231.4 L 469.8 231.8 L 471.3 232.2 L 472.8 232.7 L 474.3 233.1 L 475.8 233.5 L 477.3 233.8 L 478.8 234.2 L 480.3 234.6 L 481.8 235.0 L 483.3 235.3 L 484.8 235.7 L 486.3 236.0 L 487.8 236.3 L 489.3 236.7 L 490.8 237.0 L 492.3 237.3 L 493.8 237.6 L 495.2 237.9 L 496.7 238.2 L 498.2 238.5 L 499.7 238.8 L 501.2 239.1 L 502.7 239.4 L 504.2 239.6 L 505.7 239.9 L 507.2 240.2 L 508.7 240.4 L 510.2 240.7 L 511.7 240.9 L 513.2 241.2 L 514.7 241.4 L 516.2 241.7 L 517.7 241.9 L 519.2 242.1 L 520.7 242.3 L 522.2 242.6 L 523.7 242.8 L 525.2 243.0 L 526.7 243.2 L 528.2 243.4 L 529.7 243.6 L 531.2 243.8 L 532.7 244.0 L 534.2 244.2 L 535.7 244.4 L 537.2 244.6 L 538.7 244.8 L 540.2 244.9 L 541.7 245.1 L 543.2 245.3 L 544.7 245.5 L 546.2 245.6 L 547.7 245.8 L 549.1 246.0 L 550.6 246.1 L 552.1 246.3 L 553.6 246.5 L 555.1 246.6 L 556.6 246.8 L 558.1 246.9 L 559.6 247.1 L 561.1 247.2 L 562.6 247.4 L 564.1 247.5 L 565.6 247.6 L 567.1 247.8 L 568.6 247.9 L 570.1 248.1 L 571.6 248.2 L 573.1 248.3 L 574.6 248.4 L 576.1 248.6 L 577.6 248.7 L 579.1 248.8 L 580.6 248.9 L 582.1 249.1 L 583.6 249.2 L 585.1 249.3 L 586.6 249.4 L 588.1 249.5 L 589.6 249.6 L 591.1 249.7 L 592.6 249.9 L 594.1 250.0 L 595.6 250.1 L 597.1 250.2 L 598.6 250.3 L 600.1 250.4 L 601.6 250.5 L 603.0 250.6 L 604.5 250.7 L 606.0 250.8 L 607.5 250.9 L 609.0 251.0 L 610.5 251.1 L 612.0 251.1 L 613.5 251.2 L 615.0 251.3 L 616.5 251.4 L 618.0 251.5 L 619.5 251.6 L 621.0 251.7 L 622.5 251.8 L 624.0 251.8 L 625.5 251.9 L 627.0 252.0 L 628.5 252.1 L 630.0 252.2\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2.2\"/><line x1=\"256.7\" y1=\"26.0\" x2=\"256.7\" y2=\"262.0\" stroke=\"#dc2626\" stroke-width=\"1.6\" stroke-dasharray=\"6 4\"/><text x=\"264.7\" y=\"42.0\" font-size=\"13\" fill=\"#dc2626\" font-family=\"Georgia, serif\">x = 0   f is not defined here</text><circle cx=\"70.0\" cy=\"222.7\" r=\"3.4\" fill=\"#16a34a\"/><text x=\"70.0\" y=\"210.7\" font-size=\"12.5\" fill=\"#16a34a\" text-anchor=\"middle\" font-family=\"Georgia, serif\">(-1, 1)</text><circle cx=\"630.0\" cy=\"252.2\" r=\"3.4\" fill=\"#16a34a\"/><text x=\"630.0\" y=\"270.2\" font-size=\"12.5\" fill=\"#16a34a\" text-anchor=\"middle\" font-family=\"Georgia, serif\">(2, 0.25)</text><text x=\"503.1\" y=\"179.4\" font-size=\"14\" fill=\"#1e293b\" font-family=\"Georgia, serif\">y = 1 / x&#178;  &#8805; 0 everywhere</text><text x=\"503.1\" y=\"201.0\" font-size=\"13\" fill=\"#dc2626\" font-family=\"Georgia, serif\">yet [-1/x] from -1 to 2 = -1.5</text><text x=\"70.0\" y=\"279.0\" font-size=\"12\" fill=\"#64748b\" text-anchor=\"middle\" font-family=\"Georgia, serif\">-1</text><text x=\"443.3\" y=\"279.0\" font-size=\"12\" fill=\"#64748b\" text-anchor=\"middle\" font-family=\"Georgia, serif\">1</text><text x=\"630.0\" y=\"279.0\" font-size=\"12\" fill=\"#64748b\" text-anchor=\"middle\" font-family=\"Georgia, serif\">2</text><text x=\"58.0\" y=\"187.3\" font-size=\"12\" fill=\"#64748b\" text-anchor=\"end\" font-family=\"Georgia, serif\">2</text><text x=\"58.0\" y=\"108.7\" font-size=\"12\" fill=\"#64748b\" text-anchor=\"end\" font-family=\"Georgia, serif\">4</text><text x=\"58.0\" y=\"30.0\" font-size=\"12\" fill=\"#64748b\" text-anchor=\"end\" font-family=\"Georgia, serif\">6</text></svg>",
+        "caption": "The graph of $y = \\frac{1}{x^2}$ on $[-1, 2]$. The curve is positive at every point where it is defined and unbounded near $x = 0$, which is inside the interval of integration."
+      },
+      "question": "A student is asked to evaluate $\\displaystyle \\int_{-1}^{2} \\frac{1}{x^{2}} \\, dx$ and writes\n\n$$\\int_{-1}^{2} \\frac{1}{x^{2}} \\, dx = \\left[ -\\frac{1}{x} \\right]_{-1}^{2}\n= -\\frac{1}{2} - \\left(-\\frac{1}{-1}\\right) = -\\frac{1}{2} - 1 = -\\frac{3}{2}.$$\n\nThe graph of $y = \\frac{1}{x^{2}}$ on $[-1, 2]$ is shown.\n\n(a) Explain, without doing any integration, why the student's answer cannot be correct. \\tag{3}\n\n(b) Show that $\\displaystyle \\int_{0}^{2} \\frac{1}{x^{2}} \\, dx$ does not converge. \\tag{4}\n\n(c) Explain what this implies about $\\displaystyle \\int_{-1}^{2} \\frac{1}{x^{2}} \\, dx$. \\tag{3}\n\n(d) Now let $a > 0$ and define $I(a) = \\displaystyle \\int_{-1}^{2} \\frac{1}{x^{2} + a^{2}} \\, dx$.\nFind $I(a)$ in terms of $a$, and deduce that $I(a) \\to \\infty$ as $a \\to 0^{+}$. \\tag{3}",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain, without integrating, why the student's answer cannot be correct."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $\\int_{0}^{2} \\frac{1}{x^{2}} \\, dx$ does not converge."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain what this implies about $\\int_{-1}^{2} \\frac{1}{x^{2}} \\, dx$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Find",
+          "text": "Find $I(a)$ in terms of $a$ and deduce that $I(a) \\to \\infty$ as $a \\to 0^{+}$."
+        }
+      ],
+      "answer": "(a) On its domain, $\\frac{1}{x^{2}} > 0$ for every $x \\neq 0$ (A1). Wherever a definite\nintegral of a non-negative function exists it must be non-negative, being a limit of sums of\nnon-negative terms (R1). The student's value $-\\frac{3}{2}$ is negative, so it cannot be the\nvalue of the integral (A1). The figure makes the point visually: the curve never goes below\nthe axis, so no sensible notion of \"area under the curve\" can give $-1.5$.\n\n(b) Treat the integral as an improper integral and integrate up to the singularity (M1):\n\n$$\\int_{\\varepsilon}^{2} \\frac{1}{x^{2}} \\, dx = \\left[-\\frac{1}{x}\\right]_{\\varepsilon}^{2}\n= -\\frac{1}{2} + \\frac{1}{\\varepsilon}, \\qquad \\varepsilon > 0 \\tag{A1}$$\n\nAs $\\varepsilon \\to 0^{+}$, $\\frac{1}{\\varepsilon} \\to \\infty$ (A1), so the limit does not\nexist as a finite number and\n\n$$\\int_{0}^{2} \\frac{1}{x^{2}} \\, dx = \\lim_{\\varepsilon \\to 0^{+}} \\int_{\\varepsilon}^{2}\n\\frac{1}{x^{2}} \\, dx$$\n\ndiverges (AG). The divergence is not caused by the interval being long but by the integrand\nbeing unbounded near a single point.\n\n(c) The interval $[-1, 2]$ contains $x = 0$, at which the integrand is undefined (A1). An\nintegral over $[-1, 2]$ can only be defined by splitting at that point, as\n$\\int_{-1}^{0} + \\int_{0}^{2}$, and each piece must converge separately for the whole to\nconverge (R1). Since the second piece diverges by part (b),\n$\\int_{-1}^{2} \\frac{1}{x^{2}} \\, dx$ does not converge and has no value at all — not\n$-\\frac{3}{2}$, not any other number (A1). The student's calculation smuggled a\ndiscontinuous antiderivative across a point where the function it differentiates to does not\nexist.\n\n(d) For $a > 0$ the integrand is continuous everywhere, so the fundamental theorem applies\ndirectly (M1):\n\n$$I(a) = \\left[ \\frac{1}{a}\\arctan\\left(\\frac{x}{a}\\right) \\right]_{-1}^{2}\n= \\frac{1}{a}\\left(\\arctan\\left(\\frac{2}{a}\\right) + \\arctan\\left(\\frac{1}{a}\\right)\\right)\n\\tag{A1}$$\n\nAs $a \\to 0^{+}$, both $\\frac{2}{a}$ and $\\frac{1}{a}$ tend to $+\\infty$, so both arctangents\ntend to $\\frac{\\pi}{2}$ and their sum tends to $\\pi$. Hence\n$I(a) \\sim \\frac{\\pi}{a} \\to \\infty$ as $a \\to 0^{+}$ (AG). The parameter $a$ is a\nregularisation: it removes the singularity at the cost of making the integral finite, and the\nvalue blows up at exactly the rate one would expect as the regularisation is removed.",
+      "markscheme_notes": "(a) (A1) for observing that the integrand is positive wherever it is defined. (R1) for\nappealing to the fact that a definite integral of a non-negative function cannot be negative.\n(A1) for the conclusion. A candidate who says only \"areas cannot be negative\" earns (A1) and\n(A1) but not the (R1) unless the link to the integrand's sign is made explicit.\n\n(b) (M1) for introducing a limit at the singular endpoint. (A1) for the antiderivative\nevaluated correctly between $\\varepsilon$ and $2$. (A1) for observing that\n$\\frac{1}{\\varepsilon}$ is unbounded. (AG) for the conclusion — no mark for restating it.\nForfeiture: a candidate who writes $\\left[-\\frac{1}{x}\\right]_{0}^{2}$ and then says \"$\\frac{1}{0}$\nis undefined\" has not set up an improper integral and earns at most the (M1).\n\n(c) (A1) for identifying $x = 0$ as an interior point of the interval where the integrand\nfails to exist. (R1) for the splitting condition. (A1) for the conclusion that the integral\ndiverges rather than taking some other value. Condone the statement \"the integral does not\nexist\" as equivalent to \"does not converge\".\n\n(d) (M1) for using the standard antiderivative $\\frac{1}{a}\\arctan\\frac{x}{a}$; allow the\nsubstitution $x = a\\tan\\theta$ instead. (A1) for the correct expression in $a$. (AG) for the\nlimit. A candidate who correctly differentiates $\\frac{1}{a}\\arctan\\frac{x}{a}$ to verify the\nantiderivative earns the (M1). Note the sign: $\\arctan\\left(\\frac{-1}{a}\\right)$ is negative,\nso the two terms add as a sum of magnitudes, which is why $I(a)$ grows like $\\frac{\\pi}{a}$\nrather than cancelling.",
+      "explanation": "What makes this a good trap is that it can be caught before any analysis is done. The\nintegrand is positive; the answer is negative. That is a contradiction, and it is available to\na candidate who has not yet thought about improper integrals at all. Part (a) exists to hand\nthe candidate that observation, and everything afterwards is an explanation of it.\n\nThe student's error is a specific and common one. The fundamental theorem of calculus requires\nthe integrand to be continuous on the closed interval of integration. Here the interval\n$[-1, 2]$ contains $x = 0$, where $\\frac{1}{x^{2}}$ is not defined, and no amount of correct\nantidifferentiation on either side repairs that. The function $-\\frac{1}{x}$ differentiates to\n$\\frac{1}{x^{2}}$ on $(-\\infty, 0)$ and on $(0, \\infty)$ separately, and it is continuous\nacross $x = 0$ in no sense at all — it jumps from $+\\infty$ to $-\\infty$. Substituting the\nendpoints into it computes something, but not the area under the curve.\n\nPart (d) is the part that makes the item more than a cautionary tale. Replacing $x^{2}$ by\n$x^{2} + a^{2}$ with $a > 0$ gives an integrand that is continuous on the whole real line, so\nthe fundamental theorem genuinely applies and $I(a)$ is finite for every $a$. Letting\n$a \\to 0^{+}$ recovers the original integrand pointwise but not in integral: the limit of the\nintegrals is infinite, and the rate, $\\frac{\\pi}{a}$, is the same $\\frac{1}{a}$ blow-up that\nappeared in part (b) when the lower limit $\\varepsilon$ was sent to zero. The two calculations\nare the same phenomenon seen from two directions, and seeing that is the real payoff.\n\nThere is a useful general lesson in the shape of the answer. When a computation returns a\nvalue with the wrong sign, the wrong order of magnitude, or the wrong units, the fastest\ndiagnostic is almost never to redo the algebra — it is to ask whether the theorem being used\nactually applies. Here the sign check takes about five seconds and rules out an entire\ncalculation.",
+      "provenance": {
+        "inspired_by": "Chinese Qiangji / university transition material: improper integrals and the misuse of the Newton-Leibniz formula",
+        "source_family": "china-qiangji",
+        "resource_origin": "Chinese pre-university (qiangji) and first-year analysis exercises that present a deliberately wrong evaluation such as the integral of 1/x^2 from -1 to 1 and ask the student to find the error.",
+        "adaptation": "The source presents the faulty calculation and asks for the mistake, usually in one step and usually over the symmetric interval $[-1, 1]$ where the antiderivative is odd and the trap is a sign symmetry. Here the interval is asymmetric, $[-1, 2]$, so no symmetry cancels and the wrong answer $-1.5$ is a genuine number rather than zero; part (a) demands the contradiction be spotted before any integration; and part (d) adds a regularisation with a limit the source does not ask for. A figure is supplied so the sign check is visual as well as algebraic. Context, structure, given-versus-asked and the reasoning chain all differ."
+      },
+      "difficulty_evidence": {
+        "lever_type": "exceptional_parameter",
+        "naive_path": "Antidifferentiate to get $-\\frac{1}{x}$ and substitute the two endpoints of the interval, as in every other definite integral on the paper.",
+        "failure_point": "The interval $[-1, 2]$ contains the single interior point $x = 0$ at which the integrand is undefined, so the antiderivative is not continuous on the interval and the fundamental theorem does not apply to it as a whole.",
+        "wrong_answer": "$-\\frac{3}{2}$, a negative value for the integral of a function that is positive everywhere it is defined; the true situation is that the integral diverges and has no value."
+      },
+      "verification": {
+        "solution_skeleton": [
+          "Note that the integrand is positive so the integral cannot be negative",
+          "Replace the singular endpoint by epsilon and evaluate the proper integral",
+          "Let epsilon tend to zero and observe the blow-up",
+          "Split the original interval at the interior singularity",
+          "Regularise with x squared plus a squared and take the limit as a tends to zero"
+        ],
+        "method": "$\\int_{\\varepsilon}^{2} x^{-2}\\,dx = \\varepsilon^{-1} - \\frac{1}{2}$ is evaluated at $\\varepsilon = 10^{-3}$ and $10^{-4}$; $I(a) = \\frac{1}{a}\\left(\\arctan\\frac{2}{a} + \\arctan\\frac{1}{a}\\right)$ is evaluated at $a = 1, 0.1, 0.001$ and compared with $\\frac{\\pi}{a}$.",
+        "assertions": [
+          "approx(-1/2 - 1, -1.5, 1e-12)",
+          "approx(1/0.001 - 0.5, 999.5, 1e-9)",
+          "approx(1/0.0001 - 0.5, 9999.5, 1e-9)",
+          "approx(atan(2) + atan(1), 1.8925469, 1e-6)",
+          "approx(10*(atan(20) + atan(10)), 29.9196571, 1e-6)",
+          "approx(1000*(atan(2000) + atan(1000)), 3140.0929, 1e-6)",
+          "approx(atan(2000) + atan(1000), 3.1400929, 1e-6)",
+          "approx(pi/0.001, 3141.5926535, 1e-6)",
+          "approx(1/0.001**2, 1000000, 1e-6)"
+        ]
+      },
+      "originality": {
+        "max_similarity": 0.018,
+        "max_internal_similarity": 0.006,
+        "max_approach_similarity": 0.073,
+        "nearest_bank_id": "MATH_AAHL_P1_2010May_TZ1_q09",
+        "nearest_internal_id": "MATH-AHL5.15-001",
+        "nearest_approach_id": "MATH-AHL5.19-102",
+        "note": "filled by tools/similarity_check.py --write",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "checked_at": "2026-09-11"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-14",
+      "updated_at": "2026-09-14",
+      "subject": "Math AA HL",
+      "topic": "Topic 3: Geometry and trigonometry",
+      "id": "MATH-AHL3.17-102",
+      "syllabus_ref": "AHL 3.17 (vector equations of a plane; angles between lines and planes); AHL 3.12 (concept of a vector; displacement vectors)",
+      "subtopic": "3.17 Shortest distance from a point to a line segment, where the perpendicular foot falls outside the segment",
+      "paper": "P2",
+      "section": "B",
+      "technology": "not allowed",
+      "marks": 14,
+      "difficulty": 4,
+      "question_type": "extended_response",
+      "command_terms": [
+        "Find",
+        "Calculate",
+        "Show that",
+        "Determine"
+      ],
+      "tags": [
+        "vector equation of a line",
+        "scalar product",
+        "vector product",
+        "shortest distance",
+        "constrained minimum",
+        "endpoint"
+      ],
+      "challenge_mechanism": "The standard formula for the distance from a point to a line gives the distance to the *infinite* line. Here the perpendicular foot lands at parameter $t = 1.84$, past the end of the cable, so the constrained minimum is not stationary and sits at an endpoint instead. The second drone is included so that the candidate sees the constraint bind in one case and not the other, and has to decide which is which.",
+      "question": "A monitoring cable is stretched taut between two pylons. Relative to axes measured in\nmetres, with the $z$-axis vertical, the ends of the cable are at $A(0,\\, 2,\\, 1)$ and\n$B(4,\\, 2,\\, 4)$. A drone hovers at $P(7,\\, 6,\\, 7)$ and a second drone hovers at\n$Q(1,\\, 6,\\, 2)$.\n\n(a) Find a vector equation of the infinite line passing through $A$ and $B$. \\tag{3}\n\n(b) Find the value of the parameter $t$ at which the point of this line closest to $P$\noccurs. \\tag{3}\n\n(c) Hence find the shortest distance from $P$ to the cable. \\tag{5}\n\n(d) Show that for the drone at $Q$ the closest point of the infinite line does lie on the\ncable, and find the shortest distance from $Q$ to the cable. \\tag{3}",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Find",
+          "text": "Find a vector equation of the infinite line through $A$ and $B$."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Find",
+          "text": "Find the value of $t$ at which the point of this line closest to $P$ occurs."
+        },
+        {
+          "label": "c",
+          "marks": 5,
+          "command_term": "Calculate",
+          "text": "Hence find the shortest distance from $P$ to the cable."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that for $Q$ the closest point lies on the cable, and find the shortest distance from $Q$ to the cable."
+        }
+      ],
+      "answer": "(a) $\\overrightarrow{AB} = (4-0,\\, 2-2,\\, 4-1) = (4,\\, 0,\\, 3)$ (A1), so a vector equation of\nthe line is\n\n$$\\mathbf{r} = \\begin{pmatrix} 0 \\\\ 2 \\\\ 1 \\end{pmatrix}\n+ t\\begin{pmatrix} 4 \\\\ 0 \\\\ 3 \\end{pmatrix}, \\qquad t \\in \\mathbb{R} \\tag{M1}$$\n\nThe cable itself is the portion with $0 \\le t \\le 1$ (A1). This restriction is the one that\nmatters later and it is worth stating explicitly at the start.\n\n(b) Let $X$ be the point of the line with parameter $t$. Then\n$\\overrightarrow{AX} = t(4,0,3)$ and $\\overrightarrow{AP} = (7, 4, 6)$ (A1). At the closest\npoint, $\\overrightarrow{XP}$ is perpendicular to the direction of the line (M1), so\n\n$$(\\overrightarrow{AP} - t\\overrightarrow{AB}) \\cdot \\overrightarrow{AB} = 0\n\\quad\\Longrightarrow\\quad t = \\frac{\\overrightarrow{AP}\\cdot\\overrightarrow{AB}}\n{\\overrightarrow{AB}\\cdot\\overrightarrow{AB}} \\tag{M1}$$\n\nNow $\\overrightarrow{AP}\\cdot\\overrightarrow{AB} = 7(4) + 4(0) + 6(3) = 28 + 18 = 46$ and\n$\\overrightarrow{AB}\\cdot\\overrightarrow{AB} = 16 + 0 + 9 = 25$, so $t = \\frac{46}{25} = 1.84$\n(A1).\n\n(c) Since $t = 1.84 > 1$, the closest point of the *infinite line* lies beyond $B$, on the\nextension of the cable rather than on the cable itself (A1). The constrained minimum over\n$0 \\le t \\le 1$ is therefore attained at an endpoint (R1), and because the parameter is\nalready past the end, that endpoint is $B$. Hence the shortest distance from $P$ to the cable\nis simply $|BP|$ (M1):\n\n$$\\overrightarrow{BP} = (7-4,\\, 6-2,\\, 7-4) = (3,\\, 4,\\, 3) \\tag{A1}$$\n\n$$|BP| = \\sqrt{3^{2} + 4^{2} + 3^{2}} = \\sqrt{34} = 5.83 \\text{ m (3 s.f.)} \\tag{A1}$$\n\nFor comparison, the perpendicular distance to the infinite line is\n$\\frac{|\\overrightarrow{AP} \\times \\overrightarrow{AB}|}{|\\overrightarrow{AB}|}\n= \\frac{\\sqrt{409}}{5} = 4.04$ m, which is $31\\%$ too small — and is the answer a candidate\nwho never checks where the foot lands will give.\n\n(d) $\\overrightarrow{AQ} = (1, 4, 1)$ (A1), so\n$\\overrightarrow{AQ}\\cdot\\overrightarrow{AB} = 1(4) + 4(0) + 1(3) = 7$ and\n$t = \\frac{7}{25} = 0.28$ (A1). Since $0 \\le 0.28 \\le 1$, the closest point of the infinite\nline does lie on the cable, so the perpendicular distance formula applies directly:\n\n$$\\overrightarrow{AQ} \\times \\overrightarrow{AB} = (12,\\, 3,\\, -16), \\qquad\n|\\overrightarrow{AQ} \\times \\overrightarrow{AB}| = \\sqrt{144 + 9 + 256} = \\sqrt{401}$$\n\n$$d = \\frac{\\sqrt{401}}{5} = 4.01 \\text{ m (3 s.f.)} \\tag{A1}$$",
+      "markscheme_notes": "(a) (A1) for $\\overrightarrow{AB}$, (M1) for the vector form with a parameter, (A1) for\nstating the range $0 \\le t \\le 1$ that defines the cable. Any correct direction vector earns\nthe (A1), including a scalar multiple of $(4,0,3)$, but the parameter range must then be\nstated consistently.\n\n(b) (A1) for $\\overrightarrow{AP}$. (M1) for the perpendicularity condition. (M1) for the\nprojection formula. (A1) for $t = 1.84$; accept $\\frac{46}{25}$.\n\n(c) (A1) for observing that $t > 1$ puts the foot outside the segment. (R1) for the inference\nthat the minimum is then at an endpoint — this is the conceptual mark and should not be given\nfor simply writing \"$t > 1$\". (M1) for using $|BP|$. (A1) for $\\overrightarrow{BP}$. (A1) for\n$\\sqrt{34} = 5.83$ m. Follow-through: a candidate who obtains a different $t > 1$ in (b) but\ndraws the correct conclusion about the endpoint may earn everything after the (R1).\n\nForfeiture: a candidate who applies $\\frac{|\\overrightarrow{AP}\\times\\overrightarrow{AB}|}{|\\overrightarrow{AB}|}$\nwithout comment earns zero in this part, even if the arithmetic is correct, because the method\nanswers a different question.\n\n(d) (A1) for $\\overrightarrow{AQ}$, (A1) for $t = 0.28$ together with the observation that it\nlies in $[0,1]$, (A1) for $4.01$ m. Condone a candidate who computes the distance via the foot\n$F = A + 0.28\\,\\overrightarrow{AB}$ and then $|QF|$, which gives the same value.",
+      "explanation": "The formula for the distance from a point to a line is one of the most reliably remembered\nresults in the vectors topic, and it is quietly the wrong formula here — not because it is\nwrong in general, but because it answers a question that was not asked. It gives the distance\nto the infinite line; the cable is a segment.\n\nThe distinction only matters when the perpendicular foot falls outside the segment, and the\nway to find out is to compute the parameter $t$ and look at it. Here $t = 1.84$, so the foot\nsits well past $B$. Once that is known, the geometry changes character: on a closed interval,\na minimum that is not attained at an interior stationary point is attained at an endpoint, and\nthere is nothing left to differentiate. The distance is $|BP|$.\n\nThis is the general shape of a constrained optimisation. The unconstrained minimum is\nstationary; the constrained minimum is stationary only if the constraint happens not to bind,\nand when it does bind the minimum sits on the boundary and the stationarity condition simply\nfails. Candidates meet this idea in one-variable calculus as \"check the endpoints\", meet it\nagain in linear programming as a vertex solution, and rarely connect the two. The cable\nquestion is the same idea in vector form.\n\nPart (d) is not decoration. A candidate who has just decided in (c) that the foot lands\noutside might reasonably start assuming that always happens, and the second drone is there to\ndisconfirm it: $t = 0.28$, comfortably inside, and the perpendicular formula applies. Being\nasked to handle both cases in one item is what forces the check to become a habit rather than\na one-off insight.\n\nNumerically, the error is large enough to matter. The perpendicular distance is\n$\\frac{\\sqrt{409}}{5} \\approx 4.04$ m and the true distance is $\\sqrt{34} \\approx 5.83$ m. In\nthe setting the question describes — a drone near a cable — a $31\\%$ understatement of a\nclearance is the difference between a safe separation and a collision.",
+      "provenance": {
+        "inspired_by": "Singapore A-Level H2 Mathematics: vectors, shortest distance from a point to a line",
+        "source_family": "singapore-alevel",
+        "resource_origin": "Singapore A-Level H2 Mathematics vector items asking for the shortest distance from a point to a line given in vector form, and occasionally from a point to a line segment in a foot-of-perpendicular setting.",
+        "adaptation": "The source items are set up so that the foot of the perpendicular always falls on the segment, which means the perpendicular-distance formula is always the right tool and the check is never needed. Here the coordinates are chosen so that $t = 1.84$ for one point and $t = 0.28$ for the other, so the check decides the answer for one of them and is redundant for the other — and the candidate cannot know which without doing it. Part (c) asks for the distance to the cable rather than to the line, and the constrained-minimum reasoning is made explicit in the markscheme. Context, structure, given-versus-asked and the reasoning chain all change."
+      },
+      "difficulty_evidence": {
+        "lever_type": "binding_constraint",
+        "naive_path": "Compute $|\\overrightarrow{AP}\\times\\overrightarrow{AB}|$ and divide by $|\\overrightarrow{AB}|$, the standard formula for the distance from a point to a line.",
+        "failure_point": "That formula minimises over the infinite line, but the cable is the segment $0 \\le t \\le 1$ and the foot of the perpendicular occurs at $t = 1.84$, outside it, so the constrained minimum is at the endpoint $B$ where the distance is not stationary.",
+        "wrong_answer": "$\\frac{\\sqrt{409}}{5} = 4.04$ m against the true $\\sqrt{34} = 5.83$ m — a $31\\%$ understatement of the clearance between the drone and the cable."
+      },
+      "verification": {
+        "solution_skeleton": [
+          "Obtain the direction vector of the line and state the parameter range of the segment",
+          "Project AP onto AB to get the parameter of the foot of the perpendicular",
+          "Compare that parameter with the interval and decide whether the constraint binds",
+          "Evaluate the distance to the endpoint when it binds",
+          "Repeat the check for the second point and use the perpendicular formula when it does not"
+        ],
+        "method": "Both parameters are recomputed from the scalar products; the perpendicular distance to the infinite line and the distance to the endpoint are both evaluated for $P$, and the perpendicular distance for $Q$ is cross-checked against the distance to the foot $F = A + 0.28\\,\\overrightarrow{AB}$.",
+        "assertions": [
+          "approx(46/25, 1.84, 1e-12)",
+          "approx(7/25, 0.28, 1e-12)",
+          "approx(46/25 - 1, 0.84, 1e-12)",
+          "approx(sqrt(409)/5, 4.0447, 1e-4)",
+          "approx(sqrt(34), 5.8310, 1e-4)",
+          "approx(sqrt(401)/5, 4.0050, 1e-3)",
+          "approx(hypot(7.36-7, 2-6, 6.52-7), 4.0447, 1e-3)",
+          "approx(hypot(7-4, 6-2, 7-4), 5.8310, 1e-4)",
+          "approx(hypot(1.12-1, 2-6, 1.84-2), 4.0050, 1e-3)"
+        ]
+      },
+      "originality": {
+        "max_similarity": 0.029,
+        "max_internal_similarity": 0.005,
+        "max_approach_similarity": 0.192,
+        "nearest_bank_id": "MAAQB_17N_1_AHL_TZ0_H_2",
+        "nearest_internal_id": "MATH-AHL5.5-001",
+        "nearest_approach_id": "MATH-AHL3.16-001",
+        "note": "filled by tools/similarity_check.py --write",
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "checked_at": "2026-09-11"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-14",
+      "updated_at": "2026-09-14",
+      "subject": "Math AA HL",
+      "topic": "Topic 4: Statistics and probability",
+      "id": "MATH-AHL4.9-102",
+      "syllabus_ref": "AHL 4.9 (the normal distribution and curve; properties of the normal distribution); AHL 4.14 (variance of a discrete random variable; linear combinations of independent random variables)",
+      "subtopic": "4.9 linear combinations of independent normal variables; scaling one observation is not the same as summing four",
+      "paper": "P2",
+      "section": "B",
+      "technology": "permitted",
+      "marks": 14,
+      "difficulty": 4,
+      "question_type": "extended_response",
+      "command_terms": [
+        "State",
+        "Find",
+        "Show that",
+        "Determine"
+      ],
+      "tags": [
+        "normal distribution",
+        "linear combination",
+        "independence",
+        "standard deviation",
+        "sampling",
+        "variance"
+      ],
+      "challenge_mechanism": "Two procedures have exactly the same expected value and very different spreads, so nothing about the mean reveals which is which. Weighing four bags and weighing one bag and multiplying by four both estimate the mean at $4000$ g, but the first has standard deviation $24$ g and the second $48$ g, and the two tail probabilities differ by a factor of about $4.2$. The governing quantity is the number of independent draws, and it is invisible in the mean.",
+      "question": "The mass, $X$ grams, of a bag of flour from a production line is normally distributed with\nmean $1000$ and standard deviation $12$. Bags are filled independently.\n\nA quality-control procedure takes a random sample of four bags and weighs them together.\nLet $S$ be the total mass of the four bags.\n\n(a) State the distribution of $S$, giving its mean and standard deviation. \\tag{3}\n\n(b) Find $\\mathrm{P}(S > 4040)$. \\tag{3}\n\n(c) A second, cheaper procedure weighs a single bag and multiplies the reading by $4$,\ngiving $T = 4X$. Show that $T$ has the same mean as $S$ but a different standard deviation,\nand find $\\mathrm{P}(T > 4040)$. \\tag{4}\n\n(d) Determine which of the two probabilities is the correct one to use for the total mass of\nfour bags, and explain why the two procedures agree about the mean but differ so sharply about\nthe tail. \\tag{4}",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "State",
+          "text": "State the distribution of $S$, giving its mean and standard deviation."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Find",
+          "text": "Find the probability that the total mass of the four bags exceeds $4040$ grams."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $T = 4X$ has the same mean as $S$ but a different standard deviation, and find $\\mathrm{P}(T > 4040)$."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine which probability is correct for the total mass of four bags, and explain why the two procedures agree about the mean but differ about the tail."
+        }
+      ],
+      "answer": "(a) $S = X_1 + X_2 + X_3 + X_4$ where the $X_i$ are independent copies of $X$ (M1). A\nlinear combination of independent normal variables is normal, so\n\n$$\\mathrm{E}(S) = 4 \\times 1000 = 4000, \\qquad \\mathrm{Var}(S) = 4 \\times 12^{2} = 4 \\times 144 = 576\n\\tag{A1}$$\n\n$$S \\sim \\mathrm{N}(4000,\\, 576), \\qquad \\sigma_S = \\sqrt{576} = 24 \\text{ g} \\tag{A1}$$\n\nNote that the standard deviation scales as $\\sqrt{4} = 2$, not as $4$: variances add for\nindependent variables, standard deviations do not.\n\n(b) Standardising (M1),\n\n$$z = \\frac{4040 - 4000}{24} = \\frac{40}{24} = 1.6667 \\tag{A1}$$\n\n$$\\mathrm{P}(S > 4040) = \\mathrm{P}(Z > 1.6667) = 1 - 0.9522 = 0.0478 \\text{ (3 s.f.)} \\tag{A1}$$\n\n(c) $T = 4X$ is a linear scaling of a single normal variable, so $T$ is normal with (M1)\n\n$$\\mathrm{E}(T) = 4 \\times 1000 = 4000 \\quad \\text{— the same mean as } S \\tag{A1}$$\n\n$$\\mathrm{Var}(T) = 4^{2} \\times 12^{2} = 16 \\times 144 = 2304, \\qquad \\sigma_T = \\sqrt{2304} = 48 \\text{ g}\n\\tag{A1}$$\n\nwhich is twice $\\sigma_S$. Standardising, $z = \\frac{40}{48} = 0.8333$ and\n\n$$\\mathrm{P}(T > 4040) = \\mathrm{P}(Z > 0.8333) = 1 - 0.7977 = 0.202 \\text{ (3 s.f.)} \\tag{A1}$$\n\n(d) The correct probability for the total mass of four bags is the one from (b),\n$\\mathrm{P}(S > 4040) = 0.0478$ (A1), because the total really is a sum of four independent\nrandom variables and $T$ is not that sum (R1). The two procedures agree about the mean\nbecause expectation is linear and does not require independence:\n$\\mathrm{E}(X_1 + X_2 + X_3 + X_4) = 4\\mathrm{E}(X) = \\mathrm{E}(4X)$ (A1). They differ about\nthe tail because variance is not linear in the same way: for a sum of independent variables\nthe variances add, giving $4\\sigma^2$, whereas scaling a single observation multiplies the\nvariance by $4^{2} = 16$, giving $16\\sigma^{2}$ (R1). The single-bag procedure therefore\ninflates the spread by a factor of $2$ and overstates the probability of an extreme total by a\nfactor of about $4.2$. Averaging four independent measurements cancels some of the noise;\nmultiplying one measurement by four amplifies it.",
+      "markscheme_notes": "(a) (M1) for writing $S$ as a sum of four independent variables. (A1) for the mean and\nvariance, (A1) for the standard deviation $24$ g. Condone the answer\n$S \\sim \\mathrm{N}(4000, 24^{2})$. Do not accept $\\mathrm{N}(4000, 48)$: the second parameter\nof the normal distribution is a variance in this notation, and a candidate who writes $576$\nas the standard deviation loses the final (A1).\n\n(b) (M1) for the standardisation, (A1) for $z = 1.6667$, (A1) for $0.0478$. Accept any value\nin $[0.0475, 0.0480]$. Follow-through from an incorrect standard deviation in (a) is allowed.\n\n(c) (M1) for stating that a linear scaling of a normal variable is normal. (A1) for the mean\n$4000$ and the observation that it matches, (A1) for the variance $2304$ and standard\ndeviation $48$. (A1) for $0.202$; accept $[0.2017, 0.2025]$.\n\n(d) (A1) for identifying the probability from (b). (R1) for the reason, which must refer to\nthe total actually being a sum of four independent variables. (A1) for linearity of\nexpectation as the reason the means agree. (R1) for the contrast between adding variances and\nscaling them. A candidate who says only \"because $T$ uses one bag\" earns the first (R1) but\nnot the last.",
+      "explanation": "The pair of procedures is chosen so that every obvious check passes on both of them. Both\nare unbiased: $\\mathrm{E}(S) = \\mathrm{E}(T) = 4000$. Both are normal. Both are measured in\ngrams. A candidate who verifies only that the two methods \"give the same answer on average\"\nwill conclude that they are equivalent, and will then use whichever is more convenient —\nwhich, unfortunately, is the wrong one, because $T$ needs only one weighing.\n\nThe difference is entirely in the spread, and it comes from one structural fact: the four bags\nare independent. Independence is what allows variances to add, so\n$\\mathrm{Var}(S) = \\sigma^2 + \\sigma^2 + \\sigma^2 + \\sigma^2 = 4\\sigma^2$ and\n$\\sigma_S = 2\\sigma = 24$. The cheap procedure has no independence to exploit. It takes one\nobservation and stretches it, and stretching by a factor of $4$ multiplies the variance by\n$4^2 = 16$, so $\\sigma_T = 4\\sigma = 48$.\n\nThe $\\sqrt{n}$ versus $n$ distinction is the single most useful idea in the item. Summing $n$\nindependent measurements grows the standard deviation like $\\sqrt{n}$; scaling one measurement\nby $n$ grows it like $n$. For $n = 4$ those differ by a factor of $2$, and because the normal\ntail is steep near two standard deviations, a factor of $2$ in the standard deviation moves the\ntail probability by a factor of about $4.2$ — from $4.8\\%$ to $20\\%$.\n\nThat is why the wrong answer is dangerous rather than merely wrong. It is not a small\nmisestimate; it says an event is more than four times as likely as it is. In a quality-control\nsetting the practical consequence is that a line which is performing perfectly will appear to\ntrip the alarm on roughly one inspection in five.\n\nThe general lesson transfers well beyond this question: whenever a model replaces an average\nof several independent quantities by a scaled version of one of them, the mean survives and\nthe variance does not. Checking the mean is not a check at all.",
+      "provenance": {
+        "inspired_by": "Chinese Gaokao mathematics: normal distribution and linear combinations of random variables",
+        "source_family": "china-gaokao",
+        "resource_origin": "Chinese Gaokao probability items on the normal distribution, typically giving a mean and standard deviation and asking for a tail probability after a linear transformation, or for the distribution of a sum of independent normal variables.",
+        "adaptation": "Gaokao items of this type usually present a single transformation and ask for a single probability, so the choice of model is never in question. Here two procedures are placed side by side with identical means, so the candidate must decide which model represents the physical situation before computing anything, and then explain why the means agree while the variances do not. The contrast between $\\sqrt{n}$ and $n$ scaling — the actual content of the item — is drawn out explicitly in part (d) and in the markscheme. Context, structure, given-versus-asked and the reasoning chain all differ from the source."
+      },
+      "difficulty_evidence": {
+        "lever_type": "aggregate_recovery",
+        "naive_path": "Replace the total of four bags by four times a single bag, since both have mean $4000$, and compute one tail probability from that.",
+        "failure_point": "The mean is identical under both models, so checking it cannot reveal which is right; the governing quantity is the number of independent draws, which sets the variance at $4\\sigma^{2}$ for the sum and $16\\sigma^{2}$ for the scaled single observation.",
+        "wrong_answer": "$0.202$ instead of $0.0478$ — an overstatement by a factor of about $4.2$, which would make a correctly performing production line trip the alarm on roughly one inspection in five."
+      },
+      "verification": {
+        "solution_skeleton": [
+          "Write the total as a sum of four independent normal variables",
+          "Add the variances and take the square root for the standard deviation",
+          "Standardise 4040 and read off the upper tail",
+          "Scale a single observation by four and recompute the variance",
+          "Compare the two tail probabilities and attribute the gap to the variance scaling"
+        ],
+        "method": "The means, variances and standard deviations of $S$ and $T$ are recomputed; the two $z$-values $40/24$ and $40/48$ are evaluated and their ratio checked against the ratio of the standard deviations.",
+        "assertions": [
+          "approx(4*1000, 4000, 1e-12)",
+          "approx(4*144, 576, 1e-12)",
+          "approx(sqrt(576), 24, 1e-12)",
+          "approx(16*144, 2304, 1e-12)",
+          "approx(sqrt(2304), 48, 1e-12)",
+          "approx(40/24, 1.6666667, 1e-6)",
+          "approx(40/48, 0.8333333, 1e-6)",
+          "approx(48/24, 2, 1e-12)",
+          "approx(2304/576, 4, 1e-12)"
+        ]
+      },
+      "originality": {
+        "max_similarity": 0.009,
+        "max_internal_similarity": 0.004,
+        "max_approach_similarity": 0.246,
+        "nearest_bank_id": "MAAQB_17M_2_SL_TZ1_S_9",
+        "nearest_internal_id": "MATH-AHL4.12-001",
+        "nearest_approach_id": "CS-A4.2-002",
+        "note": "filled by tools/similarity_check.py --write",
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "checked_at": "2026-09-11"
+      }
+    }
+  ]
+}

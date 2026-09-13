@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A2.3-002 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A2.3 Bandwidth-delay product: when increasing the link rate changes nothing</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A2.3-002</p>
+<div class="meta"><span class="chip chip-key">A2.3 Data transmissions (transmission rate, bandwidth and latency; the effect of protocol overhead)</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: allowed</span><span class="chip">Calculate</span><span class="chip">Determine</span><span class="chip">Explain</span><span class="chip">State</span></div>
+
+<figure><svg viewBox="0 0 660 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Timeline comparing how long a 64 kilobyte window takes to transmit at 100 megabits per second and at 1 gigabit per second against a 40 millisecond round trip time"><rect x="0" y="0" width="660" height="250" fill="#ffffff"/><line x1="70.0" y1="52" x2="630.0" y2="52" stroke="#1e293b" stroke-width="1.6"/><text x="60.0" y="57" font-size="12" fill="#64748b" text-anchor="end" font-family="Georgia, serif">RTT</text><text x="630.0" y="40" font-size="12.5" fill="#1e293b" text-anchor="end" font-family="Georgia, serif">40 ms round-trip time</text><text x="60.0" y="100.0" font-size="12.5" fill="#64748b" text-anchor="end" font-family="Georgia, serif">100 Mbps</text><rect x="70.0" y="83.0" width="73.4" height="26" fill="#dc2626" opacity="0.85"/><rect x="143.4" y="83.0" width="486.6" height="26" fill="#f1f5f9" stroke="#64748b" stroke-width="1" stroke-dasharray="4 3"/><text x="153.4" y="100.0" font-size="12" fill="#64748b" font-family="Georgia, serif">idle, waiting for the acknowledgement</text><text x="76.0" y="100.0" font-size="12" fill="#ffffff" font-family="Georgia, serif">5.24 ms</text><text x="60.0" y="180.0" font-size="12.5" fill="#64748b" text-anchor="end" font-family="Georgia, serif">1 Gbps</text><rect x="70.0" y="163.0" width="7.3" height="26" fill="#2563eb" opacity="0.85"/><rect x="77.3" y="163.0" width="552.7" height="26" fill="#f1f5f9" stroke="#64748b" stroke-width="1" stroke-dasharray="4 3"/><text x="87.3" y="180.0" font-size="12" fill="#64748b" font-family="Georgia, serif">idle, waiting for the acknowledgement</text><text x="76.0" y="180.0" font-size="12" fill="#ffffff" font-family="Georgia, serif">0.52 ms</text><text x="70.0" y="238.0" font-size="13" fill="#1e293b" font-family="Georgia, serif">throughput = window / RTT = 64 kB / 40 ms = 13.1 Mbps at both rates</text><text x="70.0" y="258.0" font-size="12.5" fill="#dc2626" font-family="Georgia, serif">the link rate never appears in the answer</text></svg><figcaption>The same $64\ \mathrm{kB}$ window sent at $100\ \mathrm{Mbps}$ and at $1\ \mathrm{Gbps}$, against the $40\ \mathrm{ms}$ round-trip time they share. The sender finishes transmitting long before the acknowledgement returns.</figcaption></figure>
+<h2>Question</h2>
+<p>A remote backup service transfers files between two sites. The connection has a round-trip<br>time of $40\ \mathrm{ms}$. The sending software uses a sliding window of $64\ \mathrm{kB}$<br>($65536$ bytes): it may send that much data before it must stop and wait for an<br>acknowledgement. The situation is shown in the diagram.</p>
+<p>(a) Calculate the time taken to transmit one window at $100\ \mathrm{Mbps}$, and hence the<br>maximum throughput achievable with this window. \tag{3}</p>
+<p>(b) The link is upgraded to $1\ \mathrm{Gbps}$. Calculate the new transmission time for one<br>window and the new maximum throughput. \tag{4}</p>
+<p>(c) Determine the window size, in bytes, that would be needed to make full use of the<br>$1\ \mathrm{Gbps}$ link. \tag{5}</p>
+<p>(d) Explain why the upgrade produced no improvement, and state what should be changed. \tag{4}</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Calculate the time to transmit one window at $100\ \mathrm{Mbps}$ and hence the maximum throughput achievable with this window.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Calculate the new transmission time for one window at $1\ \mathrm{Gbps}$ and the new maximum throughput.</p> <em>(Calculate)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Determine the window size, in bytes, needed to make full use of the $1\ \mathrm{Gbps}$ link.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Explain why the upgrade produced no improvement, and state what should be changed.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) One window is $65536 \times 8 = 524288$ bits (A1). At $100\ \mathrm{Mbps}$ the<br>transmission time is</p>
+<p>$$t = \frac{524288}{1.00 \times 10^{8}} = 5.24\ \mathrm{ms} \tag{A1}$$</p>
+<p>The sender must then wait for the acknowledgement, so one window is delivered per round-trip<br>time and the maximum throughput is</p>
+<p>$$\frac{524288\ \mathrm{bits}}{0.040\ \mathrm{s}} = 1.31 \times 10^{7}\ \mathrm{bps}<br>= 13.1\ \mathrm{Mbps} \tag{A1}$$</p>
+<p>Note that this is $13.1\%$ of the link rate, even though the sender is idle for<br>$40 - 5.24 = 34.8\ \mathrm{ms}$ of every $40\ \mathrm{ms}$ cycle.</p>
+<p>(b) At $1\ \mathrm{Gbps}$ the transmission time falls by a factor of ten (A1):</p>
+<p>$$t = \frac{524288}{1.00 \times 10^{9}} = 0.524\ \mathrm{ms} \tag{A1}$$</p>
+<p>The throughput is unchanged, because the amount sent per round trip has not changed (A1):</p>
+<p>$$\frac{524288}{0.040} = 13.1\ \mathrm{Mbps} \tag{A1}$$</p>
+<p>The sender is now idle for $39.5\ \mathrm{ms}$ of every $40\ \mathrm{ms}$ — it finishes sooner<br>and then waits longer, and the two effects cancel exactly.</p>
+<p>(c) To keep the link busy the window must be at least the bandwidth-delay product (M1):</p>
+<p>$$W = B \times \mathrm{RTT} = 1.00 \times 10^{9} \times 0.040 = 4.0 \times 10^{7}\ \mathrm{bits}<br>\tag{A1}$$</p>
+<p>$$W = \frac{4.0 \times 10^{7}}{8} = 5.0 \times 10^{6}\ \mathrm{bytes} = 5.0\ \mathrm{MB}<br>\tag{A1}$$</p>
+<p>Compared with the existing window this is (A1)</p>
+<p>$$\frac{5.0 \times 10^{6}}{65536} = 76.3$$</p>
+<p>times larger (A1). Equivalently, the existing window keeps the link busy for<br>$\frac{5.24}{40} = 13.1\%$ of the cycle at $100\ \mathrm{Mbps}$ and for<br>$\frac{0.524}{40} = 1.31\%$ at $1\ \mathrm{Gbps}$, so the utilisation falls by a factor of ten<br>exactly as the rate rises by a factor of ten, and the two effects cancel precisely.</p>
+<p>Two checks are worth applying to the answer. First, the required window scales with the<br>round-trip time as well as with the rate, so halving the latency would halve the window<br>needed — a reminder that latency and bandwidth are separate constraints and can be traded<br>against each other. Second, $5.0\ \mathrm{MB}$ of unacknowledged data is a large amount to have<br>in flight, and in practice the window would be limited by the receiving system's buffer and by<br>congestion control rather than by the arithmetic here; the bandwidth-delay product gives the<br>minimum window that makes the link usable, not a window that any real system would necessarily<br>grant.</p>
+<p>(d) The upgrade improved the rate at which data is placed on the link but not the amount that<br>may be in flight (A1). With a windowed protocol the throughput is<br>$\frac{\text{window}}{\mathrm{RTT}}$ whenever the window is smaller than the bandwidth-delay<br>product, and the link rate does not appear in that expression at all (R1). The window here,<br>$64\ \mathrm{kB}$, is well below the $5.0\ \mathrm{MB}$ bandwidth-delay product of the upgraded<br>link, so the link is idle for $98.7\%$ of each cycle and the tenfold increase in rate is<br>invisible (A1).</p>
+<p>What should be changed is the window, not the link (A1): the sending software needs a window of<br>about $5\ \mathrm{MB}$ to use the $1\ \mathrm{Gbps}$ link, and with the existing $64\ \mathrm{kB}$<br>window there was no point buying the upgrade at all. The general diagnostic is to compute the<br>bandwidth-delay product before paying for bandwidth; if the window is smaller, the money is<br>being spent on the wrong thing.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (A1) for converting the window to $524288$ bits. (A1) for $5.24\ \mathrm{ms}$.<br>(A1) for $13.1\ \mathrm{Mbps}$; accept $1.31 \times 10^{7}\ \mathrm{bps}$. A candidate who<br>divides the link rate by ten or otherwise tries to include the link rate in the throughput<br>earns at most the first (A1).</p>
+<p>(b) (A1) for $0.524\ \mathrm{ms}$. (A1) for the observation that the window has not changed.<br>(A1) for $13.1\ \mathrm{Mbps}$. (A1) for the cancellation — the sender finishes sooner and waits<br>longer. A candidate who reports a higher throughput here has not understood windowing and loses<br>the last three marks.</p>
+<p>(c) (M1) for the bandwidth-delay product. (A1) for $4.0 \times 10^{7}$ bits. (A1) for<br>$5.0 \times 10^{6}$ bytes. (A1) for the ratio $76.3$. (A1) for the utilisation argument.<br>Accept $5\ \mathrm{MB}$ or $4.77\ \mathrm{MiB}$ provided the unit is stated.</p>
+<p>(d) (A1) for the distinction between the rate and the amount in flight. (R1) for the<br>throughput expression, which must be stated as window over round-trip time. (A1) for the<br>quantitative comparison with the bandwidth-delay product. (A1) for identifying the window as<br>what should change.</p>
+<p>Condonation: allow a candidate who says "increase the window" without the figure, provided the<br>reasoning about the amount in flight is present.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The result is counter-intuitive enough that it is worth stating in one sentence: with a<br>windowed protocol, throughput is the amount you may have in flight divided by the time a<br>round trip takes, and the speed of the link does not appear in that expression at all until the<br>window exceeds the bandwidth-delay product.</p>
+<p>The arithmetic makes it concrete. At $100\ \mathrm{Mbps}$ the $64\ \mathrm{kB}$ window takes<br>$5.24\ \mathrm{ms}$ to put on the wire, and then the sender sits idle for the remaining<br>$34.8\ \mathrm{ms}$ of the round trip. It is using the link $13.1\%$ of the time. Upgrade to<br>$1\ \mathrm{Gbps}$ and the same window takes $0.524\ \mathrm{ms}$ — the sender finishes sooner<br>and waits longer, and since the amount delivered per round trip has not changed, neither has the<br>throughput. Utilisation drops to $1.31\%$. The tenfold improvement in rate is exactly cancelled<br>by a tenfold drop in utilisation.</p>
+<p>This is why the bandwidth-delay product is the first thing to compute. It is the amount of data<br>that must be in flight to keep the pipe full: rate times round-trip time. For the upgraded link<br>that is $1\ \mathrm{Gbps} \times 40\ \mathrm{ms} = 5.0\ \mathrm{MB}$, which is $76$ times the<br>window the software actually uses. Until the window is increased — in the protocol<br>configuration, not in the hardware — the upgrade buys nothing.</p>
+<p>The practical lesson generalises well past this question. Latency and bandwidth are different<br>constraints and they bind at different times: if the window is small, latency binds and<br>bandwidth is irrelevant; if the window is large enough, bandwidth binds and latency stops<br>mattering. Buying more of the one that is not binding is the commonest way to spend money on a<br>network and get nothing for it, and the way to tell which one is binding is to compare the<br>window with the bandwidth-delay product.</p>
+<p>The figure is there to make the idle time visible. Both rows show the same $64\ \mathrm{kB}$, and<br>what changes between them is only how much of the $40\ \mathrm{ms}$ is coloured in.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>Doubling the link rate tenfold leaves the throughput unchanged, and the arithmetic that shows it is simple enough to be embarrassing. Throughput with a windowed protocol is window divided by round-trip time, and the link rate never appears in that expression once the window is smaller than the bandwidth-delay product. The data rate is a red herring, and the quantity that is actually binding — the window — is the one nothing in the stem draws attention to.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A2.3 Data transmissions (transmission rate, bandwidth and latency; the effect of protocol overhead)</dd></div>
+  <div><dt>Inspiration</dt><dd>UK A-Level Computer Science: bandwidth, latency and the factors affecting data transmission rates</dd></div>
+  <div><dt>Adaptation</dt><dd>The source&#x27;s transfer-time questions give a file size and a rate and ask for the time, so bandwidth is always the governing quantity and latency never enters. Here a sliding window is introduced, which makes the amount in flight the binding constraint and reduces the link rate to a quantity that cancels out. Parts (a) and (b) ask for the throughput at two rates tenfold apart and the answer is identical, which the source&#x27;s framing can never produce, and part (c) asks for the bandwidth-delay product. Context, structure, given-versus-asked and the reasoning chain all differ.</dd></div>
+  <div><dt>Verification</dt><dd>Transmission times and throughputs are evaluated at both rates; the required window is computed as rate times round-trip time and compared with $65536$ bytes; utilisation is computed as the ratio of transmission time to round-trip time at each rate.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MAAQB_18M_1_SL_TZ1_T_14 (similarity 0.013)</dd></div>
+  <div><dt>Nearest item here</dt><dd>PHYS-C.5-102 (similarity 0.013)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-14</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

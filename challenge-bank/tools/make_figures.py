@@ -620,7 +620,190 @@ def jit_cost_curves():
                       "faster.", "".join(body))
 
 
+def improper_singularity():
+    """y = 1/x^2 on [-1, 2]: positive everywhere, unbounded at x = 0.
+
+    The point of the figure is the clash it makes visible. The curve never goes
+    below the axis, yet the naive evaluation of the antiderivative across the
+    interval returns -1.5. Drawing the branch structure is what forces the
+    candidate to see that the interval contains a point where the function does
+    not exist, and that no signed area can be assigned to what happens there.
+    """
+    W, H = 660, 300
+    x0, x1 = -1.0, 2.0
+    ymax = 6.0
+    px0, px1, py0, py1 = 70.0, 630.0, 262.0, 26.0
+
+    def sx(x):
+        return px0 + (x - x0) / (x1 - x0) * (px1 - px0)
+
+    def sy(y):
+        return py0 - (min(y, ymax) / ymax) * (py0 - py1)
+
+    out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" '
+           f'aria-label="Graph of y equals 1 over x squared, showing the two branches '
+           f'and the vertical asymptote at x equals 0">']
+    out.append(f'<rect x="0" y="0" width="{W}" height="{H}" fill="#ffffff"/>')
+    # grid
+    for gx in (-1.0, -0.5, 0.5, 1.0, 1.5, 2.0):
+        out.append(f'<line x1="{sx(gx):.1f}" y1="{py1}" x2="{sx(gx):.1f}" y2="{py0}" '
+                   f'stroke="#e2e8f0" stroke-width="1"/>')
+    for gy in (1.0, 2.0, 3.0, 4.0, 5.0, 6.0):
+        out.append(f'<line x1="{px0}" y1="{sy(gy):.1f}" x2="{px1}" y2="{sy(gy):.1f}" '
+                   f'stroke="#e2e8f0" stroke-width="1"/>')
+    # axes
+    out.append(f'<line x1="{px0 - 8}" y1="{py0}" x2="{px1}" y2="{py0}" stroke="{INK}" stroke-width="1.6"/>')
+    out.append(f'<line x1="{sx(0):.1f}" y1="{py0}" x2="{sx(0):.1f}" y2="{py1 - 6}" stroke="{INK}" stroke-width="1.6"/>')
+    out.append(f'<path d="M {px1} {py0} l -7 -3 l 0 6 z" fill="{INK}"/>')
+    out.append(f'<path d="M {sx(0):.1f} {py1 - 6} l -3 7 l 6 0 z" fill="{INK}"/>')
+
+    def branch(a, b, n=240):
+        pts = []
+        for i in range(n + 1):
+            x = a + (b - a) * i / n
+            pts.append((sx(x), sy(1.0 / (x * x))))
+        d = "M " + " L ".join("%.1f %.1f" % p for p in pts)
+        return d
+
+    out.append(f'<path d="{branch(-1.0, -0.075)}" fill="none" stroke="{ACCENT}" stroke-width="2.2"/>')
+    out.append(f'<path d="{branch(0.075, 2.0)}" fill="none" stroke="{ACCENT}" stroke-width="2.2"/>')
+    # asymptote
+    out.append(f'<line x1="{sx(0):.1f}" y1="{py1}" x2="{sx(0):.1f}" y2="{py0}" '
+               f'stroke="{HOT}" stroke-width="1.6" stroke-dasharray="6 4"/>')
+    out.append(f'<text x="{sx(0) + 8:.1f}" y="{py1 + 16}" font-size="13" fill="{HOT}" '
+               f'font-family="Georgia, serif">x = 0   f is not defined here</text>')
+    # markers at the endpoints
+    for xv, lab in ((-1.0, "(-1, 1)"), (2.0, "(2, 0.25)")):
+        out.append(f'<circle cx="{sx(xv):.1f}" cy="{sy(1.0 / (xv * xv)):.1f}" r="3.4" fill="{GOOD}"/>')
+        dy = -12 if xv < 0 else 18
+        out.append(f'<text x="{sx(xv):.1f}" y="{sy(1.0 / (xv * xv)) + dy:.1f}" font-size="12.5" '
+                   f'fill="{GOOD}" text-anchor="middle" font-family="Georgia, serif">{lab}</text>')
+    # the impossible answer
+    out.append(f'<text x="{sx(1.32):.1f}" y="{sy(2.1):.1f}" font-size="14" fill="{INK}" '
+               f'font-family="Georgia, serif">y = 1 / x&#178;  &#8805; 0 everywhere</text>')
+    out.append(f'<text x="{sx(1.32):.1f}" y="{sy(1.55):.1f}" font-size="13" fill="{HOT}" '
+               f'font-family="Georgia, serif">yet [-1/x] from -1 to 2 = -1.5</text>')
+    # axis labels
+    for gx in (-1.0, 1.0, 2.0):
+        out.append(f'<text x="{sx(gx):.1f}" y="{py0 + 17}" font-size="12" fill="{MUTED}" '
+                   f'text-anchor="middle" font-family="Georgia, serif">{gx:g}</text>')
+    for gy in (2.0, 4.0, 6.0):
+        out.append(f'<text x="{px0 - 12}" y="{sy(gy) + 4:.1f}" font-size="12" fill="{MUTED}" '
+                   f'text-anchor="end" font-family="Georgia, serif">{gy:g}</text>')
+    out.append('</svg>')
+    return "".join(out)
+
+
+def echo_doppler():
+    """A bat, a wall closing at speed u, and the two shifts the echo picks up.
+
+    The single most useful thing this figure does is separate the two stages.
+    Candidates who apply the Doppler formula once are almost always applying it
+    to the wrong stage: the wall is a moving *observer* on the way out and a
+    moving *source* on the way back, and only the second of those is obvious.
+    """
+    W, H = 660, 250
+    out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" '
+           f'aria-label="A bat emitting ultrasound towards a wall that is moving towards it, '
+           f'showing the outward and reflected journeys">']
+    out.append(f'<rect x="0" y="0" width="{W}" height="{H}" fill="#ffffff"/>')
+    batx, wallx = 96.0, 520.0
+    mid = 168.0
+    # wall
+    out.append(f'<rect x="{wallx}" y="34" width="16" height="182" fill="{PANEL2}" stroke="{INK}" stroke-width="1.6"/>')
+    out.append(f'<text x="{wallx + 8}" y="26" font-size="13" fill="{INK}" text-anchor="middle" '
+               f'font-family="Georgia, serif">wall</text>')
+    # motion arrow on the wall (towards the bat)
+    out.append(f'<line x1="{wallx + 44}" y1="{mid - 62}" x2="{wallx + 8}" y2="{mid - 62}" '
+               f'stroke="{HOT}" stroke-width="2" marker-end="url(#edarrow)"/>')
+    out.append(f'<text x="{wallx + 52}" y="{mid - 57}" font-size="13" fill="{HOT}" '
+               f'font-family="Georgia, serif">u</text>')
+    # bat
+    out.append(f'<circle cx="{batx}" cy="{mid}" r="15" fill="{ACCENT}" opacity="0.15" stroke="{ACCENT}" stroke-width="1.6"/>')
+    out.append(f'<text x="{batx}" y="{mid + 5}" font-size="13" fill="{ACCENT}" text-anchor="middle" '
+               f'font-family="Georgia, serif">bat</text>')
+    # outward wavefronts (compressed ahead, because the wall approaches)
+    out.append(f'<g stroke="{ACCENT}" stroke-width="1.6" fill="none">')
+    for i, r in enumerate((26, 52, 78, 104, 130)):
+        out.append(f'<path d="M {batx + r} {mid - 34} A {r} {r} 0 0 1 {batx + r} {mid + 34}"/>')
+    out.append('</g>')
+    out.append(f'<text x="{batx + 128}" y="{mid + 74}" font-size="12.5" fill="{ACCENT}" '
+               f'font-family="Georgia, serif">emitted, frequency f</text>')
+    # reflected wavefronts (compressed further)
+    out.append(f'<g stroke="{GOOD}" stroke-width="1.6" fill="none">')
+    for r in (34, 66, 98, 130):
+        out.append(f'<path d="M {wallx - r} {mid - 30} A {r} {r} 0 0 0 {wallx - r} {mid + 30}"/>')
+    out.append('</g>')
+    out.append(f'<text x="{wallx - 150}" y="{mid - 62}" font-size="12.5" fill="{GOOD}" '
+               f'font-family="Georgia, serif">received echo, frequency f&#8242; &gt; f</text>')
+    # the two stages
+    out.append(f'<text x="{batx + 66}" y="{mid - 86}" font-size="12.5" fill="{MUTED}" '
+               f'font-family="Georgia, serif">stage 1: wall is a moving observer</text>')
+    out.append(f'<text x="{wallx - 214}" y="{mid + 104}" font-size="12.5" fill="{MUTED}" '
+               f'font-family="Georgia, serif">stage 2: wall is a moving source</text>')
+    out.append('<defs><marker id="edarrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" '
+               'orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="%s"/></marker></defs>' % HOT)
+    out.append('</svg>')
+    return "".join(out)
+
+
+def bdp_window():
+    """Why a bigger pipe does not help: the window empties long before the ack.
+
+    The figure plots the same 64 kB window against two link rates and the one
+    round-trip time they share. At 100 Mbps the transmission finishes after
+    5.2 ms and the sender then sits idle for the remaining 34.8 ms; at 1 Gbps it
+    finishes after 0.52 ms and idles for longer. The pipe is not the constraint
+    and never was.
+    """
+    W, H = 660, 250
+    left, right = 70.0, 630.0
+    y100, y1000 = 96.0, 176.0
+    out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" '
+           f'aria-label="Timeline comparing how long a 64 kilobyte window takes to transmit '
+           f'at 100 megabits per second and at 1 gigabit per second against a 40 millisecond '
+           f'round trip time">']
+    out.append(f'<rect x="0" y="0" width="{W}" height="{H}" fill="#ffffff"/>')
+
+    def sx(t):  # t in ms over a 40 ms round trip
+        return left + t / 40.0 * (right - left)
+
+    # RTT bar
+    out.append(f'<line x1="{left}" y1="52" x2="{right}" y2="52" stroke="{INK}" stroke-width="1.6"/>')
+    out.append(f'<text x="{left - 10}" y="57" font-size="12" fill="{MUTED}" text-anchor="end" '
+               f'font-family="Georgia, serif">RTT</text>')
+    out.append(f'<text x="{right}" y="40" font-size="12.5" fill="{INK}" text-anchor="end" '
+               f'font-family="Georgia, serif">40 ms round-trip time</text>')
+
+    rows = [("100 Mbps", 5.24288, y100, HOT), ("1 Gbps", 0.524288, y1000, ACCENT)]
+    for label, ttx, yy, col in rows:
+        out.append(f'<text x="{left - 10}" y="{yy + 4}" font-size="12.5" fill="{MUTED}" '
+                   f'text-anchor="end" font-family="Georgia, serif">{label}</text>')
+        # busy transmitting
+        out.append(f'<rect x="{left}" y="{yy - 13}" width="{sx(ttx) - left:.1f}" height="26" '
+                   f'fill="{col}" opacity="0.85"/>')
+        # idle waiting
+        out.append(f'<rect x="{sx(ttx):.1f}" y="{yy - 13}" width="{right - sx(ttx):.1f}" height="26" '
+                   f'fill="{PANEL}" stroke="{MUTED}" stroke-width="1" stroke-dasharray="4 3"/>')
+        out.append(f'<text x="{sx(ttx) + 10:.1f}" y="{yy + 4}" font-size="12" fill="{MUTED}" '
+                   f'font-family="Georgia, serif">idle, waiting for the acknowledgement</text>')
+        out.append(f'<text x="{left + 6}" y="{yy + 4}" font-size="12" fill="#ffffff" '
+                   f'font-family="Georgia, serif">{ttx:.2f} ms</text>')
+
+    out.append(f'<text x="{left}" y="{y1000 + 62}" font-size="13" fill="{INK}" '
+               f'font-family="Georgia, serif">throughput = window / RTT = '
+               f'64 kB / 40 ms = 13.1 Mbps at both rates</text>')
+    out.append(f'<text x="{left}" y="{y1000 + 82}" font-size="12.5" fill="{HOT}" '
+               f'font-family="Georgia, serif">the link rate never appears in the answer</text>')
+    out.append('</svg>')
+    return "".join(out)
+
+
+
 FIGURES = {
+    "bdp_window": bdp_window,
+    "echo_doppler": echo_doppler,
+    "improper_singularity": improper_singularity,
     "normal_shaded": normal_shaded,
     "argand_locus": argand_locus,
     "vt_graph": vt_graph,

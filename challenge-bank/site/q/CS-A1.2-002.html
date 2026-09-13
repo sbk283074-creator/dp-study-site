@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A1.2-002 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A1.2 Overflow in a two&#x27;s-complement subtraction used as a comparison</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A1.2-002</p>
+<div class="meta"><span class="chip chip-key">A1.2 Data representation and computer logic (binary representation of integers; two&#x27;s complement; overflow)</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Explain</span><span class="chip">Determine</span><span class="chip">State</span><span class="chip">Justify</span></div>
+
+
+<h2>Question</h2>
+<p>An environmental control system stores each temperature reading as an eight-bit signed<br>integer in two's complement form, so the representable range is $-128$ to $127$. The system<br>compares two readings, $a$ and $b$, using the single line</p>
+<pre><code>if a - b &lt; 0 then output &quot;a is the lower reading&quot;
+</code></pre>
+<p>and the subtraction is performed in eight bits, with no overflow detection.</p>
+<p>(a) Explain what happens when the line is executed with $a = 100$ and $b = -50$, and state the<br>value the system compares with zero. \tag{3}</p>
+<p>(b) Determine the range of values of the true difference $d = a - b$ for which the comparison<br>gives the correct result. \tag{4}</p>
+<p>(c) Determine the number of ordered pairs $(a, b)$, with $a$ and $b$ each in the range<br>$-128$ to $127$, for which the comparison gives the wrong result, and hence the proportion of<br>all pairs that fail. \tag{5}</p>
+<p>(d) State a comparison that is correct for every pair in the range, and justify it. \tag{4}</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain what happens when the line is executed with $a = 100$ and $b = -50$, and state the value compared with zero.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Determine the range of values of the true difference $d = a - b$ for which the comparison gives the correct result.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Determine the number of ordered pairs $(a, b)$ in the range $-128$ to $127$ for which the comparison gives the wrong result, and hence the proportion that fail.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>State a comparison that is correct for every pair in the range, and justify it.</p> <em>(Justify)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) The true difference is $100 - (-50) = 150$ (A1). Eight-bit two's complement can only<br>represent $-128$ to $127$, so $150$ cannot be stored; the value wraps by subtracting $256$ and<br>the system obtains $150 - 256 = -106$ (M1). Since $-106 &lt; 0$ the system reports that<br>$a$ is the lower reading, which is wrong: $100 &gt; -50$ (A1).</p>
+<p>The general rule is that a result outside the representable range has $256$ added to or<br>subtracted from it until it falls inside, which is exactly what modular arithmetic does. No<br>flag is raised and no exception is thrown, so the error is invisible at run time.</p>
+<p>(b) The comparison is correct exactly when the subtraction does not overflow, that is when the<br>true difference is itself representable (M1):</p>
+<p>$$-128 \le a - b \le 127 \tag{A1}$$</p>
+<p>Equivalently $-128 \le d \le 127$ (A1). Outside that interval the stored value differs from the<br>true difference by a multiple of $256$ and, because the magnitude of the correction is larger<br>than the magnitude of the value being represented, the sign is reversed (A1). For example<br>$d = 150$ is stored as $-106$, and $d = -150$ is stored as $+106$; in both cases the sign is<br>wrong and so is the comparison.</p>
+<p>(c) For a given difference $d$, the number of ordered pairs with $a - b = d$ and both values<br>in $[-128, 127]$ is $256 - |d|$, valid for $-255 \le d \le 255$ (M1). Summing over the correct<br>range from part (b),</p>
+<p>$$N_{\text{correct}} = \sum_{d=-128}^{127} (256 - |d|) = 24512 + 256 + 24384 = 49152 \tag{A1}$$</p>
+<p>The total number of ordered pairs is (A1)</p>
+<p>$$N_{\text{total}} = 256 + \sum_{d=-255}^{255} (256 - |d|) - 256 = \sum_{d=-255}^{255}(256-|d|) = 65536$$</p>
+<p>so the number that fail is (A1)</p>
+<p>$$N_{\text{wrong}} = 65536 - 49152 = 16384 \tag{A1}$$</p>
+<p>and the proportion is $\dfrac{16384}{65536} = 0.25$: exactly one quarter of all comparisons<br>give the wrong answer.</p>
+<p>(d) Compare the signs first, and subtract only when the signs match (M1):</p>
+<pre><code>if (a &lt; 0) and (b &gt;= 0) then output &quot;a is the lower reading&quot;
+else if (a &gt;= 0) and (b &lt; 0) then output &quot;a is the higher reading&quot;
+else if a - b &lt; 0 then output &quot;a is the lower reading&quot;
+else output &quot;a is the higher reading&quot;
+</code></pre>
+<p>Justification (A1): if the signs differ, the comparison is settled by the signs alone and no<br>subtraction is needed, which is precisely the case in which the true difference is largest and<br>the subtraction most likely to overflow. If both values are non-negative then<br>$a - b$ lies between $-127$ and $127$; if both are negative then $a - b$ also lies between<br>$-127$ and $127$ (A1). In either case the result is representable, so the subtraction cannot<br>overflow and the test is safe (A1).</p>
+<p>An alternative correct answer is to widen the stored type before subtracting — for example by<br>promoting both operands to sixteen bits — since the difference of two eight-bit values always<br>fits in nine bits. This is simpler but costs memory in a system that stores thousands of<br>readings, which is why the sign test is preferred here.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (A1) for the true difference $150$. (M1) for the wrap-around, which must be explained<br>as a modular reduction rather than merely asserted. (A1) for $-106$ and the conclusion that the<br>output is wrong.</p>
+<p>(b) (M1) for linking correctness to the absence of overflow. (A1) for the interval<br>$-128 \le d \le 127$. (A1) for restating it in terms of $d$. (A1) for noting that the sign is<br>reversed outside the interval — a candidate who gives the interval alone has not explained why<br>the comparison then fails.</p>
+<p>(c) (M1) for $256 - |d|$ as the count for a given difference. (A1) for $49152$ correct pairs.<br>(A1) for $65536$ total pairs. (A1) for $16384$ failing pairs. (A1) for the proportion $0.25$.<br>Credit any correct route to the count, including a direct enumeration argument, but the<br>summation must be shown rather than asserted. Condone small arithmetic slips in the partial<br>sums if the method is sound and the final proportion is consistent with them.</p>
+<p>(d) (M1) for a comparison that avoids the subtraction when the signs differ. (A1) for the<br>justification in terms of the signs. (A1) for the bound $|a - b| \le 127$ when the signs match.<br>(A1) for concluding that no overflow is then possible.</p>
+<p>Accept the alternative of promoting to a wider type, with full marks, provided the candidate<br>states that nine bits suffice. Do not accept "check the sign of the result", which does not<br>work: after the wrap the sign of the stored value is a valid sign, just the wrong one.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The bug is a classic and it survives code review, because the line reads like arithmetic<br>and the arithmetic is correct. The problem is that it is not arithmetic — it is a range<br>question wearing arithmetic's clothes. The subtraction has to produce a result in eight bits,<br>and the result of a subtraction of two eight-bit values needs nine.</p>
+<p>The reason the failure rate is exactly a quarter is worth seeing rather than taking on trust.<br>For any particular difference $d$, the number of ordered pairs that produce it is<br>$256 - |d|$, because the larger the difference the fewer starting values leave room for it.<br>Summing that over the representable differences gives $49152$ of the $65536$ possible pairs,<br>and the complement is $16384$, which is exactly one quarter. The figure is not an artefact of<br>the numbers chosen: it is $\frac{1}{4}$ for any even word length, and getting close to it for<br>any word length at all.</p>
+<p>What makes this dangerous in a control system is the absence of any signal. There is no<br>exception, no overflow flag that the high-level code checks, and no value that looks wrong. The<br>program compares $-106$ with zero, correctly concludes that $-106 &lt; 0$, and proceeds. The only<br>way to find the bug is to reason about the range of the operands, which is exactly what the<br>question asks for.</p>
+<p>The fix in part (d) is worth dwelling on because it is not the obvious one. The obvious fix is<br>to widen the integer, and that works — nine bits are always enough for the difference of two<br>eight-bit numbers. But it costs memory in exactly the applications where eight-bit<br>representation was chosen for compactness, and it is not needed. The sign test costs two<br>comparisons and removes the problem entirely, because the dangerous case is precisely the case<br>where the signs differ, and in that case the answer is known without subtracting anything.</p>
+<p>More generally, this is the reason comparisons in serious code are written as comparisons<br>rather than as subtractions. A compiler may or may not be able to prove that a subtraction is<br>safe; a sign test is safe by construction, and "safe by construction" is worth more than "safe<br>because the inputs happen to be small".</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>A comparison written as a subtraction looks like arithmetic and is in fact a range question. The subtraction $a - b$ is performed in eight bits whether or not the true difference fits, and it silently wraps whenever $|a - b| &gt; 127$. The failure is not random and not rare: exactly a quarter of all ordered pairs of representable values give the wrong answer, and the program gives no indication that anything went wrong.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A1.2 Data representation and computer logic (binary representation of integers; two&#x27;s complement; overflow)</dd></div>
+  <div><dt>Inspiration</dt><dd>AP Computer Science A: integer representation, overflow and the limits of primitive types</dd></div>
+  <div><dt>Adaptation</dt><dd>The source asks what value is produced by an overflow, so the candidate observes the symptom and stops. Here the overflow is embedded in a comparison, which is how it actually appears in code, and the candidate must establish the range over which the comparison is trustworthy before counting the failures. Part (c) turns the symptom into an exact failure rate over the whole input space — a combinatorial count the source never asks for — and part (d) asks for a fix that does not require widening the type. Context, structure, given-versus-asked and the reasoning chain all differ.</dd></div>
+  <div><dt>Verification</dt><dd>Every count is reproduced by direct summation over the range $-255 \le d \le 255$; the proportion is checked to be exactly $0.25$, and the same-sign bound $|a-b| \le 127$ is verified at the extremes of the representable range.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P1_2020Nov_TZ0_q08 (similarity 0.009)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-14</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B2.4-003 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>B2.4 A nested loop whose inner trip count depends on the outer index</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B2.4-003</p>
+<div class="meta"><span class="chip chip-key">B2.4 Programming algorithms (analysis of algorithms; efficiency of an algorithm)</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Determine</span><span class="chip">Show that</span><span class="chip">Explain</span></div>
+
+
+<h2>Question</h2>
+<p>A programmer writes the following routine to count the divisors of every integer up to<br>$N$.</p>
+<pre><code>COUNT = 0
+for I = 1 to N
+    for J = I to N step I
+        COUNT = COUNT + 1
+    next J
+next I
+output COUNT
+</code></pre>
+<p>(a) Trace the routine for $N = 6$ and state the value output. \tag{4}</p>
+<p>(b) Show that the number of times the inner loop body executes is</p>
+<p>$$\sum_{I=1}^{N} \left\lfloor \frac{N}{I} \right\rfloor . \tag{4}$$</p>
+<p>(c) Determine the value output when $N = 1000$, and hence determine the ratio of the number of<br>iterations to $N^{2}$. \tag{5}</p>
+<p>(d) Explain why the time complexity of the routine is $\mathrm{O}(N \log N)$ rather than<br>$\mathrm{O}(N^{2})$. \tag{3}</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Trace the routine for $N = 6$ and state the value output.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Show that the number of inner-loop executions is the sum from I = 1 to N of the floor of N divided by I.</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Determine the value output when $N = 1000$, and hence determine the ratio of the number of iterations to $N$ squared.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Explain why the time complexity is O(N log N) rather than O(N squared).</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) Tracing the outer loop (M1):</p>
+<p>| $I$ | values taken by $J$ | inner iterations |<br>|---|---|---|<br>| 1 | 1, 2, 3, 4, 5, 6 | 6 |<br>| 2 | 2, 4, 6 | 3 |<br>| 3 | 3, 6 | 2 |<br>| 4 | 4 | 1 |<br>| 5 | 5 | 1 |<br>| 6 | 6 | 1 |</p>
+<p>The inner counts are $6, 3, 2, 1, 1, 1$ (A1) and the total is $6 + 3 + 2 + 1 + 1 + 1 = 14$<br>(A1). So the routine outputs $14$ (A1). Note that only the first of the six passes runs the<br>full $N$ times; by the fourth pass the inner loop executes once.</p>
+<p>(b) On the pass with outer index $I$, the inner variable $J$ takes the values<br>$I, 2I, 3I, \ldots$ up to $N$ (M1). The largest multiple of $I$ not exceeding $N$ is<br>$\left\lfloor \frac{N}{I} \right\rfloor \cdot I$ (A1), so the number of values taken is exactly<br>$\left\lfloor \frac{N}{I} \right\rfloor$ (A1). Summing over the $N$ passes of the outer loop<br>gives the stated expression (AG).</p>
+<p>(c) Evaluating the sum for $N = 1000$ (M1):</p>
+<p>$$\sum_{I=1}^{1000} \left\lfloor \frac{1000}{I} \right\rfloor = 7069 \tag{A1}$$</p>
+<p>The ratio to $N^{2}$ is (M1)</p>
+<p>$$\frac{7069}{1000^{2}} = \frac{7069}{1000000} = 0.00707 \tag{A1}$$</p>
+<p>so the routine performs about $0.7\%$ of the iterations a quadratic algorithm would. Equally<br>tellings is the comparison with $N\ln N$:</p>
+<p>$$N\ln N = 1000 \times 6.908 = 6908 \qquad \frac{7069}{6908} = 1.02 \tag{A1}$$</p>
+<p>so the actual count is within about $2\%$ of $N\ln N$. A candidate who assumed $\mathrm{O}(N^{2})$<br>would predict roughly half a million iterations and would be wrong by a factor of about<br>seventy.</p>
+<p>(d) From (b), the iteration count is $\sum_{I=1}^{N} \left\lfloor \frac{N}{I} \right\rfloor<br>\le \sum_{I=1}^{N} \frac{N}{I} = N \sum_{I=1}^{N} \frac{1}{I}$ (M1). The sum on the right is<br>the $N$th harmonic number, $H_{N}$, which satisfies $\ln(N+1) \le H_{N} \le 1 + \ln N$ and is<br>therefore $\mathrm{O}(\log N)$ (A1). It follows that the whole expression is<br>$\mathrm{O}(N\log N)$ (AG). The bound is tight rather than merely an upper limit, as the<br>numerical comparison in (c) shows: at $N = 1000$ the actual count of $7069$ sits about $2\%$<br>above $N\ln N = 6908$, and the gap between the two is the linear term that the floors and the<br>Euler–Mascheroni constant contribute.</p>
+<p>It is worth being explicit about what the bound does and does not say. Replacing the floor by<br>$\frac{N}{I}$ can only increase the total, so the argument gives a genuine upper bound on the<br>running time and never an underestimate; and since the harmonic sum is also $\Omega(\log N)$,<br>the estimate is of the right order and not merely safe. What the argument does not do is give<br>a constant: $\mathrm{O}(N\log N)$ says nothing about whether the constant is $1$ or $100$, and<br>for small $N$ the constant can matter more than the growth rate. The numerical work in (c) is<br>what supplies the constant, which is why both parts are needed.</p>
+<p>One further observation, for a candidate who wants to check the result independently: the sum<br>$\sum \lfloor N/I \rfloor$ counts the pairs $(I, J)$ with $I \mid J$ and $J \le N$, so it is<br>the total number of divisors possessed by all the integers from $1$ to $N$. It is therefore<br>also the number of times a naive divisor-counting routine would increment its counter, which<br>is exactly what the code in the stem is doing. Recognising that gives the answer a second<br>meaning and a second way to verify it.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) for a systematic trace — a table, or an equivalent listing of the values taken by<br>$J$ for each $I$. (A1) for the inner counts $6, 3, 2, 1, 1, 1$. (A1) for the total $14$.<br>(A1) for the observation that only the first pass runs the full $N$ times; this is the<br>observation that drives the rest of the item and a bare answer of $14$ with no trace earns only<br>the first (A1).</p>
+<p>(b) (M1) for identifying the values taken by $J$ as the multiples of $I$. (A1) for<br>$\left\lfloor \frac{N}{I} \right\rfloor \cdot I$ as the largest multiple. (A1) for the count.<br>(AG) for the summation. Allow a candidate who argues via $\lfloor (N-I)/I \rfloor + 1$ and<br>simplifies, but the simplification must be shown.</p>
+<p>(c) (M1) for attempting the sum; accept a stated value obtained by computation, since summing<br>a thousand terms by hand is not the point. (A1) for $7069$. (M1) for dividing by $N^{2}$.<br>(A1) for $0.00707$. (A1) for the comparison with $N \ln N$ or with the quadratic estimate.<br>Accept the ratio as $0.0071$.</p>
+<p>(d) (M1) for bounding the floor by $\frac{N}{I}$. (A1) for identifying the harmonic sum as<br>$\mathrm{O}(\log N)$. (AG) for the conclusion. A candidate who merely says "the inner loop does<br>not run $N$ times" earns the first (M1) only.</p>
+<p>Note: do not accept an argument that the answer is $\mathrm{O}(N)$ — the harmonic sum is not<br>constant.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Nested loops are taught with a rule of thumb — multiply the trip counts — and the rule<br>of thumb is right often enough to become a reflex. It fails here because it assumes the inner<br>count is independent of the outer index, and here it is the outer index itself that sets it.</p>
+<p>Once the count is written as $\sum \lfloor N/I \rfloor$, the growth rate is a known quantity.<br>The floors can only reduce the total, so bounding above by $N\sum \frac{1}{I}$ is legitimate,<br>and the harmonic sum is $\mathrm{O}(\log N)$. That gives $N \log N$ rather than $N^{2}$, and<br>the numerical check in part (c) confirms the bound is not merely an upper limit: $N \ln N$ at<br>$N = 1000$ is $6908$ against an actual count of $7069$, about $2\%$ apart.</p>
+<p>The factor-of-seventy gap between $7069$ and the half-million a quadratic estimate predicts is<br>the practical reason this matters. A programmer who believes the routine is quadratic will<br>refuse to run it at $N = 1000$ and will rewrite it unnecessarily; one who recognises<br>$N \log N$ will not. The difference between the two growth rates only widens with $N$: at<br>$N = 10^{6}$ the true count is about $1.4 \times 10^{7}$ against $10^{12}$ for a genuinely<br>quadratic routine.</p>
+<p>There is also a substantive point hiding in the trace. The routine looks like it might be<br>counting something more exotic than it is, but $\sum \lfloor N/I \rfloor$ counts the number of<br>pairs $(I, J)$ with $I \mid J$ and $J \le N$ — that is, the total number of divisors possessed<br>by all the integers up to $N$. Recognising that gives the result a second, independent meaning,<br>and it is why the count grows the way it does: most integers have few divisors, and only the<br>small values of $I$ contribute many terms.</p>
+<p>Finally, note that the floors matter for the exact value but not for the order of growth.<br>Dropping them changes the answer by at most $N$ out of roughly $N \ln N$, which is a lower-order<br>term — and knowing which simplifications change the answer and which do not is most of what<br>algorithm analysis consists of.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>Two nested loops over the same range look like $O(N^{2})$ and are not, because the inner loop does not run $N$ times — it runs $\lfloor N/I \rfloor$ times, where $I$ is the outer index. The total is the summatory divisor function, which grows as $N\ln N$ rather than $N^{2}$: at $N = 1000$ the true count is $7069$ against the $500000$ a quadratic estimate would predict, a factor of about seventy.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B2.4 Programming algorithms (analysis of algorithms; efficiency of an algorithm)</dd></div>
+  <div><dt>Inspiration</dt><dd>AP Computer Science A: algorithm analysis, nested loops and informal complexity</dd></div>
+  <div><dt>Adaptation</dt><dd>The source&#x27;s nested loops have inner bounds that are either constant or a fixed function of the outer bound such as $I$ or $N-I$, so the trip counts are triangular or quadratic and the rule of thumb works. Here the inner loop *steps* by $I$, which makes the count $\lfloor N/I \rfloor$ and the total the summatory divisor function — a quantity that looks quadratic and is $N \log N$. Part (c) asks for the exact value at $N = 1000$ and for the comparison against both $N^{2}$ and $N\ln N$, neither of which the source asks for, and part (d) requires the harmonic-series argument rather than an informal judgement. Context, structure, given-versus-asked and the reasoning chain all differ.</dd></div>
+  <div><dt>Verification</dt><dd>The trace for $N = 6$ and the sums for $N = 10$, $N = 100$ and $N = 1000$ are computed directly; the totals are compared with $N^{2}$ and with $N\ln N$.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PHYS_HL_P2_2019May_TZ2_q02 (similarity 0.007)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL1.1-001 (similarity 0.003)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-14</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

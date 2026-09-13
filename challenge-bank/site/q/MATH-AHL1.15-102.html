@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL1.15-102 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>1.15 Induction where the base case is set by the step, not by the domain</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL1.15-102</p>
+<div class="meta"><span class="chip chip-key">AHL 1.15 (proof by mathematical induction; forming a conjecture for the nth term of a sequence and proving it)</span><span class="chip">P3 · Section B</span><span class="chip">14 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">State</span><span class="chip">Prove</span><span class="chip">Hence</span><span class="chip">Determine</span></div>
+
+
+<h2>Question</h2>
+<p>Consider the statement</p>
+<p>$$P(n): \quad 2^n &gt; n^3, \qquad n \in \mathbb{Z}^{+}.$$</p>
+<p>(a) By evaluating both sides for $n = 1, 2, \ldots, 10$, state the set of values of $n$ in<br>$\{1, 2, \ldots, 10\}$ for which $P(n)$ is true. \tag{2}</p>
+<p>(b) Prove that, for every integer $k \ge 4$,</p>
+<p>$$2^k &gt; k^3 \quad \Longrightarrow \quad 2^{k+1} &gt; (k+1)^3. \tag{5}$$</p>
+<p>(c) Hence prove that $P(n)$ is true for every integer $n \ge 10$. \tag{3}</p>
+<p>(d) Determine, with full justification, the set of positive integers $n$ for which $P(n)$ is<br>true. \tag{4}</p>
+<ol class="parts"><li><span class="marks">[2 marks]</span><strong>(a)</strong> <p>State the set of values of $n$ in $\{1,2,\ldots,10\}$ for which $P(n)$ is true.</p> <em>(State)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Prove that $2^k &gt; k^3 \Rightarrow 2^{k+1} &gt; (k+1)^3$ for every integer $k \ge 4$.</p> <em>(Prove)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Hence prove that $P(n)$ is true for every integer $n \ge 10$.</p> <em>(Hence)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Determine, with full justification, the set of positive integers $n$ for which $P(n)$ is true.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 14 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) Computing both sides:</p>
+<p>$$\begin{array}{c|cccccccccc}<br>n &amp; 1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 &amp; 6 &amp; 7 &amp; 8 &amp; 9 &amp; 10 \\ \hline<br>2^n &amp; 2 &amp; 4 &amp; 8 &amp; 16 &amp; 32 &amp; 64 &amp; 128 &amp; 256 &amp; 512 &amp; 1024 \\<br>n^3 &amp; 1 &amp; 8 &amp; 27 &amp; 64 &amp; 125 &amp; 216 &amp; 343 &amp; 512 &amp; 729 &amp; 1000<br>\end{array}$$</p>
+<p>$P(n)$ is true only for $n = 1$ and $n = 10$ among these values (A1)(A1). Note particularly<br>$n = 8$, where $2^8 = 256$ and $8^3 = 512$, and $n = 9$, where $2^9 = 512$ against $9^3 = 729$;<br>the inequality fails throughout $2 \le n \le 9$ and then turns round between $n = 9$ and<br>$n = 10$.</p>
+<p>(b) Assume $2^k &gt; k^3$ for some integer $k \ge 4$. Then</p>
+<p>$$2^{k+1} = 2 \cdot 2^k &gt; 2k^3 \tag{M1}$$</p>
+<p>using the induction hypothesis. It is therefore sufficient to prove that $2k^3 \ge (k+1)^3$<br>for $k \ge 4$ (M1). Dividing by $k^3 &gt; 0$, this is equivalent to</p>
+<p>$$2 \ge \left(1 + \frac{1}{k}\right)^3.$$</p>
+<p>Now $\left(1 + \frac{1}{k}\right)^3$ is strictly decreasing in $k$ for $k &gt; 0$ (A1), so for<br>$k \ge 4$</p>
+<p>$$\left(1 + \frac{1}{k}\right)^3 \le \left(1 + \frac{1}{4}\right)^3 = \left(\frac{5}{4}\right)^3<br>= \frac{125}{64} = 1.953125 &lt; 2 \tag{A1}$$</p>
+<p>and hence $2k^3 &gt; (k+1)^3$ strictly. Combining, $2^{k+1} &gt; 2k^3 &gt; (k+1)^3$, which is<br>$P(k+1)$ (AG). The condition $k \ge 4$ is used exactly once, at the point where<br>$\left(1 + \frac{1}{k}\right)^3$ is bounded above by its value at $k = 4$ (R1).</p>
+<p>(c) Take $n = 10$ as the base case. By part (a), $2^{10} = 1024 &gt; 1000 = 10^3$, so $P(10)$<br>holds (A1). By part (b) the implication $P(k) \Rightarrow P(k+1)$ holds for every $k \ge 4$,<br>and in particular for every $k \ge 10$ (M1). By the principle of mathematical induction<br>$P(n)$ is true for all integers $n \ge 10$ (A1).</p>
+<p>(d) From (c), every $n \ge 10$ satisfies $P(n)$. From (a), among $1 \le n \le 10$ only<br>$n = 1$ and $n = 10$ do (A1). Therefore the complete set is</p>
+<p>$$\{n \in \mathbb{Z}^{+} : 2^n &gt; n^3\} = \{1\} \cup \{n \in \mathbb{Z}^{+} : n \ge 10\} \tag{A1}$$</p>
+<p>The value $n = 1$ is isolated: $P(1)$ and $P(2)$ differ in truth value and no induction<br>connects them, so the answer cannot be written as a single inequality $n \ge N$ (R1). A<br>candidate who answers $n \ge 10$ has missed one value; a candidate who answers $n \ge 4$ has<br>used the threshold of the *step* rather than the threshold of the *statement* and is wrong at<br>$n = 4, 5, 6, 7, 8, 9$.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (A1) for identifying $n = 1$, (A1) for identifying $n = 10$. Award both only if the<br>candidate has also established that no other value in the range works; a bare statement of<br>$\{1, 10\}$ with no supporting arithmetic earns (A1) at most.</p>
+<p>(b) (M1) for using the induction hypothesis to obtain $2^{k+1} &gt; 2k^3$. (M1) for recognising<br>that the remaining task is $2k^3 \ge (k+1)^3$. (A1) for the monotonicity of<br>$\left(1 + \frac{1}{k}\right)^3$ — or for any other correct route to the bound, such as<br>expanding $2k^3 - (k+1)^3 = k^3 - 3k^2 - 3k - 1$ and showing it is positive for $k \ge 4$.<br>(A1) for the numerical bound $\frac{125}{64} &lt; 2$. (AG) for concluding $P(k+1)$: no mark for<br>restating the conclusion.</p>
+<p>Condonation: a candidate who works with $2k^3 \ge (k+1)^3$ as a non-strict inequality and<br>then notes that equality never occurs at $k = 4$ earns full marks. Forfeiture: a candidate who<br>asserts the step holds for all $k \ge 1$ without checking loses both the monotonicity (A1) and<br>the (AG).</p>
+<p>(c) (A1) for verifying $P(10)$. (M1) for observing that the implication from (b) is available<br>at every $k \ge 10$. (A1) for the inductive conclusion. Follow-through: a candidate who<br>chooses the base case $n = 4$ in (c) despite having proved in (a) that $P(4)$ is false must<br>not be awarded the final (A1), even if the rest of the structure is sound — the induction is<br>proving a statement that is false.</p>
+<p>(d) (A1) for combining the two ranges, (A1) for the explicit set notation or an unambiguous<br>equivalent such as "$n = 1$ and all $n \ge 10$". (R1) for recognising that the value $n = 1$<br>is isolated and that the set is therefore not an interval. Do not penalise a candidate who<br>writes the answer as $n = 1$ or $n \ge 10$.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The item looks like a routine induction and is not one, because the induction has two<br>thresholds and the candidate has to find both.</p>
+<p>The first threshold belongs to the implication. For $2^{k+1} &gt; (k+1)^3$ to follow from<br>$2^k &gt; k^3$, the factor of $2$ gained on the left has to outrun the factor<br>$\left(1 + \frac{1}{k}\right)^3$ gained on the right, and that happens from $k = 4$ onwards.<br>Below $k = 4$ the step is simply false: at $k = 3$, $2 \cdot 8 = 16$ is not greater than<br>$4^3 = 64$.</p>
+<p>The second threshold belongs to the statement, and it is much later. Exponential growth<br>eventually beats any power, but "$n^3$" holds out for a surprisingly long time: $2^n$ is behind<br>$n^3$ at every integer from $2$ to $9$, catches up only at $10$, and the two are within<br>$2.4$ per cent of each other there. So the base case has to be $10$, not $4$, even though the<br>step would have worked from $4$.</p>
+<p>The general principle is that an induction proves statements from a base case *using* a step,<br>so the base case must satisfy two independent conditions: the statement has to be true there,<br>and the step has to be valid from there. The correct starting point is the larger of the two<br>thresholds, and an item is only interesting when the two thresholds disagree — which is<br>exactly what happens here.</p>
+<p>The isolated value $n = 1$ is the part candidates lose most often, and it is not a trick.<br>$P(1)$ says $2 &gt; 1$, which is true, and $P(2)$ says $4 &gt; 8$, which is not. An induction<br>started anywhere cannot reach $n = 1$ going forwards, and there is nothing to induct on going<br>backwards. The answer set genuinely has two components, and the reason it feels wrong is that<br>most school induction questions have an answer of the form "all $n \ge N$". Writing the set as<br>$\{1\} \cup \{n \ge 10\}$ is the only honest description.</p>
+<p>Finally, note what the arithmetic in (a) is for. It is not busywork to pad the question: it<br>establishes both thresholds empirically before the candidate is asked to prove anything about<br>either, and it is the only place where the failure at $n = 8$ — where the two sides are in the<br>ratio $1:2$ — becomes visible. A candidate who skips (a) and guesses has no way to know that<br>$n = 9$ fails.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The step and the statement have different thresholds, and the item turns on the candidate noticing that there are two of them. The implication $2^k &gt; k^3 \Rightarrow 2^{k+1} &gt; (k+1)^3$ is valid from $k = 4$ onwards, while the statement itself is false for every integer from $2$ to $9$. The induction can therefore only start at $10$, and the single value $n = 1$ that also satisfies the inequality is unreachable by induction from anywhere.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 1.15 (proof by mathematical induction; forming a conjecture for the nth term of a sequence and proving it)</dd></div>
+  <div><dt>Inspiration</dt><dd>UK A-Level Further Mathematics / STEP: induction with an inequality whose base case is not 1</dd></div>
+  <div><dt>Adaptation</dt><dd>Standard versions ask for $2^n &gt; n^2$ from $n = 5$, where the step and the statement share a threshold and nothing interesting happens. Raising the power to $n^3$ pushes the statement&#x27;s threshold to $10$ while leaving the step&#x27;s threshold at $4$, so the two disagree by six integers. The isolated value $n = 1$ is then a genuine feature rather than an artefact, and part (d) asks for the full set rather than a bound. Structure, given-versus-asked and the reasoning chain all change; the context is kept deliberately abstract, as in the source.</dd></div>
+  <div><dt>Verification</dt><dd>The truth of $P(n)$ is enumerated for $1 \le n \le 39$; the bound $(5/4)^3 &lt; 2$ and the monotonicity claim are checked numerically at $k = 4$ and $k = 5$; the endpoint values $2^{10} = 1024 &gt; 1000$ and $2^9 = 512 &lt; 729$ are recomputed.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P1_2008May_TZ1_q07 (similarity 0.013)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-T2-001 (similarity 0.01)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-14</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A4.2-002 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A4.2 Choosing a scaling method when one outlier dominates the range</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A4.2-002</p>
+<div class="meta"><span class="chip chip-key">A4.2 Data preprocessing (HL only) (normalisation, standardisation, outlier handling)</span><span class="chip">P2 · Section B</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: allowed</span><span class="chip">Calculate</span><span class="chip">Determine</span><span class="chip">Compare</span><span class="chip">Explain</span></div>
+
+
+<h2>Question</h2>
+<p>A hospital logistics team is building a machine-learning model to predict delivery times.<br>One of the features is the loading time, in minutes, for the ten most recent deliveries:</p>
+<p>$$10,\ 11,\ 12,\ 13,\ 14,\ 15,\ 16,\ 17,\ 18,\ 1400$$</p>
+<p>The final value, $1400$ minutes, is a data-entry error: the true value was $14.00$ and the<br>decimal point was lost. The team has not yet cleaned the data and is comparing two ways of<br>scaling the feature before clustering.</p>
+<p>(a) Calculate the mean and the standard deviation of the ten values as recorded. \tag{3}</p>
+<p>(b) Determine the min–max scaled values of $10$, $18$ and $1400$, and calculate the scaled gap<br>between consecutive typical values. \tag{4}</p>
+<p>(c) Determine the standardised (z-score) values of $10$, $18$ and $1400$, calculate the<br>corresponding scaled gap, and compare the two methods. \tag{5}</p>
+<p>(d) Hence explain which scaling method the team should prefer for this data set. \tag{3}</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Calculate the mean and the standard deviation of the ten values as recorded.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Determine the min-max scaled values of 10, 18 and 1400, and calculate the scaled gap between consecutive typical values.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Determine the standardised values of 10, 18 and 1400, calculate the corresponding scaled gap, and compare the two methods.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Hence explain which scaling method the team should prefer for this data set.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) The nine typical values are the integers $10$ to $18$, whose sum is<br>$\frac{9(10 + 18)}{2} = 126$; adding $1400$ gives $1526$ and the mean is</p>
+<p>$$\bar{x} = \frac{1526}{10} = 152.6 \tag{A1}$$</p>
+<p>Note that the mean already sits far above every genuine reading: the true centre of the nine<br>typical values is $14$, and the single error has moved it by $138.6$.</p>
+<p>The sum of squared deviations is most safely found from<br>$\sum x^{2} - n\bar{x}^{2}$ (M1). Here</p>
+<p>$$\sum x^{2} = 100 + 121 + \cdots + 324 + 1960000 = 1824 + 1960000 = 1961824$$</p>
+<p>and $n\bar{x}^{2} = 10 \times 152.6^{2} = 10 \times 23286.76 = 232867.6$, so</p>
+<p>$$\sum (x - \bar{x})^{2} = 1961824 - 232867.6 = 1728956.4 \tag{A1}$$</p>
+<p>The outlier contributes $1247.4^{2} = 1556006.8$ of that, which is $90.0\%$ of the whole<br>total. The population variance is $\frac{1728956.4}{10} = 172895.6$ and</p>
+<p>$$\sigma = \sqrt{172895.6} = 415.8 \tag{A1}$$</p>
+<p>(b) Min–max scaling maps $x$ to $\frac{x - x_{\min}}{x_{\max} - x_{\min}}$, and here<br>$x_{\min} = 10$ and $x_{\max} = 1400$, so the divisor is $1390$ (M1):</p>
+<p>$$\frac{10 - 10}{1390} = 0.000, \qquad \frac{18 - 10}{1390} = 0.00576, \qquad<br>\frac{1400 - 10}{1390} = 1.000 \tag{A1}$$</p>
+<p>The typical values therefore occupy the interval $[0,\ 0.00576]$ — the bottom $0.58\%$ of the<br>range — and the outlier sits alone at $1.000$ (A1). The scaled gap between consecutive typical<br>values, which are one minute apart in the original data, is</p>
+<p>$$\frac{1}{1390} = 0.000719 \tag{A1}$$</p>
+<p>(c) Standardising maps $x$ to $\frac{x - \bar{x}}{\sigma}$ (M1):</p>
+<p>$$\frac{10 - 152.6}{415.8} = -0.343, \qquad \frac{18 - 152.6}{415.8} = -0.324, \qquad<br>\frac{1400 - 152.6}{415.8} = 3.00 \tag{A1}$$</p>
+<p>The typical values occupy $[-0.343,\ -0.324]$ and the outlier sits at $3.00$ (A1). The scaled<br>gap between consecutive typical values is</p>
+<p>$$\frac{1}{415.8} = 0.00241 \tag{A1}$$</p>
+<p>which is $\frac{0.00241}{0.000719} = 3.34$ times the min–max gap (A1). Standardisation<br>therefore preserves about three and a third times as much resolution among the typical readings<br>as min–max does, even though it is far from ideal: the outlier still inflates $\sigma$ from<br>about $2.4$ to $415.8$ and drags the mean to $152.6$, more than ten times the largest genuine<br>reading. Note also that $3.00$ is the largest z-score any value in a data set of ten can have,<br>so the outlier is pressing against the ceiling that the sample size allows.</p>
+<p>(d) Neither method should be used on the raw data (A1). The right first step is to correct or<br>remove the erroneous $1400$, since it is a known data-entry fault rather than a genuine<br>observation; with it removed the range is $8$, the mean is $14$ and the choice of scaler barely<br>matters (A1). If the value must be retained, standardisation is preferable to min–max because<br>the mean and standard deviation are less sensitive to a single extreme value than the minimum<br>and maximum are — the outlier moves $\sigma$ but does not set it, whereas it sets $x_{\max}$<br>directly (A1). Better still is a robust scaler based on the median and interquartile range,<br>which for this data gives a scaled gap of $\frac{1}{5} = 0.2$, about $278$ times the min–max<br>resolution.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (A1) for the sum or the mean $152.6$. (M1) for setting up the sum of squared<br>deviations. (A1) for the outlier's squared deviation $1556006.76$. (A1) for<br>$\sigma = 415.8$; accept $[415, 416]$. Allow the sample standard deviation ($s = 438.3$)<br>provided it is identified as such, with full marks.</p>
+<p>(b) (M1) for the divisor $1390$. (A1) for the three scaled values. (A1) for identifying that<br>the typical values fall in the bottom fraction of the range. (A1) for the gap $0.000719$.</p>
+<p>(c) (M1) for the standardisation formula. (A1) for the three z-scores. (A1) for the interval<br>occupied by the typical values. (A1) for the gap $0.00241$. (A1) for the ratio $3.34$.</p>
+<p>Forfeiture: a candidate who uses the *cleaned* mean or standard deviation in (c) has answered a<br>different question and earns at most the first (M1) — the item is explicitly about what happens<br>before cleaning.</p>
+<p>(d) (A1) for recommending cleaning first. (A1) for the consequence of cleaning. (A1) for<br>comparing the sensitivity of the two scalers, or for proposing a robust alternative with the<br>figure $0.2$.</p>
+<p>Note: a candidate who simply states that min–max is "affected by outliers" has not used the<br>quantitative work from (b) and (c) and earns at most one mark.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Min–max scaling has a single point of failure: it is defined by the two most extreme<br>values in the data set. If one of those is wrong, the whole scaling is wrong, and it is wrong in<br>a way that is easy to miss because the output still looks like a properly scaled feature —<br>values in $[0, 1]$, outlier at the top, everything else near the bottom. Nothing announces the<br>problem.</p>
+<p>Quantifying the damage is what makes the choice a decision rather than an opinion. Consecutive<br>typical readings are one minute apart, and after min–max scaling they sit $0.000719$ apart. For<br>a distance-based algorithm such as k-means, that is very close to indistinguishable: the<br>distances between ordinary points have been compressed by a factor of $1390$ relative to what<br>they were, while the distance to the outlier has been set to the maximum the scale allows.</p>
+<p>Standardisation does better, and the reason is structural. It is defined by the mean and the<br>standard deviation, which are computed from every value, so a single extreme reading shifts them<br>without determining them. Here the outlier is worth $3.0\sigma$ — large, but finite, and it<br>does not set the scale. The resolution improves by a factor of about $3.3$. That is a real<br>improvement, but it should not be oversold: the outlier has inflated $\sigma$ from roughly<br>$2.4$ to $415.8$, so standardisation is compromised too, just less catastrophically.</p>
+<p>The honest answer to (d) is that both are the wrong question. The value $1400$ is a known<br>decimal-point error; there is no statistical method that is the right response to a typo. Clean<br>it, and with the remaining nine values the range is $8$, the standard deviation is about $2.4$,<br>and the choice between scalers has almost no effect on the model. Where cleaning is not<br>possible — because the extreme value might be genuine — a robust scaler based on the median and<br>interquartile range gives a resolution of $0.2$ here, roughly $278$ times what min–max<br>delivers.</p>
+<p>The more general lesson is that preprocessing choices are not neutral. Two defensible scalings<br>of the same feature can put the ordinary values $0.0007$ apart or $0.2$ apart, and a<br>distance-based model will behave completely differently in the two cases. Measuring the<br>resolution, rather than asserting that one method is "better", is what turns that choice into<br>something a data scientist can defend.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>Both scaling methods are legitimate and they disagree by a factor of more than three in how well they separate the typical readings. Min-max puts the outlier at $1.0$ and squeezes the nine ordinary values into the bottom $8.9\%$ of the interval; standardisation spreads them over $3.5$ times as much of the range. The choice is a judgement, but it is a judgement that can be made quantitative: compare the scaled gap between consecutive typical values.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A4.2 Data preprocessing (HL only) (normalisation, standardisation, outlier handling)</dd></div>
+  <div><dt>Inspiration</dt><dd>AP Computer Science Principles / AP Statistics: data cleaning, outliers and the effect on summary statistics</dd></div>
+  <div><dt>Adaptation</dt><dd>The two traditions are separate in the source: statistics items ask how an outlier moves the mean, and ML material lists the two scalers without comparing them. Here they are combined into a single quantitative comparison, with the resolution — the scaled gap between consecutive typical values — as the measure, which neither source defines. The outlier is given a specific physical cause (a lost decimal point) so that part (d) can ask whether scaling is the right response at all, and a robust alternative is quantified alongside. Context, structure, given-versus-asked and the reasoning chain all differ.</dd></div>
+  <div><dt>Verification</dt><dd>The mean, the sum of squared deviations and the standard deviation are recomputed; both scalings are applied to the smallest, largest typical and outlying values, and the two resolutions are compared against the robust interquartile resolution.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PHYS_HL_P3_2023May_TZ2_OPT_C_q14 (similarity 0.016)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL4.8-001 (similarity 0.02)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-14</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>
