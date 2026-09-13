@@ -1,0 +1,120 @@
+{
+  "questions": [
+    {
+      "id": "CS-A2.2-101",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "A2.1 Network fundamentals, A2.2 Network architecture (the structure of a network, the roles of switches and routers, subnets and broadcast domains)",
+      "topic": "Theme A: Computer fundamentals",
+      "subtopic": "A2.2 Network architecture: device roles, subnets and broadcast domains",
+      "paper": "P1",
+      "section": "A",
+      "technology": "not allowed",
+      "marks": 17,
+      "difficulty": 4,
+      "question_type": "structured",
+      "challenge_mechanism": "The figure shows an ordinary office network, so nothing can be answered by recognising a pattern. Every mark turns on knowing which layer a device operates at and therefore what it can and cannot see: a switch forwards within one broadcast domain without ever examining an IP address, while a router exists precisely to be the boundary between two of them. The final part proposes a change that looks like a simplification and is not, which tests whether the candidate has understood that a switch does not partition anything.",
+      "command_terms": [
+        "Explain",
+        "Determine",
+        "State"
+      ],
+      "tags": [
+        "networks",
+        "subnetting",
+        "broadcast-domain",
+        "default-gateway",
+        "switch",
+        "router",
+        "structured",
+        "P1",
+        "figure"
+      ],
+      "question": "The figure shows the network of a small company. A router is connected to two switches, and three personal computers are connected to each switch. The two subnets are labelled in the figure, and the two addresses shown on the links from the router are the addresses of the router's own interfaces, one in each subnet. The company has been allocated the block 192.168.10.0/24 and has decided to use only the first half of it. Each computer is configured with the address of the router interface on its own subnet as its default gateway. Answer all parts with reference to the figure, and show your working where a calculation is involved.",
+      "figure": {
+        "type": "svg",
+        "caption": "The company network: a router with one interface in each of two /26 subnets, each subnet served by a switch carrying three personal computers.",
+        "content": "<svg viewBox=\"0 0 500 292\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Office network with a router joined to two switches, three hosts on each switch, and the two subnets labelled\"><g font-family=\"ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif\"><defs><marker id=\"ah\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\"><path d=\"M1 1L8 5L1 9\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></marker></defs><rect x=\"196\" y=\"32\" width=\"108\" height=\"40\" rx=\"6\" fill=\"#dbeafe\" stroke=\"#2563eb\" stroke-width=\"1.5\"/><text x=\"250\" y=\"57\" text-anchor=\"middle\" font-size=\"12\" fill=\"#2563eb\" font-weight=\"500\">router</text><rect x=\"86\" y=\"132\" width=\"96\" height=\"36\" rx=\"6\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"134\" y=\"155\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">switch A</text><rect x=\"318\" y=\"132\" width=\"96\" height=\"36\" rx=\"6\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"366\" y=\"155\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">switch B</text><line x1=\"250\" y1=\"72\" x2=\"250\" y2=\"102\" stroke=\"#1e293b\" stroke-width=\"1.5\"/><line x1=\"250\" y1=\"102\" x2=\"134\" y2=\"102\" stroke=\"#1e293b\" stroke-width=\"1.5\"/><line x1=\"250\" y1=\"102\" x2=\"366\" y2=\"102\" stroke=\"#1e293b\" stroke-width=\"1.5\"/><line x1=\"134\" y1=\"102\" x2=\"134\" y2=\"132\" stroke=\"#1e293b\" stroke-width=\"1.5\"/><line x1=\"366\" y1=\"102\" x2=\"366\" y2=\"132\" stroke=\"#1e293b\" stroke-width=\"1.5\"/><text x=\"196\" y=\"96\" text-anchor=\"end\" font-size=\"10\" fill=\"#2563eb\">192.168.10.1 / 26</text><text x=\"304\" y=\"96\" text-anchor=\"start\" font-size=\"10\" fill=\"#2563eb\">192.168.10.65 / 26</text><line x1=\"86\" y1=\"168\" x2=\"86\" y2=\"200\" stroke=\"#1e293b\" stroke-width=\"1.4\"/><rect x=\"69\" y=\"206\" width=\"34\" height=\"24\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"86\" y=\"222\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#1e293b\">PC1</text><line x1=\"134\" y1=\"168\" x2=\"134\" y2=\"200\" stroke=\"#1e293b\" stroke-width=\"1.4\"/><rect x=\"117\" y=\"206\" width=\"34\" height=\"24\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"134\" y=\"222\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#1e293b\">PC2</text><line x1=\"182\" y1=\"168\" x2=\"182\" y2=\"200\" stroke=\"#1e293b\" stroke-width=\"1.4\"/><rect x=\"165\" y=\"206\" width=\"34\" height=\"24\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"182\" y=\"222\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#1e293b\">PC3</text><line x1=\"318\" y1=\"168\" x2=\"318\" y2=\"200\" stroke=\"#1e293b\" stroke-width=\"1.4\"/><rect x=\"301\" y=\"206\" width=\"34\" height=\"24\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"318\" y=\"222\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#1e293b\">PC4</text><line x1=\"366\" y1=\"168\" x2=\"366\" y2=\"200\" stroke=\"#1e293b\" stroke-width=\"1.4\"/><rect x=\"349\" y=\"206\" width=\"34\" height=\"24\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"366\" y=\"222\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#1e293b\">PC5</text><line x1=\"414\" y1=\"168\" x2=\"414\" y2=\"200\" stroke=\"#1e293b\" stroke-width=\"1.4\"/><rect x=\"397\" y=\"206\" width=\"34\" height=\"24\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"414\" y=\"222\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#1e293b\">PC6</text><text x=\"134\" y=\"258\" text-anchor=\"middle\" font-size=\"11\" fill=\"#2563eb\">192.168.10.0 / 26</text><text x=\"134\" y=\"274\" text-anchor=\"middle\" font-size=\"9.5\" fill=\"#64748b\">network address</text><text x=\"366\" y=\"258\" text-anchor=\"middle\" font-size=\"11\" fill=\"#2563eb\">192.168.10.64 / 26</text><text x=\"366\" y=\"274\" text-anchor=\"middle\" font-size=\"9.5\" fill=\"#64748b\">network address</text></g></svg>"
+      },
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain the role of the switch and the role of the router in this topology, making clear what each device examines when it forwards traffic and what each device does not do."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the number of usable host addresses available in each of the two subnets shown, and state the subnet mask for these subnets in dotted decimal notation."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain why each computer must be configured with the address of the router interface on its own subnet as its default gateway, and why the gateway address must lie inside the same subnet as the computer."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain why the company has arranged the network as two subnets rather than as a single 192.168.10.0/24 network, and state the effect of the arrangement on the number of computers that receive a broadcast sent by PC1."
+        },
+        {
+          "label": "e",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "A technician suggests removing both switches and connecting all six computers to a single switch, leaving the router in place. Explain the effect of this change on the network, referring to broadcast domains and to the addresses that would have to be assigned."
+        }
+      ],
+      "answer": "(a) A switch operates inside a single subnet and forwards frames using the destination MAC address, which it learns by recording the source address of every frame it receives. **(M1)** It does not examine IP addresses and it does not change the addresses in the frames it forwards, so it cannot connect two different subnets to one another. **(A1)** A router operates between subnets: it examines the destination IP address of each packet, consults its routing table, and forwards the packet out of the interface that leads towards the destination network, rewriting the link-layer addresses in the process. **(A1)** The router is therefore the boundary of each broadcast domain, and it does not forward broadcast frames from one of its interfaces to another.\n\n(b) Each subnet has a /26 prefix, so 32 - 26 = 6 bits remain for host addresses and each subnet contains 2^6 = 64 addresses in total. **(M1)** The lowest address in each block is the network address and the highest is the broadcast address, and neither can be assigned to a host, so each subnet provides 62 usable host addresses. **(A1)** A /26 prefix means the first 26 bits of the mask are set, so the mask is 255.255.255.192. **(A1)**\n\n(c) A computer can deliver a frame directly only to another device on the same link, and to do that it must know the destination's MAC address. **(M1)** When the destination IP address is not in the computer's own subnet, there is no device on the link that can accept the frame on the destination's behalf, so the computer must hand the packet to a router that is on its link and let the router deal with it. **(A1)** The default gateway is that router, and it must be inside the computer's own subnet, because otherwise the computer would have no way of reaching it at all: it would need a gateway to reach the gateway. **(M1)** If the gateway were omitted, each computer could still exchange traffic with the other computers on its own switch, but no packet could cross to the other subnet and nothing could reach the internet. **(A1)**\n\n(d) Dividing the block into two subnets splits one broadcast domain into two. **(M1)** A broadcast frame sent by PC1 is forwarded by the switch to every port in its own subnet but is not forwarded by the router into the other subnet, so only the other two computers on switch A receive it, rather than all six. **(A1)** This reduces the amount of broadcast traffic each computer has to process and the amount of processing it triggers. **(A1)** It also allows the two subnets to be given different access rules, so a fault or a compromised machine on one subnet does not automatically affect the other. **(A1)**\n\n(e) A single switch would place all six computers in one broadcast domain, because a switch does not partition broadcast traffic. **(M1)** The two /26 subnets could not simply be kept as they are, because all six computers would then be on the same link and a broadcast from any of them would reach the other five, which defeats the purpose of the split. **(A1)** Either the computers would all have to be re-addressed into one subnet, or the single switch would have to be configured with virtual local area networks so that the two logical subnets are kept apart, in which case the router would need an interface, or a sub-interface, in each. **(A1)**",
+      "markscheme_notes": "(a) M1 for stating that the switch forwards on MAC addresses and does not inspect IP addresses; A1 for adding that it therefore cannot join two subnets; A1 for the router examining the destination IP address and forwarding between networks. Do not award the second A1 for an answer that says only that the router is 'more powerful' or that it 'connects to the internet'. (b) M1 for the number of host bits or for 2^6 = 64; A1 for 62 usable addresses in each subnet, with the reason that the network and broadcast addresses are reserved; A1 for 255.255.255.192. A candidate who answers 64 usable addresses has forgotten the two reserved addresses and scores 1 of 3. (c) M1 for recognising that a frame can only be delivered directly within the same link; A1 for stating that a router is needed as the next hop; M1 for the reason the gateway must be in the same subnet, namely that the computer must be able to reach it directly; A1 for the consequence of omitting it. The third mark is the one most often missed, so accept any answer that makes clear that the computer could not reach a gateway that was outside its own subnet. (d) M1 for identifying that the split partitions the broadcast domain; A1 for the specific consequence that only the other two computers on switch A receive PC1's broadcast; A1 for reduced broadcast traffic; A1 for a second benefit such as separate access rules. Do not accept 'it is faster' without a reason. (e) M1 for stating that one switch means one broadcast domain; A1 for the consequence that the two subnets could not be maintained as they are; A1 for either re-addressing into one subnet or using VLANs. Accept a correct answer that mentions VLANs even if the term 'router-on-a-stick' is not used.",
+      "explanation": "The figure looks unremarkable, and that is the point: there is no trick in the topology, so every mark depends on knowing what each device actually does. A switch is a link-layer device. It learns which MAC address is reachable through which port and forwards frames accordingly, and it neither reads nor rewrites IP addresses. A router is an internet-layer device. It reads the destination IP address of every packet, chooses an outgoing interface from its routing table, and forwards the packet on. Because of that difference, a switch cannot separate two subnets and a router is the boundary of a broadcast domain.\n\nPart (b) is arithmetic, but the arithmetic is where candidates lose marks. A /26 leaves six host bits, so each subnet holds 64 addresses, but the first is the network address and the last is the broadcast address, and neither may be given to a host. The answer is 62, not 64. The mask is 255.255.255.192, which is the first three octets set plus the top two bits of the fourth, since 26 = 8 + 8 + 8 + 2.\n\nPart (c) is about a constraint that is easy to state and easy to get wrong. A computer with an address in 192.168.10.0/26 can send a frame directly to any device in 192.168.10.1 to 192.168.10.62, because they share a link. A computer in the other subnet is not on that link, so the frame has to be addressed to a router that is, and the router then forwards the packet onwards. That is why the gateway must lie inside the computer's own subnet: a computer reaches its gateway by the same direct mechanism it uses for any local device. A gateway outside the subnet would be unreachable, because reaching it would itself require a gateway.\n\nPart (d) connects the addressing decision to the traffic. Splitting the block in two halves the size of each broadcast domain, so a broadcast from PC1 reaches the other two computers on switch A and stops at the router. In a network of six computers that saves very little, but the principle scales: in a single flat network of several hundred hosts, every broadcast interrupts every host.\n\nPart (e) is the part that separates understanding from vocabulary. Removing the switches looks like a simplification, but a single switch carrying all six computers creates one broadcast domain, not two. The two subnets could only be preserved by configuring the switch with VLANs, which is exactly the work the second switch was doing for free. A candidate who says the network would simply be faster has not understood what a switch does.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original item. The figure was generated from the same subnet arithmetic the answers use. The questions deliberately avoid the two themes the bank already covers in this area: this item does not ask the candidate to design a variable-length subnetting scheme, and it does not ask how a host decides whether a destination is local, both of which are already tested by CS-A2.2-001.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.008,
+        "nearest_bank_id": "PHYS_HL_P3_2006May_TZ2_OPT_D_q03",
+        "nearest_bank_label": "bank:Physics/Physics HL",
+        "max_internal_similarity": 0.011,
+        "nearest_internal_id": "PHYS-C.4-102",
+        "max_approach_similarity": 0.105,
+        "nearest_approach_id": "CS-A2.2-001",
+        "checked_at": "2026-09-11"
+      },
+      "verification": {
+        "method": "Every address in both subnets enumerated in Python and partitioned by prefix, to confirm the network, broadcast and usable ranges quoted in the answer; the host counts checked against 2^h - 2; the dotted-decimal mask checked against the prefix length.",
+        "assertions": [
+          "approx(2**6, 64)",
+          "approx(2**6 - 2, 62)",
+          "approx(32 - 26, 6)",
+          "approx(64*2, 128)",
+          "approx(256 - 192, 64)",
+          "approx(int('255.255.255.192'.split('.')[3]), 192)",
+          "approx(0 + 64 - 1, 63)",
+          "approx(64 + 64 - 1, 127)",
+          "approx(62 - 3 - 1, 58)",
+          "approx(2**7 - 2, 126)",
+          "approx(2**8 - 2, 254)"
+        ],
+        "solution_skeleton": [
+          "distinguish the link-layer forwarding a switch performs from the internet-layer forwarding a router performs",
+          "convert the prefix length into host bits and subtract the two reserved addresses",
+          "explain why a next hop must be reachable directly for a host to use it",
+          "trace a broadcast from one host and identify where it stops",
+          "test the proposed single-switch change against the definition of a broadcast domain"
+        ]
+      },
+      "status": "reviewed",
+      "authored_by": "ai",
+      "created_at": "2026-09-13",
+      "updated_at": "2026-09-13"
+    }
+  ]
+}
