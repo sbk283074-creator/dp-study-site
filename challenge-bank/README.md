@@ -1,7 +1,7 @@
 # IB Challenge Bank
 
 A small, hard, **original** question bank for four IB subjects, pinned to the guides a **May 2028**
-candidate actually sits. It is the deliberate opposite of the 9,969-question retrieval bank: instead of
+candidate actually sits. It is the deliberate opposite of the 17,439-question retrieval bank: instead of
 covering everything shallowly, it covers the highest-value nodes with items that are difficult by
 design and provably not copied.
 
@@ -16,21 +16,22 @@ design and provably not copied.
 
 | Subject | Guide in force | Questions | Nodes covered |
 |---|---|---:|---:|
-| Math AA HL | 2021 (runs to Nov 2028) | 50 | 72 / 83 (87%) |
-| Physics HL | 2025 | 19 | 24 / 24 (100%) |
-| Computer Science HL | 2027 (new Theme A/B) | 14 | 25 / 25 (100%) |
-| Business Management SL | 2024 | 17 | 34 / 34 (100%) |
-| **Total** | | **100** | **155 / 166 (93%)** |
+| Math AA HL | 2021 (runs to Nov 2028) | 75 | 83 / 83 (100%) |
+| Physics HL | 2025 | 46 | 24 / 24 (100%) |
+| Computer Science HL | 2027 (new Theme A/B) | 24 | 25 / 25 (100%) |
+| Business Management SL | 2024 | 19 | 34 / 34 (100%) |
+| **Total** | | **164** | **166 / 166 (100%)** |
 
 **Every priority-1 ("must-cover") and priority-2 ("should-cover") node is done** — Maths 32/32 + 51/51,
 Physics 24/24, CS 25/25, BM 26/26 + 8/8 Toolkit. The bank now covers **all 166 syllabus nodes** across the
 four subjects; the only remaining work is the optional priority-3 ("stretch") tail.
 
-All 111 items are `published`, difficulty 4–5 (73 at difficulty 4, 38 at difficulty 5), and pass
+All 164 items are `published`, difficulty 4–5 (85 at difficulty 4, 79 at difficulty 5), and pass
 `validate.py --strict` with **0 failures and 0 warnings**. The originality gate is clean: **0 items
-above threshold**, highest external score 0.090 and highest internal score 0.042 (limits 0.35 / 0.25).
+above threshold**, highest external score 0.090, highest internal score 0.073 and highest approach
+score 0.356 (limits 0.35 / 0.25 / 0.50).
 
-Every item carries a `verification.assertions` list — **1053 machine-checked assertions** in total — so
+Every item carries a `verification.assertions` list — **1652 machine-checked assertions** in total — so
 the arithmetic in every answer is re-derived by the validator on each run, not merely asserted by the
 author.
 
@@ -52,7 +53,7 @@ challenge-bank/
     business-management-sl/*.json
   tools/
     validate.py             the quality gate (difficulty, marks, parts, lengths, assertions)
-    similarity_check.py     the originality gate (12,796-item corpus + all internal pairs)
+    similarity_check.py     the originality gate (20,266-item corpus + all internal pairs)
     coverage.py             the gap list that the next batch is drawn from
     fix_json.py             repairs stray backslashes and HTML entities
     ship.py                 runs the whole pipeline in one command
@@ -80,7 +81,7 @@ on `file://`.
 cd challenge-bank
 
 python3 tools/ship.py                  # repair -> build -> validate -> originality -> rebuild
-python3 tools/ship.py --skip-similarity  # skip the slow 12,796-item scan while drafting
+python3 tools/ship.py --skip-similarity  # skip the slow 20,266-item scan while drafting
 ```
 
 `ship.py` stops at the first failing stage and exits non-zero, so it can be run at the end of every
@@ -126,13 +127,14 @@ ships below the mark floor, and nothing ships without a passing similarity score
 | Gate | Command | Rejects |
 |---|---|---|
 | Quality | `tools/validate.py --strict` | difficulty 1–2, below the marks floor, part marks that do not sum to `marks`, thin fields, missing markscheme annotations, failed assertions |
-| Originality | `tools/similarity_check.py` | ≥ 0.35 vs the external corpus (same subject), ≥ 0.25 vs any other item in this bank |
+| Originality | `tools/similarity_check.py` | ≥ 0.35 vs the external corpus (same subject), ≥ 0.25 vs any other item in this bank, ≥ 0.50 on the `solution_skeleton` approach gate |
 
 The originality gate is measured, not asserted: `tools/similarity_check.py` scores every item against
-9,969 past-paper items, 46 un-imported generated batches, and every other question in this bank, using
-word-level 5-gram Jaccard over LaTeX-stripped text. Forbidden moves are number-swap, name-swap,
-unit-swap, sign-flip, part-reordering and notation change — if a source inspired an item,
-`provenance.inspired_by` names it and `provenance.adaptation` says what changed.
+the **20,266-item external corpus** (past-paper rows, un-imported generated batches and every other
+question in this bank), using word-level 5-gram Jaccard over LaTeX-stripped text, and separately runs
+an **approach gate** over the declared `solution_skeleton` (reject at 0.50). Forbidden moves are
+number-swap, name-swap, unit-swap, sign-flip, part-reordering and notation change — if a source
+inspired an item, `provenance.inspired_by` names it and `provenance.adaptation` says what changed.
 
 ---
 

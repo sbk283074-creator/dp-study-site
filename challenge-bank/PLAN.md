@@ -1,7 +1,7 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 111 questions across the four subjects, all published, all gates passing, every
+**Status: live. 164 questions across the four subjects, all published, all gates passing, every
 priority-1 and priority-2 syllabus node covered, and all 166 of the 166 nodes (100%) covered overall.**
 
 New folder: `challenge-bank/` (inside `dp learning final/`). It holds the question data and a
@@ -13,7 +13,7 @@ Line-up: **Mathematics AA HL · Physics HL · Computer Science HL · Business Ma
 
 ## 1. What we are building, and why it is not the existing bank
 
-The existing question bank (`dp learning/ib-dp-platform/backend/data/app.db`, 9,969 questions) is a
+The existing question bank (`dp learning/ib-dp-platform/backend/data/app.db`, 17,439 questions) is a
 **retrieval** corpus: real IB past papers plus topic extractions. It is good for practice and search.
 
 This new bank serves the opposite purpose: a small, hard, **original** set of questions that force the
@@ -23,7 +23,7 @@ uncomfortable.
 | | Existing qbank | Challenge Bank (this project) |
 |---|---|---|
 | Provenance | Real IB papers + extractions | Original, or adapted from non-IB sources |
-| Size | 9,969 | Tens per subject, grown slowly |
+| Size | 17,439 | Tens per subject, grown slowly |
 | Difficulty | Whatever IB set | Minimum floor (§4) — easy items are rejected |
 | Purpose | Coverage, retrieval, volume | Depth, transfer, non-routine reasoning |
 | Reuse of figures | Scanned/IB figures | Only self-authored SVG / LaTeX / tables |
@@ -223,11 +223,12 @@ and gets discarded.
    swap the graph/case but keep the stem; translate a real question into different notation;
    combine two real questions.
 3. **Similarity gate (automated).** Script `tools/similarity_check.py` compares each new question
-   against (a) all 9,969 rows of `app.db`, (b) the 2,827 un-imported items in
-   `backend/generated/*.json`, (c) every previously published Challenge Bank question. Method:
-   5-gram + token-set Jaccard/cosine over normalised text, per subject.
-   **Reject if max similarity ≥ 0.35 within the same subject**, or ≥ 0.50 cross-subject. The nearest
-   match id and score are stored in `originality`.
+   against (a) all 17,439 rows of `app.db`, (b) the 2,827 un-imported items in
+   `backend/generated/*.json`, (c) every previously published Challenge Bank question — **20,266 items
+   in total**. Method: word-level 5-gram Jaccard over LaTeX-stripped text, plus an **approach gate**
+   over the declared `solution_skeleton` (stemmed token overlap).
+   **Reject if max similarity ≥ 0.35 within the same subject**, or ≥ 0.50 cross-subject, or ≥ 0.50 on
+   the approach gate. The nearest match id and score are stored in `originality`.
 4. **Web gate.** A distinctive phrase from the stem is searched verbatim. Any near-hit on a past
    paper, question-bank site or textbook solution → rewrite.
 5. **Answer independence.** The worked answer must be derived from scratch and verified (§8), not
@@ -525,12 +526,43 @@ similarity score, and no BM item ships containing HL-only content.
   between the parabola y=x²−4 and the line y=2x−1, equal to 32/3 with the right-hand part 9 (16, d5).
   Whole bank: **111 questions · 166/166 nodes (100%)**, `validate.py --strict` clean, 1108 machine-checked
   assertions, originality clean at 0.090 external / 0.042 internal.
+- **Batch 10 — DONE (priority-3 stretch).** Three more items (114 total), the optional deeper/harder tail
+  beyond the must/should nodes — the only AHL 5.x bullets with no *dedicated* question (5.12/5.16/5.17/5.18/5.19
+  already had dedicated items, and 4.7/4.9 are cross-referenced). 5.13 l'Hopital's rule pushed past one pass
+  (limits 1/3 and 1/6, plus the polynomial-vs-exponential 0) (16, d5) · 5.14 related rates on a 13 m sliding
+  ladder solved by implicit differentiation, with the reversed part (given the rate, find the position) giving
+  $x=2\sqrt{169/5}$ (16, d4) · 5.15 the derivative of $\arctan x$ derived by implicit differentiation of
+  $x=\tan y$, then used for $\pi/4$ and $\pi/12$ (16, d4).
+  Whole bank at that point: **114 questions · 166/166 nodes (100%)**.
+- **Batches 11+ — DONE (paper and question-type expansion).** With all 166 syllabus nodes already
+  covered, the remaining gap was the *paper* a question belongs to and the *kind* of question it is, so
+  the bank was extended along that axis. 53 further items took the whole bank to **164**:
+  - **Physics 19 → 46.** The P1A multiple-choice clusters (13 items, one mark per question) and the P1B
+    data-based clusters (11 items), plus a P2 extended batch. The approaches used are listed in
+    STANDARD.md §4.6 — for P1A, rigid-body rotation, induction, circuits, photons and the photoelectric
+    effect, relativity, a source-moves/observer-moves Doppler pair, and a fields item with a spurious
+    root that fails the direction test; for P1B, linearising then reading a gradient, a log–log
+    exponent, trapezium integration of a tabulated force, residual-pattern analysis, a reciprocal plot
+    whose intercept is a zero error, and the half-power width of a resonance curve.
+  - **Computer Science 14 → 24.** P1 structured items (cache hierarchy → Amdahl → a clock-scaling step
+    that fails; VLSM subnetting under a boundary constraint) and P2 case-study items (binding-constraint
+    architecture split, ADT selection against every operation, imbalanced-data metrics, concurrency and
+    deadlock, protocol design with a threat model, legacy-migration phasing).
+  - **Maths 61 → 75.** The P3 inquiry set and further Paper 3 problem-solving items.
+  - **Business Management SL 17 → 19.** P1 case studies, including an HR restructure and a market-entry
+    decision using Ansoff with STEEPLE.
+  Two tool changes shipped with this work: `validate.py` gained `question_type`, `PAPER_TYPES` and
+  `TYPE_RULES` (a declared type is now checked against the paper that actually carries it), and
+  `similarity_check.py` gained the approach gate over `solution_skeleton`.
+  Whole bank: **164 questions · 166/166 nodes (100%)**, `validate.py --strict` clean at 0 failures and
+  0 warnings, **1652** machine-checked assertions, originality clean at 0.090 external / 0.073 internal /
+  0.356 approach.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
-  answers and no markscheme notes; the   booklet carries the full answers. The maths paper now reads
-  "61 questions · 950 marks · difficulty 4–5 · May 2028 cohort".
+  answers and no markscheme notes; the   booklet carries the full answers. Current headers: maths 75 questions / 1190 marks, physics 46 / 568,
+  CS 24 / 393, BM SL 19 / 277 — all difficulty 4–5, May 2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that
 means a batch of three, it ships three.

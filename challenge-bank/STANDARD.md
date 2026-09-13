@@ -32,7 +32,7 @@ not in that map.
 
 | Property | Rule | Enforced by |
 |---|---|---|
-| Originality | 5-gram Jaccard < 0.35 vs the 12,796-item external corpus | `similarity_check.py` (fail) |
+| Originality | 5-gram Jaccard < 0.35 vs the 20,266-item external corpus | `similarity_check.py` (fail) |
 | Internal originality | < 0.25 vs every other question **in this bank** | `similarity_check.py` (fail) |
 | Not a reskin | No number-swap, name-swap, unit-swap, part-reordering or notation change of any existing question | `provenance.adaptation` (fail if borrowed without a note) |
 | Difficulty | 3, 4 or 5. Nothing ships at 1–2 | `validate.py` (fail) |
@@ -59,7 +59,7 @@ Two coherence rules, because mismatches are the clearest sign a question was not
 
 ## 3. Length contract — floors, not targets
 
-Calibrated against the published corpus (now 100 items). These are **absolute floors**: a new question
+Calibrated against the published corpus (now 164 items). These are **absolute floors**: a new question
 may not be materially thinner than the thinnest existing one in its subject.
 
 | Subject | `answer` | `markscheme_notes` | `explanation` | total context¹ |
@@ -120,10 +120,114 @@ cases where the obvious Toolkit tool is the wrong one.
 
 They are evaluated by `validate.py` in a restricted namespace (`math`, plus `G`, `g`, `c`, `e_charge`,
 and the helpers `approx(a, b, tol)` and `pct(a, b)`). **Mandatory for every new maths and physics
-question** — it is the only mechanical check that the arithmetic in the answer is right. All 111 items
-in the bank now carry them (1108 assertions in total), including the CS and BM items, where the check
+question** — it is the only mechanical check that the arithmetic in the answer is right. All 164 items
+in the bank now carry them (1652 assertions in total), including the CS and BM items, where the check
 is optional but has already repaid the cost: backfilling the original BM items exposed a €24 slip in
 an expected-value difference and a volume gap quoted against the wrong price pair.
+
+### 4.3 Paper and question type
+
+Topic coverage is complete: every question maps to a syllabus node and all 166 are covered. **Topic is
+therefore no longer the axis a new batch should be planned on.** The live gaps are the paper a question
+belongs to and the kind of question it is. Every new item must declare `question_type`, and
+`validate.py` will reject a type that the declared paper does not contain.
+
+| Subject | Paper | What that paper actually is |
+|---|---|---|
+| Physics HL | P1A | 40 multiple-choice, 1 mark each, 4 options, no negative marking |
+| Physics HL | P1B | data-based: uncertainties, graphing, experimental critique (~20 marks) |
+| Physics HL | P2 | short-answer and extended response, 90 marks, 2 h 30 |
+| Maths AA HL | P1 / P2 | structured and extended response (P1 no GDC, P2 GDC), 110 marks each |
+| Maths AA HL | P3 | HL-only inquiry/modelling, two extended problems, 55 marks, 1 h |
+| CS HL | P1 / P2 | P1 structured; P2 case-study based, no code required |
+| BM SL | P1 / P2 | P1 case study; P2 stimulus and data-response |
+
+Physics has **no Paper 3** under the 2025 guide — the options were removed. Do not write one.
+
+**MCQ rules.** Exactly four options labelled A–D, exactly one marked correct, one mark per question.
+Every option, correct or not, needs a `rationale` of at least eight words that *names the error*: a
+distractor with no stated purpose is noise, not a distractor. The four options should be the correct
+route plus the three or four most predictable wrong ones — wrong part of a formula, an inverted ratio,
+a unit slip, a quantity confused with its rate of change. An MCQ cluster is one bank item whose parts
+are the individual questions; length floors scale with the cluster (45 words of answer per MCQ), so a
+five-question cluster needs roughly 225 words of answer, not 45.
+
+**Data-based rules.** Must carry a data table or a figure, and must exercise uncertainty, graphing or
+experimental critique. Seed one genuine anomaly into the dataset and make the candidate find it, name a
+plausible physical cause, and say what should have been done at the time — deleting a point after the
+fact is not an answer. Generate the data in Python from the model, then round to the instrument
+resolution, so the fit recovers the parameters you seeded.
+
+**Solution skeleton.** Every new item carries `verification.solution_skeleton`: three to six short
+steps naming the *method*, not the answer ("linearise by squaring and fit the gradient", not "find k").
+This is what the originality gate compares — see §4.4. Make it specific to the physics or the
+mathematics; two skeletons that both read "identify the model, solve, state the answer" will be
+flagged as the same question, correctly.
+
+### 4.4 Originality is about approach, not wording
+
+Word-level n-gram overlap is the wrong measure and is no longer the one that matters. Two questions can
+share almost no words and be the same question by method, and two can share nearly all their nouns and
+be genuinely different. `similarity_check.py` therefore runs two gates:
+
+- **lexical** (word 5-gram Jaccard; reject at 0.35 same subject, 0.25 within this bank) — catches
+  copying;
+- **approach** (structural match of the `solution_skeleton`; reject at **0.50**) — catches the same
+  question wearing different words.
+
+The approach gate is fuzzy at the token level: `expand`, `expands`, `expanding` and `expansion` land on
+the same token, and stopwords are dropped, so a step described with a different part of speech still
+matches. Calibration cases that the gate must get right:
+
+| pair | lexical | approach | verdict |
+|---|---|---|---|
+| Maclaurin of e^(sin x) vs Taylor of e^(cos x) at 0 | 0.03 | 0.63 | same question — reject |
+| flywheel by energy vs flywheel by angular impulse | 0.79 | 0.22 | different — allow |
+| two half-life items, different wording | 0.00 | 0.66 | same question — reject |
+
+The middle row is why the lexical gate alone is not enough: it would have rejected two questions that
+have nothing in common but their subject matter. Only items that declare a skeleton take part in the
+approach gate, so the pre-existing bank is unaffected.
+
+**Practical consequence:** when planning a batch, check that no two items share a skeleton. Two
+data-based Physics items both built on "linearise, fit, exclude the anomaly, evaluate" scored 0.31
+against each other — under the threshold, but a warning that the next P1B items need deliberately
+different treatments (residual analysis, log-log, area under a graph, comparison of two datasets).
+
+### 4.5 Sourcing
+
+Chinese material (高考压轴题, 强基计划 written tests, 数学/物理竞赛) is a good source of difficulty and
+is encouraged. Adapt rather than translate: rebuild the context, convert to IB command terms and IB
+mark-scheme conventions, enforce units and significant figures, and state the chain of reasoning the
+markscheme will reward. Record what you borrowed in `provenance.resource_origin` and
+`provenance.adaptation` — citing the origin is fine and useful. Difficulty must survive the adaptation;
+if the hard step was an algebraic trick that IB does not examine, replace the trick rather than the
+difficulty.
+
+### 4.6 Approach ledger
+
+The approach gate only knows about skeletons that exist. Keep this ledger current when adding a batch,
+and read it before planning one — it is the only defence against a batch that passes the gate and is
+still repetitive.
+
+| paper / type | approaches already used | what to use next |
+|---|---|---|
+| Physics P1A | rigid-body rotation; induction; circuits; photons & photoelectric; **relativity (every distractor a Galilean answer)**; **Doppler (source-moves vs observer-moves pair on identical numbers)**; **fields (spurious algebraic root that fails the direction test)** | transverse waves; thermal physics; nuclear; a second relativity cluster on energy–momentum |
+| Physics P1B | linearise T²–m then gradient; log–log for an exponent; trapezium integration of a tabulated non-linear force; form the invariant from each row and propagate uncertainty; **residual-pattern analysis + uncertainty budget (curvature is systematic)**; **reciprocal plot, intercept read as a zero error, two faults of different kinds**; **half-power width of a resonance curve → Q** | area under a graph; comparison of two datasets taken with different apparatus; log–log for a power law |
+| Physics P2 | — | energy balance with an inverted parameter (done: greenhouse); selector-then-spectrometer chains; nuclear fuel-cycle arithmetic; rotational dynamics with a slipping constraint |
+| Maths P3 | iterative root with a Pell invariant; difference-equation boundary-value problem; coupled ODE cascade; integral recurrence with a squeeze; generating-function counting; optimisation with a parameter range; binomial identities by coefficient extraction; exponential Diophantine by modular reduction; **inclusion–exclusion → recurrence → limit → rounding result (derangements)**; **roots of unity: factorise, cancel, substitute the excluded point** | Maclaurin solution of an ODE with no closed form; a graph-theoretic counting invariant; a probability problem whose answer is a named constant reached two ways |
+| CS P1 (structured) | FDE cycle and CPU/GPU comparison; binary representation and overflow; scheduling; database design and SQL; NoSQL and warehousing; **cache hierarchy → Amdahl → clock scaling that fails**; **VLSM subnetting design with a boundary constraint**; **asymptotics vs constant factor, crossover computed** | translation (compiler vs interpreter, HL); ML preprocessing and validation; OOP design with multiple classes |
+| CS P2 (case study) | binding-constraint architecture split; ADT selection against every operation; imbalanced-data metrics and governance; concurrency and deadlock; protocol design with a threat model; legacy-migration phasing; algorithmic fairness | distributed-system consistency; ML pipeline governance; a second security incident with a different failure class |
+| BM P1 (case study) | ratio analysis → growth model choice; landed cost → working-capital and obsolescence effects | HR restructure with a motivation theory; market-entry with Ansoff plus STEEPLE |
+
+Three rules keep the ledger honest. First, a new item in a row must differ from the entries already there
+in *what the student has to decide*, not in the context it is dressed in. Second, the Physics P1B row
+exists in its present form because the first two P1B items were both "linearise and fit"; if a row starts
+to look like a list of the same verb, the next item has to change the verb. Third — and this is not
+theoretical — backfilling skeletons onto the 164 legacy items immediately exposed
+`MATH-AHL5.6-001`/`MATH-AHL5.8-001` at **0.467**, two "differentiate, set to zero, classify, evaluate"
+questions on different functions that had been sitting in the bank as an apparent 0-failure state.
+**Any legacy item without a skeleton is invisible to the approach gate.** Do not leave one that way.
 
 ---
 
@@ -184,7 +288,7 @@ python3 tools/ship.py                 the whole thing, stops on first failure
 | 1. repair | `tools/fix_json.py` | doubles stray backslashes, converts HTML entities |
 | 2. build | `build.py` | renders `site/` from `data/` |
 | 3. quality gate | `tools/validate.py` | §2, §3, §4. **This is the gate.** |
-| 4. originality gate | `tools/similarity_check.py --write` | 12,796 external + all internal pairs |
+| 4. originality gate | `tools/similarity_check.py --write` | 20,266 external + all internal pairs |
 | 5. rebuild | `build.py` | re-renders so similarity scores appear in the metadata |
 
 Useful variants:
@@ -212,7 +316,8 @@ unless something breaks.
 4. **Status:** new items are `draft` until the gates pass, then `published`.
 5. **Re-brief:** coverage is re-measured after every batch; the next brief comes from the new gaps.
 
-Current state: 90 questions · **145 / 166 nodes covered (87%)**, and **every priority-1 node is done** —
-Maths 32/32 (62/83 overall), Physics 24/24 (complete), CS 25/25 (complete), BM 34/34 (complete,
-including all 8 Toolkit nodes). All 90 are `published`, `validate.py --strict` reports 0 failures and
-0 warnings, and all 90 items carry `verification.assertions` (961 assertions in total).
+Current state: 164 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
+priority-2 node is done** — Maths 32/32 must + 51/51 should (83/83 overall), Physics 24/24 (complete),
+CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 164
+are `published`, `validate.py --strict` reports 0 failures and 0 warnings, and all 164 items carry
+`verification.assertions` (1652 assertions in total).
