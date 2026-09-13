@@ -5,7 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CS-A1.1-001 — CS HL — IB Challenge Bank</title>
 <link rel="stylesheet" href="../assets/site.css">
-
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
 </head>
 <body>
 <header class="site"><div class="wrap">
@@ -47,7 +53,8 @@
 <details><summary>Why this question is hard</summary><div class="body"><p>Theme A questions are usually pure recall dressed up in a context, and this one is built to resist that. Three things make it harder than it looks:</p>
 <ul><li>In (a), 'describe the interaction' is not 'list the components'. The fetch–decode–execute cycle is a *sequence* with data moving between named registers, and answers that simply define the control unit, the ALU and the registers separately cannot access the top marks.</li><li>In (b) the mark scheme is explicitly looking for a difference <strong>and</strong> a consequence for this workload. 'A GPU has more cores' is a fact; 'obstacle detection applies one operation to every pixel, so thousands of cores each handle a different pixel at the same time' is an explanation.</li><li>Part (c) is the pivot. Without the number, part (d) is an opinion. With it, students can see that 82.9 MB/s of raw video cannot be stored or processed casually — the compression ratio is doing real work, and any architecture that has to move uncompressed frames around is in trouble.</li></ul>
 <p>The evaluation in (d) then has something to bite on. The 20 ms deadline is the decisive constraint: it is not that compilation is 'faster' in some abstract sense, it is that interpretation makes the *worst-case* timing unpredictable, and a hard real-time control loop is governed by its worst case, not its average case.</p>
-<p>Classic wrong turns: describing the GPU as 'a faster CPU'; confusing compression ratio with compression *factor* (dividing by 40 when they should, or multiplying); and in (d), describing both options competently and then never choosing.</p></div></details>
+<p>Classic wrong turns: describing the GPU as 'a faster CPU'; confusing compression ratio with compression *factor* (dividing by 40 when they should, or multiplying); and in (d), describing both options competently and then never choosing.</p>
+<p>One further trap is worth naming, because part (c) carries a mark for it. The arithmetic there mixes bits and bytes: the colour depth is given in bits per pixel, so the frame rate produces a rate in bits per second, while the question asks for megabytes per second. Dividing by 8 is not a tidiness step that can be skipped, and a candidate who omits it obtains a rate eight times too large. That error is easy to miss, because the same factor of eight is then carried silently into the 90-second storage figure, where the answer still looks like a plausible number rather than a wrong one.</p></div></details>
 <h2>Metadata</h2>
 <dl class="kv">
   <div><dt>Challenge lever</dt><dd>A quantitative constraint sits in the middle of an otherwise qualitative question: a data-rate calculation determines whether the proposed architecture is even possible, so the evaluation in the last part has to be grounded in a number rather than in general preference.</dd></div>
