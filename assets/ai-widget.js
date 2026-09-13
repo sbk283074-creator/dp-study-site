@@ -8,6 +8,11 @@
  * THREE THINGS THIS WIDGET DOES
  *
  * 1. AI STUDY ASSISTANT (chat panel)
+ *    - Every reply is SPLIT: the model's chain of thought (when the model
+ *      returns one) goes into a collapsible "Thinking" block, and only the
+ *      finished answer is shown in the body. Reasoning never pollutes the
+ *      answer text, and the answer can be COPIED with one click (each reply
+ *      carries a Copy row, plus "Copy thinking" when there is any).
  *    - Full-page mode: the ⤢ button in the header expands the panel to fill
  *      the whole viewport (and Esc drops back; Esc again closes).
  *    - The control bar sits directly above the input bar and can be HIDDEN
@@ -284,6 +289,22 @@
       ".dp-ai-msg.user{align-self:flex-end;background:#3653d6;color:#fff;border-bottom-right-radius:4px}",
       ".dp-ai-msg.bot{align-self:flex-start;background:#fff;border:1px solid #e3e8f0;border-bottom-left-radius:4px}",
       ".dp-ai-msg.bot strong{color:#2a44b8}",
+      // ---- reason / answer split + copy controls ----
+      ".dp-ai-think{margin:0 0 9px;border:1px solid #e3e8f0;background:#f7f9fd;border-radius:9px;overflow:hidden}",
+      ".dp-ai-think-toggle{display:block;width:100%;text-align:left;border:none;background:transparent;padding:6px 9px;",
+      "cursor:pointer;font:600 11.5px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#5a6577}",
+      ".dp-ai-think-toggle:hover{color:#3653d6}",
+      ".dp-ai-think-n{font-weight:500;color:#94a0b2}",
+      ".dp-ai-think-body{display:none;padding:4px 10px 9px;border-top:1px solid #e6eaf3;font-size:12.5px;line-height:1.5;",
+      "color:#5a6577;max-height:260px;overflow:auto}",
+      ".dp-ai-think-body.open{display:block}",
+      ".dp-ai-think-body strong{color:#3c4657}",
+      ".dp-ai-think-body code{background:#eef1ff}",
+      ".dp-ai-acts{display:flex;gap:6px;margin-top:9px;padding-top:8px;border-top:1px solid #eef1f6}",
+      ".dp-ai-act{border:1px solid #d8dfeb;background:#fff;color:#5a6577;",
+      "font:600 11px -apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:4px 10px;border-radius:999px;cursor:pointer}",
+      ".dp-ai-act:hover{border-color:#3653d6;color:#3653d6}",
+      ".dp-ai-act.ok{border-color:#1f9d5a;color:#1f9d5a}",
       ".dp-ai-msg.err{align-self:flex-start;background:#fdeceb;color:#b02a1f;border:1px solid #f5c4bf;border-bottom-left-radius:4px}",
       // ---- collapsible control bar, attached to the input ----
       ".dp-ai-ctrl{border-top:1px solid #eef1f6;background:#fff}",
@@ -414,10 +435,95 @@
 
     function scrollDown() { msgs.scrollTop = msgs.scrollHeight; }
 
-    function addMsg(role, html) {
+    // ---- copy to clipboard (with a fallback for non-secure contexts) ----
+    function copyText(str, btn) {
+      var label = btn.textContent;
+      function done() {
+        btn.textContent = "Copied \u2713";
+        btn.classList.add("ok");
+        setTimeout(function () { btn.textContent = label; btn.classList.remove("ok"); }, 1400);
+      }
+      function fallback(s) {
+        try {
+          var ta = document.createElement("textarea");
+          ta.value = s;
+          ta.setAttribute("readonly", "");
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          done();
+        } catch (e) { btn.textContent = "Copy failed"; }
+      }
+      var s = String(str == null ? "" : str);
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(s).then(done, function () { fallback(s); });
+        } else { fallback(s); }
+      } catch (e) { fallback(s); }
+    }
+
+    // plain text of a rendered answer, for when no raw text was stored
+    function toPlain(html) {
+      var d = document.createElement("div");
+      d.innerHTML = html;
+      return (d.textContent || "").trim();
+    }
+
+    // A bot reply carries two extra things: the model's chain of thought, in a
+    // block that stays COLLAPSED (so thinking is separated from the answer, the
+    // way a normal assistant does it), and a row of copy controls.
+    function decorateBot(el, text, thinking) {
+      var plain = text || toPlain(el.innerHTML);
+      if (thinking) {
+        var wrap = document.createElement("div");
+        wrap.className = "dp-ai-think";
+        var tg = document.createElement("button");
+        tg.type = "button";
+        tg.className = "dp-ai-think-toggle";
+        var body = document.createElement("div");
+        body.className = "dp-ai-think-body";
+        body.innerHTML = format(thinking);
+        function paint(open) {
+          tg.setAttribute("aria-expanded", open ? "true" : "false");
+          tg.innerHTML = (open ? "\u25be " : "\u25b8 ") + "Thinking <span class=\"dp-ai-think-n\">" +
+            thinking.length.toLocaleString() + " chars</span>";
+        }
+        tg.addEventListener("click", function () {
+          paint(body.classList.toggle("open"));
+        });
+        paint(false);
+        wrap.appendChild(tg);
+        wrap.appendChild(body);
+        el.insertBefore(wrap, el.firstChild);
+      }
+      var acts = document.createElement("div");
+      acts.className = "dp-ai-acts";
+      var cp = document.createElement("button");
+      cp.type = "button";
+      cp.className = "dp-ai-act";
+      cp.textContent = "Copy";
+      cp.title = "Copy this answer";
+      cp.addEventListener("click", function () { copyText(plain, cp); });
+      acts.appendChild(cp);
+      if (thinking) {
+        var cpt = document.createElement("button");
+        cpt.type = "button";
+        cpt.className = "dp-ai-act";
+        cpt.textContent = "Copy thinking";
+        cpt.addEventListener("click", function () { copyText(thinking, cpt); });
+        acts.appendChild(cpt);
+      }
+      el.appendChild(acts);
+    }
+
+    function addMsg(role, html, meta) {
       var el = document.createElement("div");
       el.className = "dp-ai-msg " + role;
       el.innerHTML = html;
+      if (role === "bot" && meta) decorateBot(el, meta.text, meta.thinking || "");
       msgs.appendChild(el);
       scrollDown();
       return el;
@@ -425,10 +531,15 @@
 
     // restore history
     var history = loadHistory();
-    history.forEach(function (m) { addMsg(m.role, m.html); });
+    history.forEach(function (m) {
+      if (m.role === "bot") addMsg("bot", m.html, { text: m.text, thinking: m.thinking });
+      else addMsg(m.role, m.html);
+    });
 
-    function pushHistory(role, html) {
-      history.push({ role: role, html: html });
+    function pushHistory(role, html, meta) {
+      var item = { role: role, html: html };
+      if (role === "bot" && meta) { item.text = meta.text; item.thinking = meta.thinking || ""; }
+      history.push(item);
       saveHistory(history);
     }
 
@@ -619,8 +730,9 @@
           var d = res.data || {};
           if (res.status === 200 && d.ok) {
             var botHtml = format(d.answer || "(no answer)");
-            addMsg("bot", botHtml);
-            pushHistory("bot", botHtml);
+            var botMeta = { text: d.answer || "", thinking: d.thinking || "" };
+            addMsg("bot", botHtml, botMeta);
+            pushHistory("bot", botHtml, botMeta);
             if (d.intent) {
               meta.textContent = "via " + labelFor(d.model) + " \u00b7 " + d.intent.depth + " \u00b7 " + d.intent.difficulty + " \u00b7 " + d.intent.length;
               meta.title = d.intent.reason || "";
