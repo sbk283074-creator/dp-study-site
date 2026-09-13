@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL5.18-102 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>5.18 A separable logistic equation: the carrying capacity is derived, not given</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL5.18-102</p>
+<div class="meta"><span class="chip chip-key">AHL 5.18 (first order differential equations)</span><span class="chip">P2 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: allowed</span><span class="chip">Show that</span><span class="chip">State</span><span class="chip">Hence</span><span class="chip">Find</span></div>
+
+
+<h2>Question</h2>
+<p>The number $P$ of bacteria in a culture, $t$ hours after the start of an experiment, is modelled by the differential equation</p>
+<p>$$\frac{dP}{dt} = 0.4P - 0.0002P^2, \qquad P(0) = 500.$$</p>
+<p>The model is proposed as an alternative to the exponential model $\dfrac{dP}{dt} = 0.4P$, which predicts that the culture grows without bound.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Show that the differential equation may be written in the form $\dfrac{dP}{dt} = kP\left(1 - \dfrac{P}{L}\right)$, and state the values of the constants $k$ and $L$.</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Separate the variables and, using partial fractions, show that</p>
+<p>$$\ln\left(\frac{P}{2000 - P}\right) = 0.4t - \ln 3.$$</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Hence find an expression for $P$ in terms of $t$, and find the time, in hours, at which the population first reaches $1000$.</p> <em>(Hence)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Determine the limiting value of $P$ as $t \to \infty$, and the value of $P$ at which the growth rate $\dfrac{dP}{dt}$ is greatest. Justify your answer, and comment on the relationship between this value of $P$ and your answer to part (c).</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) Factorise the right-hand side: $0.4P - 0.0002P^2 = 0.0002P(2000 - P)$ (M1). Writing this as $0.0002P\left(2000\right)\left(1 - \dfrac{P}{2000}\right) = 0.4P\left(1 - \dfrac{P}{2000}\right)$ (A1) gives the required form with $k = 0.4$ and $L = 2000$ (A1). Note that $L$ is not read from the question: it is the ratio of the coefficient of $P$ to the coefficient of $P^2$, that is $0.4 \div 0.0002 = 2000$.</p>
+<p>(b) With the factorised form, $\dfrac{dP}{P(2000 - P)} = 0.0002\,dt$ (M1). Partial fractions: $\dfrac{1}{P(2000 - P)} = \dfrac{1}{2000}\left(\dfrac{1}{P} + \dfrac{1}{2000 - P}\right)$ (A1). Integrating,<br>$$\frac{1}{2000}\left(\ln P - \ln(2000 - P)\right) = 0.0002t + C \quad (M1),$$<br>noting that $\int \dfrac{dP}{2000 - P} = -\ln(2000 - P)$. Multiplying by $2000$ and using $0.0002 \times 2000 = 0.4$: $\ln\left(\dfrac{P}{2000 - P}\right) = 0.4t + C'$ (A1). At $t = 0$, $P = 500$, so $C' = \ln\left(\dfrac{500}{1500}\right) = \ln\dfrac{1}{3} = -\ln 3$ (A1), which gives the stated result. Since $0 &lt; P &lt; 2000$ throughout, the modulus signs may be dropped.</p>
+<p>(c) From part (b), $\dfrac{P}{2000 - P} = \dfrac{1}{3}e^{0.4t}$ (M1). Rearranging, $P\left(1 + \tfrac{1}{3}e^{0.4t}\right) = \tfrac{2000}{3}e^{0.4t}$ (M1), so<br>$$P = \frac{2000e^{0.4t}}{3 + e^{0.4t}} = \frac{2000}{1 + 3e^{-0.4t}} \quad (A1).$$<br>Setting $P = 1000$: $1 + 3e^{-0.4t} = 2$, so $e^{-0.4t} = \tfrac{1}{3}$ and $0.4t = \ln 3$ (M1). Hence $t = \dfrac{\ln 3}{0.4} = 2.75$ hours (A1), to three significant figures.</p>
+<p>(d) As $t \to \infty$, $e^{-0.4t} \to 0$, so $P \to \dfrac{2000}{1 + 0} = 2000$ (A1). The limiting population is $2000$, which is the value of $L$ found in part (a) -- the model predicts that the culture approaches, but never reaches, the carrying capacity.<br>For the growth rate, $\dfrac{dP}{dt} = 0.0002P(2000 - P)$ is a quadratic in $P$ with a negative coefficient of $P^2$, so it has a single maximum at the midpoint of its two zeros, $P = 0$ and $P = 2000$ (M1). By symmetry, or by differentiating $0.0002(2000P - P^2)$ with respect to $P$ to give $0.0002(2000 - 2P) = 0$, the maximum occurs at $P = 1000$ (A1). The maximum growth rate is therefore $0.0002(1000)(1000) = 200$ bacteria per hour (A1).<br>The connection with part (c) is exact rather than coincidental: $P = 1000$ is half the carrying capacity, and the time found in (c) is the moment at which the growth rate is greatest. Before that instant the growth rate is rising; after it, the growth rate falls even though the population is still increasing. This is the feature the exponential model cannot reproduce: under $\dfrac{dP}{dt} = 0.4P$ the growth rate is $0.4 \times 500 = 200$ per hour at $t = 0$ and increases forever, matching the correct model only at the single instant $t = 0$.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award (M1) for factorising out $0.0002P$. The value $L = 2000$ must be derived, not quoted; condone $L = 2000$ obtained by solving $0.4 - 0.0002P = 0$.<br>(b) Award (M1) for separating, (A1) for the correct partial fraction decomposition, (M1) for integrating both sides, (A1) for the factor $0.4$ and (A1) for the constant $-\ln 3$. A candidate who writes $\ln(2000 - P)$ with a positive sign forfeits the (A1) for the integration but may still earn follow-through marks in (c) if the subsequent algebra is consistent.<br>(c) Award (M1) for exponentiating, (M1) for the rearrangement, (A1) for the closed form. Accept the equivalent form $P = 2000e^{0.4t}/(3 + e^{0.4t})$. Award (M1) for setting $P = 1000$ and solving an equation of the form $e^{\pm 0.4t} = 3^{\pm 1}$, (A1) for $t = 2.75$ (units required).<br>(d) Award (A1) for the limit $2000$. For the maximum: award (M1) for recognising that $dP/dt$ is a quadratic in $P$ and attempting to maximise it, (A1) for $P = 1000$, (A1) for the value $200$. A candidate who differentiates the closed form for $P$ twice instead may earn (M1) only. The comment on part (c) earns no separate mark but should be credited in (d) if it identifies that the two instants coincide.<br>Do NOT award any mark in (d) for a limiting value described as 'infinite' or 'unbounded'.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The item is a separable differential equation, and the separation is not the difficulty. The difficulty is that the standard form of the logistic model is not handed over: the equation arrives as two competing terms, $0.4P$ and $-0.0002P^2$, and the carrying capacity is the ratio of their coefficients. Until a candidate forms that ratio, there is nothing to substitute into the logistic solution, and the most natural thing to do -- drop the quadratic term as a small correction and solve $dP/dt = 0.4P$ -- destroys exactly the behaviour being tested.</p>
+<p>The second decision is in part (d), and it is the one that separates a candidate who has learned the solution from one who understands the model. The growth rate $dP/dt$ is a quadratic in $P$; its maximum is at the vertex, $P = 1000$. Reaching that by differentiating the closed form for $P$ twice is possible but is the long way round, and it is the route that hides the point. The short way -- the zeros of $0.0002P(2000 - P)$ are $0$ and $2000$, so the vertex is at their midpoint -- takes four seconds and shows that the candidate is looking at the differential equation rather than at the formula that came out of it.</p>
+<p>The arc closes deliberately. Part (c) asks for the time at which $P = 1000$ and produces $t = \ln 3 / 0.4 \approx 2.75$ hours without any suggestion that this instant is special. Part (d) then reveals that it is the instant of fastest growth. A candidate who notices the coincidence while answering (d) has seen the structure of the logistic curve -- growth rate rising, then falling, while the population itself rises throughout -- and that is the idea the syllabus is reaching for when it asks for a model to be interpreted rather than merely solved.</p>
+<p>This is adapted from the AP Calculus BC treatment of differential equations, where the logistic equation is normally supplied already in the form $dP/dt = kP(L - P)$ or $kP(1 - P/L)$ with the carrying capacity named in the stem. Supplying only the expanded polynomial, and asking for the limit and the maximum growth rate rather than for the solution alone, moves the item from procedure to interpretation.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The carrying capacity is never written down. It has to be recovered from the ratio of the two coefficients in the differential equation, and every later part is a function of it. A candidate who expects the model to arrive in the standard form dP/dt = kP(1 - P/L) has nothing to substitute, and the natural fallback -- ignoring the quadratic term and treating the growth as exponential -- removes the very feature the question is about.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 5.18 (first order differential equations)</dd></div>
+  <div><dt>Inspiration</dt><dd>US AP Calculus BC -- logistic differential equation free-response item</dd></div>
+  <div><dt>Adaptation</dt><dd>The source supplies the logistic equation already in the form dP/dt = kP(1 - P/L) with L stated. Here only the expanded polynomial 0.4P - 0.0002P^2 is given, so the carrying capacity must be derived as a ratio (structure and given-vs-asked both changed). The AP item typically asks for the solution and one value; here the solution is a step and the assessed endpoints are the limiting value and the population at which the growth rate is greatest, with the time found in (c) deliberately equal to the instant of maximum growth (reasoning chain changed). Rewritten with IB command terms, (M1)(A1) annotations and follow-through rules.</dd></div>
+  <div><dt>Verification</dt><dd>The carrying capacity recomputed as the ratio of the two coefficients and as the root of 0.4 - 0.0002P; the closed-form solution substituted back into the differential equation at a test time and checked against 0.4P - 0.0002P^2; the initial condition and the P = 1000 crossing verified; the maximum of the quadratic growth rate located by differentiation with respect to P; the limiting value confirmed from the closed form.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2018Nov_TZ0_q11 (similarity 0.014)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL1.11-001 (similarity 0.008)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-13</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,9 +1,9 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 178 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 184 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 14 of 178 do. The remaining 164 are
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 20 of 184 do. The remaining 164 are
 a published, ratcheting backlog — see `STANDARD.md` §2.2–§2.5 and `tools/difficulty_audit.py`.**
 
 New folder: `challenge-bank/` (inside `dp learning final/`). It holds the question data and a
@@ -621,12 +621,55 @@ similarity score, and no BM item ships containing HL-only content.
     becomes a hard failure. The rule is now written down: the next Physics item may not claim difficulty 5
     until the share is back at or below 62%. The labels were left alone deliberately — lowering a label
     that the evidence supports would fix a statistic and break the standard.
+- **Batch 14 — DONE (A-Level / AP / 高考, rewritten into IB form).** Six items took the bank to **184**
+  questions and **1902** assertions. The brief was to mine three named syllabuses — A-Level, AP and
+  高考 — for genuinely hard material and then convert it to IB style and IB testing method, not to
+  translate the words and leave the question intact.
+  - **What "IB form" was taken to mean, concretely.** Every item uses IB command terms drawn from the
+    recognised list; every method mark is annotated `(M1)(A1)(R1)(AG)` at the point it is earned; every
+    part carries an explicit condonation, follow-through and forfeiture rule in `markscheme_notes`;
+    anchors are written as `Show that` so the answer is marked on the working and not on the result,
+    which is the IB convention and not the A-Level, AP or 高考 one; and answers are given exact where the
+    source would accept a decimal, or to three significant figures with units where IB requires it.
+  - **The six items.** `MATH-AHL5.18-102` (P2, 16, d5, `derived_limit`, **us-ap**): the logistic equation
+    arrives as the expanded polynomial $0.4P - 0.0002P^2$, so the carrying capacity must be recovered as
+    the ratio $0.4/0.0002 = 2000$ before the model can be recognised at all; the time at which $P = 1000$
+    turns out to be exactly the instant of maximum growth. `MATH-AHL5.16-102` (P3, 15, d5,
+    `variable_swap`, **uk-alevel**): the reflection substitution $u = \pi/2 - x$ does not simplify the
+    integrand, it swaps $\sin$ and $\cos$ and returns an integral of the same difficulty; adding the two
+    gives $I = \pi/4$, the argument generalises to any positive continuous $f$, and a final part asks
+    where the generalisation does *not* apply. `PHYS-A.1-103` (P2, 15, d4, `implicit_dependence`,
+    **china-gaokao**): range of a projectile on an inclined plane; $\alpha$ and $\beta$ enter only through
+    $2\alpha - \beta$, so the optimum is $\alpha = 45^\circ + \beta/2$, and using the flat-ground
+    $45^\circ$ costs $6.3$ m out of $68.4$ m. `PHYS-A.4-104` (P2, 15, d4, `aggregate_recovery`,
+    **us-ap**): an Atwood machine with a massive pulley, where the effective inertia $m_1 + m_2 + I/R^2$
+    has a term that has the units of mass and is not a mass; inverting the formula shows that halving the
+    acceleration needs $4.8$ times the moment of inertia, not twice. `CS-B2.4-002` (P1, 16, d4,
+    `exceptional_parameter`, **us-ap**): an array-run method that is correct on ordinary tests and fails
+    for exactly two classes of input, and where the plausible one-line repair fixes one class and not the
+    other. `BM-3.5-002` (P2, 15, d4, `quant_vs_judgement`, **uk-alevel**): a ratio analysis in which ROCE
+    and absolute profit improve while both margins and both liquidity ratios deteriorate, and where the
+    expansion returns $25.6\\%$ against a current ROCE of $18.3\\%$ yet drops the acid test ratio to $0.41$ —
+    the project is sound and the overdraft is not.
+  - **Two structural decisions are worth recording.** First, both Physics items were written at
+    **difficulty 4 with heavier `Show that` scaffolding**, deliberately. Batch 13 had pushed Physics to
+    63% difficulty 5, and the rule written then was that the next Physics item might not claim 5. Rather
+    than relabel an earned d5 — which fixes a statistic and breaks the standard — the new items were
+    *designed* to be d4. It worked: **Physics fell from 63% to 61%, below the 62% baseline**, so the debt
+    is being paid down the intended way. Second, six previously unused levers were brought in, taking the
+    bank from **7 to 12 distinct levers of 13**, and dropping the largest share from 43% to 30%.
+  - **Gates.** `validate.py` reports **0 failures** and the six add no new warnings (backlog steady at the
+    164 grandfathered items). Originality is clean at 0.028 external / 0.012 internal / 0.147 approach for
+    the new items, and the bank-wide maxima are unchanged at 0.090 / 0.073 / 0.356.
+    `difficulty_audit.py --check` passes and `prove_difficulty_gates.py` holds all 10 cases.
+  - **`us-ap` was previously unused** and is now represented by three items; `uk-alevel` by four and
+    `china-gaokao` by seven.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
-  answers and no markscheme notes; the   booklet carries the full answers. Current headers: maths 79 questions / 1242 marks, physics 52 / 645,
-  CS 27 / 442, BM SL 20 / 292 — all difficulty 4–5, May 2028 cohort.
+  answers and no markscheme notes; the   booklet carries the full answers. Current headers: maths 81 questions / 1273 marks, physics 54 / 675,
+  CS 28 / 458, BM SL 21 / 307 — all difficulty 4–5, May 2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that
 means a batch of three, it ships three.

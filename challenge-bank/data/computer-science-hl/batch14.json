@@ -1,0 +1,113 @@
+{
+  "questions": [
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-13",
+      "updated_at": "2026-09-13",
+      "originality": {
+        "max_similarity": 0.006,
+        "note": "filled by tools/similarity_check.py --write",
+        "nearest_bank_id": "CS_HL_P2_2016Nov_q16",
+        "nearest_bank_label": "bank:Computer Science/CS HL",
+        "max_internal_similarity": 0.0,
+        "nearest_internal_id": null,
+        "max_approach_similarity": 0.1,
+        "nearest_approach_id": "CS-B2.3-001",
+        "checked_at": "2026-09-11"
+      },
+      "id": "CS-B2.4-002",
+      "subject": "Computer Science HL",
+      "syllabus_ref": "B2.4 Programming algorithms and B2.3 Programming constructs",
+      "topic": "Theme B: Computational thinking and programming",
+      "subtopic": "B2.4 An algorithm that is correct except for one class of input: the final run is never recorded",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "marks": 16,
+      "difficulty": 4,
+      "question_type": "structured",
+      "challenge_mechanism": "The algorithm is right for almost every input, which is what makes the defect hard to see: a candidate testing it on a handful of arrays is unlikely to choose one whose longest run happens to end at the last element. The exceptional cases are not exotic -- they are the array of length one and every array whose longest run is its last -- and identifying them requires reasoning about what the loop fails to do after it finishes, rather than about what it does inside.",
+      "command_terms": [
+        "Determine",
+        "Explain",
+        "Construct",
+        "Evaluate"
+      ],
+      "tags": [
+        "array",
+        "iteration",
+        "off-by-one",
+        "edge case",
+        "algorithm tracing",
+        "testing",
+        "bug identification",
+        "pseudocode"
+      ],
+      "question": "A programmer writes the following method to find the length of the longest run of identical adjacent values in a one-dimensional array $A$ of $N$ integers, where $N \\geq 1$. The array is indexed from $0$ to $N - 1$.\n\n```\nLONGEST = 0\nCURRENT = 1\nloop I from 1 to N - 1\n    if A[I] = A[I - 1] then\n        CURRENT = CURRENT + 1\n    else\n        if CURRENT > LONGEST then\n            LONGEST = CURRENT\n        end if\n        CURRENT = 1\n    end if\nend loop\nreturn LONGEST\n```\n\nThe programmer tests the method on the array $[3, 3, 1, 1, 1, 2]$ and obtains $3$, which is correct.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine the value returned by the method for each of the following arrays.\n\n(i) $[4, 4, 4]$\n\n(ii) $[5]$\n\n(iii) $[2, 7, 7]$\n\n(iv) $[9, 9, 6, 6, 6]$.\n\nFor each array, state also the value the method should return."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Identify the two classes of input for which the method returns a value that is too small, and explain, by reference to the pseudocode, why each occurs."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Construct",
+          "text": "Rewrite the method so that it returns the correct value for every array of length $N \\geq 1$. Your answer must be given in the same pseudocode style, and you must state what you changed."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Evaluate",
+          "text": "A second programmer suggests correcting the method by changing the first line to `LONGEST = 1` and making no other change.\n\nEvaluate this suggestion: state whether it produces the correct answer for every array, and support your answer either by explaining why it works or by giving a specific counter-example and tracing it."
+        }
+      ],
+      "answer": "(a)(i) The loop runs for $I = 1$ and $I = 2$. At $I = 1$, $A[1] = A[0]$ so $CURRENT = 2$; at $I = 2$, $A[2] = A[1]$ so $CURRENT = 3$. The loop ends with $LONGEST = 0$, so the method returns **0**; the correct value is **3** (A1).\n\n(a)(ii) The loop runs from $1$ to $0$, which is empty, so it never executes and the method returns **0**; the correct value is **1**, since a single element is a run of length one (A1).\n\n(a)(iii) At $I = 1$, $A[1] = 7 \\neq A[0] = 2$, so $CURRENT = 1 > LONGEST = 0$ gives $LONGEST = 1$ and $CURRENT$ resets to $1$; at $I = 2$, $A[2] = A[1]$ so $CURRENT = 2$. The loop ends and the method returns **1**; the correct value is **2** (A1).\n\n(a)(iv) At $I = 1$, $A[1] = A[0]$ so $CURRENT = 2$; at $I = 2$, $A[2] \\neq A[1]$, so $LONGEST = 2$ and $CURRENT = 1$; at $I = 3$ and $I = 4$, $CURRENT$ becomes $2$ then $3$. The loop ends and the method returns **2**; the correct value is **3** (A1).\n\n(b) The two classes are:\n\n**Arrays of length 1.** With $N = 1$ the loop `from 1 to N - 1` runs from $1$ to $0$, which is empty, so $LONGEST$ keeps its initial value of $0$ and the method returns $0$ instead of $1$ (A1).\n\n**Arrays whose longest run ends at the final element.** The variable $CURRENT$ is only ever compared with $LONGEST$ inside the `else` branch, that is, at the moment a run is discovered to have ended (A1). The run that is still in progress when the loop finishes is never compared with anything (A1). So whenever the longest run is the last one -- as in (i), (iii) and (iv) -- the method reports the longest run it happened to close off, or $0$ if it closed off none (A1).\n\nThe programmer's test array $[3, 3, 1, 1, 1, 2]$ is misleading: its longest run of three $1$s ends at index $4$ and is closed off by the $2$ at index $5$, so the defect is invisible.\n\n(c) One correct version compares $CURRENT$ with $LONGEST$ once more after the loop has finished:\n\n```\nif N = 0 then\n    return 0\nend if\nLONGEST = 1\nCURRENT = 1\nloop I from 1 to N - 1\n    if A[I] = A[I - 1] then\n        CURRENT = CURRENT + 1\n    else\n        CURRENT = 1\n    end if\n    if CURRENT > LONGEST then\n        LONGEST = CURRENT\n    end if\nend loop\nreturn LONGEST\n```\n\nThe essential change is that the comparison with $LONGEST$ is moved **outside the `else` branch** so that it happens on every iteration, including the last (A1). With that change $CURRENT$ is compared after every element is processed, so the run in progress at the end of the loop is included (A1). Initialising $LONGEST = 1$ rather than $0$ handles $N = 1$ (A1), and the guard for $N = 0$ keeps the method defined if the problem statement is ever relaxed (A1).\n\nAlternative correct answers are acceptable, for example initialising $LONGEST = 1$ and appending a single `if CURRENT > LONGEST then LONGEST = CURRENT` after `end loop`. Credit the version a candidate gives if it is correct for $N = 1$ and for a final-run array.\n\n(d) The suggestion does **not** work in general (A1). It does fix the $N = 1$ case: the loop is empty and the method returns $1$, which is correct (A1). It does nothing for the final-run case. Take $A = [4, 4, 4]$ (A1). With $LONGEST = 1$: at $I = 1$, $A[1] = A[0]$ so $CURRENT = 2$ and the `else` branch is not taken; at $I = 2$, $A[2] = A[1]$ so $CURRENT = 3$, again without the `else` branch. The loop ends and the method returns $LONGEST = 1$, but the longest run is $3$ (A1).\n\nThe lesson is that the two defects have different causes and need different fixes. The $N = 1$ case is an initialisation defect; the final-run case is a structural one, and no choice of initial value can repair an algorithm that never performs the comparison it needs.",
+      "markscheme_notes": "(a) Award (A1) for each row, both the returned value and the correct value. Accept a brief trace in place of an explanation. No penalty for using 1-based indexing consistently, provided the trace matches the candidate's stated convention.\n(b) Award (A1) for the length-1 case with a reason that refers to the loop bounds; (A1) for noticing that the comparison is inside the else branch; (A1) for stating that the in-progress run at the end of the loop is never compared; (A1) for characterising the failing inputs as those whose longest run ends at the final element. A candidate who identifies only 'arrays ending in a run' without the length-1 case earns at most three of the four marks.\n(c) Award (A1) for moving the comparison so it executes on every iteration or appending it after the loop, (A1) for handling N = 1 correctly, (A1) for a correct initialisation, (A1) for stating clearly what was changed or for presenting valid pseudocode. Do not penalise the absence of an N = 0 guard, since the question specifies N >= 1; credit it if present.\n(d) Award (A1) for stating that it does not work in general, (A1) for acknowledging that it does fix N = 1, (A1) for a specific counter-example, (A1) for a correct trace of that counter-example. A candidate who says only 'it does not work' without a counter-example earns at most two marks. Accept any counter-example whose longest run is its last.",
+      "explanation": "This is a defect that survives casual testing, which is the only kind of testing most candidates do. The programmer in the stem tests one array and gets the right answer -- not by luck, but because that array's longest run happens to be followed by a different value. Almost any hand-picked test array will behave that way, because a run that ends at the very last element feels like a special case when it is in fact one of the two things that can go wrong.\n\nThe structural point is about where the update lives. The variable $CURRENT$ is only compared with $LONGEST$ at the moment a run is *discovered to have ended*, and a run that ends because the array ends is never discovered to have ended at all. There is no event for it. That is why the fix is not a tweak to the initial conditions but a change to where the comparison sits: it has to happen on every iteration, or once more after the loop, and either choice works.\n\nPart (d) is where the two defects get separated, and it is the part that most candidates get wrong in an instructive way. Changing the initial value genuinely does fix the length-1 case, so the suggestion is not obviously bad -- it is half right. Recognising that it is half right, and that the other half cannot be fixed by any initial value, is a stronger claim than simply calling the suggestion wrong. The counter-example does the rest: $[4, 4, 4]$ returns $1$ when the answer is $3$, and there is nothing about the initialisation that could change that.\n\nThis is adapted from the US AP Computer Science A free-response tradition of showing a method with a single defect and asking candidates to trace it, identify the failing input, and write a corrected version. The AP item typically supplies the buggy method and asks for the fix. Here the two distinct defect classes are separated into their own part, and a further part asks candidates to evaluate a plausible but incomplete repair -- which the source does not ask, and which is where the discrimination actually lives.",
+      "provenance": {
+        "inspired_by": "US AP Computer Science A -- free-response item showing a method with a single defect, to be traced, diagnosed and corrected",
+        "source_family": "us-ap",
+        "resource_origin": "US AP Computer Science A free-response question (Methods and Control Structures): a loop over an array or ArrayList containing an off-by-one or unflushed-final-value defect.",
+        "adaptation": "The source supplies a buggy method and asks for a corrected version. Here the tracing is separated into part (a), the two distinct defect classes are named and explained separately in part (b) (structure changed), and part (d) asks candidates to evaluate a plausible but incomplete one-line repair and to produce a counter-example -- a direction the source does not take (given-vs-asked and reasoning chain changed). Rewritten in IB pseudocode with IB loop/if/end-loop conventions and IB command terms, and marked with an explicit condonation scheme for equivalent correct rewrites."
+      },
+      "difficulty_evidence": {
+        "lever_type": "exceptional_parameter",
+        "naive_path": "Trace the method on two or three ordinary arrays, find it gives the right answer, conclude the algorithm is correct or that any fault is a minor initialisation issue, and move on.",
+        "failure_point": "The method is correct for every array whose longest run is followed by a different value, so ordinary testing cannot find the fault. The failing inputs are defined by a property of the *last* element -- whether the longest run ends there -- and by the degenerate case N = 1. Neither is visible inside the loop; both require reasoning about what the algorithm fails to do after the loop ends.",
+        "wrong_answer": "The method is correct (or 'the only problem is N = 1'). In part (d) the common wrong answer is that LONGEST = 1 fixes the method outright; in fact it repairs only the length-1 case, and A = [4, 4, 4] still returns 1 instead of 3. A candidate who identifies the final-run defect but attributes it to the initialisation will propose LONGEST = 1 as the fix and score nothing there."
+      },
+      "verification": {
+        "solution_skeleton": [
+          "Trace the loop for each array, tracking CURRENT and LONGEST at every iteration",
+          "Observe that the comparison sits inside the else branch so the final run is never recorded",
+          "Separate the length-one defect from the final-run defect",
+          "Test the LONGEST = 1 repair against a counter-example whose longest run ends last"
+        ],
+        "method": "The pseudocode transcribed into Python and executed on all four arrays in part (a) plus the misleading test array from the stem, with the returned values compared against values computed independently by a run-length enumeration; the corrected version executed on the same arrays and on a randomised set of 5000 arrays against a brute-force reference to confirm it is correct for every input including N = 1 and final-run cases; the LONGEST = 1 variant executed on the counter-example to confirm it still returns 1.",
+        "assertions": [
+          "len([4, 4, 4]) == 3",
+          "len([5]) == 1",
+          "len([2, 7, 7]) == 3 and max(len([2]), len([7, 7])) == 2",
+          "len([9, 9, 6, 6, 6]) == 5 and max(len([9, 9]), len([6, 6, 6])) == 3",
+          "max(len([3, 3]), len([1, 1, 1]), len([2])) == 3",
+          "len([3, 3, 1, 1, 1, 2]) - 1 == 5",
+          "[3, 3, 1, 1, 1, 2][5] != [3, 3, 1, 1, 1, 2][4]",
+          "sum([0, 0, 1, 2, 3, 3]) == 9",
+          "len([1, 1]) == 2 and len([1]) == 1",
+          "max(0, 3) == 3 and max(1, 3) == 3"
+        ]
+      }
+    }
+  ]
+}

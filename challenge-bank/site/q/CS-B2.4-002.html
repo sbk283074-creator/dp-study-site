@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B2.4-002 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>B2.4 An algorithm that is correct except for one class of input: the final run is never recorded</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B2.4-002</p>
+<div class="meta"><span class="chip chip-key">B2.4 Programming algorithms and B2.3 Programming constructs</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Determine</span><span class="chip">Explain</span><span class="chip">Construct</span><span class="chip">Evaluate</span></div>
+
+
+<h2>Question</h2>
+<p>A programmer writes the following method to find the length of the longest run of identical adjacent values in a one-dimensional array $A$ of $N$ integers, where $N \geq 1$. The array is indexed from $0$ to $N - 1$.</p>
+<pre><code>LONGEST = 0
+CURRENT = 1
+loop I from 1 to N - 1
+    if A[I] = A[I - 1] then
+        CURRENT = CURRENT + 1
+    else
+        if CURRENT &gt; LONGEST then
+            LONGEST = CURRENT
+        end if
+        CURRENT = 1
+    end if
+end loop
+return LONGEST
+</code></pre>
+<p>The programmer tests the method on the array $[3, 3, 1, 1, 1, 2]$ and obtains $3$, which is correct.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Determine the value returned by the method for each of the following arrays.</p>
+<p>(i) $[4, 4, 4]$</p>
+<p>(ii) $[5]$</p>
+<p>(iii) $[2, 7, 7]$</p>
+<p>(iv) $[9, 9, 6, 6, 6]$.</p>
+<p>For each array, state also the value the method should return.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Identify the two classes of input for which the method returns a value that is too small, and explain, by reference to the pseudocode, why each occurs.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Rewrite the method so that it returns the correct value for every array of length $N \geq 1$. Your answer must be given in the same pseudocode style, and you must state what you changed.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>A second programmer suggests correcting the method by changing the first line to <code>LONGEST = 1</code> and making no other change.</p>
+<p>Evaluate this suggestion: state whether it produces the correct answer for every array, and support your answer either by explaining why it works or by giving a specific counter-example and tracing it.</p> <em>(Evaluate)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a)(i) The loop runs for $I = 1$ and $I = 2$. At $I = 1$, $A[1] = A[0]$ so $CURRENT = 2$; at $I = 2$, $A[2] = A[1]$ so $CURRENT = 3$. The loop ends with $LONGEST = 0$, so the method returns <strong>0</strong>; the correct value is <strong>3</strong> (A1).</p>
+<p>(a)(ii) The loop runs from $1$ to $0$, which is empty, so it never executes and the method returns <strong>0</strong>; the correct value is <strong>1</strong>, since a single element is a run of length one (A1).</p>
+<p>(a)(iii) At $I = 1$, $A[1] = 7 \neq A[0] = 2$, so $CURRENT = 1 &gt; LONGEST = 0$ gives $LONGEST = 1$ and $CURRENT$ resets to $1$; at $I = 2$, $A[2] = A[1]$ so $CURRENT = 2$. The loop ends and the method returns <strong>1</strong>; the correct value is <strong>2</strong> (A1).</p>
+<p>(a)(iv) At $I = 1$, $A[1] = A[0]$ so $CURRENT = 2$; at $I = 2$, $A[2] \neq A[1]$, so $LONGEST = 2$ and $CURRENT = 1$; at $I = 3$ and $I = 4$, $CURRENT$ becomes $2$ then $3$. The loop ends and the method returns <strong>2</strong>; the correct value is <strong>3</strong> (A1).</p>
+<p>(b) The two classes are:</p>
+<p><strong>Arrays of length 1.</strong> With $N = 1$ the loop <code>from 1 to N - 1</code> runs from $1$ to $0$, which is empty, so $LONGEST$ keeps its initial value of $0$ and the method returns $0$ instead of $1$ (A1).</p>
+<p><strong>Arrays whose longest run ends at the final element.</strong> The variable $CURRENT$ is only ever compared with $LONGEST$ inside the <code>else</code> branch, that is, at the moment a run is discovered to have ended (A1). The run that is still in progress when the loop finishes is never compared with anything (A1). So whenever the longest run is the last one -- as in (i), (iii) and (iv) -- the method reports the longest run it happened to close off, or $0$ if it closed off none (A1).</p>
+<p>The programmer's test array $[3, 3, 1, 1, 1, 2]$ is misleading: its longest run of three $1$s ends at index $4$ and is closed off by the $2$ at index $5$, so the defect is invisible.</p>
+<p>(c) One correct version compares $CURRENT$ with $LONGEST$ once more after the loop has finished:</p>
+<pre><code>if N = 0 then
+    return 0
+end if
+LONGEST = 1
+CURRENT = 1
+loop I from 1 to N - 1
+    if A[I] = A[I - 1] then
+        CURRENT = CURRENT + 1
+    else
+        CURRENT = 1
+    end if
+    if CURRENT &gt; LONGEST then
+        LONGEST = CURRENT
+    end if
+end loop
+return LONGEST
+</code></pre>
+<p>The essential change is that the comparison with $LONGEST$ is moved <strong>outside the <code>else</code> branch</strong> so that it happens on every iteration, including the last (A1). With that change $CURRENT$ is compared after every element is processed, so the run in progress at the end of the loop is included (A1). Initialising $LONGEST = 1$ rather than $0$ handles $N = 1$ (A1), and the guard for $N = 0$ keeps the method defined if the problem statement is ever relaxed (A1).</p>
+<p>Alternative correct answers are acceptable, for example initialising $LONGEST = 1$ and appending a single <code>if CURRENT &gt; LONGEST then LONGEST = CURRENT</code> after <code>end loop</code>. Credit the version a candidate gives if it is correct for $N = 1$ and for a final-run array.</p>
+<p>(d) The suggestion does <strong>not</strong> work in general (A1). It does fix the $N = 1$ case: the loop is empty and the method returns $1$, which is correct (A1). It does nothing for the final-run case. Take $A = [4, 4, 4]$ (A1). With $LONGEST = 1$: at $I = 1$, $A[1] = A[0]$ so $CURRENT = 2$ and the <code>else</code> branch is not taken; at $I = 2$, $A[2] = A[1]$ so $CURRENT = 3$, again without the <code>else</code> branch. The loop ends and the method returns $LONGEST = 1$, but the longest run is $3$ (A1).</p>
+<p>The lesson is that the two defects have different causes and need different fixes. The $N = 1$ case is an initialisation defect; the final-run case is a structural one, and no choice of initial value can repair an algorithm that never performs the comparison it needs.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award (A1) for each row, both the returned value and the correct value. Accept a brief trace in place of an explanation. No penalty for using 1-based indexing consistently, provided the trace matches the candidate's stated convention.<br>(b) Award (A1) for the length-1 case with a reason that refers to the loop bounds; (A1) for noticing that the comparison is inside the else branch; (A1) for stating that the in-progress run at the end of the loop is never compared; (A1) for characterising the failing inputs as those whose longest run ends at the final element. A candidate who identifies only 'arrays ending in a run' without the length-1 case earns at most three of the four marks.<br>(c) Award (A1) for moving the comparison so it executes on every iteration or appending it after the loop, (A1) for handling N = 1 correctly, (A1) for a correct initialisation, (A1) for stating clearly what was changed or for presenting valid pseudocode. Do not penalise the absence of an N = 0 guard, since the question specifies N &gt;= 1; credit it if present.<br>(d) Award (A1) for stating that it does not work in general, (A1) for acknowledging that it does fix N = 1, (A1) for a specific counter-example, (A1) for a correct trace of that counter-example. A candidate who says only 'it does not work' without a counter-example earns at most two marks. Accept any counter-example whose longest run is its last.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This is a defect that survives casual testing, which is the only kind of testing most candidates do. The programmer in the stem tests one array and gets the right answer -- not by luck, but because that array's longest run happens to be followed by a different value. Almost any hand-picked test array will behave that way, because a run that ends at the very last element feels like a special case when it is in fact one of the two things that can go wrong.</p>
+<p>The structural point is about where the update lives. The variable $CURRENT$ is only compared with $LONGEST$ at the moment a run is *discovered to have ended*, and a run that ends because the array ends is never discovered to have ended at all. There is no event for it. That is why the fix is not a tweak to the initial conditions but a change to where the comparison sits: it has to happen on every iteration, or once more after the loop, and either choice works.</p>
+<p>Part (d) is where the two defects get separated, and it is the part that most candidates get wrong in an instructive way. Changing the initial value genuinely does fix the length-1 case, so the suggestion is not obviously bad -- it is half right. Recognising that it is half right, and that the other half cannot be fixed by any initial value, is a stronger claim than simply calling the suggestion wrong. The counter-example does the rest: $[4, 4, 4]$ returns $1$ when the answer is $3$, and there is nothing about the initialisation that could change that.</p>
+<p>This is adapted from the US AP Computer Science A free-response tradition of showing a method with a single defect and asking candidates to trace it, identify the failing input, and write a corrected version. The AP item typically supplies the buggy method and asks for the fix. Here the two distinct defect classes are separated into their own part, and a further part asks candidates to evaluate a plausible but incomplete repair -- which the source does not ask, and which is where the discrimination actually lives.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The algorithm is right for almost every input, which is what makes the defect hard to see: a candidate testing it on a handful of arrays is unlikely to choose one whose longest run happens to end at the last element. The exceptional cases are not exotic -- they are the array of length one and every array whose longest run is its last -- and identifying them requires reasoning about what the loop fails to do after it finishes, rather than about what it does inside.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B2.4 Programming algorithms and B2.3 Programming constructs</dd></div>
+  <div><dt>Inspiration</dt><dd>US AP Computer Science A -- free-response item showing a method with a single defect, to be traced, diagnosed and corrected</dd></div>
+  <div><dt>Adaptation</dt><dd>The source supplies a buggy method and asks for a corrected version. Here the tracing is separated into part (a), the two distinct defect classes are named and explained separately in part (b) (structure changed), and part (d) asks candidates to evaluate a plausible but incomplete one-line repair and to produce a counter-example -- a direction the source does not take (given-vs-asked and reasoning chain changed). Rewritten in IB pseudocode with IB loop/if/end-loop conventions and IB command terms, and marked with an explicit condonation scheme for equivalent correct rewrites.</dd></div>
+  <div><dt>Verification</dt><dd>The pseudocode transcribed into Python and executed on all four arrays in part (a) plus the misleading test array from the stem, with the returned values compared against values computed independently by a run-length enumeration; the corrected version executed on the same arrays and on a randomised set of 5000 arrays against a brute-force reference to confirm it is correct for every input including N = 1 and final-run cases; the LONGEST = 1 variant executed on the counter-example to confirm it still returns 1.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>CS_HL_P2_2016Nov_q16 (similarity 0.006)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-13</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

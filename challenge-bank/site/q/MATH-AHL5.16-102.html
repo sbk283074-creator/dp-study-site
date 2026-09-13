@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL5.16-102 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>5.16 A substitution that reproduces the integral instead of evaluating it</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL5.16-102</p>
+<div class="meta"><span class="chip chip-key">AHL 5.16 (integration by substitution) and AHL 5.19 (Maclaurin series context)</span><span class="chip">P3 · Section B</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: allowed</span><span class="chip">Show that</span><span class="chip">Hence</span><span class="chip">Prove</span><span class="chip">Evaluate</span></div>
+
+
+<h2>Question</h2>
+<p>Consider the definite integral</p>
+<p>$$I = \int_0^{\pi/2} \frac{\sin x}{\sin x + \cos x}\,dx.$$</p>
+<p>The integrand has an elementary antiderivative, but obtaining it is lengthy and the result is not obviously the simplest route to the value of $I$.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Use the substitution $u = \dfrac{\pi}{2} - x$ to show that</p>
+<p>$$I = \int_0^{\pi/2} \frac{\cos x}{\sin x + \cos x}\,dx.$$</p> <em>(Show that)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>Hence find the exact value of $I$.</p> <em>(Hence)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Let $f$ be a function that is positive and continuous on the interval $(0, 1)$, and let</p>
+<p>$$K = \int_0^{\pi/2} \frac{f(\sin x)}{f(\sin x) + f(\cos x)}\,dx.$$</p>
+<p>Prove that $K = \dfrac{\pi}{4}$.</p> <em>(Prove)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>(i) Hence evaluate $\displaystyle\int_0^{\pi/2} \frac{1}{1 + \tan^3 x}\,dx$.</p>
+<p>(ii) State, with a reason, whether $\displaystyle\int_0^{\pi/2} \frac{\sin x}{\sin x + \cos x + 1}\,dx$ is greater than, equal to, or less than $\dfrac{\pi}{4}$.</p> <em>(Evaluate)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) With $u = \dfrac{\pi}{2} - x$, $dx = -du$; when $x = 0$, $u = \dfrac{\pi}{2}$, and when $x = \dfrac{\pi}{2}$, $u = 0$ (M1). Also $\sin x = \sin\left(\dfrac{\pi}{2} - u\right) = \cos u$ and $\cos x = \cos\left(\dfrac{\pi}{2} - u\right) = \sin u$ (A1). Hence<br>$$I = \int_{\pi/2}^{0} \frac{\cos u}{\cos u + \sin u}(-du) = \int_0^{\pi/2} \frac{\cos u}{\cos u + \sin u}\,du \quad (A1),$$<br>and renaming the dummy variable $u$ as $x$ gives the required result.</p>
+<p>(b) Adding the two expressions for $I$ (M1),<br>$$2I = \int_0^{\pi/2} \frac{\sin x + \cos x}{\sin x + \cos x}\,dx = \int_0^{\pi/2} 1\,dx = \frac{\pi}{2} \quad (A1),$$<br>so $I = \dfrac{\pi}{4}$ (A1).</p>
+<p>(c) Apply the same substitution, $u = \dfrac{\pi}{2} - x$, to $K$ (M1). Since $\sin x$ and $\cos x$ are exchanged, and the expression is symmetric in its two arguments in the sense that the denominator is their sum,<br>$$K = \int_0^{\pi/2} \frac{f(\cos x)}{f(\cos x) + f(\sin x)}\,dx \quad (A1).$$<br>Adding the two expressions for $K$ (M1),<br>$$2K = \int_0^{\pi/2} \frac{f(\sin x) + f(\cos x)}{f(\sin x) + f(\cos x)}\,dx = \int_0^{\pi/2} 1\,dx = \frac{\pi}{2} \quad (A1),$$<br>the numerator and denominator being identical for every $x$. Hence $K = \dfrac{\pi}{4}$ (A1). The hypotheses matter: positivity of $f$ guarantees that the denominator is never zero, so the integrand is defined throughout the interval, and continuity guarantees that $K$ exists. Nothing about the particular form of $f$ was used, which is why the result holds for every such $f$.</p>
+<p>(d)(i) Write $\tan^3 x = \dfrac{\sin^3 x}{\cos^3 x}$, so (M1)<br>$$\frac{1}{1 + \tan^3 x} = \frac{1}{1 + \frac{\sin^3 x}{\cos^3 x}} = \frac{\cos^3 x}{\cos^3 x + \sin^3 x}.$$<br>This is the integrand of part (c) with $f(t) = t^3$, which is positive and continuous on $(0, 1)$ (A1), so by part (c) the integral equals $\dfrac{\pi}{4}$ (A1).</p>
+<p>(d)(ii) It is less than $\dfrac{\pi}{4}$. For $0 &lt; x &lt; \dfrac{\pi}{2}$ both $\sin x$ and $\cos x$ are positive, so adding $1$ to the denominator strictly decreases the integrand: $\dfrac{\sin x}{\sin x + \cos x + 1} &lt; \dfrac{\sin x}{\sin x + \cos x}$ pointwise on the interval of integration (M1), and therefore the integral is strictly less than $I = \dfrac{\pi}{4}$ (A1). The result of part (c) does not apply here, because the denominator is not the sum of $f(\sin x)$ and $f(\cos x)$ for any $f$ -- the extra term $1$ is not of that form -- so the symmetry argument that gives $\pi/4$ is unavailable. Numerically the integral is approximately $0.4388$, against $\dfrac{\pi}{4} \approx 0.7854$.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) Award (M1) for the substitution with correctly transformed limits (or for reversing the limits and absorbing the minus sign), (A1) for $\sin x \leftrightarrow \cos u$ and $\cos x \leftrightarrow \sin u$, (A1) for the final integral. Candidates who omit the change of limits but otherwise proceed correctly may earn (M1)(A1) only.<br>(b) Award (M1) for adding the two integrals -- this is the idea of the question, and no credit is available for attempting the antiderivative. (A1) for the integrand simplifying to 1 and the value $\pi/2$, (A1) for $I = \pi/4$.<br>(c) Award (M1) for applying the substitution to the general integrand, (A1) for the exchanged form, (M1) for adding, (A1) for the numerator equalling the denominator, (A1) for the conclusion. Credit a correct argument that observes $g(x) + g(\pi/2 - x) = 1$ for the integrand $g$, so that the average value of $g$ over the interval is $1/2$; this is equivalent and should be marked in full. Do not penalise a candidate who fails to restate the role of the hypotheses, but do not award the final (A1) to a candidate who applies the result of part (b) to a particular $f$ and claims a general proof.<br>(d)(i) Award (M1) for rewriting in terms of sine and cosine, (A1) for identifying $f(t) = t^3$ and checking that it satisfies the hypotheses, (A1) for the value $\pi/4$.<br>(d)(ii) Award (M1) for a valid comparison of the two integrands, (A1) for the strict inequality and the conclusion 'less than'. A candidate who states 'less than' with the comparison earns both marks; a candidate who states 'equal to $\pi/4$' by misapplying part (c) earns neither.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The substitution in part (a) is unusual because it does not help. Every substitution a candidate has met before has been chosen to make an integral simpler; this one leaves the integrand looking exactly as hard as it was, with $\sin$ and $\cos$ swapped. The instinct at that point is to decide the substitution was the wrong one and start again. What has actually happened is that the integral has been paired with a second integral of the same value, and the pair is trivial where the single member was not.</p>
+<p>Part (c) is where the item stops being a trick and becomes a result. The argument does not use anything about $f$ beyond positivity and continuity, and the proof is word for word the proof of part (b) with $f$ inserted. A candidate who understands that has generalised; a candidate who has only followed the steps in (a) and (b) will try to prove (c) by choosing a convenient $f$, or by repeating the substitution without noticing that the same argument is running.</p>
+<p>Part (d)(ii) is the check on whether the generalisation was understood or merely accepted. The extra $1$ in the denominator is not of the form $f(\cos x)$ for any function of the cosine alone -- or rather, it is $f(t) = 1$ added to the denominator rather than to one of the two terms, and the sum $f(\sin x) + f(\cos x)$ is no longer the denominator. Candidates reach for $\pi/4$ there because that is what the previous part produced, and the discrimination is entirely in the reason: a pointwise comparison of integrands settles it in one line, and it settles it the other way.</p>
+<p>This is adapted from the UK A-level treatment of integration by substitution, where the reflection substitution and the resulting 'integral equals its own twin' argument appear as a standard exercise. The A-level version normally stops at part (b). Adding the general proof in (c) and the counter-example in (d)(ii) is what makes the item discriminate, and both are new.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Challenge lever</dt><dd>The substitution $u = \pi/2 - x$ does not simplify the integrand: it exchanges $\sin x$ and $\cos x$ and returns an integral of exactly the same difficulty. The item only closes for a candidate who treats the transformed integral as an object to be combined with the original rather than evaluated, and then recognises that the generalisation is a statement about the substitution rather than about the particular functions involved.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 5.16 (integration by substitution) and AHL 5.19 (Maclaurin series context)</dd></div>
+  <div><dt>Inspiration</dt><dd>UK A-Level Mathematics / Further Mathematics -- the reflection substitution x -&gt; pi/2 - x applied to a trigonometric integrand</dd></div>
+  <div><dt>Adaptation</dt><dd>The source exercise asks only for the evaluation of the single integral. Here the evaluation is demoted to parts (a)-(b) and the item is extended to a general proof for an arbitrary positive continuous f (structure and reasoning chain changed), plus a part that requires the candidate to recognise where the general result does NOT apply (given-vs-asked changed). Rewritten with IB command terms, (M1)(A1) annotations and an explicit follow-through and condonation scheme, and placed on Paper 3 as an unstructured problem.</dd></div>
+  <div><dt>Verification</dt><dd>The substitution verified symbolically and the identity sin x/(sin x + cos x) + cos x/(sin x + cos x) = 1 checked at several points; the value pi/4 confirmed by Simpson&#x27;s rule with 2000 panels on the original integral and on the tan^3 form; the +1 denominator integral evaluated numerically and confirmed strictly below pi/4; the pointwise comparison checked at the midpoint x = pi/4.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PHYS_HL_P3_2003May_HL_OPT_H_q01 (similarity 0.018)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL5.5-001 (similarity 0.012)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-13</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>
