@@ -476,7 +476,9 @@
     // block that stays COLLAPSED (so thinking is separated from the answer, the
     // way a normal assistant does it), and a row of copy controls.
     function decorateBot(el, text, thinking) {
-      var plain = text || toPlain(el.innerHTML);
+      var inner = el.innerHTML;
+      var plain = text || toPlain(inner);
+      el.innerHTML = "";
       if (thinking) {
         var wrap = document.createElement("div");
         wrap.className = "dp-ai-think";
@@ -497,8 +499,15 @@
         paint(false);
         wrap.appendChild(tg);
         wrap.appendChild(body);
-        el.insertBefore(wrap, el.firstChild);
+        el.appendChild(wrap);
       }
+      // the finished answer, in its own container so it is never confused with
+      // the reasoning that sits above it
+      var ans = document.createElement("div");
+      ans.className = "dp-ai-answer";
+      ans.innerHTML = inner;
+      el.appendChild(ans);
+
       var acts = document.createElement("div");
       acts.className = "dp-ai-acts";
       var cp = document.createElement("button");
