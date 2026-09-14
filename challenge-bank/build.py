@@ -453,6 +453,12 @@ JS = """
     var body = panel.querySelector('.qai-body');
     if(!body || body.getAttribute('data-built')) return body;
     body.setAttribute('data-built', '1');
+    // The container ships `hidden` so a listing of ninety questions costs ninety
+    // buttons and no empty boxes. Nothing ever cleared it, so every panel built
+    // its controls and its answer inside a display:none box -- the request went
+    // out and came back, and the click looked like it did nothing. Reveal it
+    // here, at the one moment the content first exists.
+    body.hidden = false;
     body.innerHTML =
       '<div class="qai-row">' +
         '<label class="qai-lbl">Help me with' +
