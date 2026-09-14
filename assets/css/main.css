@@ -122,7 +122,12 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2.2rem 0; }
   border-bottom: 1px solid var(--border);
   z-index: 60;
 }
-.topbar__brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; font-size: .98rem; }
+.topbar__brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.01em; font-size: .98rem; min-width: 0; }
+/* the name must give way before the controls do, or it shoves the theme
+   toggle off the right edge of a phone */
+.topbar__brand > span:last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* below this the name cannot survive without shoving the controls off-screen */
+@media (max-width: 480px) { .topbar__brand > span:last-child { display: none; } }
 .topbar__logo {
   width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center;
   background: var(--accent); color: #fff; font-size: .72rem; font-weight: 800; letter-spacing: .02em;
@@ -262,14 +267,27 @@ h2:hover .anchor, h3:hover .anchor { opacity: 1; }
 code {
   font-family: var(--mono); font-size: .88em;
   background: var(--surface-3); border: 1px solid var(--border);
-  border-radius: 5px; padding: .08em .34em; white-space: nowrap;
+  border-radius: 5px; padding: .08em .34em; white-space: pre-wrap; overflow-wrap: anywhere;
 }
 pre {
   background: #0f1420; color: #e6edf7; border-radius: var(--radius);
   padding: 16px 18px; overflow-x: auto; font-size: .86rem; line-height: 1.62; margin: 0 0 1.2rem;
-  border: 1px solid #1c2432;
+  border: 1px solid #1c2432; max-width: 100%;
 }
+/* Grid/flex children default to min-width:auto, so one wide <pre> can widen the
+   whole track and push the page sideways. Let them shrink and scroll instead. */
+.grid > *, .card { min-width: 0; }
 pre code { background: none; border: 0; padding: 0; color: inherit; white-space: pre; font-size: 1em; }
+
+/* A long equation used to widen the whole page (on a phone that meant sideways
+   scrolling for everything). Let it scroll inside its own box instead. Two
+   things are required: the display must be stated (max-width/overflow are
+   ignored on a plain inline box, and MathJax's runtime stylesheet outranks a
+   bare rule), and MathJax's inline min-width on the container must be reset -
+   min-width beats max-width, so without !important the equation can never
+   shrink. */
+mjx-container { display: inline-block !important; max-width: 100% !important; min-width: 0 !important; overflow-x: auto; overflow-y: hidden; }
+mjx-container[display="true"] { display: block !important; padding: .15em 0 .5em; }
 html[data-theme="dark"] pre { background: #0b0f16; }
 
 /* ---------- 6. Callouts ---------------------------------------------------- */
@@ -387,6 +405,21 @@ thead th { background: var(--surface-3); font-size: .78rem; text-transform: uppe
 tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover { background: var(--surface-2); }
 td code { white-space: normal; }
+
+/* Wide data tables must scroll inside themselves, never push the page sideways. */
+@media (max-width: 760px) {
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  thead th { white-space: normal; }
+  /* tighter cells: at this width the default padding leaves four-column CJK
+     tables a few px short of their longest run. line-break:anywhere is the one
+     that matters for CJK - the default rules forbid a break before a closing
+     bracket, so "（不可用）" is an unbreakable 4-glyph unit that can overshoot a
+     narrow cell; overflow-wrap does not override that rule. */
+  th, td { overflow-wrap: anywhere; line-break: anywhere; padding: 6px 8px; }
+  /* Last-resort guard: a long unbreakable run (a formula, a paste of code, a
+     syllabus reference) must break rather than widen the whole page. */
+  .content { overflow-wrap: anywhere; }
+}
 
 .glossary { margin: 1.2rem 0; }
 .glossary dt { font-weight: 700; margin-top: .9rem; color: var(--text); }
@@ -604,6 +637,7 @@ html[data-theme="dark"] .btn--platform-litlab:hover { background: #3a1c2a; }
 .io-plan__t {
   background: var(--surface-3); font-size: .76rem; font-weight: 800; text-transform: uppercase;
   letter-spacing: .05em; color: var(--muted); padding: 11px 12px; display: grid; place-items: center; text-align: center;
+  min-width: 0; overflow-wrap: anywhere;
 }
 .io-plan__c { padding: 12px 15px; font-size: .93rem; }
 @media (max-width: 560px) { .io-plan__row { grid-template-columns: 1fr; } .io-plan__t { text-align: left; justify-items: start; } }

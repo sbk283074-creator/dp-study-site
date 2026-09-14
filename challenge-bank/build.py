@@ -95,7 +95,7 @@ footer.site{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--mut
 .card p{font-size:14px;color:#374151;margin:8px 0 12px}
 .card .count{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 .chip{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);
-  background:var(--soft);color:#374151;margin:0 6px 6px 0;white-space:nowrap}
+  background:var(--soft);color:#374151;margin:0 6px 6px 0;white-space:normal;overflow-wrap:anywhere;max-width:100%;line-height:1.45}
 .chip-hard{border-color:#fecaca;background:var(--hard-soft);color:var(--hard);font-weight:600}
 .chip-key{background:var(--accent-soft);border-color:#bfdbfe;color:#1e40af}
 .q{border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:14px;background:#fff}
@@ -109,7 +109,7 @@ footer.site{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--mut
 .box h4{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
 .box p:last-child,.box ul:last-child{margin-bottom:0}
 table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
-th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
 th{background:var(--soft);font-weight:600}
 figure{margin:18px 0}
 figure svg{max-width:100%;height:auto;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:8px}
@@ -129,9 +129,8 @@ details .body > :first-child{margin-top:14px}
 pre{background:#0f172a;color:#e2e8f0;padding:14px 16px;border-radius:var(--radius);overflow-x:auto;
   font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 code{font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-p code,li code,td code{background:var(--soft);padding:1px 5px;border-radius:4px}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px}
-input[type=search],select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
+p code,li code,td code{background:var(--soft);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px}input[type=search],select{padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
 input[type=search]{flex:1;min-width:200px}
 .pager{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
 .pager a,.btn{display:inline-block;border:1px solid var(--line);border-radius:8px;padding:7px 13px;
@@ -146,12 +145,26 @@ input[type=search]{flex:1;min-width:200px}
 .kv div{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}
 .kv div:last-child{border-bottom:0}
 .kv dt{flex:0 0 150px;color:var(--muted)}
-.kv dd{margin:0;flex:1}
+.kv dd{margin:0;flex:1;min-width:0;overflow-wrap:anywhere}
 .paper-q{margin:0 0 34px;padding-top:14px;border-top:2px solid var(--line);page-break-inside:avoid}
 .paper-q h3{margin-top:0}
 .paper-marks{float:right;color:var(--muted);font-weight:400;font-size:14px}
 .paper-ref{color:var(--muted);font-size:12.5px;margin:-6px 0 12px}
 .paper-switch{font-size:14px}
+/* A long equation is wider than a phone: let it scroll inside its own box
+   instead of dragging the whole page sideways. Three things are required:
+   display must be stated (and outrank MathJax's runtime stylesheet), and
+   MathJax also writes an inline min-width on the container - min-width beats
+   max-width, so it has to be reset with !important too. */
+mjx-container{display:inline-block !important;max-width:100% !important;min-width:0 !important;overflow-x:auto;overflow-y:hidden}
+mjx-container[display="true"]{display:block !important;padding:.15em 0 .5em}
+@media (max-width:760px){
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  /* tighter cells: at this width the default padding leaves narrow columns a
+     few px short of their longest unbreakable run */
+  th,td{white-space:normal;padding:6px 8px}
+  .wrap{overflow-wrap:anywhere}
+}
 @media print{
   header.site nav,footer.site,.controls,input[type=search],select,.paper-switch,.pager{display:none}
   details{border:0} details .body{border-top:0}
