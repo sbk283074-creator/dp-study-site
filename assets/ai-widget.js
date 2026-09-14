@@ -1012,7 +1012,7 @@
       if (window.__dpToolsLoaded) return;
       if (document.querySelector("script[data-dp-tools]")) return;
       var s = document.createElement("script");
-      s.src = HUB + "assets/tools-widget.js?v=1";
+      s.src = HUB + "assets/tools-widget.js?v=2";
       s.defer = true;
       s.setAttribute("data-dp-tools", "1");
       document.head.appendChild(s);
