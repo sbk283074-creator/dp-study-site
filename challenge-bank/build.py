@@ -342,6 +342,7 @@ def page(title, body, subject=None, mathjax=False, extra_head=""):
   <a href="{up}index.html">DP study system</a>.
 </div></footer>
 <script src="{'../' if subject else ''}assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js" defer></script>
 </body>
 </html>
 """

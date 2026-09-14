@@ -1003,6 +1003,20 @@
         ". Leave Model on Auto and I'll pick the best free model for those choices. Use \u2922 to go full page, or \u2699 to hide the controls. Ask me to explain a concept, work through a problem, or quiz you. Your conversation is saved on this device.";
       addMsg("bot", format(hint));
     }
+
+    // --- load the Formula Booklet + Scientific Calculator float bars ----------
+    // Both ship as one self-contained file (assets/tools-widget.js); adding this
+    // one loader makes two new global bars appear on every page that already has
+    // the AI widget, with no per-page edits.
+    (function loadTools() {
+      if (window.__dpToolsLoaded) return;
+      if (document.querySelector("script[data-dp-tools]")) return;
+      var s = document.createElement("script");
+      s.src = HUB + "assets/tools-widget.js?v=1";
+      s.defer = true;
+      s.setAttribute("data-dp-tools", "1");
+      document.head.appendChild(s);
+    })();
   }
 
   if (document.readyState === "loading") {
