@@ -30,6 +30,21 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>A strip consists of $n$ cells in a row. It is to be tiled using two kinds of tile: a square tile covering one cell, available in $2$ colours, and a domino covering two adjacent cells, available in $3$ colours. Let $u_n$ be the number of different tilings of a strip of $n$ cells, with $u_0 = 1$ corresponding to the empty strip.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Show that $u_1 = 2$ and $u_2 = 7$, and show that $u_n = 2u_{n-1} + 3u_{n-2}$ for every integer $n \ge 2$.</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Let $F(x) = \sum_{n=0}^{\infty} u_n x^n$. By multiplying the recurrence by $x^n$ and summing over $n \ge 2$, show that<br>$$F(x) = \frac{1}{1 - 2x - 3x^{2}}.$$</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Express $F(x)$ in partial fractions and hence determine a closed form for $u_n$.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Hence find $u_{10}$, and determine the limiting value of $\dfrac{u_{n}}{3^{n}}$ as $n \to \infty$.</p> <em>(Hence)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Math AA HL" data-ai-diff="5" data-ai-marks="16" data-ai-ref="MATH-P3-006">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>A strip consists of $n$ cells in a row. It is to be tiled using two kinds of tile: a square tile covering one cell, available in $2$ colours, and a domino covering two adjacent cells, available in $3$ colours. Let $u_n$ be the number of different tilings of a strip of $n$ cells, with $u_0 = 1$ corresponding to the empty strip.
+
+(a) Show that $u_1 = 2$ and $u_2 = 7$, and show that $u_n = 2u_{n-1} + 3u_{n-2}$ for every integer $n \ge 2$. [4 marks] (Show that)
+(b) Let $F(x) = \sum_{n=0}^{\infty} u_n x^n$. By multiplying the recurrence by $x^n$ and summing over $n \ge 2$, show that
+$$F(x) = \frac{1}{1 - 2x - 3x^{2}}.$$ [5 marks] (Show that)
+(c) Express $F(x)$ in partial fractions and hence determine a closed form for $u_n$. [4 marks] (Determine)
+(d) Hence find $u_{10}$, and determine the limiting value of $\dfrac{u_{n}}{3^{n}}$ as $n \to \infty$. [3 marks] (Hence)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> A strip of one cell can only be covered by a square, in $2$ colours, so $u_1 = 2$. <strong>(A1)</strong> A strip of two cells is either two squares ($2\times2 = 4$ ways) or one domino ($3$ ways), so $u_2 = 4+3 = 7$. <strong>(A1)</strong></p>
 <p>For $n\ge2$, look at the first cell. <strong>(M1)</strong> If it is covered by a square, there are $2$ choices of colour and the remaining $n-1$ cells can be tiled in $u_{n-1}$ ways, giving $2u_{n-1}$. If it is covered by a domino, that domino covers the first two cells, there are $3$ colour choices, and the remaining $n-2$ cells can be tiled in $u_{n-2}$ ways, giving $3u_{n-2}$. <strong>(A1)</strong> These cases are exhaustive and disjoint, so $u_n = 2u_{n-1} + 3u_{n-2}$. <strong>(AG)</strong></p>
 <p><strong>(b)</strong> Multiply the recurrence by $x^n$ and sum from $n=2$ to $\infty$: <strong>(M1)</strong><br>$$\sum_{n\ge2} u_n x^n = 2\sum_{n\ge2} u_{n-1}x^n + 3\sum_{n\ge2} u_{n-2}x^n$$<br>The left side is $F(x) - u_0 - u_1 x = F(x) - 1 - 2x$. <strong>(A1)</strong> The first sum on the right is<br>$$2x\sum_{n\ge2} u_{n-1}x^{n-1} = 2x\sum_{m\ge1} u_m x^m = 2x\bigl(F(x)-1\bigr)$$<br>and the second is<br>$$3x^{2}\sum_{n\ge2} u_{n-2}x^{n-2} = 3x^{2}F(x).$$ <strong>(A1)(A1)</strong><br>Hence<br>$$F - 1 - 2x = 2x(F-1) + 3x^{2}F$$<br>$$F\bigl(1 - 2x - 3x^{2}\bigr) = 1 - 2x + 2x = 1$$<br>$$F(x) = \frac{1}{1-2x-3x^{2}}$$ <strong>(A1)(AG)</strong></p>

@@ -35,6 +35,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>The window size is a property of the device, not of any individual object, and several SensorReadings objects may exist at once for different sensors.</p>
 <ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain why CAPACITY should be a class-level constant rather than an instance variable set by __init__, and state one invariant that the class must maintain.</p> <em>(Explain)</em></li><li><span class="marks">[6 marks]</span><strong>(b)</strong> <p>Construct the completed class, including __init__, add, mean and __len__, so that it maintains the invariant you stated and never holds more than CAPACITY readings.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain the error in the draft mean method and the effect it has after three readings have been added to a buffer whose capacity is five, and state the corrected line.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Explain why a method that returns self.values directly breaks encapsulation, and describe one way of giving the caller the data without doing so.</p> <em>(Explain)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-B3.1-001">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>The window size is a property of the device, not of any individual object, and several SensorReadings objects may exist at once for different sensors.
+
+(a) Explain why CAPACITY should be a class-level constant rather than an instance variable set by __init__, and state one invariant that the class must maintain. [3 marks] (Explain)
+(b) Construct the completed class, including __init__, add, mean and __len__, so that it maintains the invariant you stated and never holds more than CAPACITY readings. [6 marks] (Construct)
+(c) Explain the error in the draft mean method and the effect it has after three readings have been added to a buffer whose capacity is five, and state the corrected line. [4 marks] (Explain)
+(d) Explain why a method that returns self.values directly breaks encapsulation, and describe one way of giving the caller the data without doing so. [3 marks] (Explain)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The window size is a property of the device, is the same for every object created, and must not vary between objects; making it a class-level constant expresses that and prevents one instance from being given a different capacity from another. <strong>(M1)</strong> It also removes the risk that the value is reassigned after construction, which would make the buffer's behaviour depend on when a method was called. <strong>(A1)</strong></p>
 <p>An invariant the class must maintain: the number of readings held is never greater than CAPACITY, and the values held are always the most recent ones added, in order. <strong>(A1)</strong></p>
 <p><strong>(b)</strong></p>

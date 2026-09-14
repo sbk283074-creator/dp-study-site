@@ -37,6 +37,40 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>(d) State a comparison that is correct for every pair in the range, and justify it. \tag{4}</p>
 <ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain what happens when the line is executed with $a = 100$ and $b = -50$, and state the value compared with zero.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Determine the range of values of the true difference $d = a - b$ for which the comparison gives the correct result.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Determine the number of ordered pairs $(a, b)$ in the range $-128$ to $127$ for which the comparison gives the wrong result, and hence the proportion that fail.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>State a comparison that is correct for every pair in the range, and justify it.</p> <em>(Justify)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-A1.2-002">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>An environmental control system stores each temperature reading as an eight-bit signed
+integer in two&#x27;s complement form, so the representable range is $-128$ to $127$. The system
+compares two readings, $a$ and $b$, using the single line
+
+```
+if a - b &lt; 0 then output &quot;a is the lower reading&quot;
+```
+
+and the subtraction is performed in eight bits, with no overflow detection.
+
+(a) Explain what happens when the line is executed with $a = 100$ and $b = -50$, and state the
+value the system compares with zero. \tag{3}
+
+(b) Determine the range of values of the true difference $d = a - b$ for which the comparison
+gives the correct result. \tag{4}
+
+(c) Determine the number of ordered pairs $(a, b)$, with $a$ and $b$ each in the range
+$-128$ to $127$, for which the comparison gives the wrong result, and hence the proportion of
+all pairs that fail. \tag{5}
+
+(d) State a comparison that is correct for every pair in the range, and justify it. \tag{4}
+
+(a) Explain what happens when the line is executed with $a = 100$ and $b = -50$, and state the value compared with zero. [3 marks] (Explain)
+(b) Determine the range of values of the true difference $d = a - b$ for which the comparison gives the correct result. [4 marks] (Determine)
+(c) Determine the number of ordered pairs $(a, b)$ in the range $-128$ to $127$ for which the comparison gives the wrong result, and hence the proportion that fail. [5 marks] (Determine)
+(d) State a comparison that is correct for every pair in the range, and justify it. [4 marks] (Justify)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p>(a) The true difference is $100 - (-50) = 150$ (A1). Eight-bit two's complement can only<br>represent $-128$ to $127$, so $150$ cannot be stored; the value wraps by subtracting $256$ and<br>the system obtains $150 - 256 = -106$ (M1). Since $-106 &lt; 0$ the system reports that<br>$a$ is the lower reading, which is wrong: $100 &gt; -50$ (A1).</p>
 <p>The general rule is that a result outside the representable range has $256$ added to or<br>subtracted from it until it falls inside, which is exactly what modular arithmetic does. No<br>flag is raised and no exception is thrown, so the error is invisible at run time.</p>
 <p>(b) The comparison is correct exactly when the subtraction does not overflow, that is when the<br>true difference is itself representable (M1):</p>

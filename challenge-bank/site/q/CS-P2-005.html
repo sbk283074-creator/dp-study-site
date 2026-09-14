@@ -30,6 +30,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>You have been asked to redesign the protocol. Use the case study to answer all four parts.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Describe a replay attack against the current protocol. State exactly what the attacker captures, what they transmit, why the lock accepts it, and how long the attack remains available to them.</p> <em>(Describe)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a challenge-response protocol that prevents replay. Your answer must specify what the lock sends, what the phone computes, what the phone returns, and what the lock checks.</p> <em>(Construct)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Explain how your protocol defeats the replay attack, and state clearly one attack it does not defeat. Quantify the probability that an attacker who has captured a million previous exchanges could still succeed by guessing.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Evaluate whether the additional cost of your protocol is acceptable for a battery-powered lock. Your answer must include a calculated comparison.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 17 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="17" data-ai-ref="CS-P2-005">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>You have been asked to redesign the protocol. Use the case study to answer all four parts.
+
+(a) Describe a replay attack against the current protocol. State exactly what the attacker captures, what they transmit, why the lock accepts it, and how long the attack remains available to them. [4 marks] (Describe)
+(b) Construct a challenge-response protocol that prevents replay. Your answer must specify what the lock sends, what the phone computes, what the phone returns, and what the lock checks. [5 marks] (Construct)
+(c) Explain how your protocol defeats the replay attack, and state clearly one attack it does not defeat. Quantify the probability that an attacker who has captured a million previous exchanges could still succeed by guessing. [5 marks] (Explain)
+(d) Evaluate whether the additional cost of your protocol is acceptable for a battery-powered lock. Your answer must include a calculated comparison. [3 marks] (Evaluate)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The attacker positions the receiver within range and captures one legitimate frame, which contains the literal text OPEN followed by the 32-bit secret $S$ in hexadecimal. <strong>(A1)</strong> Because the frame is not encrypted, the attacker reads $S$ directly from the captured bytes; because nothing in the frame varies, no computation is needed at all. <strong>(A1)</strong></p>
 <p>To unlock later, the attacker retransmits exactly the captured bytes. The lock compares them with its stored $S$, finds them identical, and releases the bolt. <strong>(A1)</strong></p>
 <p>The attack remains available <strong>indefinitely</strong>, or until $S$ is changed, because the accepted value never varies and there is no timestamp, counter or expiry. Capturing one frame grants permanent access. <strong>(A1)</strong></p>

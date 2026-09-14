@@ -51,6 +51,50 @@ return LONGEST
 <p>For each array, state also the value the method should return.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Identify the two classes of input for which the method returns a value that is too small, and explain, by reference to the pseudocode, why each occurs.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Rewrite the method so that it returns the correct value for every array of length $N \geq 1$. Your answer must be given in the same pseudocode style, and you must state what you changed.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>A second programmer suggests correcting the method by changing the first line to <code>LONGEST = 1</code> and making no other change.</p>
 <p>Evaluate this suggestion: state whether it produces the correct answer for every array, and support your answer either by explaining why it works or by giving a specific counter-example and tracing it.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-B2.4-002">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>A programmer writes the following method to find the length of the longest run of identical adjacent values in a one-dimensional array $A$ of $N$ integers, where $N \geq 1$. The array is indexed from $0$ to $N - 1$.
+
+```
+LONGEST = 0
+CURRENT = 1
+loop I from 1 to N - 1
+    if A[I] = A[I - 1] then
+        CURRENT = CURRENT + 1
+    else
+        if CURRENT &gt; LONGEST then
+            LONGEST = CURRENT
+        end if
+        CURRENT = 1
+    end if
+end loop
+return LONGEST
+```
+
+The programmer tests the method on the array $[3, 3, 1, 1, 1, 2]$ and obtains $3$, which is correct.
+
+(a) Determine the value returned by the method for each of the following arrays.
+
+(i) $[4, 4, 4]$
+
+(ii) $[5]$
+
+(iii) $[2, 7, 7]$
+
+(iv) $[9, 9, 6, 6, 6]$.
+
+For each array, state also the value the method should return. [4 marks] (Determine)
+(b) Identify the two classes of input for which the method returns a value that is too small, and explain, by reference to the pseudocode, why each occurs. [4 marks] (Explain)
+(c) Rewrite the method so that it returns the correct value for every array of length $N \geq 1$. Your answer must be given in the same pseudocode style, and you must state what you changed. [4 marks] (Construct)
+(d) A second programmer suggests correcting the method by changing the first line to `LONGEST = 1` and making no other change.
+
+Evaluate this suggestion: state whether it produces the correct answer for every array, and support your answer either by explaining why it works or by giving a specific counter-example and tracing it. [4 marks] (Evaluate)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p>(a)(i) The loop runs for $I = 1$ and $I = 2$. At $I = 1$, $A[1] = A[0]$ so $CURRENT = 2$; at $I = 2$, $A[2] = A[1]$ so $CURRENT = 3$. The loop ends with $LONGEST = 0$, so the method returns <strong>0</strong>; the correct value is <strong>3</strong> (A1).</p>
 <p>(a)(ii) The loop runs from $1$ to $0$, which is empty, so it never executes and the method returns <strong>0</strong>; the correct value is <strong>1</strong>, since a single element is a run of length one (A1).</p>
 <p>(a)(iii) At $I = 1$, $A[1] = 7 \neq A[0] = 2$, so $CURRENT = 1 &gt; LONGEST = 0$ gives $LONGEST = 1$ and $CURRENT$ resets to $1$; at $I = 2$, $A[2] = A[1]$ so $CURRENT = 2$. The loop ends and the method returns <strong>1</strong>; the correct value is <strong>2</strong> (A1).</p>

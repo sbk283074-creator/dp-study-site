@@ -30,6 +30,23 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>At the end of a party, $n$ guests collect their coats at random from a rack. A <strong>derangement</strong> of $n$ objects is a permutation in which no object is left in its original position. Let $D_{n}$ be the number of derangements of $n$ objects, and let $p_{n} = D_{n}/n!$ be the probability that no guest takes their own coat. This problem derives three descriptions of the same sequence and asks what they tell you about each other.</p>
 <ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>Let $A_{i}$ be the set of permutations that fix object $i$. By applying the inclusion–exclusion principle to the union of the $A_{i}$, show that<br>$$D_{n} = n!\sum_{k=0}^{n}\frac{(-1)^{k}}{k!}.$$</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>By conditioning on what happens to object 1, show that for $n \ge 2$<br>$$D_{n} = (n-1)\bigl(D_{n-1} + D_{n-2}\bigr),$$<br>with $D_{0} = 1$ and $D_{1} = 0$. Hence verify that your formula from part (a) satisfies this recurrence for $n = 4$.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Determine $\displaystyle\lim_{n\to\infty} p_{n}$, giving your answer in terms of $e$. Determine also the smallest value of $n$ for which $p_{n}$ is within $0.001$ of this limit, justifying your answer with a bound on the error.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Show that for every $n \ge 1$, $D_{n}$ is the nearest integer to $\dfrac{n!}{e}$.</p> <em>(Show that)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Math AA HL" data-ai-diff="5" data-ai-marks="16" data-ai-ref="MATH-P3-010">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>At the end of a party, $n$ guests collect their coats at random from a rack. A **derangement** of $n$ objects is a permutation in which no object is left in its original position. Let $D_{n}$ be the number of derangements of $n$ objects, and let $p_{n} = D_{n}/n!$ be the probability that no guest takes their own coat. This problem derives three descriptions of the same sequence and asks what they tell you about each other.
+
+(a) Let $A_{i}$ be the set of permutations that fix object $i$. By applying the inclusion–exclusion principle to the union of the $A_{i}$, show that
+$$D_{n} = n!\sum_{k=0}^{n}\frac{(-1)^{k}}{k!}.$$ [5 marks] (Show that)
+(b) By conditioning on what happens to object 1, show that for $n \ge 2$
+$$D_{n} = (n-1)\bigl(D_{n-1} + D_{n-2}\bigr),$$
+with $D_{0} = 1$ and $D_{1} = 0$. Hence verify that your formula from part (a) satisfies this recurrence for $n = 4$. [4 marks] (Show that)
+(c) Determine $\displaystyle\lim_{n\to\infty} p_{n}$, giving your answer in terms of $e$. Determine also the smallest value of $n$ for which $p_{n}$ is within $0.001$ of this limit, justifying your answer with a bound on the error. [4 marks] (Determine)
+(d) Show that for every $n \ge 1$, $D_{n}$ is the nearest integer to $\dfrac{n!}{e}$. [3 marks] (Show that)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> A permutation fails to be a derangement exactly when at least one object is fixed, so $D_{n} = n! - \bigl|\bigcup_{i} A_{i}\bigr|$. <strong>(M1)</strong> For any $k$ distinct indices, $\bigl|A_{i_{1}} \cap \cdots \cap A_{i_{k}}\bigr| = (n-k)!$, since those $k$ objects are fixed and the remaining $n-k$ may be arranged freely. <strong>(A1)</strong> There are $\dbinom{n}{k}$ ways to choose the $k$ indices, so by inclusion–exclusion <strong>(M1)</strong><br>$$\Bigl|\bigcup_{i} A_{i}\Bigr| = \sum_{k=1}^{n} (-1)^{k+1}\binom{n}{k}(n-k)!$$<br>Therefore <strong>(M1)</strong><br>$$D_{n} = n! - \sum_{k=1}^{n}(-1)^{k+1}\frac{n!}{k!(n-k)!}(n-k)! = n!\sum_{k=0}^{n}\frac{(-1)^{k}}{k!}$$ <strong>(A1)(AG)</strong></p>
 <p><strong>(b)</strong> Consider object 1. In a derangement it must land in some position $j \neq 1$, and there are $n-1$ choices of $j$. <strong>(M1)</strong> Now consider where object $j$ goes.</p>
 <p>*Case 1.* Object $j$ lands in position 1. Then objects 1 and $j$ have swapped, and the remaining $n-2$ objects must be deranged among themselves: $D_{n-2}$ arrangements. <strong>(A1)</strong></p>

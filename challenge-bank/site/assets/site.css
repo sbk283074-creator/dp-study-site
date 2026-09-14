@@ -96,6 +96,38 @@ input[type=search]{flex:1;min-width:200px}
   border-radius:10px;padding:9px 16px;font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer}
 .q-done-page:hover{border-color:var(--accent);color:var(--accent)}
 .q-done-page.on{background:#e7f6ec;border-color:#34a853;color:#1e7e34}
+/* "Solve with AI" -- a per-question tutor panel. It shares the backend of the
+   global assistant (assets/ai-widget.js) but is scoped to one question: the
+   panel sends the question text itself, because the tutor has no access to this
+   bank and a bare "help me" would be answered blind. Nothing is sent until the
+   student presses the button; the body is built on first click, so a listing of
+   ninety questions costs ninety buttons and no textareas. */
+.qai{margin:14px 0 0;border:1px solid #c7d2fe;border-radius:var(--radius);background:#f7f8ff;padding:12px 14px}
+.qai-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.qai-title{font-weight:600;font-size:14px;color:#3730a3;white-space:nowrap}
+.qai-sub{font-size:12px;color:var(--muted);flex:1;min-width:170px}
+.qai-btn{border:1px solid #a5b4fc;background:#fff;color:#3730a3;border-radius:8px;padding:7px 13px;
+  font:600 13px -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer;white-space:nowrap}
+.qai-btn:hover{border-color:#4f46e5;background:#eef2ff}
+.qai-btn[disabled]{opacity:.6;cursor:progress}
+.qai-body{margin-top:11px}
+.qai-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.qai-lbl{font-size:12px;color:#475569;display:flex;gap:6px;align-items:center}
+.qai select{padding:5px 8px;font-size:12.5px}
+/* No `display` here on purpose: `.qai textarea` (0,1,1) would outrank the UA's
+   `[hidden]{display:none}` (0,1,0) and the attempt box would never hide. */
+.qai textarea{width:100%;min-height:54px;padding:8px 10px;border:1px solid var(--line);
+  border-radius:8px;font:13px/1.5 -apple-system,Segoe UI,Roboto,Arial,sans-serif;resize:vertical;background:#fff}
+.qai-out{margin-top:10px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px 14px;font-size:14px}
+.qai-out > :first-child{margin-top:0}
+.qai-out > :last-child{margin-bottom:0}
+.qai-meta{font-size:11.5px;color:var(--muted);margin-bottom:8px}
+.qai-think{margin-top:10px;font-size:12.5px}
+.qai-think summary{padding:7px 11px;font-size:12.5px}
+.qai-think .body{padding:0 12px 10px}
+.qai-err{color:var(--hard);font-size:13px}
+.qai-status{font-size:11.5px;color:var(--muted)}
+@media print{.qai{display:none}}
 .kv{margin:0;font-size:13px}
 .kv div{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}
 .kv div:last-child{border-bottom:0}

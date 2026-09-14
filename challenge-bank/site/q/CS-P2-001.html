@@ -30,6 +30,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>The authority has asked your team to design the monitoring and alerting subsystem. The parameters you need are given in the case study.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Calculate the total volume of data the fleet generates in one operating year, giving your answer in gibibytes, and state what the volume would become if each reading were instead stored as an 80-byte plain-text record.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>A junior developer proposes that each probe pushes every reading to the central server the moment it is taken, using a separate secure request per reading. Explain why this is a poor design even though the total payload is small, and explain how placing an edge device in each vehicle changes the trade-off.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Construct a relational schema, in third normal form, for the part of the system that records vehicles, consignments, probes and excursion alerts. Show the tables with their primary keys, foreign keys and a sensible attribute for each, and state the relationship between consignments and alerts.</p> <em>(Construct)</em></li><li><span class="marks">[5 marks]</span><strong>(d)</strong> <p>A second proposal is that each vehicle stores readings locally and uploads the whole day's file once, when it returns to the depot. Evaluate this proposal against the regulatory requirements, considering the alert deadline, the reliability of the evidence trail, and the cost of the system.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 18 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="18" data-ai-ref="CS-P2-001">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>The authority has asked your team to design the monitoring and alerting subsystem. The parameters you need are given in the case study.
+
+(a) Calculate the total volume of data the fleet generates in one operating year, giving your answer in gibibytes, and state what the volume would become if each reading were instead stored as an 80-byte plain-text record. [4 marks] (Calculate)
+(b) A junior developer proposes that each probe pushes every reading to the central server the moment it is taken, using a separate secure request per reading. Explain why this is a poor design even though the total payload is small, and explain how placing an edge device in each vehicle changes the trade-off. [4 marks] (Explain)
+(c) Construct a relational schema, in third normal form, for the part of the system that records vehicles, consignments, probes and excursion alerts. Show the tables with their primary keys, foreign keys and a sensible attribute for each, and state the relationship between consignments and alerts. [5 marks] (Construct)
+(d) A second proposal is that each vehicle stores readings locally and uploads the whole day&#x27;s file once, when it returns to the depot. Evaluate this proposal against the regulatory requirements, considering the alert deadline, the reliability of the evidence trail, and the cost of the system. [5 marks] (Evaluate)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Each probe is sampled $\dfrac{10\times3600}{30}=1200$ times per day, so each vehicle produces $4\times1200=4800$ readings per day. <strong>(M1)(A1)</strong> At 7 bytes each, the fleet produces</p>
 <p>$$4800\times7\times140\times300=1.4112\times10^{9}\text{ bytes}$$</p>
 <p>per year, which is $\dfrac{1.4112\times10^9}{2^{30}}=1.31$ GiB. <strong>(A1)</strong> Stored as 80-byte text the same readings occupy</p>

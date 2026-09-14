@@ -30,6 +30,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>Using the case study, answer all four parts. Assume a month is 30 nights of batch processing.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Explain why a big-bang cutover is a poor choice for this system, referring to specific figures in the case study rather than to general principles.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct an incremental migration plan. State the mechanism that routes each request, the order in which you would move functions and why that order, and how the two systems are kept consistent while both are live.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Calculate the total cost of nine months of dual running, including the analyst time spent on reconciliation. Show your working.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Evaluate the two proposals. If a failed big-bang cutover causes an 8-hour outage in which 3 200 payments per hour are missed and each missed payment costs EUR 120 in penalties and remediation, compare that with your answer to (c) and state which proposal you recommend.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-P2-006">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>Using the case study, answer all four parts. Assume a month is 30 nights of batch processing.
+
+(a) Explain why a big-bang cutover is a poor choice for this system, referring to specific figures in the case study rather than to general principles. [4 marks] (Explain)
+(b) Construct an incremental migration plan. State the mechanism that routes each request, the order in which you would move functions and why that order, and how the two systems are kept consistent while both are live. [5 marks] (Construct)
+(c) Calculate the total cost of nine months of dual running, including the analyst time spent on reconciliation. Show your working. [4 marks] (Calculate)
+(d) Evaluate the two proposals. If a failed big-bang cutover causes an 8-hour outage in which 3 200 payments per hour are missed and each missed payment costs EUR 120 in penalties and remediation, compare that with your answer to (c) and state which proposal you recommend. [3 marks] (Evaluate)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The decisive figure is the fallback: restoring from the previous night's backup takes 14 hours, during which roughly $14 \times 3200 \approx 45\,000$ payment instructions are not processed. <strong>(A1)</strong> A single failed cutover therefore risks a full working day of missed payments on a book of 18 million policies. <strong>(A1)</strong></p>
 <p>The staff position removes the option of a leisurely recovery. Only four people can maintain the old system, so if the new system fails and the old one must be restored and then kept running, there is almost no capacity to diagnose and fix the new one. <strong>(A1)</strong></p>
 <p>There is also no way to validate the new system at full scale before committing: 240 000 transactions per night cannot be simulated faithfully enough to be confident, and the first genuine run would also be the production run. <strong>(A1)</strong></p>

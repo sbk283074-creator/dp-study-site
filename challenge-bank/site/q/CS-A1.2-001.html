@@ -33,6 +33,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>The 12-bit register stores values in units of 0.0625 degrees Celsius per least significant bit, with the most significant bit carrying the sign.</p>
 <ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Determine the 12-bit two's complement representation of a reading of -37.5 degrees Celsius, giving your answer in binary and in hexadecimal.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Explain why the summation register can overflow even when every individual reading is representable, and determine the minimum register width needed to sum any 16 consecutive readings without overflow.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain why converting a stored reading to degrees Celsius by multiplying by 0.0625 introduces no error, whereas converting it to degrees Fahrenheit does, in both cases assuming the arithmetic itself is performed exactly.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Show that F simplifies to P + T.O, and state the number of two-input gates needed for the reduced expression.</p> <em>(Show that)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-A1.2-001">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>The 12-bit register stores values in units of 0.0625 degrees Celsius per least significant bit, with the most significant bit carrying the sign.
+
+(a) Determine the 12-bit two&#x27;s complement representation of a reading of -37.5 degrees Celsius, giving your answer in binary and in hexadecimal. [3 marks] (Determine)
+(b) Explain why the summation register can overflow even when every individual reading is representable, and determine the minimum register width needed to sum any 16 consecutive readings without overflow. [5 marks] (Explain)
+(c) Explain why converting a stored reading to degrees Celsius by multiplying by 0.0625 introduces no error, whereas converting it to degrees Fahrenheit does, in both cases assuming the arithmetic itself is performed exactly. [4 marks] (Explain)
+(d) Show that F simplifies to P + T.O, and state the number of two-input gates needed for the reduced expression. [4 marks] (Show that)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> One least significant bit represents $0.0625$ degrees Celsius, so the stored integer is the temperature divided by $0.0625$: $-37.5/0.0625=-600$. <strong>(M1)</strong></p>
 <p>To store $-600$ in 12-bit two's complement, represent $+600$ first. $600=512+64+16+8$, which is $001001011000$ in 12 bits. <strong>(A1)</strong></p>
 <p>Inverting every bit gives $110110100111$ and adding 1 gives $110110101000$, so $-600$ is stored as $1101\,1010\,1000$. Grouping into fours from the right: $1101$ is D, $1010$ is A, $1000$ is 8, so the answer is $\mathrm{0xDA8}$. <strong>(A1)</strong></p>

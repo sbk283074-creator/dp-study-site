@@ -30,6 +30,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>The table appears to settle the matter. This question asks whether it does.</p>
 <ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Determine the worst-case number of comparisons binary search makes for each value of $n$ in the table, showing how $\lfloor \log_{2} n \rfloor + 1$ gives the stated figures, and state the complexity class of each algorithm.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Using the cost model in the stimulus, calculate the worst-case time taken by each algorithm for each value of $n$ in the table. Hence determine the smallest value of $n$ for which binary search is the faster of the two, showing your method.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain why the comparison counts in the table give the opposite ranking to the timings for small $n$, referring to the cost model and to the way each algorithm accesses memory.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Evaluate whether a programmer should implement a hybrid routine that uses linear search below the crossover value and binary search above it, giving one reason for and one reason against.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="15" data-ai-ref="CS-B2.4-001">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>The table appears to settle the matter. This question asks whether it does.
+
+(a) Determine the worst-case number of comparisons binary search makes for each value of $n$ in the table, showing how $\lfloor \log_{2} n \rfloor + 1$ gives the stated figures, and state the complexity class of each algorithm. [3 marks] (Determine)
+(b) Using the cost model in the stimulus, calculate the worst-case time taken by each algorithm for each value of $n$ in the table. Hence determine the smallest value of $n$ for which binary search is the faster of the two, showing your method. [5 marks] (Calculate)
+(c) Explain why the comparison counts in the table give the opposite ranking to the timings for small $n$, referring to the cost model and to the way each algorithm accesses memory. [4 marks] (Explain)
+(d) Evaluate whether a programmer should implement a hybrid routine that uses linear search below the crossover value and binary search above it, giving one reason for and one reason against. [3 marks] (Evaluate)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> For $n = 16$, $\lfloor\log_{2} 16\rfloor + 1 = 4 + 1 = 5$; for $n = 256$, $8 + 1 = 9$; for $n = 65\,536$, $16 + 1 = 17$; for $n = 16\,777\,216$, $24 + 1 = 25$. <strong>(A1) for the method, (A1) for the four values.</strong> Linear search is $\mathrm{O}(n)$ and binary search is $\mathrm{O}(\log n)$. <strong>(A1)</strong></p>
 <p><strong>(b)</strong> Linear search takes $3n$ nanoseconds. Binary search takes $400 + 30(\lfloor\log_{2} n\rfloor + 1)$ nanoseconds. <strong>(M1)</strong></p>
 <p>| $n$ | linear search | binary search |<br>|---|---|---|<br>| $16$ | $48\ \mathrm{ns}$ | $400 + 30(5) = 550\ \mathrm{ns}$ |<br>| $256$ | $768\ \mathrm{ns}$ | $400 + 30(9) = 670\ \mathrm{ns}$ |<br>| $65\,536$ | $196\,608\ \mathrm{ns}$ | $400 + 30(17) = 910\ \mathrm{ns}$ |<br>| $16\,777\,216$ | $50\,331\,648\ \mathrm{ns}$ | $400 + 30(25) = 1150\ \mathrm{ns}$ |</p>

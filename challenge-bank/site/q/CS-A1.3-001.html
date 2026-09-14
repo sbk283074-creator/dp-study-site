@@ -30,6 +30,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>The four tasks A, B, C and D all become ready simultaneously when the controller wakes. Their processor requirements are 5 ms, 3 ms, 8 ms and 2 ms.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Describe how a closed-loop control system would maintain soil moisture at a target level, identifying the input, the process, the output and the feedback in your answer.</p> <em>(Describe)</em></li><li><span class="marks">[6 marks]</span><strong>(b)</strong> <p>Calculate the average waiting time for the four tasks under first-come-first-served scheduling and under round-robin scheduling with a time quantum of 3 ms, then recalculate each total if every context switch costs 0.5 ms and the tasks are executed in the order A, B, C, D.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Explain why the average waiting time alone is a misleading basis for choosing between the two policies, using your figures, and state which policy you would deploy.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Evaluate the use of polling for the soil-moisture probe against the use of interrupts for the rain sensor, and explain one additional operating system function that the network connection makes necessary.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-A1.3-001">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>The four tasks A, B, C and D all become ready simultaneously when the controller wakes. Their processor requirements are 5 ms, 3 ms, 8 ms and 2 ms.
+
+(a) Describe how a closed-loop control system would maintain soil moisture at a target level, identifying the input, the process, the output and the feedback in your answer. [4 marks] (Describe)
+(b) Calculate the average waiting time for the four tasks under first-come-first-served scheduling and under round-robin scheduling with a time quantum of 3 ms, then recalculate each total if every context switch costs 0.5 ms and the tasks are executed in the order A, B, C, D. [6 marks] (Calculate)
+(c) Explain why the average waiting time alone is a misleading basis for choosing between the two policies, using your figures, and state which policy you would deploy. [3 marks] (Explain)
+(d) Evaluate the use of polling for the soil-moisture probe against the use of interrupts for the rain sensor, and explain one additional operating system function that the network connection makes necessary. [3 marks] (Evaluate)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> In a closed-loop system the controller measures the actual soil moisture, compares it with the target value, and uses the difference to decide how much water to release; the measurement is then repeated so that the effect of the action is observed and corrected. <strong>(M1)</strong></p>
 <p>Input: the reading from the soil-moisture probe, converted to a digital value. Process: the controller compares this reading with the target and computes the valve opening and the duration of watering. Output: the signal that opens the irrigation valve, and the water delivered to the plot. Feedback: the next reading from the same probe, which shows whether the moisture has reached the target and allows the next decision to be adjusted. <strong>(M1)(A1)(A1)</strong></p>
 <p>The feedback path is what makes the system closed-loop and is what distinguishes it from an open-loop system, which would water for a fixed time regardless of the resulting moisture level.</p>

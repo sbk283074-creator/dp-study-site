@@ -43,6 +43,43 @@ output COUNT
 <p>(d) Explain why the time complexity of the routine is $\mathrm{O}(N \log N)$ rather than<br>$\mathrm{O}(N^{2})$. \tag{3}</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Trace the routine for $N = 6$ and state the value output.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Show that the number of inner-loop executions is the sum from I = 1 to N of the floor of N divided by I.</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Determine the value output when $N = 1000$, and hence determine the ratio of the number of iterations to $N$ squared.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Explain why the time complexity is O(N log N) rather than O(N squared).</p> <em>(Explain)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-B2.4-003">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>A programmer writes the following routine to count the divisors of every integer up to
+$N$.
+
+```
+COUNT = 0
+for I = 1 to N
+    for J = I to N step I
+        COUNT = COUNT + 1
+    next J
+next I
+output COUNT
+```
+
+(a) Trace the routine for $N = 6$ and state the value output. \tag{4}
+
+(b) Show that the number of times the inner loop body executes is
+
+$$\sum_{I=1}^{N} \left\lfloor \frac{N}{I} \right\rfloor . \tag{4}$$
+
+(c) Determine the value output when $N = 1000$, and hence determine the ratio of the number of
+iterations to $N^{2}$. \tag{5}
+
+(d) Explain why the time complexity of the routine is $\mathrm{O}(N \log N)$ rather than
+$\mathrm{O}(N^{2})$. \tag{3}
+
+(a) Trace the routine for $N = 6$ and state the value output. [4 marks] (Determine)
+(b) Show that the number of inner-loop executions is the sum from I = 1 to N of the floor of N divided by I. [4 marks] (Show that)
+(c) Determine the value output when $N = 1000$, and hence determine the ratio of the number of iterations to $N$ squared. [5 marks] (Determine)
+(d) Explain why the time complexity is O(N log N) rather than O(N squared). [3 marks] (Explain)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p>(a) Tracing the outer loop (M1):</p>
 <p>| $I$ | values taken by $J$ | inner iterations |<br>|---|---|---|<br>| 1 | 1, 2, 3, 4, 5, 6 | 6 |<br>| 2 | 2, 4, 6 | 3 |<br>| 3 | 3, 6 | 2 |<br>| 4 | 4 | 1 |<br>| 5 | 5 | 1 |<br>| 6 | 6 | 1 |</p>
 <p>The inner counts are $6, 3, 2, 1, 1, 1$ (A1) and the total is $6 + 3 + 2 + 1 + 1 + 1 = 14$<br>(A1). So the routine outputs $14$ (A1). Note that only the first of the six passes runs the<br>full $N$ times; by the fourth pass the inner loop executes once.</p>

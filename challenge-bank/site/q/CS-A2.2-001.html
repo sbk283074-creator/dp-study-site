@@ -30,6 +30,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>There is more than enough address space for all six requirements, but only if the block is divided unevenly. Design the division, then justify it.</p>
 <ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>Design a subnetting scheme using variable-length subnet masks. For each of the six requirements give the network address in dotted decimal, the prefix length, and the number of usable host addresses it provides.</p> <em>(Design)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Determine how many addresses in the /24 block remain unused by your scheme, and compare this with the number that would remain if the block had instead been divided into four equal subnets.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Explain how a host uses its own address and subnet mask to decide whether a destination address is on its own subnet, and what it does if it is not.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Evaluate one advantage and one disadvantage of the variable-length scheme compared with using four equal subnets, in a network that may grow.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="15" data-ai-ref="CS-A2.2-001">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>There is more than enough address space for all six requirements, but only if the block is divided unevenly. Design the division, then justify it.
+
+(a) Design a subnetting scheme using variable-length subnet masks. For each of the six requirements give the network address in dotted decimal, the prefix length, and the number of usable host addresses it provides. [5 marks] (Design)
+(b) Determine how many addresses in the /24 block remain unused by your scheme, and compare this with the number that would remain if the block had instead been divided into four equal subnets. [4 marks] (Determine)
+(c) Explain how a host uses its own address and subnet mask to decide whether a destination address is on its own subnet, and what it does if it is not. [3 marks] (Explain)
+(d) Evaluate one advantage and one disadvantage of the variable-length scheme compared with using four equal subnets, in a network that may grow. [3 marks] (Evaluate)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Work downwards in size so that each block starts on a boundary its own prefix length divides. A prefix that leaves $h$ host bits provides $2^{h} - 2$ usable addresses. <strong>(M1)</strong></p>
 <p>| requirement | network address | prefix | usable hosts |<br>|---|---|---|---|<br>| science, needs 60 | $192.168.40.0$ | $/26$ | $62$ |<br>| humanities, needs 28 | $192.168.40.64$ | $/27$ | $30$ |<br>| administration, needs 12 | $192.168.40.96$ | $/28$ | $14$ |<br>| library, needs 6 | $192.168.40.112$ | $/29$ | $6$ |<br>| WAN link 1, needs 2 | $192.168.40.120$ | $/30$ | $2$ |<br>| WAN link 2, needs 2 | $192.168.40.124$ | $/30$ | $2$ |</p>
 <p><strong>(A1) for each correct prefix, (A1) for the complete set of addresses, (A1) for the usable-host counts.</strong> The blocks occupy $0$–$63$, $64$–$95$, $96$–$111$, $112$–$119$, $120$–$123$ and $124$–$127$ with no overlap, because each block begins at an address divisible by its own size.</p>

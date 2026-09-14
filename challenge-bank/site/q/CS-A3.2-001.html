@@ -33,6 +33,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p>The festival is expanding and the table is causing problems.</p>
 <ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>Explain <strong>two</strong> specific problems with this design, using the data above to illustrate each. For each, name the type of anomaly it represents.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a set of tables in third normal form (3NF) to replace PERFORMANCE_BOOKING. State the primary key of each table and show the foreign-key links between them.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Using your 3NF design, write an SQL query that lists the customer name, the performance name and the total cost of each booking (quantity × price), for bookings of <strong>more than two</strong> tickets, ordered by total cost from highest to lowest.</p> <em>(Construct)</em></li><li><span class="marks">[2 marks]</span><strong>(d)</strong> <p>Box-office staff need to see booking details but must not see customer email addresses or prices. Explain how a database <strong>view</strong> solves this. (HL only)</p> <em>(Explain)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-A3.2-001">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>The festival is expanding and the table is causing problems.
+
+(a) Explain **two** specific problems with this design, using the data above to illustrate each. For each, name the type of anomaly it represents. [5 marks] (Explain)
+(b) Construct a set of tables in third normal form (3NF) to replace PERFORMANCE_BOOKING. State the primary key of each table and show the foreign-key links between them. [5 marks] (Construct)
+(c) Using your 3NF design, write an SQL query that lists the customer name, the performance name and the total cost of each booking (quantity × price), for bookings of **more than two** tickets, ordered by total cost from highest to lowest. [4 marks] (Construct)
+(d) Box-office staff need to see booking details but must not see customer email addresses or prices. Explain how a database **view** solves this. (HL only) [2 marks] (Explain)</div>
+</div>
 <details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong>  Award two from:</p>
 <ul><li><strong>Update (modification) anomaly.</strong> 'Midnight Chorus' and its venue 'East Stage' are repeated in rows 1001, 1002 and 1004. If the performance is moved to another venue, every one of those rows must be changed; if even one is missed, the database holds contradictory answers and a report cannot say where the performance is.  <strong>(A1)(A1)</strong></li><li><strong>Insertion anomaly.</strong> A newly announced performance cannot be added to the database until someone books it, because the only place a performance name can exist is inside a booking row — and BookingID is the key, so there is no way to store a performance with no bookings.  <strong>(A1)(A1)</strong></li><li><strong>Deletion anomaly.</strong> If customer L. Oyeka cancels booking 1003, that row is the only record of 'Brass Quartet' at the West Barn; deleting the booking destroys the performance record as well.  <strong>(A1)(A1)</strong></li><li><strong>Redundancy / wasted storage.</strong> Customer name and email are repeated across every booking that customer makes, so A. Ferrer's details are stored twice and R. Duval's twice, and the repetition grows with the festival.  <strong>(A1)(A1)</strong></li></ul>
 <p>(Maximum 5 marks; at least one answer must name the anomaly type for the higher band.)</p>
