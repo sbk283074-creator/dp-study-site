@@ -1,0 +1,458 @@
+{
+  "questions": [
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-14",
+      "updated_at": "2026-09-14",
+      "subject": "Math AA HL",
+      "paper": "P2",
+      "section": "B",
+      "technology": "not allowed",
+      "question_type": "structured",
+      "id": "MATH-AHL1.11-201",
+      "syllabus_ref": "AHL 1.11 (partial fractions) with SL 1.2 (arithmetic series) and AHL 1.8 (sum of an infinite series)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "1.11 Partial fractions whose pieces cancel across a gap, so that more than one term survives the telescoping",
+      "marks": 12,
+      "difficulty": 4,
+      "command_terms": [
+        "Show that",
+        "Show that",
+        "Determine",
+        "Explain"
+      ],
+      "tags": [
+        "partial fractions",
+        "telescoping",
+        "series",
+        "infinite sum",
+        "cancellation",
+        "generalisation"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "challenge_mechanism": "The sum telescopes, but not the way the familiar $1/(n(n+1)(n+2))$ example does. The two pieces of each term are two apart rather than one apart, so the piece from term $n$ is cancelled by the piece from term $n+2$ and the first *two* terms have no earlier partner. A student who has memorised the three-factor example expects exactly one surviving term at each end, takes the first term of the decomposition and reports a total that is two thirds of the correct value.",
+      "question": "For $n \\ge 1$ define $u_{n} = \\dfrac{1}{n(n+2)}$, and let $T_{N} = u_{1} + u_{2} + \\cdots + u_{N}$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $u_{n} = \\dfrac{1}{2}\\left(\\dfrac{1}{n} - \\dfrac{1}{n+2}\\right)$ for every $n \\ge 1$."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $T_{N} = \\dfrac{3}{4} - \\dfrac{1}{2(N+1)} - \\dfrac{1}{2(N+2)}$ for every $N \\ge 1$, and state how many terms of the original series are left uncancelled at each end of the sum."
+        },
+        {
+          "label": "c",
+          "marks": 2,
+          "command_term": "Determine",
+          "text": "Determine the limit of $T_{N}$ as $N$ tends to infinity, and explain why the sequence $T_{N}$ increases with $N$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "The same construction applied to $v_{n} = \\dfrac{1}{n(n+k)}$, where $k$ is a positive integer, leaves $k$ terms uncancelled at each end. Explain why the count is $k$ rather than $1$, and state the value of $\\displaystyle\\sum_{n=1}^{\\infty} v_{n}$ in terms of $k$."
+        }
+      ],
+      "answer": "**(a)** Write\n$$u_{n} = \\frac{1}{n(n+2)} = \\frac{A}{n} + \\frac{B}{n+2}$$\n\nMultiplying through by $n(n+2)$ gives an identity that must hold for every $n$ (M1):\n\n$$1 = A(n+2) + Bn$$\n\nPutting $n = 0$ gives $1 = 2A$, so $A = \\tfrac{1}{2}$ (A1). Putting $n = -2$ gives $1 = -2B$, so $B = -\\tfrac{1}{2}$ (A1). Hence\n\n$$u_{n} = \\frac{1}{2}\\left(\\frac{1}{n} - \\frac{1}{n+2}\\right) \\tag{AG}$$\n\nThe coefficient of $n$ on the right is $A + B = 0$, which is what the left-hand side requires, so the two values are consistent and no third fraction is needed.\n\n**(b)** Summing the difference from $n = 1$ to $n = N$ (M1):\n\n$$T_{N} = \\frac{1}{2}\\sum_{n=1}^{N}\\left(\\frac{1}{n} - \\frac{1}{n+2}\\right)$$\n\nWrite the first few brackets out in full, because the pattern of cancellation is not the one the three-factor example produces (M1):\n\n$$\\frac{1}{2}\\left[\\left(1 - \\frac{1}{3}\\right) + \\left(\\frac{1}{2} - \\frac{1}{4}\\right) + \\left(\\frac{1}{3} - \\frac{1}{5}\\right) + \\left(\\frac{1}{4} - \\frac{1}{6}\\right) + \\cdots\\right]$$\n\nThe $\\frac{1}{3}$ in the first bracket is removed by the $\\frac{1}{3}$ in the third, and the $\\frac{1}{4}$ in the second is removed by the $\\frac{1}{4}$ in the fourth. Every piece from $\\frac{1}{3}$ onwards meets its partner two places away, so what survives is the first two numerators and the last two denominators (M1):\n\n$$T_{N} = \\frac{1}{2}\\left(1 + \\frac{1}{2} - \\frac{1}{N+1} - \\frac{1}{N+2}\\right) = \\frac{3}{4} - \\frac{1}{2(N+1)} - \\frac{1}{2(N+2)} \\tag{A1}$$\n\n**Two** terms survive at the start rather than one (A1). The reason is the size of the gap: the two pieces of $u_{n}$ are $\\frac{1}{n}$ and $\\frac{1}{n+2}$, which are two apart, so the piece $-\\frac{1}{n+2}$ is cancelled by the piece $+\\frac{1}{n+2}$ belonging to term $n+2$ and not by anything in term $n+1$. Terms $n = 1$ and $n = 2$ therefore have no earlier partner, and the same argument read from the other end leaves two denominators uncancelled at the far end.\n\n**(c)** As $N$ tends to infinity each of $\\frac{1}{2(N+1)}$ and $\\frac{1}{2(N+2)}$ tends to zero (M1), so\n\n$$\\lim_{N\\to\\infty} T_{N} = \\frac{3}{4} \\tag{A1}$$\n\nThe limit is the limit of an increasing sequence, and it exists for that reason. The difference between successive partial sums is\n\n$$T_{N+1} - T_{N} = u_{N+1} = \\frac{1}{(N+1)(N+3)} > 0$$\n\nso $T_{N}$ increases strictly with $N$, while the closed form shows $T_{N} = \\frac{3}{4} - \\frac{1}{2(N+1)} - \\frac{1}{2(N+2)} < \\frac{3}{4}$ for every $N$. A sequence that increases and is bounded above converges, so writing down $\\frac{3}{4}$ is justified rather than merely plausible.\n\n**(d)** In general\n\n$$v_{n} = \\frac{1}{n(n+k)} = \\frac{1}{k}\\left(\\frac{1}{n} - \\frac{1}{n+k}\\right)$$\n\nso the piece $-\\frac{1}{n+k}$ is cancelled by the piece $+\\frac{1}{n+k}$ from term $n+k$, which sits $k$ places further along the sum rather than one place further along (M1). The first $k$ terms therefore have no earlier partner to remove them, so $k$ numerators survive at the start, and reading the sum from the far end gives $k$ surviving denominators (A1). Hence\n\n$$\\sum_{n=1}^{\\infty} v_{n} = \\frac{1}{k}\\left(1 + \\frac{1}{2} + \\frac{1}{3} + \\cdots + \\frac{1}{k}\\right) \\tag{A1}$$\n\nThe formula reproduces both ends of the family. At $k = 1$ it gives $1$, which is the familiar value of $\\sum 1/(n(n+1))$, and at $k = 2$ it gives $\\frac{1}{2}\\left(1 + \\frac{1}{2}\\right) = \\frac{3}{4}$, which is the result of part (c). At $k = 3$ it gives $\\frac{1}{3}\\left(1 + \\frac{1}{2} + \\frac{1}{3}\\right) = \\frac{11}{18}$.",
+      "markscheme_notes": "(a) (M1) for multiplying through by the denominator or for the cover-up method, (A1) for each of $A$ and $B$. A candidate who obtains $A = B = \\tfrac{1}{2}$ has made a sign slip and loses the second (A1); the check on the coefficient of $n$ is offered in the answer and is not required.\n\n(b) (M1) for summing the difference, (M1) for writing out enough brackets to see the pattern, (M1) for identifying which pieces survive, (A1) for the closed form. The mark for \"how many terms survive\" is separate and is awarded for the answer **two**, with the reason; a candidate who says \"one\" has used the three-factor pattern and cannot score it, even if the closed form is then obtained by another route. A candidate who writes the closed form as $\\frac{3}{4} - \\frac{2N+3}{2(N+1)(N+2)}$ should be given full credit if the simplification is correct.\n\n(c) (M1) for taking the limit of the two vanishing terms, (A1) for $\\frac{3}{4}$. The explanation of monotonicity is offered in the answer and is not separately marked, but a candidate who claims the limit exists because \"the terms get small\" should not be penalised here, because the part is worth two marks and the limit is the substance.\n\n(d) (M1) for the general decomposition and the observation that the partner sits $k$ places away, (A1) for the count of $k$ at each end, (A1) for $\\frac{1}{k}\\left(1 + \\frac{1}{2} + \\cdots + \\frac{1}{k}\\right)$. A candidate who states the value as $H_{k}/k$ without expanding it should be given the final mark, since the notation names the same quantity.\n\nForfeits: assuming the cancellation is the one-place cancellation of the three-factor case, which leaves only the term $1$ and gives $\\frac{1}{2}$ for the infinite sum in (c) and $\\frac{1}{k}$ in (d); treating the pieces as cancelling within each bracket, which removes nothing. Condonation: a candidate who works with $N \\ge 2$ or who writes $\\frac{3}{4}$ as $0.75$ should be given full credit if the exact form also appears.",
+      "explanation": "This item exists because the bank already contained the three-factor version of the same idea, and the two are worth setting side by side: the decomposition is the same technique, the cancellation is the same kind of event, and the answer is different for a reason that can be stated in one sentence. The gap between the two pieces of each term is what decides how much of the sum survives, and a student who has learned the technique rather than the example will see that immediately. A student who has learned the example will not.\n\nThe trap is precise and it is not a slip. In the familiar case, $u_{n}$ splits into three pieces spanning $n$, $n+1$ and $n+2$, and the cancellation removes everything except the very first piece. Here the split is into two pieces spanning $n$ and $n+2$, and the cancellation removes everything except the first two. A student who carries the three-factor expectation across will take the $1$ out of the decomposition, divide by two, and report $\\frac{1}{2}$ -- a number that is wrong by exactly the second surviving term, and wrong in a way that no amount of checking the algebra will reveal, because the algebra was done correctly.\n\nPart (b) therefore asks for the count as well as the closed form, which forces the student to say what they think the cancellation does before the markscheme reveals it. That is a deliberate design choice: a question that asked only for $T_{N}$ would be marked right or wrong on the final line and would hide the misunderstanding, whereas asking for the count makes the reasoning visible at the point where it matters.\n\nPart (d) is the generalisation that makes the mechanism explicit rather than leaving it as a fact about one series. Once the student has said that the partner sits $k$ places away, the count of $k$ surviving terms is a consequence rather than a coincidence, and the value $\\frac{1}{k}\\left(1 + \\frac{1}{2} + \\cdots + \\frac{1}{k}\\right)$ can be written down without doing any more summation. The three checks at the end -- $k = 1$ giving $1$, $k = 2$ giving $\\frac{3}{4}$, $k = 3$ giving $\\frac{11}{18}$ -- are there so that a student can see the general result agreeing with the special case they have just computed, which is the step that turns a formula into something they trust.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original. The identity $\\sum 1/(n(n+2)) = 3/4$ and its general form are classical; the gap-based framing, the demand for the surviving-term count, and the generalisation to $k$ are written here.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original",
+        "source_family": "original"
+      },
+      "difficulty_evidence": {
+        "lever_type": "non_obvious_tool",
+        "naive_path": "Recognise the general term as a partial-fraction sum of the familiar telescoping kind, decompose it into two fractions one apart, and cancel as though each piece were removed by the next term in the sum, leaving only the first numerator and reporting half of it.",
+        "failure_point": "The two pieces of each term are two apart rather than one apart, so the piece from term n is removed by the piece from term n+2 and the first two terms have no earlier partner at all, which means two numerators survive at the start and two denominators at the end instead of one of each.",
+        "wrong_answer": "The surviving count is taken to be one, the decomposition is truncated after its first piece, and the infinite sum is reported as one half instead of three quarters, with the same error carried into the general case as one over k rather than the k-th harmonic number divided by k."
+      },
+      "verification": {
+        "method": "The decomposition was checked symbolically at several values of n, and the closed form for T(N) was compared against direct summation for N = 1, 2, 3, 10 and 1000, agreeing to twelve decimal places in every case. The general result was checked at k = 1, 2, 3 and 4 against the harmonic numbers, and the surviving-term count was verified by writing out the cancellation explicitly for k = 2 and k = 3 rather than by trusting the pattern.",
+        "assertions": [
+          "approx(1/(1*(1+2)), 1/3, 1e-12)",
+          "approx(0.5*(1/1 - 1/3), 1/3, 1e-12)",
+          "approx(0.5*(1/2 - 1/4), 1/8, 1e-12)",
+          "all(abs(1/(n*(n+2)) - 0.5*(1/n - 1/(n+2))) < 1e-15 for n in (1,2,3,7,50))",
+          "approx(0.75 - 0.5/(1+1) - 0.5/(1+2), 1/3, 1e-12)",
+          "approx(0.75 - 0.5/(2+1) - 0.5/(2+2), 1/3 + 1/8, 1e-12)",
+          "approx(0.75 - 0.5/(3+1) - 0.5/(3+2), 1/3 + 1/8 + 1/15, 1e-12)",
+          "approx(0.75 - 0.5/(10+1) - 0.5/(10+2), sum(1/(n*(n+2)) for n in range(1, 11)), 1e-12)",
+          "abs((0.75 - 0.5/1001 - 0.5/1002) - sum(1/(n*(n+2)) for n in range(1, 1001))) < 1e-12",
+          "approx(0.5*(1 + 1/2), 0.75, 1e-12)",
+          "approx((1 + 1/2)/2, 0.75, 1e-12)",
+          "approx((1 + 1/2 + 1/3)/3, 11/18, 1e-12)",
+          "approx((1 + 1/2 + 1/3 + 1/4)/4, 25/48, 1e-12)",
+          "approx(sum(1/(n*(n+1)) for n in range(1, 400)), 399/400, 1e-12)",
+          "approx(1/(1*2) + 1/(2*3) + 1/(3*4), 0.75, 1e-12)"
+        ],
+        "solution_skeleton": [
+          "decompose the general term into two partial fractions",
+          "sum the difference and write out enough terms to expose the pattern",
+          "identify which pieces survive when the gap is two",
+          "take the limit of an increasing bounded sequence",
+          "generalise the surviving count to a gap of k"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.006,
+        "nearest_bank_id": "MATH_AAHL_P2_2021May_TZ1_q12",
+        "max_internal_similarity": 0.019,
+        "max_approach_similarity": 0.366,
+        "nearest_approach_id": "MATH-AHL1.11-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-AHL1.11-001"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-14",
+      "updated_at": "2026-09-14",
+      "subject": "Math AA HL",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "question_type": "structured",
+      "id": "MATH-AHL2.12-201",
+      "syllabus_ref": "AHL 2.12 (polynomial functions, their graphs and equations) with SL 2.7 and AHL 5.8 (local maximum and minimum points)",
+      "topic": "Topic 2: Functions",
+      "subtopic": "2.12 The number of real roots of x^3 - 3x + k, and the parameter range that gives three",
+      "marks": 12,
+      "difficulty": 4,
+      "command_terms": [
+        "Determine",
+        "Determine",
+        "Show that",
+        "Sketch"
+      ],
+      "tags": [
+        "polynomial",
+        "cubic",
+        "discriminant",
+        "parameter",
+        "stationary points",
+        "roots"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "challenge_mechanism": "The number of real roots is governed by where the curve sits relative to the horizontal axis, so the two turning points have to be located and their signs examined. A student who reaches for the cubic discriminant formula gets the boundary but cannot explain it, and the boundary case is where the interesting answer lives.",
+      "question": "The function $f$ is defined by $f(x) = x^{3} - 3x + k$, where $k$ is a real constant.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the coordinates of the two stationary points of the graph of $f$, in terms of $k$."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine the set of values of $k$ for which the equation $f(x) = 0$ has three distinct real roots."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $k = 2$ gives a repeated root, find that root, and factorise $f(x)$ completely for this value of $k$."
+        },
+        {
+          "label": "d",
+          "marks": 2,
+          "command_term": "Sketch",
+          "text": "Sketch the graph of $y = f(x)$ for a value of $k$ between $-2$ and $2$, marking the stationary points and the three roots."
+        }
+      ],
+      "answer": "**(a)** Differentiate (M1):\n$$f'(x) = 3x^{2} - 3 = 3(x - 1)(x + 1)$$\n\nSo $f'(x) = 0$ at $x = \\pm 1$ (A1). Evaluating:\n$$f(-1) = -1 + 3 + k = k + 2, \\qquad f(1) = 1 - 3 + k = k - 2$$\n\nThe stationary points are $(-1,\\,k+2)$ and $(1,\\,k-2)$ (A1). Since $f''(x) = 6x$, the first is a local maximum and the second a local minimum.\n\n**(b)** For a cubic with a positive leading coefficient, the graph rises from $-\\infty$, turns down at the local maximum, turns up again at the local minimum, and rises to $+\\infty$. Three distinct real roots occur exactly when the local maximum is above the axis and the local minimum is below it (M1)(R1):\n$$k + 2 > 0 \\quad\\text{and}\\quad k - 2 < 0$$\n\nThat is (M1)\n$$-2 < k < 2 \\tag{A1}$$\n\nThe same conclusion follows from the discriminant of $x^{3} + px + q$, which is $-4p^{3} - 27q^{2}$; here $p = -3$ and $q = k$, so the discriminant is $108 - 27k^{2}$, and it is positive precisely when $k^{2} < 4$.\n\n**(c)** At $k = 2$ the local minimum is at $(1,\\,0)$, so $x = 1$ is a root (M1). Dividing $x^{3} - 3x + 2$ by $(x - 1)$:\n$$x^{3} - 3x + 2 = (x - 1)(x^{2} + x - 2) = (x - 1)(x - 1)(x + 2) \\tag{A1(A1)}$$\n\nSo\n$$f(x) = (x - 1)^{2}(x + 2)$$\n\nand the roots are $x = 1$ (repeated, because the curve touches the axis there) and $x = -2$. By symmetry, $k = -2$ gives $f(x) = (x + 1)^{2}(x - 2)$.\n\n**(d)** For example $k = 0$ gives $f(x) = x(x^{2} - 3)$, so the roots are $x = 0$ and $x = \\pm\\sqrt{3} \\approx \\pm 1.73$. The sketch should show a cubic rising from the lower left, a local maximum at $(-1,\\,2)$, a local minimum at $(1,\\,-2)$, and three crossings of the horizontal axis, one between $-2$ and $-1$, one at the origin, and one between $1$ and $2$.",
+      "markscheme_notes": "(a) M1 for differentiating, A1 for $x = \\pm 1$, A1 for both coordinates in terms of $k$. Accept the stationary points given as $x$-values with the corresponding $y$-values stated separately. A candidate who does not identify which is the maximum and which the minimum should not be penalised here, but the distinction is needed in (b).\n\n(b) M1 for the condition on the two turning points, R1 for stating that the maximum must be positive and the minimum negative (or the equivalent geometric statement), M1 for translating into inequalities in $k$, A1 for $-2 < k < 2$. A candidate who quotes the discriminant $108 - 27k^{2}$ and solves the inequality should be given full credit. Strict inequalities are required: a candidate who writes $-2 \\le k \\le 2$ has included the repeated-root cases and loses the A1.\n\n(c) M1 for substituting $k = 2$ and identifying $x = 1$ as a root, A1 for the quadratic factor, A1 for the complete factorisation or for both roots with the repetition stated. Accept $f(x) = (x-1)^{2}(x+2)$ or $f(x) = (x-1)(x-1)(x+2)$. The symmetry remark about $k = -2$ is not required.\n\n(d) A1 for the correct shape with the three roots in the right places, A1 for both stationary points marked with the values $k \\pm 2$. A sketch with the maximum and minimum interchanged scores 0 on the second mark.\n\nForfeits: using $f''(x) = 3x$ by differentiating incorrectly; concluding from the discriminant alone without any reference to the turning points, which is accepted in (b) but leaves (d) unsupported. Condonation: a candidate who works throughout with $x^{3} - 3x - k$ and reverses the sign of the final range consistently should be given full credit.",
+      "explanation": "The item looks like a routine curve-sketching exercise and is actually about the relationship between a graph and its parameters. The number of real roots of a cubic is not a property of the coefficients in the abstract; it is a statement about where the turning points sit relative to the horizontal axis, and the whole question follows from locating those two points and looking at their signs.\n\nThe boundary is where the marks are lost. At $k = \\pm 2$ one turning point touches the axis, so two of the three roots coalesce and the equation has a repeated root rather than three distinct ones. The distinction between $< $ and $\\le$ is therefore the difference between the right answer and a wrong one, and it is exactly the kind of boundary that a student relying on a memorised discriminant formula may not think to check. Part (c) makes the boundary concrete by factorising the $k = 2$ case completely, so the repeated root can be seen rather than merely asserted.\n\nPart (d) is deliberately placed last and carries only two marks, but it does real work: it forces the student to exhibit a member of the family, and the choice of $k = 0$ makes the roots irrational, which means the sketch cannot be produced by guessing rational roots. A student who understands the structure can sketch the general shape and place the roots by reference to the stationary points, which is the transferable skill. The symmetry between $k = 2$ and $k = -2$ is not required but is worth noticing, because the original cubic is odd apart from the constant.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original. The family $x^{3} - 3x + k$ is a familiar teaching example; the parts were chosen so that the boundary cases are examinable, and part (c) is written so that the repeated root must be produced by factorisation rather than asserted from the discriminant.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original",
+        "source_family": "original"
+      },
+      "difficulty_evidence": {
+        "lever_type": "derived_limit",
+        "naive_path": "Compute the discriminant of the cubic and read off the condition for three real roots, treating the boundary values as part of the answer because the discriminant is non-negative there.",
+        "failure_point": "The discriminant is zero at the boundary rather than positive, and a zero discriminant means two roots have merged, so the inequality that permits three distinct real roots must be strict and the boundary cases have to be examined separately.",
+        "wrong_answer": "The range is reported as minus two less than or equal to k less than or equal to two, which wrongly includes both repeated-root cases, and the count of distinct real roots is given as three at the boundary."
+      },
+      "verification": {
+        "method": "The discriminant -4p^3 - 27q^2 was evaluated for k from -3 to 3 and its sign confirmed against the expected root count; the factorisations at k = +-2 were checked by expansion, and the roots at k = 0 were confirmed to be 0 and +-sqrt(3).",
+        "assertions": [
+          "approx(3*1**2 - 3, 0.0, 1e-12)",
+          "approx((-1)**3 - 3*(-1), 2.0, 1e-12)",
+          "approx(1**3 - 3*1, -2.0, 1e-12)",
+          "approx(-4*(-3)**3 - 27*0**2, 108.0, 1e-12)",
+          "approx(-4*(-3)**3 - 27*2**2, 0.0, 1e-12)",
+          "approx(-4*(-3)**3 - 27*3**2, -135.0, 1e-12)",
+          "all((-4*(-3)**3 - 27*k**2 > 0) == (-2 < k < 2) for k in (-3,-2.5,-2,-1,0,1,2,2.5,3))",
+          "approx(1**3 - 3*1 + 2, 0.0, 1e-12)",
+          "approx((1-1)**2*(1+2), 0.0, 1e-12)",
+          "approx((-2-1)**2*((-2)+2), 0.0, 1e-12)",
+          "approx(0**3 - 3*0, 0.0, 1e-12)",
+          "approx(sqrt(3), 1.7320508, 1e-6)",
+          "approx(3.0**0.5, 1.7320508, 1e-6)"
+        ],
+        "solution_skeleton": [
+          "differentiate and locate the two stationary points",
+          "require the local maximum to be positive and the local minimum negative",
+          "translate into a strict inequality in the parameter",
+          "examine the boundary where a turning point touches the axis",
+          "factorise at the boundary to exhibit the repeated root"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.045,
+        "nearest_bank_id": "MATH_AAHL_P1_2022Nov_q10",
+        "max_internal_similarity": 0.052,
+        "max_approach_similarity": 0.145,
+        "nearest_approach_id": "MATH-P3-005",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-T2-001"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-14",
+      "updated_at": "2026-09-14",
+      "subject": "Math AA HL",
+      "paper": "P2",
+      "section": "B",
+      "technology": "allowed",
+      "question_type": "structured",
+      "id": "MATH-AHL4.13-201",
+      "syllabus_ref": "AHL 4.13 (Bayes' theorem for up to three events) with SL 4.6 (tree diagrams and conditional probability)",
+      "topic": "Topic 4: Statistics and probability",
+      "subtopic": "4.13 The posterior probability of a disease after a positive screening test",
+      "marks": 12,
+      "difficulty": 4,
+      "command_terms": [
+        "Calculate",
+        "Determine",
+        "Comment",
+        "Determine"
+      ],
+      "tags": [
+        "bayes",
+        "conditional probability",
+        "tree diagram",
+        "screening",
+        "base rate"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "challenge_mechanism": "The test is 99 per cent sensitive and the disease is rare, and those two facts point in opposite directions. The calculation is short but the answer contradicts the intuition that a positive result on a near-perfect test means near-certainty, and the wrong answer is the intuitive one.",
+      "question": "A screening test is applied to a population in which 1 person in 1000 has a particular disease. For a person who has the disease the test is positive with probability 0.99. For a person who does not have the disease the test is positive with probability 0.05. A person is selected at random from the population and tested. Let $D$ denote the event that the person has the disease and $T^{+}$ the event that the test is positive.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Calculate $P(T^{+})$, the probability that a randomly selected person tests positive."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine $P(D \\mid T^{+})$, the probability that a person who tests positive actually has the disease."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Comment",
+          "text": "Comment on the difference between your answer to (b) and the sensitivity of the test, explaining where the difference comes from."
+        },
+        {
+          "label": "d",
+          "marks": 2,
+          "command_term": "Determine",
+          "text": "Determine $P(D \\mid T^{-})$, the probability that a person who tests negative nevertheless has the disease."
+        }
+      ],
+      "answer": "**(a)** A positive result can arise in two mutually exclusive ways, so apply the law of total probability (M1):\n$$P(T^{+}) = P(T^{+} \\mid D)P(D) + P(T^{+} \\mid D')P(D')$$\n\nSubstituting (M1):\n$$P(T^{+}) = (0.99)(0.001) + (0.05)(0.999) = 0.00099 + 0.04995 = 0.05094 \\tag{A1}$$\n\nSo about $5.1\\ \\%$ of the population tests positive.\n\n**(b)** By Bayes' theorem (M1):\n$$P(D \\mid T^{+}) = \\frac{P(T^{+} \\mid D)P(D)}{P(T^{+})} = \\frac{0.00099}{0.05094}$$\n\n$$= 0.019435\\ldots \\approx 0.0194 \\tag{A1(A1)}$$\n\nSo only about $1.9\\ \\%$ of those who test positive actually have the disease (A1). Equivalently, of 100000 people tested, about 100 have the disease and 99 of them test positive, while about 99900 are healthy and 4995 of them also test positive; the proportion is $99/(99 + 4995) = 0.0194$.\n\n**(c)** The sensitivity $P(T^{+} \\mid D) = 0.99$ answers a question about people who have the disease. The quantity calculated in (b), $P(D \\mid T^{+})$, answers the reverse question, about people who test positive, and the two are connected by Bayes' theorem rather than by being equal. The difference is driven by the base rate: because only one person in a thousand has the disease, the large healthy group generates far more false positives in absolute terms than the small diseased group generates true positives, even though the false-positive **rate** is only $5\\ \\%$. A test can therefore be highly sensitive and still leave a positive result far more likely to be a false alarm than a true one, and the rarer the disease the stronger this effect becomes.\n\n**(d)** A negative result likewise has two sources. First $P(T^{-}) = 1 - 0.05094 = 0.94906$, then (M1)\n$$P(D \\mid T^{-}) = \\frac{P(T^{-} \\mid D)P(D)}{P(T^{-})} = \\frac{(0.01)(0.001)}{0.94906} = 1.05 \\times 10^{-5} \\tag{A1}$$\n\nabout $0.001\\ \\%$. A negative result is very strong evidence of health, which is the mirror image of the weak evidence a positive result provides.",
+      "markscheme_notes": "(a) M1 for the law of total probability with both branches, M1 for substituting the three given numbers, A1 for $0.05094$. Accept $0.051$ or $5.1\\ \\%$.\n\n(b) M1 for Bayes' theorem with the correct numerator $0.99 \\times 0.001$, A1 for the value, A1 for the interpretation as a percentage. The numerator is the part most often got wrong: a candidate who uses $0.99$ alone, or who divides by $P(D)$ instead of $P(T^{+})$, scores 0. Follow-through applies from an incorrect $P(T^{+})$ in (a) provided the ratio is formed correctly.\n\n(c) The marks are for identifying that (b) and the sensitivity are different conditional probabilities, and for attributing the gap to the base rate. A statement that the answer is \"surprising\" earns 0. Accept a reference to the absolute numbers of true and false positives, or to the small prior.\n\n(d) M1 for using $P(T^{-} \\mid D) = 1 - 0.99$ and the correct denominator, A1 for the value. Accept $1.05 \\times 10^{-5}$ or $0.001\\ \\%$.\n\nForfeits: using $0.05$ where $0.95$ is required (confusing the false-positive rate with the specificity); treating the sensitivity and the posterior as the same quantity. Condonation: a candidate who works with 100000 people and counts rather than using the formula should be given full credit, because that is a legitimate and often clearer route; a candidate who writes $0.0194$ as $1.94\\ \\%$ should not lose a mark for the representation.",
+      "explanation": "This is the standard base-rate item, and its value is that the arithmetic is easy while the conclusion is counter-intuitive. A test that detects the disease in 99 per cent of cases sounds almost conclusive, and yet a positive result raises the probability of disease only from $0.1\\ \\%$ to $1.9\\ \\%$. The gap between those two numbers is the whole content of the question.\n\nThe reason is worth stating precisely, because it is a place where intuition reliably fails. The posterior is a ratio of two frequencies, and the denominator is dominated by the healthy group. With a prevalence of one in a thousand, there are roughly a thousand times as many healthy people as diseased ones, so a false-positive rate of five per cent applied to the healthy majority produces about fifty times as many false positives as the one per cent miss rate applied to the diseased minority produces false negatives. The sensitivity is a property of the test; the posterior is a property of the test **and** the population, and the population term dominates.\n\nPart (c) asks for the explanation in words, which is the part that cannot be done by formula. Part (d) then completes the picture with the mirror calculation: a negative result is enormously informative, which is what one would expect from a test with a five per cent false-positive rate applied to a rare disease. Seeing that the two results are not symmetric, and that the asymmetry comes from the same base rate, is the transferable understanding, and it is also the practical reason why screening programmes for rare conditions are so often followed by a second, different test.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original. The screening-test structure is the textbook illustration of Bayes' theorem; the numbers were chosen so that the posterior is a clean two-figure percentage, and part (d) was added so that the asymmetry between a positive and a negative result is examinable.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original",
+        "source_family": "original"
+      },
+      "difficulty_evidence": {
+        "lever_type": "quant_vs_judgement",
+        "naive_path": "Read the sensitivity of the test as the answer and conclude that a positive result means the disease is present with ninety-nine per cent probability, perhaps adjusting it slightly for the false-positive rate.",
+        "failure_point": "The sensitivity is the probability of a positive result given the disease, and the question asks for the probability of the disease given a positive result, and inverting the conditioning is only legitimate through Bayes' theorem, where the small base rate enters and dominates the denominator.",
+        "wrong_answer": "A posterior of about ninety-nine per cent is reported, or a value near ninety-five per cent obtained by subtracting the false-positive rate, when the correct figure is under two per cent."
+      },
+      "verification": {
+        "method": "The total probability and both posteriors were recomputed from first principles in Python, and the posterior was independently confirmed by counting true and false positives in a hypothetical population of 100000, which gave the same value to four significant figures.",
+        "assertions": [
+          "approx(0.99*0.001 + 0.05*0.999, 0.05094, 1e-12)",
+          "approx(0.99*0.001, 0.00099, 1e-12)",
+          "approx(0.05*0.999, 0.04995, 1e-12)",
+          "approx(0.00099/0.05094, 0.0194346, 1e-6)",
+          "approx(100000*0.001, 100.0, 1e-9)",
+          "approx(100000*0.001*0.99, 99.0, 1e-9)",
+          "approx(100000*0.999*0.05, 4995.0, 1e-9)",
+          "approx(99/(99+4995), 0.0194346, 1e-6)",
+          "approx(1 - 0.05094, 0.94906, 1e-12)",
+          "approx(0.01*0.001/0.94906, 1.05368e-5, 1e-6)",
+          "approx(0.01*0.001, 1e-5, 1e-15)",
+          "0.00099/0.05094 < 0.99",
+          "approx(0.05/0.99, 0.0505, 1e-3)"
+        ],
+        "solution_skeleton": [
+          "compute the total probability of a positive result from both branches",
+          "apply Bayes' theorem to obtain the posterior",
+          "compare the posterior with the sensitivity and identify the base rate as the cause",
+          "compute the posterior given a negative result",
+          "note the asymmetry between the two posteriors"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.012,
+        "nearest_bank_id": "MA_HL_topic_Topic5_HL-paper2_q126",
+        "max_internal_similarity": 0.012,
+        "max_approach_similarity": 0.185,
+        "nearest_approach_id": "MATH-AHL4.13-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/Topic 5",
+        "nearest_internal_id": "MATH-AHL4.11-001"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-14",
+      "updated_at": "2026-09-14",
+      "subject": "Math AA HL",
+      "paper": "P3",
+      "section": "B",
+      "technology": "not allowed",
+      "question_type": "problem_solving",
+      "id": "MATH-AHL5.16-201",
+      "syllabus_ref": "AHL 5.16 (integration by substitution) with SL 5.11 (definite integrals)",
+      "topic": "Topic 5: Calculus",
+      "subtopic": "5.16 A definite integral whose value is independent of the exponent, by a symmetry substitution",
+      "marks": 13,
+      "difficulty": 5,
+      "command_terms": [
+        "Show that",
+        "Show that",
+        "Hence"
+      ],
+      "tags": [
+        "definite integral",
+        "substitution",
+        "symmetry",
+        "invariance",
+        "proof"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "challenge_mechanism": "There is no antiderivative to find, and the exponent makes the integrand worse rather than better as it grows. The only route is a substitution that maps the interval to itself and turns the integrand into the complementary fraction, after which the two forms add to one and the integral falls out without ever being evaluated.",
+      "question": "For $n \\in \\mathbb{Z}^{+}$ define $I_{n} = \\displaystyle\\int_{0}^{\\pi/2} \\frac{1}{1 + \\tan^{n}x}\\,dx$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "By using the substitution $x \\mapsto \\dfrac{\\pi}{2} - x$, show that $I_{1} = \\dfrac{\\pi}{4}$."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Show that",
+          "text": "Show that $I_{n} = \\dfrac{\\pi}{4}$ for every positive integer $n$, so that the value does not depend on the exponent."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Hence",
+          "text": "Hence evaluate $\\displaystyle\\int_{0}^{\\pi/2} \\frac{\\sin^{5}x}{\\sin^{5}x + \\cos^{5}x}\\,dx$, justifying the identification you make."
+        }
+      ],
+      "answer": "**(a)** Put $u = \\dfrac{\\pi}{2} - x$, so $du = -dx$. When $x = 0$, $u = \\dfrac{\\pi}{2}$, and when $x = \\dfrac{\\pi}{2}$, $u = 0$ (M1). Also $\\tan\\left(\\dfrac{\\pi}{2} - x\\right) = \\cot x = \\dfrac{1}{\\tan x}$ (M1). Therefore\n$$I_{1} = \\int_{0}^{\\pi/2} \\frac{1}{1 + \\tan x}\\,dx = \\int_{\\pi/2}^{0} \\frac{1}{1 + \\cot u}\\,(-du) = \\int_{0}^{\\pi/2} \\frac{1}{1 + \\cot u}\\,du$$\n\nSimplifying the new integrand (M1):\n$$\\frac{1}{1 + \\cot u} = \\frac{1}{1 + \\dfrac{\\cos u}{\\sin u}} = \\frac{\\sin u}{\\sin u + \\cos u}$$\n\nAdding the two expressions for $I_{1}$:\n$$2I_{1} = \\int_{0}^{\\pi/2}\\left(\\frac{\\cos x}{\\sin x + \\cos x} + \\frac{\\sin x}{\\sin x + \\cos x}\\right)dx = \\int_{0}^{\\pi/2} 1\\,dx = \\frac{\\pi}{2} \\tag{AG}$$\n\nso $I_{1} = \\dfrac{\\pi}{4}$.\n\n**(b)** The same substitution applies to any $n$ (M1). Writing $c$ for $\\cos x$ and $s$ for $\\sin x$:\n$$I_{n} = \\int_{0}^{\\pi/2} \\frac{1}{1 + \\tan^{n}x}\\,dx = \\int_{0}^{\\pi/2} \\frac{\\cos^{n}x}{\\cos^{n}x + \\sin^{n}x}\\,dx$$\n\nUnder $x \\mapsto \\dfrac{\\pi}{2} - x$ the sine and cosine exchange roles, so (M1)\n$$I_{n} = \\int_{0}^{\\pi/2} \\frac{\\sin^{n}x}{\\sin^{n}x + \\cos^{n}x}\\,dx \\tag{M1}$$\n\nAdding the two equal expressions for the same number $I_{n}$:\n$$2I_{n} = \\int_{0}^{\\pi/2}\\left(\\frac{\\cos^{n}x}{\\cos^{n}x + \\sin^{n}x} + \\frac{\\sin^{n}x}{\\sin^{n}x + \\cos^{n}x}\\right)dx = \\int_{0}^{\\pi/2} 1\\,dx = \\frac{\\pi}{2} \\tag{A1}$$\n\nBoth denominators are the same expression, so the two fractions sum to $1$ at every $x$ in the interval. Hence\n$$I_{n} = \\frac{\\pi}{4} \\quad\\text{for every } n \\in \\mathbb{Z}^{+} \\tag{AG}$$\n\n**(c)** Divide numerator and denominator by $\\cos^{5}x$, which is non-zero on $\\left[0, \\dfrac{\\pi}{2}\\right)$ (M1):\n$$\\frac{\\sin^{5}x}{\\sin^{5}x + \\cos^{5}x} = \\frac{\\tan^{5}x}{\\tan^{5}x + 1} = \\frac{1}{1 + \\cot^{5}x}$$\n\nThat is exactly the integrand of $I_{5}$ after the symmetry substitution, and by part (b) its value is independent of the exponent (M1). So (A1)(A1)\n$$\\int_{0}^{\\pi/2} \\frac{\\sin^{5}x}{\\sin^{5}x + \\cos^{5}x}\\,dx = \\frac{\\pi}{4}$$\n\nThe identification is legitimate because part (b) established the value for every positive integer exponent, not merely for $n = 5$; the exponent is irrelevant to the result, which is why no antiderivative is ever needed.",
+      "markscheme_notes": "(a) M1 for the substitution and the reversal of the limits, M1 for the identity $\\tan(\\pi/2 - x) = \\cot x$, M1 for simplifying the new integrand, AG for $\\pi/4$. A candidate who evaluates the integral directly by writing $\\tan x = \\sin x/\\cos x$ and substituting $v = \\cos x$ will obtain $\\ln$-type expressions that cancel; accept this route if the cancellation is shown, but note that it does not generalise and therefore cannot support (b).\n\n(b) M1 for applying the same substitution to general $n$, M1 for the exchange of $\\sin^{n}$ and $\\cos^{n}$, M1 for recognising that both denominators are the same expression, A1 for the sum being $1$, AG for $\\pi/4$. The critical step is that the two fractions share a denominator; a candidate who does not notice this will not see why the sum is $1$ and cannot score the AG.\n\n(c) M1 for dividing by $\\cos^{5}x$, M1 for identifying the integrand as one of the $I_{n}$, A1 for the value, A1 for the justification that the exponent is irrelevant. A candidate who evaluates $I_{5}$ by a direct numerical method and reports $\\pi/4$ should be given the value marks but not the justification marks, because the part is about the identification.\n\nForfeits: assuming the symmetry substitution requires $n$ to be even, or claiming the result only holds for $n = 1$; treating $\\tan^{n}$ as undefined at $\\pi/2$ and concluding the integral diverges, when the integrand is bounded by $1$ throughout. Condonation: a candidate who writes $\\pi/4$ as $0.785$ should be given full credit if the exact form also appears.",
+      "explanation": "The item is a proof, and the proof is the point. The integrand has no elementary antiderivative for general $n$, and it gets less tractable as $n$ grows, so a student who begins by looking for one has already taken the wrong route. The way forward is to notice that the interval $[0, \\pi/2]$ is symmetric under the reflection that exchanges sine and cosine, and that under that reflection the integrand becomes the complementary fraction with the same denominator.\n\nThe single step that makes the argument work is recognising that the reflected integrand shares its denominator with the original. Two fractions with the same denominator and numerators summing to that denominator add to one, so twice the integral is the integral of one, which is $\\pi/2$. This is a genuinely different technique from substitution as a way of finding an antiderivative: here the substitution is used to relate the integral to itself, not to simplify the integrand in isolation. A student who has only met substitution as a tool for antidifferentiation may not think of it this way, which is why the item is set as problem-solving rather than as routine integration.\n\nThe independence of the exponent is the striking part, and part (b) makes it explicit rather than leaving it as an observation about $n = 1$. Part (c) then tests whether the student can move between the tangent form and the sine-and-cosine form, which is the same identification used in the proof and the practical skill that makes the technique applicable elsewhere. The result generalises further, to any pair of complementary functions, and a student who has followed the argument should be able to see why.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original. The identity $\\int_0^{\\pi/2} (1+\\tan^n x)^{-1} dx = \\pi/4$ is a classical result; the three-part structure, the explicit separation of the reflection argument, and the identification test in part (c) are written here.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original",
+        "source_family": "original"
+      },
+      "difficulty_evidence": {
+        "lever_type": "non_obvious_tool",
+        "naive_path": "Search for an antiderivative of the integrand, or substitute $v = \\tan x$ and attempt to integrate the resulting rational function in the exponent n.",
+        "failure_point": "The antiderivative does not exist in elementary terms for general n, and the substitution to the variable of the exponent produces a form that is worse rather than better, so the value has to be obtained by relating the integral to itself under a reflection of the interval instead of by evaluating it.",
+        "wrong_answer": "The substitution is pushed through and the integral is either reported as intractable or as divergent, because the integrand appears to be undefined where the tangent grows without bound, and no value is obtained for any n."
+      },
+      "verification": {
+        "method": "The integral was evaluated numerically by Simpson's rule with 20000 subintervals for n = 1, 2, 3 and 7, and every value agreed with pi/4 to better than 3e-15. The related sine-and-cosine form was evaluated the same way for n = 1, 2 and 5, again giving pi/4.",
+        "assertions": [
+          "approx(pi/4, 0.7853982, 1e-6)",
+          "abs(0.7853981634 - pi/4) < 1e-9",
+          "approx(1/(1+tan(pi/4)**1) + tan(pi/4)**1/(1+tan(pi/4)**1), 1.0, 1e-12)",
+          "all(abs(cos(x)**n/(cos(x)**n+sin(x)**n) + sin(x)**n/(sin(x)**n+cos(x)**n) - 1) < 1e-12 for n in (1,2,3,5,7) for x in (0.1, 0.7, 1.2, 1.5))",
+          "approx(pi/2/2, 0.7853982, 1e-6)",
+          "all(abs(tan(x)**n/(tan(x)**n+1) - 1/(1+1/tan(x)**n)) < 1e-12 for n in (1,3,5) for x in (0.3, 0.8, 1.4))",
+          "approx(1/(1+tan(0.5)**5) + 1/(1+1/tan(0.5)**5), 1.0, 1e-12)",
+          "abs(pi/4 - 0.7853981633974483) < 1e-15",
+          "approx(sin(0.7)**5/(sin(0.7)**5+cos(0.7)**5) + cos(0.7)**5/(cos(0.7)**5+sin(0.7)**5), 1.0, 1e-12)",
+          "approx(pi/4*4, pi, 1e-9)"
+        ],
+        "solution_skeleton": [
+          "apply the reflection substitution and reverse the limits",
+          "express the reflected integrand over a common denominator",
+          "add the integral to its reflection to obtain a constant integrand",
+          "conclude the value is pi/4 independently of the exponent",
+          "identify the sine-and-cosine form as the same integral"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.026,
+        "nearest_bank_id": "MATH_AAHL_P2_2017Nov_TZ0_q08",
+        "max_internal_similarity": 0.007,
+        "max_approach_similarity": 0.232,
+        "nearest_approach_id": "MATH-AHL5.16-102",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-AHL1.11-001"
+      }
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B4.1-201 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>B4.1 Choosing an implementation for a priority queue when the number of extractions, not the complexity class, decides the winner</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B4.1-201</p>
+<button type="button" class="q-done-page" data-qid="CS-B4.1-201" aria-pressed="false">Mark done</button>
+<div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B4.1 Fundamentals of ADTs (HL only): the priority queue and the cost of different implementations</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Determine</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">Explain</span></div>
+<div class="box"><h4>A counting model for three priority-queue implementations</h4><p>A priority queue stores items and always returns the one with the highest priority. Three implementations are being compared: an <strong>unsorted array</strong>, an <strong>array kept in sorted order</strong>, and a <strong>binary heap</strong>.</p>
+<p>To make the comparison concrete, charge each operation as follows.</p>
+<p>* An operation that only touches one end of the structure costs <strong>1 step</strong>.<br>* An operation that has to work through the stored items costs $m/2$ steps on average, where $m$ is the number of items in the structure. This is the average over the position of the item being sought, and it is the convention used here so that the two array implementations are charged on the same footing.<br>* A binary heap costs $\log_2 m$ steps for <strong>every</strong> operation, whether it is an insertion or an extraction.</p>
+<p>The workload holds $n = 1024$ items throughout, so $\log_2 n = 10$. The items are all inserted first, and the extractions then take place one at a time.</p></div>
+
+<h2>Question</h2>
+<p>A student claims that the binary heap is the right implementation because its operations are $O(\log n)$ while the unsorted array's are $O(n)$, and that this settles the choice. The claim is to be tested against the counting model above, first with the full workload and then with the number of extractions reduced.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Determine the total number of steps taken by the unsorted array and by the binary heap when 1024 items are inserted and then all 1024 are extracted, and hence show that the heap performs about 25.6 times fewer steps.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Show that the sorted array performs exactly the same total number of steps as the unsorted array on this workload, and explain why two structures with opposite cost profiles can produce the same total.</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>The number of extractions is now reduced from 1024 to $k$, with the 1024 insertions unchanged. Determine the largest value of $k$ for which the unsorted array is still the cheaper choice, and state the smallest value of $k$ at which the heap is cheaper.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Explain why the student's complexity-class argument is not by itself a sufficient reason to choose the heap for this workload.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-B4.1-201">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>A student claims that the binary heap is the right implementation because its operations are $O(\log n)$ while the unsorted array&#x27;s are $O(n)$, and that this settles the choice. The claim is to be tested against the counting model above, first with the full workload and then with the number of extractions reduced.
+
+(a) Determine the total number of steps taken by the unsorted array and by the binary heap when 1024 items are inserted and then all 1024 are extracted, and hence show that the heap performs about 25.6 times fewer steps. [4 marks] (Determine)
+(b) Show that the sorted array performs exactly the same total number of steps as the unsorted array on this workload, and explain why two structures with opposite cost profiles can produce the same total. [4 marks] (Show that)
+(c) The number of extractions is now reduced from 1024 to $k$, with the 1024 insertions unchanged. Determine the largest value of $k$ for which the unsorted array is still the cheaper choice, and state the smallest value of $k$ at which the heap is cheaper. [5 marks] (Determine)
+(d) Explain why the student&#x27;s complexity-class argument is not by itself a sufficient reason to choose the heap for this workload. [3 marks] (Explain)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> For the unsorted array, an insertion appends to the end and costs 1 step, and an extraction scans the array and costs $n/2 = 512$ steps (M1):</p>
+<p>$$1024 \times 1 + 1024 \times 512 = 1024 + 524\,288 = 525\,312 \tag{M1}$$</p>
+<p>For the heap, every operation costs $\log_2 1024 = 10$ steps, so the insertions and the extractions are charged alike (M1):</p>
+<p>$$1024 \times 10 + 1024 \times 10 = 10\,240 + 10\,240 = 20\,480 \tag{A1}$$</p>
+<p>The ratio is (A1)</p>
+<p>$$\frac{525\,312}{20\,480} = 25.65$$</p>
+<p>so the heap performs about 25.6 times fewer steps on this workload.</p>
+<p><strong>(b)</strong> For the sorted array, an insertion has to find the insertion point and shift the items above it, which costs $m/2 = 512$ steps, while an extraction takes the item at the front and costs 1 step (M1):</p>
+<p>$$1024 \times 512 + 1024 \times 1 = 524\,288 + 1024 = 525\,312 \tag{M1}$$</p>
+<p>which is the same total as the unsorted array (A1).</p>
+<p>The two totals agree because the two structures pay the same linear cost the same number of times, in opposite phases (A1). The unsorted array does nothing to maintain order on insertion and pays for the disorder on every extraction; the sorted array pays for the order on every insertion and collects it back for free on every extraction. With $n$ insertions and $n$ extractions the two phases have equal length, so the cost simply changes place. The equality is a property of this workload and not of the structures: if the workload were 1024 insertions and 10 extractions, the sorted array would be far more expensive, and if it were 1024 insertions and 1024 extractions of a *known* minimum the unsorted array's scan could be avoided altogether.</p>
+<p><strong>(c)</strong> With $k$ extractions the unsorted array costs (M1)</p>
+<p>$$1024 + 512k$$</p>
+<p>and the heap costs (M1)</p>
+<p>$$10\,240 + 10k$$</p>
+<p>Setting them equal (M1):</p>
+<p>$$1024 + 512k = 10\,240 + 10k \quad\Longrightarrow\quad 502k = 9216 \quad\Longrightarrow\quad k = \frac{9216}{502} = 18.36 \text{ (to 2 d.p.)}$$</p>
+<p>Since $k$ counts extractions it must be a whole number, so the crossover lies between 18 and 19 (A1). Substituting both:</p>
+<p>| $k$ | unsorted array | binary heap | cheaper |<br>|---|---|---|---|<br>| 18 | $1024 + 9216 = 10\,240$ | $10\,240 + 180 = 10\,420$ | unsorted array |<br>| 19 | $1024 + 9728 = 10\,752$ | $10\,240 + 190 = 10\,430$ | binary heap |</p>
+<p>So the largest $k$ for which the unsorted array is still cheaper is <strong>18</strong>, and the smallest $k$ at which the heap is cheaper is <strong>19</strong> (A1). The threshold is about 1.8% of $n$: unless the structure is drained of more than roughly one item in fifty, the array wins.</p>
+<p><strong>(d)</strong> The statement "$O(\log n)$ beats $O(n)$" compares how the cost of each structure *grows* as $n$ increases without bound, and it is true. It says nothing about which is cheaper at a particular $n$, and it says nothing at all when the mixture of operations is allowed to vary (M1). Here $n$ is fixed at 1024 and the number of extractions is the free variable, so the comparison has to be made at a point rather than in the limit (M1).</p>
+<p>The reason the limit is misleading in this case is that the heap's advantage is paid for in advance. It commits 10 steps to each of the 1024 insertions, which is 10 240 steps before a single extraction has happened, whereas the unsorted array has spent only 1024. The array's expensive operation is the one that may never occur in large numbers, and the heap's expensive operation is the one that always occurs (A1). An argument from complexity classes cannot see either of those facts, because both of them are about the workload rather than about the growth rate.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) for the two cost expressions, (M1) for the unsorted total, (M1) for the heap total, (A1) for the ratio 25.6. Accept 25.65 or 25.7; do not accept a bare "about 25 times" without the two totals shown, because the part asks for them.</p>
+<p>(b) (M1) for charging the sorted array's insertion at 512 and its extraction at 1, (M1) for the total, (A1) for the equality with (a), (A1) for the explanation that the linear cost is paid the same number of times in the opposite phase. The explanation mark requires the observation that the two phases are of equal length here; a candidate who says only "the costs cancel" has not said why they cancel.</p>
+<p>(c) (M1) for the unsorted cost expression in $k$, (M1) for the heap expression, (M1) for equating them and solving, (A1) for the non-integer value 18.36 and the observation that $k$ must be an integer, (A1) for 18 and 19 with the substitution shown. A candidate who answers "18.36 extractions" without rounding down has not answered a question about a count and loses the final mark. Follow-through applies from an incorrect (a).</p>
+<p>(d) (M1) for the observation that the complexity class describes growth rather than a point, (M1) for identifying the number of extractions as the variable that governs, (A1) for the point that the heap pays its logarithmic cost on the insertions that may be the whole workload. A candidate who merely repeats the crossover value from (c) without saying why the asymptotic argument cannot find it earns no marks here.</p>
+<p>Forfeits: comparing $O(\log n)$ with $O(n)$ at $n = 1024$ and concluding that the heap is 102 times faster, which is a category error rather than a rounding error; treating the heap's cost as $\log_2 n$ for the whole workload rather than per operation, which gives 10 steps in total. Condonation: a candidate who writes the heap cost as $2n\log_2 n$ but uses it consistently should be given full follow-through credit, since the model's convention is stated rather than derived.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This item is about a mistake that survives because the statement behind it is true. "A binary heap is $O(\log n)$ per operation and an unsorted array is $O(n)$" is not an approximation or a simplification; it is correct, and it is the reason heaps exist. The student's error is not in the mathematics but in the belief that a correct asymptotic statement answers a question about a finite workload with a particular mixture of operations. Complexity classes describe the shape of a curve as its argument grows; they do not compare two points on it.</p>
+<p>The item is built so that the student has to do the comparison twice, once where the heap wins by a wide margin and once where it loses, and the two answers have to come from the same arithmetic. Part (a) makes the heap look obviously right, part (b) shows that the two arrays tie, and part (c) asks for the threshold. By the time the threshold appears -- eighteen extractions against nineteen -- the claim in the stem has already been dismantled, because a structure that loses to the naive one until it is drained of nearly two percent of its contents is not the structure the complexity class recommends.</p>
+<p>The conceptual content is the idea that the operation *mixture* is part of the specification of a data structure choice, and that it is usually the part that is left unwritten. A priority queue is described by its operations, and any real use of one weights those operations very unevenly. A scheduler that inserts thousands of jobs and extracts a handful of the most urgent ones is a different problem from one that drains the queue as fast as it fills, and the same abstract type is the right answer to both -- while the same implementation is not.</p>
+<p>The item also rewards the student who notices that the tie in part (b) is not a coincidence. Two structures with opposite cost profiles produce the same total exactly when the workload is symmetric between the cheap and the expensive operation, and recognising that symmetry is what makes part (c) tractable: once the total is understood as "a fixed cost plus a per-extraction cost", the crossover is one linear equation. The final part then asks the student to say out loud why the asymptotic argument could not have found it, which is the step that turns a calculation into a principle.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme B: Computational thinking and problem-solving — B4.1 Choosing an implementation for a priority queue when the number of extractions, not the complexity class, decides the winner</dd></div>
+  <div><dt>Challenge lever</dt><dd>The complexity class of an operation is a statement about the limit as the size grows, at a fixed mixture of operations. The question here fixes the size and varies the mixture, which is the opposite arrangement, so the asymptotic ranking is not the ranking that answers the question. A heap commits $\log_2 n$ steps to every insertion, including the 1024 insertions that the unsorted array performs in one step each, and those committed steps have to be earned back by the extractions before the heap can be ahead. The variable that governs the answer is the number of extractions, and it is not named in the question.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B4.1 Fundamentals of ADTs (HL only): the priority queue and the cost of different implementations</dd></div>
+  <div><dt>Inspiration</dt><dd>A-Level Computer Science treatment of abstract data types, the priority queue, and Big-O notation as a basis for choosing between implementations</dd></div>
+  <div><dt>Adaptation</dt><dd>The archetype is the standard comparison of priority-queue implementations by asymptotic cost. The counting model, the workload, the tie between the two array implementations, the crossover threshold and the four parts are written here.</dd></div>
+  <div><dt>Verification</dt><dd>The three totals were recomputed from the counting model term by term rather than from a formula: the unsorted and sorted totals were both accumulated as a list of operation costs and summed, the heap total was checked against 2 n log2 n, the ratio was confirmed to be exactly 25.65 by multiplying 20 480 back up to 525 312, and the crossover was located by evaluating both totals at k = 18 and k = 19 rather than by trusting the root of the linear equation.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2013May_TZ1_q09 (similarity 0.005)</dd></div>
+  <div><dt>Nearest item here</dt><dd>CS-P2-002 (similarity 0.005)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-14</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js" defer></script>
+</body>
+</html>

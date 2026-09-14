@@ -571,8 +571,9 @@ rather than only a sum. Run it after any change to the rubric.
 4. **Status:** new items are `draft` until the gates pass, then `published`.
 5. **Re-brief:** coverage is re-measured after every batch; the next brief comes from the new gaps.
 
-Current state: 164 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
+Current state: 224 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
 priority-2 node is done** — Maths 32/32 must + 51/51 should (83/83 overall), Physics 24/24 (complete),
-CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 164
-are `published`, `validate.py --strict` reports 0 failures and 0 warnings, and all 164 items carry
-`verification.assertions` (1652 assertions in total).
+CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 224
+carry `verification.assertions` (2373 assertions in total), `validate.py` reports 0 failures, and 60 of
+the 224 carry a `difficulty_evidence` block — the other 164 are the grandfathered backlog described in
+§4.7, which `--strict` reports as warnings and plain `--check` ignores unless the bank gets worse.

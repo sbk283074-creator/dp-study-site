@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL4.13-201 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>4.13 The posterior probability of a disease after a positive screening test</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL4.13-201</p>
+<button type="button" class="q-done-page" data-qid="MATH-AHL4.13-201" aria-pressed="false">Mark done</button>
+<div class="meta"><span class="chip chip-topic">Topic 4: Statistics and probability</span><span class="chip chip-key">AHL 4.13 (Bayes&#x27; theorem for up to three events) with SL 4.6 (tree diagrams and conditional probability)</span><span class="chip">P2 · Section B</span><span class="chip">12 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: allowed</span><span class="chip">Calculate</span><span class="chip">Determine</span><span class="chip">Comment</span><span class="chip">Determine</span></div>
+
+
+<h2>Question</h2>
+<p>A screening test is applied to a population in which 1 person in 1000 has a particular disease. For a person who has the disease the test is positive with probability 0.99. For a person who does not have the disease the test is positive with probability 0.05. A person is selected at random from the population and tested. Let $D$ denote the event that the person has the disease and $T^{+}$ the event that the test is positive.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Calculate $P(T^{+})$, the probability that a randomly selected person tests positive.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Determine $P(D \mid T^{+})$, the probability that a person who tests positive actually has the disease.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Comment on the difference between your answer to (b) and the sensitivity of the test, explaining where the difference comes from.</p> <em>(Comment)</em></li><li><span class="marks">[2 marks]</span><strong>(d)</strong> <p>Determine $P(D \mid T^{-})$, the probability that a person who tests negative nevertheless has the disease.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 12 marks. Try the question before revealing anything below.</p>
+<div class="qai" data-ai data-ai-subject="Math AA HL" data-ai-diff="4" data-ai-marks="12" data-ai-ref="MATH-AHL4.13-201">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>A screening test is applied to a population in which 1 person in 1000 has a particular disease. For a person who has the disease the test is positive with probability 0.99. For a person who does not have the disease the test is positive with probability 0.05. A person is selected at random from the population and tested. Let $D$ denote the event that the person has the disease and $T^{+}$ the event that the test is positive.
+
+(a) Calculate $P(T^{+})$, the probability that a randomly selected person tests positive. [3 marks] (Calculate)
+(b) Determine $P(D \mid T^{+})$, the probability that a person who tests positive actually has the disease. [4 marks] (Determine)
+(c) Comment on the difference between your answer to (b) and the sensitivity of the test, explaining where the difference comes from. [3 marks] (Comment)
+(d) Determine $P(D \mid T^{-})$, the probability that a person who tests negative nevertheless has the disease. [2 marks] (Determine)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> A positive result can arise in two mutually exclusive ways, so apply the law of total probability (M1):<br>$$P(T^{+}) = P(T^{+} \mid D)P(D) + P(T^{+} \mid D')P(D')$$</p>
+<p>Substituting (M1):<br>$$P(T^{+}) = (0.99)(0.001) + (0.05)(0.999) = 0.00099 + 0.04995 = 0.05094 \tag{A1}$$</p>
+<p>So about $5.1\ \%$ of the population tests positive.</p>
+<p><strong>(b)</strong> By Bayes' theorem (M1):<br>$$P(D \mid T^{+}) = \frac{P(T^{+} \mid D)P(D)}{P(T^{+})} = \frac{0.00099}{0.05094}$$</p>
+<p>$$= 0.019435\ldots \approx 0.0194 \tag{A1(A1)}$$</p>
+<p>So only about $1.9\ \%$ of those who test positive actually have the disease (A1). Equivalently, of 100000 people tested, about 100 have the disease and 99 of them test positive, while about 99900 are healthy and 4995 of them also test positive; the proportion is $99/(99 + 4995) = 0.0194$.</p>
+<p><strong>(c)</strong> The sensitivity $P(T^{+} \mid D) = 0.99$ answers a question about people who have the disease. The quantity calculated in (b), $P(D \mid T^{+})$, answers the reverse question, about people who test positive, and the two are connected by Bayes' theorem rather than by being equal. The difference is driven by the base rate: because only one person in a thousand has the disease, the large healthy group generates far more false positives in absolute terms than the small diseased group generates true positives, even though the false-positive <strong>rate</strong> is only $5\ \%$. A test can therefore be highly sensitive and still leave a positive result far more likely to be a false alarm than a true one, and the rarer the disease the stronger this effect becomes.</p>
+<p><strong>(d)</strong> A negative result likewise has two sources. First $P(T^{-}) = 1 - 0.05094 = 0.94906$, then (M1)<br>$$P(D \mid T^{-}) = \frac{P(T^{-} \mid D)P(D)}{P(T^{-})} = \frac{(0.01)(0.001)}{0.94906} = 1.05 \times 10^{-5} \tag{A1}$$</p>
+<p>about $0.001\ \%$. A negative result is very strong evidence of health, which is the mirror image of the weak evidence a positive result provides.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) M1 for the law of total probability with both branches, M1 for substituting the three given numbers, A1 for $0.05094$. Accept $0.051$ or $5.1\ \%$.</p>
+<p>(b) M1 for Bayes' theorem with the correct numerator $0.99 \times 0.001$, A1 for the value, A1 for the interpretation as a percentage. The numerator is the part most often got wrong: a candidate who uses $0.99$ alone, or who divides by $P(D)$ instead of $P(T^{+})$, scores 0. Follow-through applies from an incorrect $P(T^{+})$ in (a) provided the ratio is formed correctly.</p>
+<p>(c) The marks are for identifying that (b) and the sensitivity are different conditional probabilities, and for attributing the gap to the base rate. A statement that the answer is "surprising" earns 0. Accept a reference to the absolute numbers of true and false positives, or to the small prior.</p>
+<p>(d) M1 for using $P(T^{-} \mid D) = 1 - 0.99$ and the correct denominator, A1 for the value. Accept $1.05 \times 10^{-5}$ or $0.001\ \%$.</p>
+<p>Forfeits: using $0.05$ where $0.95$ is required (confusing the false-positive rate with the specificity); treating the sensitivity and the posterior as the same quantity. Condonation: a candidate who works with 100000 people and counts rather than using the formula should be given full credit, because that is a legitimate and often clearer route; a candidate who writes $0.0194$ as $1.94\ \%$ should not lose a mark for the representation.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This is the standard base-rate item, and its value is that the arithmetic is easy while the conclusion is counter-intuitive. A test that detects the disease in 99 per cent of cases sounds almost conclusive, and yet a positive result raises the probability of disease only from $0.1\ \%$ to $1.9\ \%$. The gap between those two numbers is the whole content of the question.</p>
+<p>The reason is worth stating precisely, because it is a place where intuition reliably fails. The posterior is a ratio of two frequencies, and the denominator is dominated by the healthy group. With a prevalence of one in a thousand, there are roughly a thousand times as many healthy people as diseased ones, so a false-positive rate of five per cent applied to the healthy majority produces about fifty times as many false positives as the one per cent miss rate applied to the diseased minority produces false negatives. The sensitivity is a property of the test; the posterior is a property of the test <strong>and</strong> the population, and the population term dominates.</p>
+<p>Part (c) asks for the explanation in words, which is the part that cannot be done by formula. Part (d) then completes the picture with the mirror calculation: a negative result is enormously informative, which is what one would expect from a test with a five per cent false-positive rate applied to a rare disease. Seeing that the two results are not symmetric, and that the asymmetry comes from the same base rate, is the transferable understanding, and it is also the practical reason why screening programmes for rare conditions are so often followed by a second, different test.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Topic 4: Statistics and probability — 4.13 The posterior probability of a disease after a positive screening test</dd></div>
+  <div><dt>Challenge lever</dt><dd>The test is 99 per cent sensitive and the disease is rare, and those two facts point in opposite directions. The calculation is short but the answer contradicts the intuition that a positive result on a near-perfect test means near-certainty, and the wrong answer is the intuitive one.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 4.13 (Bayes&#x27; theorem for up to three events) with SL 4.6 (tree diagrams and conditional probability)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Original. The screening-test structure is the textbook illustration of Bayes&#x27; theorem; the numbers were chosen so that the posterior is a clean two-figure percentage, and part (d) was added so that the asymmetry between a positive and a negative result is examinable.</dd></div>
+  <div><dt>Verification</dt><dd>The total probability and both posteriors were recomputed from first principles in Python, and the posterior was independently confirmed by counting true and false positives in a hypothetical population of 100000, which gave the same value to four significant figures.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MA_HL_topic_Topic5_HL-paper2_q126 (similarity 0.012)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL4.11-001 (similarity 0.012)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-14</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js" defer></script>
+</body>
+</html>

@@ -24,8 +24,8 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <p class="lede">Algorithmic thinking and ADT reasoning against the new syllabus, including the Paper 2 question type that requires no code.</p>
 <p><small>2027 guide (first assessment 2027) — Theme A / Theme B</small></p>
 <div class="stat-row">
-  <div class="stat"><b>32</b>questions</div>
-  <div class="stat"><b>521</b>marks in total</div>
+  <div class="stat"><b>34</b>questions</div>
+  <div class="stat"><b>553</b>marks in total</div>
   <div class="stat"><b>4–5</b>difficulty range</div>
 </div>
 <p class="paper-switch">Printable: <a href="../papers/computer-science-hl-paper.html">question paper</a> · <a href="../papers/computer-science-hl-answers.html">answer booklet</a></p>
@@ -42,7 +42,7 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   </select>
   <select id="f-done" aria-label="Filter by progress"><option value="">All questions</option><option value="todo">To do</option><option value="done">Done</option></select>
 </div>
-<p class="small" id="count">32 questions</p>
+<p class="small" id="count">34 questions</p>
 <div id="results"></div>
 <div class="q" data-search="CS-P2-003 Theme A: Concepts of computer science Predictive maintenance on smart water meters — imbalanced data, metrics and governance A4.2 Data preprocessing (HL only), A4.3 Machine learning approaches (HL only), A4.4 Ethical considerations, A3.4 Alternative databases and data warehouses (HL only) The base rate is so low that a model which never predicts anything achieves 99.996% accuracy, so the student has to abandon accuracy entirely and reason about precision, recall and the operational cost of a false alarm. case study machine learning imbalanced data precision and recall ethics data warehouse" data-diff="5" data-paper="P2" data-topic="Theme A: Concepts of computer science" data-qid="CS-P2-003">
 <div class="q-head"><h3><a href="../q/CS-P2-003.html">Predictive maintenance on smart water meters — imbalanced data, metrics and governance</a></h3>
@@ -544,6 +544,52 @@ $1\ \mathrm{Gbps}$ link. \tag{5}
 (b) Calculate the new transmission time for one window at $1\ \mathrm{Gbps}$ and the new maximum throughput. [4 marks] (Calculate)
 (c) Determine the window size, in bytes, needed to make full use of the $1\ \mathrm{Gbps}$ link. [5 marks] (Determine)
 (d) Explain why the upgrade produced no improvement, and state what should be changed. [4 marks] (Explain)</div>
+</div>
+</div><div class="q" data-search="CS-A3.3-201 Theme A: Concepts of computer science A3.3 One row that changes every aggregate: COUNT(*), COUNT(column), AVG, and NULL propagating through a computed column A3.3 Database programming (SQL queries, aggregate functions, GROUP BY and HAVING, NULL handling) An aggregate is not a function of the table, it is a function of the rows the engine decides to feed it, and that set is not the same for every aggregate. `COUNT(*)` counts rows, `COUNT(unit_price)` counts values, and `AVG(unit_price)` divides a NULL-excluding sum by a NULL-excluding count. All three read like variations on &quot;how many&quot;, and only one of them answers the question a manager thinks they asked. The same NULL then propagates silently through a computed column, so a customer&#x27;s spend becomes NULL rather than a number, and the failure surfaces as a missing row in a report rather than as an error. SQL aggregate functions NULL GROUP BY HAVING database programming" data-diff="4" data-paper="P1" data-topic="Theme A: Concepts of computer science" data-qid="CS-A3.3-201">
+<div class="q-head"><h3><a href="../q/CS-A3.3-201.html">A3.3 One row that changes every aggregate: COUNT(*), COUNT(column), AVG, and NULL propagating through a computed column</a></h3>
+<button type="button" class="q-done" data-qid="CS-A3.3-201" aria-pressed="false">Mark done</button></div>
+<p class="stem">An aggregate is not a function of the table, it is a function of the rows the engine decides to feed it, and that set is not the same for every aggregate. <code>COUNT(*)</code> counts rows, <code>COUNT(unit_price)</code> counts values, and <code>AVG(unit_price)</code> divides a NULL-excluding sum by a NULL-excluding count. All three read like variations on "how many", and only one of them answers the question a manager thinks they asked. The same NULL then propagates silently through a computed column, so a customer's spend becomes NULL rather than a number, and the failure surfaces as a missing row in a report rather than as an error.</p>
+<div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A3.3 Database programming (SQL queries, aggregate functions, GROUP BY and HAVING, NULL handling)</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Explain</span><span class="chip">Determine</span><span class="chip">Determine</span><span class="chip">Explain</span></div>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-A3.3-201">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>A manager is asked three things about this table: what the average unit price is, which customers have placed more than one order, and how much each of those customers has spent. The manager writes a set of queries without reading the note on how the engine treats NULL.
+
+(a) Explain the difference between `COUNT(*)` and `COUNT(unit_price)` in a query over this table, and state the value that each of the two returns. [4 marks] (Explain)
+(b) The manager writes `SELECT SUM(unit_price) / COUNT(*) AS average_price FROM orders;` and reports the result as 18.00. Determine the value that the engine&#x27;s own `AVG(unit_price)` returns, and explain why the two expressions give different answers. [5 marks] (Determine)
+(c) Determine which customers the query
+```
+SELECT customer_id, SUM(quantity * unit_price) AS spend
+FROM orders
+WHERE order_id &gt; 2
+GROUP BY customer_id
+HAVING COUNT(*) &gt;= 2;
+```
+returns, and the value it reports for each. State the result the manager intended, and identify the single clause responsible for the difference. [4 marks] (Determine)
+(d) Explain why `SUM(quantity * unit_price)` for customer 104 returns NULL rather than 0, and state one change to the query that would make the reported total well defined for every customer. [3 marks] (Explain)</div>
+</div>
+</div><div class="q" data-search="CS-B4.1-201 Theme B: Computational thinking and problem-solving B4.1 Choosing an implementation for a priority queue when the number of extractions, not the complexity class, decides the winner B4.1 Fundamentals of ADTs (HL only): the priority queue and the cost of different implementations The complexity class of an operation is a statement about the limit as the size grows, at a fixed mixture of operations. The question here fixes the size and varies the mixture, which is the opposite arrangement, so the asymptotic ranking is not the ranking that answers the question. A heap commits $\log_2 n$ steps to every insertion, including the 1024 insertions that the unsorted array performs in one step each, and those committed steps have to be earned back by the extractions before the heap can be ahead. The variable that governs the answer is the number of extractions, and it is not named in the question. priority queue ADT binary heap complexity data structure choice crossover" data-diff="4" data-paper="P1" data-topic="Theme B: Computational thinking and problem-solving" data-qid="CS-B4.1-201">
+<div class="q-head"><h3><a href="../q/CS-B4.1-201.html">B4.1 Choosing an implementation for a priority queue when the number of extractions, not the complexity class, decides the winner</a></h3>
+<button type="button" class="q-done" data-qid="CS-B4.1-201" aria-pressed="false">Mark done</button></div>
+<p class="stem">The complexity class of an operation is a statement about the limit as the size grows, at a fixed mixture of operations. The question here fixes the size and varies the mixture, which is the opposite arrangement, so the asymptotic ranking is not the ranking that answers the question. A heap commits $\log_2 n$ steps to every insertion, including the 1024 insertions that the unsorted array performs in one step each, and those committed steps have to be earned back by the extractions before the heap can be ahead. The variable that governs the answer is the number of extractions, and it is not named in the question.</p>
+<div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B4.1 Fundamentals of ADTs (HL only): the priority queue and the cost of different implementations</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Determine</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">Explain</span></div>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-B4.1-201">
+<div class="qai-head">
+  <span class="qai-title">Solve with AI</span>
+  <span class="qai-sub">The tutor is sent this whole question, not just its topic.</span>
+  <button type="button" class="qai-btn" data-ai-go>Solve with AI</button>
+</div>
+<div class="qai-body" hidden></div>
+<div class="qai-src" hidden>A student claims that the binary heap is the right implementation because its operations are $O(\log n)$ while the unsorted array&#x27;s are $O(n)$, and that this settles the choice. The claim is to be tested against the counting model above, first with the full workload and then with the number of extractions reduced.
+
+(a) Determine the total number of steps taken by the unsorted array and by the binary heap when 1024 items are inserted and then all 1024 are extracted, and hence show that the heap performs about 25.6 times fewer steps. [4 marks] (Determine)
+(b) Show that the sorted array performs exactly the same total number of steps as the unsorted array on this workload, and explain why two structures with opposite cost profiles can produce the same total. [4 marks] (Show that)
+(c) The number of extractions is now reduced from 1024 to $k$, with the 1024 insertions unchanged. Determine the largest value of $k$ for which the unsorted array is still the cheaper choice, and state the smallest value of $k$ at which the heap is cheaper. [5 marks] (Determine)
+(d) Explain why the student&#x27;s complexity-class argument is not by itself a sufficient reason to choose the heap for this workload. [3 marks] (Explain)</div>
 </div>
 </div><div class="q" data-search="CS-A1.2-001 Theme A: Concepts of computer science A1.2 Data representation and computer logic A1.2 Data representation and computer logic (A1.2.1 representation of integers in binary and hexadecimal, A1.2.2 binary encoding and its impact on storage, A1.2.3 logic gates, A1.2.4 truth tables) The word length is fixed and small enough that representable range, scaled range and accumulator overflow all interact; the student must recognise that the overflow point depends on the number of readings rather than on the sensor, and then explain why one conversion factor is exact and a superficially similar one is not. two&#x27;s complement overflow fixed point Boolean simplification logic gates" data-diff="4" data-paper="P1" data-topic="Theme A: Concepts of computer science" data-qid="CS-A1.2-001">
 <div class="q-head"><h3><a href="../q/CS-A1.2-001.html">A 12-bit temperature log and the arithmetic that breaks it</a></h3>

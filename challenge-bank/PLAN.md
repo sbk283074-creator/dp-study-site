@@ -1,11 +1,13 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 208 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 224 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 44 of 208 do. The remaining 164 are
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 60 of 224 do. The remaining 164 are
 a published, ratcheting backlog — see `STANDARD.md` §2.2–§2.5 and `tools/difficulty_audit.py`. All 13
-lever types are now in use, and the Physics difficulty-5 share has been designed down from 62% to 56%.
+lever types are in use, and the Physics difficulty-5 share has been designed down from 62% to **49%**,
+which brings every subject inside the 50% cap and clears the calibration debt. The only outstanding debt
+is that no item claims difficulty 3, so the 3–5 scale still reads as two points.
 The `topic` label is now a closed vocabulary per subject, enforced by `validate.py`, and is shown on every
 question page and filterable on every subject page.**
 
@@ -729,12 +731,56 @@ similarity score, and no BM item ships containing HL-only content.
     per subject and **fails** on an unknown label, proved non-vacuous on 12 cases including all five that
     were really in the bank. The topic now renders as a chip on every question page, appears in the
     metadata block and the global search index, and filters every subject page.
+- **Batch 17 — DONE (8 Physics HL items, 208 → 216; and the Physics debt cleared).** Eight Paper 1/2/3
+  Physics items spanning all five themes, every one at difficulty 4, on the explicit instruction to stop
+  adding Physics d5 items until the share reached the 50% cap. Lever types are all distinct:
+  `implicit_dependence`, `exceptional_parameter`, `decoy_technique`, `variable_swap`, `partial_cancellation`,
+  `binding_constraint`, `derived_limit`, `seeded_anomaly`.
+  - **Every number was recomputed from first principles before any prose was written.** A pulley with a
+    non-negligible moment of inertia, ice that does not all melt, a rectangular pV cycle against a Carnot
+    decoy, a point source with incoherent addition in dB, closed-pipe resonances where the end correction
+    cancels, a charged drop with upward acceleration equal to g, a velocity selector, and a photoelectric
+    data set with a seeded anomaly at 7.00×10¹⁴ Hz.
+  - **The generator's self-check caught four false assertions and one silent data-loss bug.** Two of the
+    assertions divided by `mg` twice and two had a malformed regression and a wrong-direction inequality;
+    all four were fixed by re-expressing them. The data-loss bug was more serious: `item()`'s key list
+    omitted `stimulus` and `figure`, so the data table for the photoelectric item was accepted as an
+    argument and then silently dropped, and the item shipped as a `data_based` question with no data.
+    `item()` now **raises** on any unknown keyword so this class of defect cannot recur.
+  - **Outcome: Physics HL 56% → 49%.** The calibration gate reports no debt for any subject for the first
+    time. The full pipeline passed including the originality scan: **0 items above threshold**, highest
+    external 0.044, highest internal 0.073, highest approach 0.356.
+- **Batch 18 — DONE (4 Maths, 2 CS, 2 BM; 216 → 224).** Weighted as asked — Physics and Maths are 12 of
+  the 16 items across Batches 17 and 18, with CS and BM represented but not competing for attention.
+  - **Maths ×4.** A telescoping sum whose cancellation skips a term (AHL 1.11), the root count of
+    $x^3 - 3x + k$ and the strict range $-2 < k < 2$ (AHL 2.12), a screening test read by Bayes where a
+    99%-sensitive test on a 1-in-1000 disease gives only 1.94% confidence (AHL 4.13), and
+    $\int_0^{\pi/2}(1+\tan^n x)^{-1}dx = \pi/4$ for every $n$ by the reflection substitution, set as a
+    Paper 3 problem-solving item at difficulty 5 (AHL 5.16).
+  - **CS ×2.** An aggregate that silently excludes a row — `COUNT(*)` against `COUNT(unit_price)`, and
+    `SUM/COUNT(*)` reporting 18.00 where `AVG` reports 21.00 — with the `WHERE`-before-`GROUP BY` trap on
+    top. And a priority queue where the heap loses: under a stated counting model the crossover is at
+    $k = 18.36$ extractions, so the unsorted array wins for any workload that drains fewer than nineteen
+    of 1 024 items.
+  - **BM ×2.** A ratio extract where paying a supplier in cash *raises* both liquidity ratios, and buying
+    inventory on credit lowers the current ratio by the equal-amounts rule while dropping the acid test
+    through 1.00 because its numerator cancels exactly. And a break-even at 12 500 units against a
+    capacity of 10 000 — unreachable, with a negative margin of safety and three single-lever thresholds
+    at £44.00, £160 000 and £20.00.
+  - **The originality gate passed and the batch was still changed.** `MATH-AHL1.11-201` scored 0.185
+    internal against a 0.25 limit — under the gate, but it used the *same general term* as the existing
+    `MATH-AHL1.11-001` ($1/(n(n+1)(n+2))$) with near-identical parts (a) and (c). The threshold is a proxy
+    for a judgement, and the judgement was that the bank should not hold the same question twice, so the
+    item was rewritten around $1/(n(n+2))$, whose pieces cancel across a gap and leave two survivors at
+    each end rather than one. Internal overlap fell **0.185 → 0.019**.
+  - Evidenced count **52 → 60**; assertions **2265 → 2373**. Difficulty split 132 at d4, 92 at d5; every
+    subject inside the 50% cap.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  93 questions / 1443 marks, physics 59 / 748, CS 32 / 521, BM SL 24 / 355 — all difficulty 4–5, May
+  97 questions / 1492 marks, physics 67 / 842, CS 34 / 553, BM SL 26 / 387 — all difficulty 4–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that
