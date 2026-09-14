@@ -277,6 +277,10 @@
     var subject = inferSubject();
     var settings = loadSettings();
 
+    var INTRO_HINT = "Hi \u2014 I'm your AI study assistant. Use the controls just above the box to set how long the reply should be, how hard I should think, and how hard the task is" +
+      (subject ? " for " + subject : "") +
+      ". Leave Model on Auto and I'll pick the best free model for those choices. Use \u2922 to go full page, or \u2699 to hide the controls. Ask me to explain a concept, work through a problem, or quiz you. Your conversation is saved on this device.";
+
     var styles = [
       ".dp-ai-launch{position:fixed;right:18px;bottom:18px;z-index:2147483000;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100vw - 30px)}",
       ".dp-ai-btn{display:flex;align-items:center;gap:8px;padding:12px 16px;border:none;border-radius:999px;",
@@ -303,6 +307,15 @@
       ".dp-ai-head .chip{font-size:11px;font-weight:600;background:rgba(255,255,255,.18);padding:3px 8px;border-radius:999px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}",
       ".dp-ai-head button{background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:15px;line-height:1}",
       ".dp-ai-head button:hover{background:rgba(255,255,255,.28)}",
+      // ---- question scope strip (per-question "Ask AI" buttons) ----
+      ".dp-ai-scope{display:flex;align-items:center;gap:7px;padding:7px 12px;background:#f2f5ff;",
+      "border-bottom:1px solid #dbe2ff;font:600 11.5px -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#2a44b8}",
+      ".dp-ai-scope[hidden]{display:none}",
+      ".dp-ai-scope .ic{font-size:12px;line-height:1;flex:0 0 auto}",
+      ".dp-ai-scope .ref{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
+      ".dp-ai-scope button{flex:0 0 auto;border:1px solid #c3cffb;background:#fff;color:#2a44b8;",
+      "font:600 10.5px -apple-system,Segoe UI,Roboto,Arial,sans-serif;padding:3px 8px;border-radius:999px;cursor:pointer}",
+      ".dp-ai-scope button:hover{background:#e7ecff}",
       // min-height:0 lets the message list actually shrink in a flex column, so
       // opening the usage strip can never push the input out of the panel
       ".dp-ai-msgs{flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:#fafbfd}",
@@ -431,11 +444,12 @@
       '<div class="dp-ai-nav" id="dpAiNav" role="dialog" aria-label="Site map">' + navMarkup() + '</div>' +
       '<div class="dp-ai-panel" id="dpAiPanel" role="dialog" aria-label="AI study assistant">' +
         '<div class="dp-ai-head">' +
-          '<h3>AI Study Assistant</h3>' +
-          (subject ? '<span class="chip" id="dpAiSubj">' + escapeHtml(subject) + '</span>' : '') +
+          '<h3 id="dpAiTitle">AI Study Assistant</h3>' +
+          '<span class="chip" id="dpAiSubj"' + (subject ? '' : ' style="display:none"') + '>' + escapeHtml(subject || '') + '</span>' +
           '<button id="dpAiExpand" aria-label="Toggle full page" title="Full-page mode">\u2922</button>' +
           '<button id="dpAiClose" aria-label="Close">\u00d7</button>' +
         '</div>' +
+        '<div class="dp-ai-scope" id="dpAiScope" hidden></div>' +
         '<div class="dp-ai-msgs" id="dpAiMsgs"></div>' +
         '<div class="dp-ai-usage" id="dpAiUsage">' +
           '<button class="dp-ai-usage-toggle" id="dpAiUsageToggle" aria-expanded="false" aria-controls="dpAiUsageBody" ' +
@@ -498,6 +512,18 @@
 
     // last good /api/ask/status payload — feeds the usage strip
     var poolState = null;
+
+    var subjChip = document.getElementById("dpAiSubj");
+    var scopeEl = document.getElementById("dpAiScope");
+    var titleEl = document.getElementById("dpAiTitle");
+
+    // ---- question scope ----------------------------------------------------
+    // The panel is the SITE-WIDE assistant. A per-question "Ask AI" button can
+    // put it into *focused* mode: the reply is then grounded in that one
+    // question (via questionId and/or the question text) and the conversation
+    // is kept in memory only, so it never overwrites the saved site-wide chat.
+    var scope = null;     // { ref, subject, topic, marks, questionId } or null
+    var scopeMsgs = [];   // focused conversation — deliberately not persisted
 
     function scrollDown() { msgs.scrollTop = msgs.scrollHeight; }
 
@@ -645,10 +671,11 @@
       return el;
     }
 
-    // restore history — anything saved before the thinking/answer split is
-    // migrated on the way in, so old replies no longer show reasoning inline
+    // Restore history — anything saved before the thinking/answer split is
+    // migrated on the way in, so old replies no longer show reasoning inline.
     var history = loadHistory();
-    history.forEach(function (m) {
+
+    function paintStored(m) {
       if (m.role === "bot") {
         var raw = m.text || toPlain(m.html);
         var sp = splitInlineThinking(raw);
@@ -658,13 +685,92 @@
       } else {
         addMsg(m.role, m.html);
       }
-    });
+    }
+
+    // Repaint the transcript for whichever mode we are in.
+    function renderAll() {
+      msgs.innerHTML = "";
+      var list = scope ? scopeMsgs : history;
+      for (var i = 0; i < list.length; i++) paintStored(list[i]);
+      // Empty site-wide transcript -> show the first-run hint again (it is a
+      // UI affordance, not a message, so it is deliberately not persisted).
+      if (!scope && list.length === 0) addMsg("bot", format(INTRO_HINT));
+    }
+
+    renderAll();
 
     function pushHistory(role, html, meta) {
       var item = { role: role, html: html };
       if (role === "bot" && meta) { item.text = meta.text; item.thinking = meta.thinking || ""; }
+      if (scope) { scopeMsgs.push(item); return; }  // focused chat stays in memory
       history.push(item);
       saveHistory(history);
+    }
+
+    // ---- enter / leave focused mode ---------------------------------------
+    function paintScopeChip() {
+      if (!scopeEl) return;
+      if (!scope) { scopeEl.hidden = true; scopeEl.innerHTML = ""; return; }
+      scopeEl.hidden = false;
+      scopeEl.innerHTML =
+        '<span class="ic">\uD83C\uDFAF</span>' +
+        '<span class="ref"></span>' +
+        '<button type="button" id="dpAiScopeExit" title="Stop focusing on this question and go back to the site-wide chat">Site-wide</button>';
+      scopeEl.querySelector(".ref").textContent = "Focused on " + scope.ref;
+      document.getElementById("dpAiScopeExit").addEventListener("click", exitScope);
+    }
+
+    function exitScope() {
+      if (!scope) return;
+      scope = null;
+      scopeMsgs = [];
+      if (subjChip) { subjChip.textContent = subject || ""; subjChip.style.display = subject ? "" : "none"; }
+      if (titleEl) titleEl.textContent = "AI Study Assistant";
+      text.placeholder = "Ask anything about " + (subject || "your IB subjects") + "\u2026";
+      paintScopeChip();
+      renderAll();
+      text.value = "";
+      autosize();
+    }
+
+    function enterScope(o) {
+      scope = {
+        ref: o.ref || o.questionId || "this question",
+        subject: o.subject || subject || "",
+        topic: o.topic || "",
+        marks: (o.marks == null ? null : o.marks),
+        questionId: o.questionId || null
+      };
+      scopeMsgs = [];
+      if (subjChip) { subjChip.textContent = scope.subject || ""; subjChip.style.display = scope.subject ? "" : "none"; }
+      if (titleEl) titleEl.textContent = "Ask about this question";
+      text.placeholder = "Ask anything about this question\u2026";
+      paintScopeChip();
+      renderAll();
+
+      // A per-question button may state the intent up front (e.g. "solution").
+      if (o.depth && DEPTH_NEED[o.depth]) settings.depth = o.depth;
+      if (o.difficulty && DIFF_NEED[o.difficulty]) settings.difficulty = o.difficulty;
+      if (o.length && LEN_NEED[o.length]) settings.length = o.length;
+      saveSettings(settings);
+      syncSegs();
+      refreshHint();
+
+      var intro = "Focused on " + scope.ref + ". Ask me anything about this one question \u2014 " +
+        "explain the method, work through it step by step, or mark an attempt you paste in.";
+      scopeMsgs.push({ role: "bot", html: format(intro) });
+      addMsg("bot", format(intro));
+
+      openPanel();
+    }
+
+    // The backend's intent axis is `complexity` (simple|standard|deep). The
+    // panel exposes it as two rows (Think = depth, Task = difficulty), so
+    // collapse them exactly the way predictModel() does — otherwise the hint
+    // promises a model that the request never actually asks for.
+    function complexityFor(s) {
+      var need = Math.max(DEPTH_NEED[s.depth] || 2, DIFF_NEED[s.difficulty] || 2);
+      return need >= 3 ? "deep" : (need <= 1 ? "simple" : "standard");
     }
 
     function openPanel() {
@@ -679,6 +785,9 @@
       expandBtn.textContent = "\u2922";
       expandBtn.title = "Full-page mode";
       btn.setAttribute("aria-expanded", "false");
+      // Closing always drops the question focus, so the floating "Ask AI"
+      // launcher can never reopen somebody else's question by surprise.
+      exitScope();
     }
     function toggleFull() {
       var on = panel.classList.toggle("dp-ai-panel--full");
@@ -916,6 +1025,13 @@
       pushHistory("user", userHtml);
       text.value = "";
       autosize();
+      request(val);
+    }
+
+    // Fire one turn at the API. `val` is what the model sees — it may carry
+    // grounding text for a focused question — while the transcript already
+    // shows the short label for that turn.
+    function request(val) {
       setLoading(true);
       showTyping();
 
@@ -924,11 +1040,15 @@
 
       var payload = {
         message: val,
-        subject: subject || undefined,
+        subject: (scope && scope.subject) || subject || undefined,
         depth: settings.depth,
         difficulty: settings.difficulty,
-        length: settings.length
+        length: settings.length,
+        complexity: complexityFor(settings)
       };
+      if (scope && scope.questionId) payload.questionId = scope.questionId;
+      if (scope && scope.topic) payload.topic = scope.topic;
+      if (scope && scope.marks != null) payload.marks = scope.marks;
       if (settings.model) payload.model = settings.model;
 
       fetch(API, {
@@ -963,14 +1083,20 @@
               meta.textContent = "";
               meta.title = "";
             }
+            // setLoading(false) runs after this and blanks the footer unless
+            // told to keep it — without this flag the "via <model>" line that
+            // was just written is wiped on the very next tick.
+            if (meta.textContent) meta.dataset.keep = "1"; else delete meta.dataset.keep;
           } else if (d.error === "rate_limited" || d.error === "quota_exceeded") {
             addMsg("err", format(d.message || "Rate limit reached. Please try again shortly."));
             meta.textContent = "";
             meta.title = "";
+            delete meta.dataset.keep;
           } else {
             addMsg("err", format((d && d.message) || ("Something went wrong (HTTP " + res.status + ").")));
             meta.textContent = "";
             meta.title = "";
+            delete meta.dataset.keep;
           }
         })
         .catch(function (err) {
@@ -978,6 +1104,7 @@
           addMsg("err", format("Could not reach the AI service. Check your connection and try again." + (err && err.name === "AbortError" ? " (timed out)" : "")));
           meta.textContent = "";
           meta.title = "";
+          delete meta.dataset.keep;
         })
         .then(function () {
           clearTimeout(timer);
@@ -996,13 +1123,49 @@
       }
     });
 
-    // first-run hint
-    if (history.length === 0) {
-      var hint = "Hi \u2014 I'm your AI study assistant. Use the controls just above the box to set how long the reply should be, how hard I should think, and how hard the task is" +
-        (subject ? " for " + subject : "") +
-        ". Leave Model on Auto and I'll pick the best free model for those choices. Use \u2922 to go full page, or \u2699 to hide the controls. Ask me to explain a concept, work through a problem, or quiz you. Your conversation is saved on this device.";
-      addMsg("bot", format(hint));
-    }
+    // ---- public hook: focus the assistant on ONE question -------------------
+    // Any page can now offer a per-question "Ask AI" button that opens THIS
+    // panel — the same chat, the same controls, the same history behaviour —
+    // just scoped to a single question. Nothing about the chat UI is
+    // duplicated, so the two banks can never drift apart from the global bar.
+    //
+    //   window.dpAI.open({
+    //     ref:        "MATH-AHL5.14-001",   // shown in the scope strip
+    //     subject:    "Mathematics AA HL",  // optional
+    //     topic:      "5.14",               // optional
+    //     marks:      6,                    // optional
+    //     questionId: "PH-TSOKOS-WB-Q0026", // optional — server grounds on the DB
+    //     context:    "<full question text>",// optional — for questions not in the DB
+    //     prompt:     "Give me a full worked solution.",
+    //     display:    "Full solution",       // short label for the transcript
+    //     depth:      "deep",                // optional intent override
+    //     difficulty: "hard",
+    //     length:     "long",
+    //     autoSend:   true                   // false = just prefill the box
+    //   });
+    window.dpAI = {
+      open: function (opts) {
+        var o = opts || {};
+        enterScope(o);
+        var seed = "";
+        if (o.context) seed += "Question:\n" + o.context + "\n\n";
+        if (o.prompt) seed += o.prompt;
+        if (!seed) { text.focus(); return; }
+        if (o.autoSend === false) {
+          text.value = seed;
+          autosize();
+          text.focus();
+          return;
+        }
+        var label = o.display || o.prompt || "Explain this question";
+        var labelHtml = format(label);
+        addMsg("user", labelHtml);
+        pushHistory("user", labelHtml);
+        request(seed);
+      },
+      close: function () { closePanel(); },
+      focused: function () { return !!scope; }
+    };
 
     // --- load the Formula Booklet + Scientific Calculator float bars ----------
     // Both ship as one self-contained file (assets/tools-widget.js); adding this
