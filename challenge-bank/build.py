@@ -141,6 +141,19 @@ input[type=search]{flex:1;min-width:200px}
 .stat b{display:block;font-size:22px;color:var(--ink)}
 #results .q{margin-bottom:10px}
 .empty{color:var(--muted);font-size:14px}
+/* "Mark as done" — challenge-bank progress tracking (localStorage, no backend) */
+.q{position:relative}
+.q-head{display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
+.q-head h3{margin:0;flex:1;min-width:0}
+.q-done{margin-top:2px;border:1px solid var(--line);background:#fff;color:#475569;border-radius:999px;
+  padding:6px 13px;font:600 12.5px -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer;
+  white-space:nowrap;flex:none}
+.q-done:hover{border-color:var(--accent);color:var(--accent)}
+.q-done.on{background:#e7f6ec;border-color:#34a853;color:#1e7e34}
+.q-done-page{display:inline-block;margin:14px 0 4px;border:1px solid var(--line);background:#fff;color:#334155;
+  border-radius:10px;padding:9px 16px;font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer}
+.q-done-page:hover{border-color:var(--accent);color:var(--accent)}
+.q-done-page.on{background:#e7f6ec;border-color:#34a853;color:#1e7e34}
 .kv{margin:0;font-size:13px}
 .kv div{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}
 .kv div:last-child{border-bottom:0}
@@ -166,7 +179,7 @@ mjx-container[display="true"]{display:block !important;padding:.15em 0 .5em}
   .wrap{overflow-wrap:anywhere}
 }
 @media print{
-  header.site nav,footer.site,.controls,input[type=search],select,.paper-switch,.pager{display:none}
+  header.site nav,footer.site,.controls,input[type=search],select,.paper-switch,.pager,.q-done,.q-done-page{display:none}
   details{border:0} details .body{border-top:0}
   details[open] .body{border-top:0}
   body{font-size:11.5pt}
@@ -176,31 +189,68 @@ mjx-container[display="true"]{display:block !important;padding:.15em 0 .5em}
 
 JS = """
 (function(){
+  // ---------- Mark as done (works on listing + individual question pages) ----------
+  var DONE_KEY = 'cb_done_v1';
+  function loadDone(){ try { return JSON.parse(localStorage.getItem(DONE_KEY) || '{}'); } catch(e){ return {}; } }
+  function saveDone(o){ try { localStorage.setItem(DONE_KEY, JSON.stringify(o)); } catch(e){} }
+  function isDone(id){ return !!(id && loadDone()[id]); }
+  function setDone(id, val){
+    if(!id) return;
+    var o = loadDone();
+    if(val) o[id] = 1; else delete o[id];
+    saveDone(o);
+  }
+  function wireToggle(btn){
+    var id = btn.getAttribute('data-qid');
+    if(!id) return;
+    function paint(){
+      var d = isDone(id);
+      btn.setAttribute('aria-pressed', d ? 'true' : 'false');
+      btn.textContent = d ? '\\u2713 Done' : 'Mark done';
+      btn.classList.toggle('on', d);
+      var card = btn.closest('.q');
+      if(card) card.classList.toggle('is-done', d);
+    }
+    paint();
+    btn.addEventListener('click', function(){
+      setDone(id, !isDone(id));
+      paint();
+      if(typeof window.__cbRunFilter === 'function') window.__cbRunFilter();
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.q-done, .q-done-page'), wireToggle);
+
+  // ---------- Listing filter: search / paper / difficulty / done ----------
   var q = document.getElementById('q');
   var box = document.getElementById('results');
-  if(!q || !box) return;
-  function hay(card){ return (card.dataset.search || '').toLowerCase(); }
-  function run(){
-    var term = q.value.trim().toLowerCase();
-    var diff = (document.getElementById('f-diff')||{}).value || '';
-    var paper = (document.getElementById('f-paper')||{}).value || '';
-    var shown = 0;
-    Array.prototype.forEach.call(document.querySelectorAll('[data-search]'), function(card){
-      var ok = (!term || hay(card).indexOf(term) !== -1)
-            && (!diff || card.dataset.diff === diff)
-            && (!paper || card.dataset.paper === paper);
-      card.style.display = ok ? '' : 'none';
-      if(ok) shown++;
+  if(q && box){
+    function hay(card){ return (card.dataset.search || '').toLowerCase(); }
+    window.__cbRunFilter = function(){
+      var term = q.value.trim().toLowerCase();
+      var diff = (document.getElementById('f-diff')||{}).value || '';
+      var paper = (document.getElementById('f-paper')||{}).value || '';
+      var fd = (document.getElementById('f-done')||{}).value || '';
+      var shown = 0;
+      Array.prototype.forEach.call(document.querySelectorAll('[data-search]'), function(card){
+        var id = card.getAttribute('data-qid') || '';
+        var done = isDone(id);
+        var ok = (!term || hay(card).indexOf(term) !== -1)
+              && (!diff || card.dataset.diff === diff)
+              && (!paper || card.dataset.paper === paper)
+              && (!fd || (fd === 'done' ? done : !done));
+        card.style.display = ok ? '' : 'none';
+        if(ok) shown++;
+      });
+      var note = document.getElementById('count');
+      if(note) note.textContent = shown + ' question' + (shown === 1 ? '' : 's') + ' shown';
+    };
+    q.addEventListener('input', window.__cbRunFilter);
+    ['f-diff','f-paper','f-done'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.addEventListener('change', window.__cbRunFilter);
     });
-    var note = document.getElementById('count');
-    if(note) note.textContent = shown + ' question' + (shown === 1 ? '' : 's') + ' shown';
-    box.style.display = 'none';
+    window.__cbRunFilter();
   }
-  q.addEventListener('input', run);
-  ['f-diff','f-paper'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.addEventListener('change', run);
-  });
 
   // global search on the home page
   var g = document.getElementById('g');
@@ -367,10 +417,12 @@ def chips(q):
 
 def question_card(q, slug):
     title = q.get("title") or q["subtopic"]
+    qid = q["id"]
     search = " ".join([q["id"], q["topic"], q["subtopic"], q["syllabus_ref"],
                        q.get("challenge_mechanism", ""), " ".join(q.get("tags") or [])])
-    return f"""<div class="q" data-search="{html.escape(search, quote=True)}" data-diff="{q['difficulty']}" data-paper="{html.escape(q.get('paper') or '')}">
-<h3><a href="../q/{html.escape(q['id'])}.html">{html.escape(title)}</a></h3>
+    return f"""<div class="q" data-search="{html.escape(search, quote=True)}" data-diff="{q['difficulty']}" data-paper="{html.escape(q.get('paper') or '')}" data-qid="{html.escape(qid)}">
+<div class="q-head"><h3><a href="../q/{html.escape(qid)}.html">{html.escape(title)}</a></h3>
+<button type="button" class="q-done" data-qid="{html.escape(qid)}" aria-pressed="false">Mark done</button></div>
 <p class="stem">{inline(q.get('challenge_mechanism', ''))}</p>
 {chips(q)}
 </div>"""
@@ -404,6 +456,7 @@ def build_question_page(q, slug):
     body = f"""
 <h1>{html.escape(q.get('title') or q['subtopic'])}</h1>
 <p class="lede"><a href="../{slug}/index.html">{html.escape(SUBJECTS[slug]['name'])}</a> · {html.escape(q['id'])}</p>
+<button type="button" class="q-done-page" data-qid="{html.escape(q['id'])}" aria-pressed="false">Mark done</button>
 {chips(q)}
 {stimulus_html(q.get('stimulus'))}
 {figure_html(q.get('figure'))}
@@ -501,6 +554,7 @@ def build_subject_page(slug, qs):
   <select id="f-diff" aria-label="Filter by difficulty"><option value="">All difficulties</option>
     {''.join('<option value="%s">Difficulty %s</option>' % (d, d) for d in diffs)}
   </select>
+  <select id="f-done" aria-label="Filter by progress"><option value="">All questions</option><option value="todo">To do</option><option value="done">Done</option></select>
 </div>
 <p class="small" id="count">{len(qs)} questions</p>
 <div id="results"></div>

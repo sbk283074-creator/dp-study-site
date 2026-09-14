@@ -82,6 +82,19 @@ input[type=search]{flex:1;min-width:200px}
 .stat b{display:block;font-size:22px;color:var(--ink)}
 #results .q{margin-bottom:10px}
 .empty{color:var(--muted);font-size:14px}
+/* "Mark as done" — challenge-bank progress tracking (localStorage, no backend) */
+.q{position:relative}
+.q-head{display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
+.q-head h3{margin:0;flex:1;min-width:0}
+.q-done{margin-top:2px;border:1px solid var(--line);background:#fff;color:#475569;border-radius:999px;
+  padding:6px 13px;font:600 12.5px -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer;
+  white-space:nowrap;flex:none}
+.q-done:hover{border-color:var(--accent);color:var(--accent)}
+.q-done.on{background:#e7f6ec;border-color:#34a853;color:#1e7e34}
+.q-done-page{display:inline-block;margin:14px 0 4px;border:1px solid var(--line);background:#fff;color:#334155;
+  border-radius:10px;padding:9px 16px;font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer}
+.q-done-page:hover{border-color:var(--accent);color:var(--accent)}
+.q-done-page.on{background:#e7f6ec;border-color:#34a853;color:#1e7e34}
 .kv{margin:0;font-size:13px}
 .kv div{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--line)}
 .kv div:last-child{border-bottom:0}
@@ -107,7 +120,7 @@ mjx-container[display="true"]{display:block !important;padding:.15em 0 .5em}
   .wrap{overflow-wrap:anywhere}
 }
 @media print{
-  header.site nav,footer.site,.controls,input[type=search],select,.paper-switch,.pager{display:none}
+  header.site nav,footer.site,.controls,input[type=search],select,.paper-switch,.pager,.q-done,.q-done-page{display:none}
   details{border:0} details .body{border-top:0}
   details[open] .body{border-top:0}
   body{font-size:11.5pt}

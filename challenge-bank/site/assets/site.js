@@ -1,30 +1,67 @@
 
 (function(){
+  // ---------- Mark as done (works on listing + individual question pages) ----------
+  var DONE_KEY = 'cb_done_v1';
+  function loadDone(){ try { return JSON.parse(localStorage.getItem(DONE_KEY) || '{}'); } catch(e){ return {}; } }
+  function saveDone(o){ try { localStorage.setItem(DONE_KEY, JSON.stringify(o)); } catch(e){} }
+  function isDone(id){ return !!(id && loadDone()[id]); }
+  function setDone(id, val){
+    if(!id) return;
+    var o = loadDone();
+    if(val) o[id] = 1; else delete o[id];
+    saveDone(o);
+  }
+  function wireToggle(btn){
+    var id = btn.getAttribute('data-qid');
+    if(!id) return;
+    function paint(){
+      var d = isDone(id);
+      btn.setAttribute('aria-pressed', d ? 'true' : 'false');
+      btn.textContent = d ? '\u2713 Done' : 'Mark done';
+      btn.classList.toggle('on', d);
+      var card = btn.closest('.q');
+      if(card) card.classList.toggle('is-done', d);
+    }
+    paint();
+    btn.addEventListener('click', function(){
+      setDone(id, !isDone(id));
+      paint();
+      if(typeof window.__cbRunFilter === 'function') window.__cbRunFilter();
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.q-done, .q-done-page'), wireToggle);
+
+  // ---------- Listing filter: search / paper / difficulty / done ----------
   var q = document.getElementById('q');
   var box = document.getElementById('results');
-  if(!q || !box) return;
-  function hay(card){ return (card.dataset.search || '').toLowerCase(); }
-  function run(){
-    var term = q.value.trim().toLowerCase();
-    var diff = (document.getElementById('f-diff')||{}).value || '';
-    var paper = (document.getElementById('f-paper')||{}).value || '';
-    var shown = 0;
-    Array.prototype.forEach.call(document.querySelectorAll('[data-search]'), function(card){
-      var ok = (!term || hay(card).indexOf(term) !== -1)
-            && (!diff || card.dataset.diff === diff)
-            && (!paper || card.dataset.paper === paper);
-      card.style.display = ok ? '' : 'none';
-      if(ok) shown++;
+  if(q && box){
+    function hay(card){ return (card.dataset.search || '').toLowerCase(); }
+    window.__cbRunFilter = function(){
+      var term = q.value.trim().toLowerCase();
+      var diff = (document.getElementById('f-diff')||{}).value || '';
+      var paper = (document.getElementById('f-paper')||{}).value || '';
+      var fd = (document.getElementById('f-done')||{}).value || '';
+      var shown = 0;
+      Array.prototype.forEach.call(document.querySelectorAll('[data-search]'), function(card){
+        var id = card.getAttribute('data-qid') || '';
+        var done = isDone(id);
+        var ok = (!term || hay(card).indexOf(term) !== -1)
+              && (!diff || card.dataset.diff === diff)
+              && (!paper || card.dataset.paper === paper)
+              && (!fd || (fd === 'done' ? done : !done));
+        card.style.display = ok ? '' : 'none';
+        if(ok) shown++;
+      });
+      var note = document.getElementById('count');
+      if(note) note.textContent = shown + ' question' + (shown === 1 ? '' : 's') + ' shown';
+    };
+    q.addEventListener('input', window.__cbRunFilter);
+    ['f-diff','f-paper','f-done'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.addEventListener('change', window.__cbRunFilter);
     });
-    var note = document.getElementById('count');
-    if(note) note.textContent = shown + ' question' + (shown === 1 ? '' : 's') + ' shown';
-    box.style.display = 'none';
+    window.__cbRunFilter();
   }
-  q.addEventListener('input', run);
-  ['f-diff','f-paper'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.addEventListener('change', run);
-  });
 
   // global search on the home page
   var g = document.getElementById('g');

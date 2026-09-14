@@ -191,9 +191,10 @@
   // ---- build the DOM --------------------------------------------------------
   if (document.getElementById("dp-tools-root")) return;
   var styles = [
-    // launch cluster sits just above the AI cluster (bottom:18) so the two rows
-    // never overlap; it is hidden behind the AI panel when that is open.
-    ".dp-tools-launch{position:fixed;right:18px;bottom:80px;z-index:2147483000;display:flex;align-items:center;gap:10px}",
+    // Launch buttons are injected into the AI/Sites launch cluster (so the
+    // Formula + Calc bars sit right next to Ask AI and Sites). This standalone
+    // cluster is only used as a fallback if that cluster is somehow absent.
+    ".dp-tools-launch{position:fixed;right:18px;bottom:18px;z-index:2147483000;display:flex;align-items:center;gap:10px}",
     ".dp-tools-btn{display:flex;align-items:center;gap:7px;padding:11px 14px;border:1px solid #d8dfeb;border-radius:999px;",
     "background:#fff;color:#334155;font:600 13px/1 -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer;",
     "box-shadow:0 4px 14px rgba(16,24,40,.12);transition:transform .15s ease,border-color .15s ease,color .15s ease}",
@@ -250,15 +251,6 @@
   var root = document.createElement("div");
   root.id = "dp-tools-root";
   root.innerHTML =
-    '<div class="dp-tools-launch">' +
-      '<button class="dp-tools-btn" id="dpFbBtn" aria-label="Open formula booklet" aria-expanded="false">' +
-        '<span class="ic">\u{1F4D8}</span><span>Formula</span>' +
-      '</button>' +
-      '<button class="dp-tools-btn" id="dpCalBtn" aria-label="Open calculator" aria-expanded="false">' +
-        '<span class="ic">\u{1F9EE}</span><span>Calc</span>' +
-      '</button>' +
-    '</div>' +
-
     // --- formula booklet panel ---
     '<div class="dp-tools-panel" id="dpFbPanel" role="dialog" aria-label="Formula booklet">' +
       '<div class="dp-tools-head">' +
@@ -289,6 +281,24 @@
       '</div>' +
     '</div>';
   document.body.appendChild(root);
+
+  // Mount the two launch buttons into the AI/Sites launch cluster so the
+  // Formula + Calc bars sit directly next to Ask AI and Sites. If that cluster
+  // is missing for any reason, fall back to a standalone cluster at bottom-right.
+  var TOOLS_BTNS =
+    '<button class="dp-tools-btn" id="dpFbBtn" aria-label="Open formula booklet" aria-expanded="false">' +
+      '<span class="ic">\u{1F4D8}</span><span>Formula</span>' +
+    '</button>' +
+    '<button class="dp-tools-btn" id="dpCalBtn" aria-label="Open calculator" aria-expanded="false">' +
+      '<span class="ic">\u{1F9EE}</span><span>Calc</span>' +
+    '</button>';
+  var aiLaunch = document.querySelector(".dp-ai-launch");
+  var tlaunch = aiLaunch || document.createElement("div");
+  if (!aiLaunch) {
+    tlaunch.className = "dp-tools-launch";
+    document.body.appendChild(tlaunch);
+  }
+  tlaunch.insertAdjacentHTML("beforeend", TOOLS_BTNS);
 
   // ---- formula booklet logic ----
   var fbBtn = document.getElementById("dpFbBtn");

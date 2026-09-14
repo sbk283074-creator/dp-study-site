@@ -278,7 +278,7 @@
     var settings = loadSettings();
 
     var styles = [
-      ".dp-ai-launch{position:fixed;right:18px;bottom:18px;z-index:2147483000;display:flex;align-items:center;gap:10px}",
+      ".dp-ai-launch{position:fixed;right:18px;bottom:18px;z-index:2147483000;display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100vw - 30px)}",
       ".dp-ai-btn{display:flex;align-items:center;gap:8px;padding:12px 16px;border:none;border-radius:999px;",
       "background:#3653d6;background:linear-gradient(135deg,#3653d6,#5b73e8);color:#fff;font:600 14px/1 -apple-system,Segoe UI,Roboto,Arial,sans-serif;",
       "cursor:pointer;box-shadow:0 6px 20px rgba(54,83,214,.35);transition:transform .15s ease,box-shadow .15s ease}",
