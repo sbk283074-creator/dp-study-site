@@ -98,6 +98,7 @@ footer.site{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--mut
   background:var(--soft);color:#374151;margin:0 6px 6px 0;white-space:normal;overflow-wrap:anywhere;max-width:100%;line-height:1.45}
 .chip-hard{border-color:#fecaca;background:var(--hard-soft);color:var(--hard);font-weight:600}
 .chip-key{background:var(--accent-soft);border-color:#bfdbfe;color:#1e40af}
+.chip-topic{background:#f5f3ff;border-color:#ddd6fe;color:#5b21b6;font-weight:600}
 .q{border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:14px;background:#fff}
 .q h3{margin:0 0 8px;font-size:18px}
 .q h3 a{text-decoration:none;color:var(--ink)}
@@ -220,7 +221,7 @@ JS = """
   }
   Array.prototype.forEach.call(document.querySelectorAll('.q-done, .q-done-page'), wireToggle);
 
-  // ---------- Listing filter: search / paper / difficulty / done ----------
+  // ---------- Listing filter: search / topic / paper / difficulty / done ----------
   var q = document.getElementById('q');
   var box = document.getElementById('results');
   if(q && box){
@@ -229,6 +230,7 @@ JS = """
       var term = q.value.trim().toLowerCase();
       var diff = (document.getElementById('f-diff')||{}).value || '';
       var paper = (document.getElementById('f-paper')||{}).value || '';
+      var topic = (document.getElementById('f-topic')||{}).value || '';
       var fd = (document.getElementById('f-done')||{}).value || '';
       var shown = 0;
       Array.prototype.forEach.call(document.querySelectorAll('[data-search]'), function(card){
@@ -237,6 +239,7 @@ JS = """
         var ok = (!term || hay(card).indexOf(term) !== -1)
               && (!diff || card.dataset.diff === diff)
               && (!paper || card.dataset.paper === paper)
+              && (!topic || card.dataset.topic === topic)
               && (!fd || (fd === 'done' ? done : !done));
         card.style.display = ok ? '' : 'none';
         if(ok) shown++;
@@ -245,7 +248,7 @@ JS = """
       if(note) note.textContent = shown + ' question' + (shown === 1 ? '' : 's') + ' shown';
     };
     q.addEventListener('input', window.__cbRunFilter);
-    ['f-diff','f-paper','f-done'].forEach(function(id){
+    ['f-diff','f-paper','f-topic','f-done'].forEach(function(id){
       var el = document.getElementById(id);
       if(el) el.addEventListener('change', window.__cbRunFilter);
     });
@@ -265,6 +268,7 @@ JS = """
       gr.innerHTML = hits.length ? hits.map(function(x){
         return '<div class="q"><h3><a href="' + x.u + '">' + x.t + '</a></h3>' +
                '<div class="meta"><span class="chip">' + x.sub + '</span>' +
+               (x.topic ? '<span class="chip chip-topic">' + x.topic + '</span>' : '') +
                '<span class="chip">' + x.paper + '</span>' +
                '<span class="chip">' + x.marks + ' marks</span>' +
                '<span class="chip chip-hard">difficulty ' + x.d + '</span></div></div>';
@@ -400,6 +404,10 @@ def page(title, body, subject=None, mathjax=False, extra_head=""):
 
 def chips(q):
     out = ['<div class="meta">']
+    # The topic is the label a learner actually navigates by ("which part of the
+    # course is this?"), so it leads the row rather than being buried in metadata.
+    if q.get("topic"):
+        out.append('<span class="chip chip-topic">%s</span>' % html.escape(q["topic"]))
     out.append('<span class="chip chip-key">%s</span>' % html.escape(q["syllabus_ref"]))
     out.append('<span class="chip">%s%s</span>' % (html.escape(q.get("paper") or ""),
                                                    " · Section " + q["section"] if q.get("section") else ""))
@@ -420,7 +428,7 @@ def question_card(q, slug):
     qid = q["id"]
     search = " ".join([q["id"], q["topic"], q["subtopic"], q["syllabus_ref"],
                        q.get("challenge_mechanism", ""), " ".join(q.get("tags") or [])])
-    return f"""<div class="q" data-search="{html.escape(search, quote=True)}" data-diff="{q['difficulty']}" data-paper="{html.escape(q.get('paper') or '')}" data-qid="{html.escape(qid)}">
+    return f"""<div class="q" data-search="{html.escape(search, quote=True)}" data-diff="{q['difficulty']}" data-paper="{html.escape(q.get('paper') or '')}" data-topic="{html.escape(q.get('topic') or '', quote=True)}" data-qid="{html.escape(qid)}">
 <div class="q-head"><h3><a href="../q/{html.escape(qid)}.html">{html.escape(title)}</a></h3>
 <button type="button" class="q-done" data-qid="{html.escape(qid)}" aria-pressed="false">Mark done</button></div>
 <p class="stem">{inline(q.get('challenge_mechanism', ''))}</p>
@@ -469,6 +477,7 @@ def build_question_page(q, slug):
 <details><summary>Why this question is hard</summary><div class="body">{md(q.get('explanation'))}</div></details>
 <h2>Metadata</h2>
 <dl class="kv">
+  <div><dt>Topic</dt><dd>{html.escape(q.get('topic') or '')} — {html.escape(q.get('subtopic') or '')}</dd></div>
   <div><dt>Challenge lever</dt><dd>{html.escape(q.get('challenge_mechanism') or '')}</dd></div>
   <div><dt>Syllabus reference</dt><dd>{html.escape(q.get('syllabus_ref') or '')}</dd></div>
   <div><dt>Inspiration</dt><dd>{html.escape(prov.get('inspired_by') or 'original')}</dd></div>
@@ -535,6 +544,7 @@ def build_subject_page(slug, qs):
     meta = SUBJECTS[slug]
     diffs = sorted({q["difficulty"] for q in qs})
     papers = sorted({q.get("paper") or "" for q in qs if q.get("paper")})
+    topics = sorted({q.get("topic") or "" for q in qs if q.get("topic")})
     total = sum(q["marks"] for q in qs)
     body = f"""
 <h1>{html.escape(meta['name'])}</h1>
@@ -548,6 +558,9 @@ def build_subject_page(slug, qs):
 <p class="paper-switch">Printable: <a href="../papers/{slug}-paper.html">question paper</a> · <a href="../papers/{slug}-answers.html">answer booklet</a></p>
 <div class="controls">
   <input type="search" id="q" placeholder="Search topic, syllabus reference, tag…" aria-label="Search questions">
+  <select id="f-topic" aria-label="Filter by topic"><option value="">All topics</option>
+    {''.join('<option value="%s">%s</option>' % (html.escape(t, quote=True), html.escape(t)) for t in topics)}
+  </select>
   <select id="f-paper" aria-label="Filter by paper"><option value="">All papers</option>
     {''.join('<option value="%s">%s</option>' % (html.escape(p, quote=True), html.escape(p)) for p in papers)}
   </select>
@@ -575,7 +588,7 @@ def build_index(all_qs):
 </div>""")
     index_js = [{"t": (q.get("title") or q["subtopic"]), "sub": SUBJECTS[slug]["short"],
                  "u": "q/%s.html" % q["id"], "marks": q["marks"], "d": q["difficulty"],
-                 "paper": q.get("paper") or "",
+                 "paper": q.get("paper") or "", "topic": q.get("topic") or "",
                  "s": " ".join([q["id"], q["topic"], q["subtopic"], q["syllabus_ref"],
                                 " ".join(q.get("tags") or [])]).lower()}
                 for slug in SUBJECTS for q in all_qs.get(slug, [])]

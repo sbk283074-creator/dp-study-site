@@ -43,6 +43,7 @@ not in that map, and separately rejects a non-empty `syllabus_ref` that yields n
 | Part count | Maths ≥ 3 · Physics ≥ 3 · CS ≥ 2 · BM SL ≥ 3 | `validate.py` (fail) |
 | Named lever | `difficulty_evidence.lever_type` from the closed taxonomy of §2.4, plus `challenge_mechanism` ≥ 10 words naming the specific mechanism | `validate.py` (fail) |
 | **Sourcing recorded** | `provenance.source_family` from the closed list of §4.5 | `validate.py` (fail) |
+| **Topic label** | `topic` from the closed per-subject vocabulary (`validate.py` holds `TOPICS`), named after the guide the subject is pinned to. A near-miss label silently splits one topic in two and makes the filter lie | `validate.py` (fail) |
 | Real markscheme | Maths/physics answers carry `(M1)(A1)(R1)(AG)` at each award | `validate.py` (fail if zero) |
 | Command terms | Recognised IB terms; marks matched to the demand of the term | `validate.py` (warn) |
 | Verification | Method named; arithmetic re-checked by machine where numbers exist | `validate.py` (fail if no method) |
@@ -178,6 +179,32 @@ A label is informative only if it discriminates. `tools/difficulty_audit.py` the
 Measured 2026-09-13, before this standard: difficulty 5 = 46% of the bank (Physics 62%), difficulty 3 =
 0%, `difficulty_evidence` coverage = **0 / 172**. Those are the numbers this section exists to move, and
 the audit reports them on every run so that they cannot quietly drift back.
+
+### 2.6 The topic label is a label, not a comment
+
+Every item carried a `topic` from the beginning, and it was 100% populated. It was still not a labelling
+scheme, for three separate reasons, and all three had to be fixed before the label meant anything:
+
+1. **It was invisible.** `topic` was concatenated into the search index and never rendered. A student
+   browsing Mathematics had no way to see which items were Calculus and which were Number and algebra.
+2. **There was no way to use it.** The subject index filtered by paper, difficulty and progress — not by
+   topic. A label you cannot filter by is a label nobody can act on.
+3. **The vocabulary had drifted.** The same topic appeared under several names, so even a filter would
+   have split it. Measured on 2026-09-14, Computer Science Theme A was carrying **three** labels
+   ("Concepts of computer science", 17 items; "Computer fundamentals", 1; "Systems in organisations", 3)
+   and Theme B two; Business Management Unit 3 carried both "Unit 3: Finance and accounts" and
+   "Topic 3: Finance and accounts", and one item carried two units in a single label.
+
+The names are not a matter of taste: they are taken from the guide each subject is pinned to. The CS 2027
+guide defines **exactly two** themes — "Concepts of Computer Science" and "Computational Thinking and
+Problem Solving" — and places "Computer Fundamentals" (A1) and "Programming" (B2) *inside* them as
+strands. Two of the three Theme A labels were strand names promoted to theme names; the third does not
+appear in the guide at all.
+
+The rule is therefore: `topic` must come from a closed per-subject vocabulary, and an unknown value is a
+**failure, not a warning**, because the failure mode is silent — a near-miss label does not look wrong,
+it just splits a topic in two. `tools/normalise_topics.py` records the migration that repaired the eleven
+items affected, and `tools/validate.py` holds the vocabulary itself.
 
 ---
 

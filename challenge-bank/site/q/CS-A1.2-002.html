@@ -23,7 +23,7 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>A1.2 Overflow in a two&#x27;s-complement subtraction used as a comparison</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A1.2-002</p>
 <button type="button" class="q-done-page" data-qid="CS-A1.2-002" aria-pressed="false">Mark done</button>
-<div class="meta"><span class="chip chip-key">A1.2 Data representation and computer logic (binary representation of integers; two&#x27;s complement; overflow)</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Explain</span><span class="chip">Determine</span><span class="chip">State</span><span class="chip">Justify</span></div>
+<div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A1.2 Data representation and computer logic (binary representation of integers; two&#x27;s complement; overflow)</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Explain</span><span class="chip">Determine</span><span class="chip">State</span><span class="chip">Justify</span></div>
 
 
 <h2>Question</h2>
@@ -69,13 +69,14 @@ else output &quot;a is the higher reading&quot;
 <p>More generally, this is the reason comparisons in serious code are written as comparisons<br>rather than as subtractions. A compiler may or may not be able to prove that a subtraction is<br>safe; a sign test is safe by construction, and "safe by construction" is worth more than "safe<br>because the inputs happen to be small".</p></div></details>
 <h2>Metadata</h2>
 <dl class="kv">
+  <div><dt>Topic</dt><dd>Theme A: Concepts of computer science — A1.2 Overflow in a two&#x27;s-complement subtraction used as a comparison</dd></div>
   <div><dt>Challenge lever</dt><dd>A comparison written as a subtraction looks like arithmetic and is in fact a range question. The subtraction $a - b$ is performed in eight bits whether or not the true difference fits, and it silently wraps whenever $|a - b| &gt; 127$. The failure is not random and not rare: exactly a quarter of all ordered pairs of representable values give the wrong answer, and the program gives no indication that anything went wrong.</dd></div>
   <div><dt>Syllabus reference</dt><dd>A1.2 Data representation and computer logic (binary representation of integers; two&#x27;s complement; overflow)</dd></div>
   <div><dt>Inspiration</dt><dd>AP Computer Science A: integer representation, overflow and the limits of primitive types</dd></div>
   <div><dt>Adaptation</dt><dd>The source asks what value is produced by an overflow, so the candidate observes the symptom and stops. Here the overflow is embedded in a comparison, which is how it actually appears in code, and the candidate must establish the range over which the comparison is trustworthy before counting the failures. Part (c) turns the symptom into an exact failure rate over the whole input space — a combinatorial count the source never asks for — and part (d) asks for a fix that does not require widening the type. Context, structure, given-versus-asked and the reasoning chain all differ.</dd></div>
   <div><dt>Verification</dt><dd>Every count is reproduced by direct summation over the range $-255 \le d \le 255$; the proportion is checked to be exactly $0.25$, and the same-sign bound $|a-b| \le 127$ is verified at the extremes of the representable range.</dd></div>
   <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P1_2020Nov_TZ0_q08 (similarity 0.009)</dd></div>
-  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-P3-018 (similarity 0.003)</dd></div>
   <div><dt>Status</dt><dd>published · authored by ai · 2026-09-14</dd></div>
 </dl>
 <div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>

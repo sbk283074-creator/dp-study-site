@@ -1,0 +1,685 @@
+{
+  "questions": [
+    {
+      "id": "MATH-P3-013",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "SL 5.8 (local maximum and minimum points), SL 5.4 (tangents and normals), AHL 1.6 (simple deductive proof)",
+      "topic": "Topic 5: Calculus",
+      "subtopic": "P3 extended problem: the extremum-point shift for e^x = ax and the sum of the two roots",
+      "paper": "P3",
+      "technology": "allowed",
+      "marks": 15,
+      "difficulty": 5,
+      "question_type": "problem_solving",
+      "challenge_mechanism": "The function looks symmetric about its turning point, and every visual cue supports that reading: one turning point, two roots, one on each side. A prepared student therefore sets x = x0 + u on one branch and x = x0 - u on the other, assumes the two branches are mirror images, and obtains x1 + x2 = 2x0 immediately. The whole of the difficulty is that this quantity -- the difference between the two branches at equal offset -- appears nowhere in the question and has to be constructed before it can be used. Once constructed, it collapses to 2a(sinh u - u) and is strictly positive, which proves the opposite inequality. The item is therefore not a trap about algebra but a trap about assuming a symmetry instead of testing it, and the false route is not obviously false: it produces a clean, well-formed proof of a false statement.",
+      "command_terms": [
+        "Show that",
+        "Prove",
+        "Determine"
+      ],
+      "tags": [
+        "transcendental equation",
+        "stationary points",
+        "extremum-point shift",
+        "inequality proof",
+        "parameter discussion",
+        "numerical root finding",
+        "problem solving",
+        "symmetric construction"
+      ],
+      "question": "Let $a$ be a real constant and define $h(x) = e^{x} - a x$ for real $x$, so that the equation $e^{x} = ax$ is equivalent to $h(x) = 0$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that the equation $e^{x} = ax$ has exactly two distinct real roots if and only if $a > e$. State also how many real roots the equation has when $a = e$, when $0 < a < e$, and when $a \\le 0$."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Now let $a > e$ and write $x_0 = \\ln a$. Using the identity $\\sinh u = \\dfrac{e^{u} - e^{-u}}{2}$, show that for every real $u$\n$$h(x_0 + u) - h(x_0 - u) = 2a\\left(\\sinh u - u\\right),$$\nand hence show that $h(x_0 + u) > h(x_0 - u)$ for every $u > 0$."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Prove",
+          "text": "Let $x_1$ and $x_2$ be the two roots of $h(x) = 0$ with $x_1 < x_2$. Prove that $x_1 + x_2 < 2\\ln a$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Taking $a = 4$, determine $x_1$ and $x_2$ correct to four decimal places, and verify that the values you obtain are consistent with the inequality proved in part (c)."
+        }
+      ],
+      "answer": "(a) Differentiating gives $h'(x) = e^{x} - a$ (M1).\n\nIf $a \\le 0$ then $h'(x) = e^{x} - a > 0$ for every real $x$, because $e^{x} > 0$ and $-a \\ge 0$; so $h$ is strictly increasing. When $a < 0$, as $x \\to -\\infty$ we have $e^{x} \\to 0$ while $ax \\to +\\infty$, so $h(x) \\to -\\infty$; and $h(0) = 1 > 0$. A strictly increasing function that runs from $-\\infty$ to a positive value crosses zero exactly once, so there is exactly one real root (A1). If $a = 0$ then $h(x) = e^{x} > 0$ for all $x$, so there is no real root (A1).\n\nIf $a > 0$ then $h'(x) = 0$ exactly when $e^{x} = a$, that is at the single point $x_0 = \\ln a$; and $h'(x) < 0$ for $x < x_0$, $h'(x) > 0$ for $x > x_0$, so $h$ has a global minimum at $x_0$ (M1). The minimum value is\n$$h(x_0) = e^{\\ln a} - a\\ln a = a - a\\ln a = a\\left(1 - \\ln a\\right).$$\nIf $0 < a < e$ then $\\ln a < 1$, so $a(1 - \\ln a) > 0$ and the minimum is positive; hence $h(x) > 0$ for all $x$ and there is no real root (A1). If $a = e$ then $\\ln a = 1$ and the minimum is exactly $0$, attained only at $x_0 = 1$; so there is exactly one real root, namely $x = 1$ (A1). If $a > e$ then $\\ln a > 1$, so $a(1 - \\ln a) < 0$; on $(-\\infty, x_0]$ the function $h$ decreases strictly from $+\\infty$ to this negative value, giving exactly one root there, and on $[x_0, +\\infty)$ it increases strictly from that negative value to $+\\infty$, giving exactly one further root; these two roots are distinct because $h(x_0) \\ne 0$ (A1) (AG). Combining the cases, exactly two distinct real roots occur precisely when $a > e$; one real root occurs when $a = e$ or $a < 0$; and no real root occurs when $0 \\le a < e$ (A1).\n\n(b) Expanding the definition,\n$$h(x_0+u) - h(x_0-u) = \\left(e^{x_0+u} - a(x_0+u)\\right) - \\left(e^{x_0-u} - a(x_0-u)\\right)$$ (M1)\n$$= e^{x_0}\\left(e^{u} - e^{-u}\\right) - 2au.$$\nBecause $x_0 = \\ln a$ we have $e^{x_0} = a$, so the first term is $a\\left(e^{u} - e^{-u}\\right)$ (A1), and using the given identity $e^{u} - e^{-u} = 2\\sinh u$ this becomes\n$$h(x_0+u) - h(x_0-u) = 2a\\sinh u - 2au = 2a\\left(\\sinh u - u\\right)$$ (A1).\nNow let $\\varphi(u) = \\sinh u - u$. Then $\\varphi(0) = 0$ and $\\varphi'(u) = \\cosh u - 1 \\ge 0$ for all real $u$, with equality only at $u = 0$; so $\\varphi$ is strictly increasing and $\\varphi(u) > 0$ for every $u > 0$ (M1). Since $a > e > 0$, it follows that $2a\\varphi(u) > 0$, that is $h(x_0 + u) > h(x_0 - u)$ for every $u > 0$ (A1) (AG).\n\n(c) From part (a) the function $h$ has its global minimum at $x_0 = \\ln a$ and exactly two roots, one on each side of $x_0$; hence $x_1 < x_0 < x_2$ (M1). Put $d = x_2 - x_0$, so that $d > 0$ and $x_2 = x_0 + d$. Applying part (b) with $u = d$ gives\n$$h(x_0 + d) - h(x_0 - d) = 2a\\left(\\sinh d - d\\right) > 0,$$\nand since $h(x_0 + d) = h(x_2) = 0$, it follows that $h(x_0 - d) < 0$ (M1).\n\nOn the interval $(-\\infty, x_0]$ we have $h'(x) < 0$, so $h$ is strictly decreasing there; both $x_1$ and $x_0 - d$ lie in this interval because $x_1 < x_0$ and $d > 0$ (M1). Because $h$ is strictly decreasing, $h(x_0 - d) < h(x_1)$ forces $x_0 - d > x_1$ (A1). Substituting $d = x_2 - x_0$ gives\n$$x_1 < x_0 - \\left(x_2 - x_0\\right) = 2x_0 - x_2,$$\nand rearranging, $x_1 + x_2 < 2x_0 = 2\\ln a$, as required (A1) (AG).\n\n(d) Here $x_0 = \\ln 4 = 1.3862944$ and $h(x) = e^{x} - 4x$. Solving $e^{x} = 4x$ numerically gives the two roots $x_1 = 0.35740296$ and $x_2 = 2.15329236$ (M1) (A1). Checking: $e^{0.35740296} = 1.42961183$ and $4 \\times 0.35740296 = 1.42961183$; $e^{2.15329236} = 8.61316945$ and $4 \\times 2.15329236 = 8.61316945$ (A1). The sum is $x_1 + x_2 = 2.51069532$, while $2\\ln 4 = 2.77258872$, and indeed $2.51069532 < 2.77258872$, so the inequality of part (c) is satisfied (R1). The margin is about $0.262$, which is far larger than the rounding uncertainty of the four-decimal-place values, so the check is genuine (AG).",
+      "markscheme_notes": "(a) The differentiation earns (M1) even if the case analysis is incomplete. Full marks require all four cases to be settled, and the two 'no root' cases must be justified, not asserted: for $0 < a < e$ the argument must use $a(1-\\ln a) > 0$, and for $a = 0$ the observation $e^{x} > 0$ suffices. Condone the phrase 'the minimum is above the axis' as equivalent to $a(1-\\ln a) > 0$. A candidate who claims there is always at least one root because $e^{x}$ eventually beats $ax$ forfeits the final (A1): the whole point of the case $0 < a < e$ is that $e^{x} - ax$ is positive everywhere. Do not accept a graph alone as proof, but a correct graph accompanying a correct sign argument earns full marks.\n\n(b) Award (M1) for separating the two brackets, (A1) for using $e^{x_0} = a$ (not merely $x_0 = \\ln a$), (A1) for the closed form $2a(\\sinh u - u)$, and (M1) for a valid monotonicity argument for $\\sinh u - u$. Candidates may instead differentiate $u \\mapsto h(x_0+u) - h(x_0-u)$ directly, obtaining $e^{x_0+u} + e^{x_0-u} - 2a = a(e^{u} + e^{-u}) - 2a = 2a(\\cosh u - 1) \\ge 0$, and then use the value $0$ at $u = 0$; this is a fully valid alternative and earns all four marks. Follow-through applies: a candidate whose part (a) is wrong but who correctly obtains the difference expression still earns (b).\n\n(c) The essential marks are (M1) for locating the roots on opposite sides of $x_0$, (M1) for using part (b) with $u = x_2 - x_0$ to get $h(x_0-d) < 0$, and (A1) for converting that into a statement about position via the decreasing branch. The reversal of the inequality is the standard error: writing $x_0 - d < x_1$ from $h(x_0-d) < h(x_1)$ on a decreasing branch forfeits the (A1) but the earlier (M1) marks stand. Candidates who instead differentiate $g(u) = h(x_0+u) - h(x_0-u)$ a second time, or who use the convexity of $e^{x}$, may earn full marks if the argument is complete; a proof that the inequality is strict must exclude equality, which happens only in the limiting case $a = e$ that part (a) has already removed.\n\n(d) Award (M1) for setting up the equation and a numerical method, (A1) for both roots to four decimal places, and (R1) only for an actual comparison with the exact value $2\\ln 4$, not for a restatement of the roots. Accept a graphical solution or a solver, provided the roots are stated to the required accuracy. A candidate who reports the mirror pair $0.6193$ and $2.4152$ has answered the wrong question: award (M1) for a correct numerical method applied to their own claim, but no (A1), because those values do not satisfy $e^{x} = 4x$; check by substitution.",
+      "explanation": "This is the extremum-point-shift problem, the most heavily tested final-question genre in the Chinese national entrance examination's calculus paper. Its whole content is the single observation that the turning point of a two-root function need not be the midpoint of the roots. Everything else is machinery.\n\nThe reason the genre is hard is that the false assumption is not algebraically detectable. If you assume the branches are mirror images, you can write a proof that differentiates, finds a positive derivative, and concludes $x_1 + x_2 = 2x_0$ -- and every line of it is locally valid. What is missing is a test. Part (b) supplies the test by asking you to compute the difference between the two branches at equal offset. That difference is not mentioned anywhere in parts (a), (c) or (d); it is a quantity you have to invent. This is why the lever here is the construction of an auxiliary quantity rather than a technique: until you have written down $h(x_0+u) - h(x_0-u)$, you have nothing to test the symmetry hypothesis against.\n\nOnce it is written down, the problem becomes easy and, more importantly, becomes checkable. Because $e^{x_0} = a$, the difference collapses to $2a(\\sinh u - u)$, and $\\sinh u - u$ is the simplest function in the world with value $0$ and derivative $\\cosh u - 1 \\ge 0$: strictly positive for positive argument. So the right-hand branch sits strictly above the left-hand branch at equal horizontal distance, which means the left root must be further from $x_0$ than the right root is, which is exactly $x_1 + x_2 < 2x_0$.\n\nThe final step is the one candidates lose. Having shown $h(x_0 - d) < 0$ and knowing $h(x_1) = 0$, you must convert an inequality between function values into an inequality between arguments -- and because $h$ is *decreasing* on that branch, the inequality reverses. Writing $x_0 - d < x_1$ at that point is the classic error and it turns the proof into a proof of the opposite statement, which is how a candidate can finish with a complete-looking argument and the wrong inequality.\n\nPart (d) exists to make the false answer and the true answer numerically distinguishable. The mirror pair about $\\ln 4$ is $0.6193$ and $2.4152$; the true roots are $0.3574$ and $2.1533$. Both sums are close to each other -- $2.7726$ against $2.5107$ -- which is why the error survives a glance at a graph. Substituting back into $e^{x} = 4x$ separates them at once, and a candidate who does not substitute back will not notice.",
+      "provenance": {
+        "inspired_by": "Chinese 高考 导数压轴 genre of 极值点偏移 (extremum-point shift): a one-parameter family whose two roots straddle a turning point that is not their midpoint, and the task is to prove an inequality for the sum of the roots by a symmetric construction.",
+        "source_family": "china-gaokao",
+        "adaptation": "The source genre is a single-variable calculus problem in which the two roots of f(x) = 0 straddle a turning point x0, and the student must prove x1 + x2 < 2x0 by constructing the difference of the two branches. Four of the permitted changes were made to fit IB AA HL P3. First, the function was replaced by e^x - ax, chosen because the auxiliary difference h(x0+u) - h(x0-u) then collapses to the exact closed form 2a(sinh u - u) via e^{ln a} = a, which makes the key step checkable rather than merely plausible. Second, a parameter-discussion part was added as (a), asking for the complete classification of the number of real roots; in the source this is normally assumed, and making it explicit is what identifies a = e as the exceptional value. Third, the degenerate case a = e is required explicitly rather than excluded. Fourth, a numerical part (d) was added so that the false symmetric answer and the true answer are separated by a margin a candidate can actually check. The context, the wording and all numerical data are original; nothing is quoted from any source.",
+        "resource_origin": "高考 导数压轴 极值点偏移 类题型（结构改编，函数、参数与全部数据均为原创）",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.009,
+        "nearest_bank_id": "MAAQB_17M_2_AHL_TZ2_H_11",
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "max_internal_similarity": 0.013,
+        "nearest_internal_id": "MATH-P3-005",
+        "max_approach_similarity": 0.121,
+        "nearest_approach_id": "MATH-P3-005",
+        "checked_at": "2026-09-11"
+      },
+      "verification": {
+        "method": "The root count was classified symbolically from the sign of h'(x) and then confirmed numerically by sign-change bisection on a grid of 3,000,001 points over [-60, 60] for a in {-3, -1, -0.001, 0, 0.5, 1, 2, e, 2.72, 3, 4, 10}, giving 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 2, 2 roots respectively; the double root at a = e was confirmed separately by h(1) = 0 and h'(1) = 0, since a tangency is not a sign change and is invisible to the grid. The identity h(x0+u) - h(x0-u) = 2a(sinh u - u) was verified by expanding both sides and substituting e^{x0} = a. The two roots for a = 4 were located by bisection and substituted back into e^x - 4x, giving residuals below 1e-12; the sum 2.51069532 was compared with 2 ln 4 = 2.77258872 and with the mirror-pair sum, which is identical to 2 ln 4 by construction.",
+        "assertions": [
+          "approx(exp(0.35740296) - 4*0.35740296, 0, 1e-6)",
+          "approx(exp(2.15329236) - 4*2.15329236, 0, 1e-6)",
+          "approx(0.35740296 + 2.15329236, 2.51069532, 1e-8)",
+          "0.35740296 + 2.15329236 < 2*log(4)",
+          "approx(2*log(4), 2.77258872, 1e-8)",
+          "approx(4*(1 - log(4)), -1.5451774, 1e-6)",
+          "approx(2.718281828459045*(1 - log(2.718281828459045)), 0, 1e-12)",
+          "approx(exp(1) - 2.718281828459045, 0, 1e-12)",
+          "approx(2*4*((exp(1) - exp(-1))/2 - 1), 1.4016095492, 1e-9)",
+          "approx(4*(exp(1) - exp(-1)) - 8, 1.4016095492, 1e-9)",
+          "approx(2*log(4) - 0.35740296, 2.41518576, 1e-7)",
+          "approx(2*log(4) - 2.15329236, 0.61929636, 1e-7)",
+          "approx(exp(log(4)), 4, 1e-12)",
+          "4*(1 - log(4)) < 0",
+          "all([approx(exp(log(a)), a, 1e-12) for a in [0.5, 1, 2, 3, 4, 10]])"
+        ],
+        "solution_skeleton": [
+          "differentiate h and locate the single turning point at x = ln a when a > 0",
+          "classify the number of roots from the sign of the minimum value a(1 - ln a), separating the four cases",
+          "expand h(x0+u) - h(x0-u) and use e^{x0} = a to reach 2a(sinh u - u)",
+          "show sinh u - u is strictly increasing with value 0 at u = 0, hence positive for u > 0",
+          "apply that inequality with u = x2 - x0 and convert it to a position statement using the decreasing branch",
+          "solve e^x = 4x numerically and check the two roots by substitution"
+        ]
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-13",
+      "updated_at": "2026-09-13",
+      "difficulty_evidence": {
+        "lever_type": "implicit_dependence",
+        "naive_path": "Differentiate, find the single turning point at x0 = ln a, observe that there is one root on each side, assume the two branches are mirror images about x0, and write x1 + x2 = 2 ln a. The substitution x = x0 +/- u is then used to 'prove' the equality, and for a = 4 the answer is reported as the mirror pair 0.6193 and 2.4152.",
+        "failure_point": "The quantity that decides the question -- the difference between the two branches at equal offset -- is not present anywhere in the question and must be constructed before it can be used. Once written down it is 2a(sinh u - u), which is strictly positive for every u > 0, so the branches are not mirror images and x1 + x2 = 2 ln a is false. The assumption of symmetry is invisible to the algebra that follows it: differentiating and finding a positive derivative proves a statement about a function that was never the right one.",
+        "wrong_answer": "x1 + x2 = 2 ln a, which for a = 4 gives 2.7726 and the roots 0.61929636 and 2.41518576 -- the reflections of the true roots in the line x = ln 4 -- instead of the true roots 0.35740296 and 2.15329236 summing to 2.51069532. The error inflates the sum by 0.2619, and the reported pair fails a substitution check: exp(0.61929636) = 1.8576, whereas 4 x 0.61929636 = 2.4772."
+      }
+    },
+    {
+      "id": "MATH-P3-014",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 5.19 (Maclaurin series), AHL 5.18 (first order differential equations)",
+      "topic": "Topic 5: Calculus",
+      "subtopic": "P3 extended problem: series solution of a differential equation with no elementary solution",
+      "paper": "P3",
+      "technology": "allowed",
+      "marks": 14,
+      "difficulty": 5,
+      "question_type": "problem_solving",
+      "challenge_mechanism": "The differential equation is separable, so the first move a prepared student makes is to separate it and integrate -- and that move is correct and useless, because the integral of e^{-x^2} is not elementary, so the exact solution produces no number at all. The route that looks like a retreat, grinding out coefficients of a Maclaurin series, is the one that yields a value with a defensible error bound, because the series alternates with decreasing terms and therefore bounds its own tail. The item inverts the usual status ordering of the two methods: the exact method dead-ends exactly where a number is required, and the 'approximate' method is the rigorous one.",
+      "command_terms": [
+        "Show that",
+        "Hence",
+        "Determine"
+      ],
+      "tags": [
+        "Maclaurin series",
+        "differential equations",
+        "non-elementary integral",
+        "alternating series",
+        "error bound",
+        "series solution",
+        "problem solving"
+      ],
+      "question": "The function $y$ is defined for all real $x$ by\n$$\\frac{\\mathrm{d}y}{\\mathrm{d}x} = e^{-x^{2}}, \\qquad y(0) = 0,$$\nand $y$ has a Maclaurin series $y(x) = \\sum_{n=0}^{\\infty} a_n x^{n}$ that converges for all real $x$. Write $t_k = \\dfrac{(-1)^{k} x^{2k+1}}{k!\\,(2k+1)}$ for $k \\ge 0$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $a_n = 0$ for every even $n$, and that $a_{2k+1} = \\dfrac{(-1)^{k}}{k!\\,(2k+1)}$ for every integer $k \\ge 0$, so that $y(x) = \\sum_{k=0}^{\\infty} t_k$."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $\\left|\\dfrac{t_{k+1}}{t_k}\\right| = \\dfrac{x^{2}}{k+1} \\cdot \\dfrac{2k+1}{2k+3}$, and deduce that $|t_{k+1}| < |t_k|$ for every $k \\ge 0$ whenever $|x| \\le 0.6$."
+        },
+        {
+          "label": "c",
+          "marks": 5,
+          "command_term": "Hence",
+          "text": "Hence show that\n$$\\left|\\,y(0.6) - \\sum_{k=0}^{3} t_k\\,\\right| < 5 \\times 10^{-5}.$$"
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Hence determine $y(0.6)$ correct to four decimal places, showing that your value is reliable at that accuracy."
+        }
+      ],
+      "answer": "(a) Write $y(x) = \\sum_{n \\ge 0} a_n x^{n}$, so $y'(x) = \\sum_{n \\ge 1} n\\,a_n x^{n-1} = \\sum_{n \\ge 0} (n+1)a_{n+1} x^{n}$ (M1). Also $e^{-x^{2}} = \\sum_{k \\ge 0} \\dfrac{(-1)^{k} x^{2k}}{k!}$, since replacing $x$ by $-x^{2}$ in the exponential series is valid for all real $x$ (A1). Equating coefficients of $x^{n}$ in $\\sum_{n \\ge 0} (n+1)a_{n+1}x^{n} = \\sum_{k \\ge 0} \\dfrac{(-1)^{k}}{k!} x^{2k}$: the right-hand side has no odd powers, so $(n+1)a_{n+1} = 0$ whenever $n$ is odd, that is $a_n = 0$ for every even $n \\ge 2$; and $a_0 = y(0) = 0$ (A1). When $n = 2k$ we get $(2k+1)a_{2k+1} = \\dfrac{(-1)^{k}}{k!}$, hence $a_{2k+1} = \\dfrac{(-1)^{k}}{k!\\,(2k+1)}$ for every $k \\ge 0$ (A1). Substituting gives $y(x) = \\sum_{k \\ge 0} \\dfrac{(-1)^{k} x^{2k+1}}{k!\\,(2k+1)} = \\sum_{k \\ge 0} t_k$ (AG).\n\n(b) Using $t_k = \\dfrac{(-1)^{k}x^{2k+1}}{k!(2k+1)}$,\n$$\\frac{t_{k+1}}{t_k} = \\frac{(-1)^{k+1}x^{2k+3}}{(k+1)!(2k+3)} \\cdot \\frac{k!(2k+1)}{(-1)^{k}x^{2k+1}} = -x^{2} \\cdot \\frac{2k+1}{(k+1)(2k+3)}$$ (M1),\nso $\\left|\\dfrac{t_{k+1}}{t_k}\\right| = \\dfrac{x^{2}}{k+1} \\cdot \\dfrac{2k+1}{2k+3}$ (A1). Now $\\dfrac{2k+1}{2k+3} < 1$ for every $k \\ge 0$, so $\\left|\\dfrac{t_{k+1}}{t_k}\\right| < \\dfrac{x^{2}}{k+1} \\le \\dfrac{x^{2}}{1} = x^{2}$ when $k \\ge 0$ and $|x| \\le 0.6$; since $0.6^{2} = 0.36 < 1$, we get $|t_{k+1}| < |t_k|$ for every $k \\ge 0$ (A1) (AG).\n\n(c) From part (b) the terms $t_k$ alternate in sign, because of the factor $(-1)^{k}$, and their moduli decrease strictly. For such a series the truncation error is bounded by the modulus of the first omitted term (M1). We compute, at $x = 0.6$,\n$$t_0 = 0.6, \\quad t_1 = -\\frac{0.216}{3} = -0.072, \\quad t_2 = \\frac{0.07776}{10} = 0.007776, \\quad t_3 = -\\frac{0.0279936}{42} = -0.000666514$$ (M1) (A1),\nso $\\sum_{k=0}^{3} t_k = 0.5351094857$ (A1). The first omitted term is $t_4 = \\dfrac{0.6^{9}}{4! \\cdot 9} = \\dfrac{0.010077696}{216} = 4.6656 \\times 10^{-5}$ (M1), and the alternating-series bound therefore gives\n$$\\left|\\,y(0.6) - \\sum_{k=0}^{3} t_k\\,\\right| \\le |t_4| = 4.6656 \\times 10^{-5} < 5 \\times 10^{-5}$$ (A1) (AG).\n\n(d) Four terms are not enough for four decimal places: the interval they determine is $(0.5351094857 - 0.000046656,\\; 0.5351094857 + 0.000046656) = (0.5350628, 0.5351561)$, and this straddles the rounding boundary $0.53515$, so the fourth decimal place is not yet decided (M1). Adding the next term, $t_4 = 0.000046656$, gives $\\sum_{k=0}^{4} t_k = 0.5351561417$ with the first omitted term now $|t_5| = \\dfrac{0.6^{11}}{5! \\cdot 11} = \\dfrac{0.0036279706}{1320} = 2.7485 \\times 10^{-6}$ (M1), so\n$$0.5351533932 < y(0.6) < 0.5351561417,$$\nand both endpoints round to $0.5352$; hence $y(0.6) = 0.5352$ to four decimal places (A1) (AG). (The exact value is $\\tfrac{\\sqrt{\\pi}}{2}\\,\\mathrm{erf}(0.6) = 0.5351535268$, which lies inside the interval, as it must.)",
+      "markscheme_notes": "(a) Accept the substitution performed in either order -- comparing coefficients of $y'$ with the expanded exponential is the expected route, but a candidate who differentiates the series twice and uses $y'' = -2x\\,e^{-x^{2}} = -2xy'$ to obtain the recurrence $(n+2)(n+1)a_{n+2} = -2(n-1)a_{n-1}$ earns full marks provided the parity split is then carried out. The statement $a_0 = y(0) = 0$ must be justified from the initial condition, not assumed. Do not require the word 'induction' for the closed form: a correctly explained substitution is sufficient. A candidate who writes the series with the wrong parity, for example keeping even powers, forfeits the final (A1).\n\n(b) The ratio must be derived, not quoted. Award (M1) for forming $t_{k+1}/t_k$ and (A1) for the simplified modulus. The deduction that $|t_{k+1}| < |t_k|$ needs the numerical fact $x^{2} \\le 0.36 < 1$; a bare assertion that the ratio is less than one, without evaluating it at $|x| = 0.6$, earns nothing. Condone the weaker but still valid observation that $\\dfrac{2k+1}{2k+3} \\le \\dfrac{1}{3}$ for $k \\ge 0$, since $0.36 \\times \\tfrac13 < 1$.\n\n(c) The marks are for the alternating-series bound (M1), the four terms (M1)(A1), their sum (A1), the first omitted term (M1) and the comparison (A1). Do not award the final (A1) for a bound obtained by 'the terms get small'; the error bound for an alternating series must be the first omitted term, and a candidate who sums more terms and quotes a difference between successive partial sums has not bounded anything. Follow-through: a candidate whose part (b) is wrong but who correctly identifies the first omitted term and compares its modulus with $5 \\times 10^{-5}$ may still earn the last two marks.\n\n(d) Award (M1) for recognising that four terms are insufficient, (M1) for extending to five terms with a new bound, and (A1) for $0.5352$. A candidate who simply writes $0.5352$ from a calculator without an interval earns no marks, because the question asks for reliability at that accuracy. Accept $0.5351$ only if the accompanying interval is genuinely contained in $(0.53505, 0.53515)$; it cannot be, since the true value is $0.5351535$.",
+      "explanation": "This item is built on a reversal. The equation is separable and the solution is, in principle, available in closed form: $y(x) = \\int_0^{x} e^{-t^{2}}\\,\\mathrm{d}t$. A strong candidate will find that in the first thirty seconds and feel that the problem is over. It is not, because that integral has no elementary antiderivative -- it is the error function -- so the closed form cannot produce the number that part (d) asks for. The method that looks like a concession to approximation is the only one that can answer the question.\n\nThe coefficient extraction is routine: substituting a power series into the differential equation and comparing coefficients with the exponential series gives a recurrence in which every even coefficient vanishes, because the right-hand side $e^{-x^{2}}$ has only even powers while the derivative of a power series carries the index shift. The surviving coefficients are $\\dfrac{(-1)^{k}}{k!(2k+1)}$, which is the series of the error function in disguise.\n\nWhat makes the item difficult is the demand for an error bound, and this is where the two halves of the series have to be handled differently. The signs alternate because of the $(-1)^{k}$, and the moduli decrease because the ratio is $\\dfrac{x^{2}}{k+1}\\cdot\\dfrac{2k+1}{2k+3} < \\dfrac{x^{2}}{k+1} \\le 0.36$ throughout the region of interest. An alternating series with strictly decreasing moduli has its truncation error bounded by the first omitted term -- nothing more and nothing less -- so the whole problem reduces to evaluating one term. That is a strong result and it is why the 'approximate' method wins.\n\nThe subtlety that separates a good answer from a correct one is part (d). Four terms give $0.5351095 \\pm 0.0000467$, and that interval contains $0.53515$, the boundary between $0.5351$ and $0.5352$. So four terms do not determine the fourth decimal place, even though the error is small. A candidate who quotes $0.5351$ because the first four terms give it will be wrong; a candidate who quotes $0.5352$ from a calculator will be right for the wrong reason. Five terms give $0.5351534 < y(0.6) < 0.5351561$, and now both endpoints round to $0.5352$, which is an answer with a reason attached. The habit being tested is asking how many terms the requested accuracy actually requires, rather than assuming that a small error is a sufficient error.",
+      "provenance": {
+        "inspired_by": "Chinese 高考 / 强基计划 genre on series methods for equations with no elementary solution: a differential equation is presented whose closed form involves a non-elementary integral, and the student must obtain a numerical value with a controlled error by expanding in a power series instead.",
+        "source_family": "china-qiangji",
+        "adaptation": "The source genre contrasts an exact-but-useless closed form with an approximate-but-rigorous series, and asks for a value to a stated accuracy. Three of the permitted changes were made. First, the integrand was chosen as e^{-x^2}, so that the alternating series arises from the expansion of a single exponential and the ratio of consecutive terms has the elementary form x^2/(k+1) times (2k+1)/(2k+3); this keeps the whole problem inside AHL 5.19. Second, the evaluation point was fixed at x = 0.6 rather than a natural value such as 1, because at x = 0.6 four terms are deliberately insufficient for four decimal places while five terms suffice -- the source genre typically asks for a value at which the truncation is comfortable. Third, the ratio and the monotonicity of the moduli were made explicit parts, so that the alternating-series bound is derived rather than quoted. The context and all numerical data are original.",
+        "resource_origin": "高考 / 强基计划 幂级数解法与误差估计类题型（结构改编，方程、展开点与全部数据均为原创）",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.006,
+        "nearest_bank_id": "MA_HL_topic_Topic5_HL-paper2_q95",
+        "nearest_bank_label": "bank:Mathematics/Topic 5",
+        "max_internal_similarity": 0.054,
+        "nearest_internal_id": "MATH-P3-012",
+        "max_approach_similarity": 0.17,
+        "nearest_approach_id": "MATH-P3-012",
+        "checked_at": "2026-09-11"
+      },
+      "verification": {
+        "method": "The series was re-derived from the differential equation by coefficient comparison and the recurrence checked symbolically. The first twelve partial sums were computed at x = 0.6 and compared against the independent closed value (sqrt(pi)/2) erf(0.6) = 0.5351535268, to which they converge. The ratio formula was evaluated over k = 0..49 at x = 0.6 and found to be below 1 throughout, with maximum 0.12 at k = 0. The truncation interval after four terms was computed as (0.5351094857 - 0.000046656, 0.5351094857 + 0.000046656) and confirmed to straddle the rounding boundary 0.53515; the interval after five terms was computed as (0.5351533932, 0.5351561417) and confirmed to lie entirely within the set of reals rounding to 0.5352, and to contain the true value.",
+        "assertions": [
+          "approx(0.6 - 0.216/3 + 0.07776/10 - 0.0279936/42, 0.5351094857, 1e-9)",
+          "approx(0.6**9/216, 4.6656e-05, 1e-9)",
+          "approx(sum([(-1)**k * 0.6**(2*k+1)/(factorial(k)*(2*k+1)) for k in range(5)]), 0.5351561417, 1e-9)",
+          "approx(sum([(-1)**k * 0.6**(2*k+1)/(factorial(k)*(2*k+1)) for k in range(12)]), 0.5351535268, 1e-9)",
+          "0.5351094857 + 0.000046656 > 0.5351535268",
+          "0.5351094857 < 0.5351535268",
+          "approx(0.6**2/1 * 1/3, 0.12, 1e-12)",
+          "max([0.36/(k+1)*(2*k+1)/(2*k+3) for k in range(50)]) < 1",
+          "round(0.5351533932, 4) == round(0.5351561417, 4)",
+          "round(0.5351094857 - 0.000046656, 4) != round(0.5351094857 + 0.000046656, 4)",
+          "approx(0.6**11/1320, 2.7485e-06, 1e-9)",
+          "approx(exp(0) , 1, 1e-12)",
+          "approx(sum([(-1)**k * 0.5**(2*k+1)/(factorial(k)*(2*k+1)) for k in range(20)]), 0.4612810064, 1e-9)",
+          "approx(0.6**2, 0.36, 1e-12)"
+        ],
+        "solution_skeleton": [
+          "substitute a Maclaurin series into the differential equation and compare coefficients with the exponential series",
+          "read off that all even coefficients vanish and the odd ones form the alternating double-factorial-free series",
+          "form the ratio of consecutive terms and show its modulus is below x^2/(k+1) <= 0.36 for |x| <= 0.6",
+          "invoke the alternating-series remainder bound, so the error is the first omitted term",
+          "sum four terms, find the interval straddles 0.53515, and extend to five terms",
+          "confirm both endpoints of the five-term interval round to 0.5352"
+        ]
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-13",
+      "updated_at": "2026-09-13",
+      "difficulty_evidence": {
+        "lever_type": "decoy_technique",
+        "naive_path": "Separate the variables and integrate: y(x) = the integral from 0 to x of e^{-t^2} dt. Recognise this as a complete, correct closed form, declare the differential equation solved, and then attempt to evaluate that integral at x = 0.6 by elementary means -- by parts, by substitution, or by reaching for a standard integral that does not exist.",
+        "failure_point": "The integral of e^{-t^2} has no elementary antiderivative, so the exact solution cannot produce any numerical value at all; the method that appears to solve the problem is exactly the method that cannot answer part (d). The route that looks like a retreat from rigour -- expanding in a Maclaurin series -- is the one that yields a value, because the resulting series alternates with strictly decreasing terms and therefore bounds its own truncation error by the first omitted term.",
+        "wrong_answer": "Either a stalled answer that reports the closed form integral of e^{-t^2} and then claims y(0.6) = 0.5351 by numerical integration without any error control, or -- if four terms are summed and the interval is not examined -- the value 0.5351, obtained because 0.5351095 +/- 0.0000467 straddles the rounding boundary 0.53515. The true value is 0.5351535268, which is 0.5352 to four decimal places; four terms do not determine it and five do."
+      }
+    },
+    {
+      "id": "MATH-P3-015",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "SL 4.7 (concept of discrete random variables and their probability distributions; expected value), AHL 1.8 (sum of infinite convergent geometric sequences), SL 4.5 (concepts of trial, outcome, sample space and event)",
+      "topic": "Topic 4: Statistics and probability",
+      "subtopic": "P3 extended problem: expected waiting times for patterns in a biased coin sequence",
+      "paper": "P3",
+      "technology": "allowed",
+      "marks": 14,
+      "difficulty": 4,
+      "question_type": "problem_solving",
+      "challenge_mechanism": "Both patterns have length two, so the intuition that governs the whole problem -- that a rarer pattern takes longer to appear -- is available and plausible. It is also not what determines the answer. At p = 1/2 the two patterns have exactly the same probability, 1/4, and yet the expected waiting times are 6 and 4: a 50% difference between two patterns that are equally likely. The variable the student reaches for, the probability of the pattern, does not set the waiting time; what sets it is the overlap structure of the pattern with itself, and that is invisible in the probabilities. The item forces the student to derive both expectations from first principles rather than reason from rarity, and then to discover that the ordering of the two is itself a function of p, reversing at the golden ratio. The parts are deliberately scaffolded -- (a) and (b) name the states, so the derivation is forced rather than left to the student's own judgement -- and that scaffolding contains the misconception: a candidate holding it still has to do the arithmetic that refutes it. The trap is real but survivable, which is why this item is graded 4 rather than 5, and the containment is the thing the label records.",
+      "command_terms": [
+        "Show that",
+        "Hence",
+        "Calculate"
+      ],
+      "tags": [
+        "expected value",
+        "waiting time",
+        "geometric series",
+        "state recursion",
+        "pattern overlap",
+        "golden ratio",
+        "problem solving"
+      ],
+      "question": "A biased coin is tossed repeatedly and independently. Each toss lands heads with probability $p$ and tails with probability $1 - p$, where $0 < p < 1$. For a given sequence of outcomes, the waiting time is the number of tosses needed to see that sequence for the first time. Let $E_{HH}$ and $E_{HT}$ denote the expected waiting times for the sequences $HH$ and $HT$ respectively.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "By considering the two states 'no progress towards $HT$' and 'the last toss was $H$', show that\n$$E_{HT} = \\frac{1}{p\\,(1-p)}.$$"
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "By a similar argument with the two states 'no progress towards $HH$' and 'the last toss was $H$', show that\n$$E_{HH} = \\frac{1+p}{p^{2}}.$$"
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Hence",
+          "text": "Hence show that $E_{HH} < E_{HT}$ if and only if $p > \\dfrac{\\sqrt{5} - 1}{2}$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Taking $p = \\dfrac{2}{3}$, calculate $E_{HH}$ and $E_{HT}$. By comparing the values of $E_{HH}$ and $E_{HT}$ at $p = \\dfrac{1}{2}$, comment on the claim that the rarer of two equally long patterns always takes longer to appear."
+        }
+      ],
+      "answer": "(a) Let $A$ be the expected number of further tosses needed from the state in which no progress towards $HT$ has been made, and let $B$ be the expected number of further tosses needed from the state in which the last toss was $H$ (M1).\n\nFrom state $B$: one toss is made; a tail completes the pattern with probability $1-p$, and a head returns to state $B$ with probability $p$. Hence $B = 1 + p B + (1-p) \\cdot 0$ (M1), so $(1-p)B = 1$ and $B = \\dfrac{1}{1-p}$ (A1).\n\nFrom state $A$: one toss is made; a head moves to state $B$ with probability $p$, and a tail leaves us in state $A$ with probability $1-p$. Hence $A = 1 + pB + (1-p)A$ (M1), so $pA = 1 + pB$ and $A = \\dfrac{1}{p} + B = \\dfrac{1}{p} + \\dfrac{1}{1-p} = \\dfrac{(1-p) + p}{p(1-p)} = \\dfrac{1}{p(1-p)}$ (A1) (AG). Since we begin with no tosses made, $E_{HT} = A = \\dfrac{1}{p(1-p)}$.\n\n(b) Let $C$ be the expected number of further tosses from the state in which no progress towards $HH$ has been made, and let $D$ be the expected number of further tosses from the state in which the last toss was $H$ (M1).\n\nFrom state $D$: one toss is made; a head completes the pattern with probability $p$, and a tail sends us back to state $C$ with probability $1-p$, because a tail destroys all progress. Hence $D = 1 + p \\cdot 0 + (1-p)C$ (M1).\n\nFrom state $C$: one toss is made; a head moves to state $D$ with probability $p$, and a tail leaves us in state $C$ with probability $1-p$. Hence $C = 1 + pD + (1-p)C$ (M1), so $pC = 1 + pD$ and $C = \\dfrac{1}{p} + D$.\n\nSubstituting $D = 1 + (1-p)C$ into $C = \\dfrac{1}{p} + D$ gives $C = \\dfrac{1}{p} + 1 + (1-p)C$, so $pC = \\dfrac{1}{p} + 1 = \\dfrac{1+p}{p}$ and $C = \\dfrac{1+p}{p^{2}}$ (A1) (AG). Since we begin with no tosses made, $E_{HH} = C = \\dfrac{1+p}{p^{2}}$.\n\n(c) The two expectations are equal when\n$$\\frac{1+p}{p^{2}} = \\frac{1}{p(1-p)} \\iff (1+p)(1-p) = p \\iff 1 - p^{2} = p \\iff p^{2} + p - 1 = 0$$ (M1).\nThe roots are $p = \\dfrac{-1 \\pm \\sqrt{1+4}}{2} = \\dfrac{-1 \\pm \\sqrt{5}}{2}$, and since $0 < p < 1$ only $p = \\dfrac{\\sqrt{5}-1}{2} \\approx 0.6180$ is admissible (A1). To decide the direction, test $p = \\dfrac{2}{3} > \\dfrac{\\sqrt5-1}{2}$: here $E_{HH} = 3.75$ and $E_{HT} = 4.5$, so $E_{HH} < E_{HT}$ (M1). Since the difference $E_{HH} - E_{HT}$ changes sign only at the single value found above, $E_{HH} < E_{HT}$ precisely for $p > \\dfrac{\\sqrt{5}-1}{2}$ (A1) (AG).\n\n(d) At $p = \\dfrac{2}{3}$ we have $1 - p = \\dfrac{1}{3}$, so\n$$E_{HH} = \\frac{1 + \\frac{2}{3}}{\\left(\\frac{2}{3}\\right)^{2}} = \\frac{\\frac{5}{3}}{\\frac{4}{9}} = \\frac{5}{3} \\times \\frac{9}{4} = \\frac{15}{4} = 3.75,$$ (M1)\n$$E_{HT} = \\frac{1}{\\frac{2}{3} \\times \\frac{1}{3}} = \\frac{1}{\\frac{2}{9}} = \\frac{9}{2} = 4.5$$ (A1).\n\nAt $p = \\dfrac{1}{2}$ both patterns have probability $\\dfrac{1}{4}$, yet $E_{HH} = \\dfrac{1.5}{0.25} = 6$ while $E_{HT} = \\dfrac{1}{0.25} = 4$ (A1). The claim is therefore false: two patterns of the same length and the same probability can have expected waiting times differing by 50%. What governs the waiting time is not how likely the pattern is but how much of a partial match survives a failure -- a tail destroys all progress towards $HH$, whereas for $HT$ a head simply leaves the state unchanged -- and this overlap structure is not visible in the pattern probabilities at all (AG).",
+      "markscheme_notes": "(a) The states must be defined before they are used; a solution that writes down the two recurrences without saying what $A$ and $B$ mean forfeits the first (M1). The recurrence for the completed pattern must set the term for success to $0$ and not to $B$ or to $1$; a candidate who writes $B = 1 + pB + (1-p)B$ has not understood the state space and should not be awarded (M1). Award full marks for a correct first-step analysis, which is the equivalent and equally acceptable route.\n\n(b) The decisive difference from part (a) is that a tail from state $D$ returns to state $C$, not to state $D$; candidates who copy the structure of part (a) and write $D = 1 + pD + (1-p)C$ will obtain a wrong answer and should not be given follow-through credit for (b) itself, although they may keep (M1) for a correctly formed equation for $C$. Accept the answer in either the form $(1+p)/p^{2}$ or $\\dfrac{1}{p} + \\dfrac{1}{p^{2}}$.\n\n(c) The quadratic must be obtained by equating the two expressions, not by guessing the golden ratio. Award (M1) for the equality and its reduction, (A1) for rejecting the negative root, and (M1)(A1) for establishing the direction of the inequality -- a candidate who asserts the direction without a test value forfeits the final (A1). Condone the exact answer left as $\\dfrac{\\sqrt5-1}{2}$; the decimal $0.618$ is not required.\n\n(d) Award (M1) for substituting $p = \\tfrac23$ into either expression, (A1) for both values, and (A1) for the comparison at $p = \\tfrac12$ together with a comment that engages with the overlap structure. The comment must do more than restate the numbers: an answer that says only 'the claim is false because 6 is not 4' earns the (A1) for the arithmetic but not the (AG). Any correct statement of the mechanism -- that a failure resets $HH$ completely while a failure from state $B$ leaves $HT$ still requiring only one specific toss -- is acceptable.",
+      "explanation": "The reason this problem is a trap rather than an exercise is that the intuition it defeats is a good intuition in almost every other setting. Usually, rarer events do take longer to occur, and here the two patterns have the same length, so it feels as though nothing else could distinguish them. The calculation shows that at $p = 1/2$ the two patterns are exactly equally likely -- probability $1/4$ each -- and yet one takes 6 tosses on average and the other takes 4. So the probability of the pattern is not the variable that governs the waiting time, and the student has to find the variable that does.\n\nThat variable is the pattern's self-overlap. When you are waiting for $HH$ and you have just seen one $H$, a tail destroys your progress entirely: you are back to having nothing, and you must see two heads in a row from scratch. When you are waiting for $HT$ and you have just seen one $H$, a head does not destroy your progress at all -- it leaves you in exactly the state you were already in, still needing one tail. That asymmetry is worth 50% of the expected time, and it is completely invisible in the two probabilities. The recurrences make the asymmetry explicit: in part (a) the failure branch returns to $B$, in part (b) it returns to $C$. Candidates who do not notice this will write the same recurrence twice and get the same answer twice.\n\nOnce both expressions are in hand, part (c) is a clean piece of algebra that produces the golden ratio. It is worth pausing on why the answer is a golden ratio and not, say, $1/2$: the condition $(1+p)(1-p) = p$ rearranges to $p^{2} + p - 1 = 0$, which is the defining equation of the golden ratio, and it appears here because the same quadratic governs any comparison between a self-overlapping pattern and a non-overlapping one. The comparison is genuinely two-sided: for a coin strongly biased towards heads ($p > 0.618$) the run $HH$ is the faster target, and for a fairer coin ($p < 0.618$) the mixed pattern $HT$ is faster, even though $HH$ is the more probable pattern for every $p > 1/2$.\n\nThe final comment is the part that cannot be answered by calculation alone. It is not enough to observe that 6 and 4 are different; the answer has to say what the difference is made of. The pattern probability is a red herring, and recognising which variable in a problem is a red herring -- rather than assuming that the most obvious quantity must be the governing one -- is the transferable skill.",
+      "provenance": {
+        "inspired_by": "Chinese 高考 / 强基计划 genre on 概率递推 (recursive probability) and 马尔可夫链 (Markov chains): a repeated trial is modelled by a small set of states, the expected duration is found by solving the resulting linear recurrences, and the answer is then compared across parameter values.",
+        "source_family": "china-gaokao",
+        "adaptation": "The source genre supplies the state-recursion method and the habit of comparing the result across a parameter. Three of the permitted changes were made. First, the source setting -- typically a gambler's ruin or a Markov chain on a small state space -- was replaced by the waiting times of the patterns HH and HT in a biased coin sequence, chosen because the two patterns are equally likely at p = 1/2 yet have expected waiting times in the ratio 3:2, which makes the usual rarity heuristic visibly fail. Second, the pattern-probability red herring was made the explicit subject of part (d), so that the misconception is tested rather than merely avoided. Third, the parameter comparison was sharpened from a numerical comparison to the exact threshold, which turns out to be the golden ratio. The context, the wording and all numerical data are original; the standard results for these two patterns were re-derived here rather than quoted.",
+        "resource_origin": "高考 / 强基计划 概率递推与期望等待时间类题型（结构改编，情境与全部数据均为原创）",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.02,
+        "nearest_bank_id": "MAAQB_EXN_2_AHL_TZ0_9",
+        "nearest_bank_label": "bank:Math AA/Topic 2",
+        "max_internal_similarity": 0.0,
+        "nearest_internal_id": null,
+        "max_approach_similarity": 0.13,
+        "nearest_approach_id": "PHYS-B.5-103",
+        "checked_at": "2026-09-11"
+      },
+      "verification": {
+        "method": "Both expectations were derived twice: once from the closed forms (1+p)/p^2 and 1/(p(1-p)), and independently by solving the state recurrences symbolically for p = 2/3, giving 1/p^2 + 1/p = 3.75 and 1/p + 1/(1-p) = 4.5, which agree. The identity 1/p + 1/(1-p) = 1/(p(1-p)) was checked at p = 0.5, 2/3 and 0.8. The crossover was found by solving (1+p)(1-p) = p, i.e. p^2 + p - 1 = 0, giving p = (sqrt(5)-1)/2 = 0.618033989, at which the difference of the two expectations is -8.9e-16, i.e. zero to machine precision. The ordering was sampled on both sides: at p = 0.5 and p = 0.6 the pair HT is faster, at p = 2/3, 0.7 and 0.8 the pair HH is faster, consistent with the threshold.",
+        "assertions": [
+          "approx((1+2/3)/(2/3)**2, 3.75, 1e-12)",
+          "approx(1/((2/3)*(1/3)), 4.5, 1e-12)",
+          "approx(1/(2/3) + 1/(1-2/3), 4.5, 1e-12)",
+          "approx(((5**0.5)-1)/2, 0.618033989, 1e-9)",
+          "approx((((5**0.5)-1)/2)**2 + (((5**0.5)-1)/2) - 1, 0, 1e-12)",
+          "approx((1+0.5)/0.25, 6, 1e-12)",
+          "approx(1/(0.5*0.5), 4, 1e-12)",
+          "approx((1+0.6)/0.36, 4.4444444444, 1e-9)",
+          "approx(1/(0.6*0.4), 4.1666666667, 1e-9)",
+          "(1+0.6)/0.36 > 1/(0.6*0.4)",
+          "(1+2/3)/(2/3)**2 < 1/((2/3)*(1/3))",
+          "approx(1/(2/3) + 1/(1/3), 4.5, 1e-12)",
+          "all([abs((1+p)/p**2 - 1/(p*(1-p))) > 0 for p in [0.3, 0.5, 0.7, 0.9]])",
+          "approx((1+0.8)/0.64, 2.8125, 1e-12)"
+        ],
+        "solution_skeleton": [
+          "define the two states and write the expected further duration from each",
+          "solve the two linear recurrences for HT, noting that a head from the single-H state leaves it unchanged",
+          "solve the two linear recurrences for HH, noting that a tail from the single-H state destroys all progress",
+          "equate the two closed forms and solve the resulting quadratic p^2 + p - 1 = 0",
+          "test one value of p to fix the direction of the inequality",
+          "substitute p = 2/3, and compare at p = 1/2 to expose the failure of the rarity heuristic"
+        ]
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-13",
+      "updated_at": "2026-09-13",
+      "difficulty_evidence": {
+        "lever_type": "non_governing_variable",
+        "naive_path": "Compare the probabilities of the two patterns. Since both have length two, conclude that whichever pattern is less likely must take longer to appear, then reason that a biased coin makes one pattern rarer and therefore slower -- or, if the coin is fair, conclude that the two patterns are equally likely and therefore take the same expected time. Either way the answer is read off from the pattern probabilities rather than computed from the transition structure.",
+        "failure_point": "The probability of the pattern does not determine the waiting time. At p = 1/2 the two patterns have identical probability 1/4, yet E[HH] = 6 and E[HT] = 4; and at p = 2/3 the rarer pattern HT (probability 2/9 against 4/9) is indeed slower, which makes the heuristic look confirmed at exactly the parameter value a student is most likely to test. The governing quantity is the pattern's self-overlap: a tail from the single-H state resets progress towards HH completely but leaves progress towards HT unchanged, and that asymmetry appears nowhere in the probabilities of the two patterns.",
+        "wrong_answer": "E[HH] = E[HT] = 4 at p = 1/2, from the argument that two patterns of equal length and equal probability must have equal expected waiting times; or E[HH] = 4.5 and E[HT] = 3.75 at p = 2/3, from the argument that the rarer pattern is slower -- which reverses the true ordering at that value. The correct values are E[HH] = 6, E[HT] = 4 at p = 1/2, and E[HH] = 3.75, E[HT] = 4.5 at p = 2/3."
+      }
+    },
+    {
+      "id": "MATH-P3-016",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.10 (counting principles, including permutations and combinations), SL 1.9 (the binomial theorem), AHL 1.6 (simple deductive proof)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "P3 extended problem: counting monotone lattice paths and the Catalan numbers",
+      "paper": "P3",
+      "technology": "allowed",
+      "marks": 15,
+      "difficulty": 5,
+      "question_type": "problem_solving",
+      "challenge_mechanism": "The counting problem is stated in a way that invites case analysis: count the paths for small n, look for a pattern, and try to generalise by splitting on the first step. The first step is exactly where the naive attempt stalls, because the constraint couples the two coordinates -- how many steps up you may still take depends on how many steps right you have already taken -- so the obvious recursion is not self-contained. The tool that works, the reflection bijection, is not the obvious one: it counts the forbidden paths by counting something that has nothing to do with the original problem, namely all paths from a reflected starting point. A student who does not find it can still compute the right numbers for small n and will then be unable to justify the general formula, which is exactly the failure the item is built to expose.",
+      "command_terms": [
+        "Show that",
+        "Hence",
+        "Determine"
+      ],
+      "tags": [
+        "counting",
+        "lattice paths",
+        "reflection principle",
+        "Catalan numbers",
+        "binomial coefficients",
+        "generating functions",
+        "problem solving"
+      ],
+      "question": "A path on a grid starts at $(0,0)$ and ends at $(n,n)$, where $n$ is a positive integer. Each step of the path is either one unit to the right, written $R$, or one unit upwards, written $U$. A path is called admissible if it never passes through a point whose $y$-coordinate exceeds its $x$-coordinate; that is, every point $(x,y)$ on the path satisfies $y \\le x$. Let $C_n$ denote the number of admissible paths from $(0,0)$ to $(n,n)$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that the total number of paths from $(0,0)$ to $(n,n)$ is $\\dbinom{2n}{n}$, and that the number of paths that pass through at least one point with $y = x + 1$ is $\\dbinom{2n}{n-1}$."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Hence",
+          "text": "Hence show that $C_n = \\dbinom{2n}{n} - \\dbinom{2n}{n-1} = \\dfrac{1}{n+1}\\dbinom{2n}{n}$, and evaluate $C_n$ for $n = 1, 2, 3, 4, 5$."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that $\\dfrac{1}{k+1}\\dbinom{2k}{k} = \\dbinom{2k}{k} - \\dbinom{2k}{k-1}$ for every integer $k \\ge 1$, and deduce that $C_n$ is an integer for every $n \\ge 1$ without evaluating the binomial coefficient."
+        },
+        {
+          "label": "d",
+          "marks": 5,
+          "command_term": "Determine",
+          "text": "Let $C(x) = \\sum_{n=0}^{\\infty} C_n x^{n}$ with $C_0 = 1$. By considering the first step at which an admissible path returns to the diagonal $y = x$, show that $C(x) = 1 + x\\,C(x)^{2}$. Hence determine the closed form of $C(x)$ and verify that the coefficient of $x^{3}$ is $5$."
+        }
+      ],
+      "answer": "(a) A path from $(0,0)$ to $(n,n)$ consists of exactly $n$ steps $R$ and exactly $n$ steps $U$, so it is determined by choosing which $n$ of the $2n$ positions in the sequence are the $R$ steps; hence the total number of paths is $\\dbinom{2n}{n}$ (A1).\n\nFor the second count, consider a path that passes through at least one point with $y = x+1$, and let $T$ be the *first* such point. Reflect the portion of the path from $(0,0)$ up to and including $T$ in the line $y = x+1$, leaving the rest of the path unchanged (M1). Under this reflection the point $(0,0)$ maps to $(-1,1)$, each $R$ step before $T$ becomes a $U$ step and each $U$ step becomes an $R$ step, and $T$ itself lies on the mirror line and is fixed. The reflected path therefore runs from $(-1,1)$ to $(n,n)$, and it consists of $(n+1)$ steps right and $(n-1)$ steps up, again a monotone path of $2n$ steps in total (A1).\n\nThe correspondence is a bijection, because the first point at which a path from $(-1,1)$ to $(n,n)$ reaches $y = x+1$ is recovered by reflecting back, so the two sets have the same size (A1). The number of monotone paths from $(-1,1)$ to $(n,n)$ is the number of ways of choosing which $n-1$ of the $2n$ steps are the $U$ steps, that is $\\dbinom{2n}{n-1}$ (A1).\n\n(b) A path is admissible precisely when it never reaches $y = x+1$, so the admissible paths are exactly the paths counted in part (a) with the forbidden ones removed (M1):\n$$C_n = \\binom{2n}{n} - \\binom{2n}{n-1} = \\binom{2n}{n}\\left(1 - \\frac{n}{n+1}\\right) = \\frac{1}{n+1}\\binom{2n}{n}$$ (A1),\nusing $\\dbinom{2n}{n-1} = \\dfrac{n}{n+1}\\dbinom{2n}{n}$ (A1). Substituting: $C_1 = \\tfrac12\\dbinom21 = 1$; $C_2 = \\tfrac13\\dbinom42 = 2$; $C_3 = \\tfrac14\\dbinom63 = 5$; $C_4 = \\tfrac15\\dbinom84 = 14$; $C_5 = \\tfrac16\\dbinom{10}{5} = 42$ (AG).\n\n(c) By the factorial formula,\n$$\\binom{2k}{k-1} = \\frac{(2k)!}{(k-1)!\\,(k+1)!} = \\frac{(2k)!}{k!\\,k!} \\cdot \\frac{k}{k+1} = \\frac{k}{k+1}\\binom{2k}{k}$$ (M1) (A1).\nTherefore\n$$\\binom{2k}{k} - \\binom{2k}{k-1} = \\binom{2k}{k}\\left(1 - \\frac{k}{k+1}\\right) = \\frac{1}{k+1}\\binom{2k}{k},$$\nwhich is the required identity (A1). Since $\\dbinom{2k}{k}$ and $\\dbinom{2k}{k-1}$ are both integers, their difference is an integer; by the identity that difference equals $\\dfrac{1}{k+1}\\dbinom{2k}{k}$, and by part (b) this is exactly $C_k$ (AG). Hence $C_n$ is an integer for every $n \\ge 1$ without the coefficient ever having been evaluated.\n\n(d) Take an admissible path counted by $C_n$ with $n \\ge 1$, and let $(j+1, j+1)$ be the first point after the origin at which it returns to the diagonal $y = x$ (M1). The path splits into three parts: the segment from $(0,0)$ to $(j+1, j+1)$, the segment from $(j+1,j+1)$ to $(n,n)$, and the single step that first reaches $(j+1,j+1)$. Every admissible path from $(0,0)$ to $(j+1,j+1)$ that does not return to the diagonal before its endpoint is the first step $R$, followed by an admissible path from $(1,0)$ to $(j+1,j+1)$ that stays above the diagonal; shifting that middle part down and left by one unit gives an arbitrary admissible path from $(0,0)$ to $(j,j)$ (M1). The final step into $(j+1,j+1)$ from $(j+1,j)$ or $(j,j+1)$ contributes one factor $x$ and the tail contributes a further $C(x)$. Summing over $j \\ge 0$ and adding the empty path,\n$$C(x) = 1 + x\\,C(x)\\cdot C(x) = 1 + x\\,C(x)^{2}$$ (A1) (AG).\n\nRearranging, $x\\,C^{2} - C + 1 = 0$, so by the quadratic formula $C = \\dfrac{1 \\pm \\sqrt{1 - 4x}}{2x}$ (M1). Since $C(x) \\to C_0 = 1$ as $x \\to 0$ while $\\dfrac{1 + \\sqrt{1-4x}}{2x} \\to +\\infty$, the admissible branch is\n$$C(x) = \\frac{1 - \\sqrt{1 - 4x}}{2x}$$ (A1). Expanding, $C(x) = 1 + x + 2x^{2} + 5x^{3} + 14x^{4} + \\cdots$, so the coefficient of $x^{3}$ is $5$, in agreement with $C_3 = 5$ from part (b) (AG).",
+      "markscheme_notes": "(a) The total count earns (A1). The reflection argument must identify the *first* point on the line $y = x+1$; a candidate who reflects at an arbitrary such point does not obtain a bijection and forfeits (M1). Award (M1) for performing the reflection and (A1) for the bijection, and (A1) for the resulting count $\\dbinom{2n}{n-1}$. Do not accept 'by symmetry' as a justification for the count of forbidden paths; the two sets are not of equal size and the argument is not a symmetry argument.\n\n(b) Award (M1) for the subtraction, (A1) for the algebra giving $\\dfrac{1}{n+1}\\dbinom{2n}{n}$, and (A1) for the identity $\\dbinom{2n}{n-1} = \\dfrac{n}{n+1}\\dbinom{2n}{n}$, which must be shown and not assumed. The five values earn (AG); one arithmetic slip loses the (AG) but not the earlier marks.\n\n(c) The identity must be derived from the factorial definition; a candidate who verifies it for $k = 1, 2, 3$ and asserts it in general forfeits the second (A1). The deduction that $C_n$ is an integer requires the observation that a difference of two integers is an integer -- not the observation that the formula 'looks like' an integer. A candidate who instead proves integrality by a direct divisibility argument on $(n+1) \\mid \\binom{2n}{n}$ earns full marks if the argument is complete.\n\n(d) The decomposition must be shown to be a bijection, not merely stated. Award (M1) for identifying the first return to the diagonal, (M1) for the shift argument that converts the 'stays above the diagonal' segment into an arbitrary admissible path of one size smaller, (A1) for $C = 1 + xC^{2}$, (M1) for solving the quadratic, (A1) for selecting the correct root using $C(0) = 1$, and (AG) for the coefficient check. The rejection of the positive root must be justified by the behaviour as $x \\to 0$; a candidate who rejects it because 'the coefficients would be negative' should be given credit only if they demonstrate the negativity.",
+      "explanation": "The difficulty of this item is that the constraint is global. Every step of an admissible path is subject to a condition that depends on the whole history of the path, so the natural approach -- condition on the first step and recurse -- produces a recursion that is not closed: after one step to the right the remaining problem is 'paths from $(1,0)$ to $(n,n)$ staying above the diagonal', which is a new kind of object, and recursing on it produces further new kinds. A student who pursues this route will compute $C_1$ through $C_5$ correctly and be unable to say why the general formula holds.\n\nThe way out is the reflection principle, and its character is worth noticing. Rather than count the admissible paths directly, it counts the *forbidden* ones, and it counts them by exhibiting a bijection with a set that has nothing to do with the constraint: all monotone paths from $(-1,1)$ to $(n,n)$. The reflection is a trick in the sense that it is not forced by the problem statement -- nothing in the question suggests reflecting anything -- but once seen, it is completely rigorous, because reflecting at the *first* crossing gives a bijection rather than merely an injection. This is the archetype of a non-obvious tool, and it is why the item's difficulty is not computational.\n\nPart (c) is a small piece of bookkeeping with a satisfying payoff. The difference of two binomial coefficients is manifestly an integer, and the identity shows that this integer is $\\dfrac{1}{n+1}\\dbinom{2n}{n}$; so the Catalan numbers are integers by an argument that never divides anything. This is worth pausing on, because the formula $\\dfrac{1}{n+1}\\dbinom{2n}{n}$ gives no indication that the division comes out exactly, and a student who only knows the formula will find that fact surprising.\n\nPart (d) changes the tool again. The recurrence $C = 1 + xC^{2}$ is a statement about the whole sequence at once, obtained by decomposing a path at its first return to the diagonal; it is the standard 'first-return decomposition' and it is the reason the Catalan numbers have a closed generating function. Solving the quadratic is elementary, but selecting the correct root is not: the two roots differ by $\\dfrac{\\sqrt{1-4x}}{x}$, which is singular at the origin, and only the condition $C(0) = 1$ -- that is, the fact that there is exactly one path of length zero -- chooses between them. Students who solve the quadratic and pick a sign by guesswork will pick the wrong one about half the time.",
+      "provenance": {
+        "inspired_by": "Chinese 高考 / 强基计划 genre on 计数递推 (counting by recurrence) and 卡塔兰数 (Catalan numbers): a constrained lattice-path count is posed, the reflection bijection is used to count the forbidden paths, and the resulting formula is shown to be integral and then packaged into a generating function.",
+        "source_family": "china-gaokao",
+        "adaptation": "The source genre supplies the lattice-path setting, the reflection argument and the first-return decomposition. Three of the permitted changes were made. First, the constraint was fixed as 'never above the diagonal' with the diagonal drawn as $y = x$, which makes the forbidden condition the single line $y = x+1$ and therefore makes the reflection a single explicit map; the source material often states the constraint in a form in which the reflecting line has to be discovered. Second, a part was added asking for the integrality of $C_n$ to be deduced from the identity $\\frac{1}{k+1}\\binom{2k}{k} = \\binom{2k}{k} - \\binom{2k}{k-1}$, which is normally left implicit. Third, the generating-function part was restricted to the quadratic $C = 1 + xC^{2}$ and its solution, and the usual asymptotic via Stirling's approximation was deliberately omitted because Stirling lies outside the IB syllabus; the closed form is instead checked against $C_3 = 5$. The context and all data are original.",
+        "resource_origin": "高考 / 强基计划 计数递推与卡塔兰数类题型（结构改编，情境与全部数据均为原创）",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.008,
+        "nearest_bank_id": "MATH_AAHL_P2_2019Nov_TZ0_q05",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "max_internal_similarity": 0.012,
+        "nearest_internal_id": "MATH-AHL1.15-001",
+        "max_approach_similarity": 0.083,
+        "nearest_approach_id": "MATH-P3-013",
+        "checked_at": "2026-09-11"
+      },
+      "verification": {
+        "method": "The reflection count was checked arithmetically: for n = 1..8 the number of paths containing a point with y = x+1, obtained as the total minus the admissible count, equals C(2n, n-1) in every case, giving 1, 4, 15, 56, 210, 792, 3003, 11440. The admissible counts were confirmed to be the Catalan numbers 1, 2, 5, 14, 42, 132, 429, 1430, and the identity C(2n,n) - C(2n,n-1) = C(2n,n)/(n+1) was checked as an exact integer equality for n = 1..8. The identity C(2k,k)/(k+1) = C(2k,k) - C(2k,k-1) was checked as an exact equality for k = 1..7. The closed form was evaluated at x = 0.01 and compared with the series: C(0.01) = 1.0102051443 and 1 + 0.01 C(0.01)^2 = 1.0102051443, agreeing to 2e-15, which confirms the quadratic identity numerically as well as symbolically.",
+        "assertions": [
+          "approx(comb(6,3) - comb(6,2), 5, 1e-12)",
+          "approx(comb(12,6) - comb(12,5), 132, 1e-12)",
+          "approx(comb(20,10) - comb(20,9), 16796, 1e-12)",
+          "[comb(2*n,n) - comb(2*n,n-1) for n in range(1,6)] == [1, 2, 5, 14, 42]",
+          "all([comb(2*n,n) - comb(2*n,n-1) == comb(2*n,n)//(n+1) for n in range(1,9)])",
+          "all([comb(2*k,k)/(k+1) == comb(2*k,k) - comb(2*k,k-1) for k in range(1,8)])",
+          "approx(comb(6,3)/(3+1), 5, 1e-12)",
+          "approx(comb(2*4,4) - comb(2*4,3), 14, 1e-12)",
+          "approx((1 - sqrt(1-4*0.01))/(2*0.01), 1.0102051443, 1e-9)",
+          "approx((1 - sqrt(1-4*0.01))/(2*0.01), 1 + 0.01*((1 - sqrt(1-4*0.01))/(2*0.01))**2, 1e-9)",
+          "approx(comb(2*8,8) - comb(2*8,7), 1430, 1e-12)",
+          "approx(comb(2*3,3-1), 15, 1e-12)",
+          "approx(comb(2*5,5)/6, 42, 1e-12)",
+          "approx(comb(2*10,10) - comb(2*10,9), 16796, 1e-12)"
+        ],
+        "solution_skeleton": [
+          "count all monotone paths as C(2n,n) by choosing the positions of the right steps",
+          "reflect the path up to its first touch of y = x+1 to biject the forbidden paths with paths from (-1,1)",
+          "subtract to obtain C(2n,n) - C(2n,n-1) and simplify to C(2n,n)/(n+1)",
+          "derive the identity with C(2k,k-1) from factorials and read off integrality as a difference of integers",
+          "decompose an admissible path at its first return to the diagonal to obtain C = 1 + x C^2",
+          "solve the quadratic and choose the root with C(0) = 1, then check the coefficient of x^3"
+        ]
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-13",
+      "updated_at": "2026-09-13",
+      "difficulty_evidence": {
+        "lever_type": "non_obvious_tool",
+        "naive_path": "Condition on the first step and set up a recursion on the number of admissible paths, or count the paths for n = 1, 2, 3, 4 by listing them, notice the sequence 1, 2, 5, 14, and either generalise by pattern-spotting or attempt to split the count according to where the path first touches the diagonal -- which produces new constrained counting problems rather than closing the recursion.",
+        "failure_point": "The constraint is global: how many upward steps remain available depends on how many right steps have already been taken, so conditioning on the first step does not close. The tool that works -- the reflection bijection, which counts the forbidden paths by reflecting the initial segment at the *first* crossing of y = x+1 -- is not suggested by the problem statement and is not the obvious counting tool. A candidate who does not find it can produce the correct numbers for small n and cannot justify the general formula, which is exactly the gap the item tests.",
+        "wrong_answer": "The sequence 1, 2, 5, 14 is produced and the general term is asserted to be C(2n,n)/(n+1) on the strength of the pattern, with no reflection argument and no derivation of the forbidden count; or the forbidden paths are counted as C(2n,n)/2 'by symmetry', which gives C(2n,n)/2 = 3 for n = 2 and 10 for n = 3."
+      }
+    },
+    {
+      "id": "MATH-P3-017",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.15 (proof by mathematical induction), SL 1.6 (simple deductive proof), AHL 1.8 (sum of infinite convergent geometric sequences)",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "P3 extended problem: bounding a series by term-wise telescoping",
+      "paper": "P3",
+      "technology": "allowed",
+      "marks": 14,
+      "difficulty": 5,
+      "question_type": "problem_solving",
+      "challenge_mechanism": "The series of reciprocal squares has no elementary closed form, so the only available route is comparison, and the standard comparison is available to every prepared student: 1/k^2 < 1/(k(k-1)) telescopes to give the partial sum below 2 - 1/n. That estimate is correct, it is the one the student has been taught, and it is not strong enough for the target 7/4, because 2 - 1/n exceeds 7/4 as soon as n reaches 4. The constraint binds: the target is tighter than the whole family of estimates of the obvious type, so the student must find a different comparison, valid only from k = 3, and combine it with exact values for the first two terms. Part (c) makes the failure of the standard estimate an explicit object of study rather than something the student has to notice.",
+      "command_terms": [
+        "Show that",
+        "Hence",
+        "Calculate"
+      ],
+      "tags": [
+        "series",
+        "inequalities",
+        "telescoping",
+        "comparison test",
+        "reciprocal squares",
+        "proof",
+        "problem solving"
+      ],
+      "question": "For an integer $n \\ge 1$ write $S_n = \\displaystyle\\sum_{k=1}^{n} \\frac{1}{k^{2}}$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that, for every integer $k \\ge 3$,\n$$\\frac{1}{k^{2}} < \\frac{1}{k - \\frac{1}{2}} - \\frac{1}{k + \\frac{1}{2}}.$$"
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Hence",
+          "text": "Hence show that $S_n < \\dfrac{7}{4}$ for every integer $n \\ge 1$."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that the alternative estimate $\\dfrac{1}{k^{2}} < \\dfrac{1}{k(k-1)}$, valid for $k \\ge 2$, gives $S_n < 2 - \\dfrac{1}{n}$, and explain why this estimate cannot establish the bound in part (b) for $n \\ge 4$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Calculate $S_{20}$ correct to six decimal places, and verify that it is consistent both with the bound proved in part (b) and with the tighter value $\\dfrac{33}{20} = 1.65$ that your proof in part (b) actually establishes."
+        }
+      ],
+      "answer": "(a) Combining the two fractions on the right-hand side over a common denominator,\n$$\\frac{1}{k - \\frac{1}{2}} - \\frac{1}{k + \\frac{1}{2}} = \\frac{\\left(k + \\frac12\\right) - \\left(k - \\frac12\\right)}{\\left(k - \\frac12\\right)\\left(k + \\frac12\\right)} = \\frac{1}{k^{2} - \\frac14}$$ (M1) (A1).\nSince $k \\ge 3$ we have $k^{2} - \\tfrac14 < k^{2}$, and both quantities are positive, so taking reciprocals reverses the inequality (M1):\n$$\\frac{1}{k^{2}} < \\frac{1}{k^{2} - \\frac14} = \\frac{1}{k - \\frac{1}{2}} - \\frac{1}{k + \\frac{1}{2}}$$ (A1).\n\n(b) For $n = 1$ and $n = 2$ we have $S_1 = 1$ and $S_2 = 1 + \\tfrac14 = \\tfrac54 = 1.25$, both less than $\\tfrac74 = 1.75$ (A1).\n\nNow let $n \\ge 3$. By part (a),\n$$\\sum_{k=3}^{n} \\frac{1}{k^{2}} < \\sum_{k=3}^{n}\\left(\\frac{1}{k - \\frac12} - \\frac{1}{k + \\frac12}\\right)$$ (M1).\nThe right-hand sum telescopes: writing out the first few terms, $\\left(\\frac{1}{2.5} - \\frac{1}{3.5}\\right) + \\left(\\frac{1}{3.5} - \\frac{1}{4.5}\\right) + \\cdots + \\left(\\frac{1}{n - 0.5} - \\frac{1}{n + 0.5}\\right)$, every intermediate term cancels (M1), leaving\n$$\\sum_{k=3}^{n} \\frac{1}{k^{2}} < \\frac{1}{\\frac52} - \\frac{1}{n + \\frac12} = \\frac{2}{5} - \\frac{1}{n + \\frac12} < \\frac{2}{5} = 0.4$$ (A1).\nTherefore\n$$S_n = 1 + \\frac14 + \\sum_{k=3}^{n}\\frac{1}{k^{2}} < 1 + \\frac14 + \\frac25 = \\frac{20 + 5 + 8}{20} = \\frac{33}{20} = 1.65 < \\frac74$$ (A1) (AG).\nSince $\\tfrac{33}{20} < \\tfrac74$, this establishes $S_n < \\tfrac74$ for every $n \\ge 3$, and the cases $n = 1, 2$ were settled separately, so the bound holds for every integer $n \\ge 1$ (AG).\n\n(c) For $k \\ge 2$ we have $k(k-1) < k^{2}$, so $\\dfrac{1}{k^{2}} < \\dfrac{1}{k(k-1)}$ (A1). Also $\\dfrac{1}{k(k-1)} = \\dfrac{1}{k-1} - \\dfrac{1}{k}$, so\n$$\\sum_{k=2}^{n} \\frac{1}{k^{2}} < \\sum_{k=2}^{n}\\left(\\frac{1}{k-1} - \\frac{1}{k}\\right) = 1 - \\frac{1}{n}$$ (M1),\nthe sum telescoping to $\\left(1 - \\frac12\\right) + \\left(\\frac12 - \\frac13\\right) + \\cdots + \\left(\\frac{1}{n-1} - \\frac{1}{n}\\right)$. Hence $S_n < 1 + 1 - \\dfrac{1}{n} = 2 - \\dfrac{1}{n}$ (A1).\n\nBut $2 - \\dfrac{1}{n} \\ge \\dfrac74$ exactly when $\\dfrac{1}{n} \\le \\dfrac14$, that is when $n \\ge 4$. So for $n \\ge 4$ this estimate bounds $S_n$ only by a quantity that is at least $\\tfrac74$, and therefore cannot show $S_n < \\tfrac74$ (AG). The estimate is not wrong -- it is a valid upper bound -- it is simply too weak: every estimate of the form $\\dfrac{1}{k^{2}} < \\dfrac{1}{(k-a)(k-b)}$ with $ab = 0$ produces a telescoping sum whose total is exactly $2$, and no member of that family can reach $1.75$.\n\n(d) Summing directly,\n$$S_{20} = 1 + \\frac14 + \\frac19 + \\cdots + \\frac{1}{400} = 1.5961632439\\ldots$$ (M1) (A1), so $S_{20} = 1.596163$ to six decimal places (A1). This is consistent with the two bounds: $1.596163 < 1.65 < 1.75$ (AG). Note that the proof of part (b) gives the stronger bound $\\tfrac{33}{20}$, and the true limit of the series is $\\tfrac{\\pi^{2}}{6} = 1.644934\\ldots$, which also lies below both bounds, so the numerical value is consistent with the theory as it must be.",
+      "markscheme_notes": "(a) Award (M1) for combining the fractions, (A1) for the simplified form $1/(k^{2}-\\tfrac14)$, (M1) for the observation that $k^{2}-\\tfrac14 < k^{2}$, and (A1) for reversing the inequality correctly. The reversal is the point of the part: a candidate who writes $1/k^{2} > 1/(k^{2}-\\tfrac14)$ has the inequality the wrong way round and forfeits the last (A1). Do not accept a numerical check at $k = 3$ as a proof for all $k \\ge 3$.\n\n(b) The cases $n = 1, 2$ must be handled separately, because the telescoping identity of part (a) requires $k \\ge 3$; a candidate who applies the telescoping sum from $k = 1$ and writes $\\frac{1}{0.5} - \\frac{1}{1.5} = 2 - \\frac23$ for the first term forfeits the (A1) for the base cases and will obtain a wrong constant. Award (M1) for summing the inequality, (M1) for the telescoping cancellation, (A1) for the value $2/5$, and (A1) for the final constant. The value $\\tfrac{33}{20}$ need not be simplified to a decimal, but the comparison with $\\tfrac74$ must be made explicitly: the question asks for $\\tfrac74$, and obtaining a different (larger) bound without comparing it to $\\tfrac74$ is not an answer.\n\n(c) Award (A1) for the comparison $k(k-1) < k^{2}$, (M1) for the telescoping sum, (A1) for $2 - \\tfrac1n$, and (AG) for the inequality $2 - \\tfrac1n \\ge \\tfrac74 \\iff n \\ge 4$. The explanation must identify the *reason* the estimate fails -- that its bound tends to $2$ and so cannot ever certify a target below $2$ -- and not merely state that $2 - \\tfrac1n$ is larger than $\\tfrac74$ at $n = 4$.\n\n(d) Award (M1) for an explicit summation, (A1) for the value to six decimal places, and (A1) for the comparison. Accept the value obtained from a calculator, provided the six decimal places are stated correctly; a candidate who reports $1.5961632$ (seven places) has not answered to the required accuracy but should not be penalised heavily. Follow-through applies to a candidate whose constant in part (b) differs from $\\tfrac{33}{20}$: the comparison must then be made against their own constant.",
+      "explanation": "This problem is about a specific and very common failure of reasoning: having found a bound that is true, concluding that it is the bound you need. The estimate $\\dfrac{1}{k^{2}} < \\dfrac{1}{k(k-1)}$ is the standard one, it appears in every textbook treatment of the convergence of this series, and it works perfectly for its usual purpose -- showing that the series converges, since it gives $S_n < 2 - 1/n < 2$. What it cannot do is show $S_n < \\tfrac74$, because it is an estimate whose total is exactly $2$ and $\\tfrac74$ is smaller than $2$. No amount of careful algebra applied to that estimate will produce the target, and this is the sense in which the constraint binds.\n\nThe escape is to compare against a slightly wider denominator. Instead of $k(k-1)$ one uses $k^{2} - \\tfrac14 = \\left(k - \\tfrac12\\right)\\left(k + \\tfrac12\\right)$, which is larger than $k^{2}$ and still splits into two telescoping pieces. The gain is not large -- the tail from $k = 3$ onwards is bounded by $\\tfrac25$ instead of $1$ -- but it is exactly enough, and it is enough because the first two terms are handled exactly rather than estimated. That combination, a sharp estimate where it is available and exact arithmetic where the estimate does not apply, is the transferable technique.\n\nThe restriction $k \\ge 3$ is not incidental. At $k = 1$ the comparison $1/(k^{2}-\\tfrac14) > 1/k^{2}$ would give $\\tfrac{1}{0.75} = \\tfrac43 > 1$, which is a much weaker statement than the trivial equality $1/1^{2} = 1$; at $k = 2$ it would give $\\tfrac{1}{3.75} = 0.2667$ against the exact $0.25$. So the sharpened estimate is worse than useless at the start of the series and essential later, and knowing where to switch from exact values to estimates is the real content of part (b). A candidate who applies the new estimate from $k = 1$ obtains a bound larger than $\\tfrac74$ and concludes, wrongly, that the method has failed.\n\nPart (d) is a reality check. The true sum is $\\tfrac{\\pi^{2}}{6} = 1.6449\\ldots$, comfortably below $1.65$, so the bound proved here is not merely valid but reasonably tight -- the gap is about $0.005$. Seeing that the bound is nearly attained is what makes the earlier failure of the $k(k-1)$ estimate understandable rather than mysterious: the true value sits so close to $\\tfrac{33}{20}$ that any estimate with slack of order $0.35$ was never going to be good enough.",
+      "provenance": {
+        "inspired_by": "Chinese 高考 / 强基计划 genre on 数列不等式放缩 (estimation of a sequence by comparison): a partial sum with no closed form is to be bounded above by a target constant that is tighter than the estimate produced by the standard telescoping comparison, so a sharper comparison has to be found.",
+        "source_family": "china-gaokao",
+        "adaptation": "The source genre supplies the target, the standard comparison and the need for a sharper one. Three of the permitted changes were made. First, the series was fixed as the reciprocal squares, chosen because the standard comparison $1/(k(k-1))$ has total exactly $2$ while the target is $\\tfrac74$, so the binding of the constraint is arithmetic and unambiguous rather than a matter of taste. Second, a part was added -- part (c) -- asking for the standard estimate to be carried out and its failure explained, so that the misconception is examined explicitly instead of being left as a trap. Third, the switch point $k = 3$ was made explicit in the statement of part (a), because in the source material deciding where the sharpened estimate becomes useful is left to the student and is a separate skill from the comparison itself. The context and all data are original.",
+        "resource_origin": "高考 / 强基计划 数列不等式放缩类题型（结构改编，级数、目标常数与全部数据均为原创）",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.007,
+        "nearest_bank_id": "MATH_AAHL_P1_2021May_TZ2_q01",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "max_internal_similarity": 0.028,
+        "nearest_internal_id": "MATH-AHL1.15-001",
+        "max_approach_similarity": 0.091,
+        "nearest_approach_id": "MATH-P3-011",
+        "checked_at": "2026-09-11"
+      },
+      "verification": {
+        "method": "The comparison was checked symbolically by combining the two fractions, and numerically for k = 3..199 by comparing 1/(k^2 - 1/4) with 1/k^2. The telescoping sum from k = 3 to 199 was evaluated as 0.4 - 1/199.5 and confirmed to equal the closed form. The final bound 1 + 1/4 + 2/5 = 33/20 = 1.65 was checked against 7/4 = 1.75, and the bound was verified to hold for every n from 3 to 2999 by direct evaluation, with n = 1 and n = 2 checked separately. The standard estimate was verified to satisfy 2 - 1/n >= 7/4 for every n from 4 to 2999. The partial sum S_20 was computed as 1.5961632439 and compared with both bounds and with pi^2/6.",
+        "assertions": [
+          "all([1/(k*k - 0.25) > 1/(k*k) for k in range(3, 200)])",
+          "approx(sum([1/(k-0.5) - 1/(k+0.5) for k in range(3, 200)]), 1/2.5 - 1/199.5, 1e-9)",
+          "approx(1/2.5, 0.4, 1e-12)",
+          "approx(1 + 0.25 + 0.4, 1.65, 1e-12)",
+          "1.65 < 1.75",
+          "all([1 + 0.25 + (1/2.5 - 1/(n+0.5)) < 1.75 for n in range(3, 3000)])",
+          "all([2 - 1/n >= 1.75 for n in range(4, 3000)])",
+          "all([sum([1/k**2 for k in range(1,n+1)]) < 1.75 for n in range(1, 200)])",
+          "approx(sum([1/k**2 for k in range(1,21)]), 1.596163, 1e-6)",
+          "1.596163 < 1.65",
+          "approx(sum([1/(k-1) - 1/k for k in range(2,11)]), 0.9, 1e-12)",
+          "approx(2 - 1/4, 1.75, 1e-12)",
+          "approx(33/20, 1.65, 1e-12)",
+          "all([sum([1/k**2 for k in range(1,n+1)]) < 1 + 0.25 + (1/2.5 - 1/(n+0.5)) for n in range(3, 500)])"
+        ],
+        "solution_skeleton": [
+          "combine the two candidate fractions to obtain 1/(k^2 - 1/4) and compare it with 1/k^2",
+          "sum the resulting inequality from k = 3 and telescope to obtain 2/5 minus a tail",
+          "handle n = 1 and n = 2 exactly, since the comparison is only valid from k = 3",
+          "add the exact first two terms to obtain the constant 33/20 and compare it with 7/4",
+          "carry out the standard comparison 1/(k(k-1)) and find its total is 2, so it cannot reach 7/4",
+          "evaluate S_20 numerically and check it against both bounds"
+        ]
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-13",
+      "updated_at": "2026-09-13",
+      "difficulty_evidence": {
+        "lever_type": "binding_constraint",
+        "naive_path": "Bound each term by the standard comparison 1/k^2 < 1/(k(k-1)) = 1/(k-1) - 1/k, telescope the sum to obtain S_n < 2 - 1/n, observe that this is less than 2, and conclude that the series is bounded -- reporting the bound 2, or 2 - 1/n, as the answer to a question that asked for 7/4.",
+        "failure_point": "The target 7/4 is tighter than every bound the standard comparison can produce. The telescoping sum of 1/(k(k-1)) is exactly 2, and 2 - 1/n >= 7/4 as soon as n >= 4, so for the values of n that matter the estimate certifies nothing. The constraint binds: no manipulation of the 1/(k(k-1)) family reaches 7/4, and a genuinely different comparison, valid only from k = 3, must be found and then combined with exact values for the first two terms. The standard estimate is not wrong, which is what makes the failure hard to see: it is correct and insufficient.",
+        "wrong_answer": "S_n < 2 - 1/n, so 'S_n < 2' and hence certainly less than 7/4 -- a conclusion that does not follow, because 2 - 1/n >= 7/4 for n >= 4 (for instance 2 - 1/4 = 1.75 exactly, and 2 - 1/10 = 1.9). A second wrong answer applies the sharpened comparison from k = 1 instead of k = 3, obtaining the bound 1 + 0.25 + 0.4 = 1.65 only after using 1/0.75 = 1.333 in place of the exact 1, which gives a total of about 1.98 and a spurious conclusion that the method fails."
+      }
+    },
+    {
+      "id": "MATH-P3-018",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "SL 3.1 (the distance between two points), AHL 2.12 (polynomial functions, their graphs and equations), AHL 3.12 (concept of a vector; displacement vectors)",
+      "topic": "Topic 3: Geometry and trigonometry",
+      "subtopic": "P3 extended problem: the product of the two segments of a chord through an interior point",
+      "paper": "P3",
+      "technology": "allowed",
+      "marks": 15,
+      "difficulty": 5,
+      "question_type": "problem_solving",
+      "challenge_mechanism": "The student is asked about the product PA x PB for a chord through a fixed interior point, and the natural response is to parameterise the chord by its gradient, find the two intersection points, compute the two distances, and multiply. This is entirely doable and produces an expression in the gradient that looks irreducibly messy -- a ratio of surds -- and the student must then discover, by simplifying or by evaluating, that the gradient cancels completely. The variable the student reaches for, the direction of the chord, is not what sets the answer. The efficient route makes this structural rather than miraculous: parametrising by arc length along the chord turns the two distances into the two roots of a quadratic, and their product into the constant term, which never mentions the direction at all.",
+      "command_terms": [
+        "Show that",
+        "Deduce",
+        "Determine"
+      ],
+      "tags": [
+        "circle",
+        "chord",
+        "power of a point",
+        "quadratic roots",
+        "invariance",
+        "parametrisation",
+        "problem solving"
+      ],
+      "question": "The circle $\\Gamma$ has equation $x^{2} + y^{2} = 25$, so its centre is $O = (0,0)$ and its radius is $5$. The point $P = (3,0)$ lies inside $\\Gamma$. For a real constant $m$, let $L_m$ be the line through $P$ with gradient $m$, and let $A$ and $B$ be the two points where $L_m$ meets $\\Gamma$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that $L_m$ meets $\\Gamma$ in two distinct points for every real value of $m$, and state what happens when the line through $P$ is vertical."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Parametrise $L_m$ as $(x,y) = (3,0) + \\dfrac{t}{s}(1, m)$ where $s = \\sqrt{1 + m^{2}}$, so that $|t|$ is the distance from $P$ to the point with parameter $t$. Show that the parameters of $A$ and $B$ are the two roots of\n$$t^{2} + \\frac{6}{s}\\,t - 16 = 0,$$\nand deduce that $PA \\times PB = 16$ for every real value of $m$."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Now let $P$ be any point inside a circle of radius $r$ whose centre is $O$, and let $d = OP$ with $d < r$. Show that for any line through $P$ meeting the circle at $A$ and $B$, $PA \\times PB = r^{2} - d^{2}$."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "For $P = (3,0)$ in the circle $x^{2} + y^{2} = 25$, determine the chord $AB$ for which $PA = PB$, and verify that your answer is consistent with part (b)."
+        }
+      ],
+      "answer": "(a) Points of $L_m$ satisfy $y = m(x-3)$. Substituting into $x^{2} + y^{2} = 25$,\n$$x^{2} + m^{2}(x-3)^{2} = 25 \\iff \\left(1 + m^{2}\\right)x^{2} - 6m^{2}x + \\left(9m^{2} - 25\\right) = 0$$ (M1).\nThe discriminant is\n$$\\Delta = \\left(-6m^{2}\\right)^{2} - 4\\left(1+m^{2}\\right)\\left(9m^{2}-25\\right) = 36m^{4} - 36m^{4} + 64m^{2} + 100 = 64m^{2} + 100$$ (M1) (A1).\nSince $m^{2} \\ge 0$ we have $\\Delta \\ge 100 > 0$ for every real $m$, so the quadratic has two distinct real roots and $L_m$ meets $\\Gamma$ in two distinct points (A1). When the line through $P$ is vertical its gradient is undefined and it is not one of the $L_m$; that line is $x = 3$, which meets $\\Gamma$ where $9 + y^{2} = 25$, that is at $(3,4)$ and $(3,-4)$, again two distinct points (AG).\n\n(b) Write the point of $L_m$ with parameter $t$ as $\\left(3 + \\dfrac{t}{s},\\; \\dfrac{mt}{s}\\right)$, where $s^{2} = 1+m^{2}$; the direction vector $\\dfrac{1}{s}(1,m)$ has unit length, so $|t|$ is indeed the distance from $P$ (M1). Substituting,\n$$\\left(3 + \\frac{t}{s}\\right)^{2} + \\left(\\frac{mt}{s}\\right)^{2} = 25 \\iff 9 + \\frac{6t}{s} + \\frac{t^{2}}{s^{2}}\\left(1 + m^{2}\\right) = 25$$ (M1),\nand since $1 + m^{2} = s^{2}$ the last term is simply $t^{2}$, giving\n$$t^{2} + \\frac{6}{s}\\,t - 16 = 0$$ (A1).\nBy Vieta's formulas the product of the two roots is the constant term, $-16$, so $t_A t_B = -16$ (A1). The two parameters have opposite signs, which is consistent with $P$ lying between $A$ and $B$, and $|t_A| = PA$, $|t_B| = PB$, so\n$$PA \\times PB = |t_A t_B| = 16$$ (A1) (AG),\nindependently of $m$.\n\n(c) Place the origin at $O$ and the $x$-axis along $OP$, so that $P = (d, 0)$; this loses no generality because a rotation about $O$ preserves distances and the circle (M1). Let $\\mathbf{u} = (\\cos\\theta, \\sin\\theta)$ be a unit vector along the line, and write a general point of the line as $P + t\\mathbf{u} = \\left(d + t\\cos\\theta,\\; t\\sin\\theta\\right)$, so that $|t|$ is the distance from $P$ (M1). Substituting into $x^{2} + y^{2} = r^{2}$,\n$$\\left(d + t\\cos\\theta\\right)^{2} + \\left(t\\sin\\theta\\right)^{2} = r^{2} \\iff t^{2} + 2d\\cos\\theta\\,t + \\left(d^{2} - r^{2}\\right) = 0$$ (A1).\nThe two intersection points correspond to the two roots, and by Vieta their product is the constant term $d^{2} - r^{2}$. Since $d < r$ this is negative, so the roots have opposite signs -- that is, $P$ lies between $A$ and $B$ -- and therefore\n$$PA \\times PB = |t_A t_B| = r^{2} - d^{2}$$ (A1) (AG),\nwhich does not involve $\\theta$: the product is the same for every chord through $P$. For part (b) we have $r^{2} - d^{2} = 25 - 9 = 16$, in agreement (AG).\n\n(d) Since $PA = PB$ means that $P$ is the midpoint of $AB$, and the perpendicular from the centre of a circle to a chord bisects that chord, the chord with midpoint $P$ is the one perpendicular to $OP$ (M1). Here $OP$ lies along the $x$-axis, so $AB$ is the vertical line $x = 3$ (A1). Then $y^{2} = 25 - 9 = 16$, so $A = (3,4)$ and $B = (3,-4)$, and $PA = PB = 4$, giving $PA \\times PB = 16$, which agrees with the value $r^{2} - d^{2} = 25 - 9 = 16$ obtained in parts (b) and (c) (A1) (AG). In terms of part (b) this chord corresponds to the limiting case $s \\to \\infty$: the sum of the two parameters is $t_A + t_B = -\\dfrac{6}{s} \\to 0$, so $t_A = -t_B$ and $|t_A| = |t_B| = 4$ (AG).",
+      "markscheme_notes": "(a) Award (M1) for the substitution and (M1)(A1) for the discriminant simplified to $64m^{2}+100$. The final (A1) requires the observation that $64m^{2} + 100 \\ge 100 > 0$; a candidate who stops at $\\Delta = 64m^{2}+100$ without drawing the conclusion forfeits it. The vertical line must be addressed separately and must be identified as *not* being one of the $L_m$; a candidate who writes 'the case $m = \\infty$' is condoning a notational abuse that should be pointed out but not penalised, provided the vertical line is correctly identified as $x = 3$ with two intersection points. Accept a geometric argument in place of the discriminant, provided it establishes that $P$ is strictly inside the circle, since every line through an interior point meets the circle twice; this is a fully valid alternative earning full marks.\n\n(b) The parametrisation must be shown to be by arc length: award (M1) for that observation explicitly, since without it $|t|$ is not the distance and the whole part collapses. Award (M1) for the substitution, (A1) for the simplified quadratic, and (A1) for the Vieta step. The final (A1) requires both the product of the roots and the conversion from $|t_A t_B|$ to $PA \\times PB$; a candidate who obtains $t_A t_B = -16$ and stops has not answered the question. Note that $PA \\times PB = 16$ is the absolute value, since the roots are of opposite sign; a candidate who reports $-16$ forfeits the final (A1).\n\n(c) The rotation argument must be stated; a candidate who places $P$ on the $x$-axis without saying that this is without loss of generality earns (M1) but should be reminded of it. The key marks are (M1) for the unit-vector parametrisation, (A1) for the quadratic in $t$, and (A1) for the Vieta step together with the observation that $d < r$ makes the product negative and hence $P$ interior to the chord. A candidate who argues from the intersecting-chords theorem in reverse -- computing $r^{2}-d^{2}$ as the product for the diameter and asserting it is the same for all chords -- has assumed what is to be proved and earns at most the (M1) for the diameter case.\n\n(d) Award (M1) for the perpendicular-from-centre argument or an equivalent statement that $P$ is the midpoint, (A1) for the chord $x = 3$ with the two endpoints, and (A1) for the verification. The observation that this is the limit $s \\to \\infty$ of part (b) earns the final (AG); a candidate who instead sets $m = 0$ has confused the horizontal with the vertical chord and should be checked carefully.",
+      "explanation": "The item is built around a quantity that does not depend on the thing everyone expects it to depend on. The product $PA \\times PB$ is computed along a chord, the chord has a direction, and the direction is the only free parameter in the problem -- so the overwhelming prior is that the answer is a function of the direction. It is not. The product is $r^{2} - d^{2}$, which mentions the radius and the position of $P$ and nothing else.\n\nPart (b) is designed so that a student who does not see the structure can still get the answer, by brute force, and then be unable to explain it. Parameterising by $x$ and substituting produces a quadratic whose roots are the $x$-coordinates of $A$ and $B$, and the distances require square roots of expressions in those roots; the product of the two distances is a messy ratio of surds in $m$ which does, in fact, simplify to $16$, but the simplification is unpleasant and gives no insight. Parameterising by arc length changes the problem: because the direction vector is normalised, the parameter $t$ *is* the signed distance, the two distances become the two roots of a quadratic, and their product is just the constant term. The constant term is $-16$, and it never mentioned $m$ at all.\n\nPart (c) is the generalisation, and it is worth seeing how little changes. Replacing $9$ by $d^{2}$ and $25$ by $r^{2}$, the same substitution gives $t^{2} + 2d\\cos\\theta\\,t + (d^{2}-r^{2}) = 0$. The direction enters only through the coefficient of $t$ -- that is, through the *sum* of the roots -- and never through the constant term. So the invariance is structural: the product of the two segments is the constant term, and the constant term is fixed by where $P$ is and how big the circle is. This is the theorem usually called the power of a point, and the reason it is worth deriving rather than quoting is that the derivation shows exactly which part of the quadratic carries the direction information.\n\nPart (d) closes the loop by asking for the one chord that the invariance does not distinguish: the chord bisected at $P$. Since the perpendicular from the centre bisects a chord, that chord is perpendicular to $OP$; in the parameterisation of part (b) it is the limit in which the sum of the roots vanishes, $t_A = -t_B$, and the two segments are equal at $4$. A student who has understood that the direction affects only the sum of the roots will find this immediate, and a student who has only brute-forced part (b) will have to compute it from scratch.",
+      "provenance": {
+        "inspired_by": "Chinese 高考 / 强基计划 genre on 解析几何 (analytic geometry) with an invariance: a chord through a fixed point of a conic is parameterised by its direction, and a product or sum of the resulting segment lengths turns out not to depend on the direction -- the classical power-of-a-point relation, usually posed for a circle and asked as a proof of invariance.",
+        "source_family": "china-qiangji",
+        "adaptation": "The source genre supplies the parametrisation and the invariance. Three of the permitted changes were made. First, the circle and the point were fixed at $x^{2}+y^{2}=25$ and $P=(3,0)$, chosen so that $r^{2}-d^{2}=16$ is a perfect square; this makes the bisected chord of part (d) have segments of length exactly $4$ and therefore makes the invariance checkable by hand, whereas a generic point would give a surd and hide the arithmetic. Second, the parametrisation by arc length was made explicit in the statement of part (b) rather than left for the student to invent, because the Chinese sources typically parameterise by $x$-coordinate and then simplify a surd ratio, which tests algebra rather than structure. Third, a part was added -- part (d) -- asking for the chord bisected at $P$, which is the one chord the invariance cannot distinguish and which is therefore the natural place to test whether the student has understood which quantity carries the direction. The context and all data are original.",
+        "resource_origin": "高考 / 强基计划 解析几何中的定值问题（圆幂定理）类题型（结构改编，圆、定点与全部数据均为原创）",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.007,
+        "nearest_bank_id": "MAAQB_20N_2_SL_TZ0_S_7",
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "max_internal_similarity": 0.006,
+        "nearest_internal_id": "MATH-AHL5.16-001",
+        "max_approach_similarity": 0.08,
+        "nearest_approach_id": "MATH-AHL2.10-001",
+        "checked_at": "2026-09-11"
+      },
+      "verification": {
+        "method": "The discriminant of the line-circle intersection was simplified symbolically to 64m^2 + 100 and checked to be positive for m = -50..50. The chord product was computed two ways. First, by brute force: for m = 0, 0.5, 1, 2, 5, 10 the two intersection points were found from the x-quadratic and the product of the two distances was computed directly, giving 16 to ten decimal places in every case. Second, by the arc-length parametrisation: the quadratic in t was derived symbolically as t^2 + (6/s)t - 16 = 0, whose constant term is -16 for every m. The vertical chord x = 3 was checked separately, giving endpoints (3, +/-4) and a product of 16. For m = 1 the exact algebra gives distances (sqrt(41)-3)/2 and (sqrt(41)+3)/2, whose product is exactly 8, so the chord product is 2 x 8 = 16 exactly. The general result r^2 - d^2 was checked at d = 0 (giving 25) and d = 3 (giving 16).",
+        "assertions": [
+          "all([64*m*m + 100 > 0 for m in range(-50, 51)])",
+          "approx(25 - 3**2, 16, 1e-12)",
+          "approx(25 - 0, 25, 1e-12)",
+          "approx(sqrt(25 - 9), 4, 1e-12)",
+          "approx(((sqrt(41)-3)/2) * ((sqrt(41)+3)/2), 8, 1e-9)",
+          "approx(((sqrt(41)-3)/2) * ((sqrt(41)+3)/2) * 2, 16, 1e-9)",
+          "approx((41-9)/2, 16, 1e-12)",
+          "approx(2*8, 16, 1e-12)",
+          "approx(4*4, 16, 1e-12)",
+          "approx((3 + sqrt(41))/2, 4.7015621187, 1e-8)",
+          "approx((sqrt(41) - 3)/2, 1.7015621187, 1e-8)",
+          "approx(3 - (3 - sqrt(41))/2, 4.7015621187, 1e-8)",
+          "approx(4**2, 16, 1e-12)",
+          "approx((6/sqrt(5))**2/4 - (36/5 + 64)/4, -16, 1e-12)",
+          "approx((36/5)/4 - 71.2/4, -16, 1e-12)"
+        ],
+        "solution_skeleton": [
+          "substitute y = m(x-3) into the circle, examine the discriminant to confirm two intersections for every m, and handle the vertical line separately since it is not one of the L_m",
+          "parametrise the chord by arc length so that the parameter is the signed distance from P",
+          "substitute the parametrisation into the circle and reduce to t^2 + (6/s)t - 16 = 0",
+          "read the product of the two distances off the constant term and note it does not involve m",
+          "generalise by placing O at the origin and P at (d,0), obtaining the constant term d^2 - r^2",
+          "identify the bisected chord as the one perpendicular to OP and check it against the invariant"
+        ]
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-13",
+      "updated_at": "2026-09-13",
+      "difficulty_evidence": {
+        "lever_type": "non_governing_variable",
+        "naive_path": "Parameterise the chord by its gradient m, substitute into the circle, solve the resulting quadratic for the two x-coordinates, compute the two distances from P with the distance formula, and multiply them -- expecting the answer to be a function of m, and either carrying a messy ratio of surds forward or concluding that the product 'depends on the chord' because the expression contains m.",
+        "failure_point": "The direction of the chord does not set the product. Parameterising by arc length makes the two distances the two roots of t^2 + (6/s)t - 16 = 0, so the product is the constant term -16, and the direction enters only the coefficient of t -- that is, the sum of the roots. The variable the student reaches for, the gradient, is present in the working but cancels out of the answer, and a student who parameterises by x-coordinate instead sees the direction appear in the expression without recognising that it is about to vanish.",
+        "wrong_answer": "The product is reported as a function of the chord direction -- for instance the expression obtained by substituting y = m(x-3) and multiplying the two distances, left unsimplified because it contains m -- or, in the sign-confused form, as -16 instead of 16, from reading the constant term of the quadratic in t without taking the absolute value. The correct answer is PA x PB = 16 for every chord, equal to r^2 - d^2 = 25 - 9."
+      }
+    }
+  ]
+}

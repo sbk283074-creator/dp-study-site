@@ -147,6 +147,38 @@ SOURCE_FAMILIES = {
     "original", "ib", "china-gaokao", "china-qiangji", "china-competition",
     "uk-alevel", "uk-further-maths", "us-ap", "singapore-alevel", "other",
 }
+# The closed `topic` vocabulary, per subject. Names follow the guide each subject
+# is pinned to (see SUBJECTS in build.py). The Computer Science entries are the
+# two themes of the 2027 guide; A1 "Computer Fundamentals" and B2 "Programming"
+# are strands *within* those themes, not themes themselves.
+TOPICS = {
+    "Math AA HL": {
+        "Topic 1: Number and algebra",
+        "Topic 2: Functions",
+        "Topic 3: Geometry and trigonometry",
+        "Topic 4: Statistics and probability",
+        "Topic 5: Calculus",
+    },
+    "Physics HL": {
+        "Theme A: Space, time and motion",
+        "Theme B: The particulate nature of matter",
+        "Theme C: Wave behaviour",
+        "Theme D: Fields",
+        "Theme E: Nuclear and quantum physics",
+    },
+    "Computer Science HL": {
+        "Theme A: Concepts of computer science",
+        "Theme B: Computational thinking and problem-solving",
+    },
+    "Business Management SL": {
+        "Unit 1: Introduction to business management",
+        "Unit 2: Human resource management",
+        "Unit 3: Finance and accounts",
+        "Unit 4: Marketing",
+        "Unit 5: Operations management",
+        "Unit 6: The SL Toolkit",
+    },
+}
 # The rubric of STANDARD.md 2.3, as a table: label -> the score it needs.
 # The maximum is 9, not 10: the mark-distribution test that used to carry the
 # tenth point was withdrawn (see the note in difficulty_score), so the same
@@ -401,6 +433,36 @@ def check_difficulty(q, fail, warn):
         warn.append("difficulty_evidence: " + n)
 
 
+def check_topic(q, fail, warn):
+    """The `topic` label must come from the closed vocabulary for its subject.
+
+    Every item carries a `topic`, and it is the label a learner filters by, so a
+    near-miss label silently splits one topic into two and makes the filter lie.
+    That is not hypothetical: before this check existed the bank used three
+    different labels for Computer Science Theme A ("Concepts of computer
+    science", "Computer fundamentals", "Systems in organisations") and two for
+    Theme B, and two for BM Unit 3 ("Unit 3:" and "Topic 3:"). The theme names
+    below are taken from the guides the bank is pinned to -- for Computer
+    Science, the 2027 guide, which defines exactly two themes and places
+    "Computer Fundamentals" (A1) and "Programming" (B2) *inside* them as
+    strands. See tools/normalise_topics.py for the migration that fixed the
+    labels that had drifted.
+    """
+    subj = q.get("subject", "")
+    topic = q.get("topic")
+    allowed = TOPICS.get(subj)
+    if not topic:
+        fail.append("no topic label")
+        return
+    if allowed is None:
+        warn.append("no topic vocabulary defined for subject %r" % subj)
+        return
+    if topic not in allowed:
+        near = sorted(allowed, key=lambda t: -_overlap(t, topic))[0] if allowed else ""
+        fail.append("topic %r is not in the vocabulary for %s (did you mean %r?)"
+                    % (topic, subj, near))
+
+
 def check_sourcing(q, fail, warn):
     """Sourcing must be recorded, and a non-original claim must name its
     origin -- otherwise "we draw on other syllabuses" is untestable."""
@@ -471,6 +533,7 @@ def check(q, seen_ids, medians):
 
     # ---- difficulty must be earned, and sourcing must be recorded ---------
     check_difficulty(q, fail, warn)
+    check_topic(q, fail, warn)
     check_sourcing(q, fail, warn)
 
     # ---- length contract -------------------------------------------------
@@ -663,6 +726,27 @@ def check(q, seen_ids, medians):
     if "<script" in blob.lower():
         fail.append("script tag in content")
 
+    # `blob` covers the prose fields only. Figures and stimuli are markup too, and
+    # an HTML entity inside a figure SVG renders inconsistently in exactly the
+    # same way -- but fix_json.py decodes it at the start of every pipeline run,
+    # so the hole never surfaced as a failure; it surfaced as an unexplained diff
+    # in a file nobody had edited. Checked separately from `blob` so that the
+    # unpaired-$ test above is not applied to SVG coordinates.
+    extras = []
+    fig = q.get("figure")
+    if isinstance(fig, dict):
+        extras += [str(fig.get(k) or "") for k in ("content", "caption")]
+    st = q.get("stimulus")
+    if isinstance(st, dict):
+        extras += [str(st.get(k) or "") for k in ("body", "title", "table")]
+    elif isinstance(st, str):
+        extras.append(st)
+    markup = " ".join(extras)
+    if ENTITY.search(markup):
+        fail.append("HTML entity present in figure/stimulus (use literal characters)")
+    if "<script" in markup.lower():
+        fail.append("script tag in figure/stimulus")
+
     # ---- originality ------------------------------------------------------
     orig = q.get("originality") or {}
     if orig.get("max_similarity") is None:
@@ -707,10 +791,16 @@ def evaluate(expr):
     """Run one verification assertion. Returns (bool, error_or_None)."""
     # Curated namespace: pure functions only, no builtins. `comb` and `factorial`
     # are included so that combinatorial identities can be machine-checked the
-    # same way arithmetic ones are.
+    # same way arithmetic ones are. `all` and `any` are included because the
+    # natural assertion for a sequence or a counting item is a universal one --
+    # "for every k in range(...)" -- and without them authors are forced into
+    # obscure encodings such as min([...]) that hide the intent. Both are pure
+    # and side-effect free, so admitting them widens what can be *expressed*
+    # without weakening what is *checked*.
     env = {"__builtins__": {}, "abs": abs, "min": min, "max": max, "round": round,
            "sum": sum, "pow": pow, "float": float, "int": int, "len": len,
-           "range": range, "comb": math.comb, "factorial": math.factorial}
+           "range": range, "comb": math.comb, "factorial": math.factorial,
+           "all": all, "any": any}
     env.update({k: getattr(math, k) for k in
                 ("sqrt", "sin", "cos", "tan", "asin", "acos", "atan", "atan2", "log",
                  "log10", "exp", "radians", "degrees", "pi", "e", "hypot", "fabs")})

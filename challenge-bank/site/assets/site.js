@@ -31,7 +31,7 @@
   }
   Array.prototype.forEach.call(document.querySelectorAll('.q-done, .q-done-page'), wireToggle);
 
-  // ---------- Listing filter: search / paper / difficulty / done ----------
+  // ---------- Listing filter: search / topic / paper / difficulty / done ----------
   var q = document.getElementById('q');
   var box = document.getElementById('results');
   if(q && box){
@@ -40,6 +40,7 @@
       var term = q.value.trim().toLowerCase();
       var diff = (document.getElementById('f-diff')||{}).value || '';
       var paper = (document.getElementById('f-paper')||{}).value || '';
+      var topic = (document.getElementById('f-topic')||{}).value || '';
       var fd = (document.getElementById('f-done')||{}).value || '';
       var shown = 0;
       Array.prototype.forEach.call(document.querySelectorAll('[data-search]'), function(card){
@@ -48,6 +49,7 @@
         var ok = (!term || hay(card).indexOf(term) !== -1)
               && (!diff || card.dataset.diff === diff)
               && (!paper || card.dataset.paper === paper)
+              && (!topic || card.dataset.topic === topic)
               && (!fd || (fd === 'done' ? done : !done));
         card.style.display = ok ? '' : 'none';
         if(ok) shown++;
@@ -56,7 +58,7 @@
       if(note) note.textContent = shown + ' question' + (shown === 1 ? '' : 's') + ' shown';
     };
     q.addEventListener('input', window.__cbRunFilter);
-    ['f-diff','f-paper','f-done'].forEach(function(id){
+    ['f-diff','f-paper','f-topic','f-done'].forEach(function(id){
       var el = document.getElementById(id);
       if(el) el.addEventListener('change', window.__cbRunFilter);
     });
@@ -76,6 +78,7 @@
       gr.innerHTML = hits.length ? hits.map(function(x){
         return '<div class="q"><h3><a href="' + x.u + '">' + x.t + '</a></h3>' +
                '<div class="meta"><span class="chip">' + x.sub + '</span>' +
+               (x.topic ? '<span class="chip chip-topic">' + x.topic + '</span>' : '') +
                '<span class="chip">' + x.paper + '</span>' +
                '<span class="chip">' + x.marks + ' marks</span>' +
                '<span class="chip chip-hard">difficulty ' + x.d + '</span></div></div>';
