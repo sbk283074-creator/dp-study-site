@@ -59,6 +59,19 @@
     "allam-2-7b": "Allam 2 7B"
   };
 
+  // Capability notes used only as a FALLBACK, when the live status endpoint
+  // cannot be reached — so the usage panel still tells the student what each
+  // model is for even with no quota numbers to show.
+  var MODEL_INFO = {
+    "openai/gpt-oss-120b": { who: "OpenAI open-weight · 117B MoE", best: "Hardest problems, proofs, multi-step reasoning" },
+    "openai/gpt-oss-20b": { who: "OpenAI open-weight · 21B MoE", best: "Quick checks and short explanations" },
+    "qwen/qwen3.6-27b": { who: "Alibaba · 27B dense", best: "Chinese answers, general IB questions" },
+    "qwen/qwen3.8-27b": { who: "Alibaba · 27B dense", best: "Standard IB questions, especially in Chinese" },
+    "groq/compound-mini": { who: "Groq system · 120B + 70B + tools", best: "Long, detailed explanations (unlimited daily tokens)" },
+    "groq/compound": { who: "Groq system · 120B + 70B + tools", best: "Long answers that need web search or code tools" },
+    "allam-2-7b": { who: "SDAIA · 7B", best: "Many short, simple questions (largest request quota)" }
+  };
+
   // --- the complete site map: every sub-site reachable from every page ------
   var SITE = [
     {
@@ -93,7 +106,14 @@
   ];
 
   function defaultSettings() {
-    return { depth: "standard", difficulty: "medium", length: "medium", model: "", hideControls: false };
+    return {
+      depth: "standard",
+      difficulty: "medium",
+      length: "medium",
+      model: "",
+      hideControls: false,
+      showUsage: false // the usage strip stays collapsed until asked for
+    };
   }
   function loadSettings() {
     try {
@@ -104,7 +124,8 @@
         difficulty: s.difficulty || d.difficulty,
         length: s.length || d.length,
         model: s.model || d.model,
-        hideControls: !!s.hideControls
+        hideControls: !!s.hideControls,
+        showUsage: !!s.showUsage
       };
     } catch (e) { return defaultSettings(); }
   }
@@ -282,7 +303,9 @@
       ".dp-ai-head .chip{font-size:11px;font-weight:600;background:rgba(255,255,255,.18);padding:3px 8px;border-radius:999px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}",
       ".dp-ai-head button{background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:15px;line-height:1}",
       ".dp-ai-head button:hover{background:rgba(255,255,255,.28)}",
-      ".dp-ai-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:#fafbfd}",
+      // min-height:0 lets the message list actually shrink in a flex column, so
+      // opening the usage strip can never push the input out of the panel
+      ".dp-ai-msgs{flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:#fafbfd}",
       ".dp-ai-msg{max-width:88%;padding:10px 13px;border-radius:12px;font-size:14px;line-height:1.55;word-wrap:break-word}",
       ".dp-ai-msg p{margin:0 0 8px}.dp-ai-msg p:last-child{margin:0}",
       ".dp-ai-msg code{background:#eef1ff;padding:1px 5px;border-radius:5px;font-size:12.5px}",
@@ -327,6 +350,31 @@
       "select.dp-ai-sel{flex:1;padding:7px 9px;border:1px solid #ccd5e4;border-radius:9px;font:600 12px -apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#fff;color:#151923;cursor:pointer}",
       ".dp-ai-hint{font-size:11px;color:#5a6577;background:#f4f6fb;border:1px solid #e6eaf3;border-radius:8px;padding:6px 9px;line-height:1.45;margin-top:2px}",
       ".dp-ai-hint b{color:#2a44b8}",
+      // ---- collapsible usage strip: one line when closed ----
+      ".dp-ai-usage{position:relative;border-top:1px solid #eef1f6;background:#fff}",
+      ".dp-ai-usage-toggle{display:flex;align-items:center;gap:8px;width:100%;border:none;background:transparent;",
+      "padding:7px 12px;cursor:pointer;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;text-align:left}",
+      ".dp-ai-usage-toggle:hover{background:#f7f9fd}",
+      ".dp-ai-usage-toggle .dot{width:7px;height:7px;border-radius:50%;background:#1f9d5a;box-shadow:0 0 0 3px rgba(31,157,90,.18);flex:0 0 auto}",
+      ".dp-ai-usage-toggle .dot.warn{background:#d97706;box-shadow:0 0 0 3px rgba(217,119,6,.16)}",
+      ".dp-ai-usage-toggle .dot.off{background:#b9c0cf;box-shadow:none}",
+      ".dp-ai-usage-toggle .tlab{font-size:10px;font-weight:800;color:#7a8398;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}",
+      ".dp-ai-usage-sum{flex:1;font-size:11px;font-weight:600;color:#3653d6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right}",
+      ".dp-ai-usage .dp-ai-chev{transform:rotate(-90deg)}",
+      ".dp-ai-usage.open .dp-ai-chev{transform:none}",
+      // the open body floats over the conversation instead of pushing the input
+      // box around, so it costs exactly zero layout space on any screen
+      ".dp-ai-usage-body{display:none;position:absolute;left:0;right:0;bottom:100%;z-index:2;",
+      "box-sizing:border-box;padding:9px 12px;max-height:190px;overflow-y:auto;background:#fff;",
+      "border-top:1px solid #eef1f6;box-shadow:0 -10px 24px rgba(16,24,40,.10)}",
+      ".dp-ai-usage.open .dp-ai-usage-body{display:block}",
+      ".dp-ai-urow{border:1px solid #e6eaf3;border-radius:8px;padding:6px 8px;margin-bottom:5px;background:#fbfcfe}",
+      ".dp-ai-urow.on{background:#f2f5ff;border-color:#dbe2ff}",
+      ".dp-ai-urow .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}",
+      ".dp-ai-urow .nm{font-size:11.5px;font-weight:700;color:#1d2436;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
+      ".dp-ai-urow .q{font-size:10.5px;color:#5a6577;white-space:nowrap}",
+      ".dp-ai-urow .sub{display:block;font-size:10.5px;color:#6c7788;margin-top:2px;line-height:1.4}",
+      ".dp-ai-unote{margin:2px 0 0;font-size:10px;color:#8b93a7;line-height:1.45}",
       ".dp-ai-foot{padding:7px 12px;font-size:11px;color:#6c7788;display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #eef1f6;background:#fff}",
       ".dp-ai-foot .meta{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}",
       ".dp-ai-foot a{color:#3653d6;text-decoration:none;font-weight:600;white-space:nowrap}",
@@ -389,6 +437,16 @@
           '<button id="dpAiClose" aria-label="Close">\u00d7</button>' +
         '</div>' +
         '<div class="dp-ai-msgs" id="dpAiMsgs"></div>' +
+        '<div class="dp-ai-usage" id="dpAiUsage">' +
+          '<button class="dp-ai-usage-toggle" id="dpAiUsageToggle" aria-expanded="false" aria-controls="dpAiUsageBody" ' +
+            'title="How much free AI is left today, and what each model is for">' +
+            '<span class="dot off" id="dpAiUsageDot"></span>' +
+            '<span class="tlab">Usage</span>' +
+            '<span class="dp-ai-usage-sum" id="dpAiUsageSum">checking\u2026</span>' +
+            '<span class="dp-ai-chev">\u25be</span>' +
+          '</button>' +
+          '<div class="dp-ai-usage-body" id="dpAiUsageBody"></div>' +
+        '</div>' +
         '<div class="dp-ai-ctrl" id="dpAiCtrl">' +
           '<button class="dp-ai-ctrl-toggle" id="dpAiCtrlToggle" aria-expanded="true">' +
             '<span class="gear">\u2699</span>' +
@@ -429,9 +487,17 @@
     var ctrlSum = document.getElementById("dpAiCtrlSum");
     var modelSel = document.getElementById("dpAiModel");
     var hintEl = document.getElementById("dpAiHint");
+    var usageBox = document.getElementById("dpAiUsage");
+    var usageToggle = document.getElementById("dpAiUsageToggle");
+    var usageSum = document.getElementById("dpAiUsageSum");
+    var usageBody = document.getElementById("dpAiUsageBody");
+    var usageDot = document.getElementById("dpAiUsageDot");
     var navBtn = document.getElementById("dpAiNavBtn");
     var nav = document.getElementById("dpAiNav");
     var navClose = document.getElementById("dpAiNavClose");
+
+    // last good /api/ask/status payload — feeds the usage strip
+    var poolState = null;
 
     function scrollDown() { msgs.scrollTop = msgs.scrollHeight; }
 
@@ -669,15 +735,101 @@
         " \u00b7 " + (SHORT_AXIS[settings.length] || settings.length) +
         " \u00b7 " + (SHORT_AXIS[settings.depth] || settings.depth) +
         " \u00b7 " + (SHORT_AXIS[settings.difficulty] || settings.difficulty);
+      // the usage strip marks the model that will actually answer, so it has to
+      // follow the same settings the hint does
+      renderUsage();
     }
     function applyCollapse() {
       ctrl.classList.toggle("collapsed", !!settings.hideControls);
       ctrlToggle.setAttribute("aria-expanded", settings.hideControls ? "false" : "true");
     }
+
+    // --- usage strip: the same "what is left today" view the per-question Ask
+    //     AI panel has, but collapsed to a single line so it costs no room ---
+    function fmtInt(n) { return Number(n || 0).toLocaleString(); }
+    function shortDur(sec) {
+      if (!isFinite(sec) || sec < 0) return "";
+      var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60);
+      return h ? h + "h " + m + "m" : Math.max(1, m) + "m";
+    }
+    function usageRow(name, quota, sub, isPick) {
+      return '<div class="dp-ai-urow' + (isPick ? " on" : "") + '">' +
+        '<div class="top"><span class="nm">' + escapeHtml(name) + '</span>' +
+        '<span class="q">' + escapeHtml(quota) + '</span></div>' +
+        (sub ? '<span class="sub">' + escapeHtml(sub) + '</span>' : '') +
+        '</div>';
+    }
+    function renderUsage() {
+      if (!usageBox) return;
+      var auto = settings.model || predictModel(settings);
+      var rows = "", sum = "", dot = "dot off";
+      if (poolState && poolState.pool && poolState.pool.length) {
+        var ag = poolState.aggregate || {};
+        var total = poolState.pool.length;
+        var avail = ag.availableNow == null
+          ? poolState.pool.filter(function (m) { return m.available; }).length
+          : ag.availableNow;
+        sum = avail + "/" + total + " free · " + fmtInt(ag.rpdRemaining) + " req left today";
+        var rs = poolState.resetInSeconds;
+        if (isFinite(rs)) sum += " · resets in " + shortDur(rs);
+        dot = avail === 0 ? "dot off" : (avail < Math.ceil(total / 2) ? "dot warn" : "dot");
+        rows = poolState.pool.map(function (m) {
+          var isPick = m.id === auto;
+          var caps = m.caps || MODEL_INFO[m.id] || {};
+          var sub = (caps.vendor ? caps.vendor + " · " + caps.size : caps.who || "") +
+            (caps.bestFor || caps.best ? " — Best for: " + (caps.bestFor || caps.best) : "");
+          return usageRow(
+            labelFor(m.id) + (isPick ? " ★" : "") + (m.available ? "" : " · capped"),
+            (m.remaining === null ? "∞" : fmtInt(m.remaining)) + " req · " +
+              (m.tpdRemaining === null ? "∞" : fmtInt(m.tpdRemaining)) + " tok",
+            sub,
+            isPick
+          );
+        }).join("");
+      } else {
+        // No live numbers: fall back to what each model is good at.
+        sum = "capabilities only";
+        rows = Object.keys(MODEL_LABELS).map(function (id) {
+          var info = MODEL_INFO[id] || {};
+          return usageRow(labelFor(id), "quota offline", info.best ? info.who + " — Best for: " + info.best : "", id === auto);
+        }).join("");
+      }
+      usageBody.innerHTML = rows +
+        '<p class="dp-ai-unote">Requests = how many questions per day; tokens = how long the ' +
+        'answers can be. \u201c\u221e\u201d means no cap on that dimension. Quotas reset at 00:00 UTC.</p>';
+      usageSum.textContent = sum;
+      usageDot.className = dot;
+    }
+    function applyUsage() {
+      if (!usageBox) return;
+      usageBox.classList.toggle("open", !!settings.showUsage);
+      usageToggle.setAttribute("aria-expanded", settings.showUsage ? "true" : "false");
+      sizeUsageBody();
+    }
+    // The body floats above the strip, so its only limit is the room between the
+    // header and the strip — measure that and cap it, or it would cover the title.
+    function sizeUsageBody() {
+      if (!usageBox || !usageBox.classList.contains("open")) return;
+      var pr = panel.getBoundingClientRect();
+      var sr = usageBox.getBoundingClientRect();
+      var head = panel.querySelector(".dp-ai-head");
+      var headH = head ? head.getBoundingClientRect().height : 0;
+      var room = Math.floor(sr.top - pr.top - headH - 8);
+      usageBody.style.maxHeight = Math.max(64, Math.min(190, room)) + "px";
+    }
+    usageToggle.addEventListener("click", function () {
+      settings.showUsage = !settings.showUsage;
+      saveSettings(settings);
+      applyUsage();
+    });
+    window.addEventListener("resize", sizeUsageBody);
+    renderUsage();
+
     ctrlToggle.addEventListener("click", function () {
       settings.hideControls = !settings.hideControls;
       saveSettings(settings);
       applyCollapse();
+      sizeUsageBody(); // the control bar just changed height
     });
     ctrl.querySelectorAll(".dp-ai-seg button").forEach(function (b) {
       b.addEventListener("click", function () {
@@ -694,36 +846,41 @@
       refreshHint();
     });
 
-    // populate model picker from the live status endpoint (fallback to known pool)
-    function fillModels() {
-      var ids = Object.keys(MODEL_LABELS);
-      function apply(list) {
-        list.forEach(function (id) {
-          if (!id) return;
-          var o = document.createElement("option");
-          o.value = id;
-          o.textContent = labelFor(id);
-          modelSel.appendChild(o);
-        });
-        syncSegs();
-        refreshHint();
-      }
+    // Model picker + usage strip, both fed by the live status endpoint.
+    // The picker is rebuilt each time (never appended twice) so a refresh after
+    // every reply cannot duplicate options.
+    function applyModelList(list) {
+      while (modelSel.options.length > 1) modelSel.removeChild(modelSel.lastChild);
+      (list || []).forEach(function (id) {
+        if (!id) return;
+        var o = document.createElement("option");
+        o.value = id;
+        o.textContent = labelFor(id);
+        modelSel.appendChild(o);
+      });
+      syncSegs();
+      refreshHint();
+    }
+    function applyStatus(d) {
+      if (d && d.configured === false) poolState = null;
+      else if (d && Array.isArray(d.pool) && d.pool.length) poolState = d;
+      if (poolState) applyModelList(poolState.pool.map(function (m) { return m.id; }));
+      else applyModelList(Object.keys(MODEL_LABELS));
+      renderUsage();
+    }
+    function fetchStatus() {
       try {
         fetch(STATUS, { method: "GET", headers: { "content-type": "application/json" } })
           .then(function (r) { return r.ok ? r.json() : null; })
-          .then(function (d) {
-            var list = (d && Array.isArray(d.pool) && d.pool.length)
-              ? d.pool.map(function (m) { return m.id; })
-              : ids;
-            apply(list);
-          })
-          .catch(function () { apply(ids); });
-      } catch (e) { apply(ids); }
+          .then(function (d) { applyStatus(d); })
+          .catch(function () { applyStatus(null); });
+      } catch (e) { applyStatus(null); }
     }
-    fillModels();
+    fetchStatus();
     syncSegs();
     refreshHint();
     applyCollapse();
+    applyUsage();
 
     function setLoading(on) {
       send.disabled = on;
@@ -822,7 +979,13 @@
           meta.textContent = "";
           meta.title = "";
         })
-        .then(function () { clearTimeout(timer); setLoading(false); text.focus(); });
+        .then(function () {
+          clearTimeout(timer);
+          setLoading(false);
+          text.focus();
+          // Every reply spends quota, so re-read the live numbers.
+          fetchStatus();
+        });
     }
 
     send.addEventListener("click", sendMessage);
