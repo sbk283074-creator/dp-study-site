@@ -195,12 +195,39 @@ mjx-container[display="true"]{display:block !important;padding:.15em 0 .5em}
   th,td{white-space:normal;padding:6px 8px}
   .wrap{overflow-wrap:anywhere}
 }
+/* ---- Build-your-own-paper: selection checkbox + floating bar ---- */
+.q-pick-wrap{display:flex;align-items:center;gap:5px;flex:none;margin-right:6px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none}
+.q-pick-wrap input{width:15px;height:15px;cursor:pointer;accent-color:var(--accent)}
+.q-pick-page{margin:14px 8px 4px 0;border:1px solid var(--line);background:#fff;color:#334155;border-radius:10px;padding:9px 16px;font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer}
+.q-pick-page:hover{border-color:var(--accent);color:var(--accent)}
+.q-pick-page.on{background:#e7f6ec;border-color:#34a853;color:#1e7e34}
+.q-pdf{margin:14px 0 4px;border:1px solid var(--line);background:#fff;color:#334155;border-radius:10px;padding:9px 16px;font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer}
+.q-pdf:hover{border-color:var(--accent);color:var(--accent)}
+.cb-pickbar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:40;display:flex;gap:12px;align-items:center;background:#0f172a;color:#fff;padding:10px 16px;border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.25);font-size:14px}
+.cb-pickbar[hidden]{display:none}
+.cb-pickbar b{font-size:15px}
+.cb-pickbar .btn{background:#fff;color:#0f172a;border:0;padding:6px 12px;border-radius:999px;font:600 13px -apple-system,Segoe UI,Roboto,Arial,sans-serif;text-decoration:none;cursor:pointer}
+.cb-pickbar .cb-pickbar-clear{background:transparent;color:#cbd5e1;border:0;cursor:pointer;font-size:13px;text-decoration:underline}
+/* ---- Builder page ---- */
+.builder-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:18px 0 14px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--soft)}
+.b-answers{font-size:14px;display:flex;align-items:center;gap:6px;cursor:pointer}
+.paper-q-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.paper-q-actions{margin-left:auto;display:flex;gap:6px}
+.paper-q-actions button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:3px 9px;font-size:13px;cursor:pointer}
+.paper-q-actions button:hover{border-color:var(--accent);color:var(--accent)}
+.paper-q-bar .paper-ref{font-size:12.5px;color:var(--muted)}
 @media print{
   header.site nav,footer.site,.controls,input[type=search],select,.paper-switch,.pager,.q-done,.q-done-page{display:none}
   details{border:0} details .body{border-top:0}
   details[open] .body{border-top:0}
   body{font-size:11.5pt}
   .paper-q{border-top:1px solid #999}
+  /* single-question export: show ONLY the question block, never the answer */
+  body.cb-print-q .q-done-page,body.cb-print-q .q-pick-page,body.cb-print-q .q-pdf,
+  body.cb-print-q .qai,body.cb-print-q details,body.cb-print-q .kv,
+  body.cb-print-q .pager,body.cb-print-q .reveal-note,body.cb-print-q #cb-pickbar{display:none !important}
+  /* builder export: hide the on-screen controls, keep the assembled paper */
+  body.cb-print-paper .builder-controls,body.cb-print-paper #cb-pickbar{display:none !important}
 }
 """
 
@@ -427,6 +454,81 @@ JS = """
     });
   });
 })();
+
+(function(){
+  // ---------- Build-your-own-paper selection (localStorage, no backend) ----------
+  var PICK_KEY = 'cb_pick_v1';
+  function loadPick(){ try { return JSON.parse(localStorage.getItem(PICK_KEY) || '[]'); } catch(e){ return []; } }
+  function savePick(a){ try { localStorage.setItem(PICK_KEY, JSON.stringify(a)); } catch(e){} }
+  function isPicked(id){ return loadPick().indexOf(id) !== -1; }
+  function setPick(id, val){
+    if(!id) return;
+    var a = loadPick(), i = a.indexOf(id);
+    if(val && i === -1) a.push(id);
+    if(!val && i !== -1) a.splice(i, 1);
+    savePick(a); paintPick();
+  }
+  function clearPick(){ savePick([]); paintPick(); }
+  // The builder lives at <site>/papers/builder.html. On GitHub Pages the path
+  // contains "/site/", but a local server may serve site/ as the root, so anchor
+  // on that marker when present and otherwise fall back to a depth calculation.
+  function builderHref(){
+    var p = location.pathname, i = p.indexOf('/site/');
+    if(i >= 0) return p.slice(0, i + 6) + 'papers/builder.html';
+    var segs = p.split('/').filter(Boolean);
+    if(segs.length && segs[segs.length - 1].indexOf('.') !== -1) segs.pop();
+    if(segs[segs.length - 1] === 'papers') return 'builder.html';
+    return (segs.length === 0 ? '' : '../') + 'papers/builder.html';
+  }
+  function paintPick(){
+    Array.prototype.forEach.call(document.querySelectorAll('.q-pick'), function(cb){
+      var id = cb.getAttribute('data-qid');
+      if(id) cb.checked = isPicked(id);
+    });
+    var pageBtn = document.querySelector('.q-pick-page');
+    if(pageBtn){
+      var on = isPicked(pageBtn.getAttribute('data-qid'));
+      pageBtn.classList.toggle('on', on);
+      pageBtn.textContent = on ? '\u2713 In paper' : 'Add to paper';
+    }
+    var bar = document.getElementById('cb-pickbar');
+    if(bar){
+      var n = loadPick().length;
+      var cnt = bar.querySelector('[data-n]'); if(cnt) cnt.textContent = n;
+      var pl = bar.querySelector('[data-plural]'); if(pl) pl.textContent = n === 1 ? '' : 's';
+      var buildLink = bar.querySelector('.cb-pickbar-build');
+      if(buildLink) buildLink.setAttribute('href', builderHref());
+      bar.hidden = n === 0;
+    }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.q-pick'), function(cb){
+    cb.addEventListener('change', function(){ setPick(cb.getAttribute('data-qid'), cb.checked); });
+  });
+  var pageBtn = document.querySelector('.q-pick-page');
+  if(pageBtn) pageBtn.addEventListener('click', function(){
+    var id = pageBtn.getAttribute('data-qid');
+    setPick(id, !isPicked(id));
+  });
+  var clearBtn = document.getElementById('cb-clear');
+  if(clearBtn) clearBtn.addEventListener('click', function(){
+    if(window.confirm('Clear all selected questions?')) clearPick();
+  });
+
+  // ---------- Single-question "Save as PDF" (isolated print) ----------
+  function printQuestion(){
+    document.body.classList.add('cb-print-q');
+    var done = function(){ document.body.classList.remove('cb-print-q'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done);
+    window.print();
+    setTimeout(function(){ document.body.classList.remove('cb-print-q'); }, 1200);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-print-q]'), function(b){
+    b.addEventListener('click', printQuestion);
+  });
+
+  window.cbPaintPick = paintPick;
+  paintPick();
+})();
 """
 
 MATHJAX = """<script>
@@ -523,6 +625,58 @@ def figure_html(fig):
 
 
 # --------------------------------------------------------------------------
+# reusable question / answer bodies (pages, papers, PDF builder)
+# --------------------------------------------------------------------------
+def question_body_html(q):
+    """The question itself (stem + stimulus + figure + parts), no answer.
+
+    Reused by the question page, the per-subject paper and the custom builder so
+    every surface renders the item identically."""
+    parts = "".join(
+        '<li><span class="marks">[%s mark%s]</span><strong>(%s)</strong> %s%s</li>'
+        % (p["marks"], "" if p["marks"] == 1 else "s",
+           html.escape(p["label"]), md(p["text"]),
+           " <em>(%s)</em>" % html.escape(p["command_term"]) if p.get("command_term") else "")
+        for p in q.get("parts") or []
+    )
+    return (stimulus_html(q.get("stimulus")) + figure_html(q.get("figure")) +
+            md(q.get("question")) + '<ol class="parts">%s</ol>' % parts)
+
+
+def answer_body_html(q):
+    return (md(q.get("answer")) +
+            "<h4>Markscheme notes</h4>" + md(q.get("markscheme_notes")))
+
+
+def build_bank(all_qs):
+    """Flat, browser-loadable copy of every question's printable content.
+
+    The builder page is a static file with no backend, so it reads this JSON
+    (fetched at runtime) to render whatever the user has selected. HTML bodies
+    are pre-rendered here with the same helpers the pages use, so a selected
+    question looks exactly like its page."""
+    out = []
+    for slug in SUBJECTS:
+        for q in all_qs.get(slug, []):
+            out.append({
+                "id": q["id"],
+                "subject": SUBJECTS[slug]["short"],
+                "level": q.get("level"),
+                "topic": q.get("topic") or "",
+                "subtopic": q.get("subtopic") or "",
+                "syllabus_ref": q.get("syllabus_ref") or "",
+                "paper": q.get("paper") or "",
+                "section": q.get("section") or "",
+                "marks": q["marks"],
+                "difficulty": q["difficulty"],
+                "title": q.get("title") or q.get("subtopic") or "",
+                "q_html": question_body_html(q),
+                "a_html": answer_body_html(q),
+            })
+    return out
+
+
+# --------------------------------------------------------------------------
 # page scaffolding
 # --------------------------------------------------------------------------
 def page(title, body, subject=None, mathjax=False, extra_head=""):
@@ -555,6 +709,11 @@ def page(title, body, subject=None, mathjax=False, extra_head=""):
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="{up}index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="{'../' if subject else ''}assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>
@@ -627,7 +786,7 @@ def question_card(q, slug):
     search = " ".join([q["id"], q["topic"], q["subtopic"], q["syllabus_ref"],
                        q.get("challenge_mechanism", ""), " ".join(q.get("tags") or [])])
     return f"""<div class="q" data-search="{html.escape(search, quote=True)}" data-diff="{q['difficulty']}" data-paper="{html.escape(q.get('paper') or '')}" data-topic="{html.escape(q.get('topic') or '', quote=True)}" data-qid="{html.escape(qid)}">
-<div class="q-head"><h3><a href="../q/{html.escape(qid)}.html">{html.escape(title)}</a></h3>
+<div class="q-head"><label class="q-pick-wrap" title="Add this question to your custom paper"><input type="checkbox" class="q-pick" data-qid="{html.escape(qid)}"> <span>Paper</span></label><h3><a href="../q/{html.escape(qid)}.html">{html.escape(title)}</a></h3>
 <button type="button" class="q-done" data-qid="{html.escape(qid)}" aria-pressed="false">Mark done</button></div>
 <p class="stem">{inline(q.get('challenge_mechanism', ''))}</p>
 {chips(q)}
@@ -664,13 +823,17 @@ def build_question_page(q, slug):
 <h1>{html.escape(q.get('title') or q['subtopic'])}</h1>
 <p class="lede"><a href="../{slug}/index.html">{html.escape(SUBJECTS[slug]['name'])}</a> · {html.escape(q['id'])}</p>
 <button type="button" class="q-done-page" data-qid="{html.escape(q['id'])}" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="{html.escape(q['id'])}">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 {chips(q)}
 {stimulus_html(q.get('stimulus'))}
 {figure_html(q.get('figure'))}
+<section id="q-print">
 <h2>Question</h2>
 {md(q.get('question'))}
 <ol class="parts">{parts}</ol>
 <p class="reveal-note">Total: {q['marks']} marks. Try the question before revealing anything below.</p>
+</section>
 {ai_panel(q)}
 <details><summary>Reveal the answer</summary><div class="body">{md(q.get('answer'))}</div></details>
 <details><summary>Markscheme notes</summary><div class="body">{md(q.get('markscheme_notes'))}</div></details>
@@ -846,6 +1009,114 @@ The topic list follows the subject you pick.</p>
 
 
 # --------------------------------------------------------------------------
+# custom "build your own exam paper" page
+# --------------------------------------------------------------------------
+# A static page (no backend). It reads the user's selection from localStorage and
+# the printable question bodies from data/bank.json, then assembles an exam-style
+# paper the browser can print to PDF. MathJax is included so selected questions
+# with LaTeX typeset exactly as they do on their own pages.
+BUILDER_PAGE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build your own exam paper — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+__MATHJAX__
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+<h1>Build your own exam paper</h1>
+<p class="lede">Tick <strong>Add to paper</strong> on any question, across any subject, then assemble them here into a printable, exam-style paper.</p>
+<div class="builder-controls" id="b-controls">
+  <label class="b-answers"><input type="checkbox" id="b-answers"> Include answers &amp; markschemes</label>
+  <button type="button" class="btn" id="b-print">Print / Save as PDF</button>
+  <button type="button" class="btn" id="b-clear">Clear selection</button>
+  <span class="b-total" id="b-total"></span>
+  <a class="btn" href="../index.html">&#8592; Back to the bank</a>
+</div>
+<div id="b-list"></div>
+<div id="b-empty" class="empty" hidden>
+  <p><strong>No questions selected yet.</strong></p>
+  <p>Open any subject page, tick <strong>Add to paper</strong> on the questions you want, then return here. Your selection is kept in this browser.</p>
+</div>
+</div></main>
+<footer class="site"><div class="wrap">
+  Part of the <a href="../../index.html">DP study system</a>.
+</div></footer>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
+<script>
+(function(){
+  var LIST=document.getElementById('b-list');
+  var EMPTY=document.getElementById('b-empty');
+  var TOTAL=document.getElementById('b-total');
+  var ANS=document.getElementById('b-answers');
+  function pick(){ try{return JSON.parse(localStorage.getItem('cb_pick_v1')||'[]');}catch(e){return [];} }
+  function savePick(a){ try{localStorage.setItem('cb_pick_v1',JSON.stringify(a));}catch(e){} }
+  function typeset(){
+    if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise([LIST]).then(function(){ if(typeof fixInlineMath==='function') fixInlineMath(); }); }
+    else if(typeof fixInlineMath==='function'){ fixInlineMath(); }
+  }
+  fetch('../data/bank.json').then(function(r){return r.json();}).then(function(bank){
+    var byId={}; bank.forEach(function(q){byId[q.id]=q;});
+    function render(){
+      var ids=pick();
+      if(!ids.length){ LIST.innerHTML=''; EMPTY.hidden=false; TOTAL.textContent=''; return; }
+      EMPTY.hidden=true;
+      var total=0;
+      LIST.innerHTML = ids.map(function(id,i){
+        var q=byId[id]; if(!q){return '';}
+        total += parseInt(q.marks,10)||0;
+        return '<section class="paper-q" data-qid="'+id+'">'
+          + '<div class="paper-q-bar"><span class="paper-marks">'+q.marks+' marks</span>'
+          + '<span class="paper-ref">'+q.id+' · '+q.syllabus_ref+' · difficulty '+q.difficulty+'</span>'
+          + '<span class="paper-q-actions">'
+          + (i>0?'<button type="button" class="b-up" data-id="'+id+'">↑</button>':'')
+          + (i<ids.length-1?'<button type="button" class="b-down" data-id="'+id+'">↓</button>':'')
+          + '<button type="button" class="b-remove" data-id="'+id+'">Remove</button></span></div>'
+          + '<h3>'+(i+1)+'. '+q.title+'</h3>'
+          + q.q_html
+          + (ANS.checked?'<details class="b-ans" open><summary>Answer &amp; markscheme</summary><div class="body">'+q.a_html+'</div></details>':'')
+          + '</section>';
+      }).join('');
+      TOTAL.textContent = ids.length+' question'+(ids.length===1?'':'s')+' · '+total+' marks total';
+      Array.prototype.forEach.call(LIST.querySelectorAll('.b-remove'),function(b){b.addEventListener('click',function(){var a=pick();var i=a.indexOf(b.getAttribute('data-id'));if(i>-1){a.splice(i,1);savePick(a);render();if(window.cbPaintPick)window.cbPaintPick();}});});
+      Array.prototype.forEach.call(LIST.querySelectorAll('.b-up'),function(b){b.addEventListener('click',function(){var a=pick();var i=a.indexOf(b.getAttribute('data-id'));if(i>0){a.splice(i,1);a.splice(i-1,0,b.getAttribute('data-id'));savePick(a);render();}});});
+      Array.prototype.forEach.call(LIST.querySelectorAll('.b-down'),function(b){b.addEventListener('click',function(){var a=pick();var i=a.indexOf(b.getAttribute('data-id'));if(i>-1&&i<a.length-1){a.splice(i,1);a.splice(i+1,0,b.getAttribute('data-id'));savePick(a);render();}});});
+      typeset();
+    }
+    ANS.addEventListener('change',render);
+    document.getElementById('b-print').addEventListener('click',function(){
+      document.body.classList.add('cb-print-paper');
+      var done=function(){document.body.classList.remove('cb-print-paper');window.removeEventListener('afterprint',done);};
+      window.addEventListener('afterprint',done);
+      window.print();
+      setTimeout(function(){document.body.classList.remove('cb-print-paper');},1200);
+    });
+    document.getElementById('b-clear').addEventListener('click',function(){
+      if(confirm('Clear all selected questions?')){ savePick([]); render(); if(window.cbPaintPick)window.cbPaintPick(); }
+    });
+    render();
+  }).catch(function(e){
+    LIST.innerHTML='<p class="empty">Could not load the question bank data (bank.json). If you opened this page from disk, serve it over http(s) instead.</p>';
+  });
+})();
+</script>
+</body>
+</html>
+"""
+
+
+def build_builder():
+    return BUILDER_PAGE.replace("__MATHJAX__", MATHJAX)
+
+
+# --------------------------------------------------------------------------
 def load():
     all_qs, errors = {}, []
     for slug in SUBJECTS:
@@ -939,6 +1210,12 @@ def main():
             put(SITE / "q" / ("%s.html" % q["id"]), build_question_page(q, slug))
         put(SITE / "papers" / ("%s-paper.html" % slug), build_paper(slug, qs))
         put(SITE / "papers" / ("%s-answers.html" % slug), build_paper(slug, qs, answers=True))
+
+    # Browser-loadable copy of every question's printable body, used by the custom
+    # paper builder (a static page with no backend of its own).
+    (SITE / "data").mkdir(parents=True, exist_ok=True)
+    put(SITE / "data" / "bank.json", json.dumps(build_bank(all_qs), ensure_ascii=False))
+    put(SITE / "papers" / "builder.html", build_builder())
 
     pruned = 0
     if SITE.exists():

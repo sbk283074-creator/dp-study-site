@@ -32,6 +32,8 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>Forty ten-pence subtractions that never reach sixteen pounds</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B2.1-001</p>
 <button type="button" class="q-done-page" data-qid="CS-B2.1-001" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-B2.1-001">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B2.1 Programming fundamentals (data types, variables and constants, operators, expressions, type conversion, input and output)</span><span class="chip">P2 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">python</span><span class="chip">Explain</span><span class="chip">Construct</span><span class="chip">Justify</span></div>
 <div class="box"><h4>Rivergate car park - the season-ticket balance</h4><p>A multi-storey car park in Rivergate sells season tickets. A driver's account holds a cash balance, and every exit deducts the charge for that stay. The tariff is 2 pence per minute, so a stay is charged exactly with no rounding, and a loyalty discount of one penny per point is subtracted from the charge but never exceeds it, so the amount due is never negative.</p>
 <p>The current Python implementation holds the balance, the charge and the discount in pounds as floating-point numbers. A driver tops up £20.00 and then makes forty short stays, each deducting exactly £0.10. The true remaining balance is exactly £16.00, and the car park sells a £16.00 annual pass that may be bought only when the balance is at least £16.00.</p>
@@ -47,10 +49,12 @@ def can_buy_pass(balance):
 
 print(BALANCE)                 # 15.999999999999945
 print(can_buy_pass(BALANCE))   # False</code></pre>
+<section id="q-print">
 <h2>Question</h2>
 <p>The rewritten system must be available in both Python and Java, and the two versions must behave identically.</p>
 <ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain the difference between a floating-point number and an integer as a way of storing an amount of money, and state why the balance in this system should be held in pence rather than pounds.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a Python function settle(balance_pence, minutes, points) that returns the balance remaining after the stay, or None if the balance is insufficient. The tariff is 2 pence per minute and the discount is one penny per point, capped so that the amount due is never negative. Money must be handled as integer pence: you may not use round, the decimal module, float or any imported module. A Java version of this paper requires the same algorithm, so write the algorithm rather than a demonstration of syntax.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain why the loop above prints 15.999999999999945 rather than 16.00, and why can_buy_pass therefore returns False. Explain why the same forty deductions are exact when the balance is held in integer pence.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Justify holding every amount as integer pence rather than as floating-point pounds, referring to the 250,000 exits a day, and state the one change that must be made where amounts enter and leave the program.</p> <em>(Justify)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-B2.1-001">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -115,6 +119,11 @@ print(can_buy_pass(BALANCE))   # False</code></pre>
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

@@ -32,16 +32,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>A 12-bit temperature log and the arithmetic that breaks it</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A1.2-001</p>
 <button type="button" class="q-done-page" data-qid="CS-A1.2-001" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-A1.2-001">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A1.2 Data representation and computer logic (A1.2.1 representation of integers in binary and hexadecimal, A1.2.2 binary encoding and its impact on storage, A1.2.3 logic gates, A1.2.4 truth tables)</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Determine</span><span class="chip">Explain</span><span class="chip">Show that</span><span class="chip">State</span></div>
 <div class="box"><h4>A field temperature logger</h4><p>A logger records temperature once per minute for a week. The sensing element produces a signed integer that is stored in a 12-bit two's complement register, in units of 0.0625 degrees Celsius per least significant bit. A separate summation register accumulates consecutive readings so that a rolling average can be reported, using the same 12-bit width as the readings themselves.</p>
 <p>The logger also drives an alarm output from three inputs: P (pressure above the safe limit), T (temperature above the safe limit) and O (operator override enabled). The designer's first attempt at the alarm logic is</p>
 <p>F = P.T + P.T' + P'.T.O</p>
 <p>where the prime denotes NOT, the dot denotes AND and + denotes OR. The alarm output is available only at a single-frequency clock, so reducing the number of gates is worth doing.</p></div>
 
+<section id="q-print">
 <h2>Question</h2>
 <p>The 12-bit register stores values in units of 0.0625 degrees Celsius per least significant bit, with the most significant bit carrying the sign.</p>
 <ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Determine the 12-bit two's complement representation of a reading of -37.5 degrees Celsius, giving your answer in binary and in hexadecimal.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Explain why the summation register can overflow even when every individual reading is representable, and determine the minimum register width needed to sum any 16 consecutive readings without overflow.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Explain why converting a stored reading to degrees Celsius by multiplying by 0.0625 introduces no error, whereas converting it to degrees Fahrenheit does, in both cases assuming the arithmetic itself is performed exactly.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Show that F simplifies to P + T.O, and state the number of two-input gates needed for the reduced expression.</p> <em>(Show that)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-A1.2-001">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -102,6 +106,11 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

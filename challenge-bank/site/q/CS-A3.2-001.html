@@ -32,16 +32,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>A3 Databases</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A3.2-001</p>
 <button type="button" class="q-done-page" data-qid="CS-A3.2-001" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-A3.2-001">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A3.2 Database design (schemas, ERDs, normalisation), A3.3 Database programming (SQL joins, views HL only)</span><span class="chip">P1 · Section A</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">sql</span><span class="chip">Explain</span><span class="chip">Construct</span><span class="chip">State</span></div>
 <div class="box"><h4>Stimulus</h4><p>A small music festival stores all of its booking data in a <strong>single</strong> table:</p>
 <p>PERFORMANCE_BOOKING</p>
 <p>| BookingID | CustomerName | CustomerEmail | PerformanceName | VenueName | SeatCategory | PricePerTicket | Quantity |<br>|---|---|---|---|---|---|---|---|<br>| 1001 | A. Ferrer | a.ferrer@mail | Midnight Chorus | East Stage | Premium | 85.00 | 2 |<br>| 1002 | A. Ferrer | a.ferrer@mail | Midnight Chorus | East Stage | Standard | 45.00 | 4 |<br>| 1003 | L. Oyeka | l.oyeka@mail | Brass Quartet | West Barn | Standard | 40.00 | 2 |<br>| 1004 | R. Duval | r.duval@mail | Midnight Chorus | East Stage | Premium | 85.00 | 1 |<br>| 1005 | R. Duval | r.duval@mail | Brass Quartet | West Barn | Standard | 40.00 | 3 |</p>
 <p>BookingID is unique. A customer may make several bookings, and a performance runs in exactly one venue.</p></div>
 
+<section id="q-print">
 <h2>Question</h2>
 <p>The festival is expanding and the table is causing problems.</p>
 <ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>Explain <strong>two</strong> specific problems with this design, using the data above to illustrate each. For each, name the type of anomaly it represents.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a set of tables in third normal form (3NF) to replace PERFORMANCE_BOOKING. State the primary key of each table and show the foreign-key links between them.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Using your 3NF design, write an SQL query that lists the customer name, the performance name and the total cost of each booking (quantity × price), for bookings of <strong>more than two</strong> tickets, ordered by total cost from highest to lowest.</p> <em>(Construct)</em></li><li><span class="marks">[2 marks]</span><strong>(d)</strong> <p>Box-office staff need to see booking details but must not see customer email addresses or prices. Explain how a database <strong>view</strong> solves this. (HL only)</p> <em>(Explain)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-A3.2-001">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -116,6 +120,11 @@ ORDER BY TotalCost DESC;
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

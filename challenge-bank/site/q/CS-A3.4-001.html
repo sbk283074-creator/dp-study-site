@@ -32,15 +32,19 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>A relational store that cannot answer the question</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A3.4-001</p>
 <button type="button" class="q-done-page" data-qid="CS-A3.4-001" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-A3.4-001">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A3.4 Alternative databases and data warehouses (A3.4.1 NoSQL, cloud, spatial and in-memory databases, A3.4.2 objectives of data warehouses, A3.4.3 OLAP and data mining, A3.4.4 distributed databases and ACID)</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">sql</span><span class="chip">Explain</span><span class="chip">Design</span><span class="chip">Calculate</span><span class="chip">Justify</span></div>
 <div class="box"><h4>Nightline Couriers</h4><p>Nightline Couriers operates 340 vans from 12 depots. Every van reports its position, speed and load temperature once every 0.4 seconds while the ignition is on, an average of 14 hours a day. Each report is stored as a fixed-length record of 80 bytes. The reports are written to a relational database on a single server, and the same database holds the tables that the dispatch system reads and writes many times per second.</p>
 <p>At the end of each month the operations director asks for a report showing, for every depot and every month, the number of completed deliveries, the average delivery time per parcel, the total distance driven and the number of temperature excursions, defined as any period in which a load temperature left the permitted range for more than 90 seconds.</p>
 <p>The report currently takes nine hours to produce and, while it runs, drivers report that the dispatch screen stops responding.</p></div>
 
+<section id="q-print">
 <h2>Question</h2>
 <p>The operations director wants the monthly report produced without the dispatch system losing responsiveness. The data described above is available, and management accepts that the reporting and dispatch workloads must be separated.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Explain why the monthly report is slow and why running it affects the dispatch system, referring to the difference between the workloads the two stores must support.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Design a star schema for the monthly report. State the grain of the fact table, name the fact table and three dimension tables, and give two measures that the fact table must hold.</p> <em>(Design)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Calculate the volume of raw report data generated in one year, and the volume if every record is stored with a replication factor of three. State one consequence of your answer for the choice of database.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Justify the use of a key-value or wide-column store for the incoming position reports rather than the relational database, and state one capability that is given up by doing so.</p> <em>(Justify)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-A3.4-001">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -98,6 +102,11 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

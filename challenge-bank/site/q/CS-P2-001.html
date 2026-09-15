@@ -32,13 +32,17 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>Distributed monitoring system — architecture, transmission and schema design</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-P2-001</p>
 <button type="button" class="q-done-page" data-qid="CS-P2-001" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-P2-001">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A2.2 Network architecture, A2.3 Data transmissions, A2.4 Network security, A3.2 Database design</span><span class="chip">P2</span><span class="chip">18 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not applicable</span><span class="chip">Calculate</span><span class="chip">Explain</span><span class="chip">Construct</span><span class="chip">Evaluate</span></div>
 <div class="box"><h4>Northreach cold chain</h4><p>Northreach is a regional health authority that distributes vaccines by road. Its fleet is 140 refrigerated vehicles. Each vehicle carries four temperature probes inside the cargo compartment, and each probe is sampled every 30 seconds throughout the ten-hour delivery window. A reading consists of a probe identifier stored in one byte, a timestamp stored in four bytes, and a temperature stored in two bytes. The authority operates on 300 days each year. Regulatory rules require that any excursion above 8 degrees Celsius is detected and an alert raised within 60 seconds of the reading being taken, and that the full temperature history for any consignment can be produced as evidence for up to six years.</p><figure><table><thead><tr><th>quantity</th><th>value</th></tr></thead><tbody><tr><td>vehicles</td><td>140</td></tr><tr><td>probes per vehicle</td><td>4</td></tr><tr><td>sample period / s</td><td>30</td></tr><tr><td>delivery window / h</td><td>10</td></tr><tr><td>operating days per year</td><td>300</td></tr><tr><td>bytes per reading</td><td>7</td></tr><tr><td>alert deadline / s</td><td>60</td></tr></tbody></table><figcaption>Fleet and sampling parameters</figcaption></figure></div>
 
+<section id="q-print">
 <h2>Question</h2>
 <p>The authority has asked your team to design the monitoring and alerting subsystem. The parameters you need are given in the case study.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Calculate the total volume of data the fleet generates in one operating year, giving your answer in gibibytes, and state what the volume would become if each reading were instead stored as an 80-byte plain-text record.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>A junior developer proposes that each probe pushes every reading to the central server the moment it is taken, using a separate secure request per reading. Explain why this is a poor design even though the total payload is small, and explain how placing an edge device in each vehicle changes the trade-off.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Construct a relational schema, in third normal form, for the part of the system that records vehicles, consignments, probes and excursion alerts. Show the tables with their primary keys, foreign keys and a sensible attribute for each, and state the relationship between consignments and alerts.</p> <em>(Construct)</em></li><li><span class="marks">[5 marks]</span><strong>(d)</strong> <p>A second proposal is that each vehicle stores readings locally and uploads the whole day's file once, when it returns to the depot. Evaluate this proposal against the regulatory requirements, considering the alert deadline, the reliability of the evidence trail, and the cost of the system.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 18 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="18" data-ai-ref="CS-P2-001">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -92,6 +96,11 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

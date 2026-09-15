@@ -221,3 +221,78 @@
     });
   });
 })();
+
+(function(){
+  // ---------- Build-your-own-paper selection (localStorage, no backend) ----------
+  var PICK_KEY = 'cb_pick_v1';
+  function loadPick(){ try { return JSON.parse(localStorage.getItem(PICK_KEY) || '[]'); } catch(e){ return []; } }
+  function savePick(a){ try { localStorage.setItem(PICK_KEY, JSON.stringify(a)); } catch(e){} }
+  function isPicked(id){ return loadPick().indexOf(id) !== -1; }
+  function setPick(id, val){
+    if(!id) return;
+    var a = loadPick(), i = a.indexOf(id);
+    if(val && i === -1) a.push(id);
+    if(!val && i !== -1) a.splice(i, 1);
+    savePick(a); paintPick();
+  }
+  function clearPick(){ savePick([]); paintPick(); }
+  // The builder lives at <site>/papers/builder.html. On GitHub Pages the path
+  // contains "/site/", but a local server may serve site/ as the root, so anchor
+  // on that marker when present and otherwise fall back to a depth calculation.
+  function builderHref(){
+    var p = location.pathname, i = p.indexOf('/site/');
+    if(i >= 0) return p.slice(0, i + 6) + 'papers/builder.html';
+    var segs = p.split('/').filter(Boolean);
+    if(segs.length && segs[segs.length - 1].indexOf('.') !== -1) segs.pop();
+    if(segs[segs.length - 1] === 'papers') return 'builder.html';
+    return (segs.length === 0 ? '' : '../') + 'papers/builder.html';
+  }
+  function paintPick(){
+    Array.prototype.forEach.call(document.querySelectorAll('.q-pick'), function(cb){
+      var id = cb.getAttribute('data-qid');
+      if(id) cb.checked = isPicked(id);
+    });
+    var pageBtn = document.querySelector('.q-pick-page');
+    if(pageBtn){
+      var on = isPicked(pageBtn.getAttribute('data-qid'));
+      pageBtn.classList.toggle('on', on);
+      pageBtn.textContent = on ? '✓ In paper' : 'Add to paper';
+    }
+    var bar = document.getElementById('cb-pickbar');
+    if(bar){
+      var n = loadPick().length;
+      var cnt = bar.querySelector('[data-n]'); if(cnt) cnt.textContent = n;
+      var pl = bar.querySelector('[data-plural]'); if(pl) pl.textContent = n === 1 ? '' : 's';
+      var buildLink = bar.querySelector('.cb-pickbar-build');
+      if(buildLink) buildLink.setAttribute('href', builderHref());
+      bar.hidden = n === 0;
+    }
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.q-pick'), function(cb){
+    cb.addEventListener('change', function(){ setPick(cb.getAttribute('data-qid'), cb.checked); });
+  });
+  var pageBtn = document.querySelector('.q-pick-page');
+  if(pageBtn) pageBtn.addEventListener('click', function(){
+    var id = pageBtn.getAttribute('data-qid');
+    setPick(id, !isPicked(id));
+  });
+  var clearBtn = document.getElementById('cb-clear');
+  if(clearBtn) clearBtn.addEventListener('click', function(){
+    if(window.confirm('Clear all selected questions?')) clearPick();
+  });
+
+  // ---------- Single-question "Save as PDF" (isolated print) ----------
+  function printQuestion(){
+    document.body.classList.add('cb-print-q');
+    var done = function(){ document.body.classList.remove('cb-print-q'); window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done);
+    window.print();
+    setTimeout(function(){ document.body.classList.remove('cb-print-q'); }, 1200);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-print-q]'), function(b){
+    b.addEventListener('click', printQuestion);
+  });
+
+  window.cbPaintPick = paintPick;
+  paintPick();
+})();

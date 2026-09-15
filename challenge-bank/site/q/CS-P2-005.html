@@ -32,13 +32,17 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>A2.4 Network security</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-P2-005</p>
 <button type="button" class="q-done-page" data-qid="CS-P2-005" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-P2-005">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A2.4 Network security, A1.2 Data representation and computer logic (binary, hexadecimal, hashing)</span><span class="chip">P2</span><span class="chip">17 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: allowed</span><span class="chip">Describe</span><span class="chip">Construct</span><span class="chip">Explain</span><span class="chip">Evaluate</span></div>
 <div class="box"><h4>Wireless smart lock</h4><p>A smart lock is fitted to a communal entrance. The lock is battery powered and communicates with the resident's phone over a short-range wireless link. The current protocol works as follows. The lock stores a 32-bit shared secret $S$. To unlock, the phone transmits a single frame containing the ASCII text OPEN followed by the 32-bit value $S$ in hexadecimal. The lock compares the received value with its stored $S$ and, if they match, releases the bolt. There is no encryption, no timestamp and no counter. An attacker with a $40\ \mathrm{EUR}$ software-defined radio can capture any frame transmitted within about $15\ \mathrm{m}$ and can later transmit arbitrary bytes. The lock is rated for $25$ operations per day on a $2.4\ \mathrm{Ah}$, $3.0\ \mathrm{V}$ battery. Its microcontroller can compute a keyed hash over $32$ bytes in $4\ \mathrm{ms}$ using $0.90\ \mathrm{mJ}$, whereas transmitting the current static frame costs $0.15\ \mathrm{mJ}$. The round-trip time on the wireless link is $40\ \mathrm{ms}$ and the bolt must be released within $250\ \mathrm{ms}$ of the resident's tap.</p></div>
 
+<section id="q-print">
 <h2>Question</h2>
 <p>You have been asked to redesign the protocol. Use the case study to answer all four parts.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Describe a replay attack against the current protocol. State exactly what the attacker captures, what they transmit, why the lock accepts it, and how long the attack remains available to them.</p> <em>(Describe)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct a challenge-response protocol that prevents replay. Your answer must specify what the lock sends, what the phone computes, what the phone returns, and what the lock checks.</p> <em>(Construct)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Explain how your protocol defeats the replay attack, and state clearly one attack it does not defeat. Quantify the probability that an attacker who has captured a million previous exchanges could still succeed by guessing.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Evaluate whether the additional cost of your protocol is acceptable for a battery-powered lock. Your answer must include a calculated comparison.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 17 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="17" data-ai-ref="CS-P2-005">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -96,6 +100,11 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

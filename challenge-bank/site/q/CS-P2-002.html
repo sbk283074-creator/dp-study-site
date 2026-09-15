@@ -32,13 +32,17 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>Emergency department triage — ADT selection, class design and cost analysis</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-P2-002</p>
 <button type="button" class="q-done-page" data-qid="CS-P2-002" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-P2-002">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B4.1 Fundamentals of ADTs (HL only), B3.2 Fundamentals of OOP for multiple classes (HL only), B2.4 Programming algorithms, B2.2 Data structures</span><span class="chip">P2</span><span class="chip">19 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not applicable</span><span class="chip">Evaluate</span><span class="chip">Construct</span><span class="chip">Justify</span><span class="chip">Determine</span></div>
 <div class="box"><h4>Emergency department triage board</h4><p>A hospital emergency department receives about 220 patients a day and the waiting room holds about 18 patients on average. On arrival each patient is assessed by a nurse and assigned a triage category from 1 to 5, where 1 is the most urgent. The triage board software must support four operations: adding a patient on arrival; removing and returning the most urgent patient when a doctor becomes free; escalating the category of a patient who is already waiting because their condition has deteriorated; and removing a patient who has left without being seen. The department has had an incident in which a category 3 patient waited behind a category 2 patient whose condition had in fact improved, and the board is being rewritten.</p><figure><table><thead><tr><th>quantity</th><th>value</th></tr></thead><tbody><tr><td>patients per day</td><td>220</td></tr><tr><td>average waiting room occupancy</td><td>18</td></tr><tr><td>escalations per day</td><td>33</td></tr><tr><td>patients leaving unseen per day</td><td>11</td></tr></tbody></table><figcaption>Operating figures</figcaption></figure></div>
 
+<section id="q-print">
 <h2>Question</h2>
 <p>You are to design the data structure and the classes behind the new triage board. The four required operations and the operating figures are given in the case study.</p>
 <ol class="parts"><li><span class="marks">[5 marks]</span><strong>(a)</strong> <p>Evaluate an unsorted array, an array kept sorted by category, and a binary max-heap as the underlying structure for the waiting list, referring to each of the four required operations in each case.</p> <em>(Evaluate)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Construct Python class definitions for the two classes you would use to model a patient and the waiting list. Include the attributes, the constructor, and the signatures and a one-line comment for each of the four required operations.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>A patient who leaves without being seen cannot be removed from a heap directly, because their record may sit in the middle of the array. Justify whether the system should remove such a patient immediately or mark them as departed and skip them when they reach the front of the queue.</p> <em>(Justify)</em></li><li><span class="marks">[5 marks]</span><strong>(d)</strong> <p>Using the operating figures, determine the total number of comparisons needed for one day of insertions under the unsorted-array design and under the binary-heap design, and determine which structure you would recommend for this department.</p> <em>(Determine)</em></li></ol>
 <p class="reveal-note">Total: 19 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="19" data-ai-ref="CS-P2-002">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -100,6 +104,11 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

@@ -32,13 +32,17 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>An irrigation gateway choosing how to share its processor</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A1.3-001</p>
 <button type="button" class="q-done-page" data-qid="CS-A1.3-001" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-A1.3-001">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A1.3 Operating systems and control systems (A1.3.2 functions of an operating system, A1.3.3 comparison of scheduling approaches, A1.3.4 evaluation of polling and interrupt handling, A1.3.6 open-loop and closed-loop control)</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Describe</span><span class="chip">Calculate</span><span class="chip">Evaluate</span><span class="chip">Explain</span></div>
 <div class="box"><h4>A field irrigation gateway</h4><p>A solar-powered gateway controller sits in a field and manages irrigation for sixteen plots. It runs a small operating system on a single-core processor and executes four periodic tasks, described as A, B, C and D. Each task becomes ready at the same moment when the controller wakes from sleep, and their processor requirements are 5 ms, 3 ms, 8 ms and 2 ms respectively. The controller must also handle two inputs: a soil-moisture probe that is read on a fixed schedule every 30 seconds, and a rain sensor that triggers a shutdown and must be acted on within 5 milliseconds of the first drop reaching it. The device is battery-backed and mains-charged, and is connected to the farm network so that readings can be uploaded.</p></div>
 
+<section id="q-print">
 <h2>Question</h2>
 <p>The four tasks A, B, C and D all become ready simultaneously when the controller wakes. Their processor requirements are 5 ms, 3 ms, 8 ms and 2 ms.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Describe how a closed-loop control system would maintain soil moisture at a target level, identifying the input, the process, the output and the feedback in your answer.</p> <em>(Describe)</em></li><li><span class="marks">[6 marks]</span><strong>(b)</strong> <p>Calculate the average waiting time for the four tasks under first-come-first-served scheduling and under round-robin scheduling with a time quantum of 3 ms, then recalculate each total if every context switch costs 0.5 ms and the tasks are executed in the order A, B, C, D.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Explain why the average waiting time alone is a misleading basis for choosing between the two policies, using your figures, and state which policy you would deploy.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Evaluate the use of polling for the soil-moisture probe against the use of interrupts for the rain sensor, and explain one additional operating system function that the network connection makes necessary.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-A1.3-001">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -97,6 +101,11 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

@@ -32,16 +32,20 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>B4.1 Choosing an implementation for a priority queue when the number of extractions, not the complexity class, decides the winner</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B4.1-201</p>
 <button type="button" class="q-done-page" data-qid="CS-B4.1-201" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-B4.1-201">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B4.1 Fundamentals of ADTs (HL only): the priority queue and the cost of different implementations</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Determine</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">Explain</span></div>
 <div class="box"><h4>A counting model for three priority-queue implementations</h4><p>A priority queue stores items and always returns the one with the highest priority. Three implementations are being compared: an <strong>unsorted array</strong>, an <strong>array kept in sorted order</strong>, and a <strong>binary heap</strong>.</p>
 <p>To make the comparison concrete, charge each operation as follows.</p>
 <p>* An operation that only touches one end of the structure costs <strong>1 step</strong>.<br>* An operation that has to work through the stored items costs $m/2$ steps on average, where $m$ is the number of items in the structure. This is the average over the position of the item being sought, and it is the convention used here so that the two array implementations are charged on the same footing.<br>* A binary heap costs $\log_2 m$ steps for <strong>every</strong> operation, whether it is an insertion or an extraction.</p>
 <p>The workload holds $n = 1024$ items throughout, so $\log_2 n = 10$. The items are all inserted first, and the extractions then take place one at a time.</p></div>
 
+<section id="q-print">
 <h2>Question</h2>
 <p>A student claims that the binary heap is the right implementation because its operations are $O(\log n)$ while the unsorted array's are $O(n)$, and that this settles the choice. The claim is to be tested against the counting model above, first with the full workload and then with the number of extractions reduced.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Determine the total number of steps taken by the unsorted array and by the binary heap when 1024 items are inserted and then all 1024 are extracted, and hence show that the heap performs about 25.6 times fewer steps.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Show that the sorted array performs exactly the same total number of steps as the unsorted array on this workload, and explain why two structures with opposite cost profiles can produce the same total.</p> <em>(Show that)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>The number of extractions is now reduced from 1024 to $k$, with the 1024 insertions unchanged. Determine the largest value of $k$ for which the unsorted array is still the cheaper choice, and state the smallest value of $k$ at which the heap is cheaper.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Explain why the student's complexity-class argument is not by itself a sufficient reason to choose the heap for this workload.</p> <em>(Explain)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-B4.1-201">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -111,6 +115,11 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

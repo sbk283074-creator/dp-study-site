@@ -32,6 +32,8 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>A forty-gigabyte file that will not fit in memory twice</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B2.5-001</p>
 <button type="button" class="q-done-page" data-qid="CS-B2.5-001" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-B2.5-001">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B2.5 File processing (reading and writing files, line-by-line and whole-file processing, parsing records, detecting malformed data, memory and error handling)</span><span class="chip">P2 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">python</span><span class="chip">Explain</span><span class="chip">Construct</span><span class="chip">Evaluate</span></div>
 <div class="box"><h4>Northwind Climate Archive ingestion</h4><p>A weather service ingests a daily archive from a national network of 500 stations. The archive is a single text file of 40 GB. Each record is one line of about 100 bytes holding four comma-separated fields: station code, timestamp, temperature and humidity.</p>
 <p>The file arrives as a compressed stream over a socket. The stream cannot be rewound and the raw file is never written to disk, because the service has no room for it. The machine that runs the ingestion has 8 GB of RAM.</p>
@@ -48,10 +50,12 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
         station, timestamp, temp, humidity = fields
         ...
     return summary, errors</code></pre>
+<section id="q-print">
 <h2>Question</h2>
 <p>The ingestion runs once a night on a single machine, must not exhaust memory, and must finish before the next upload arrives.</p>
 <ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain why stream.read() cannot be used here, referring to the size of the file and the memory available, and state what a streaming implementation does instead.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Explain why data.split("\n") followed by line.split(",") produces errors that the developer would not see when testing on a small file. Describe how a record containing a comma inside a quoted field must be parsed.</p> <em>(Explain)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Construct a Python function ingest(stream, max_errors) that consumes the stream exactly once and returns a summary, an error report and an error count. stream is a file-like object that supports iteration and cannot be rewound. The summary must give, for each station, the count, minimum, maximum and sum of temperatures. The error report must hold the line number and a reason for at most max_errors malformed records, and the count must be the exact total of malformed records. You may not import any module, and you may not call stream.read() or stream.seek(). A Java version of this paper requires the same algorithm.</p> <em>(Construct)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Evaluate the decision to keep only the first max_errors malformed records while still counting all of them, against the provider's requirement to receive the line number of every malformed record. State what is given up and recommend a design.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-B2.5-001">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -118,6 +122,11 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

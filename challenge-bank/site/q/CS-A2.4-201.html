@@ -32,15 +32,19 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>A2.4 A security incident caused by a legitimate account with excessive privilege, where the control that would have prevented it conflicts with the requirement that clinical staff must not be blocked out of records in an emergency</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A2.4-201</p>
 <button type="button" class="q-done-page" data-qid="CS-A2.4-201" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-A2.4-201">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A2.4 Network security, with A4.4 Ethical considerations and A3.2 Database design</span><span class="chip">P2 · Section B</span><span class="chip">13 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: allowed</span><span class="chip">Analyse</span><span class="chip">Design</span><span class="chip">Determine</span><span class="chip">Evaluate</span></div>
 <div class="box"><h4>An incident at a three-site hospital trust</h4><p>A hospital trust runs one patient-records system across three sites, with six clinical departments. Access is granted through roles. In the year of the incident the trust operated forty roles; the largest was <code>TechSupport</code>, held by thirty-four members of the IT service desk, which carried the union of every permission any of its holders had ever asked for, including read and write access to the full records of every department at every site. The trust's written policy is that no member of staff may be denied access to a record they need in order to treat a patient, and that any access outside a member's own department must be visible in the audit log within one working day.</p>
 <p>The incident: a service-desk analyst whose employment was being terminated copied the records of $1{,}180$ patients from four departments he had never worked in and had never had a legitimate reason to view. The copy was made over eleven days using his own account and his own credentials during normal working hours. It was found two months later during a routine audit. Nothing he did required an exploit, a stolen password or a disabled control, and every copy operation was recorded in the log. The log had $4.2$ million entries for the year and was reviewed by one auditor two days a week.</p>
 <p>The proposal on the table is to replace the forty roles with a strict role-based scheme in which a role exists for every combination of site, department and job function that the trust employs, and in which any access outside a member's own role is refused by the system and escalated to a manager. The trust employs six departments, five job functions and three sites. The trust's information-governance officer has objected, on the grounds that the strict scheme will create an administration burden the trust cannot carry and that a refused request in a clinical emergency is a patient-safety event.</p></div>
 
+<section id="q-print">
 <h2>Question</h2>
 <p>The trust's board has asked for an analysis of the incident against the three components of the CIA triad, a design for a replacement role-based access-control scheme, the working arithmetic of the current audit coverage and the proposed quarterly permission review, and an evaluation of the information-governance officer's objection.</p>
 <ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Analyse the incident against the three components of the CIA triad, identifying for each component whether it was breached and giving the specific evidence from the case that supports your answer.</p> <em>(Analyse)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Design a role-based access-control scheme for this trust, stating how many roles the strict scheme described in the case would need and explaining how your design resolves the conflict between the trust's policy on emergency access and the principle of least privilege.</p> <em>(Design)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>The auditor reviews $4.2$ million log entries a year in two days a week. Determine what fraction of the log is currently reviewed, and determine the review workload the proposed scheme implies if each role must be reviewed quarterly at fifteen minutes per role.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Evaluate the proposal against the information-governance officer's objection, and state which of the two requirements -- least privilege or unblocked clinical access -- your design sacrifices and why.</p> <em>(Evaluate)</em></li></ol>
 <p class="reveal-note">Total: 13 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="13" data-ai-ref="CS-A2.4-201">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -99,6 +103,11 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

@@ -32,17 +32,21 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 <h1>B4 Abstract data types</h1>
 <p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B4.1-001</p>
 <button type="button" class="q-done-page" data-qid="CS-B4.1-001" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-B4.1-001">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
 <div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B4.1 Fundamentals of ADTs (B4.1.3 linked lists, B4.1.4 binary search trees), B2.2 Data structures, B2.4 Programming algorithms, B1.1 Approaches to computational thinking</span><span class="chip">P2</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">pseudocode</span><span class="chip">Explain</span><span class="chip">Describe</span><span class="chip">Evaluate</span></div>
 <div class="box"><h4>Stimulus</h4><p>This is the Paper 2 *algorithmic-thinking* question type, for which the IB expects a solution without reading or writing Python or Java. Pseudocode below uses the conventions <code>=</code> for assignment, <code>//</code> for a comment, and indentation-delimited blocks.</p>
 <p>---</p>
 <p>A national road-tolling system uses overhead gantries that read number plates automatically. Most gantries have no permanent network connection, so each gantry records sightings in local memory and uploads them as a single batch once every 15 minutes. Within a batch, sightings are already in chronological order.</p>
 <p>The central system receives batches from thousands of gantries. Batches may arrive late, and they may arrive out of order relative to one another. Before a journey can be billed, all sightings for a single plate must be assembled into one chronological sequence.</p></div>
 <figure><table><thead><tr><th>Plates held, n</th><th>Design 1: array + linear search (comparisons, worst case)</th><th>Design 2: binary search tree (comparisons, worst case)</th></tr></thead><tbody><tr><td>1 000</td><td>1 000</td><td>≈ 10</td></tr><tr><td>10 000</td><td>10 000</td><td>≈ 14</td></tr><tr><td>100 000</td><td>100 000</td><td>≈ 17</td></tr><tr><td>1 000 000</td><td>1 000 000</td><td>≈ 20</td></tr></tbody></table><figcaption>Indicative performance of the two membership-test designs as n, the number of plates held, grows.</figcaption></figure>
+<section id="q-print">
 <h2>Question</h2>
 <p>The central system must (i) buffer sightings at the gantry, (ii) discard duplicate sightings of the same plate within a 24-hour window, and (iii) merge batches that arrive out of order into one chronological list.</p>
 <ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Explain why a queue is a suitable abstract data type for the gantry's local buffer, and explain one advantage of implementing that queue as a <strong>circular</strong> queue rather than a non-circular one in this context.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Two designs are proposed for discarding duplicates. <strong>Design 1</strong> keeps accepted plates in an array and uses linear search. <strong>Design 2</strong> keeps accepted plates in a binary search tree keyed on the plate.</p>
 <p>For $n$ accepted plates, state the worst-case time complexity of a single membership test for each design, and evaluate which design is preferable for a system handling 40 000 plates per day.</p> <em>(Evaluate)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Describe, using pseudocode or structured English, an algorithm that merges two batches, each already sorted by timestamp, into a single chronological list. State the time complexity of your algorithm in terms of the batch sizes $p$ and $q$.</p> <em>(Describe)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Number plates are issued in blocks, so plates arriving at a gantry are often already in near-alphabetical order. Explain the consequence of this for the shape and performance of the binary search tree in Design 2, and describe one change that would avoid the problem.</p> <em>(Explain)</em></li></ol>
 <p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
 <div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-B4.1-001">
 <div class="qai-head">
   <span class="qai-title">Ask AI</span>
@@ -125,6 +129,11 @@ end MERGE
   past paper, textbook or question bank; figures are authored, not scanned. Part of the
   <a href="../../../index.html">DP study system</a>.
 </div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
 <script src="../assets/site.js"></script>
 <script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>

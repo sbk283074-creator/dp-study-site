@@ -136,10 +136,37 @@ mjx-container[display="true"]{display:block !important;padding:.15em 0 .5em}
   th,td{white-space:normal;padding:6px 8px}
   .wrap{overflow-wrap:anywhere}
 }
+/* ---- Build-your-own-paper: selection checkbox + floating bar ---- */
+.q-pick-wrap{display:flex;align-items:center;gap:5px;flex:none;margin-right:6px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none}
+.q-pick-wrap input{width:15px;height:15px;cursor:pointer;accent-color:var(--accent)}
+.q-pick-page{margin:14px 8px 4px 0;border:1px solid var(--line);background:#fff;color:#334155;border-radius:10px;padding:9px 16px;font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer}
+.q-pick-page:hover{border-color:var(--accent);color:var(--accent)}
+.q-pick-page.on{background:#e7f6ec;border-color:#34a853;color:#1e7e34}
+.q-pdf{margin:14px 0 4px;border:1px solid var(--line);background:#fff;color:#334155;border-radius:10px;padding:9px 16px;font:600 14px -apple-system,Segoe UI,Roboto,Arial,sans-serif;cursor:pointer}
+.q-pdf:hover{border-color:var(--accent);color:var(--accent)}
+.cb-pickbar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:40;display:flex;gap:12px;align-items:center;background:#0f172a;color:#fff;padding:10px 16px;border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.25);font-size:14px}
+.cb-pickbar[hidden]{display:none}
+.cb-pickbar b{font-size:15px}
+.cb-pickbar .btn{background:#fff;color:#0f172a;border:0;padding:6px 12px;border-radius:999px;font:600 13px -apple-system,Segoe UI,Roboto,Arial,sans-serif;text-decoration:none;cursor:pointer}
+.cb-pickbar .cb-pickbar-clear{background:transparent;color:#cbd5e1;border:0;cursor:pointer;font-size:13px;text-decoration:underline}
+/* ---- Builder page ---- */
+.builder-controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:18px 0 14px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--soft)}
+.b-answers{font-size:14px;display:flex;align-items:center;gap:6px;cursor:pointer}
+.paper-q-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.paper-q-actions{margin-left:auto;display:flex;gap:6px}
+.paper-q-actions button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:3px 9px;font-size:13px;cursor:pointer}
+.paper-q-actions button:hover{border-color:var(--accent);color:var(--accent)}
+.paper-q-bar .paper-ref{font-size:12.5px;color:var(--muted)}
 @media print{
   header.site nav,footer.site,.controls,input[type=search],select,.paper-switch,.pager,.q-done,.q-done-page{display:none}
   details{border:0} details .body{border-top:0}
   details[open] .body{border-top:0}
   body{font-size:11.5pt}
   .paper-q{border-top:1px solid #999}
+  /* single-question export: show ONLY the question block, never the answer */
+  body.cb-print-q .q-done-page,body.cb-print-q .q-pick-page,body.cb-print-q .q-pdf,
+  body.cb-print-q .qai,body.cb-print-q details,body.cb-print-q .kv,
+  body.cb-print-q .pager,body.cb-print-q .reveal-note,body.cb-print-q #cb-pickbar{display:none !important}
+  /* builder export: hide the on-screen controls, keep the assembled paper */
+  body.cb-print-paper .builder-controls,body.cb-print-paper #cb-pickbar{display:none !important}
 }
