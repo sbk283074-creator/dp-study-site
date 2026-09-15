@@ -154,12 +154,36 @@ page builder — harmless, and a rebuild may re-add them. Loads `main.css`, `app
     **Past papers**. This is the load-bearing detail: an *absent* `category` means "no filter", which
     is exactly what surfaced the books, so every remaining option is a real non-book category and the
     exclusion holds **by construction**. A client-side filter was rejected — books are 42% of all rows
-    (7,304 of 17,273), so browser-side filtering cannot produce correct page sizes or totals.
+    (7,304 of 17,366), so browser-side filtering cannot produce correct page sizes or totals.
   - `BooksPage` / `BookDetailPage` / `BookReaderPage` now render a shared
     `components/NotAvailable.tsx` notice ("This feature is not available yet"). The previous
     implementations are in git history.
   - `backend/src/api.js` gained an **`exclude_category`** param (comma-separated) for exactly this
     job, but **it is not live** — see trap 14. Nothing in the frontend depends on it.
+- **Mock papers now has data (2026-09-15).** The category button had been a dead end: production held
+  **zero** `category='mock'` rows, so clicking it returned 0 and rendered the generic
+  *"Nothing matches the current filters"* — blaming the user's filters for a dataset that was never
+  loaded. The rows are the **official IB specimen papers**, produced by
+  `ib-dp-platform/backend/ocr/specimen_json/specimen.json` (93 questions) and imported via
+  `POST /api/questions/bulk`. **`mock` is now 93**, and the unfiltered total is **17,366**
+  (`7,304 book + 6,977 past + 2,205 topic + 787 questionbank + 93 mock`). All six specimen papers are
+  present (CS HL P1 15 / P2 16 / P3 8; Physics HL P1A 40 / P1B 4 / P2 10) and all 93 carry a
+  `question_image`.
+  - **The import needs no DB credentials.** `createApp()` is only `cors()` + `express.json()` — there is
+    **no auth, API key or bearer check anywhere** in `backend/src` or `backend/netlify` — and
+    `POST /api/questions/bulk` is **idempotent by id** (`INSERT OR REPLACE` whenever an id is present).
+    Send ~20 rows per call: the handler wraps each batch in one `db.transaction`, and the Worker's
+    50-subrequest cap is what kills bigger payloads.
+- **Still missing: 73 Physics HL past-paper rows (2015 Nov).** They exist in the local dev DB
+  (`backend/data/app.db`) but production has **none** of them (40× Paper 1, 9× Paper 2, 24× Paper 3).
+  Their 157 image refs all resolve, so only the rows are absent. **They cannot be pushed through the
+  API:** `validateQuestion` requires a non-empty `explanation`, and all 73 have `explanation=''` — as do
+  **10,042 existing rows** (every `past`/`topic`/`questionbank` row; only `book` and `mock` have
+  explanations). The OCR importers (`ocr/import_physics_topic.mjs` and friends) `INSERT` directly and
+  bypass the validator, which is why the gap exists and why neither validating path can close it.
+  Resolution: run `ib-dp-platform/backend/scripts/copy_missing_rows.mjs --category=past --day=2026-09-12`
+  with `TURSO_URL`/`TURSO_AUTH_TOKEN` set — it reads the local rows read-only and writes them through
+  `insertQuestion` (no validation) as upserts, so re-running is safe.
 - **Rebuild recipe** (the only sanctioned way — never hand-edit the bundle):
   ```bash
   cd ~/Downloads/dp learning/ib-dp-platform/frontend
