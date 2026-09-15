@@ -879,11 +879,35 @@
     // longer see. Only the *focused* panel is closed here: a site-wide
     // conversation is deliberately left alone, so changing pages mid-chat does
     // not throw the conversation away.
+    //
+    // `hashchange`/`popstate` alone are NOT enough. The Question Bank is a React
+    // Router hash app: clicking a nav link calls history.pushState ONCE and
+    // fires neither event (measured on the live qbank — pushState 1, hashchange
+    // 0, popstate 0), so a listener on those alone never runs there. Wrap both
+    // history methods and announce the navigation ourselves.
+    //
+    // NOTE: `window.history` must be spelled out. This scope has its own
+    // `var history` (the chat transcript, line ~728) which shadows the global —
+    // writing `history.pushState` silently reads `undefined` off an array and
+    // the guard below skips the whole block with no error.
     function onRouteChange() {
       if (scope) closePanel();
     }
     window.addEventListener("hashchange", onRouteChange);
     window.addEventListener("popstate", onRouteChange);
+    ["pushState", "replaceState"].forEach(function (name) {
+      var original = window.history[name];
+      if (typeof original !== "function") return;
+      window.history[name] = function () {
+        var out = original.apply(this, arguments);
+        // Deferred: the router is mid-update and closing the panel mutates the DOM.
+        setTimeout(function () {
+          try { window.dispatchEvent(new Event("dp-ai:route")); } catch (e) {}
+        }, 0);
+        return out;
+      };
+    });
+    window.addEventListener("dp-ai:route", onRouteChange);
 
     // --- control bar wiring + collapse logic ---
     function syncSegs() {
