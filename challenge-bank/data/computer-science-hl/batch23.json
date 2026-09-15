@@ -1,0 +1,155 @@
+{
+  "questions": [
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P1",
+      "section": "B",
+      "technology": "permitted",
+      "question_type": "structured",
+      "id": "CS-A3.2-301",
+      "syllabus_ref": "A3.2 Database design: the selection of indexes and the effect of that selection on the operations the database performs. With A3.3 Database programming and B1.1 Approaches to computational thinking (identifying and evaluating the efficiency of a procedure)",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A3.2 An index that makes the slow operation a hundred times faster and the system as a whole slower: two effects that have to be summed before either can be judged",
+      "marks": 14,
+      "difficulty": 5,
+      "command_terms": [
+        "Calculate",
+        "Show that",
+        "Determine",
+        "Evaluate"
+      ],
+      "tags": [
+        "database",
+        "index",
+        "query performance",
+        "write amplification",
+        "trade-off",
+        "service level",
+        "workload",
+        "mean versus tail latency"
+      ],
+      "stimulus": {
+        "title": "Meridian Freight: an index on the ORDERS table",
+        "body": "Meridian Freight runs an order-capture system on a single relational database. The ORDERS table holds 2 000 000 rows. The system performs exactly two kinds of operation on it: a lookup, which retrieves one order by its ORDER_ID, and an insert, which adds one new order.\n\nMeasured on the production hardware, a lookup without an index performs a full scan of the table and takes 400 ms. An insert takes 5 ms. The development team creates a B-tree index on ORDER_ID; after that, a lookup takes 4 ms and an insert takes 40 ms, the extra 35 ms being the cost of maintaining the index.\n\nThe current workload is 1 000 000 operations per day, of which 5% are lookups and 95% are inserts. The service-level target is a mean operation time of at most 30 ms, measured over a whole day.",
+        "table": {
+          "caption": "Measured cost of one operation, before and after the index",
+          "columns": [
+            "operation",
+            "before",
+            "after",
+            "change"
+          ],
+          "rows": [
+            [
+              "lookup (5% of operations)",
+              "400 ms",
+              "4 ms",
+              "−396 ms"
+            ],
+            [
+              "insert (95% of operations)",
+              "5 ms",
+              "40 ms",
+              "+35 ms"
+            ]
+          ]
+        }
+      },
+      "figure": {
+        "type": "svg",
+        "content": "<svg viewBox=\"0 0 540 300\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Two stacked bars of mean time per operation. Before the index the mean is 24.75 milliseconds, almost all of it reads; after the index it is 38.2 milliseconds, almost all of it writes. The service-level target of 30 milliseconds is met before and breached after.\"><g font-family=\"ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif\"><line x1=\"90.0\" y1=\"235.0\" x2=\"500\" y2=\"235.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><text x=\"82.0\" y=\"238.5\" text-anchor=\"end\" font-size=\"10.5\" fill=\"#64748b\">0</text><line x1=\"90.0\" y1=\"193.0\" x2=\"500\" y2=\"193.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><text x=\"82.0\" y=\"196.5\" text-anchor=\"end\" font-size=\"10.5\" fill=\"#64748b\">10</text><line x1=\"90.0\" y1=\"151.0\" x2=\"500\" y2=\"151.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><text x=\"82.0\" y=\"154.5\" text-anchor=\"end\" font-size=\"10.5\" fill=\"#64748b\">20</text><line x1=\"90.0\" y1=\"109.0\" x2=\"500\" y2=\"109.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><text x=\"82.0\" y=\"112.5\" text-anchor=\"end\" font-size=\"10.5\" fill=\"#64748b\">30</text><line x1=\"90.0\" y1=\"67.0\" x2=\"500\" y2=\"67.0\" stroke=\"#e2e8f0\" stroke-width=\"1\"/><text x=\"82.0\" y=\"70.5\" text-anchor=\"end\" font-size=\"10.5\" fill=\"#64748b\">40</text><line x1=\"90.0\" y1=\"235.0\" x2=\"500\" y2=\"235.0\" stroke=\"#334155\" stroke-width=\"1.6\"/><line x1=\"90.0\" y1=\"46.0\" x2=\"90.0\" y2=\"235.0\" stroke=\"#334155\" stroke-width=\"1.6\"/><text x=\"18\" y=\"140.5\" font-size=\"10.5\" fill=\"#64748b\" transform=\"rotate(-90 18 140.5)\" text-anchor=\"middle\">mean time per operation (ms)</text><rect x=\"160.0\" y=\"151.0\" width=\"96.0\" height=\"84.0\" fill=\"#1d4ed8\"/><rect x=\"160.0\" y=\"131.1\" width=\"96.0\" height=\"19.9\" fill=\"#93c5fd\"/><text x=\"208.0\" y=\"252.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#334155\">before the index</text><text x=\"208.0\" y=\"123.1\" text-anchor=\"middle\" font-size=\"11\" fill=\"#334155\">24.75 ms</text><text x=\"208.0\" y=\"196.5\" text-anchor=\"middle\" font-size=\"9.5\" fill=\"#ffffff\">reads 20.0</text><rect x=\"360.0\" y=\"234.2\" width=\"96.0\" height=\"0.8\" fill=\"#1d4ed8\"/><rect x=\"360.0\" y=\"74.6\" width=\"96.0\" height=\"159.6\" fill=\"#93c5fd\"/><text x=\"408.0\" y=\"252.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#334155\">after the index</text><text x=\"408.0\" y=\"66.6\" text-anchor=\"middle\" font-size=\"11\" fill=\"#334155\">38.20 ms</text><text x=\"408.0\" y=\"157.9\" text-anchor=\"middle\" font-size=\"9.5\" fill=\"#334155\">writes 38.0</text><line x1=\"90.0\" y1=\"109.0\" x2=\"500\" y2=\"109.0\" stroke=\"#b45309\" stroke-width=\"1.4\" stroke-dasharray=\"6 4\"/><text x=\"500\" y=\"103.0\" text-anchor=\"end\" font-size=\"10.5\" fill=\"#b45309\">service-level target: 30 ms</text><text x=\"90.0\" y=\"272\" font-size=\"10.5\" fill=\"#64748b\">The index makes every read one hundred times faster and the mean operation more than half as slow again.</text></g></svg>"
+      },
+      "challenge_mechanism": "An index is taught as the fix for a slow query, and the evidence offered is the speed of the query: here a hundred times faster, which is the kind of number that ends a discussion. The item puts a second effect alongside it — every insert now maintains the index — and the two effects oppose each other, so neither can be judged alone. Because reads are rare and expensive and writes are common and cheap, the read saving and the write penalty are of the same order, and the penalty wins: the mean operation time rises by 54% while the slowest operation falls by a factor of ten. The break-even mix is the point of the item, and it is not where intuition puts it.",
+      "question": "The chart shows the mean time per operation before and after the change, split into the time spent on reads and the time spent on writes. Use the data in the case study to answer the following, giving times to two decimal places and percentages to one decimal place.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Calculate the mean time per operation before the index is created and after it is created, and the percentage change in the mean."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Show that",
+          "text": "Show that the change in the mean is the difference of two separate effects, one a saving on reads and one a penalty on writes, and calculate the size of each per operation."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine the fraction of operations that would have to be reads for the index to break even, and hence state whether the index should be kept under the current workload."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Evaluate",
+          "text": "The service-level target is currently a mean operation time of 30 ms. The operations team proposes to replace it with a target on the 99th percentile of individual operation times. Evaluate whether the index should be kept under each target, and recommend what Meridian should do."
+        }
+      ],
+      "answer": "**(a)** Before: $0.05 \\times 400 + 0.95 \\times 5 = 20 + 4.75 = 24.75$ ms (M1). After: $0.05 \\times 4 + 0.95 \\times 40 = 0.2 + 38 = 38.20$ ms (A1). The mean therefore rises by $13.45$ ms, which is $\\dfrac{13.45}{24.75} \\times 100 = 54.3\\%$ (A1): the index makes the average operation more than half as slow again. Over a day of 1 000 000 operations that is 24 750 s, about 6.9 hours of database work, against 38 200 s, about 10.6 hours: the same throughput costs an extra 3.7 hours.\n**(b)** The change can be separated cleanly because each operation type appears with a known frequency. The saving on reads is $0.05 \\times (400 - 4) = 0.05 \\times 396 = 19.80$ ms per operation on average (M1). The penalty on writes is $0.95 \\times (40 - 5) = 0.95 \\times 35 = 33.25$ ms per operation on average (A1). The net change is $33.25 - 19.80 = +13.45$ ms, which is exactly the difference found in part (a) (A1). The two effects are of the same order — reads are 5% of the operations but each one saves 396 ms, writes are 95% but each one costs 35 ms — so neither can be neglected and the sign of the result is not obvious until both are computed.\n**(c)** Let $r$ be the fraction of operations that are lookups. Without the index the mean is $400r + 5(1-r) = 5 + 395r$; with it the mean is $4r + 40(1-r) = 40 - 36r$ (M1). Break even when $5 + 395r = 40 - 36r$, so $431r = 35$ and $r = \\dfrac{35}{431} = 0.0812$ (M1)(A1). The index pays for itself only when more than about $8.1\\%$ of operations are lookups. The current workload runs at $5\\%$, which is below that, so under the current mix the index should **not** be kept (A1). The margin is not thin: the observed 5% is about three fifths of the 8.1% needed, so the index fails by a comfortable distance rather than on a rounding error, and no plausible drift in the mix over a week would rescue it.\n**(d)** Under the present target the answer is clear: the mean is 24.75 ms without the index, which meets the 30 ms target, and 38.20 ms with it, which does not — so the index turns a compliant system into a non-compliant one and should be dropped (M1). The percentile target reverses the comparison. Without the index, 5% of operations take 400 ms, so the 99th percentile is 400 ms; with the index the slowest operation is 40 ms and the 99th percentile is 40 ms (A1). Against a tail target the index is therefore a factor-of-ten improvement, and it is the only way to meet any percentile target below 400 ms (A1). The recommendation follows from which target Meridian actually cares about, and the two are not the same thing: a mean target measures throughput and a percentile target measures the experience of the unlucky operation, and an index trades the second for the first. Meridian should either keep the index and move the target to a percentile, or drop the index and accept 400 ms lookups — and if it needs both, it should look at a covering index on a narrower column set, or at batching the index maintenance, rather than at the current all-or-nothing choice (M1)(A1).",
+      "markscheme_notes": "(a) (M1) for a frequency-weighted mean in either case, (A1) for 24.75 ms and 38.20 ms, (A1) for +54.3%. A candidate who averages the two operation times without weighting by frequency has not modelled the workload and scores at most one.\n(b) (M1) for isolating the read saving, (A1) for the write penalty, (A1) for showing that the difference of the two reproduces the answer to (a). The reconciliation is worth a mark of its own: an item of this kind is exactly where an arithmetic slip hides, and the cross-check is what catches it.\n(c) (M1) for expressing the mean as a function of r in both cases, (M1) for equating them and solving, (A1) for 0.0812 (accept 8.1%), (A1) for the conclusion. Note that the break-even fraction is small — 8% — which is itself the finding: the index is not wrong in principle, it is wrong at this mix, and a candidate who concludes that indexes are harmful has over-read the result.\n(d) (M1) for applying the current mean target to the two means, (A1) for computing the 99th percentile in each case (400 ms and 40 ms), (A1) for the conclusion that the ranking reverses, and (M1)(A1) for a recommendation that names the real choice — which target the organisation wants — or proposes a concrete alternative such as a narrower index or deferred maintenance. Do not credit 'it depends' on its own; the dependency must be stated.",
+      "explanation": "Index selection is taught as a query-optimisation topic, and the evidence used to judge it is the query: a hundredfold speed-up is presented, and the discussion stops. What the syllabus asks for — evaluating the effect of a design decision on the system — is not served by that, because an index is not a change to one operation. It is a change to every operation, and the ones it slows are the ones nobody was complaining about.\n\nThe numbers are chosen so that the two effects nearly cancel. Reads are rare (5%) and catastrophic (400 ms); writes are almost everything (95%) and individually cheap (5 ms). That is a realistic profile for an order-capture system, and it puts the read saving and the write penalty within a factor of two of each other, which is the only regime in which the question is interesting. The result — the mean rises 54% while the worst case falls by a factor of ten — is not a paradox; it is what happens when a change is judged on one statistic and the business measures another.\n\nPart (d) exists so that 'drop the index' is not the answer. A mean target and a percentile target rank the two designs in opposite orders, and a candidate who can state that, and say which one the organisation actually wants, has done the evaluation rather than the arithmetic.",
+      "provenance": {
+        "inspired_by": "Relational database practice: index selection and write amplification",
+        "adaptation": "The source tradition states the read/write trade-off qualitatively and advises measuring before and after. Here the trade-off is given numbers that oppose each other at almost equal strength, so the two effects have to be computed separately and recombined, and the break-even workload is derived rather than asserted. The service-level target is then split into a mean and a percentile version specifically so that the two designs rank in opposite orders, which is the situation a qualitative treatment cannot express.",
+        "resource_origin": "Relational database practice: index selection, write amplification from index maintenance, and the distinction between mean and tail latency in a service-level target (structure adapted; Meridian Freight, the workload and every figure are original)",
+        "source_url": null,
+        "rights": "original",
+        "source_family": "other"
+      },
+      "difficulty_evidence": {
+        "lever_type": "partial_cancellation",
+        "naive_path": "Compare the two lookup times, note that a query that took 400 ms now takes 4 ms, and conclude that the index is worth keeping because the operation that was slow is now a hundred times faster.",
+        "failure_point": "The index changes every operation, not only the slow one: each lookup saves 396 ms and each insert costs 35 ms, and because lookups are 5% of the workload and inserts 95%, the two effects come out at 19.80 ms and 33.25 ms per operation — the same order, opposing signs, and the penalty is the larger, so the mean rises 54% while the slowest operation falls by a factor of ten.",
+        "wrong_answer": "The evaluation keeps the index because lookups are a hundred times faster, and reports the mean operation time as improved, when the frequency-weighted mean has risen from 24.75 ms to 38.20 ms and the 30 ms service-level target, met before the change, is now breached."
+      },
+      "verification": {
+        "method": "Every figure was recomputed in Python. The two means were computed from the workload weights and cross-checked by summing the two per-operation effects, which reproduce the same difference of 13.45 ms. The break-even fraction was solved algebraically and then verified by substituting r = 35/431 back into both mean expressions, which agree to fifteen decimal places, and by evaluating the mean difference on a grid of r from 0 to 1 to confirm that the sign changes exactly once, at that value. The daily totals were recomputed from the operation counts and agree with the per-operation figures. The figure draws its bars from the same four contribution times.",
+        "assertions": [
+          "approx(0.05 * 400 + 0.95 * 5, 24.75, 1e-12)",
+          "approx(0.05 * 4 + 0.95 * 40, 38.2, 1e-12)",
+          "approx(38.2 - 24.75, 13.45, 1e-12)",
+          "approx(13.45 / 24.75 * 100, 54.3434, 1e-4)",
+          "approx(0.05 * 396, 19.8, 1e-12)",
+          "approx(0.95 * 35, 33.25, 1e-12)",
+          "approx(33.25 - 19.8, 13.45, 1e-12)",
+          "approx(35 / 431, 0.0812065, 1e-7)",
+          "approx(5 + 395 * 0.0812065, 40 - 36 * 0.0812065, 1e-4)",
+          "approx(5 + 395 * 0.05, 24.75, 1e-12)",
+          "approx(40 - 36 * 0.05, 38.2, 1e-12)",
+          "approx(24.75 * 1000000 / 1000, 24750, 1e-9)",
+          "approx(38.2 * 1000000 / 1000, 38200, 1e-9)",
+          "approx(50000 * 400 / 1000, 20000, 1e-9)",
+          "approx(950000 * 35 / 1000, 33250, 1e-9)",
+          "approx(400 / 40, 10, 1e-12)"
+        ],
+        "solution_skeleton": [
+          "form each mean as a frequency-weighted average of the two operation times",
+          "separate the change into a read saving and a write penalty and check they reconcile",
+          "write both means as functions of the read fraction and equate them for break-even",
+          "compare the break-even fraction with the observed workload",
+          "apply the mean target and then the percentile target to both designs"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.003,
+        "nearest_bank_id": "CS_HL_P2_2018May_q17",
+        "checked_at": "2026-09-11",
+        "note": "not yet scanned; tools/similarity_check.py --write fills this in",
+        "nearest_bank_label": "bank:Computer Science/CS HL",
+        "max_internal_similarity": 0.015,
+        "nearest_internal_id": "BM-3.5-002",
+        "max_approach_similarity": 0.1,
+        "nearest_approach_id": "BM-5.5-201"
+      }
+    }
+  ]
+}

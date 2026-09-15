@@ -1,9 +1,9 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 255 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 277 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 91 of 255 do. The remaining 164 are
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 113 of 277 do. The remaining 164 are
 a published, ratcheting backlog — see `STANDARD.md` §2.2–§2.5 and `tools/difficulty_audit.py`. All 13
 lever types are in use, and the Physics difficulty-5 share has been designed down from 62% to **47%**,
 which brings every subject inside the 50% cap with the calibration debt cleared. **The last calibration
@@ -13,6 +13,14 @@ audit prints `calibration OK` and `--check --strict` exits 0 for the first time.
 difficulty-3 item; that is a design gap rather than a slot to fill, and it is recorded below.
 The `topic` label is now a closed vocabulary per subject, enforced by `validate.py`, and is shown on every
 question page and filterable on every subject page.**
+**Figure coverage is now a first-class gate rather than a nice-to-have.** Batches 22 and 22b raise the
+share of items that carry a self-authored graph to **52 of 277 = 19%**, and move the bank-wide ratchet
+`FIGURE_COVERAGE_FLOOR` from 0.17 to 0.19 — the floor may rise and may
+never fall, so a later batch cannot quietly spend the coverage. Every figure is drawn by hand as a
+plain-Python SVG string builder in `tools/make_figures.py`: no charting library, no plotting package, no
+image model. `validate.py` rejects the fingerprints of all of them (`<canvas`, `plotly`, `matplotlib`,
+`chart.js`, `highcharts`, `echarts`, `vega`, `bokeh`, `data:image/`), so "without other tools" is a
+property the gate checks rather than a promise the prose makes.
 
 New folder: `challenge-bank/` (inside `dp learning final/`). It holds the question data and a
 standalone static website that collects and presents the questions.
@@ -940,12 +948,176 @@ similarity score, and no BM item ships containing HL-only content.
     falsifiable, not more, so all three items carry full evidence. Recorded in the skill.
   - Evidenced count **88 → 91**; assertions **2788 → 2840**. Difficulty split now **3 at d3, 150 at d4,
     102 at d5**; every subject still inside the 50% cap.
+- **Batch 22 — DONE (2 Maths, 2 Physics, 1 BM).** The figure-coverage batch. Standing
+  instruction: *a percentage of questions must carry a graph, written without other tools.* Before this
+  batch the bank held **45 of 255 = 18%** figure-bearing items and the distribution was lopsided — Physics
+  and CS sat at 32% each, Maths at 8%, and **BM at zero**: 30 items, not one graph. Batch 22 adds five
+  items, all five figure-bearing. Together with the two Physics waves that landed alongside it (22b below)
+  the bank reaches **52 of 267 = 19%** (Maths 11 = 10%, Physics 27 = 32%, CS 13 = 32%, BM 1 = 3%), and
+  `FIGURE_COVERAGE_FLOOR` rises 0.17 → 0.19 in the same change. All five are difficulty 5 except the BM
+  item, which is difficulty 4; all five score **9/9** on the rubric.
+  - **The two Physics items of this batch are filed as `physics-hl/batch22c.json`, not `batch22.json`, and
+    that is a scar rather than a plan.** Two Physics writers were in flight at once and both targeted
+    `physics-hl/batch22.json`; the pair was overwritten twice before it stuck. See the incident note at the
+    end of this entry. The `c` suffix exists so that no writer's filename can collide with another's again.
+  - **Maths ×2.** Both are designed so the **figure is the load-bearing part**, not decoration — in each
+    the graph is what makes the wrong answer attractive.
+    - `MATH-AHL5.8-201` (AHL 5.8, d5, Paper 3, `problem_solving`, 18 marks, `decoy_technique`,
+      `uk-alevel`). The stimulus is the **graph of $f'(x) = (x-2)^{2}(4-x)$** and nothing else; the
+      candidate must read stationary behaviour off the derivative rather than off $f$. At $x = 2$ the
+      graph is flat and *does not cross*: $f'(1.9) = 0.021$ and $f'(2.1) = 0.019$, same sign, so $x = 2$ is
+      a **stationary point of inflection**, not an extremum — and a plot that is read carelessly shows a
+      turning point. At $x = 4$ the sign does change ($f'(3.9) = 0.361 \to f'(4.1) = -0.441$), so that one
+      **is** a local maximum. $f''(x) = (x-2)(10-3x)$ confirms both. The second half turns on the
+      difference between a signed integral and a geometric area: $f(4) = 475/12 \approx 39.58$,
+      $f(5) = 36$, the signed integral over $[0,5]$ is $36$, and the **enclosed area is $259/6 \approx
+      43.17$** — larger, because a lobe below the axis adds rather than cancels. Figure
+      `derivative_cubic_graph`, sampled from the same `fp(x)` the markscheme integrates.
+    - `MATH-AHL4.4-201` (AHL 4.4, d5, Paper 2 section B, `extended_response`, 12 marks,
+      `seeded_anomaly`, `us-ap`). A ten-point bivariate stimulus table with **one influential point**
+      ($y = 30$ against a body that runs $2 \ldots 18$). Over all ten points $S_{xx} = 82.5$,
+      $S_{xy} = 206.5$, $m = 2.503$, $c = -1.467$, $r = 0.942$; drop the last point and $S_{xx} = 60$,
+      $S_{xy} = 118$, $m = 1.967$, $c = 0.500$, $r = 0.996$. Both lines look respectable and both $r$ look
+      strong, which is the trap: the *prediction* is what moves — at $x = 12$ the estimate goes from
+      **24.1 to 28.6, +18.5%**. Figure `scatter_influential`, drawn from the same sums the markscheme uses.
+  - **Physics ×2.** Both are the "right formula, wrong model" shape, and both use a graph to make the
+    wrong model look sanctioned.
+    - `PHYS-B.5-201` (B.5, d5, Paper 1 section B, `data_based`, 12 marks, `non_obvious_tool`,
+      `uk-alevel`). A **filament-lamp characteristic** $I = 0.1403\,V^{0.526}$ plotted against a 6.0 V
+      supply and a 12 Ω series resistor, i.e. the load line $I = (6.0 - V)/12$. The operating point is the
+      intersection: **3.0 V, 0.250 A** (exact root $V = 2.999622$). The non-obvious tool is that the lamp's
+      resistance *is not constant*: $R = 12\ \Omega$ at 3.0 V but $17\ \Omega$ at 6.0 V, so the tempting
+      one-shot $I = 6.0/24$ gives **0.2093 A — 16.3% low** — and is self-contradictory besides, since it
+      implies 0.2707 A at 3.488 V. Figure `lamp_characteristic` (curve + load line + the crossing marked).
+    - `PHYS-D.1-201` (D.1, d5, Paper 2 section B, `structured`, 12 marks, `non_governing_variable`,
+      `us-ap`). A **$g$-against-$r$ graph for a uniform planet** ($R = 3.0 \times 10^{6}$ m, surface
+      $g_{s} = 3.6$ m s⁻²) whose defining feature is a **kink at the surface**: linear inside, inverse
+      square outside. From the surface value $M = 4.86 \times 10^{23}$ kg, $V = 1.13 \times 10^{20}$ m³ and
+      $\rho = 4295$ kg m⁻³ (cross-checked by the independent route $3g_{s}/4\pi GR$). The lever is that
+      $r$ is *not* the governing variable inside the body: at $r = 1.5 \times 10^{6}$ m the field is
+      **1.8 m s⁻²**, while the plausible-looking $GM/r^{2}$ gives **14.4 m s⁻² — eight times too big**,
+      because that formula only holds for $r \ge R$. Figure `g_against_r_planet` (two regimes, kink marked).
+  - **BM ×1.** `BM-3.7-201` (Unit 3.7, d4, Paper 2 section B, `structured`, 12 marks, `wrong_design_cost`,
+    `original`). A six-month cash-flow forecast; closing balances $[8, 3, -9, -6, 3, 14]$; the trough is
+    **−9 in month 3** and the limit is breached **4** times. The lever is that the obvious repair — re-time
+    an inflow from month 4 into month 3 — moves the trough to −6 and the breach count to **1**: it
+    *fails*. The reason is that **the month-4 closing balance is pinned at −6 by $12 + 68 - 86$ for every
+    re-timing**, so shuffling receipts inside the window cannot fix a structural deficit. A 4 000 loan
+    gives $[12, 7, -5, -2, 7, 18]$ — trough −5, exactly on the limit. Figure `cashflow_closing_balance`,
+    the first figure ever to appear in a BM item.
+  - **Hand-authored figures, and the gate that enforces it.** All five are plain-Python string builders
+    appended to `tools/make_figures.py` and registered in its `FIGURES` dict: `derivative_cubic_graph`,
+    `scatter_influential`, `lamp_characteristic`, `g_against_r_planet`, `cashflow_closing_balance`. They
+    emit SVG from the same house primitives as the existing figures (`_svg`, `_t`, `_tsup`, `_tr`, `_l`,
+    `_c`, `_p`, `_r`, `_poly`, `_arrow_defs`) and the same palette, and are exported through
+    `data/_figures.json` before being inlined into the item JSON. **Two of them sample their own curve** —
+    the derivative graph from `fp(x)`, the scatter from the very sums the markscheme quotes — so the
+    picture and the markscheme cannot drift apart. Layout was checked programmatically before shipping: a
+    bounds test caught two labels overrunning the frame and a collision test caught two overlapping
+    labels; both were fixed.
+  - Evidenced count **91 → 96**; assertions **2840 → 2909**.
+- **Batch 22b — DONE (6 Physics, filed as `physics-hl/batch22.json`).** A parallel Physics wave that landed
+  in the same window as Batch 22 and shares its figure goal. Six **difficulty-4 `structured`** items, one
+  per node, and the design is visibly a *spread* rather than a theme:
+
+  | id | node | lever | source family | marks | figure |
+  |---|---|---|---|---|---|
+  | `PHYS-A.2-301` | A.2 Space, time and motion | `non_obvious_tool` | `china-competition` | 14 | — |
+  | `PHYS-B.3-301` | B.3 Particulate nature of matter | `aggregate_recovery` | `china-gaokao` | 14 | ✓ |
+  | `PHYS-D.2-301` | D.2 Fields | `implicit_dependence` | `ib` | 15 | — |
+  | `PHYS-D.4-301` | D.4 Fields | `wrong_design_cost` | `us-ap` | 15 | ✓ |
+  | `PHYS-E.1-301` | E.1 Nuclear and quantum physics | `derived_limit` | `singapore-alevel` | 15 | — |
+  | `PHYS-E.5-301` | E.5 Nuclear and quantum physics | `partial_cancellation` | `uk-alevel` | 15 | — |
+
+  Six distinct **levers** from the 13-type taxonomy, six distinct **source families**, and four of the four
+  examinable Themes — the wave is built to diversify rather than to drill one idea. All six carry full
+  `difficulty_evidence` and score **9/9**. Two are figure-bearing, so the wave takes the figure count
+  45 → 47. `PHYS-D.2-301` is the bank's first item sourced from `ib` itself.
+- **Physics's first difficulty-3 item — DONE (1 Physics, `physics-hl/batch21.json`).** `PHYS-A.3-201`
+  (Theme A, 13 marks, 5 parts, `decoy_technique`, `original`) closes the gap that the Batch 21 entry
+  recorded in as many words: *"Physics still claims no difficulty-3 item; that is a design gap rather than
+  a slot to fill."* It is the single-lever shape §2.3 asks for — one clean trap, everything else routine —
+  and it still scores **9/9**.
+  - **It shipped with a paper-type bug, and the gate caught it.** The item declared `paper: "P1"` with
+    `question_type: "structured"`. Physics **P1 contains only `mcq` and `data_based`**; `structured` lives
+    on P2. This is exactly what `PAPER_TYPES` in `validate.py` exists to reject, and it rejected it —
+    `structured on Physics HL P1: that paper contains data_based/mcq`. Corrected to `paper: "P2"`, where
+    `structured` is legal. The lesson is not "check the field" but "the paper a question *looks* like it
+    belongs to is not the paper it is allowed on".
+- **The clobber incident, recorded because it cost real work twice.** Two Physics writers were in flight at
+  once and both wrote `data/physics-hl/batch22.json`. Batch 22's Physics pair was destroyed by the first
+  writer; it was recovered from its generator, reinstated, and then destroyed **again** by the second
+  writer before it finally settled. Nothing was lost in the end, but only because the generator survived
+  and because the loss showed up as an arithmetic anomaly — the bank's item count moved by an amount that
+  no single batch could explain, and the audit's per-subject Physics total did not match the sum of the
+  files. Two rules came out of it, both now in the skill: **one wave, one filename** (a second pass gets
+  `batchNb.json`, never a re-run over a filename another writer owns), and **check the count per subject
+  after every write**, because a wrong total is the cheapest detector there is.
+- **Batches 21–22 together — 255 → 277.** The figure ratchet was set in the same change:
+  `FIGURE_COVERAGE_FLOOR` 0.17 → **0.19**, against a measured **52 / 277 = 19%**. Evidenced count
+  **91 → 113**; assertions **2840 → 3144**. Difficulty split now **4 at d3, 163 at d4, 110 at d5**;
+  every subject still inside the 50% cap (Maths 48%, Physics 44%, CS 31%, BM 10%). Bank totals:
+  Maths 117 / 1773 marks, Physics 84 / 1060, CS 45 / 701, BM 31 / 462.
+  - **A parallel session landed a CS and Maths wave in the same window.** Four CS items
+    (`CS-A1.3-301`, `CS-A2.3-301`, `CS-A4.3-301`, `CS-B2.4-301`) and a further Maths wave arrived while
+    these docs were being written, taking the bank 267 → 277. They are counted in every figure above. One
+    of them (`MATH-AHL1.13-301`) briefly failed the gate — *difficulty 5 is not earned: the evidence
+    scores 7/9, which permits at most 4* — and was corrected by its own author within minutes. Recorded
+    here because the numbers in this document were re-derived three times in twenty minutes for the same
+    release, and anyone comparing a count against an earlier revision should assume a second writer rather
+    than a mistake.
+  - **The ratchet, and why it is a gate and not a number.** `FIGURE_COVERAGE_FLOOR` was 0.17, set when the
+    bank stood at 18%. The figure-bearing items added across these waves took the share to **19%**, so the
+    floor moves to **0.19** in the same commit — a deliberately tight fit (52/267 = 19.5%), which is the
+    point: the next batch has to carry its own weight. The rule is one-directional on purpose: coverage may
+    rise and the floor follows it up, but a future batch cannot add non-figure items and let the percentage
+    sag back — the audit fails instead. `FIGURE_SUBJECT_TARGET = 0.15` is the per-subject companion, and it
+    is *reported* rather than enforced, which is the honest choice: Maths at 10% and BM at 3% are both
+    still under it, and forcing them up would mean bolting graphs onto items that do not need one.
+  - **Verification first, prose second.** Every number above was recomputed in Python *before* the prose
+    was written: exact fractions plus 200 000-interval quadrature for the Maths area, bisection to 200
+    iterations for the lamp operating point, two independent routes to the planet's density, and a
+    re-chained cash-flow column for the BM repair. The BM verifier found a real bug on its first run — the
+    "shifted" branch was reusing the original opening balances instead of re-chaining — and fixing it is
+    what surfaced the stronger, correct result that month 4 is pinned.
+- **Batch 22, second wave — 267 → 285.** Eighteen items landed in one sitting: eight Maths
+  (`MATH-AHL2.13-301` oblique asymptote that the curve actually crosses, `MATH-4.10-301` the two
+  regression lines of the same scatter, `MATH-AHL3.15-301` two flight paths that intersect without the
+  aircraft colliding, `MATH-AHL3.10-301` the root a squared trig equation adds, `MATH-1.3-301` two
+  sequences with the same first three terms, `MATH-AHL1.13-301` a sum of sines summed as a complex
+  geometric series, `MATH-3.18-301` three planes that form a triangular prism, `MATH-5.9-301` two moving
+  objects level at a repeated root), five Business Management (`BM-5.5-301` a contract that crosses the
+  relevant range and destroys profit with positive contribution, `BM-4.4-301` a survey whose non-response
+  flips the majority, `BM-6.7-301` a grouped table whose open-ended class makes the mean underivable,
+  `BM-3.8-301` capital rationing in which the highest-NPV project is the wrong pick, `BM-5.2-301` the
+  stage with the lowest stated capacity that is not the bottleneck) and five Computer Science
+  (`CS-B2.4-301` recursion whose call count is 2F(n) − 1 while memoisation changes a different limit,
+  `CS-A2.3-301` a DNS TTL judged against an arrival rate, `CS-A4.3-301` two confusion matrices that
+  expose data leakage, `CS-A1.3-301` row-major against column-major traversal under thrashing,
+  `CS-A3.2-301` an index that makes the slow operation a hundred times faster and the system 54% slower).
+  - **Two gates bit, both on items in this wave.** `MATH-AHL1.13-301` failed *difficulty 5 is not
+    earned: the evidence scores 7/9* because its heaviest part was part (a); the fix was to re-cut the
+    marks (a: 4 → 3, d: 3 → 4) and expand the corresponding markscheme, not to weaken the evidence.
+    `CS-A3.2-301` failed twice on vocabulary — a topic outside the CS closed list, and `structured` on
+    Paper 2, which is a case-study paper — and both are the kind of error the validator exists to catch.
+  - **The figure gap narrowed deliberately.** BM went from 1 to 5 figure-bearing items (3% → 14%)
+    because four of the five new BM items carry an SVG built by the same plain-Python string builders,
+    and both new Maths items carry one; bank-wide coverage rose 52 → 59 = **21%**, so
+    `FIGURE_COVERAGE_FLOOR` moves to **0.20** in this commit. The per-subject companion stays *reported*,
+    not enforced: Maths is still at 11% and forcing it to 15% would mean bolting graphs onto items that
+    do not need one.
+  - **One wave, one filename, kept.** The last CS item went to `batch23.json` rather than a re-run over
+    `batch22.json`, which another writer owns in this window. The rule from the earlier incident holds:
+    a second pass gets a new filename, and the per-subject total is checked after every write.
+  - **Numbers after the wave.** 285 items — Maths 119 / 1803 marks, Physics 84 / 1060, CS 46 / 715,
+    BM 36 / 532. Difficulty split **4 at d3, 164 at d4, 117 at d5**; every subject inside the 50% cap
+    (Maths 49%, Physics 44%, CS 33%, BM 19%). Evidence present **121 / 285**; assertions **3271**.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  109 questions / 1653 marks, physics 75 / 935, CS 41 / 638, BM SL 30 / 450 — all difficulty 3–5, May
+  117 questions / 1773 marks, physics 84 / 1060, CS 45 / 701, BM SL 31 / 462 — all difficulty 3–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that

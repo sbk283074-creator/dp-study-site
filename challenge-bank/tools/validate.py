@@ -746,6 +746,16 @@ def check(q, seen_ids, medians):
         fail.append("HTML entity present in figure/stimulus (use literal characters)")
     if "<script" in markup.lower():
         fail.append("script tag in figure/stimulus")
+    # A figure must be hand-authored vector markup. The IBO presents questions
+    # "in the form of words, symbols, diagrams or tables"; a charting library's
+    # output, or a raster image produced by an image model, is neither authored
+    # here nor reproducible from the JSON alone. Reject the fingerprints.
+    low = markup.lower()
+    for marker in ("<canvas", "plotly", "matplotlib", "chart.js", "chartjs",
+                   "highcharts", "echarts", "vega", "bokeh", "data:image/"):
+        if marker in low:
+            fail.append("figure looks machine-generated (%s) -- hand-author the SVG" % marker)
+            break
 
     # ---- originality ------------------------------------------------------
     orig = q.get("originality") or {}

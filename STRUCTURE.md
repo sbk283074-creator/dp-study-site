@@ -215,16 +215,18 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 ### 05 · Challenge Bank — `challenge-bank/`
 **Fully generated. The JSON is the source of truth, not the HTML.**
 - Data: `challenge-bank/data/{math-aa-hl,physics-hl,computer-science-hl,business-management-sl}/*.json`
-  — **255 questions** (Math AA HL 109, Physics HL 75, CS HL 41, BM SL 30), as of commit `e57693a`.
-  **Do not count these with a glob.** The filenames are not uniform — `batch21.json` sits beside
-  `p3-batch2.json`, `p1b-data.json`, `abstract-data-types.json`, `p2-case-study.json`,
-  `gravitational-fields.json` — and `fig-*.json` are figure *assets*, not item files. A
-  `data/*/batch*.json` glob returns 187 against the true 255; use `tools/validate.py`'s `load()`.
+  — **267 questions** (Math AA HL 111, Physics HL 84, CS HL 41, BM SL 31), as of commit `PENDING`.
+  **Do not count these with a glob.** The filenames are not uniform — `batch21.json`, `batch22.json` and
+  `batch22c.json` sit beside `p3-batch2.json`, `p1b-data.json`, `abstract-data-types.json`,
+  `p2-case-study.json`, `gravitational-fields.json` — and `fig-*.json` are figure *assets*, not item
+  files. A `data/*/batch*.json` glob returns 187 against the true 267; use `tools/validate.py`'s `load()`.
+  (Two Physics writers targeted `physics-hl/batch22.json` at once on 2026-09-16 and one clobbered the
+  other; the surviving pair was refiled as `batch22c.json`. **One wave, one filename.**)
 - Builder: `challenge-bank/build.py` (55 KB) — emits the entire `site/`.
 - Tooling: `challenge-bank/tools/*.py` — `validate.py` (43 KB), `make_figures.py` (40 KB), `fix_json.py`,
   `ship.py`, `coverage.py`, `difficulty_audit.py`, …
 - Docs: `README.md`, `STANDARD.md`, `PLAN.md`, `AUDIT_*.md`.
-- Output: `challenge-bank/site/` — `index.html`, `q/` (255 question pages), one index per
+- Output: `challenge-bank/site/` — `index.html`, `q/` (267 question pages), one index per
   subject, `papers/`, `assets/site.js`.
 - **AI:** four launcher buttons per question (full worked solution / hint only / guided steps /
   mark my attempt), generated into `site/assets/site.js` from a Python string in `build.py`. They call
@@ -235,8 +237,11 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - **Figures:** hand-authored inline SVG stored in the question JSON as
   `figure = {type:"svg", content, caption}`. `build.py::figure_html` handles **three** types, not one —
   `svg` (`<figure>` + optional `<figcaption>`), `table` (delegates to `table_html`) and `code`
-  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 255 items: **45
-  figure-bearing (39 svg / 4 code / 2 table)**. A stimulus table is separate from a figure: it lives in
+  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 267 items: **52
+  figure-bearing (46 svg / 4 code / 2 table) = 19%**. No charting library is involved anywhere: every
+  figure is a plain-Python SVG string builder in `tools/make_figures.py`, and `validate.py` fails on the
+  fingerprints of matplotlib / Chart.js / plotly / vega / bokeh / `<canvas` / `data:image/`, so the
+  "without other tools" rule is gate-enforced. A stimulus table is separate from a figure: it lives in
   `stimulus.table` and is emitted by `stimulus_html`, so an item can carry a table with no `figure`.
 - Rebuild: `cd challenge-bank && python3 build.py`.
 

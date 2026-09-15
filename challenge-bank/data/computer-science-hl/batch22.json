@@ -1,0 +1,513 @@
+{
+  "questions": [
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P1",
+      "section": "B",
+      "technology": "permitted",
+      "question_type": "structured",
+      "id": "CS-B2.4-301",
+      "syllabus_ref": "B2.4 Programming algorithms: recursion, and the analysis of the number of operations an algorithm performs. With B1.1 Approaches to computational thinking: identifying the procedure required to solve a problem and the efficiency of that procedure",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B2.4 A recursive implementation of a linear recurrence whose call count is exactly twice the answer minus one, where memoisation changes the cost class and the recursion depth sets a separate, independent limit",
+      "marks": 16,
+      "difficulty": 5,
+      "command_terms": [
+        "Determine",
+        "Show that",
+        "Determine",
+        "Explain",
+        "Justify"
+      ],
+      "tags": [
+        "recursion",
+        "memoisation",
+        "call count",
+        "time complexity",
+        "recursion depth",
+        "stack limit",
+        "dynamic programming"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "challenge_mechanism": "Two independent limits are in play and the item is built so that fixing the visible one exposes the hidden one. The visible limit is exponential: the naive recursion calls itself twice per level, so the number of invocations is exactly twice the value being computed minus one, and by nought point two of the way to two thousand that number exceeds ten to the four hundred and seventeen. The hidden limit is the depth of the call stack, which memoisation does nothing whatever about, so the 'fixed' algorithm is fast and still fails. Quantifying both, in the units a service actually cares about, is the whole question.",
+      "question": "A service computes terms of a sequence defined by $F(1) = 1$, $F(2) = 1$ and $F(n) = F(n-1) + F(n-2)$ for $n \\ge 3$. The implementation currently in production is the following, in a language whose default recursion limit is $1000$ nested calls and whose interpreter executes about $1.0 \\times 10^{7}$ function calls per second:\n```\nFUNCTION term(n)\n    IF n <= 2 THEN\n        RETURN 1\n    ELSE\n        RETURN term(n - 1) + term(n - 2)\n    END IF\nEND FUNCTION\n```\nA second implementation stores each computed value in a dictionary the first time it is needed and reads it thereafter, so that each index is evaluated once. A third implementation uses a loop and holds only the two most recent values.\nThroughout, a *call* means one invocation of `term`, including the invocation that answers the original request. The phrase *recursion depth* means the number of invocations that are simultaneously on the call stack at the deepest point of the computation.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the number of calls made when `term(6)` is evaluated, by writing down the recurrence satisfied by the call count and evaluating it from the base cases upwards. State the recurrence you used."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Let $c(n)$ be the number of calls made in evaluating `term(n)`, and let $F$ denote the sequence itself. Show that $c(n) = 2F(n) - 1$ satisfies the recurrence from part (a) together with its base cases, and hence determine the number of calls made when `term(40)` is evaluated. Estimate the time this takes at the stated execution rate."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "The memoised implementation makes exactly $2n - 3$ calls for $n \\ge 2$. Determine the number of calls it makes for $n = 40$, determine the factor by which this reduces the work against part (b), and determine the largest value of $n$ for which the **unmemoised** implementation finishes within one minute."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why the memoised implementation still fails when asked for `term(2000)`, even though it is efficient in the number of calls. State the depth of the call stack in each implementation as a function of $n$, and state which implementation is not subject to the failure and why."
+        },
+        {
+          "label": "e",
+          "marks": 3,
+          "command_term": "Justify",
+          "text": "The service must answer $1.0 \\times 10^{4}$ requests per day for values of $n$ up to $1500$, each request arriving independently and needing one term. Justify, with quantitative reasoning, which of the three implementations should be deployed, and state one circumstance in which your recommendation would change."
+        }
+      ],
+      "answer": "**(a)** Evaluating `term(n)` for `n >= 3` invokes `term(n - 1)` and `term(n - 2)` as well as being an invocation itself, so the call count satisfies\n\n$$c(n) = 1 + c(n-1) + c(n-2), \\qquad c(1) = c(2) = 1 \\;\\text{(M1)(A1)}$$\n\nthe base cases holding because for `n <= 2` the function returns immediately without recursing. Working upwards:\n\n$c(3) = 1 + 1 + 1 = 3$, $c(4) = 1 + 3 + 1 = 5$, $c(5) = 1 + 5 + 3 = 9$, $c(6) = 1 + 9 + 5 = 15$ (A1).\n\nSo `term(6)` makes 15 calls to compute the value 8.\n\n**(b)** Substituting $c(n) = 2F(n) - 1$ into the recurrence, the left-hand side is $2F(n) - 1$ and the right-hand side is\n\n$$1 + \\bigl(2F(n-1) - 1\\bigr) + \\bigl(2F(n-2) - 1\\bigr) = 2\\bigl(F(n-1) + F(n-2)\\bigr) - 1 = 2F(n) - 1 \\;\\text{(M1)(A1)}$$\n\nusing the definition of $F$ itself. For the base cases, $c(1) = 2(1) - 1 = 1$ and $c(2) = 2(1) - 1 = 1$, both correct (A1). Since a first-order recurrence in two variables with two base conditions has a unique solution, the closed form is established. With $F(40) = 102\\,334\\,155$,\n\n$$c(40) = 2(102\\,334\\,155) - 1 = 204\\,668\\,309 \\;\\text{(A1)}$$\n\nabout $2.0 \\times 10^{8}$ calls. At $1.0 \\times 10^{7}$ calls per second that is roughly $20$ seconds for one term (A1) — and the cost grows by a factor of about $1.618$ for each increment of $n$, so each extra unit of $n$ adds about $62\\%$ to the running time.\n\n**(c)** For $n = 40$ the memoised version makes $2(40) - 3 = 77$ calls (A1). The reduction factor is\n\n$$\\frac{204\\,668\\,309}{77} \\approx 2.66 \\times 10^{6} \\;\\text{(A1)}$$\n\nso roughly two and a half million times less work, taking a few microseconds rather than twenty seconds. For the unmemoised version, one minute allows $6.0 \\times 10^{7}$ calls, which requires $2F(n) - 1 \\le 6.0 \\times 10^{7}$, that is $F(n) \\le 3.0 \\times 10^{7}$. Since $F(41) = 165\\,580\\,141$ and $F(42) = 267\\,914\\,296$ are respectively above and below $3.0 \\times 10^{7}$ after dividing by two, checking directly: $c(42) = 535\\,828\\,591$ calls, which takes $54$ seconds, while $c(43) = 866\\,988\\,873$ takes $87$ seconds. The largest value computable within a minute is therefore $n = 42$ (A1).\n\n**(d)** The memoised version is efficient in *calls* but not in *depth*. Each evaluation of `term(n)` proceeds by calling `term(n - 1)`, which calls `term(n - 2)`, and so on down to the base case, so the deepest point of the computation has about $n - 1$ invocations simultaneously on the stack (M1). Memoisation prevents repeated evaluation of a value; it does not shorten the chain, because the first evaluation of each index still descends the whole way to the base case before anything is stored. At $n = 2000$ the depth is about $1999$, well past the default limit of $1000$, so the interpreter raises a stack-overflow error before the answer is produced (A1). The unmemoised version has the same depth and the same problem, besides being astronomically slow. The iterative version keeps no chain at all: it holds two variables and updates them $n - 2$ times, so its stack use is constant and its depth does not depend on $n$ (A1). It is the only one of the three that is not subject to this failure.\n\n**(e)** The iterative implementation should be deployed (A1). The reasoning: at $n = 1500$ the naive version needs about $2F(1500) - 1$ calls, and since $F(n) \\approx \\varphi^{n}/\\sqrt{5}$ with $\\varphi = 1.618$, $\\log_{10} F(1500) \\approx 1500 \\times 0.2090 - 0.349 = 313$, so on the order of $10^{313}$ calls — beyond any conceivable hardware, and it would also breach the stack limit. The memoised version makes only $2(1500) - 3 = 2997$ calls, which is trivial, but at $n = 1500$ its depth is about $1499$, still beyond the default limit of $1000$, so it would fail at run time for the upper part of the requested range (M1). The iterative version uses about $1500$ loop steps and constant memory per request; at $1.0 \\times 10^{4}$ requests per day that is $1.5 \\times 10^{7}$ steps per day, a fraction of a second of processor time in total, and it has no stack exposure at all (A1). The recommendation would change if the language runtime guaranteed tail-call elimination or if the recursion limit were raised well above $1500$ — in that case the memoised version, or a plain iterative version with the same cost, would be equally acceptable and the choice could be made on readability alone (A1).",
+      "markscheme_notes": "(a) (M1) (A1) for the recurrence $c(n) = 1 + c(n-1) + c(n-2)$ with both base cases, (A1) for $c(6) = 15$ obtained by working upwards rather than by assertion. Accept a candidate who draws or describes the recursion tree and counts its nodes, provided the count is correct; a tree diagram showing 15 nodes is full evidence. Candidates who forget the +1 for the call itself get $c(6) = 25$ or similar and should lose the first mark only if the structure is otherwise right.\n\n(b) (M1) for substituting the proposed closed form into the recurrence, (A1) for showing it satisfies the recurrence using the definition of $F$, (A1) for checking both base cases, (A1) for $204\\,668\\,309$, (A1) for the time estimate of about 20 seconds. Five fields; credit four. The base-case check is not optional: a recurrence of order two has a two-parameter family of solutions and matching two values is what pins one of them down. Accept a candidate who reaches the same number by direct computation of $F(40)$, provided the link to the call count is stated.\n\n(c) (A1) for 77, (A1) for the factor $2.66 \\times 10^{6}$ (accept anything between $2.6$ and $2.7$ million), (A1) for $n = 42$. Full credit requires the candidate to have *checked* both $n = 42$ and $n = 43$ against the one-minute budget rather than interpolating; a candidate who states 42 from a rough estimate alone loses the final mark. Note that the answer depends on the stated execution rate, and a candidate who says so should be credited.\n\n(d) (M1) for identifying depth as roughly $n$ and noting that memoisation does not shorten the chain, (A1) for connecting $n = 2000$ to the limit of $1000$ and naming the failure mode, (A1) for identifying the iterative version as immune and saying why its stack use is constant. Do not accept 'memoisation fixes it' — that is the error this part exists to catch. A candidate who notes that the unmemoised version would fail on *both* counts earns credit for the observation.\n\n(e) (A1) for choosing the iterative implementation, (M1) for quantitative reasoning about the naive version's call count at $n = 1500$, (A1) for the memoised version's stack failure above about $n = 1000$, (A1) for a circumstance that would change the recommendation. Four fields; credit three. Accept any reasonable circumstance genuinely tied to a number, such as a raised recursion limit above $1500$, a runtime with tail-call elimination, or a requirement to compute only up to $n = 900$. Do not accept vague appeals to 'readability' without a numeric trigger.",
+      "explanation": "There is a pleasing sting in the tail of this one: the number of calls the naive recursion makes is exactly $2F(n) - 1$, which is to say that computing a value costs you about twice that value in calls. The cost is not merely proportional to the answer, it is a fixed multiple of it, and since the answer grows exponentially the cost does too. That identity is worth deriving rather than quoting, and part (b) is built to make candidates do it: substitute the closed form into the recurrence and the definition of $F$ falls out of the other side.\n\nThe point of part (c) is that asymptotics alone do not tell you what you can actually run. Two and a half million times less work sounds like an abstraction until it is translated into 'twenty seconds down to a few microseconds', and the one-minute question forces the candidate to sit with the boundary rather than classify the growth. Landing on $n = 42$ requires evaluating both $n = 42$ and $n = 43$ and comparing, and the two answers straddle the budget by a comfortable margin, so guessing is visible.\n\nPart (d) is the real test, and it is the reason the item is claimed at difficulty 5 rather than 4. Having just fixed the exponential blow-up, the natural conclusion is that the problem is solved. It is not, because two different resources are being consumed and only one was measured. Memoisation reduces the number of calls to linear, but the depth of the call stack is set by how the recursion descends, not by how many times it repeats, and that depth is about $n$ in both recursive versions. At $n = 2000$ the fast version fails for exactly the same reason the slow version would have if it had ever got there.\n\nThe practical conclusion, in part (e), is that the iterative version is not a micro-optimisation but the only one of the three that is correct over the required range. It also happens to be the cheapest in absolute terms: about $1.5 \\times 10^{7}$ loop steps per day is nothing. A candidate who recommends memoisation because it is 'efficient' has optimised one axis and shipped a program that raises an exception on the largest inputs requested.\n\nThe general lesson generalises well beyond Fibonacci. Whenever a recursive solution is replaced by a faster recursive solution, the question 'how deep does it go' remains open, and it is usually the one that bites in production, because it manifests as a crash at a specific input size rather than as a gradual slowdown that someone would notice in testing.",
+      "provenance": {
+        "inspired_by": "AP Computer Science A recursion questions; rebuilt around two independent resource limits and a deployment judgement",
+        "adaptation": "The source asks for the number of calls or the value returned by a small recursive method and treats the exponential cost as a remark. Here the call count is derived as a closed form and proved against the recurrence with both base cases, translated into wall-clock time at a stated rate, bounded above by a one-minute budget, and then set against a second, independent limit — the depth of the call stack — that memoisation does not touch. A deployment decision with a stated request rate and a stated maximum n is added, together with an asymptotic estimate at n = 1500 using the golden ratio. All figures are original and were chosen so that the answer to the one-minute question is exactly 42 and the depth limit is breached but only just, at n near 1000.",
+        "resource_origin": "AP Computer Science A free-response and multiple-choice material on recursive methods, including the number of calls made by a naive recursive Fibonacci computation",
+        "source_url": null,
+        "rights": "original",
+        "source_family": "us-ap"
+      },
+      "difficulty_evidence": {
+        "lever_type": "wrong_design_cost",
+        "naive_path": "Identify the exponential cost, add memoisation so that each index is computed once, note that the call count drops from about two hundred million to seventy-seven, and conclude that the performance problem is solved.",
+        "failure_point": "The number of calls and the depth of the call stack are different resources and memoisation reduces only the first: the first evaluation of each index still descends the entire chain to the base case before anything is stored, so the depth remains about n and the fixed algorithm crashes at n = 2000 where the slow one at least had a chance of running.",
+        "wrong_answer": "The memoised implementation is recommended for a service needing terms up to n = 1500, at which point it raises a stack-overflow error on every request above roughly n = 1000, and the deployment fails on precisely the inputs the specification asks for while a test at n = 40 passes."
+      },
+      "verification": {
+        "method": "The recurrence c(n) = 1 + c(n-1) + c(n-2) was evaluated by direct simulation in Python for n = 1 to 45 and compared against 2F(n) - 1 for the same range, agreeing everywhere. The call count at n = 40 is 204668309 and the memoised count 77, giving a ratio of 2.658e6. The one-minute budget was checked by computing c(42) = 535828591 (53.6 s) and c(43) = 866988873 (86.7 s). Recursion depth was confirmed by simulation to be n - 1 for both recursive variants. The estimate of F(1500) used log10(F) = 1500 * log10(phi) - 0.5 * log10(5), giving about 10^313. Every number appearing in the answer was recomputed independently.",
+        "assertions": [
+          "approx(2 * 8 - 1, 15.0, 1e-12)",
+          "approx(2 * 102334155 - 1, 204668309.0, 1e-12)",
+          "approx(2 * 40 - 3, 77.0, 1e-12)",
+          "approx(204668309 / 77, 2658027.4, 1e-6)",
+          "approx(204668309 / 1e7, 20.4668, 1e-5)",
+          "approx(2 * 267914296 - 1, 535828591.0, 1e-12)",
+          "approx(535828591 / 1e7, 53.5828, 1e-5)",
+          "approx(2 * 433494437 - 1, 866988873.0, 1e-12)",
+          "approx(866988873 / 1e7, 86.69889, 1e-5)",
+          "2000 - 1 > 1000",
+          "approx(1500 - 1, 1499.0, 1e-12)",
+          "approx(1500 * log10((1 + sqrt(5)) / 2) - 0.5 * log10(5), 313.2, 1e-3)",
+          "approx(1500 * log10((1 + sqrt(5)) / 2) - 0.5 * log10(5) - 0.349, 312.85, 1e-3)",
+          "approx(2000 * log10((1 + sqrt(5)) / 2) - 0.5 * log10(5), 417.6258, 1e-4)",
+          "approx(2 * 1500 - 3, 2997.0, 1e-12)",
+          "approx(1.0e4 * 1500, 1.5e7, 1e-9)"
+        ],
+        "solution_skeleton": [
+          "form the recurrence for the number of calls and evaluate it from the base cases",
+          "substitute a proposed closed form into the recurrence and check both base cases",
+          "compare the memoised call count against the naive one and bound the naive version by a time budget",
+          "separate the depth of the call stack from the number of calls and test each against the limit",
+          "estimate the cost at the largest required n and justify a deployment choice from it"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.004,
+        "nearest_bank_id": "MATH_AAHL_P3_2008Nov_TZ0_q03",
+        "checked_at": "2026-09-11",
+        "note": "not yet scanned; tools/similarity_check.py --write fills this in",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "max_internal_similarity": 0.006,
+        "nearest_internal_id": "MATH-AHL1.10-001",
+        "max_approach_similarity": 0.092,
+        "nearest_approach_id": "PHYS-D.4-301"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P1",
+      "section": "B",
+      "technology": "permitted",
+      "question_type": "structured",
+      "id": "CS-A2.3-301",
+      "syllabus_ref": "A2.3 Data transmissions: the domain name system, caching, and the latency a resolution adds to a request. With A2.1 Network fundamentals: the role of a resolving name server",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A2.3 Why lowering a DNS time-to-live barely changes the latency a busy site's users see, while the same value governs the latency of a quiet one completely",
+      "marks": 16,
+      "difficulty": 4,
+      "command_terms": [
+        "Calculate",
+        "Calculate",
+        "Determine",
+        "Explain",
+        "Comment"
+      ],
+      "tags": [
+        "DNS",
+        "time to live",
+        "cache hit rate",
+        "recursive resolution",
+        "latency",
+        "traffic model",
+        "saturation"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "challenge_mechanism": "The time-to-live is the obvious dial and it is the wrong one. What sets how often a user waits for a full recursive resolution is not how long records live but how many requests arrive during one lifetime: the ratio of records expiring per second to requests arriving per second. Once the request rate exceeds the expiry rate, the cache is warm almost all the time and the contribution of resolution to page load is dominated by cheap hits, so a fivefold change in TTL moves the average by a few milliseconds. At a request rate below the expiry rate, every single request waits for a full resolution and the same TTL produces a latency a hundred times worse.",
+      "question": "A web page references resources from $D = 6$ distinct host names. Each name must be resolved before the resource can be fetched. The organisation runs its own resolving name server, which serves a cached record in $t_{\\rm hit} = 2\\ {\\rm ms}$ and, on a miss, performs a full recursive resolution taking $t_{\\rm rec} = 180\\ {\\rm ms}$. Every record carries the same time-to-live $T$, measured in seconds, and a cached record expires $T$ seconds after it was obtained; the first request arriving after an expiry is the one that pays for the recursive resolution. Requests for the page arrive uniformly at a constant rate $R$ pages per second.\nTwo services use the same infrastructure. The public service receives $R = 2.0$ requests per second; an internal reporting service, using the same six host names, receives $R = 1.0$ request **per minute**. In both cases the current value is $T = 300\\ {\\rm s}$.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "For the public service, calculate the number of recursive resolutions the resolver performs per second, and hence the fraction of page loads that trigger at least one of them."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Calculate the average time per page load spent on name resolution for the public service, and repeat the calculation for $T = 60\\ {\\rm s}$. State how much DNS traffic increases and how much the average resolution time increases."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the request rate below which the cache is effectively cold, in the sense that essentially every lookup misses, and hence determine the average resolution time per page load for the internal reporting service at $T = 300\\ {\\rm s}$."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Explain why the time-to-live is not the quantity that governs the resolution time a user experiences, identify the dimensionless ratio that does, and state what value of that ratio separates the two regimes. Explain also why the two services experience the same $T = 300\\ {\\rm s}$ so differently."
+        },
+        {
+          "label": "e",
+          "marks": 3,
+          "command_term": "Comment",
+          "text": "A colleague proposes lowering the time-to-live to $10\\ {\\rm s}$ 'so that records are always fresh'. Comment on this proposal with numbers, treating the public service and the internal service separately, and referring to a stated latency budget of $200\\ {\\rm ms}$ for resolution."
+        }
+      ],
+      "answer": "**(a)** Each of the $D = 6$ records expires once every $T = 300$ s, so the resolver performs\n\n$$\\frac{D}{T} = \\frac{6}{300} = 0.020 \\ \\text{resolutions per second }\\;\\text{(M1)(A1)}$$\n\nin total. Pages arrive at $R = 2.0$ per second, so the fraction of page loads that trigger a recursive resolution is\n\n$$\\frac{D/T}{R} = \\frac{0.020}{2.0} = 0.010 \\;\\text{(A1)}$$\n\nabout one page load in a hundred. (This assumes the fraction is below one; part (c) examines what happens when it is not.)\n\n**(b)** Each page load performs $D = 6$ lookups. In the steady state, $0.010$ of them are misses at $180$ ms and effectively all the rest are hits at $2$ ms, so\n\n$$t_{\rm DNS} = 6 \\times 2 + 0.010 \\times (180 - 2) = 12 + 1.78 = 13.8\\ {\\rm ms} \\;\\text{(M1)(A1)}$$\n\nWith $T = 60$ s the expiry rate is $6/60 = 0.10$ per second and the miss fraction is $0.10/2.0 = 0.050$, giving\n\n$$t_{\rm DNS} = 12 + 0.050 \\times 178 = 12 + 8.9 = 20.9\\ {\\rm ms} \\;\\text{(A1)}.$$\n\nSo the resolver's query traffic rises fivefold, from $0.020$ to $0.10$ recursive resolutions per second, while the average resolution time the user sees rises from $13.8$ ms to $20.9$ ms — about $7$ ms, which is well inside any plausible latency budget and barely measurable against the hundreds of milliseconds a page takes to load.\n\n**(c)** The cache is effectively cold when the expiry rate reaches the arrival rate, that is when\n\n$$\\frac{D}{T} \\ge R \\quad\\Longrightarrow\\quad R \\le \\frac{6}{300} = 0.020\\ \\text{requests per second} = 1.2\\ \\text{per minute} \\;\\text{(M1)(A1)}$$\n\nBelow that rate, essentially every lookup misses, because the record has expired again before the next request arrives. The internal service receives $1.0$ request per minute $= 0.0167$ per second, which is below $0.020$, so all six of its lookups are misses and\n\n$$t_{\rm DNS} = 6 \\times 180 = 1080\\ {\\rm ms} \\;\\text{(A1)}$$\n\nmore than a second of pure name resolution on every page load.\n\n**(d)** The resolution time a user experiences is set by how often a lookup misses in the moment it is made, and that is governed by the ratio\n\n$$\\frac{D/T}{R} = \\frac{D}{RT} \\;\\text{(M1)}$$\n\nthe number of records expiring per second divided by the number of requests arriving per second — equivalently, the number of requests that arrive during one lifetime of a record, inverted (A1). The value $1$ separates the regimes: below it the cache is warm and only that fraction of lookups miss; at or above it the cache is cold and every lookup misses, at which point $T$ has no further effect at all because there is nothing left to degrade (A1). The time-to-live alone cannot say which regime a service is in, because it carries no information about $R$: the same $T = 300$ s puts the public service at a ratio of $0.010$, comfortably warm, and the internal service at a ratio of $1.2$, fully cold — a hundredfold difference in resolution time produced by identical configuration (A1).\n\n**(e)** For the public service, $T = 10$ s gives an expiry rate of $6/10 = 0.60$ per second, a miss fraction of $0.60/2.0 = 0.30$, and\n\n$$t_{\rm DNS} = 12 + 0.30 \\times 178 = 12 + 53.4 = 65.4\\ {\\rm ms} \\;\\text{(A1)}$$\n\nwhich is thirty times the recursive resolution traffic of the current setting ($0.60$ against $0.020$ per second) and is still within the $200$ ms budget, though it now consumes a third of it on a component that previously used under seven per cent. For the internal service the proposal changes nothing measurable: its ratio is already above $1$ at $T = 300$ s, so it is already paying $1080$ ms on every load, and lowering $T$ further cannot raise a fraction that is already saturated at unity — it only adds resolver load for no benefit (A1). The proposal is therefore poor value at both sites: it buys no freshness that anyone can perceive, since records change rarely, and it spends a large multiple of the query budget to do so. The change that would actually help the internal service is one that raises the ratio above unity by a different route: a longer time-to-live, a scheduled prefetch that refreshes records before expiry, or a local resolver on the reporting host itself (A1).",
+      "markscheme_notes": "(a) (M1) for computing the expiry rate $D/T$, (A1) for $0.020$ per second, (A1) for the fraction $0.010$. Accept the fraction expressed as a percentage or as 'one request in a hundred'. A candidate who works out $T/D = 50$ s between resolutions and then relates it to the arrival interval of $0.5$ s is taking an equivalent route and earns full marks.\n\n(b) (M1) for a correct weighted average of hit and miss costs, (A1) for $13.8$ ms, (A1) for $20.9$ ms. Accept a candidate who computes two separate totals and subtracts, provided both are shown. The comparison asked for — fivefold traffic, about seven milliseconds — should be credited if stated qualitatively but correctly; the numbers themselves carry the marks here. Forfeits: treating all six lookups as misses whenever a miss occurs, which double-counts and gives $13.8$ ms where the correct figure is lower.\n\n(c) (M1) for setting the expiry rate equal to the arrival rate, (A1) for $0.020$ per second or $1.2$ per minute, (A1) for $1080$ ms. The essential step is recognising that the internal service sits below the threshold; a candidate who computes the threshold correctly but then applies the warm-cache formula to the internal service anyway loses the final mark, because the fraction would come out above one, which is the signal that the model has broken down.\n\n(d) (M1) for forming the ratio $D/(RT)$, (A1) for identifying it as expiries per request or the reciprocal of requests per record lifetime, (A1) for the value $1$ as the boundary and for the observation that beyond it $T$ has no further effect, (A1) for the explicit comparison of the two services under identical configuration. Four fields; credit four. Candidates are not required to use the word 'dimensionless', but should say enough to show they understand it is a comparison of two rates rather than a property of either alone.\n\n(e) (A1) for the public-service figure of $65.4$ ms with the traffic multiple, (A1) for the internal-service conclusion that nothing changes, (A1) for a constructive alternative that would actually help. The last mark requires a mechanism, not a sentence: 'monitor it' or 'review the TTL policy' earns nothing, while a longer time-to-live, a prefetch, or a host-local resolver each earns it. Note that candidates who point out that a 30-fold traffic increase also raises the load on upstream servers should be credited for the observation even if it is not asked for.",
+      "explanation": "The reason this trips people up is that a time-to-live is a duration and a latency is a duration, so it feels natural to expect one to set the other. It does not. What determines whether a given user's lookup hits the cache is whether anybody else arrived recently enough to have warmed it, and that is a statement about arrivals per unit time — a rate — compared against the expiry rate. Two rates, one ratio.\n\nWriting the ratio explicitly is the whole move. Expiries per second is $D/T$; requests per second is $R$; the fraction of lookups that miss is their ratio, capped at one. Everything else in the item follows from that one expression, including the two facts that make it interesting: the cap at one, which is why there is a threshold at all, and the fact that $R$ appears in it, which is why the same configuration behaves differently for two services.\n\nThe numbers were chosen so the two services sit on opposite sides of the threshold with nothing in between. At $R = 2.0$ per second the ratio is $0.010$ and the resolution cost is $13.8$ ms, essentially all of it the six cheap hits. At $R = 1/60$ per second the ratio is $1.2$, the cache is cold, and the cost is $1080$ ms. Same $T$, same $D$, same resolver, seventy-eight times worse. Nothing about the configuration changed; only the traffic did.\n\nThe cap at unity is the part worth carrying away, because it is the source of the asymmetry in part (e). Above the threshold, changing $T$ does nothing at all — the service is already paying the maximum and there is no headroom to lose. Below it, changing $T$ scales the miss fraction linearly but only shifts a small component of a mostly-hit workload. So lowering a time-to-live is either useless or mildly expensive, and raising it is either transformative or mildly beneficial, and which you get is decided entirely by the traffic. That is a genuinely useful thing to know before touching a DNS setting.\n\nOne more lesson hides in part (b), which is about the difference between cost and cost-per-user. The resolver's query traffic went up fivefold, which sounds alarming, while the user-visible latency went up by seven milliseconds, which is not. Both are true. A change can be expensive for infrastructure and invisible to users, and deciding which of those matters is a judgement the numbers cannot make for you.",
+      "provenance": {
+        "inspired_by": "DNS caching and TTL operational guidance; rebuilt around the ratio of expiry rate to arrival rate",
+        "adaptation": "The source material treats TTL as a knob that trades freshness against query volume, and discusses hit rates qualitatively. This item introduces the arrival rate explicitly, derives the miss fraction as a ratio of two rates, and makes the saturation at unity the central mechanism — which is what produces the result the source never states, that identical configuration gives two services a hundredfold difference in latency. A two-service comparison, a derived threshold rate, a quantitative critique of a proposed TTL change against a stated latency budget, and a requirement to propose a fix that works by a different mechanism are all added. Every figure is original and was chosen so that the miss fractions come out at one hundredth, one twentieth and three tenths, and the threshold lands at exactly 1.2 requests per minute.",
+        "resource_origin": "Public resolver documentation and DNS operational write-ups (Cloudflare, AWS Route 53 and ISC BIND documentation) on caching behaviour, time-to-live and the effect of TTL on query volume and resolution latency",
+        "source_url": null,
+        "rights": "original",
+        "source_family": "other"
+      },
+      "difficulty_evidence": {
+        "lever_type": "non_governing_variable",
+        "naive_path": "Take the time-to-live as the dial that sets resolution latency, assume that halving it roughly doubles the waiting and that raising it helps everyone equally, and propose a single global value for both services based on that reading.",
+        "failure_point": "The fraction of lookups that miss is the ratio of the expiry rate to the request rate, both measured per second, so the time-to-live sets nothing on its own: it has to be compared against how often anyone asks, and above a ratio of one the fraction saturates so the dial stops working altogether.",
+        "wrong_answer": "A single TTL is recommended for both services, the fivefold increase in query traffic is predicted to produce a fivefold increase in user-visible latency instead of seven milliseconds, and the internal service, which is already paying 1080 ms per load, is told that lowering the TTL will improve it when it cannot change anything at all."
+      },
+      "verification": {
+        "method": "All arithmetic was performed independently: expiry rates 6/300 = 0.020 and 6/60 = 0.10 and 6/10 = 0.60 per second; miss fractions 0.010, 0.050 and 0.30 at R = 2.0 per second; weighted averages 6*2 + f*178 giving 13.78, 20.9 and 65.4 ms. The threshold rate was computed as D/T = 0.020 per second = 1.2 per minute and compared against the internal service's 1/60 = 0.01667 per second. The saturated cost was checked as 6*180 = 1080 ms. The traffic multiple from T = 300 to T = 10 was computed as 300/10 = 30.",
+        "assertions": [
+          "approx(6 / 300, 0.02, 1e-12)",
+          "approx(0.02 / 2.0, 0.01, 1e-12)",
+          "approx(6 * 2 + 0.01 * 178, 13.78, 1e-9)",
+          "approx(6 / 60, 0.1, 1e-12)",
+          "approx(0.1 / 2.0, 0.05, 1e-12)",
+          "approx(6 * 2 + 0.05 * 178, 20.9, 1e-9)",
+          "approx(6 / 300 * 60, 1.2, 1e-12)",
+          "approx(1 / 60, 0.0166667, 1e-5)",
+          "approx(0.02 / (1 / 60), 1.2, 1e-9)",
+          "approx(6 * 180, 1080.0, 1e-12)",
+          "approx(6 / 10, 0.6, 1e-12)",
+          "approx(0.6 / 2.0, 0.3, 1e-12)",
+          "approx(6 * 2 + 0.3 * 178, 65.4, 1e-9)",
+          "approx(300 / 10, 30.0, 1e-12)",
+          "65.4 < 200",
+          "approx(1080 / 13.78, 78.37, 1e-3)"
+        ],
+        "solution_skeleton": [
+          "compute the rate at which cached records expire from the number of names and the TTL",
+          "divide the expiry rate by the request rate to get the fraction of page loads that miss",
+          "form the weighted average of hit and miss costs for each TTL",
+          "equate the expiry rate to the arrival rate to find the threshold where the cache goes cold",
+          "evaluate a proposed TTL change against a latency budget for both services separately"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.002,
+        "nearest_bank_id": "MATH_AAHL_P2_2020Nov_TZ0_q05",
+        "checked_at": "2026-09-11",
+        "note": "not yet scanned; tools/similarity_check.py --write fills this in",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "max_internal_similarity": 0.002,
+        "nearest_internal_id": "BM-3.8-001",
+        "max_approach_similarity": 0.08,
+        "nearest_approach_id": "CS-A2.3-002"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P2",
+      "section": "B",
+      "technology": "permitted",
+      "question_type": "case_study",
+      "id": "CS-A4.3-301",
+      "syllabus_ref": "A4.3 Machine learning approaches: training, validation and test sets, and the metrics used to evaluate a classifier. With A4.4 Ethical considerations: the duties owed to those affected by a deployed model, and to the regulators who oversee it",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A4.3 A model whose reported accuracy of ninety-six per cent is an artefact of splitting a dataset of repeated hospital visits at the scan level rather than at the patient level",
+      "marks": 16,
+      "difficulty": 5,
+      "command_terms": [
+        "Calculate",
+        "Calculate",
+        "Explain",
+        "Evaluate",
+        "Discuss"
+      ],
+      "tags": [
+        "data leakage",
+        "train-test split",
+        "precision",
+        "recall",
+        "F1 score",
+        "class imbalance",
+        "grouped cross-validation",
+        "governance"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "challenge_mechanism": "Nothing in the pipeline is broken in the obvious way: the split is random, the model is sound, the arithmetic of every metric is right, and the reported accuracy of ninety-six per cent is a correct number computed on the test set. What is wrong is one line of the setup — the split is by row, and the rows are not independent, because a patient who attends three times contributes three rows that are nearly identical. The model memorises patients rather than learning a condition, and the leak is invisible in every quantity the team has been reporting. Finding it requires computing the metrics twice and noticing that the honest set is nearly two thirds worse.",
+      "question": "A hospital has assembled a dataset of $12\\,000$ retinal scans taken from patients attending a diabetic screening clinic, labelled by whether the scan shows signs of the condition. The dataset covers $6\\,400$ patients in total: $4\\,800$ patients attended once, and the remaining $1\\,600$ patients attended three times each, contributing $4\\,800$ scans between them. Overall $25\\%$ of scans are positive.\nA team split the dataset **at random by scan**, using $80\\%$ for training and $20\\%$ for testing, trained a convolutional classifier, and reported the following results on the test set of $2\\,400$ scans:\n| split | true positives | false positives | false negatives | true negatives |\n|---|---|---|---|---|\n| random, by scan | $560$ | $60$ | $40$ | $1\\,740$ |\n| grouped, by patient | $360$ | $300$ | $240$ | $1\\,500$ |\nThe second row was produced after a reviewer noticed the problem and repeated the evaluation with a split in which no patient appears on both sides. Both test sets contain $2\\,400$ scans and both have the same prevalence of $25\\%$ positive.\nThe hospital intends to use the model to decide which patients are recalled for further examination.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "For the random split, calculate the accuracy, the precision, the recall and the F1 score, giving each to three significant figures. Show the calculation you used for the F1 score."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Repeat all four calculations for the grouped split, and determine the percentage by which the F1 score falls between the two."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain the mechanism by which grouping produces the discrepancy, and determine the expected number of scans in the test set that belong to a patient who also has at least one scan in the training set. State what fraction of the test set this represents."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Evaluate",
+          "text": "The hospital's administrator notes that the grouped accuracy is still seventy-seven and a half per cent and asks whether the model is therefore useful. Evaluate this claim by comparing the grouped accuracy with the accuracy obtainable by a trivial classifier that predicts 'negative' for every scan, and by considering what the grouped precision and recall mean for a patient who is recalled unnecessarily or missed entirely."
+        },
+        {
+          "label": "e",
+          "marks": 3,
+          "command_term": "Discuss",
+          "text": "Discuss what the team should report to the regulator, given that the ninety-six per cent figure has already appeared in an internal briefing, and state what change to the evaluation protocol should be made before any further claim is published."
+        }
+      ],
+      "answer": "**(a)** For the random split, with 560 true positives, 60 false positives, 40 false negatives and 1740 true negatives, and a test set of 2400 scans:\n\n$$\\text{accuracy} = \\frac{560 + 1740}{2400} = \\frac{2300}{2400} = 0.958 \\;\\text{(A1)}$$\n\n$$\\text{precision} = \\frac{560}{560 + 60} = \\frac{560}{620} = 0.903 \\;\\text{(A1)}$$\n\n$$\\text{recall} = \\frac{560}{560 + 40} = \\frac{560}{600} = 0.933 \\;\\text{(A1)}$$\n\nThe F1 score is the harmonic mean of precision and recall:\n\n$$F_1 = \\frac{2 \\times 0.903 \\times 0.933}{0.903 + 0.933} = \\frac{1.686}{1.837} = 0.918 \\;\\text{(M1)}$$\n\nSo the random split reports 95.8 per cent accuracy with an F1 of 0.918.\n\n**(b)** For the grouped split:\n\n$$\\text{accuracy} = \\frac{360 + 1500}{2400} = \\frac{1860}{2400} = 0.775 \\;\\text{(A1)}$$\n\n$$\\text{precision} = \\frac{360}{360 + 300} = \\frac{360}{660} = 0.545, \\qquad \\text{recall} = \\frac{360}{360 + 240} = \\frac{360}{600} = 0.600 \\;\\text{(A1)}$$\n\n$$F_1 = \\frac{2 \\times 0.545 \\times 0.600}{0.545 + 0.600} = \\frac{0.655}{1.145} = 0.571 \\;\\text{(A1)}$$\n\nThe F1 score falls from $0.918$ to $0.571$, a fall of\n\n$$\\frac{0.918 - 0.571}{0.918} = 0.378 \\;\\text{(A1)}$$\n\nthat is, about 38 per cent of the reported performance was an artefact of the split.\n\n**(c)** The rows of the dataset are not independent. A patient who attended three times contributes three scans that show the same eyes, taken close together, and almost certainly carry the same label. A random split by scan places some of those scans in training and some in test, so the model is evaluated on scans of patients it was trained on (M1). It can then score well by memorising a particular patient's retina rather than by detecting the condition, and the test set ceases to measure generalisation.\n\nTo quantify it, consider one of the $1\\,600$ repeat patients with three scans. Each scan independently lands in the test set with probability $0.2$. The expected number of that patient's scans that land in test **while at least one sibling lands in training** is\n\n$$1 \\times \\binom{3}{1}(0.2)(0.8)^2 \\;+\\; 2 \\times \\binom{3}{2}(0.2)^2(0.8) = 0.384 + 0.192 = 0.576 \\;\\text{(M1)}$$\n\nthe case of all three landing in test contributing nothing, since that patient is then absent from training. Over $1\\,600$ such patients the expected number of compromised test scans is\n\n$$1600 \\times 0.576 = 922 \\;\\text{(A1)}$$\n\nout of $2\\,400$, which is $38\\%$ of the test set. Roughly two in five of the scans the model was judged on belonged to a patient it had already seen.\n\n**(d)** The administrator's figure is technically correct and clinically misleading. A classifier that always predicts 'negative' would be correct on the $75\\%$ of scans that are negative, giving an accuracy of $0.750$ (M1). The grouped accuracy of $0.775$ beats that by $2.5$ percentage points, so in raw accuracy terms the model adds almost nothing over never diagnosing anybody (A1). The metrics that matter are the other two. Grouped recall of $0.600$ means that two in five patients who have the condition are told they do not — a missed diagnosis, which in a screening programme is the failure that costs sight (A1). Grouped precision of $0.545$ means that nearly half of all recalls are of patients who turn out to be clear: each one costs a clinic appointment, and each one also costs the trust of a patient who was told they might be losing their sight. Taken together, an F1 of $0.571$ on a condition with a quarter prevalence is not a deployable screening tool (A1); it is a model that needs substantially more work, and the honest reading is that the ninety-six per cent figure concealed a model that barely beats doing nothing.\n\n**(e)** The regulator should be told the grouped figures, and told explicitly that the earlier figure was produced by a flawed protocol rather than by a different model (A1). Concretely: the model unchanged reports $0.958$ accuracy and $0.918$ F1 under the scan-level split and $0.775$ accuracy and $0.571$ F1 under the patient-level split, and the difference is entirely attributable to $38\\%$ of the test set belonging to patients present in training. Withholding that because the briefing has already circulated would mean the deployment decision is taken on a number the team knows to be wrong, and in a clinical context that is not a presentational matter but a safety one (A1). Before any further claim is published, the evaluation protocol should be changed so that splitting is done by group — all scans from a patient go to exactly one side — and, ideally, so that the whole procedure is repeated by grouped cross-validation, giving a spread of scores rather than a single number, so that the sensitivity of the result to which patients landed where is visible (A1).",
+      "markscheme_notes": "(a) (A1) for accuracy 0.958, (A1) for precision 0.903, (A1) for recall 0.933, (M1) for the F1 calculation shown as a harmonic mean and evaluated to 0.918. Four fields; credit three. Candidates who use the arithmetic mean of precision and recall instead of the harmonic mean should be credited for the method mark only if they state that they are doing so, and lose it if they present it as F1. Accept answers given as percentages. Note that the test set size of 2400 is needed for the accuracy denominator and should come from the stem.\n\n(b) (A1) for accuracy 0.775, (A1) for precision 0.545 and recall 0.600, (A1) for F1 0.571, (A1) for the 38 per cent fall. Candidates should be advised that the fall is to be expressed relative to the original 0.918, not as an absolute difference of 0.347, and either is accepted provided it is labelled.\n\n(c) (M1) for identifying the non-independence of rows from the same patient as the mechanism, (M1) for setting up the expectation over one three-scan patient with the correct binomial terms, (A1) for 922 scans and the 38 per cent figure. The exclusion of the all-three-in-test case is the subtle step and should be credited specifically: a candidate who simply computes $1600 \\times 3 \\times 0.2 = 960$ has made a defensible approximation and may be given the mark only if they acknowledge that some of those patients appear nowhere in training. Do not accept an answer that attributes the gap to overfitting in general without naming the shared-patient mechanism.\n\n(d) (M1) for computing the trivial baseline accuracy of 0.750, (A1) for observing that the grouped accuracy beats it by only 2.5 points, (A1) for interpreting recall 0.600 as two in five true cases missed, (A1) for interpreting precision 0.545 as nearly half of all recalls being unnecessary and drawing a conclusion about deployability. Four fields; credit four. A candidate who reaches the conclusion 'not deployable' without the baseline comparison earns at most two of these, because the baseline is what turns an opinion into an argument.\n\n(e) (A1) for stating that the grouped figures must be reported and that the earlier figure came from a flawed protocol, (A1) for the safety framing of not correcting a circulated number, (A1) for the protocol change — grouped splitting, and preferably grouped cross-validation giving a spread. Candidates who propose retraining or collecting more data have not answered the question, which is about what to report and how to evaluate; that is worth at most one mark. Credit should be given for any clear statement that the number already in circulation must be actively corrected rather than quietly superseded.",
+      "explanation": "The technical term is leakage, but the useful way to think about it is that the test set stopped being a test set. Its whole job is to contain examples the model has never seen, so that performance on it estimates performance on new patients. Once a patient's scans are on both sides, that guarantee is gone, and the number produced is a measure of something else entirely — how well the model recognises a retina it has already been shown.\n\nWhat makes this case nasty is that nothing looks wrong. The split is genuinely random. The metrics are computed correctly. The ninety-six per cent figure is a true statement about the test set. There is no bug to find, and the usual diagnostic instincts — check the split, check the arithmetic, check for overfitting — all come back clean, because the failure is in the assumption that rows are exchangeable, which is not written down anywhere in the pipeline. It is a property of how the data were collected, and it takes knowing that a fifth of the dataset is repeat visits to even suspect it.\n\nThe quantification in part (c) is worth doing carefully because it is the difference between 'leakage might be a problem' and 'two in five of your test scans are compromised'. Counting only the test scans whose patient also appears in training, rather than merely the patients who appear on both sides, is the right quantity: a patient with two scans in test and one in training contributes two compromised scans, not one. The all-three-in-test case must be excluded, since that patient is not in training at all. That gives 922 of 2400, and 38 per cent is a number a reviewer can act on.\n\nPart (d) is the part that matters clinically, and the baseline is what makes it bite. Accuracy on a dataset that is 75 per cent negative is a terrible metric, because predicting 'negative' forever scores 75 per cent. The model scores 77.5. Two and a half points above doing nothing is not a screening tool, and no amount of framing makes it one. Precision and recall tell the real story: four in ten true cases missed, and half of all recalls unnecessary. In a screening programme those are the two numbers that determine whether patients are harmed and whether the clinic drowns.\n\nFinally, part (e) is not decoration. The ninety-six per cent figure has already been briefed, and the temptation is to publish the corrected number next to it without saying why it changed. In a regulated clinical setting that is not a presentational choice: a deployment decision taken on a number the team knows to be wrong is a safety failure, and the correction has to be explicit about the cause.",
+      "provenance": {
+        "inspired_by": "Leakage-through-duplicates guidance in medical machine learning; rebuilt as a quantified case study with a governance consequence",
+        "adaptation": "The source states the principle — split by group, not by row — and warns that duplicates inflate scores. It rarely quantifies how much of a test set is compromised. This item supplies a concrete dataset with a stated repeat-visit structure, asks for the expected number of compromised scans to be derived from first principles, and puts two complete confusion matrices side by side so that the candidate computes all eight metrics and discovers a 38 per cent fall in F1. A majority-class baseline, a clinical interpretation of precision and recall, and an explicit governance question about a figure already in circulation are added. All figures are original and were chosen so that both test sets have identical prevalence and size, so that the only difference between the two rows is the grouping.",
+        "resource_origin": "Public machine-learning practice literature on leakage through grouped or duplicated records — notably the literature on patient-level splitting in medical imaging, and the general guidance that a test set must contain examples independent of the training set",
+        "source_url": null,
+        "rights": "original",
+        "source_family": "other"
+      },
+      "difficulty_evidence": {
+        "lever_type": "seeded_anomaly",
+        "naive_path": "Report the ninety-six per cent accuracy, note that the model performs well, and see no reason to question a random split — the split is random, the metrics are correct, and the number has already been briefed.",
+        "failure_point": "Randomness at the level of rows does not produce independence at the level of patients when a fifth of the dataset is repeat visits, so the random split places thirty-eight per cent of the test set on scans of patients present in training, and the model is being scored on its ability to memorise rather than to generalise.",
+        "wrong_answer": "The model is declared ready for deployment on 0.958 accuracy and 0.918 F1 when the honest figures are 0.775 and 0.571, and the 77.5 per cent accuracy is not recognised as being only two and a half points above the 75 per cent obtainable by predicting 'negative' for every scan."
+      },
+      "verification": {
+        "method": "All eight metrics were recomputed from the two confusion matrices: random split accuracy 2300/2400 = 0.9583, precision 560/620 = 0.9032, recall 560/600 = 0.9333, F1 = 2(0.9032)(0.9333)/(0.9032+0.9333) = 0.9180; grouped split accuracy 1860/2400 = 0.775, precision 360/660 = 0.5455, recall 360/600 = 0.600, F1 = 2(0.5455)(0.6)/(1.1455) = 0.5714. The fall in F1 is (0.9180-0.5714)/0.9180 = 0.3776. The expected compromised scans were computed as 1600 * (1*3*0.2*0.64 + 2*3*0.04*0.8) = 1600 * 0.576 = 921.6, and 921.6/2400 = 0.384. The baseline accuracy was taken as the negative class prevalence, 0.75.",
+        "assertions": [
+          "approx((560 + 1740) / 2400, 0.9583333, 1e-6)",
+          "approx(560 / 620, 0.9032258, 1e-6)",
+          "approx(560 / 600, 0.9333333, 1e-6)",
+          "approx(2 * (560 / 620) * (560 / 600) / (560 / 620 + 560 / 600), 0.9180328, 1e-6)",
+          "approx((360 + 1500) / 2400, 0.775, 1e-12)",
+          "approx(360 / 660, 0.5454545, 1e-6)",
+          "approx(360 / 600, 0.6, 1e-12)",
+          "approx(2 * (360 / 660) * 0.6 / (360 / 660 + 0.6), 0.5714286, 1e-6)",
+          "approx((0.9180328 - 0.5714286) / 0.9180328, 0.3776, 1e-3)",
+          "approx(1600 * (3 * 0.2 * 0.64 + 2 * 3 * 0.04 * 0.8), 921.6, 1e-9)",
+          "approx(921.6 / 2400, 0.384, 1e-9)",
+          "approx(0.775 - 0.75, 0.025, 1e-12)",
+          "approx(2.0 / 5.0, 0.4, 1e-12)",
+          "approx(1 - 360 / 660, 0.4545455, 1e-6)"
+        ],
+        "solution_skeleton": [
+          "compute accuracy, precision, recall and the F1 score from each confusion matrix",
+          "express the fall in F1 between the two splits as a proportion",
+          "model a repeat patient's scans as three independent Bernoulli draws and count compromised test scans",
+          "compare the honest accuracy against the majority-class baseline and interpret recall clinically",
+          "identify the protocol change that makes the evaluation independent of grouping"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.002,
+        "nearest_bank_id": "MATH_AAHL_P2_2020Nov_TZ0_q02",
+        "checked_at": "2026-09-11",
+        "note": "not yet scanned; tools/similarity_check.py --write fills this in",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "max_internal_similarity": 0.003,
+        "nearest_internal_id": "CS-P2-007",
+        "max_approach_similarity": 0.075,
+        "nearest_approach_id": "CS-P2-007"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P1",
+      "section": "B",
+      "technology": "permitted",
+      "question_type": "structured",
+      "id": "CS-A1.3-301",
+      "syllabus_ref": "A1.3 Operating systems and control systems: virtual memory, paging, page faults and the role of the memory management unit. With B2.2 Data structures: the layout of a two-dimensional array in memory",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A1.3 A process whose working set exceeds the available frames, where the cost of traversing a large array depends on the access order by a factor equal to the number of elements that fit in one page",
+      "marks": 15,
+      "difficulty": 4,
+      "command_terms": [
+        "Calculate",
+        "Calculate",
+        "Determine",
+        "Calculate",
+        "Explain"
+      ],
+      "tags": [
+        "virtual memory",
+        "page fault",
+        "working set",
+        "effective access time",
+        "locality of reference",
+        "row-major order",
+        "huge pages"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "challenge_mechanism": "Two things have to be true at once for the array traversal to be catastrophic, and separately each is survivable. The working set must exceed the available frames, otherwise everything stays resident and the access order costs nothing; and the access order must be column-major, otherwise the traversal streams through memory and each page is touched once. Neither condition is the cause on its own — it is their conjunction, which is why a fix aimed at one of them, such as moving to huge pages, repairs the sequential case by a factor of five hundred and does nothing at all for the strided one.",
+      "question": "A server has $4\\ {\\rm GiB}$ of physical memory, of which the operating system and other resident processes occupy $2\\ {\\rm GiB}$, leaving $2\\ {\\rm GiB}$ of frames available to a numerical application. Memory is paged with a page size of $4\\ {\\rm KiB}$ $(4096\\ {\\rm bytes})$; a memory access that hits takes $t_{m} = 80\\ {\\rm ns}$, and a page fault costs $t_{d} = 8\\ {\\rm ms}$ because the page must be fetched from a solid-state device. The effective access time is\n$$t_{\\rm eff} = (1 - p)\\,t_{m} + p\\,t_{d},$$\nwhere $p$ is the probability that a given access faults.\nThe application must traverse a square array of double-precision numbers, each occupying $8$ bytes, stored in row-major order, with $32\\,768$ rows and $32\\,768$ columns. Its declared working set is therefore the whole array. Two traversals are considered: one that visits the elements in row-major order and one that visits them in column-major order.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 2,
+          "command_term": "Calculate",
+          "text": "Calculate the number of frames available to the application and the number of frames the array requires, and state whether the working set fits."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Calculate the page-fault probability $p$ at which the effective access time is double the fault-free time, and comment on the magnitude of that probability."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "Determine the number of page faults generated by each traversal, assuming in the row-major case that each page is read once and in the column-major case that every element access faults. Determine the ratio of the two, and explain where that ratio comes from."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Calculate the time taken by each traversal at $8\\ {\\rm ms}$ per fault, giving your answers in hours for the row-major case and in days for the column-major case."
+        },
+        {
+          "label": "e",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "A colleague proposes moving to huge pages of $2\\ {\\rm MiB}$ $(2\\,097\\,152\\ {\\rm bytes})$. Explain, with numbers, what this does for each of the two traversals, and explain why the same change has two such different effects."
+        }
+      ],
+      "answer": "**(a)** The available memory is $2\\ {\\rm GiB} = 2 \\times 1024^{3} = 2\\,147\\,483\\,648$ bytes, giving\n\n$$\\frac{2\\,147\\,483\\,648}{4096} = 524\\,288\\ \\text{frames} \\;\\text{(A1)}$$\n\nThe array occupies $32\\,768 \\times 32\\,768 \\times 8 = 8\\,589\\,934\\,592$ bytes $= 8\\ {\\rm GiB}$, so it needs\n\n$$\\frac{8\\,589\\,934\\,592}{4096} = 2\\,097\\,152\\ \\text{frames} \\;\\text{(A1)}$$\n\nfour times what is available, so the working set does not fit and the process must fault under any policy.\n\n**(b)** Setting $t_{\\rm eff} = 2t_{m} = 160\\ {\\rm ns}$:\n\n$$160 = 80(1-p) + p(8\\times10^{6}) \\quad\\Longrightarrow\\quad 80 = p(8\\times10^{6} - 80) \\quad\\Longrightarrow\\quad p \\approx 1.0 \\times 10^{-5} \\;\\text{(M1)(A1)}$$\n\nA fault probability of one in a hundred thousand — a tenth of a basis point — is enough to double the time of every memory access, because a fault costs about $10^{5}$ times as much as a hit (A1). This is why paging systems are designed so that the fault rate stays several orders of magnitude below that; once it rises to even one per cent, the effective access time is roughly a thousand times the nominal one.\n\n**(c)** The array holds $4096/8 = 512$ doubles per page (M1).\n\n*Row-major.* Consecutive elements of a row are consecutive in memory, so a full traversal reads each page once and never revisits it. The number of faults is the number of pages:\n\n$$\\frac{8\\,589\\,934\\,592}{4096} = 2\\,097\\,152 \\;\\text{(A1)}$$\n\n*Column-major.* Consecutive elements of a column are $32\\,768 \\times 8 = 262\\,144$ bytes apart, which is $64$ pages apart, so each access lands on a different page and the traversal revisits every page $512$ times over the course of a column pass. Since the whole array needs $2\\,097\\,152$ frames and only $524\\,288$ are available, pages are evicted long before they are revisited, so essentially every access faults. The number of faults is therefore approximately the number of elements:\n\n$$32\\,768 \\times 32\\,768 = 1\\,073\\,741\\,824 \\;\\text{(A1)}$$\n\nThe ratio is\n\n$$\\frac{1\\,073\\,741\\,824}{2\\,097\\,152} = 512 \\;\\text{(A1)}$$\n\nexactly the number of doubles that fit in one page. That is not a coincidence: in row-major order one fault serves $512$ consecutive element accesses, while in column-major order one fault serves one, so the ratio is precisely the number of elements per page.\n\n**(d)** Row-major:\n\n$$2\\,097\\,152 \\times 8 \\times 10^{-3} = 16\\,777\\ {\\rm s} = 4.66\\ {\\rm hours} \\;\\text{(M1)(A1)}$$\n\nColumn-major:\n\n$$1\\,073\\,741\\,824 \\times 8 \\times 10^{-3} = 8.59 \\times 10^{6}\\ {\\rm s} \\approx 99\\ {\\rm days} \\;\\text{(A1)}$$\n\nThe same computation, on the same data, differing by a factor of $512$ purely because of the order in which the elements are visited.\n\n**(e)** With $2\\ {\\rm MiB}$ pages the array occupies $8\\,589\\,934\\,592 / 2\\,097\\,152 = 4096$ huge pages (M1). For the row-major traversal this reduces the fault count from $2\\,097\\,152$ to $4096$, a factor of $512$, and the time from $4.66$ hours to $4096 \\times 0.008 = 32.8$ seconds (A1). For the column-major traversal it changes nothing: the number of distinct pages is still far more than the available frames can hold, and the access pattern still touches a different page on every single element, so the fault count remains of the order of $10^{9}$ and the traversal still takes about three months (A1). The change has two different effects because the two traversals are limited by different things. The row-major case is limited by the *number* of fault events, and larger pages reduce that number proportionally. The column-major case is limited by the *locality* of the access pattern, and no page size can create locality where the program does not have it: with $512$ doubles per page the row-major case amortises one fault over $512$ accesses, and the column-major case amortises it over one, whatever the page is called.",
+      "markscheme_notes": "(a) (A1) for each of the two frame counts and (A1) for the conclusion. Accept the counts in gibibytes rather than bytes provided the conversion to frames is shown. Candidates who use $10^{9}$ rather than $1024^{3}$ for a gibibyte should be followed through rather than penalised, but should be told the convention.\n\n(b) (M1) for setting $t_{\\rm eff} = 2t_m$ and rearranging, (A1) for $1.0 \\times 10^{-5}$, (A1) for a comment that connects the smallness of the probability to the size of the ratio $t_d/t_m$. Accept an answer of $10^{-5}$ given without the subtraction of $80$ from $8 \\times 10^{6}$. A candidate who states merely 'a very small probability' without quantifying it loses the final mark.\n\n(c) (M1) for computing 512 doubles per page, (A1) for $2\\,097\\,152$ faults, (A1) for $1\\,073\\,741\\,824$ faults, (A1) for the ratio 512 with the explanation that it equals the number of elements per page. The explanation carries a mark in its own right: a candidate who produces the two counts and divides them without saying why the quotient is 512 gets three of the four. Credit candidates who note that the column-major figure is an upper bound, since the very first pass through a column may find some pages still resident.\n\n(d) (M1) for multiplying a fault count by the fault cost, (A1) for 4.66 hours, (A1) for about 99 days. Accept 4.7 hours and 100 days. Note that the conversion to hours and days is asked for and should be shown; a raw seconds figure alone loses the accuracy marks.\n\n(e) (M1) for computing 4096 huge pages, (A1) for the row-major improvement to about 33 seconds, (A1) for the column-major case being unchanged, together with the distinction between a limit on the number of fault events and a limit on locality. The distinction is the mark: a candidate who says simply 'huge pages make it faster' without separating the two traversals earns at most one. Credit candidates who observe that huge pages also increase internal fragmentation and are therefore not free, even where they help.",
+      "explanation": "The numbers here are large enough to be genuinely alarming, which is the point: a 512-fold difference in running time produced by the order of two nested loops, with no change to the data, the algorithm's output, or the hardware. Four and a half hours against three months.\n\nIt is worth being precise about the two conditions, because the item is built on their conjunction and candidates regularly attribute the disaster to only one. If the array fitted in memory, the column-major traversal would still touch memory in a poor order, but it would cost a modest multiple rather than a catastrophe, because nothing would ever be evicted. If the array did not fit but the traversal were row-major, the cost would be one fault per page, which is the minimum possible for streaming through data larger than memory. It takes both — an oversized working set *and* an access pattern with no locality — to reach a fault per element.\n\nThat conjunction is exactly why part (e) is interesting. Huge pages reduce the number of pages by a factor of 512, and for a streaming traversal that translates directly into 512 times fewer faults: 4.66 hours becomes 33 seconds. For the strided traversal it is worth nothing at all, because the number of distinct pages was never the binding constraint — the absence of locality was. The same change, applied to the same array, on the same machine, is either a 500-fold win or nothing.\n\nPart (b) deserves a moment on its own, because the number is so small that it looks wrong. A fault probability of one in a hundred thousand doubles the effective access time. The reason is the ratio $t_d/t_m$, which is about $10^{5}$: a fault costs five orders of magnitude more than a hit, so a fault rate of one in ten to the five contributes as much delay as all the hits combined. This is the arithmetic behind the folklore that paging either works or does not — there is no regime in which it degrades gracefully.\n\nThe practical lesson generalises past arrays. Any data structure whose traversal order does not match its memory layout pays a fixed penalty per element, and the penalty is the ratio of elements per page. Row-major arrays traversed by column, linked lists where arrays would do, hash tables with poor locality, structures of arrays split into arrays of structures: the underlying arithmetic is the same, and it is the number of useful accesses served per fault.",
+      "provenance": {
+        "inspired_by": "Operating systems treatments of thrashing and effective access time; rebuilt around a traversal-order choice with a quantified ratio",
+        "adaptation": "The textbook presents the effective access time formula and warns about thrashing, usually with a small illustrative example, and treats locality as a qualitative property. This item fixes a concrete 8 GiB array against a concrete 2 GiB of available frames, demands the fault counts for two specific traversal orders, and — the part the textbook does not do — asks why the ratio between them is exactly the number of elements per page. It then tests a specific remedy, huge pages, against both traversals and requires the candidate to distinguish a limit on the number of fault events from a limit on locality. All figures are original and were chosen so that the array is four times the available memory, the elements per page is exactly 512, the row-major time lands near 4.7 hours and the column-major time near 99 days.",
+        "resource_origin": "Operating systems textbook material on virtual memory, working sets, effective access time and thrashing (the classic treatment in Silberschatz, Galvin and Gagne, and the equivalent chapters in Tanenbaum)",
+        "source_url": null,
+        "rights": "original",
+        "source_family": "other"
+      },
+      "difficulty_evidence": {
+        "lever_type": "binding_constraint",
+        "naive_path": "Attribute the slowness to the array being larger than memory, conclude that nothing can be done without more RAM, and treat the order of the two nested loops as an irrelevant stylistic detail that the compiler will handle.",
+        "failure_point": "Neither the oversized working set nor the access order is sufficient on its own: the row-major traversal streams through all 2097152 pages and pays the minimum possible, while the column-major traversal revisits every page 512 times with only a quarter of them resident, so the disaster needs both conditions and the loop order is carrying half of it.",
+        "wrong_answer": "The computation is estimated at around four and a half hours and declared acceptable, or extra memory is requested for a problem that a loop swap would reduce by a factor of five hundred, and a move to huge pages is predicted to help both traversals when it helps only one."
+      },
+      "verification": {
+        "method": "All quantities were computed independently in Python: available frames 2*1024**3/4096 = 524288; array bytes 32768**2*8 = 8589934592; pages 8589934592/4096 = 2097152; elements per page 4096/8 = 512; column stride in pages 32768*8/4096 = 64; element count 32768**2 = 1073741824; ratio 1073741824/2097152 = 512. Fault times 2097152*0.008 = 16777.2 s = 4.6603 h and 1073741824*0.008 = 8589934.6 s = 99.42 days. Huge pages 8589934592/2097152 = 4096 and 4096*0.008 = 32.768 s. The doubling fault rate was solved as 80/(8e6-80) = 1.00001e-5.",
+        "assertions": [
+          "approx(2 * 1024 ** 3 / 4096, 524288.0, 1e-12)",
+          "approx(32768 * 32768 * 8 / 4096, 2097152.0, 1e-9)",
+          "approx(2097152 / 524288, 4.0, 1e-12)",
+          "approx(4096 / 8, 512.0, 1e-12)",
+          "approx(32768 * 8 / 4096, 64.0, 1e-12)",
+          "approx(32768 * 32768, 1073741824.0, 1e-9)",
+          "approx(1073741824 / 2097152, 512.0, 1e-12)",
+          "approx(80 / (8e6 - 80), 1.00001e-5, 1e-4)",
+          "approx(80 + 1.0e-5 * 8e6, 160.0, 1e-9)",
+          "approx(2097152 * 0.008 / 3600, 4.6603, 1e-3)",
+          "approx(1073741824 * 0.008 / 86400, 99.42, 1e-3)",
+          "approx(8589934592 / 2097152, 4096.0, 1e-12)",
+          "approx(4096 * 0.008, 32.768, 1e-9)",
+          "approx(2097152 / 4096, 512.0, 1e-12)"
+        ],
+        "solution_skeleton": [
+          "convert available memory and array size into frame counts and compare them",
+          "solve the effective access time expression for the fault rate that doubles it",
+          "count the faults for each traversal and express their ratio as elements per page",
+          "convert both fault counts into wall-clock time at the stated fault cost",
+          "evaluate a larger page size against both traversals and separate the two limiting effects"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.003,
+        "nearest_bank_id": "PH_HL_Topic_12_HL-paper1_q49",
+        "checked_at": "2026-09-11",
+        "note": "not yet scanned; tools/similarity_check.py --write fills this in",
+        "nearest_bank_label": "bank:Physics/Topic 12",
+        "max_internal_similarity": 0.005,
+        "nearest_internal_id": "CS-B2.2-201",
+        "max_approach_similarity": 0.078,
+        "nearest_approach_id": "MATH-AHL5.1-001"
+      }
+    }
+  ]
+}

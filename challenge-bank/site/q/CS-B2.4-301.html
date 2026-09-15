@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B2.4-301 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>B2.4 A recursive implementation of a linear recurrence whose call count is exactly twice the answer minus one, where memoisation changes the cost class and the recursion depth sets a separate, independent limit</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B2.4-301</p>
+<button type="button" class="q-done-page" data-qid="CS-B2.4-301" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-B2.4-301">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B2.4 Programming algorithms: recursion, and the analysis of the number of operations an algorithm performs. With B1.1 Approaches to computational thinking: identifying the procedure required to solve a problem and the efficiency of that procedure</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: permitted</span><span class="chip">Determine</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">Explain</span></div>
+
+
+<section id="q-print">
+<h2>Question</h2>
+<p>A service computes terms of a sequence defined by $F(1) = 1$, $F(2) = 1$ and $F(n) = F(n-1) + F(n-2)$ for $n \ge 3$. The implementation currently in production is the following, in a language whose default recursion limit is $1000$ nested calls and whose interpreter executes about $1.0 \times 10^{7}$ function calls per second:<br>``<code><br>FUNCTION term(n)<br>    IF n &lt;= 2 THEN<br>        RETURN 1<br>    ELSE<br>        RETURN term(n - 1) + term(n - 2)<br>    END IF<br>END FUNCTION<br></code>`<code><br>A second implementation stores each computed value in a dictionary the first time it is needed and reads it thereafter, so that each index is evaluated once. A third implementation uses a loop and holds only the two most recent values.<br>Throughout, a *call* means one invocation of </code>term`, including the invocation that answers the original request. The phrase *recursion depth* means the number of invocations that are simultaneously on the call stack at the deepest point of the computation.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Determine the number of calls made when <code>term(6)</code> is evaluated, by writing down the recurrence satisfied by the call count and evaluating it from the base cases upwards. State the recurrence you used.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Let $c(n)$ be the number of calls made in evaluating <code>term(n)</code>, and let $F$ denote the sequence itself. Show that $c(n) = 2F(n) - 1$ satisfies the recurrence from part (a) together with its base cases, and hence determine the number of calls made when <code>term(40)</code> is evaluated. Estimate the time this takes at the stated execution rate.</p> <em>(Show that)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>The memoised implementation makes exactly $2n - 3$ calls for $n \ge 2$. Determine the number of calls it makes for $n = 40$, determine the factor by which this reduces the work against part (b), and determine the largest value of $n$ for which the <strong>unmemoised</strong> implementation finishes within one minute.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Explain why the memoised implementation still fails when asked for <code>term(2000)</code>, even though it is efficient in the number of calls. State the depth of the call stack in each implementation as a function of $n$, and state which implementation is not subject to the failure and why.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(e)</strong> <p>The service must answer $1.0 \times 10^{4}$ requests per day for values of $n$ up to $1500$, each request arriving independently and needing one term. Justify, with quantitative reasoning, which of the three implementations should be deployed, and state one circumstance in which your recommendation would change.</p> <em>(Justify)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="16" data-ai-ref="CS-B2.4-301">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>A service computes terms of a sequence defined by $F(1) = 1$, $F(2) = 1$ and $F(n) = F(n-1) + F(n-2)$ for $n \ge 3$. The implementation currently in production is the following, in a language whose default recursion limit is $1000$ nested calls and whose interpreter executes about $1.0 \times 10^{7}$ function calls per second:
+```
+FUNCTION term(n)
+    IF n &lt;= 2 THEN
+        RETURN 1
+    ELSE
+        RETURN term(n - 1) + term(n - 2)
+    END IF
+END FUNCTION
+```
+A second implementation stores each computed value in a dictionary the first time it is needed and reads it thereafter, so that each index is evaluated once. A third implementation uses a loop and holds only the two most recent values.
+Throughout, a *call* means one invocation of `term`, including the invocation that answers the original request. The phrase *recursion depth* means the number of invocations that are simultaneously on the call stack at the deepest point of the computation.
+
+(a) Determine the number of calls made when `term(6)` is evaluated, by writing down the recurrence satisfied by the call count and evaluating it from the base cases upwards. State the recurrence you used. [3 marks] (Determine)
+(b) Let $c(n)$ be the number of calls made in evaluating `term(n)`, and let $F$ denote the sequence itself. Show that $c(n) = 2F(n) - 1$ satisfies the recurrence from part (a) together with its base cases, and hence determine the number of calls made when `term(40)` is evaluated. Estimate the time this takes at the stated execution rate. [4 marks] (Show that)
+(c) The memoised implementation makes exactly $2n - 3$ calls for $n \ge 2$. Determine the number of calls it makes for $n = 40$, determine the factor by which this reduces the work against part (b), and determine the largest value of $n$ for which the **unmemoised** implementation finishes within one minute. [3 marks] (Determine)
+(d) Explain why the memoised implementation still fails when asked for `term(2000)`, even though it is efficient in the number of calls. State the depth of the call stack in each implementation as a function of $n$, and state which implementation is not subject to the failure and why. [3 marks] (Explain)
+(e) The service must answer $1.0 \times 10^{4}$ requests per day for values of $n$ up to $1500$, each request arriving independently and needing one term. Justify, with quantitative reasoning, which of the three implementations should be deployed, and state one circumstance in which your recommendation would change. [3 marks] (Justify)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Evaluating <code>term(n)</code> for <code>n &gt;= 3</code> invokes <code>term(n - 1)</code> and <code>term(n - 2)</code> as well as being an invocation itself, so the call count satisfies</p>
+<p>$$c(n) = 1 + c(n-1) + c(n-2), \qquad c(1) = c(2) = 1 \;\text{(M1)(A1)}$$</p>
+<p>the base cases holding because for <code>n &lt;= 2</code> the function returns immediately without recursing. Working upwards:</p>
+<p>$c(3) = 1 + 1 + 1 = 3$, $c(4) = 1 + 3 + 1 = 5$, $c(5) = 1 + 5 + 3 = 9$, $c(6) = 1 + 9 + 5 = 15$ (A1).</p>
+<p>So <code>term(6)</code> makes 15 calls to compute the value 8.</p>
+<p><strong>(b)</strong> Substituting $c(n) = 2F(n) - 1$ into the recurrence, the left-hand side is $2F(n) - 1$ and the right-hand side is</p>
+<p>$$1 + \bigl(2F(n-1) - 1\bigr) + \bigl(2F(n-2) - 1\bigr) = 2\bigl(F(n-1) + F(n-2)\bigr) - 1 = 2F(n) - 1 \;\text{(M1)(A1)}$$</p>
+<p>using the definition of $F$ itself. For the base cases, $c(1) = 2(1) - 1 = 1$ and $c(2) = 2(1) - 1 = 1$, both correct (A1). Since a first-order recurrence in two variables with two base conditions has a unique solution, the closed form is established. With $F(40) = 102\,334\,155$,</p>
+<p>$$c(40) = 2(102\,334\,155) - 1 = 204\,668\,309 \;\text{(A1)}$$</p>
+<p>about $2.0 \times 10^{8}$ calls. At $1.0 \times 10^{7}$ calls per second that is roughly $20$ seconds for one term (A1) — and the cost grows by a factor of about $1.618$ for each increment of $n$, so each extra unit of $n$ adds about $62\%$ to the running time.</p>
+<p><strong>(c)</strong> For $n = 40$ the memoised version makes $2(40) - 3 = 77$ calls (A1). The reduction factor is</p>
+<p>$$\frac{204\,668\,309}{77} \approx 2.66 \times 10^{6} \;\text{(A1)}$$</p>
+<p>so roughly two and a half million times less work, taking a few microseconds rather than twenty seconds. For the unmemoised version, one minute allows $6.0 \times 10^{7}$ calls, which requires $2F(n) - 1 \le 6.0 \times 10^{7}$, that is $F(n) \le 3.0 \times 10^{7}$. Since $F(41) = 165\,580\,141$ and $F(42) = 267\,914\,296$ are respectively above and below $3.0 \times 10^{7}$ after dividing by two, checking directly: $c(42) = 535\,828\,591$ calls, which takes $54$ seconds, while $c(43) = 866\,988\,873$ takes $87$ seconds. The largest value computable within a minute is therefore $n = 42$ (A1).</p>
+<p><strong>(d)</strong> The memoised version is efficient in *calls* but not in *depth*. Each evaluation of <code>term(n)</code> proceeds by calling <code>term(n - 1)</code>, which calls <code>term(n - 2)</code>, and so on down to the base case, so the deepest point of the computation has about $n - 1$ invocations simultaneously on the stack (M1). Memoisation prevents repeated evaluation of a value; it does not shorten the chain, because the first evaluation of each index still descends the whole way to the base case before anything is stored. At $n = 2000$ the depth is about $1999$, well past the default limit of $1000$, so the interpreter raises a stack-overflow error before the answer is produced (A1). The unmemoised version has the same depth and the same problem, besides being astronomically slow. The iterative version keeps no chain at all: it holds two variables and updates them $n - 2$ times, so its stack use is constant and its depth does not depend on $n$ (A1). It is the only one of the three that is not subject to this failure.</p>
+<p><strong>(e)</strong> The iterative implementation should be deployed (A1). The reasoning: at $n = 1500$ the naive version needs about $2F(1500) - 1$ calls, and since $F(n) \approx \varphi^{n}/\sqrt{5}$ with $\varphi = 1.618$, $\log_{10} F(1500) \approx 1500 \times 0.2090 - 0.349 = 313$, so on the order of $10^{313}$ calls — beyond any conceivable hardware, and it would also breach the stack limit. The memoised version makes only $2(1500) - 3 = 2997$ calls, which is trivial, but at $n = 1500$ its depth is about $1499$, still beyond the default limit of $1000$, so it would fail at run time for the upper part of the requested range (M1). The iterative version uses about $1500$ loop steps and constant memory per request; at $1.0 \times 10^{4}$ requests per day that is $1.5 \times 10^{7}$ steps per day, a fraction of a second of processor time in total, and it has no stack exposure at all (A1). The recommendation would change if the language runtime guaranteed tail-call elimination or if the recursion limit were raised well above $1500$ — in that case the memoised version, or a plain iterative version with the same cost, would be equally acceptable and the choice could be made on readability alone (A1).</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) (A1) for the recurrence $c(n) = 1 + c(n-1) + c(n-2)$ with both base cases, (A1) for $c(6) = 15$ obtained by working upwards rather than by assertion. Accept a candidate who draws or describes the recursion tree and counts its nodes, provided the count is correct; a tree diagram showing 15 nodes is full evidence. Candidates who forget the +1 for the call itself get $c(6) = 25$ or similar and should lose the first mark only if the structure is otherwise right.</p>
+<p>(b) (M1) for substituting the proposed closed form into the recurrence, (A1) for showing it satisfies the recurrence using the definition of $F$, (A1) for checking both base cases, (A1) for $204\,668\,309$, (A1) for the time estimate of about 20 seconds. Five fields; credit four. The base-case check is not optional: a recurrence of order two has a two-parameter family of solutions and matching two values is what pins one of them down. Accept a candidate who reaches the same number by direct computation of $F(40)$, provided the link to the call count is stated.</p>
+<p>(c) (A1) for 77, (A1) for the factor $2.66 \times 10^{6}$ (accept anything between $2.6$ and $2.7$ million), (A1) for $n = 42$. Full credit requires the candidate to have *checked* both $n = 42$ and $n = 43$ against the one-minute budget rather than interpolating; a candidate who states 42 from a rough estimate alone loses the final mark. Note that the answer depends on the stated execution rate, and a candidate who says so should be credited.</p>
+<p>(d) (M1) for identifying depth as roughly $n$ and noting that memoisation does not shorten the chain, (A1) for connecting $n = 2000$ to the limit of $1000$ and naming the failure mode, (A1) for identifying the iterative version as immune and saying why its stack use is constant. Do not accept 'memoisation fixes it' — that is the error this part exists to catch. A candidate who notes that the unmemoised version would fail on *both* counts earns credit for the observation.</p>
+<p>(e) (A1) for choosing the iterative implementation, (M1) for quantitative reasoning about the naive version's call count at $n = 1500$, (A1) for the memoised version's stack failure above about $n = 1000$, (A1) for a circumstance that would change the recommendation. Four fields; credit three. Accept any reasonable circumstance genuinely tied to a number, such as a raised recursion limit above $1500$, a runtime with tail-call elimination, or a requirement to compute only up to $n = 900$. Do not accept vague appeals to 'readability' without a numeric trigger.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>There is a pleasing sting in the tail of this one: the number of calls the naive recursion makes is exactly $2F(n) - 1$, which is to say that computing a value costs you about twice that value in calls. The cost is not merely proportional to the answer, it is a fixed multiple of it, and since the answer grows exponentially the cost does too. That identity is worth deriving rather than quoting, and part (b) is built to make candidates do it: substitute the closed form into the recurrence and the definition of $F$ falls out of the other side.</p>
+<p>The point of part (c) is that asymptotics alone do not tell you what you can actually run. Two and a half million times less work sounds like an abstraction until it is translated into 'twenty seconds down to a few microseconds', and the one-minute question forces the candidate to sit with the boundary rather than classify the growth. Landing on $n = 42$ requires evaluating both $n = 42$ and $n = 43$ and comparing, and the two answers straddle the budget by a comfortable margin, so guessing is visible.</p>
+<p>Part (d) is the real test, and it is the reason the item is claimed at difficulty 5 rather than 4. Having just fixed the exponential blow-up, the natural conclusion is that the problem is solved. It is not, because two different resources are being consumed and only one was measured. Memoisation reduces the number of calls to linear, but the depth of the call stack is set by how the recursion descends, not by how many times it repeats, and that depth is about $n$ in both recursive versions. At $n = 2000$ the fast version fails for exactly the same reason the slow version would have if it had ever got there.</p>
+<p>The practical conclusion, in part (e), is that the iterative version is not a micro-optimisation but the only one of the three that is correct over the required range. It also happens to be the cheapest in absolute terms: about $1.5 \times 10^{7}$ loop steps per day is nothing. A candidate who recommends memoisation because it is 'efficient' has optimised one axis and shipped a program that raises an exception on the largest inputs requested.</p>
+<p>The general lesson generalises well beyond Fibonacci. Whenever a recursive solution is replaced by a faster recursive solution, the question 'how deep does it go' remains open, and it is usually the one that bites in production, because it manifests as a crash at a specific input size rather than as a gradual slowdown that someone would notice in testing.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme B: Computational thinking and problem-solving — B2.4 A recursive implementation of a linear recurrence whose call count is exactly twice the answer minus one, where memoisation changes the cost class and the recursion depth sets a separate, independent limit</dd></div>
+  <div><dt>Challenge lever</dt><dd>Two independent limits are in play and the item is built so that fixing the visible one exposes the hidden one. The visible limit is exponential: the naive recursion calls itself twice per level, so the number of invocations is exactly twice the value being computed minus one, and by nought point two of the way to two thousand that number exceeds ten to the four hundred and seventeen. The hidden limit is the depth of the call stack, which memoisation does nothing whatever about, so the &#x27;fixed&#x27; algorithm is fast and still fails. Quantifying both, in the units a service actually cares about, is the whole question.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B2.4 Programming algorithms: recursion, and the analysis of the number of operations an algorithm performs. With B1.1 Approaches to computational thinking: identifying the procedure required to solve a problem and the efficiency of that procedure</dd></div>
+  <div><dt>Inspiration</dt><dd>AP Computer Science A recursion questions; rebuilt around two independent resource limits and a deployment judgement</dd></div>
+  <div><dt>Adaptation</dt><dd>The source asks for the number of calls or the value returned by a small recursive method and treats the exponential cost as a remark. Here the call count is derived as a closed form and proved against the recurrence with both base cases, translated into wall-clock time at a stated rate, bounded above by a one-minute budget, and then set against a second, independent limit — the depth of the call stack — that memoisation does not touch. A deployment decision with a stated request rate and a stated maximum n is added, together with an asymptotic estimate at n = 1500 using the golden ratio. All figures are original and were chosen so that the answer to the one-minute question is exactly 42 and the depth limit is breached but only just, at n near 1000.</dd></div>
+  <div><dt>Verification</dt><dd>The recurrence c(n) = 1 + c(n-1) + c(n-2) was evaluated by direct simulation in Python for n = 1 to 45 and compared against 2F(n) - 1 for the same range, agreeing everywhere. The call count at n = 40 is 204668309 and the memoised count 77, giving a ratio of 2.658e6. The one-minute budget was checked by computing c(42) = 535828591 (53.6 s) and c(43) = 866988873 (86.7 s). Recursion depth was confirmed by simulation to be n - 1 for both recursive variants. The estimate of F(1500) used log10(F) = 1500 * log10(phi) - 0.5 * log10(5), giving about 10^313. Every number appearing in the answer was recomputed independently.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P3_2008Nov_TZ0_q03 (similarity 0.004)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL1.10-001 (similarity 0.006)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-15</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A2.3-301 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A2.3 Why lowering a DNS time-to-live barely changes the latency a busy site&#x27;s users see, while the same value governs the latency of a quiet one completely</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A2.3-301</p>
+<button type="button" class="q-done-page" data-qid="CS-A2.3-301" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-A2.3-301">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A2.3 Data transmissions: the domain name system, caching, and the latency a resolution adds to a request. With A2.1 Network fundamentals: the role of a resolving name server</span><span class="chip">P1 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: permitted</span><span class="chip">Calculate</span><span class="chip">Calculate</span><span class="chip">Determine</span><span class="chip">Explain</span></div>
+
+
+<section id="q-print">
+<h2>Question</h2>
+<p>A web page references resources from $D = 6$ distinct host names. Each name must be resolved before the resource can be fetched. The organisation runs its own resolving name server, which serves a cached record in $t_{\rm hit} = 2\ {\rm ms}$ and, on a miss, performs a full recursive resolution taking $t_{\rm rec} = 180\ {\rm ms}$. Every record carries the same time-to-live $T$, measured in seconds, and a cached record expires $T$ seconds after it was obtained; the first request arriving after an expiry is the one that pays for the recursive resolution. Requests for the page arrive uniformly at a constant rate $R$ pages per second.<br>Two services use the same infrastructure. The public service receives $R = 2.0$ requests per second; an internal reporting service, using the same six host names, receives $R = 1.0$ request <strong>per minute</strong>. In both cases the current value is $T = 300\ {\rm s}$.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>For the public service, calculate the number of recursive resolutions the resolver performs per second, and hence the fraction of page loads that trigger at least one of them.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>Calculate the average time per page load spent on name resolution for the public service, and repeat the calculation for $T = 60\ {\rm s}$. State how much DNS traffic increases and how much the average resolution time increases.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Determine the request rate below which the cache is effectively cold, in the sense that essentially every lookup misses, and hence determine the average resolution time per page load for the internal reporting service at $T = 300\ {\rm s}$.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Explain why the time-to-live is not the quantity that governs the resolution time a user experiences, identify the dimensionless ratio that does, and state what value of that ratio separates the two regimes. Explain also why the two services experience the same $T = 300\ {\rm s}$ so differently.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(e)</strong> <p>A colleague proposes lowering the time-to-live to $10\ {\rm s}$ 'so that records are always fresh'. Comment on this proposal with numbers, treating the public service and the internal service separately, and referring to a stated latency budget of $200\ {\rm ms}$ for resolution.</p> <em>(Comment)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-A2.3-301">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>A web page references resources from $D = 6$ distinct host names. Each name must be resolved before the resource can be fetched. The organisation runs its own resolving name server, which serves a cached record in $t_{\rm hit} = 2\ {\rm ms}$ and, on a miss, performs a full recursive resolution taking $t_{\rm rec} = 180\ {\rm ms}$. Every record carries the same time-to-live $T$, measured in seconds, and a cached record expires $T$ seconds after it was obtained; the first request arriving after an expiry is the one that pays for the recursive resolution. Requests for the page arrive uniformly at a constant rate $R$ pages per second.
+Two services use the same infrastructure. The public service receives $R = 2.0$ requests per second; an internal reporting service, using the same six host names, receives $R = 1.0$ request **per minute**. In both cases the current value is $T = 300\ {\rm s}$.
+
+(a) For the public service, calculate the number of recursive resolutions the resolver performs per second, and hence the fraction of page loads that trigger at least one of them. [3 marks] (Calculate)
+(b) Calculate the average time per page load spent on name resolution for the public service, and repeat the calculation for $T = 60\ {\rm s}$. State how much DNS traffic increases and how much the average resolution time increases. [3 marks] (Calculate)
+(c) Determine the request rate below which the cache is effectively cold, in the sense that essentially every lookup misses, and hence determine the average resolution time per page load for the internal reporting service at $T = 300\ {\rm s}$. [3 marks] (Determine)
+(d) Explain why the time-to-live is not the quantity that governs the resolution time a user experiences, identify the dimensionless ratio that does, and state what value of that ratio separates the two regimes. Explain also why the two services experience the same $T = 300\ {\rm s}$ so differently. [4 marks] (Explain)
+(e) A colleague proposes lowering the time-to-live to $10\ {\rm s}$ &#x27;so that records are always fresh&#x27;. Comment on this proposal with numbers, treating the public service and the internal service separately, and referring to a stated latency budget of $200\ {\rm ms}$ for resolution. [3 marks] (Comment)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Each of the $D = 6$ records expires once every $T = 300$ s, so the resolver performs</p>
+<p>$$\frac{D}{T} = \frac{6}{300} = 0.020 \ \text{resolutions per second }\;\text{(M1)(A1)}$$</p>
+<p>in total. Pages arrive at $R = 2.0$ per second, so the fraction of page loads that trigger a recursive resolution is</p>
+<p>$$\frac{D/T}{R} = \frac{0.020}{2.0} = 0.010 \;\text{(A1)}$$</p>
+<p>about one page load in a hundred. (This assumes the fraction is below one; part (c) examines what happens when it is not.)</p>
+<p><strong>(b)</strong> Each page load performs $D = 6$ lookups. In the steady state, $0.010$ of them are misses at $180$ ms and effectively all the rest are hits at $2$ ms, so</p>
+<p>$$t_{m DNS} = 6 \times 2 + 0.010 \times (180 - 2) = 12 + 1.78 = 13.8\ {\rm ms} \;\text{(M1)(A1)}$$</p>
+<p>With $T = 60$ s the expiry rate is $6/60 = 0.10$ per second and the miss fraction is $0.10/2.0 = 0.050$, giving</p>
+<p>$$t_{m DNS} = 12 + 0.050 \times 178 = 12 + 8.9 = 20.9\ {\rm ms} \;\text{(A1)}.$$</p>
+<p>So the resolver's query traffic rises fivefold, from $0.020$ to $0.10$ recursive resolutions per second, while the average resolution time the user sees rises from $13.8$ ms to $20.9$ ms — about $7$ ms, which is well inside any plausible latency budget and barely measurable against the hundreds of milliseconds a page takes to load.</p>
+<p><strong>(c)</strong> The cache is effectively cold when the expiry rate reaches the arrival rate, that is when</p>
+<p>$$\frac{D}{T} \ge R \quad\Longrightarrow\quad R \le \frac{6}{300} = 0.020\ \text{requests per second} = 1.2\ \text{per minute} \;\text{(M1)(A1)}$$</p>
+<p>Below that rate, essentially every lookup misses, because the record has expired again before the next request arrives. The internal service receives $1.0$ request per minute $= 0.0167$ per second, which is below $0.020$, so all six of its lookups are misses and</p>
+<p>$$t_{m DNS} = 6 \times 180 = 1080\ {\rm ms} \;\text{(A1)}$$</p>
+<p>more than a second of pure name resolution on every page load.</p>
+<p><strong>(d)</strong> The resolution time a user experiences is set by how often a lookup misses in the moment it is made, and that is governed by the ratio</p>
+<p>$$\frac{D/T}{R} = \frac{D}{RT} \;\text{(M1)}$$</p>
+<p>the number of records expiring per second divided by the number of requests arriving per second — equivalently, the number of requests that arrive during one lifetime of a record, inverted (A1). The value $1$ separates the regimes: below it the cache is warm and only that fraction of lookups miss; at or above it the cache is cold and every lookup misses, at which point $T$ has no further effect at all because there is nothing left to degrade (A1). The time-to-live alone cannot say which regime a service is in, because it carries no information about $R$: the same $T = 300$ s puts the public service at a ratio of $0.010$, comfortably warm, and the internal service at a ratio of $1.2$, fully cold — a hundredfold difference in resolution time produced by identical configuration (A1).</p>
+<p><strong>(e)</strong> For the public service, $T = 10$ s gives an expiry rate of $6/10 = 0.60$ per second, a miss fraction of $0.60/2.0 = 0.30$, and</p>
+<p>$$t_{m DNS} = 12 + 0.30 \times 178 = 12 + 53.4 = 65.4\ {\rm ms} \;\text{(A1)}$$</p>
+<p>which is thirty times the recursive resolution traffic of the current setting ($0.60$ against $0.020$ per second) and is still within the $200$ ms budget, though it now consumes a third of it on a component that previously used under seven per cent. For the internal service the proposal changes nothing measurable: its ratio is already above $1$ at $T = 300$ s, so it is already paying $1080$ ms on every load, and lowering $T$ further cannot raise a fraction that is already saturated at unity — it only adds resolver load for no benefit (A1). The proposal is therefore poor value at both sites: it buys no freshness that anyone can perceive, since records change rarely, and it spends a large multiple of the query budget to do so. The change that would actually help the internal service is one that raises the ratio above unity by a different route: a longer time-to-live, a scheduled prefetch that refreshes records before expiry, or a local resolver on the reporting host itself (A1).</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) for computing the expiry rate $D/T$, (A1) for $0.020$ per second, (A1) for the fraction $0.010$. Accept the fraction expressed as a percentage or as 'one request in a hundred'. A candidate who works out $T/D = 50$ s between resolutions and then relates it to the arrival interval of $0.5$ s is taking an equivalent route and earns full marks.</p>
+<p>(b) (M1) for a correct weighted average of hit and miss costs, (A1) for $13.8$ ms, (A1) for $20.9$ ms. Accept a candidate who computes two separate totals and subtracts, provided both are shown. The comparison asked for — fivefold traffic, about seven milliseconds — should be credited if stated qualitatively but correctly; the numbers themselves carry the marks here. Forfeits: treating all six lookups as misses whenever a miss occurs, which double-counts and gives $13.8$ ms where the correct figure is lower.</p>
+<p>(c) (M1) for setting the expiry rate equal to the arrival rate, (A1) for $0.020$ per second or $1.2$ per minute, (A1) for $1080$ ms. The essential step is recognising that the internal service sits below the threshold; a candidate who computes the threshold correctly but then applies the warm-cache formula to the internal service anyway loses the final mark, because the fraction would come out above one, which is the signal that the model has broken down.</p>
+<p>(d) (M1) for forming the ratio $D/(RT)$, (A1) for identifying it as expiries per request or the reciprocal of requests per record lifetime, (A1) for the value $1$ as the boundary and for the observation that beyond it $T$ has no further effect, (A1) for the explicit comparison of the two services under identical configuration. Four fields; credit four. Candidates are not required to use the word 'dimensionless', but should say enough to show they understand it is a comparison of two rates rather than a property of either alone.</p>
+<p>(e) (A1) for the public-service figure of $65.4$ ms with the traffic multiple, (A1) for the internal-service conclusion that nothing changes, (A1) for a constructive alternative that would actually help. The last mark requires a mechanism, not a sentence: 'monitor it' or 'review the TTL policy' earns nothing, while a longer time-to-live, a prefetch, or a host-local resolver each earns it. Note that candidates who point out that a 30-fold traffic increase also raises the load on upstream servers should be credited for the observation even if it is not asked for.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The reason this trips people up is that a time-to-live is a duration and a latency is a duration, so it feels natural to expect one to set the other. It does not. What determines whether a given user's lookup hits the cache is whether anybody else arrived recently enough to have warmed it, and that is a statement about arrivals per unit time — a rate — compared against the expiry rate. Two rates, one ratio.</p>
+<p>Writing the ratio explicitly is the whole move. Expiries per second is $D/T$; requests per second is $R$; the fraction of lookups that miss is their ratio, capped at one. Everything else in the item follows from that one expression, including the two facts that make it interesting: the cap at one, which is why there is a threshold at all, and the fact that $R$ appears in it, which is why the same configuration behaves differently for two services.</p>
+<p>The numbers were chosen so the two services sit on opposite sides of the threshold with nothing in between. At $R = 2.0$ per second the ratio is $0.010$ and the resolution cost is $13.8$ ms, essentially all of it the six cheap hits. At $R = 1/60$ per second the ratio is $1.2$, the cache is cold, and the cost is $1080$ ms. Same $T$, same $D$, same resolver, seventy-eight times worse. Nothing about the configuration changed; only the traffic did.</p>
+<p>The cap at unity is the part worth carrying away, because it is the source of the asymmetry in part (e). Above the threshold, changing $T$ does nothing at all — the service is already paying the maximum and there is no headroom to lose. Below it, changing $T$ scales the miss fraction linearly but only shifts a small component of a mostly-hit workload. So lowering a time-to-live is either useless or mildly expensive, and raising it is either transformative or mildly beneficial, and which you get is decided entirely by the traffic. That is a genuinely useful thing to know before touching a DNS setting.</p>
+<p>One more lesson hides in part (b), which is about the difference between cost and cost-per-user. The resolver's query traffic went up fivefold, which sounds alarming, while the user-visible latency went up by seven milliseconds, which is not. Both are true. A change can be expensive for infrastructure and invisible to users, and deciding which of those matters is a judgement the numbers cannot make for you.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme A: Concepts of computer science — A2.3 Why lowering a DNS time-to-live barely changes the latency a busy site&#x27;s users see, while the same value governs the latency of a quiet one completely</dd></div>
+  <div><dt>Challenge lever</dt><dd>The time-to-live is the obvious dial and it is the wrong one. What sets how often a user waits for a full recursive resolution is not how long records live but how many requests arrive during one lifetime: the ratio of records expiring per second to requests arriving per second. Once the request rate exceeds the expiry rate, the cache is warm almost all the time and the contribution of resolution to page load is dominated by cheap hits, so a fivefold change in TTL moves the average by a few milliseconds. At a request rate below the expiry rate, every single request waits for a full resolution and the same TTL produces a latency a hundred times worse.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A2.3 Data transmissions: the domain name system, caching, and the latency a resolution adds to a request. With A2.1 Network fundamentals: the role of a resolving name server</dd></div>
+  <div><dt>Inspiration</dt><dd>DNS caching and TTL operational guidance; rebuilt around the ratio of expiry rate to arrival rate</dd></div>
+  <div><dt>Adaptation</dt><dd>The source material treats TTL as a knob that trades freshness against query volume, and discusses hit rates qualitatively. This item introduces the arrival rate explicitly, derives the miss fraction as a ratio of two rates, and makes the saturation at unity the central mechanism — which is what produces the result the source never states, that identical configuration gives two services a hundredfold difference in latency. A two-service comparison, a derived threshold rate, a quantitative critique of a proposed TTL change against a stated latency budget, and a requirement to propose a fix that works by a different mechanism are all added. Every figure is original and was chosen so that the miss fractions come out at one hundredth, one twentieth and three tenths, and the threshold lands at exactly 1.2 requests per minute.</dd></div>
+  <div><dt>Verification</dt><dd>All arithmetic was performed independently: expiry rates 6/300 = 0.020 and 6/60 = 0.10 and 6/10 = 0.60 per second; miss fractions 0.010, 0.050 and 0.30 at R = 2.0 per second; weighted averages 6*2 + f*178 giving 13.78, 20.9 and 65.4 ms. The threshold rate was computed as D/T = 0.020 per second = 1.2 per minute and compared against the internal service&#x27;s 1/60 = 0.01667 per second. The saturated cost was checked as 6*180 = 1080 ms. The traffic multiple from T = 300 to T = 10 was computed as 300/10 = 30.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2020Nov_TZ0_q05 (similarity 0.002)</dd></div>
+  <div><dt>Nearest item here</dt><dd>BM-3.8-001 (similarity 0.002)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-15</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

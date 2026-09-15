@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A4.3-301 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A4.3 A model whose reported accuracy of ninety-six per cent is an artefact of splitting a dataset of repeated hospital visits at the scan level rather than at the patient level</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A4.3-301</p>
+<button type="button" class="q-done-page" data-qid="CS-A4.3-301" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-A4.3-301">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A4.3 Machine learning approaches: training, validation and test sets, and the metrics used to evaluate a classifier. With A4.4 Ethical considerations: the duties owed to those affected by a deployed model, and to the regulators who oversee it</span><span class="chip">P2 · Section B</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: permitted</span><span class="chip">Calculate</span><span class="chip">Calculate</span><span class="chip">Explain</span><span class="chip">Evaluate</span></div>
+
+
+<section id="q-print">
+<h2>Question</h2>
+<p>A hospital has assembled a dataset of $12\,000$ retinal scans taken from patients attending a diabetic screening clinic, labelled by whether the scan shows signs of the condition. The dataset covers $6\,400$ patients in total: $4\,800$ patients attended once, and the remaining $1\,600$ patients attended three times each, contributing $4\,800$ scans between them. Overall $25\%$ of scans are positive.<br>A team split the dataset <strong>at random by scan</strong>, using $80\%$ for training and $20\%$ for testing, trained a convolutional classifier, and reported the following results on the test set of $2\,400$ scans:<br>| split | true positives | false positives | false negatives | true negatives |<br>|---|---|---|---|---|<br>| random, by scan | $560$ | $60$ | $40$ | $1\,740$ |<br>| grouped, by patient | $360$ | $300$ | $240$ | $1\,500$ |<br>The second row was produced after a reviewer noticed the problem and repeated the evaluation with a split in which no patient appears on both sides. Both test sets contain $2\,400$ scans and both have the same prevalence of $25\%$ positive.<br>The hospital intends to use the model to decide which patients are recalled for further examination.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>For the random split, calculate the accuracy, the precision, the recall and the F1 score, giving each to three significant figures. Show the calculation you used for the F1 score.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>Repeat all four calculations for the grouped split, and determine the percentage by which the F1 score falls between the two.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Explain the mechanism by which grouping produces the discrepancy, and determine the expected number of scans in the test set that belong to a patient who also has at least one scan in the training set. State what fraction of the test set this represents.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>The hospital's administrator notes that the grouped accuracy is still seventy-seven and a half per cent and asks whether the model is therefore useful. Evaluate this claim by comparing the grouped accuracy with the accuracy obtainable by a trivial classifier that predicts 'negative' for every scan, and by considering what the grouped precision and recall mean for a patient who is recalled unnecessarily or missed entirely.</p> <em>(Evaluate)</em></li><li><span class="marks">[3 marks]</span><strong>(e)</strong> <p>Discuss what the team should report to the regulator, given that the ninety-six per cent figure has already appeared in an internal briefing, and state what change to the evaluation protocol should be made before any further claim is published.</p> <em>(Discuss)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="16" data-ai-ref="CS-A4.3-301">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>A hospital has assembled a dataset of $12\,000$ retinal scans taken from patients attending a diabetic screening clinic, labelled by whether the scan shows signs of the condition. The dataset covers $6\,400$ patients in total: $4\,800$ patients attended once, and the remaining $1\,600$ patients attended three times each, contributing $4\,800$ scans between them. Overall $25\%$ of scans are positive.
+A team split the dataset **at random by scan**, using $80\%$ for training and $20\%$ for testing, trained a convolutional classifier, and reported the following results on the test set of $2\,400$ scans:
+| split | true positives | false positives | false negatives | true negatives |
+|---|---|---|---|---|
+| random, by scan | $560$ | $60$ | $40$ | $1\,740$ |
+| grouped, by patient | $360$ | $300$ | $240$ | $1\,500$ |
+The second row was produced after a reviewer noticed the problem and repeated the evaluation with a split in which no patient appears on both sides. Both test sets contain $2\,400$ scans and both have the same prevalence of $25\%$ positive.
+The hospital intends to use the model to decide which patients are recalled for further examination.
+
+(a) For the random split, calculate the accuracy, the precision, the recall and the F1 score, giving each to three significant figures. Show the calculation you used for the F1 score. [3 marks] (Calculate)
+(b) Repeat all four calculations for the grouped split, and determine the percentage by which the F1 score falls between the two. [3 marks] (Calculate)
+(c) Explain the mechanism by which grouping produces the discrepancy, and determine the expected number of scans in the test set that belong to a patient who also has at least one scan in the training set. State what fraction of the test set this represents. [3 marks] (Explain)
+(d) The hospital&#x27;s administrator notes that the grouped accuracy is still seventy-seven and a half per cent and asks whether the model is therefore useful. Evaluate this claim by comparing the grouped accuracy with the accuracy obtainable by a trivial classifier that predicts &#x27;negative&#x27; for every scan, and by considering what the grouped precision and recall mean for a patient who is recalled unnecessarily or missed entirely. [4 marks] (Evaluate)
+(e) Discuss what the team should report to the regulator, given that the ninety-six per cent figure has already appeared in an internal briefing, and state what change to the evaluation protocol should be made before any further claim is published. [3 marks] (Discuss)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> For the random split, with 560 true positives, 60 false positives, 40 false negatives and 1740 true negatives, and a test set of 2400 scans:</p>
+<p>$$\text{accuracy} = \frac{560 + 1740}{2400} = \frac{2300}{2400} = 0.958 \;\text{(A1)}$$</p>
+<p>$$\text{precision} = \frac{560}{560 + 60} = \frac{560}{620} = 0.903 \;\text{(A1)}$$</p>
+<p>$$\text{recall} = \frac{560}{560 + 40} = \frac{560}{600} = 0.933 \;\text{(A1)}$$</p>
+<p>The F1 score is the harmonic mean of precision and recall:</p>
+<p>$$F_1 = \frac{2 \times 0.903 \times 0.933}{0.903 + 0.933} = \frac{1.686}{1.837} = 0.918 \;\text{(M1)}$$</p>
+<p>So the random split reports 95.8 per cent accuracy with an F1 of 0.918.</p>
+<p><strong>(b)</strong> For the grouped split:</p>
+<p>$$\text{accuracy} = \frac{360 + 1500}{2400} = \frac{1860}{2400} = 0.775 \;\text{(A1)}$$</p>
+<p>$$\text{precision} = \frac{360}{360 + 300} = \frac{360}{660} = 0.545, \qquad \text{recall} = \frac{360}{360 + 240} = \frac{360}{600} = 0.600 \;\text{(A1)}$$</p>
+<p>$$F_1 = \frac{2 \times 0.545 \times 0.600}{0.545 + 0.600} = \frac{0.655}{1.145} = 0.571 \;\text{(A1)}$$</p>
+<p>The F1 score falls from $0.918$ to $0.571$, a fall of</p>
+<p>$$\frac{0.918 - 0.571}{0.918} = 0.378 \;\text{(A1)}$$</p>
+<p>that is, about 38 per cent of the reported performance was an artefact of the split.</p>
+<p><strong>(c)</strong> The rows of the dataset are not independent. A patient who attended three times contributes three scans that show the same eyes, taken close together, and almost certainly carry the same label. A random split by scan places some of those scans in training and some in test, so the model is evaluated on scans of patients it was trained on (M1). It can then score well by memorising a particular patient's retina rather than by detecting the condition, and the test set ceases to measure generalisation.</p>
+<p>To quantify it, consider one of the $1\,600$ repeat patients with three scans. Each scan independently lands in the test set with probability $0.2$. The expected number of that patient's scans that land in test <strong>while at least one sibling lands in training</strong> is</p>
+<p>$$1 \times \binom{3}{1}(0.2)(0.8)^2 \;+\; 2 \times \binom{3}{2}(0.2)^2(0.8) = 0.384 + 0.192 = 0.576 \;\text{(M1)}$$</p>
+<p>the case of all three landing in test contributing nothing, since that patient is then absent from training. Over $1\,600$ such patients the expected number of compromised test scans is</p>
+<p>$$1600 \times 0.576 = 922 \;\text{(A1)}$$</p>
+<p>out of $2\,400$, which is $38\%$ of the test set. Roughly two in five of the scans the model was judged on belonged to a patient it had already seen.</p>
+<p><strong>(d)</strong> The administrator's figure is technically correct and clinically misleading. A classifier that always predicts 'negative' would be correct on the $75\%$ of scans that are negative, giving an accuracy of $0.750$ (M1). The grouped accuracy of $0.775$ beats that by $2.5$ percentage points, so in raw accuracy terms the model adds almost nothing over never diagnosing anybody (A1). The metrics that matter are the other two. Grouped recall of $0.600$ means that two in five patients who have the condition are told they do not — a missed diagnosis, which in a screening programme is the failure that costs sight (A1). Grouped precision of $0.545$ means that nearly half of all recalls are of patients who turn out to be clear: each one costs a clinic appointment, and each one also costs the trust of a patient who was told they might be losing their sight. Taken together, an F1 of $0.571$ on a condition with a quarter prevalence is not a deployable screening tool (A1); it is a model that needs substantially more work, and the honest reading is that the ninety-six per cent figure concealed a model that barely beats doing nothing.</p>
+<p><strong>(e)</strong> The regulator should be told the grouped figures, and told explicitly that the earlier figure was produced by a flawed protocol rather than by a different model (A1). Concretely: the model unchanged reports $0.958$ accuracy and $0.918$ F1 under the scan-level split and $0.775$ accuracy and $0.571$ F1 under the patient-level split, and the difference is entirely attributable to $38\%$ of the test set belonging to patients present in training. Withholding that because the briefing has already circulated would mean the deployment decision is taken on a number the team knows to be wrong, and in a clinical context that is not a presentational matter but a safety one (A1). Before any further claim is published, the evaluation protocol should be changed so that splitting is done by group — all scans from a patient go to exactly one side — and, ideally, so that the whole procedure is repeated by grouped cross-validation, giving a spread of scores rather than a single number, so that the sensitivity of the result to which patients landed where is visible (A1).</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (A1) for accuracy 0.958, (A1) for precision 0.903, (A1) for recall 0.933, (M1) for the F1 calculation shown as a harmonic mean and evaluated to 0.918. Four fields; credit three. Candidates who use the arithmetic mean of precision and recall instead of the harmonic mean should be credited for the method mark only if they state that they are doing so, and lose it if they present it as F1. Accept answers given as percentages. Note that the test set size of 2400 is needed for the accuracy denominator and should come from the stem.</p>
+<p>(b) (A1) for accuracy 0.775, (A1) for precision 0.545 and recall 0.600, (A1) for F1 0.571, (A1) for the 38 per cent fall. Candidates should be advised that the fall is to be expressed relative to the original 0.918, not as an absolute difference of 0.347, and either is accepted provided it is labelled.</p>
+<p>(c) (M1) for identifying the non-independence of rows from the same patient as the mechanism, (M1) for setting up the expectation over one three-scan patient with the correct binomial terms, (A1) for 922 scans and the 38 per cent figure. The exclusion of the all-three-in-test case is the subtle step and should be credited specifically: a candidate who simply computes $1600 \times 3 \times 0.2 = 960$ has made a defensible approximation and may be given the mark only if they acknowledge that some of those patients appear nowhere in training. Do not accept an answer that attributes the gap to overfitting in general without naming the shared-patient mechanism.</p>
+<p>(d) (M1) for computing the trivial baseline accuracy of 0.750, (A1) for observing that the grouped accuracy beats it by only 2.5 points, (A1) for interpreting recall 0.600 as two in five true cases missed, (A1) for interpreting precision 0.545 as nearly half of all recalls being unnecessary and drawing a conclusion about deployability. Four fields; credit four. A candidate who reaches the conclusion 'not deployable' without the baseline comparison earns at most two of these, because the baseline is what turns an opinion into an argument.</p>
+<p>(e) (A1) for stating that the grouped figures must be reported and that the earlier figure came from a flawed protocol, (A1) for the safety framing of not correcting a circulated number, (A1) for the protocol change — grouped splitting, and preferably grouped cross-validation giving a spread. Candidates who propose retraining or collecting more data have not answered the question, which is about what to report and how to evaluate; that is worth at most one mark. Credit should be given for any clear statement that the number already in circulation must be actively corrected rather than quietly superseded.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The technical term is leakage, but the useful way to think about it is that the test set stopped being a test set. Its whole job is to contain examples the model has never seen, so that performance on it estimates performance on new patients. Once a patient's scans are on both sides, that guarantee is gone, and the number produced is a measure of something else entirely — how well the model recognises a retina it has already been shown.</p>
+<p>What makes this case nasty is that nothing looks wrong. The split is genuinely random. The metrics are computed correctly. The ninety-six per cent figure is a true statement about the test set. There is no bug to find, and the usual diagnostic instincts — check the split, check the arithmetic, check for overfitting — all come back clean, because the failure is in the assumption that rows are exchangeable, which is not written down anywhere in the pipeline. It is a property of how the data were collected, and it takes knowing that a fifth of the dataset is repeat visits to even suspect it.</p>
+<p>The quantification in part (c) is worth doing carefully because it is the difference between 'leakage might be a problem' and 'two in five of your test scans are compromised'. Counting only the test scans whose patient also appears in training, rather than merely the patients who appear on both sides, is the right quantity: a patient with two scans in test and one in training contributes two compromised scans, not one. The all-three-in-test case must be excluded, since that patient is not in training at all. That gives 922 of 2400, and 38 per cent is a number a reviewer can act on.</p>
+<p>Part (d) is the part that matters clinically, and the baseline is what makes it bite. Accuracy on a dataset that is 75 per cent negative is a terrible metric, because predicting 'negative' forever scores 75 per cent. The model scores 77.5. Two and a half points above doing nothing is not a screening tool, and no amount of framing makes it one. Precision and recall tell the real story: four in ten true cases missed, and half of all recalls unnecessary. In a screening programme those are the two numbers that determine whether patients are harmed and whether the clinic drowns.</p>
+<p>Finally, part (e) is not decoration. The ninety-six per cent figure has already been briefed, and the temptation is to publish the corrected number next to it without saying why it changed. In a regulated clinical setting that is not a presentational choice: a deployment decision taken on a number the team knows to be wrong is a safety failure, and the correction has to be explicit about the cause.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme A: Concepts of computer science — A4.3 A model whose reported accuracy of ninety-six per cent is an artefact of splitting a dataset of repeated hospital visits at the scan level rather than at the patient level</dd></div>
+  <div><dt>Challenge lever</dt><dd>Nothing in the pipeline is broken in the obvious way: the split is random, the model is sound, the arithmetic of every metric is right, and the reported accuracy of ninety-six per cent is a correct number computed on the test set. What is wrong is one line of the setup — the split is by row, and the rows are not independent, because a patient who attends three times contributes three rows that are nearly identical. The model memorises patients rather than learning a condition, and the leak is invisible in every quantity the team has been reporting. Finding it requires computing the metrics twice and noticing that the honest set is nearly two thirds worse.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A4.3 Machine learning approaches: training, validation and test sets, and the metrics used to evaluate a classifier. With A4.4 Ethical considerations: the duties owed to those affected by a deployed model, and to the regulators who oversee it</dd></div>
+  <div><dt>Inspiration</dt><dd>Leakage-through-duplicates guidance in medical machine learning; rebuilt as a quantified case study with a governance consequence</dd></div>
+  <div><dt>Adaptation</dt><dd>The source states the principle — split by group, not by row — and warns that duplicates inflate scores. It rarely quantifies how much of a test set is compromised. This item supplies a concrete dataset with a stated repeat-visit structure, asks for the expected number of compromised scans to be derived from first principles, and puts two complete confusion matrices side by side so that the candidate computes all eight metrics and discovers a 38 per cent fall in F1. A majority-class baseline, a clinical interpretation of precision and recall, and an explicit governance question about a figure already in circulation are added. All figures are original and were chosen so that both test sets have identical prevalence and size, so that the only difference between the two rows is the grouping.</dd></div>
+  <div><dt>Verification</dt><dd>All eight metrics were recomputed from the two confusion matrices: random split accuracy 2300/2400 = 0.9583, precision 560/620 = 0.9032, recall 560/600 = 0.9333, F1 = 2(0.9032)(0.9333)/(0.9032+0.9333) = 0.9180; grouped split accuracy 1860/2400 = 0.775, precision 360/660 = 0.5455, recall 360/600 = 0.600, F1 = 2(0.5455)(0.6)/(1.1455) = 0.5714. The fall in F1 is (0.9180-0.5714)/0.9180 = 0.3776. The expected compromised scans were computed as 1600 * (1*3*0.2*0.64 + 2*3*0.04*0.8) = 1600 * 0.576 = 921.6, and 921.6/2400 = 0.384. The baseline accuracy was taken as the negative class prevalence, 0.75.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2020Nov_TZ0_q02 (similarity 0.002)</dd></div>
+  <div><dt>Nearest item here</dt><dd>CS-P2-007 (similarity 0.003)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-15</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

@@ -21,6 +21,7 @@ why this is a separate gate rather than another branch inside validate.py.
 
 import argparse
 import collections
+import math
 import sys
 from pathlib import Path
 
@@ -32,6 +33,21 @@ import validate as V  # noqa: E402  (same directory, shares the rubric)
 EVIDENCE_COVERAGE_FLOOR = 8
 MAX_D5_SHARE = 0.50
 SUBJECT_ORDER = ["Math AA HL", "Physics HL", "Computer Science HL", "Business Management SL"]
+
+# --------------------------------------------------------------------- figures
+#
+# The IB presents questions "in the form of words, symbols, diagrams or tables,
+# or combinations of these" on every maths paper, Physics paper 1B is *data-based*
+# by definition, and the BM paper 2 booklet carries "charts, tables and
+# infographics". A bank with almost no figures is therefore not modelling the
+# papers it claims to model, however good its prose is.
+#
+# So the share of figure-bearing items is measured like every other claim here.
+# The bank-wide floor is a RATCHET -- it may rise and may not fall -- and the
+# per-subject target is reported as a gap rather than a debt, so it stays visible
+# without turning the pipeline red on a backlog that is being paid down.
+FIGURE_COVERAGE_FLOOR = 0.20        # bank-wide, ratchet (measured 59/285 = 20.7%, 2026-09-16)
+FIGURE_SUBJECT_TARGET = 0.15        # per subject, reported gap
 
 # The state measured on 2026-09-13, when the standard took force.
 #
@@ -63,6 +79,19 @@ D5_REGRESSION_SLACK = 0.02
 def evidence_of(q):
     ev = q.get("difficulty_evidence")
     return ev if isinstance(ev, dict) and ev else None
+
+
+def figure_of(q):
+    """The item's figure, whether it is inlined as a dict or referenced by name."""
+    fig = q.get("figure")
+    return fig if fig else None
+
+
+def figure_kind(q):
+    fig = figure_of(q)
+    if not fig:
+        return None
+    return "ref" if isinstance(fig, str) else (fig.get("type") or "?")
 
 
 def bar(n, total, width=22):
@@ -211,9 +240,40 @@ def main():
     if unknown:
         regressions.append("R4 source_family outside the list: %s" % ", ".join(map(str, unknown)))
 
+    # -------------------------------------------------------------- figures
+    print("\n5. Is the item set graphic enough to model the papers?\n")
+    with_fig = [q for q in items if figure_of(q)]
+    share = len(with_fig) / n
+    kinds = collections.Counter(figure_kind(q) for q in with_fig)
+    print("   bank-wide: %d / %d = %.0f%% carry a figure  %s"
+          % (len(with_fig), n, 100 * share, bar(len(with_fig), n)))
+    if kinds:
+        print("   by kind: %s" % ", ".join("%s %d" % (k, v) for k, v in sorted(kinds.items())))
+    print("\n   %-24s %4s  %-24s %s" % ("subject", "n", "with a figure", "share"))
+    fig_gaps = []
+    for s in SUBJECT_ORDER:
+        qs = [q for q in items if q.get("subject") == s]
+        if not qs:
+            continue
+        wf = len([q for q in qs if figure_of(q)])
+        f = wf / len(qs)
+        flag = ""
+        if f < FIGURE_SUBJECT_TARGET:
+            need = math.ceil(FIGURE_SUBJECT_TARGET * len(qs))
+            flag = "  <- below target (%.0f%%): %d more needed" % (
+                100 * FIGURE_SUBJECT_TARGET, need - wf)
+            fig_gaps.append((s, wf, need))
+        print("   %-24s %4d  %2d  %s %4.0f%%%s" % (s, len(qs), wf, bar(wf, len(qs)), 100 * f, flag))
+    if share < FIGURE_COVERAGE_FLOOR:
+        regressions.append("R5 figure coverage %.0f%% has fallen below the ratchet floor %.0f%%"
+                           % (100 * share, 100 * FIGURE_COVERAGE_FLOOR))
+    elif fig_gaps:
+        print("\n   figure target gaps (not a debt -- the ratchet is bank-wide and holds): %s"
+              % ", ".join("%s %d/%d" % (g[0], g[1], g[2]) for g in fig_gaps))
+
     # -------------------------------------------------------------- backlog
     if args.backlog:
-        print("\n5. Backlog -- items with no difficulty_evidence\n")
+        print("\n6. Backlog -- items with no difficulty_evidence\n")
         for s in SUBJECT_ORDER:
             qs = [q for q in without if q.get("subject") == s]
             if qs:

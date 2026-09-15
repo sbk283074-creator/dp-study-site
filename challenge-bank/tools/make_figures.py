@@ -926,8 +926,256 @@ def compile_interpret_cost():
                       "both cost eight hundred and sixty four milliseconds.", "".join(body))
 
 
+def derivative_cubic_graph():
+    """y = f'(x) = (x-2)^2 (4-x): a zero at x = 2 that the curve *touches*, and a
+    zero at x = 4 that it *crosses*.
+
+    The distinction is the whole item, so the path is sampled from the same
+    function the answer integrates rather than drawn by eye. A picture whose
+    touching zero actually crossed would make the item unanswerable.
+    """
+    W, H = 520, 320
+    x0, x1 = 62, 492
+    ytop, ybase = 36, 268
+    xmin, xmax = -0.8, 5.4
+    ymin, ymax = -12.0, 20.0
+
+    def X(x):
+        return x0 + (x - xmin) / (xmax - xmin) * (x1 - x0)
+
+    def Y(y):
+        return ybase - (y - ymin) / (ymax - ymin) * (ybase - ytop)
+
+    def fp(x):
+        return (x - 2) ** 2 * (4 - x)
+
+    body = []
+    for y in (-10, -5, 5, 10, 15):
+        body.append(_l(x0, Y(y), x1, Y(y), PANEL2, 1))
+        body.append(_t(x0 - 8, Y(y) + 4, str(y), 10.5, MUTED, anchor="end"))
+    for x in range(0, 6):
+        body.append(_l(X(x), ytop, X(x), ybase, PANEL2, 1))
+        body.append(_t(X(x), ybase + 17, str(x), 10.5, MUTED))
+    body.append(_l(x0, Y(0), x1, Y(0), INK, 1.6))
+    body.append(_l(X(0), ybase, X(0), ytop, INK, 1.6))
+    body.append(_t(x1 + 6, Y(0) + 4, "x", 12, INK, anchor="start"))
+    body.append(_t(X(0) - 13, ytop + 10, "y", 12, INK))
+    pts, x = [], xmin
+    while x <= xmax + 1e-9:
+        pts.append((X(x), Y(fp(x))))
+        x += 0.02
+    body.append(_p("M " + " L ".join("%.1f,%.1f" % p for p in pts), stroke=INK, w=1.9))
+    body.append(_c(X(2), Y(0), 3.4, fill=HOT, stroke=HOT, w=1))
+    body.append(_t(X(2), Y(0) + 21, "2", 11.5, HOT))
+    body.append(_c(X(4), Y(0), 3.4, fill=HOT, stroke=HOT, w=1))
+    body.append(_t(X(4), Y(0) + 21, "4", 11.5, HOT))
+    body.append(_c(X(0), Y(16), 3.4, fill=ACCENT, stroke=ACCENT, w=1))
+    body.append(_t(X(0) + 11, Y(16) - 5, "16", 11.5, ACCENT, anchor="start"))
+    body.append(_t(X(0.6), Y(18.4), "y = f'(x)", 12, INK, anchor="start"))
+    return _svg(W, H, "The graph of the derivative f prime of x. A cubic curve that cuts "
+                      "the y axis at 16, touches the x axis at x equals 2 without crossing "
+                      "it, and then crosses the x axis at x equals 4, becoming negative to "
+                      "the right of that point.", "".join(body))
+
+
+def scatter_influential():
+    """Ten points, nine of them close to y = 2x and one at (10, 30), with the line
+    of best fit through all ten drawn.
+
+    The line is computed from the same sums the answer quotes, so the gradient a
+    candidate reads off the picture is the gradient the markscheme uses.
+    """
+    xs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    ys = [2, 5, 6, 9, 10, 12, 15, 16, 18, 30]
+    n = len(xs)
+    mx, my = sum(xs) / n, sum(ys) / n
+    Sxx = sum((a - mx) ** 2 for a in xs)
+    Sxy = sum((a - mx) * (b - my) for a, b in zip(xs, ys))
+    m = Sxy / Sxx
+    c = my - m * mx
+
+    W, H = 520, 330
+    x0, x1 = 60, 494
+    ytop, ybase = 34, 276
+    xmin, xmax = 0.0, 12.0
+    ymin, ymax = -2.0, 32.0
+
+    def X(v):
+        return x0 + (v - xmin) / (xmax - xmin) * (x1 - x0)
+
+    def Y(v):
+        return ybase - (v - ymin) / (ymax - ymin) * (ybase - ytop)
+
+    body = []
+    for v in range(0, 33, 4):
+        body.append(_l(x0, Y(v), x1, Y(v), PANEL2, 1))
+        body.append(_t(x0 - 8, Y(v) + 4, str(v), 10.5, MUTED, anchor="end"))
+    for v in range(0, 13, 2):
+        body.append(_l(X(v), ytop, X(v), ybase, PANEL2, 1))
+        body.append(_t(X(v), ybase + 17, str(v), 10.5, MUTED))
+    body.append(_l(x0, Y(0), x1, Y(0), INK, 1.6))
+    body.append(_l(X(0), ybase, X(0), ytop, INK, 1.6))
+    body.append(_t(x1 + 6, Y(0) + 4, "x", 12, INK, anchor="start"))
+    body.append(_t(X(0) - 15, ytop + 20, "y", 12, INK))
+    body.append(_l(X(xmin), Y(m * xmin + c), X(xmax), Y(m * xmax + c), ACCENT, 1.8, dash="7 4"))
+    body.append(_t(X(xmax), Y(24.0), "line of best fit", 11, ACCENT, anchor="end"))
+    for a, b in zip(xs, ys):
+        col = HOT if b == 30 else INK
+        body.append(_c(X(a), Y(b), 4.0, fill=col, stroke=col, w=1))
+    return _svg(W, H, "A scatter diagram of ten points. Nine of them lie close to a "
+                      "straight line through the origin, and the tenth, at x equals 10, "
+                      "y equals 30, lies well above that line. A dashed line of best fit "
+                      "for all ten points is drawn.", "".join(body))
+
+
+def lamp_characteristic():
+    """The current-voltage characteristic of a filament lamp, on a grid fine enough
+    to draw a load line on.
+
+    The curve is the same power law the markscheme uses, so the point where a
+    candidate's load line crosses it lands on the value the answer quotes.
+    """
+    A, B = 0.1403, 0.526
+    W, H = 500, 330
+    x0, x1 = 62, 438
+    ytop, ybase = 34, 272
+    xmin, xmax = 0.0, 6.5
+    ymin, ymax = 0.0, 0.55
+
+    def X(v):
+        return x0 + (v - xmin) / (xmax - xmin) * (x1 - x0)
+
+    def Y(v):
+        return ybase - (v - ymin) / (ymax - ymin) * (ybase - ytop)
+
+    body = []
+    for k in range(1, 6):
+        iv = k / 10.0
+        body.append(_l(x0, Y(iv), x1, Y(iv), PANEL2, 1))
+        body.append(_t(x0 - 8, Y(iv) + 4, "%.1f" % iv, 10.5, MUTED, anchor="end"))
+    for v in range(0, 7):
+        body.append(_l(X(v), ytop, X(v), ybase, PANEL2, 1))
+        body.append(_t(X(v), ybase + 17, str(v), 10.5, MUTED))
+    body.append(_l(x0, Y(0), x1, Y(0), INK, 1.6))
+    body.append(_l(X(0), ybase, X(0), ytop, INK, 1.6))
+    body.append(_t(x1 + 8, Y(0) + 4, "V / V", 12, INK, anchor="start"))
+    body.append(_t(X(0) - 13, ytop + 8, "I / A", 12, INK))
+    pts, v = [], 0.0
+    while v <= xmax + 1e-9:
+        pts.append((X(v), Y(min(A * v ** B, ymax))))
+        v += 0.02
+    body.append(_p("M " + " L ".join("%.1f,%.1f" % p for p in pts), stroke=INK, w=1.9))
+    body.append(_t(X(4.75), Y(0.455), "filament lamp", 11, MUTED, anchor="start"))
+    return _svg(W, H, "The current-voltage characteristic of a filament lamp: current in "
+                      "amperes against potential difference in volts. The curve rises from "
+                      "the origin and bends over towards the voltage axis, so its gradient "
+                      "falls as the potential difference increases.", "".join(body))
+
+
+def g_against_r_planet():
+    """g against r for a planet of uniform density: linear inside the surface,
+    inverse-square outside, with the kink at r = R.
+
+    Both branches come from the same G, M and R the answer uses, so the kink sits
+    exactly at the surface radius the question asks the candidate to read off.
+    """
+    G = 6.67e-11
+    R = 3.0e6
+    gs = 3.6
+    M = gs * R ** 2 / G
+
+    W, H = 500, 320
+    x0, x1 = 66, 430
+    ytop, ybase = 36, 268
+    xmin, xmax = 0.0, 1.5e7
+    ymin, ymax = 0.0, 4.0
+
+    def X(r):
+        return x0 + (r - xmin) / (xmax - xmin) * (x1 - x0)
+
+    def Y(v):
+        return ybase - (v - ymin) / (ymax - ymin) * (ybase - ytop)
+
+    def gval(r):
+        return gs * r / R if r <= R else G * M / r ** 2
+
+    body = []
+    for k in (1, 2, 3):
+        body.append(_l(x0, Y(float(k)), x1, Y(float(k)), PANEL2, 1))
+        body.append(_t(x0 - 8, Y(float(k)) + 4, str(k), 10.5, MUTED, anchor="end"))
+    for k in range(0, 16, 3):
+        body.append(_l(X(k * 1e6), ytop, X(k * 1e6), ybase, PANEL2, 1))
+        body.append(_t(X(k * 1e6), ybase + 17, str(k), 10.5, MUTED))
+    body.append(_l(x0, Y(0), x1, Y(0), INK, 1.6))
+    body.append(_l(X(0), ybase, X(0), ytop, INK, 1.6))
+    body.append(_tsup(x1 + 8, Y(0) + 5, "r / 10", "6", 12, INK, anchor="start"))
+    body.append(_tsup(x0 + 8, ytop + 12, "g / m s", "-2", 12, INK, anchor="start"))
+    pts, r = [], 0.0
+    while r <= xmax + 1.0:
+        pts.append((X(r), Y(gval(r))))
+        r += 2.5e4
+    body.append(_p("M " + " L ".join("%.1f,%.1f" % p for p in pts), stroke=INK, w=1.9))
+    body.append(_l(X(R), Y(0), X(R), Y(gs), ACCENT, 1.2, dash="4 3"))
+    body.append(_c(X(R), Y(gs), 3.4, fill=ACCENT, stroke=ACCENT, w=1))
+    body.append(_t(X(R) + 11, Y(gs) - 5, "r = R, g = 3.6", 11, ACCENT, anchor="start"))
+    body.append(_t(X(1.42e7), Y(0.75), "outside: g falls as 1 / r squared", 11, MUTED, anchor="end"))
+    return _svg(W, H, "A graph of gravitational field strength against distance from the "
+                      "centre of a planet. It rises as a straight line from the origin to "
+                      "the surface at r equals R, where it reaches 3.6 metres per second "
+                      "squared, and then falls away as an inverse square curve beyond the "
+                      "surface.", "".join(body))
+
+
+def cashflow_closing_balance():
+    """The forecast closing cash balance month by month, against the overdraft
+    limit the business already holds.
+
+    The bars are the balances the answer tabulates; the limit line is what makes
+    the breach visible, which is the first thing the question asks for.
+    """
+    months = [1, 2, 3, 4, 5, 6]
+    closing = [8, 3, -9, -6, 3, 14]
+    LIMIT = -5
+
+    W, H = 520, 320
+    x0, x1 = 62, 500
+    ytop, ybase = 36, 268
+    ymin, ymax = -12.0, 16.0
+
+    def Y(v):
+        return ybase - (v - ymin) / (ymax - ymin) * (ybase - ytop)
+
+    body = []
+    for v in range(-10, 17, 5):
+        body.append(_l(x0, Y(v), x1, Y(v), PANEL2, 1))
+        body.append(_t(x0 - 8, Y(v) + 4, str(v), 10.5, MUTED, anchor="end"))
+    body.append(_l(x0, Y(0), x1, Y(0), INK, 1.6))
+    slot = (x1 - x0) / len(months)
+    bw = slot * 0.44
+    for i, (mo, v) in enumerate(zip(months, closing)):
+        cx = x0 + slot * (i + 0.5)
+        top = min(Y(0), Y(v))
+        h = abs(Y(v) - Y(0))
+        col = HOT if v < 0 else ACCENT
+        body.append(_r(cx - bw / 2, top, bw, h, fill=col, stroke=col, sw=1, rx=2))
+        body.append(_t(cx, Y(v) + (17 if v < 0 else -7), str(v), 11, col))
+        body.append(_t(cx, ybase + 17, "M%d" % mo, 11, MUTED))
+    body.append(_l(x0, Y(LIMIT), x1, Y(LIMIT), HOT, 1.5, dash="7 4"))
+    body.append(_t(x0 + 8, Y(LIMIT) - 6, "overdraft limit -5", 11, HOT, anchor="start"))
+    body.append(_t(x0 + 6, ytop + 14, "closing balance / thousand", 11, MUTED, anchor="start"))
+    return _svg(W, H, "A column chart of the forecast closing cash balance for each of six "
+                      "months. The balances are 8, 3, minus 9, minus 6, 3 and 14 thousand. "
+                      "The bars for months 3 and 4 fall below the existing overdraft limit "
+                      "of minus 5 thousand, which is drawn as a dashed line.", "".join(body))
+
+
 FIGURES = {
     "series_solution_ode": series_solution_ode,
+    "derivative_cubic_graph": derivative_cubic_graph,
+    "scatter_influential": scatter_influential,
+    "lamp_characteristic": lamp_characteristic,
+    "g_against_r_planet": g_against_r_planet,
+    "cashflow_closing_balance": cashflow_closing_balance,
     "compile_interpret_cost": compile_interpret_cost,
     "bdp_window": bdp_window,
     "echo_doppler": echo_doppler,

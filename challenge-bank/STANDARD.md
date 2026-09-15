@@ -285,15 +285,23 @@ belongs to and the kind of question it is. Every new item must declare `question
 
 | Subject | Paper | What that paper actually is |
 |---|---|---|
-| Physics HL | P1A | 40 multiple-choice, 1 mark each, 4 options, no negative marking |
-| Physics HL | P1B | data-based: uncertainties, graphing, experimental critique (~20 marks) |
+| Physics HL | P1A | 40 multiple-choice, **1 mark each**, 4 options, no negative marking (40 of P1's 60) |
+| Physics HL | P1B | data-based questions, **20 marks** — the other half of P1 |
 | Physics HL | P2 | short-answer and extended response, 90 marks, 2 h 30 |
-| Maths AA HL | P1 / P2 | structured and extended response (P1 no GDC, P2 GDC), 110 marks each |
-| Maths AA HL | P3 | HL-only inquiry/modelling, two extended problems, 55 marks, 1 h |
-| CS HL | P1 / P2 | P1 structured; P2 case-study based, no code required |
-| BM SL | P1 / P2 | P1 case study; P2 stimulus and data-response |
+| Maths AA HL | P1 | Section A short-response ≈55 + Section B extended-response ≈55 = 110 marks, **no GDC**, 2 h |
+| Maths AA HL | P2 | same A/B shape, 110 marks, **GDC required**, 2 h |
+| Maths AA HL | P3 | exactly **two** compulsory extended-response problem-solving questions, 55 marks, 1 h, GDC |
+| CS HL | P1 | 80 marks: Section A **56** extended response (Theme A) + Section B **24** short *and* extended response (pre-seen case study) |
+| CS HL | P2 | 80 marks, **all extended response**, Theme B only — no case study, no MCQ |
+| BM SL | P1 | 30 marks: Section A **20** + Section B **10**, on an unseen 800–1 000-word case study |
+| BM SL | P2 | 40 marks: Section A **20** (both sets of structured questions) + Section B **20** (one of two, extended response); **mostly quantitative**, stimulus carries charts/tables/infographics |
 
 Physics has **no Paper 3** under the 2025 guide — the options were removed. Do not write one.
+**CS has no MCQ paper and no Paper 3.** The case study lives in **P1 Section B**, not P2 — a CS item
+declared `case_study` must be on P1, and a `structured` item on P2 is off-spec because P2 is entirely
+extended-response. Two further CS rules from the guide: one P2 question is **algorithmic thinking with
+no code to read or write**, and some questions **prohibit named built-ins** (`sort`, `pop`, `len`, `max`,
+`min`) — a question that can be answered by `sorted()` is not testing the algorithm.
 
 **MCQ rules.** Exactly four options labelled A–D, exactly one marked correct, one mark per question.
 Every option, correct or not, needs a `rationale` of at least eight words that *names the error*: a
@@ -308,6 +316,40 @@ experimental critique. Seed one genuine anomaly into the dataset and make the ca
 plausible physical cause, and say what should have been done at the time — deleting a point after the
 fact is not an answer. Generate the data in Python from the model, then round to the instrument
 resolution, so the fit recovers the parameters you seeded.
+
+#### 4.3.1 A stated share of items must carry a graph — hand-authored, load-bearing
+
+The guides say it outright. On every maths paper, "questions may be presented in the form of words,
+symbols, **diagrams** or tables, or combinations of these"; marks are awarded for reasoning "supported by
+working and/or explanations (in the form of, for example **diagrams, graphs** or calculations)". Physics
+P1B *is* data-based. The BM paper 2 booklet carries "**charts, tables and infographics**". A bank of prose
+questions is therefore not modelling the papers it claims to model, however good the prose is.
+
+Three rules, all enforced:
+
+1. **The figure is hand-authored vector markup**, written in code and inlined into the item JSON as
+   `figure = {type:"svg", content, caption}`. **Never** a charting library (matplotlib, Chart.js, plotly,
+   D3, vega) and **never** an image model. `validate.py` fails on the fingerprints of both —
+   `<canvas`, `plotly`, `matplotlib`, `chart.js`, `highcharts`, `echarts`, `vega`, `bokeh`, `data:image/`
+   — and on `<script>`. The reason is not purity: a figure that cannot be regenerated from the JSON alone
+   breaks the property that the data is the source of truth.
+2. **The figure must be load-bearing.** The question is not answerable without reading it. A decorative
+   sketch that merely restates the stem is worse than no figure, because it inflates the count.
+3. **The share is measured, and it ratchets.** `difficulty_audit.py` reports the figure share bank-wide and
+   per subject, and fails the pipeline if the bank-wide share falls below `FIGURE_COVERAGE_FLOOR`. That
+   floor **may rise and may never fall**, exactly like `EVIDENCE_COVERAGE_FLOOR`. The per-subject target is
+   `FIGURE_SUBJECT_TARGET` (15%) and is reported as a *gap*, not a debt, so it stays visible without
+   turning the pipeline red on a backlog being paid down.
+
+The failure mode this rule exists to prevent is a bank that looks thorough and is not: at Batch 21 the
+bank stood at **45/255 = 18%**, with **Maths at 8.3% (9/109)** and **BM at 0% (0/30)**. Maths and BM are
+the two subjects with the widest gap between what the guide presents and what the bank contains. Batches
+22 and 22b were written against that gap and moved it: the bank now stands at **52/267 = 19%**, with
+**Maths at 10% (11/111)** and **BM at 3% (1/31)** — the first figure ever to appear in a BM item.
+`FIGURE_COVERAGE_FLOOR` was raised from 0.17 to **0.19** in the same change that earned it, which is the
+ratchet working as designed: coverage rose, and the floor followed it up so the gain cannot be spent
+later. Maths and BM are both still under the 15% per-subject target, and the audit prints exactly how many
+more items each needs (Maths 6, BM 4). That is the intended state — a visible gap, not a red pipeline.
 
 **Solution skeleton.** Every new item carries `verification.solution_skeleton`: three to six short
 steps naming the *method*, not the answer ("linearise by squaring and fit the gradient", not "find k").
@@ -356,7 +398,18 @@ appears over and over in the same accent.
 Every item declares `provenance.source_family` from this closed list, and `difficulty_audit.py` reports
 the mix — so "we draw on other syllabuses" is a measured fact rather than an intention. (Measured
 2026-09-13: only **6 of 172** items name any source at all — the other 166 record `original` — so the
-claim was untestable in either direction.)
+claim was untestable in either direction. Measured 2026-09-15, after the sourcing work: **60 of 255**.
+Measured 2026-09-16, after Batches 22 and 22b: **70 of 267** — `uk-alevel` 21, `china-gaokao` 20,
+`us-ap` 12, `uk-further-maths` 6, `china-qiangji` 6, `singapore-alevel` 2, `china-competition` 2,
+`ib` 1.)
+
+**Keeping the list fed is a standing duty, not a one-off.** A batch that sources nothing is not neutral —
+it drifts back toward `original`, and `original` written by one author in one idiom is the fastest route
+to a bank that is uniformly shaped. So every batch should carry at least one item whose idea came from
+outside IB, and the search for material continues independently of any batch: new textbooks, other
+systems' past papers, university-entrance tests and competition archives are all in scope. The rules do
+not change — an idea may be borrowed, a question may not, and `provenance.adaptation` must name what
+changed (§5.2). Prefer a source the bank has **not** used yet over a fifth item from one it has.
 
 | `source_family` | What it is good for | What must change on adaptation |
 |---|---|---|
@@ -571,9 +624,9 @@ rather than only a sum. Run it after any change to the rubric.
 4. **Status:** new items are `draft` until the gates pass, then `published`.
 5. **Re-brief:** coverage is re-measured after every batch; the next brief comes from the new gaps.
 
-Current state: 224 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
+Current state: 267 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
 priority-2 node is done** — Maths 32/32 must + 51/51 should (83/83 overall), Physics 24/24 (complete),
-CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 224
-carry `verification.assertions` (2373 assertions in total), `validate.py` reports 0 failures, and 60 of
-the 224 carry a `difficulty_evidence` block — the other 164 are the grandfathered backlog described in
+CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 267
+carry `verification.assertions` (3003 assertions in total), `validate.py` reports 0 failures, and 103 of
+the 267 carry a `difficulty_evidence` block — the other 164 are the grandfathered backlog described in
 §4.7, which `--strict` reports as warnings and plain `--check` ignores unless the bank gets worse.
