@@ -215,12 +215,16 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 ### 05 · Challenge Bank — `challenge-bank/`
 **Fully generated. The JSON is the source of truth, not the HTML.**
 - Data: `challenge-bank/data/{math-aa-hl,physics-hl,computer-science-hl,business-management-sl}/*.json`
-  — 238 questions (Math AA HL 102, Physics HL 71, CS HL 37, BM SL 28).
+  — **255 questions** (Math AA HL 109, Physics HL 75, CS HL 41, BM SL 30), as of commit `e57693a`.
+  **Do not count these with a glob.** The filenames are not uniform — `batch21.json` sits beside
+  `p3-batch2.json`, `p1b-data.json`, `abstract-data-types.json`, `p2-case-study.json`,
+  `gravitational-fields.json` — and `fig-*.json` are figure *assets*, not item files. A
+  `data/*/batch*.json` glob returns 187 against the true 255; use `tools/validate.py`'s `load()`.
 - Builder: `challenge-bank/build.py` (55 KB) — emits the entire `site/`.
 - Tooling: `challenge-bank/tools/*.py` — `validate.py` (43 KB), `make_figures.py` (40 KB), `fix_json.py`,
   `ship.py`, `coverage.py`, `difficulty_audit.py`, …
 - Docs: `README.md`, `STANDARD.md`, `PLAN.md`, `AUDIT_*.md`.
-- Output: `challenge-bank/site/` — `index.html`, `q/` (238 question pages), one index per
+- Output: `challenge-bank/site/` — `index.html`, `q/` (255 question pages), one index per
   subject, `papers/`, `assets/site.js`.
 - **AI:** four launcher buttons per question (full worked solution / hint only / guided steps /
   mark my attempt), generated into `site/assets/site.js` from a Python string in `build.py`. They call
@@ -229,7 +233,11 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   `autoSend:false` so the composer is prefilled with `MY ATTEMPT:` instead of sending. The question
   text rides along in `context`, so the widget is not limited to `questionId` grounding here.
 - **Figures:** hand-authored inline SVG stored in the question JSON as
-  `figure = {type:"svg", content, caption}`; `build.py::figure_html` requires `type:"svg"`.
+  `figure = {type:"svg", content, caption}`. `build.py::figure_html` handles **three** types, not one —
+  `svg` (`<figure>` + optional `<figcaption>`), `table` (delegates to `table_html`) and `code`
+  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 255 items: **45
+  figure-bearing (39 svg / 4 code / 2 table)**. A stimulus table is separate from a figure: it lives in
+  `stimulus.table` and is emitted by `stimulus_html`, so an item can carry a table with no `figure`.
 - Rebuild: `cd challenge-bank && python3 build.py`.
 
 ---
