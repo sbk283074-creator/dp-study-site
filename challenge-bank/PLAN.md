@@ -1,12 +1,12 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 224 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 238 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 60 of 224 do. The remaining 164 are
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 74 of 238 do. The remaining 164 are
 a published, ratcheting backlog — see `STANDARD.md` §2.2–§2.5 and `tools/difficulty_audit.py`. All 13
-lever types are in use, and the Physics difficulty-5 share has been designed down from 62% to **49%**,
-which brings every subject inside the 50% cap and clears the calibration debt. The only outstanding debt
+lever types are in use, and the Physics difficulty-5 share has been designed down from 62% to **46%**,
+which brings every subject inside the 50% cap with the calibration debt cleared. The only outstanding debt
 is that no item claims difficulty 3, so the 3–5 scale still reads as two points.
 The `topic` label is now a closed vocabulary per subject, enforced by `validate.py`, and is shown on every
 question page and filterable on every subject page.**
@@ -775,12 +775,61 @@ similarity score, and no BM item ships containing HL-only content.
     each end rather than one. Internal overlap fell **0.185 → 0.019**.
   - Evidenced count **52 → 60**; assertions **2265 → 2373**. Difficulty split 132 at d4, 92 at d5; every
     subject inside the 50% cap.
+- **Batch 19 — DONE (5 Maths, 4 Physics, 3 CS, 2 BM; 224 → 238).** The stretch tail: volume added on top
+  of a bank whose priority-1 and priority-2 nodes were already complete, so this batch competes only
+  against its own quality bar. Every item is designed at difficulty 4–5 with a `difficulty_evidence`
+  block, all four subjects sit inside the 50% cap, all 13 levers remain in use, and the originality gate
+  is clean.
+  - **Maths ×5.** A Maclaurin series solution of $y' = y^{2} - x$ whose inhomogeneous term first bites at
+    $n = 1$, so the recurrence has to be started by hand (AHL 5.19, Paper 3, difficulty 5); three planes
+    whose determinant vanishes at $k = 4$ and which meet in a *prism* rather than a sheaf, where the
+    exceptional parameter produces inconsistency and not infinite solutions (AHL 3.18, difficulty 5);
+    $9^{x} - k\cdot 3^{x} + (k+1) = 0$ read as a hidden quadratic whose number of roots is governed by the
+    *product* of the roots rather than by the discriminant (AHL 2.10); $\int dx/(x^{2}+x+1)$, where the
+    obvious substitution $u = x^{2}+x+1$ fails and the working one has to be built by completing the
+    square (AHL 5.16); and a two-prize raffle whose values are recovered from $E(X)$ and $\operatorname{Var}(X)$,
+    where the tempting symmetry assumption $a = b = 5$ fits the mean and gives the wrong variance
+    (AHL 4.14).
+  - **Physics ×4, all difficulty 4 by design** — the standing Physics difficulty-5 rule, so the d5 share
+    falls again rather than rising. Two seeded-anomaly data-based items: a speed-of-sound measurement
+    where the end correction is systematic rather than random, and an impulse obtained by integrating an
+    $F$–$t$ record whose sampling interval changes mid-trace, so the constant-interval assumption
+    overstates the impulse by 29%. Then a fission fuel-cycle chain in which the enrichment step *is* the
+    arithmetic (377 kg of uranium consumed through 9.4 t of 4%-enriched fuel loaded to a coal comparison
+    of $3.4 \times 10^{6}$ t), and a cyclotron whose exit energy is fixed by the flux density and the dee
+    radius rather than by the accelerating voltage, so doubling the voltage halves the number of
+    revolutions and leaves the energy exactly where it was.
+  - **CS ×3.** A compiler-against-interpreter cost model on a daily batch workflow, where the per-run
+    comparison is six to one in favour of the compiled form and the 720 ms one-off translation cost still
+    reverses the verdict for the first 47 executions — crossover at $n = 48$; a hospital insider breach
+    with no attacker and no vulnerability, where least privilege and the written guarantee that no
+    clinician is blocked from a record in an emergency cannot both be met by one role per person
+    (90 strict roles, 30 once the site is treated as a record attribute, plus a time-limited break-glass
+    grant); and an OOP design where the obvious two-axis hierarchy is merely multiplicative — 19 classes
+    in use, 24 in full — which composition keeps at 9.
+  - **BM ×2.** A price cut that is revenue-positive and profit-negative: the elasticity really is elastic
+    ($-1.33$) and revenue really does rise, but the £6 comes off the contribution of all 300 existing
+    members and the 60 new ones do not cover it, so profit falls £120 and the membership needed to hold
+    it (365) is five above the forecast. And a retention pay rise where the wrong comparison — the
+    £300 000 recruitment bill *already being spent* against the £352 000 salary increase — makes the
+    proposal look nearly self-financing, when the saving it actually buys is £150 000 and no achievable
+    fall in turnover can cover the cost.
+  - **The originality gate passed and the batch was still changed.** `PHYS-D.3-202` came back with an
+    *approach* score of 0.416 against `PHYS-D.2-102`. That is under the 0.50 limit and therefore a pass,
+    but the two items used the same apparatus (a velocity selector feeding a magnetic spectrometer) and
+    near-identical solution skeletons, step for step. The threshold is a proxy for a judgement, and the
+    judgement was that the bank should not hold the same question twice, so the item was rewritten around
+    a cyclotron, where the exit energy is derived from the geometry instead of from the voltage. Its
+    approach score fell **0.416 → 0.200**, and the top of the approach table is once again the
+    `MATH-AHL1.11` pair at 0.366.
+  - Evidenced count **60 → 74**; assertions **2373 → 2585**. Difficulty split 144 at d4, 94 at d5; every
+    subject inside the 50% cap.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  97 questions / 1492 marks, physics 67 / 842, CS 34 / 553, BM SL 26 / 387 — all difficulty 4–5, May
+  102 questions / 1555 marks, physics 71 / 884, CS 37 / 587, BM SL 28 / 419 — all difficulty 4–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that
