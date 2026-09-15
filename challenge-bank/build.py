@@ -437,7 +437,7 @@ function fixInlineMath(){
   document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
     var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
     for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
-    if(hasText){ c.style.display='inline-block'; c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
     else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
   });
 }
