@@ -243,7 +243,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 5. **`start.command` is not version-controlled** — repo A does not own `~/Downloads/dp learning/`.
 6. **The qbank bundle must be built with `VITE_API_BASE_URL`**, or every API call 404s (see §5·02).
 7. **`ib-dp-platform.netlify.app` is stale and has no Git connection** (`repo_url: None`), so pushes never reach it. The Cloudflare host is the current one. It **cannot be retired**, though — it is the only host with a `/figures` route (§4).
-8. **Repointing `qbank/index.html` — change ONLY the hashed `<script type="module">` line.** The `ai-widget.js?v=2` line just below it is a separate concern; drop it and the shared widget goes missing.
+8. **Repointing `qbank/index.html` — change ONLY the hashed `<script type="module">` line.** The widget cache-buster just below it (`ai-widget.js?v=…`) is a separate concern; drop it and the shared widget goes missing. **Read the current value out of the file rather than assuming it** — it was bumped `?v=2` → `?v=3` on 2026-09-15 (the widget gained a print rule), across all 68 pages.
 9. **React `setState` is not synchronous.** `setCategory('past'); runSearch()` reads the *previous* render's value, so a filter silently needs two clicks. Pass the value you are about to set (`load(0, {category: c})`).
 10. **The Bash tool's `grep` can silently return nothing** for patterns that demonstrably exist. Use the Grep tool.
 11. **`agent-browser screenshot` takes `[selector] [path]`** — there is no `--path` flag; passing one fails with "Element not found" at exit 0.
