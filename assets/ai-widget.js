@@ -222,6 +222,54 @@
     return "<p>" + safe + "</p>";
   }
 
+  // --- KaTeX: typeset the LaTeX the AI writes between $...$ / $$...$$ / \(...\) / \[...\] ---
+  // The backend prompt instructs the model to use LaTeX, so without this the
+  // raw dollar signs would reach the student. We load KaTeX once (only if the
+  // page does not already provide it) and render each message node, so maths is
+  // set whether or not the host page has loaded MathJax.
+  var KATEX_CSS = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css";
+  var KATEX_JS  = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js";
+  var KATEX_AR  = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js";
+  var _katexPromise = null;
+  function ensureKatex() {
+    if (window.renderMathInElement && window.katex) return Promise.resolve();
+    if (_katexPromise) return _katexPromise;
+    _katexPromise = new Promise(function (resolve) {
+      var css = document.createElement("link");
+      css.rel = "stylesheet"; css.href = KATEX_CSS;
+      document.head.appendChild(css);
+      var s1 = document.createElement("script");
+      s1.src = KATEX_JS;
+      s1.onload = function () {
+        var s2 = document.createElement("script");
+        s2.src = KATEX_AR;
+        s2.onload = resolve; s2.onerror = resolve;
+        document.head.appendChild(s2);
+      };
+      s1.onerror = resolve;
+      document.head.appendChild(s1);
+    });
+    return _katexPromise;
+  }
+  function renderMath(node) {
+    if (!node) return;
+    ensureKatex().then(function () {
+      if (!window.renderMathInElement) return;
+      try {
+        window.renderMathInElement(node, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false },
+            { left: "\\[", right: "\\]", display: true },
+            { left: "\\(", right: "\\)", display: false }
+          ],
+          throwOnError: false,
+          ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+        });
+      } catch (e) {}
+    });
+  }
+
   function loadHistory() {
     try { return JSON.parse(localStorage.getItem(LS_CHAT) || "[]"); }
     catch (e) { return []; }
@@ -668,6 +716,7 @@
       if (role === "bot" && meta) decorateBot(el, meta.text, meta.thinking || "");
       msgs.appendChild(el);
       scrollDown();
+      renderMath(el);   // typeset any LaTeX in this message (answer + thinking)
       return el;
     }
 

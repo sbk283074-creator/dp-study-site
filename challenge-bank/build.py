@@ -430,7 +430,7 @@ JS = """
 """
 
 MATHJAX = """<script>
-window.MathJax={tex:{inlineMath:[['$','$'],['\\\\(','\\\\)']],displayMath:[['$$','$$'],['\\\\[','\\\\]']],
+window.MathJax={tex:{displaystyle:true,inlineMath:[['$','$'],['\\\\(','\\\\)']],displayMath:[['$$','$$'],['\\\\[','\\\\]']],
 processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
 function mjFallback(){var s=document.createElement('script');
 s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
