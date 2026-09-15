@@ -145,6 +145,21 @@ page builder — harmless, and a rebuild may re-add them. Loads `main.css`, `app
     and stays **disabled** until it appears — it no longer unmounts itself, which is what made the old
     select-form version **vanish on click** (the Netlify host 404s `/api/ask/status` and the component
     did `if (status && !status.configured) return null`).
+- **Books are hidden from the UI (2026-09-15).** Questions imported from textbooks were not usable —
+  `question` holds `"[See question image. Source: …]"` and `answer`/`explanation` are `__AI_FILL__` —
+  so they no longer appear anywhere in the frontend. **The rows were not deleted**: they are still in
+  Turso, and `/api/questions?category=book` still returns all 7,304 of them. The switch is
+  frontend-only and reversible.
+  - Search / Practice / Export lost their **All** and **Books** category options and now default to
+    **Past papers**. This is the load-bearing detail: an *absent* `category` means "no filter", which
+    is exactly what surfaced the books, so every remaining option is a real non-book category and the
+    exclusion holds **by construction**. A client-side filter was rejected — books are 42% of all rows
+    (7,304 of 17,273), so browser-side filtering cannot produce correct page sizes or totals.
+  - `BooksPage` / `BookDetailPage` / `BookReaderPage` now render a shared
+    `components/NotAvailable.tsx` notice ("This feature is not available yet"). The previous
+    implementations are in git history.
+  - `backend/src/api.js` gained an **`exclude_category`** param (comma-separated) for exactly this
+    job, but **it is not live** — see trap 14. Nothing in the frontend depends on it.
 - **Rebuild recipe** (the only sanctioned way — never hand-edit the bundle):
   ```bash
   cd ~/Downloads/dp learning/ib-dp-platform/frontend
@@ -155,8 +170,11 @@ page builder — harmless, and a rebuild may re-add them. Loads `main.css`, `app
   ```
   Both vars are **mandatory and must differ** (see §4). Without `VITE_API_BASE_URL`, `api.ts` resolves
   the host as `import.meta.env.VITE_API_BASE_URL || ""`, so every call goes *relative* and 404s on
-  github.io — that mistake shipped once (commit `24cccf3`). Verify after building: the bundle should
-  contain the Cloudflare host **twice** and the Netlify host **once**.
+  github.io — that mistake shipped once (commit `24cccf3`). Verify after building: the bundle must
+  contain **the Netlify host** (figures) and **the Cloudflare host** (API).
+  **The Cloudflare count is 1, not 2, as of 2026-09-15** — `VITE_API_BASE_URL` appears twice in the
+  source (`getJSON` and `getBookFileUrl`), but `getBookFileUrl` lost its only caller when the book
+  reader was switched off, so Rollup tree-shakes it. Use the Netlify count as the stable invariant.
 
 ### 03 · Python Mastery — `PYTHON/`
 Ships a **single 2.2 MB `index.html`** — a hash-routed app (`#/01-setting-up-…`).
@@ -231,3 +249,6 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 11. **`agent-browser screenshot` takes `[selector] [path]`** — there is no `--path` flag; passing one fails with "Element not found" at exit 0.
 12. **`/api/*` 403s a bare `urllib` request.** Send `User-Agent: Mozilla/5.0`.
 13. **A second agent session may push to repo A mid-task.** Re-run `git ls-remote origin main` before pushing, and audit which paths the intervening commits touched before assuming your build is intact.
+14. **The live API cannot be deployed from this repo.** `ib-dp-platform-api.pages.dev` does **not** auto-deploy. A backend change was pushed (`daa0fc0`, adding `exclude_category`) and the live API ignored it across 12 checks over ~5 minutes — `exclude_category=book` kept returning 17,273 instead of 9,969. There is no `wrangler` config in the repo, and `netlify deploy` cannot run in the agent environment. **Treat any `backend/` change as local-only** until the user deploys it, and never make the frontend depend on a new API param.
+15. **The qbank has no SPA fallback.** A hard load of `/dp-study-site/qbank/books` returns a **404** page — GitHub Pages has no rewrite for `qbank/` sub-paths — even though in-app navigation to Books works. Test routes by clicking the nav, not by typing the URL.
+16. **TWO checkouts of repo A exist on disk, and only one is authoritative.** `~/Downloads/dp learning final` is the real one (tracked: has `STRUCTURE.md`, `backend/`, `challenge-bank/`, HEAD in step with `origin/main`). `~/Downloads/FOOTBALL STADIUM/dp learning final` is a **stale clone frozen at `56b7bd4`** — Sept-9 state, `qbank/assets/index-B0bvnfED.js`, no `STRUCTURE.md`, no `challenge-bank/` — carrying its own unrelated uncommitted edits to `core/ cs/ english/ math/ physics/`. The agent *workspace* (`.workbuddy-ai/memory/`) sits under the stale one, so `cd`-ing by habit lands in the wrong tree and it will happily accept a commit. Before editing: `git rev-parse HEAD` **and** confirm `STRUCTURE.md` exists. Do not delete the stale clone; it is not yours.
