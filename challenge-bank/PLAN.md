@@ -1,13 +1,16 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 252 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 255 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 88 of 252 do. The remaining 164 are
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 91 of 255 do. The remaining 164 are
 a published, ratcheting backlog — see `STANDARD.md` §2.2–§2.5 and `tools/difficulty_audit.py`. All 13
 lever types are in use, and the Physics difficulty-5 share has been designed down from 62% to **47%**,
-which brings every subject inside the 50% cap with the calibration debt cleared. The only outstanding debt
-is that no item claims difficulty 3, so the 3–5 scale still reads as two points.
+which brings every subject inside the 50% cap with the calibration debt cleared. **The last calibration
+debt is now cleared too:** R2 (*"no item claims difficulty 3 — the 3-5 scale has collapsed to two
+points"*) was paid by Batch 21, which adds three difficulty-3 items, one each in Maths, CS and BM. The
+audit prints `calibration OK` and `--check --strict` exits 0 for the first time. Physics still claims no
+difficulty-3 item; that is a design gap rather than a slot to fill, and it is recorded below.
 The `topic` label is now a closed vocabulary per subject, enforced by `validate.py`, and is shown on every
 question page and filterable on every subject page.**
 
@@ -892,12 +895,57 @@ similarity score, and no BM item ships containing HL-only content.
     third item on the node would have been padding. The batch is smaller for it and not weaker.
   - Evidenced count **74 → 88**; assertions **2585 → 2788**. Difficulty split 150 at d4, 102 at d5;
     every subject inside the 50% cap.
+- **Batch 21 — DONE (1 Maths, 1 CS, 1 BM; 252 → 255).** The calibration batch, and the only batch in the
+  plan written to close a rule rather than to add coverage. `STANDARD.md` §2.5 requires the bank to use
+  the whole 3–5 range — *"a bank with 0% at difficulty 3 is, in effect, a two-point scale wearing three
+  labels"* — and the audit had been printing R2, *no item claims difficulty 3*, on every run since the
+  standard took force on 2026-09-13. Every item in this batch therefore claims difficulty 3, and each one
+  earns it the same way: **one clean lever, everything else routine.** §2.3 exempts a difficulty-3 label
+  from the three-field completeness floor, so the bar is a rubric score of 4/9 — but all three items score
+  **9/9** anyway, because the evidence is written to the same standard as a difficulty-5 item.
+  - **Maths ×1.** $2^{x} \ge x^{2}$, whose natural window $0 \le x \le 5$ shows exactly two intersections,
+    both exact, at $x = 2$ and $x = 4$ — and it is their exactness that makes the window look complete.
+    The solution set is $[r_{1}, 2] \cup [4, \infty)$ with $r_{1} = -0.7666646960$, a third intersection on
+    the far side of the $y$-axis, where the exponential has flattened towards zero and the parabola has
+    not. The lever is a single one: the **domain the search is carried out on**, not the algebra of the
+    inequality, decides the answer (AHL 2.15, d3, `decoy_technique`, figure `b21-exp-vs-quad`).
+  - **CS ×1.** A routing matrix at two scales. A dense two-dimensional array stores $n^{2}$ cells while the
+    non-zeros grow only linearly, so the two costs diverge by a factor of the order: at the unit-test scale
+    of 1 000 the array is 8.00 MB and allocates without complaint, while at the production scale of
+    200 000 it is **320 GB** against **6.4 MB** held sparsely — a ratio of 50 000 in memory and 100 000 in
+    time for one matrix-vector multiply (40.0 s against 0.40 ms). The density is 0.001% at both scales, so
+    the test suite is exercising the one property that does not change (Theme B, B2.2, d3,
+    `wrong_design_cost`, figure `b21-dense-vs-sparse`, with a stimulus table of the two scales).
+  - **BM ×1.** Market share rising from 18% to 21% while every quantity it is supposed to stand for falls.
+    The market contracted 20.0% while sales fell 6.67%, so the share gains 3.0 percentage points on 12 000
+    *fewer* pots; unit contribution is unchanged at 9.00, total contribution falls 1 620 000 → 1 512 000,
+    and operating profit goes from +60 000 to −138 000 once a 21.43% rise in marketing spend is taken into
+    account. The lever is a single one: the **denominator moved**, so a relative gain is not an absolute
+    one (Unit 4.1, d3, `non_governing_variable`).
+  - **R2 is paid, and it took reading the branch to see why it was so cheap.** The audit's R2 rule is
+    `if allc[3] < BASELINE["d3_count"]` → regression, `elif allc[3] == 0` → debt, with `d3_count`
+    recorded as **0**. The count cannot fall below zero, so R2 can only ever fire as a debt, and a single
+    item silences it. It is **bank-wide, not per subject** — which is why three subjects are enough to
+    clear it, and why Physics deliberately contributes none. Physics is the one subject this batch leaves
+    alone: every open Physics node already carries a trap *plus* a second demand, so a difficulty-3 item
+    there would have been a difficulty-4 item relabelled, which is the exact failure §2.3 exists to
+    prevent. `--check --strict` now exits 0 for the first time, and the outstanding-debts section has
+    disappeared from the audit output.
+  - **The rubric score cannot produce a difficulty-3 item, and this batch is the proof.** Measured across
+    all 90 evidenced items that existed before this batch, **every one scores 9/9**, so
+    `max_label_for(9)` = 5 is an upper bound and nothing more: `--id` prints *"permits at most difficulty
+    5"* for a difficulty-3 item exactly as it does for a difficulty-5 one. A difficulty-3 claim therefore
+    rests on the **number of ideas** in the item — one lever, everything else routine — and not on the
+    score. Hollowing out an evidence field to drag the score down to 4 would make the claim *less*
+    falsifiable, not more, so all three items carry full evidence. Recorded in the skill.
+  - Evidenced count **88 → 91**; assertions **2788 → 2840**. Difficulty split now **3 at d3, 150 at d4,
+    102 at d5**; every subject still inside the 50% cap.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  108 questions / 1641 marks, physics 75 / 935, CS 40 / 626, BM SL 29 / 434 — all difficulty 4–5, May
+  109 questions / 1653 marks, physics 75 / 935, CS 41 / 638, BM SL 30 / 450 — all difficulty 3–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that
