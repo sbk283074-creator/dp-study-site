@@ -1,6 +1,6 @@
 # dp-study-site — the whole structure
 
-**Verified 2026-09-14 against the live site and both repos. Not recalled — checked.**
+**Verified 2026-09-15 against the live site and both repos. Not recalled — checked.**
 Read this before changing anything in `~/Downloads/dp learning final`.
 
 ---
@@ -50,7 +50,7 @@ In the repo but **not** one of the five: the subject pages
 
 | File | Size | What it does | Backend |
 |---|---|---|---|
-| `assets/ai-widget.js` | 54 KB | global **Ask AI** assistant + site navigator (chat, thinking split, copy, full-page mode) | `ib-dp-platform-api.pages.dev/api/ask` |
+| `assets/ai-widget.js` | 64 KB | the **one** chat implementation — global **Ask AI** + site navigator, *and* the focused per-question mode (§3·1) | `ib-dp-platform-api.pages.dev/api/ask` |
 | `assets/tools-widget.js` | 52 KB | Formula Booklet + Scientific Calculator; injected *by* ai-widget.js | none |
 | `assets/css/main.css` | 33 KB | site styling | — |
 | `assets/js/app.js` | 24 KB | nav, search, page behaviour | — |
@@ -58,6 +58,36 @@ In the repo but **not** one of the five: the subject pages
 
 Referenced by **absolute URL** (`https://sbk283074-creator.github.io/dp-study-site/assets/…`),
 so editing the one file updates every page at once.
+
+### 3·1 There is ONE chat implementation, and it has a public hook
+
+Both banks open **the same panel** as the floating button — there is no second chat UI. `ai-widget.js`
+ends `build()` by publishing:
+
+```js
+window.dpAI = {
+  open(opts),   // enter focused mode on one question, then optionally auto-send
+  close(),      // closes the panel (also exits focused mode)
+  focused()     // -> true while scoped to a question
+};
+```
+
+`opts`: `ref` (chip label), `questionId` (grounding — the server looks the row up itself),
+`subject`, `topic`, `marks`, `context` (question text, prepended to the seed),
+`prompt`, `display` (what the user bubble says), `depth`/`difficulty`/`length`,
+and `autoSend:false` (prefill the composer instead of sending — used by "Mark my attempt").
+
+Gotchas worth knowing before touching it:
+
+- Focused transcripts live in a **memory-only** array (`scopeMsgs`); they never touch
+  `localStorage['dp_ai_chat_v1']`, so the site-wide history is never overwritten. Closing the panel
+  runs `exitScope()`, so the floating launcher can never reopen someone else's question.
+- `/api/ask` reads **`complexity`** (`simple|standard|deep`), *not* `depth`/`difficulty`. The panel's
+  two rows are collapsed by `complexityFor()` before sending; the raw fields are inert server-side.
+  `length` (`short|medium|long`) *is* honoured.
+- **Grounding comes only from `questionId`.** There is no field for client-supplied question text.
+  Book rows are still placeholders (`question` = `"[See question image. Source: …]"`,
+  `answer`/`explanation` = `__AI_FILL__`), so the AI cannot actually answer a Books question.
 
 ---
 
@@ -80,13 +110,17 @@ so editing the one file updates every page at once.
 - **The two hosts are not equivalent for images.** Cloudflare has **no `/figures` route at all**
   (route-level JSON 404); Netlify serves figures from a Blob store (200 for a real path, 101 KB).
   That is *why* the base is split rather than simply repointed — pointing both at Cloudflare would
-  break the **10,042** question images that use the relative-path figure class.
+  break the **9,969** question images that use the relative-path figure class.
   (`ib-dp-images-a.pages.dev` also serves them, but *without* the `/figures/` prefix, so it is not a
   drop-in for `QuestionCard.tsx`.)
 - **Data is unaffected by the split**: both hosts read the *same* Turso database
   (19 books / 17,273 questions as of 2026-09-14).
-- **Pre-existing and unrelated:** `/figures/book2/...` (7,304 rows) 404s on *every* host — the Blob
-  store never received those files.
+- **The files were also missing from the store** — not merely mis-URLed. `/figures/book2/...` 404'd on
+  *every* host because the Blob store never received them. **Backfilled 2026-09-15**: 13,342 files /
+  **967.5 MB** were absent (`book2` 12,938, `specimen` 153, `physics_hl_p3` 113, `physics_hl_p2` 82,
+  `physics_hl_p1` 56) out of a 102,346-file / 10.2 GB local tree. The DB references **35,993 distinct
+  image paths** (28,689 relative + 7,304 root-relative) and **0** were missing locally, so the store
+  now covers every one of them.
 
 ---
 
@@ -103,12 +137,14 @@ page builder — harmless, and a rebuild may re-add them. Loads `main.css`, `app
 - Committed output: `qbank/index.html`, `qbank/assets/index-<hash>.js`, `qbank/assets/index-<hash>.css`.
 - Reads books / questions / facets / collections / exams from the **Cloudflare** API (since `cb839d1`);
   figures still come from Netlify (see §4).
-- **AI — two affordances, both working:**
+- **AI — one implementation, two entry points:**
   - the shared global widget (`.dp-ai-launch`) → Cloudflare;
-  - a per-question **"Ask AI"** button (`components/AskAI.tsx`; 50 on a search page) → Cloudflare
-    `/api/ask`. It used to **vanish on click** — the Netlify host 404s `/api/ask/status`, and the
-    component does `if (status && !status.configured) return null`. Fixed by `cb839d1`; verified live
-    (panel opens with difficulty / length / model controls and a live quota line).
+  - a per-question **"Ask AI"** button (`components/AskAI.tsx`, one per card) that does **not** own a
+    chat panel. It calls `window.dpAI.open({ref, questionId, subject, topic, marks, …})` and the
+    *global* widget opens in **focused mode** (§3·1). It polls for the hook (the widget is `defer`)
+    and stays **disabled** until it appears — it no longer unmounts itself, which is what made the old
+    select-form version **vanish on click** (the Netlify host 404s `/api/ask/status` and the component
+    did `if (status && !status.configured) return null`).
 - **Rebuild recipe** (the only sanctioned way — never hand-edit the bundle):
   ```bash
   cd ~/Downloads/dp learning/ib-dp-platform/frontend
@@ -137,15 +173,19 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 ### 05 · Challenge Bank — `challenge-bank/`
 **Fully generated. The JSON is the source of truth, not the HTML.**
 - Data: `challenge-bank/data/{math-aa-hl,physics-hl,computer-science-hl,business-management-sl}/*.json`
-  — 224 questions.
+  — 238 questions (Math AA HL 102, Physics HL 71, CS HL 37, BM SL 28).
 - Builder: `challenge-bank/build.py` (55 KB) — emits the entire `site/`.
 - Tooling: `challenge-bank/tools/*.py` — `validate.py` (43 KB), `make_figures.py` (40 KB), `fix_json.py`,
   `ship.py`, `coverage.py`, `difficulty_audit.py`, …
 - Docs: `README.md`, `STANDARD.md`, `PLAN.md`, `AUDIT_*.md`.
-- Output: `challenge-bank/site/` — `index.html` (121 KB), `q/` (224 question pages), one index per
+- Output: `challenge-bank/site/` — `index.html`, `q/` (238 question pages), one index per
   subject, `papers/`, `assets/site.js`.
-- **AI:** a per-question **"Solve with AI"** panel, generated into `site/assets/site.js` from a Python
-  string in `build.py`, calling **Cloudflare `/api/ask`**. Four modes: solution / hint / steps / mark.
+- **AI:** four launcher buttons per question (full worked solution / hint only / guided steps /
+  mark my attempt), generated into `site/assets/site.js` from a Python string in `build.py`. They call
+  `window.dpAI.open({ref, subject, marks, context, prompt, display, …})` — i.e. the **same** global
+  widget in focused mode (§3·1), *not* a self-contained panel. "Mark my attempt" passes
+  `autoSend:false` so the composer is prefilled with `MY ATTEMPT:` instead of sending. The question
+  text rides along in `context`, so the widget is not limited to `questionId` grounding here.
 - **Figures:** hand-authored inline SVG stored in the question JSON as
   `figure = {type:"svg", content, caption}`; `build.py::figure_html` requires `type:"svg"`.
 - Rebuild: `cd challenge-bank && python3 build.py`.
@@ -167,7 +207,12 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - Pages' CDN caches hard: after a push, poll with `?cb=$(date +%s)`, or read
   `raw.githubusercontent.com/sbk283074-creator/dp-study-site/main/…` to bypass it.
 - **The `netlify` CLI cannot run in the agent environment** — invoking it kills the shell even for
-  `--version`, sandboxed or not. Any Netlify redeploy must be run by the user in Terminal.
+  `--version`, sandboxed or not. Any Netlify **redeploy** must be run by the user in Terminal.
+- **But the `@netlify/blobs` SDK works fine from the agent.** `getStore({name:'figures', siteID, token})`
+  with `siteID` from `.netlify/state.json` and `token` from
+  `~/Library/Preferences/netlify/config.json` → `users.*.auth.token` does `list`/`set`/`get` over plain
+  HTTPS. That is how the figure blobs are backfilled (`upload-figures-fast.mjs`, concurrency 40,
+  idempotent — it snapshots existing keys with `list()` then `set()`s only the missing ones).
 
 ---
 
@@ -179,4 +224,10 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 4. **A listening port is not a working service.** A wedged vite can hold `:5175` and 500 every request (it runs from a deleted node binary — check `lsof -p <pid> | awk '$4=="txt"{print $NF; exit}'` for `.deleting.`).
 5. **`start.command` is not version-controlled** — repo A does not own `~/Downloads/dp learning/`.
 6. **The qbank bundle must be built with `VITE_API_BASE_URL`**, or every API call 404s (see §5·02).
-7. **`ib-dp-platform.netlify.app` is stale and has no Git connection** (`repo_url: None`), so pushes never reach it. The Cloudflare host is the current one.
+7. **`ib-dp-platform.netlify.app` is stale and has no Git connection** (`repo_url: None`), so pushes never reach it. The Cloudflare host is the current one. It **cannot be retired**, though — it is the only host with a `/figures` route (§4).
+8. **Repointing `qbank/index.html` — change ONLY the hashed `<script type="module">` line.** The `ai-widget.js?v=2` line just below it is a separate concern; drop it and the shared widget goes missing.
+9. **React `setState` is not synchronous.** `setCategory('past'); runSearch()` reads the *previous* render's value, so a filter silently needs two clicks. Pass the value you are about to set (`load(0, {category: c})`).
+10. **The Bash tool's `grep` can silently return nothing** for patterns that demonstrably exist. Use the Grep tool.
+11. **`agent-browser screenshot` takes `[selector] [path]`** — there is no `--path` flag; passing one fails with "Element not found" at exit 0.
+12. **`/api/*` 403s a bare `urllib` request.** Send `User-Agent: Mozilla/5.0`.
+13. **A second agent session may push to repo A mid-task.** Re-run `git ls-remote origin main` before pushing, and audit which paths the intervening commits touched before assuming your build is intact.
