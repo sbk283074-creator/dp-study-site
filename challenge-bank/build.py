@@ -882,7 +882,7 @@ def page(title, body, subject=None, mathjax=False, extra_head="", body_class="")
   <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
 </div>
 <script src="{'../' if subject else ''}assets/site.js"></script>
-<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=3" defer></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=4" defer></script>
 </body>
 </html>
 """
@@ -1237,7 +1237,7 @@ __MATHJAX__
   Part of the <a href="../../index.html">DP study system</a>.
 </div></footer>
 <script src="../assets/site.js"></script>
-<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=3" defer></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=4" defer></script>
 <script>
 // The paper is assembled in the browser from data/bank.json (no backend): this
 // page reads the selection that the site-wide picker keeps in localStorage and

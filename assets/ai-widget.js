@@ -873,6 +873,18 @@
       if (nav.classList.contains("open")) closeNav();
     });
 
+    // A route change means the question this panel was focused on is no longer
+    // on screen, so the focus must not outlive it — otherwise navigating away
+    // leaves the bar still saying "Focused on <ref>" for a question you can no
+    // longer see. Only the *focused* panel is closed here: a site-wide
+    // conversation is deliberately left alone, so changing pages mid-chat does
+    // not throw the conversation away.
+    function onRouteChange() {
+      if (scope) closePanel();
+    }
+    window.addEventListener("hashchange", onRouteChange);
+    window.addEventListener("popstate", onRouteChange);
+
     // --- control bar wiring + collapse logic ---
     function syncSegs() {
       ctrl.querySelectorAll(".dp-ai-seg").forEach(function (seg) {
