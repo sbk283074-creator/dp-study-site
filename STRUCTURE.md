@@ -237,7 +237,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 ## 7. Traps that have already bitten
 
 1. **`git push` can report a ref-lock failure and still have succeeded.** Trust `git ls-remote origin main`, not the error text.
-2. **VS Code races git.** A 0-byte orphan `.git/index.lock` reappears and blocks commits. Confirm the orphan with `lsof .git/index.lock` (no holder), delete it, then add+commit in a **single** command.
+2. **A 0-byte `.git/index.lock` blocks commits — check who owns it first.** VS Code leaves orphans, so the fix is to delete the lock and then `add`+`commit` in a **single** command. But `lsof` can report *no holder* while the **concurrent session is mid-`git add -A`**; deleting a live lock corrupts their index. Check `pgrep -fl "git-core|git push|git commit|git add"` too, and wait if one is running.
 3. **zsh is not bash.** Unquoted `--include=*.js` → `no matches found`; `for f in $FILES` does **not** word-split. Use the Grep tool or `grep -E`.
 4. **A listening port is not a working service.** A wedged vite can hold `:5175` and 500 every request (it runs from a deleted node binary — check `lsof -p <pid> | awk '$4=="txt"{print $NF; exit}'` for `.deleting.`).
 5. **`start.command` is not version-controlled** — repo A does not own `~/Downloads/dp learning/`.
