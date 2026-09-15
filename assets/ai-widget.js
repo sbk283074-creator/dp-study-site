@@ -475,7 +475,10 @@
     ].join("");
 
     var styleEl = document.createElement("style");
-    styleEl.textContent = styles;
+    styleEl.textContent = styles +
+      // The launcher cluster and both panels are position:fixed, so without this
+      // they ride along on every print job / Save-as-PDF and land on the paper.
+      "@media print{#dp-ai-root{display:none !important}}";
     document.head.appendChild(styleEl);
 
     var root = document.createElement("div");

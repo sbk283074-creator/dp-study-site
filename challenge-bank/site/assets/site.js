@@ -126,18 +126,27 @@
       });
       var capped = hits.slice(0, 60);
       gr.innerHTML = hits.length ? capped.map(function(x){
-        return '<div class="q" data-qid="' + x.id + '"><h3><a href="' + x.u + '">' + x.t + '</a></h3>' +
+        // Same affordances as a subject listing, so a paper can be assembled
+        // straight from a search instead of by walking four subject pages.
+        return '<div class="q" data-qid="' + x.id + '">' +
+               '<div class="q-head">' +
+               '<label class="q-pick-wrap" title="Add this question to your custom paper">' +
+               '<input type="checkbox" class="q-pick" data-qid="' + x.id + '"> <span>Paper</span></label>' +
+               '<h3><a href="' + x.u + '">' + x.t + '</a></h3>' +
+               '<button type="button" class="q-done" data-qid="' + x.id + '" aria-pressed="false">Mark done</button>' +
+               '</div>' +
                '<div class="meta"><span class="chip">' + x.sub + '</span>' +
                (x.topic ? '<span class="chip chip-topic">' + x.topic + '</span>' : '') +
                '<span class="chip">' + x.paper + '</span>' +
                '<span class="chip">' + x.marks + ' marks</span>' +
                '<span class="chip chip-hard">difficulty ' + x.d + '</span></div>' +
-               '<button type="button" class="q-done" data-qid="' + x.id + '" aria-pressed="false">Mark done</button></div>';
+               '</div>';
       }).join('') + (hits.length > capped.length
           ? '<p class="small">' + (hits.length - capped.length) + ' more match -- narrow the search or add a filter.</p>'
           : '')
         : '<p class="empty">No questions match that search.</p>';
       Array.prototype.forEach.call(gr.querySelectorAll('.q-done'), wireToggle);
+      if(window.cbPaintPick) window.cbPaintPick();  // reflect the current selection
     }
 
     if(gSubject) gSubject.addEventListener('change', function(){ topicOptions(); runGlobal(); });
@@ -268,8 +277,15 @@
       bar.hidden = n === 0;
     }
   }
-  Array.prototype.forEach.call(document.querySelectorAll('.q-pick'), function(cb){
-    cb.addEventListener('change', function(){ setPick(cb.getAttribute('data-qid'), cb.checked); });
+  // Delegated, because checkboxes are also rendered later -- into the home
+  // page's search results and the builder's own list -- long after this file
+  // has run. A per-element listener bound at load time misses every one of them.
+  document.addEventListener('change', function(e){
+    var cb = e.target;
+    if(cb && cb.classList && cb.classList.contains('q-pick')){
+      var id = cb.getAttribute('data-qid');
+      if(id) setPick(id, cb.checked);
+    }
   });
   var pageBtn = document.querySelector('.q-pick-page');
   if(pageBtn) pageBtn.addEventListener('click', function(){

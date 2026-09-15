@@ -473,7 +473,10 @@
   ].join("");
 
   var styleEl = document.createElement("style");
-  styleEl.textContent = styles;
+  styleEl.textContent = styles +
+    // Fixed-position launcher and panels: hide them from print / Save-as-PDF so
+    // a printed question sheet is the paper only.
+    "@media print{#dp-tools-root{display:none !important}}";
   document.head.appendChild(styleEl);
 
   var root = document.createElement("div");

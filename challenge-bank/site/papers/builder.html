@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Build your own exam paper — IB Challenge Bank</title>
+<title>Build your own exam paper &mdash; IB Challenge Bank</title>
 <link rel="stylesheet" href="../assets/site.css">
 <script>
 window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
@@ -22,86 +22,184 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
 </script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
 </head>
-<body>
+<body class="cb-paper">
 <header class="site"><div class="wrap">
   <a class="brand" href="../index.html">IB Challenge Bank</a>
-  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../index.html">Study system &#8599;</a></nav>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../index.html">Study system &#8599;</a></nav>
 </div></header>
 <main><div class="wrap">
-<h1>Build your own exam paper</h1>
-<p class="lede">Tick <strong>Add to paper</strong> on any question, across any subject, then assemble them here into a printable, exam-style paper.</p>
-<div class="builder-controls" id="b-controls">
-  <label class="b-answers"><input type="checkbox" id="b-answers"> Include answers &amp; markschemes</label>
+<div class="builder-controls">
+  <label class="b-answers"><input type="checkbox" id="b-answers"> Include the markscheme (starts on a new page)</label>
   <button type="button" class="btn" id="b-print">Print / Save as PDF</button>
   <button type="button" class="btn" id="b-clear">Clear selection</button>
   <span class="b-total" id="b-total"></span>
   <a class="btn" href="../index.html">&#8592; Back to the bank</a>
 </div>
-<div id="b-list"></div>
+<div id="b-paper"></div>
 <div id="b-empty" class="empty" hidden>
   <p><strong>No questions selected yet.</strong></p>
-  <p>Open any subject page, tick <strong>Add to paper</strong> on the questions you want, then return here. Your selection is kept in this browser.</p>
+  <p>Tick <strong>Paper</strong> next to any question &mdash; in the search results on the home page or on a
+  subject page &mdash; or press <strong>Add to paper</strong> on a question&#39;s own page. The bar at the
+  bottom of the screen keeps the count, and your selection is remembered in this browser, so you can gather
+  questions from several subjects before you build.</p>
+  <p><a class="btn" href="../index.html">Browse the bank &#8594;</a></p>
 </div>
 </div></main>
 <footer class="site"><div class="wrap">
   Part of the <a href="../../index.html">DP study system</a>.
 </div></footer>
 <script src="../assets/site.js"></script>
-<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=3" defer></script>
 <script>
+// The paper is assembled in the browser from data/bank.json (no backend): this
+// page reads the selection that the site-wide picker keeps in localStorage and
+// lays the questions out as an exam paper -- cover, numbered questions with the
+// mark allocation in the right-hand margin, ruled writing space sized from the
+// marks, and an optional markscheme that starts on its own page.
 (function(){
-  var LIST=document.getElementById('b-list');
+  var PAPER=document.getElementById('b-paper');
   var EMPTY=document.getElementById('b-empty');
   var TOTAL=document.getElementById('b-total');
   var ANS=document.getElementById('b-answers');
-  function pick(){ try{return JSON.parse(localStorage.getItem('cb_pick_v1')||'[]');}catch(e){return [];} }
-  function savePick(a){ try{localStorage.setItem('cb_pick_v1',JSON.stringify(a));}catch(e){} }
-  function typeset(){
-    if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise([LIST]).then(function(){ if(typeof fixInlineMath==='function') fixInlineMath(); }); }
-    else if(typeof fixInlineMath==='function'){ fixInlineMath(); }
+  var KEY='cb_pick_v1';
+
+  function esc(s){
+    return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
   }
-  fetch('../data/bank.json').then(function(r){return r.json();}).then(function(bank){
-    var byId={}; bank.forEach(function(q){byId[q.id]=q;});
-    function render(){
-      var ids=pick();
-      if(!ids.length){ LIST.innerHTML=''; EMPTY.hidden=false; TOTAL.textContent=''; return; }
-      EMPTY.hidden=true;
-      var total=0;
-      LIST.innerHTML = ids.map(function(id,i){
-        var q=byId[id]; if(!q){return '';}
-        total += parseInt(q.marks,10)||0;
-        return '<section class="paper-q" data-qid="'+id+'">'
-          + '<div class="paper-q-bar"><span class="paper-marks">'+q.marks+' marks</span>'
-          + '<span class="paper-ref">'+q.id+' · '+q.syllabus_ref+' · difficulty '+q.difficulty+'</span>'
-          + '<span class="paper-q-actions">'
-          + (i>0?'<button type="button" class="b-up" data-id="'+id+'">↑</button>':'')
-          + (i<ids.length-1?'<button type="button" class="b-down" data-id="'+id+'">↓</button>':'')
-          + '<button type="button" class="b-remove" data-id="'+id+'">Remove</button></span></div>'
-          + '<h3>'+(i+1)+'. '+q.title+'</h3>'
-          + q.q_html
-          + (ANS.checked?'<details class="b-ans" open><summary>Answer &amp; markscheme</summary><div class="body">'+q.a_html+'</div></details>':'')
-          + '</section>';
-      }).join('');
-      TOTAL.textContent = ids.length+' question'+(ids.length===1?'':'s')+' · '+total+' marks total';
-      Array.prototype.forEach.call(LIST.querySelectorAll('.b-remove'),function(b){b.addEventListener('click',function(){var a=pick();var i=a.indexOf(b.getAttribute('data-id'));if(i>-1){a.splice(i,1);savePick(a);render();if(window.cbPaintPick)window.cbPaintPick();}});});
-      Array.prototype.forEach.call(LIST.querySelectorAll('.b-up'),function(b){b.addEventListener('click',function(){var a=pick();var i=a.indexOf(b.getAttribute('data-id'));if(i>0){a.splice(i,1);a.splice(i-1,0,b.getAttribute('data-id'));savePick(a);render();}});});
-      Array.prototype.forEach.call(LIST.querySelectorAll('.b-down'),function(b){b.addEventListener('click',function(){var a=pick();var i=a.indexOf(b.getAttribute('data-id'));if(i>-1&&i<a.length-1){a.splice(i,1);a.splice(i+1,0,b.getAttribute('data-id'));savePick(a);render();}});});
-      typeset();
+  function pick(){ try{ return JSON.parse(localStorage.getItem(KEY)||'[]'); }catch(e){ return []; } }
+  function savePick(a){ try{ localStorage.setItem(KEY,JSON.stringify(a)); }catch(e){} }
+  function typeset(){
+    if(window.MathJax && MathJax.typesetPromise){
+      MathJax.typesetPromise([PAPER]).then(function(){ if(typeof fixInlineMath==='function') fixInlineMath(); });
+    } else if(typeof fixInlineMath==='function'){ fixInlineMath(); }
+  }
+  // A paper's time budget: about 1.4 minutes a mark, quoted in whole 5s.
+  function fmtMinutes(t){
+    var m=Math.max(30,Math.round(t*1.4/5)*5), h=Math.floor(m/60), r=m%60;
+    if(!h) return r+' minutes';
+    return h+' hour'+(h>1?'s':'')+(r?' '+r+' minutes':'');
+  }
+  // Writing space proportional to the marks on offer.
+  function ruled(marks){
+    var n=Math.max(2,Math.min(12,Math.ceil((marks||1)*1.2))), s='', i;
+    for(i=0;i<n;i++) s+='<span class="pq-line"></span>';
+    return '<div class="pq-lines">'+s+'</div>';
+  }
+  function marksLabel(m){ return '['+(m==null?'—':m)+' mark'+(m===1?'':'s')+']'; }
+  // A real paper tops out near 90 marks; a complete subject set does not fit one
+  // sitting, so its total is working time rather than a suggested duration.
+  function timeLabel(t){ return t<=180 ? 'Suggested time' : 'Working time'; }
+  function cover(items,total){
+    var names={}, lean=items[0]||{};
+    items.forEach(function(q){ if(q.subject_name) names[q.subject_name]=1; });
+    var keys=Object.keys(names);
+    var subject = keys.length===1 ? keys[0] : 'Mixed subjects';
+    var level   = keys.length===1 ? (lean.subject_level||'') : 'Questions from more than one subject';
+    return '<section class="exam-cover">'
+      + '<p class="ec-prog">IB Diploma Programme</p>'
+      + '<h1 class="ec-subject">'+esc(subject)+'</h1>'
+      + '<p class="ec-level">'+esc(level)+'</p>'
+      + '<p class="ec-paper">Practice paper</p>'
+      + '<table class="ec-facts">'
+      + '<tr><td class="ec-k">Candidate name</td><td class="ec-rule"></td>'
+      + '<td class="ec-k">Date</td><td class="ec-rule"></td></tr>'
+      + '<tr><td class="ec-k">Questions</td><td class="ec-v">'+items.length+'</td>'
+      + '<td class="ec-k">Total marks</td><td class="ec-v">'+total+'</td></tr>'
+      + '<tr><td class="ec-k">'+timeLabel(total)+'</td><td class="ec-v">'+fmtMinutes(total)+'</td>'
+      + '<td class="ec-k">Calculator</td><td class="ec-v">permitted</td></tr>'
+      + '</table>'
+      + '<div class="ec-instr"><h2>Instructions to candidates</h2><ul>'
+      + '<li>Do not open this paper until instructed to do so.</li>'
+      + '<li>Answer <b>all</b> questions. Show all working.</li>'
+      + '<li>The number of marks available is shown in brackets [ ] after each question or part.</li>'
+      + '<li>Write your answers in the spaces provided.</li>'
+      + '<li>A calculator is permitted.</li>'
+      + (total>180 ? '<li>This paper is long ('+items.length+' questions, '+total+' marks), so it is not a '
+          + 'single sitting — split it into parts and mark each part before moving on.</li>' : '')
+      + (ANS.checked
+          ? '<li>The markscheme follows the questions, starting on a new page. Attempt the paper first.</li>'
+          : '<li>No markscheme is included in this printing.</li>')
+      + '</ul></div></section>';
+  }
+  function move(id,delta){
+    var a=pick(), i=a.indexOf(id), j=i+delta;
+    if(i<0||j<0||j>=a.length) return;
+    a.splice(i,1); a.splice(j,0,id); savePick(a); render();
+  }
+  function paperHead(q,i,n){
+    return '<div class="pq-head"><h3><span class="pq-n">'+i+'.</span> '+esc(q.title)+'</h3>'
+      + '<span class="pq-right">'
+      + '<span class="pq-marks">'+marksLabel(q.marks)+'</span>'
+      + '<span class="pq-ref">'+esc(q.id)+'</span>'
+      + '<span class="paper-q-actions no-print">'
+      + (i>1?'<button type="button" class="b-up" data-id="'+esc(q.id)+'" title="Move up">&#8593;</button>':'')
+      + (i<n?'<button type="button" class="b-down" data-id="'+esc(q.id)+'" title="Move down">&#8595;</button>':'')
+      + '<button type="button" class="b-remove" data-id="'+esc(q.id)+'">Remove</button>'
+      + '</span></span></div>';
+  }
+  function render(){
+    var ids=pick(), items=[], total=0;
+    ids.forEach(function(id){ var q=byId[id]; if(q){ items.push(q); total += parseInt(q.marks,10)||0; } });
+    if(!items.length){
+      PAPER.innerHTML=''; EMPTY.hidden=false; TOTAL.textContent=''; return;
     }
+    EMPTY.hidden=true;
+    var n=items.length;
+    var qHtml = items.map(function(q,i){
+      return '<section class="paper-q">'+paperHead(q,i+1,n)+q.q_html+ruled(q.marks)+'</section>';
+    }).join('');
+    var msHtml = items.map(function(q,i){
+      var ref=[q.topic,q.syllabus_ref,'difficulty '+q.difficulty].filter(Boolean).join(' · ');
+      return '<section class="paper-q ms-q">'
+        + '<div class="pq-head"><h3><span class="pq-n">'+(i+1)+'.</span> '+esc(q.title)+'</h3>'
+        + '<span class="pq-right"><span class="pq-marks">'+marksLabel(q.marks)+'</span>'
+        + '<span class="pq-ref">'+esc(ref)+'</span></span></div>'
+        + q.a_html + '</section>';
+    }).join('');
+    PAPER.innerHTML = cover(items,total)
+      + '<div class="exam-run-head"><span>Practice paper</span><span>'
+      + n+' questions · '+total+' marks · '+fmtMinutes(total)+'</span></div>'
+      + qHtml
+      + '<p class="exam-end">End of questions · '+total+' marks in total</p>'
+      + (ANS.checked ? '<section class="exam-ms"><h2>Markscheme</h2>'+msHtml+'</section>' : '');
+    TOTAL.textContent = n+' question'+(n===1?'':'s')+' · '+total+' marks';
+    Array.prototype.forEach.call(PAPER.querySelectorAll('.b-remove'),function(b){
+      b.addEventListener('click',function(){
+        var a=pick(), i=a.indexOf(b.getAttribute('data-id'));
+        if(i>-1){ a.splice(i,1); savePick(a); render(); if(window.cbPaintPick) window.cbPaintPick(); }
+      });
+    });
+    Array.prototype.forEach.call(PAPER.querySelectorAll('.b-up'),function(b){
+      b.addEventListener('click',function(){ move(b.getAttribute('data-id'),-1); });
+    });
+    Array.prototype.forEach.call(PAPER.querySelectorAll('.b-down'),function(b){
+      b.addEventListener('click',function(){ move(b.getAttribute('data-id'),1); });
+    });
+    typeset();
+  }
+  var byId={};
+  fetch('../data/bank.json').then(function(r){ return r.json(); }).then(function(bank){
+    bank.forEach(function(q){ byId[q.id]=q; });
     ANS.addEventListener('change',render);
     document.getElementById('b-print').addEventListener('click',function(){
       document.body.classList.add('cb-print-paper');
-      var done=function(){document.body.classList.remove('cb-print-paper');window.removeEventListener('afterprint',done);};
+      var done=function(){ document.body.classList.remove('cb-print-paper'); window.removeEventListener('afterprint',done); };
       window.addEventListener('afterprint',done);
       window.print();
-      setTimeout(function(){document.body.classList.remove('cb-print-paper');},1200);
+      setTimeout(function(){ document.body.classList.remove('cb-print-paper'); },1200);
     });
     document.getElementById('b-clear').addEventListener('click',function(){
-      if(confirm('Clear all selected questions?')){ savePick([]); render(); if(window.cbPaintPick)window.cbPaintPick(); }
+      if(confirm('Clear all selected questions?')){ savePick([]); render(); if(window.cbPaintPick) window.cbPaintPick(); }
     });
     render();
-  }).catch(function(e){
-    LIST.innerHTML='<p class="empty">Could not load the question bank data (bank.json). If you opened this page from disk, serve it over http(s) instead.</p>';
+  }).catch(function(){
+    EMPTY.hidden=false;
+    EMPTY.innerHTML='<p><strong>Could not load the question bank data.</strong></p>'
+      + '<p>This page reads <code>data/bank.json</code> next to it with <code>fetch</code>, which browsers '
+      + 'block for <code>file://</code> pages. Serve the site over http(s) &mdash; on the live site this is '
+      + 'handled for you.</p>';
   });
 })();
 </script>

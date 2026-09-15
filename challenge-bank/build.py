@@ -216,6 +216,40 @@ mjx-container[display="true"]{display:block !important;padding:.15em 0 .5em}
 .paper-q-actions button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:3px 9px;font-size:13px;cursor:pointer}
 .paper-q-actions button:hover{border-color:var(--accent);color:var(--accent)}
 .paper-q-bar .paper-ref{font-size:12.5px;color:var(--muted)}
+/* ---- Exam-paper layout: cover, question head, writing space, markscheme ---- */
+.exam-cover{border:2px solid #111827;padding:20px 22px;margin:0 0 26px}
+.ec-prog{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0}
+.ec-subject{font-family:Georgia,"Times New Roman",serif;font-size:25px;letter-spacing:.03em;text-transform:uppercase;margin:8px 0 2px}
+.ec-level{margin:0;font-size:15px;color:#374151}
+.ec-paper{font-family:Georgia,"Times New Roman",serif;font-size:18px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:12px 0 0}
+.ec-facts{width:100%;border-collapse:collapse;margin-top:16px;font-size:13.5px}
+.ec-facts .ec-k{color:var(--muted);padding:7px 14px 7px 0;white-space:nowrap;width:1%}
+.ec-facts .ec-v{padding:7px 26px 7px 0}
+.ec-facts .ec-rule{border-bottom:1px solid #9ca3af;padding:7px 26px 7px 0;width:26%}
+.ec-instr{margin-top:18px;border-top:1px solid #9ca3af;padding-top:12px;font-size:13.5px}
+.ec-instr h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;color:var(--muted)}
+.ec-instr ul{margin:0;padding-left:20px}
+.ec-instr li{margin:3px 0}
+.ec-note{margin:12px 0 0;font-size:13px;color:#374151}
+.exam-run-head{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid #111827;padding-bottom:6px;margin:0 0 16px}
+.paper-q{border-top:0;border-bottom:1px solid var(--line);margin:0;padding:16px 0 6px;break-inside:avoid;page-break-inside:avoid}
+.pq-head{display:flex;align-items:baseline;gap:14px}
+.pq-head h3{margin:0;flex:1 1 auto;min-width:0;font-size:17px;font-weight:600}
+.pq-n{font-weight:700;margin-right:4px}
+.pq-right{flex:0 0 auto;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.pq-right .paper-q-actions{margin:0}
+.builder-cta{border-color:var(--accent);background:var(--accent-soft)}
+.builder-cta h3{margin-top:0}
+.builder-cta ol{margin:10px 0 0;padding-left:20px}
+.builder-cta li{margin:5px 0}
+.pq-marks{display:block;font-size:13px;color:var(--muted);white-space:nowrap}
+.pq-ref{display:block;font-size:11px;color:#9ca3af;letter-spacing:.02em}
+.pq-lines{margin:12px 0 6px}
+.pq-line{display:block;border-bottom:1px dotted #c9c9c9;height:21px}
+.exam-end{text-align:center;font-size:13px;color:var(--muted);letter-spacing:.06em;margin:24px 0 0}
+.exam-ms{break-before:page;page-break-before:always;margin-top:34px}
+.exam-ms h2{text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:17px;letter-spacing:.16em;text-transform:uppercase;border-top:2px solid #111827;border-bottom:2px solid #111827;padding:8px 0;margin:0 0 18px}
+.ms-q .pq-head h3{font-size:16px;font-weight:600}
 @media print{
   header.site nav,footer.site,.controls,input[type=search],select,.paper-switch,.pager,.q-done,.q-done-page{display:none}
   details{border:0} details .body{border-top:0}
@@ -225,9 +259,20 @@ mjx-container[display="true"]{display:block !important;padding:.15em 0 .5em}
   /* single-question export: show ONLY the question block, never the answer */
   body.cb-print-q .q-done-page,body.cb-print-q .q-pick-page,body.cb-print-q .q-pdf,
   body.cb-print-q .qai,body.cb-print-q details,body.cb-print-q .kv,
-  body.cb-print-q .pager,body.cb-print-q .reveal-note,body.cb-print-q #cb-pickbar{display:none !important}
+  body.cb-print-q header.site,body.cb-print-q footer.site,
+  body.cb-print-q .pager,body.cb-print-q .reveal-note,body.cb-print-q #cb-pickbar,
+  body.cb-print-q #dp-ai-root,body.cb-print-q #dp-tools-root{display:none !important}
   /* builder export: hide the on-screen controls, keep the assembled paper */
-  body.cb-print-paper .builder-controls,body.cb-print-paper #cb-pickbar{display:none !important}
+  body.cb-print-paper .builder-controls,body.cb-print-paper #cb-pickbar,
+  body.cb-print-paper #dp-ai-root,body.cb-print-paper #dp-tools-root{display:none !important}
+  /* exam-paper pages (per-subject papers + built papers): drop the whole site
+     chrome so the browser prints the paper, not the website around it */
+  body.cb-paper header.site,body.cb-paper footer.site,body.cb-paper .paper-switch,
+  body.cb-paper .builder-controls,body.cb-paper #cb-pickbar,body.cb-paper .no-print,
+  body.cb-paper #dp-ai-root,body.cb-paper #dp-tools-root{display:none !important}
+  body.cb-paper main,body.cb-paper main>.wrap{max-width:none;width:auto;margin:0;padding:0}
+  .pq-line{height:22px}
+  .exam-cover{break-after:auto}
 }
 """
 
@@ -359,18 +404,27 @@ JS = """
       });
       var capped = hits.slice(0, 60);
       gr.innerHTML = hits.length ? capped.map(function(x){
-        return '<div class="q" data-qid="' + x.id + '"><h3><a href="' + x.u + '">' + x.t + '</a></h3>' +
+        // Same affordances as a subject listing, so a paper can be assembled
+        // straight from a search instead of by walking four subject pages.
+        return '<div class="q" data-qid="' + x.id + '">' +
+               '<div class="q-head">' +
+               '<label class="q-pick-wrap" title="Add this question to your custom paper">' +
+               '<input type="checkbox" class="q-pick" data-qid="' + x.id + '"> <span>Paper</span></label>' +
+               '<h3><a href="' + x.u + '">' + x.t + '</a></h3>' +
+               '<button type="button" class="q-done" data-qid="' + x.id + '" aria-pressed="false">Mark done</button>' +
+               '</div>' +
                '<div class="meta"><span class="chip">' + x.sub + '</span>' +
                (x.topic ? '<span class="chip chip-topic">' + x.topic + '</span>' : '') +
                '<span class="chip">' + x.paper + '</span>' +
                '<span class="chip">' + x.marks + ' marks</span>' +
                '<span class="chip chip-hard">difficulty ' + x.d + '</span></div>' +
-               '<button type="button" class="q-done" data-qid="' + x.id + '" aria-pressed="false">Mark done</button></div>';
+               '</div>';
       }).join('') + (hits.length > capped.length
           ? '<p class="small">' + (hits.length - capped.length) + ' more match -- narrow the search or add a filter.</p>'
           : '')
         : '<p class="empty">No questions match that search.</p>';
       Array.prototype.forEach.call(gr.querySelectorAll('.q-done'), wireToggle);
+      if(window.cbPaintPick) window.cbPaintPick();  // reflect the current selection
     }
 
     if(gSubject) gSubject.addEventListener('change', function(){ topicOptions(); runGlobal(); });
@@ -501,8 +555,15 @@ JS = """
       bar.hidden = n === 0;
     }
   }
-  Array.prototype.forEach.call(document.querySelectorAll('.q-pick'), function(cb){
-    cb.addEventListener('change', function(){ setPick(cb.getAttribute('data-qid'), cb.checked); });
+  // Delegated, because checkboxes are also rendered later -- into the home
+  // page's search results and the builder's own list -- long after this file
+  // has run. A per-element listener bound at load time misses every one of them.
+  document.addEventListener('change', function(e){
+    var cb = e.target;
+    if(cb && cb.classList && cb.classList.contains('q-pick')){
+      var id = cb.getAttribute('data-qid');
+      if(id) setPick(id, cb.checked);
+    }
   });
   var pageBtn = document.querySelector('.q-pick-page');
   if(pageBtn) pageBtn.addEventListener('click', function(){
@@ -648,6 +709,92 @@ def answer_body_html(q):
             "<h4>Markscheme notes</h4>" + md(q.get("markscheme_notes")))
 
 
+def subject_level(slug):
+    """The level lives in the subject slug and nowhere else."""
+    if slug.endswith("-hl"):
+        return "Higher Level"
+    if slug.endswith("-sl"):
+        return "Standard Level"
+    return ""
+
+
+def fmt_minutes(total_marks):
+    """A paper's time budget. IB allows roughly 1.4 minutes a mark and always
+    quotes the result in whole five-minute units."""
+    minutes = max(30, int(round(total_marks * 1.4 / 5.0) * 5))
+    h, m = divmod(minutes, 60)
+    if not h:
+        return "%d minutes" % m
+    return "%d hour%s%s" % (h, "s" if h > 1 else "", " %d minutes" % m if m else "")
+
+
+def time_label(total_marks):
+    """A real IB paper tops out near 90 marks (2h15). A complete subject set does
+    not fit one sitting, and calling its total "suggested time" would be a lie
+    about how the paper is meant to be used."""
+    return "Suggested time" if total_marks <= 180 else "Working time"
+
+
+def ruled_lines(marks, cap=12):
+    """Writing space proportional to the marks on offer — about a line a mark,
+    never a two-line stub and never most of a page."""
+    n = max(2, min(cap, -(-int(marks or 1) * 6 // 5)))  # ceil(marks * 1.2)
+    return '<div class="pq-lines">%s</div>' % ('<span class="pq-line"></span>' * n)
+
+
+def exam_cover(meta, slug, *, answers, count, marks):
+    """The cover block. A real paper opens with programme / subject / level /
+    paper, the candidate's own details, the time and mark budget, and what the
+    candidate is and is not allowed to do."""
+    if answers:
+        paper_line = "Markscheme"
+        instr = [
+            "This booklet gives the answers and markschemes for the matching question paper.",
+            "Award marks against the working shown, not only against the final value.",
+            "Each answer states the markscheme logic, so partial credit can be judged fairly.",
+            "Questions are numbered exactly as they are in the question paper.",
+        ]
+        note = ("Do not open this until you have written your own answers. Reading a markscheme "
+                "first replaces the thinking the question exists to make you do.")
+    else:
+        paper_line = "Challenge question paper"
+        instr = [
+            "Do not open this paper until instructed to do so.",
+            "Answer <b>all</b> questions. Show all working.",
+            "The number of marks available is shown in brackets [ ] after each question or part.",
+            "Write your answers in the spaces provided.",
+            "A calculator is permitted.",
+            "No answers are printed in this paper. Attempt every question before opening the markscheme.",
+        ]
+        note = ""
+        if marks > 180:
+            instr.append("This paper is a complete subject set (%d questions, %d marks). It is not a "
+                         "single sitting \u2014 split it across sessions and mark each part before "
+                         "moving on." % (count, marks))
+    facts = (
+        '<table class="ec-facts">'
+        '<tr><td class="ec-k">Candidate name</td><td class="ec-rule"></td>'
+        '<td class="ec-k">Date</td><td class="ec-rule"></td></tr>'
+        '<tr><td class="ec-k">Questions</td><td class="ec-v">%d</td>'
+        '<td class="ec-k">Total marks</td><td class="ec-v">%d</td></tr>'
+        '<tr><td class="ec-k">%s</td><td class="ec-v">%s</td>'
+        '<td class="ec-k">Calculator</td><td class="ec-v">permitted</td></tr>'
+        '</table>' % (count, marks, time_label(marks), fmt_minutes(marks))
+    )
+    note_html = '<p class="ec-note">%s</p>' % note if note else ""
+    return """<section class="exam-cover">
+<p class="ec-prog">IB Diploma Programme</p>
+<h1 class="ec-subject">{subject}</h1>
+<p class="ec-level">{level}</p>
+<p class="ec-paper">{line}</p>
+{facts}
+<div class="ec-instr"><h2>Instructions to candidates</h2><ul>{instr}</ul></div>
+{note}
+</section>""".format(subject=html.escape(meta["name"]), level=html.escape(subject_level(slug)),
+                     line=html.escape(paper_line), facts=facts,
+                     instr="".join("<li>%s</li>" % s for s in instr), note=note_html)
+
+
 def build_bank(all_qs):
     """Flat, browser-loadable copy of every question's printable content.
 
@@ -661,6 +808,8 @@ def build_bank(all_qs):
             out.append({
                 "id": q["id"],
                 "subject": SUBJECTS[slug]["short"],
+                "subject_name": SUBJECTS[slug]["name"],
+                "subject_level": subject_level(slug),
                 "level": q.get("level"),
                 "topic": q.get("topic") or "",
                 "subtopic": q.get("subtopic") or "",
@@ -679,7 +828,7 @@ def build_bank(all_qs):
 # --------------------------------------------------------------------------
 # page scaffolding
 # --------------------------------------------------------------------------
-def page(title, body, subject=None, mathjax=False, extra_head=""):
+def page(title, body, subject=None, mathjax=False, extra_head="", body_class=""):
     nav = "".join(
         '<a href="../%s/index.html">%s</a>' % (slug, SUBJECTS[slug]["short"])
         for slug in SUBJECTS
@@ -687,6 +836,7 @@ def page(title, body, subject=None, mathjax=False, extra_head=""):
     # Depth 0 at site/index.html, depth 1 at site/<subject>/ and site/q/.
     # The main study system sits two levels above the site root.
     up = "../../" if not subject else "../../../"
+    body_attr = ' class="%s"' % body_class if body_class else ''
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -696,10 +846,10 @@ def page(title, body, subject=None, mathjax=False, extra_head=""):
 <link rel="stylesheet" href="{'../' if subject else ''}assets/site.css">
 {MATHJAX if mathjax else ''}{extra_head}
 </head>
-<body>
+<body{body_attr}>
 <header class="site"><div class="wrap">
   <a class="brand" href="{'../index.html' if subject else 'index.html'}">IB Challenge Bank</a>
-  <nav>{nav}<a href="{'../index.html' if subject else 'index.html'}">About</a><a class="ext" href="{up}index.html">Study system &#8599;</a></nav>
+  <nav>{nav}<a href="{'../' if subject else ''}papers/builder.html">Paper builder</a><a href="{'../index.html' if subject else 'index.html'}">About</a><a class="ext" href="{up}index.html">Study system &#8599;</a></nav>
 </div></header>
 <main><div class="wrap">
 {body}
@@ -715,7 +865,7 @@ def page(title, body, subject=None, mathjax=False, extra_head=""):
   <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
 </div>
 <script src="{'../' if subject else ''}assets/site.js"></script>
-<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=3" defer></script>
 </body>
 </html>
 """
@@ -857,50 +1007,51 @@ def build_question_page(q, slug):
 
 
 def build_paper(slug, qs, answers=False):
-    """A printable paper, or its matching answer booklet, for one subject."""
+    """A printable exam-style paper, or its matching markscheme, for one subject.
+
+    Deliberately NOT a restyled copy of the on-screen listing. It is laid out the
+    way a real paper is: a cover carrying the candidate's own details and the
+    instructions, questions numbered with their mark allocation in the right-hand
+    margin and writing space sized from the marks on offer, and — for the
+    markscheme — a section that starts on its own page.
+    """
     meta = SUBJECTS[slug]
     total = sum(q["marks"] for q in qs)
+    kind = "Markscheme" if answers else "Question paper"
     blocks = []
     for i, q in enumerate(qs, 1):
+        title = html.escape(q.get("title") or q["subtopic"])
+        head = (
+            '<div class="pq-head"><h3><span class="pq-n">%d.</span> %s</h3>'
+            '<span class="pq-right"><span class="pq-marks">[%d mark%s]</span>'
+            '<span class="pq-ref">%s</span></span></div>'
+            % (i, title, q["marks"], "" if q["marks"] == 1 else "s", html.escape(q["id"]))
+        )
         if answers:
-            blocks.append(f"""<section class="paper-q">
-<h3>{i}. {html.escape(q['id'])} <span class="paper-marks">{q['marks']} marks</span></h3>
-{md(q.get('answer'))}
-<h4>Markscheme notes</h4>
-{md(q.get('markscheme_notes'))}
-</section>""")
+            meta_line = " \u00b7 ".join(x for x in [
+                html.escape(q.get("topic") or ""),
+                html.escape(q.get("syllabus_ref") or ""),
+                "difficulty %s" % q["difficulty"],
+            ] if x)
+            blocks.append('<section class="paper-q ms-q">\n%s\n<p class="pq-ref">%s</p>\n%s</section>'
+                          % (head, meta_line, answer_body_html(q)))
         else:
-            parts = "".join(
-                '<li><span class="marks">[%s mark%s]</span><strong>(%s)</strong> %s%s</li>'
-                % (p["marks"], "" if p["marks"] == 1 else "s",
-                   html.escape(p["label"]), md(p["text"]),
-                   " <em>(%s)</em>" % html.escape(p["command_term"]) if p.get("command_term") else "")
-                for p in q.get("parts") or []
-            )
-            blocks.append(f"""<section class="paper-q">
-<h3>{i}. {html.escape(q.get('title') or q['subtopic'])} <span class="paper-marks">{q['marks']} marks</span></h3>
-<p class="paper-ref">{html.escape(q['id'])} · {html.escape(q.get('syllabus_ref', ''))} · difficulty {q['difficulty']}</p>
-{stimulus_html(q.get('stimulus'))}
-{figure_html(q.get('figure'))}
-{md(q.get('question'))}
-<ol class="parts">{parts}</ol>
-</section>""")
-    kind = "Answer booklet" if answers else "Question paper"
-    lede = ("Answers, markschemes and examiner notes. Do not open this until you have written your own "
-            "answers." if answers else
-            "No answers are printed in this paper. Attempt every question in writing before opening the "
-            "matching answer booklet.")
-    switch = ('<a href="%s-paper.html">&#8592; Question paper</a>' % slug if answers
-              else '<a href="%s-answers.html">Answer booklet &#8594;</a>' % slug)
-    body = f"""
-<h1>{html.escape(meta['name'])} — Challenge {kind}</h1>
-<p class="lede">{len(qs)} questions · {total} marks · difficulty 4–5 · May 2028 cohort</p>
-<p class="reveal-note">{lede}</p>
-<p class="paper-switch">{switch}</p>
-{''.join(blocks)}
-"""
-    return page("%s — Challenge %s" % (meta["short"], kind), body, subject=slug,
-                mathjax=meta["mathjax"])
+            blocks.append('<section class="paper-q">\n%s\n%s\n%s</section>'
+                          % (head, question_body_html(q), ruled_lines(q["marks"])))
+    switch = ('<p class="paper-switch"><a href="%s-paper.html">&#8592; Question paper</a></p>' % slug
+              if answers
+              else '<p class="paper-switch"><a href="%s-answers.html">Markscheme &#8594;</a></p>' % slug)
+    run_head = ('<div class="exam-run-head"><span>%s \u00b7 %s</span>'
+                '<span>%d questions \u00b7 %d marks \u00b7 %s</span></div>'
+                % (html.escape(meta["short"]), html.escape(kind), len(qs), total, fmt_minutes(total)))
+    cover = exam_cover(meta, slug, answers=answers, count=len(qs), marks=total)
+    if answers:
+        body = cover + '<section class="exam-ms"><h2>Markscheme</h2>%s%s</section>' % (run_head, "".join(blocks))
+    else:
+        body = (cover + switch + run_head + "".join(blocks)
+                + '<p class="exam-end">End of questions \u00b7 %d marks in total</p>' % total)
+    return page("%s \u2014 %s" % (meta["short"], kind), body, subject=slug,
+                mathjax=meta["mathjax"], body_class="cb-paper")
 
 
 def build_subject_page(slug, qs):
@@ -973,14 +1124,28 @@ question with the numbers changed, and nothing is a one-step recall item. Each q
 how it was verified.</p>
 <h2>Browse by subject</h2>
 <div class="cards">{''.join(cards)}</div>
-<h2>Printable papers</h2>
-<p>Each subject is also assembled into a printable question paper and a matching answer booklet, so a
-whole set can be attempted under exam conditions away from the screen. Open the paper, print it, then
-mark against the booklet.</p>
+<h2>Papers</h2>
+<div class="card builder-cta">
+  <h3><a href="papers/builder.html">Build your own paper &#8594;</a></h3>
+  <p>Pick any questions, from any subject, and assemble them into a printable paper laid out like a real
+  exam — cover page, instructions, questions numbered with their marks in the margin, writing space for
+  each answer, and a markscheme on its own pages.</p>
+  <ol>
+    <li>Tick <strong>Paper</strong> next to a question — here in the search results, or on a subject page.</li>
+    <li>A bar appears at the bottom of the screen showing how many you have picked. It follows you from
+    page to page, so you can build a paper across subjects.</li>
+    <li>Press <strong>Build paper</strong>, tick <em>Include the markscheme</em> if you want the answers,
+    then <strong>Print / Save as PDF</strong>.</li>
+  </ol>
+</div>
+<h3>Ready-made papers</h3>
+<p>Each subject is also assembled into a printable question paper and a matching markscheme, so a whole
+set can be attempted under exam conditions away from the screen. Every paper uses the same exam layout as
+the builder, and the markscheme starts on its own page.</p>
 <ul>{''.join(
     '<li><strong>%s</strong> — %d questions, %d marks · '
     '<a href="papers/%s-paper.html">question paper</a> · '
-    '<a href="papers/%s-answers.html">answer booklet</a></li>'
+    '<a href="papers/%s-answers.html">markscheme</a></li>'
     % (html.escape(SUBJECTS[s]['short']), len(all_qs.get(s, [])),
        sum(q['marks'] for q in all_qs.get(s, [])), s, s)
     for s in SUBJECTS if all_qs.get(s)
@@ -1001,6 +1166,8 @@ The topic list follows the subject you pick.</p>
   <li>Attempt the question in writing first — timed, closed book, under exam conditions for that paper.</li>
   <li>Only then open <em>Reveal the answer</em>. Compare method, not just the final value.</li>
   <li>Read <em>Markscheme notes</em> for what earns partial credit and what the common errors are.</li>
+  <li>To work away from the screen, tick <em>Paper</em> on the questions you want and print them from the
+  <a href="papers/builder.html">paper builder</a>; or print a whole subject at once.</li>
   <li>Read <em>Why this question is hard</em> last; it names the trap the question is built around.</li>
 </ul>
 """
@@ -1020,90 +1187,188 @@ BUILDER_PAGE = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Build your own exam paper — IB Challenge Bank</title>
+<title>Build your own exam paper &mdash; IB Challenge Bank</title>
 <link rel="stylesheet" href="../assets/site.css">
 __MATHJAX__
 </head>
-<body>
+<body class="cb-paper">
 <header class="site"><div class="wrap">
   <a class="brand" href="../index.html">IB Challenge Bank</a>
-  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../index.html">About</a><a class="ext" href="../../index.html">Study system &#8599;</a></nav>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../index.html">Study system &#8599;</a></nav>
 </div></header>
 <main><div class="wrap">
-<h1>Build your own exam paper</h1>
-<p class="lede">Tick <strong>Add to paper</strong> on any question, across any subject, then assemble them here into a printable, exam-style paper.</p>
-<div class="builder-controls" id="b-controls">
-  <label class="b-answers"><input type="checkbox" id="b-answers"> Include answers &amp; markschemes</label>
+<div class="builder-controls">
+  <label class="b-answers"><input type="checkbox" id="b-answers"> Include the markscheme (starts on a new page)</label>
   <button type="button" class="btn" id="b-print">Print / Save as PDF</button>
   <button type="button" class="btn" id="b-clear">Clear selection</button>
   <span class="b-total" id="b-total"></span>
   <a class="btn" href="../index.html">&#8592; Back to the bank</a>
 </div>
-<div id="b-list"></div>
+<div id="b-paper"></div>
 <div id="b-empty" class="empty" hidden>
   <p><strong>No questions selected yet.</strong></p>
-  <p>Open any subject page, tick <strong>Add to paper</strong> on the questions you want, then return here. Your selection is kept in this browser.</p>
+  <p>Tick <strong>Paper</strong> next to any question &mdash; in the search results on the home page or on a
+  subject page &mdash; or press <strong>Add to paper</strong> on a question&#39;s own page. The bar at the
+  bottom of the screen keeps the count, and your selection is remembered in this browser, so you can gather
+  questions from several subjects before you build.</p>
+  <p><a class="btn" href="../index.html">Browse the bank &#8594;</a></p>
 </div>
 </div></main>
 <footer class="site"><div class="wrap">
   Part of the <a href="../../index.html">DP study system</a>.
 </div></footer>
 <script src="../assets/site.js"></script>
-<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=3" defer></script>
 <script>
+// The paper is assembled in the browser from data/bank.json (no backend): this
+// page reads the selection that the site-wide picker keeps in localStorage and
+// lays the questions out as an exam paper -- cover, numbered questions with the
+// mark allocation in the right-hand margin, ruled writing space sized from the
+// marks, and an optional markscheme that starts on its own page.
 (function(){
-  var LIST=document.getElementById('b-list');
+  var PAPER=document.getElementById('b-paper');
   var EMPTY=document.getElementById('b-empty');
   var TOTAL=document.getElementById('b-total');
   var ANS=document.getElementById('b-answers');
-  function pick(){ try{return JSON.parse(localStorage.getItem('cb_pick_v1')||'[]');}catch(e){return [];} }
-  function savePick(a){ try{localStorage.setItem('cb_pick_v1',JSON.stringify(a));}catch(e){} }
-  function typeset(){
-    if(window.MathJax && MathJax.typesetPromise){ MathJax.typesetPromise([LIST]).then(function(){ if(typeof fixInlineMath==='function') fixInlineMath(); }); }
-    else if(typeof fixInlineMath==='function'){ fixInlineMath(); }
+  var KEY='cb_pick_v1';
+
+  function esc(s){
+    return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+    });
   }
-  fetch('../data/bank.json').then(function(r){return r.json();}).then(function(bank){
-    var byId={}; bank.forEach(function(q){byId[q.id]=q;});
-    function render(){
-      var ids=pick();
-      if(!ids.length){ LIST.innerHTML=''; EMPTY.hidden=false; TOTAL.textContent=''; return; }
-      EMPTY.hidden=true;
-      var total=0;
-      LIST.innerHTML = ids.map(function(id,i){
-        var q=byId[id]; if(!q){return '';}
-        total += parseInt(q.marks,10)||0;
-        return '<section class="paper-q" data-qid="'+id+'">'
-          + '<div class="paper-q-bar"><span class="paper-marks">'+q.marks+' marks</span>'
-          + '<span class="paper-ref">'+q.id+' · '+q.syllabus_ref+' · difficulty '+q.difficulty+'</span>'
-          + '<span class="paper-q-actions">'
-          + (i>0?'<button type="button" class="b-up" data-id="'+id+'">↑</button>':'')
-          + (i<ids.length-1?'<button type="button" class="b-down" data-id="'+id+'">↓</button>':'')
-          + '<button type="button" class="b-remove" data-id="'+id+'">Remove</button></span></div>'
-          + '<h3>'+(i+1)+'. '+q.title+'</h3>'
-          + q.q_html
-          + (ANS.checked?'<details class="b-ans" open><summary>Answer &amp; markscheme</summary><div class="body">'+q.a_html+'</div></details>':'')
-          + '</section>';
-      }).join('');
-      TOTAL.textContent = ids.length+' question'+(ids.length===1?'':'s')+' · '+total+' marks total';
-      Array.prototype.forEach.call(LIST.querySelectorAll('.b-remove'),function(b){b.addEventListener('click',function(){var a=pick();var i=a.indexOf(b.getAttribute('data-id'));if(i>-1){a.splice(i,1);savePick(a);render();if(window.cbPaintPick)window.cbPaintPick();}});});
-      Array.prototype.forEach.call(LIST.querySelectorAll('.b-up'),function(b){b.addEventListener('click',function(){var a=pick();var i=a.indexOf(b.getAttribute('data-id'));if(i>0){a.splice(i,1);a.splice(i-1,0,b.getAttribute('data-id'));savePick(a);render();}});});
-      Array.prototype.forEach.call(LIST.querySelectorAll('.b-down'),function(b){b.addEventListener('click',function(){var a=pick();var i=a.indexOf(b.getAttribute('data-id'));if(i>-1&&i<a.length-1){a.splice(i,1);a.splice(i+1,0,b.getAttribute('data-id'));savePick(a);render();}});});
-      typeset();
+  function pick(){ try{ return JSON.parse(localStorage.getItem(KEY)||'[]'); }catch(e){ return []; } }
+  function savePick(a){ try{ localStorage.setItem(KEY,JSON.stringify(a)); }catch(e){} }
+  function typeset(){
+    if(window.MathJax && MathJax.typesetPromise){
+      MathJax.typesetPromise([PAPER]).then(function(){ if(typeof fixInlineMath==='function') fixInlineMath(); });
+    } else if(typeof fixInlineMath==='function'){ fixInlineMath(); }
+  }
+  // A paper's time budget: about 1.4 minutes a mark, quoted in whole 5s.
+  function fmtMinutes(t){
+    var m=Math.max(30,Math.round(t*1.4/5)*5), h=Math.floor(m/60), r=m%60;
+    if(!h) return r+' minutes';
+    return h+' hour'+(h>1?'s':'')+(r?' '+r+' minutes':'');
+  }
+  // Writing space proportional to the marks on offer.
+  function ruled(marks){
+    var n=Math.max(2,Math.min(12,Math.ceil((marks||1)*1.2))), s='', i;
+    for(i=0;i<n;i++) s+='<span class="pq-line"></span>';
+    return '<div class="pq-lines">'+s+'</div>';
+  }
+  function marksLabel(m){ return '['+(m==null?'\u2014':m)+' mark'+(m===1?'':'s')+']'; }
+  // A real paper tops out near 90 marks; a complete subject set does not fit one
+  // sitting, so its total is working time rather than a suggested duration.
+  function timeLabel(t){ return t<=180 ? 'Suggested time' : 'Working time'; }
+  function cover(items,total){
+    var names={}, lean=items[0]||{};
+    items.forEach(function(q){ if(q.subject_name) names[q.subject_name]=1; });
+    var keys=Object.keys(names);
+    var subject = keys.length===1 ? keys[0] : 'Mixed subjects';
+    var level   = keys.length===1 ? (lean.subject_level||'') : 'Questions from more than one subject';
+    return '<section class="exam-cover">'
+      + '<p class="ec-prog">IB Diploma Programme</p>'
+      + '<h1 class="ec-subject">'+esc(subject)+'</h1>'
+      + '<p class="ec-level">'+esc(level)+'</p>'
+      + '<p class="ec-paper">Practice paper</p>'
+      + '<table class="ec-facts">'
+      + '<tr><td class="ec-k">Candidate name</td><td class="ec-rule"></td>'
+      + '<td class="ec-k">Date</td><td class="ec-rule"></td></tr>'
+      + '<tr><td class="ec-k">Questions</td><td class="ec-v">'+items.length+'</td>'
+      + '<td class="ec-k">Total marks</td><td class="ec-v">'+total+'</td></tr>'
+      + '<tr><td class="ec-k">'+timeLabel(total)+'</td><td class="ec-v">'+fmtMinutes(total)+'</td>'
+      + '<td class="ec-k">Calculator</td><td class="ec-v">permitted</td></tr>'
+      + '</table>'
+      + '<div class="ec-instr"><h2>Instructions to candidates</h2><ul>'
+      + '<li>Do not open this paper until instructed to do so.</li>'
+      + '<li>Answer <b>all</b> questions. Show all working.</li>'
+      + '<li>The number of marks available is shown in brackets [ ] after each question or part.</li>'
+      + '<li>Write your answers in the spaces provided.</li>'
+      + '<li>A calculator is permitted.</li>'
+      + (total>180 ? '<li>This paper is long ('+items.length+' questions, '+total+' marks), so it is not a '
+          + 'single sitting \u2014 split it into parts and mark each part before moving on.</li>' : '')
+      + (ANS.checked
+          ? '<li>The markscheme follows the questions, starting on a new page. Attempt the paper first.</li>'
+          : '<li>No markscheme is included in this printing.</li>')
+      + '</ul></div></section>';
+  }
+  function move(id,delta){
+    var a=pick(), i=a.indexOf(id), j=i+delta;
+    if(i<0||j<0||j>=a.length) return;
+    a.splice(i,1); a.splice(j,0,id); savePick(a); render();
+  }
+  function paperHead(q,i,n){
+    return '<div class="pq-head"><h3><span class="pq-n">'+i+'.</span> '+esc(q.title)+'</h3>'
+      + '<span class="pq-right">'
+      + '<span class="pq-marks">'+marksLabel(q.marks)+'</span>'
+      + '<span class="pq-ref">'+esc(q.id)+'</span>'
+      + '<span class="paper-q-actions no-print">'
+      + (i>1?'<button type="button" class="b-up" data-id="'+esc(q.id)+'" title="Move up">&#8593;</button>':'')
+      + (i<n?'<button type="button" class="b-down" data-id="'+esc(q.id)+'" title="Move down">&#8595;</button>':'')
+      + '<button type="button" class="b-remove" data-id="'+esc(q.id)+'">Remove</button>'
+      + '</span></span></div>';
+  }
+  function render(){
+    var ids=pick(), items=[], total=0;
+    ids.forEach(function(id){ var q=byId[id]; if(q){ items.push(q); total += parseInt(q.marks,10)||0; } });
+    if(!items.length){
+      PAPER.innerHTML=''; EMPTY.hidden=false; TOTAL.textContent=''; return;
     }
+    EMPTY.hidden=true;
+    var n=items.length;
+    var qHtml = items.map(function(q,i){
+      return '<section class="paper-q">'+paperHead(q,i+1,n)+q.q_html+ruled(q.marks)+'</section>';
+    }).join('');
+    var msHtml = items.map(function(q,i){
+      var ref=[q.topic,q.syllabus_ref,'difficulty '+q.difficulty].filter(Boolean).join(' \u00b7 ');
+      return '<section class="paper-q ms-q">'
+        + '<div class="pq-head"><h3><span class="pq-n">'+(i+1)+'.</span> '+esc(q.title)+'</h3>'
+        + '<span class="pq-right"><span class="pq-marks">'+marksLabel(q.marks)+'</span>'
+        + '<span class="pq-ref">'+esc(ref)+'</span></span></div>'
+        + q.a_html + '</section>';
+    }).join('');
+    PAPER.innerHTML = cover(items,total)
+      + '<div class="exam-run-head"><span>Practice paper</span><span>'
+      + n+' questions \u00b7 '+total+' marks \u00b7 '+fmtMinutes(total)+'</span></div>'
+      + qHtml
+      + '<p class="exam-end">End of questions \u00b7 '+total+' marks in total</p>'
+      + (ANS.checked ? '<section class="exam-ms"><h2>Markscheme</h2>'+msHtml+'</section>' : '');
+    TOTAL.textContent = n+' question'+(n===1?'':'s')+' \u00b7 '+total+' marks';
+    Array.prototype.forEach.call(PAPER.querySelectorAll('.b-remove'),function(b){
+      b.addEventListener('click',function(){
+        var a=pick(), i=a.indexOf(b.getAttribute('data-id'));
+        if(i>-1){ a.splice(i,1); savePick(a); render(); if(window.cbPaintPick) window.cbPaintPick(); }
+      });
+    });
+    Array.prototype.forEach.call(PAPER.querySelectorAll('.b-up'),function(b){
+      b.addEventListener('click',function(){ move(b.getAttribute('data-id'),-1); });
+    });
+    Array.prototype.forEach.call(PAPER.querySelectorAll('.b-down'),function(b){
+      b.addEventListener('click',function(){ move(b.getAttribute('data-id'),1); });
+    });
+    typeset();
+  }
+  var byId={};
+  fetch('../data/bank.json').then(function(r){ return r.json(); }).then(function(bank){
+    bank.forEach(function(q){ byId[q.id]=q; });
     ANS.addEventListener('change',render);
     document.getElementById('b-print').addEventListener('click',function(){
       document.body.classList.add('cb-print-paper');
-      var done=function(){document.body.classList.remove('cb-print-paper');window.removeEventListener('afterprint',done);};
+      var done=function(){ document.body.classList.remove('cb-print-paper'); window.removeEventListener('afterprint',done); };
       window.addEventListener('afterprint',done);
       window.print();
-      setTimeout(function(){document.body.classList.remove('cb-print-paper');},1200);
+      setTimeout(function(){ document.body.classList.remove('cb-print-paper'); },1200);
     });
     document.getElementById('b-clear').addEventListener('click',function(){
-      if(confirm('Clear all selected questions?')){ savePick([]); render(); if(window.cbPaintPick)window.cbPaintPick(); }
+      if(confirm('Clear all selected questions?')){ savePick([]); render(); if(window.cbPaintPick) window.cbPaintPick(); }
     });
     render();
-  }).catch(function(e){
-    LIST.innerHTML='<p class="empty">Could not load the question bank data (bank.json). If you opened this page from disk, serve it over http(s) instead.</p>';
+  }).catch(function(){
+    EMPTY.hidden=false;
+    EMPTY.innerHTML='<p><strong>Could not load the question bank data.</strong></p>'
+      + '<p>This page reads <code>data/bank.json</code> next to it with <code>fetch</code>, which browsers '
+      + 'block for <code>file://</code> pages. Serve the site over http(s) &mdash; on the live site this is '
+      + 'handled for you.</p>';
   });
 })();
 </script>
