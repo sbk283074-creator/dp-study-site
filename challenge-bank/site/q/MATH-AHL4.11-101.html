@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL4.11-101 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>4.11 A payout of 2^k occurring with probability 2^-k: the expected value of the uncapped game does not converge, the cap at 2^20 makes it exactly 21, and the probability of recovering the fair entry fee is only one sixteenth, so the expected value and the chance of finishing ahead point in opposite directions</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL4.11-101</p>
+<button type="button" class="q-done-page" data-qid="MATH-AHL4.11-101" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="MATH-AHL4.11-101">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Topic 4: Statistics and probability</span><span class="chip chip-key">AHL 4.11 (expected value of a discrete random variable with an unbounded set of outcomes) with AHL 4.14 (variance and standard deviation of a discrete random variable) and AHL 5.13 (limits of sequences and the convergence of a series)</span><span class="chip">P2 · Section B</span><span class="chip">14 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: permitted</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">Determine</span><span class="chip">Explain</span></div>
+
+
+<section id="q-print">
+<h2>Question</h2>
+<p>A casino offers the following game. A fair coin is tossed repeatedly until it shows a head for the first time. If that first head appears on toss $k$, the player receives $2^{k}$ dollars. So a head on the first toss pays $2$, a head on the second pays $4$, a head on the third pays $8$, and so on. Let $X$ be the payout, so that $\Pr(X = 2^{k}) = 2^{-k}$ for $k = 1, 2, 3, \ldots$ The casino protects itself with a cap: no payout exceeds $2^{20} = 1\,048\,576$ dollars, so a player whose first head arrives on toss $21$ or later receives $2^{20}$ dollars. The entry fee is to be set at the expected payout of the capped game. All answers should be given exactly where the question asks for an exact value, and $2^{20}$ may be left in that form.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Show that $\Pr(X = 2^{k}) = 2^{-k}$ defines a valid probability distribution on $k = 1, 2, 3, \ldots$, and show that the expected payout of the uncapped game does not converge.</p> <em>(Show that)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Determine the expected payout of the capped game, and hence the fair entry fee, evaluating the contribution of the tail $k \ge 21$ explicitly.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Determine the probability that a single play returns at least the fair entry fee, and the probability that a single play returns no more than $\$4$.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Explain why a player who decides by maximising expected monetary value and a player who decides by maximising the probability of finishing ahead reach opposite conclusions about paying the fair entry fee. Support your explanation with the expected payout, the probability from part (c), and the standard deviation of the payout.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 14 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Math AA HL" data-ai-diff="5" data-ai-marks="14" data-ai-ref="MATH-AHL4.11-101">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>A casino offers the following game. A fair coin is tossed repeatedly until it shows a head for the first time. If that first head appears on toss $k$, the player receives $2^{k}$ dollars. So a head on the first toss pays $2$, a head on the second pays $4$, a head on the third pays $8$, and so on. Let $X$ be the payout, so that $\Pr(X = 2^{k}) = 2^{-k}$ for $k = 1, 2, 3, \ldots$ The casino protects itself with a cap: no payout exceeds $2^{20} = 1\,048\,576$ dollars, so a player whose first head arrives on toss $21$ or later receives $2^{20}$ dollars. The entry fee is to be set at the expected payout of the capped game. All answers should be given exactly where the question asks for an exact value, and $2^{20}$ may be left in that form.
+
+(a) Show that $\Pr(X = 2^{k}) = 2^{-k}$ defines a valid probability distribution on $k = 1, 2, 3, \ldots$, and show that the expected payout of the uncapped game does not converge. [3 marks] (Show that)
+(b) Determine the expected payout of the capped game, and hence the fair entry fee, evaluating the contribution of the tail $k \ge 21$ explicitly. [4 marks] (Determine)
+(c) Determine the probability that a single play returns at least the fair entry fee, and the probability that a single play returns no more than $\$4$. [3 marks] (Determine)
+(d) Explain why a player who decides by maximising expected monetary value and a player who decides by maximising the probability of finishing ahead reach opposite conclusions about paying the fair entry fee. Support your explanation with the expected payout, the probability from part (c), and the standard deviation of the payout. [4 marks] (Explain)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The probabilities are $2^{-1}, 2^{-2}, 2^{-3}, \ldots$, so their sum is a geometric series with first term $\tfrac{1}{2}$ and ratio $\tfrac{1}{2}$:<br>$$\sum_{k \ge 1}2^{-k} = \frac{1/2}{1 - 1/2} = 1 \;(M1)(A1).$$Every term is positive and the sum is $1$, so this is a valid distribution.<br>The expected payout without the cap is<br>$$\sum_{k \ge 1}2^{k}\cdot 2^{-k} = \sum_{k \ge 1}1 = 1 + 1 + 1 + \cdots \;(M1),$$<br>and the partial sums are $1, 2, 3, \ldots, n$ after $n$ terms, which grow without bound (A1). The expectation therefore does not converge. The cause is that the payout doubles exactly as fast as the probability halves, so the two factors cancel in every term and nothing is left to make the terms shrink.<br><strong>(b)</strong> With the cap, the payout is $2^{k}$ for $1 \le k \le 20$ and $2^{20}$ for $k \ge 21$. For the first twenty terms the factors again cancel, so each contributes $1$ and the total is $20$ (M1). For the tail,<br>$$\sum_{k \ge 21}2^{-k} = 2^{-20}, \;(M1)$$<br>which is the probability that the first head arrives on toss $21$ or later, so the tail contributes<br>$$2^{20}\cdot 2^{-20} = 1 \;(A1).$$<br>Hence $\mathbb{E}(X) = 20 + 1 = 21$ dollars, and the fair entry fee is $\$21$ (A1). The cap has turned an infinite expectation into a finite one, and the whole of the tail contributes exactly as much as one of the early terms.<br><strong>(c)</strong> The payout reaches the fee of $\$21$ when $2^{k} \ge 21$, that is when $k \ge 5$, since $2^{4} = 16 &lt; 21$ and $2^{5} = 32 \ge 21$ (M1). Therefore<br>$$\Pr(X \ge 21) = \sum_{k \ge 5}2^{-k} = 2^{-4} = \frac{1}{16} \;(A1).$$<br>A play returns no more than $\$4$ when $k \le 2$, so<br>$$\Pr(X \le 4) = 2^{-1} + 2^{-2} = \frac{3}{4} \;(A1).$$<br>So the player recovers the fee in one play out of sixteen, and finishes with $\$4$ or less in three plays out of four.<br><strong>(d)</strong> The two players are answering different questions with the same data. The expected-value player asks what the average payout would be over infinitely many plays, and the answer is $\$21$, so at a fee of $\$21$ the game is exactly fair and playing is no worse than not playing (A1). The second player asks what will happen on the single play that is actually available, and from part (c) the probability of finishing ahead is $\tfrac{1}{16}$, while the probability of finishing behind is $\tfrac{15}{16}$ (A1).<br>The reason the two answers can both be correct is that the mean of a heavily skewed distribution is not a typical value. Computing $\mathbb{E}(X^{2}) = \sum_{k=1}^{20}2^{k} + 2^{20} = (2^{21} - 2) + 2^{20} = 3\,145\,726$ gives<br>$$\operatorname{Var}(X) = 3\,145\,726 - 21^{2} = 3\,145\,285, \qquad \sigma_{X} \approx 1773.5 \;(A1).$$<br>A standard deviation of about $1773$ against a mean of $21$ says that a single play is almost always either far below the mean or vastly above it; the mean is produced by the rare large payouts and describes none of the outcomes the player is likely to see. A player who can afford many plays, or who can pool the game with others, is buying the mean and the expected-value argument applies. A player who plays once is buying a $\tfrac{1}{16}$ chance of a good outcome, and the correct decision depends on which of those two situations the player is in (A1).</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) for recognising the geometric series and summing it, (A1) for the value $1$, (M1) for writing the expectation as a sum of ones, (A1) for the conclusion that the partial sums grow without bound. A candidate who says the expectation is infinite because the payout is unbounded has the right conclusion for the wrong reason and scores (M1)(A1) only; boundedness of the payout is not the test, and the uncapped payout is unbounded in any case. The reason required is that the terms of the expectation are all equal to one.<br>(b) (M1) for splitting the sum at $k = 20$, (M1) for the tail probability $2^{-20}$, (A1) for the tail contribution $1$, (A1) for $\mathbb{E}(X) = 21$. A candidate who computes $20$ and forgets the tail has capped the payout without allowing for the probability mass beyond the cap, and loses the last two marks; that probability mass is not zero, and its contribution is not negligible in the sense that it is a whole unit of the answer.<br>(c) (M1) for the inequality $2^{k} \ge 21$ leading to $k \ge 5$, (A1) for $1/16$, (A1) for $3/4$. A candidate who uses $k \ge 4$ because $2^{4} = 16$ is close to $21$ loses the first (A1); the comparison is exact and $16 &lt; 21$. A candidate who answers $1/16$ for the second probability has answered the complementary event.<br>(d) (A1) for the expected-value argument, (A1) for the $\tfrac{1}{16}$ against $\tfrac{15}{16}$ comparison, (A1) for $\mathbb{E}(X^{2}) = 3\,145\,726$ and $\sigma_{X} \approx 1773.5$, (A1) for the conclusion that the mean is not a typical value and that the decision depends on whether the player is buying the mean or a single outcome. Condonation: a candidate who computes the variance as $3\,145\,285$ and the standard deviation as $1773$ to four significant figures scores the third (A1) in full. A candidate who writes that the game is \"not worth playing\" or \"worth playing\" without distinguishing the two decision rules scores at most three of the four marks, because the part asks why the two rules disagree, not which one is right.<br>Follow-through: a candidate whose part (b) total is $20$ but who then uses $20$ as the fee in part (c) keeps the method mark there and the marks that do not depend on the fee. Forfeits: claiming the uncapped expectation is $0$ or $1$ by treating the payout as constant; computing the tail probability as $2^{-21}$; and reporting the standard deviation as a percentage of the mean without commenting on the skew.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This is the oldest paradox in probability and it is still the sharpest illustration of what an expectation is not. The payout doubles when the probability halves, so the two factors cancel in every single term of the expectation and every term equals one. An infinite series of ones diverges, and the uncapped game has no expected value at all. Nothing is wrong with the calculation; the game genuinely has no fair price in the expected-value sense.</p>
+<p>The cap is what makes the question answerable, and it is also what makes it interesting. Twenty terms of the capped expectation each contribute one, giving twenty, and the entire tail beyond the cap contributes one more, because the probability that the first head arrives on or after the twenty-first toss is $2^{-20}$ and the payout in that case is $2^{20}$. That single unit of contribution is easy to lose: a candidate who caps the payout and then sums only the first twenty terms reports a fair price of twenty and is wrong by a dollar, which in this game is a five per cent error on the answer.</p>
+<p>The heart of the item is the contrast between the mean and the distribution. At a fee of twenty-one the player is ahead only if the first head takes five or more tosses, and that happens one time in sixteen. Three plays in four return four dollars or less. The standard deviation of the payout, about seventeen hundred and seventy-four dollars against a mean of twenty-one, is the number that makes the point concrete: it is eighty times the mean, which tells the player that the mean is produced by rare enormous outcomes and describes nothing about the play in hand.</p>
+<p>The resolution is not that one decision rule is right and the other is wrong. A player who can repeat the game many times, or a syndicate that buys many tickets, is buying the mean, and for them the expected-value argument is the correct one. A player with one play and a limited bank is buying an outcome, and for them the probability of finishing ahead is the relevant quantity. Saying which is which is the judgement the final part is asking for.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Topic 4: Statistics and probability — 4.11 A payout of 2^k occurring with probability 2^-k: the expected value of the uncapped game does not converge, the cap at 2^20 makes it exactly 21, and the probability of recovering the fair entry fee is only one sixteenth, so the expected value and the chance of finishing ahead point in opposite directions</dd></div>
+  <div><dt>Challenge lever</dt><dd>The expected value of this game does not converge, because the payout doubles exactly as fast as the probability halves, so every term of the expectation is equal to one and the series of ones diverges. Capping the payout at 2^20 makes the expectation finite and it comes out at exactly 21, which is the fair entry fee. The trap is what follows: at a fee of 21 the player recovers the fee only when the first head falls on or after the fifth toss, which happens with probability one sixteenth, so fifteen times in sixteen the player finishes behind. A candidate who treats the expected value as a description of what will probably happen concludes that the game is worth playing at 21 and never checks the probability of coming out ahead; the standard deviation of the payout, about 1773 against a mean of 21, is the number that shows how little the mean describes a single play.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 4.11 (expected value of a discrete random variable with an unbounded set of outcomes) with AHL 4.14 (variance and standard deviation of a discrete random variable) and AHL 5.13 (limits of sequences and the convergence of a series)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>The classical St Petersburg game is used here with a house cap of 2^20, which makes every quantity finite and exactly computable. The cap is chosen so that the expected payout is the integer 21, the probability of recovering the fee is exactly 1/16, and the variance is an integer; the game, the cap, the fee and all the questions asked about it are constructed here.</dd></div>
+  <div><dt>Verification</dt><dd>Every quantity was computed in exact rational arithmetic over the full distribution. The probabilities sum to exactly 1; the capped expectation is exactly 21, confirmed as 20 from the first twenty terms plus 1 from the tail whose probability is exactly 2^-20; the probability that the payout reaches 21 is exactly 1/16 and the probability that it is at most 4 is exactly 3/4. E(X^2) is exactly 3145726, so the variance is 3145285 and the standard deviation is 1773.4951367286012. All values were re-derived in floating point as well, and agree.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2010May_TZ1_q08 (similarity 0.003)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL4.8-001 (similarity 0.006)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-15</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

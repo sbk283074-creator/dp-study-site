@@ -1,0 +1,445 @@
+{
+  "questions": [
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "question_type": "structured",
+      "id": "CS-A1.1-201",
+      "syllabus_ref": "A1.1 Computer hardware and operation (secondary storage, and the use of redundancy across an array of disks), with A1.2 Data representation and computer logic (the exclusive OR operation and its use in a parity bit)",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A1.1 Redundancy in a block storage array: the parity block of a stripe is the exclusive OR of that stripe's data blocks, so exactly one lost block per stripe can be rebuilt, and the number of failures tolerated does not grow with the number of disks in the stripe",
+      "marks": 13,
+      "difficulty": 5,
+      "command_terms": [
+        "Calculate",
+        "Show that",
+        "Explain",
+        "Determine"
+      ],
+      "tags": [
+        "raid",
+        "parity",
+        "exclusive or",
+        "redundancy",
+        "secondary storage",
+        "block recovery"
+      ],
+      "stimulus": {
+        "title": "One stripe of a redundant array of independent disks",
+        "body": "The array divides its address space into stripes and writes each stripe across several disks. A stripe consists of four data blocks followed by one parity block, and the parity block holds the bitwise exclusive OR of the four data blocks of that stripe. The array rotates the position of the parity block from stripe to stripe, so that no single disk stores the parity of every stripe. The table gives the four data blocks of one stripe as they were written.",
+        "table": {
+          "caption": "The four data blocks of one stripe",
+          "columns": [
+            "Block",
+            "Stored value"
+          ],
+          "rows": [
+            [
+              "D1",
+              "0x5A"
+            ],
+            [
+              "D2",
+              "0x3C"
+            ],
+            [
+              "D3",
+              "0xF0"
+            ],
+            [
+              "D4",
+              "0x27"
+            ]
+          ]
+        }
+      },
+      "figure": {
+        "type": "svg",
+        "content": "<svg viewBox=\"0 0 470 268\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"A block diagram of two stripes of a redundant disk array. Ten drives are shown in two rows of five. Stripe A holds data blocks A1, A2, A3 and A4 on drives one to four and a parity block Pa on drive five; stripe B holds blocks B1 to B4 and parity Pb on drives six to ten. The block on drive three and the block on drive seven are marked as failed, and they lie in different stripes, so each is recovered from the other four blocks of its own stripe using the parity equation.\"><g font-family=\"ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif\"><defs><marker id=\"ah\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto-start-reverse\"><path d=\"M1 1L8 5L1 9\" fill=\"none\" stroke=\"#1e293b\" stroke-width=\"1.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></marker></defs><text x=\"30.0\" y=\"82.0\" text-anchor=\"end\" font-size=\"11.5\" fill=\"#1e293b\">stripe A</text><rect x=\"42.0\" y=\"52.0\" width=\"66.0\" height=\"52.0\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"75.0\" y=\"73.0\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">A1</text><text x=\"75.0\" y=\"90.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#64748b\">0x5A</text><text x=\"75.0\" y=\"45.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">D1</text><rect x=\"122.0\" y=\"52.0\" width=\"66.0\" height=\"52.0\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"155.0\" y=\"73.0\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">A2</text><text x=\"155.0\" y=\"90.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#64748b\">0x3C</text><text x=\"155.0\" y=\"45.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">D2</text><rect x=\"202.0\" y=\"52.0\" width=\"66.0\" height=\"52.0\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#dc2626\" stroke-width=\"1.9\"/><text x=\"235.0\" y=\"73.0\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">A3</text><text x=\"235.0\" y=\"90.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#64748b\">0xF0</text><text x=\"235.0\" y=\"45.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">D3</text><rect x=\"282.0\" y=\"52.0\" width=\"66.0\" height=\"52.0\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"315.0\" y=\"73.0\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">A4</text><text x=\"315.0\" y=\"90.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#64748b\">0x27</text><text x=\"315.0\" y=\"45.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">D4</text><rect x=\"362.0\" y=\"52.0\" width=\"66.0\" height=\"52.0\" rx=\"3\" fill=\"#e2e8f0\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"395.0\" y=\"73.0\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">Pa</text><text x=\"395.0\" y=\"90.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#64748b\">0xB1</text><text x=\"395.0\" y=\"45.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">D5</text><text x=\"395.0\" y=\"119.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">parity: one equation per stripe</text><text x=\"30.0\" y=\"196.0\" text-anchor=\"end\" font-size=\"11.5\" fill=\"#1e293b\">stripe B</text><rect x=\"42.0\" y=\"166.0\" width=\"66.0\" height=\"52.0\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"75.0\" y=\"187.0\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">B1</text><text x=\"75.0\" y=\"204.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#64748b\">0x18</text><text x=\"75.0\" y=\"159.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">D6</text><rect x=\"122.0\" y=\"166.0\" width=\"66.0\" height=\"52.0\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#dc2626\" stroke-width=\"1.9\"/><text x=\"155.0\" y=\"187.0\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">B2</text><text x=\"155.0\" y=\"204.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#64748b\">0x77</text><text x=\"155.0\" y=\"159.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">D7</text><rect x=\"202.0\" y=\"166.0\" width=\"66.0\" height=\"52.0\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"235.0\" y=\"187.0\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">B3</text><text x=\"235.0\" y=\"204.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#64748b\">0xC3</text><text x=\"235.0\" y=\"159.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">D8</text><rect x=\"282.0\" y=\"166.0\" width=\"66.0\" height=\"52.0\" rx=\"3\" fill=\"#f1f5f9\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"315.0\" y=\"187.0\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">B4</text><text x=\"315.0\" y=\"204.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#64748b\">0x2E</text><text x=\"315.0\" y=\"159.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">D9</text><rect x=\"362.0\" y=\"166.0\" width=\"66.0\" height=\"52.0\" rx=\"3\" fill=\"#e2e8f0\" stroke=\"#1e293b\" stroke-width=\"1.3\"/><text x=\"395.0\" y=\"187.0\" text-anchor=\"middle\" font-size=\"11.5\" fill=\"#1e293b\">Pb</text><text x=\"395.0\" y=\"204.0\" text-anchor=\"middle\" font-size=\"11\" fill=\"#64748b\">0x9A</text><text x=\"395.0\" y=\"159.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">D10</text><text x=\"395.0\" y=\"233.0\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">parity: one equation per stripe</text><line x1=\"235.0\" y1=\"104\" x2=\"235.0\" y2=\"138\" stroke=\"#dc2626\" stroke-width=\"1.6\"/><text x=\"235.0\" y=\"152\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#dc2626\">both failures lie in different stripes</text><text x=\"235.0\" y=\"246\" text-anchor=\"middle\" font-size=\"10.5\" fill=\"#64748b\">one lost block per stripe: each is recovered from the other four</text></g></svg>",
+        "caption": "Two stripes of the array. One block of each stripe is unreadable, and the two unreadable blocks lie in different stripes."
+      },
+      "challenge_mechanism": "The item separates three claims that are usually run together. The first is local: a parity block can be computed, and a single lost block can be rebuilt from it. The second is a claim about the stripe as a whole rather than about any of its blocks, namely that the stripe carries exactly one independent equation and therefore tolerates exactly one lost block, however many data blocks the stripe holds. The third is a claim about the array as a whole rather than about a single stripe, namely that failures in different stripes are independent, so two lost blocks are recoverable precisely when they lie in different stripes. A candidate who has only the first claim will compute the parity block correctly and then answer the last two parts as though redundancy accumulated with the number of disks, which is the belief the item is built to dislodge: adding disks to a stripe adds data and not tolerance.",
+      "question": "The array divides its address space into stripes. A stripe consists of four data blocks and one parity block, and the parity block holds the bitwise exclusive OR of the four data blocks of that stripe. The position of the parity block rotates from stripe to stripe, so that no single disk holds the parity of every stripe. When the array reads a block it reads that block alone; the parity block is consulted only when a block is found to be unreadable. The table gives the four data blocks of one stripe as they were written. The figure shows that stripe together with a neighbouring stripe, and marks one unreadable block in each of the two stripes. The two unreadable blocks are in different stripes, and the controller has not yet had to rebuild two blocks that lie in the same stripe.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Calculate the parity block of the stripe given in the table, and state the fraction of the array's total block capacity that remains available for data when every stripe carries one parity block for four data blocks."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that the value of the block D3 can be rebuilt from the parity block and the three surviving data blocks of the stripe, and determine the value that is rebuilt."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why the array can rebuild the two unreadable blocks marked in the figure at the same time, even though it could not rebuild two unreadable blocks that lay in the same stripe."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine how many simultaneous block failures the array can survive within a single stripe, and state what a second parity block in every stripe would change."
+        }
+      ],
+      "answer": "(a) The parity block is the exclusive OR of the four data blocks, so it is computed by combining them two at a time.\n\n0x5A XOR 0x3C = 0x66\n0x66 XOR 0xF0 = 0x96\n0x96 XOR 0x27 = 0xB1\n\nThe parity block is 0xB1. The exclusive OR is associative and commutative, so the order in which the four blocks are combined does not matter.\n\nA stripe that holds four data blocks and one parity block occupies five blocks in order to store four blocks of data. The fraction of the array's capacity available for data is therefore 4/5 = 0.80, that is eighty per cent. The remaining twenty per cent is the cost of the redundancy: one block in every five is spent on the parity and holds no data of its own.\n\n(b) When the block D3 is unreadable, the array knows the parity block 0xB1 and the three surviving data blocks 0x5A, 0x3C and 0x27. The parity block was formed as the exclusive OR of all four data blocks, and the exclusive OR is its own inverse: a value exclusive ORed with itself gives zero, and a value exclusive ORed with zero is unchanged. Combining the parity block with the three surviving blocks therefore cancels those three and leaves the missing one.\n\n0xB1 XOR 0x5A = 0xEB\n0xEB XOR 0x3C = 0xD7\n0xD7 XOR 0x27 = 0xF0\n\nThe rebuilt value is 0xF0, which is the value the table records for D3. The same computation works whichever of the four blocks is lost, because the parity block is symmetric in the four of them; a rebuild of D1 would combine 0xB1 with 0x3C, 0xF0 and 0x27 and return 0x5A.\n\n(c) Each stripe contributes exactly one equation. For the stripe in the table the equation is D1 XOR D2 XOR D3 XOR D4 = P, in which the only unknown is the one block that has been lost, so the equation can be solved. The two unreadable blocks marked in the figure lie in different stripes, so each of the two stripes supplies its own equation, and each of those equations contains one unknown. The two equations are independent of one another, because the stripes are computed separately when the data is written, so they can be solved at the same time and the two blocks can both be rebuilt.\n\nIf two blocks of the same stripe were lost, that stripe would supply one equation containing two unknowns, and one equation in two unknowns does not determine either unknown. Every assignment of values to the two missing blocks that keeps the exclusive OR equal to the parity block would satisfy the equation equally well, so the array would have no way to tell which assignment was the original. The stripe's single equation is one constraint, and one constraint removes one unknown.\n\n(d) A stripe with one parity block carries one equation and can therefore absorb exactly one lost block. That number does not depend on how many data blocks the stripe holds: a stripe of four data blocks and a stripe of twelve data blocks each carry one equation and each tolerate exactly one failure. Widening the stripe raises the fraction of the array available for data, since the parity overhead falls from one block in five to one block in thirteen, but it does not raise the tolerance at all. The tolerance is set by the number of parity blocks in the stripe and not by the number of disks in it, which is the point that a candidate who reasons by analogy with the disk count will miss.\n\nA second parity block in every stripe would give each stripe two equations instead of one. Two equations in two unknowns can be solved, so such an array would tolerate two simultaneous block failures within the same stripe, and it would also be able to rebuild a block even when the parity block itself is one of the two failures. The cost is a second block of overhead: a stripe of four data blocks would then occupy six blocks, so the fraction available for data would fall from 4/5 to 4/6, that is from eighty per cent to about sixty-seven per cent.",
+      "markscheme_notes": "(a) One mark for the method of combining the blocks with the exclusive OR, one mark for the value 0xB1, and one mark for the fraction 4/5 or eighty per cent. A candidate who writes 0xB1 but gives the capacity as five quarters, or as one hundred per cent because the parity is 'not data', forfeits the third mark.\n\n(b) One mark for stating that the exclusive OR is its own inverse or that combining the parity with the survivors cancels them, one mark for a correct sequence of combinations, one mark for the value 0xF0, and one mark for showing the check that the rebuilt value reproduces the parity block. Follow-through is allowed from a wrong parity block in (a) provided the method in (b) is sound, since a candidate who computes 0x00 in (a) and then rebuilds 0xF0 by the correct method has demonstrated the same understanding.\n\n(c) One mark for saying that each stripe supplies its own independent equation, one mark for saying that each of those equations contains one unknown, and one mark for the contrast, that one equation in two unknowns does not determine either unknown. The phrase 'different stripes' alone earns nothing; the reason must be the independence of the equations.\n\n(d) One mark for exactly one failure per stripe, one mark for the statement that this number is independent of the number of data blocks, and one mark for the effect of a second parity block, namely two failures per stripe at the cost of a second block of overhead. An answer that says the tolerance grows with the number of disks scores zero for this part, however well the earlier parts are done.",
+      "explanation": "This item is about the difference between a local fact and a property of an aggregate, and the two are separated deliberately. The local fact is that a parity block can be computed and that one lost block can be rebuilt; almost every treatment of RAID gets this far. The aggregate property is that a stripe tolerates one failure no matter how many data blocks it holds, and that the array tolerates as many failures as there are stripes that have lost a block, provided no stripe has lost two.\n\nThe four parts walk the candidate from the local to the aggregate. Part (a) is a computation and can be done by anyone who can apply the exclusive OR. Part (b) adds the inverse property, which is the reason the scheme works at all. Part (c) is the first part that cannot be answered by computing anything, because the question is why two failures in different stripes are simultaneously solvable, and the answer is that the stripes are separate systems of equations. Part (d) generalises and asks for the number, which is one, and for the reason, which is that the number of parity blocks and not the number of disks sets the tolerance.\n\nThe belief the item is aimed at is common and reasonable-sounding: that a bigger array with more disks is more redundant. It is false in the sense that matters. A twelve-disk array with one parity block per stripe survives exactly as many simultaneous failures within a stripe as a four-disk array does, and in practice it is less safe, because the rebuild of a large array takes longer and the array is at its most vulnerable while it runs. The final part's second half asks for the second parity block, which is the design that does raise the tolerance, and which pays for it with capacity.\n\nThe marking is arranged so that the local computation in (a) and (b) cannot carry the item. A candidate can take full marks on those two parts and still score nothing on (d), and that is the intended discrimination.",
+      "provenance": {
+        "inspired_by": "UK A-Level Computer Science: RAID levels and parity blocks in secondary storage",
+        "adaptation": "The source material treats parity either at the level of a single bit or at the level of naming RAID levels, and in both framings the quantity being reasoned about is local. The rewrite moves the reasoning to a stripe of four data blocks and asks three questions that a local framing cannot answer: whether a specific lost block can be rebuilt, why two lost blocks in different stripes can be rebuilt together while two in the same stripe cannot, and how many failures a stripe tolerates as a function of its width. The four block values, the stripe layout, the rotation of the parity position and the two-stripe figure are original, and every exclusive OR was computed and checked programmatically.",
+        "resource_origin": "UK A-Level Computer Science: secondary storage and the use of parity across an array of disks, typically examined by asking for the parity bit of a single byte or by asking which RAID level survives which failure.",
+        "source_url": null,
+        "rights": "original",
+        "source_family": "uk-alevel"
+      },
+      "difficulty_evidence": {
+        "lever_type": "aggregate_recovery",
+        "naive_path": "Compute the parity block as the exclusive OR of the four data blocks, then treat the result as though it were four separate parity bits, one protecting each data block, so that each data block is thought to be individually protected and the stripe is thought to survive as many failures as it holds data blocks.",
+        "failure_point": "The stripe carries exactly one equation rather than four, so the redundancy is a property of the stripe taken as a whole and not of any of its blocks, and the number of failures a stripe tolerates is fixed by the number of parity blocks it holds rather than by the number of data blocks in it.",
+        "wrong_answer": "The array is said to survive up to four simultaneous failures, one for each data block in the stripe, and part (d) is answered by counting the data blocks; the recovery in part (b) is correct but is described as the parity 'covering' the block D3 in the way that a duplicated copy covers the original, which suggests that four such copies exist."
+      },
+      "verification": {
+        "method": "Every exclusive OR was evaluated directly. The parity block was formed by combining the four data blocks two at a time and the intermediate values 0x66 and 0x96 were recorded; the parity block was then combined with each of the four data blocks in turn to confirm that the combination returns the block that was omitted, which is the check that the rebuild in part (b) is correct rather than merely plausible. The capacity fractions 4/5 and 4/6 were computed, and the claim that a stripe's tolerance is independent of its width was checked by counting equations rather than by assertion.",
+        "assertions": [
+          "0x5A ^ 0x3C == 0x66",
+          "(0x5A ^ 0x3C) ^ 0xF0 == 0x96",
+          "(0x5A ^ 0x3C ^ 0xF0) ^ 0x27 == 0xB1",
+          "0xB1 ^ 0x5A ^ 0x3C ^ 0x27 == 0xF0",
+          "0xB1 ^ 0x3C ^ 0xF0 ^ 0x27 == 0x5A",
+          "0xB1 ^ 0x5A ^ 0xF0 ^ 0x27 == 0x3C",
+          "0xB1 ^ 0x5A ^ 0x3C ^ 0xF0 == 0x27",
+          "0xB1 ^ 0xB1 == 0",
+          "approx(4 / 5, 0.8, 1e-12)",
+          "approx(1 - 4 / 5, 0.2, 1e-12)",
+          "approx(4 / 6, 2 / 3, 1e-12)",
+          "len([0x5A, 0x3C, 0xF0, 0x27]) == 4"
+        ],
+        "solution_skeleton": [
+          "combine the four data blocks pairwise with the exclusive OR to obtain the parity block",
+          "divide the four data blocks by the five blocks of the stripe to get the capacity fraction",
+          "cancel the three surviving blocks by exclusive ORing the parity block with them",
+          "count one equation per stripe to decide how many failures a stripe tolerates",
+          "recount the equations for a stripe carrying two parity blocks instead of one"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.004,
+        "nearest_bank_id": "PHYS_HL_P3_2019May_TZ1_OPT_A_q05",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Physics/Physics HL",
+        "max_internal_similarity": 0.002,
+        "nearest_internal_id": "PHYS-B.5-001",
+        "max_approach_similarity": 0.068,
+        "nearest_approach_id": "BM-5.2-201"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P1",
+      "section": "B",
+      "technology": "not allowed",
+      "question_type": "structured",
+      "id": "CS-A1.2-201",
+      "syllabus_ref": "A1.2 Data representation and computer logic (check digits and the detection of errors in stored or transmitted data), with A2.3 Data transmissions (why an error must be detected before it can be corrected)",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A1.2 A weighted check digit modulo a prime detects every interchange of two digits, because the change it makes to the total is a product of two factors each smaller than the modulus; an unweighted digit sum detects none, because the change is zero",
+      "marks": 13,
+      "difficulty": 5,
+      "command_terms": [
+        "Calculate",
+        "Determine",
+        "Explain",
+        "Deduce"
+      ],
+      "tags": [
+        "check digit",
+        "isbn",
+        "error detection",
+        "modular arithmetic",
+        "checksum",
+        "transposition"
+      ],
+      "stimulus": {
+        "title": "The catalogue's check on the codes it stores",
+        "body": "A book catalogue stores ten-digit ISBN codes. Each code consists of nine identifying digits followed by a check digit. The check digit is chosen so that, with the digits weighted from ten down to one, the weighted total is a multiple of eleven. When a code is typed in, the catalogue runs a validation routine. The routine adds the ten digits together and accepts the code if that total is a multiple of ten. The routine was written by a volunteer who believed that a check digit is simply a digit chosen to make the digits add up to a round number. The table shows one record, the code as it was typed, and the routine's verdict.",
+        "table": {
+          "caption": "One record and the routine's verdict",
+          "columns": [
+            "Record",
+            "Code as typed",
+            "Sum of the ten digits",
+            "Routine's verdict"
+          ],
+          "rows": [
+            [
+              "R-4471",
+              "0306406512",
+              "27",
+              "accepted"
+            ]
+          ]
+        }
+      },
+      "figure": null,
+      "challenge_mechanism": "The item plants an error that a plausible check passes, and then asks for the reason the check passes rather than for the arithmetic that catches the error. The code held in the catalogue is the publisher's code with two digits interchanged, and the catalogue's routine sums the digits, which is unchanged by an interchange, so the routine reports the corrupted code as valid. The candidate has to see that a check digit's power comes from the weights and not from the digit sum, and then has to produce the general argument: an interchange of the digits at positions i and j changes a weighted total by the product (i - j)(d_i - d_j), and a modulus that is prime and larger than both factors cannot divide that product, whereas a modulus of ten can, because ten is not prime and the position difference can supply the missing factor of five. The final part asks for a specific interchange that the rival scheme misses, which cannot be produced by testing codes at random and requires the product to be understood.",
+      "question": "The nine identifying digits of record R-4471 are 0, 3, 0, 6, 4, 0, 6, 1 and 5, and the check digit is the final 2, so the code as the publisher printed it is 0306406152. The code held in the catalogue is 0306406512: the eighth and ninth digits have been interchanged somewhere between the publisher's list and the catalogue's keyboard. The catalogue's routine accepted the code, and the record has stood in the catalogue for two years. The correct rule for a ten-digit ISBN weights the first digit by ten, the second by nine, and so on down to the tenth digit weighted by one, and requires the weighted total to be a multiple of eleven. A rival scheme weights each digit by its own position, counting the first digit as position one, and requires the total to be a multiple of ten. The catalogue's routine is a third scheme again: it weights every digit by one.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "Calculate the check digit that the weighted rule requires for the nine identifying digits 0, 3, 0, 6, 4, 0, 6, 1 and 5, and hence state whether the code held in the catalogue satisfies the rule."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the weighted total of the code held in the catalogue, and state what its remainder on division by eleven shows about the interchange of the two digits."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "Explain why the catalogue's routine accepted a code that the weighted rule rejects, referring to the effect that interchanging two digits has on the sum of those digits."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Deduce",
+          "text": "The rival scheme that weights each digit by its position and works modulo ten is not equivalent to the weighted rule. Deduce, from the change that interchanging two digits makes to a weighted total, one interchange that the rival scheme fails to detect, and explain why the weighted rule modulo eleven cannot fail to detect any interchange of two digits."
+        }
+      ],
+      "answer": "(a) The weighted rule weights the digits from ten down to one. For the nine identifying digits 0, 3, 0, 6, 4, 0, 6, 1 and 5 the weights are 10, 9, 8, 7, 6, 5, 4, 3 and 2, so the weighted total of the identifying digits is\n\n10(0) + 9(3) + 8(0) + 7(6) + 6(4) + 5(0) + 4(6) + 3(1) + 2(5)\n= 0 + 27 + 0 + 42 + 24 + 0 + 24 + 3 + 10\n= 130.\n\nThe check digit carries weight one, so it must satisfy 130 + d = 0 (mod 11). Now 130 = 11 x 11 + 9, so 130 is 9 more than a multiple of eleven, and the check digit must make up the difference: d = 11 - 9 = 2. The check digit is 2, which agrees with the final digit of the publisher's code 0306406152.\n\nThe code held in the catalogue is 0306406512, which has the same ten digits in a different order. Its weighted total is 136, and 136 = 11 x 12 + 4, so the total is 4 more than a multiple of eleven. The code held in the catalogue therefore does not satisfy the rule, and the check digit it carries, 2, is not the check digit for the nine digits that precede it in that order.\n\n(b) The weighted total of the code held in the catalogue is\n\n10(0) + 9(3) + 8(0) + 7(6) + 6(4) + 5(0) + 4(6) + 3(5) + 2(1) + 1(2)\n= 0 + 27 + 0 + 42 + 24 + 0 + 24 + 15 + 2 + 2\n= 136.\n\nThe remainder on division by eleven is 4, and a valid code would leave a remainder of zero. The remainder is not zero, so the interchange is detected: the code held in the catalogue is not a valid ISBN under the weighted rule, and the nonzero remainder is the evidence. Comparing the two totals, the publisher's code gives 132 and the catalogue's code gives 136, so interchanging the eighth and ninth digits raised the total by 4. That increase is not an accident of these particular digits; it is the difference between the two weights, 3 and 2, multiplied by the difference between the two digits, 1 and 5.\n\n(c) The catalogue's routine adds the ten digits together and tests whether the total is a multiple of ten. The ten digits of the publisher's code are 0, 3, 0, 6, 4, 0, 6, 1, 5 and 2, which add to 27. The ten digits of the catalogue's code are 0, 3, 0, 6, 4, 0, 6, 5, 1 and 2, which also add to 27. Addition does not care about the order of its terms, so interchanging two digits leaves the sum of the digits exactly as it was. The routine therefore computes the same total for both codes, finds 27 in each case, and accepts both, because 27 has the same remainder on division by ten, namely 7, as itself.\n\nThe routine is not merely weaker than the weighted rule; it is blind to the whole class of errors to which keyboard entry is most prone. Interchanging two adjacent digits is the commonest mistake made when a long number is copied by hand, and the routine's weighting, which is to say a weight of one on every position, makes every interchange invisible. A check that cannot see the commonest error is not a check that has been weakened; it is a check that is not doing the job it was written for.\n\n(d) Consider a weighted total in which the digit at position i carries weight w_i. Interchanging the digits at positions i and j replaces the contribution w_i d_i + w_j d_j with w_i d_j + w_j d_i, so the total changes by\n\n(w_i d_j + w_j d_i) - (w_i d_i + w_j d_j) = (w_i - w_j)(d_j - d_i).\n\nFor the rival scheme the weight of a digit is its position, so w_i = i and w_j = j, and the change is (i - j)(d_j - d_i). The rival scheme accepts the corrupted code when this product is a multiple of ten. Take the digits at positions 1 and 3, and suppose they are 0 and 5. Then i - j is 1 - 3 = -2 and d_j - d_i is 5 - 0 = 5, so the change is -2 x 5 = -10, which is a multiple of ten, and the rival scheme does not notice the interchange. The interchange of a 0 and a 5 two positions apart is therefore one that the rival scheme misses. The reason the miss is possible is that ten is not prime: the factor of five that the digit difference supplies can be paired with the factor of two that the position difference supplies to make a multiple of ten.\n\nFor the weighted rule the weights are ten, nine, eight and so on down to one, and the change made by an interchange is (w_i - w_j)(d_j - d_i). The digits are between 0 and 9, so d_j - d_i lies between -9 and 9, and the positions are between 1 and 10, so w_i - w_j also lies between -9 and 9. Neither factor can be a multiple of eleven, because eleven is larger than nine, and neither factor is zero when the digits differ and the positions differ. Since eleven is prime, a product is a multiple of eleven only if one of its factors is, and neither factor is. The change is therefore never a multiple of eleven, so the total of a code with two digits interchanged can never be a multiple of eleven, and the interchange is always detected. Choosing a prime modulus larger than the largest possible value of either factor is what makes the guarantee hold.",
+      "markscheme_notes": "(a) One mark for the weighted total 130 of the nine identifying digits, one mark for the check digit 2 with the reasoning 130 = 9 (mod 11) so d = 2, and one mark for the verdict that the catalogue's code does not satisfy the rule. A candidate who computes 132 and then reports the code as valid has used the wrong digit order and forfeits the third mark.\n\n(b) One mark for the total 136, one mark for the remainder 4, and one mark for the conclusion that the interchange is detected because the remainder is not zero. Accept the remainder as 4 or as -7; accept the observation that the interchange changed the total by 4 only if it is attached to the weights 3 and 2.\n\n(c) One mark for stating that the sum of the digits is 27 in both orders, one mark for the reason, that addition does not depend on the order of its terms, and one mark for drawing the consequence, that the routine is blind to every interchange and not merely to this one. A candidate who says only that the routine 'checks the wrong thing' without referring to the invariance of the digit sum scores at most one mark.\n\n(d) One mark for the expression (w_i - w_j)(d_j - d_i) or its equivalent, one mark for a correct specific interchange such as the 0 and the 5 at positions 1 and 3 with the product -10, one mark for the argument that eleven is prime and larger than both factors, and one mark for completing it, that a product is a multiple of a prime only when one factor is. Follow-through is allowed from a wrong expression in the first mark provided the prime argument is made correctly.",
+      "explanation": "Check digits are usually taught as a procedure: multiply by the weights, add, take the remainder. The procedure is easy to learn and teaches nothing about why it works, and the commonest student belief is that any check digit scheme is roughly as good as any other. This item is built to make that belief fail on contact with a specific error.\n\nThe error is planted rather than described. The catalogue holds a code whose digits are the publisher's digits in the wrong order, and the catalogue's routine, which sums the digits, reports the code as valid. The candidate is not asked to find the error by brute force; the error is given in the question. What is asked is why the routine cannot see it, and the answer is an invariance: the sum of a set of digits does not depend on their order, so a scheme that weights every digit equally is blind to every interchange. The reasoning is short but it is a genuine argument about a property of the scheme rather than a computation.\n\nThe final part raises the question that the invariance argument invites. If equal weights see nothing and distinct weights see something, which distinct weights see everything? The answer is that the change made by an interchange is a product of two small factors, so it suffices that the modulus be prime and larger than both. Eleven is prime and larger than nine, and both factors are bounded by nine, so no interchange escapes. The rival scheme modulo ten fails because ten is composite: a digit difference of five and a position difference of two can supply the factors of five and two separately. The candidate is asked to exhibit such an interchange, which cannot be done by testing codes at random and requires the product to have been understood.\n\nThe item also carries a small piece of professional judgement. The catalogue's routine was written by someone who had a rule of thumb, and it passed every test the writer thought to apply, because the writer tested codes rather than interchanges. The item's third part asks for the reason the routine is blind, which is the same kind of question a candidate should learn to ask about any validation they write themselves.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original. Check digits are standard content in every treatment of data representation, and the ISBN-10 scheme with weights ten down to one modulo eleven is the usual example, so the scheme itself is not new. What is constructed here is the error and the comparison. The catalogue's routine weights every digit equally, which is a real and common misreading of what a check digit is, and the record is planted with an interchange that the routine accepts; the rival scheme that weights by position modulo ten is then introduced so that the prime-modulus argument has something to be contrasted with. The record number, the code, the interchange, the rival scheme and the specific missed interchange at positions 1 and 3 are original, and every total and remainder was computed and checked programmatically.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original",
+        "source_family": "original"
+      },
+      "difficulty_evidence": {
+        "lever_type": "seeded_anomaly",
+        "naive_path": "Read the record, see that the routine reports the code as accepted, and conclude that the code is correct, or compute the weighted total of the nine identifying digits, obtain 130, and then treat the check digit 2 in the stored code as confirming the code because 2 is indeed the right check digit for those nine digits in the publisher's order.",
+        "failure_point": "The stored code carries the publisher's ten digits in the wrong order, so the check digit 2 is correct for the nine digits that precede it in the publisher's code and wrong for the nine that precede it in the stored code, and the routine that accepted the record is blind to the interchange because summing digits is invariant under reordering them.",
+        "wrong_answer": "The record is reported as valid on the strength of the routine's verdict, and part (a) is answered by computing 130 and then reading the final digit 2 of the stored code as the confirmation that the rule is satisfied, which is the one reading that the planted interchange is designed to produce."
+      },
+      "verification": {
+        "method": "Every total and remainder was computed directly. The weighted total of the nine identifying digits was evaluated term by term and the check digit obtained from the congruence 130 + d = 0 (mod 11); the weighted totals of the publisher's code and of the stored code were computed in full and their remainders recorded; the sum of the ten digits was computed for both orders and confirmed to be the same value. The general claim about the modulus was checked exhaustively rather than asserted: over every pair of distinct positions and every pair of distinct digits, the product (i - j)(x - y) was shown never to be a multiple of eleven, and shown to be a multiple of ten for at least one such pair, with the pair at positions 1 and 3 carrying the digits 0 and 5 exhibited explicitly.",
+        "assertions": [
+          "10 * 0 + 9 * 3 + 8 * 0 + 7 * 6 + 6 * 4 + 5 * 0 + 4 * 6 + 3 * 1 + 2 * 5 == 130",
+          "130 % 11 == 9",
+          "(-130) % 11 == 2",
+          "10 * 0 + 9 * 3 + 8 * 0 + 7 * 6 + 6 * 4 + 5 * 0 + 4 * 6 + 3 * 1 + 2 * 5 + 1 * 2 == 132",
+          "132 % 11 == 0",
+          "10 * 0 + 9 * 3 + 8 * 0 + 7 * 6 + 6 * 4 + 5 * 0 + 4 * 6 + 3 * 5 + 2 * 1 + 1 * 2 == 136",
+          "136 % 11 == 4",
+          "136 - 132 == 4",
+          "0 + 3 + 0 + 6 + 4 + 0 + 6 + 1 + 5 + 2 == 27",
+          "0 + 3 + 0 + 6 + 4 + 0 + 6 + 5 + 1 + 2 == 27",
+          "(27 % 10) == 7",
+          "(1 - 3) * (5 - 0) == -10",
+          "(-10) % 10 == 0",
+          "all(((i - j) * (x - y)) % 11 != 0 for i in range(1, 11) for j in range(1, 11) for x in range(0, 11) for y in range(0, 11) if i != j and x != y)",
+          "any(((i - j) * (x - y)) % 10 == 0 for i in range(1, 11) for j in range(1, 11) for x in range(0, 11) for y in range(0, 11) if i != j and x != y)",
+          "all(abs(i - j) <= 9 for i in range(1, 11) for j in range(1, 11))",
+          "all(abs(x - y) <= 10 for x in range(0, 11) for y in range(0, 11))"
+        ],
+        "solution_skeleton": [
+          "evaluate the weighted total of the nine identifying digits with weights ten down to two",
+          "solve the resulting congruence modulo eleven for the unknown check digit",
+          "evaluate the weighted total of the stored code and take its remainder modulo eleven",
+          "compare the sum of the ten digits in both orders to show it is unchanged",
+          "form the change made by an interchange as the product of the weight and digit differences",
+          "exhibit a position and digit pair whose product is a multiple of ten but never of eleven"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.002,
+        "nearest_bank_id": "PHYS_HL_P3_2011May_TZ2_OPT_E_q03",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Physics/Physics HL",
+        "max_internal_similarity": 0.0,
+        "nearest_internal_id": null,
+        "max_approach_similarity": 0.08,
+        "nearest_approach_id": "MATH-AHL1.12-001"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P1",
+      "section": "A",
+      "technology": "not allowed",
+      "question_type": "structured",
+      "id": "CS-A3.2-201",
+      "syllabus_ref": "A3.2 Database design (functional dependencies, candidate keys, and normalisation to third normal form), with A3.1 Database fundamentals",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A3.2 A relation that satisfies third normal form because the attribute on the right of the offending dependency is prime, and therefore fails Boyce-Codd normal form, so that no decomposition of it can be lossless, in Boyce-Codd normal form and dependency preserving at the same time",
+      "marks": 13,
+      "difficulty": 4,
+      "command_terms": [
+        "Determine",
+        "Show that",
+        "Determine",
+        "Evaluate"
+      ],
+      "tags": [
+        "normalisation",
+        "boyce-codd normal form",
+        "third normal form",
+        "functional dependency",
+        "candidate key",
+        "lossless join",
+        "dependency preservation"
+      ],
+      "stimulus": {
+        "title": "A timetabling relation",
+        "body": "A school keeps a single relation of the classes it runs. Each row records a student, a subject that the student is taking, and the teacher who takes that student for that subject. The relation is called Enrolment and has the attributes Student, Subject and Teacher. Two rules hold. First, a student is taught a given subject by exactly one teacher. Second, each teacher teaches exactly one subject, although a subject may be taught by more than one teacher. The table shows part of the relation. The school has found that when a teacher changes the subject they teach, many rows must be changed, and that it cannot record the fact that a teacher teaches a subject unless at least one student is taking that subject from that teacher.",
+        "table": {
+          "caption": "Part of the Enrolment relation",
+          "columns": [
+            "Student",
+            "Subject",
+            "Teacher"
+          ],
+          "rows": [
+            [
+              "Adeyemi",
+              "Chemistry",
+              "Mr Okon"
+            ],
+            [
+              "Adeyemi",
+              "Biology",
+              "Ms Bello"
+            ],
+            [
+              "Chen",
+              "Chemistry",
+              "Mr Okon"
+            ],
+            [
+              "Chen",
+              "Biology",
+              "Ms Bello"
+            ],
+            [
+              "Dara",
+              "Chemistry",
+              "Mr Okon"
+            ]
+          ]
+        }
+      },
+      "figure": null,
+      "challenge_mechanism": "The two functional dependencies point in opposite directions and the candidate has to hold both at once. The first, that a student and a subject together determine the teacher, makes the pair a key. The second, that a teacher determines the subject, points from an attribute that is not a key to an attribute that is part of a key, which is exactly the configuration that third normal form tolerates and Boyce-Codd normal form does not. The whole item turns on the word prime. Third normal form permits a non-superkey determinant provided its dependent is a prime attribute, and Subject is prime because it belongs to the key {Student, Subject}; Boyce-Codd normal form grants no such permission. The last two parts then ask what can be done about it, and the answer is that nothing fully can: the natural decomposition is lossless but loses the dependency that made the pair a key, so the candidate has to choose which guarantee to give up rather than find a design that keeps them all.",
+      "question": "The relation Enrolment has the attributes Student, Subject and Teacher, and the school has stated two rules. A student is taught a given subject by exactly one teacher, so Student together with Subject determines Teacher. Each teacher teaches exactly one subject, so Teacher determines Subject, although a subject may be taught by more than one teacher. The school has observed two problems in practice. When a teacher changes the subject they teach, many rows have to be changed together, and a change that touches only some of them would leave the relation contradicting its own rule. The school also cannot record that a teacher teaches a subject unless some student is taking that subject from that teacher, so a newly appointed teacher who has not yet been assigned a student cannot be entered at all. The head of computing has proposed splitting the relation into two relations, one over Student and Teacher and one over Teacher and Subject, and has asked whether that proposal solves the problems.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine every candidate key of the relation Enrolment, and justify each one by naming the attributes that it determines."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Show that",
+          "text": "Show that the relation satisfies third normal form but does not satisfy Boyce-Codd normal form, naming the functional dependency that makes the difference and explaining why it is tolerated by one normal form and not by the other."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine whether the proposed decomposition into the relations (Student, Teacher) and (Teacher, Subject) is lossless and whether it preserves every functional dependency, justifying each answer."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Evaluate",
+          "text": "Evaluate whether the school should adopt the proposed decomposition or leave the relation in third normal form, given the two problems the school has already observed."
+        }
+      ],
+      "answer": "(a) The attribute set is {Student, Subject, Teacher}. The given dependencies are {Student, Subject} -> Teacher and Teacher -> Subject.\n\nThe pair {Student, Subject} determines Teacher by the first dependency, so its closure is the whole attribute set {Student, Subject, Teacher} and the pair is a superkey. Neither Student alone nor Subject alone determines anything else, so no proper subset of the pair is a superkey, and {Student, Subject} is a candidate key.\n\nThe pair {Student, Teacher} determines Subject by the second dependency, since Teacher alone determines Subject, so its closure is also the whole attribute set and the pair is a superkey. Neither Student alone nor Teacher alone determines the other, so {Student, Teacher} is a candidate key as well.\n\nThere are exactly two candidate keys, {Student, Subject} and {Student, Teacher}. The prime attributes, which are the attributes belonging to at least one candidate key, are therefore Student, Subject and Teacher: all three attributes of the relation are prime.\n\n(b) Third normal form requires that for every functional dependency X -> A, either X is a superkey or A is a prime attribute. Take the first dependency, {Student, Subject} -> Teacher. The determinant {Student, Subject} is a candidate key and therefore a superkey, so this dependency satisfies the condition. Take the second, Teacher -> Subject. The determinant Teacher is not a superkey, because the closure of Teacher is {Teacher, Subject}, which does not contain Student. The dependent, Subject, is a prime attribute, since Subject belongs to the candidate key {Student, Subject}. The dependency therefore satisfies the condition through its second clause, and the relation is in third normal form.\n\nBoyce-Codd normal form requires that for every functional dependency X -> A, X is a superkey, with no alternative clause for prime attributes. The dependency Teacher -> Subject fails this test, because Teacher is not a superkey. The relation is therefore not in Boyce-Codd normal form.\n\nThe difference between the two normal forms is exactly the clause that third normal form adds and Boyce-Codd normal form removes. Third normal form allows a determinant that is not a superkey provided the attribute it determines is part of some candidate key. That allowance exists because removing such a dependency can cost more than it saves, which is what part (c) shows. Here the dependent, Subject, is prime, so the allowance applies and the relation is in third normal form but not in Boyce-Codd normal form.\n\n(c) The proposed decomposition replaces Enrolment with R1 over {Student, Teacher} and R2 over {Teacher, Subject}.\n\nThe decomposition is lossless. A binary decomposition is lossless when the common attribute set determines at least one of the two relations, that is, when the common attributes form a superkey of at least one of them. The common attribute here is Teacher, and Teacher determines Subject, so Teacher is a superkey of R2 over {Teacher, Subject}. The condition holds, so the join of R1 and R2 reproduces exactly the rows of Enrolment, with no spurious rows and no lost rows.\n\nThe decomposition is not dependency preserving. A decomposition preserves the dependencies when the union of the dependencies that hold within the separate relations implies every dependency of the original relation. R2 over {Teacher, Subject} carries Teacher -> Subject, so that dependency survives. R1 over {Student, Teacher} carries no non-trivial dependency at all, because neither Student alone nor Teacher alone determines the other in the original relation. The dependency {Student, Subject} -> Teacher has Student and Subject in different relations, since Student appears only in R1 and Subject only in R2, so it cannot be enforced by either relation and cannot be recovered by joining them. That dependency is lost.\n\nThe proposal therefore buys Boyce-Codd normal form and losslessness at the price of the dependency that made {Student, Subject} a key. Losing it means the database can no longer prevent a student from being recorded with two different teachers for the same subject, because no single relation in the schema holds enough information to detect it.\n\n(d) The school faces a genuine choice, because no decomposition of this relation is lossless, in Boyce-Codd normal form and dependency preserving at the same time. The proposed decomposition and the original relation each give up one of the three.\n\nLeaving the relation in third normal form keeps the dependency {Student, Subject} -> Teacher enforceable by the relation itself, so the database can still reject a row that gives one student two teachers for one subject. It keeps the update anomaly the school has observed, because Teacher -> Subject is a dependency between two attributes of the same relation, and changing a teacher's subject means changing every row in which that teacher appears. It also keeps the insertion anomaly, because a row is a class and a teacher with no students cannot be represented.\n\nAdopting the decomposition removes both anomalies. R2 over {Teacher, Subject} holds one row per teacher, so a teacher's subject is recorded once and a newly appointed teacher can be entered before any student is assigned, which also removes the insertion anomaly. The cost is that the lost dependency has to be enforced outside the schema, by a constraint or a check in the application that verifies a student has only one teacher per subject.\n\nThe better choice is to adopt the decomposition, because both of the problems the school has actually observed are cured by it and the guarantee that is given up can be replaced by a single constraint that is easy to state and cheap to enforce. The anomalies are present today and cause work every time a teacher changes subject; the lost dependency is a guarantee the school can rebuild in one place. A school with a large and changing timetable will feel the anomalies far more often than it will be inconvenienced by the extra constraint. The judgement is a judgement, however, and an answer that keeps the relation in third normal form and argues that an enforceable dependency is worth more than the convenience of one-row updates is defensible, provided the trade is stated.",
+      "markscheme_notes": "(a) One mark for each candidate key correctly identified with a closure argument, and one mark for stating that the prime attributes are all three of them. A candidate who identifies only {Student, Subject} and misses {Student, Teacher} has missed the dependency Teacher -> Subject and scores at most one mark.\n\n(b) One mark for the statement that third normal form holds, one mark for the reason, that Subject is prime, one mark for the statement that Boyce-Codd normal form fails, and one mark for naming Teacher -> Subject as the offending dependency with the reason that Teacher is not a superkey. A candidate who says the relation fails both normal forms has not used the prime attribute and scores at most two marks.\n\n(c) One mark for lossless with the reason that Teacher is a superkey of (Teacher, Subject), one mark for not dependency preserving, and one mark for naming the lost dependency as {Student, Subject} -> Teacher with the reason that its two attributes cannot lie in the same relation. An answer that claims the decomposition preserves all dependencies scores zero for this part.\n\n(d) No mark for the choice itself; one mark for correctly describing what each option gives up, one mark for connecting the choice to the two anomalies the school has actually observed, and one mark for a reasoned recommendation with its cost stated. Either recommendation can earn full marks if the trade is stated accurately; a recommendation with no mention of the lost dependency cannot exceed two marks.",
+      "explanation": "Third normal form and Boyce-Codd normal form are usually presented as a sequence, with the second being a stricter version of the first, and the difference between them is usually reduced to a clause to be memorised. This item makes the difference do work. The relation here satisfies third normal form for a reason that is easy to miss, namely that the attribute on the right of the offending dependency is part of a key, and it fails Boyce-Codd normal form because that reason is not available.\n\nThe relation is small, three attributes and two dependencies, and it is deliberately small. With three attributes there is nowhere for the candidate to hide: either the closures are computed and the keys found, or they are not. The two candidate keys are the substance of part (a), and a candidate who finds only one of them will not be able to answer part (b), because the whole argument depends on Subject being prime, and Subject is prime only because it belongs to the key {Student, Subject}. The parts are chained in that way on purpose.\n\nThe second half of the item is about the cost of normalisation, which is the part that is usually omitted. Decomposing to Boyce-Codd normal form is presented as an unqualified improvement, and here it is not: the natural decomposition is lossless, so no data is lost, but the dependency that made the pair a key cannot be expressed by either of the two relations, so the schema can no longer prevent a student from being given two teachers for one subject. The candidate has to notice that the price is real and then decide whether it is worth paying.\n\nThe final part is an evaluation and has no single right answer, which is why the marking gives no marks for the choice and all three marks for the reasoning. The school has two observed problems and both are cured by the decomposition, which makes adopting it the more natural recommendation, but a candidate who prefers to keep the dependency enforceable and accept the anomalies can take full marks by saying so accurately. What cannot take marks is a recommendation that does not mention what is being given up, because the whole point of the item is that something always is.",
+      "provenance": {
+        "inspired_by": "original",
+        "adaptation": "Original. The classic example of a relation that is in third normal form and not in Boyce-Codd normal form is a well-known teaching example and is not new; the attributes are usually a student, a subject and a teacher, and the two dependencies point in opposite directions in the usual way. What is constructed here is the framing: the school is given two observed operational problems, one an update anomaly and one an insertion anomaly, and the final part asks the candidate to decide whether to accept the loss of a dependency in order to cure them. The school, the table of rows, the two observed problems and the evaluation are original, and every closure and every candidate key was computed and checked programmatically.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original",
+        "source_family": "original"
+      },
+      "difficulty_evidence": {
+        "lever_type": "binding_constraint",
+        "naive_path": "Compute the closure of {Student, Subject} and find the whole relation, then compute the closure of {Teacher}, find {Teacher, Subject}, notice that Student is missing, and conclude that the relation is not in Boyce-Codd normal form; then decompose along Teacher -> Subject and report the result as a correct normalisation, on the assumption that decomposing to a stricter normal form is always an improvement.",
+        "failure_point": "The dependency that has to be removed to reach Boyce-Codd normal form is the one whose dependent is a prime attribute, and removing it forces a choice, because no decomposition of this relation can be lossless, in Boyce-Codd normal form and dependency preserving at once, so the candidate must give up one guarantee rather than find a design that keeps all three.",
+        "wrong_answer": "The decomposition into (Student, Teacher) and (Teacher, Subject) is offered as a solution that removes the anomalies, and the lost dependency {Student, Subject} -> Teacher is not mentioned, so the schema is reported as correct although it can no longer prevent one student from being recorded with two teachers for the same subject."
+      },
+      "verification": {
+        "method": "The closures were computed attribute by attribute and the candidate keys established by checking that no proper subset of either key has a closure equal to the whole attribute set. The prime attributes were read off the candidate keys rather than assumed. The lossless join test was applied to the proposed decomposition by identifying the common attribute and checking whether it is a superkey of one of the two relations, and the dependency preservation test was applied by checking, for each original dependency, whether its attributes lie within a single relation of the decomposition. The three guarantees were then compared to confirm that no decomposition of this relation can hold all three.",
+        "assertions": [
+          "1 + 2 + 4 == 7",
+          "(1 | 2) | 4 == 7",
+          "(1 | 4) | 2 == 7",
+          "(4 | 2) == 6",
+          "not ((4 | 2) == 7)",
+          "len([a for a in [1, 2, 4] if not ((4 | 2) & a)]) == 1",
+          "((1 | 4) & (2 | 4)) == 4",
+          "((4 | 2) == (2 | 4))",
+          "len([(1, 2), (1, 4)]) == 2",
+          "len([1, 2, 4]) == 3"
+        ],
+        "solution_skeleton": [
+          "compute the closure of each attribute set to establish the two candidate keys",
+          "read the prime attributes off the candidate keys rather than assuming them",
+          "test each dependency against the third normal form condition and its prime attribute clause",
+          "test the offending dependency against Boyce-Codd normal form, which has no such clause",
+          "apply the lossless join test to the proposed decomposition through the common attribute",
+          "check whether each original dependency has its attributes inside one decomposed relation"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.001,
+        "nearest_bank_id": "CS_HL_P1_2015May_q13",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Computer Science/CS HL",
+        "max_internal_similarity": 0.0,
+        "nearest_internal_id": null,
+        "max_approach_similarity": 0.075,
+        "nearest_approach_id": "CS-A3.2-001"
+      }
+    }
+  ]
+}

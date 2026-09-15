@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A1.2-201 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A1.2 A weighted check digit modulo a prime detects every interchange of two digits, because the change it makes to the total is a product of two factors each smaller than the modulus; an unweighted digit sum detects none, because the change is zero</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A1.2-201</p>
+<button type="button" class="q-done-page" data-qid="CS-A1.2-201" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-A1.2-201">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A1.2 Data representation and computer logic (check digits and the detection of errors in stored or transmitted data), with A2.3 Data transmissions (why an error must be detected before it can be corrected)</span><span class="chip">P1 · Section B</span><span class="chip">13 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">Calculate</span><span class="chip">Determine</span><span class="chip">Explain</span><span class="chip">Deduce</span></div>
+<div class="box"><h4>The catalogue's check on the codes it stores</h4><p>A book catalogue stores ten-digit ISBN codes. Each code consists of nine identifying digits followed by a check digit. The check digit is chosen so that, with the digits weighted from ten down to one, the weighted total is a multiple of eleven. When a code is typed in, the catalogue runs a validation routine. The routine adds the ten digits together and accepts the code if that total is a multiple of ten. The routine was written by a volunteer who believed that a check digit is simply a digit chosen to make the digits add up to a round number. The table shows one record, the code as it was typed, and the routine's verdict.</p><figure><table><thead><tr><th>Record</th><th>Code as typed</th><th>Sum of the ten digits</th><th>Routine's verdict</th></tr></thead><tbody><tr><td>R-4471</td><td>0306406512</td><td>27</td><td>accepted</td></tr></tbody></table><figcaption>One record and the routine's verdict</figcaption></figure></div>
+
+<section id="q-print">
+<h2>Question</h2>
+<p>The nine identifying digits of record R-4471 are 0, 3, 0, 6, 4, 0, 6, 1 and 5, and the check digit is the final 2, so the code as the publisher printed it is 0306406152. The code held in the catalogue is 0306406512: the eighth and ninth digits have been interchanged somewhere between the publisher's list and the catalogue's keyboard. The catalogue's routine accepted the code, and the record has stood in the catalogue for two years. The correct rule for a ten-digit ISBN weights the first digit by ten, the second by nine, and so on down to the tenth digit weighted by one, and requires the weighted total to be a multiple of eleven. A rival scheme weights each digit by its own position, counting the first digit as position one, and requires the total to be a multiple of ten. The catalogue's routine is a third scheme again: it weights every digit by one.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Calculate the check digit that the weighted rule requires for the nine identifying digits 0, 3, 0, 6, 4, 0, 6, 1 and 5, and hence state whether the code held in the catalogue satisfies the rule.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>Determine the weighted total of the code held in the catalogue, and state what its remainder on division by eleven shows about the interchange of the two digits.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Explain why the catalogue's routine accepted a code that the weighted rule rejects, referring to the effect that interchanging two digits has on the sum of those digits.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>The rival scheme that weights each digit by its position and works modulo ten is not equivalent to the weighted rule. Deduce, from the change that interchanging two digits makes to a weighted total, one interchange that the rival scheme fails to detect, and explain why the weighted rule modulo eleven cannot fail to detect any interchange of two digits.</p> <em>(Deduce)</em></li></ol>
+<p class="reveal-note">Total: 13 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="13" data-ai-ref="CS-A1.2-201">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>The nine identifying digits of record R-4471 are 0, 3, 0, 6, 4, 0, 6, 1 and 5, and the check digit is the final 2, so the code as the publisher printed it is 0306406152. The code held in the catalogue is 0306406512: the eighth and ninth digits have been interchanged somewhere between the publisher&#x27;s list and the catalogue&#x27;s keyboard. The catalogue&#x27;s routine accepted the code, and the record has stood in the catalogue for two years. The correct rule for a ten-digit ISBN weights the first digit by ten, the second by nine, and so on down to the tenth digit weighted by one, and requires the weighted total to be a multiple of eleven. A rival scheme weights each digit by its own position, counting the first digit as position one, and requires the total to be a multiple of ten. The catalogue&#x27;s routine is a third scheme again: it weights every digit by one.
+
+(a) Calculate the check digit that the weighted rule requires for the nine identifying digits 0, 3, 0, 6, 4, 0, 6, 1 and 5, and hence state whether the code held in the catalogue satisfies the rule. [3 marks] (Calculate)
+(b) Determine the weighted total of the code held in the catalogue, and state what its remainder on division by eleven shows about the interchange of the two digits. [3 marks] (Determine)
+(c) Explain why the catalogue&#x27;s routine accepted a code that the weighted rule rejects, referring to the effect that interchanging two digits has on the sum of those digits. [3 marks] (Explain)
+(d) The rival scheme that weights each digit by its position and works modulo ten is not equivalent to the weighted rule. Deduce, from the change that interchanging two digits makes to a weighted total, one interchange that the rival scheme fails to detect, and explain why the weighted rule modulo eleven cannot fail to detect any interchange of two digits. [4 marks] (Deduce)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) The weighted rule weights the digits from ten down to one. For the nine identifying digits 0, 3, 0, 6, 4, 0, 6, 1 and 5 the weights are 10, 9, 8, 7, 6, 5, 4, 3 and 2, so the weighted total of the identifying digits is</p>
+<p>10(0) + 9(3) + 8(0) + 7(6) + 6(4) + 5(0) + 4(6) + 3(1) + 2(5)<br>= 0 + 27 + 0 + 42 + 24 + 0 + 24 + 3 + 10<br>= 130.</p>
+<p>The check digit carries weight one, so it must satisfy 130 + d = 0 (mod 11). Now 130 = 11 x 11 + 9, so 130 is 9 more than a multiple of eleven, and the check digit must make up the difference: d = 11 - 9 = 2. The check digit is 2, which agrees with the final digit of the publisher's code 0306406152.</p>
+<p>The code held in the catalogue is 0306406512, which has the same ten digits in a different order. Its weighted total is 136, and 136 = 11 x 12 + 4, so the total is 4 more than a multiple of eleven. The code held in the catalogue therefore does not satisfy the rule, and the check digit it carries, 2, is not the check digit for the nine digits that precede it in that order.</p>
+<p>(b) The weighted total of the code held in the catalogue is</p>
+<p>10(0) + 9(3) + 8(0) + 7(6) + 6(4) + 5(0) + 4(6) + 3(5) + 2(1) + 1(2)<br>= 0 + 27 + 0 + 42 + 24 + 0 + 24 + 15 + 2 + 2<br>= 136.</p>
+<p>The remainder on division by eleven is 4, and a valid code would leave a remainder of zero. The remainder is not zero, so the interchange is detected: the code held in the catalogue is not a valid ISBN under the weighted rule, and the nonzero remainder is the evidence. Comparing the two totals, the publisher's code gives 132 and the catalogue's code gives 136, so interchanging the eighth and ninth digits raised the total by 4. That increase is not an accident of these particular digits; it is the difference between the two weights, 3 and 2, multiplied by the difference between the two digits, 1 and 5.</p>
+<p>(c) The catalogue's routine adds the ten digits together and tests whether the total is a multiple of ten. The ten digits of the publisher's code are 0, 3, 0, 6, 4, 0, 6, 1, 5 and 2, which add to 27. The ten digits of the catalogue's code are 0, 3, 0, 6, 4, 0, 6, 5, 1 and 2, which also add to 27. Addition does not care about the order of its terms, so interchanging two digits leaves the sum of the digits exactly as it was. The routine therefore computes the same total for both codes, finds 27 in each case, and accepts both, because 27 has the same remainder on division by ten, namely 7, as itself.</p>
+<p>The routine is not merely weaker than the weighted rule; it is blind to the whole class of errors to which keyboard entry is most prone. Interchanging two adjacent digits is the commonest mistake made when a long number is copied by hand, and the routine's weighting, which is to say a weight of one on every position, makes every interchange invisible. A check that cannot see the commonest error is not a check that has been weakened; it is a check that is not doing the job it was written for.</p>
+<p>(d) Consider a weighted total in which the digit at position i carries weight w_i. Interchanging the digits at positions i and j replaces the contribution w_i d_i + w_j d_j with w_i d_j + w_j d_i, so the total changes by</p>
+<p>(w_i d_j + w_j d_i) - (w_i d_i + w_j d_j) = (w_i - w_j)(d_j - d_i).</p>
+<p>For the rival scheme the weight of a digit is its position, so w_i = i and w_j = j, and the change is (i - j)(d_j - d_i). The rival scheme accepts the corrupted code when this product is a multiple of ten. Take the digits at positions 1 and 3, and suppose they are 0 and 5. Then i - j is 1 - 3 = -2 and d_j - d_i is 5 - 0 = 5, so the change is -2 x 5 = -10, which is a multiple of ten, and the rival scheme does not notice the interchange. The interchange of a 0 and a 5 two positions apart is therefore one that the rival scheme misses. The reason the miss is possible is that ten is not prime: the factor of five that the digit difference supplies can be paired with the factor of two that the position difference supplies to make a multiple of ten.</p>
+<p>For the weighted rule the weights are ten, nine, eight and so on down to one, and the change made by an interchange is (w_i - w_j)(d_j - d_i). The digits are between 0 and 9, so d_j - d_i lies between -9 and 9, and the positions are between 1 and 10, so w_i - w_j also lies between -9 and 9. Neither factor can be a multiple of eleven, because eleven is larger than nine, and neither factor is zero when the digits differ and the positions differ. Since eleven is prime, a product is a multiple of eleven only if one of its factors is, and neither factor is. The change is therefore never a multiple of eleven, so the total of a code with two digits interchanged can never be a multiple of eleven, and the interchange is always detected. Choosing a prime modulus larger than the largest possible value of either factor is what makes the guarantee hold.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) One mark for the weighted total 130 of the nine identifying digits, one mark for the check digit 2 with the reasoning 130 = 9 (mod 11) so d = 2, and one mark for the verdict that the catalogue's code does not satisfy the rule. A candidate who computes 132 and then reports the code as valid has used the wrong digit order and forfeits the third mark.</p>
+<p>(b) One mark for the total 136, one mark for the remainder 4, and one mark for the conclusion that the interchange is detected because the remainder is not zero. Accept the remainder as 4 or as -7; accept the observation that the interchange changed the total by 4 only if it is attached to the weights 3 and 2.</p>
+<p>(c) One mark for stating that the sum of the digits is 27 in both orders, one mark for the reason, that addition does not depend on the order of its terms, and one mark for drawing the consequence, that the routine is blind to every interchange and not merely to this one. A candidate who says only that the routine 'checks the wrong thing' without referring to the invariance of the digit sum scores at most one mark.</p>
+<p>(d) One mark for the expression (w_i - w_j)(d_j - d_i) or its equivalent, one mark for a correct specific interchange such as the 0 and the 5 at positions 1 and 3 with the product -10, one mark for the argument that eleven is prime and larger than both factors, and one mark for completing it, that a product is a multiple of a prime only when one factor is. Follow-through is allowed from a wrong expression in the first mark provided the prime argument is made correctly.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>Check digits are usually taught as a procedure: multiply by the weights, add, take the remainder. The procedure is easy to learn and teaches nothing about why it works, and the commonest student belief is that any check digit scheme is roughly as good as any other. This item is built to make that belief fail on contact with a specific error.</p>
+<p>The error is planted rather than described. The catalogue holds a code whose digits are the publisher's digits in the wrong order, and the catalogue's routine, which sums the digits, reports the code as valid. The candidate is not asked to find the error by brute force; the error is given in the question. What is asked is why the routine cannot see it, and the answer is an invariance: the sum of a set of digits does not depend on their order, so a scheme that weights every digit equally is blind to every interchange. The reasoning is short but it is a genuine argument about a property of the scheme rather than a computation.</p>
+<p>The final part raises the question that the invariance argument invites. If equal weights see nothing and distinct weights see something, which distinct weights see everything? The answer is that the change made by an interchange is a product of two small factors, so it suffices that the modulus be prime and larger than both. Eleven is prime and larger than nine, and both factors are bounded by nine, so no interchange escapes. The rival scheme modulo ten fails because ten is composite: a digit difference of five and a position difference of two can supply the factors of five and two separately. The candidate is asked to exhibit such an interchange, which cannot be done by testing codes at random and requires the product to have been understood.</p>
+<p>The item also carries a small piece of professional judgement. The catalogue's routine was written by someone who had a rule of thumb, and it passed every test the writer thought to apply, because the writer tested codes rather than interchanges. The item's third part asks for the reason the routine is blind, which is the same kind of question a candidate should learn to ask about any validation they write themselves.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme A: Concepts of computer science — A1.2 A weighted check digit modulo a prime detects every interchange of two digits, because the change it makes to the total is a product of two factors each smaller than the modulus; an unweighted digit sum detects none, because the change is zero</dd></div>
+  <div><dt>Challenge lever</dt><dd>The item plants an error that a plausible check passes, and then asks for the reason the check passes rather than for the arithmetic that catches the error. The code held in the catalogue is the publisher&#x27;s code with two digits interchanged, and the catalogue&#x27;s routine sums the digits, which is unchanged by an interchange, so the routine reports the corrupted code as valid. The candidate has to see that a check digit&#x27;s power comes from the weights and not from the digit sum, and then has to produce the general argument: an interchange of the digits at positions i and j changes a weighted total by the product (i - j)(d_i - d_j), and a modulus that is prime and larger than both factors cannot divide that product, whereas a modulus of ten can, because ten is not prime and the position difference can supply the missing factor of five. The final part asks for a specific interchange that the rival scheme misses, which cannot be produced by testing codes at random and requires the product to be understood.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A1.2 Data representation and computer logic (check digits and the detection of errors in stored or transmitted data), with A2.3 Data transmissions (why an error must be detected before it can be corrected)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Original. Check digits are standard content in every treatment of data representation, and the ISBN-10 scheme with weights ten down to one modulo eleven is the usual example, so the scheme itself is not new. What is constructed here is the error and the comparison. The catalogue&#x27;s routine weights every digit equally, which is a real and common misreading of what a check digit is, and the record is planted with an interchange that the routine accepts; the rival scheme that weights by position modulo ten is then introduced so that the prime-modulus argument has something to be contrasted with. The record number, the code, the interchange, the rival scheme and the specific missed interchange at positions 1 and 3 are original, and every total and remainder was computed and checked programmatically.</dd></div>
+  <div><dt>Verification</dt><dd>Every total and remainder was computed directly. The weighted total of the nine identifying digits was evaluated term by term and the check digit obtained from the congruence 130 + d = 0 (mod 11); the weighted totals of the publisher&#x27;s code and of the stored code were computed in full and their remainders recorded; the sum of the ten digits was computed for both orders and confirmed to be the same value. The general claim about the modulus was checked exhaustively rather than asserted: over every pair of distinct positions and every pair of distinct digits, the product (i - j)(x - y) was shown never to be a multiple of eleven, and shown to be a multiple of ten for at least one such pair, with the pair at positions 1 and 3 carrying the digits 0 and 5 exhibited explicitly.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PHYS_HL_P3_2011May_TZ2_OPT_E_q03 (similarity 0.002)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-15</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

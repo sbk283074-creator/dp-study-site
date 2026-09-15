@@ -1,11 +1,11 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 238 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 252 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 74 of 238 do. The remaining 164 are
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 88 of 252 do. The remaining 164 are
 a published, ratcheting backlog — see `STANDARD.md` §2.2–§2.5 and `tools/difficulty_audit.py`. All 13
-lever types are in use, and the Physics difficulty-5 share has been designed down from 62% to **46%**,
+lever types are in use, and the Physics difficulty-5 share has been designed down from 62% to **47%**,
 which brings every subject inside the 50% cap with the calibration debt cleared. The only outstanding debt
 is that no item claims difficulty 3, so the 3–5 scale still reads as two points.
 The `topic` label is now a closed vocabulary per subject, enforced by `validate.py`, and is shown on every
@@ -824,12 +824,80 @@ similarity score, and no BM item ships containing HL-only content.
     `MATH-AHL1.11` pair at 0.366.
   - Evidenced count **60 → 74**; assertions **2373 → 2585**. Difficulty split 144 at d4, 94 at d5; every
     subject inside the 50% cap.
+- **Batch 20 — DONE (6 Maths, 4 Physics, 3 CS, 1 BM; 238 → 252).** The hard half of the stretch tail, and
+  the first batch written to the instruction *harder than before, especially in Maths, with a real logical
+  point inside rather than more arithmetic*. Every item names a lever and the lever carries the
+  difficulty; nothing was made longer to make it harder. Maths contributes 3 × d5 and 3 × d4, Physics
+  2 × d5 and 2 × d4, CS 2 × d5 and 1 × d4, BM 1 × d5. Physics rises to **47%**, CS to **30%**, BM to
+  **10%** — all inside the 50% cap, and the gate confirms no subject has regressed against the
+  2026-09-13 baseline. Six hand-authored inline SVGs were added (three Maths, two Physics, one CS).
+  A second BM item was written, passed every gate, and was then withdrawn: see the last bullet below.
+  - **Maths ×6.** $\sin 2x = k\cos x$ on $[0, 2\pi]$, where the number of solutions is **5 at $k = 0$**,
+    4 for $0 < |k| < 2$ and 2 for $|k| \ge 2$ — the exceptional parameter is the one value that makes
+    $\cos x$ a *common* factor, so it destroys one of the roots it would otherwise leave (AHL 3.8, d5,
+    `exceptional_parameter`); $\int_{-a}^{a}(x^{3} - a^{2}x)\,dx$, where the signed integral is exactly
+    **zero for every $a$** while the geometric area between the curve and the axis is $a^{4}/2$, so the two
+    readings of "area" disagree by the whole of it (AHL 5.11, d4, `partial_cancellation`); $\sum_{k=1}^{n}
+    1/(1 - \omega^{k}) = (n-1)/2$ for an $n$-th root of unity, where every term has real part exactly
+    $\tfrac12$ and the whole sum is recovered by pairing each term with its conjugate — the tool is complex
+    conjugation applied to a real sum, which no amount of real manipulation suggests (AHL 1.13, d5,
+    `non_obvious_tool`); a capped St Petersburg game where the uncapped expectation diverges because every
+    term contributes exactly 1, and the cap at $2^{20}$ makes the expectation **21**, so a quantity that
+    was infinite becomes a small integer (AHL 4.11, d5, `quant_vs_judgement`); $\int_{0}^{1} x^{-p}\,dx$,
+    where the partial integral $(1 - \epsilon^{1-p})/(1-p)$ has a limit only for $p < 1$ and the naive
+    antiderivative is applied at $p = 2$ to return 9, 99, 999 as $\epsilon$ falls (AHL 5.12, d4,
+    `decoy_technique`); and $n! > 3^{n}$, which first holds at $N = 7$ because $6! = 720$ falls short of
+    $729$ by exactly 9, so the induction step needs $k + 1 > 3$ and the base case cannot be guessed
+    (AHL 1.15, d4, `implicit_dependence`).
+  - **Physics ×4.** A series circuit containing an inductor, where the initial rate of rise is
+    $\varepsilon/L = 48\ \mathrm{A\,s^{-1}}$ and contains **neither** resistance although both are in the
+    diagram, while the final current and the time constant depend on the total including the coil's own
+    8 Ω — so a candidate who treats the coil as ideal gets 0.300 A and 6.25 ms against the correct
+    0.250 A and 5.21 ms (D.4, d5, `non_governing_variable`); a diffraction-grating record in which the
+    36.1° line is present *at the correct angle* but carries only 2 of 100, the missing order being
+    explained by $d/a = 2$ putting the single-slit envelope zero exactly on order 2, so the anomaly is
+    invisible to anyone who checks only the angles (C.3, d5, `seeded_anomaly`, data-based with a figure);
+    a potential divider asked to deliver 4.00 V into a load, which delivers 2.40 V and cannot be made to
+    deliver 4.00 V for **any** finite $R_{2}$ because that would require the parallel combination to equal
+    its own upper bound (B.5, d4, `wrong_design_cost`); and a hot-air balloon whose required internal
+    temperature is 367 K, whose payload bound is $\rho_{\text{out}}V$, and for which a 3000 kg payload
+    demands a *negative* density (B.3, d4, `derived_limit`).
+  - **CS ×3.** A RAID 5 stripe of four data blocks and one parity block, where the parity is the XOR
+    ($0x5A \oplus 0x3C \oplus 0xF0 \oplus 0x27 = 0xB1$), any one lost block is recoverable, and the
+    tolerance is **one failure per stripe regardless of the stripe's width** — so widening a stripe
+    raises capacity but not redundancy, which is the belief the item exists to break (A1.1, d5,
+    `aggregate_recovery`, with a two-stripe figure); an ISBN-10 catalogue record holding the publisher's
+    digits **interchanged** and accepted by a routine that sums the digits, where the digit sum is 27 in
+    both orders and is therefore blind to every transposition, while the weighted total moves
+    132 → 136 and the prime modulus 11 detects every interchange because the change is a product of two
+    factors each smaller than 11 (A1.2, d5, `seeded_anomaly`); and a timetabling relation with
+    $\{S,\mathrm{Sub}\} \to T$ and $T \to \mathrm{Sub}$ that is in **3NF but not BCNF**, whose natural
+    decomposition is lossless but loses the dependency that made the pair a key, so no decomposition can
+    be lossless, in BCNF and dependency-preserving at once (A3.2, d4, `binding_constraint`).
+  - **BM ×1.** A four-stage flow line whose bottleneck is welding at 480 units a week against a demand of
+    600, where a second machine at the assembly stage raises assembly's capacity to 1 200 and the line's
+    output by **exactly zero**, while the same machine at welding closes the shortfall — and the choice
+    between the 85 000-dollar machine at 326.92 a week and overtime at 360.00 a week turns on which cost is
+    fixed and which is variable (5.2, d5, `binding_constraint`).
+  - **The originality gate passed and the batch was still changed.** The first BM item of this batch
+    computed the payback period, the average rate of return and the net present value of two mutually
+    exclusive projects and then asked which to choose. It came back at internal 0.020 against a 0.25
+    limit, a comfortable pass, and it was withdrawn anyway, because reading the same-node neighbour is the
+    check the gate is only a proxy for. The neighbour is `BM-3.8-001`: payback, average rate of return and
+    net present value on two mutually exclusive projects with a 400 000 outlay, a four-year life, no
+    residual value and a 10 per cent cost of capital, whose own `challenge_mechanism` states that "the
+    three appraisal methods rank the two projects differently". Four of those five parameters matched, and
+    so did the recommendation part, so the new item was a second copy of an existing question rather than a
+    harder one. It was withdrawn and Batch 20 ships one BM item: BM 3.8 is saturated by 001 and 002, and a
+    third item on the node would have been padding. The batch is smaller for it and not weaker.
+  - Evidenced count **74 → 88**; assertions **2585 → 2788**. Difficulty split 150 at d4, 102 at d5;
+    every subject inside the 50% cap.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  102 questions / 1555 marks, physics 71 / 884, CS 37 / 587, BM SL 28 / 419 — all difficulty 4–5, May
+  108 questions / 1641 marks, physics 75 / 935, CS 40 / 626, BM SL 29 / 434 — all difficulty 4–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that
