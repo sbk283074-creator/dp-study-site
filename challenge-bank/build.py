@@ -430,7 +430,7 @@ JS = """
 """
 
 MATHJAX = """<script>
-window.MathJax={tex:{displaystyle:true,inlineMath:[['$','$'],['\\\\(','\\\\)']],displayMath:[['$$','$$'],['\\\\[','\\\\]']],
+window.MathJax={tex:{displayStyle:true,inlineMath:[['$','$'],['\\\\(','\\\\)']],displayMath:[['$$','$$'],['\\\\[','\\\\]']],
 processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']}};
 function mjFallback(){var s=document.createElement('script');
 s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
@@ -547,7 +547,7 @@ def page(title, body, subject=None, mathjax=False, extra_head=""):
   <a href="{up}index.html">DP study system</a>.
 </div></footer>
 <script src="{'../' if subject else ''}assets/site.js"></script>
-<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js" defer></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=2" defer></script>
 </body>
 </html>
 """
