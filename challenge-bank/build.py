@@ -718,21 +718,38 @@ def subject_level(slug):
     return ""
 
 
-def fmt_minutes(total_marks):
+def minutes_for(total_marks):
     """A paper's time budget. IB allows roughly 1.4 minutes a mark and always
     quotes the result in whole five-minute units."""
-    minutes = max(30, int(round(total_marks * 1.4 / 5.0) * 5))
-    h, m = divmod(minutes, 60)
+    return max(30, int(round(total_marks * 1.4 / 5.0) * 5))
+
+
+def fmt_minutes(total_marks):
+    """Spelled-out duration, the way a real paper quotes it: 1 hour 30 minutes."""
+    h, m = divmod(minutes_for(total_marks), 60)
     if not h:
         return "%d minutes" % m
     return "%d hour%s%s" % (h, "s" if h > 1 else "", " %d minutes" % m if m else "")
 
 
-def time_label(total_marks):
-    """A real IB paper tops out near 90 marks (2h15). A complete subject set does
-    not fit one sitting, and calling its total "suggested time" would be a lie
-    about how the paper is meant to be used."""
-    return "Suggested time" if total_marks <= 180 else "Working time"
+def fmt_minutes_short(total_marks):
+    """Compact duration for one-line summaries: 36 h 15 min."""
+    h, m = divmod(minutes_for(total_marks), 60)
+    if not h:
+        return "%d min" % m
+    return "%d h %d min" % (h, m) if m else "%d h" % h
+
+
+def time_fact(total_marks):
+    """The cover's time row, as (label, value).
+
+    A real IB paper tops out near 90 marks (2 h 15) and even a whole Paper 3 stays
+    under 180. A complete subject set does not fit one sitting at all, so its
+    36-hour total must not be dressed up as one exam's working time: past 180
+    marks the row is a total and says outright that it runs over sessions."""
+    if total_marks <= 180:
+        return "Working time", fmt_minutes(total_marks)
+    return "Total working time", "%s across sessions" % fmt_minutes_short(total_marks)
 
 
 def ruled_lines(marks, cap=12):
@@ -779,7 +796,7 @@ def exam_cover(meta, slug, *, answers, count, marks):
         '<td class="ec-k">Total marks</td><td class="ec-v">%d</td></tr>'
         '<tr><td class="ec-k">%s</td><td class="ec-v">%s</td>'
         '<td class="ec-k">Calculator</td><td class="ec-v">permitted</td></tr>'
-        '</table>' % (count, marks, time_label(marks), fmt_minutes(marks))
+        '</table>' % (count, marks, *time_fact(marks))
     )
     note_html = '<p class="ec-note">%s</p>' % note if note else ""
     return """<section class="exam-cover">
@@ -1043,7 +1060,9 @@ def build_paper(slug, qs, answers=False):
               else '<p class="paper-switch"><a href="%s-answers.html">Markscheme &#8594;</a></p>' % slug)
     run_head = ('<div class="exam-run-head"><span>%s \u00b7 %s</span>'
                 '<span>%d questions \u00b7 %d marks \u00b7 %s</span></div>'
-                % (html.escape(meta["short"]), html.escape(kind), len(qs), total, fmt_minutes(total)))
+                % (html.escape(meta["short"]), html.escape(kind), len(qs), total,
+                   "%s working time across sessions" % fmt_minutes_short(total)
+                   if total > 180 else fmt_minutes(total)))
     cover = exam_cover(meta, slug, answers=answers, count=len(qs), marks=total)
     if answers:
         body = cover + '<section class="exam-ms"><h2>Markscheme</h2>%s%s</section>' % (run_head, "".join(blocks))
@@ -1258,8 +1277,13 @@ __MATHJAX__
   }
   function marksLabel(m){ return '['+(m==null?'\u2014':m)+' mark'+(m===1?'':'s')+']'; }
   // A real paper tops out near 90 marks; a complete subject set does not fit one
-  // sitting, so its total is working time rather than a suggested duration.
-  function timeLabel(t){ return t<=180 ? 'Suggested time' : 'Working time'; }
+  // sitting, so its total must not read as a single exam's working time.
+  function timeLabel(t){ return t<=180 ? 'Working time' : 'Total working time'; }
+  function timeValue(t){
+    if(t<=180) return fmtMinutes(t);
+    var m=Math.max(30,Math.round(t*1.4/5)*5), h=Math.floor(m/60), r=m%60;
+    return (h ? h+' h'+(r?' '+r+' min':'') : r+' min')+' across sessions';
+  }
   function cover(items,total){
     var names={}, lean=items[0]||{};
     items.forEach(function(q){ if(q.subject_name) names[q.subject_name]=1; });
@@ -1276,7 +1300,7 @@ __MATHJAX__
       + '<td class="ec-k">Date</td><td class="ec-rule"></td></tr>'
       + '<tr><td class="ec-k">Questions</td><td class="ec-v">'+items.length+'</td>'
       + '<td class="ec-k">Total marks</td><td class="ec-v">'+total+'</td></tr>'
-      + '<tr><td class="ec-k">'+timeLabel(total)+'</td><td class="ec-v">'+fmtMinutes(total)+'</td>'
+      + '<tr><td class="ec-k">'+timeLabel(total)+'</td><td class="ec-v">'+timeValue(total)+'</td>'
       + '<td class="ec-k">Calculator</td><td class="ec-v">permitted</td></tr>'
       + '</table>'
       + '<div class="ec-instr"><h2>Instructions to candidates</h2><ul>'

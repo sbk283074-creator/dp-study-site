@@ -89,8 +89,13 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
   }
   function marksLabel(m){ return '['+(m==null?'—':m)+' mark'+(m===1?'':'s')+']'; }
   // A real paper tops out near 90 marks; a complete subject set does not fit one
-  // sitting, so its total is working time rather than a suggested duration.
-  function timeLabel(t){ return t<=180 ? 'Suggested time' : 'Working time'; }
+  // sitting, so its total must not read as a single exam's working time.
+  function timeLabel(t){ return t<=180 ? 'Working time' : 'Total working time'; }
+  function timeValue(t){
+    if(t<=180) return fmtMinutes(t);
+    var m=Math.max(30,Math.round(t*1.4/5)*5), h=Math.floor(m/60), r=m%60;
+    return (h ? h+' h'+(r?' '+r+' min':'') : r+' min')+' across sessions';
+  }
   function cover(items,total){
     var names={}, lean=items[0]||{};
     items.forEach(function(q){ if(q.subject_name) names[q.subject_name]=1; });
@@ -107,7 +112,7 @@ s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.h
       + '<td class="ec-k">Date</td><td class="ec-rule"></td></tr>'
       + '<tr><td class="ec-k">Questions</td><td class="ec-v">'+items.length+'</td>'
       + '<td class="ec-k">Total marks</td><td class="ec-v">'+total+'</td></tr>'
-      + '<tr><td class="ec-k">'+timeLabel(total)+'</td><td class="ec-v">'+fmtMinutes(total)+'</td>'
+      + '<tr><td class="ec-k">'+timeLabel(total)+'</td><td class="ec-v">'+timeValue(total)+'</td>'
       + '<td class="ec-k">Calculator</td><td class="ec-v">permitted</td></tr>'
       + '</table>'
       + '<div class="ec-instr"><h2>Instructions to candidates</h2><ul>'
