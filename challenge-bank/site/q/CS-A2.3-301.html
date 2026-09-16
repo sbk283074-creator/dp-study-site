@@ -69,20 +69,24 @@ Two services use the same infrastructure. The public service receives $R = 2.0$ 
 <p>$$\frac{D/T}{R} = \frac{0.020}{2.0} = 0.010 \;\text{(A1)}$$</p>
 <p>about one page load in a hundred. (This assumes the fraction is below one; part (c) examines what happens when it is not.)</p>
 <p><strong>(b)</strong> Each page load performs $D = 6$ lookups. In the steady state, $0.010$ of them are misses at $180$ ms and effectively all the rest are hits at $2$ ms, so</p>
-<p>$$t_{m DNS} = 6 \times 2 + 0.010 \times (180 - 2) = 12 + 1.78 = 13.8\ {\rm ms} \;\text{(M1)(A1)}$$</p>
+<p>$$t_{
+m DNS} = 6 \times 2 + 0.010 \times (180 - 2) = 12 + 1.78 = 13.8\ {\rm ms} \;\text{(M1)(A1)}$$</p>
 <p>With $T = 60$ s the expiry rate is $6/60 = 0.10$ per second and the miss fraction is $0.10/2.0 = 0.050$, giving</p>
-<p>$$t_{m DNS} = 12 + 0.050 \times 178 = 12 + 8.9 = 20.9\ {\rm ms} \;\text{(A1)}.$$</p>
+<p>$$t_{
+m DNS} = 12 + 0.050 \times 178 = 12 + 8.9 = 20.9\ {\rm ms} \;\text{(A1)}.$$</p>
 <p>So the resolver's query traffic rises fivefold, from $0.020$ to $0.10$ recursive resolutions per second, while the average resolution time the user sees rises from $13.8$ ms to $20.9$ ms — about $7$ ms, which is well inside any plausible latency budget and barely measurable against the hundreds of milliseconds a page takes to load.</p>
 <p><strong>(c)</strong> The cache is effectively cold when the expiry rate reaches the arrival rate, that is when</p>
 <p>$$\frac{D}{T} \ge R \quad\Longrightarrow\quad R \le \frac{6}{300} = 0.020\ \text{requests per second} = 1.2\ \text{per minute} \;\text{(M1)(A1)}$$</p>
 <p>Below that rate, essentially every lookup misses, because the record has expired again before the next request arrives. The internal service receives $1.0$ request per minute $= 0.0167$ per second, which is below $0.020$, so all six of its lookups are misses and</p>
-<p>$$t_{m DNS} = 6 \times 180 = 1080\ {\rm ms} \;\text{(A1)}$$</p>
+<p>$$t_{
+m DNS} = 6 \times 180 = 1080\ {\rm ms} \;\text{(A1)}$$</p>
 <p>more than a second of pure name resolution on every page load.</p>
 <p><strong>(d)</strong> The resolution time a user experiences is set by how often a lookup misses in the moment it is made, and that is governed by the ratio</p>
 <p>$$\frac{D/T}{R} = \frac{D}{RT} \;\text{(M1)}$$</p>
 <p>the number of records expiring per second divided by the number of requests arriving per second — equivalently, the number of requests that arrive during one lifetime of a record, inverted (A1). The value $1$ separates the regimes: below it the cache is warm and only that fraction of lookups miss; at or above it the cache is cold and every lookup misses, at which point $T$ has no further effect at all because there is nothing left to degrade (A1). The time-to-live alone cannot say which regime a service is in, because it carries no information about $R$: the same $T = 300$ s puts the public service at a ratio of $0.010$, comfortably warm, and the internal service at a ratio of $1.2$, fully cold — a hundredfold difference in resolution time produced by identical configuration (A1).</p>
 <p><strong>(e)</strong> For the public service, $T = 10$ s gives an expiry rate of $6/10 = 0.60$ per second, a miss fraction of $0.60/2.0 = 0.30$, and</p>
-<p>$$t_{m DNS} = 12 + 0.30 \times 178 = 12 + 53.4 = 65.4\ {\rm ms} \;\text{(A1)}$$</p>
+<p>$$t_{
+m DNS} = 12 + 0.30 \times 178 = 12 + 53.4 = 65.4\ {\rm ms} \;\text{(A1)}$$</p>
 <p>which is thirty times the recursive resolution traffic of the current setting ($0.60$ against $0.020$ per second) and is still within the $200$ ms budget, though it now consumes a third of it on a component that previously used under seven per cent. For the internal service the proposal changes nothing measurable: its ratio is already above $1$ at $T = 300$ s, so it is already paying $1080$ ms on every load, and lowering $T$ further cannot raise a fraction that is already saturated at unity — it only adds resolver load for no benefit (A1). The proposal is therefore poor value at both sites: it buys no freshness that anyone can perceive, since records change rarely, and it spends a large multiple of the query budget to do so. The change that would actually help the internal service is one that raises the ratio above unity by a different route: a longer time-to-live, a scheduled prefetch that refreshes records before expiry, or a local resolver on the reporting host itself (A1).</p></div></details>
 <details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) for computing the expiry rate $D/T$, (A1) for $0.020$ per second, (A1) for the fraction $0.010$. Accept the fraction expressed as a percentage or as 'one request in a hundred'. A candidate who works out $T/D = 50$ s between resolutions and then relates it to the arrival interval of $0.5$ s is taking an equivalent route and earns full marks.</p>
 <p>(b) (M1) for a correct weighted average of hit and miss costs, (A1) for $13.8$ ms, (A1) for $20.9$ ms. Accept a candidate who computes two separate totals and subtracts, provided both are shown. The comparison asked for — fivefold traffic, about seven milliseconds — should be credited if stated qualitatively but correctly; the numbers themselves carry the marks here. Forfeits: treating all six lookups as misses whenever a miss occurs, which double-counts and gives $13.8$ ms where the correct figure is lower.</p>
@@ -120,6 +124,6 @@ Two services use the same infrastructure. The public service receives $R = 2.0$ 
   <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
 </div>
 <script src="../assets/site.js"></script>
-<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=11" defer></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=12" defer></script>
 </body>
 </html>

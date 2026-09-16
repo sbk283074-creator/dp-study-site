@@ -41,9 +41,10 @@ The hub's nav-card row ("Choose where you want to study") numbers them **01–06
 | 05 | Challenge Bank | `challenge-bank/site/` | `/dp-study-site/challenge-bank/site/` | **generated static** | Cloudflare (**AI only**) |
 | 06 | BPhO Round 0 | `bpho/` | `/dp-study-site/bpho/` | static SPA, hash-routed | Cloudflare (**AI only**) |
 
-In the repo but **not** one of the six: the subject pages
-`math/ physics/ cs/ english/ chinese/ business/ core/` (static study pages), and
-`study-plan.html` + `exam-toolkit.html`.
+In the repo but **not** one of the six (the hub has no nav card for these): the subject pages
+`math/ physics/ cs/ english/ chinese/ business/ core/` (static study pages),
+`study-plan.html` + `exam-toolkit.html`, and the two vocabulary spaces
+`ib-english-vocab/` and `vocab-review/` (§5·07).
 
 ---
 
@@ -51,7 +52,7 @@ In the repo but **not** one of the six: the subject pages
 
 | File | Size | What it does | Backend |
 |---|---|---|---|
-| `assets/ai-widget.js` | 64 KB | the **one** chat implementation — global **Ask AI** + site navigator, *and* the focused per-question mode (§3·1) | `ib-dp-platform-api.pages.dev/api/ask` |
+| `assets/ai-widget.js` | 68 KB | the **one** chat implementation — global **Ask AI** + site navigator, *and* the focused per-item mode (§3·1) | `ib-dp-platform-api.pages.dev/api/ask` |
 | `assets/tools-widget.js` | 52 KB | Formula Booklet + Scientific Calculator; injected *by* ai-widget.js | none |
 | `assets/css/main.css` | 33 KB | site styling | — |
 | `assets/js/app.js` | 24 KB | nav, search, page behaviour | — |
@@ -77,6 +78,26 @@ window.dpAI = {
 `subject`, `topic`, `marks`, `context` (question text, prepended to the seed),
 `prompt`, `display` (what the user bubble says), `depth`/`difficulty`/`length`,
 and `autoSend:false` (prefill the composer instead of sending — used by "Mark my attempt").
+
+Focus mode is not question-specific, so three more optional keys let a **non-question** page reuse it
+without pretending it has a question (all default to the original question-bank wording, so the two
+banks are byte-identical to before):
+
+| Key | Effect |
+|---|---|
+| `noun` | `"poem"` / `"word"` / `"term"` → header becomes "Ask about this **poem**", and the opening bot line is reworded for it |
+| `contextLabel` | renames the `Question:` prefix prepended to `context` (e.g. `Poem:` / `Word:` / `Term:`) |
+| `intro` | replaces the opening bot line outright |
+
+Live callers of `open()` today:
+
+| Caller | Scope | Notes |
+|---|---|---|
+| `qbank/` (React) | one question | `questionId` grounding |
+| `challenge-bank/site/assets/site.js` | one question | 4 launchers, generated from `build.py` |
+| `Eng learning/index.html` | one **poem**, one **glossary term**, the whole glossary | `noun:"poem"` / `"term"`, `contextLabel` set accordingly (§5·04) |
+| `vocab-review/index.html` | one **word** | `noun:"word"`, prompt asks for a Chinese explanation (§5·07) |
+| `ib-english-vocab/assets/vocab-ask-ai.js` | one **word** | injected into every `days/dayN.html` (§5·07) |
 
 Gotchas worth knowing before touching it:
 
@@ -347,6 +368,37 @@ Built 2026-09-16. **Hand-authored static SPA — no build step, no bundler, no `
   **every** space, because the widget compares against `HUB + item` (a live absolute path) while the
   local path is shorter; that is a harness artefact, not a defect.
 - Rebuild: **none.** Edit the data files directly and reload.
+
+### 07 · The two vocabulary spaces — `ib-english-vocab/` and `vocab-review/`
+
+Neither is in the hub's 01–06 row; both are reached from the widget's **🧭 Sites** map.
+
+**`vocab-review/`** — "词汇复习站 · Vocabulary Review", a **Chinese-UI** Leitner spaced-repetition
+drill over ~1,450 curated words (`data.js` + `data_extra*.js`). Single `index.html`, no build.
+`openDetail(w)` renders one word into `#detailCard` and stashes it in the module-level `detailWord`,
+which is what the **🤖 问 AI：就讲这个词** button reads; that button got its own `.askai` accent class
+in `.d-actions`. Its prompt is deliberately Chinese, matching the site's own UI language.
+
+**`ib-english-vocab/`** — the IB English vocabulary plan, an **English-UI** site: a `manifest.json`
+hub plus one page per day in `days/`.
+- Hub: `index.html` + `assets/site.js` + `assets/site.css`; `site.js` fetches `manifest.json`.
+- Day pages: **fully self-contained** — inline CSS, and until now no shared JS at all.
+- `build.mjs` regenerates `manifest.json` (curated entries are preserved) and the `/day/N/` redirect
+  stubs. It does **not** generate the day pages themselves.
+
+**The per-word Ask AI hook.** Because day pages share no stylesheet or script, the button cannot live
+in shared CSS — it lives in `assets/vocab-ask-ai.js` (6 KB), which every day page loads via
+`<script src="../assets/vocab-ask-ai.js" defer></script>` placed **right after** the widget tag.
+It reads each `.word-card` (`.word` `.ipa` `.pos` `.definition` `.usage-box` `.example` `.ib-tip`
+`.collocations`), appends a pill button into `.word-header`, and calls
+`window.dpAI.open({ … noun:"word", contextLabel:"Word", autoSend:false })`. It is idempotent, so
+running twice cannot double the buttons.
+
+Two consequences worth remembering:
+
+- **Load order matters.** `ai-widget.js` defines `window.dpAI` only while its `build()` runs, and both
+  scripts are `defer`, so the widget tag must come first. Reversing them silently disables the button.
+- **A regenerated day page must keep both `<script>` tags**, or it loses the feature without any error.
 
 ---
 

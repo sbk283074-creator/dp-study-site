@@ -774,7 +774,7 @@
       scopeEl.innerHTML =
         '<span class="ic">\uD83C\uDFAF</span>' +
         '<span class="ref"></span>' +
-        '<button type="button" id="dpAiScopeExit" title="Stop focusing on this question and go back to the site-wide chat">Site-wide</button>';
+        '<button type="button" id="dpAiScopeExit" title="Stop focusing on this ' + (scope.noun || "question") + ' and go back to the site-wide chat">Site-wide</button>';
       scopeEl.querySelector(".ref").textContent = "Focused on " + scope.ref;
       document.getElementById("dpAiScopeExit").addEventListener("click", exitScope);
     }
@@ -793,17 +793,23 @@
     }
 
     function enterScope(o) {
+      // `noun` lets a non-question page (a poem, a vocabulary word) reuse this
+      // exact scope machinery without the panel insisting it is a "question".
+      // Every default below reproduces the original wording byte-for-byte, so
+      // the question bank and challenge bank are untouched.
+      var noun = o.noun || "question";
       scope = {
-        ref: o.ref || o.questionId || "this question",
+        ref: o.ref || o.questionId || ("this " + noun),
         subject: o.subject || subject || "",
         topic: o.topic || "",
         marks: (o.marks == null ? null : o.marks),
-        questionId: o.questionId || null
+        questionId: o.questionId || null,
+        noun: noun
       };
       scopeMsgs = [];
       if (subjChip) { subjChip.textContent = scope.subject || ""; subjChip.style.display = scope.subject ? "" : "none"; }
-      if (titleEl) titleEl.textContent = "Ask about this question";
-      text.placeholder = "Ask anything about this question\u2026";
+      if (titleEl) titleEl.textContent = "Ask about this " + noun;
+      text.placeholder = "Ask anything about this " + noun + "\u2026";
       paintScopeChip();
       renderAll();
 
@@ -815,8 +821,9 @@
       syncSegs();
       refreshHint();
 
-      var intro = "Focused on " + scope.ref + ". Ask me anything about this one question \u2014 " +
-        "explain the method, work through it step by step, or mark an attempt you paste in.";
+      var intro = o.intro || ("Focused on " + scope.ref + ". " + (o.noun
+        ? "Ask me anything about this " + noun + " \u2014 its meaning, its context, or how to write about it."
+        : "Ask me anything about this one question \u2014 explain the method, work through it step by step, or mark an attempt you paste in."));
       scopeMsgs.push({ role: "bot", html: format(intro) });
       addMsg("bot", format(intro));
 
@@ -1238,12 +1245,24 @@
     //     length:     "long",
     //     autoSend:   true                   // false = just prefill the box
     //   });
+    //
+    // Non-question pages (the poetry lab's per-poem button, the vocabulary
+    // sites' per-word buttons) may additionally pass:
+    //   noun:         "poem" | "word"   -> "Ask about this poem" instead of
+    //                                      "…this question"; also tunes the
+    //                                      opening line of the transcript.
+    //   contextLabel: "Poem" | "Word"   -> renames the "Question:" prefix that
+    //                                      is prepended to `context`.
+    //   intro:        "…"               -> replaces the opening bot line outright.
+    // All three are optional and default to the original question-bank wording.
     window.dpAI = {
       open: function (opts) {
         var o = opts || {};
         enterScope(o);
         var seed = "";
-        if (o.context) seed += "Question:\n" + o.context + "\n\n";
+        // `contextLabel` renames the "Question:" prefix for non-question pages
+        // (e.g. "Poem" / "Word"). Default keeps the original wording exactly.
+        if (o.context) seed += (o.contextLabel || "Question") + ":\n" + o.context + "\n\n";
         if (o.prompt) seed += o.prompt;
         if (!seed) { text.focus(); return; }
         if (o.autoSend === false) {

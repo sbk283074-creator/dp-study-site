@@ -29,6 +29,10 @@
   .btn.primary{background:var(--crimson);color:#fff;border-color:var(--crimson)}
   .btn.primary:hover{background:#7e1c2b}
   .btn.tiny{padding:4px 9px;font-size:12px}
+  .btn.ai{border-color:var(--crimson);color:var(--crimson);font-weight:600}
+  .btn.ai:hover{background:var(--crimson);color:#fff}
+  .askai-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .askai-hint{font-size:12px;color:var(--muted);line-height:1.45}
   .layout{display:flex;flex:1;min-height:0;overflow:hidden}
   /* on a phone the 248px rail leaves no room for the poem: stack it instead */
   @media (max-width:760px){
@@ -150,11 +154,20 @@
       <div class="poem" id="poemBox" data-page-node-id="qv4NgSxkTZ94WCaRKuLggv"></div>
       <div class="hint" data-page-node-id="vr0KMpQBUEMEGZMyX4Disn">💡 Select any text in the poem to <b data-page-node-id="7vY1jIZhQWfIAwV3bE0XFZ">annotate</b>, <b data-page-node-id="7Zj6EhfNcUPh0SLZFXQRFq">translate</b>, or <b data-page-node-id="GqmfV5g2zkCpiFO1go7wl1">add to Vocab</b>. Click a highlight to read its note.
         <span class="tag" data-page-node-id="U48LmtHrPyb5htHZbUQDOi">Yellow</span>Teacher notes · <span class="tag" style="background:#d8ecd8;color:#3f8f3f" data-page-node-id="daUEYUobmHJF4shfYQUbmx">Green</span>your note</div>
+
+      <div class="askai-row" id="askPoemWrap" data-page-node-id="AskPoemRow01">
+        <button class="btn ai" id="btnAskPoem" onclick="askAiPoem()" data-page-node-id="AskPoemBtn01">🤖 Ask AI about this poem</button>
+        <span class="askai-hint" data-page-node-id="AskPoemHint01">Opens the study assistant <b>focused on this poem</b> — the full text and its context go with the question, so the answer stays on this poem instead of the whole collection.</span>
+      </div>
     </section>
 
     <section class="view" id="view-analysis" data-page-node-id="Bf7elz4OA3GN7uznOzSbuJ">
       <h2 class="title" id="aTitle" data-page-node-id="HgrbYn5BiHizakPuNUhvtC"></h2>
       <div class="byline" id="aBy" data-page-node-id="Yqvj5EcF5vK9aUCihKzIoY"></div>
+      <div class="askai-row" id="askAnalysisWrap" style="margin:0 0 18px" data-page-node-id="AskAnalysisRow01">
+        <button class="btn ai" onclick="askAiPoem()" data-page-node-id="AskAnalysisBtn01">🤖 Ask AI about this poem</button>
+        <span class="askai-hint" data-page-node-id="AskAnalysisHint01">Focused on <b>this poem</b> — the text and your teacher's highlighted lines travel with the question.</span>
+      </div>
       <div class="analysis" id="analysisBox" data-page-node-id="h6HxNpBuKItGZOrtyTVplJ"></div>
     </section>
 
@@ -5234,6 +5247,75 @@ function load(){
 function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
 function getPoem(id){ return state.poems.find(p=>p.id===id); }
 
+/* ==================== ASK AI — scoped to one poem / one term ====================
+   The floating assistant is a shared site-wide widget (assets/ai-widget.js).
+   It publishes exactly one integration point — window.dpAI.open() — and nothing
+   here re-implements any part of the chat. Passing ref/subject/topic/context
+   scopes the panel to a single poem or a single glossary term, exactly the way
+   the question bank scopes itself to one question. With autoSend:false the
+   question is only pre-filled, so the student can edit it before sending. */
+function dpAiReady(){ return !!(window.dpAI && typeof window.dpAI.open==="function"); }
+function dpAiNotReady(){ alert("The study assistant is still loading — give it a moment and try again."); }
+function stripTags(s){ return String(s==null?"":s).replace(/<[^>]*>/g,"").trim(); }
+function poemScopeContext(p){
+  // `context` and `note` are the only fields stored as HTML (they are rendered
+  // with innerHTML elsewhere), so they get flattened before being pasted into
+  // the assistant's input box. The poem text and key lines are plain text.
+  const out=["Title: "+stripTags(p.title)];
+  if(p.author) out.push("Author: "+stripTags(p.author));
+  if(p.context) out.push("Context: "+stripTags(p.context));
+  if(p.keyPassages && p.keyPassages.length){
+    out.push("Teacher-highlighted lines:");
+    p.keyPassages.forEach(kp=>out.push('  "'+kp.text+'" — '+stripTags(kp.note)));
+  }
+  if(p.text) out.push("", "Full text:", p.text);
+  return out.join("\n");
+}
+function askAiPoem(){
+  const p=getPoem(currentPoem);
+  if(!p){ alert("Choose a poem from the left-hand list first."); return; }
+  if(!dpAiReady()){ dpAiNotReady(); return; }
+  window.dpAI.open({
+    ref:p.title, subject:"English Literature", topic:p.title,
+    noun:"poem", contextLabel:"Poem",
+    context:poemScopeContext(p),
+    prompt:'Help me study "'+p.title+'" by '+(p.author||"Carol Ann Duffy")+". Walk me through the themes, the speaker's voice and tone, the form, and the techniques Duffy uses — then tell me where to focus for an IB essay or individual oral.",
+    display:'Ask about "'+p.title+'"',
+    intro:'Focused on "'+p.title+'". Ask me anything about this poem — its meaning, its voice, Duffy\u2019s techniques, or how to write about it.',
+    autoSend:false
+  });
+}
+function askAiTerm(i){
+  const t=(window.__avTerms||[])[i];
+  if(!t) return;
+  if(!dpAiReady()){ dpAiNotReady(); return; }
+  const out=["Term: "+t.term,"Category: "+t.category,"Definition: "+t.definition];
+  if(t.example) out.push("Example from the collection: "+t.example);
+  if(t.tip) out.push("Tip: "+t.tip);
+  window.dpAI.open({
+    ref:t.term, subject:"English Literature", topic:t.category,
+    noun:"term", contextLabel:"Term",
+    context:out.join("\n"),
+    prompt:'Explain "'+t.term+'" to me as a literary-analysis term: what it means, how Duffy uses it, and how I can use it convincingly in my own essay writing. Give me a short example sentence.',
+    display:'Ask about "'+t.term+'"',
+    intro:'Focused on "'+t.term+'". Ask me anything about this term — its meaning, how to spot it in a poem, or how to use it in an essay.',
+    autoSend:false
+  });
+}
+function askAiGlossary(){
+  if(!dpAiReady()){ dpAiNotReady(); return; }
+  window.dpAI.open({
+    ref:"Literary Analysis Vocabulary", subject:"English Literature", topic:"Literary analysis vocabulary",
+    noun:"glossary", contextLabel:"Topic",
+    context:"The student is working through the Literary Analysis Vocabulary glossary of this study site: "+
+      "50+ essential terms for writing about poetry (diction, enjambment, caesura, volta, sibilance, extended metaphor, dramatic monologue, and so on), each with a definition, an example from Carol Ann Duffy's collection, and a usage tip.",
+    prompt:"Quiz me on literary-analysis vocabulary. Ask me one term at a time, wait for my answer, then tell me what I got right or wrong and give the exact word I should have used.",
+    display:"Quiz me on literary vocabulary",
+    intro:"Focused on the Literary Analysis Vocabulary glossary. Ask me to explain a term, or say \u201cquiz me\u201d and I\u2019ll test you one term at a time.",
+    autoSend:false
+  });
+}
+
 /* ============================ RENDER ============================ */
 function render(){
   renderList();
@@ -5243,6 +5325,9 @@ function render(){
   document.getElementById("rTitle").textContent = p.title;
   document.getElementById("rBy").innerHTML = p.author + (p.context?(" · "+p.context):"");
   renderPoem(p);
+  ["askPoemWrap","askAnalysisWrap"].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display="";
+  });
   // analysis
   document.getElementById("aTitle").textContent = p.title;
   document.getElementById("aBy").innerHTML = p.author + (p.context?(" · "+p.context):"");
@@ -5297,6 +5382,11 @@ function renderSection(secId){
   document.getElementById("rTitle").textContent="";
   document.getElementById("rBy").innerHTML="";
   document.getElementById("poemBox").innerHTML='<div style="padding:20px"></div>';
+  // Standalone sections (Exam Questions, Techniques, Vocab, Meters) are not a
+  // poem, so the per-poem buttons must not be offered here.
+  ["askPoemWrap","askAnalysisWrap"].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display="none";
+  });
   let html="";
   if(secId==="__examQuestions"){
     const eq=SEED.examQuestions;
@@ -5334,13 +5424,22 @@ function renderSection(secId){
     });
   } else if(secId==="__analysisVocab"){
     const av=SEED.analysisVocab;
+    // Flatten every term into one index, so each per-term "Ask AI" button can
+    // pass a plain number instead of a quoted string inside an inline handler.
+    const termIndex=[];
     html='<h2 style="margin:0 0 8px">'+esc(av.title)+'</h2><p style="color:#666;margin-bottom:20px">'+esc(av.subtitle)+'</p>';
+    html+='<div class="askai-row" style="margin:0 0 18px">'+
+      '<button class="btn ai" onclick="askAiGlossary()">🤖 Quiz me on this glossary</button>'+
+      '<span class="askai-hint">Opens the assistant focused on <b>this glossary</b>. Every term below has its own <b>Ask AI</b> button too.</span></div>';
     av.categories.forEach(cat=>{
       html+='<div class="card" style="margin:12px 0">';
       html+='<h3 style="margin:0 0 10px;border-bottom:2px solid #e5d3d3;padding-bottom:6px">'+esc(cat.name)+'</h3>';
       cat.terms.forEach(t=>{
+        const ti=termIndex.length;
+        termIndex.push({term:t.term,definition:t.definition,example:t.example,tip:t.tip,category:cat.name});
         html+='<div style="margin:8px 0;padding:8px 10px;background:#fafafa;border-radius:4px">';
-        html+='<b style="color:#369">'+esc(t.term)+'</b>';
+        html+='<b style="color:#369">'+esc(t.term)+'</b>'+
+          ' <button class="btn tiny ai" onclick="askAiTerm('+ti+')" title="Ask the study assistant about this term">Ask AI</button>';
         html+='<div style="margin:4px 0"><i>'+esc(t.definition)+'</i></div>';
         html+='<div style="font-size:0.9em"><b>Example:</b> '+esc(t.example)+'</div>';
         html+='<div style="font-size:0.85em;color:#666;margin-top:4px"><b>Tip:</b> '+esc(t.tip)+'</div>';
@@ -5348,6 +5447,7 @@ function renderSection(secId){
       });
       html+='</div>';
     });
+    window.__avTerms=termIndex;
   } else if(secId==="__meters"){
     const m=SEED.meters;
     html='<h2 style="margin:0 0 8px">'+esc(m.title)+'</h2><p style="color:#666;margin-bottom:20px">'+esc(m.subtitle)+'</p>';
@@ -6110,6 +6210,6 @@ function esc(s){ return (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</
 /* init */
 render();
 </script>
-<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=11" defer></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=12" defer></script>
 </body>
 </html>

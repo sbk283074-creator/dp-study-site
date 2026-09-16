@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>词汇复习站 · Vocabulary Review</title>
-<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=11" defer></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=12" defer></script>
 <style>
   :root{
     --bg:#f5f7fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
@@ -90,6 +90,8 @@
   .diff b{color:#047857}
   .d-actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;align-items:center}
   .d-actions .btn.ghost{border-color:#fcd34d;color:#b45309}
+  .d-actions .btn.askai{border-color:#a5b4fc;color:#4338ca;font-weight:600}
+  .d-actions .btn.askai:hover{background:#4338ca;border-color:#4338ca;color:#fff}
   @media(max-width:640px){
     .dsense{grid-template-columns:1fr}
     .dsense-no{text-align:left;width:fit-content;padding:5px 12px}
@@ -292,8 +294,10 @@ function toggleFav(w){
 
 /* ---------- 详情 ---------- */
 let inDetail=false;
+let detailWord=null;   // 当前详情页里的那个词，"问 AI" 就是针对它
 function openDetail(wd){
   const w = allWords().find(x=>x.w===wd); if(!w) return;
+  detailWord=w;
   const syn=(w.syn||[]).filter(Boolean), ant=(w.ant||[]).filter(Boolean);
   const favon=favSet().has(w.w);
 
@@ -329,6 +333,7 @@ function openDetail(wd){
       ${diff}
       <div class="d-actions">
         <button class="btn ghost sm" id="detFavBtn" onclick="quickFav('${esc(w.w)}')">${favon?'★ 已收藏':'☆ 收藏'}</button>
+        <button class="btn askai sm" onclick="askAiWord()" title="打开 AI 助手，且只针对这个词">🤖 问 AI：就讲这个词</button>
         <button class="btn sm" onclick="goBack()">← 返回列表</button>
       </div>
     </div>`;
@@ -343,6 +348,45 @@ function openDetail(wd){
   document.getElementById('detail').style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
   inDetail=true;
+}
+/* ---------- 问 AI：只针对当前这个词 ----------
+   右下角的助手是全站共用的一个组件（assets/ai-widget.js），它只对外开放
+   一个接口 window.dpAI.open()。这里只调用该接口，不复制任何聊天逻辑，
+   也不会改动助手本身。autoSend:false 表示只把问题预填进输入框，
+   发送前你还可以自己改。 */
+function askAiWord(){
+  const w = detailWord;
+  if(!w) return;
+  if(!(window.dpAI && typeof window.dpAI.open==='function')){
+    alert('AI 助手还在加载，请稍等片刻再点一次。');
+    return;
+  }
+  const lines = ['Word: ' + w.w + (w.ipa ? ('  ' + w.ipa) : '')];
+  if(w.pos) lines.push('Part of speech: ' + w.pos);
+  if(w.cat) lines.push('Category: ' + w.cat);
+  (w.senses||[]).forEach((s,i)=>{
+    lines.push('Sense ' + (i+1) + ': ' + (s.def||''));
+    (s.ex||[]).forEach(e=>lines.push('   e.g. ' + e));
+    if(s.note) lines.push('   note: ' + s.note);
+  });
+  const syn=(w.syn||[]).filter(Boolean), ant=(w.ant||[]).filter(Boolean);
+  if(syn.length) lines.push('Synonyms: ' + syn.join(', '));
+  if(ant.length) lines.push('Antonyms: ' + ant.join(', '));
+  if(w.synDiff) lines.push('Synonym nuance: ' + w.synDiff);
+
+  window.dpAI.open({
+    ref: w.w,
+    subject: 'English Vocabulary',
+    topic: w.cat || undefined,
+    noun: 'word',
+    contextLabel: 'Word',
+    context: lines.join('\n'),
+    prompt: '用中文讲解 "' + w.w + '" 这个词：中文释义、词性、读音要点、常见搭配、近义词之间的区别，' +
+      '再给我两个新的英文例句（附中文翻译）。最后告诉我这个词在 IB English 的作文或口头评论里可以怎么用。',
+    display: '问 AI：' + w.w,
+    intro: '已锁定 "' + w.w + '" 这个词。可以直接问我它的意思、用法、搭配，或者怎么用在作文里。',
+    autoSend: false
+  });
 }
 function quickFav(w){
   toggleFav(w);
