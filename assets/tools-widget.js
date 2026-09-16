@@ -26,6 +26,12 @@
   if (window.__dpToolsLoaded) return;
   window.__dpToolsLoaded = true;
 
+  // Per-page tool config, set by assets/ai-widget.js BEFORE this script loads.
+  // ai-widget.js only loads us when the page is allowed at least one tool and tells
+  // us which. Default (loaded on its own, with no config) = show both.
+  var CFG = (window.__dpToolsConfig && typeof window.__dpToolsConfig === "object")
+    ? window.__dpToolsConfig : { formula: true, calc: true };
+
   // --- small HTML helpers for nicely-set formulas (no MathJax needed) --------
   function frac(n, d) {
     return '<span class="fb-frac"><span class="fb-n">' + n + '</span><span class="fb-d">' + d + '</span></span>';
@@ -679,4 +685,19 @@
   // first paint
   fillTopics();
   renderFormulas();
+
+  // --- per-page tool gating -------------------------------------------------
+  // ai-widget.js decides which tools a page may show and publishes it on
+  // window.__dpToolsConfig before loading us. Tear down any tool the page is not
+  // allowed to have. This runs AFTER all the wiring above, so the now-detached
+  // nodes can never be opened, and the launch cluster keeps only the enabled bars
+  // — Ask AI + Sites then sit at the right edge with nothing pushing them left.
+  if (!CFG.formula) {
+    var _fb = document.getElementById("dpFbBtn"); if (_fb && _fb.parentNode) _fb.parentNode.removeChild(_fb);
+    var _fp = document.getElementById("dpFbPanel"); if (_fp && _fp.parentNode) _fp.parentNode.removeChild(_fp);
+  }
+  if (!CFG.calc) {
+    var _cb = document.getElementById("dpCalBtn"); if (_cb && _cb.parentNode) _cb.parentNode.removeChild(_cb);
+    var _cp = document.getElementById("dpCalPanel"); if (_cp && _cp.parentNode) _cp.parentNode.removeChild(_cp);
+  }
 })();
