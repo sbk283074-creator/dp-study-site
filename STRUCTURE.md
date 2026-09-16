@@ -215,12 +215,14 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 ### 05 · Challenge Bank — `challenge-bank/`
 **Fully generated. The JSON is the source of truth, not the HTML.**
 - Data: `challenge-bank/data/{math-aa-hl,physics-hl,computer-science-hl,business-management-sl}/*.json`
-  — **305 questions** (Math AA HL 125, Physics HL 88, CS HL 53, BM SL 39), as of commit `48a5dfa`.
+  — **310 questions** (Math AA HL 125, Physics HL 90, CS HL 56, BM SL 39), as of commit `48a5dfa`.
   **Do not count these with a glob.** The filenames are not uniform — `batch21.json`, `batch22.json`,
   `batch22c.json` and `batch23.json` sit beside `p3-batch2.json`, `p1b-data.json`,
   `abstract-data-types.json`, `p2-case-study.json`, `p2-theme-b.json`, `gravitational-fields.json`. A
-  `data/*/batch*.json` glob matches **68 files holding 233 of the 305 items** (re-measured 2026-09-16), so
-  it silently misses 72; the number drifts as the bank grows, so re-measure rather than quoting it. Use
+  `data/*/batch*.json` glob matches **68 files holding 233 of the 310 items** (re-measured 2026-09-16), so
+  it silently misses 77; the number drifts as the bank grows, so re-measure rather than quoting it. Batch
+  26 is the proof: it added two files and the glob figure **did not move at all**, because both are named
+  `…-batch26.json`. Use
   `tools/validate.py`'s `load()`, which also returns **`(file, question)` tuples**, not bare questions.
   **`fig-*.json` are *not* figure assets** — `physics-hl/fig-circuit-structured.json` and
   `fig-standing-wave.json` hold real items (`PHYS-B.5-102`, `PHYS-C.4-102`) and `load()` reads them. The
@@ -232,7 +234,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - Tooling: `challenge-bank/tools/*.py` — `validate.py` (43 KB), `make_figures.py` (40 KB), `fix_json.py`,
   `ship.py`, `coverage.py`, `difficulty_audit.py`, …
 - Docs: `README.md`, `STANDARD.md`, `PLAN.md`, `AUDIT_*.md`.
-- Output: `challenge-bank/site/` — `index.html`, `q/` (305 question pages), one index per
+- Output: `challenge-bank/site/` — `index.html`, `q/` (310 question pages), one index per
   subject, `papers/`, `assets/site.js`.
 - **AI:** four launcher buttons per question (full worked solution / hint only / guided steps /
   mark my attempt), generated into `site/assets/site.js` from a Python string in `build.py`. They call
@@ -243,19 +245,21 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - **Figures:** hand-authored inline SVG stored in the question JSON as
   `figure = {type:"svg", content, caption}`. `build.py::figure_html` handles **three** types, not one —
   `svg` (`<figure>` + optional `<figcaption>`), `table` (delegates to `table_html`) and `code`
-  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 305 items: **79
-  figure-bearing (73 svg / 4 code / 2 table) = 26%**, with every subject above the 15% per-subject
-  target (Maths 15%, Physics 35%, CS 40%, BM 21%). No charting library is involved anywhere: every
+  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 310 items: **84
+  figure-bearing (78 svg / 4 code / 2 table) = 27%**, with every subject above the 15% per-subject
+  target (Maths 15%, Physics 37%, CS 43%, BM 21%). No charting library is involved anywhere: every
   figure is a plain-Python SVG string builder in `tools/make_figures.py`, and `validate.py` fails on the
   fingerprints of matplotlib / Chart.js / plotly / vega / bokeh / `<canvas` / `data:image/`, so the
   "without other tools" rule is gate-enforced. `FIGURE_COVERAGE_FLOOR` in `difficulty_audit.py` is a
-  **ratchet** (now 0.25): it may rise and may never fall. A stimulus table is separate from a figure: it
+  **ratchet** (now 0.27): it may rise and may never fall, and it is now the binding constraint — one
+  non-figure item of headroom remains, so a new batch must carry figures. A stimulus table is separate
+  from a figure: it
   lives in `stimulus.table` and is emitted by `stimulus_html`, so an item can carry a table with no
   `figure`.
 - **Difficulty is evidenced, and the top-tier debt is cleared.** Every item must carry
   `difficulty_evidence` (`lever_type` from a closed 13-term taxonomy + `naive_path` + `failure_point` +
   `wrong_answer`); the rubric scores it out of 9 and the label must be earned (d5 needs 8). As of
-  2026-09-16: **220 of 305 items evidenced, `difficulty 5 with no evidence: 0`**, and the 85 outstanding
+  2026-09-16: **225 of 310 items evidenced, `difficulty 5 with no evidence: 0`**, and the 85 outstanding
   items are all difficulty-3 or difficulty-4 claims. Reading the 79-item difficulty-5 backlog produced
   **five label corrections, all downwards** — `MATH-P3-010` 5→4, `MATH-AHL5.9-001` 5→4,
   `MATH-AHL5.10-001` 5→3, `MATH-AHL5.11-001` 5→4, `PHYS-E.2-101` 5→4 — while
@@ -267,12 +271,12 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   the table to P1 → `{structured, extended_response, case_study}`, P2 → `{extended_response}` produced
   **17 failures with no data change**, and the 17 items were then re-filed by their own `topic` field
   (9 Theme A → P1, 8 Theme B → P2 as `extended_response`). Per-paper distribution is now Maths P1 61 /
-  P2 35 / P3 29, Physics P1A 14 clusters (70 questions) / P1B 17 / P2 57, CS P1 41 / P2 12, BM P1 10 / P2 29.
+  P2 35 / P3 29, Physics P1A 14 clusters (70 questions) / P1B 17 / P2 59, CS P1 44 / P2 12, BM P1 10 / P2 29.
 - **`section` is checked too, and the same lesson applied twice.** `section` renders as a student-visible
   chip (`P1 · Section A`) and feeds the paper builder, and was validated nowhere. `SECTION_RULES` in
   `validate.py` now holds the legal set per `(subject, paper)` — **empty set included**, which is what
   makes "this paper has no sections" enforceable — and `SECTION_THEME_RULES` holds CS P1 Section A ⇒
-  theme A. Adding the rule exposed **60 of 305 items** with a label their paper does not have: **47
+  theme A. Adding the rule exposed **60 items** (of the then-305) with a label their paper does not have: **47
   Physics P2** and **10 Maths P3** were split into sections those papers do not contain (read off the
   guide PDFs: Physics P2 is "short-answer and extended-response questions" with no split named, Maths P3
   is "two compulsory extended response problem-solving questions"), and **3 CS P1** items were theme B in

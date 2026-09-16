@@ -1,24 +1,26 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 305 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 310 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 220 of 305 do. The difficulty-5
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 225 of 310 do. The difficulty-5
 backlog is **cleared** — no item claims difficulty 5 without evidence — and the 85 items that remain
 unbacked are all difficulty-3 or difficulty-4 claims, a published, ratcheting backlog described in
 `STANDARD.md` §2.2–§2.5 and measured by `tools/difficulty_audit.py`. All 13
 lever types are in use, the largest share is 15%, and every subject is inside the 50% difficulty-5 cap
-(Maths 45%, Physics 44%, CS 34%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
+(Maths 45%, Physics 44%, CS 36%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
 the share was above the cap) and R2 (no item claimed difficulty 3 — the 3-5 scale had collapsed to two
 points) were paid by Batches 21–23, and the backlog pass added a fifth difficulty-3 item. The audit prints
 `calibration OK` and `--check --strict` exits 0.
 The `topic` label is now a closed vocabulary per subject, enforced by `validate.py`, and is shown on every
 question page and filterable on every subject page.**
 **Figure coverage is now a first-class gate rather than a nice-to-have.** Batch 23 raised the share of
-items that carry a self-authored graph to 75 of 301 = 25%; Batch 25 moves it to **79 of 305 = 26%** and
-raises the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.24 to **0.25** — the floor may rise and may
+items that carry a self-authored graph to 75 of 301 = 25%; Batch 26 moves it to **84 of 310 = 27.1%** and
+raises the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.25 to **0.27** — the floor may rise and may
 never fall, so a later batch cannot quietly spend the coverage. No subject prints a gap: Maths 15%,
-Physics 35%, CS 40%, BM 21%, against a 15% target. Every figure is drawn by hand as a plain-Python SVG
+Physics 37%, CS 43%, BM 21%, against a 15% target — but only **1 non-figure item of headroom** is left
+(n = 311 passes at 0.27, n = 312 fails), so the ratchet now *forces* a batch to carry figures rather than
+merely encouraging it. Every figure is drawn by hand as a plain-Python SVG
 string builder,
 most of them inline in the batch generator that wrote the item and the named set in
 `tools/make_figures.py`: no charting library, no plotting package, no
@@ -28,9 +30,9 @@ property the gate checks rather than a promise the prose makes.**
 **The `section` label is a checked property too, as of 2026-09-16.** `SECTION_RULES` in `validate.py`
 records the legal section set for every `(subject, paper)` — including the empty set, which is what makes
 "this paper has no sections" enforceable — and `SECTION_THEME_RULES` records that CS P1 Section A is
-theme A. Adding the rule exposed **60 of 305 items** carrying a label their paper does not have (47
-Physics P2, 10 Maths P3, 3 CS P1); all 60 were cleared, and the 6 CS P1 theme-B items this leaves
-without a home are the next CS batch's work order (`STANDARD.md` §7).
+theme A. Adding the rule exposed **60 items** (the bank then held 305) carrying a label their paper does
+not have (47 Physics P2, 10 Maths P3, 3 CS P1); all 60 were cleared, and the 6 CS P1 theme-B items this
+leaves without a home are the next CS batch's work order (`STANDARD.md` §7).
 
 New folder: `challenge-bank/` (inside `dp learning final/`). It holds the question data and a
 standalone static website that collects and presents the questions.
@@ -1311,12 +1313,56 @@ similarity score, and no BM item ships containing HL-only content.
   - **`subtopic` was checked and deliberately left open.** All 305 items carry one and it is free text by
     design — it is the author's one-line summary of the item's idea, not a vocabulary — so gating it
     would be inventing a constraint the material does not have.
+- **Batch 26 — DONE (5 items, 305 → 310; the CS P1 Section A gap closed and Physics E.2 deepened).**
+  Two waves, two filenames, written to paths no earlier batch owned. The brief came from measuring the
+  per-*paper* distribution rather than the node list, which is where the thinness actually was.
+  - **CS HL Paper 1 Section A — 9 items → 12.** Three theme-A strands (**A1.1.6** cache hierarchy,
+    **A1.2** number representation, **A1.3** scheduling) had **no Section A item at all**, and Section A
+    holds 56 of the paper's 80 marks — so the component that carries the marks was the empty one.
+    `CS-P1A-401` cache hierarchy and AMAT (d5, 14 marks, `non_governing_variable`), `CS-P1A-402` 8-bit
+    two's-complement overflow (d5, 13 marks, `decoy_technique`), `CS-P1A-403` round-robin against FCFS
+    (d4, 14 marks, `quant_vs_judgement`).
+  - **Physics HL Paper 2 on E.2 — 1 item → 3.** E.2 was the bank's thinnest strand with a single item, so
+    the gap was depth, not breadth (all 24 strands were already covered). `PHYS-E.2-401` de Broglie
+    wavelength and electron diffraction (d5, 11 marks, `implicit_dependence`), `PHYS-E.2-402` photoelectric
+    stopping potential for two metals (d4, 10 marks, `decoy_technique`). Both **omit `section` entirely**,
+    because Physics P2 is one of the three papers with no sections — the shape `batch23.json` already had.
+  - **Both waves carry hand-authored figures, and the ratchet was raised to follow them.** Five new SVGs,
+    each generated from the same expression the markscheme uses: the cache pyramid with its hit rates and
+    miss hand-off arrows, the two 8-bit frames with their sums and carry-outs, the process table plus
+    round-robin Gantt chart, the diffraction tube with the ring drawn at $r = 2.95$ cm, and the two
+    parallel $V_s$–$f$ lines. Coverage moved **79/305 = 26% → 84/310 = 27.1%** and
+    `FIGURE_COVERAGE_FLOOR` went 0.25 → **0.27**. That leaves **1 non-figure item of headroom**
+    (n = 311 passes, n = 312 fails), so the next batch cannot be plain text at all.
+  - **A physics defect the gates could not have caught.** The first `PHYS-E.2-401` design used 150 V, which
+    puts the first diffraction ring at $\theta \approx 28^\circ$ — far outside the small-angle regime the
+    relation $r = 2L\lambda/d$ assumes, and far below any real electron-diffraction tube. Rebuilt at
+    **3.00 kV**: $\lambda = 22.4$ pm, $\theta = 6.04^\circ$, $r = 2.95$ cm, with the inverse task (a
+    2.50 cm ring) giving **4.17 kV**. Found by re-deriving the geometry before writing prose, not by a gate.
+  - **The two traps were engineered to fail in both directions.** `CS-P1A-402`'s frames prove carry-out is
+    *not* the overflow test: frame A has carry-out 1 with no overflow, frame B has carry-out 0 *with*
+    overflow. `CS-P1A-401`'s naive path ($0.94 \times 3 + 0.06 \times 14 = 3.66$ ns) ignores RAM entirely
+    and would turn the true 2.13× speed-up into a 3.28× one.
+  - **All 49 planned assertions were run through `validate.py`'s own `evaluate()` before any prose was
+    written** — 10/10, 12/12, 11/11, 8/8, 8/8, zero failures. `evaluate()` returns a `(bool, err)` tuple,
+    so `if evaluate(a):` is always truthy; every result had to be unpacked.
+  - **Numbers after the wave.** 310 items — Maths 125 / 1839 marks, Physics 90 / 1106, CS 56 / 838,
+    BM 39 / 563. Difficulty split **5 / 180 / 125**, evidence **225 / 310**, assertions **3540**,
+    figures **84 (78 svg / 4 code / 2 table)**. CS P1 now reads **Section A 12 / Section B 25 / 7
+    unlabelled**. All five new items carry exactly one warning each — "originality not yet scanned" — and
+    nothing else, so bank warnings moved 171 → 176 with no collateral. Similarity on the new items:
+    external ≤ 0.054, internal ≤ 0.010, approach ≤ 0.220.
+  - **A passing similarity gate is not a judgement.** The nearest approach neighbour (`PHYS-E.2-201`,
+    0.220) was read rather than trusted: it is a `data_based` anomaly hunt using `seeded_anomaly`, against
+    this batch's `structured` two-metal graph using `decoy_technique`. `CS-A1.3-001` (0.067 against
+    `CS-P1A-403`) computes FCFS only and draws no chart. Both overlaps are the unavoidable
+    "gradient + threshold" and "compare two schedulers" themes, not duplication.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  125 questions / 1839 marks, physics 88 / 1085, CS 53 / 797, BM SL 39 / 563 — all difficulty 3–5, May
+  125 questions / 1839 marks, physics 90 / 1106, CS 56 / 838, BM SL 39 / 563 — all difficulty 3–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-P1A-402 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>Two&#x27;s complement overflow and exclusive OR checksums</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-P1A-402</p>
+<button type="button" class="q-done-page" data-qid="CS-P1A-402" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-P1A-402">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A1.2 Data representation and computer logic (A1.2.1 representation of integers in binary and hexadecimal, A1.2.2 binary encoding and its impact on storage, A1.2.3 logic gates, A1.2.4 truth tables)</span><span class="chip">P1 · Section A</span><span class="chip">13 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not applicable</span><span class="chip">Determine</span><span class="chip">Deduce</span><span class="chip">Calculate</span><span class="chip">Explain</span></div>
+
+<figure><svg viewBox="0 0 470 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two transmitted frames. Frame A carries the bytes 0x7A, 0x9C and 0xE6, its 8-bit sum is 0x16 which is plus 22, and the adder produced a carry-out of 1. Frame B carries the bytes 0x6F, 0x32 and 0x5D, its 8-bit sum is 0xA1 which is minus 95, and the adder produced a carry-out of 0. The reading and the offset are 8-bit two's complement values and the third byte is their exclusive OR checksum."><g font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"><text x="28" y="24" text-anchor="start" font-size="12" fill="#1e293b" font-weight="600">Frame A</text><rect x="28" y="30" width="104" height="56" rx="3" fill="#f1f5f9" stroke="#1e293b" stroke-width="1.3"/><text x="80" y="52" text-anchor="middle" font-size="13" fill="#2563eb" font-weight="600">0x7A</text><text x="80" y="72" text-anchor="middle" font-size="10.5" fill="#1e293b" font-family="ui-monospace, Menlo, Consolas, monospace">0111 1010</text><text x="80" y="96" text-anchor="middle" font-size="10" fill="#64748b">reading</text><rect x="142" y="30" width="104" height="56" rx="3" fill="#f1f5f9" stroke="#1e293b" stroke-width="1.3"/><text x="194" y="52" text-anchor="middle" font-size="13" fill="#2563eb" font-weight="600">0x9C</text><text x="194" y="72" text-anchor="middle" font-size="10.5" fill="#1e293b" font-family="ui-monospace, Menlo, Consolas, monospace">1001 1100</text><text x="194" y="96" text-anchor="middle" font-size="10" fill="#64748b">offset</text><rect x="256" y="30" width="104" height="56" rx="3" fill="#f1f5f9" stroke="#1e293b" stroke-width="1.3"/><text x="308" y="52" text-anchor="middle" font-size="13" fill="#64748b" font-weight="600">0xE6</text><text x="308" y="72" text-anchor="middle" font-size="10.5" fill="#1e293b" font-family="ui-monospace, Menlo, Consolas, monospace">1110 0110</text><text x="308" y="96" text-anchor="middle" font-size="10" fill="#64748b">checksum</text><rect x="28" y="108" width="218" height="30" rx="3" fill="#ffffff" stroke="#16a34a" stroke-width="1.3" stroke-dasharray="5 3"/><text x="38" y="128" text-anchor="start" font-size="11.5" fill="#16a34a">8-bit sum  0x16 = +22</text><rect x="256" y="108" width="104" height="30" rx="3" fill="#ffffff" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5 3"/><text x="308" y="128" text-anchor="middle" font-size="11" fill="#64748b">carry-out = 1</text><text x="28" y="150" text-anchor="start" font-size="12" fill="#1e293b" font-weight="600">Frame B</text><rect x="28" y="156" width="104" height="56" rx="3" fill="#f1f5f9" stroke="#1e293b" stroke-width="1.3"/><text x="80" y="178" text-anchor="middle" font-size="13" fill="#2563eb" font-weight="600">0x6F</text><text x="80" y="198" text-anchor="middle" font-size="10.5" fill="#1e293b" font-family="ui-monospace, Menlo, Consolas, monospace">0110 1111</text><text x="80" y="222" text-anchor="middle" font-size="10" fill="#64748b">reading</text><rect x="142" y="156" width="104" height="56" rx="3" fill="#f1f5f9" stroke="#1e293b" stroke-width="1.3"/><text x="194" y="178" text-anchor="middle" font-size="13" fill="#2563eb" font-weight="600">0x32</text><text x="194" y="198" text-anchor="middle" font-size="10.5" fill="#1e293b" font-family="ui-monospace, Menlo, Consolas, monospace">0011 0010</text><text x="194" y="222" text-anchor="middle" font-size="10" fill="#64748b">offset</text><rect x="256" y="156" width="104" height="56" rx="3" fill="#f1f5f9" stroke="#1e293b" stroke-width="1.3"/><text x="308" y="178" text-anchor="middle" font-size="13" fill="#64748b" font-weight="600">0x5D</text><text x="308" y="198" text-anchor="middle" font-size="10.5" fill="#1e293b" font-family="ui-monospace, Menlo, Consolas, monospace">0101 1101</text><text x="308" y="222" text-anchor="middle" font-size="10" fill="#64748b">checksum</text><rect x="28" y="234" width="218" height="30" rx="3" fill="#ffffff" stroke="#dc2626" stroke-width="1.3" stroke-dasharray="5 3"/><text x="38" y="254" text-anchor="start" font-size="11.5" fill="#dc2626">8-bit sum  0xA1 = -95</text><rect x="256" y="234" width="104" height="30" rx="3" fill="#ffffff" stroke="#64748b" stroke-width="1.3" stroke-dasharray="5 3"/><text x="308" y="254" text-anchor="middle" font-size="11" fill="#64748b">carry-out = 0</text><text x="235" y="292" text-anchor="middle" font-size="10" fill="#64748b">all three bytes are 8-bit; the reading and the offset are two's complement</text></g></svg><figcaption>Two captured frames, each with the 8-bit sum and the carry-out produced by the receiver's adder.</figcaption></figure>
+<section id="q-print">
+<h2>Question</h2>
+<p>A sensor network transmits each measurement as a three-byte frame. The first byte is the reading and the second is a calibration offset, and both are 8-bit two's complement values; the third byte is a checksum. Two frames captured from the network are shown in the figure, together with the 8-bit sum that the receiver's adder produced for each of them and the carry-out bit that the same adder produced. The receiver must reject any frame whose two signed values cannot be added without the result being misrepresented, and the engineer who wrote the receiver used the carry-out bit to make that decision.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Determine the signed decimal value of the reading and of the offset in frame A, and state the true arithmetic sum of those two values. Show how the first bit of each byte is used in your decoding.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>Deduce the signed decimal value that the 8-bit sum in frame B represents, and state with a reason whether the addition of the two signed values in frame B has overflowed.</p> <em>(Deduce)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Calculate the checksum of each frame from its first two bytes, and state whether each of the two checksums in the figure is correct.</p> <em>(Calculate)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>Explain why the carry-out bit cannot be used to decide whether a signed addition has overflowed. Your answer should refer to both frames and should state the condition that does detect overflow.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 13 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="13" data-ai-ref="CS-P1A-402">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>A sensor network transmits each measurement as a three-byte frame. The first byte is the reading and the second is a calibration offset, and both are 8-bit two&#x27;s complement values; the third byte is a checksum. Two frames captured from the network are shown in the figure, together with the 8-bit sum that the receiver&#x27;s adder produced for each of them and the carry-out bit that the same adder produced. The receiver must reject any frame whose two signed values cannot be added without the result being misrepresented, and the engineer who wrote the receiver used the carry-out bit to make that decision.
+
+(a) Determine the signed decimal value of the reading and of the offset in frame A, and state the true arithmetic sum of those two values. Show how the first bit of each byte is used in your decoding. [3 marks] (Determine)
+(b) Deduce the signed decimal value that the 8-bit sum in frame B represents, and state with a reason whether the addition of the two signed values in frame B has overflowed. [3 marks] (Deduce)
+(c) Calculate the checksum of each frame from its first two bytes, and state whether each of the two checksums in the figure is correct. [3 marks] (Calculate)
+(d) Explain why the carry-out bit cannot be used to decide whether a signed addition has overflowed. Your answer should refer to both frames and should state the condition that does detect overflow. [4 marks] (Explain)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p>(a) In frame A the first byte is 0x7A, which in binary is 0111 1010. Its leading bit is 0, so the value is positive and the remaining bits give $64 + 32 + 16 + 8 + 2 = 122$ (A1). The second byte is 0x9C, which is 1001 1100. Its leading bit is 1, so it is negative, and its magnitude is found by taking the two's complement: $1001\,1100 \to 0110\,0011 \to 0110\,0100$, which is $64 + 32 + 4 = 100$ (A1). The offset is therefore $-100$.</p>
+<p>The true arithmetic sum of the two signed values is $122 + (-100) = 22$ (A1). Because the two values have opposite signs, the sum lies between them and no overflow is possible.</p>
+<p>(b) In frame B the first byte is 0x6F, which is 0110 1111 with a leading bit of 0, so the reading is $+111$. The second byte is 0x32, which is 0011 0010 with a leading bit of 0, so the offset is $+50$ (M1). Their true sum is $111 + 50 = 161$, which is greater than the largest value an 8-bit two's complement number can hold, namely $+127$ (A1).</p>
+<p>The 8-bit sum shown in the figure is 0xA1, which is 1010 0001. Its leading bit is 1, so it represents a negative number, and its magnitude is $0101\,1110 + 1 = 0101\,1111 = 95$, giving $-95$ (A1). Adding two positive values has produced a negative result, so the addition has overflowed.</p>
+<p>(c) The checksum is the exclusive OR of the first two bytes. For frame A, $0111\,1010$ XOR $1001\,1100 = 1110\,0110$, which is 0xE6 (M1) (A1). The figure shows 0xE6, so the checksum of frame A is correct (A1).</p>
+<p>For frame B, $0110\,1111$ XOR $0011\,0010 = 0101\,1101$, which is 0x5D (M1). The figure shows 0x5D, so the checksum of frame B is also correct (A1). This matters: the frame that overflows is not corrupt, and a receiver that relied on the checksum alone would accept it.</p>
+<p>(d) The carry-out is the bit that leaves the most significant position of the adder, and it reports whether the unsigned sum of the two bit patterns exceeded 255. That is not the same question as whether the signed sum exceeded 127 or fell below $-128$, because the same bit patterns mean different things under the two interpretations (A1).</p>
+<p>Frame A shows the first failure. Its bytes are 0x7A and 0x9C, whose unsigned values are 122 and 156. Their unsigned sum is 278, which exceeds 255, so the adder produces a carry-out of 1. The signed values, however, are 122 and $-100$, whose sum is 22 and fits comfortably; the carry-out is 1 while there is no overflow (A1). A receiver that rejected on the carry-out would discard a good frame.</p>
+<p>Frame B shows the opposite failure. Its bytes are 0x6F and 0x32, whose unsigned values are 111 and 50. Their unsigned sum is 161, which does not exceed 255, so the carry-out is 0. The signed values are $+111$ and $+50$, whose sum of 161 exceeds 127, so the result stored is $-95$ and the addition has overflowed (A1). A receiver that accepted on the carry-out would accept a frame whose value is wrong by 256.</p>
+<p>Overflow for signed addition is detected from the signs of the operands and the sign of the result, not from the carry-out: overflow occurs when two operands of the same sign produce a result of the opposite sign (A1). Equivalently, it is the exclusive OR of the carry into the most significant position and the carry out of it. In frame A the signs are opposite, so no overflow is possible whatever the carry-out is; in frame B both operands are positive and the result is negative, so overflow has occurred whatever the carry-out is (A1).</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>Part (a): award A1 for decoding 0x7A as +122 with the leading bit used as the sign, A1 for decoding 0x9C as $-100$ by taking the two's complement of the magnitude, and A1 for the true sum 22. A candidate who reads 0x9C as 156 or as $-28$ has not applied two's complement and scores no marks on the second point.</p>
+<p>Part (b): M1 for reading both bytes as positive, A1 for identifying that 161 exceeds +127, and A1 for decoding 0xA1 as $-95$. Accept $-95$ with or without the working.</p>
+<p>Part (c): M1 for the exclusive OR method and A1 for each correct checksum. The marks are for the method and the values; a candidate who XORs the three bytes together, or who adds rather than XORs, scores no marks here.</p>
+<p>Part (d): this is the discriminating part. A1 for stating that the carry-out answers the unsigned question rather than the signed one, A1 for frame A as the false-rejection case, A1 for frame B as the false-acceptance case, and A1 for the correct rule that overflow is detected from the signs of the operands and the result. A candidate who asserts that overflow occurs when the carry-out is 1 without noticing frame B scores at most A1.</p>
+<p>Note that both checksums are correct, so the checksum cannot be used to detect the overflow either; a candidate who says the frame is corrupt has misread the question.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The item separates two things that share a name. The carry-out bit and signed overflow are both described informally as the addition having gone past the end, and on many textbook examples they coincide, which is exactly why the carry-out is such a persistent error. The two frames here are chosen to break the coincidence in both directions, so the rule cannot be salvaged by adjusting it.</p>
+<p>Frame A is the false-rejection case. Its two bytes are 0x7A and 0x9C. As unsigned patterns these are 122 and 156, summing to 278, so a carry-out is produced. As signed patterns they are 122 and $-100$, summing to 22, so nothing is wrong. The carry-out is 1 and there is no overflow. Frame B is the false-acceptance case. Its bytes are 0x6F and 0x32, which are 111 and 50 unsigned and also $+111$ and $+50$ signed. The unsigned sum is 161, which fits in eight bits, so there is no carry-out; the signed sum is 161, which does not fit, so the stored result of 0xA1 reads back as $-95$. The carry-out is 0 and there is an overflow.</p>
+<p>Because the same hardware bit is wrong in both directions on the same item, a candidate who guesses cannot pass part (d) by pattern-matching on the first frame. The correct rule is stated in terms of the signs: overflow occurs when two operands share a sign and the result does not. It can also be expressed as the exclusive OR of the carry into and the carry out of the sign position, which is the form a hardware designer would use and which is why the single visible carry-out is not enough.</p>
+<p>The checksum is a deliberate second layer. Both frames have correct checksums, so the third byte offers no help in detecting the overflow and a candidate who looks for corruption there finds none. This forces the answer back onto the interpretation of the two signed bytes, which is the point of the item.</p>
+<p>The figure carries every value the answer needs, including the carry-out that the receiver's engineer relied on, so the trap is presented as data rather than described in the stem. The two frames are decoded from the same two's complement function in the generator that the markscheme uses, so the picture and the answer cannot drift apart.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme A: Concepts of computer science — Two&#x27;s complement overflow and exclusive OR checksums</dd></div>
+  <div><dt>Challenge lever</dt><dd>The carry-out of an adder is the obvious overflow test because it is the one bit the hardware makes visible, and on one of these two frames it agrees with the truth. The frames are chosen so that it disagrees in both directions: frame A produces a carry-out while its signed result is correct, and frame B produces no carry-out while its signed result is wrong. A candidate who checks the carry bit is right once for the wrong reason and wrong once without noticing.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A1.2 Data representation and computer logic (A1.2.1 representation of integers in binary and hexadecimal, A1.2.2 binary encoding and its impact on storage, A1.2.3 logic gates, A1.2.4 truth tables)</dd></div>
+  <div><dt>Inspiration</dt><dd>adapted</dd></div>
+  <div><dt>Adaptation</dt><dd>Three changes. Context: a receiver that must decide whether to accept a frame, rather than an exercise that asks only for the sum of two binary numbers. Given and asked: two frames are given and the carry-out of each is supplied in the figure, so the candidate has to decide whether that bit is the right test rather than being told that it is not. Reasoning chain: the final part requires the candidate to generalise from two cases that fail in opposite directions, so a rule fitted to one frame is visibly insufficient.</dd></div>
+  <div><dt>Verification</dt><dd>Both frames are decoded and re-encoded from the same two&#x27;s complement function, the carry-out is recomputed as the quotient of the raw sum by 256, and the overflow condition is checked independently from the signs of the operands and the result.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>CS_HL_P1_2002May_q05 (similarity 0.004)</dd></div>
+  <div><dt>Nearest item here</dt><dd>PHYS-B.4-401 (similarity 0.007)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-16</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>
