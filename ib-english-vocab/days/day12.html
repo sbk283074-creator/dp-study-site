@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 12</title>
+<style>
+  :root {
+    --ink: #1a2238; --ink-soft: #4a5568; --paper: #faf8f3; --paper-warm: #f5f0e6;
+    --gold: #b8860b; --gold-soft: #d4a933; --teal: #2c7a7b; --teal-soft: #4fd1c5;
+    --coral: #c53030; --coral-soft: #fc8181; --purple: #6b46c1; --purple-soft: #b794f4;
+    --line: #e2dcd0; --shadow: 0 2px 8px rgba(26,34,56,0.08); --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.65; padding: 0; }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+  header { background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%); color: #fff; padding: 48px 24px 40px; text-align: center; }
+  header h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 28px; font-weight: normal; letter-spacing: 0.5px; margin-bottom: 6px; }
+  header .subtitle { font-size: 15px; color: var(--gold-soft); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  header .day-badge { display: inline-block; background: rgba(212,169,51,0.2); border: 1px solid var(--gold-soft); color: var(--gold-soft); padding: 6px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+  header .date { margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.5); }
+  h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: normal; color: var(--ink); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--gold-soft); display: flex; align-items: center; gap: 10px; }
+  h2 .icon { font-size: 24px; }
+  h3 { font-size: 16px; font-weight: 700; color: var(--ink); margin: 24px 0 12px; }
+  .tracker { display: flex; gap: 4px; margin: 16px 0; flex-wrap: wrap; }
+  .tracker .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--line); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--ink-soft); }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+  .sr-status { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .sr-card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: var(--shadow); text-align: center; }
+  .sr-card .sr-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-soft); font-weight: 700; }
+  .sr-card .sr-count { font-family: Georgia, serif; font-size: 32px; font-weight: bold; margin: 4px 0; }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note { font-size: 12px; color: var(--ink-soft); }
+  .recall-intro { background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); font-size: 14px; color: var(--ink-soft); margin-bottom: 16px; }
+  .recall-intro strong { color: var(--ink); }
+  .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .review-card { background: #fff; border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); border-left: 4px solid var(--teal); transition: transform 0.15s; }
+  .review-card .rword { font-family: Georgia, serif; font-size: 17px; font-weight: bold; color: var(--ink); }
+  .review-card .rdef { font-size: 12px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt { background: var(--paper-warm); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; color: var(--ink-soft); }
+  .review-prompt strong { color: var(--ink); }
+  .word-card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--line); position: relative; overflow: hidden; }
+  .word-card::before { content: ""; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--gold); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+  .word { font-family: Georgia, serif; font-size: 24px; font-weight: bold; color: var(--ink); }
+  .ipa { font-size: 14px; color: var(--ink-soft); font-style: italic; }
+  .pos { display: inline-block; background: #fef5e7; color: var(--gold); font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .definition { font-size: 15px; color: var(--ink); margin: 10px 0 12px; }
+  .usage-box { background: var(--paper-warm); border-radius: 8px; padding: 10px 14px; margin: 8px 0; font-size: 13px; }
+  .usage-box .label { font-weight: 700; color: var(--gold); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+  .example { font-style: italic; color: var(--ink-soft); font-size: 14px; margin: 8px 0; padding-left: 14px; border-left: 3px solid var(--gold-soft); }
+  .example .source { display: block; font-size: 12px; color: var(--gold); font-style: normal; margin-top: 4px; font-weight: 600; }
+  .ib-tip { background: #e6fffa; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
+  .ib-tip .label { color: var(--teal); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .collocations { font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+  .collocations strong { color: var(--ink); }
+  .distinction-box { background: linear-gradient(135deg, #fef5e7 0%, #fff 100%); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); margin: 16px 0; border-left: 4px solid var(--gold); }
+  .distinction-box h4 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+  .distinction-box p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .distinction-box p strong { color: var(--ink); }
+  .practice-box { background: #fff; border-radius: 12px; padding: 24px; box-shadow: var(--shadow); margin-top: 12px; }
+  .practice-box ol { padding-left: 20px; margin-top: 8px; }
+  .practice-box ol li { font-size: 14px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.7; }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank { display: inline-block; border-bottom: 2px solid var(--gold-soft); min-width: 80px; text-align: center; color: transparent; user-select: none; }
+  .word-bank { background: var(--paper-warm); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: var(--ink-soft); }
+  .word-bank strong { color: var(--ink); }
+  .tips-list { list-style: none; counter-reset: tip; }
+  .tips-list li { background: #fff; border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; box-shadow: var(--shadow); font-size: 14px; color: var(--ink-soft); position: relative; padding-left: 52px; }
+  .tips-list li::before { counter-increment: tip; content: counter(tip); position: absolute; left: 16px; top: 14px; width: 28px; height: 28px; background: var(--teal); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .tips-list li strong { color: var(--ink); }
+  .category-badge { display: inline-block; background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 12px; letter-spacing: 0.5px; margin-bottom: 8px; }
+  footer { text-align: center; padding: 32px 24px; color: var(--ink-soft); font-size: 13px; border-top: 1px solid var(--line); margin-top: 48px; }
+  footer strong { color: var(--ink); }
+  @media (max-width: 600px) { .review-grid { grid-template-columns: 1fr; } .sr-status { grid-template-columns: 1fr; } header h1 { font-size: 22px; } .word { font-size: 20px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 12 / 112 — Phase 2: Descriptive Precision</div>
+  <div class="date">Friday, 4 September 2026</div>
+</header>
+<div class="container">
+
+  <h2><span class="icon">📅</span> This Week (Week 2)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">8</div><div class="dot done">9</div><div class="dot done">10</div><div class="dot done">11</div><div class="dot today">12</div><div class="dot">13</div><div class="dot">14</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 8–11:</strong></td><td>Setting, Character, Mood, Tone/Register — 48 new ✓</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 12 →</strong></td><td><strong>Descriptive Precision II</strong> (poignant, evocative, incongruous, jarring, luminous, muted, scintillating, suffused, discordant, palpable, ephemeral, redolent) — 12 new</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 13:</strong></td><td>Week 2 review &amp; consolidation</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 14:</strong></td><td>Week 2 assessment</td></tr>
+    </table>
+  </div>
+
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review"><div class="sr-label">Review</div><div class="sr-count">12</div><div class="sr-note">Day 11 first review<br>(Tone &amp; Register)</div></div>
+    <div class="sr-card new"><div class="sr-label">New Words</div><div class="sr-count">12</div><div class="sr-note">Descriptive Precision II</div></div>
+    <div class="sr-card total"><div class="sr-label">Today Total</div><div class="sr-count">24</div><div class="sr-note">est. 35–45 min</div></div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Yesterday's twelve tone/register adjectives get their first review now. You've now built four descriptive layers — place (8), person (9), mood (10), voice (11). Today finishes Phase 2's descriptive set with <em>texture and quality</em> adjectives: words for how something <em>lands</em> on the senses and the mind. After today, your Week 2 toolkit is complete and ready for consolidation.
+    <br><br><strong>Today's flow:</strong> (1) Day 11 first review &rarr; (2) 12 new texture/quality adjectives &rarr; (3) distinction boxes (poignant/evocative, jarring/discordant, ephemeral/palpable) &rarr; (4) practice.
+  </div>
+
+  <h2><span class="icon">🔁</span> Day 11 First Review — 12 Tone &amp; Register Adjectives</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">Yesterday's voice toolkit. Recall each word's dimension (tone vs. register) before checking.</p>
+  <div class="review-grid">
+    <div class="review-card"><div class="rword">lyrical</div><div class="rdef"><em>Musical, emotionally rich prose (tone).</em></div></div>
+    <div class="review-card"><div class="rword">sparse</div><div class="rdef"><em>Minimal text/style — few words on the page.</em></div></div>
+    <div class="review-card"><div class="rword">ornate</div><div class="rdef"><em>Elaborately decorated, dense style.</em></div></div>
+    <div class="review-card"><div class="rword">colloquial</div><div class="rdef"><em>Informal, everyday speech (low register).</em></div></div>
+    <div class="review-card"><div class="rword">laconic</div><div class="rdef"><em>Terse character speech (few words said).</em></div></div>
+    <div class="review-card"><div class="rword">sardonic</div><div class="rdef"><em>Wry, distanced cynical mockery (tone).</em></div></div>
+    <div class="review-card"><div class="rword">caustic</div><div class="rdef"><em>Corrosive, attacking wit (tone).</em></div></div>
+    <div class="review-card"><div class="rword">euphemistic</div><div class="rdef"><em>Mild words disguising harsh truth.</em></div></div>
+    <div class="review-card"><div class="rword">vernacular</div><div class="rdef"><em>A group's own dialect (specific low register).</em></div></div>
+    <div class="review-card"><div class="rword">formal</div><div class="rdef"><em>Elevated, standard language (high register).</em></div></div>
+    <div class="review-card"><div class="rword">dispassionate</div><div class="rdef"><em>Objective, emotionally neutral (tone).</em></div></div>
+    <div class="review-card"><div class="rword">strident</div><div class="rdef"><em>Loud, forceful, insistent (tone).</em></div></div>
+  </div>
+  <div class="review-prompt"><strong>Self-assessment:</strong> The three Day 11 pairs (sparse/laconic, sardonic/caustic, formal/colloquial) are the ones to drill. They return in your Day 13 weekly review.</div>
+
+  <h2><span class="icon">📖</span> Today's New Words — 12 Texture &amp; Quality Adjectives</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;"><span class="category-badge">NEW CATEGORY — "DESCRIBING TEXTURE"</span></p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;"><strong style="color:var(--ink);">From layers to texture.</strong> You can now name place, person, mood, and voice. Today's words describe <em>how something lands</em> — its sensory and intellectual texture: piercing (poignant), suggestive (evocative), clashing (jarring, discordant), glowing (luminous, scintillating), softened (muted), permeating (suffused, redolent), tangible (palpable), fleeting (ephemeral), and out-of-place (incongruous). These are the adjectives that make a commentary <em>specific</em> about effect — the difference between "the image is strong" and "the image is <em>palpable</em>," or "it feels wrong" and "it is <em>incongruous</em>." With these, your Week 2 descriptive arsenal is complete.</p>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">poignant</span><span class="ipa">/ˈpɔɪnjənt/</span><span class="pos">adjective</span></div>
+    <p class="definition">Evoking a keen, often sorrowful sense of emotion; deeply moving in a sharp, bittersweet way.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [poignant] moment / The [poignant] detail [wounds]…"</div>
+    <p class="example">"The poignant moment in A Thousand Splendid Suns when Mariam's letter reaches Laila — a lifetime of unspoken love delivered too late — pierces precisely because it is earned."<span class="source">— A Thousand Splendid Suns analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for sharply moving, bittersweet emotion. Distinct from "evocative" (see box): poignant <em>hurts</em> (keen, sorrowful); evocative <em>suggests</em> (calls to mind). A poignant scene makes the reader feel; an evocative one makes the reader remember. Pairs with Day 10's "elegiac" (both mournful) but poignant is sharper, less calm. Staple for endings and sacrifices.</div>
+    <p class="collocations"><strong>Common collocations:</strong> poignant moment · poignant detail · poignant scene · poignant loss · poignant beauty</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">evocative</span><span class="ipa">/ɪˈvɒkətɪv/</span><span class="pos">adjective</span></div>
+    <p class="definition">Tending to call up or suggest strong images, memories, or feelings.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"an [evocative] image / The [evocative] language [summons]…"</div>
+    <p class="example">"The evocative language of the opening of Wide Sargasso Sea —orchard, fog, the madwoman's laugh — summons the whole colonial gothic before a plot begins."<span class="source">— Wide Sargasso Sea analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use when language <em>calls something to mind</em>. Distinct from "poignant" (see box): evocative = suggestive (rich association); poignant = keenly moving. Also distinct from Day 1's verb "evoke" — evocative is the adjective form, perfect for "an evocative image." Vital for analysing imagery and memory; marks writing that works by association rather than statement.</div>
+    <p class="collocations"><strong>Common collocations:</strong> evocative image · evocative language · evocative detail · evocative prose · evocative atmosphere</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: poignant vs. evocative</h4>
+    <p>Both enrich feeling, but differently:</p>
+    <p style="margin-top:8px;"><strong>poignant</strong> — <em>Keenly moving</em>; strikes the reader with bittersweet sorrow.<br>&rarr; "The poignant letter, delivered too late, wounded the reader."</p>
+    <p style="margin-top:8px;"><strong>evocative</strong> — <em>Strongly suggestive</em>; calls up images and memories.<br>&rarr; "The evocative opening summoned the whole gothic world."</p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">The test: poignant = makes you <em>feel</em> (emotional impact); evocative = makes you <em>see/remember</em> (associative impact). Memory trick: poignant = pierces (Latin <em>pungere</em> = prick); evocative = evokes. A scene can be evocative without being poignant, and poignant without being especially imagistic. Both consolidate in Day 13.</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">incongruous</span><span class="ipa">/ɪnˈkɒŋɡruəs/</span><span class="pos">adjective</span></div>
+    <p class="definition">Out of place; not fitting the surrounding context or expectations.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"an [incongruous] detail / The [incongruous] element [jars]…"</div>
+    <p class="example">"The incongruous luxury of the nursery in A Streetcar Named Desire — "The Krewe of Apollo" — clashes with the cramped, sweating reality of the Kowalski flat."<span class="source">— A Streetcar Named Desire analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use when something doesn't belong. Root: <em>in-</em> + <em>congruus</em> = not fitting. Distinct from "discordant" (clashing sounds/tones) — incongruous is about <em>fit within a context</em> (visual, social, generic). Pairs with Day 8's "forbidding" (a forbidding setting can make a bright object incongruous). Excellent for analysing irony, class clash, and surreal dislocation. A top word for "something is off here."</div>
+    <p class="collocations"><strong>Common collocations:</strong> incongruous detail · incongruous element · incongruous image · incongruous note · incongruous contrast</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">jarring</span><span class="ipa">/ˈdʒɑːrɪŋ/</span><span class="pos">adjective</span></div>
+    <p class="definition">Harshly incongruent; producing a startling, unpleasant shock of contrast.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [jarring] shift / The [jarring] contrast [disrupts]…"</div>
+    <p class="example">"The jarring shift in The Toast to a casual, jaunty tone after the murder exposes the speaker's psychopathic detachment."<span class="source">— "This Is a Photograph of Me" / confessional poetry analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for a sudden, harsh rupture. Distinct from "discordant" (see box): jarring is the <em>shock of contrast</em> (often a sudden shift); discordant is <em>clashing elements</em> coexisting. Both name dissonance. Pairs with Day 11's "strident" (loud) and Day 10's "febrile" (agitated). Vital for analysing tone shifts, non-linear editing, and modernist rupture.</div>
+    <p class="collocations"><strong>Common collocations:</strong> jarring shift · jarring contrast · jarring note · jarring detail · jarring transition</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: jarring vs. discordant</h4>
+    <p>Both name dissonance, but in different shapes:</p>
+    <p style="margin-top:8px;"><strong>jarring</strong> — A <em>sudden, shocking</em> contrast or shift (one thing jolts against another).<br>&rarr; "The jarring cut from ballet to blood ruptured the film's calm."</p>
+    <p style="margin-top:8px;"><strong>discordant</strong> — <em>Clashing elements</em> coexisting in unresolved tension (ongoing, not a single jolt).<br>&rarr; "The discordant voices of the chorus never resolve into harmony."</p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">The test: jarring = a <em>jolt</em> (momentary, transitional); discordant = <em>clash</em> (sustained, simultaneous). Memory trick: jarring = you're jarred by a cut; discordant = notes that won't harmonise. Both are Week 2 texture words for analysing dissonance; they consolidate in Day 13.</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">discordant</span><span class="ipa">/dɪsˈkɔːdnt/</span><span class="pos">adjective</span></div>
+    <p class="definition">Disagreeing, conflicting; harshly clashing and unresolved in tone or sound.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [discordant] voice / The [discordant] elements [refuse]…"</div>
+    <p class="example">"The discordant registers of The Waste Land — high myth and low pub chat — refuse the consolation of a single, coherent speaking self."<span class="source">— The Waste Land analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for sustained clashing. Distinct from "jarring" (see box): discordant = ongoing clash; jarring = sudden jolt. Also distinct from Day 11's "strident" (forceful volume) — discordant is about <em>incompatibility</em>, not loudness. Pairs with Day 11's "formal/colloquial" tension. Essential for modernism, polyphony, and fragmented form.</div>
+    <p class="collocations"><strong>Common collocations:</strong> discordant voice · discordant note · discordant element · discordant tone · discordant mixture</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">luminous</span><span class="ipa">/ˈluːmɪnəs/</span><span class="pos">adjective</span></div>
+    <p class="definition">Glowing with light; radiant, clear, and illuminating in quality.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [luminous] image / The [luminous] prose [illumines]…"</div>
+    <p class="example">"The luminous image of the kite at the close of The Kite Runner — 'for you, a thousand times over' — becomes the novel's redeeming, clarifying light."<span class="source">— The Kite Runner analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for radiant clarity (literal or metaphorical). Distinct from "ethereal" (Day 10, delicate otherworldliness) — luminous is <em>glowing and clear</em>, not necessarily delicate. Pairs with Day 8's "verdant" (both can signal life/Eden) and contrasts Day 10's "sombre/glacial" (dark/cold). Excellent for redemption, epiphanies, and moments of sudden understanding.</div>
+    <p class="collocations"><strong>Common collocations:</strong> luminous image · luminous prose · luminous moment · luminous clarity · luminous detail</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">muted</span><span class="ipa">/ˈmjuːtɪd/</span><span class="pos">adjective</span></div>
+    <p class="definition">Softened, subdued, and restrained; reduced in intensity or expression.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [muted] response / The [muted] palette [withholds]…"</div>
+    <p class="example">"The muted palette of the final act — greys, half-lights — withholds the catharsis a louder ending would have demanded."<span class="source">— A Doll's House analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for softened, restrained expression. Distinct from "sparse" (Day 11, few words) — muted is about <em>reduced intensity</em>, not quantity. The softened pole opposite "strident" (loud) and "scintillating" (brilliant). Pairs with Day 10's "languid" (low energy). Vital for understatement, repression, and endings that refuse to shout.</div>
+    <p class="collocations"><strong>Common collocations:</strong> muted palette · muted response · muted tone · muted colour · muted grief</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">scintillating</span><span class="ipa">/ˈsɪntɪleɪtɪŋ/</span><span class="pos">adjective</span></div>
+    <p class="definition">Brilliantly lively, witty, or sparkling in quality.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [scintillating] wit / The [scintillating] dialogue [sparkles]…"</div>
+    <p class="example">"The scintillating dialogue of Much Ado About Nothing — Beatrice and Benedick's sparring — turns verbal combat into the play's life-force."<span class="source">— Much Ado About Nothing analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for brilliant, sparkling liveliness. Distinct from "lyrical" (Day 11, musical feeling) — scintillating is <em>witty/sparkling</em>, intellectual sparkle. The brilliant pole opposite "muted." Root: <em>scintilla</em> = spark. Excellent for comedy, wit, and energetic repartee; marks a text alive with intelligence.</div>
+    <p class="collocations"><strong>Common collocations:</strong> scintillating wit · scintillating dialogue · scintillating prose · scintillating mind · scintillating conversation</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">suffused</span><span class="ipa">/səˈfjuːzd/</span><span class="pos">adjective</span></div>
+    <p class="definition">Pervaded or filled thoroughly with a quality, feeling, or light.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a room [suffused] with… / The text is [suffused] by…"</div>
+    <p class="example">"The opening of Wuthering Heights is suffused with a cold, creeping dread that the cheerful firelight never quite dispels."<span class="source">— Wuthering Heights analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for thorough permeation. Root: <em>sub-</em> + <em>fundere</em> = pour under (see Day 3's verbs "infuse/suffuse"). The adjective form lets you write "a passage suffused with melancholy" — elegant and precise. Pairs with Day 8's "permeate/saturate" (verb cousins). Excellent for atmosphere that is <em>everywhere</em> rather than located in one detail.</div>
+    <p class="collocations"><strong>Common collocations:</strong> suffused with light · suffused with colour · suffused with feeling · suffused with dread · suffused with warmth</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">palpable</span><span class="ipa">/ˈpælpəbl/</span><span class="pos">adjective</span></div>
+    <p class="definition">Tangible, able to be felt practically as a physical presence; unmistakably real.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [palpable] tension / The [palpable] atmosphere [presses]…"</div>
+    <p class="example">"The palpable tension in the dinner scene of A Doll's House — every silence weighted, every word a move — makes the room feel physically charged."<span class="source">— A Doll's House analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for something so present it feels touchable. Distinct from "visceral" (Day 10, gut-level) — palpable is about <em>tangibility/presence</em> (you could almost touch it); visceral is about <em>bodily reaction</em>. The "almost physical" pole opposite "ephemeral." Classic for tension, atmosphere, and dread made concrete. A precision upgrade over "strong" or "intense."</div>
+    <p class="collocations"><strong>Common collocations:</strong> palpable tension · palpable atmosphere · palpable silence · palpable presence · palpable unease</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: ephemeral vs. palpable</h4>
+    <p>Opposite poles of presence:</p>
+    <p style="margin-top:8px;"><strong>ephemeral</strong> — <em>Fleeting, transient</em>; here and gone in a breath.<br>&rarr; "The ephemeral happiness of the picnic is soon swallowed by the plot."</p>
+    <p style="margin-top:8px;"><strong>palpable</strong> — <em>Tangible, solidly present</em>; you could almost touch it.<br>&rarr; "The palpable tension in the room pressed on every guest."</p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">The test: ephemeral = barely <em>there</em> (passing); palpable = almost <em>too</em> there (present). Memory trick: ephemeral = on the wing (Greek <em>epi</em> + <em>hemera</em> = lasting a day); palpable = palm-able. This pair lets you contrast what vanishes with what weighs. Both consolidate in Day 13.</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">ephemeral</span><span class="ipa">/ɪˈfemərəl/</span><span class="pos">adjective</span></div>
+    <p class="definition">Lasting for a very short time; transient and fleeting.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"an [ephemeral] joy / The [ephemeral] moment [fades]…"</div>
+    <p class="example">"The ephemeral peace of the Christmas truce in Regeneration — soldiers laughing across a trench — only sharpens the obscenity of the war's return."<span class="source">— Regeneration analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for fleeting transience. Distinct from "wistful" (Day 10, regretful longing) — ephemeral is about <em>duration</em> (short), not feeling. The transient pole opposite "palpable." Pairs with Day 10's "haunting" (what lingers) as its contrast — the ephemeral vanishes, the haunting remains. Excellent for war, youth, and beauty-that-passes.</div>
+    <p class="collocations"><strong>Common collocations:</strong> ephemeral joy · ephemeral moment · ephemeral beauty · ephemeral peace · ephemeral fame</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">redolent</span><span class="ipa">/ˈredələnt/</span><span class="pos">adjective</span></div>
+    <p class="definition">Strongly suggestive or reminiscent of something; richly expressive of a quality.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"[redolent] of… / The scene is [redolent] with…"</div>
+    <p class="example">"The opening of Chronicle of a Death Foretold — the scent of bitter almonds — is redolent of fate, summoning the whole doomed, circular narrative in a single smell."<span class="source">— Chronicle of a Death Foretold analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for strong evocation through association (often smell, but broadly "redolent of X"). Distinct from "evocative" (suggestive) — redolent is <em>specifically reminiscent</em>, carrying the odour/aura of something. Pairs with "suffused" (both permeation metaphors). Root: <em>redolere</em> = emit smell. A sophisticated alternative to "evocative" that signals sensory precision. Great for memory and fate-laden openings.</div>
+    <p class="collocations"><strong>Common collocations:</strong> redolent of · redolent with · redolent scent · redolent memory · redolent atmosphere</p>
+  </div>
+
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Fill in the Blank (Day 12 Words)</h3>
+    <div class="word-bank"><strong>Word Bank:</strong> poignant · evocative · incongruous · jarring · luminous · muted · scintillating · suffused · discordant · palpable · ephemeral · redolent</div>
+    <ol>
+      <li>The ________ letter, delivered too late, wounded the reader with earned sorrow.</li>
+      <li>The ________ opening summoned the whole gothic world before a plot began.</li>
+      <li>The ________ luxury of the nursery clashed with the cramped flat's reality.</li>
+      <li>The ________ cut from ballet to blood ruptured the film's calm.</li>
+      <li>The ________ image of the kite became the novel's redeeming light.</li>
+      <li>The ________ palette withheld the catharsis a louder ending demanded.</li>
+      <li>The ________ dialogue turned verbal combat into the play's life-force.</li>
+      <li>The scene was ________ with a cold, creeping dread that never lifted.</li>
+      <li>The ________ tension in the room made every silence feel weighted.</li>
+      <li>The ________ peace of the truce only sharpened the war's obscenity.</li>
+      <li>The scent of bitter almonds was ________ of fate from the first line.</li>
+      <li>The ________ voices of the poem refused the comfort of one coherent self.</li>
+    </ol>
+    <h3 style="margin-top:24px;">Exercise 2: Cross-Day Sentences (Days 8–11 + Day 12 texture)</h3>
+    <ol>
+      <li><strong>palpable</strong> (Day 12) + <strong>oppressive</strong> (Day 8) — How does an oppressive setting make tension palpable?</li>
+      <li><strong>luminous</strong> (Day 12) + <strong>sombre</strong> (Day 10) — Can a sombre passage still be luminous? When?</li>
+      <li><strong>jarring</strong> (Day 12) + <strong>sardonic</strong> (Day 11) — How might a sardonic tone produce a jarring effect?</li>
+      <li><strong>incongruous</strong> (Day 12) + <strong>verdant</strong> (Day 8) — Draft one sentence where a verdant setting makes an event incongruous.</li>
+    </ol>
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <ol>
+      <li><strong>poignant</strong> vs. <strong>evocative</strong> — which makes you feel, which makes you remember?</li>
+      <li><strong>jarring</strong> vs. <strong>discordant</strong> — a jolt or a sustained clash?</li>
+      <li><strong>ephemeral</strong> vs. <strong>palpable</strong> — opposite poles of what?</li>
+    </ol>
+  </div>
+
+  <h2><span class="icon">🎯</span> Building Your Descriptive Toolkit</h2>
+  <ol class="tips-list">
+    <li><strong>Your Week 2 descriptive set is now complete.</strong> Place (8) + person (9) + mood (10) + voice (11) + texture (today) = five layers. You can now render a scene fully: where it is, who is in it, how it feels, how it speaks, and how it lands on the senses.</li>
+    <li><strong>Texture words make commentary specific.</strong> "Strong" becomes "palpable"; "weird" becomes "incongruous"; "pretty" becomes "luminous" or "scintillating." This precision is the single biggest lever on your vocabulary grade.</li>
+    <li><strong>The three Day 12 pairs are exam armour.</strong> poignant/evocative (feel vs. remember), jarring/discordant (jolt vs. clash), ephemeral/palpable (fleeting vs. tangible). They consolidate in Day 13 with all prior Week 2 pairs.</li>
+    <li><strong>Use the verb-adjective cousins.</strong> suffused (today) ← infuse/suffuse (Day 3); redolent ← evoke (Day 1). Your analysis verbs and descriptive adjectives are the same toolkit seen two ways — deploy both in one sentence for maximum density.</li>
+    <li><strong>Pair texture with every other layer.</strong> A palpable (texture) tension in an oppressive (place) setting, spoken in a laconic (voice) line by a stoic (person) character — that is a complete, sophisticated reading built from this week's words.</li>
+    <li><strong>Tomorrow is consolidation.</strong> Day 13 reviews all 60 Week 2 words and the nine distinction clusters; Day 14 is your descriptive writing assessment. Rest tonight — the words need their first long-term review.</li>
+  </ol>
+
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 13 (Next): Week 2 Review &amp; Consolidation</strong><br>
+    All 60 Week 2 words across five categories + the nine near-synonym distinction clusters + cumulative practice.<br><br>
+    <strong style="color:var(--ink);">Day 14:</strong> Week 2 assessment — a descriptive writing challenge deploying the full Week 2 vocabulary.
+  </div>
+
+</div>
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 2, Week 2, Day 12<br>
+  120 words learned so far (+12 today) · 1,180 to go · Texture precision unlocked ✨
+</footer>
+</body>
+</html>

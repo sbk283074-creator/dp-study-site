@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 11</title>
+<style>
+  :root {
+    --ink: #1a2238; --ink-soft: #4a5568; --paper: #faf8f3; --paper-warm: #f5f0e6;
+    --gold: #b8860b; --gold-soft: #d4a933; --teal: #2c7a7b; --teal-soft: #4fd1c5;
+    --coral: #c53030; --coral-soft: #fc8181; --purple: #6b46c1; --purple-soft: #b794f4;
+    --line: #e2dcd0; --shadow: 0 2px 8px rgba(26,34,56,0.08); --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.65; padding: 0; }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+  header { background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%); color: #fff; padding: 48px 24px 40px; text-align: center; }
+  header h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 28px; font-weight: normal; letter-spacing: 0.5px; margin-bottom: 6px; }
+  header .subtitle { font-size: 15px; color: var(--gold-soft); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  header .day-badge { display: inline-block; background: rgba(212,169,51,0.2); border: 1px solid var(--gold-soft); color: var(--gold-soft); padding: 6px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+  header .date { margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.5); }
+  h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: normal; color: var(--ink); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--gold-soft); display: flex; align-items: center; gap: 10px; }
+  h2 .icon { font-size: 24px; }
+  h3 { font-size: 16px; font-weight: 700; color: var(--ink); margin: 24px 0 12px; }
+  .tracker { display: flex; gap: 4px; margin: 16px 0; flex-wrap: wrap; }
+  .tracker .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--line); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--ink-soft); }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+  .sr-status { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .sr-card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: var(--shadow); text-align: center; }
+  .sr-card .sr-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-soft); font-weight: 700; }
+  .sr-card .sr-count { font-family: Georgia, serif; font-size: 32px; font-weight: bold; margin: 4px 0; }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note { font-size: 12px; color: var(--ink-soft); }
+  .recall-intro { background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); font-size: 14px; color: var(--ink-soft); margin-bottom: 16px; }
+  .recall-intro strong { color: var(--ink); }
+  .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .review-card { background: #fff; border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); border-left: 4px solid var(--teal); transition: transform 0.15s; }
+  .review-card .rword { font-family: Georgia, serif; font-size: 17px; font-weight: bold; color: var(--ink); }
+  .review-card .rdef { font-size: 12px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt { background: var(--paper-warm); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; color: var(--ink-soft); }
+  .review-prompt strong { color: var(--ink); }
+  .word-card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--line); position: relative; overflow: hidden; }
+  .word-card::before { content: ""; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--gold); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+  .word { font-family: Georgia, serif; font-size: 24px; font-weight: bold; color: var(--ink); }
+  .ipa { font-size: 14px; color: var(--ink-soft); font-style: italic; }
+  .pos { display: inline-block; background: #fef5e7; color: var(--gold); font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .definition { font-size: 15px; color: var(--ink); margin: 10px 0 12px; }
+  .usage-box { background: var(--paper-warm); border-radius: 8px; padding: 10px 14px; margin: 8px 0; font-size: 13px; }
+  .usage-box .label { font-weight: 700; color: var(--gold); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+  .example { font-style: italic; color: var(--ink-soft); font-size: 14px; margin: 8px 0; padding-left: 14px; border-left: 3px solid var(--gold-soft); }
+  .example .source { display: block; font-size: 12px; color: var(--gold); font-style: normal; margin-top: 4px; font-weight: 600; }
+  .ib-tip { background: #e6fffa; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
+  .ib-tip .label { color: var(--teal); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .collocations { font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+  .collocations strong { color: var(--ink); }
+  .distinction-box { background: linear-gradient(135deg, #fef5e7 0%, #fff 100%); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); margin: 16px 0; border-left: 4px solid var(--gold); }
+  .distinction-box h4 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+  .distinction-box p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .distinction-box p strong { color: var(--ink); }
+  .practice-box { background: #fff; border-radius: 12px; padding: 24px; box-shadow: var(--shadow); margin-top: 12px; }
+  .practice-box ol { padding-left: 20px; margin-top: 8px; }
+  .practice-box ol li { font-size: 14px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.7; }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank { display: inline-block; border-bottom: 2px solid var(--gold-soft); min-width: 80px; text-align: center; color: transparent; user-select: none; }
+  .word-bank { background: var(--paper-warm); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: var(--ink-soft); }
+  .word-bank strong { color: var(--ink); }
+  .tips-list { list-style: none; counter-reset: tip; }
+  .tips-list li { background: #fff; border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; box-shadow: var(--shadow); font-size: 14px; color: var(--ink-soft); position: relative; padding-left: 52px; }
+  .tips-list li::before { counter-increment: tip; content: counter(tip); position: absolute; left: 16px; top: 14px; width: 28px; height: 28px; background: var(--teal); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .tips-list li strong { color: var(--ink); }
+  .category-badge { display: inline-block; background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 12px; letter-spacing: 0.5px; margin-bottom: 8px; }
+  footer { text-align: center; padding: 32px 24px; color: var(--ink-soft); font-size: 13px; border-top: 1px solid var(--line); margin-top: 48px; }
+  footer strong { color: var(--ink); }
+  @media (max-width: 600px) { .review-grid { grid-template-columns: 1fr; } .sr-status { grid-template-columns: 1fr; } header h1 { font-size: 22px; } .word { font-size: 20px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 11 / 112 — Phase 2: Descriptive Precision</div>
+  <div class="date">Thursday, 3 September 2026</div>
+</header>
+<div class="container">
+
+  <h2><span class="icon">📅</span> This Week (Week 2)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">8</div><div class="dot done">9</div><div class="dot done">10</div><div class="dot today">11</div><div class="dot">12</div><div class="dot">13</div><div class="dot">14</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 8–10:</strong></td><td>Setting, Character, Mood adjectives — 36 new ✓</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 11 →</strong></td><td><strong>Tone &amp; Register</strong> (lyrical, sparse, ornate, colloquial, laconic, sardonic, caustic, euphemistic, vernacular, formal, dispassionate, strident) — 12 new</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 12:</strong></td><td>Descriptive Precision II</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 13:</strong></td><td>Week 2 review &amp; consolidation</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 14:</strong></td><td>Week 2 assessment</td></tr>
+    </table>
+  </div>
+
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review"><div class="sr-label">Review</div><div class="sr-count">12</div><div class="sr-note">Day 10 first review<br>(Mood &amp; Atmosphere)</div></div>
+    <div class="sr-card new"><div class="sr-label">New Words</div><div class="sr-count">12</div><div class="sr-note">Tone &amp; Register</div></div>
+    <div class="sr-card total"><div class="sr-label">Today Total</div><div class="sr-count">24</div><div class="sr-note">est. 35–45 min</div></div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Yesterday's twelve mood adjectives get their first review now — the 24-hour window that locks them in. Then we move from the <em>felt</em> to the <em>voice</em>: tone and register words name the author's attitude and the level of language chosen. This is the vocabulary of <em>stylistic analysis</em> — central to IB Paper 1 commentary.
+    <br><br><strong>Today's flow:</strong> (1) Day 10 first review &rarr; (2) 12 new tone/register adjectives &rarr; (3) distinction boxes (sparse/laconic, sardonic/caustic, formal/colloquial) &rarr; (4) practice.
+  </div>
+
+  <h2><span class="icon">🔁</span> Day 10 First Review — 12 Mood &amp; Atmosphere Adjectives</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">Yesterday's emotional-weather toolkit. Recall each shade before checking.</p>
+  <div class="review-grid">
+    <div class="review-card"><div class="rword">sombre</div><div class="rdef"><em>Dark, serious, weighty in tone (external).</em></div></div>
+    <div class="review-card"><div class="rword">spectral</div><div class="rdef"><em>Ghostly, unsettling otherworldliness.</em></div></div>
+    <div class="review-card"><div class="rword">haunting</div><div class="rdef"><em>Lingering, disturbingly memorable (after).</em></div></div>
+    <div class="review-card"><div class="rword">elegiac</div><div class="rdef"><em>Mournful, lamenting what is lost.</em></div></div>
+    <div class="review-card"><div class="rword">foreboding</div><div class="rdef"><em>Ominous, anticipatory dread (before).</em></div></div>
+    <div class="review-card"><div class="rword">melancholic</div><div class="rdef"><em>Pensive, inward wistful sadness.</em></div></div>
+    <div class="review-card"><div class="rword">wistful</div><div class="rdef"><em>Gentle, regretful longing.</em></div></div>
+    <div class="review-card"><div class="rword">languid</div><div class="rdef"><em>Sluggish, low-energy, exhausted.</em></div></div>
+    <div class="review-card"><div class="rword">ethereal</div><div class="rdef"><em>Delicate, enchanting otherworldliness.</em></div></div>
+    <div class="review-card"><div class="rword">glacial</div><div class="rdef"><em>Cold, hostile, emotionally frozen.</em></div></div>
+    <div class="review-card"><div class="rword">febrile</div><div class="rdef"><em>Feverish, agitated, restless energy.</em></div></div>
+    <div class="review-card"><div class="rword">visceral</div><div class="rdef"><em>Gut-level, raw, bodily feeling.</em></div></div>
+  </div>
+  <div class="review-prompt"><strong>Self-assessment:</strong> The three Day 10 pairs (sombre/melancholic, spectral/ethereal, foreboding/haunting) are the ones to drill. They return in your Day 13 weekly review.</div>
+
+  <h2><span class="icon">📖</span> Today's New Words — 12 Tone &amp; Register Adjectives</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;"><span class="category-badge">NEW CATEGORY — "DESCRIBING VOICE"</span></p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;"><strong style="color:var(--ink);">From feeling to voice.</strong> Mood (Day 10) is what a text <em>feels</em> like; tone and register are <em>how</em> it speaks. Tone = the author's attitude (ironic, solemn, detached); register = the level of language (formal vs. colloquial). These twelve words let you analyse <em>style</em> precisely — the core of Paper 1 commentary and a huge part of your 6.5→7.5 vocabulary gap, becauseregister and tone are exactly what distinguishes a competent essay from a sophisticated one. They sit on spectra: elaborate↔minimal (ornate/sparse/laconic), warm↔cold (lyrical/dispassionate), mocking↔plain (sardonic/caustic/colloquial), and high↔low register (formal/vernacular).</p>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">lyrical</span><span class="ipa">/ˈlɪrɪkl/</span><span class="pos">adjective</span></div>
+    <p class="definition">Expressive, musical, and song-like in quality; emotionally rich.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [lyrical] passage / The [lyrical] prose [sings]…"</div>
+    <p class="example">"The lyrical passage in Beloved where Sethe recounts her children's beauty transforms trauma into a sung, incantatory memory."<span class="source">— Beloved analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for musical, emotionally elevated prose or poetry. Distinct from "ornate" (decorated with detail) — lyrical is about <em>musical feeling</em>, not density. Pairs as the warm pole opposite "dispassionate." Vital for analysing poetry and elevated prose; marks moments where language itself becomes affective.</div>
+    <p class="collocations"><strong>Common collocations:</strong> lyrical passage · lyrical prose · lyrical quality · lyrical moment · lyrical beauty</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">sparse</span><span class="ipa">/spɑːs/</span><span class="pos">adjective</span></div>
+    <p class="definition">Minimal, thin, and restrained; using few words or details.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [sparse] style / The [sparse] prose [withholds]…"</div>
+    <p class="example">"The sparse style of The Road — bare nouns, no adjectives — strips language to survival, mirroring the stripped world."<span class="source">— The Road analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for minimalism as a <em>stylistic choice</em>. Distinct from "laconic" (see box): sparse describes the <em>text/style</em> (few words on the page); laconic describes a <em>character's speech</em> (few words spoken). Both mean "little language" at different levels. Pairs as the minimal pole opposite "ornate." Excellent for Hemingway, Beckett, and apocalyptic restraint.</div>
+    <p class="collocations"><strong>Common collocations:</strong> sparse style · sparse prose · sparse dialogue · sparse detail · sparse writing</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: sparse vs. laconic</h4>
+    <p>Both mean "little language," but at different levels:</p>
+    <p style="margin-top:8px;"><strong>sparse</strong> — The <em>text/style</em> uses few words or details (authorial, global).<br>&rarr; "The sparse prose strips the page to bare nouns."</p>
+    <p style="margin-top:8px;"><strong>laconic</strong> — A <em>character's speech</em> is terse, saying much in few words (character-level).<br>&rarr; "His laconic reply — 'Fine.' — closed the subject."</p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">The test: sparse = how the <em>author writes</em>; laconic = how the <em>character speaks</em>. A novel can be sparse overall yet contain a laconic character. Memory trick: sparse = the page is empty; laconic = the mouth is shut. Both consolidate in Day 13.</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">laconic</span><span class="ipa">/ləˈkɒnɪk/</span><span class="pos">adjective</span></div>
+    <p class="definition">Using very few words; terse and economical in speech.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [laconic] reply / The [laconic] speaker [conveys]…"</div>
+    <p class="example">"The laconic exchanges of Waiting for Godot — 'Let's go.' 'We can't.' 'Ah.' — compress an entire philosophy of stasis into syllables."<span class="source">— Waiting for Godot analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for terse, economy-of-speech characters. Distinct from "sparse" (see box): laconic = character speech; sparse = authorial style. Root: Laconia (Sparta), famed for brevity. Perfect for playwrights (Beckett, Pinter's "Pinteresque" pause) and for showing power through refusal to elaborate. Pairs with Day 9's "taciturn" — both quiet, but laconic still <em>speaks</em> little, taciturn simply says little by habit.</div>
+    <p class="collocations"><strong>Common collocations:</strong> laconic reply · laconic style · laconic speaker · laconic wit · laconic understatement</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">ornate</span><span class="ipa">/ɔːˈneɪt/</span><span class="pos">adjective</span></div>
+    <p class="definition">Elaborately decorated; richly detailed and highly embellished in style.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"an [ornate] style / The [ornate] prose [decorates]…"</div>
+    <p class="example">"The ornate style of A Portrait of a Lady — James's serpentine, clause-upon-clause sentences — enacts the social elaboration Isabel moves within."<span class="source">— The Portrait of a Lady analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for heavily decorated, maximalist prose. Distinct from "lyrical" (musical feeling) — ornate is about <em>density of detail/decoration</em>. The maximal pole opposite "sparse." Often signals excess, decadence, or a worldview that refuses simplicity. Vital for Victorian and modernist maximalists (James, Woolf at her densest).</div>
+    <p class="collocations"><strong>Common collocations:</strong> ornate style · ornate prose · ornate language · ornate imagery · ornate syntax</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">colloquial</span><span class="ipa">/kəˈləʊkwiəl/</span><span class="pos">adjective</span></div>
+    <p class="definition">Informal, conversational; using everyday, familiar language.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [colloquial] voice / The [colloquial] tone [grounds]…"</div>
+    <p class="example">"The colloquial voice of The Catcher in the Rye — 'if you really want to hear about it' — fuses narrator and reader into one restless, spoken confidence."<span class="source">— The Catcher in the Rye analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for informal, spoken-feeling language. Distinct from "vernacular" (a specific dialect/group speech) — colloquial is broadly "everyday," not tied to a region or class. The low-register pole opposite "formal." Watch: colloquial can signal intimacy, rebellion, or anti-elitism. Pairs with "sardonic" for a chatty, mocking narrator.</div>
+    <p class="collocations"><strong>Common collocations:</strong> colloquial voice · colloquial tone · colloquial language · colloquial style · colloquial phrasing</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">sardonic</span><span class="ipa">/sɑːˈdɒnɪk/</span><span class="pos">adjective</span></div>
+    <p class="definition">Grimly mocking, cynical, and disdainfully ironic in tone.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [sardonic] narrator / The [sardonic] tone [distances]…"</div>
+    <p class="example">"The sardonic tone of Huck Finn's narrator — 'all I wanted was a change' — lets a child's voice mock the adult world's pieties without naming them."<span class="source">— Adventures of Huckleberry Finn analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for cynical, disdainful mockery. Distinct from "caustic" (see box): sardonic is <em>wry, distanced irony</em>; caustic is <em>corrosive, attacking</em>. Both mock, but sardonic smiles while caustic burns. Pairs with "colloquial" for the chatty ironist. Excellent for unreliable or world-weary narrators. Root: from a Sardinian herb said to induce laughter — mockery as reflex.</div>
+    <p class="collocations"><strong>Common collocations:</strong> sardonic tone · sardonic narrator · sardonic wit · sardonic humour · sardonic smile</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: sardonic vs. caustic</h4>
+    <p>Both mock, but with different heat:</p>
+    <p style="margin-top:8px;"><strong>sardonic</strong> — <em>Wry, distanced</em> cynicism; mocks with a cold smile.<br>&rarr; "His sardonic aside mocked the ceremony without raising his voice."</p>
+    <p style="margin-top:8px;"><strong>caustic</strong> — <em>Corrosive, attacking</em>; mocks by burning.<br>&rarr; "Her caustic review flayed the novel's every pretension."</p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">The test: sardonic = detached irony (cool); caustic = destructive wit (hot). Memory trick: sardonic = sardonic smile; caustic = caustic burns (like acid). A sardonic narrator keeps you at arm's length; a caustic one wounds. Both are staple tones for satire — choose by how much the text wants to hurt.</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">caustic</span><span class="ipa">/ˈkɔːstɪk/</span><span class="pos">adjective</span></div>
+    <p class="definition">Biting, sarcastic, and corrosive; sharply critical in a destructive way.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [caustic] wit / The [caustic] satire [flays]…"</div>
+    <p class="example">"The caustic wit of Volpone — Jonson's voracious tricksters — scalds greed until the audience laughs at its own."<span class="source">— Volpone analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for corrosive, attacking mockery. Distinct from "sardonic" (see box): caustic burns; sardonic smiles. Root: Greek <em>kaustikos</em> = burn. The aggressive pole of satire, opposite the gentle "wistful." Deploy for satire that aims to wound or reform. Watch register: caustic is high-intensity and should be reserved for genuinely savage moments.</div>
+    <p class="collocations"><strong>Common collocations:</strong> caustic wit · caustic satire · caustic remark · caustic tone · caustic review</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">euphemistic</span><span class="ipa">/ˌjuːfəˈmɪstɪk/</span><span class="pos">adjective</span></div>
+    <p class="definition">Using mild or indirect words to soften or disguise something harsh or unpleasant.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [euphemistic] phrase / The [euphemistic] language [conceals]…"</div>
+    <p class="example">"The euphemistic language of the Party in 1984 — 'vaporized,' 'rectified' — disguises murder as bureaucratic tidiness."<span class="source">— 1984 analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use when soft language <em>hides</em> hard truth. Root: Greek <em>eu</em> (good) + <em>pheme</em> (speech). The opposite of "caustic" (which exposes by burning) — euphemism conceals by soothing. Vital for analysing propaganda, repression, and polite evasions (death, war, class). In IB, spotting euphemism is a top-tier critical move.</div>
+    <p class="collocations"><strong>Common collocations:</strong> euphemistic language · euphemistic phrase · euphemistic tone · euphemistic expression · euphemistic circumlocution</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">vernacular</span><span class="ipa">/vəˈnækjələ(r)/</span><span class="pos">adjective</span></div>
+    <p class="definition">Using the everyday language or dialect of a particular group, region, or class.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [vernacular] voice / The [vernacular] idiom [roots]…"</div>
+    <p class="example">"The vernacular voice of Their Eyes Were Watching God — Hurston's African American Southern dialect — roots the novel in a specific living community rather than a literary standard."<span class="source">— Their Eyes Were Watching God analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for a group's own language (dialect, class speech). Distinct from "colloquial" (general everyday speech) — vernacular is <em>specific</em> to a community. The low-register, identity-bearing pole. Crucial for postcolonial and minority-language texts; signals authenticity and resistance to standardisation. Pair with "formal" to stage cultural tension.</div>
+    <p class="collocations"><strong>Common collocations:</strong> vernacular voice · vernacular idiom · vernacular speech · vernacular language · vernacular rhythm</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: formal vs. colloquial</h4>
+    <p>The register poles — the level of language chosen:</p>
+    <p style="margin-top:8px;"><strong>formal</strong> — Standard, elevated, Conventionally "proper" language (high register).<br>&rarr; "The formal prose of the essay maintains authoritative distance."</p>
+    <p style="margin-top:8px;"><strong>colloquial</strong> — Informal, conversational, everyday language (low register).<br>&rarr; "The colloquial voice fuses narrator and reader into spoken confidence."</p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">The test: formal = elevated/standard; colloquial = everyday/spoken. They name <em>register</em>, not attitude (a formal text can be warm; a colloquial one can be cold). Memory trick: formal = the lecture hall; colloquial = the chat. Watch how authors <em>shift</em> register — that shift is itself analysis (e.g., vernacular vs. formal staging cultural conflict).</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">formal</span><span class="ipa">/ˈfɔːml/</span><span class="pos">adjective</span></div>
+    <p class="definition">Following accepted conventions; elevated, standard, and not casual in language.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [formal] register / The [formal] style [authorises]…"</div>
+    <p class="example">"The formal register of the constitutional debates in A Man of the People lends the satire a deadpan civic authority that makes the corruption land harder."<span class="source">— A Man of the People analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for elevated/standard register. Distinct from "ornate" (decorated) — formal is about <em>convention/level</em>, not richness. The high-register pole opposite "colloquial"/"vernacular." Watch register shifts: when a text drops from formal to colloquial (or vernacular), something ideological is happening. Staple for analysing nonfiction, drama's elevated verse, and satirical contrast.</div>
+    <p class="collocations"><strong>Common collocations:</strong> formal register · formal style · formal tone · formal prose · formal diction</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">dispassionate</span><span class="ipa">/dɪsˈpæʃənət/</span><span class="pos">adjective</span></div>
+    <p class="definition">Unemotional, objective, and free from personal bias or feeling.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [dispassionate] tone / The [dispassionate] observer [withholds]…"</div>
+    <p class="example">"The dispassionate tone of the camp commandant's memoir in If This Is a Man — measured, almost clinical — makes the horror more unbearable by refusing to raise its voice."<span class="source">— If This Is a Man analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for cool, objective distance. Distinct from "glacial" (Day 10, hostile cold) — dispassionate is <em>neutral</em>, not unkind. The cold pole opposite "lyrical." Often a deliberate rhetorical strategy: detachment can be more devastating than rage. Vital for analysing testimony, reportage, and the "cool" modernist narrator.</div>
+    <p class="collocations"><strong>Common collocations:</strong> dispassionate tone · dispassionate observer · dispassionate account · dispassionate analysis · dispassionate prose</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">strident</span><span class="ipa">/ˈstraɪdnt/</span><span class="pos">adjective</span></div>
+    <p class="definition">Loud, forceful, and insistent in tone; harshly emphatic.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [strident] voice / The [strident] rhetoric [demands]…"</div>
+    <p class="example">"The strident rhetoric of the revolutionaries in Things Fall Apart's latter sections drowns out the modulated counsel of the elders, signalling the arrival of a new, uncompromising order."<span class="source">— Things Fall Apart analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for loud, over-forceful tone (often critical or political). Distinct from "caustic" (corrosive wit) — strident is about <em>volume/insistence</em>, not cleverness. Often marks demagoguery or urgent protest; can be positive (righteous) or negative (shrill) depending on the text's stance. Pairs with "dispassionate" as its opposite (shout vs. silence).</div>
+    <p class="collocations"><strong>Common collocations:</strong> strident voice · strident rhetoric · strident tone · strident criticism · strident note</p>
+  </div>
+
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Fill in the Blank (Day 11 Words)</h3>
+    <div class="word-bank"><strong>Word Bank:</strong> lyrical · sparse · ornate · colloquial · laconic · sardonic · caustic · euphemistic · vernacular · formal · dispassionate · strident</div>
+    <ol>
+      <li>The ________ passage transforms trauma into a sung, incantatory memory.</li>
+      <li>The ________ style — bare nouns, no adjectives — strips language to survival.</li>
+      <li>James's ________ sentences, clause upon clause, enact social elaboration.</li>
+      <li>The ________ voice of the narrator fuses reader and speaker into confidence.</li>
+      <li>His ________ reply — "Fine." — closed the subject in two syllables.</li>
+      <li>The ________ tone of Huck's voice mocks adult pieties without naming them.</li>
+      <li>Her ________ review flayed the novel's every pretension.</li>
+      <li>The Party's ________ language — "vaporized" — disguises murder as tidiness.</li>
+      <li>Hurston's ________ dialect roots the novel in a living community.</li>
+      <li>The ________ register of the debates lends the satire civic authority.</li>
+      <li>The ________ tone of the memoir, almost clinical, makes horror unbearable.</li>
+      <li>The ________ rhetoric of the revolutionaries drowned out the elders' counsel.</li>
+    </ol>
+    <h3 style="margin-top:24px;">Exercise 2: Cross-Day Sentences (Day 10/9 + Day 11 register)</h3>
+    <ol>
+      <li><strong>dispassionate</strong> (Day 11) + <strong>visceral</strong> (Day 10) — How can a dispassionate tone produce a visceral effect?</li>
+      <li><strong>sparse</strong> (Day 11) + <strong>haunting</strong> (Day 10) — Why does sparse prose often feel haunting?</li>
+      <li><strong>colloquial</strong> (Day 11) + <strong>gregarious</strong> (Day 9) — How might a colloquial voice suit a gregarious narrator?</li>
+      <li><strong>formal</strong> (Day 11) + <strong>sardonic</strong> (Day 11) — Draft one sentence on a text that pairs formal register with sardonic tone.</li>
+    </ol>
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <ol>
+      <li><strong>sparse</strong> vs. <strong>laconic</strong> — text-level or speech-level? Illustrate both.</li>
+      <li><strong>sardonic</strong> vs. <strong>caustic</strong> — which smiles, which burns?</li>
+      <li><strong>formal</strong> vs. <strong>colloquial</strong> — what dimension do they name, and how is a register shift itself analytical?</li>
+    </ol>
+  </div>
+
+  <h2><span class="icon">🎯</span> Building Your Descriptive Toolkit</h2>
+  <ol class="tips-list">
+    <li><strong>You can now analyse voice, not just feeling.</strong> Setting (8) + character (9) + mood (10) + tone/register (today) = the full stylistic toolkit. These twelve words are the language of Paper 1 commentary — exactly the layer that lifts a 6.5 to a 7.5.</li>
+    <li><strong>Separate tone (attitude) from register (level).</strong> sardonic/caustic/dispassionate = attitude; formal/colloquial/vernacular = level. Naming which one you mean is a sophistication signal examiners reward.</li>
+    <li><strong>The three Day 11 pairs are exam armour.</strong> sparse/laconic (text vs. speech), sardonic/caustic (smile vs. burn), formal/colloquial (register poles). They consolidate in Day 13 with the Day 8/9/10 pairs.</li>
+    <li><strong>Watch the register shift.</strong> When a text drops from formal to vernacular, or swings from dispassionate to strident, that movement is <em>the</em> analytical moment. Don't just label one register — track the change.</li>
+    <li><strong>Pair voice with mood and character.</strong> A dispassionate tone (voice) over a visceral subject (mood), spoken by a laconic character — that's a complete stylistic reading. The verb constructs, the adjective qualifies across four dimensions now.</li>
+    <li><strong>Deploy these in your next commentary.</strong> Force three Day 11 words into your style paragraph. By Paper 2, "sardonic vs. caustic" and "formal vs. colloquial" should be instinctive.</li>
+  </ol>
+
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 12 (Next): Descriptive Precision II</strong><br>
+    Texture &amp; quality adjectives that finish the Week 2 descriptive set: <em>poignant, evocative, jarring, luminous, palpable</em>…<br><br>
+    <strong style="color:var(--ink);">Day 13:</strong> Week 2 review &amp; consolidation — all Week 2 near-synonym clusters.<br>
+    <strong style="color:var(--ink);">Day 14:</strong> Week 2 assessment — a descriptive writing challenge.
+  </div>
+
+</div>
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 2, Week 2, Day 11<br>
+  108 words learned so far (+12 today) · 1,192 to go · Voice precision unlocked 🎙️
+</footer>
+</body>
+</html>

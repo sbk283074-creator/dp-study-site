@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 4</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards (Day 2 2nd pass — interactive reveal) */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  /* Review Cards (Day 3 1st review) */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid, .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 4 / 112 — Foundation Phase</div>
+  <div class="date">Tuesday, 25 August 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 1)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">1</div>
+      <div class="dot done">2</div>
+      <div class="dot done">3</div>
+      <div class="dot today">4</div>
+      <div class="dot">5</div>
+      <div class="dot">6</div>
+      <div class="dot">7</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--teal);">Day 1 ✓</strong></td><td>Foundational analysis verbs (10) + evaluative adjectives (2) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 2 ✓</strong></td><td>More analysis verbs + effect verbs (12) + Day 1 review — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 3 ✓</strong></td><td>Writing-Method Verbs I (12) + Day 1 (2nd pass) + Day 2 (1st review) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 4 →</strong></td><td><strong>Writing-Method Verbs II</strong> (permeate, saturate, interlace, inscribe, construct, arrange, calibrate, modulate, attenuate, distil, hone, sharpen) + Day 2 (2nd pass) + Day 3 (1st review)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 5:</strong></td><td>Evaluative adjectives (polemical, subversive, satirical, allegorical, tendentious, reductive…)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 6:</strong></td><td>Weekly review &amp; consolidation (all Week 1 verbs)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 7:</strong></td><td>Weekly assessment (all Week 1 words)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">Day 2 (2nd pass) — 12 words<br>Day 3 (1st review) — 12 words</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Writing-Method Verbs II</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">36</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the forgetting curve:</strong> Day 2 words are now 2 days old — this is their <em>second</em> recall, the same hard retrieval point Day 1 faced yesterday. The difficulty you feel is the memory consolidating, not a sign you're forgetting. Day 3 words get their <em>first</em> review today (24-hour window). Research confirms the second-pass recall is where short-term memory converts to long-term storage — push through it.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 2 active recall challenge &rarr; (2) Day 3 quick review &rarr; (3) 12 new writing-method verbs II &rarr; (4) practice exercises.
+  </div>
+
+  <!-- ============ DAY 2 SECOND PASS — ACTIVE RECALL ============ -->
+  <h2><span class="icon">🔥</span> Day 2 Active Recall — 2nd Pass</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    These are Sunday's words. For each, you see the word and its <em>usage pattern</em>. <strong>Recall the full definition before clicking to reveal.</strong> Then read the deeper question — it tests whether you can <em>use</em> the word, not just define it. Flag any word you can't answer for tonight's re-study.
+  </p>
+  <div class="recall-list">
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">underscore</span>
+        <span class="rpat">"The motif underscores the theme by…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To emphasise or reinforce significance <strong>structurally</strong>.</em> It's not just mentioning — it's making something prominent through repetition or placement.</div>
+        <div class="rquestion">What's the difference between underscoring a theme and merely mentioning it? (Hint: underscore implies the theme is reinforced by the <em>structure</em> of the text, not just stated once.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">illuminate</span>
+        <span class="rpat">"The scene illuminates the character's motivation…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To shed light on; reveal what was hidden or unclear.</em> More literary than "explain" — it implies revealing through showing.</div>
+        <div class="rquestion">How does illuminate differ from explain? (Hint: explain states directly; illuminate reveals through a detail, image, or moment that makes something suddenly clear.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">dismantle</span>
+        <span class="rpat">"The text dismantles the ideology by…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To take apart systematically, piece by piece.</em> The logical structure is disassembled methodically.</div>
+        <div class="rquestion">What does dismantling require that simple criticism doesn't? (Hint: dismantling exposes the <em>internal workings</em> of the thing — you can't take apart what you haven't first shown how it's assembled.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">deconstruct</span>
+        <span class="rpat">"The text deconstructs the binary of…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To reveal internal contradictions in a concept or binary.</em> From Derrida — not demolition, but showing the opposition was never stable.</div>
+        <div class="rquestion">How is deconstruction different from destruction? (Hint: destruction knocks something down from outside; deconstruction shows the thing was already unstable from within — the contradiction was always there.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">destabilise</span>
+        <span class="rpat">"The technique destabilises the reader's certainty…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To make unstable or uncertain; to shake foundations.</em> The thing still stands, but you can no longer trust it.</div>
+        <div class="rquestion">What's left after a text destabilises something? (Hint: not destruction — the certainty is removed, but the object remains, now shaky and unreadable as it was.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">engender</span>
+        <span class="rpat">"The setting engenders a sense of entrapment…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To cause or produce (feelings, attitudes, conditions).</em> The feeling arises organically from the conditions described.</div>
+        <div class="rquestion">Why engender rather than simply "create"? (Hint: engender implies the feeling grows <em>out of</em> the situation — the setting itself gives birth to the emotion.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">provoke</span>
+        <span class="rpat">"The scene provokes the reader into confronting…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To deliberately incite a response; to challenge comfort.</em> Often uncomfortable, always intentional.</div>
+        <div class="rquestion">What distinguishes provoke from merely "cause"? (Hint: provoke carries the sense of <em>deliberate</em> incitement — the author wants to push the reader past complacency.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">elicit</span>
+        <span class="rpat">"The dramatic irony elicits sympathy from the audience…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To draw out a response from the reader/audience.</em> The object is a <em>response</em> — sympathy, horror, laughter.</div>
+        <div class="rquestion">Remember the Day 2 distinction: <strong>elicit</strong> vs. <strong>evoke</strong>? Which one takes the reader's <em>response</em> as its object, and which takes an <em>atmosphere</em>? (Answer: elicit = response; evoke = atmosphere.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">exemplify</span>
+        <span class="rpat">"The character exemplifies the archetype through…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To serve as a typical example of a broader pattern.</em> The instance represents the class.</div>
+        <div class="rquestion">How is exemplify different from instantiate? (Hint: exemplify = a <em>typical</em> case; instantiate = a concrete <em>embodiment</em> of something abstract. A hero can exemplify courage; a character can instantiate the very conflict between duty and desire.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">instantiate</span>
+        <span class="rpat">"The character instantiates the conflict as…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To embody an abstract concept; give it concrete form.</em> The abstract becomes flesh.</div>
+        <div class="rquestion">What does instantiate add that "show" lacks? (Hint: instantiate makes the abstract <em>physically present</em> — an idea you can point to in a body on the page.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">perpetuate</span>
+        <span class="rpat">"The structure perpetuates the cycle of…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To cause to continue indefinitely (usually negative).</em> Keeping a harmful pattern alive.</div>
+        <div class="rquestion">Why is perpetuate almost always negative in criticism? (Hint: it implies sustaining something that <em>should</em> end — oppression, silence, a cycle. Rarely used for good things.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">vindicate</span>
+        <span class="rpat">"The revelation vindicates the protagonist's earlier suspicion…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To prove right retrospectively; to justify.</em> Something earlier is shown to have been correct all along.</div>
+        <div class="rquestion">What temporal movement does vindicate require? (Hint: it's always <em>retrospective</em> — a past doubt, suspicion, or position is proven right by a later event.)</div>
+      </div>
+    </details>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> How many could you define <em>and</em> answer the deeper question for? If you struggled with 3+ words, revisit the Day 2 document tonight. The second pass is the gate between short-term and long-term memory — it's supposed to be work.
+  </div>
+
+  <!-- ============ DAY 3 FIRST REVIEW ============ -->
+  <h2><span class="icon">🔄</span> Day 3 First Review — 12 Words</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:12px;">
+    Yesterday's writing-method verbs — the 24-hour recall window. Try to recall each meaning <em>before</em> reading the definition. Ask: <em>Can I use this verb to describe a technique in a text I'm reading?</em> If not, flag it — it reappears in Day 5's review.
+  </p>
+  <div class="review-grid">
+    <div class="review-card">
+      <span class="rword">craft</span>
+      <p class="rdef"><em>To construct with deliberate skill and artistry.</em><br>"The author <em>crafts</em> the voice with flat restraint…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">deploy</span>
+      <p class="rdef"><em>To position and use a technique strategically.</em><br>"Atwood <em>deploys</em> biblical naming with precision…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">weave</span>
+      <p class="rdef"><em>To interlace multiple strands into a unified whole.</em><br>"He <em>weaves</em> myth and history into one fabric…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">render</span>
+      <p class="rdef"><em>To represent or translate into a form; cause to become.</em><br>"Chopin <em>renders</em> awakening as a tactile process…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">orchestrate</span>
+      <p class="rdef"><em>To coordinate multiple elements with deliberate precision.</em><br>"Miller <em>orchestrates</em> the time transitions…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">sculpt</span>
+      <p class="rdef"><em>To shape by careful, deliberate craftsmanship.</em><br>"Morrison <em>sculpts</em> memory into nonlinear form…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">layer</span>
+      <p class="rdef"><em>To build up meaning through superimposed levels.</em><br>"Fitzgerald <em>layers</em> the green light with resonance…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">embed</span>
+      <p class="rdef"><em>To fix firmly within a surrounding context.</em><br>"Orwell <em>embeds</em> politics in domestic routine…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">frame</span>
+      <p class="rdef"><em>To present within a perspective/boundary that shapes meaning.</em><br>"Brontë <em>frames</em> the story through double narration…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">thread</span>
+      <p class="rdef"><em>To run one element continuously through a text.</em><br>"Shakespeare <em>threads</em> the blood motif throughout…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">infuse</span>
+      <p class="rdef"><em>To instil a quality into the text (author is subject).</em><br>"Achebe <em>infuses</em> the prose with oral tradition…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">suffuse</span>
+      <p class="rdef"><em>To spread through completely (atmosphere is subject).</em><br>"An atmosphere of dread <em>suffuses</em> the scene…"</p>
+    </div>
+  </div>
+  <div class="review-prompt">
+    <strong>Key distinctions from Day 3 — can you still articulate them?</strong><br>
+    &bull; <strong>weave</strong> (many strands &rarr; cloth) vs. <strong>thread</strong> (one strand &rarr; through)<br>
+    &bull; <strong>infuse</strong> (author puts in) vs. <strong>suffuse</strong> (atmosphere spreads through)<br>
+    &bull; <strong>craft</strong> (overall construction) vs. <strong>sculpt</strong> (shaping by removing)<br>
+    If any still feel fuzzy, revisit the Day 3 distinction boxes tonight.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Writing-Method Verbs II</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge">SAME CATEGORY — "HOW TEXTS ARE BUILT"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">Completing the authorial-craft toolkit.</strong> Yesterday's verbs described construction at the level of <em>elements</em> (weave, thread, layer, embed) and <em>overall form</em> (craft, sculpt, orchestrate). Today's verbs refine that toolkit in two directions: (1) <strong>intensity and saturation</strong> — how thoroughly a quality fills a text (permeate, saturate); (2) <strong>precision and control</strong> — how an author tunes, varies, reduces, and concentrates (calibrate, modulate, attenuate, distil, hone, sharpen), plus structural verbs (construct, arrange, interlace, inscribe). Together, Days 3 + 4 give you a complete vocabulary for discussing <em>how</em> a text is built — exactly what IB Paper 1 demands.
+  </p>
+
+  <!-- Word 1: permeate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">permeate</span>
+      <span class="ipa">/ˈpɜːmieɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To spread throughout every part of something; to pass into and fill every corner of a text — like a smell or liquid seeping through, gradually and thoroughly.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[Quality/theme] <strong>permeates</strong> [the text / every level of the narrative], [effect]…"
+    </div>
+    <p class="example">
+      "The motif of surveillance permeates every level of 1984 — not just the telescreens but the language (Newspeak), the architecture, the psychology of the citizens — until the reader understands that in Oceania there is no outside to be free in."
+      <span class="source">— 1984 analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Lighter than "saturate." Use when an idea or technique is <em>present throughout</em> a text without necessarily filling it to capacity. "The theme of exile permeates the collection" — it's everywhere, but not overwhelming. See the distinction box below: permeate = spread through; saturate = fill to capacity.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> permeate the text · permeate every level · permeate the narrative · permeate consciousness · permeation (n.)</p>
+  </div>
+
+  <!-- Word 2: saturate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">saturate</span>
+      <span class="ipa">/ˈsætʃəreɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To fill something completely, to the point where it can absorb no more; to soak thoroughly so that nothing else can fit.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[Quality/imagery] <strong>saturates</strong> [the scene / the prose], [effect]…"
+    </div>
+    <p class="example">
+      "Colour imagery saturates the opening chapter of The Great Gatsby — green, white, gold — so that the reader is immersed in a world where material excess is itself a language, and wealth becomes indistinguishable from identity."
+      <span class="source">— The Great Gatsby analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Stronger than "permeate." Saturate implies <em>completeness</em> — the text is soaked to capacity, often to the point of being inescapable or oppressive. "The prose is saturated with grief" — there's no room for anything else. Distinguished from permeate by <strong>degree</strong>: permeate = spread through; saturate = fill to capacity.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> saturate the prose · saturate the scene · saturated with · saturated in colour · saturation (n.)</p>
+  </div>
+
+  <!-- PERMEATE vs SATURATE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: permeate vs. saturate</h4>
+    <p>
+      Both describe a quality spreading through a text, but they differ in <strong>degree of fullness</strong>:
+    </p>
+    <p style="margin-top:8px;">
+      <strong>permeate</strong> — Spreads through gradually and thoroughly, present in every part. The text is <em>infused</em> with the quality, but other things still exist alongside it.<br>
+      &rarr; "The theme of alienation <strong>permeates</strong> Kafka's short stories — present in nearly every page, yet never the only thing happening."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>saturate</strong> — Fills to capacity; so full that nothing else can fit. The quality is overwhelming, inescapable.<br>
+      &rarr; "Violent imagery <strong>saturates</strong> the final act, leaving the audience no perceptual space untouched by brutality."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      Memory trick: <strong>permeate</strong> = the smell is in every room &rarr; everywhere but breathable · <strong>saturate</strong> = the room is flooded &rarr; nothing else can enter. Use permeate for "throughout"; use saturate for "completely full."
+    </p>
+  </div>
+
+  <!-- Word 3: interlace -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">interlace</span>
+      <span class="ipa">/ˌɪntəˈleɪs/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To interweave or link together in a complex, interlocking pattern; to bind distinct elements so tightly they become mutually dependent and cannot be separated without breaking the whole.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>interlaces</strong> [element A] with [element B], [effect]…"
+    </div>
+    <p class="example">
+      "In Atonement, McEwan interlaces the act of writing with the act of atonement — Briony's novels within the novel are never merely stories but confessions, so that fiction and guilt become the same gesture, each sentence an attempt to undo a childhood crime."
+      <span class="source">— Atonement analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Like "weave" (Day 3) but with emphasis on <em>mutual dependence</em> — often narrative levels, timelines, or voices bound so tightly they're one fabric. Especially useful for metafiction and frame narratives, where story and storytelling are fused. Past tense: <em>interlaced</em>; adjective: <em>interwoven</em>. "McEwan <em>interlaces</em> fiction and guilt" shows the two can't be pulled apart.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> interlace narrative levels · interlace fact and fiction · interlace voices · interlace the timelines · interwoven (adj.)</p>
+  </div>
+
+  <!-- Word 4: inscribe -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">inscribe</span>
+      <span class="ipa">/ɪnˈskraɪb/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To write, engrave, or fix permanently into a text or surface; to mark something indelibly so it becomes part of its identity — from monumental inscription.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>inscribes</strong> [idea / identity / history] into [the text / the character], [effect]…"
+    </div>
+    <p class="example">
+      "Morrison inscribes the history of slavery into the very body of the novel — not as background but as living presence, so that Sethe's scar and the ghost of Beloved are the text's way of refusing to let the past be buried or forgotten."
+      <span class="source">— Beloved analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Carries a sense of <em>permanence and marking</em> — from inscriptions on stone or monuments. Use when something (history, identity, ideology) is fixed into the text <em>indelibly</em> — not just present, but carved in. Connects to Day 3's "embed" (fix within context) but inscribe adds the sense of deliberate, permanent <em>recording</em>. "The novel inscribes marginalised voices into the canon" — it makes them permanent.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> inscribe history · inscribe identity · inscribe meaning · inscribe into · inscription (n.)</p>
+  </div>
+
+  <!-- Word 5: construct -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">construct</span>
+      <span class="ipa">/kənˈstrʌkt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To build methodically and deliberately; to assemble a text's structure, argument, or meaning with conscious design rather than accident.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>constructs</strong> [the narrative / argument / character] so that [effect]…"
+    </div>
+    <p class="example">
+      "Austen constructs Pride and Prejudice around a series of dramatic ironies — each misunderstanding built to collapse at precisely the right moment, so the reader's pleasure comes from watching a carefully engineered structure of pride and prejudice dismantle itself."
+      <span class="source">— Pride and Prejudice analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The most general of the construction verbs — but that's its strength for discussing <em>overall architecture</em>: plot structure, argument design, character development. Pairs perfectly with "deconstruct" (Day 2): a text is <em>constructed</em>, and you can deconstruct it. "The author constructs an unreliable narrator" shows awareness of design, not accident. Distinct from "arrange" (next word) in scale — construct = build the whole; arrange = order the parts.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> construct a narrative · construct an argument · construct the plot · construct meaning · construction (n.)</p>
+  </div>
+
+  <!-- Word 6: arrange -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">arrange</span>
+      <span class="ipa">/əˈreɪndʒ/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To order, sequence, or place elements deliberately for effect; to determine the disposition of parts within a whole — the how and why of ordering.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>arranges</strong> [scenes / words / images] [in a particular order], [effect]…"
+    </div>
+    <p class="example">
+      "Bishop arranges the details of 'One Art' in ascending order of loss — from a lost door key to a lost continent to a lost love — so the villanelle's repetitive form enacts the speaker's attempt to master grief through ritualised repetition."
+      <span class="source">— Elizabeth Bishop, 'One Art' analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Often about <em>sequence and ordering</em> — the deliberate placement of elements. Distinct from "construct" (overall building) in <strong>scale</strong>: arrange is about the ordering of parts (which scene comes first, how stanzas are sequenced, where the climax sits). Use when the <em>order itself</em> carries meaning — a key Paper 1 observation. "The author arranges the chapters non-chronologically" is precise about structure.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> arrange the scenes · arrange in order · arrange the stanzas · arrange the details · arrangement (n.)</p>
+  </div>
+
+  <!-- Word 7: calibrate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">calibrate</span>
+      <span class="ipa">/ˈkælɪbreɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To adjust precisely to achieve a desired degree of accuracy or effect; to tune a technique so it hits exactly the right intensity — from scientific instrument calibration.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>calibrates</strong> [tone / detail / irony] so that [precise effect]…"
+    </div>
+    <p class="example">
+      "Ishiguro calibrates the revelation of Kathy's fate with excruciating precision — withholding just enough that the reader pieces together the horror a beat before she does, so that our knowledge and her ignorance create a sustained, quiet devastation."
+      <span class="source">— Never Let Me Go analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The scientific metaphor — precise adjustment toward accuracy. Use when an author adjusts a technique (tone, pacing, irony, detail) to hit an <em>exact</em> emotional or intellectual target. Implies fine control and intentionality. Excellent for tone management and pacing. "The author <em>calibrates</em> the irony" = adjusts it precisely for maximum effect, not just "uses" it. See distinction box with "modulate" below.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> calibrate the tone · calibrate the irony · calibrate the detail · calibrate the pacing · calibration (n.)</p>
+  </div>
+
+  <!-- Word 8: modulate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">modulate</span>
+      <span class="ipa">/ˈmɒdjuleɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To vary or adjust the tone, pace, or intensity of a text; to shift register for expressive effect — from music, where modulation means changing pitch or key.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>modulates</strong> [tone / pace / register] between [A] and [B], [effect]…"
+    </div>
+    <p class="example">
+      "Woolf modulates the stream-of-consciousness between fragmentary interior thought and luminous descriptive passages, so the reader feels the character's consciousness expand and contract like breathing, the form itself mirroring the rhythm of perception."
+      <span class="source">— Mrs Dalloway analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The musical metaphor — variation and shifting. Use when a text changes tone, pace, or register <em>deliberately</em> (not randomly). Distinct from "calibrate" (precise setting toward a fixed target) — modulate is about <em>variation and movement</em> between states. "The author modulates between intimate and distant" describes dynamic range; "calibrates the irony" describes precise tuning. Both show control, but modulate emphasises <strong>change</strong>.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> modulate the tone · modulate the pace · modulate between · modulate the register · modulation (n.)</p>
+  </div>
+
+  <!-- CALIBRATE vs MODULATE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: calibrate vs. modulate</h4>
+    <p>
+      Both describe an author adjusting a technique, but they operate differently:
+    </p>
+    <p style="margin-top:8px;">
+      <strong>calibrate</strong> — Precise <em>tuning toward a fixed target</em>. The author sets a technique to exactly the right degree. Implies accuracy, control, and a specific destination.<br>
+      &rarr; "The author <strong>calibrates</strong> the irony so it cuts without becoming unbearable."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>modulate</strong> — <em>Variation and movement</em> between states. The author shifts tone, pace, or register across the text. Implies dynamic range, not a fixed point.<br>
+      &rarr; "The author <strong>modulates</strong> between intimacy and distance as the narrator's reliability wavers."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      Memory trick: <strong>calibrate</strong> = set the dial to the exact right number &rarr; precision · <strong>modulate</strong> = move the dial up and down &rarr; variation. You can use both: "She <em>calibrates</em> each scene's irony while <em>modulating</em> the overall tone from cold to tender."
+    </p>
+  </div>
+
+  <!-- Word 9: attenuate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">attenuate</span>
+      <span class="ipa">/əˈtenjueɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To weaken, reduce, or make thinner and gradually less intense; to diminish force, clarity, or emotional impact deliberately.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [technique / structure] <strong>attenuates</strong> [the impact / certainty / clarity of]…"
+    </div>
+    <p class="example">
+      "In The Road, McCarthy's stripped, punctuation-less prose attenuates all rhetorical comfort — there is no authorial warmth to cushion the devastation, so the bareness of the language becomes the bareness of the world, style and subject inseparable."
+      <span class="source">— The Road analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Useful for describing deliberate <em>reduction</em> — of tone, certainty, clarity, or emotional force. Often about restraint: the author attenuates something to make the reader feel absence. Connects to "undermine" (Day 1, gradual weakening) but attenuate is about <em>thinning/diminishing intensity</em> rather than attacking foundations. "The epilogue attenuates the triumph" = rescales/weakens it. Sophisticated alternative to "reduce" or "lessen."
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> attenuate the impact · attenuate certainty · attenuate the tone · attenuate clarity · attenuation (n.)</p>
+  </div>
+
+  <!-- Word 10: distil -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">distil</span>
+      <span class="ipa">/dɪˈstɪl/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To extract and concentrate the essential essence of something; to reduce complexity to its purest, most potent form — from the distillation of liquids.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>distils</strong> [complex experience / theme] into [essential image / phrase], [effect]…"
+    </div>
+    <p class="example">
+      "Plath distils the entire experience of confinement and self-fracture into the single image of the bell jar — so that a whole novel's worth of anguish is condensed into one suffocating, airless metaphor."
+      <span class="source">— The Bell Jar / Plath analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> From distillation — removing impurities to get the essence. Use when an author <em>concentrates</em> a complex feeling or theme into a single powerful image, line, or moment. Implies refinement and concentration, not just summary. Perfect for discussing climax images, closing lines, or symbolic condensation. "The final stanza <em>distils</em> the poem's argument" = concentrates it to essence. Note the spelling: <em>distil</em> (British) / <em>distill</em> (American).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> distil into · distil the essence · distil experience · distil meaning · distillation (n.)</p>
+  </div>
+
+  <!-- Word 11: hone -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">hone</span>
+      <span class="ipa">/həʊn/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To refine, sharpen, and perfect through repeated, careful effort; to bring to a fine edge over time — from sharpening a blade on a whetstone.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>hones</strong> [craft / voice / image] through [repetition / revision / structure], [effect]…"
+    </div>
+    <p class="example">
+      "Hemingway hones his trademark economy across the stories in In Our Time — each subsequent vignette strips away another layer of explanation until the unspoken carries more weight than the stated, the restraint itself becoming the meaning."
+      <span class="source">— In Our Time analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use when discussing an author's deliberate <em>refinement</em> of style, voice, or a recurring technique over the course of a text or career. Implies patient, repeated perfecting. Good for stylistic development and the craft of revision. Distinct from "sharpen" (next word): hone = perfect over <em>time/effort</em>; sharpen = intensify at a <em>moment</em>. "The author <em>hones</em> the image until it cuts" — precision through effort.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> hone the craft · hone the voice · hone an image · hone the style · honed (adj.)</p>
+  </div>
+
+  <!-- Word 12: sharpen -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">sharpen</span>
+      <span class="ipa">/ˈʃɑːpən/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To make more acute, precise, or intense; to bring into focus or heighten an effect — increasing clarity or force rather than refining over time.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [technique] <strong>sharpens</strong> [the contrast / the focus / the tension], [effect]…"
+    </div>
+    <p class="example">
+      "The shift to present tense in the final section sharpens the immediacy of the trauma — suddenly the reader is no longer safe in the past tense's distance, but thrust into the raw present of the event, the grammatical change itself enacting the return of the repressed."
+      <span class="source">— Trauma narrative analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use when a technique makes something more <em>acute or focused</em> — contrast, focus, tension, perception. Distinct from "hone" (refinement through effort) — sharpen is about <em>increasing intensity or acuity</em>, often at a single moment. "The irony <em>sharpens</em> the critique" = makes it more cutting; "the author <em>hones</em> the style" = refines it over time. Both relate to edges, but sharpen = intensify, hone = perfect.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> sharpen the contrast · sharpen the focus · sharpen the tension · sharpen perception · sharpen the critique</p>
+  </div>
+
+  <!-- ============ PRACTICE EXERCISES ============ -->
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Fill in the Blank (Day 4 Words)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Complete each sentence with a word from today's list. Use context clues to choose the right word.</p>
+    <div class="word-bank">
+      <strong>Word Bank:</strong> permeate · saturate · interlace · inscribe · construct · arrange · calibrate · modulate · attenuate · distil · hone · sharpen
+    </div>
+    <ol>
+      <li>McCarthy's punctuation-less prose <span class="blank">________</span> all rhetorical comfort, leaving the reader exposed to the bare horror of the world without any authorial cushion.</li>
+      <li>Colour and light imagery <span class="blank">________</span> the opening pages so completely that the reader is immersed in a world where wealth has become a language of its own.</li>
+      <li>Plath <span class="blank">________</span> a whole novel's worth of anguish into the single, suffocating image of the bell jar.</li>
+      <li>The guilt of writing and the act of atonement are <span class="blank">________</span> so tightly in the novel that fiction and confession become the same gesture.</li>
+      <li>Austen <span class="blank">________</span> Pride and Prejudice around a series of dramatic ironies, each built to collapse at precisely the right moment.</li>
+      <li>Bishop <span class="blank">________</span> the losses in 'One Art' in ascending order, so the form enacts the speaker's attempt to master grief.</li>
+      <li>Ishiguro <span class="blank">________</span> the revelation with excruciating precision, withholding just enough to maximise the quiet devastation.</li>
+      <li>Woolf <span class="blank">________</span> between fragmentary thought and luminous description, so the reader feels the consciousness expand and contract.</li>
+      <li>Morrison <span class="blank">________</span> the history of slavery into the very body of the novel, refusing to let the past be buried.</li>
+      <li>The shift to present tense <span class="blank">________</span> the immediacy of the trauma, thrusting the reader into the raw present of the event.</li>
+      <li>Hemingway <span class="blank">________</span> his economy across the stories, stripping away explanation until the unspoken carries more weight than the stated.</li>
+      <li>The theme of surveillance <span class="blank">________</span> every level of the dystopia — language, architecture, psychology — until there is no outside to be free in.</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 2: Cross-Day Sentences (Days 1–3 + Day 4)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Write one analytical sentence for each pair, using <strong>both</strong> words — one from Days 1–3 and one from Day 4. Train yourself to combine <em>what texts do</em>, <em>how they're built</em>, and <em>precision of effect</em>.</p>
+    <ol>
+      <li><strong>foreground</strong> (Day 1) + <strong>saturate</strong> (Day 4) — How does saturating a scene foreground a theme?</li>
+      <li><strong>thread</strong> (Day 3) + <strong>distil</strong> (Day 4) — How does distilling a threaded motif into a single image work?</li>
+      <li><strong>calibrate</strong> (Day 4) + <strong>evoke</strong> (Day 1) — How does calibrating a technique evoke a precise atmosphere?</li>
+      <li><strong>destabilise</strong> (Day 2) + <strong>modulate</strong> (Day 4) — How does modulating tone destabilise the reader?</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Explain the difference between each pair in 1–2 sentences. Why would you choose one over the other in an essay? Use a literary example to illustrate.</p>
+    <ol>
+      <li><strong>permeate</strong> vs. <strong>saturate</strong> — see the distinction box above. Give your own literary example for each.</li>
+      <li><strong>calibrate</strong> vs. <strong>modulate</strong> — see the distinction box above. Give your own literary example for each.</li>
+      <li><strong>construct</strong> vs. <strong>arrange</strong> — what's the difference in scale? (Hint: construct = build the whole; arrange = order the parts.)</li>
+      <li><strong>hone</strong> vs. <strong>sharpen</strong> — what's the difference in temporality? (Hint: hone = perfect over time; sharpen = intensify at a moment.)</li>
+    </ol>
+  </div>
+
+  <!-- ============ BUILDING YOUR TOOLKIT ============ -->
+  <h2><span class="icon">🎯</span> Completing the Authorial-Craft Toolkit</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>You now have a near-complete vocabulary for "how texts are built."</strong> Days 3 + 4 together give you: construction verbs (<em>craft, construct, sculpt, arrange</em>), integration verbs (<em>weave, thread, layer, embed, interlace, inscribe</em>), saturation verbs (<em>permeate, saturate</em>), and control verbs (<em>deploy, orchestrate, calibrate, modulate, attenuate, distil, hone, sharpen</em>). This is the toolkit for IB Paper 1 — where you must discuss <em>how</em> a text creates meaning.
+    </li>
+    <li>
+      <strong>Match the verb to the precise analytical claim.</strong> Don't reach for "use" when you mean "calibrate" (precise tuning) or "thread" (one continuous motif). The verb itself carries the argument. "The author <em>distils</em> the theme into a closing image" is a stronger claim than "the author <em>shows</em> the theme at the end" — it says the condensation was deliberate and meaningful.
+    </li>
+    <li>
+      <strong>The degree words (permeate / saturate) let you be precise about intensity.</strong> Examiners reward students who notice <em>how much</em> a quality fills a text. "The irony permeates the early chapters but saturates the ending" is a sophisticated observation about escalation — and it uses two words you learned today to make it.
+    </li>
+    <li>
+      <strong>Control verbs (calibrate, modulate, attenuate, sharpen) describe authorial intentionality.</strong> When you write that an author "calibrates the tone" or "modulates between intimacy and distance," you're attributing <em>conscious control</em> — exactly what IB rewards in Criterion A (Understanding) and Criterion C (Organisation). It shows you see the text as a made object, not a found one.
+    </li>
+    <li>
+      <strong>Watch the distinction traps for Days 3–4.</strong> The pairs most often confused: <em>weave/thread</em> (Day 3), <em>infuse/suffuse</em> (Day 3), <em>permeate/saturate</em> (Day 4), <em>calibrate/modulate</em> (Day 4), <em>construct/arrange</em> (Day 4), <em>hone/sharpen</em> (Day 4). Review all six distinction boxes until the differences are instinctive — they're the difference between a 5 and a 7.
+    </li>
+    <li>
+      <strong>Start deploying these in your annotations and essays now.</strong> When you annotate a set text this week, replace "the author uses…" with "the author <em>calibrates</em> / <em>threads</em> / <em>distils</em>…" Build the instinct before the exam. By Paper 1, the right verb should arrive without thinking — the metaphor should match the technique.
+    </li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 5 (Tomorrow): Evaluative Adjectives</strong><br>
+    The vocabulary for <em>judging</em> texts, not just analysing them — <em>polemical, subversive, satirical, allegorical, tendentious, reductive, insidious, didactic</em>. This shifts you from describing <em>how</em> a text works to evaluating <em>whether</em> and <em>how well</em> it works.<br><br>
+    <strong style="color:var(--ink);">Review tomorrow:</strong> Day 3 (2nd pass — active recall challenge) + Day 4 (1st review — quick recall cards)<br><br>
+    <strong style="color:var(--ink);">Day 6:</strong> Weekly review &amp; consolidation — all 60+ Week 1 words reviewed together.<br>
+    <strong style="color:var(--ink);">Day 7:</strong> Weekly assessment — a mini-essay using the full Week 1 vocabulary.
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 1, Week 1, Day 4<br>
+  48 words learned so far (36 reviewed + 12 new) · 1,252 to go · Authorial-craft toolkit complete 🛠️
+</footer>
+
+</body>
+</html>

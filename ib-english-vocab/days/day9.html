@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 9</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards (interactive reveal) */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid, .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 9 / 112 — Phase 2: Descriptive Precision</div>
+  <div class="date">Saturday, 5 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 2)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">8</div>
+      <div class="dot today">9</div>
+      <div class="dot">10</div>
+      <div class="dot">11</div>
+      <div class="dot">12</div>
+      <div class="dot">13</div>
+      <div class="dot">14</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 8:</strong></td><td><strong>Setting Adjectives I</strong> (oppressive, desolate, bleak, forbidding, stark, austere, claustrophobic, labyrinthine, sepulchral, verdant, bucolic, tranquil) — 12 new words ✓</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 9 →</strong></td><td><strong>Character Adjectives</strong> (mercurial, stoic, inscrutable, indomitable, saturnine, sanguine, taciturn, gregarious, pugnacious, circumspect, capricious, magnanimous) — 12 new words</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 10:</strong></td><td>Mood &amp; Atmosphere words (sombre, spectral, haunting, elegiac, foreboding…)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 11:</strong></td><td>Tone &amp; Register adjectives (lyrical, sparse, ornate, colloquial, laconic…)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 12:</strong></td><td>Descriptive Precision II — more character / mood nuance</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 13:</strong></td><td>Week 2 review &amp; consolidation — the Week 2 near-synonym clusters</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 14:</strong></td><td>Week 2 assessment — a descriptive writing challenge</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Day 8 first review<br>(Setting Adjectives I)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Character Adjectives</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> You learned twelve setting adjectives yesterday (Day 8). Memory is sharpest in the first 24 hours and then drops — so today's first review of those twelve is the single most cost-effective repetition you'll do this week. Knock it out cleanly now and they'll survive into your Day 13 weekly review with far less effort.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 8 first review &rarr; (2) 12 new character adjectives &rarr; (3) distinction boxes (saturnine/sanguine, taciturn/gregarious, mercurial/capricious) &rarr; (4) practice exercises.
+
+  <!-- ============ DAY 8 FIRST REVIEW ============ -->
+  <h2><span class="icon">🔁</span> Day 8 First Review — 12 Setting Adjectives</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    Yesterday's place toolkit. Read each word, <strong>recall its precise shade before looking</strong>, then check the definition. These twelve reappear in your Day 13 weekly review — a clean first pass today makes that consolidation painless.
+  </p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">oppressive</div>
+      <div class="rdef"><em>Weighing heavily; crushing from the <strong>outside</strong> (heat, silence, a regime).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">desolate</div>
+      <div class="rdef"><em>Empty, abandoned, lonely — <strong>emptied of life and people</strong>.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">bleak</div>
+      <div class="rdef"><em>Cold, cheerless, <strong>hopeless</strong> — drained of comfort and future.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">forbidding</div>
+      <div class="rdef"><em>Menacing, deters <strong>approach</strong> — the threshold that keeps you out.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">stark</div>
+      <div class="rdef"><em>Bare, harsh, <strong>exposed</strong> — unadorned and blunt.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">austere</div>
+      <div class="rdef"><em>Severe but <strong>dignified</strong> — restrained by chosen discipline.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">claustrophobic</div>
+      <div class="rdef"><em>Enclosed, <strong>suffocating</strong> — walls closing in, no room to move.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">labyrinthine</div>
+      <div class="rdef"><em>Winding, <strong>confusing</strong>, hard to navigate — physical, plot, or psyche.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">sepulchral</div>
+      <div class="rdef"><em>Tomb-like, <strong>death-haunted</strong> gloom — funereal in tone.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">verdant</div>
+      <div class="rdef"><em>Lush, <strong>green</strong>, flourishing — often symbolic or ironically false-Eden.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">bucolic</div>
+      <div class="rdef"><em>Idealised <strong>rural / pastoral</strong> simplicity — the country idyll.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">tranquil</div>
+      <div class="rdef"><em>Calm, <strong>peaceful</strong>, untroubled — often deceptive calm.</em></div>
+    </div>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> Could you recall all twelve without peeking? The three Day 8 distinction pairs (stark/austere, desolate/bleak, oppressive/claustrophobic) are the ones most likely to blur — revisit the Day 8 document's boxes if any felt shaky. Today's character adjectives are routinely deployed <em>inside</em> these settings, so keep both toolkits warm.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Character Adjectives</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge">NEW CATEGORY — "DESCRIBING PEOPLE"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">From place to person.</strong> Yesterday you learned to render a <em>setting</em> with precision. Today you learn to render a <em>character</em> — the adjectives that turn "he was weird / nice / mean" into "he is <em>mercurial</em>, <em>taciturn</em>, and ultimately <em>inscrutable</em>." In IB Lang &amp; Lit, characterisation is not description for its own sake — it is <em>argument</em>. The adjective you choose is evidence for a claim about power, psychology, or theme. Notice the architecture we're building: a <strong>temperament spectrum</strong> spanning volatile (<em>mercurial, capricious</em>) → restrained (<em>stoic, taciturn, circumspect</em>) → unreadable (<em>inscrutable</em>) → unconquerable (<em>indomitable, magnanimous</em>) → dark (<em>saturnine</em>) → bright (<em>sanguine</em>) → social (<em>gregarious</em>) → aggressive (<em>pugnacious</em>). Picking the exact shade is what separates a 5 from a 7.
+  </p>
+
+  <!-- Word 1: mercurial -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">mercurial</span>
+      <span class="ipa">/mɜːˈkjʊəriəl/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Subject to sudden, unpredictable changes of mood, mind, or behaviour; lively, volatile, and quick to shift.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [mercurial] protagonist [oscillates / veers] between…" / "his [mercurial] nature [defies] any fixed reading"
+    </div>
+    <p class="example">
+      "Hamlet's mercurial shifts — from feigned madness to savage lucidity to paralyzing doubt — frustrate every attempt to fix his character, mirroring the play's epistemological uncertainty."
+      <span class="source">— Hamlet analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for characters who change <em>quickly and unpredictably from within</em>. Distinct from "capricious" (see box): mercurial = mood/temperament swings (reactive, emotional); capricious = whimsical choices (volitional). Note the classical root — Mercury, the quick, winged messenger-god — captures the speed of change. Powerful for protagonists whose instability is itself thematic (Hamlet, the modern anti-hero). Pairs with your analysis verbs: a character can be foregrounded yet remain mercurial.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> mercurial nature · mercurial temperament · mercurial mood · mercurial character · mercurial shifts</p>
+  </div>
+
+  <!-- Word 2: stoic -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">stoic</span>
+      <span class="ipa">/ˈstəʊɪk/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Enduring pain, hardship, or emotion without complaint or visible feeling; emotionally restrained and unyielding.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "a [stoic] figure / The [stoic] endurance [bears / withstands]…"
+    </div>
+    <p class="example">
+      "Sethe's stoic bearing in Beloved — she seals her trauma behind silence, enduring the unspeakable with a hardness that both protects and isolates her."
+      <span class="source">— Beloved analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for characters who endure <em>silently</em>. Distinct from "indomitable": stoic = inner restraint / withholding feeling (inward, still); indomitable = undefeated will / persistence (forward, active). A stoic may be inwardly broken; an indomitable figure refuses to be broken. Root: Stoicism, the philosophy of equanimity under suffering. Vital for trauma, migration, and survival narratives.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> stoic endurance · stoic silence · stoic figure · stoic bearing · stoic acceptance</p>
+  </div>
+
+  <!-- Word 3: inscrutable -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">inscrutable</span>
+      <span class="ipa">/ɪnˈskruːtəbl/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Impossible to read, interpret, or understand; mysteriously unreadable.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "an [inscrutable] expression / The [inscrutable] figure [resists interpretation]…"
+    </div>
+    <p class="example">
+      "Kurtz in Heart of Darkness remains inscrutable to the end — his final 'horror' resists every interpretive frame Marlow builds, leaving meaning itself in shadow."
+      <span class="source">— Heart of Darkness analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for characters or forces that <em>refuse decoding</em>. Related to "enigmatic" but sharper: inscrutable stresses un-readability, not just puzzling. Powerful for ambiguous antagonists, the imperial "other," and texts about the limits of knowing. Connects to your analysis verbs — a character can be foregrounded yet remain inscrutable, which is itself a comment on epistemic limits. Excellent for postcolonial and modernist ambiguity.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> inscrutable expression · inscrutable face · inscrutable silence · inscrutable motive · inscrutable gaze</p>
+  </div>
+
+  <!-- Word 4: indomitable -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">indomitable</span>
+      <span class="ipa">/ɪnˈdɒmɪtəbl/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Impossible to subdue, defeat, or discourage; unconquerable in spirit or will.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "an [indomitable] spirit / The [indomitable] will [refuses / prevails]…"
+    </div>
+    <p class="example">
+      "Hester Prynne's indomitable dignity in The Scarlet Letter — she transforms public shame into a quiet authority that outlasts the town's condemnation."
+      <span class="source">— The Scarlet Letter analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for characters whose spirit <em>cannot be broken</em>. Distinct from "stoic": indomitable = undefeated will / persistence (active, forward); stoic = inner restraint under suffering (inward, still). An indomitable hero keeps fighting; a stoic hero keeps silent. Classic for resistance, survival, and feminist reclamation narratives — and for any figure who converts victimhood into agency.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> indomitable spirit · indomitable will · indomitable courage · indomitable resolve · indomitable defiance</p>
+  </div>
+
+  <!-- Word 5: saturnine -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">saturnine</span>
+      <span class="ipa">/ˈsætənaɪn/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Gloomy, bitter, and sardonic in temperament; darkly melancholic and distrustful.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "a [saturnine] figure / The [saturnine] brooding [poisons / darkens]…"
+    </div>
+    <p class="example">
+      "Chillingworth in The Scarlet Letter becomes increasingly saturnine — his brooding, vengeful surveillance of Dimmesdale reading as a corruption of intellect into malice."
+      <span class="source">— The Scarlet Letter analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for gloomy, sardonic, bitter dispositions. Distinct from "sanguine" (see box) — saturnine = pessimistic / melancholic; sanguine = optimistic / cheerful. Both name a <em>base temperament</em>. Root: Saturn, the cold, slow planet of melancholy. Excellent for villains, misanthropes, and the "dark" temperament in drama — and for charting a character's moral decline (Chillingworth's saturnine turn).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> saturnine figure · saturnine mood · saturnine gaze · saturnine temperament · saturnine brooding</p>
+  </div>
+
+  <!-- SATURNINE vs SANGUINE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: saturnine vs. sanguine</h4>
+    <p>
+      Both name a character's <strong>default temperament</strong>, but at opposite poles:
+    </p>
+    <p style="margin-top:8px;">
+      <strong>saturnine</strong> — Gloomy, bitter, sardonic; distrustful and darkly melancholic.<br>
+      &rarr; "His saturnine brooding poisoned every gathering he entered."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>sanguine</strong> — Optimistic, hopeful, cheerfully confident; warm and buoyant.<br>
+      &rarr; "Her sanguine faith that all would mend never once wavered."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: <strong>saturnine</strong> expects the worst and distrusts; <strong>sanguine</strong> expects the best and trusts. They describe a <em>baseline disposition</em>, not a passing mood. Memory trick: saturnine = Saturn's cold shadow; sanguine = sunny blood (Latin <em>sanguis</em>). Watch for irony — a sanguine character is often the text's fool (Candide, Pangloss), while a saturnine one is its warning. This pair is a cornerstone of your Day 9 character cluster.
+    </p>
+  </div>
+
+  <!-- Word 6: sanguine -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">sanguine</span>
+      <span class="ipa">/ˈsæŋɡwɪn/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Optimistic, hopeful, and confidently cheerful, especially about the future; warm and buoyant in temperament.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "a [sanguine] outlook / The [sanguine] hero [trusts / expects]…"
+    </div>
+    <p class="example">
+      "Candide's sanguine refrain — 'everything is for the best' — is the novel's engine of irony, as Leibnizian optimism collides ceaselessly with a world of disasters."
+      <span class="source">— Candide analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for confident optimism. Distinct from "saturnine" (see box): sanguine = cheerful / hopeful; saturnine = gloomy / sardonic — temperament poles. Root: Latin <em>sanguis</em> = blood (the "sanguine" humour was warm and lively). Watch for irony — a sanguine character is frequently the one the text is quietly mocking (Candide, Pangloss). Use it to name a disposition the narrative undercuts.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> sanguine outlook · sanguine temperament · sanguine expectation · sanguine view · sanguine disposition</p>
+  </div>
+
+  <!-- Word 7: taciturn -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">taciturn</span>
+      <span class="ipa">/ˈtæsɪtɜːn/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Reserved and uncommunicative by habit; saying little, often from temperament rather than shyness.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "a [taciturn] character / The [taciturn] figure [withholds / reveals little]…"
+    </div>
+    <p class="example">
+      "Boo Radley in To Kill a Mockingbird is long taciturn — his near-silence makes his one decisive act of rescue the more resonant, speech ceding to deed."
+      <span class="source">— To Kill a Mockingbird analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for characters who speak little. Distinct from "gregarious" (see box): taciturn = quiet / reserved (low output); gregarious = sociable / companionable (high engagement). Both describe <em>social orientation</em>, opposite poles. Crucial nuance: taciturn ≠ shy — shyness is anxiety; taciturnity is temperament or habit. Strong for silent observers, outsider figures, and the "strong, silent" archetype. Pairs with "circumspect": circumspect = careful in what they say; taciturn = simply quiet.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> taciturn character · taciturn manner · taciturn figure · taciturn silence · naturally taciturn</p>
+  </div>
+
+  <!-- TACITURN vs GREGARIOUS distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: taciturn vs. gregarious</h4>
+    <p>
+      Both describe a character's <strong>social orientation</strong>, but at opposite poles:
+    </p>
+    <p style="margin-top:8px;">
+      <strong>taciturn</strong> — Reserved, says little by temperament or habit (low verbal output).<br>
+      &rarr; "The taciturn scout spoke only when necessary."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>gregarious</strong> — Sociable, seeks and enjoys the company of others (high engagement).<br>
+      &rarr; "The gregarious host drew every guest into laughter."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: <strong>taciturn</strong> = withholds words (silence); <strong>gregarious</strong> = seeks people (sociability). They name the <em>default</em> relation to others. Memory trick: taciturn = tongue held; gregarious = flock-seeking (Latin <em>grex</em> = herd). Note a character can shift — a gregarious figure silenced by grief becomes taciturn — but the words name the baseline. This pair is a cornerstone of your Day 9 character cluster.
+    </p>
+  </div>
+
+  <!-- Word 8: gregarious -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">gregarious</span>
+      <span class="ipa">/ɡrɪˈɡeəriəs/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Fond of company; sociable, outgoing, and drawn to the company of others.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "a [gregarious] companion / The [gregarious] figure [enlivens / gathers]…"
+    </div>
+    <p class="example">
+      "Mercutio's gregarious wit in Romeo and Juliet — his public wordplay and love of the crowd — makes his sudden death the moment the play's comic social world collapses into tragedy."
+      <span class="source">— Romeo and Juliet analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for sociable, company-loving characters. Distinct from "taciturn" (see box): gregarious = sociable (seeks others); taciturn = reserved (withholds). Opposite poles of social orientation. Root: <em>grex</em> = flock / herd. Watch for irony — a gregarious character can also be a disruptive or performative one (Mercutio's sociability borders on the dangerous). Good for ensemble and comedic texts, and for marking the moment a lively social world fractures.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> gregarious companion · gregarious nature · gregarious personality · gregarious host · gregarious crowd</p>
+  </div>
+
+  <!-- Word 9: pugnacious -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">pugnacious</span>
+      <span class="ipa">/pʌɡˈneɪʃəs/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Eager or quick to argue, fight, or contradict; aggressively confrontational.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "a [pugnacious] attitude / The [pugnacious] character [provokes / clashes]…"
+    </div>
+    <p class="example">
+      "Stanley Kowalski's pugnacious physicality in A Streetcar Named Desire — his readiness to dominate and fight — embodies the raw, hegemonic masculinity that crushes Blanche's fragile world."
+      <span class="source">— A Streetcar Named Desire analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for aggressive, fight-ready characters. Distinct from "indomitable": pugnacious = eager to fight / confront (aggression outward); indomitable = cannot be defeated (endurance). A pugnacious character <em>starts</em> conflicts; an indomitable one <em>survives</em> them. Root: Latin <em>pugnus</em> = fist. Excellent for confrontational, masculinist, or class-conflict texts. Pairs with "gregarious" ironically — both high-energy, opposite intent.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> pugnacious manner · pugnacious attitude · pugnacious character · pugnacious streak · pugnacious tone</p>
+  </div>
+
+  <!-- Word 10: circumspect -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">circumspect</span>
+      <span class="ipa">/ˈsɜːkəmspekt/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Cautious and prudent; considering all circumstances and possible consequences before acting or speaking.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "a [circumspect] narrator / The [circumspect] observer [weighs / tempers]…"
+    </div>
+    <p class="example">
+      "Nick Carraway's circumspect narration in The Great Gatsby — his careful, qualifying voice ('I'm inclined to reserve all judgements') — frames the novel's unreliability and moral restraint."
+      <span class="source">— The Great Gatsby analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for careful, judicious characters. Distinct from "taciturn": circumspect = cautious in speech / action (deliberate prudence); taciturn = simply quiet (low output). A circumspect narrator <em>chooses words carefully</em>; a taciturn one <em>offers few</em>. Root: <em>circum-</em> + <em>specere</em> = looking around. Vital for discussing unreliable or measured narrators and narrative voice. Pairs with "capricious" as its opposite (prudence vs. whim).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> circumspect manner · circumspect narrator · circumspect approach · circumspect observer · circumspect tone</p>
+  </div>
+
+  <!-- Word 11: capricious -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">capricious</span>
+      <span class="ipa">/kəˈprɪʃəs/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Given to sudden, unpredictable changes of mind or behaviour; impulsive and whimsical, acting on passing fancies.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "a [capricious] ruler / The [capricious] figure [veers / decides on a whim]…"
+    </div>
+    <p class="example">
+      "Lydia Bennet's capricious elopement in Pride and Prejudice — her impulsive flight with Wickham — exposes how unconstrained whim can endanger an entire family's social survival."
+      <span class="source">— Pride and Prejudice analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for whimsical, impulsive behaviour. Distinct from "mercurial" (see box): capricious = acts on sudden whims / impulses (volitional, choice-driven); mercurial = mood swings (temperament-driven). A capricious character <em>changes decisions</em>; a mercurial one <em>changes feelings</em>. Root: Italian <em>capriccio</em> = a sudden fright / whim. Classic for fickle rulers, impulsive youth, and for fate or fortune personified as a character.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> capricious behaviour · capricious ruler · capricious fate · capricious nature · capricious whim</p>
+  </div>
+
+  <!-- MERCURIAL vs CAPRICIOUS distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: mercurial vs. capricious</h4>
+    <p>
+      Both mean <strong>changeable</strong>, but they differ in <em>what</em> changes and <em>why</em>:
+    </p>
+    <p style="margin-top:8px;">
+      <strong>mercurial</strong> — Mood / temperament swings rapidly and unpredictably (reactive, emotional).<br>
+      &rarr; "His mercurial temper flared and cooled within a single sentence."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>capricious</strong> — Acts on sudden whims and impulses (volitional, choice-driven).<br>
+      &rarr; "The capricious queen exiled him on a whim, then forgot him by noon."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: <strong>mercurial</strong> = the <em>feelings</em> change (inside); <strong>capricious</strong> = the <em>decisions / behaviour</em> change (outside, by whim). Memory trick: mercurial = mood like mercury (never still); capricious = a sudden caprice grabs the wheel. A mercurial character is hard to read <em>emotionally</em>; a capricious one is hard to predict <em>behaviourally</em>. This pair is the final cornerstone of your Day 9 character cluster.
+    </p>
+  </div>
+
+  <!-- Word 12: magnanimous -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">magnanimous</span>
+      <span class="ipa">/mæɡˈnænɪməs/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Generous in spirit; forgiving, noble-minded, and free from petty resentment, especially toward a rival or enemy.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "a [magnanimous] gesture / The [magnanimous] act [forgives / transcends]…"
+    </div>
+    <p class="example">
+      "Sydney Carton's magnanimous sacrifice in A Tale of Two Cities — 'it is a far, far better thing that I do' — redeems a wasted life through an act of selfless nobility."
+      <span class="source">— A Tale of Two Cities analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for noble, forgiving generosity. Distinct from "stoic": magnanimous = generous outward spirit (grace toward others); stoic = inner restraint under suffering (withholding). The two rarely coincide in one character but both mark <em>moral elevation</em>. Root: Latin <em>magnus</em> + <em>animus</em> = great-souled. A pinnacle word for redemption, sacrifice, and moral triumph — use it precisely, for it carries high moral weight and should not be diluted to mere "kind."
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> magnanimous gesture · magnanimous spirit · magnanimous act · magnanimous forgiveness · magnanimous rival</p>
+  </div>
+
+  <!-- ============ PRACTICE EXERCISES ============ -->
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Fill in the Blank (Day 9 Words)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Complete each sentence with a word from today's list. Use context clues to choose the right word.</p>
+    <div class="word-bank">
+      <strong>Word Bank:</strong> mercurial · stoic · inscrutable · indomitable · saturnine · sanguine · taciturn · gregarious · pugnacious · circumspect · capricious · magnanimous
+    </div>
+    <ol>
+      <li>Hamlet's <span class="blank">________</span> shifts between feigned madness and savage lucidity frustrate every attempt to fix his character.</li>
+      <li>Sethe's <span class="blank">________</span> bearing seals her trauma behind silence, enduring the unspeakable without complaint.</li>
+      <li>Kurtz remains <span class="blank">________</span> to the end — his final "horror" resists every interpretive frame Marlow builds.</li>
+      <li>Hester Prynne's <span class="blank">________</span> dignity transforms public shame into a quiet authority that outlasts the town's condemnation.</li>
+      <li>Chillingworth becomes increasingly <span class="blank">________</span> as his brooding, vengeful surveillance curdles into malice.</li>
+      <li>Candide's <span class="blank">________</span> refrain that "everything is for the best" is the novel's engine of irony.</li>
+      <li>Boo Radley is long <span class="blank">________</span> — his near-silence makes his one act of rescue more resonant.</li>
+      <li>Mercutio's <span class="blank">________</span> wit enlivens the crowd, until his death collapses the play's comic world.</li>
+      <li>Stanley Kowalski's <span class="blank">________</span> physicality embodies the raw masculinity that crushes Blanche's world.</li>
+      <li>Nick Carraway's <span class="blank">________</span> narration — "I'm inclined to reserve all judgements" — frames the novel's unreliability.</li>
+      <li>Lydia Bennet's <span class="blank">________</span> elopement exposes how unconstrained whim endangers a family's survival.</li>
+      <li>Sydney Carton's <span class="blank">________</span> sacrifice redeems a wasted life through selfless nobility.</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 2: Cross-Day Sentences (Day 8 adjectives + Day 9 character adjectives)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Write one analytical sentence for each pair, using <strong>both</strong> words — one Day 8 setting adjective and one Day 9 character adjective. Train yourself to render a <em>character within a setting</em>.</p>
+    <ol>
+      <li><strong>oppressive</strong> (Day 8) + <strong>stoic</strong> (Day 9) — How does an oppressive setting test a stoic character?</li>
+      <li><strong>forbidding</strong> (Day 8) + <strong>taciturn</strong> (Day 9) — A forbidding exterior and a taciturn manner: how do they reinforce each other?</li>
+      <li><strong>sepulchral</strong> (Day 8) + <strong>saturnine</strong> (Day 9) — How do a sepulchral atmosphere and a saturnine temperament combine?</li>
+      <li><strong>bleak</strong> (Day 8) + <strong>indomitable</strong> (Day 9) — How does a bleak world set off an indomitable spirit?</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Explain the difference between each pair in 1–2 sentences. Why would you choose one over the other in an essay? Use a literary example to illustrate.</p>
+    <ol>
+      <li><strong>saturnine</strong> vs. <strong>sanguine</strong> — see the distinction box above. Give your own literary example for each.</li>
+      <li><strong>taciturn</strong> vs. <strong>gregarious</strong> — see the distinction box above. Can the same character be both at different points? Illustrate.</li>
+      <li><strong>mercurial</strong> vs. <strong>capricious</strong> — see the distinction box above. Which describes changing feelings, which changing decisions?</li>
+    </ol>
+  </div>
+
+  <!-- ============ BUILDING YOUR TOOLKIT ============ -->
+  <h2><span class="icon">🎯</span> Building Your Descriptive Toolkit</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>You now have the vocabulary for people, not just places.</strong> Phase 2 began with setting (Day 8); today you render character. These twelve adjectives let you replace "he was weird / nice / mean" with precise, essay-ready qualification. In IB Lang &amp; Lit, characterisation is argument — the right adjective is evidence for a claim about psychology, power, or theme.
+    </li>
+    <li>
+      <strong>Build a temperament spectrum, not a list.</strong> Your character adjectives now span: volatile (<em>mercurial, capricious</em>) → restrained (<em>stoic, taciturn, circumspect</em>) → unreadable (<em>inscrutable</em>) → unconquerable (<em>indomitable, magnanimous</em>) → dark (<em>saturnine</em>) → bright (<em>sanguine</em>) → social (<em>gregarious</em>) → aggressive (<em>pugnacious</em>). Matching the exact shade to the moment is what separates a 5 from a 7.
+    </li>
+    <li>
+      <strong>The distinction pairs are your Week 2 exam armour (cont.).</strong> Watch the three near-synonym clusters seeded today: <em>saturnine/sanguine</em> (disposition poles), <em>taciturn/gregarious</em> (social poles), <em>mercurial/capricious</em> (changeability nuance). Your Day 13 weekly review will consolidate them alongside Day 8's setting clusters — review all six boxes until the differences are instinctive.
+    </li>
+    <li>
+      <strong>Character adjectives name what a person does to the text.</strong> A "saturnine" figure darkens every scene he enters; a "gregarious" one energises it; an "inscrutable" one withholds meaning. Always push one step further: what does this adjective reveal about theme, power, or ideology? Never let a character adjective sit as mere decoration.
+    </li>
+    <li>
+      <strong>Pair setting with character to render a world.</strong> Today's cross-day exercise showed it: an oppressive setting tests a stoic character; a forbidding exterior matches a taciturn manner. The verb constructs, the adjective qualifies — and now you can qualify both place and person. That combination is a fully rendered scene, ready for a commentary or Paper 2 paragraph.
+    </li>
+    <li>
+      <strong>Deploy these in your next character analysis.</strong> When you next write on a set text, force yourself to use at least three Day 9 adjectives precisely. By Paper 2, the right shade of "mercurial" vs. "capricious" should arrive without thinking — that's character precision.
+    </li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 10 (Next): Mood &amp; Atmosphere words</strong><br>
+    Move from the concrete to the felt — the adjectives that name a text's emotional weather: <em>sombre, spectral, haunting, elegiac, foreboding</em>…<br><br>
+    <strong style="color:var(--ink);">Day 11:</strong> Tone &amp; Register adjectives — <em>lyrical, sparse, ornate, colloquial, laconic</em>…<br>
+    <strong style="color:var(--ink);">Day 12:</strong> Descriptive Precision II — more character / mood nuance.<br>
+    <strong style="color:var(--ink);">Day 13:</strong> Week 2 review &amp; consolidation — the Week 2 near-synonym clusters (Day 8 setting pairs + Day 9 character pairs).<br>
+    <strong style="color:var(--ink);">Day 14:</strong> Week 2 assessment — a descriptive writing challenge.
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 2, Week 2, Day 9<br>
+  84 words learned so far (+12 today) · 1,216 to go · Character precision unlocked 🎭
+</footer>
+
+</body>
+</html>

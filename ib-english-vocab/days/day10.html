@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 10</title>
+<style>
+  :root {
+    --ink: #1a2238; --ink-soft: #4a5568; --paper: #faf8f3; --paper-warm: #f5f0e6;
+    --gold: #b8860b; --gold-soft: #d4a933; --teal: #2c7a7b; --teal-soft: #4fd1c5;
+    --coral: #c53030; --coral-soft: #fc8181; --purple: #6b46c1; --purple-soft: #b794f4;
+    --line: #e2dcd0; --shadow: 0 2px 8px rgba(26,34,56,0.08); --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.65; padding: 0; }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+  header { background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%); color: #fff; padding: 48px 24px 40px; text-align: center; }
+  header h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 28px; font-weight: normal; letter-spacing: 0.5px; margin-bottom: 6px; }
+  header .subtitle { font-size: 15px; color: var(--gold-soft); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  header .day-badge { display: inline-block; background: rgba(212,169,51,0.2); border: 1px solid var(--gold-soft); color: var(--gold-soft); padding: 6px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+  header .date { margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.5); }
+  h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: normal; color: var(--ink); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--gold-soft); display: flex; align-items: center; gap: 10px; }
+  h2 .icon { font-size: 24px; }
+  h3 { font-size: 16px; font-weight: 700; color: var(--ink); margin: 24px 0 12px; }
+  .tracker { display: flex; gap: 4px; margin: 16px 0; flex-wrap: wrap; }
+  .tracker .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--line); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--ink-soft); }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+  .sr-status { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .sr-card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: var(--shadow); text-align: center; }
+  .sr-card .sr-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-soft); font-weight: 700; }
+  .sr-card .sr-count { font-family: Georgia, serif; font-size: 32px; font-weight: bold; margin: 4px 0; }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note { font-size: 12px; color: var(--ink-soft); }
+  .recall-intro { background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); font-size: 14px; color: var(--ink-soft); margin-bottom: 16px; }
+  .recall-intro strong { color: var(--ink); }
+  .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .review-card { background: #fff; border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); border-left: 4px solid var(--teal); transition: transform 0.15s; }
+  .review-card .rword { font-family: Georgia, serif; font-size: 17px; font-weight: bold; color: var(--ink); }
+  .review-card .rdef { font-size: 12px; color: var(--ink-soft); margin-top: 4px; line-height: 1.5; }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt { background: var(--paper-warm); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; color: var(--ink-soft); }
+  .review-prompt strong { color: var(--ink); }
+  .word-card { background: #fff; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--line); position: relative; overflow: hidden; }
+  .word-card::before { content: ""; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--gold); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+  .word { font-family: Georgia, serif; font-size: 24px; font-weight: bold; color: var(--ink); }
+  .ipa { font-size: 14px; color: var(--ink-soft); font-style: italic; }
+  .pos { display: inline-block; background: #fef5e7; color: var(--gold); font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .definition { font-size: 15px; color: var(--ink); margin: 10px 0 12px; }
+  .usage-box { background: var(--paper-warm); border-radius: 8px; padding: 10px 14px; margin: 8px 0; font-size: 13px; }
+  .usage-box .label { font-weight: 700; color: var(--gold); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+  .example { font-style: italic; color: var(--ink-soft); font-size: 14px; margin: 8px 0; padding-left: 14px; border-left: 3px solid var(--gold-soft); }
+  .example .source { display: block; font-size: 12px; color: var(--gold); font-style: normal; margin-top: 4px; font-weight: 600; }
+  .ib-tip { background: #e6fffa; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
+  .ib-tip .label { color: var(--teal); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .collocations { font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+  .collocations strong { color: var(--ink); }
+  .distinction-box { background: linear-gradient(135deg, #fef5e7 0%, #fff 100%); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); margin: 16px 0; border-left: 4px solid var(--gold); }
+  .distinction-box h4 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+  .distinction-box p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .distinction-box p strong { color: var(--ink); }
+  .practice-box { background: #fff; border-radius: 12px; padding: 24px; box-shadow: var(--shadow); margin-top: 12px; }
+  .practice-box ol { padding-left: 20px; margin-top: 8px; }
+  .practice-box ol li { font-size: 14px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.7; }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank { display: inline-block; border-bottom: 2px solid var(--gold-soft); min-width: 80px; text-align: center; color: transparent; user-select: none; }
+  .word-bank { background: var(--paper-warm); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: var(--ink-soft); }
+  .word-bank strong { color: var(--ink); }
+  .tips-list { list-style: none; counter-reset: tip; }
+  .tips-list li { background: #fff; border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; box-shadow: var(--shadow); font-size: 14px; color: var(--ink-soft); position: relative; padding-left: 52px; }
+  .tips-list li::before { counter-increment: tip; content: counter(tip); position: absolute; left: 16px; top: 14px; width: 28px; height: 28px; background: var(--teal); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .tips-list li strong { color: var(--ink); }
+  .category-badge { display: inline-block; background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 12px; letter-spacing: 0.5px; margin-bottom: 8px; }
+  footer { text-align: center; padding: 32px 24px; color: var(--ink-soft); font-size: 13px; border-top: 1px solid var(--line); margin-top: 48px; }
+  footer strong { color: var(--ink); }
+  @media (max-width: 600px) { .review-grid { grid-template-columns: 1fr; } .sr-status { grid-template-columns: 1fr; } header h1 { font-size: 22px; } .word { font-size: 20px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 10 / 112 — Phase 2: Descriptive Precision</div>
+  <div class="date">Wednesday, 2 September 2026</div>
+</header>
+<div class="container">
+
+  <h2><span class="icon">📅</span> This Week (Week 2)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">8</div><div class="dot done">9</div><div class="dot today">10</div><div class="dot">11</div><div class="dot">12</div><div class="dot">13</div><div class="dot">14</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 8:</strong></td><td>Setting Adjectives I — 12 new ✓</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 9:</strong></td><td>Character Adjectives — 12 new ✓</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 10 →</strong></td><td><strong>Mood &amp; Atmosphere</strong> (sombre, spectral, haunting, elegiac, foreboding, melancholic, wistful, languid, ethereal, glacial, febrile, visceral) — 12 new</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 11:</strong></td><td>Tone &amp; Register adjectives</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 12:</strong></td><td>Descriptive Precision II</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 13:</strong></td><td>Week 2 review &amp; consolidation</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 14:</strong></td><td>Week 2 assessment</td></tr>
+    </table>
+  </div>
+
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review"><div class="sr-label">Review</div><div class="sr-count">12</div><div class="sr-note">Day 9 first review<br>(Character Adjectives)</div></div>
+    <div class="sr-card new"><div class="sr-label">New Words</div><div class="sr-count">12</div><div class="sr-note">Mood &amp; Atmosphere</div></div>
+    <div class="sr-card total"><div class="sr-label">Today Total</div><div class="sr-count">24</div><div class="sr-note">est. 35–45 min</div></div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Yesterday you met twelve character adjectives. A clean first review now (within 24 hours) locks them in before they slide. Then we shift from describing <em>people</em> to describing the <em>emotional weather</em> of a text — the mood and atmosphere words that let you name how a passage <em>feels</em> to read.
+    <br><br><strong>Today's flow:</strong> (1) Day 9 first review &rarr; (2) 12 new mood/atmosphere adjectives &rarr; (3) distinction boxes (sombre/melancholic, spectral/ethereal, foreboding/haunting) &rarr; (4) practice.
+  </div>
+
+  <h2><span class="icon">🔁</span> Day 9 First Review — 12 Character Adjectives</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">Yesterday's people toolkit. Recall each word's shade before checking, then read the definition.</p>
+  <div class="review-grid">
+    <div class="review-card"><div class="rword">mercurial</div><div class="rdef"><em>Mood/temperament swings rapidly and unpredictably (reactive).</em></div></div>
+    <div class="review-card"><div class="rword">stoic</div><div class="rdef"><em>Endures pain silently; inner restraint, no complaint.</em></div></div>
+    <div class="review-card"><div class="rword">inscrutable</div><div class="rdef"><em>Impossible to read or interpret; unreadable.</em></div></div>
+    <div class="review-card"><div class="rword">indomitable</div><div class="rdef"><em>Impossible to defeat; unconquerable will.</em></div></div>
+    <div class="review-card"><div class="rword">saturnine</div><div class="rdef"><em>Gloomy, bitter, sardonic disposition.</em></div></div>
+    <div class="review-card"><div class="rword">sanguine</div><div class="rdef"><em>Optimistic, hopeful, cheerfully confident.</em></div></div>
+    <div class="review-card"><div class="rword">taciturn</div><div class="rdef"><em>Reserved, says little by habit (low output).</em></div></div>
+    <div class="review-card"><div class="rword">gregarious</div><div class="rdef"><em>Sociable, seeks company (high engagement).</em></div></div>
+    <div class="review-card"><div class="rword">pugnacious</div><div class="rdef"><em>Eager to fight; aggressively confrontational.</em></div></div>
+    <div class="review-card"><div class="rword">circumspect</div><div class="rdef"><em>Cautious, prudent before acting/speaking.</em></div></div>
+    <div class="review-card"><div class="rword">capricious</div><div class="rdef"><em>Acting on whims/impulses (volitional).</em></div></div>
+    <div class="review-card"><div class="rword">magnanimous</div><div class="rdef"><em>Noble, forgiving, free of petty resentment.</em></div></div>
+  </div>
+  <div class="review-prompt"><strong>Self-assessment:</strong> The three Day 9 pairs (saturnine/sanguine, taciturn/gregarious, mercurial/capricious) are the ones to drill. They return in your Day 13 weekly review.</div>
+
+  <h2><span class="icon">📖</span> Today's New Words — 12 Mood &amp; Atmosphere Adjectives</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;"><span class="category-badge">NEW CATEGORY — "DESCRIBING MOOD"</span></p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;"><strong style="color:var(--ink);">From person to atmosphere.</strong> You can now render a <em>setting</em> (Day 8) and a <em>character</em> (Day 9). Today you learn to name the <em>emotional weather</em> — the felt quality of a passage. These adjectives answer "how does this text <em>feel</em> to read?" and they are the bridge between objective description and critical judgement. Notice they operate on a spectrum from <strong>dark/heavy</strong> (sombre, melancholic, glacial) through <strong>otherworldly</strong> (spectral, ethereal) to <strong>agitated/raw</strong> (febrile, visceral) and <strong>lingering</strong> (haunting, elegiac, wistful). In IB commentaries, mood words are your evidence for tone and effect — never assert "the mood is sad" when you can prove it is <em>elegiac</em> or <em>sombre</em>.</p>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">sombre</span><span class="ipa">/ˈsɒmbə(r)/</span><span class="pos">adjective</span></div>
+    <p class="definition">Dark, gloomy, and serious in tone; heavy with gravity or sadness.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [sombre] palette / The [sombre] tone [refuses / weighs]…"</div>
+    <p class="example">"The sombre palette of The Road — ashen greys and dying light — refuses the consolation of colour, mirroring a world drained of futurity."<span class="source">— The Road analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for darkness that is <em>serious and weighty</em>, not merely scary. Distinct from "melancholic" (see box): sombre describes the external tone/atmosphere; melancholic the inward, pensive sadness. Pairs with Day 8's "bleak" — sombre is the tonal cousin of bleak. Vital for post-apocalyptic, elegiac, and tragic texts.</div>
+    <p class="collocations"><strong>Common collocations:</strong> sombre palette · sombre tone · sombre mood · sombre atmosphere · sombre music</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">spectral</span><span class="ipa">/ˈspɛktrəl/</span><span class="pos">adjective</span></div>
+    <p class="definition">Ghostly, phantom-like; seeming to belong to another, uncanny world.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [spectral] figure / The [spectral] presence [haunts]…"</div>
+    <p class="example">"The spectral figures of the dead in Hamlet's Denmark — Old Hamlet's ghost, the procession of kings — unsettle the living's sense of an ordered world."<span class="source">— Hamlet analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for the ghostly and the uncanny. Distinct from "ethereal" (see box): spectral = ghostly and <em>unsettling</em> (hints death/otherworld danger); ethereal = delicate and <em>enchanting</em> otherworldliness. Both are otherworldly but spectral disturbs, ethereal delights. Strong for gothic, revenge tragedy, and texts about memory's return.</div>
+    <p class="collocations"><strong>Common collocations:</strong> spectral figure · spectral light · spectral presence · spectral image · spectral white</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">haunting</span><span class="ipa">/ˈhɔːntɪŋ/</span><span class="pos">adjective</span></div>
+    <p class="definition">Lingering in the mind in a disturbingly memorable way; not easily shaken off.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [haunting] image / The [haunting] close [outlives]…"</div>
+    <p class="example">"The haunting final image of the kite in The Kite Runner — 'there is a way to be good again' — outlives the novel's violence, returning whenever we think we understand guilt."<span class="source">— The Kite Runner analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for that which <em>refuses to leave</em> the reader. Distinct from "foreboding" (see box): haunting looks <em>back</em> (a disturbance that lingers after); foreboding looks <em>forward</em> (dread of what is coming). A haunting image is the after-echo; a foreboding one is the warning. Excellent for endings, trauma, and unresolved memory.</div>
+    <p class="collocations"><strong>Common collocations:</strong> haunting image · haunting memory · haunting beauty · haunting silence · haunting melody</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">elegiac</span><span class="ipa">/ˌɛlɪˈdʒaɪək/</span><span class="pos">adjective</span></div>
+    <p class="definition">Mournful and lamenting; expressing sorrow for what is lost or passing.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"an [elegiac] tone / The [elegiac] passage [mourns]…"</div>
+    <p class="example">"The elegiac cadence of Never Let Me Go mourns a childhood the clones were never permitted to keep, even as it pretends to recollect it calmly."<span class="source">— Never Let Me Go analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for sorrowful remembrance — the tone of loss acknowledged. Root: <em>elegy</em>, a poem of mourning. Distinct from "wistful" (gentle regret) and "melancholic" (pensive sadness): elegiac is specifically <em>lament</em> for the lost. Pinnacle word for texts about memory, mortality, and empire's end. Deploy it when a passage weeps without tears.</div>
+    <p class="collocations"><strong>Common collocations:</strong> elegiac tone · elegiac mood · elegiac poem · elegiac passage · elegiac note</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">foreboding</span><span class="ipa">/fɔːˈbɔːdɪŋ/</span><span class="pos">adjective</span></div>
+    <p class="definition">Ominous; suggesting that something bad is about to happen.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [foreboding] opening / The [foreboding] detail [anticipates]…"</div>
+    <p class="example">"The fog that opens Bleak House is a foreboding of the entangling 'fog' of Chancery that will blight every life the novel touches."<span class="source">— Bleak House analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for anticipatory dread. Distinct from "haunting" (see box): foreboding points <em>forward</em> to doom; haunting points <em>back</em> to what won't leave. Often sits at a text's threshold (opening image, first scene). Pairs with Day 8's "forbidding" — both warn the reader before events. Classic for gothic and realist openings that foreshadow fate.</div>
+    <p class="collocations"><strong>Common collocations:</strong> foreboding opening · foreboding atmosphere · foreboding silence · foreboding sense · foreboding detail</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: sombre vs. melancholic</h4>
+    <p>Both name darkness, but at different levels:</p>
+    <p style="margin-top:8px;"><strong>sombre</strong> — Dark, serious, <em>weighty</em> in tone (external, atmospheric).<br>&rarr; "The sombre palette of the film refuses any relief of colour."</p>
+    <p style="margin-top:8px;"><strong>melancholic</strong> — Deeply pensive, <em>inwardly</em> wistful-sad (a quality of feeling).<br>&rarr; "The melancholic brooding of the narrator turns every memory into loss."</p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">The test: sombre describes the <em>atmosphere's weight</em>; melancholic describes the <em>mood's sadness</em>. A sombre scene can be melancholic, but a melancholic passage need not be dark — it can be lit by gentle, regretful light. Memory trick: sombre = the room is dark; melancholic = the heart is sad.</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">melancholic</span><span class="ipa">/ˌmɛlənˈkɒlɪk/</span><span class="pos">adjective</span></div>
+    <p class="definition">Deeply pensive and wistfully sad; given to thoughtful sorrow.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [melancholic] evocation / The [melancholic] strain [broods]…"</div>
+    <p class="example">"Conrad's melancholic evocation of empire's end in Heart of Darkness broods over a civilisation aware, dimly, of its own decay."<span class="source">— Heart of Darkness analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for thoughtful, reflective sadness. Distinct from "sombre" (see box): melancholic = inward pensive sorrow; sombre = external dark weight. Also distinct from "elegiac" (laments a specific loss) — melancholic need not name what is lost. Root: the medieval "humours" (black bile). Excellent for narrators who reflect rather than act.</div>
+    <p class="collocations"><strong>Common collocations:</strong> melancholic mood · melancholic tone · melancholic strain · melancholic brooding · melancholic evocation</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">wistful</span><span class="ipa">/ˈwɪs(t)fʊl/</span><span class="pos">adjective</span></div>
+    <p class="definition">Sadly longing; tinged with gentle regret for something absent or past.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [wistful] close / The [wistful] glance [aches]…"</div>
+    <p class="example">"The wistful closing of The Great Gatsby — 'so we beat on, boats against the current' — aches for a past that cannot be recovered, yet without bitterness."<span class="source">— The Great Gatsby analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for gentle, regretful longing (softer than melancholic). Distinct from "elegiac" (open lament) and "melancholic" (heavy brooding): wistful is the <em>lightest</em> of the sorrow family — a sigh, not a sob. Perfect for endings that yearn. Watch the softness: wistful should never be used where the feeling is crushing.</div>
+    <p class="collocations"><strong>Common collocations:</strong> wistful tone · wistful glance · wistful mood · wistful remembrance · wistful smile</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: spectral vs. ethereal</h4>
+    <p>Both are otherworldly, but with opposite affect:</p>
+    <p style="margin-top:8px;"><strong>spectral</strong> — Ghostly, <em>unsettling</em>; hints death or uncanny danger.<br>&rarr; "The spectral lighting made the corridor feel haunted."</p>
+    <p style="margin-top:8px;"><strong>ethereal</strong> — Delicate, light, <em>enchanting</em> otherworldliness.<br>&rarr; "Her ethereal presence seemed hardly of this earth."</p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">The test: spectral <em>disturbs</em> (ghosts, threat); ethereal <em>delights</em> (angels, beauty). Both remove a figure from the mundane, but spectral is the gothic cousin, ethereal the romantic one. Memory trick: spectral = spooky spectre; ethereal = airy, like ether. In a commentary, choosing wrong flips your whole reading of a scene.</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">ethereal</span><span class="ipa">/ɪˈθɪəriəl/</span><span class="pos">adjective</span></div>
+    <p class="definition">Delicate, light, and airy; seemingly too perfect or refined for this world.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"an [ethereal] quality / The [ethereal] figure [transcends]…"</div>
+    <p class="example">"The ethereal quality of Laura's presence in The Glass Menagerie renders her almost a memory already, not quite of this world."<span class="source">— The Glass Menagerie analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for delicate, otherworldly beauty. Distinct from "spectral" (see box): ethereal enchants; spectral unsettles. Often marks a character who is idealized, fragile, or already slipping into memory. Pairs with Day 8's "verdant" (both can signal an Edenic, not-quite-real quality). Watch: ethereal is praise-adjacent; don't use it for menace.</div>
+    <p class="collocations"><strong>Common collocations:</strong> ethereal quality · ethereal beauty · ethereal light · ethereal voice · ethereal presence</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">languid</span><span class="ipa">/ˈlaŋɡwɪd/</span><span class="pos">adjective</span></div>
+    <p class="definition">Weak, sluggish, and lacking energy; tiredly slow or indolent.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [languid] afternoon / The [languid] pace [drags]…"</div>
+    <p class="example">"The languid Southern afternoons of The Sound and the Fury mirror the Compson family's exhausted, drifting decline."<span class="source">— The Sound and the Fury analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for exhausted, energy-drained slowness. Distinct from "lethargic" (clinical) — languid can be luxurious or decadent, not just tired. Pairs as a contrast to "febrile" (see below): languid = low energy; febrile = high, agitated energy. Both describe a charged atmosphere, opposite poles. Good for decay, heat, and post-imperial exhaustion.</div>
+    <p class="collocations"><strong>Common collocations:</strong> languid pace · languid afternoon · languid movement · languid heat · languid grace</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">glacial</span><span class="ipa">/ˈɡleɪʃl/</span><span class="pos">adjective</span></div>
+    <p class="definition">Cold, hostile, and emotionally frozen; lacking warmth or human feeling.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [glacial] manner / The [glacial] silence [freezes]…"</div>
+    <p class="example">"The glacial manner of the commanding officers in The Handmaid's Tale conveys a power that freezes the self into obedient stillness."<span class="source">— The Handmaid's Tale analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for cold hostility. Distinct from Day 8's "forbidding" (menacing, keeps you out) — glacial is about <em>frozen feeling</em>, emotional coldness. Pairs with "sombre" (both heavy/dark) but glacial adds the chill of power. Excellent for dystopian authority, emotionally absent parents, and calcified institutions.</div>
+    <p class="collocations"><strong>Common collocations:</strong> glacial manner · glacial silence · glacial stare · glacial indifference · glacial cold</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">febrile</span><span class="ipa">/ˈfiːbraɪl/</span><span class="pos">adjective</span></div>
+    <p class="definition">Feverish, agitated, and restless; charged with nervous, barely-contained energy.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [febrile] atmosphere / The [febrile] crowd [teeters]…"</div>
+    <p class="example">"The febrile energy of the Parisian streets in Les Misérables mirrors a society on the edge of revolutionary combustion."<span class="source">— Les Misérables analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for agitated, overheated intensity. Distinct from "languid" (its opposite — sluggish calm); febrile = high, restless energy. Root: <em>febris</em> = fever. Perfect for pre-revolution, mania, and contagion-of-feeling scenes. Watch: febrile implies instability about to tip — pair it with foreboding for maximum tension.</div>
+    <p class="collocations"><strong>Common collocations:</strong> febrile atmosphere · febrile energy · febrile excitement · febrile mood · febrile imagination</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: foreboding vs. haunting</h4>
+    <p>Both deal with dread, but in opposite time directions:</p>
+    <p style="margin-top:8px;"><strong>foreboding</strong> — <em>Anticipatory</em> dread; senses doom <em>before/as</em> it arrives.<br>&rarr; "The foreboding opening fog warns of entanglement to come."</p>
+    <p style="margin-top:8px;"><strong>haunting</strong> — <em>Lingering</em> disturbance; what <em>won't leave</em> after the fact.<br>&rarr; "The haunting final image returns long after the book is closed."</p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">The test: foreboding looks <em>forward</em> (warning); haunting looks <em>back</em> (after-echo). A text can open with foreboding and close with haunting — dread announced, then dread that remains. Memory trick: foreboding = before; haunting = haunts after. Both are cornerstone mood words for your Day 13 review.</p>
+  </div>
+
+  <div class="word-card adj">
+    <div class="word-header"><span class="word">visceral</span><span class="ipa">/ˈvɪsərəl/</span><span class="pos">adjective</span></div>
+    <p class="definition">Felt in the gut; raw, instinctive, and bodily rather than intellectual.</p>
+    <div class="usage-box"><span class="label">Literary Usage Pattern</span>"a [visceral] response / The [visceral] violence [recoils]…"</div>
+    <p class="example">"The visceral violence of Disgrace forces a bodily recoil that no abstract argument about post-apartheid South Africa could achieve."<span class="source">— Disgrace analysis</span></p>
+    <div class="ib-tip"><span class="label">IB Tip</span> Use for raw, bodily impact. Distinct from "emotional" (broad) — visceral is specifically <em>gut-level, physical</em> feeling. Root: <em>viscera</em> = internal organs. Vital when you want to show a text <em>acts on the body</em>, not just the mind — trauma, violence, desire. A precision upgrade over "powerful" or "moving." Pairs with "febrile" (both high-intensity affect).</div>
+    <p class="collocations"><strong>Common collocations:</strong> visceral response · visceral reaction · visceral violence · visceral fear · visceral intensity</p>
+  </div>
+
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Fill in the Blank (Day 10 Words)</h3>
+    <div class="word-bank"><strong>Word Bank:</strong> sombre · spectral · haunting · elegiac · foreboding · melancholic · wistful · languid · ethereal · glacial · febrile · visceral</div>
+    <ol>
+      <li>The ________ palette of the film — all ash and dying light — refuses any relief of colour.</li>
+      <li>The ________ figures of the dead unsettled the living's sense of an ordered world.</li>
+      <li>The ________ final image of the kite outlives the novel's violence.</li>
+      <li>The ________ cadence of the memoir mourns a childhood the narrator never kept.</li>
+      <li>The fog that opens the novel is a ________ of the entanglement to come.</li>
+      <li>Conrad's ________ evocation of empire's end broods over a civilisation's decay.</li>
+      <li>The ________ closing — "boats against the current" — aches for a past unrecoverable.</li>
+      <li>The ________ Southern afternoons mirror the family's exhausted decline.</li>
+      <li>Her ________ presence seemed hardly of this world, too delicate to be real.</li>
+      <li>The ________ manner of the officers froze the self into obedient stillness.</li>
+      <li>The ________ energy of the streets mirrored a society on the edge of combustion.</li>
+      <li>The ________ violence forced a bodily recoil no argument could achieve.</li>
+    </ol>
+    <h3 style="margin-top:24px;">Exercise 2: Cross-Day Sentences (Day 8/9 adjectives + Day 10 mood)</h3>
+    <ol>
+      <li><strong>sepulchral</strong> (Day 8) + <strong>sombre</strong> (Day 10) — How do a sepulchral setting and a sombre tone compound each other?</li>
+      <li><strong>mercurial</strong> (Day 9) + <strong>febrile</strong> (Day 10) — How does a febrile atmosphere amplify a mercurial character?</li>
+      <li><strong>gregarious</strong> (Day 9) + <strong>languid</strong> (Day 10) — What does a languid world do to a gregarious figure?</li>
+      <li><strong>foreboding</strong> (Day 10) + <strong>haunting</strong> (Day 10) — Draft one sentence using both to describe a text's opening and close.</li>
+    </ol>
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <ol>
+      <li><strong>sombre</strong> vs. <strong>melancholic</strong> — which is atmospheric, which is inward? Illustrate.</li>
+      <li><strong>spectral</strong> vs. <strong>ethereal</strong> — which disturbs, which enchants? Give examples.</li>
+      <li><strong>foreboding</strong> vs. <strong>haunting</strong> — which looks forward, which looks back?</li>
+    </ol>
+  </div>
+
+  <h2><span class="icon">🎯</span> Building Your Descriptive Toolkit</h2>
+  <ol class="tips-list">
+    <li><strong>You can now name the emotional weather.</strong> Setting (Day 8) + character (Day 9) + mood (today) = a fully rendered scene with feeling. These twelve adjectives answer "how does this <em>feel</em> to read?" — the question every IB commentary must answer.</li>
+    <li><strong>Build a mood spectrum, not a list.</strong> dark/heavy (sombre, melancholic, glacial) → otherworldly (spectral, ethereal) → agitated/raw (febrile, visceral) → lingering (haunting, elegiac, wistful). Match the exact shade to the passage; "sad" becomes "elegiac" or "wistful" depending on the loss.</li>
+    <li><strong>Mood words are evidence for tone and effect.</strong> Never assert a mood without the precise word. "The tone is sombre" is a claim; "the sombre palette refuses consolation" is analysis. The adjective does the argumentative work.</li>
+    <li><strong>The three Day 10 distinction pairs are exam armour.</strong> sombre/melancholic (atmospheric vs. inward), spectral/ethereal (unsettling vs. enchanting), foreboding/haunting (forward vs. back). They consolidate in your Day 13 weekly review alongside the Day 8 and Day 9 pairs.</li>
+    <li><strong>Pair mood with setting and character.</strong> A glacial manner (character) in a forbidding setting (place) under a sombre tone (mood) is a complete atmospheric analysis. The verb constructs, the adjective qualifies — now across three dimensions.</li>
+    <li><strong>Deploy these in your next commentary.</strong> When you next write on a set text, force three Day 10 adjectives into your effect paragraph. By Paper 2, "foreboding" vs. "haunting" should arrive without thinking.</li>
+  </ol>
+
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 11 (Next): Tone &amp; Register adjectives</strong><br>
+    Move from the felt to the voice — words naming the author's attitude and level of language: <em>lyrical, sparse, ornate, colloquial, laconic</em>…<br><br>
+    <strong style="color:var(--ink);">Day 12:</strong> Descriptive Precision II — texture &amp; quality adjectives.<br>
+    <strong style="color:var(--ink);">Day 13:</strong> Week 2 review &amp; consolidation — all Week 2 near-synonym clusters.<br>
+    <strong style="color:var(--ink);">Day 14:</strong> Week 2 assessment — a descriptive writing challenge.
+  </div>
+
+</div>
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 2, Week 2, Day 10<br>
+  96 words learned so far (+12 today) · 1,204 to go · Mood precision unlocked 🌫️
+</footer>
+</body>
+</html>

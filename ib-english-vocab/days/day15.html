@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 15</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards (interactive reveal) */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid, .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 15 / 112 — Technical &amp; Rhetorical Terminology</div>
+  <div class="date">Monday, 7 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 3)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot today">15</div>
+      <div class="dot">16</div>
+      <div class="dot">17</div>
+      <div class="dot">18</div>
+      <div class="dot">19</div>
+      <div class="dot">20</div>
+      <div class="dot">21</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--gold);">Day 15 →</strong></td><td><strong>Technical &amp; Rhetorical Terminology</strong> (metaphor, simile, personification, symbolism, irony, motif, juxtaposition, hyperbole, allusion, metonymy, oxymoron, anaphora) — 12 new words</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 16:</strong></td><td>More devices — paradox, synecdoche, imagery, allegory (revisited), antithesis, epistrophe…</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 17:</strong></td><td>Structural &amp; narrative terms — foreshadowing, frame narrative, unreliable narrator, stream of consciousness…</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 18:</strong></td><td>Tone &amp; attitude terms — connotation, register, subtext, inference…</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 19:</strong></td><td>More rhetorical schemes — chiasmus, zeugma, asyndeton, litotes…</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 20:</strong></td><td>Mixed consolidation of the Week 3 device toolkit</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 21:</strong></td><td>Week 3 review &amp; consolidation — all Day 15-20 devices + distinction pairs</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Day 12 spaced review<br>(Descriptive Precision II)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Technical &amp; Rhetorical Terms</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> You've completed two threads — analysis verbs (Week 1) and descriptive adjectives (Week 2) — 120 words across two weeks. Today begins a new thread: the <em>technical terminology</em> of literary and rhetorical devices. These are the words you use to name <em>how</em> a text means, not just what it says. They pair with everything before: a metaphor can <em>foreground</em> an idea (Day 1); irony can be <em>subversive</em> (Day 5); a symbol can be <em>evocative</em> (Day 12).
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 12 spaced review (Descriptive Precision II) &rarr; (2) 12 new technical / rhetorical terms &rarr; (3) distinction boxes (metaphor/simile, verbal/situational irony, metonymy/metaphor) &rarr; (4) practice exercises.
+
+  <!-- ============ DAY 12 SPACED REVIEW ============ -->
+  <h2><span class="icon">🔁</span> Day 12 Spaced Review — 12 Descriptive Precision II Words</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    A spaced-repetition pass on the texture adjectives from Day 12. Read each word, <strong>recall its precise shade before looking</strong>, then check the definition. These twelve reappear whenever you reach for a word like "evocative" or "palpable" to describe a device's effect — keep them sharp.
+  </p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">poignant</div>
+      <div class="rdef"><em>Keenly moving; painfully touching — emotion that cuts.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">evocative</div>
+      <div class="rdef"><em>Strongly suggestive; calls feeling or memory to mind.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">incongruous</div>
+      <div class="rdef"><em>Out of place; clashing with its surrounding context.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">jarring</div>
+      <div class="rdef"><em>Harsh, discordant; violently disrupts expectation.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">discordant</div>
+      <div class="rdef"><em>Conflicting, unharmonious; notes or ideas that clash.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">luminous</div>
+      <div class="rdef"><em>Glowing, radiant; figuratively clear or insightful.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">muted</div>
+      <div class="rdef"><em>Softened, subdued; lowered in intensity or colour.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">scintillating</div>
+      <div class="rdef"><em>Brilliant, sparkling; lively and sharply witty.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">suffused</div>
+      <div class="rdef"><em>Spread through; permeated with a quality or light.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">palpable</div>
+      <div class="rdef"><em>Tangible, felt physically; almost touchable.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">ephemeral</div>
+      <div class="rdef"><em>Fleeting, short-lived; here and then gone.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">redolent</div>
+      <div class="rdef"><em>Strongly suggestive or fragrant; charged with association.</em></div>
+    </div>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> Could you recall all twelve without peeking? The three Day 12 distinction pairs (poignant/evocative, jarring/discordant, ephemeral/palpable) are the ones most likely to blur — revisit the Day 12 document's boxes if any felt shaky. Today's device terms often lean on these adjectives ("an <em>evocative</em> symbol," "a <em>palpable</em> irony"), so the two toolkits reinforce each other.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Technical &amp; Rhetorical Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge">NEW CATEGORY — "LITERARY DEVICES &amp; RHETORIC"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">From describing to naming.</strong> Weeks 1-2 gave you verbs for what texts <em>do</em> (subvert, juxtapose, foreground) and adjectives for what they <em>depict</em> (oppressive, mercurial, evocative). Today you learn the <em>technical terms</em> for the devices themselves — metaphor, irony, symbolism, anaphora. This is the vocabulary of IB Paper 1 commentary and Paper 2 analysis: the words that let you say precisely <em>how</em> a text produces meaning. Notice the architecture we're building: a <strong>device spectrum</strong> spanning figurative language (metaphor, simile, personification) &rarr; interpretive concepts (symbolism, motif, irony) &rarr; structural / rhetorical schemes (juxtaposition, hyperbole, allusion, metonymy, oxymoron, anaphora). Picking the exact device is what separates a 5 from a 7 — and, like Day 1's "juxtapose," several of today's nouns are the noun forms of verbs you already know.
+  </p>
+
+  <!-- Word 1: metaphor -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">metaphor</span>
+      <span class="ipa">/ˈmetəfə(r)/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A figure of speech that identifies one thing as another, asserting a likeness without "like" or "as"; an implicit comparison that transfers qualities from one domain to another.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "X [is / becomes] Y" — "the [city] is a [jungle]" · "his [words] [are] weapons"
+    </div>
+    <p class="example">
+      "In <em>The Great Gatsby</em>, the green light is a metaphor for the unreachable American Dream — desire itself made visible across the dark water, always approached and never reached."
+      <span class="source">— The Great Gatsby analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The cornerstone device of literary analysis. Distinct from <strong>simile</strong> (see box below): metaphor asserts identity; simile only likens. In IB, never stop at naming it — analyse <em>what</em> is transferred and <em>why</em>. A metaphor is an argument: equating two domains makes a claim about both. Connect to Day 1's <em>foreground</em> and <em>subvert</em> — a metaphor can foreground an idea or subvert a reader's expectation in a single move. Watch for the <em>extended metaphor</em> (sustained across a passage) and the <em>mixed metaphor</em> (a flaw when two comparisons collide).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> extended metaphor · mixed metaphor · dead metaphor · sustained metaphor · central metaphor</p>
+  </div>
+
+  <!-- METAPHOR vs SIMILE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: metaphor vs. simile</h4>
+    <p>Both are figurative comparisons, but they commit differently:</p>
+    <p style="margin-top:8px;">
+      <strong>metaphor</strong> — Asserts identity: "X <em>is</em> Y" (the city <em>is</em> a jungle). Total, compressed, no qualifier.<br>
+      &rarr; "All the world's a stage."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>simile</strong> — Compares with "like / as": "X is <em>like</em> Y" (the city is <em>like</em> a jungle). Explicit, hedged.<br>
+      &rarr; "My love is like a red, red rose."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: does the text <em>equate</em> the two domains (metaphor) or merely <em>liken</em> them (simile)? Memory trick: simile = "similar" + "like / as"; metaphor carries the weight alone. A metaphor fuses; a simile holds the two apart so the reader can watch the comparison happen. In IB, name which the author chose and why that degree of commitment matters. This pair anchors your Day 15 device toolkit.
+    </p>
+  </div>
+
+  <!-- Word 2: simile -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">simile</span>
+      <span class="ipa">/ˈsɪməli/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A figure of speech that compares two unlike things using "like" or "as", making the resemblance explicit rather than asserted.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "X [is] [like / as] Y" — "he [fled] [like] a shadow" · "cold [as] stone"
+    </div>
+    <p class="example">
+      "In <em>Frankenstein</em>, Shelley writes that the creature's 'yellow eye' fixes on Victor 'like' a 'malignant thing' — the simile externalises Victor's terror as a predator he himself has made."
+      <span class="source">— Frankenstein analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>metaphor</strong> (see box above): a simile hedges with "like / as"; a metaphor commits. A simile can signal a speaker's caution or a character's limited grasp; a metaphor signals total identification. Note when an author shifts simile → metaphor — that escalation often marks a turning point. In Paper 1 commentary, the choice between them is itself worth a sentence.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> simile and metaphor · apt simile · stock simile · Homeric simile · sustained simile</p>
+  </div>
+
+  <!-- Word 3: personification -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">personification</span>
+      <span class="ipa">/pəˌsɒnɪfɪˈkeɪʃn/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A figure of speech that attributes human qualities, actions, or emotions to non-human things, abstractions, or animals.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The wind] [whispers / remembers / refuses]" · "[Death] [comes knocking]"
+    </div>
+    <p class="example">
+      "In Emily Dickinson's poetry, 'Death' is personified as a courteous gentleman who 'kindly stopped for me' — mortality rendered as a social call, at once defusing and unsettling."
+      <span class="source">— Dickinson analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Go beyond "gives human traits." Ask <em>which</em> human trait, and to <em>what effect</em>? Personification often reveals a text's attitude to nature, time, or fate. It overlaps with <em>pathetic fallacy</em> (nature reflecting a character's emotion) — a useful sub-category to name. Connect to Day 1's <em>evoke</em>: personification is a prime way a text evokes feeling. Avoid the weak reading "the writer is being descriptive" — push to theme.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> personification of · anthropomorphic personification · pathetic fallacy · use of personification</p>
+  </div>
+
+  <!-- Word 4: symbolism -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">symbolism</span>
+      <span class="ipa">/ˈsɪmbəlɪzəm/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The use of symbols — objects, characters, colours, or actions that stand for something beyond their literal sense — to convey deeper, often abstract, meaning.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The bird] [symbolises] freedom" · "[The colour red] [recurs as] a symbol of…"
+    </div>
+    <p class="example">
+      "In <em>A Streetcar Named Desire</em>, the paper lantern Blanche drapes over the bare bulb symbolises her fragile attempt to soften a harsh reality she cannot bear to see."
+      <span class="source">— A Streetcar Named Desire analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinguish a <em>symbol</em> from a <em>motif</em> (see Day 15, word 6): a symbol is a single resonant signifier; a motif is the pattern of its recurrence. Avoid static "X = Y" decoding — IB rewards showing how a symbol's meaning <em>shifts</em> across the text. Connect to Day 1's <em>foreground</em>: what the text foregrounds as symbolic is never accidental. Root: Greek <em>symbolon</em>, a token of recognition shared between two parties.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> symbol of · richly symbolic · symbolic resonance · use of symbolism · Christian symbolism</p>
+  </div>
+
+  <!-- Word 5: irony -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">irony</span>
+      <span class="ipa">/ˈaɪrəni/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A contrast between appearance and reality, expectation and result, or what is said and what is meant. Three principal kinds: <em>verbal</em> (saying the opposite of intent), <em>situational</em> (outcome contrary to expectation), and <em>dramatic</em> (the audience knows what a character does not).</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The fire station] [burns down] — the [irony] is…" · "verbal [irony] in her 'thanks'"
+    </div>
+    <p class="example">
+      "In <em>Othello</em>, the audience's knowledge that Iago deceives makes Othello's trust devastatingly ironic — dramatic irony that tightens the tragedy with every kiss of betrayal."
+      <span class="source">— Othello analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Always <strong>name the type</strong>. Verbal irony ≠ sarcasm (sarcasm is aggressive; verbal irony need not be). Irony is the engine of IB Paper 1 tone analysis and links directly to Day 5's <em>satirical</em> and <em>subversive</em>. Distinct from mere coincidence (see box below: verbal vs. situational). A text's irony often marks where it wants you to read against the surface — exactly where marks are won.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> dramatic irony · situational irony · verbal irony · heavy irony · bitter irony</p>
+  </div>
+
+  <!-- VERBAL vs SITUATIONAL IRONY distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: verbal irony vs. situational irony</h4>
+    <p>Both are "irony," but the gap sits in a different place:</p>
+    <p style="margin-top:8px;">
+      <strong>verbal irony</strong> — A gap between <em>what is said</em> and <em>what is meant</em> (a language / tone effect). "Thanks a lot," said to the person who ruined it.<br>
+      &rarr; "What a <em>perfect</em> day," spoken in a storm.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>situational irony</strong> — A gap between <em>what happens</em> and <em>what was expected</em> (a plot / event effect). The fire station burns down.<br>
+      &rarr; The pacifist wins the war by becoming a tyrant.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: is the contrast in <strong>language</strong> (verbal) or in <strong>outcome</strong> (situational)? A third kind — <em>dramatic irony</em> — sits in <em>knowledge</em>: the audience knows more than a character (Othello trusts Iago). Name the exact type in essays; lumping them as "ironic" loses the precision IB rewards. This pair is a cornerstone of your Day 15 rhetoric cluster.
+    </p>
+  </div>
+
+  <!-- Word 6: motif -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">motif</span>
+      <span class="ipa">/məʊˈtiːf/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A recurring element — image, idea, sound, colour, or action — that gains significance through repetition and helps develop a theme.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The bird] [recurs as] a motif of…" · "[Light and dark] [form] a [motif]"
+    </div>
+    <p class="example">
+      "In <em>Crime and Punishment</em>, Raskolnikov's recurring encounters with the colour yellow form a motif of moral sickness that builds toward his psychological collapse."
+      <span class="source">— Dostoevsky analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>symbol</strong> and <strong>theme</strong>: a motif is the <em>pattern of recurrence</em>; a symbol is a single resonant object; a theme is the idea the motif helps articulate. IB rewards <em>tracing</em> a motif across the whole text, not spotting it once. Map its trajectory (where it appears, how it changes) and you have the spine of a strong commentary or Paper 2 paragraph.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> recurring motif · central motif · dominant motif · musical motif · visual motif</p>
+  </div>
+
+  <!-- Word 7: juxtaposition -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">juxtaposition</span>
+      <span class="ipa">/ˌdʒʌkstəpəˈzɪʃn/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The placement of two or more things side by side for the purpose of comparison or contrast; the resulting device when elements are set against each other.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The] [juxtaposition] of [wealth and poverty]" · "by [juxtaposing] X and Y"
+    </div>
+    <p class="example">
+      "In <em>A Tale of Two Cities</em>, Dickens opens with the juxtaposition 'It was the best of times, it was the worst of times' — opposing states yoked to frame a world on the brink."
+      <span class="source">— Dickens analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The <strong>noun</strong> form of Day 1's verb <em>juxtapose</em>. You already know how to juxtapose; now name the resulting device. Juxtaposition is <em>structural</em> — it works through arrangement, not wording. Ask what the contrast reveals about class, power, or theme. Connect to Day 1's <em>foreground</em> and <em>contrast</em>: placing two things together foregrounds the difference. One of the highest-yield devices for Paper 2 comparative essays.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> stark juxtaposition · deliberate juxtaposition · juxtaposition of · striking juxtaposition</p>
+  </div>
+
+  <!-- Word 8: hyperbole -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">hyperbole</span>
+      <span class="ipa">/haɪˈpɜːbəli/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">Deliberate exaggeration for emphasis, effect, or humour; an overstatement not meant to be taken literally.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[I've told you] [a million times]" · "[the] [world's] [end]"
+    </div>
+    <p class="example">
+      "In <em>Macbeth</em>, Lady Macbeth's 'all the perfumes of Arabia will not sweeten this little hand' is hyperbole that measures a guilt too vast for any cleansing — the exaggeration <em>is</em> the point."
+      <span class="source">— Macbeth analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Exaggeration with <em>purpose</em>. Don't dismiss it as "just exaggeration" — analyse what the overstatement reveals (guilt, scale, absurdity). It often pairs with <em>understatement</em> (litotes) for ironic effect. Connect to Day 5's <em>polemical</em>: hyperbole amplifies a stance. In satire, hyperbole is a weapon; in tragedy, a measure of feeling too large for words.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> mere hyperbole · rhetorical hyperbole · hyperbole and understatement</p>
+  </div>
+
+  <!-- Word 9: allusion -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">allusion</span>
+      <span class="ipa">/əˈluːʒn/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">An indirect reference to a person, event, text, myth, or work of art, presumed familiar to the reader; a second text summoned inside the first.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A] [clear] allusion to [the Bible]" · "[the] [myth of]…"
+    </div>
+    <p class="example">
+      "In <em>Lord of the Flies</em>, the boys' fall from order alludes to the Garden of Eden and the Fall — Golding borrows a myth to frame civilisation as fragile and original sin as innate."
+      <span class="source">— Golding analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> An allusion is a <em>second text</em> invoked inside the first. Name the source and the effect: what does the echo add? Allusions build <em>intertextuality</em> — a key IB concept (connect to Day 2's <em>interrogate</em> and <em>contextualise</em>). A biblical or classical allusion can charge a modern scene with inherited meaning in a single phrase. Trace the allusion to its source and your analysis deepens instantly.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> biblical allusion · classical allusion · passing allusion · direct allusion · mythological allusion</p>
+  </div>
+
+  <!-- Word 10: metonymy -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">metonymy</span>
+      <span class="ipa">/mɪˈtɒnəmi/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A figure of speech in which one word or concept is substituted for another with which it is closely associated — part for whole, container for contents, or institution for the people who run it.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The crown] [declared war]" (crown = monarchy) · "[the pen] [is mightier]"
+    </div>
+    <p class="example">
+      "In Orwell's <em>1984</em>, 'the Party' stands as metonymy for total power — the organisation substituted for the system that governs every thought."
+      <span class="source">— Orwell analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>metaphor</strong> (see box below): metonymy substitutes by <em>association / contiguity</em> (the crown = the monarchy — things that sit together in the real world); metaphor transfers by <em>resemblance</em> across distinct domains (time is a thief). Both condense meaning; metonymy is about relation, metaphor about likeness. Naming metonymy shows you see how a text wields power through substitution.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> metonymy for · synecdoche and metonymy · use of metonymy</p>
+  </div>
+
+  <!-- METONYMY vs METAPHOR distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: metonymy vs. metaphor</h4>
+    <p>Both substitute one term for another, but on different grounds:</p>
+    <p style="margin-top:8px;">
+      <strong>metonymy</strong> — Substitution by <em>association / contiguity</em>: the crown = the monarchy; the pen = writing; the White House = the administration. The two things are <em>adjacent</em> in the real world.<br>
+      &rarr; "The crown declared war."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>metaphor</strong> — Transfer by <em>resemblance</em> across distinct domains: time is a thief; the city is a jungle. The two things are <em>not</em> otherwise related — only a shared quality links them.<br>
+      &rarr; "Time is a thief."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: are the two terms <strong>next to each other</strong> in reality (metonymy) or linked only by a <strong>shared quality</strong> (metaphor)? "The White House spoke" = metonymy (place for power); "the White House is a fortress" = metaphor (likeness). Confusing them is a classic IB slip — name the right one and your device analysis is airtight. This pair rounds out your Day 15 toolkit.
+    </p>
+  </div>
+
+  <!-- Word 11: oxymoron -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">oxymoron</span>
+      <span class="ipa">/ˌɒksɪˈmɔːrɒn/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A figure of speech that pairs two contradictory or opposite terms (e.g., "deafening silence," "bitter-sweet"), yoking opposition within a single phrase.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a] [civil war]" · "[the] [cruel kindness]"
+    </div>
+    <p class="example">
+      "In <em>Romeo and Juliet</em>, 'parting is such sweet sorrow' yokes oxymoron to capture love and loss at once — the contradiction <em>is</em> the feeling."
+      <span class="source">— Shakespeare analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Two contradictory words in one phrase. Distinct from <em>paradox</em> (a contradictory statement or idea, larger than a phrase): oxymoron is local, paradox is structural. Both signal a truth that logic alone can't hold. Connect to Day 5's <em>ambivalent</em>: an oxymoron often names an ambivalent response in two words. Watch for clusters of oxymora building a theme of irresolution.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> apparent oxymoron · rhetorical oxymoron · string of oxymora</p>
+  </div>
+
+  <!-- Word 12: anaphora -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">anaphora</span>
+      <span class="ipa">/əˈnæfərə/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The repetition of a word or phrase at the beginning of successive clauses or sentences, used to build rhythm, emphasis, or accumulating force.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[We shall fight]… [we shall fight]… [we shall fight]"
+    </div>
+    <p class="example">
+      "In Martin Luther King's 'I Have a Dream,' the anaphora 'I have a dream' returns like a refrain, building momentum from vision to vision until the speech becomes a chant."
+      <span class="source">— MLK analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> A structural / rhetorical device of <em>repetition</em>. Name it in speeches, sermons, manifestos, and polemical prose (connect to Day 5's <em>polemical</em>). Ask what the repeated unit accumulates <em>toward</em>. Distinct from <em>epistrophe</em> (repetition at the <em>end</em> of clauses). Anaphora is especially valuable for non-literary texts (Paper 1, Section 2) — it signals insistence, unity, or rising urgency. A must for your rhetoric vocabulary.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> use of anaphora · rhetorical anaphora · anaphoric repetition</p>
+  </div>
+
+  <!-- ============ PRACTICE EXERCISES ============ -->
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Fill in the Blank (Day 15 Words)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Complete each sentence with a word from today's list. Use context clues to choose the right device.</p>
+    <div class="word-bank">
+      <strong>Word Bank:</strong> metaphor · simile · personification · symbolism · irony · motif · juxtaposition · hyperbole · allusion · metonymy · oxymoron · anaphora
+    </div>
+    <ol>
+      <li>In the poem, the "silence" is given a voice that "screams" — a striking use of <span class="blank">________</span> that makes absence feel alive.</li>
+      <li>"He is as sly as a fox," she said; the <span class="blank">________</span> makes the comparison explicit rather than asserted.</li>
+      <li>The green light across the water is the novel's central <span class="blank">________</span>, standing for a desire the protagonist can never reach.</li>
+      <li>The recurring image of birds in flight forms a <span class="blank">________</span> of freedom that builds across the whole collection.</li>
+      <li>"Thanks for nothing," he muttered after the prize was given to his rival — a clear case of <span class="blank">________</span>.</li>
+      <li>By placing the banquet's excess beside the beggar's hunger, the director uses <span class="blank">________</span> to expose inequality.</li>
+      <li>"All the perfumes of Arabia" could not cleanse the guilt — the <span class="blank">________</span> measures feeling too vast for words.</li>
+      <li>The text's <span class="blank">________</span> to Eden frames the characters' fall as a loss of innocence older than the story itself.</li>
+      <li>"The crown has spoken" uses <span class="blank">________</span>, substituting the symbol of monarchy for the institution itself.</li>
+      <li>"Parting is such sweet sorrow" is a famous <span class="blank">________</span>, yoking love and loss in two words.</li>
+      <li>"I have a dream" returns at the start of every paragraph — the <span class="blank">________</span> drives the speech's rising urgency.</li>
+      <li>"Time is a thief" is a <span class="blank">________</span>, transferring a quality across two unrelated domains rather than substituting by association.</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 2: Cross-Day Sentences (Day 15 devices + prior vocabulary)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Write one analytical sentence for each pair, using <strong>both</strong> words — one Day 15 device and one term from Weeks 1-2. Train yourself to name the device and the effect in the same clause.</p>
+    <ol>
+      <li><strong>metaphor</strong> (Day 15) + <strong>foreground</strong> (Day 1) — How does a metaphor let you foreground an abstract idea?</li>
+      <li><strong>symbolism</strong> (Day 15) + <strong>evocative</strong> (Day 12) — How can a symbol be evocative without being explicit?</li>
+      <li><strong>juxtaposition</strong> (Day 15) + <strong>stark</strong> (Day 8) — How does a stark setting sharpen a juxtaposition?</li>
+      <li><strong>irony</strong> (Day 15) + <strong>subversive</strong> (Day 5) — How can irony make a text subversive?</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Explain the difference between each pair in 1-2 sentences. Why would you choose one over the other in an essay? Use a literary example to illustrate.</p>
+    <ol>
+      <li><strong>metaphor</strong> vs. <strong>simile</strong> — see the distinction box above. When does a shift from simile to metaphor mark a turning point?</li>
+      <li><strong>verbal irony</strong> vs. <strong>situational irony</strong> — see the distinction box above. Can the same moment be both? Illustrate.</li>
+      <li><strong>metonymy</strong> vs. <strong>metaphor</strong> — see the distinction box above. Which replaces by association, which by resemblance?</li>
+    </ol>
+  </div>
+
+  <!-- ============ BUILDING YOUR TOOLKIT ============ -->
+  <h2><span class="icon">🎯</span> Building Your Device Toolkit</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>You now have the vocabulary to NAME the devices, not just feel them.</strong> Phase 1 gave you verbs for what texts do; Phase 2 gave you adjectives for what they depict; today you gain the technical terms for <em>how</em> they mean. In IB, naming the device precisely is the difference between "the writer uses a comparison" (vague) and "the extended metaphor equates desire with distance, foregrounding unattainability" (analytical).
+    </li>
+    <li>
+      <strong>Name the device as a verb, not a label.</strong> Never end at "this is a metaphor." Push to effect: what does the metaphor <em>do</em> to meaning, tone, or theme? The device is evidence for an argument, exactly as Day 1 taught with <em>foreground</em> / <em>subvert</em> / <em>problematize</em> — now you can cite the precise mechanism.
+    </li>
+    <li>
+      <strong>The three distinction pairs are exam armour.</strong> metaphor/simile (commitment), verbal/situational irony (where the gap sits), metonymy/metaphor (association vs. resemblance). These confusions cost marks; master them and your device analysis is airtight. They'll consolidate in your Week 3 review (Day 21).
+    </li>
+    <li>
+      <strong>juxtaposition is the bridge to comparative work.</strong> As the noun of Day 1's "juxtapose," it is your sharpest tool for Paper 2 — set two texts side by side and the contrast reveals each. Practise naming juxtapositions in the texts you're comparing this week.
+    </li>
+    <li>
+      <strong>Rhetoric belongs to non-literary texts too.</strong> anaphora, hyperbole, and irony are everywhere in speeches, adverts, and op-eds (Paper 1, Section 2). Today's toolkit works double duty: literary and non-literary. Spot them in the news this week and you'll be ready for any text type.
+    </li>
+    <li>
+      <strong>Deploy these in your next commentary.</strong> When you next write on a set text, force yourself to name at least four Day 15 devices precisely and trace one motif across the passage. By Paper 2, the right term should arrive without thinking — that's technical precision.
+    </li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 16 (Next): More Technical &amp; Rhetorical Terminology</strong><br>
+    Deepen the device set — paradox, synecdoche, imagery, allegory (revisited from Day 5), antithesis, epistrophe…<br><br>
+    <strong style="color:var(--ink);">Day 17:</strong> Structural &amp; Narrative Terms — foreshadowing, frame narrative, unreliable narrator, stream of consciousness.<br>
+    <strong style="color:var(--ink);">Day 18:</strong> Tone &amp; Attitude Terms — connotation, register, subtext, inference.<br>
+    <strong style="color:var(--ink);">Day 19:</strong> More Rhetorical Schemes — chiasmus, zeugma, asyndeton, litotes.<br>
+    <strong style="color:var(--ink);">Day 20:</strong> Mixed consolidation of the Week 3 device toolkit.<br>
+    <strong style="color:var(--ink);">Day 21:</strong> Week 3 review &amp; consolidation — all Day 15-20 devices + distinction pairs.
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 3, Day 15<br>
+  132 words learned so far (+12 today) · 1,168 to go · Literary devices unlocked 🎭
+</footer>
+

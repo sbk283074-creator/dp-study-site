@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 5</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards (Day 3 2nd pass — interactive reveal) */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  /* Review Cards (Day 4 1st review) */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid, .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 5 / 112 — Foundation Phase</div>
+  <div class="date">Wednesday, 26 August 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 1)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">1</div>
+      <div class="dot done">2</div>
+      <div class="dot done">3</div>
+      <div class="dot done">4</div>
+      <div class="dot today">5</div>
+      <div class="dot">6</div>
+      <div class="dot">7</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--teal);">Day 1 ✓</strong></td><td>Foundational analysis verbs (10) + evaluative adjectives (2) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 2 ✓</strong></td><td>More analysis verbs + effect verbs (12) + Day 1 review — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 3 ✓</strong></td><td>Writing-Method Verbs I (12) + Day 1 (2nd pass) + Day 2 (1st review) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 4 ✓</strong></td><td>Writing-Method Verbs II (12) + Day 2 (2nd pass) + Day 3 (1st review) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 5 →</strong></td><td><strong>Evaluative Adjectives</strong> (polemical, subversive, satirical, allegorical, tendentious, reductive, insidious, transgressive, provocative, ambivalent + didactic &amp; nuanced revisited) + Day 3 (2nd pass) + Day 4 (1st review)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 6:</strong></td><td>Weekly review &amp; consolidation — all 60 Week 1 words + near-synonym clusters</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 7:</strong></td><td>Weekly assessment — a mini-essay using the full Week 1 vocabulary</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">Day 3 (2nd pass) — 12 words<br>Day 4 (1st review) — 12 words</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Evaluative Adjectives</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">36</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the forgetting curve:</strong> Day 3 words are now 2 days old — this is their <em>second</em> recall, the same hard retrieval point Day 1 and Day 2 faced on their second passes. The struggle is the memory consolidating. Day 4 words get their <em>first</em> review today (24-hour window). Research confirms the second-pass recall is where short-term memory converts to long-term storage — push through it.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 3 active recall challenge &rarr; (2) Day 4 quick review &rarr; (3) 12 new evaluative adjectives &rarr; (4) practice exercises.
+  </div>
+
+  <!-- ============ DAY 3 SECOND PASS — ACTIVE RECALL ============ -->
+  <h2><span class="icon">🔥</span> Day 3 Active Recall — 2nd Pass</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    These are Saturday's writing-method verbs. For each, you see the word and its <em>usage pattern</em>. <strong>Recall the full definition before clicking to reveal.</strong> Then read the deeper question — it tests whether you can <em>use</em> the word, not just define it. Flag any word you can't answer for tonight's re-study.
+  </p>
+  <div class="recall-list">
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">craft</span>
+        <span class="rpat">"The author crafts the voice with flat restraint…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To construct with deliberate skill and artistry.</em> The author is a maker, not just a recorder.</div>
+        <div class="rquestion">How does "craft" differ from merely "write"? (Hint: craft implies conscious, skilful making — every choice is deliberate, the text is built like an object.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">deploy</span>
+        <span class="rpat">"Atwood deploys biblical naming with precision…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To position and use a technique strategically.</em></div>
+        <div class="rquestion">Why "deploy" rather than "use"? (Hint: deploy implies tactical placement — the technique is positioned for maximum effect, like a piece moved on a board.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">weave</span>
+        <span class="rpat">"He weaves myth and history into one fabric…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To interlace multiple strands into a unified whole.</em></div>
+        <div class="rquestion">weave vs. thread? (One builds a whole cloth from many strands; thread runs one strand continuously through an existing text.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">render</span>
+        <span class="rpat">"Chopin renders awakening as a tactile process…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To represent or translate into a form; cause to become.</em></div>
+        <div class="rquestion">How is "render" different from "show"? (Hint: render implies translation — taking an abstract experience and making it perceivable in a specific medium.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">orchestrate</span>
+        <span class="rpat">"Miller orchestrates the time transitions…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To coordinate multiple elements with deliberate precision.</em></div>
+        <div class="rquestion">Why "orchestrate" rather than "organise"? (Hint: orchestrate implies a conductor coordinating many independent parts into one unified effect — the musical metaphor signals control.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">sculpt</span>
+        <span class="rpat">"Morrison sculpts memory into nonlinear form…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To shape by careful, deliberate craftsmanship.</em></div>
+        <div class="rquestion">sculpt vs. craft? (craft = overall construction of the whole; sculpt = shaping by refining/removing, like a sculptor working a block.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">layer</span>
+        <span class="rpat">"Fitzgerald layers the green light with resonance…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To build up meaning through superimposed levels.</em></div>
+        <div class="rquestion">What does layering do that a single image doesn't? (Hint: layers accumulate meaning — each pass adds new resonance without erasing the old.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">embed</span>
+        <span class="rpat">"Orwell embeds politics in domestic routine…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To fix firmly within a surrounding context.</em></div>
+        <div class="rquestion">embed vs. inscribe (Day 4)? (embed = fix within a context; inscribe = carve indelibly/permanently — embed is about placement, inscribe about permanent marking.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">frame</span>
+        <span class="rpat">"Brontë frames the story through double narration…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To present within a perspective/boundary that shapes meaning.</em></div>
+        <div class="rquestion">Why does framing matter for interpretation? (Hint: the frame dictates how we read — the same story told through different narration means something different.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">thread</span>
+        <span class="rpat">"Shakespeare threads the blood motif throughout…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To run one element continuously through a text.</em></div>
+        <div class="rquestion">thread vs. weave? (thread = one continuous strand through a text; weave = many strands interlaced into cloth.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">infuse</span>
+        <span class="rpat">"Achebe infuses the prose with oral tradition…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To instil a quality into the text (author is the active subject).</em></div>
+        <div class="rquestion">infuse vs. suffuse? (infuse = author puts a quality in; suffuse = atmosphere spreads through on its own, atmosphere is the subject.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">suffuse</span>
+        <span class="rpat">"An atmosphere of dread suffuses the scene…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>To spread through completely (atmosphere is the subject).</em></div>
+        <div class="rquestion">Why is suffuse's subject different from infuse's? (Hint: in suffuse the atmosphere is the active spreader; in infuse the author is the active agent.)</div>
+      </div>
+    </details>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> How many could you define <em>and</em> answer the deeper question for? If you struggled with 3+ words, revisit the Day 3 document tonight. The second pass is the gate between short-term and long-term memory — it's supposed to be work.
+  </div>
+
+  <!-- ============ DAY 4 FIRST REVIEW ============ -->
+  <h2><span class="icon">🔄</span> Day 4 First Review — 12 Words</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:12px;">
+    Yesterday's writing-method verbs II — the 24-hour recall window. Try to recall each meaning <em>before</em> reading the definition. Ask: <em>Can I use this verb to describe a technique in a text I'm reading?</em> If not, flag it — it reappears in Day 6's weekly review.
+  </p>
+  <div class="review-grid">
+    <div class="review-card">
+      <span class="rword">permeate</span>
+      <p class="rdef"><em>To spread throughout every part of something.</em><br>"The theme of surveillance <em>permeates</em> every level of 1984…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">saturate</span>
+      <p class="rdef"><em>To fill completely, to capacity.</em><br>"Colour imagery <em>saturates</em> the opening chapter…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">interlace</span>
+      <p class="rdef"><em>To bind distinct elements so tightly they're mutually dependent.</em><br>"McEwan <em>interlaces</em> writing with atonement…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">inscribe</span>
+      <p class="rdef"><em>To fix permanently into a text (from monumental marking).</em><br>"Morrison <em>inscribes</em> slavery into the novel's body…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">construct</span>
+      <p class="rdef"><em>To build methodically; assemble structure with design.</em><br>"Austen <em>constructs</em> the plot around dramatic irony…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">arrange</span>
+      <p class="rdef"><em>To order/sequence elements deliberately for effect.</em><br>"Bishop <em>arranges</em> the losses in ascending order…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">calibrate</span>
+      <p class="rdef"><em>To adjust precisely toward a fixed target.</em><br>"Ishiguro <em>calibrates</em> the revelation with precision…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">modulate</span>
+      <p class="rdef"><em>To vary or shift tone/pace/register.</em><br>"Woolf <em>modulates</em> between thought and description…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">attenuate</span>
+      <p class="rdef"><em>To weaken or diminish intensity deliberately.</em><br>"McCarthy's prose <em>attenuates</em> all comfort…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">distil</span>
+      <p class="rdef"><em>To extract and concentrate the essential essence.</em><br>"Plath <em>distils</em> anguish into the bell jar image…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">hone</span>
+      <p class="rdef"><em>To refine/perfect through repeated effort over time.</em><br>"Hemingway <em>hones</em> his economy across stories…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">sharpen</span>
+      <p class="rdef"><em>To make more acute or intense at a moment.</em><br>"The tense shift <em>sharpens</em> the trauma's immediacy…"</p>
+    </div>
+  </div>
+  <div class="review-prompt">
+    <strong>Key distinctions from Day 4 — can you still articulate them?</strong><br>
+    &bull; <strong>permeate</strong> (spread through) vs. <strong>saturate</strong> (fill to capacity)<br>
+    &bull; <strong>calibrate</strong> (precise tuning) vs. <strong>modulate</strong> (variation/shift)<br>
+    &bull; <strong>construct</strong> (build the whole) vs. <strong>arrange</strong> (order the parts)<br>
+    &bull; <strong>hone</strong> (perfect over time) vs. <strong>sharpen</strong> (intensify at a moment)<br>
+    If any still feel fuzzy, revisit the Day 4 distinction boxes tonight.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Evaluative Adjectives</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge gold">NEW CATEGORY — "JUDGING TEXTS"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">The shift from description to evaluation.</strong> Days 1–2 gave you verbs for <em>what texts do</em> (analysis). Days 3–4 gave you verbs for <em>how texts are built</em> (craft). Today's adjectives give you the vocabulary for <em>judging</em> — for saying whether a text's argument is sound, biased, subtle, or simplistic. This is the language of critical appraisal: the difference between "the novel shows X" (description) and "the novel's argument is <em>nuanced</em> rather than <em>reductive</em>" (evaluation). IB Paper 2 and your IOC commentary live or die on these words. Note: <em>didactic</em> and <em>nuanced</em> appeared on Day 1 — today we revisit them at a higher, evaluative level.
+  </p>
+
+  <!-- Word 1: polemical -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">polemical</span>
+      <span class="ipa">/pəˈlemɪkl/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Expressing strong, often controversial opinions intended to provoke debate or attack opposing views; argumentative and combative in tone.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The essay's [polemical] tone / The text's [polemical] stance [against X]…"
+    </div>
+    <p class="example">
+      "Swift's A Modest Proposal is savagely polemical — its outrageous proposal is engineered to jolt the reader out of complacent indifference and force a reckoning with Ireland's exploitation."
+      <span class="source">— A Modest Proposal analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use for texts or arguments that argue aggressively and take a confrontational stance. Distinct from the neutral "argumentative" — polemical carries the sense of attack and provocation. A polemical text wears its bias openly (contrast with "tendentious," below). Ideal for evaluating satire, manifestos, and essays.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> polemical essay · polemical tone · polemical stance · polemical attack · polemical intent</p>
+  </div>
+
+  <!-- Word 2: subversive -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">subversive</span>
+      <span class="ipa">/səbˈvɜːsɪv/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Intending to undermine or overthrow established authority, norms, or power structures — often through indirect or covert means rather than open rebellion.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "A [subversive] text / The [subversive] potential of [element] challenges [authority/ideology]…"
+    </div>
+    <p class="example">
+      "The Handmaid's Tale is fundamentally subversive: by normalising a theocratic dystopia through the mundane voice of Offred, Atwood dismantles our complacency about how quickly rights can erode."
+      <span class="source">— The Handmaid's Tale analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use when a text quietly (or openly) works against the status quo. Subversive texts don't just criticise — they aim to topple. Note the link to "subvert" (Day 1 verb) — this is its adjective form. Distinct from "satirical" (see distinction box): satire mocks; subversion undermines. Strong for political and feminist readings.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> subversive message · subversive text · subversive potential · subversive reading · subversive intent</p>
+  </div>
+
+  <!-- Word 3: satirical -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">satirical</span>
+      <span class="ipa">/səˈtɪrɪkl/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Using humour, irony, exaggeration, or ridicule to expose and criticise folly, vice, or stupidity — especially in politics or society. Satire is a mode, not merely a tone.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "A [satirical] portrayal / The [satirical] exposure of [target]…"
+    </div>
+    <p class="example">
+      "Orwell's Animal Farm is a sustained satirical allegory — the farm's pigs becoming indistinguishable from the humans they overthrew exposes how revolution can betray its own ideals."
+      <span class="source">— Animal Farm analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Satire is a <em>mode</em>: a satirical text uses wit as a weapon. Distinguish from "subversive" (see distinction box) — satire mocks its target through humour; subversion works to erode power, with or without humour. A text can be satirical without being subversive (safe, establishment-approved satire), and subversive without being satirical (a quiet, lyrical dismantling).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> satirical novel · satirical tone · satirical critique · satirical edge · satirical target</p>
+  </div>
+
+  <!-- SATIRICAL vs SUBVERSIVE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: satirical vs. subversive</h4>
+    <p>
+      Both describe texts that challenge the status quo, but they differ in <strong>method vs. aim</strong>:
+    </p>
+    <p style="margin-top:8px;">
+      <strong>satirical</strong> — Uses wit, irony, exaggeration, and ridicule as the <em>method</em>. The target is mocked into exposure.<br>
+      &rarr; "The satirical portrait of the mayor exposes his vanity through comic exaggeration."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>subversive</strong> — Works to <em>undermine or overthrow</em> power/authority as the <em>aim</em>. The method can be quiet, covert, or overt.<br>
+      &rarr; "The subversive framing of the dystopia erodes the reader's faith in the present order."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      Overlap is real (satire is often subversive), but they're not identical: satire = <em>how</em> it attacks (with humour); subversion = <em>what</em> it seeks (to topple). Memory trick: satire holds up a fun-house mirror; subversion quietly loosens the foundations.
+    </p>
+  </div>
+
+  <!-- Word 4: allegorical -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">allegorical</span>
+      <span class="ipa">/ˌæləˈɡɒrɪkl/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Operating as an allegory — a narrative carrying a second, symbolic level of meaning beneath the literal story, where characters and events stand for abstract ideas or historical realities.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "An [allegorical] narrative / The [allegorical] representation of [abstract concept]…"
+    </div>
+    <p class="example">
+      "In The Faerie Queene, Spenser's allegorical knights embody virtues in conflict, so the romance plot simultaneously functions as a moral and political map of Elizabethan England."
+      <span class="source">— The Faerie Queene analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use when a text has a clear symbolic substructure. Allegorical readings require you to identify the "other" level — but beware over-allegorising (that's when a reading turns "reductive," below). The opposite trap: forcing every detail to "mean" something. A strong allegorical reading balances the literal and the symbolic.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> allegorical reading · allegorical level · allegorical meaning · allegorical structure · allegorical dimension</p>
+  </div>
+
+  <!-- Word 5: tendentious -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">tendentious</span>
+      <span class="ipa">/tenˈdenʃəs/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Biased or partisan; presenting an argument slanted toward a particular conclusion, often while appearing objective or neutral. The bias is there, but disguised.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "A [tendentious] account / The [tendentious] framing of [evidence] leans toward [conclusion]…"
+    </div>
+    <p class="example">
+      "The prosecutor's tendentious framing of the evidence in the trial scene manipulates the jury by arranging facts to foreclose any interpretation but his own."
+      <span class="source">— Trial-scene analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> A tendentious text pushes an agenda while pretending neutrality. Distinct from "polemical" (openly argumentative) — tendentious is biased but <em>disguised</em>. Critical test: does the text hide its bias behind a facade of objectivity? If yes, "tendentious" is your word. Excellent for exposing unreliable narrators and propaganda.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> tendentious argument · tendentious history · tendentious bias · tendentious framing · tendentious account</p>
+  </div>
+
+  <!-- POLEMICAL vs TENDENTIOUS distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: polemical vs. tendentious</h4>
+    <p>
+      Both describe biased or argument-driven texts, but they differ in <strong>how the bias is presented</strong>:
+    </p>
+    <p style="margin-top:8px;">
+      <strong>polemical</strong> — Wears its bias <em>openly</em>. Combative, aggressive, picks a fight in plain sight.<br>
+      &rarr; "Her polemical essay attacks the policy head-on with furious rhetoric."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>tendentious</strong> — Hides its bias <em>behind a mask of neutrality</em>. Slants the argument while appearing fair.<br>
+      &rarr; "The documentary's tendentious editing makes its case seem inevitable rather than chosen."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      Memory trick: <strong>polemical</strong> = picks a fight in the open &rarr; honest about its stance · <strong>tendentious</strong> = rigs the game while pretending fairness &rarr; deceptive about its stance. Both are critical caution words, but tendentious carries the extra charge of disguised bias.
+    </p>
+  </div>
+
+  <!-- Word 6: reductive -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">reductive</span>
+      <span class="ipa">/rɪˈdʌktɪv/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Oversimplifying; reducing complex reality to an overly simple, flattened account that loses essential nuance and contradiction.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "A [reductive] reading / The [reductive] portrayal [flattens the complexity of]…"
+    </div>
+    <p class="example">
+      "Reading 1984 merely as anti-communist propaganda is reductive — it collapses Orwell's broader warning about totalitarianism in any form into a single, parochial political slogan."
+      <span class="source">— 1984 analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> A key critical <em>caution</em> word. Examiners reward students who avoid reductive readings — and who can name when an interpretation (including their own first draft) has flattened a text. The direct opposite of "nuanced" (revisited below). Use it to diagnose weak readings: "This interpretation is too reductive because it ignores the narrator's ambivalence."
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> reductive reading · reductive analysis · reductive account · reductive interpretation · reductive framework</p>
+  </div>
+
+  <!-- Word 7: insidious -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">insidious</span>
+      <span class="ipa">/ɪnˈsɪdiəs/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Proceeding harmfully in a subtle, stealthy, or gradual way; treacherous precisely because it is unnoticed until the damage is done.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [insidious] influence / The [insidious] normalisation of [harmful thing]…"
+    </div>
+    <p class="example">
+      "The insidious appeal of the Party in 1984 lies precisely in its banality — Newspeak and the Two Minutes Hate erode freedom so gradually that Winston barely notices the cage closing."
+      <span class="source">— 1984 analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Powerful for describing how oppressive systems or ideologies creep in unnoticed. Often paired with "normalise" — the danger is that the harmful thing becomes attractive or invisible. Distinct from "subversive": subversion is the force undermining from within; insidious is the <em>quality</em> of that creep (stealthy, gradual). Great for dystopia and gothic studies.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> insidious influence · insidious power · insidious effect · insidious normalisation · insidious appeal</p>
+  </div>
+
+  <!-- Word 8: transgressive -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">transgressive</span>
+      <span class="ipa">/trænzˈɡreʃəs/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Violating or crossing accepted boundaries, norms, or moral codes; challenging what is permitted or sanctioned.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "A [transgressive] act / The [transgressive] desire / A [transgressive] text [crosses the boundary of]…"
+    </div>
+    <p class="example">
+      "The transgressive desire of Gothic heroines — their hunger, their curiosity — is precisely what makes them threatening to the patriarchal order that seeks to contain them."
+      <span class="source">— Gothic fiction analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Closely related to "subversive" but more about <em>boundary-crossing</em> than system-overthrowing. Useful for characters, desires, or forms that break taboos. A transgressive text may shock without necessarily aiming to topple a regime. Strong for gender, body, and censorship discussions.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> transgressive desire · transgressive act · transgressive text · transgressive impulse · transgressive body</p>
+  </div>
+
+  <!-- Word 9: provocative -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">provocative</span>
+      <span class="ipa">/prəˈvɒkətɪv/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Deliberately stimulating strong reaction, thought, or controversy; challenging the reader's comfort or assumptions.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "A [provocative] gesture / The [provocative] claim / A [provocative] image [forces a response]…"
+    </div>
+    <p class="example">
+      "Kafka's provocative opening — 'Someone must have been telling lies about Josef K.' — implicates the reader in guilt before any crime is named, unsettling our assumptions about innocence."
+      <span class="source">— The Trial analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> From the verb "provoke" (Day 2). Use for moments that deliberately jolt the reader. Distinct from "polemical" — provocative need not be argumentative, just jolting or unsettling. "A provocative opening" names the author's intent to disturb without committing to a position.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> provocative image · provocative claim · provocative gesture · provocative opening · provocative premise</p>
+  </div>
+
+  <!-- Word 10: ambivalent -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">ambivalent</span>
+      <span class="ipa">/æmˈbɪvələnt/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Having mixed, contradictory feelings or attitudes toward something; simultaneously attracted and repelled, or holding two incompatible positions at once.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The text is [ambivalent] about [subject], [both X and Y]…"
+    </div>
+    <p class="example">
+      "The play is deeply ambivalent about empire — celebrating its adventure while mourning its destruction, so the audience is never allowed a stable moral position."
+      <span class="source">— Postcolonial drama analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Crucial for sophisticated analysis — texts (and characters) are rarely one thing. Spotting ambivalence shows you're reading beyond the surface. Opposite of a "clear-cut" stance. Pairs naturally with "nuanced": an ambivalent text usually demands a nuanced reading. Avoid claiming a text "says X" when it's actually ambivalent about X.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> ambivalent attitude · ambivalent portrayal · ambivalent tone · ambivalent about · ambivalent response</p>
+  </div>
+
+  <!-- Word 11: didactic (revisited) -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">didactic</span>
+      <span class="ipa">/dɪˈdæktɪk/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Intended to teach or instruct, especially morally; a text whose primary purpose is to convey a lesson. Can be neutral (teaching) or slightly critical (preachy).</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [didactic] purpose / A [didactic] text [instructs the reader to…]"
+    </div>
+    <p class="example">
+      "While A Christmas Carol is unapologetically didactic — Scrooge's transformation is a moral lesson — its emotional force prevents it from feeling like mere preaching."
+      <span class="source">— A Christmas Carol analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Revisited from Day 1, now at the evaluative level. The key move: weigh <em>didactic intent</em> against <em>artistic effect</em>. A text can be didactic and still succeed (if the lesson is earned through feeling); it fails as a novel when the teaching overwhelms the art. Use "didactic" to name a text's purpose, then judge whether that purpose is achieved.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> didactic purpose · didactic intent · didactic literature · didactic message · overtly didactic</p>
+  </div>
+
+  <!-- Word 12: nuanced (revisited) -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">nuanced</span>
+      <span class="ipa">/ˈnjuːɑːnst/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Characterised by subtle, fine-grained distinctions and sensitivity to complexity; avoiding oversimplification and holding contradiction rather than resolving it prematurely.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "A [nuanced] reading / The [nuanced] portrayal [captures the complexity of]…"
+    </div>
+    <p class="example">
+      "Morrison's nuanced portrayal of Sethe refuses easy judgement — her love and her violence are shown as the same overwhelming maternal force, demanding that the reader hold contradiction rather than resolve it."
+      <span class="source">— Beloved analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Revisited from Day 1 — and it is the <strong>gold-standard adjective for IB</strong>. "Nuanced" is what you strive for in every essay, and what "reductive" (above) destroys. Use it to describe the best readings; use "reductive" to diagnose the weakest. They are direct opposites — see the final distinction box. If you can call a text or a reading "nuanced" with evidence, you're operating at a 6–7 level.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> nuanced reading · nuanced portrayal · nuanced analysis · nuanced understanding · nuanced approach</p>
+  </div>
+
+  <!-- REDUCTIVE vs NUANCED distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: reductive vs. nuanced</h4>
+    <p>
+      These are <strong>direct opposites</strong> — the single most important evaluative pair in your toolkit:
+    </p>
+    <p style="margin-top:8px;">
+      <strong>reductive</strong> — Flattens complexity; loses essential nuance; collapses contradiction into a single claim.<br>
+      &rarr; "Reading the novel as simply 'anti-war' is reductive — it ignores the text's ambivalence about sacrifice."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>nuanced</strong> — Captures subtle distinction and complexity; holds contradiction.<br>
+      &rarr; "Her nuanced reading attends to both the novel's critique of war and its mournful respect for the fallen."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      Memory trick: <strong>reductive</strong> = the text/reading shrinks &rarr; loses detail · <strong>nuanced</strong> = the text/reading expands &rarr; gains detail. Use "reductive" to <em>critique</em> weak interpretations (including your own drafts); use "nuanced" to <em>describe</em> strong ones. They will feature in your Day 6 weekly review cluster.
+    </p>
+  </div>
+
+  <!-- ============ PRACTICE EXERCISES ============ -->
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Fill in the Blank (Day 5 Words)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Complete each sentence with a word from today's list. Use context clues to choose the right word.</p>
+    <div class="word-bank">
+      <strong>Word Bank:</strong> polemical · subversive · satirical · allegorical · tendentious · reductive · insidious · transgressive · provocative · ambivalent · didactic · nuanced
+    </div>
+    <ol>
+      <li>Swift's <em>A Modest Proposal</em> is savagely <span class="blank">________</span>, engineered to jolt the reader out of complacency.</li>
+      <li>The Handmaid's Tale is <span class="blank">________</span>: by normalising dystopia through Offred's mundane voice, Atwood erodes our complacency about disappearing rights.</li>
+      <li>Animal Farm is a sustained <span class="blank">________</span> allegory in which the pigs' corruption exposes how revolution betrays itself.</li>
+      <li>The prosecutor's <span class="blank">________</span> framing of the evidence manipulates the jury by arranging facts to foreclose other interpretations.</li>
+      <li>Reading 1984 merely as anti-communist propaganda is <span class="blank">________</span> — it collapses a broader warning into a single slogan.</li>
+      <li>The <span class="blank">________</span> appeal of the Party lies in its banality; Newspeak erodes freedom so gradually Winston barely notices.</li>
+      <li>The <span class="blank">________</span> desire of Gothic heroines — their hunger and curiosity — makes them threatening to the patriarchal order.</li>
+      <li>Kafka's <span class="blank">________</span> opening implicates the reader in guilt before any crime is named.</li>
+      <li>The play is deeply <span class="blank">________</span> about empire — celebrating adventure while mourning its destruction, denying the audience a stable moral stance.</li>
+      <li>A Christmas Carol is unapologetically <span class="blank">________</span>, yet its emotional force prevents it feeling like mere preaching.</li>
+      <li>Morrison's <span class="blank">________</span> portrayal of Sethe refuses easy judgement, demanding the reader hold contradiction.</li>
+      <li>In The Faerie Queene, Spenser's <span class="blank">________</span> knights embody virtues in conflict, functioning as a moral map of England.</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 2: Cross-Day Sentences (Days 1–4 + Day 5)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Write one analytical sentence for each pair, using <strong>both</strong> words — one from Days 1–4 and one from Day 5. Train yourself to combine <em>what texts do</em>, <em>how they're built</em>, and <em>evaluative judgement</em>.</p>
+    <ol>
+      <li><strong>foreground</strong> (Day 1) + <strong>subversive</strong> (Day 5) — How does foregrounding a subversive element sharpen a text's political edge?</li>
+      <li><strong>distil</strong> (Day 4) + <strong>allegorical</strong> (Day 5) — How does distilling an allegorical meaning into one image work?</li>
+      <li><strong>problematize</strong> (Day 1) + <strong>reductive</strong> (Day 5) — Why is a reductive reading the opposite of problematizing?</li>
+      <li><strong>calibrate</strong> (Day 4) + <strong>nuanced</strong> (Day 5) — How does calibrating tone produce a nuanced portrayal?</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Explain the difference between each pair in 1–2 sentences. Why would you choose one over the other in an essay? Use a literary example to illustrate.</p>
+    <ol>
+      <li><strong>polemical</strong> vs. <strong>tendentious</strong> — see the distinction box above. Give your own literary example for each.</li>
+      <li><strong>satirical</strong> vs. <strong>subversive</strong> — see the distinction box above. Can a text be one without the other? Illustrate.</li>
+      <li><strong>reductive</strong> vs. <strong>nuanced</strong> — see the distinction box above. Find one reductive reading and one nuanced reading of a text you know.</li>
+    </ol>
+  </div>
+
+  <!-- ============ BUILDING YOUR TOOLKIT ============ -->
+  <h2><span class="icon">🎯</span> Building Your Critical Vocabulary</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>You now have the vocabulary for judgement, not just description.</strong> Days 1–4 gave you verbs for <em>what texts do</em> (analysis) and <em>how they're built</em> (craft). Day 5 gives you adjectives for <em>evaluating</em> — whether a text's argument is sound, biased, subtle, or simplistic. This is the language of critical appraisal that IB Paper 2 and your IOC demand.
+    </li>
+    <li>
+      <strong>The caution words (reductive, tendentious, insidious) are your critical armour.</strong> Use "reductive" to diagnose weak readings — including your own first drafts — and "tendentious" to expose hidden bias in narrators and propaganda. Naming the flaw precisely is a Criterion C/D move.
+    </li>
+    <li>
+      <strong>The aspiration words (nuanced, ambivalent, allegorical) describe complex, rewarding texts.</strong> "Nuanced" is the IB gold standard — aim for it in every essay. "Ambivalent" lets you capture texts that refuse a stable stance, and "allegorical" names symbolic depth without over-reading.
+    </li>
+    <li>
+      <strong>The stance words (polemical, satirical, subversive, transgressive, provocative) describe a text's mode of critique.</strong> Match the word to the precise kind of challenge the text mounts: satire mocks, subversion undermines, transgression crosses boundaries, polemic attacks openly, provocation jolts. The distinction boxes train you to pick the exact one.
+    </li>
+    <li>
+      <strong>Watch the distinction traps for Day 5.</strong> The pairs most often confused: <em>polemical/tendentious</em> (open vs. disguised bias), <em>satirical/subversive</em> (method vs. aim), <em>reductive/nuanced</em> (opposites). These are exactly the near-synonym clusters your Day 6 weekly review will consolidate — review all three boxes until the differences are instinctive.
+    </li>
+    <li>
+      <strong>Deploy evaluative adjectives in your essay conclusions and evaluations now.</strong> When you judge a text, name the quality: "The novel's argument is ultimately more nuanced than reductive" — that's evaluative precision. By Paper 2, the right adjective should arrive without thinking.
+    </li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 6 (Tomorrow): Weekly Review &amp; Consolidation</strong><br>
+    All 60 Week 1 words reviewed together, plus the Week 1 near-synonym clusters: <em>weave/thread</em>, <em>infuse/suffuse</em>, <em>permeate/saturate</em>, <em>calibrate/modulate</em>, <em>construct/arrange</em>, <em>hone/sharpen</em>, and the new <em>polemical/tendentious</em>, <em>satirical/subversive</em>, <em>reductive/nuanced</em> pairs.<br><br>
+    <strong style="color:var(--ink);">Day 7:</strong> Weekly assessment — a mini-essay using the full Week 1 vocabulary.<br><br>
+    <strong style="color:var(--ink);">Day 8+:</strong> Phase 2 — Descriptive Precision (environmental / setting adjectives: oppressive, desolate, labyrinthine, verdant, sepulchral, stark, austere, bucolic…).
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 1, Week 1, Day 5<br>
+  60 words learned so far (48 reviewed + 12 new) · 1,240 to go · Critical-evaluation vocabulary unlocked 🔍
+</footer>
+
+</body>
+</html>

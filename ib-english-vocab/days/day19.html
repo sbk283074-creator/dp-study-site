@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 19</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards (interactive reveal) */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 19 / 112 — Rhetorical Schemes</div>
+  <div class="date">Friday, 11 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 3)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">15</div>
+      <div class="dot done">16</div>
+      <div class="dot done">17</div>
+      <div class="dot done">18</div>
+      <div class="dot today">19</div>
+      <div class="dot">20</div>
+      <div class="dot">21</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 15 →</strong></td><td>Core device terms</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 16 →</strong></td><td>More devices</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 17 →</strong></td><td>Structural &amp; Narrative Terms</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 18 →</strong></td><td>Tone &amp; Attitude Terms</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 19 →</strong></td><td><strong>Rhetorical Schemes</strong> — chiasmus, zeugma, asyndeton, polysyndeton, litotes…</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 20:</strong></td><td>Mixed consolidation of the Week 3 device toolkit</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 21:</strong></td><td>Week 3 review &amp; consolidation — all Day 15-20 terms + distinction pairs</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Day 18 first review<br>(Tone &amp; Attitude Terms)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Rhetorical Schemes</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Days 15-16 gave you <em>devices</em> (tropes — figures of meaning); Day 17 gave you <em>structure</em>; Day 18 gave you <em>tone</em>. Today you get the fourth pillar of technical terminology: <em>rhetorical schemes</em> — figures of <em>arrangement</em>, the shapes sentences take. A scheme is not about what a word means but <em>how words are ordered</em>: reversed, linked, stripped of conjunctions, balanced, inverted. This is the vocabulary for analysing <em>style</em> at the sentence level — the difference between "he left because she stayed" and "she stayed. He left."
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 18 first review (12 tone terms as quick-recall cards) &rarr; (2) 12 rhetorical schemes &rarr; (3) three distinction boxes (asyndeton/polysyndeton, chiasmus/antimetabole, parataxis/hypotaxis) &rarr; (4) practice exercises.
+
+  <!-- ============ DAY 18 FIRST REVIEW ============ -->
+  <h2><span class="icon">🔁</span> Day 18 First Review — 12 Tone &amp; Attitude Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    Your first spaced pass on Day 18's tone set. Read each word, <strong>recall its precise definition before looking</strong>, then check.
+  </p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">connotation</div>
+      <div class="rdef"><em>The associations / feelings a word carries beyond its literal sense.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">denotation</div>
+      <div class="rdef"><em>The literal, dictionary meaning of a word.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">register</div>
+      <div class="rdef"><em>The level of formality / social variety of language.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">subtext</div>
+      <div class="rdef"><em>The unspoken meaning the text itself implies.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">inference</div>
+      <div class="rdef"><em>The conclusion the reader draws from evidence.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">modality</div>
+      <div class="rdef"><em>The degree of certainty / necessity a text expresses.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">equivocation</div>
+      <div class="rdef"><em>Strategic ambiguity used to dodge a position.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">hedge</div>
+      <div class="rdef"><em>An honest softener that weakens a claim's force.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">stance</div>
+      <div class="rdef"><em>The writer's position toward subject and audience.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">sarcasm</div>
+      <div class="rdef"><em>Mocking words conveying the opposite of their sense.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">innuendo</div>
+      <div class="rdef"><em>An indirect hint at something disparaging.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">understatement</div>
+      <div class="rdef"><em>Deliberately representing something as less than it is.</em></div>
+    </div>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> Could you define all twelve without peeking? The three Day 18 distinction pairs (connotation/denotation, subtext/inference, hedge/equivocation) are the ones to watch. Today's schemes are a new thread — tone tells you <em>how a text feels</em>; schemes tell you <em>how its sentences are built</em>. Keep both in mind when you analyse a real passage.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Rhetorical Schemes</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge">CONTINUING — "RHETORICAL SCHEMES (FIGURES OF ARRANGEMENT)"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">From meaning to shape.</strong> Days 15-16 were <em>tropes</em> (a word used for something else — metaphor, irony). Today's twelve are <em>schemes</em> — the same words, rearranged for effect. chiasmus/antimetabole reverse order; asyndeton/polysyndeton play with conjunctions; litotes negates to affirm; isocolon/anadiplosis/climax build pattern; anastrophe inverts; parataxis/hypotaxis decide whether clauses are equal or nested. This is the vocabulary of <em>stylistic analysis</em> — the sentence-level craft that separates a 5 from a 7 in both Papers.
+  </p>
+
+  <!-- Word 1: chiasmus -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">chiasmus</span>
+      <span class="ipa">/kaɪˈæzməs/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A figure in which words, phrases, or concepts are repeated in reverse order (A–B–B–A), creating balance through mirrored structure.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[ask not what your country can do for you] [— ask what you can do for your country]"
+    </div>
+    <p class="example">
+      "Kennedy's 'ask not what your country can do for you — ask what you can do for your country' is the textbook chiasmus: the second clause mirrors the first in reversed order."
+      <span class="source">— Inaugural rhetoric</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>antimetabole</strong> (see box): chiasmus reverses <em>concepts or structures</em>; antimetabole repeats the <em>exact same words</em>. Connect to Day 15's <em>juxtaposition</em> (reversal) and Day 16's <em>tricolon</em>. Chiasmus produces symmetry and a sense of closure — name the turn and what it resolves. A staple of speeches and argumentative prose.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a perfect chiasmus · chiastic structure · chiastic reversal</p>
+  </div>
+
+  <!-- Word 2: zeugma -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">zeugma</span>
+      <span class="ipa">/ˈzjuːɡmə/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A figure in which one word (usually a verb) governs two or more others, to only one of which it strictly applies, yoking literal and figurative senses.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[he] [opened the door and his heart]" · "[she lost her keys and her temper]"
+    </div>
+    <p class="example">
+      "In Pope, 'he grasped the sceptre and his bride' — one verb grips both a thing and a person, the mismatch producing sudden wit."
+      <span class="source">— Neoclassical satire</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Connect to Day 16's <em>pun</em> (wordplay) and Day 1's <em>conflate</em>. Zeugma yokes the literal and the figurative; the clash <em>is</em> the effect. Name which object the verb fits and which it doesn't — the gap is the meaning. Useful for poetry and satirical prose where compression carries wit.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a harsh zeugma · zeugmatic linkage · syntactic zeugma</p>
+  </div>
+
+  <!-- Word 3: asyndeton -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">asyndeton</span>
+      <span class="ipa">/eɪˈsɪndətɒn/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The deliberate omission of conjunctions between coordinated words, phrases, or clauses.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[veni, vidi, vici] [— I came, I saw, I conquered]"
+    </div>
+    <p class="example">
+      "Caesar's 'veni, vidi, vici' is asyndeton: the missing 'and' accelerates the sentence into a staccato of triumph."
+      <span class="source">— Historical epigram</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>polysyndeton</strong> (see box). Connect to Day 16's <em>tricolon</em> (asyndeton often accompanies it). Asyndeton speeds pace and implies inexhaustibility or urgency — name the tempo it creates. In non-literary texts it can signal efficiency, brute fact, or coldness.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> deliberate asyndeton · stripped of conjunctions</p>
+  </div>
+
+  <!-- ASYNDETON vs POLYSYNDETON distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: asyndeton vs. polysyndeton</h4>
+    <p>Both manipulate conjunctions — but in opposite directions, producing opposite rhythms:</p>
+    <p style="margin-top:8px;">
+      <strong>asyndeton</strong> — <em>Omission</em> of conjunctions ("I came, I saw, I conquered"). Clauses run together; pace accelerates; energy feels staccato or urgent.<br>
+      &rarr; Effect: speed, triumph, breathlessness, inexhaustibility.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>polysyndeton</strong> — <em>Repetition</em> of conjunctions ("and… and… and…"). Clauses pile up; pace slows; the list feels cumulative or obsessive.<br>
+      &rarr; Effect: accumulation, weight, childlike listing, litany.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: are the connectives <strong>stripped out</strong> (asyndeton — faster) or <strong>piled on</strong> (polysyndeton — slower)? The two are often mirror images in the same author's toolkit. In stylistic analysis, naming which one explains the <em>rhythm</em> a sentence imposes on the reader — and rhythm is half of tone.
+    </p>
+  </div>
+
+  <!-- Word 4: polysyndeton -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">polysyndeton</span>
+      <span class="ipa">/ˌpɒlɪˈsɪndətɒn/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The deliberate use of many conjunctions between coordinated elements, where they could be omitted.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[we laughed and we cried and we remembered and we wept]"
+    </div>
+    <p class="example">
+      "In Woolf, 'she bought the gloves and the shoes and the hat and the coat' — polysyndeton slows the sentence into a litany of accumulation."
+      <span class="source">— Modernist prose</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>asyndeton</strong> (see box). Connect to Day 16's enumerative feel. Polysyndeton slows pace and suggests abundance, obsession, or a child's indiscriminate listing — name the rhythm it imposes. The mirror of asyndeton; spotting both in one text reveals a writer modulating tempo on purpose.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> heavy polysyndeton · relentless 'and's · cumulative polysyndeton</p>
+  </div>
+
+  <!-- Word 5: litotes -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">litotes</span>
+      <span class="ipa">/ˈlaɪtətiːz/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A figure of understatement in which an affirmative is expressed by negating its contrary (a form of double negative).</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[not unhappy] [= rather pleased]" · "[no small achievement]"
+    </div>
+    <p class="example">
+      "'He was not without influence' is litotes — the denial of the negative states the positive with restrained force."
+      <span class="source">— Understated prose</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Connect to Day 18's <em>understatement</em> (litotes is its grammatical form) and Day 11's restrained register. Litotes is the polite, hedged affirmation — name the restraint and what it conceals. Common in British/understated English prose; a mark of register awareness and of Day 18's <em>hedge</em> family.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a studied litotes · litotic understatement</p>
+  </div>
+
+  <!-- Word 6: antimetabole -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">antimetabole</span>
+      <span class="ipa">/ˌæntɪməˈtæbəli/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">Repetition of words in successive clauses in reversed grammatical order (A–B–B–A) — a subtype of chiasmus that repeats the exact same words.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[when the going gets tough, the tough get going]"
+    </div>
+    <p class="example">
+      "'You forget what you want to remember, and you remember what you want to forget' turns memory into antimetabole — the words flip but stay identical."
+      <span class="source">— Aphoristic prose</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>chiasmus</strong> (see box): antimetabole repeats the <em>same words</em>; chiasmus reverses <em>concepts/structures</em> (often with different words). Connect to Day 15's <em>anaphora</em> (repetition) and Day 16's <em>tricolon</em>. Name the reversal and the paradox it stages — a favourite of proverbs and aphorisms.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> neat antimetabole · antimetabolic reversal</p>
+  </div>
+
+  <!-- CHIASMUS vs ANTIMETABOLE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: chiasmus vs. antimetabole</h4>
+    <p>Both are A–B–B–A reversals — but the test is whether the <em>words</em> are identical:</p>
+    <p style="margin-top:8px;">
+      <strong>chiasmus</strong> — Concepts or structures reverse, often with <em>different</em> words.<br>
+      &rarr; "Ask not what your country can do for <em>you</em> — ask what <em>you</em> can do for your <em>country</em>." (you/country swap, but the wording shifts.)
+    </p>
+    <p style="margin-top:8px;">
+      <strong>antimetabole</strong> — The <em>exact same words</em> repeat in reversed order.<br>
+      &rarr; "When the going gets tough, the <em>tough</em> get <em>going</em>." (going/tough/tough/going — identical.)
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: do the <strong>same words</strong> come back flipped (antimetabole) or do <strong>ideas</strong> mirror each other in new words (chiasmus)? Every antimetabole is a chiasmus, but not vice versa. In analysis, naming which one shows you can tell a structural rhyme from a verbal echo — a precise, impressive distinction.
+    </p>
+  </div>
+
+  <!-- Word 7: isocolon -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">isocolon</span>
+      <span class="ipa">/aɪˈsɒkəlɒn/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A series of clauses or phrases of roughly equal length and parallel structure.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[to err is human; to forgive, divine]"
+    </div>
+    <p class="example">
+      "Pope's 'to err is human, to forgive divine' is isocolon — two balanced halves of matching weight and rhythm."
+      <span class="source">— Epigram</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Connect to Day 16's <em>tricolon</em> (isocolon can have 2, 3, or 4 balanced units) and Day 2's sense of symmetry. Isocolon produces aphoristic balance and memorability — name the equilibrium and what it dignifies (truth feels inevitable when two halves balance). The backbone of memorable prose and argument.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> balanced isocolon · parallel isocola</p>
+  </div>
+
+  <!-- Word 8: anadiplosis -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">anadiplosis</span>
+      <span class="ipa">/ˌænədɪˈpləʊsɪs/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">Repetition of the last word (or phrase) of one clause at the beginning of the next, chaining clauses together.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[the crime was blood; blood demands blood]"
+    </div>
+    <p class="example">
+      "In Shakespeare, 'blood hath brought blood' — anadiplosis links clause to clause by repeating the hinge word."
+      <span class="source">— Revenge tragedy</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Connect to Day 15's <em>anaphora</em> (head-repetition) — anadiplosis repeats at the <em>tail-into-head</em>, creating a chain. It builds momentum and causal linkage — name the chain it forges and the word it elevates to a theme. Powerful in argument and tragedy; the repeated word becomes the obsession.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> iterative anadiplosis · a chain of repetition</p>
+  </div>
+
+  <!-- Word 9: anastrophe -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">anastrophe</span>
+      <span class="ipa">/əˈnæstrəfi/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">Inversion of the normal word order, usually for emphasis, metre, or effect.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[great is the temptation] [← normal: the temptation is great]" · "[object that I love]"
+    </div>
+    <p class="example">
+      "'Great is the guilt' inverts 'the guilt is great' — anastrophe throws weight onto 'great' and slows the line."
+      <span class="source">— Biblical / epic style</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Connect to Day 1's <em>foreground</em> — inversion is syntactic foregrounding — and Day 5's emphasis. Anastrophe is defamiliarisation through order; name what the inversion highlights and why the writer broke the expected pattern. Common in poetry, older prose (Milton, the Authorised Version), and translation — a tool for sound and weight.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> deliberate anastrophe · inverted word order</p>
+  </div>
+
+  <!-- Word 10: climax -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">climax</span>
+      <span class="ipa">/ˈklaɪmæks/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">Arrangement of words or phrases in ascending order of importance, intensity, or scale (also called gradatio).</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[trial, then sentence, then death] [— each step intensifies]"
+    </div>
+    <p class="example">
+      "'First the whisper, then the argument, then the screaming silence' — climax ratchets each item higher until the final paradox lands."
+      <span class="source">— Rhetorical prose</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Connect to Day 16's <em>tricolon</em> (climax is often a rising tricolon) and Day 18's <em>stance</em>. Climax directs the reader's attention to the peak — name the escalation and its emotional payoff. The purposeful cousin of asyndeton's speed; both control how a sentence builds.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a rising climax · arranged in climax · gradatio</p>
+  </div>
+
+  <!-- Word 11: parataxis -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">parataxis</span>
+      <span class="ipa">/ˌpærəˈtæksɪs/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">Coordination of clauses without subordination or connectives — short, equal, side-by-side statements placed next to one another.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[he left. she stayed.] [— no 'because' or 'although']"
+    </div>
+    <p class="example">
+      "Hemingway's 'He drank. He drove. He died.' is parataxis — blunt, equal clauses with no linking word to explain causality."
+      <span class="source">— Modernist prose</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>hypotaxis</strong> (see box). Connect to Day 2's starkness and Day 11's <em>laconic</em>. Parataxis suggests objectivity, fatalism, or plainness — name the flatness and what it <em>withholds</em> (no cause is stated). The modernist sentence; essential for style analysis and for contrasting literary with non-literary registers.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> blunt parataxis · paratactic style · paratactic listing</p>
+  </div>
+
+  <!-- PARATAXIS vs HYPOTAXIS distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: parataxis vs. hypotaxis</h4>
+    <p>The fundamental choice in how clauses relate — equality vs. hierarchy:</p>
+    <p style="margin-top:8px;">
+      <strong>parataxis</strong> — Clauses set <em>side by side</em>, equal, with no subordination ("He left. She stayed."). The reader supplies the link.<br>
+      &rarr; Effect: objectivity, fatalism, plainness, restraint.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>hypotaxis</strong> — Clauses <em>nested</em> by subordination ("She stayed <em>because</em> he left."). One idea is made dependent on another.<br>
+      &rarr; Effect: complexity, nuance, qualification, a mind weighing conditions.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: are the clauses <strong>equal neighbours</strong> (parataxis) or <strong>one embedded inside another</strong> (hypotaxis)? This single choice encodes a writer's whole relationship to certainty — parataxis withholds causality; hypotaxis supplies it through <em>because / although / if</em>. Connect to Day 18's <em>modality</em> and <em>hedge</em>: hypotaxis is where nuance lives. Hemingway vs. Henry James is the canonical contrast.
+    </p>
+  </div>
+
+  <!-- Word 12: hypotaxis -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">hypotaxis</span>
+      <span class="ipa">/ˌhaɪpəˈtæksɪs/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">Subordination of clauses — embedding dependent ideas within main ones by means of conjunctions (because, although, if, when).</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[she stayed] [because] [he left]" · "[although tired, he worked]"
+    </div>
+    <p class="example">
+      "Henry James's sentences pile clause within clause — hypotaxis that mirrors a mind qualifying everything it says before it says it."
+      <span class="source">— Late-modern prose</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>parataxis</strong> (see box). Connect to Day 18's <em>modality</em> / <em>hedge</em> — hypotaxis carries nuance, condition, and caution. Hypotaxis suggests intellectual complexity or sophistication — name the nesting and what it implies about the thinker. The opposite of Hemingway's parataxis; together the pair explains almost any stylistic contrast you'll meet.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> dense hypotaxis · hypotactic nesting · heavily subordinated</p>
+  </div>
+
+  <!-- ============ PRACTICE EXERCISES ============ -->
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Fill in the Blank (Day 19 Words)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Complete each sentence with a word from today's list. Use context clues to choose the right scheme.</p>
+    <div class="word-bank">
+      <strong>Word Bank:</strong> chiasmus · zeugma · asyndeton · polysyndeton · litotes · antimetabole · isocolon · anadiplosis · anastrophe · climax · parataxis · hypotaxis
+    </div>
+    <ol>
+      <li>"'Ask not what your country can do for you — ask what you can do for your country' is textbook <span class="blank">________</span>."</li>
+      <li>"'He opened the door and his heart' is a <span class="blank">________</span> — one verb yokes a thing and a feeling."</li>
+      <li>"'I came, I saw, I conquered' uses <span class="blank">________</span> — the missing 'and' speeds the line."</li>
+      <li>"'We laughed and we cried and we remembered' piles on conjunctions — that's <span class="blank">________</span>."</li>
+      <li>"'He was not without influence' is <span class="blank">________</span>, a double-negative understatement."</li>
+      <li>"'When the going gets tough, the tough get going' repeats the same words flipped: <span class="blank">________</span>."</li>
+      <li>"'To err is human; to forgive, divine' balances two equal halves — an <span class="blank">________</span>."</li>
+      <li>"'The crime was blood; blood demands blood' chains clauses by a repeated word: <span class="blank">________</span>."</li>
+      <li>"'Great is the guilt' inverts normal order — that's <span class="blank">________</span>, used for emphasis."</li>
+      <li>"'First the whisper, then the argument, then the scream' rises in force: a rhetorical <span class="blank">________</span>."</li>
+      <li>"'He left. She stayed.' — equal clauses, no link — is <span class="blank">________</span>."</li>
+      <li>"'She stayed because he left' nests one clause in another: <span class="blank">________</span>."</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 2: Cross-Day Sentences (Day 19 terms + prior vocabulary)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Write one analytical sentence for each pair, using <strong>both</strong> words — one Day 19 term and one from Days 1-18.</p>
+    <ol>
+      <li><strong>asyndeton</strong> (Day 19) + <strong>tone</strong> (Day 11) — How does asyndeton shape a text's tone?</li>
+      <li><strong>zeugma</strong> (Day 19) + <strong>conflate</strong> (Day 1) — How can zeugma deliberately conflate two senses?</li>
+      <li><strong>parataxis</strong> (Day 19) + <strong>understatement</strong> (Day 18) — How does paratactic style reinforce understatement?</li>
+      <li><strong>chiasmus</strong> (Day 19) + <strong>foreground</strong> (Day 1) — How does chiasmus foreground a central idea by mirroring it?</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Explain the difference between each pair in 1-2 sentences. Why would you choose one over the other in an essay? Use a literary example to illustrate.</p>
+    <ol>
+      <li><strong>asyndeton</strong> vs. <strong>polysyndeton</strong> — see the distinction box above. Omission vs. piling-on?</li>
+      <li><strong>chiasmus</strong> vs. <strong>antimetabole</strong> — see the distinction box above. Ideas mirrored vs. same words flipped?</li>
+      <li><strong>parataxis</strong> vs. <strong>hypotaxis</strong> — see the distinction box above. Equal clauses vs. nested clauses?</li>
+    </ol>
+  </div>
+
+  <!-- ============ BUILDING YOUR TOOLKIT ============ -->
+  <h2><span class="icon">🎯</span> Building Your Device Toolkit</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Day 19 completes the "scheme" half of technical terminology.</strong> Devices (Days 15-16) are figures of <em>meaning</em>; schemes (today) are figures of <em>arrangement</em>. Together they let you analyse a text at both the word level and the sentence level — the full stylistic toolkit IB examiners look for.
+    </li>
+    <li>
+      <strong>Three distinction pairs anchor the day.</strong> asyndeton/polysyndeton (conjunctions: speed vs. weight), chiasmus/antimetabole (reversal: ideas vs. same words), parataxis/hypotaxis (clause relation: equal vs. nested). These six terms let you explain <em>why a sentence feels the way it does</em> — the move that lifts stylistic analysis from description to explanation.
+    </li>
+    <li>
+      <strong>Schemes are the grammar of rhythm and tone.</strong> Asyndeton accelerates; polysyndeton accumulates; parataxis withholds cause; hypotaxis supplies nuance. Once you can name the scheme, you can explain the <em>tempo</em> — and tempo is half of tone (Day 18). The two days are now linked.
+    </li>
+    <li>
+      <strong>Zeugma and litotes are the witty/subtle ones.</strong> Zeugma compresses a joke or a shock into one verb; litotes says less to mean more (kin to Day 18's understatement and hedge). Both reward close readers who notice the <em>economy</em> of a line. Name them and you've caught the writer being cunning.
+    </li>
+    <li>
+      <strong>Revisits tie the weeks together.</strong> juxtaposition (Day 15) → chiasmus; tricolon (Day 16) → isocolon/climax; anaphora (Day 15) → anadiplosis; foreground (Day 1) → anastrophe; understatement/hedge (Day 18) → litotes/hypotaxis. Your technical vocabulary is now a connected web across all three weeks, not isolated lists.
+    </li>
+    <li>
+      <strong>Deploy these on a real sentence this week.</strong> Take any paragraph and force yourself to name: one scheme of arrangement, one of the three distinction pairs it illustrates, and the effect on rhythm/tone. By Day 21's review you'll have a complete Week 3 toolkit — devices (15-16) + structure (17) + tone (18) + schemes (19).
+    </li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 20 (Next): Mixed Consolidation of the Week 3 Device Toolkit</strong><br>
+    A mixed set drawing across devices (15-16), structure (17), tone (18), and schemes (19) — to interleave the whole Week 3 vocabulary before the big review.<br><br>
+    <strong style="color:var(--ink);">Day 21:</strong> Week 3 review &amp; consolidation — all Day 15-20 terms + the distinction pairs, with a cumulative practice passage.
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 3, Day 19<br>
+  180 words learned so far (+12 today) · 1,120 to go · Rhetorical schemes 🎭
+</footer>
+
+
+</body>
+</html>

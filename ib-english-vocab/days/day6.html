@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 6</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall intro */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+
+  /* Group header for review */
+  .group-head {
+    margin: 32px 0 12px;
+    padding: 14px 18px;
+    background: var(--paper-warm);
+    border-radius: 10px;
+    border-left: 4px solid var(--purple);
+  }
+  .group-head .gh-title {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .group-head .gh-sub {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card.adj { border-left-color: var(--gold); }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rtag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ink-soft);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 1px 8px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .review-card.adj .rtag { color: var(--gold); }
+  .review-card .rdef {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-card.adj .rdef em { color: var(--gold); }
+  .review-card .rex {
+    font-size: 12px;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    padding-left: 10px;
+    border-left: 2px solid var(--gold-soft);
+  }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 90px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 6 / 112 — Week 1 Review</div>
+  <div class="date">Saturday, 29 August 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 1)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">1</div>
+      <div class="dot done">2</div>
+      <div class="dot done">3</div>
+      <div class="dot done">4</div>
+      <div class="dot done">5</div>
+      <div class="dot today">6</div>
+      <div class="dot">7</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--teal);">Day 1 ✓</strong></td><td>Core analysis verbs (10) + first evaluative adjectives (nuanced, didactic) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 2 ✓</strong></td><td>More analysis &amp; effect/causation verbs (12) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 3 ✓</strong></td><td>Writing-Method Verbs I (12) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 4 ✓</strong></td><td>Writing-Method Verbs II (12) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 5 ✓</strong></td><td>Evaluative Adjectives (12) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 6 →</strong></td><td><strong>Weekly Review &amp; Consolidation</strong> — all 60 Week 1 words + 9 near-synonym clusters</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 7:</strong></td><td>Weekly assessment — a guided mini-essay using the full Week 1 vocabulary</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">All Week 1 words<br>Days 1–5 consolidated</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">0</div>
+      <div class="sr-note">Consolidation day</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">est. 45–60 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Why a pure review day?</strong> Memory research is clear: the leap from "I've seen this word" to "I own this word" happens <em>not</em> on first contact but on the third to fifth retrieval. You've met all 60 Week 1 terms once or twice. Today you retrieve them <em>together</em>, in context, and — crucially — you untangle the near-synonym clusters that examiners love to test. A review day is not a rest day; it is the day the vocabulary becomes yours.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Sweep all 60 words by category &rarr; (2) unpack the 9 distinction clusters &rarr; (3) cumulative practice &rarr; (4) Day 7 preview (assessment). Work actively: cover the definitions, recall, then check.
+  </div>
+
+  <!-- ============ THE WEEK 1 TOOLKIT AT A GLANCE ============ -->
+  <h2><span class="icon">🗂️</span> The Week 1 Toolkit at a Glance</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge">WEEK 1 CONSOLIDATION — REVIEW DAY</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    Five conceptual families, built in order: <strong style="color:var(--ink);">what texts do</strong> (analysis, Days 1–2) &rarr; <strong style="color:var(--ink);">how texts are built</strong> (craft, Days 3–4) &rarr; <strong style="color:var(--ink);">how we judge texts</strong> (evaluation, Day 5). Re-read each card and ask: <em>Can I use this word in a sentence about a text I'm reading right now?</em>
+  </p>
+
+  <!-- Group A: Day 1 -->
+  <div class="group-head">
+    <div class="gh-title">Group A — Core Analysis Verbs &amp; First Adjectives <span style="font-size:13px; color:var(--ink-soft);">(Day 1)</span></div>
+    <div class="gh-sub">The verbs that name <em>what a text does</em> to its reader and its ideas — plus the two adjectives (nuanced, didactic) that opened the evaluative register.</div>
+  </div>
+  <div class="review-grid">
+    <div class="review-card"><span class="rword">subvert</span><span class="rtag">verb</span><p class="rdef"><em>To undermine or overthrow established ideas/authority from within.</em></p><p class="rex">"Atwood subverts the fairy-tale form to expose its complicity in patriarchy."</p></div>
+    <div class="review-card"><span class="rword">juxtapose</span><span class="rtag">verb</span><p class="rdef"><em>To place elements side by side to highlight contrast.</em></p><p class="rex">"The novel juxtaposes wealth and decay within a single street."</p></div>
+    <div class="review-card"><span class="rword">foreground</span><span class="rtag">verb</span><p class="rdef"><em>To bring an element to the centre of attention.</em></p><p class="rex">"The opening foregrounds the theme of unreliable memory."</p></div>
+    <div class="review-card"><span class="rword">undermine</span><span class="rtag">verb</span><p class="rdef"><em>To weaken an idea or position gradually or deliberately.</em></p><p class="rex">"The ending undermines the narrator's claimed reliability."</p></div>
+    <div class="review-card"><span class="rword">evoke</span><span class="rtag">verb</span><p class="rdef"><em>To call forth a feeling, memory, or image in the reader.</em></p><p class="rex">"The imagery evokes a quiet sense of displacement."</p></div>
+    <div class="review-card"><span class="rword">elucidate</span><span class="rtag">verb</span><p class="rdef"><em>To make an idea or theme clear or explicit.</em></p><p class="rex">"The symbol elucidates the novel's central conflict."</p></div>
+    <div class="review-card"><span class="rword">problematize</span><span class="rtag">verb</span><p class="rdef"><em>To expose the complexity of an assumed-certain issue.</em></p><p class="rex">"The text problematizes the good/evil binary."</p></div>
+    <div class="review-card"><span class="rword">conflate</span><span class="rtag">verb</span><p class="rdef"><em>To wrongly merge two distinct things into one.</em></p><p class="rex">"Critics often conflate the author's voice with the narrator's."</p></div>
+    <div class="review-card"><span class="rword">obfuscate</span><span class="rtag">verb</span><p class="rdef"><em>To deliberately obscure or cloud meaning.</em></p><p class="rex">"The bureaucratic prose obfuscates the truth."</p></div>
+    <div class="review-card"><span class="rword">interrogate</span><span class="rtag">verb</span><p class="rdef"><em>To critically examine or question a text or assumption.</em></p><p class="rex">"We must interrogate the text's claim to objectivity."</p></div>
+    <div class="review-card adj"><span class="rword">nuanced</span><span class="rtag">adj</span><p class="rdef"><em>Showing subtle, fine-grained distinction; holding complexity.</em></p><p class="rex">"Her nuanced reading attends to the contradiction."</p></div>
+    <div class="review-card adj"><span class="rword">didactic</span><span class="rtag">adj</span><p class="rdef"><em>Intended to teach or instruct, especially morally.</em></p><p class="rex">"The fable is overtly didactic, yet quietly moving."</p></div>
+  </div>
+
+  <!-- Group B: Day 2 -->
+  <div class="group-head">
+    <div class="gh-title">Group B — Analysis &amp; Effect/Causation Verbs <span style="font-size:13px; color:var(--ink-soft);">(Day 2)</span></div>
+    <div class="gh-sub">Verbs that name emphasis, dismantling, causation, and exemplification — the analytical machinery for <em>how an argument or effect is produced</em>.</div>
+  </div>
+  <div class="review-grid">
+    <div class="review-card"><span class="rword">underscore</span><span class="rtag">verb</span><p class="rdef"><em>To emphasise or stress.</em></p><p class="rex">"The repetition underscores the theme of isolation."</p></div>
+    <div class="review-card"><span class="rword">illuminate</span><span class="rtag">verb</span><p class="rdef"><em>To shed light on or clarify.</em></p><p class="rex">"The subplot illuminates the character's hidden motive."</p></div>
+    <div class="review-card"><span class="rword">dismantle</span><span class="rtag">verb</span><p class="rdef"><em>To take apart an argument or structure critically.</em></p><p class="rex">"The essay dismantles the myth of meritocracy."</p></div>
+    <div class="review-card"><span class="rword">deconstruct</span><span class="rtag">verb</span><p class="rdef"><em>To break a text into parts to reveal hidden assumptions.</em></p><p class="rex">"The critic deconstructs the nature/culture opposition."</p></div>
+    <div class="review-card"><span class="rword">destabilise</span><span class="rtag">verb</span><p class="rdef"><em>To unsettle or undermine the stability of meaning or position.</em></p><p class="rex">"The unreliable narrator destabilises our sense of truth."</p></div>
+    <div class="review-card"><span class="rword">engender</span><span class="rtag">verb</span><p class="rdef"><em>To give rise to or cause (a feeling or condition).</em></p><p class="rex">"The claustrophobic setting engenders paranoia."</p></div>
+    <div class="review-card"><span class="rword">provoke</span><span class="rtag">verb</span><p class="rdef"><em>To deliberately stimulate reaction or thought.</em></p><p class="rex">"Kafka's opening provokes a creeping unease."</p></div>
+    <div class="review-card"><span class="rword">elicit</span><span class="rtag">verb</span><p class="rdef"><em>To draw out (a response or feeling) from the reader.</em></p><p class="rex">"The final line elicits reluctant sympathy."</p></div>
+    <div class="review-card"><span class="rword">exemplify</span><span class="rtag">verb</span><p class="rdef"><em>To serve as a clear example of.</em></p><p class="rex">"The scene exemplifies the novel's governing irony."</p></div>
+    <div class="review-card"><span class="rword">instantiate</span><span class="rtag">verb</span><p class="rdef"><em>To make an abstract idea concrete in a specific instance.</em></p><p class="rex">"The character instantiates the theme of alienation."</p></div>
+    <div class="review-card"><span class="rword">perpetuate</span><span class="rtag">verb</span><p class="rdef"><em>To cause (often harmfully) to continue or persist.</em></p><p class="rex">"The narrative perpetuates a colonial stereotype."</p></div>
+    <div class="review-card"><span class="rword">vindicate</span><span class="rtag">verb</span><p class="rdef"><em>To justify or prove right in hindsight.</em></p><p class="rex">"The twist vindicates the earlier ambiguity."</p></div>
+  </div>
+
+  <!-- Group C: Day 3 -->
+  <div class="group-head">
+    <div class="gh-title">Group C — Writing-Method Verbs I <span style="font-size:13px; color:var(--ink-soft);">(Day 3)</span></div>
+    <div class="gh-sub">The shift to <em>how texts are built</em>: verbs of deliberate making, integration, and artistry (textile, sculptural, musical metaphors).</div>
+  </div>
+  <div class="review-grid">
+    <div class="review-card"><span class="rword">craft</span><span class="rtag">verb</span><p class="rdef"><em>To construct with deliberate skill and artistry.</em></p><p class="rex">"The author crafts the voice with flat restraint."</p></div>
+    <div class="review-card"><span class="rword">deploy</span><span class="rtag">verb</span><p class="rdef"><em>To position and use a technique strategically.</em></p><p class="rex">"Atwood deploys biblical naming with precision."</p></div>
+    <div class="review-card"><span class="rword">weave</span><span class="rtag">verb</span><p class="rdef"><em>To interlace multiple strands into a unified whole.</em></p><p class="rex">"He weaves myth and history into one fabric."</p></div>
+    <div class="review-card"><span class="rword">render</span><span class="rtag">verb</span><p class="rdef"><em>To represent or translate into a perceivable form.</em></p><p class="rex">"Chopin renders awakening as a tactile process."</p></div>
+    <div class="review-card"><span class="rword">orchestrate</span><span class="rtag">verb</span><p class="rdef"><em>To coordinate elements with deliberate precision.</em></p><p class="rex">"Miller orchestrates the time transitions."</p></div>
+    <div class="review-card"><span class="rword">sculpt</span><span class="rtag">verb</span><p class="rdef"><em>To shape by careful, refining craftsmanship.</em></p><p class="rex">"Morrison sculpts memory into nonlinear form."</p></div>
+    <div class="review-card"><span class="rword">layer</span><span class="rtag">verb</span><p class="rdef"><em>To build up meaning through superimposed levels.</em></p><p class="rex">"Fitzgerald layers the green light with resonance."</p></div>
+    <div class="review-card"><span class="rword">embed</span><span class="rtag">verb</span><p class="rdef"><em>To fix firmly within a surrounding context.</em></p><p class="rex">"Orwell embeds politics in domestic routine."</p></div>
+    <div class="review-card"><span class="rword">frame</span><span class="rtag">verb</span><p class="rdef"><em>To present within a perspective that shapes meaning.</em></p><p class="rex">"Brontë frames the story through double narration."</p></div>
+    <div class="review-card"><span class="rword">thread</span><span class="rtag">verb</span><p class="rdef"><em>To run one element continuously through a text.</em></p><p class="rex">"Shakespeare threads the blood motif throughout."</p></div>
+    <div class="review-card"><span class="rword">infuse</span><span class="rtag">verb</span><p class="rdef"><em>(Author) to instil a quality into the text.</em></p><p class="rex">"Achebe infuses the prose with oral tradition."</p></div>
+    <div class="review-card"><span class="rword">suffuse</span><span class="rtag">verb</span><p class="rdef"><em>(Atmosphere) to spread through completely.</em></p><p class="rex">"An atmosphere of dread suffuses the scene."</p></div>
+  </div>
+
+  <!-- Group D: Day 4 -->
+  <div class="group-head">
+    <div class="gh-title">Group D — Writing-Method Verbs II <span style="font-size:13px; color:var(--ink-soft);">(Day 4)</span></div>
+    <div class="gh-sub">Completing the craft toolkit: saturation, integration, control, and refinement verbs.</div>
+  </div>
+  <div class="review-grid">
+    <div class="review-card"><span class="rword">permeate</span><span class="rtag">verb</span><p class="rdef"><em>To spread throughout every part of something.</em></p><p class="rex">"The theme of surveillance permeates 1984."</p></div>
+    <div class="review-card"><span class="rword">saturate</span><span class="rtag">verb</span><p class="rdef"><em>To fill completely, to capacity.</em></p><p class="rex">"Colour imagery saturates the opening chapter."</p></div>
+    <div class="review-card"><span class="rword">interlace</span><span class="rtag">verb</span><p class="rdef"><em>To bind distinct elements so tightly they're interdependent.</em></p><p class="rex">"McEwan interlaces writing with atonement."</p></div>
+    <div class="review-card"><span class="rword">inscribe</span><span class="rtag">verb</span><p class="rdef"><em>To fix permanently into a text (monumental marking).</em></p><p class="rex">"Morrison inscribes slavery into the novel's body."</p></div>
+    <div class="review-card"><span class="rword">construct</span><span class="rtag">verb</span><p class="rdef"><em>To build methodically; assemble structure with design.</em></p><p class="rex">"Austen constructs the plot around irony."</p></div>
+    <div class="review-card"><span class="rword">arrange</span><span class="rtag">verb</span><p class="rdef"><em>To order or sequence elements deliberately for effect.</em></p><p class="rex">"Bishop arranges the losses in ascending order."</p></div>
+    <div class="review-card"><span class="rword">calibrate</span><span class="rtag">verb</span><p class="rdef"><em>To adjust precisely toward a fixed target.</em></p><p class="rex">"Ishiguro calibrates the revelation with care."</p></div>
+    <div class="review-card"><span class="rword">modulate</span><span class="rtag">verb</span><p class="rdef"><em>To vary or shift tone, pace, or register.</em></p><p class="rex">"Woolf modulates between thought and description."</p></div>
+    <div class="review-card"><span class="rword">attenuate</span><span class="rtag">verb</span><p class="rdef"><em>To weaken or diminish intensity deliberately.</em></p><p class="rex">"McCarthy's prose attenuates all comfort."</p></div>
+    <div class="review-card"><span class="rword">distil</span><span class="rtag">verb</span><p class="rdef"><em>To extract and concentrate the essential essence.</em></p><p class="rex">"Plath distils anguish into the bell-jar image."</p></div>
+    <div class="review-card"><span class="rword">hone</span><span class="rtag">verb</span><p class="rdef"><em>To refine or perfect through repeated effort over time.</em></p><p class="rex">"Hemingway hones his economy across stories."</p></div>
+    <div class="review-card"><span class="rword">sharpen</span><span class="rtag">verb</span><p class="rdef"><em>To make more acute or intense at a single moment.</em></p><p class="rex">"The tense shift sharpens the trauma's immediacy."</p></div>
+  </div>
+
+  <!-- Group E: Day 5 -->
+  <div class="group-head">
+    <div class="gh-title">Group E — Evaluative Adjectives <span style="font-size:13px; color:var(--ink-soft);">(Day 5)</span></div>
+    <div class="gh-sub">The vocabulary for <em>judging</em> texts: stance words, caution words, and aspiration words. The language of critical appraisal.</div>
+  </div>
+  <div class="review-grid">
+    <div class="review-card adj"><span class="rword">polemical</span><span class="rtag">adj</span><p class="rdef"><em>Openly argumentative or combative in tone.</em></p><p class="rex">"Swift's polemical essay attacks the policy head-on."</p></div>
+    <div class="review-card adj"><span class="rword">subversive</span><span class="rtag">adj</span><p class="rdef"><em>Working to undermine authority, often covertly.</em></p><p class="rex">"The Handmaid's Tale is fundamentally subversive."</p></div>
+    <div class="review-card adj"><span class="rword">satirical</span><span class="rtag">adj</span><p class="rdef"><em>Using wit/irony to expose folly (a mode).</em></p><p class="rex">"Animal Farm is a sustained satirical allegory."</p></div>
+    <div class="review-card adj"><span class="rword">allegorical</span><span class="rtag">adj</span><p class="rdef"><em>Carrying a second symbolic level of meaning.</em></p><p class="rex">"The Faerie Queene is an allegorical romance."</p></div>
+    <div class="review-card adj"><span class="rword">tendentious</span><span class="rtag">adj</span><p class="rdef"><em>Biased while disguised as neutral.</em></p><p class="rex">"The prosecutor's tendentious framing manipulates."</p></div>
+    <div class="review-card adj"><span class="rword">reductive</span><span class="rtag">adj</span><p class="rdef"><em>Oversimplifying; flattening complexity.</em></p><p class="rex">"Reading it merely as X is reductive."</p></div>
+    <div class="review-card adj"><span class="rword">insidious</span><span class="rtag">adj</span><p class="rdef"><em>Harmful in a subtle, gradual, unnoticed way.</em></p><p class="rex">"The insidious appeal of the Party lies in its banality."</p></div>
+    <div class="review-card adj"><span class="rword">transgressive</span><span class="rtag">adj</span><p class="rdef"><em>Crossing accepted boundaries or taboos.</em></p><p class="rex">"The transgressive desire of Gothic heroines."</p></div>
+    <div class="review-card adj"><span class="rword">provocative</span><span class="rtag">adj</span><p class="rdef"><em>Deliberately stimulating reaction or thought.</em></p><p class="rex">"Kafka's provocative opening implicates the reader."</p></div>
+    <div class="review-card adj"><span class="rword">ambivalent</span><span class="rtag">adj</span><p class="rdef"><em>Holding mixed or contradictory feelings.</em></p><p class="rex">"The play is deeply ambivalent about empire."</p></div>
+    <div class="review-card adj"><span class="rword">didactic</span><span class="rtag">adj</span><p class="rdef"><em>Intended to teach; weigh intent against effect.</em></p><p class="rex">"A Christmas Carol is didactic yet moving."</p></div>
+    <div class="review-card adj"><span class="rword">nuanced</span><span class="rtag">adj</span><p class="rdef"><em>Subtle, complexity-holding — the IB gold standard.</em></p><p class="rex">"Morrison's nuanced portrayal of Sethe."</p></div>
+  </div>
+
+  <!-- ============ NEAR-SYNONYM CLUSTERS ============ -->
+  <h2><span class="icon">🔗</span> The 9 Near-Synonym Clusters</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    These are the pairs examiners probe — and the pairs students most often blur. Each cluster below restates the distinction box from its original day. <strong>By the end of today, choosing the right word in each pair should be instinctive.</strong>
+  </p>
+
+  <div class="distinction-box">
+    <h4>⚠️ Cluster 1: weave vs. thread <span style="font-weight:400; font-size:12px; color:var(--ink-soft);">(Day 3)</span></h4>
+    <p><strong>weave</strong> — Many strands interlaced into a unified whole (you build the cloth).<br>&rarr; "He weaves myth and history into one fabric."</p>
+    <p style="margin-top:6px;"><strong>thread</strong> — One continuous strand run through an existing text (you run a line through).<br>&rarr; "Shakespeare threads the blood motif throughout."</p>
+    <p style="margin-top:6px; font-size:12px; color:var(--ink-soft);">Trick: weave = build from many; thread = one line through.</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Cluster 2: infuse vs. suffuse <span style="font-weight:400; font-size:12px; color:var(--ink-soft);">(Day 3)</span></h4>
+    <p><strong>infuse</strong> — The <em>author</em> puts a quality into the text (author is the active agent).<br>&rarr; "Achebe infuses the prose with oral tradition."</p>
+    <p style="margin-top:6px;"><strong>suffuse</strong> — The <em>atmosphere</em> spreads through on its own (atmosphere is the subject).<br>&rarr; "Dread suffuses the scene."</p>
+    <p style="margin-top:6px; font-size:12px; color:var(--ink-soft);">Trick: infuse = author in; suffuse = mood spreads.</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Cluster 3: permeate vs. saturate <span style="font-weight:400; font-size:12px; color:var(--ink-soft);">(Day 4)</span></h4>
+    <p><strong>permeate</strong> — Spread through every part (presence throughout).<br>&rarr; "Surveillance permeates every level of the novel."</p>
+    <p style="margin-top:6px;"><strong>saturate</strong> — Fill completely, to capacity (degree of fullness).<br>&rarr; "Colour imagery saturates the chapter."</p>
+    <p style="margin-top:6px; font-size:12px; color:var(--ink-soft);">Trick: permeate = everywhere; saturate = filled up.</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Cluster 4: calibrate vs. modulate <span style="font-weight:400; font-size:12px; color:var(--ink-soft);">(Day 4)</span></h4>
+    <p><strong>calibrate</strong> — Precise tuning toward a fixed target.<br>&rarr; "Ishiguro calibrates the revelation to the exact degree."</p>
+    <p style="margin-top:6px;"><strong>modulate</strong> — Variation or shift of tone, pace, or register.<br>&rarr; "Woolf modulates between thought and description."</p>
+    <p style="margin-top:6px; font-size:12px; color:var(--ink-soft);">Trick: calibrate = tune to a point; modulate = vary across range.</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Cluster 5: construct vs. arrange <span style="font-weight:400; font-size:12px; color:var(--ink-soft);">(Day 4)</span></h4>
+    <p><strong>construct</strong> — Build the whole structure methodically.<br>&rarr; "Austen constructs the plot around irony."</p>
+    <p style="margin-top:6px;"><strong>arrange</strong> — Order or sequence the parts deliberately for effect.<br>&rarr; "Bishop arranges the losses in ascending order."</p>
+    <p style="margin-top:6px; font-size:12px; color:var(--ink-soft);">Trick: construct = make the building; arrange = order the rooms.</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Cluster 6: hone vs. sharpen <span style="font-weight:400; font-size:12px; color:var(--ink-soft);">(Day 4)</span></h4>
+    <p><strong>hone</strong> — Perfect over time through repeated effort.<br>&rarr; "Hemingway hones his economy across stories."</p>
+    <p style="margin-top:6px;"><strong>sharpen</strong> — Intensify at a single moment.<br>&rarr; "The tense shift sharpens the trauma's immediacy."</p>
+    <p style="margin-top:6px; font-size:12px; color:var(--ink-soft);">Trick: hone = slow polish over years; sharpen = sudden edge now.</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Cluster 7: polemical vs. tendentious <span style="font-weight:400; font-size:12px; color:var(--ink-soft);">(Day 5)</span></h4>
+    <p><strong>polemical</strong> — Wears its bias <em>openly</em>; picks a fight in plain sight.<br>&rarr; "Her polemical essay attacks the policy head-on."</p>
+    <p style="margin-top:6px;"><strong>tendentious</strong> — Hides its bias <em>behind a mask of neutrality</em>.<br>&rarr; "The documentary's tendentious editing makes its case seem inevitable."</p>
+    <p style="margin-top:6px; font-size:12px; color:var(--ink-soft);">Trick: polemical = honest about its stance; tendentious = deceptive about it.</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Cluster 8: satirical vs. subversive <span style="font-weight:400; font-size:12px; color:var(--ink-soft);">(Day 5)</span></h4>
+    <p><strong>satirical</strong> — The <em>method</em>: mocks its target through wit, irony, exaggeration.<br>&rarr; "The satirical portrait exposes vanity through comic exaggeration."</p>
+    <p style="margin-top:6px;"><strong>subversive</strong> — The <em>aim</em>: works to undermine or topple power, with or without humour.<br>&rarr; "The subversive framing erodes the reader's faith in the present order."</p>
+    <p style="margin-top:6px; font-size:12px; color:var(--ink-soft);">Trick: satire holds up a fun-house mirror; subversion quietly loosens the foundations.</p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⚠️ Cluster 9: reductive vs. nuanced <span style="font-weight:400; font-size:12px; color:var(--ink-soft);">(Day 5)</span></h4>
+    <p><strong>reductive</strong> — Flattens complexity; loses essential nuance; collapses contradiction into one claim.<br>&rarr; "Reading the novel as simply 'anti-war' is reductive."</p>
+    <p style="margin-top:6px;"><strong>nuanced</strong> — Captures subtle distinction and complexity; holds contradiction.<br>&rarr; "Her nuanced reading attends to both critique and respect."</p>
+    <p style="margin-top:6px; font-size:12px; color:var(--ink-soft);">Trick: reductive = the reading shrinks; nuanced = the reading expands. They are direct opposites — the most important evaluative pair you own.</p>
+  </div>
+
+  <!-- ============ PRACTICE EXERCISES ============ -->
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Choose the Right Word from Each Cluster</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">For each sentence, pick the correct word from the paired cluster. The context dictates which nuance fits.</p>
+    <ol>
+      <li>The novelist doesn't build a single cloth from many tales; rather, she runs the symbol of the river <span class="blank">________</span> (weave / thread) through every chapter.</li>
+      <li>The composer's score <span class="blank">________</span> (infuse / suffuse) the film with melancholy — here the <em>mood</em> is the active spreader, not the director.</li>
+      <li>Colour and sound don't merely appear in the scene; they <span class="blank">________</span> (permeate / saturate) it to the point of overload.</li>
+      <li>The director <span class="blank">________</span> (calibrate / modulate) the score between tension and calm, shifting register scene by scene.</li>
+      <li>He <span class="blank">________</span> (construct / arrange) the entire sonnet around a single volta, building its architecture from scratch.</li>
+      <li>Years of revision <span class="blank">________</span> (hone / sharpen) her imagery, whereas the final stanza <span class="blank">________</span> (hone / sharpen) the poem's emotional cut in an instant.</li>
+      <li>The columnist's <span class="blank">________</span> (polemical / tendentious) piece wears its anger openly; contrast it with the op-ed whose <span class="blank">________</span> (polemical / tendentious) framing hides its bias behind fake neutrality.</li>
+      <li>The comedy is <span class="blank">________</span> (satirical / subversive) in method — it mocks — but its deeper <span class="blank">________</span> (satirical / subversive) aim is to erode the reader's trust in authority.</li>
+      <li>Calling the novel "just a love story" is <span class="blank">________</span> (reductive / nuanced); a truly <span class="blank">________</span> (reductive / nuanced) reading would hold its contradictions.</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 2: The Full-Arsenal Sentence</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Write one analytical sentence for each prompt, deliberately combining words from <em>different</em> Week 1 groups (analysis + craft + evaluation). This is the synthesis IB rewards.</p>
+    <ol>
+      <li>Combine <strong>foreground</strong> (A) + <strong>layer</strong> (C) + <strong>nuanced</strong> (E) — how does foregrounding a layered image yield a nuanced effect?</li>
+      <li>Combine <strong>destabilise</strong> (B) + <strong>frame</strong> (C) + <strong>ambivalent</strong> (E) — how does a destabilising frame produce textual ambivalence?</li>
+      <li>Combine <strong>elicit</strong> (B) + <strong>distil</strong> (D) + <strong>reductive</strong> (E) — why is distilling an emotion to elicit sympathy the opposite of a reductive reading?</li>
+      <li>Combine <strong>subvert</strong> (A) + <strong>weave</strong> (C) + <strong>subversive</strong> (E) — link the verb and adjective forms in one claim.</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 3: Self-Test &amp; Spot-the-Cluster</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;"><strong>(a) Blank-page recall:</strong> Without looking, write definitions for these 10 randomly chosen Week 1 words — <em>subvert, deconstruct, craft, infuse, calibrate, inscribe, tendentious, evoke, instantiate, attenuate</em>. Check against the cards above; any you missed, re-read tonight.<br><br><strong>(b) Spot the cluster:</strong> For each word below, name the near-synonym it belongs to and the distinction:<br>
+      &bull; <strong>thread</strong> → pairs with ___ (difference: ___)<br>
+      &bull; <strong>suffuse</strong> → pairs with ___ (difference: ___)<br>
+      &bull; <strong>saturate</strong> → pairs with ___ (difference: ___)<br>
+      &bull; <strong>modulate</strong> → pairs with ___ (difference: ___)<br>
+      &bull; <strong>arrange</strong> → pairs with ___ (difference: ___)<br>
+      &bull; <strong>sharpen</strong> → pairs with ___ (difference: ___)<br>
+      &bull; <strong>tendentious</strong> → pairs with ___ (difference: ___)<br>
+      &bull; <strong>subversive</strong> → pairs with ___ (difference: ___)<br>
+      &bull; <strong>nuanced</strong> → pairs with ___ (difference: ___)</p>
+  </div>
+
+  <!-- ============ BUILDING YOUR TOOLKIT ============ -->
+  <h2><span class="icon">🎯</span> What Week 1 Gave You</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>A three-layer analytical language.</strong> Layer 1 — <em>what texts do</em> (analysis verbs, Days 1–2). Layer 2 — <em>how texts are built</em> (craft verbs, Days 3–4). Layer 3 — <em>how we judge texts</em> (evaluative adjectives, Day 5). Most students only have Layer 1. You now have the full stack.
+    </li>
+    <li>
+      <strong>Precision over approximation.</strong> The 9 clusters exist because "they're basically the same" is where analysis collapses. Choosing <em>weave</em> over <em>thread</em>, or <em>nuanced</em> over <em>reductive</em>, is a Criterion A/B precision move that separates 5s from 7s.
+    </li>
+    <li>
+      <strong>Your caution vs. aspiration vocabulary.</strong> <em>reductive, tendentious, insidious</em> let you name a text's (or your own draft's) failure precisely. <em>nuanced, ambivalent, allegorical</em> let you describe success. Deploy both in conclusions.
+    </li>
+    <li>
+      <strong>Stance verbs with exact targets.</strong> <em>polemical</em> (open attack), <em>satirical</em> (mock with wit), <em>subversive</em> (undermine power), <em>transgressive</em> (cross boundaries), <em>provocative</em> (jolt). Match the word to the precise challenge the text mounts.
+    </li>
+    <li>
+      <strong>Craft verbs that earn you "how" marks.</strong> Instead of "the author uses imagery," you can now say the author <em>distils</em> an emotion, <em>calibrates</em> a revelation, or <em>inscribes</em> a history. That specificity is what IOC and Paper 2 examiners reward.
+    </li>
+    <li>
+      <strong>A consolidation habit.</strong> Today proved that reviewing 60 words in one sitting is doable and high-yield. Keep this rhythm: learn across the week, consolidate on Day 6, assess on Day 7. Memory is built in the retrieval, not the first read.
+    </li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 7 (Tomorrow): Weekly Assessment</strong><br>
+    A guided mini-essay task that forces you to deploy the full Week 1 vocabulary in one sustained analytical passage — the real test of whether the words are yours. No new terms; pure application.<br><br>
+    <strong style="color:var(--ink);">Day 8+:</strong> Phase 2 — Descriptive Precision. Environmental / setting adjectives (<em>oppressive, desolate, labyrinthine, verdant, sepulchral, stark, austere, bucolic…</em>), then character adjectives and mood/atmosphere words. The vocabulary shifts from <em>argument</em> to <em>atmosphere</em>.
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 1, Week 1, Day 6 — Consolidation<br>
+  60 words consolidated (all of Week 1) · 0 new today · 1,240 to go · You now own the full analytical stack 🧠
+</footer>
+
+</body>
+</html>

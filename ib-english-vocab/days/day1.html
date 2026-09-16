@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 1</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Plan Overview */
+  .plan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .phase-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .phase-card:nth-child(1) { border-left-color: var(--teal); }
+  .phase-card:nth-child(2) { border-left-color: var(--gold); }
+  .phase-card:nth-child(3) { border-left-color: var(--coral); }
+  .phase-card:nth-child(4) { border-left-color: #6b46c1; }
+  .phase-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .phase-card .weeks {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  .phase-card ul {
+    list-style: none;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .phase-card ul li {
+    padding: 2px 0;
+  }
+  .phase-card ul li::before {
+    content: "•";
+    color: var(--gold-soft);
+    margin-right: 6px;
+  }
+  .phase-card.current {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-left-width: 4px;
+    box-shadow: var(--shadow-lg);
+  }
+  .phase-card.current h4::after {
+    content: " ← YOU ARE HERE";
+    font-size: 10px;
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  /* Spaced Repetition */
+  .sr-table {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .sr-table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .sr-table th {
+    background: var(--paper-warm);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--ink);
+    border-bottom: 2px solid var(--line);
+  }
+  .sr-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  .sr-table tr:last-child td { border-bottom: none; }
+  .sr-table .day-label { font-weight: 600; color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .plan-grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 1 / 112 — Foundation Phase</div>
+  <div class="date">Saturday, 22 August 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Student Profile -->
+  <h2><span class="icon">📋</span> Your Study Profile</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow); font-size:14px; color:var(--ink-soft); line-height:1.8;">
+    <strong style="color:var(--ink);">Current level:</strong> IELTS 7.5 (estimated vocabulary ~6.5)<br>
+    <strong style="color:var(--ink);">Target:</strong> IB English Lang &amp; Lit mastery — sophisticated literary analysis vocabulary<br>
+    <strong style="color:var(--ink);">Gap:</strong> Your functional English is strong, but IB Lang &amp; Lit demands <em>analytical precision</em> — the specific verbs, adjectives, and terms that let you discuss <em>how</em> texts create meaning, not just <em>what</em> they say.<br>
+    <strong style="color:var(--ink);">Daily commitment:</strong> ~20 minutes (learn + review + practice)<br>
+    <strong style="color:var(--ink);">Total words:</strong> ~1,300+ over 16 weeks (12 new words/day, 6 days/week + 1 review day)
+  </div>
+
+  <!-- 16-Week Plan -->
+  <h2><span class="icon">🗺️</span> 16-Week Programme Map</h2>
+  <div class="plan-grid">
+    <div class="phase-card current">
+      <h4>Phase 1: Analytical Verbs</h4>
+      <div class="weeks">Weeks 1–4 · The Verbs You Use to Analyse</div>
+      <ul>
+        <li>Core analysis verbs (subvert, juxtapose, foreground…)</li>
+        <li>More analysis &amp; effect verbs (underscore, provoke, engender…)</li>
+        <li><strong>Writing-method verbs</strong> — craft, deploy, weave, render, orchestrate, sculpt, layer, embed…</li>
+        <li>Evaluative adjectives (nuanced, didactic, polemical, subversive…)</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 2: Descriptive Precision</h4>
+      <div class="weeks">Weeks 5–8 · Complex Adjectives for Analysis</div>
+      <ul>
+        <li><strong>Environmental &amp; setting adjectives</strong> — oppressive, desolate, labyrinthine, verdant, sepulchral…</li>
+        <li><strong>Character adjectives</strong> — mercurial, stoic, inscrutable, indomitable, saturnine, sanguine…</li>
+        <li>Mood &amp; atmosphere words — sombre, spectral, haunting, elegiac, foreboding…</li>
+        <li>Tone &amp; register adjectives — lyrical, sparse, ornate, colloquial, laconic…</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 3: Technical Terminology</h4>
+      <div class="weeks">Weeks 9–12 · Device &amp; Genre Vocabulary</div>
+      <ul>
+        <li>Literary device terminology (sound, figurative, structural)</li>
+        <li>Poetic &amp; dramatic terminology</li>
+        <li>Rhetorical &amp; persuasive devices</li>
+        <li>Genre, intertextuality &amp; IB command terms</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <h4>Phase 4: Mastery &amp; Application</h4>
+      <div class="weeks">Weeks 13–16 · Consolidation</div>
+      <ul>
+        <li>Critical theory vocabulary</li>
+        <li>Stylistic &amp; linguistic analysis terms</li>
+        <li>Argumentative essay vocabulary</li>
+        <li>Comprehensive review &amp; final assessment</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- This Week -->
+  <h2><span class="icon">📅</span> This Week (Week 1)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot today">1</div>
+      <div class="dot">2</div>
+      <div class="dot">3</div>
+      <div class="dot">4</div>
+      <div class="dot">5</div>
+      <div class="dot">6</div>
+      <div class="dot">7</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%;"><strong style="color:var(--ink);">Day 1:</strong></td><td>Foundational analysis verbs (10) + evaluative adjectives (2)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0;"><strong style="color:var(--ink);">Day 2:</strong></td><td>More analysis verbs + effect verbs (underscore, provoke, engender…)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0;"><strong style="color:var(--ink);">Day 3:</strong></td><td><strong>Writing-method verbs I</strong> — craft, deploy, weave, render, orchestrate…</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0;"><strong style="color:var(--ink);">Day 4:</strong></td><td><strong>Writing-method verbs II</strong> — sculpt, layer, embed, infuse, suffuse, permeate…</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0;"><strong style="color:var(--ink);">Day 5:</strong></td><td>Evaluative adjectives (polemical, subversive, satirical, allegorical…)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0;"><strong style="color:var(--ink);">Day 6:</strong></td><td>Weekly review &amp; consolidation</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0;"><strong style="color:var(--ink);">Day 7:</strong></td><td>Weekly assessment (all Week 1 words)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition -->
+  <h2><span class="icon">🧠</span> Spaced Repetition System</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:12px;">
+    You forget ~60% of new words within 24 hours. Spaced repetition interrupts forgetting by reviewing words at increasing intervals. Here's how each day works:
+  </p>
+  <div class="sr-table">
+    <table>
+      <tr><th>Day</th><th>New Words</th><th>Review From</th><th>Total</th></tr>
+      <tr><td class="day-label">Day 1</td><td>12</td><td>—</td><td>12</td></tr>
+      <tr><td class="day-label">Day 2</td><td>12</td><td>Day 1</td><td>24</td></tr>
+      <tr><td class="day-label">Day 3</td><td>12</td><td>Day 1 (quick) + Day 2</td><td>36</td></tr>
+      <tr><td class="day-label">Day 4</td><td>12</td><td>Day 1 (recall) + Day 2–3</td><td>48</td></tr>
+      <tr><td class="day-label">Day 5</td><td>12</td><td>Day 2–4</td><td>60</td></tr>
+      <tr><td class="day-label">Day 6</td><td>0</td><td>All Days 1–5 (deep review)</td><td>60</td></tr>
+      <tr><td class="day-label">Day 7</td><td>0</td><td>Weekly Test (60 words)</td><td>60</td></tr>
+    </table>
+  </div>
+  <p style="font-size:13px; color:var(--ink-soft); margin-top:8px;">
+    💡 <strong>Key principle:</strong> It's better to know 60 words <em>deeply</em> than 200 words superficially. Each word should become a tool you can reach for instinctively in an essay.
+  </p>
+
+  <!-- TODAY'S VOCABULARY -->
+  <h2><span class="icon">📖</span> Today's Words — 12 New Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">Category: Core Analysis Verbs (10) + Foundational Evaluative Adjectives (2)</strong><br>
+    These are the words you'll use constantly in IB essays to describe <em>what authors do</em> and <em>how texts work</em>. Master these first — they appear in almost every analytical paragraph.
+  </p>
+
+  <!-- Word 1 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">subvert</span>
+      <span class="ipa">/səbˈvɜːt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To undermine, overturn, or deliberately undermine the authority, power, or established conventions of something.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>subverts</strong> [convention/expectation/stereotype] by [specific technique]…"
+    </div>
+    <p class="example">
+      "Atwood subverts the conventions of the dystopian genre by framing the narrative through an unreliable, fragmented retrospective account."
+      <span class="source">— The Handmaid's Tale analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use this when an author deliberately breaks or challenges a genre convention, social norm, or reader expectation. Don't use it for simple disagreement — it implies a systematic overturning.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> subvert expectations · subvert conventions · subvert authority · subvert stereotypes · subvert the narrative</p>
+  </div>
+
+  <!-- Word 2 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">juxtapose</span>
+      <span class="ipa">/ˈdʒʌkstəpəʊz/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To place two things side by side to highlight the contrast or relationship between them.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>juxtaposes</strong> [X] with [Y] to [reveal/highlight/emphasise]…"
+    </div>
+    <p class="example">
+      "Fitzgerald juxtaposes the glittering opulence of West Egg with the desolate grey of the Valley of Ashes to expose the moral emptiness beneath the American Dream."
+      <span class="source">— The Great Gatsby analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> This is one of the most useful verbs in literary analysis. Always state <em>what</em> is juxtaposed and <em>why</em> — the effect of the contrast is the analytical insight.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> juxtapose A with B · juxtapose imagery · juxtapose scenes · juxtaposition (n.)</p>
+  </div>
+
+  <!-- Word 3 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">foreground</span>
+      <span class="ipa">/ˈfɔːɡraʊnd/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To bring to prominence; to make something the central focus or most noticeable element.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The narrative <strong>foregrounds</strong> [theme/idea/issue] through [technique]…"
+    </div>
+    <p class="example">
+      "Miller foregrounds the theme of mass hysteria through the escalating stage directions, which physically crowd the courtroom scene."
+      <span class="source">— The Crucible analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> "Foreground" is more precise than "show" or "highlight." It implies the author deliberately makes something central — use it when a theme or idea is given unusual prominence.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> foreground a theme · foreground an issue · foreground the protagonist's · foreground the contrast</p>
+  </div>
+
+  <!-- Word 4 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">undermine</span>
+      <span class="ipa">/ˌʌndəˈmaɪn/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To gradually weaken, damage, or erode the confidence, authority, or effectiveness of something.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [technique] <strong>undermines</strong> [the reader's confidence / the protagonist's authority / the assumption that]…"
+    </div>
+    <p class="example">
+      "Iago's whispered asides undermine the audience's trust in Othello's perception, creating dramatic irony that intensifies the tragedy."
+      <span class="source">— Othello analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> "Undermine" implies a gradual process, not a sudden destruction. Perfect for describing how irony, unreliability, or conflicting perspectives erode certainty.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> undermine confidence · undermine authority · undermine the premise · undermine certainty</p>
+  </div>
+
+  <!-- Word 5 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">evoke</span>
+      <span class="ipa">/ɪˈvəʊk/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To bring a feeling, memory, or image to mind; to elicit an emotional response from the reader.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The imagery <strong>evokes</strong> a sense of [emotion/atmosphere]…"
+    </div>
+    <p class="example">
+      "The opening lines of Eliot's 'The Waste Land' — 'April is the cruellest month' — evoke a pervasive sense of spiritual decay and disillusionment."
+      <span class="source">— T.S. Eliot, poetry analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> "Evoke" is about emotional resonance, not explicit statement. Use it when imagery, sound, or atmosphere <em>implies</em> a feeling rather than naming it directly. Distinguish from "invoke" (to call upon).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> evoke nostalgia · evoke sympathy · evoke a sense of · evoke an atmosphere · evocative (adj.)</p>
+  </div>
+
+  <!-- Word 6 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">elucidate</span>
+      <span class="ipa">/ɪˈluːsɪdeɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To make something clear; to explain or shed light on a complex idea or relationship.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [metaphor/symbol/scene] <strong>elucidates</strong> the relationship between [X and Y]…"
+    </div>
+    <p class="example">
+      "The extended metaphor of the conch elucidates the fragility of civilised order when stripped of institutional authority."
+      <span class="source">— Lord of the Flies analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> More sophisticated than "explain" or "show." Use it when a literary device makes an abstract concept <em>concrete and understandable</em>. Reserve for genuine clarification, not mere illustration.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> elucidate a theme · elucidate the relationship · elucidate a concept · elucidation (n.)</p>
+  </div>
+
+  <!-- Word 7 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">problematize</span>
+      <span class="ipa">/ˈprɒbləmətaɪz/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To present something as problematic; to complicate or question what was previously taken for granted.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The novel <strong>problematizes</strong> the notion of [idea/concept] by [technique]…"
+    </div>
+    <p class="example">
+      "Achebe problematizes the colonial narrative of 'civilising' Africa by centring the Igbo perspective and exposing the violence beneath the imperial project."
+      <span class="source">— Things Fall Apart analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> A high-level analytical verb. Use it when a text doesn't simply <em>reject</em> an idea but shows it to be more complex, contradictory, or unstable than it first appears. Common in Paper 2 comparative essays.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> problematize the notion · problematize identity · problematize assumptions · problematize the binary</p>
+  </div>
+
+  <!-- Word 8 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">conflate</span>
+      <span class="ipa">/kənˈfleɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To merge two distinct things into one; to combine elements that should remain separate.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author <strong>conflates</strong> [X] and [Y], suggesting that [insight]…"
+    </div>
+    <p class="example">
+      "Orwell conflates surveillance and intimacy in 1984, where the telescreen watches not only actions but thoughts — love itself becomes a form of rebellion."
+      <span class="source">— 1984 analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use this when a text deliberately blurs the boundary between two concepts (e.g., love and power, memory and identity). It's an analytical observation about how the text merges categories.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> conflate X with Y · conflate personal and political · conflate memory and identity · conflation (n.)</p>
+  </div>
+
+  <!-- Word 9 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">obfuscate</span>
+      <span class="ipa">/ˈɒbfʌskeɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To deliberately make something unclear, obscure, or difficult to understand.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [narrative structure/unreliable narrator/ambiguity] <strong>obfuscates</strong> [the truth/motivation]…"
+    </div>
+    <p class="example">
+      "The fragmented, non-linear chronology obfuscates the causal relationship between the narrator's trauma and her present reality, forcing the reader to reconstruct meaning."
+      <span class="source">— Generic narrative analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Implies <em>deliberate</em> obscuring, not accidental complexity. Use it when the text's difficulty is itself meaningful — a technique, not a flaw.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> obfuscate the truth · obfuscate motive · obfuscate meaning · obfuscation (n.)</p>
+  </div>
+
+  <!-- Word 10 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">interrogate</span>
+      <span class="ipa">/ɪnˈterəɡeɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">In literary analysis: to examine closely, question rigorously, or subject something to critical scrutiny. <em>(Not the police-interview meaning.)</em></p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The text <strong>interrogates</strong> [assumption/idea/social construct] by [technique]…"
+    </div>
+    <p class="example">
+      "The play interrogates the nature of justice in a society where the legal system itself is corrupted by fear and mass hysteria."
+      <span class="source">— The Crucible analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> A powerful analytical verb. "Interrogate" implies the text doesn't just <em>show</em> something — it subjects it to sustained critical questioning. Pairs well with concepts like "identity," "power," "justice," "truth."
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> interrogate assumptions · interrogate identity · interrogate power structures · interrogate the notion</p>
+  </div>
+
+  <!-- Word 11 -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">nuanced</span>
+      <span class="ipa">/ˈnjuːɑːnst/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Characterised by subtle distinctions or fine gradations; not simplistic or black-and-white.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The author's <strong>nuanced</strong> portrayal of [character/theme] avoids simplistic [binaries/judgements]…"
+    </div>
+    <p class="example">
+      "Characterisation in the novel is nuanced — the protagonist is neither hero nor villain, but a figure whose moral compromises accumulate with devastating inevitability."
+      <span class="source">— Generic novel analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> "Nuanced" is one of the highest-value adjectives in IB English. Examiners reward students who recognise complexity rather than reducing texts to simple messages. Use it to signal that you see <em>layers</em>.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> nuanced portrayal · nuanced understanding · nuanced approach · nuanced perspective · nuance (n.)</p>
+  </div>
+
+  <!-- Word 12 -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">didactic</span>
+      <span class="ipa">/daɪˈdæktɪk/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Intended to teach or instruct, often with a moral lesson; sometimes implies being overly preachy or moralising.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The tone is <strong>didactic</strong>, suggesting [moral lesson / ideological stance]…"
+    </div>
+    <p class="example">
+      "The fable's didactic purpose is evident in its concluding moral, yet the narrative's ambiguity complicates any single reading of its message."
+      <span class="source">— Generic fable analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Can be neutral (a text that teaches) or critical (a text that preaches too much). In IB, often used to identify when an author's moral agenda shapes the narrative. Ask: <em>Does the text teach, or does it question?</em>
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> didactic tone · didactic purpose · didactic message · didactic literature · didacticism (n.)</p>
+  </div>
+
+  <!-- PRACTICE -->
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Fill in the Blank</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Complete each sentence with a word from today's list. Use context clues to choose the right word.</p>
+    <div class="word-bank">
+      <strong>Word Bank:</strong> subvert · juxtapose · foreground · undermine · evoke · elucidate · problematize · conflate · obfuscate · interrogate · nuanced · didactic
+    </div>
+    <ol>
+      <li>The author <span class="blank">________</span> the traditional hero's journey by making the protagonist morally ambiguous from the outset.</li>
+      <li>The poet <span class="blank">________</span> images of spring with images of death, creating a tension between renewal and loss.</li>
+      <li>The unreliable narrator <span class="blank">________</span> the true sequence of events, forcing the reader to question every detail.</li>
+      <li>Rather than offering a simple moral, the novel <span class="blank">________</span> the concept of justice by showing it from three conflicting perspectives.</li>
+      <li>The sensory imagery of rain and decay <span class="blank">________</span> a powerful sense of melancholy and decline.</li>
+      <li>The critic argued that the film <span class="blank">________</span> personal trauma with political violence, suggesting the two are inseparable.</li>
+      <li>The playwright <span class="blank">________</span> the theme of surveillance through the recurring motif of watching eyes.</li>
+      <li>The essayist's <span class="blank">________</span> argument avoids simplistic conclusions, acknowledging multiple valid interpretations.</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 2: Write Your Own</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Write one analytical sentence for each of the following words, using a text you are currently studying in IB English. Aim for the standard IB analytical structure: <em>technique → author's verb → effect</em>.</p>
+    <ol>
+      <li><strong>juxtapose</strong> — Write about two contrasting scenes, images, or characters in a text you study.</li>
+      <li><strong>problematize</strong> — Write about how a text complicates a concept (e.g., freedom, identity, love).</li>
+      <li><strong>nuanced</strong> — Write about a character or theme that resists simple categorisation.</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Explain the difference between these word pairs in 1–2 sentences each. Why would you choose one over the other in an essay?</p>
+    <ol>
+      <li><strong>subvert</strong> vs. <strong>undermine</strong></li>
+      <li><strong>evoke</strong> vs. <strong>elucidate</strong></li>
+      <li><strong>problematize</strong> vs. <strong>interrogate</strong></li>
+    </ol>
+  </div>
+
+  <!-- IB TIPS -->
+  <h2><span class="icon">🎯</span> How to Use These Words in IB Essays</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Use analysis verbs in your topic sentences.</strong> Instead of "The author shows that…", try "The author <em>juxtaposes</em> X with Y to <em>foreground</em>…" This immediately signals analytical thinking to the examiner.
+    </li>
+    <li>
+      <strong>Always link technique → purpose → effect.</strong> Don't just name what the author does. Write: "By [technique], the author [analytical verb] in order to [purpose], which [effect on reader]." This three-part chain is the backbone of IB literary analysis.
+    </li>
+    <li>
+      <strong>Vary your analytical verbs.</strong> If every sentence uses "shows" or "highlights," your essay sounds repetitive. Today's 10 verbs give you alternatives that carry more precise meanings.
+    </li>
+    <li>
+      <strong>Use evaluative adjectives to show nuance.</strong> Examiners reward students who recognise complexity. "The portrayal is <em>nuanced</em>" signals that you see layers — not just a simple message. This is worth marks in Criterion C (Organization) and Criterion D (Language).
+    </li>
+    <li>
+      <strong>Don't force sophisticated vocabulary.</strong> Use these words where they <em>fit</em>. A precisely used "juxtapose" is worth more than five misused "obfuscates." Quality over quantity — always.
+    </li>
+    <li>
+      <strong>Build a personal word bank.</strong> Keep a running list of analytical verbs and evaluative adjectives you encounter in model essays, critical commentary, or your teacher's feedback. Add to it weekly.
+    </li>
+  </ol>
+
+  <!-- LITERARY READING TIPS -->
+  <h2><span class="icon">📚</span> Vocabulary &amp; Literary Reading</h2>
+  <div style="background:#fff; border-radius:12px; padding:24px; box-shadow:var(--shadow); font-size:14px; color:var(--ink-soft); line-height:1.8;">
+    <p style="margin-bottom:12px;">Your vocabulary gap isn't just about essay-writing — it directly affects your <strong style="color:var(--ink);">reading comprehension</strong> of literary texts. Here's how to close the gap:</p>
+    <p style="margin-bottom:12px;"><strong style="color:var(--ink);">1. Active reading with a vocabulary journal.</strong> When you encounter an unfamiliar word in a set text, don't skip it. Record it with: the sentence it appeared in, your inferred meaning, the dictionary definition, and one sentence of your own using the word.</p>
+    <p style="margin-bottom:12px;"><strong style="color:var(--ink);">2. Read criticism alongside the text.</strong> Find one literary essay or review about your set text per week. Academic criticism models the exact vocabulary you need — and shows you how experienced critics use words like "problematize," "foreground," and "interrogate" in context.</p>
+    <p style="margin-bottom:12px;"><strong style="color:var(--ink);">3. Pay attention to authorial word choice.</strong> When an author uses an unusual word, ask: <em>Why this word and not a simpler one?</em> The gap between ordinary language and literary language is where meaning lives. Your growing analytical vocabulary helps you name <em>what</em> the author is doing and <em>why</em> it matters.</p>
+    <p><strong style="color:var(--ink);">4. Read beyond your set texts.</strong> Read 15 minutes of quality English prose daily — novels, long-form journalism (The Guardian, The Atlantic), or literary essays. Exposure to sophisticated prose in context is how vocabulary moves from "recognised" to "owned."</p>
+  </div>
+
+  <!-- TOMORROW PREVIEW -->
+  <h2><span class="icon">⏭️</span> Coming Up This Week</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 2 (Tomorrow):</strong> More Analysis Verbs + Effect Verbs<br>
+    <span style="display:block; margin:4px 0 12px; font-size:13px;">underscore · illuminate · dismantle · deconstruct · destabilise · engender · provoke · elicit · exemplify · instantiate · perpetuate · vindicate</span>
+    <strong style="color:var(--ink);">Day 3 (Preview):</strong> <strong>Writing-Method Verbs I</strong> — describing how authors construct texts<br>
+    <span style="display:block; margin-top:4px; font-size:13px;">craft · deploy · weave · render · orchestrate · sculpt · layer · embed · frame · thread</span><br><br>
+    Plus: <strong>Daily review</strong> of previously learned words (spaced repetition)
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 1, Week 1, Day 1<br>
+  12 new words learned today · 1,288 to go · You've got this 💪
+</footer>
+
+</body>
+</html>

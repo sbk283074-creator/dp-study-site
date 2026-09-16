@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 13</title>
+<style>
+  :root {
+    --ink: #1a2238; --ink-soft: #4a5568; --paper: #faf8f3; --paper-warm: #f5f0e6;
+    --gold: #b8860b; --gold-soft: #d4a933; --teal: #2c7a7b; --teal-soft: #4fd1c5;
+    --coral: #c53030; --coral-soft: #fc8181; --purple: #6b46c1; --purple-soft: #b794f4;
+    --line: #e2dcd0; --shadow: 0 2px 8px rgba(26,34,56,0.08); --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; background: var(--paper); color: var(--ink); line-height: 1.65; padding: 0; }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+  header { background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%); color: #fff; padding: 48px 24px 40px; text-align: center; }
+  header h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 28px; font-weight: normal; letter-spacing: 0.5px; margin-bottom: 6px; }
+  header .subtitle { font-size: 15px; color: var(--gold-soft); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+  header .day-badge { display: inline-block; background: rgba(212,169,51,0.2); border: 1px solid var(--gold-soft); color: var(--gold-soft); padding: 6px 20px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+  header .date { margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.5); }
+  h2 { font-family: Georgia, 'Times New Roman', serif; font-size: 22px; font-weight: normal; color: var(--ink); margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--gold-soft); display: flex; align-items: center; gap: 10px; }
+  h2 .icon { font-size: 24px; }
+  h3 { font-size: 16px; font-weight: 700; color: var(--ink); margin: 24px 0 12px; }
+  .tracker { display: flex; gap: 4px; margin: 16px 0; flex-wrap: wrap; }
+  .tracker .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--line); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--ink-soft); }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+  .sr-status { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .sr-card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: var(--shadow); text-align: center; }
+  .sr-card .sr-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--ink-soft); font-weight: 700; }
+  .sr-card .sr-count { font-family: Georgia, serif; font-size: 32px; font-weight: bold; margin: 4px 0; }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note { font-size: 12px; color: var(--ink-soft); }
+  .recall-intro { background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); font-size: 14px; color: var(--ink-soft); margin-bottom: 16px; }
+  .recall-intro strong { color: var(--ink); }
+  .cat-block { background:#fff; border-radius:12px; padding:18px 20px; box-shadow:var(--shadow); margin-bottom:14px; }
+  .cat-block h3 { margin:0 0 4px; }
+  .cat-block .cat-sub { font-size:12px; color:var(--ink-soft); margin-bottom:12px; }
+  .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .review-card { background: var(--paper-warm); border-radius: 8px; padding: 10px 12px; border-left: 3px solid var(--teal); }
+  .review-card .rword { font-family: Georgia, serif; font-size: 15px; font-weight: bold; color: var(--ink); }
+  .review-card .rdef { font-size: 11.5px; color: var(--ink-soft); margin-top: 2px; line-height: 1.45; }
+  .review-prompt { background: var(--paper-warm); border-radius: 8px; padding: 12px 16px; margin-top: 12px; font-size: 13px; color: var(--ink-soft); }
+  .review-prompt strong { color: var(--ink); }
+  .cluster { background: linear-gradient(135deg,#fef5e7 0%,#fff 100%); border-radius:10px; padding:14px 16px; margin-bottom:8px; border-left:4px solid var(--gold); }
+  .cluster .pair { font-weight:700; color:var(--ink); font-size:14px; }
+  .cluster .note { font-size:12px; color:var(--ink-soft); margin-top:3px; }
+  .practice-box { background: #fff; border-radius: 12px; padding: 24px; box-shadow: var(--shadow); margin-top: 12px; }
+  .practice-box ol { padding-left: 20px; margin-top: 8px; }
+  .practice-box ol li { font-size: 14px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.7; }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank { display: inline-block; border-bottom: 2px solid var(--gold-soft); min-width: 80px; text-align: center; color: transparent; user-select: none; }
+  .word-bank { background: var(--paper-warm); border-radius: 8px; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: var(--ink-soft); }
+  .word-bank strong { color: var(--ink); }
+  .tips-list { list-style: none; counter-reset: tip; }
+  .tips-list li { background: #fff; border-radius: 10px; padding: 16px 20px; margin-bottom: 10px; box-shadow: var(--shadow); font-size: 14px; color: var(--ink-soft); position: relative; padding-left: 52px; }
+  .tips-list li::before { counter-increment: tip; content: counter(tip); position: absolute; left: 16px; top: 14px; width: 28px; height: 28px; background: var(--teal); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .tips-list li strong { color: var(--ink); }
+  .category-badge { display: inline-block; background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 14px; border-radius: 12px; letter-spacing: 0.5px; margin-bottom: 8px; }
+  footer { text-align: center; padding: 32px 24px; color: var(--ink-soft); font-size: 13px; border-top: 1px solid var(--line); margin-top: 48px; }
+  footer strong { color: var(--ink); }
+  @media (max-width: 600px) { .review-grid { grid-template-columns: 1fr; } .sr-status { grid-template-columns: 1fr; } header h1 { font-size: 22px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 13 / 112 — Week 2 Review &amp; Consolidation</div>
+  <div class="date">Saturday, 5 September 2026</div>
+</header>
+<div class="container">
+
+  <h2><span class="icon">📅</span> This Week (Week 2)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">8</div><div class="dot done">9</div><div class="dot done">10</div><div class="dot done">11</div><div class="dot done">12</div><div class="dot today">13</div><div class="dot">14</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 8–12:</strong></td><td>Five descriptive layers — 60 new words ✓</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 13 →</strong></td><td><strong>Week 2 Review &amp; Consolidation</strong> — all 60 words + 15 distinction pairs (0 new)</td></tr>
+      <tr style="color:var(--ink-soft);"><td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 14:</strong></td><td>Week 2 assessment — descriptive writing challenge</td></tr>
+    </table>
+  </div>
+
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review"><div class="sr-label">Review</div><div class="sr-count">60</div><div class="sr-note">All Week 2 words<br>(Days 8–12)</div></div>
+    <div class="sr-card new"><div class="sr-label">New Words</div><div class="sr-count">0</div><div class="sr-note">Consolidation day</div></div>
+    <div class="sr-card total"><div class="sr-label">Today Total</div><div class="sr-count">60</div><div class="sr-note">est. 40–55 min</div></div>
+  </div>
+  <div class="recall-intro">
+    <strong>This is your Week 2 consolidation day — zero new words.</strong> Across Days 8–12 you met <strong>60 descriptive adjectives</strong> in five layers (place, person, mood, voice, texture) and <strong>15 near-synonym distinction pairs</strong>. Today cements them. Research on spacing shows a review <em>just before</em> a word would fade is the highest-leverage repetition you can do — so today's 60-word pass is worth more than three passive re-reads. Work the categories below tick-by-tick; tomorrow you'll deploy the whole set in a writing challenge.
+    <br><br><strong>Today's flow:</strong> (1) five category recall grids (60 words) &rarr; (2) the 15 distinction pairs &rarr; (3) cumulative practice &rarr; (4) Day 14 preview.
+  </div>
+
+  <h2><span class="icon">🔁</span> Week 2 Recall — 60 Words in 5 Layers</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">Read each word, recall its shade, then check. Tick the ones you know cold; star the ones to revisit tonight.</p>
+
+  <div class="cat-block">
+    <h3>① Describing Place — Setting Adjectives (Day 8)</h3>
+    <div class="cat-sub">The vocabulary of where a text happens.</div>
+    <div class="review-grid">
+      <div class="review-card"><div class="rword">oppressive</div><div class="rdef">Crushing from the outside (heat, silence, regime).</div></div>
+      <div class="review-card"><div class="rword">desolate</div><div class="rdef">Empty, abandoned, lonely.</div></div>
+      <div class="review-card"><div class="rword">bleak</div><div class="rdef">Cold, cheerless, hopeless.</div></div>
+      <div class="review-card"><div class="rword">forbidding</div><div class="rdef">Menacing; deters approach.</div></div>
+      <div class="review-card"><div class="rword">stark</div><div class="rdef">Bare, harsh, exposed.</div></div>
+      <div class="review-card"><div class="rword">austere</div><div class="rdef">Severe but dignified; restrained by choice.</div></div>
+      <div class="review-card"><div class="rword">claustrophobic</div><div class="rdef">Enclosed, suffocating.</div></div>
+      <div class="review-card"><div class="rword">labyrinthine</div><div class="rdef">Winding, confusing to navigate.</div></div>
+      <div class="review-card"><div class="rword">sepulchral</div><div class="rdef">Tomb-like, death-haunted gloom.</div></div>
+      <div class="review-card"><div class="rword">verdant</div><div class="rdef">Lush, green, flourishing.</div></div>
+      <div class="review-card"><div class="rword">bucolic</div><div class="rdef">Idealised rural / pastoral.</div></div>
+      <div class="review-card"><div class="rword">tranquil</div><div class="rdef">Calm, peaceful, untroubled.</div></div>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <h3>② Describing People — Character Adjectives (Day 9)</h3>
+    <div class="cat-sub">The vocabulary of who a text is about.</div>
+    <div class="review-grid">
+      <div class="review-card"><div class="rword">mercurial</div><div class="rdef">Mood swings (reactive).</div></div>
+      <div class="review-card"><div class="rword">stoic</div><div class="rdef">Endures silently (inward).</div></div>
+      <div class="review-card"><div class="rword">inscrutable</div><div class="rdef">Unreadable, mysterious.</div></div>
+      <div class="review-card"><div class="rword">indomitable</div><div class="rdef">Unconquerable will.</div></div>
+      <div class="review-card"><div class="rword">saturnine</div><div class="rdef">Gloomy, bitter, sardonic.</div></div>
+      <div class="review-card"><div class="rword">sanguine</div><div class="rdef">Optimistic, cheerful.</div></div>
+      <div class="review-card"><div class="rword">taciturn</div><div class="rdef">Reserved, says little.</div></div>
+      <div class="review-card"><div class="rword">gregarious</div><div class="rdef">Sociable, seeks company.</div></div>
+      <div class="review-card"><div class="rword">pugnacious</div><div class="rdef">Eager to fight; aggressive.</div></div>
+      <div class="review-card"><div class="rword">circumspect</div><div class="rdef">Cautious, prudent.</div></div>
+      <div class="review-card"><div class="rword">capricious</div><div class="rdef">Acts on whims (volitional).</div></div>
+      <div class="review-card"><div class="rword">magnanimous</div><div class="rdef">Noble, forgiving, generous.</div></div>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <h3>③ Describing Mood — Atmosphere (Day 10)</h3>
+    <div class="cat-sub">The vocabulary of how a text feels to read.</div>
+    <div class="review-grid">
+      <div class="review-card"><div class="rword">sombre</div><div class="rdef">Dark, serious, weighty (atmospheric).</div></div>
+      <div class="review-card"><div class="rword">spectral</div><div class="rdef">Ghostly, unsettling.</div></div>
+      <div class="review-card"><div class="rword">haunting</div><div class="rdef">Lingering, disturbingly memorable.</div></div>
+      <div class="review-card"><div class="rword">elegiac</div><div class="rdef">Mournful, lamenting loss.</div></div>
+      <div class="review-card"><div class="rword">foreboding</div><div class="rdef">Ominous, anticipatory dread.</div></div>
+      <div class="review-card"><div class="rword">melancholic</div><div class="rdef">Pensive, inward sadness.</div></div>
+      <div class="review-card"><div class="rword">wistful</div><div class="rdef">Gentle, regretful longing.</div></div>
+      <div class="review-card"><div class="rword">languid</div><div class="rdef">Sluggish, low-energy.</div></div>
+      <div class="review-card"><div class="rword">ethereal</div><div class="rdef">Delicate, enchanting otherworldly.</div></div>
+      <div class="review-card"><div class="rword">glacial</div><div class="rdef">Cold, hostile, frozen.</div></div>
+      <div class="review-card"><div class="rword">febrile</div><div class="rdef">Feverish, agitated energy.</div></div>
+      <div class="review-card"><div class="rword">visceral</div><div class="rdef">Gut-level, raw, bodily.</div></div>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <h3>④ Describing Voice — Tone &amp; Register (Day 11)</h3>
+    <div class="cat-sub">The vocabulary of how a text speaks (attitude vs. level).</div>
+    <div class="review-grid">
+      <div class="review-card"><div class="rword">lyrical</div><div class="rdef">Musical, emotionally rich.</div></div>
+      <div class="review-card"><div class="rword">sparse</div><div class="rdef">Minimal text/style (authorial).</div></div>
+      <div class="review-card"><div class="rword">ornate</div><div class="rdef">Elaborately decorated, dense.</div></div>
+      <div class="review-card"><div class="rword">colloquial</div><div class="rdef">Informal, everyday (low register).</div></div>
+      <div class="review-card"><div class="rword">laconic</div><div class="rdef">Terse speech (character-level).</div></div>
+      <div class="review-card"><div class="rword">sardonic</div><div class="rdef">Wry, distanced cynicism.</div></div>
+      <div class="review-card"><div class="rword">caustic</div><div class="rdef">Corrosive, attacking wit.</div></div>
+      <div class="review-card"><div class="rword">euphemistic</div><div class="rdef">Mild words hiding harsh truth.</div></div>
+      <div class="review-card"><div class="rword">vernacular</div><div class="rdef">A group's own dialect (specific).</div></div>
+      <div class="review-card"><div class="rword">formal</div><div class="rdef">Elevated, standard (high register).</div></div>
+      <div class="review-card"><div class="rword">dispassionate</div><div class="rdef">Objective, neutral (tone).</div></div>
+      <div class="review-card"><div class="rword">strident</div><div class="rdef">Loud, forceful, insistent.</div></div>
+    </div>
+  </div>
+
+  <div class="cat-block">
+    <h3>⑤ Describing Texture — Quality (Day 12)</h3>
+    <div class="cat-sub">The vocabulary of how something lands on the senses.</div>
+    <div class="review-grid">
+      <div class="review-card"><div class="rword">poignant</div><div class="rdef">Keenly, bittersweetly moving.</div></div>
+      <div class="review-card"><div class="rword">evocative</div><div class="rdef">Strongly suggestive, summoning.</div></div>
+      <div class="review-card"><div class="rword">incongruous</div><div class="rdef">Out of place, not fitting.</div></div>
+      <div class="review-card"><div class="rword">jarring</div><div class="rdef">Sudden, shocking contrast (jolt).</div></div>
+      <div class="review-card"><div class="rword">luminous</div><div class="rdef">Glowing, radiant clarity.</div></div>
+      <div class="review-card"><div class="rword">muted</div><div class="rdef">Softened, subdued intensity.</div></div>
+      <div class="review-card"><div class="rword">scintillating</div><div class="rdef">Brilliantly lively, sparkling.</div></div>
+      <div class="review-card"><div class="rword">suffused</div><div class="rdef">Thoroughly pervaded / filled.</div></div>
+      <div class="review-card"><div class="rword">discordant</div><div class="rdef">Clashing, unresolved (sustained).</div></div>
+      <div class="review-card"><div class="rword">palpable</div><div class="rdef">Tangible, almost touchable.</div></div>
+      <div class="review-card"><div class="rword">ephemeral</div><div class="rdef">Fleeting, transient.</div></div>
+      <div class="review-card"><div class="rword">redolent</div><div class="rdef">Strongly reminiscent / evocative.</div></div>
+    </div>
+  </div>
+
+  <div class="review-prompt"><strong>Self-assessment:</strong> Which layer is shakiest? Most students find <em>voice</em> (tone vs. register) and the <em>texture</em> layer newest and hardest. Star those cards and revisit them in tomorrow's assessment warm-up.</div>
+
+  <h2><span class="icon">⚖️</span> The 15 Distinction Pairs (Your Week 2 Exam Armour)</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:12px;">These near-synonym pairs are where marks are won and lost. For each, know the test question.</p>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+    <div class="cluster"><div class="pair">stark / austere</div><div class="note">bare &amp; harsh vs. severe but dignified (chosen restraint)</div></div>
+    <div class="cluster"><div class="pair">desolate / bleak</div><div class="note">emptied of people vs. drained of comfort/hope</div></div>
+    <div class="cluster"><div class="pair">oppressive / claustrophobic</div><div class="note">crushing from outside vs. enclosing/suffocating space</div></div>
+    <div class="cluster"><div class="pair">saturnine / sanguine</div><div class="note">gloomy/sardonic vs. optimistic/cheerful (temperament poles)</div></div>
+    <div class="cluster"><div class="pair">taciturn / gregarious</div><div class="note">reserved/quiet vs. sociable/seek-company (social poles)</div></div>
+    <div class="cluster"><div class="pair">mercurial / capricious</div><div class="note">mood swings vs. whimsical choices (feelings vs. decisions)</div></div>
+    <div class="cluster"><div class="pair">sombre / melancholic</div><div class="note">dark/weighty atmosphere vs. inward pensive sadness</div></div>
+    <div class="cluster"><div class="pair">spectral / ethereal</div><div class="note">ghostly &amp; unsettling vs. delicate &amp; enchanting</div></div>
+    <div class="cluster"><div class="pair">foreboding / haunting</div><div class="note">anticipatory dread (forward) vs. lingering disturbance (back)</div></div>
+    <div class="cluster"><div class="pair">sparse / laconic</div><div class="note">minimal text/style vs. terse speech (level: author vs. character)</div></div>
+    <div class="cluster"><div class="pair">sardonic / caustic</div><div class="note">wry distanced mockery vs. corrosive attacking wit</div></div>
+    <div class="cluster"><div class="pair">formal / colloquial</div><div class="note">elevated/standard vs. informal/spoken (register poles)</div></div>
+    <div class="cluster"><div class="pair">poignant / evocative</div><div class="note">keenly moving (feel) vs. strongly suggestive (remember)</div></div>
+    <div class="cluster"><div class="pair">jarring / discordant</div><div class="note">sudden jolt of contrast vs. sustained clashing</div></div>
+    <div class="cluster"><div class="pair">ephemeral / palpable</div><div class="note">fleeting/transient vs. tangible/solidly present</div></div>
+  </div>
+
+  <h2><span class="icon">✏️</span> Cumulative Practice</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Sort the Word</h3>
+    <p style="font-size:13px; color:var(--ink-soft);">Sort each word into its layer (Place / Person / Mood / Voice / Texture):</p>
+    <div class="word-bank"><strong>Mixed bag:</strong> verdant · taciturn · visceral · ornate · ephemeral · saturnine · forbidding · scintillating · sanguine · sepulchral · laconic · luminous · capricious · redolent · strident · austere</div>
+    <ol>
+      <li><strong>Place:</strong> ______ &nbsp; ______ &nbsp; ______ &nbsp; ______</li>
+      <li><strong>Person:</strong> ______ &nbsp; ______ &nbsp; ______</li>
+      <li><strong>Mood:</strong> ______ &nbsp; ______</li>
+      <li><strong>Voice:</strong> ______ &nbsp; ______ &nbsp; ______</li>
+      <li><strong>Texture:</strong> ______ &nbsp; ______ &nbsp; ______ &nbsp; ______</li>
+    </ol>
+    <h3 style="margin-top:24px;">Exercise 2: Pick the Precise Pair</h3>
+    <p style="font-size:13px; color:var(--ink-soft);">For each, choose the better word and say why:</p>
+    <ol>
+      <li>A character who <em>silently</em> bears trauma → <strong>stoic</strong> or <strong>inscrutable</strong>?</li>
+      <li>A text that <em>calls memories to mind</em> → <strong>evocative</strong> or <strong>poignant</strong>?</li>
+      <li>An author who <em>writes few words on the page</em> → <strong>sparse</strong> or <strong>laconic</strong>?</li>
+      <li>A ghastly, unsettling ghost → <strong>spectral</strong> or <strong>ethereal</strong>?</li>
+      <li>A sudden cut from calm to violence → <strong>jarring</strong> or <strong>discordant</strong>?</li>
+    </ol>
+    <h3 style="margin-top:24px;">Exercise 3: Build a Full Reading</h3>
+    <p style="font-size:13px; color:var(--ink-soft);">Using at least one word from <em>each</em> of the five layers, write one analytical sentence on a text you know. Example skeleton:</p>
+    <p style="font-size:13px; color:var(--ink-soft); font-style:italic;">"In [text], the [PLACE] setting frames a [PERSON] protagonist whose [MOOD] is rendered in a [VOICE] style whose [TEXTURE] detail makes the theme unavoidable."</p>
+  </div>
+
+  <h2><span class="icon">🎯</span> Consolidation Tips</h2>
+  <ol class="tips-list">
+    <li><strong>Five layers, one scene.</strong> Place + person + mood + voice + texture is a complete descriptive reading. In your next commentary, try to deploy all five on a single passage — that's a 7-range response.</li>
+    <li><strong>The pairs are the prize.</strong> Examiners can't award top marks for "sad" or "weird." They can for "elegiac" vs. "wistful," or "sardonic" vs. "caustic." Drill the 15 pairs until the right word arrives without thinking.</li>
+    <li><strong>Know tone vs. register cold.</strong> It's the most commonly confused Week 2 distinction. Tone = attitude (sardonic, caustic, dispassionate, strident). Register = level (formal, colloquial, vernacular, sparse, laconic).</li>
+    <li><strong>Use verbs + adjectives together.</strong> "The passage <em>suffuses</em> the scene with a <em>palpable</em> dread" — analysis verb (Day 3) + texture adjective (Day 12) in one clause. Density = sophistication.</li>
+    <li><strong>Rest is part of the method.</strong> Spaced repetition needs the gap to work. After today's pass, sleep on it; Day 14's assessment activates the words one more time before Week 3.</li>
+  </ol>
+
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 14 (Next): Week 2 Assessment</strong><br>
+    A guided descriptive-writing challenge that deploys the full 60-word Week 2 vocabulary — pure application, 0 new terms.
+  </div>
+
+</div>
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 2, Week 2, Day 13<br>
+  120 words learned so far (0 new today) · 1,180 to go · Week 2 consolidated 🧩
+</footer>
+</body>
+</html>

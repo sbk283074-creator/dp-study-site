@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 20</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards (interactive reveal) */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+<body>
+
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 20 / 112 — Week 3 Mixed Consolidation</div>
+  <div class="date">Saturday, 12 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 3)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">15</div>
+      <div class="dot done">16</div>
+      <div class="dot done">17</div>
+      <div class="dot done">18</div>
+      <div class="dot done">19</div>
+      <div class="dot today">20</div>
+      <div class="dot">21</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 15 →</strong></td><td>Core device terms (tropes)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 16 →</strong></td><td>More devices</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 17 →</strong></td><td>Structural &amp; Narrative Terms</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 18 →</strong></td><td>Tone &amp; Attitude Terms</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 19 →</strong></td><td>Rhetorical Schemes (figures of arrangement)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 20 →</strong></td><td><strong>Mixed Consolidation</strong> — all 60 Week 3 terms regrouped by function + distinction pairs</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 21:</strong></td><td>Week 3 review &amp; assessment — flash-recall of all 60 + guided mini-analysis</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">All Week 3 words<br>(Days 15–19)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">0</div>
+      <div class="sr-note">Consolidation day</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">est. 40–55 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Week 3 built your <em>technical terminology</em> — the precise metalanguage IB examiners expect in both Papers. Five days, four pillars: <em>tropes</em> (Days 15–16, figures of <em>meaning</em>), <em>structure &amp; narrative</em> (Day 17), <em>tone &amp; attitude</em> (Day 18), and <em>schemes</em> (Day 19, figures of <em>arrangement</em>). Sixty terms in five sittings is a lot to hold — so today we do <em>not</em> learn anything new. We <strong>regroup</strong> all sixty by <em>function</em> instead of by day, so the words stop living in five separate lists and start living as one interconnected toolkit.
+    <br><br>
+    <strong>Today's flow:</strong> (1) four functional recall grids (60 words, by what they DO, not when you met them) &rarr; (2) twelve distinction pairs (your exam armour) &rarr; (3) mixed practice &rarr; (4) Day 21 preview.
+  </div>
+
+  <!-- ============ FUNCTIONAL REGROUPING ============ -->
+  <h2><span class="icon">🔁</span> Week 3 Recall — 60 Terms by Function</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    Read each word and <strong>recall its precise definition before looking</strong>. They are ordered by <em>job</em>, not by day — this interleaving is what turns five lists into one toolkit.
+  </p>
+
+  <h3>① Figures of Meaning — Tropes (Days 15–16 · 24 terms)</h3>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">metaphor</div>
+      <div class="rdef"><em>A direct comparison stating one thing IS another (no "like/as").</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">simile</div>
+      <div class="rdef"><em>A comparison made explicit with "like" or "as".</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">personification</div>
+      <div class="rdef"><em>Giving human qualities to something non-human.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">symbolism</div>
+      <div class="rdef"><em>A concrete object carrying a deeper, abstract meaning.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">irony</div>
+      <div class="rdef"><em>A gap between what is said and what is meant / expected.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">motif</div>
+      <div class="rdef"><em>A recurring image or idea that accumulates meaning.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">juxtaposition</div>
+      <div class="rdef"><em>Placing two things side by side to expose contrast.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">hyperbole</div>
+      <div class="rdef"><em>Deliberate, obvious exaggeration for effect.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">allusion</div>
+      <div class="rdef"><em>A brief reference to another text, person, or event.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">metonymy</div>
+      <div class="rdef"><em>A related term substituted for the thing meant.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">oxymoron</div>
+      <div class="rdef"><em>A contradiction packed into adjacent words ("bitter sweet").</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">anaphora</div>
+      <div class="rdef"><em>Repetition of a word/phrase at the START of units.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">paradox</div>
+      <div class="rdef"><em>A statement that seems contradictory yet reveals truth.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">synecdoche</div>
+      <div class="rdef"><em>A part standing for the whole (or whole for part).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">imagery</div>
+      <div class="rdef"><em>Vivid sensory language evoking mental pictures.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">allegory</div>
+      <div class="rdef"><em>A sustained narrative carrying a second meaning.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">antithesis</div>
+      <div class="rdef"><em>Contrasting ideas in balanced parallel structure.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">epistrophe</div>
+      <div class="rdef"><em>Repetition of a word/phrase at the END of units.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">apostrophe</div>
+      <div class="rdef"><em>Addressing an absent or imaginary listener directly.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">alliteration</div>
+      <div class="rdef"><em>Repetition of initial consonant sounds.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">euphemism</div>
+      <div class="rdef"><em>A mild term substituted for a harsh or blunt one.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">pun</div>
+      <div class="rdef"><em>A play on words with similar sounds, different senses.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">satire</div>
+      <div class="rdef"><em>A mode using wit to expose vice or folly.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">tricolon</div>
+      <div class="rdef"><em>A group of three parallel phrases or clauses.</em></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px;">② Structure &amp; Narrative (Day 17 · 12 terms)</h3>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">foreshadowing</div>
+      <div class="rdef"><em>Hinting at events yet to come.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">flashback</div>
+      <div class="rdef"><em>A return to an earlier point in time.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">flash-forward</div>
+      <div class="rdef"><em>A leap ahead to a later point in time.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">frame narrative</div>
+      <div class="rdef"><em>A story that encloses other stories.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">unreliable narrator</div>
+      <div class="rdef"><em>A narrator whose account distorts the truth.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">stream of consciousness</div>
+      <div class="rdef"><em>The unordered flow of a character's thoughts.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">interior monologue</div>
+      <div class="rdef"><em>A character's thoughts rendered directly.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">epiphany</div>
+      <div class="rdef"><em>A sudden moment of insight or revelation.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">denouement</div>
+      <div class="rdef"><em>The resolution following the climax.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">non-linear narrative</div>
+      <div class="rdef"><em>Events presented out of chronological order.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">retrospective narration</div>
+      <div class="rdef"><em>Past events told from a later vantage point.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">cyclic structure</div>
+      <div class="rdef"><em>Ending where the beginning started (a loop).</em></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px;">③ Tone &amp; Attitude (Day 18 · 12 terms)</h3>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">connotation</div>
+      <div class="rdef"><em>The associations / feelings a word carries.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">denotation</div>
+      <div class="rdef"><em>The literal, dictionary meaning of a word.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">register</div>
+      <div class="rdef"><em>The level of formality of language used.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">subtext</div>
+      <div class="rdef"><em>The unspoken meaning the text implies.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">inference</div>
+      <div class="rdef"><em>The conclusion a reader draws from evidence.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">modality</div>
+      <div class="rdef"><em>The degree of certainty / necessity expressed.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">equivocation</div>
+      <div class="rdef"><em>Strategic ambiguity used to dodge a position.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">hedge</div>
+      <div class="rdef"><em>An honest softener that weakens a claim's force.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">stance</div>
+      <div class="rdef"><em>The writer's position toward subject and audience.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">sarcasm</div>
+      <div class="rdef"><em>Mocking words conveying the opposite of their sense.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">innuendo</div>
+      <div class="rdef"><em>An indirect hint at something disparaging.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">understatement</div>
+      <div class="rdef"><em>Deliberately representing something as less than it is.</em></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px;">④ Schemes — Figures of Arrangement (Day 19 · 12 terms)</h3>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">chiasmus</div>
+      <div class="rdef"><em>Ideas repeated in reverse order (A–B–B–A).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">zeugma</div>
+      <div class="rdef"><em>One word governing two, fitting only one strictly.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">asyndeton</div>
+      <div class="rdef"><em>The omission of conjunctions between units.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">polysyndeton</div>
+      <div class="rdef"><em>The repetition of conjunctions between units.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">litotes</div>
+      <div class="rdef"><em>Understatement via a double negative.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">antimetabole</div>
+      <div class="rdef"><em>The SAME words repeated in reversed order.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">isocolon</div>
+      <div class="rdef"><em>Parallel clauses of equal length / weight.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">anadiplosis</div>
+      <div class="rdef"><em>A word ending one clause starts the next.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">anastrophe</div>
+      <div class="rdef"><em>Inversion of the normal word order.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">climax</div>
+      <div class="rdef"><em>A series rising in importance or force.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">parataxis</div>
+      <div class="rdef"><em>Equal clauses joined by no linker.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">hypotaxis</div>
+      <div class="rdef"><em>Clauses nested by subordinators.</em></div>
+    </div>
+  </div>
+
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> The four pillars answer four different analytical questions. <em>Tropes</em> = "what does this word/ image mean?" <em>Structure</em> = "how is the story built and ordered?" <em>Tone</em> = "how does the text feel and position me?" <em>Schemes</em> = "how are the sentences shaped?" A strong Paper 1 or 2 commentary names at least one term from each pillar. Today's job is to make all sixty retrievable — not as five lists, but as one web.
+  </div>
+
+  <!-- ============ DISTINCTION PAIRS ============ -->
+  <h2><span class="icon">⚖️</span> The 12 Distinction Pairs (Your Week 3 Exam Armour)</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    IB markers reward precise discrimination. These are the pairs most often confused — know the exact seam between each.
+  </p>
+
+  <div class="distinction-box">
+    <h4>① metaphor vs. simile</h4>
+    <p><strong>metaphor</strong> — asserts identity: "the city is a jungle" (no "like/as").<br>
+    <strong>simile</strong> — asserts resemblance: "the city is like a jungle" (with "like/as").<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Test: is the comparison stated as fact or signposted as similarity? Metaphors are stronger and riskier; similes are safer and more measured.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>② irony vs. satire</h4>
+    <p><strong>irony</strong> — a device: a gap between saying and meaning (verbal, situational, dramatic).<br>
+    <strong>satire</strong> — a mode / genre: uses irony + wit to expose vice or folly.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">One is a single technique; the other is a whole posture. A text can be ironic without being satirical; satire almost always deploys irony.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>③ symbolism vs. allegory</h4>
+    <p><strong>symbolism</strong> — a single object carries a deeper meaning within an otherwise realistic text.<br>
+    <strong>allegory</strong> — the ENTIRE narrative is a sustained second-level system (characters = ideas).<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Scale is the seam: one symbol vs. a whole symbolic world. Animal Farm is allegory; the green light in Gatsby is symbolism.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>④ anaphora vs. epistrophe</h4>
+    <p><strong>anaphora</strong> — repetition at the START of units ("I have a dream… I have a dream…").<br>
+    <strong>epistrophe</strong> — repetition at the END of units ("…of the people, by the people, for the people").<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Same device, opposite position. Anaphora builds mounting urgency; epistrophe lands a hammering close.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑤ anaphora vs. anadiplosis</h4>
+    <p><strong>anaphora</strong> — the same word repeats at the start of each unit, independently.<br>
+    <strong>anadiplosis</strong> — the LAST word of one clause becomes the FIRST word of the next ("the crime was blood; blood demands blood").<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Anaphora = parallel opens; anadiplosis = a chain linking end to beginning. The latter creates causal or escalating linkage.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑥ synecdoche vs. metonymy</h4>
+    <p><strong>synecdoche</strong> — a PART stands for the WHOLE (or whole for part): "all hands on deck".<br>
+    <strong>metonymy</strong> — a related term substitutes for the thing: "the crown declared war".<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Synecdoche is a subset of metonymy based on part/whole; metonymy is broader association (not necessarily part/whole).</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑦ asyndeton vs. polysyndeton</h4>
+    <p><strong>asyndeton</strong> — conjunctions OMITTED ("I came, I saw, I conquered") → speed, staccato, urgency.<br>
+    <strong>polysyndeton</strong> — conjunctions PILED ON ("and… and… and…") → slowness, accumulation, weight.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Opposite manipulations of the same connective. Name which one to explain the sentence's rhythm.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑧ chiasmus vs. antimetabole</h4>
+    <p><strong>chiasmus</strong> — CONCEPTS/structures mirrored in reverse (A–B–B–A), not identical words.<br>
+    <strong>antimetabole</strong> — the SAME WORDS repeated in reversed order ("when the going gets tough, the tough get going").<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Antimetabole is the stricter, word-for-word form; chiasmus can swap synonyms. Both produce symmetry and closure.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑨ parataxis vs. hypotaxis</h4>
+    <p><strong>parataxis</strong> — equal clauses joined by no subordinator ("he left. she stayed") → blunt, fast,并列.<br>
+    <strong>hypotaxis</strong> — clauses nested by subordinators ("she stayed because he left") → nuanced, causal, hierarchical.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Clause relation is the seam: equal vs. nested. Parataxis withholds cause; hypotaxis supplies it.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑩ connotation vs. denotation</h4>
+    <p><strong>denotation</strong> — the literal dictionary meaning.<br>
+    <strong>connotation</strong> — the feelings / associations a word carries beyond that.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">"Home" and "house" share a denotation; their connotations diverge entirely. Word-choice analysis lives in connotation.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑪ subtext vs. inference</h4>
+    <p><strong>subtext</strong> — the unspoken meaning that resides IN the text (the author's implied layer).<br>
+    <strong>inference</strong> — the conclusion the READER draws from that evidence.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Subtext is in the work; inference is in the reader. You infer the subtext. Don't confuse the two in an essay.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑫ hedge vs. equivocation</h4>
+    <p><strong>hedge</strong> — an honest softener that modestly weakens a claim ("perhaps", "seems").<br>
+    <strong>equivocation</strong> — strategic ambiguity that dodges taking a position at all.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Both reduce force, but hedge is fair caution; equivocation is evasive manoeuvring. Watch the speaker's intent.</span></p>
+  </div>
+
+  <!-- ============ PRACTICE EXERCISES ============ -->
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Name the Device</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Identify the single best Week 3 term for each extract. Use the functional grids above.</p>
+    <div class="word-bank">
+      <strong>Pool:</strong> metaphor · irony · anaphora · foreshadowing · unreliable narrator · asyndeton · parataxis · litotes · satire · symbolism · zeugma · epiphany
+    </div>
+    <ol>
+      <li>"It was the best of times, it was the worst of times" opens a novel that then narrates both. &rarr; <span class="blank">________</span></li>
+      <li>"I came, I saw, I conquered" — the missing "and" accelerates the line. &rarr; <span class="blank">________</span></li>
+      <li>"He grasped the sceptre and his bride" — one verb grips a thing and a person. &rarr; <span class="blank">________</span></li>
+      <li>"The green light at the end of the dock" stands for Gatsby's unreachable dream. &rarr; <span class="blank">________</span></li>
+      <li>"She was not unhappy" — a double negative that means "fairly content". &rarr; <span class="blank">________</span></li>
+      <li>"He left. She stayed. The river rose." — equal clauses, no linkers. &rarr; <span class="blank">________</span></li>
+      <li>"Blood alone moves the wheels of history" — spoken by a narrator we learn to distrust. &rarr; <span class="blank">________</span></li>
+      <li>"We shall fight on the beaches, we shall fight on the landing grounds…" &rarr; <span class="blank">________</span></li>
+      <li>Early in the play a knife is mentioned; three acts later it kills the king. &rarr; <span class="blank">________</span></li>
+      <li>A newspaper column mocks a minister's expense claims with deadpan wit. &rarr; <span class="blank">________</span></li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 2: Mini Stylistic Analysis</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Below is a short passage. Write ONE analytical paragraph (6–8 sentences) naming <strong>at least eight</strong> Week 3 terms and explaining their combined effect. Aim for the four-pillar balance (trope + structure + tone + scheme).</p>
+    <div class="usage-box" style="margin-bottom:14px;">
+      <span class="label">Passage</span>
+      "The door was open. She entered and she looked and she listened. He was not a thief, not a liar, not a fool — and yet the room remembered him. The light, the light, the light mocked the dark. When the truth came, it came quietly, and she understood everything, and she said nothing."
+    </div>
+    <ol>
+      <li><strong>Your analysis:</strong> (deploy ≥8 terms — e.g. polysyndeton, tricolon / anaphora, anadiplosis, litotes, parataxis, unreliable narrator or retrospective framing, symbolism, understatement, denouement / epiphany…)</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">In 1–2 sentences each, explain the seam between the pair and give a literary example.</p>
+    <ol>
+      <li><strong>metaphor</strong> vs. <strong>simile</strong> — identity or resemblance?</li>
+      <li><strong>asyndeton</strong> vs. <strong>polysyndeton</strong> — what opposite rhythm does each create?</li>
+      <li><strong>connotation</strong> vs. <strong>denotation</strong> — where does word-choice analysis actually live?</li>
+    </ol>
+  </div>
+
+  <!-- ============ BUILDING YOUR TOOLKIT ============ -->
+  <h2><span class="icon">🎯</span> Building Your Device Toolkit</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Week 3 is the metalanguage spine of the whole programme.</strong> Tropes (15–16) tell you what words mean; structure (17) tells you how the story is built; tone (18) tells you how it feels; schemes (19) tell you how sentences are shaped. Together they are the vocabulary for a complete Paper 1 commentary and a precise Paper 2 essay.
+    </li>
+    <li>
+      <strong>Regroup, don't re-list.</strong> Today you met the same sixty words ordered by <em>function</em>. That interleaving is the difference between memorising five lists and owning one toolkit. When you analyse a real passage, reach for one term from each pillar rather than twelve from one.
+    </li>
+    <li>
+      <strong>The twelve distinction pairs are where marks are won or lost.</strong> Saying "this is a metaphor" gets you the identification; saying "this is a metaphor, not a simile, because it asserts identity and so risks more" gets you the top band. Precision of discrimination is the IB differentiator.
+    </li>
+    <li>
+      <strong>Tone and schemes are now linked.</strong> Asyndeton accelerates; polysyndeton accumulates; parataxis withholds cause; hypotaxis supplies nuance (Day 19) — and all of them are the grammar of <em>rhythm</em>, which is half of <em>tone</em> (Day 18). Name a scheme and you can explain a tempo; name a tempo and you can explain a tone.
+    </li>
+    <li>
+      <strong>Structure terms let you discuss the whole before the sentence.</strong> Before you zoom into a scheme, use foreshadowing / frame narrative / non-linear narrative / unreliable narrator to orient the reader of your essay to the text's architecture. Top commentaries move between macro (structure) and micro (scheme) deliberately.
+    </li>
+    <li>
+      <strong>Deploy these on a real text this week.</strong> Take any set-text paragraph and force yourself to name: one trope, one structural feature, one tone term, and one scheme — then show how they reinforce each other. By Day 21's assessment you'll have a complete, connected Week 3 toolkit ready to deploy under exam conditions.
+    </li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 21 (Next): Week 3 Review &amp; Assessment</strong><br>
+    A full flash-recall of all 60 Week 3 terms (self-test grid, no peeking) + a guided mini-analysis that deploys the device vocabulary under exam-style conditions, with a distinction quick-ref. Week 3 closes here.<br><br>
+    <strong style="color:var(--ink);">Phase 3 continues:</strong> after the Week 3 assessment, Phase 4 (Weeks 13–16) brings critical theory, stylistic / linguistic analysis, and argumentative-essay vocabulary to tie the whole programme together.
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 3, Day 20<br>
+  180 words learned so far (+0 today) · 1,120 to go · Mixed consolidation 🔀
+</footer>
+
+
+</body>
+</html>

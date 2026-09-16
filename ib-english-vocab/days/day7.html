@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 7</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards (interactive reveal) */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Assessment custom blocks */
+  .assess-box {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 16px 0;
+    box-shadow: var(--shadow-lg);
+  }
+  .assess-box h4 {
+    color: var(--gold-soft);
+    font-size: 15px;
+    margin-bottom: 8px;
+    font-family: Georgia, serif;
+    letter-spacing: 0.5px;
+  }
+  .assess-box p, .assess-box li { color: rgba(255,255,255,0.88); font-size: 14px; line-height: 1.75; }
+  .assess-box ul { padding-left: 20px; margin-top: 8px; }
+  .assess-box .vw { color: var(--gold-soft); font-weight: 600; }
+  .model-para {
+    background: var(--paper-warm);
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-size: 14px;
+    line-height: 1.85;
+    border-left: 4px solid var(--gold);
+  }
+  .vw { color: var(--gold); font-weight: 600; }
+  .extract {
+    background: #fff;
+    border-left: 4px solid var(--purple);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 12px 0;
+    box-shadow: var(--shadow);
+  }
+  .deploy-grid { width:100%; border-collapse:collapse; font-size:13px; margin-top:12px; }
+  .deploy-grid th { text-align:left; padding:8px 10px; background:var(--ink); color:#fff; font-weight:600; }
+  .deploy-grid td { padding:6px 10px; border-bottom:1px solid var(--line); }
+  .deploy-grid tr:nth-child(even) td { background: #fff; }
+  .deploy-grid .cat { color: var(--teal); font-weight: 700; width: 28%; vertical-align: top; }
+  .gridword { font-family: Georgia, serif; font-weight: 600; color: var(--ink); }
+  .deploy-grid .tick { text-align:center; color: var(--teal); font-weight: 700; width: 12%; }
+  .rubric { background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow); margin-top:12px; }
+  .rubric ol { padding-left: 20px; }
+  .rubric li { font-size:13px; color:var(--ink-soft); margin-bottom:10px; line-height:1.7; }
+  .rubric li strong { color: var(--ink); }
+
+  /* Distinction quick-ref */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Tips */
+  .tips-list { list-style: none; counter-reset: tip; }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 7 / 112 — Weekly Assessment</div>
+  <div class="date">Monday, 31 August 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 1 — Final Day)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">1</div>
+      <div class="dot done">2</div>
+      <div class="dot done">3</div>
+      <div class="dot done">4</div>
+      <div class="dot done">5</div>
+      <div class="dot done">6</div>
+      <div class="dot today">7</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--teal);">Day 1 ✓</strong></td><td>Foundational analysis verbs (12) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 2 ✓</strong></td><td>More analysis &amp; effect verbs (12) + Day 1 review — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 3 ✓</strong></td><td>Writing-Method Verbs I (12) + Day 1 (2nd pass) + Day 2 (1st review) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 4 ✓</strong></td><td>Writing-Method Verbs II (12) + Day 2 (2nd pass) + Day 3 (1st review) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 5 ✓</strong></td><td>Evaluative Adjectives (12) + Day 3 (2nd pass) + Day 4 (1st review) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--teal);">Day 6 ✓</strong></td><td>Week 1 Review &amp; Consolidation — all 60 words + 9 distinction clusters — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 7 →</strong></td><td><strong>Weekly Assessment</strong> — guided mini-essay deploying the full Week 1 vocabulary + Day 5 (2nd-pass) recall. <em>No new terms; pure application.</em></td>
+      </tr>
+    </table>
+    <p style="font-size:13px; color:var(--ink-soft); margin-top:12px;">
+      Completing today's assessment closes <strong style="color:var(--ink);">Week 1</strong>. You will have met, reviewed, and now <em>applied</em> 60 words spanning three registers: <em>what texts do</em> (analysis), <em>how texts are built</em> (craft), and <em>how we judge texts</em> (evaluation).
+    </p>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Day 5 (2nd pass) — 12 adjectives<br>+2-day recall window</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">0</div>
+      <div class="sr-note">Assessment day</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">12+</div>
+      <div class="sr-note">+ full 60-word essay task<br>est. 45–60 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Why an assessment day?</strong> Memory is built in <em>retrieval</em>, not in re-reading. Days 1–6 loaded and refreshed the vocabulary; Day 7 forces you to <em>produce</em> it under pressure — the exact skill your IB Individual Oral (IO) and Paper 2 demand. A word you can recognise but not deploy is only half-learned. Today converts passive recognition into active control.<br><br>
+    <strong>Today's flow:</strong> (1) Day 5 second-pass recall (the +2-day retrieval point) &rarr; (2) the 60-word deployment grid &rarr; (3) a model paragraph &rarr; (4) your own guided mini-essay &rarr; (5) self-marking against the rubric.
+  </div>
+
+  <!-- ============ DAY 5 SECOND PASS — ACTIVE RECALL ============ -->
+  <h2><span class="icon">🔥</span> Day 5 Active Recall — 2nd Pass</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    These are last Wednesday's evaluative adjectives. Day 5's first exposure was 5 days ago; this is the <em>second</em> retrieval — the forgetting-curve's hardest gate. For each, recall the full definition before clicking to reveal, then answer the deeper question. Anything you can't answer cold re-enters tomorrow's warm-up.
+  </p>
+  <div class="recall-list">
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">polemical</span>
+        <span class="rpat">"Her polemical essay attacks the policy head-on…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Expressing strong, controversial opinions intended to provoke debate or attack opposing views; combative in tone.</em></div>
+        <div class="rquestion">How does "polemical" differ from "tendentious"? (Hint: polemical wears its bias openly; tendentious hides bias behind a mask of neutrality.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">subversive</span>
+        <span class="rpat">"The subversive framing erodes the reader's faith…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Intending to undermine or overthrow established authority/norms, often by indirect means.</em></div>
+        <div class="rquestion">subversive vs. satirical? (subversion = the aim of toppling power; satire = the method of mockery. A text can be one without the other.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">satirical</span>
+        <span class="rpat">"A sustained satirical allegory exposing the pigs' corruption…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Using humour, irony, exaggeration, or ridicule to expose and criticise folly or vice.</em></div>
+        <div class="rquestion">Is every satirical text subversive? (No — establishment-approved satire mocks safely; subversion seeks to topple.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">allegorical</span>
+        <span class="rpat">"The allegorical knights embody virtues in conflict…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Operating as an allegory — a narrative carrying a second, symbolic level of meaning.</em></div>
+        <div class="rquestion">What is the danger of over-reading a text as allegorical? (It can become "reductive" — collapsing every detail into a single symbol.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">tendentious</span>
+        <span class="rpat">"The tendentious editing makes the case seem inevitable…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Biased or partisan while appearing objective; the bias is disguised.</em></div>
+        <div class="rquestion">Where do you most often catch tendentious framing? (Unreliable narrators, documentaries, propaganda — anywhere neutrality is performed.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">reductive</span>
+        <span class="rpat">"Reading it merely as anti-war is reductive…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Oversimplifying; flattening complex reality into an overly simple account that loses nuance.</em></div>
+        <div class="rquestion">What is the direct opposite of reductive? (nuanced — the IB gold-standard adjective.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">insidious</span>
+        <span class="rpat">"The insidious appeal of the Party lies in its banality…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Proceeding harmfully in a subtle, stealthy, gradual way; treacherous because unnoticed.</em></div>
+        <div class="rquestion">insidious vs. subversive? (subversion = the force undermining; insidious = the quality of that creep — stealthy and gradual.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">transgressive</span>
+        <span class="rpat">"The transgressive desire of Gothic heroines…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Violating or crossing accepted boundaries, norms, or moral codes.</em></div>
+        <div class="rquestion">transgressive vs. subversive? (transgression = crossing a taboo; subversion = overthrowing a system. A desire can be transgressive without toppling anything.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">provocative</span>
+        <span class="rpat">"Kafka's provocative opening implicates the reader…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Deliberately stimulating strong reaction, thought, or controversy.</em></div>
+        <div class="rquestion">provocative vs. polemical? (provocative jolts without committing to a stance; polemical argues a position aggressively.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">ambivalent</span>
+        <span class="rpat">"The play is deeply ambivalent about empire…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Holding mixed, contradictory feelings or attitudes at once; attracted and repelled simultaneously.</em></div>
+        <div class="rquestion">Why is spotting ambivalence a sign of sophisticated reading? (It shows you've moved past "the text says X" to "the text holds contradiction.")</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">didactic</span>
+        <span class="rpat">"Unapologetically didactic, yet emotionally forceful…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Intended to teach or instruct, especially morally; can be neutral or slightly critical (preachy).</em></div>
+        <div class="rquestion">When does didactic intent succeed vs. fail as literature? (Succeeds when the lesson is earned through feeling; fails when teaching overwhelms art.)</div>
+      </div>
+    </details>
+
+    <details class="recall-card">
+      <summary>
+        <span class="rword">nuanced</span>
+        <span class="rpat">"A nuanced portrayal refuses easy judgement…"</span>
+      </summary>
+      <div class="reveal-body">
+        <div class="rdef"><em>Characterised by subtle distinction and sensitivity to complexity; holding contradiction rather than resolving it.</em></div>
+        <div class="rquestion">Why is "nuanced" the single most valuable adjective in your IB toolkit? (Examiners reward it; it is the opposite of the reductive readings they penalise.)</div>
+      </div>
+    </details>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> How many of the 12 could you define <em>and</em> answer the deeper question for, cold? If 3+ were shaky, those words re-enter your Day 8 warm-up. The second pass is where recognition becomes ownership — push through it before the essay.
+  </div>
+
+  <!-- ============ THE ASSESSMENT ============ -->
+  <h2><span class="icon">🎯</span> The Weekly Assessment — Deploy All 60 Words</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge">WEEK 1 ASSESSMENT — PURE APPLICATION</span>
+  </p>
+
+  <div class="assess-box">
+    <h4>THE TASK</h4>
+    <p>Write <strong>one sustained analytical paragraph of 250–350 words</strong> on a literary text you know well <em>(or the unseen extract below)</em>. Your goal is to <strong>deploy as many Week 1 words as possible — correctly and naturally</strong>. The paragraph must:</p>
+    <ul>
+      <li>use at least <strong>4 analysis verbs</strong> (Days 1–2) to say what the text <em>does</em>;</li>
+      <li>use at least <strong>4 craft verbs</strong> (Days 3–4) to say how it is <em>built</em>;</li>
+      <li>use at least <strong>4 evaluative adjectives</strong> (Day 5) to <em>judge</em> the effect;</li>
+      <li>and respect the <strong>9 distinction clusters</strong> — never swap near-synonyms that the plan told you apart.</li>
+    </ul>
+    <p style="margin-top:10px; font-size:13px;">Highlight every Week 1 word you use (as I have in the model). Then self-mark with the grid + rubric below.</p>
+  </div>
+
+  <!-- Unseen extract option -->
+  <h3>Option B — Unseen Extract (IO-style stretch)</h3>
+  <div class="extract">
+    "The lighthouse had always kept its own hours. Maren returned each summer to find the paint peeled a little further, the gulls bolder, the silence thicker. Her grandfather's maps still hung crooked on the wall, plotting channels that no longer existed. She told herself the place was unchanged; the tide, indifferent, disagreed. At night the lamp stuttered, and for a moment the whole coastline seemed to hold its breath — as if the island were waiting to be remembered, or forgiven."
+  </div>
+  <p style="font-size:13px; color:var(--ink-soft); margin-bottom:16px;">If you choose this extract, write your paragraph on how the writer <span class="vw">crafts</span> atmosphere and <span class="vw">foregrounds</span> memory — without ever naming the feeling directly.</p>
+
+  <!-- Model paragraph -->
+  <h3>A Model Paragraph (how the words should sit inside real analysis)</h3>
+  <div class="model-para">
+    Atwood's <em>The Handmaid's Tale</em> is a fundamentally <span class="vw">subversive</span> text that works to <span class="vw">undermine</span> the reader's complacency about how swiftly rights erode. By <span class="vw">foregrounding</span> Offred's mundane domestic voice, the novel <span class="vw">deploys</span> a deliberately subdued register that gradually <span class="vw">suffuses</span> the scene with quiet dread; an <span class="vw">insidious</span> atmosphere of surveillance <span class="vw">permeates</span> every chapter. Atwood <span class="vw">crafts</span> the narrative so that seemingly minor images — the red of the dresses, the wall of the dismissed — are <span class="vw">woven</span> into a larger <span class="vw">allegorical</span> critique of patriarchal control, while the blood motif is <span class="vw">threaded</span> throughout to <span class="vw">underscore</span> the body's political claims. The text <span class="vw">provocatively</span> <span class="vw">juxtaposes</span> Offred's inward meditation with the stark rituals of Gilead, and this contrast <span class="vw">elucidates</span> the gap between official ideology and lived experience. Rather than offering a <span class="vw">reductive</span> portrait of victimhood, Atwood <span class="vw">renders</span> Offred as <span class="vw">ambivalent</span>: complicit yet resistant, so the reader must hold contradiction rather than resolve it. The novel's power is <span class="vw">nuanced</span> — it neither <span class="vw">didactically</span> lectures nor <span class="vw">polemically</span> rants, but <span class="vw">calibrates</span> its revelations so that horror accumulates through <span class="vw">layering</span> rather than shock. In this way the text <span class="vw">destabilises</span> any stable moral position, inviting us to <span class="vw">interrogate</span> our own comfort with the ordinary face of oppression.
+    <p style="font-size:12px; color:var(--ink-soft); margin-top:10px;">— 26 Week 1 words deployed in ~230 words. Note how each verb carries its specific metaphor and each adjective earns its judgement.</p>
+  </div>
+
+  <!-- Deployment grid -->
+  <h3>The 60-Word Deployment Grid (tick as you use them)</h3>
+  <table class="deploy-grid">
+    <tr><th>Category (Day)</th><th>Words</th><th class="tick">Used?</th></tr>
+    <tr>
+      <td class="cat">Core Analysis Verbs<br>(Day 1)</td>
+      <td><span class="gridword">subvert</span> · <span class="gridword">juxtapose</span> · <span class="gridword">foreground</span> · <span class="gridword">undermine</span> · <span class="gridword">evoke</span> · <span class="gridword">elucidate</span> · <span class="gridword">problematize</span> · <span class="gridword">conflate</span> · <span class="gridword">obfuscate</span> · <span class="gridword">interrogate</span> · <span class="gridword">nuanced</span> · <span class="gridword">didactic</span></td>
+      <td class="tick">☐</td>
+    </tr>
+    <tr>
+      <td class="cat">More Analysis &amp; Effect<br>(Day 2)</td>
+      <td><span class="gridword">underscore</span> · <span class="gridword">illuminate</span> · <span class="gridword">dismantle</span> · <span class="gridword">deconstruct</span> · <span class="gridword">destabilise</span> · <span class="gridword">engender</span> · <span class="gridword">provoke</span> · <span class="gridword">elicit</span> · <span class="gridword">exemplify</span> · <span class="gridword">instantiate</span> · <span class="gridword">perpetuate</span> · <span class="gridword">vindicate</span></td>
+      <td class="tick">☐</td>
+    </tr>
+    <tr>
+      <td class="cat">Writing-Method Verbs I<br>(Day 3)</td>
+      <td><span class="gridword">craft</span> · <span class="gridword">deploy</span> · <span class="gridword">weave</span> · <span class="gridword">render</span> · <span class="gridword">orchestrate</span> · <span class="gridword">sculpt</span> · <span class="gridword">layer</span> · <span class="gridword">embed</span> · <span class="gridword">frame</span> · <span class="gridword">thread</span> · <span class="gridword">infuse</span> · <span class="gridword">suffuse</span></td>
+      <td class="tick">☐</td>
+    </tr>
+    <tr>
+      <td class="cat">Writing-Method Verbs II<br>(Day 4)</td>
+      <td><span class="gridword">permeate</span> · <span class="gridword">saturate</span> · <span class="gridword">interlace</span> · <span class="gridword">inscribe</span> · <span class="gridword">construct</span> · <span class="gridword">arrange</span> · <span class="gridword">calibrate</span> · <span class="gridword">modulate</span> · <span class="gridword">attenuate</span> · <span class="gridword">distil</span> · <span class="gridword">hone</span> · <span class="gridword">sharpen</span></td>
+      <td class="tick">☐</td>
+    </tr>
+    <tr>
+      <td class="cat">Evaluative Adjectives<br>(Day 5)</td>
+      <td><span class="gridword">polemical</span> · <span class="gridword">subversive</span> · <span class="gridword">satirical</span> · <span class="gridword">allegorical</span> · <span class="gridword">tendentious</span> · <span class="gridword">reductive</span> · <span class="gridword">insidious</span> · <span class="gridword">transgressive</span> · <span class="gridword">provocative</span> · <span class="gridword">ambivalent</span> · <span class="gridword">didactic</span> · <span class="gridword">nuanced</span></td>
+      <td class="tick">☐</td>
+    </tr>
+  </table>
+  <div class="review-prompt">
+    <strong>Target:</strong> aim to deploy <strong>20+</strong> distinct words (the model used 26). Going for all 60 forces awkward padding — quality of deployment matters more than raw count. A 6–7 essay uses the <em>right</em> word at the <em>right</em> moment, not the most words.
+  </div>
+
+  <!-- Self-marking rubric -->
+  <h3>Self-Marking Rubric (Criterion A/D style)</h3>
+  <div class="rubric">
+    <ol>
+      <li><strong>Accuracy (owning the word):</strong> Is each word used with its precise meaning and metaphor? (e.g. "suffuse" needs an atmosphere as subject; "infuse" needs an author as agent.) Deduct for any word used vaguely or wrongly.</li>
+      <li><strong>Range across registers:</strong> Did you use analysis verbs + craft verbs + evaluative adjectives, not just one family? A paragraph of only craft verbs is one-dimensional.</li>
+      <li><strong>Distinction discipline:</strong> Did you respect the 9 clusters? Penalise yourself if you swapped <em>weave/thread</em>, <em>infuse/suffuse</em>, <em>permeate/saturate</em>, <em>calibrate/modulate</em>, <em>construct/arrange</em>, <em>hone/sharpen</em>, <em>polemical/tendentious</em>, <em>satirical/subversive</em>, or <em>reductive/nuanced</em>.</li>
+      <li><strong>Naturalness:</strong> Do the words sit inside the argument, or do they stick out like ornaments? Forced deployment reads as padding — rewrite those sentences.</li>
+      <li><strong>Judgement earned:</strong> Are your evaluative adjectives backed by evidence from the text, not asserted bare? "Nuanced" must be <em>shown</em>, not just claimed.</li>
+    </ol>
+    <p style="font-size:13px; color:var(--ink-soft); margin-top:8px;"><strong>Score yourself:</strong> 5/5 = the words are now yours · 3–4/5 = solid, a few to fix · below 3 = redo the paragraph tomorrow before Day 8.</p>
+  </div>
+
+  <!-- Distinction quick-ref -->
+  <h3>Distinction Quick-Reference (the 9 Week 1 clusters)</h3>
+  <div class="distinction-box">
+    <h4>⚠️ Don't let assessment day be where the near-synonyms collapse</h4>
+    <p>
+      <strong>Day 3:</strong> <em>weave</em> = many strands into cloth · <em>thread</em> = one strand through a text · <em>infuse</em> = author puts a quality in · <em>suffuse</em> = atmosphere spreads on its own.<br>
+      <strong>Day 4:</strong> <em>permeate</em> = spread through · <em>saturate</em> = fill to capacity · <em>calibrate</em> = precise tuning · <em>modulate</em> = variation/shift · <em>construct</em> = build the whole · <em>arrange</em> = order the parts · <em>hone</em> = perfect over time · <em>sharpen</em> = intensify at a moment.<br>
+      <strong>Day 5:</strong> <em>polemical</em> = open attack · <em>tendentious</em> = disguised bias · <em>satirical</em> = mocks (method) · <em>subversive</em> = topples (aim) · <em>reductive</em> = flattens · <em>nuanced</em> = expands.
+    </p>
+  </div>
+
+  <!-- ============ BUILDING YOUR TOOLKIT ============ -->
+  <h2><span class="icon">🎯</span> What Today Proves</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Recognition ≠ ownership.</strong> You could probably define all 60 words by now. Today tested whether you can <em>produce</em> them under pressure — the IO and Paper 2 skill. If the paragraph felt stiff, that's normal: active deployment is a separate muscle from passive recognition, and it strengthens with each assessment.
+    </li>
+    <li>
+      <strong>The three registers must interlock.</strong> Strong analysis sentences pair an <em>analysis verb</em> (what the text does), a <em>craft verb</em> (how it's built), and an <em>evaluative adjective</em> (whether it works). The model paragraph does exactly this in every sentence. Train that triad.
+    </li>
+    <li>
+      <strong>Distinction discipline is the difference between 5 and 7.</strong> Examiners notice when a student uses "weave" where "thread" is precise, or calls a text "nuanced" when the evidence shows it's "reductive." The 9 clusters are your precision edge — guard them even under timed pressure.
+    </li>
+    <li>
+      <strong>Assessment days are not a break — they're the test of the system.</strong> Weeks 2–16 will each close with a Day-7-style assessment. Treat today as the template: recall &rarr; deploy &rarr; self-mark &rarr; fix. That loop is what makes the vocabulary stick for the final exams.
+    </li>
+    <li>
+      <strong>Carry the 60 into your real schoolwork this week.</strong> In your next IO practice or essay, consciously deploy 5–10 of these words. Transfer from the plan to actual graded work is the whole point — otherwise the list stays decorative.
+    </li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 8 (Tomorrow): Phase 2 begins — Descriptive Precision I</strong><br>
+    Environmental / setting adjectives to make your descriptions of place and atmosphere precise and literary: <em>oppressive, desolate, labyrinthine, verdant, sepulchral, stark, austere, bucolic</em> (and more). The vocabulary shifts from <em>argument</em> to <em>atmosphere</em> — exactly what you need for extract analysis and descriptive IO commentary.<br><br>
+    <strong style="color:var(--ink);">Days 9–:</strong> Character adjectives (mercurial, stoic, inscrutable, indomitable, saturnine, sanguine, taciturn, gregarious), then mood/atmosphere and tone/register words (sombre, spectral, haunting, elegiac, foreboding · lyrical, sparse, ornate, colloquial, laconic).<br><br>
+    <strong style="color:var(--ink);">Week 2 closes</strong> with its own review + assessment, following the same rhythm you just completed.
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 1, Week 1, Day 7 — Assessment<br>
+  60 words consolidated · Week 1 complete 🎯 · next: Phase 2 Descriptive Precision (Day 8)
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 2</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Review Section */
+  .review-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .review-intro strong { color: var(--ink); }
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 2 / 112 — Foundation Phase</div>
+  <div class="date">Sunday, 23 August 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 1)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">1</div>
+      <div class="dot today">2</div>
+      <div class="dot">3</div>
+      <div class="dot">4</div>
+      <div class="dot">5</div>
+      <div class="dot">6</div>
+      <div class="dot">7</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--teal);">Day 1 ✓</strong></td><td>Foundational analysis verbs (10) + evaluative adjectives (2) — <em style="color:var(--teal);">completed</em></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 2 →</strong></td><td><strong>More analysis verbs + effect verbs</strong> (underscore, provoke, engender…) + <strong>Day 1 review</strong></td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 3:</strong></td><td><strong>Writing-method verbs I</strong> — craft, deploy, weave, render, orchestrate…</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 4:</strong></td><td><strong>Writing-method verbs II</strong> — sculpt, layer, embed, infuse, suffuse, permeate…</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 5:</strong></td><td>Evaluative adjectives (polemical, subversive, satirical, allegorical…)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 6:</strong></td><td>Weekly review &amp; consolidation</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 7:</strong></td><td>Weekly assessment (all Week 1 words)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- SPACED REPETITION STATUS -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Review</h2>
+  <div class="review-intro">
+    <strong>How it works:</strong> You learned 12 words yesterday. Today, before learning new words, you need to recall them. Research shows that <em>active recall within 24 hours</em> is the single most effective way to interrupt forgetting. Don't just re-read — try to <strong>produce</strong> the meaning from memory first.
+    <br><br>
+    <strong>Today's schedule:</strong> 12 review words (Day 1) + 12 new words (Day 2) = <strong>24 words total</strong>
+  </div>
+
+  <!-- DAY 1 QUICK RECALL -->
+  <h2><span class="icon">🔄</span> Day 1 Quick Recall — 12 Words</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:12px;">
+    For each word below, try to recall the meaning <strong>before</strong> reading the definition. Then ask yourself: <em>Can I use this word in an analytical sentence about a text I'm studying?</em> If not, flag it for extra review tonight.
+  </p>
+  <div class="review-grid">
+    <div class="review-card">
+      <span class="rword">subvert</span>
+      <p class="rdef"><em>To undermine or overturn established conventions/authority.</em><br>"The author subverts the genre by…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">juxtapose</span>
+      <p class="rdef"><em>To place side by side to highlight contrast.</em><br>"Fitzgerald juxtaposes X with Y to…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">foreground</span>
+      <p class="rdef"><em>To bring to prominence; make central.</em><br>"The narrative foregrounds the theme of…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">undermine</span>
+      <p class="rdef"><em>To gradually weaken or erode.</em><br>"The irony undermines the reader's confidence in…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">evoke</span>
+      <p class="rdef"><em>To bring a feeling/atmosphere to mind.</em><br>"The imagery evokes a sense of…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">elucidate</span>
+      <p class="rdef"><em>To make clear; shed light on.</em><br>"The metaphor elucidates the relationship between…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">problematize</span>
+      <p class="rdef"><em>To complicate/question what was taken for granted.</em><br>"The novel problematizes the notion of…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">conflate</span>
+      <p class="rdef"><em>To merge two distinct things into one.</em><br>"Orwell conflates X and Y, suggesting…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">obfuscate</span>
+      <p class="rdef"><em>To deliberately make unclear or obscure.</em><br>"The fragmented structure obfuscates the truth…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">interrogate</span>
+      <p class="rdef"><em>To subject to rigorous critical questioning.</em><br>"The text interrogates assumptions about…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">nuanced</span>
+      <p class="rdef"><em>Characterised by subtle distinctions; not simplistic.</em><br>"A nuanced portrayal that avoids…"</p>
+    </div>
+    <div class="review-card">
+      <span class="rword">didactic</span>
+      <p class="rdef"><em>Intended to teach/instruct, often with a moral lesson.</em><br>"The tone is didactic, suggesting…"</p>
+    </div>
+  </div>
+  <div class="review-prompt">
+    <strong>Self-check:</strong> Cover the definitions above. Can you recall each word's meaning and its "literary usage pattern" template? Which 2–3 words feel least secure? <strong>Star them</strong> — they'll appear again in Day 3's review.
+  </div>
+
+  <!-- TODAY'S NEW VOCABULARY -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">Category: More Analysis Verbs (7) + Effect &amp; Causation Verbs (5)</strong><br>
+    Yesterday you learned verbs for <em>what authors do</em> to texts and conventions. Today's verbs go further — they describe <em>what texts do to readers</em> (provoke, elicit, engender), <em>how texts take ideas apart</em> (dismantle, deconstruct, destabilise), and <em>how texts prove or sustain arguments</em> (exemplify, instantiate, perpetuate, vindicate). Together with Day 1, these 24 verbs form the core analytical toolkit you'll use in every IB essay.
+  </p>
+
+  <!-- Word 1 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">underscore</span>
+      <span class="ipa">/ˌʌndəˈskɔː/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To emphasise or give additional weight to something; to reinforce the significance of an idea through structural or stylistic means.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [technique/motif] <strong>underscores</strong> [theme/idea] by [specific method]…"
+    </div>
+    <p class="example">
+      "The recurring motif of decay — from the Valley of Ashes to Gatsby's unmaintained mansion — underscores the novel's argument that the American Dream is structurally self-destroying."
+      <span class="source">— The Great Gatsby analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> More formal and precise than "emphasise." Use it when a literary element reinforces a theme <em>structurally</em> — through repetition, patterning, or motif — rather than through direct statement. "The author emphasises" is about intention; "the text underscores" is about <em>effect</em>.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> underscore a theme · underscore the significance · underscore the contrast · underscore the tension · underscore the point</p>
+  </div>
+
+  <!-- Word 2 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">illuminate</span>
+      <span class="ipa">/ɪˈluːmɪneɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To clarify or make intelligible; to shed light on a complex idea, hidden motivation, or layered relationship within a text.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [scene/metaphor/dialogue] <strong>illuminates</strong> [aspect of character/theme/motivation]…"
+    </div>
+    <p class="example">
+      "Blanche's desperate monologue about the 'paper lantern' illuminates the fragility of the persona she has constructed — beauty that cannot survive exposure to harsh light."
+      <span class="source">— A Streetcar Named Desire analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use when a moment or device reveals something previously hidden or only half-understood. Unlike "elucidate" (which means to <em>explain</em>), "illuminate" suggests a flash of insight — a sudden clarity. Perfect for moments of dramatic revelation or symbolic density.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> illuminate a character's motivation · illuminate the theme · illuminate the human condition · illuminating (adj.) · illumination (n.)</p>
+  </div>
+
+  <!-- Word 3 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">dismantle</span>
+      <span class="ipa">/dɪsˈmænt(ə)l/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To take apart systematically; to deconstruct an argument, ideology, or social structure piece by piece until it can no longer function.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The text <strong>dismantles</strong> [ideology/stereotype/hierarchy] by [specific technique]…"
+    </div>
+    <p class="example">
+      "Austen dismantles the social hierarchy of Regency England not through direct political critique but through the weaponised irony of free indirect discourse, exposing Lady Catherine's authority as hollow performance."
+      <span class="source">— Pride and Prejudice analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Implies a methodical, deliberate taking-apart — not a single blow but a systematic disassembly. Use when a text shows <em>how</em> a belief system falls apart, piece by piece. Compare with "subvert" (overturning) — "dismantle" is more analytical and structural.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> dismantle an argument · dismantle stereotypes · dismantle the ideology · dismantle the hierarchy · dismantlement (n.)</p>
+  </div>
+
+  <!-- Word 4 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">deconstruct</span>
+      <span class="ipa">/ˌdiːkənˈstrʌkt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To break down a text or concept to reveal its internal contradictions and hidden assumptions; to show that categories we treat as natural are actually constructed and unstable.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "By [technique], the text <strong>deconstructs</strong> the [binary/assumption/concept], revealing it to be [unstable/contradictory]…"
+    </div>
+    <p class="example">
+      "Winterson deconstructs the binary of male and female by presenting gender as a fluid narrative construction, showing that the body itself is a text that can be rewritten."
+      <span class="source">— Written on the Body analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> A term from poststructuralist theory (Derrida). In IB, use it when a text reveals that categories we take for granted — gender, truth, sanity, civilisation — are unstable <em>constructions</em>, not natural facts. Don't use it as a fancy synonym for "analyse" — it specifically means to expose contradictions <em>within</em> a system of meaning. Pairs powerfully with "binary" and "construct."
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> deconstruct a binary · deconstruct the narrative · deconstruct assumptions · deconstruct the category · deconstruction (n.)</p>
+  </div>
+
+  <!-- Word 5 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">destabilise</span>
+      <span class="ipa">/diːˈsteɪbɪlaɪz/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To make unstable or uncertain; to shake the foundations of a belief, identity, narrative, or social order.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [technique] <strong>destabilises</strong> [the reader's certainty / the character's identity / the social order]…"
+    </div>
+    <p class="example">
+      "The shifting narrative perspective — sometimes first person, sometimes third, sometimes uncertain which — destabilises the reader's confidence in any single version of events, mirroring the epistemological uncertainty at the heart of the novel."
+      <span class="source">— Generic postmodern analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use when a text deliberately unsettles something that seemed stable. The instability is <em>meaningful</em> — it creates space for new meaning to emerge. Distinguish from "undermine" (which weakens): "destabilise" is about making something <em>wobbly</em>, not necessarily destroying it.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> destabilise identity · destabilise the narrative · destabilise assumptions · destabilise the social order · destabilisation (n.)</p>
+  </div>
+
+  <!-- Word 6 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">engender</span>
+      <span class="ipa">/ɪnˈdʒendə/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To cause or produce; to give rise to a feeling, attitude, or social condition within the text or in the reader.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [setting/imagery/situation] <strong>engenders</strong> [emotion/attitude/condition] in [the reader/the character]…"
+    </div>
+    <p class="example">
+      "The claustrophobic domestic setting — the barred windows, the nailed-down bed, the wallpaper pressing inward — engenders a pervasive sense of entrapment that mirrors and amplifies the narrator's psychological deterioration."
+      <span class="source">— The Yellow Wallpaper analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> More formal than "cause" or "create." Reserve it for the production of abstract things — feelings, attitudes, social conditions. "The imagery <em>engenders</em> a sense of dread" is notably more sophisticated than "The imagery makes you feel scared." It implies a generative relationship between the literary device and the effect.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> engender sympathy · engender a sense of · engender distrust · engender hope · engender complacency</p>
+  </div>
+
+  <!-- Word 7 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">provoke</span>
+      <span class="ipa">/prəˈvəʊk/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To deliberately stimulate or incite a response — emotional, intellectual, or physical — often challenging comfort or complacency.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [scene/technique] <strong>provokes</strong> [reaction] by [method], forcing the reader to [confront/reconsider]…"
+    </div>
+    <p class="example">
+      "The abrupt shift from lyrical nature description to the visceral brutality of the hunt provokes the reader into confronting the violence that the preceding lyricism has been aesthetically concealing."
+      <span class="source">— Generic prose analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Implies <em>intentionality</em> — the author is doing this deliberately. "Provoke" is stronger and more confrontational than "cause"; it suggests a challenge to the reader's comfort, assumptions, or moral position. Perfect for describing shock tactics, tonal shifts, or graphic imagery that serves a purpose.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> provoke a response · provoke unease · provoke the reader · provoke controversy · provocation (n.) · provocative (adj.)</p>
+  </div>
+
+  <!-- Word 8 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">elicit</span>
+      <span class="ipa">/ɪˈlɪsɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To draw out or bring forth a response from the reader or audience, often through careful prompting, technique, or dramatic design.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [technique] <strong>elicits</strong> [sympathy/discomfort/reflection] from the [reader/audience]…"
+    </div>
+    <p class="example">
+      "The dramatic irony of the banquet scene — where only the audience sees Banquo's ghost — elicits a mixture of pity and revulsion, complicating any straightforward response to Macbeth's downfall."
+      <span class="source">— Macbeth analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> "Elicit" focuses on the response <em>drawn out</em> from the reader or audience. It's more precise than "make the reader feel" because it implies a technique that <em>pulls</em> a reaction. Distinguish carefully from "evoke" (Day 1): <strong>evoke</strong> = bringing an atmosphere/feeling to mind; <strong>elicit</strong> = drawing a specific reaction <em>from</em> someone. See the distinction box below.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> elicit sympathy · elicit a response · elicit discomfort · elicit reflection · elicit empathy · elicitation (n.)</p>
+  </div>
+
+  <!-- EVOKE vs ELICIT distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: evoke vs. elicit</h4>
+    <p>
+      These two verbs are frequently confused, and using the wrong one is a red flag for examiners.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>evoke</strong> (Day 1) — The subject is usually a <em>textual element</em> (imagery, setting, sound). The object is an <em>atmosphere or feeling</em>. The feeling arises in the reader's mind without being directly solicited.<br>
+      → "The imagery <strong>evokes</strong> a sense of melancholy." (The imagery brings melancholy to mind.)
+    </p>
+    <p style="margin-top:8px;">
+      <strong>elicit</strong> (Day 2) — The subject is a <em>technique or design choice</em>. The object is a <em>specific, deliberate reaction</em> from the reader/audience. There's an implied causal mechanism.<br>
+      → "The dramatic irony <strong>elicits</strong> sympathy from the audience." (The technique pulls sympathy out of the audience.)
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      Memory trick: <strong>e</strong>voke → <strong>e</strong>motion/atmosphere · <strong>e</strong>licit → <strong>e</strong>xtract a reaction <em>from</em> someone
+    </p>
+  </div>
+
+  <!-- Word 9 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">exemplify</span>
+      <span class="ipa">/ɪɡˈzemplɪfaɪ/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To serve as a typical example of; to illustrate a broader pattern, concept, or theme through a specific instance.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [character/scene] <strong>exemplifies</strong> [theme/concept/archetype] through [specific quality/behaviour]…"
+    </div>
+    <p class="example">
+      "Tom Buchanan exemplifies the moral bankruptcy of the old-money elite — his casual cruelty is not an aberration but the logical expression of unchecked inherited privilege, presented without self-awareness."
+      <span class="source">— The Great Gatsby analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use when a specific element perfectly <em>illustrates</em> a broader theme. More precise than "shows" or "is an example of" — it means this element is a <em>representative</em> instance of a larger pattern. Examiners like it because it demonstrates that you can move between the specific (one character) and the general (a theme).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> exemplify a theme · exemplify the archetype · exemplify the conflict · exemplify a trope · exemplification (n.)</p>
+  </div>
+
+  <!-- Word 10 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">instantiate</span>
+      <span class="ipa">/ɪnˈstænʃieɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To give concrete form to an abstract concept; to embody or represent a general idea in a specific, tangible instance.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [character/scene] <strong>instantiates</strong> [abstract concept] as [concrete manifestation]…"
+    </div>
+    <p class="example">
+      "Winston Smith instantiates the conflict between individual memory and collective history — his job of falsifying records makes him both the agent and the victim of institutional forgetting."
+      <span class="source">— 1984 analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> A high-register alternative to "is an example of" or "represents." Use it when a character or scene doesn't merely <em>illustrate</em> a concept (cf. "exemplify") but <em>embodies</em> it — the abstract idea is made flesh. Examiners at HL will recognise this as a term from philosophy and literary theory. Use sparingly — once or twice per essay for maximum impact.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> instantiate a concept · instantiate the archetype · instantiate the theme · instantiate an ideal · instantiation (n.)</p>
+  </div>
+
+  <!-- Word 11 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">perpetuate</span>
+      <span class="ipa">/pəˈpetʃueɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To cause something to continue indefinitely; to sustain, reinforce, or keep in circulation a system, belief, or cycle — usually with negative connotations.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [narrative structure/social dynamic] <strong>perpetuates</strong> [inequality/ideology/cycle of violence] by [mechanism]…"
+    </div>
+    <p class="example">
+      "The cyclical structure of the novel — ending where it began, with a new generation inheriting the same conflicts — perpetuates the sense that the cycle of colonial violence is structurally unbreakable, offering no easy redemption."
+      <span class="source">— Generic postcolonial analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Usually negative — perpetuating stereotypes, inequality, cycles of violence. Use it to show that a text depicts (or itself participates in) the reinforcement of a harmful pattern. A sharp analytical question: <em>Does the text critique the cycle, or does it perpetuate it?</em> This tension is often where the most sophisticated IB arguments live.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> perpetuate stereotypes · perpetuate inequality · perpetuate the cycle · perpetuate the myth · perpetuate the status quo · perpetuation (n.)</p>
+  </div>
+
+  <!-- Word 12 -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">vindicate</span>
+      <span class="ipa">/ˈvɪndɪkeɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To justify or prove right; to show that someone or something was correct, often retrospectively, after a period of doubt or opposition.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "The [ending/revelation/structure] <strong>vindicates</strong> [character's actions / earlier suspicion / thematic argument]…"
+    </div>
+    <p class="example">
+      "The novel's final revelation — that the narrator's seemingly paranoid suspicions were justified all along — vindicates her perspective retrospectively, transforming the reader's previous doubt into guilt."
+      <span class="source">— Generic unreliable-narrator analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Use when a later development in the text confirms an earlier position. It's about <em>retrospective justification</em> — the text proves that a character or perspective was right all along. Extremely powerful in essays about unreliable narrators, delayed revelation, or texts that reframe their own earlier events. <br><br>⚠️ Don't confuse with <strong>vindictive</strong> (adj. — seeking revenge). Same root, very different meaning.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> vindicate a character · vindicate a claim · vindicate the protagonist · vindicate a position · vindication (n.)</p>
+  </div>
+
+  <!-- EXEMPLIFY vs INSTANTIATE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: exemplify vs. instantiate</h4>
+    <p>
+      Both describe the relationship between a specific element and a general concept, but with different shades of meaning:
+    </p>
+    <p style="margin-top:8px;">
+      <strong>exemplify</strong> — The element is a <em>typical example</em> of a broader pattern. It illustrates the concept clearly. Neutral in register.<br>
+      → "Tom Buchanan <strong>exemplifies</strong> the carelessness of the wealthy." (He's a clear example of this type.)
+    </p>
+    <p style="margin-top:8px;">
+      <strong>instantiate</strong> — The element doesn't just illustrate the concept — it <em>embodies</em> it, gives it concrete form. Higher register; implies a tighter, more philosophical connection between the abstract and the concrete.<br>
+      → "Winston <strong>instantiates</strong> the conflict between memory and power." (He IS the conflict, made flesh.)
+    </p>
+  </p>
+  </div>
+
+  <!-- PRACTICE -->
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Fill in the Blank (Day 2 Words)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Complete each sentence with a word from today's list. Use context clues to choose the right word.</p>
+    <div class="word-bank">
+      <strong>Word Bank:</strong> underscore · illuminate · dismantle · deconstruct · destabilise · engender · provoke · elicit · exemplify · instantiate · perpetuate · vindicate
+    </div>
+    <ol>
+      <li>The recurring image of broken mirrors <span class="blank">________</span> the theme of fractured identity that runs throughout the novel.</li>
+      <li>Rather than simply condemning colonialism, the author <span class="blank">________</span> its ideological foundations, showing how "civilising" language masks economic exploitation.</li>
+      <li>The unreliable narration <span class="blank">________</span> the reader's trust in the narrator's account, making every "fact" suspect.</li>
+      <li>The oppressive summer heat <span class="blank">________</span> a sense of mounting tension that erupts in the novel's climactic confrontation.</li>
+      <li>The playwright's use of direct address <span class="blank">________</span> the audience into uncomfortable complicity with the protagonist's decisions.</li>
+      <li>The final scene, in which the protagonist's warnings prove accurate, <span class="blank">________</span> her earlier suspicions that everyone had dismissed as paranoia.</li>
+      <li>The cyclical narrative structure <span class="blank">________</span> the cycle of generational trauma, offering no exit from the pattern of violence.</li>
+      <li>The protagonist <span class="blank">________</span> the existential conflict between individual freedom and social conformity — he is not merely caught between them but <em>is</em> that conflict in human form.</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 2: Cross-Day Sentences (Day 1 + Day 2)</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Write one analytical sentence for each pair, using <strong>both</strong> words in a single sentence about a text you are studying. This trains you to combine analytical verbs naturally.</p>
+    <ol>
+      <li><strong>juxtapose</strong> (Day 1) + <strong>underscore</strong> (Day 2) — Write about how contrasting elements reinforce a theme.</li>
+      <li><strong>evoke</strong> (Day 1) + <strong>engender</strong> (Day 2) — Write about how atmosphere creates a specific emotional response.</li>
+      <li><strong>problematize</strong> (Day 1) + <strong>destabilise</strong> (Day 2) — Write about how a text complicates and unsettles a concept.</li>
+      <li><strong>interrogate</strong> (Day 1) + <strong>dismantle</strong> (Day 2) — Write about how a text questions and takes apart a social structure.</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Explain the difference between each pair in 1–2 sentences. Why would you choose one over the other in an essay? Use a literary example to illustrate.</p>
+    <ol>
+      <li><strong>provoke</strong> vs. <strong>elicit</strong> — both are about reader response, but what's the difference in intensity and intentionality?</li>
+      <li><strong>dismantle</strong> vs. <strong>deconstruct</strong> — both involve taking apart, but what's the difference in what is being taken apart and how?</li>
+      <li><strong>exemplify</strong> vs. <strong>instantiate</strong> — see the distinction box above. Give your own literary example for each.</li>
+      <li><strong>perpetuate</strong> vs. <strong>vindicate</strong> — how do these represent opposite textual functions?</li>
+    </ol>
+  </div>
+
+  <!-- IB TIPS -->
+  <h2><span class="icon">🎯</span> Building Your Analytical Verb Toolkit</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>You now have 24 analytical verbs.</strong> That's enough to never use "shows" or "highlights" in an essay again. Print or bookmark this list and keep it beside you when writing. The goal is not to use all 24 in every essay — it's to <em>choose the right one</em> for each analytical move.
+    </li>
+    <li>
+      <strong>Match the verb to the analytical function.</strong> Ask yourself: Is the author <em>taking something apart</em> (dismantle, deconstruct, destabilise)? <em>Reinforcing something</em> (underscore, perpetuate)? <em>Producing a response</em> (engender, provoke, elicit)? <em>Proving something right</em> (vindicate)? Each function has its own verbs — using the right one demonstrates precision.
+    </li>
+    <li>
+      <strong>Stack verbs for complex analysis.</strong> A single sentence can use two analytical verbs to show layered effects: "By <em>juxtaposing</em> the two settings, the author <em>underscores</em> the contrast between… and <em>engenders</em> in the reader a sense of…" This layered structure is what separates 6/7-level analysis from 4/5-level.
+    </li>
+    <li>
+      <strong>Watch register: don't overuse the highest-level verbs.</strong> "Instantiate" and "deconstruct" are powerful precisely because they're uncommon. Use them once or twice per essay. "Underscore," "provoke," and "elicit" are workhorses — use them freely. Calibrate your register like a musician calibrates dynamics.
+    </li>
+    <li>
+      <strong>Start using these verbs in your reading notes, not just essays.</strong> When you annotate a set text, write "underscores" or "dismantles" in the margin instead of "shows." This builds instinct — by exam time, the right verb will come automatically.
+    </li>
+    <li>
+      <strong>The distinction boxes matter.</strong> Examiners can tell when a student uses "evoke" and "elicit" interchangeably. The precision of <em>choosing the right word</em> is worth marks in Criterion D (Language). Review the evoke/elicit and exemplify/instantiate distinctions until they're instinctive.
+    </li>
+  </ol>
+
+  <!-- TOMORROW PREVIEW -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 3 (Tomorrow): Writing-Method Verbs I</strong><br>
+    A new category — verbs that describe <em>how authors construct texts</em>. These are the verbs that let you discuss craft, not just effect.<br>
+    <span style="display:block; margin:8px 0 12px; font-size:13px;">craft · deploy · weave · render · orchestrate · sculpt · layer · embed · frame · thread · infuse · suffuse</span>
+    <strong style="color:var(--ink);">Review tomorrow:</strong> Day 1 (second pass — quick recall) + Day 2 (first review)<br><br>
+    <strong style="color:var(--ink);">Day 4 (Preview):</strong> Writing-Method Verbs II — permeate, frame, thread, and the shift to evaluative adjectives later in the week.
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Phase 1, Week 1, Day 2<br>
+  24 words learned so far (12 reviewed + 12 new) · 1,276 to go · Building momentum 🔥
+</footer>
+
+</body>
+</html>

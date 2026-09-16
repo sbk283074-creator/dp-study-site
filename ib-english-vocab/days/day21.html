@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 21</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall intro */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .note-box {
+    background: var(--paper-warm);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .note-box strong { color: var(--ink); }
+
+  /* Flash-recall master sheet */
+  .crib-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 12.5px;
+  }
+  .crib-table th {
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .crib-table td {
+    border: 1px solid var(--line);
+    padding: 7px 10px;
+    vertical-align: top;
+  }
+  .crib-table td.term {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    width: 26%;
+  }
+  .crib-table td.pillar {
+    color: var(--gold);
+    font-weight: 600;
+    width: 18%;
+  }
+  .crib-table td.def { color: var(--ink-soft); }
+  .crib-table tr:nth-child(even) td { background: #fff; }
+  .crib-table tr:nth-child(odd) td { background: #fcfaf5; }
+
+  /* Model paragraph */
+  .model {
+    background: var(--paper-warm);
+    border-left: 4px solid var(--purple);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 14px 0;
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.85;
+  }
+  .model .hl { background: #fff3d6; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+
+  /* Practice */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol { padding-left: 20px; margin-top: 8px; }
+  .practice-box ol li { font-size: 14px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.7; }
+  .practice-box ol li strong { color: var(--ink); }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 13.5px;
+  }
+  .usage-box .label {
+    font-weight: 700; color: var(--gold);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    display: block; margin-bottom: 4px;
+  }
+
+  /* Rubric */
+  .rubric { width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
+  .rubric th, .rubric td { border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top; }
+  .rubric th { background: var(--paper-warm); color: var(--ink); }
+  .rubric td.crit { font-weight:700; color: var(--ink); width:16%; }
+  .rubric td .band { font-weight:700; }
+  .rubric td .b1 { color: var(--coral); }
+  .rubric td .b2 { color: var(--gold); }
+  .rubric td .b3 { color: var(--teal); }
+
+  /* Distinction quick-ref */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    margin: 12px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .distinction-box p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Tips */
+  .tips-list { list-style: none; counter-reset: tip; }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  @media (max-width: 600px) {
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .crib-table { font-size: 11px; }
+    .crib-table td.term { width: 32%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 21 / 112 — Week 3 Review &amp; Assessment</div>
+  <div class="date">Sunday, 13 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Week tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 3)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">15</div>
+      <div class="dot done">16</div>
+      <div class="dot done">17</div>
+      <div class="dot done">18</div>
+      <div class="dot done">19</div>
+      <div class="dot done">20</div>
+      <div class="dot today">21</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 15 →</strong></td><td>Core device terms (tropes)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 16 →</strong></td><td>More devices</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 17 →</strong></td><td>Structural &amp; Narrative Terms</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 18 →</strong></td><td>Tone &amp; Attitude Terms</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 19 →</strong></td><td>Rhetorical Schemes (figures of arrangement)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 20 →</strong></td><td>Mixed Consolidation — all 60 regrouped + distinction pairs</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 21:</strong></td><td><strong>Week 3 Review &amp; Assessment</strong> — flash-recall of all 60 + guided mini-analysis</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced repetition -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">All Week 3 words<br>(Days 15–19)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">0</div>
+      <div class="sr-note">Assessment day</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">est. 45–60 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Week 3 capstone — no new words, pure retrieval + application.</strong> Day 20 regrouped the sixty terms by <em>function</em>. Today you <em>prove</em> they're yours: first a cover-and-recall master sheet (all 60, by pillar), then a guided mini-analysis that deploys the device vocabulary exactly as a Paper 1 commentary or Paper 2 paragraph must under timed conditions. The difference between Day 20 and Day 21 is the difference between <em>recognising</em> a word and <em>owning</em> it.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Flash-Recall Master Sheet &rarr; (2) Guided Mini-Analysis (model + rubric) &rarr; (3) Your Task — analyse a passage &rarr; (4) Distinction Quick-Ref &rarr; (5) Assessment Tips &rarr; (6) Day 22 preview.
+  </div>
+
+  <!-- ============ FLASH-RECALL MASTER SHEET ============ -->
+  <h2><span class="icon">🔁</span> Flash-Recall Master Sheet — All 60 Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    This is your capstone crib. <strong>Cover the Definition column</strong> with a piece of paper and write each term's meaning from memory; then check. A term is "known" only when you can reproduce its definition <em>and</em> name a near-neighbour it must be distinguished from (see Quick-Ref below).
+  </p>
+
+  <h3>① Figures of Meaning — Tropes (Days 15–16 · 24 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Pillar</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">metaphor</td><td class="pillar">trope</td><td class="def">Direct comparison stating one thing <em>is</em> another (no "like/as").</td></tr>
+    <tr><td class="term">simile</td><td class="pillar">trope</td><td class="def">Comparison made explicit with "like" or "as".</td></tr>
+    <tr><td class="term">personification</td><td class="pillar">trope</td><td class="def">Giving human qualities to something non-human.</td></tr>
+    <tr><td class="term">symbolism</td><td class="pillar">trope</td><td class="def">A concrete object carrying a deeper, abstract meaning.</td></tr>
+    <tr><td class="term">irony</td><td class="pillar">trope</td><td class="def">A gap between what is said and what is meant / expected.</td></tr>
+    <tr><td class="term">motif</td><td class="pillar">trope</td><td class="def">A recurring image or idea that accumulates meaning.</td></tr>
+    <tr><td class="term">juxtaposition</td><td class="pillar">trope</td><td class="def">Placing two things side by side to expose contrast.</td></tr>
+    <tr><td class="term">hyperbole</td><td class="pillar">trope</td><td class="def">Deliberate, obvious exaggeration for effect.</td></tr>
+    <tr><td class="term">allusion</td><td class="pillar">trope</td><td class="def">A brief reference to another text, person, or event.</td></tr>
+    <tr><td class="term">metonymy</td><td class="pillar">trope</td><td class="def">A related term substituted for the thing meant.</td></tr>
+    <tr><td class="term">oxymoron</td><td class="pillar">trope</td><td class="def">A contradiction packed into adjacent words.</td></tr>
+    <tr><td class="term">anaphora</td><td class="pillar">trope</td><td class="def">Repetition of a word/phrase at the <em>start</em> of units.</td></tr>
+    <tr><td class="term">paradox</td><td class="pillar">trope</td><td class="def">A statement that seems contradictory yet reveals truth.</td></tr>
+    <tr><td class="term">synecdoche</td><td class="pillar">trope</td><td class="def">A part standing for the whole (or whole for part).</td></tr>
+    <tr><td class="term">imagery</td><td class="pillar">trope</td><td class="def">Vivid sensory language evoking mental pictures.</td></tr>
+    <tr><td class="term">allegory</td><td class="pillar">trope</td><td class="def">A sustained narrative carrying a second meaning.</td></tr>
+    <tr><td class="term">antithesis</td><td class="pillar">trope</td><td class="def">Contrasting ideas in balanced parallel structure.</td></tr>
+    <tr><td class="term">epistrophe</td><td class="pillar">trope</td><td class="def">Repetition of a word/phrase at the <em>end</em> of units.</td></tr>
+    <tr><td class="term">apostrophe</td><td class="pillar">trope</td><td class="def">Addressing an absent or imaginary listener directly.</td></tr>
+    <tr><td class="term">alliteration</td><td class="pillar">trope</td><td class="def">Repetition of initial consonant sounds.</td></tr>
+    <tr><td class="term">euphemism</td><td class="pillar">trope</td><td class="def">A mild term substituted for a harsh or blunt one.</td></tr>
+    <tr><td class="term">pun</td><td class="pillar">trope</td><td class="def">A play on words with similar sounds, different senses.</td></tr>
+    <tr><td class="term">satire</td><td class="pillar">trope</td><td class="def">A mode using wit to expose vice or folly.</td></tr>
+    <tr><td class="term">tricolon</td><td class="pillar">trope</td><td class="def">A group of three parallel phrases or clauses.</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">② Structure &amp; Narrative (Day 17 · 12 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Pillar</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">foreshadowing</td><td class="pillar">structure</td><td class="def">Hinting at events yet to come.</td></tr>
+    <tr><td class="term">flashback</td><td class="pillar">structure</td><td class="def">A return to an earlier point in time.</td></tr>
+    <tr><td class="term">flash-forward</td><td class="pillar">structure</td><td class="def">A leap ahead to a later point in time.</td></tr>
+    <tr><td class="term">frame narrative</td><td class="pillar">structure</td><td class="def">A story that encloses other stories.</td></tr>
+    <tr><td class="term">unreliable narrator</td><td class="pillar">structure</td><td class="def">A narrator whose account distorts the truth.</td></tr>
+    <tr><td class="term">stream of consciousness</td><td class="pillar">structure</td><td class="def">The unordered flow of a character's thoughts.</td></tr>
+    <tr><td class="term">interior monologue</td><td class="pillar">structure</td><td class="def">A character's thoughts rendered directly.</td></tr>
+    <tr><td class="term">epiphany</td><td class="pillar">structure</td><td class="def">A sudden moment of insight or revelation.</td></tr>
+    <tr><td class="term">denouement</td><td class="pillar">structure</td><td class="def">The resolution following the climax.</td></tr>
+    <tr><td class="term">non-linear narrative</td><td class="pillar">structure</td><td class="def">Events presented out of chronological order.</td></tr>
+    <tr><td class="term">retrospective narration</td><td class="pillar">structure</td><td class="def">Past events told from a later vantage point.</td></tr>
+    <tr><td class="term">cyclic structure</td><td class="pillar">structure</td><td class="def">Ending where the beginning started (a loop).</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">③ Tone &amp; Attitude (Day 18 · 12 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Pillar</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">connotation</td><td class="pillar">tone</td><td class="def">The associations / feelings a word carries.</td></tr>
+    <tr><td class="term">denotation</td><td class="pillar">tone</td><td class="def">The literal, dictionary meaning of a word.</td></tr>
+    <tr><td class="term">register</td><td class="pillar">tone</td><td class="def">The level of formality of language used.</td></tr>
+    <tr><td class="term">subtext</td><td class="pillar">tone</td><td class="def">The unspoken meaning the text implies.</td></tr>
+    <tr><td class="term">inference</td><td class="pillar">tone</td><td class="def">The conclusion a reader draws from evidence.</td></tr>
+    <tr><td class="term">modality</td><td class="pillar">tone</td><td class="def">The degree of certainty / necessity expressed.</td></tr>
+    <tr><td class="term">equivocation</td><td class="pillar">tone</td><td class="def">Strategic ambiguity used to dodge a position.</td></tr>
+    <tr><td class="term">hedge</td><td class="pillar">tone</td><td class="def">An honest softener that weakens a claim's force.</td></tr>
+    <tr><td class="term">stance</td><td class="pillar">tone</td><td class="def">The writer's position toward subject and audience.</td></tr>
+    <tr><td class="term">sarcasm</td><td class="pillar">tone</td><td class="def">Mocking words conveying the opposite of their sense.</td></tr>
+    <tr><td class="term">innuendo</td><td class="pillar">tone</td><td class="def">An indirect hint at something disparaging.</td></tr>
+    <tr><td class="term">understatement</td><td class="pillar">tone</td><td class="def">Deliberately representing something as less than it is.</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">④ Schemes — Figures of Arrangement (Day 19 · 12 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Pillar</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">chiasmus</td><td class="pillar">scheme</td><td class="def">Ideas repeated in reverse order (A–B–B–A), not same words.</td></tr>
+    <tr><td class="term">zeugma</td><td class="pillar">scheme</td><td class="def">One word governing two, fitting only one strictly.</td></tr>
+    <tr><td class="term">asyndeton</td><td class="pillar">scheme</td><td class="def">The omission of conjunctions between units.</td></tr>
+    <tr><td class="term">polysyndeton</td><td class="pillar">scheme</td><td class="def">The repetition of conjunctions between units.</td></tr>
+    <tr><td class="term">litotes</td><td class="pillar">scheme</td><td class="def">Understatement via a double negative.</td></tr>
+    <tr><td class="term">antimetabole</td><td class="pillar">scheme</td><td class="def">The SAME words repeated in reversed order.</td></tr>
+    <tr><td class="term">isocolon</td><td class="pillar">scheme</td><td class="def">Parallel clauses of equal length / weight.</td></tr>
+    <tr><td class="term">anadiplosis</td><td class="pillar">scheme</td><td class="def">A word ending one clause starts the next.</td></tr>
+    <tr><td class="term">anastrophe</td><td class="pillar">scheme</td><td class="def">Inversion of the normal word order.</td></tr>
+    <tr><td class="term">climax</td><td class="pillar">scheme</td><td class="def">A series rising in importance or force.</td></tr>
+    <tr><td class="term">parataxis</td><td class="pillar">scheme</td><td class="def">Equal clauses joined by no linker.</td></tr>
+    <tr><td class="term">hypotaxis</td><td class="pillar">scheme</td><td class="def">Clauses nested by subordinators.</td></tr>
+  </table>
+
+  <div class="note-box">
+    <strong>Self-score:</strong> If you can reproduce ≥54/60 definitions unprompted, Week 3 is locked in. If 5–10 are fuzzy, mark them and give them a 1-day intense pass before Day 22. If more than 10 fail, redo the Day 20 grids first — don't advance on shaky ground.
+  </div>
+
+  <!-- ============ GUIDED MINI-ANALYSIS ============ -->
+  <h2><span class="icon">✍️</span> Guided Mini-Analysis — Model &amp; Rubric</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    The capstone skill is <em>deploying</em> these terms on a real passage. Below: a model paragraph that names terms from <strong>all four pillars</strong>. Highlighted = Week 3 vocabulary.
+  </p>
+  <div class="model">
+    A novel that opens <em>in medias res</em> through a <span class="hl">frame narrative</span> quickly establishes an <span class="hl">unreliable narrator</span> whose <span class="hl">retrospective narration</span> colours every event with <span class="hl">irony</span>. The author's use of <span class="hl">foreshadowing</span> — a recurring <span class="hl">motif</span> of broken clocks — builds <span class="hl">symbolic</span> weight long before the <span class="hl">epiphany</span> that resolves the <span class="hl">denouement</span>. Sentences alternate <span class="hl">parataxis</span> ("he left. she waited.") with <span class="hl">hypotaxis</span> that supplies cause, while <span class="hl">anaphora</span> ("we remember, we remember, we remember") mounts urgency and <span class="hl">polysyndeton</span> slows the grief. The tone is <span class="hl">suffused</span> with <span class="hl">understatement</span> and a strategic <span class="hl">hedge</span> that lets the <span class="hl">subtext</span> — the unspoken guilt — carry more than any <span class="hl">denotation</span>. The effect is a text where structure, trope, tone, and scheme interlock so tightly that no single device can be read in isolation.
+  </div>
+  <p style="font-size:13px; color:var(--ink-soft); margin-top:8px;">
+    That paragraph names <strong>17</strong> distinct Week 3 terms across all four pillars — structure (frame narrative, unreliable narrator, retrospective narration), trope (irony, foreshadowing, motif, symbolism, epiphany, denouement), scheme (parataxis, hypotaxis, anaphora, polysyndeton), tone (understatement, hedge, subtext, denotation). It moves macro → micro and ties each device to an <em>effect</em>, not just a label.
+  </p>
+
+  <h3 style="margin-top:20px;">Self-Marking Rubric (use after Your Task below)</h3>
+  <table class="rubric">
+    <tr><th>Criterion</th><th>1–3 (Developing)</th><th>4–6 (Proficient)</th><th>7–9 (Excellent)</th></tr>
+    <tr><td class="crit">Identify</td><td class="b1"><span class="band b1">1–3</span> Names few / wrong devices</td><td class="b2"><span class="band b2">4–6</span> Names most devices correctly</td><td class="b3"><span class="band b3">7–9</span> Names every device, precisely</td></tr>
+    <tr><td class="crit">Distinguish</td><td class="b1"><span class="band b1">1–3</span> No near-neighbour awareness</td><td class="b2"><span class="band b2">4–6</span> Occasional correct pair choice</td><td class="b3"><span class="band b3">7–9</span> Right term from a pair every time</td></tr>
+    <tr><td class="crit">Four-pillar balance</td><td class="b1"><span class="band b1">1–3</span> One pillar only (e.g. all tropes)</td><td class="b2"><span class="band b2">4–6</span> 2–3 pillars represented</td><td class="b3"><span class="band b3">7–9</span> All 4 pillars deployed deliberately</td></tr>
+    <tr><td class="crit">Integrate</td><td class="b1"><span class="band b1">1–3</span> Labels listed, not analysed</td><td class="b2"><span class="band b2">4–6</span> Words attached to effects</td><td class="b3"><span class="band b3">7–9</span> Devices drive the argument about meaning</td></tr>
+  </table>
+
+  <!-- ============ YOUR TASK ============ -->
+  <h2><span class="icon">✏️</span> Your Task — Analyse the Passage</h2>
+  <div class="practice-box">
+    <p style="font-size:14px; color:var(--ink-soft);">Write ONE analytical paragraph (9–12 sentences) on the passage below. Then self-mark with the rubric.</p>
+    <div class="usage-box" style="margin:12px 0;">
+      <span class="label">Passage</span>
+      "The letter arrived before the war began. She read it twice and she wept and she burned it. The house remembered everything; the house forgave nothing. Light is a thief, light is a liar, light is a friend — and still the dark returned. When the child asked why, the mother said only that some doors are better left closed, and the silence that followed was heavier than any answer."
+    </div>
+    <p style="font-size:13.5px; color:var(--ink); margin-bottom:8px;"><strong>Requirements:</strong></p>
+    <ol>
+      <li>Name <strong>at least eight</strong> Week 3 terms, with <strong>all four pillars represented</strong> (trope + structure + tone + scheme).</li>
+      <li>Use <strong>at least one correct distinction pair</strong> (e.g. anaphora vs. epistrophe; asyndeton vs. polysyndeton; parataxis vs. hypotaxis).</li>
+      <li>For each device, state its <strong>effect</strong> — what it makes the reader feel or understand — not just its name.</li>
+      <li>Move from macro (structure / what the text does as a whole) to micro (a specific scheme) at least once.</li>
+    </ol>
+    <p style="font-size:13px; color:var(--ink-soft); margin-top:10px;">
+      <strong>Starter:</strong> "The extract opens with <span class="hl">[structure term]</span>, establishing… The <span class="hl">[scheme]</span> ('…') accelerates / slows the line, while the <span class="hl">[trope]</span> figures the house as… Tonally, the <span class="hl">[tone term]</span> means the <span class="hl">[trope]</span> of light carries a <span class="hl">[tone term]</span> weight, so the reader infers…"
+    </p>
+    <p style="font-size:13px; color:var(--ink-soft); margin-top:8px;">
+      <strong>Then self-mark:</strong> target 7–9 on every rubric row. If Identify or Four-pillar drops below 4, your Week 3 toolkit still has gaps — revisit the Master Sheet above.
+    </p>
+  </div>
+
+  <!-- ============ DISTINCTION QUICK-REF ============ -->
+  <h2><span class="icon">⚖️</span> Distinction Quick-Ref (Your Exam Armour)</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    The twelve pairs most often confused. In an essay, naming the <em>right</em> term from a pair is what separates 5 from 7.
+  </p>
+  <div class="distinction-box">
+    <h4>① metaphor vs. simile</h4>
+    <p><strong>metaphor</strong> asserts identity ("the city is a jungle"); <strong>simile</strong> asserts resemblance with "like/as". Test: fact or signpost?</p>
+  </div>
+  <div class="distinction-box">
+    <h4>② irony vs. satire</h4>
+    <p><strong>irony</strong> is a device (a gap between saying and meaning); <strong>satire</strong> is a mode that deploys irony to expose folly. One technique vs. a whole posture.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>③ symbolism vs. allegory</h4>
+    <p><strong>symbolism</strong> = one object carries meaning within a realist text; <strong>allegory</strong> = the entire narrative is a second-level system. Scale is the seam.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>④ anaphora vs. epistrophe</h4>
+    <p><strong>anaphora</strong> repeats at the START of units; <strong>epistrophe</strong> at the END. Same device, opposite position.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑤ anaphora vs. anadiplosis</h4>
+    <p><strong>anaphora</strong> = parallel opens, independent; <strong>anadiplosis</strong> = the last word of one clause becomes the first of the next (a chain).</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑥ synecdoche vs. metonymy</h4>
+    <p><strong>synecdoche</strong> = part/whole ("all hands on deck"); <strong>metonymy</strong> = broader association ("the crown declared war"). Synecdoche is a subset.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑦ asyndeton vs. polysyndeton</h4>
+    <p><strong>asyndeton</strong> omits conjunctions → speed, staccato; <strong>polysyndeton</strong> piles them → slowness, accumulation. Opposite rhythms.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑧ chiasmus vs. antimetabole</h4>
+    <p><strong>chiasmus</strong> mirrors concepts (A–B–B–A, synonyms OK); <strong>antimetabole</strong> repeats the SAME words reversed. Antimetabole is stricter.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑨ parataxis vs. hypotaxis</h4>
+    <p><strong>parataxis</strong> = equal clauses, no linker ("he left. she stayed") → withholds cause; <strong>hypotaxis</strong> = nested by subordinators → supplies cause. Equal vs. nested.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑩ connotation vs. denotation</h4>
+    <p><strong>denotation</strong> = literal meaning; <strong>connotation</strong> = felt associations. Word-choice analysis lives in connotation.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑪ subtext vs. inference</h4>
+    <p><strong>subtext</strong> resides IN the text (author's implied layer); <strong>inference</strong> is what the READER draws. You infer the subtext.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑫ hedge vs. equivocation</h4>
+    <p><strong>hedge</strong> = honest softener ("perhaps"); <strong>equivocation</strong> = evasive dodge. Both reduce force, opposite intent.</p>
+  </div>
+
+  <!-- ============ ASSESSMENT TIPS ============ -->
+  <h2><span class="icon">🎯</span> Assessment Tips</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Recognition is not ownership.</strong> You "know" a Week 3 term only when you can spell it, define it, and deploy it on a unseen passage in under a minute. The Master Sheet tests the first two; the Your Task tests the third. All three must pass.
+    </li>
+    <li>
+      <strong>Reach for one term from each pillar, every time.</strong> A commentary that names twelve tropes but no scheme or tone term is unbalanced and caps below the top band. The four-pillar balance row in the rubric is the single biggest lever on your mark.
+    </li>
+    <li>
+      <strong>The pair is the differentiator.</strong> "This is a metaphor" gets identification; "this is a metaphor, not a simile, because it asserts identity and so risks more" gets the top band. The twelve distinctions are your edge — keep them alive into Phase 4.
+    </li>
+    <li>
+      <strong>Devices must drive meaning, not decorate.</strong> Top commentaries use each term to explain an effect ("the polysyndeton slows the grief, forcing the reader to dwell"). If you can delete the device name and the sentence loses nothing, you've listed, not analysed.
+    </li>
+    <li>
+      <strong>Macro before micro.</strong> Orient with structure (frame narrative, unreliable narrator, foreshadowing) before zooming into a scheme. The model paragraph moves whole-text → sentence on purpose. Examiners reward that architecture of thought.
+    </li>
+    <li>
+      <strong>Week 3 is the metalanguage spine of the whole programme.</strong> Everything after — stylistic and linguistic analysis, critical theory, argumentative-essay vocabulary — hangs off these sixty terms. Lock them in now and Phase 4 becomes application, not relearning.</li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 22 (Next): Week 4, Day 1 — Stylistic &amp; Linguistic Analysis</strong><br>
+    Week 3 gave you the device toolkit. Week 4 turns it into argument: the metalanguage of <em>stylistics</em> and <em>linguistic analysis</em> (phonological, morphological, syntactic, semantic levels) plus the <em>argumentative-essay vocabulary</em> that frames a Paper 2 claim — thesis, qualify, concede, rebut, substantiate. Critical-theory terms follow later in the phase. Your sixty devices become the evidence for precise linguistic argument.<br><br>
+    <strong style="color:var(--ink);">Milestone:</strong> 180 words learned (of ~1,300). Week 3 complete — the technical-terminology foundation is now locked. 🏆
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 3, Day 21<br>
+  180 words learned so far (+0 today) · 1,120 to go · Week 3 complete 🏆
+</footer>
+
+</body>
+</html>
