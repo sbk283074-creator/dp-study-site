@@ -6211,6 +6211,32 @@ function esc(s){ return (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</
 /* init */
 render();
 </script>
-<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=12" defer></script>
+<script>
+/* Deep links: #poem=<id> opens that poem.
+   The global search palette indexes all 30 poems, so each result needs to land
+   on the poem it names rather than on whatever the lab happened to open with.
+   Runs after render() above and reuses the app's own state, so it is a no-op
+   whenever there is no hash. */
+(function () {
+  function openFromHash() {
+    var m = /(?:^|#|&)poem=([\w-]+)/.exec(location.hash || '');
+    if (!m) return;
+    if (typeof getPoem !== 'function') return;
+    if (!getPoem(m[1])) return;
+    try {
+      currentPoem = m[1];
+      if (typeof switchView === 'function') switchView('read');
+      if (typeof render === 'function') render();
+    } catch (e) { /* never break the lab for a bad hash */ }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', openFromHash);
+  } else {
+    openFromHash();
+  }
+  window.addEventListener('hashchange', openFromHash);
+})();
+</script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
 </body>
 </html>

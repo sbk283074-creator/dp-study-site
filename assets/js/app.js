@@ -327,7 +327,16 @@ let INDEX = [];
 function loadIndex() {
   if (window.DP_SEARCH_INDEX) { INDEX = window.DP_SEARCH_INDEX; return; }
   const s = document.createElement('script');
-  s.src = hrefTo('assets/js/search-index.js');
+  // Absolute URL so it works from any depth, and versioned to match the palette.
+  s.src = 'https://sbk283074-creator.github.io/dp-study-site/assets/js/search-index.js?v=2';
+  // Without onload, a query typed before the index arrives is answered with
+  // "No results" and stays wrong until the student happens to type another
+  // character. Re-render once the index lands.
+  s.onload = () => {
+    INDEX = window.DP_SEARCH_INDEX || [];
+    const i = document.getElementById('search-input');
+    if (i && i.value.trim()) renderResults(i.value);
+  };
   document.head.appendChild(s);
 }
 function search(q) {

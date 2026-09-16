@@ -1309,6 +1309,21 @@
       s.setAttribute("data-dp-tools", "1");
       document.head.appendChild(s);
     })();
+
+    // --- global search (Cmd/Ctrl+K) -------------------------------------------
+    // Another self-contained file (assets/search-widget.js). Injecting it here is
+    // what makes the palette site-wide: 429 pages load this widget by absolute
+    // URL, so one line here beats editing 429 HTML files. The index itself is
+    // only fetched the first time the palette is opened.
+    (function loadSearch() {
+      if (window.__dpSearchLoaded) return;
+      if (document.querySelector("script[data-dp-search]")) return;
+      var s = document.createElement("script");
+      s.src = HUB + "assets/search-widget.js?v=1";
+      s.defer = true;
+      s.setAttribute("data-dp-search", "1");
+      document.head.appendChild(s);
+    })();
   }
 
   if (document.readyState === "loading") {
