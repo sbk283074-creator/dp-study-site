@@ -215,7 +215,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 ### 05 · Challenge Bank — `challenge-bank/`
 **Fully generated. The JSON is the source of truth, not the HTML.**
 - Data: `challenge-bank/data/{math-aa-hl,physics-hl,computer-science-hl,business-management-sl}/*.json`
-  — **310 questions** (Math AA HL 125, Physics HL 90, CS HL 56, BM SL 39), as of commit `48a5dfa`.
+  — **310 questions** (Math AA HL 125, Physics HL 90, CS HL 56, BM SL 39), as of commit `b69ec98`.
   **Do not count these with a glob.** The filenames are not uniform — `batch21.json`, `batch22.json`,
   `batch22c.json` and `batch23.json` sit beside `p3-batch2.json`, `p1b-data.json`,
   `abstract-data-types.json`, `p2-case-study.json`, `p2-theme-b.json`, `gravitational-fields.json`. A
