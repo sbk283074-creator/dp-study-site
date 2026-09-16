@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-AHL4.7-501 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A discrete distribution given only as a bar chart of observed counts, so the heights must be normalised before the expected value and variance can be found</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-AHL4.7-501</p>
+<button type="button" class="q-done-page" data-qid="MATH-AHL4.7-501" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="MATH-AHL4.7-501">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Topic 4: Statistics and probability</span><span class="chip chip-key">SL 4.7 (discrete random variables and their probability distributions) with AHL 4.11 (the expected value of a discrete random variable) and AHL 4.14 (the variance of a discrete random variable)</span><span class="chip">P2 · Section B</span><span class="chip">13 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: permitted</span><span class="chip">Explain</span><span class="chip">Find</span><span class="chip">Find</span><span class="chip">Find</span></div>
+
+<figure><svg viewBox="0 0 470 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A bar chart with five bars labelled zero to four along the horizontal axis. The vertical axis is labelled number of observations and is marked one to four. The bar above zero has height two, the bar above one has height three, the bar above two has height four, the bar above three has height three, and the bar above four has height two. The total of the five heights is fourteen."><rect x="0" y="0" width="470" height="300" fill="#ffffff"/><line x1="55.0" y1="250.0" x2="448.0" y2="250.0" stroke="#1e293b" stroke-width="1.6" stroke-linecap="round"/><line x1="55.0" y1="250.0" x2="55.0" y2="52.0" stroke="#1e293b" stroke-width="1.6" stroke-linecap="round"/><text x="46.0" y="56.0" font-size="10.5" fill="#64748b" text-anchor="end" font-weight="normal">number of observations</text><text x="250.0" y="296.0" font-size="12" fill="#64748b" text-anchor="middle" font-weight="normal">value of the random variable X</text><rect x="78.0" y="166.0" width="54.0" height="84.0" fill="#bfdbfe" stroke="#2563eb" stroke-width="1.4"/><text x="105.0" y="159.0" font-size="13" fill="#1e293b" text-anchor="middle" font-weight="bold">2</text><text x="105.0" y="268.0" font-size="12.5" fill="#1e293b" text-anchor="middle" font-weight="normal">0</text><rect x="152.0" y="124.0" width="54.0" height="126.0" fill="#bfdbfe" stroke="#2563eb" stroke-width="1.4"/><text x="179.0" y="117.0" font-size="13" fill="#1e293b" text-anchor="middle" font-weight="bold">3</text><text x="179.0" y="268.0" font-size="12.5" fill="#1e293b" text-anchor="middle" font-weight="normal">1</text><rect x="226.0" y="82.0" width="54.0" height="168.0" fill="#bfdbfe" stroke="#2563eb" stroke-width="1.4"/><text x="253.0" y="75.0" font-size="13" fill="#1e293b" text-anchor="middle" font-weight="bold">4</text><text x="253.0" y="268.0" font-size="12.5" fill="#1e293b" text-anchor="middle" font-weight="normal">2</text><rect x="300.0" y="124.0" width="54.0" height="126.0" fill="#bfdbfe" stroke="#2563eb" stroke-width="1.4"/><text x="327.0" y="117.0" font-size="13" fill="#1e293b" text-anchor="middle" font-weight="bold">3</text><text x="327.0" y="268.0" font-size="12.5" fill="#1e293b" text-anchor="middle" font-weight="normal">3</text><rect x="374.0" y="166.0" width="54.0" height="84.0" fill="#bfdbfe" stroke="#2563eb" stroke-width="1.4"/><text x="401.0" y="159.0" font-size="13" fill="#1e293b" text-anchor="middle" font-weight="bold">2</text><text x="401.0" y="268.0" font-size="12.5" fill="#1e293b" text-anchor="middle" font-weight="normal">4</text><line x1="51.0" y1="208.0" x2="55.0" y2="208.0" stroke="#1e293b" stroke-width="1.4" stroke-linecap="round"/><text x="46.0" y="212.0" font-size="10.5" fill="#64748b" text-anchor="end" font-weight="normal">1</text><line x1="51.0" y1="166.0" x2="55.0" y2="166.0" stroke="#1e293b" stroke-width="1.4" stroke-linecap="round"/><text x="46.0" y="170.0" font-size="10.5" fill="#64748b" text-anchor="end" font-weight="normal">2</text><line x1="51.0" y1="124.0" x2="55.0" y2="124.0" stroke="#1e293b" stroke-width="1.4" stroke-linecap="round"/><text x="46.0" y="128.0" font-size="10.5" fill="#64748b" text-anchor="end" font-weight="normal">3</text><line x1="51.0" y1="82.0" x2="55.0" y2="82.0" stroke="#1e293b" stroke-width="1.4" stroke-linecap="round"/><text x="46.0" y="86.0" font-size="10.5" fill="#64748b" text-anchor="end" font-weight="normal">4</text><text x="250.0" y="34.0" font-size="12.5" fill="#1e293b" text-anchor="middle" font-weight="bold">Heights measured in a sample of 14 trials</text></svg><figcaption>A bar chart showing the number of observations of each value of X in a sample of 14 trials: two observations of 0, three of 1, four of 2, three of 3 and two of 4.</figcaption></figure>
+<section id="q-print">
+<h2>Question</h2>
+<p>A random variable $X$ takes the values $0$, $1$, $2$, $3$ and $4$. The diagram shows the number of times each value was observed in a sample of 14 independent trials.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Explain why the heights in the diagram cannot be used directly as the probabilities $P(X = k)$, and hence write down the value of $P(X = 0)$.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>Find the expected value $E(X)$ of this distribution, giving your answer as an exact fraction.</p> <em>(Find)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Find the variance $Var(X)$ of this distribution, giving your answer as an exact fraction.</p> <em>(Find)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>A game pays out $5X - 8$ in the same units. Find the expected payout, and state whether the game favours the player.</p> <em>(Find)</em></li></ol>
+<p class="reveal-note">Total: 13 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Math AA HL" data-ai-diff="4" data-ai-marks="13" data-ai-ref="MATH-AHL4.7-501">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>A random variable $X$ takes the values $0$, $1$, $2$, $3$ and $4$. The diagram shows the number of times each value was observed in a sample of 14 independent trials.
+
+(a) Explain why the heights in the diagram cannot be used directly as the probabilities $P(X = k)$, and hence write down the value of $P(X = 0)$. [3 marks] (Explain)
+(b) Find the expected value $E(X)$ of this distribution, giving your answer as an exact fraction. [3 marks] (Find)
+(c) Find the variance $Var(X)$ of this distribution, giving your answer as an exact fraction. [4 marks] (Find)
+(d) A game pays out $5X - 8$ in the same units. Find the expected payout, and state whether the game favours the player. [3 marks] (Find)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The heights record how many observations fell on each value, so they are<br>frequencies rather than probabilities. Probabilities of a discrete distribution must be<br>non-negative and must sum to $1$, and these heights sum to</p>
+<p>$$2 + 3 + 4 + 3 + 2 = 14,$$ (M1)</p>
+<p>which is the sample size rather than $1$. (R1) Each height must therefore be divided by the<br>total of $14$ before it can be used as a probability:</p>
+<p>$$P(X = 0) = \frac{2}{14} = \frac{1}{7}.$$ (A1)</p>
+<p>The whole distribution is</p>
+<p>$$P(X = 0) = \frac{1}{7}, \quad P(X = 1) = \frac{3}{14}, \quad P(X = 2) = \frac{2}{7},<br>\quad P(X = 3) = \frac{3}{14}, \quad P(X = 4) = \frac{1}{7},$$</p>
+<p>and these five probabilities sum to $1$, which confirms the scaling was correct.</p>
+<p><strong>(b)</strong> The expected value is the sum of each value multiplied by its probability:</p>
+<p>$$E(X) = \sum_{k=0}^{4} k \, P(X = k)<br>       = \frac{0(2) + 1(3) + 2(4) + 3(3) + 4(2)}{14}.$$ (M1)(A1)</p>
+<p>$$E(X) = \frac{0 + 3 + 8 + 9 + 8}{14} = \frac{28}{14} = 2.$$ (A1)</p>
+<p>The distribution is symmetric about $2$, and the expected value is the centre of that symmetry,<br>which is a useful check on the arithmetic.</p>
+<p><strong>(c)</strong> The variance is most safely found from $E(X^{2}) - [E(X)]^{2}$. First compute</p>
+<p>$$E(X^{2}) = \sum_{k=0}^{4} k^{2} P(X = k)<br>          = \frac{0(2) + 1(3) + 4(4) + 9(3) + 16(2)}{14}.$$ (M1)(A1)</p>
+<p>$$E(X^{2}) = \frac{0 + 3 + 16 + 27 + 32}{14} = \frac{78}{14} = \frac{39}{7}.$$ (A1)</p>
+<p>Therefore</p>
+<p>$$Var(X) = E(X^{2}) - [E(X)]^{2} = \frac{39}{7} - 2^{2} = \frac{39}{7} - \frac{28}{7}<br>        = \frac{11}{7}.$$ (A1)</p>
+<p>The variance is $\dfrac{11}{7} \approx 1.57$ (to three significant figures).</p>
+<p><strong>(d)</strong> The expectation of a linear function of a random variable is the same linear function of<br>the expectation, so</p>
+<p>$$E(5X - 8) = 5E(X) - 8 = 5(2) - 8 = 2.$$ (M1)(A1)</p>
+<p>The expected payout is $2$ per play. Because it is positive, the game favours the player:<br>on average a player gains $2$ for each play, and the operator loses that amount. (A1)</p>
+<p>Note that the variance is not needed here. The linear rule for expectation does not require<br>independence and does not require the distribution to be known, only that $E(X)$ is known,<br>which is why part (b) is sufficient.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) for summing the heights to 14, (R1) for the explicit reason that probabilities must sum to 1 and these do not, (A1) for $P(X = 0) = \frac{1}{7}$ or an equivalent exact fraction or a decimal 0.143. Do not award the final mark for $\frac{2}{14}$ left unsimplified unless it is then used consistently. A student who writes $P(X = 0) = 2$ scores (M1)(R0)(A0). (b) (M1) for the weighted sum structure, (A1) for the correct numerator 28, (A1) for 2. Follow-through from an incorrect normalisation in (a) is allowed only if every probability used is consistent with that normalisation. (c) (M1) for computing $E(X^{2})$ with squared values, (A1) for the numerator 78, (A1) for $\frac{39}{7}$, (A1) for $\frac{11}{7}$ or 1.57. Award (A0) for the last mark if the variance is negative, which indicates the two terms were subtracted in the wrong order. (d) (M1) for using $E(aX + b) = aE(X) + b$, (A1) for $2$, (A1) for the conclusion that the game favours the player because the expected payout is positive. Accept a correct conclusion drawn from a follow-through value in (b).</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This item tests a single idea that is easy to state and easy to violate: a bar chart<br>of a distribution may be drawn in counts or in probabilities, and the two are not<br>interchangeable. Every routine exercise in the syllabus presents the probabilities directly,<br>so the habit a student has built is to read a height off the chart and use it. Here the heights<br>are counts from a sample of 14 trials, and the first thing that should be noticed is that they<br>sum to 14. A probability distribution cannot do that. The scaling factor is the sample size,<br>and once each height is divided by 14 the five probabilities sum to 1, which is the check that<br>the normalisation is right.</p>
+<p>The cost of missing this is large and systematic rather than small. If the heights are used<br>directly, the "expected value" is $0(2) + 1(3) + 2(4) + 3(3) + 4(2) = 28$, which is 14 times the<br>correct answer of 2, and the variance is inflated by a factor of $14^{2}$ as well. Both answers<br>are self-consistent with the wrong normalisation, so nothing in the arithmetic flags the error;<br>the only warning is the sum of the probabilities. That is what makes the item worth asking: the<br>mistake is not detectable downstream.</p>
+<p>Part (b) is deliberately the easy part once the distribution is correct, because the<br>distribution is symmetric about 2 and the expected value is the centre of symmetry. The<br>symmetric shape also gives a free check on the answer, and a student who obtains something<br>other than 2 should be suspicious.</p>
+<p>Part (c) carries the second demand. The variance must be obtained from $E(X^{2}) - [E(X)]^{2}$,<br>which requires squaring each value before weighting it, and the arithmetic stays in exact<br>fractions: $E(X^{2}) = \frac{39}{7}$ and the variance is $\frac{11}{7}$. A student who instead<br>averages the squared deviations about the mean will reach the same value but has more chances<br>to make an arithmetic slip, and one who subtracts in the wrong order obtains a negative<br>variance, which is impossible and should be caught.</p>
+<p>Part (d) is a judgement rather than a calculation. The expected payout is $2$, and the<br>question is whether that favours the player; because it is positive it does, and the answer has<br>to say so. The point worth noticing is that the variance is not needed at all: the expectation<br>of a linear function depends only on the expectation of the variable, so no assumption about<br>independence or about the shape of the distribution is required. A student who computes the<br>variance of the payout and reports it as the answer has answered a different question.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Topic 4: Statistics and probability — A discrete distribution given only as a bar chart of observed counts, so the heights must be normalised before the expected value and variance can be found</dd></div>
+  <div><dt>Challenge lever</dt><dd>The five heights in the diagram are counts of observations, and they add to 14 rather than to 1, so they are not probabilities. The first move a prepared student makes is to read a height off the chart and treat it as P(X = k), because every textbook exercise presents a bar chart of a probability distribution whose heights already sum to one. Here the sum is 14, so every probability is wrong by a factor of 14 and both the expected value and the variance are inflated. The correct route is to divide each height by the total first, and only then apply the standard formulae; the second demand is that the variance must be computed from E(X^2) - [E(X)]^2 rather than from a spread-sheet of the values, which keeps the arithmetic in exact fractions.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>SL 4.7 (discrete random variables and their probability distributions) with AHL 4.11 (the expected value of a discrete random variable) and AHL 4.14 (the variance of a discrete random variable)</dd></div>
+  <div><dt>Inspiration</dt><dd>IB and A-level genre: expected value and variance of a discrete random variable, and the expectation of a linear function of that variable</dd></div>
+  <div><dt>Adaptation</dt><dd>Three changes. Context: the distribution is supplied only as a bar chart of observed counts from a sample, so the normalisation step is part of the question rather than given. Given and asked: the student is asked first to justify that the heights are not probabilities, which is never asked when the distribution is tabulated. Reasoning chain: the payout part is answered from the expectation alone, and the item says so, so the variance has to be recognised as irrelevant rather than computed and discarded.</dd></div>
+  <div><dt>Verification</dt><dd>All probabilities were computed as exact fractions from the five counts, checked to sum to 1, and the expected value, second moment and variance were derived with Fraction arithmetic and cross-checked against floating point. The linear-transformation result was verified separately. The bar chart is drawn from the same five counts the answer normalises, so the heights in the figure and the probabilities in the answer cannot drift apart.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2018Nov_TZ0_q06 (similarity 0.012)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL1.8-001 (similarity 0.016)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-16</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

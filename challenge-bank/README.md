@@ -16,17 +16,17 @@ design and provably not copied.
 
 | Subject | Guide in force | Questions | Nodes covered |
 |---|---|---:|---:|
-| Math AA HL | 2021 (runs to Nov 2028) | 125 | 83 / 83 (100%) |
+| Math AA HL | 2021 (runs to Nov 2028) | 130 | 83 / 83 (100%) |
 | Physics HL | 2025 | 90 | 24 / 24 (100%) |
 | Computer Science HL | 2027 (new Theme A/B) | 56 | 25 / 25 (100%) |
 | Business Management SL | 2024 | 39 | 34 / 34 (100%) |
-| **Total** | | **310** | **166 / 166 (100%)** |
+| **Total** | | **315** | **166 / 166 (100%)** |
 
 **Every priority-1 ("must-cover") and priority-2 ("should-cover") node is done** — Maths 32/32 + 51/51,
 Physics 24/24, CS 25/25, BM 26/26 + 8/8 Toolkit. The bank covers **all 166 syllabus nodes** across the
 four subjects; the only remaining work is the optional priority-3 ("stretch") tail.
 
-All 310 items are difficulty 3–5 (**5 at difficulty 3, 180 at difficulty 4, 125 at difficulty 5**), and
+All 315 items are difficulty 3–5 (**5 at difficulty 3, 182 at difficulty 4, 128 at difficulty 5**), and
 pass `validate.py`
 with **0 failures**. The originality gate is clean: **0 items above threshold**, highest external score
 0.090, highest internal score 0.073 and highest approach score 0.366 (limits 0.35 / 0.25 / 0.50). The
@@ -34,12 +34,12 @@ approach maximum is `MATH-AHL1.11-201` against `MATH-AHL1.11-001`, two items on 
 the partial-fractions-then-telescoping method — the gate judges the method different enough, and the two
 are different questions with different answers (¾ against ¼).
 
-Every item carries a `verification.assertions` list — **3540 machine-checked assertions** in total — so
+Every item carries a `verification.assertions` list — **3600 machine-checked assertions** in total — so
 the arithmetic in every answer is re-derived by the validator on each run, not merely asserted by the
-author. **84 items are figure-bearing (27%)**, with the SVG inlined into `question.figure` so a page
+author. **89 items are figure-bearing (28%)**, with the SVG inlined into `question.figure` so a page
 renders identically on `file://` and over HTTP.
 
-**The figures are hand-drawn, and the gate enforces it.** Every one of the 84 is emitted as raw SVG by a
+**The figures are hand-drawn, and the gate enforces it.** Every one of the 89 is emitted as raw SVG by a
 plain-Python string builder — some in `tools/make_figures.py`, which writes the named set in
 `data/_figures.json`, and the rest inline in the batch generator that authored the item — with no
 charting library, no plotting package and no image model anywhere in the chain. That is not a style
@@ -50,17 +50,20 @@ their own curve from the same expression the markscheme integrates, so the pictu
 drift apart: Batch 23's two unbounded tails are plotted from `1/x**2` and `1/sqrt(x)`, the very
 integrands whose antiderivatives the answer evaluates.
 Coverage is tracked as a **ratchet**: `difficulty_audit.py` holds a bank-wide floor
-(`FIGURE_COVERAGE_FLOOR`, now **0.27**) that may rise but may never fall, so a later batch cannot add
-text-only items and let the share sag back. Batch 26 raised it from 0.25: all five of its items carry a
-hand-authored figure, which moved coverage to 84/310 = 27.1% and let the floor follow it up. That leaves
-only **1 non-figure item of headroom** (n = 311 passes at 0.27; n = 312 fails), so the next batch cannot
-be plain text at all — the ratchet has now reached the point where it forces the issue rather than
-merely encouraging it. The per-subject companion
+(`FIGURE_COVERAGE_FLOOR`, now **0.28**) that may rise but may never fall, so a later batch cannot add
+text-only items and let the share sag back. Batch 26 raised it from 0.25 to 0.27; Batch 27 raised it
+again, because all five of its items carry a hand-authored figure, which moved coverage to
+89/315 = 28.3% and let the floor follow it up. That leaves
+only **2 non-figure items of headroom** (n = 317 passes at 0.28; n = 318 fails), so a plain-text batch
+is still effectively ruled out — the ratchet has reached the point where it forces the issue rather than
+merely encouraging it. Batch 27 was aimed by the same reading: Maths carried the bank's thinnest figure
+share, so all five items are Maths, and that share moved **15% → 18%** in one wave. The per-subject
+companion
 (`FIGURE_SUBJECT_TARGET = 0.15`) is *reported* rather than enforced, and no subject prints a gap:
-**CS 43%, Physics 37%, BM 21%, Maths 15%**.
+**CS 43%, Physics 37%, BM 21%, Maths 18%**.
 
-**Sourcing is recorded, not claimed.** 104 items are drawn from other syllabuses — 高考, 强基, 竞赛,
-A-Level, Further Maths, AP, 新加坡 A-Level, and three from IB itself — and each names
+**Sourcing is recorded, not claimed.** 109 items are drawn from other syllabuses — 高考, 强基, 竞赛,
+A-Level, Further Maths, AP, 新加坡 A-Level, four from IB itself, and six recorded as `other` — and each names
 `provenance.resource_origin` and
 `provenance.adaptation`.
 Adaptation means at least two of context, structure, given-vs-asked and reasoning chain change, so the
@@ -77,10 +80,10 @@ What the audit reports today:
 
 | | now | at the 2026-09-13 baseline |
 |---|---|---|
-| items with evidence for the label | **225 / 310** | 0 / 172 |
+| items with evidence for the label | **230 / 315** | 0 / 172 |
 | difficulty 5 with no evidence | **0** | 79 |
 | labels the evidence does not permit | **0** | — |
-| items claiming difficulty 5 | 40% | 46% |
+| items claiming difficulty 5 | 41% | 46% |
 | items claiming difficulty 3 | **2%** | 0% |
 
 The evidence row is now the story, and it is the intended one. What changed on 2026-09-13 is not the
@@ -89,7 +92,7 @@ per-item rule while telling the student nothing. Evidence was then backfilled su
 reading each item — **never mass-generated**, which would reproduce the exact defect. The whole
 difficulty-5 backlog has since been cleared: **no item in the bank claims difficulty 5 without
 evidence.** 85 items still carry no `difficulty_evidence` at all, but every one of them is a
-difficulty-3 or difficulty-4 claim, so the audit reports them as a backlog rather than as an unbacked
+difficulty-4 claim, so the audit reports them as a backlog rather than as an unbacked
 top-tier label.
 
 **Clearing it was not a transcription exercise.** The 79 items were read one at a time, and reading them
@@ -121,7 +124,7 @@ item that closed it is on **A.3**, a node with no such incumbent, and it is a ge
 question rather than a relabelled hard one — which is the distinction the earlier note was protecting.
 
 **The rubric score is a documentation gate, not a difficulty meter, and this is worth knowing before
-trying.** Measured across all 225 evidenced items: **205 score 9/9**, 19 score 8/9 and one scores 7/9 —
+trying.** Measured across all 230 evidenced items: **210 score 9/9**, 19 score 8/9 and one scores 7/9 —
 and 8 of 9 is already enough for the top label, so a score below 9 is not by itself a demotion. What the
 score tests is whether the three evidence statements are present, long enough and mutually distinct, and
 whether the arc and assertion-density tests hold; it does not measure how many *ideas* an item contains.
@@ -141,17 +144,18 @@ items were again all written at difficulty 4, taking it down again to **46%**. T
 worked off rather than relabelled, and with Physics inside the cap the self-imposed rule lapsed: **Batch
 20 adds two Physics items at difficulty 5 and two at difficulty 4, taking the share to 47%**, still
 inside the cap and still below the 62% baseline. Batches 22 and 22b then added nine Physics items — six at
-difficulty 4 and three at difficulty 5 — landing at **44%**; Batch 23 then added four Physics items, all at difficulty 4, for **45%**. The backlog pass then moved one further Physics item — `PHYS-E.2-101`, a photoelectric MCQ cluster whose own mechanism names units rather than an idea — from 5 down to 4, taking the share to **44%**. Batch 26 then added three Physics items — one at difficulty
-5 and one at difficulty 4 on the E.2 strand, plus one d5 and one d4 elsewhere — leaving the share at
+difficulty 4 and three at difficulty 5 — landing at **44%**; Batch 23 then added four Physics items, all at difficulty 4, for **45%**. The backlog pass then moved one further Physics item — `PHYS-E.2-101`, a photoelectric MCQ cluster whose own mechanism names units rather than an idea — from 5 down to 4, taking the share to **44%**. Batch 26 then added two Physics items — one at difficulty
+5 and one at difficulty 4, both on the E.2 strand — leaving the share at
 **44%**, unchanged to the nearest point because the batch added d4 and d5 in step. The calibration gate is checked against
 the baseline on
 every run, so a share that rose past 49% would stop the pipeline rather than pass quietly.
 
 Batch 15 also closed the last gap in the lever taxonomy: **all 13 lever types are in use**, and the
-largest single share is **15%** of evidenced items (`non_governing_variable`, 34 of 225), so the bank is
-no longer one trick in different clothes. That share barely moved while 84 items were added to the
-evidenced set, which is the useful reading: the backlog was spread across the taxonomy rather than
-concentrated in the levers that were already busy.
+largest single share is **15%** of evidenced items (`non_governing_variable`, 34 of 230), so the bank is
+no longer one trick in different clothes. That share barely moved while the evidenced set grew from
+**38 items to 230** — it was 18% of those 38, measured at the Batch 15 commit — which is the useful
+reading: the backfill was spread across the taxonomy rather than concentrated in the levers that were
+already busy.
 
 `tools/prove_difficulty_gates.py` guards the gates themselves: it injects one defect at a time — an
 invented `lever_type`, a `wrong_answer` that restates `naive_path`, a difficulty 5 with no evidence — and

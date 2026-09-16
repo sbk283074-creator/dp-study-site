@@ -1,9 +1,9 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 310 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 315 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 225 of 310 do. The difficulty-5
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 230 of 315 do. The difficulty-5
 backlog is **cleared** — no item claims difficulty 5 without evidence — and the 85 items that remain
 unbacked are all difficulty-3 or difficulty-4 claims, a published, ratcheting backlog described in
 `STANDARD.md` §2.2–§2.5 and measured by `tools/difficulty_audit.py`. All 13
@@ -15,11 +15,12 @@ points) were paid by Batches 21–23, and the backlog pass added a fifth difficu
 The `topic` label is now a closed vocabulary per subject, enforced by `validate.py`, and is shown on every
 question page and filterable on every subject page.**
 **Figure coverage is now a first-class gate rather than a nice-to-have.** Batch 23 raised the share of
-items that carry a self-authored graph to 75 of 301 = 25%; Batch 26 moves it to **84 of 310 = 27.1%** and
-raises the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.25 to **0.27** — the floor may rise and may
-never fall, so a later batch cannot quietly spend the coverage. No subject prints a gap: Maths 15%,
-Physics 37%, CS 43%, BM 21%, against a 15% target — but only **1 non-figure item of headroom** is left
-(n = 311 passes at 0.27, n = 312 fails), so the ratchet now *forces* a batch to carry figures rather than
+items that carry a self-authored graph to 75 of 301 = 25%; Batch 26 took it to 84 of 310 = 27.1%; Batch 27
+takes it to **89 of 315 = 28.3%** and raises the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.27 to
+**0.28** — the floor may rise and may
+never fall, so a later batch cannot quietly spend the coverage. No subject prints a gap: Maths 18%,
+Physics 37%, CS 43%, BM 21%, against a 15% target — but only **2 non-figure items of headroom** are left
+(n = 317 passes at 0.28, n = 318 fails), so the ratchet now *forces* a batch to carry figures rather than
 merely encouraging it. Every figure is drawn by hand as a plain-Python SVG
 string builder,
 most of them inline in the batch generator that wrote the item and the named set in
@@ -1357,12 +1358,65 @@ similarity score, and no BM item ships containing HL-only content.
     this batch's `structured` two-metal graph using `decoy_technique`. `CS-A1.3-001` (0.067 against
     `CS-P1A-403`) computes FCFS only and draws no chart. Both overlaps are the unavoidable
     "gradient + threshold" and "compare two schedulers" themes, not duplication.
+- **Batch 27 — DONE (5 items, 310 → 315; the Maths figure share attacked where it was thinnest).**
+  One wave, one filename (`data/math-aa-hl/figures-batch27.json`), written to an id space no batch had
+  used (`-5xx`). The brief came from the **figure table** rather than the node list: node coverage has
+  been 100% since 2026-09-11, so "which node is thin" was a dead end — the 125 Maths items already sat on
+  **124 distinct `syllabus_ref` values**, so every node has its item and thinness was never a node
+  problem. The real gap was **topics that have items but no figure at all**: tangents and normals
+  (5 items, 0 figures), discrete random variables (8, 0), the binomial (5, 0), skew lines (2, 0), the
+  unit circle (3, 1). Batch 27 takes the top of that list.
+  - **The five items.** `MATH-AHL5.6-501` tangent and normal at a stationary point (P1 §B, d5, 13 marks,
+    `exceptional_parameter`); `MATH-AHL4.7-501` expected value and variance read off a bar chart of
+    counts (P2 §B, d4, 13 marks, `decoy_technique`); `MATH-AHL2.16-501` the graphs of $|f(x)|$,
+    $f(|x|)$ and $1/f(x)$ (P1 §B, d5, 13 marks, `decoy_technique`); `MATH-AHL3.6-501` exact values from
+    the unit circle (P1 §A, d4, 11 marks, `non_obvious_tool`); `MATH-AHL5.9-501` the open box whose
+    optimum sits on the boundary (P2 §B, d5, 14 marks, `binding_constraint`). Three of the five are
+    difficulty 5, which is what the standing rule asks of new Maths items; all three earn it with a lever
+    rather than with length.
+  - **Every item carries a hand-authored figure, and the ratchet was raised to follow them.** Five new
+    SVGs, each built from the same expression the markscheme uses — the tangent line and its normal at
+    the stationary point, the five-bar count chart, the three-panel $|f(x)|$ / $f(|x|)$ / $1/f(x)$
+    sketch, the unit circle with both angles marked, and the net of the folded box. Coverage moved
+    **84/310 = 27.1% → 89/315 = 28.3%** and `FIGURE_COVERAGE_FLOOR` went 0.27 → **0.28**. Maths — the
+    thinnest subject in the bank — moved **15% → 18%** (19/125 → 24/130). **2 non-figure items of
+    headroom** remain (n = 317 passes at 0.28, n = 318 fails), so a plain-text batch is still ruled out.
+  - **Two of the five traps are built to fire from both sides.** `MATH-AHL4.7-501` draws the distribution
+    as **counts from a sample of 14 trials** rather than as probabilities: reading the heights directly
+    gives $E(X) = 28$ and a variance inflated by $14^2$, and both are self-consistent with the wrong
+    normalisation, so nothing in the arithmetic flags the error — the only warning is that the heights
+    sum to 14. `MATH-AHL5.9-501` is the mirror image: the differentiation is routine and the stationary
+    point is found correctly, but the feasible interval closes before it, so the answer is the endpoint.
+  - **All 60 assertions were checked numerically before any prose was written.** A standalone script
+    verified $f(2) = -4$, $f'(2) = 0$ and $(x-2)^2(x+1) \equiv x^3 - 3x^2 + 4$; the heights 2, 3, 4, 3, 2
+    with $E(X) = 2$, $E(X^2) = 39/7$ and $Var = 11/7$; $\cos(5\pi/6) = -\sqrt3/2$ with $PQ = \sqrt3$ by
+    two routes and sector area $\pi/3$; and $V(2) = 128$, $dV/dx = 12(x-2)(x-6)$, $V''(2) = -48$ with
+    $S = 144 - 4x^2$ strictly decreasing on the feasible interval.
+  - **Two near-misses worth recording, because neither was a data defect.** `MATH-AHL4.7-501` first
+    shipped an unpaired `$` from a literal `\\$` currency escape; the generator's own self-check caught
+    it, which is the whole reason that script refuses to write on any mismatch. Separately, a coverage
+    probe looked for `solution_skeleton` at the top level and reported 0 steps for the new items — the
+    field is `verification.solution_skeleton`, and **all 315 items carry one**, so the approach gate had
+    been running on them all along. A probe that looks in the wrong place reports a defect that does not
+    exist; the fix was to the probe, not the data.
+  - **Numbers after the wave.** 315 items — Maths 130 / 1903 marks, Physics 90 / 1106, CS 56 / 838,
+    BM 39 / 563. Difficulty split **5 / 182 / 128**, evidence **230 / 315**, assertions **3600**,
+    figures **89 (83 svg / 4 code / 2 table)**. Bank-wide difficulty-5 share 41%, difficulty-3 2%. All
+    five new items are `ok` with **zero warnings**, so the bank total stayed at 176. Similarity on the
+    new items: external ≤ 0.039, internal ≤ 0.042, approach ≤ 0.173.
+  - **The originality pass is not idempotent across batches, and a diff on old files is expected.**
+    Adding items can change which item is *nearest* to an existing one, so `similarity_check.py --write`
+    rewrote `nearest_internal_id`, `max_internal_similarity`, `max_approach_similarity` and
+    `nearest_approach_id` in **five older Maths files** (13 lines) with no data change to the items
+    themselves. This is the gate working, not collateral damage — but a batch's diff is therefore not
+    confined to the batch's own files, and a reviewer who expects otherwise will read a healthy diff as a
+    mistake.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  125 questions / 1839 marks, physics 90 / 1106, CS 56 / 838, BM SL 39 / 563 — all difficulty 3–5, May
+  130 questions / 1903 marks, physics 90 / 1106, CS 56 / 838, BM SL 39 / 563 — all difficulty 3–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that
