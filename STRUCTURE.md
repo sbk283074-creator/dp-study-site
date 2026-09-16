@@ -323,6 +323,12 @@ Built 2026-09-16. **Hand-authored static SPA — no build step, no bundler, no `
   `window.dpAI.open({ref, subject, topic, context, prompt, display, autoSend:true})` — the **same**
   global widget in focused mode (§3·1), not a second chat UI. The question, its five options, the
   correct letter and the official solution all ride along in `context`.
+- **Registering a new space is a TWO-place job, and the second place is easy to forget:**
+  (1) a `.platform-card` in the hub's `index.html` card row, and (2) an entry in the shared widget's
+  `SITE` array in `assets/ai-widget.js` — that array *is* the **🧭 Sites** button list, and it also
+  drives the "you are here" marker and the "Suggested flow" line. A space that is in (1) but not (2)
+  is reachable but invisible to the site map. The path also needs a branch in `inferSubject()`
+  (same file) or the widget cannot name the space it is on.
 - Module codes are the letters **A, I, L, M, H, B, C, D, E, F, G, K, J, N** — not A–N in order.
   Each checklist item carries a flag from `CORE` / `NEW` / `R1-ONLY` / `SKIP` and the module carries
   a priority 1–4. `R1-ONLY` marks material that appears in Round 1 but is **out of scope** for
@@ -334,6 +340,12 @@ Built 2026-09-16. **Hand-authored static SPA — no build step, no bundler, no `
   81 question cards, answering Q1 gives "Correct", solution reveal opens, a checklist tick
   **persists across reload**, mock starts with 125 option buttons (25 × 5) and marking produces the
   result view with 3 stat cards, and the hub card navigates to the space. Zero console/page errors.
+  Also confirmed the **🧭 Sites** list shows "BPhO Round 0" and the "Suggested flow" links to it.
+  *Testing note:* the widget is loaded by **absolute URL**, so a localhost run fetches the *deployed*
+  copy — test an edited widget with a Playwright `route` interception serving the local file, or the
+  old version passes and the new one is never exercised. "you are here" reads 0 on localhost for
+  **every** space, because the widget compares against `HUB + item` (a live absolute path) while the
+  local path is shorter; that is a harness artefact, not a defect.
 - Rebuild: **none.** Edit the data files directly and reload.
 
 ---

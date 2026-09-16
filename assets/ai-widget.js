@@ -81,7 +81,8 @@
         { t: "Question Bank", d: "9,969 real questions \u2014 practise and review.", u: "qbank/" },
         { t: "Python Mastery", d: "A focused, self-contained Python course.", u: "PYTHON/" },
         { t: "The World's Wife Lab", d: "Duffy's collection, poem by poem.", u: "Eng%20learning/" },
-        { t: "Challenge Bank", d: "Original hard problems with full markschemes.", u: "challenge-bank/site/" }
+        { t: "Challenge Bank", d: "Original hard problems with full markschemes.", u: "challenge-bank/site/" },
+        { t: "BPhO Round 0", d: "British Physics Olympiad \u2014 topics, drills, timed mocks.", u: "bpho/" }
       ]
     },
     {
@@ -175,6 +176,7 @@
     if (p.indexOf("/core/") > -1) return "DP Core (TOK / EE / CAS)";
     if (p.indexOf("/qbank/") > -1) return "Question Bank";
     if (p.indexOf("/challenge-bank/") > -1) return "Challenge Bank";
+    if (p.indexOf("/bpho/") > -1) return "BPhO Round 0";
     if (p.indexOf("/python") > -1) return "Python Mastery";
     if (p.indexOf("/eng%20learning") > -1 || p.indexOf("/eng learning") > -1) return "The World's Wife Lab";
     return "";
@@ -314,7 +316,8 @@
       '\u2192 test it in the <a href="' + HUB + 'qbank/">Question Bank</a> ' +
       '\u2192 build fluency in <a href="' + HUB + 'PYTHON/">Python Mastery</a> ' +
       '\u2192 go line by line through <a href="' + HUB + 'Eng%20learning/">The World\u2019s Wife</a> ' +
-      '\u2192 stretch on the <a href="' + HUB + 'challenge-bank/site/">Challenge Bank</a>.</p></div>';
+      '\u2192 stretch on the <a href="' + HUB + 'challenge-bank/site/">Challenge Bank</a> ' +
+      '\u2192 then compete in <a href="' + HUB + 'bpho/">BPhO Round 0</a>.</p></div>';
     out += '</div>';
     return out;
   }
