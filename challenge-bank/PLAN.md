@@ -1,25 +1,25 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 301 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 305 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 216 of 301 do. The difficulty-5
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 220 of 305 do. The difficulty-5
 backlog is **cleared** — no item claims difficulty 5 without evidence — and the 85 items that remain
 unbacked are all difficulty-3 or difficulty-4 claims, a published, ratcheting backlog described in
 `STANDARD.md` §2.2–§2.5 and measured by `tools/difficulty_audit.py`. All 13
 lever types are in use, the largest share is 15%, and every subject is inside the 50% difficulty-5 cap
-(Maths 45%, Physics 44%, CS 35%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
+(Maths 45%, Physics 44%, CS 34%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
 the share was above the cap) and R2 (no item claimed difficulty 3 — the 3-5 scale had collapsed to two
 points) were paid by Batches 21–23, and the backlog pass added a fifth difficulty-3 item. The audit prints
 `calibration OK` and `--check --strict` exits 0.
 The `topic` label is now a closed vocabulary per subject, enforced by `validate.py`, and is shown on every
 question page and filterable on every subject page.**
-**Figure coverage is now a first-class gate rather than a nice-to-have.** Batch 23 raises the share of
-items that carry a self-authored graph to **75 of 301 = 25%**, and moves the bank-wide ratchet
-`FIGURE_COVERAGE_FLOOR` from 0.20 to 0.24 — the floor may rise and may
-never fall, so a later batch cannot quietly spend the coverage. With it, the last reported per-subject gap
-closes: Maths, stuck at 11% since the standard took force, now stands at 15% against a 15% target, and no
-subject prints a gap on the audit run. Every figure is drawn by hand as a plain-Python SVG string builder,
+**Figure coverage is now a first-class gate rather than a nice-to-have.** Batch 23 raised the share of
+items that carry a self-authored graph to 75 of 301 = 25%; Batch 25 moves it to **79 of 305 = 26%** and
+raises the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.24 to **0.25** — the floor may rise and may
+never fall, so a later batch cannot quietly spend the coverage. No subject prints a gap: Maths 15%,
+Physics 35%, CS 40%, BM 21%, against a 15% target. Every figure is drawn by hand as a plain-Python SVG
+string builder,
 most of them inline in the batch generator that wrote the item and the named set in
 `tools/make_figures.py`: no charting library, no plotting package, no
 image model. `validate.py` rejects the fingerprints of all of them (`<canvas`, `plotly`, `matplotlib`,
@@ -1194,12 +1194,60 @@ similarity score, and no BM item ships containing HL-only content.
     read before a later batch leans on them.
   - **This is not evidence that the bank got harder.** No question text, answer or mark allocation
     changed; the only edits are the 79 `difficulty_evidence` blocks and the five labels above.
+- **Batch 25 — DONE (4 CS HL Paper 2 items, 301 → 305; and a structural error in the CS papers fixed).**
+  The batch exists because of a defect found while answering a question about why Physics and CS have
+  fewer items than Maths. The answer is that they do not, per syllabus node — Maths carries 125 items
+  over **83** nodes while Physics carries 88 over **24** and CS 49 over **25**, so Physics is in fact the
+  densest subject in the bank at 3.7 items per node against Maths's 1.5. What the question did expose was
+  a paper-level hole that node coverage could not see.
+  - **The CS Paper 2 table was wrong and the gate was blind to it.** `PAPER_TYPES` read
+    `("Computer Science HL", "P2"): {"case_study"}`, contradicting both the guide and `STANDARD.md`
+    §2.4, which states plainly that the case study lives on **P1 Section B** and that P2 is
+    *entirely* extended-response. Seventeen CS items were declared `case_study` on P2 and the validator
+    checked them against a table expecting exactly that, so the bank reported **0 failures** throughout.
+    Correcting the table to P1 → `{structured, extended_response, case_study}` and P2 →
+    `{extended_response}` turned `0 failures` into **17 failures with no data change at all** — the
+    clearest possible demonstration that a gate encoding the same mistake as the data cannot detect it.
+  - **The 17 items were re-filed by their own `topic` field.** Nine were Theme A, which the guide places
+    on P1, and moved there (seven as Section B case studies, two as Section A extended response); eight
+    were Theme B, which is P2's subject, and stayed on P2 with the type corrected to `extended_response`
+    and the meaningless section label cleared. `paper` and `question_type` are the only fields changed.
+  - **The consequence was that P2 had no items of its own type.** Before the fix, CS P2 held 17 items and
+    **zero** extended-response — the 80-mark, 40%-of-grade component was effectively unmodelled while the
+    audit reported 100% node coverage. Four new Theme B extended-response items fill it, on the three
+    Theme B nodes that had no Paper 2 item at all (**B1.1**, **B2.2**, **B2.4**) plus B4.1. CS P2 now
+    holds **12** items, CS stands at 53, and its figure share rises to **40% (21/53)**.
+  - **The four items, all with a hand-authored SVG figure and all scoring 9/9 on the rubric.**
+    `CS-P2B-001` (B1.1, d4, 16) single-machine scheduling where shortest-job-first — the rule the course
+    teaches, and the right answer to a *different* objective — is the decoy: the booking order scores
+    +2, shortest-job-first +3, and earliest-deadline-first **−1**, verified by enumerating all 24 orders
+    and, after a fifth job is added, all 120. `CS-P2B-002` (B2.2, d4, 16) a triage queue where a binary
+    heap and a sorted array **swap places** depending on the workload: the array wins a lookup-heavy
+    workload by 9.3× and the heap wins an insertion-heavy one by 15.5×. `CS-P2B-003` (B2.4, d5, 15) a
+    doubling array where the average of 0.999 copies per append is *correct* and still cannot answer the
+    deadline question, because append 513 alone copies 512 elements. `CS-P2B-004` (B4.1, d4, 16) a cache
+    that faults **more** when given more room — 9 misses at three pages rising to 10 at four, against
+    10 falling to 8 for least-recently-used — which is why the eviction rule must be a function of the
+    order the structure already maintains.
+  - **Two of the four designs were wrong before they were written.** The verifier caught that the
+    doubling item's prose would have claimed 2046 total copies and a worst append of 1024 (the truth is
+    **1023** and **512**), and that the first greedy counterexample had **no counterexample in it** —
+    earliest-finish and shortest-first both returned the same three intervals. Both were redesigned before
+    a word of prose was written, which is the entire argument for verifying first.
+  - **The figure ratchet moved with the coverage.** All four items carry a figure, so coverage rose
+    75/301 = 25% → **79/305 = 26%** and `FIGURE_COVERAGE_FLOOR` was raised 0.24 → **0.25**. The headroom
+    is unchanged at **11 non-figure items** (n = 316 passes, n = 317 fails), so the constraint on the next
+    batch is as tight as it was.
+  - **Numbers after the wave.** 305 items — Maths 125, Physics 88, CS 53, BM 39. Difficulty split
+    **5 / 178 / 122**. Evidence present **220 / 305**, assertions **3491**, `difficulty 5 with no
+    evidence` **0**, `labels the evidence does not permit` **0**. All 13 levers in use; largest share
+    still 15%. `calibration OK`.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  117 questions / 1773 marks, physics 84 / 1060, CS 45 / 701, BM SL 31 / 462 — all difficulty 3–5, May
+  125 questions / 1839 marks, physics 88 / 1085, CS 53 / 797, BM SL 39 / 563 — all difficulty 3–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that

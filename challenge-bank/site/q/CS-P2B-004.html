@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-P2B-004 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>The cache that got worse when it was given more room</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-P2B-004</p>
+<button type="button" class="q-done-page" data-qid="CS-P2B-004" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-P2B-004">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B4.1 (Fundamentals of abstract data types: choosing and combining ADTs to support a required set of operations)</span><span class="chip">P2</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not allowed</span><span class="chip">Determine</span><span class="chip">Explain</span><span class="chip">Design</span><span class="chip">Justify</span></div>
+<div class="box"><h4>A browser cache with room for four pages</h4><p>A browser keeps recently visited pages in a cache that can hold a fixed number of pages. When a page is requested and it is in the cache, that is a hit and no download is needed. When it is not, that is a miss, and the page must be downloaded and stored. If the cache is already full, some page must be evicted to make room.</p>
+<p>Two eviction policies are being considered. The first evicts the page that has been in the cache longest, regardless of how often it has been used. The second evicts the page that was least recently used.</p>
+<p>The browser is tested with the following sequence of page requests: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5. The cache is empty at the start, and each request is for a single page.</p></div>
+<figure><svg viewBox="0 0 470 160" role="img" aria-label="A least-recently-used cache drawn as two linked structures. On the left is a hash map with a box holding three entries: page 4 to node 4, page 1 to node 1 and page 5 to node 5, and a note that a lookup takes one step. On the right is a doubly linked chain of three nodes holding page 5, then page 1, then page 4, with arrows in both directions between neighbours, labelled next and prev. The left end of the chain is marked most recent and the right end least recent. A page can be found through the hash map in one step and then moved to the most recent end by changing four pointers, without searching the chain."><rect x="8" y="26" width="128" height="120" fill="#e0e7ff" stroke="#1f2937" stroke-width="1.2"/><text x="72" y="46" font-size="11" fill="#1f2937" text-anchor="middle">hash map</text><text x="72" y="64" font-size="10" fill="#1f2937" text-anchor="middle">page to node</text><text x="72" y="82" font-size="10" fill="#1f2937" text-anchor="middle">4 to node(4)</text><text x="72" y="98" font-size="10" fill="#1f2937" text-anchor="middle">1 to node(1)</text><text x="72" y="114" font-size="10" fill="#1f2937" text-anchor="middle">5 to node(5)</text><text x="72" y="134" font-size="9" fill="#1f2937" text-anchor="middle">lookup in one step</text><text x="152" y="40" font-size="10" fill="#1f2937">most recent</text><text x="392" y="40" font-size="10" fill="#1f2937">least recent</text><rect x="170" y="56" width="56" height="34" fill="#bbf7d0" stroke="#1f2937" stroke-width="1.2"/><text x="198" y="78" font-size="12" fill="#1f2937" text-anchor="middle">page 5</text><rect x="250" y="56" width="56" height="34" fill="#bbf7d0" stroke="#1f2937" stroke-width="1.2"/><text x="278" y="78" font-size="12" fill="#1f2937" text-anchor="middle">page 1</text><rect x="330" y="56" width="56" height="34" fill="#bbf7d0" stroke="#1f2937" stroke-width="1.2"/><text x="358" y="78" font-size="12" fill="#1f2937" text-anchor="middle">page 4</text><line x1="226" y1="66" x2="250" y2="66" stroke="#1f2937" stroke-width="1.4" marker-end="url(#a)"/><line x1="250" y1="82" x2="226" y2="82" stroke="#1f2937" stroke-width="1.4" marker-end="url(#a)"/><line x1="306" y1="66" x2="330" y2="66" stroke="#1f2937" stroke-width="1.4" marker-end="url(#a)"/><line x1="330" y1="82" x2="306" y2="82" stroke="#1f2937" stroke-width="1.4" marker-end="url(#a)"/><text x="188" y="118" font-size="9" fill="#1f2937">next</text><text x="188" y="132" font-size="9" fill="#1f2937">prev</text><line x1="166" y1="46" x2="166" y2="56" stroke="#1f2937" stroke-width="1.4"/><line x1="386" y1="46" x2="386" y2="56" stroke="#1f2937" stroke-width="1.4"/></svg><figcaption>The two structures an O(1) LRU cache needs: a hash map for the lookup and a doubly linked list for the recency order.</figcaption></figure>
+<section id="q-print">
+<h2>Question</h2>
+<p>The cache must support two operations at constant cost: looking up whether a page is present, and moving a page to the front of the recency order after it is used. You are asked to evaluate the two policies and then to design a structure that meets the cost requirement.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>With room for three pages, determine the number of misses for each of the two policies over the twelve requests, and state which policy has fewer misses.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>The cache is now given room for four pages. Determine the number of misses for each policy at this size, and explain what the results show about how the first policy's miss count behaves as the cache is enlarged.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>Design a structure, or a combination of structures, that supports both the presence lookup and the move-to-front operation at constant cost, and explain how each of the two operations is carried out.</p> <em>(Design)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>Justify why the second policy can be supported by your structure at constant cost while the first policy cannot, even though both policies evict exactly one page per miss.</p> <em>(Justify)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="16" data-ai-ref="CS-P2B-004">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>The cache must support two operations at constant cost: looking up whether a page is present, and moving a page to the front of the recency order after it is used. You are asked to evaluate the two policies and then to design a structure that meets the cost requirement.
+
+(a) With room for three pages, determine the number of misses for each of the two policies over the twelve requests, and state which policy has fewer misses. [4 marks] (Determine)
+(b) The cache is now given room for four pages. Determine the number of misses for each policy at this size, and explain what the results show about how the first policy&#x27;s miss count behaves as the cache is enlarged. [5 marks] (Explain)
+(c) Design a structure, or a combination of structures, that supports both the presence lookup and the move-to-front operation at constant cost, and explain how each of the two operations is carried out. [4 marks] (Design)
+(d) Justify why the second policy can be supported by your structure at constant cost while the first policy cannot, even though both policies evict exactly one page per miss. [3 marks] (Justify)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>Part (a).</strong> With room for three pages, the first policy evicts in arrival order. Tracing the requests: 1 misses, cache {1}; 2 misses, {1,2}; 3 misses, {1,2,3}; 4 misses and evicts 1, {2,3,4}; 1 misses and evicts 2, {3,4,1}; 2 misses and evicts 3, {4,1,2}; 5 misses and evicts 4, {1,2,5}; 1 hits; 2 hits; 3 misses and evicts 1, {2,5,3}; 4 misses and evicts 2, {5,3,4}; 5 hits. That is <strong>9 misses</strong>. <strong>(M1)(A1)</strong></p>
+<p>The second policy evicts the least recently used page. Tracing: 1 misses, {1}; 2 misses, {1,2}; 3 misses, {1,2,3}; 4 misses and evicts 1, {2,3,4}; 1 misses and evicts 2, {3,4,1}; 2 misses and evicts 3, {4,1,2}; 5 misses and evicts 4, {1,2,5}; 1 hits, order {2,5,1}; 2 hits, order {5,1,2}; 3 misses and evicts 5, {1,2,3}; 4 misses and evicts 1, {2,3,4}; 5 misses and evicts 2, {3,4,5}. That is <strong>10 misses</strong>. <strong>(M1)(A1)</strong></p>
+<p>So at three pages the first policy has <strong>fewer</strong> misses, by one. <strong>(A1)</strong></p>
+<p><strong>Part (b).</strong> With room for four pages, the first policy evicts 1 at the fourth request, then 2, then 3, then 4, then 5. The misses are at requests 1, 2, 3, 4, 5, 6, 7, 10, 11 and 12, which is <strong>10 misses</strong>. <strong>(M1)(A1)</strong></p>
+<p>The second policy with four pages: 1, 2, 3, 4 all miss; 1 hits; 2 hits; 5 misses and evicts 3; 1 hits; 2 hits; 3 misses and evicts 4; 4 misses and evicts 5; 5 misses and evicts 1. That is <strong>8 misses</strong>. <strong>(M1)(A1)</strong></p>
+<p>What the results show is that enlarging the cache made the first policy <strong>worse</strong>: its miss count rose from 9 to 10 when the room available rose from three pages to four. The second policy behaved as expected, falling from 10 to 8. <strong>(A1)</strong> A policy whose miss count can increase when it is given more memory is not merely inefficient, it is unsafe to size by experiment, because adding capacity cannot be relied upon to help.</p>
+<p><strong>Part (c).</strong> The structure is a combination of a hash map and a doubly linked list. <strong>(M1)</strong></p>
+<p>The hash map is keyed by page number and maps to the node in the list that holds that page. The list holds the pages in recency order, with the most recently used at the head. <strong>(A1)</strong></p>
+<p>For the presence lookup, the page number is hashed and the map is consulted, which is constant cost on average; if the key is absent the page is not cached. <strong>(A1)</strong></p>
+<p>For the move-to-front operation, the map gives the node directly, and the node is unlinked from its position and relinked at the head. Because the list is doubly linked, both the node's predecessor and its successor are reachable from the node itself, so a fixed number of pointer changes suffices and no search along the list is needed. <strong>(A1)</strong></p>
+<p><strong>Part (d).</strong> The second policy needs to know, for each page, when it was last used, and the move-to-front structure maintains exactly that as the order of the list, so the least recently used page is the tail and can be evicted by unlinking it. <strong>(M1)</strong></p>
+<p>The first policy needs to know when each page *arrived*, which is a different order from the recency order and cannot be read off it: a page at the head of the recency list may have arrived long before a page at the tail. <strong>(A1)</strong> Maintaining the arrival order as well would require a second ordering, and the point is that the recency list is the only order the structure carries, so the policy that needs a different order cannot use it. The deeper reason is that the second policy's eviction rule is a *function of the state the structure already maintains*, while the first policy's is not. <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p><strong>(a)</strong> M1 for a correct trace of either policy. A1 for 9 misses under the arrival-order policy and A1 for 10 under the recency policy. A1 for the comparison. Award the comparison mark provided the candidate's own two numbers are compared consistently, even if one trace is wrong.</p>
+<p><strong>(b)</strong> M1 for a correct trace at four pages. A1 for 10 and A1 for 8. A1 for the observation that the arrival-order policy's count rose when the cache grew. Do not credit a candidate who reports the increase but describes it as a rounding or counting error; the point is that the increase is real.</p>
+<p><strong>(c)</strong> M1 for naming both a hash map and a linked list. A1 for the map being keyed by page and holding the node. A1 for the lookup being constant cost. A1 for the move-to-front being constant cost *because the list is doubly linked*, so the predecessor is reachable without a search. A candidate who proposes a singly linked list and does not address how the predecessor is found scores at most 3 of 4.</p>
+<p><strong>(d)</strong> M1 for identifying that the recency order is exactly what the second policy needs and the tail is the eviction victim. A1 for identifying that the arrival order is a different order and is not recoverable from the recency order. A1 for the general statement that the second policy's rule is a function of the maintained state and the first policy's is not. A candidate who says only "the first policy needs a queue" without explaining why the queue is not already present scores the M1 but not the final A1.</p>
+<p>In parts (a) and (b), accept a table of cache contents instead of prose, provided the misses are countable from it. The exact eviction victim at each step need not be named if the count is right.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The item is built around a result that surprises almost everyone the first time they meet it: giving a cache more room can make it perform worse. The first policy's miss count rises from 9 to 10 when the cache grows from three pages to four, while the second policy's falls from 10 to 8. The two policies are tied on the small cache and separated on the large one, which means the intuitive experiment of "try it with more memory and see" gives a different recommendation at each size.</p>
+<p>The mechanism is that the second policy is a *stack algorithm* and the first is not. A policy is a stack algorithm when the set of pages it holds at any moment, with a cache of size k, is always a subset of the set it would hold with a cache of size k + 1. Least-recently-used has this property, because adding a slot never changes which pages are more recent than which. Evict-the-oldest does not, because a page that arrived early can be kept longer in a larger cache and thereby survive to displace a page that a smaller cache would have kept. Once the student sees that the property is about *nesting of the cache contents* rather than about hit rates, the anomaly stops being paradoxical.</p>
+<p>Part (c) is where the abstract data type content lives. The requirement is two constant-cost operations, and neither obvious structure delivers both: a hash map gives the lookup but has no order, and a list gives the order but needs a search to find a page. The answer is a composition, and the composition works only because the list is *doubly* linked, so that a node can be unlinked without walking to find its predecessor. That detail is the whole of part (c)'s last mark and is the most commonly missed step.</p>
+<p>Part (d) closes the loop by asking why the same structure cannot serve the first policy. The answer is not that the first policy is harder but that it needs a *different order* from the one the structure maintains. Students who answer that the first policy needs a queue have noticed something true and stopped one step short: a queue would work, but the structure is already maintaining an order and it is the wrong one.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme B: Computational thinking and problem-solving — B4.1 Fundamentals of ADTs</dd></div>
+  <div><dt>Challenge lever</dt><dd>Neither of the two obvious ADTs can support the required operations at constant cost, and the structure that can is a combination whose necessity only becomes visible once the recency order and the lookup are seen to be two different jobs.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B4.1 (Fundamentals of abstract data types: choosing and combining ADTs to support a required set of operations)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Built from the B4.1 bullets on selecting and combining abstract data types. The reference string 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5 was searched for so that the two policies are separated cleanly: at three pages the counts are 9 and 10, and at four pages they are 10 and 8, so the first policy&#x27;s count rises while the second&#x27;s falls. The browser-cache framing and the four parts are original; the page-replacement anomaly is a standard result rather than a borrowed question.</dd></div>
+  <div><dt>Verification</dt><dd>Both replacement policies were simulated in Python over the twelve-request reference string at cache sizes three and four. At size three the arrival-order policy faults 9 times and the least-recently-used policy faults 10 times; at size four they fault 10 and 8 times respectively. The increase from 9 to 10 for the arrival-order policy when the cache is enlarged was confirmed by the simulation rather than assumed.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P1_2018May_TZ2_q02 (similarity 0.008)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-P3-016 (similarity 0.002)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · </dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

@@ -303,6 +303,23 @@ extended-response. Two further CS rules from the guide: one P2 question is **alg
 no code to read or write**, and some questions **prohibit named built-ins** (`sort`, `pop`, `len`, `max`,
 `min`) — a question that can be answered by `sorted()` is not testing the algorithm.
 
+**The CS Paper 2 type table was wrong, and the gate could not see it (fixed 2026-09-16).** `PAPER_TYPES`
+in `tools/validate.py` read `("Computer Science HL", "P2"): {"case_study"}`, which contradicts the
+paragraph above and the guide. The consequence was not a warning but a blind spot: 17 CS items were
+declared `paper: "P2", question_type: "case_study"`, the validator checked them against a table that
+expected exactly that, and the bank reported **0 failures** the whole time. Nine of those items were
+Theme A material, which the guide places on P1, and **not one item carried P2's only legal type** — so
+the 80-mark, 40%-of-grade Paper 2 was effectively unmodelled while the gate said the corpus was clean.
+The table now reads P1 → `{structured, extended_response, case_study}` and P2 → `{extended_response}`,
+and the 17 items were moved to the paper their own `topic` field names. Two lessons, both general:
+
+1. **A gate that encodes the same mistake as the data cannot detect it.** Correcting the table turned
+   the bank from `0 failures` to `17 failures` with no data change at all. When a rule is written down
+   in two places — prose and code — the prose is not a check on the code.
+2. **Check that every legal paper/type pair actually has items.** Coverage was 100% by syllabus node
+   throughout, which is exactly why nobody looked at the papers. Node coverage and paper coverage are
+   different claims, and only the first was being measured.
+
 **MCQ rules.** Exactly four options labelled A–D, exactly one marked correct, one mark per question.
 Every option, correct or not, needs a `rationale` of at least eight words that *names the error*: a
 distractor with no stated purpose is noise, not a distractor. The four options should be the correct
@@ -345,10 +362,11 @@ The failure mode this rule exists to prevent is a bank that looks thorough and i
 bank stood at **45/255 = 18%**, with **Maths at 8.3% (9/109)** and **BM at 0% (0/30)**. Maths and BM are
 the two subjects with the widest gap between what the guide presents and what the bank contains. Batches
 22 and 22b were written against that gap and moved it, and the figure work that followed kept moving it:
-the bank now stands at **75/301 = 25%**, with **Maths at 15% (19/125)** — at the per-subject target for
-the first time — **Physics at 35% (31/88)**, **CS at 35% (17/49)** and **BM at 21% (8/39)**, against 0%
+the bank now stands at **79/305 = 26%**, with **Maths at 15% (19/125)** — at the per-subject target —
+**CS at 40% (21/53)**, **Physics at 35% (31/88)** and **BM at 21% (8/39)**, against 0%
 for BM at Batch 21. `FIGURE_COVERAGE_FLOOR` was raised from 0.17 to **0.19** in the same change that
-earned it and has since been raised again to **0.24**, which is the ratchet working as designed: coverage
+earned it and has since been raised twice more, to **0.24** and then to **0.25** by Batch 25, which is the
+ratchet working as designed: coverage
 rose, and the floor followed it up so the gain cannot be spent later. Every subject now clears the 15%
 per-subject target, so the audit prints no gap. That is the intended state — the gap visible until it is
 closed, and then a floor that stops it reopening.
@@ -449,7 +467,8 @@ still repetitive.
 | Physics P2 | — | energy balance with an inverted parameter (done: greenhouse); selector-then-spectrometer chains; nuclear fuel-cycle arithmetic; rotational dynamics with a slipping constraint |
 | Maths P3 | iterative root with a Pell invariant; difference-equation boundary-value problem; coupled ODE cascade; integral recurrence with a squeeze; generating-function counting; optimisation with a parameter range; binomial identities by coefficient extraction; exponential Diophantine by modular reduction; **inclusion–exclusion → recurrence → limit → rounding result (derangements)**; **roots of unity: factorise, cancel, substitute the excluded point** | Maclaurin solution of an ODE with no closed form; a graph-theoretic counting invariant; a probability problem whose answer is a named constant reached two ways |
 | CS P1 (structured) | FDE cycle and CPU/GPU comparison; binary representation and overflow; scheduling; database design and SQL; NoSQL and warehousing; **cache hierarchy → Amdahl → clock scaling that fails**; **VLSM subnetting design with a boundary constraint**; **asymptotics vs constant factor, crossover computed** | translation (compiler vs interpreter, HL); ML preprocessing and validation; OOP design with multiple classes |
-| CS P2 (case study) | binding-constraint architecture split; ADT selection against every operation; imbalanced-data metrics and governance; concurrency and deadlock; protocol design with a threat model; legacy-migration phasing; algorithmic fairness | distributed-system consistency; ML pipeline governance; a second security incident with a different failure class |
+| CS P1 (case study, Section B) | binding-constraint architecture split; ADT selection against every operation; imbalanced-data metrics and governance; concurrency and deadlock; protocol design with a threat model; legacy-migration phasing; algorithmic fairness | distributed-system consistency; ML pipeline governance; a second security incident with a different failure class |
+| CS P2 (extended response, Theme B) | **single-machine scheduling where the trained rule is the decoy**; **heap vs sorted array where the workload reverses the ranking**; **amortised doubling where the average is right and cannot answer the question**; **a cache that faults more when given more room** | graph traversal with a tie-break that changes the answer; string matching with overlapping occurrences; a compression scheme whose worst case is not its average case |
 | BM P1 (case study) | ratio analysis → growth model choice; landed cost → working-capital and obsolescence effects | HR restructure with a motivation theory; market-entry with Ansoff plus STEEPLE |
 
 Three rules keep the ledger honest. First, a new item in a row must differ from the entries already there
@@ -649,11 +668,17 @@ rather than only a sum. Run it after any change to the rubric.
 4. **Status:** new items are `draft` until the gates pass, then `published`.
 5. **Re-brief:** coverage is re-measured after every batch; the next brief comes from the new gaps.
 
-Current state: 301 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
+Current state: 305 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
 priority-2 node is done** — Maths 32/32 must + 51/51 should (83/83 overall), Physics 24/24 (complete),
-CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 301
-carry `verification.assertions` (3447 assertions in total), `validate.py` reports 0 failures, and 216 of
-the 301 carry a `difficulty_evidence` block — the other 85 are the grandfathered backlog described in
+CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 305
+carry `verification.assertions` (3491 assertions in total), `validate.py` reports 0 failures, and 220 of
+the 305 carry a `difficulty_evidence` block — the other 85 are the grandfathered backlog described in
 §4.7, which `--strict` reports as warnings and plain `--check` ignores unless the bank gets worse. **No
 item claims difficulty 5 without evidence**; all 85 outstanding items are difficulty-3 or difficulty-4
 claims.
+
+**Node coverage is not paper coverage, and only the first was being measured.** The 100% above is true
+and was true throughout the CS Paper 2 error described in §2.4: every CS node had an item, while the
+80-mark Paper 2 component had none of its legal question type. When a coverage claim is quoted, say which
+kind it is. The per-paper distribution is worth reading beside it — after Batch 25 it is Maths P1 61 /
+P2 35 / P3 29, Physics P1A 14 clusters (70 questions) / P1B 17 / P2 57, CS P1 41 / P2 12, BM P1 10 / P2 29.

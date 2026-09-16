@@ -1,0 +1,501 @@
+{
+  "_note": "CS HL Paper 2, Theme B, extended response. Added 2026-09-16 to fill the Paper 2 gap: before this batch every item on P2 was typed case_study, which the guide forbids, and no item carried P2's only legal type.",
+  "questions": [
+    {
+      "id": "CS-P2B-001",
+      "title": "Four jobs, one machine, and the order that looks efficient",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "B1.1 (Approaches to computational thinking: decomposition, pattern recognition, abstraction and algorithm design)",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B1.1 Approaches to computational thinking",
+      "paper": "P2",
+      "section": null,
+      "question_type": "extended_response",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "The schedule that a competent student reaches for first, shortest job first, is a decoy here: it minimises the average time in the system but the objective is the worst single lateness, and on this job set it is four units worse than the order that looks arbitrary.",
+      "command_terms": [
+        "Determine",
+        "Apply",
+        "Explain",
+        "Justify"
+      ],
+      "tags": [
+        "scheduling",
+        "greedy",
+        "algorithm design",
+        "computational thinking",
+        "counterexample",
+        "P2"
+      ],
+      "stimulus": {
+        "title": "One machine, four jobs, and a promise about the worst one",
+        "body": "A workshop has a single paint booth and four cars waiting. Only one car can be in the booth at a time, and once a car is started it must be finished. Each car has a painting time in hours and a promised collection time, counted in hours from now. The workshop does not care about the average wait. It cares about the worst case, because the manager is judged on the single most disappointed customer of the week.\n\nThe lateness of a job is the time it finishes minus its promised collection time, so a negative lateness means the job finished early. The objective is to make the largest lateness as small as possible, and a negative value is a success rather than a problem.\n\nThe four cars are: A takes 5 hours and is promised at hour 8; B takes 2 hours and is promised at hour 6; C takes 4 hours and is promised at hour 20; D takes 7 hours and is promised at hour 16. The booth starts empty at hour 0 and is never idle while jobs remain.",
+        "table": null
+      },
+      "figure": {
+        "type": "svg",
+        "content": "<svg viewBox=\"0 0 470 305\" role=\"img\" aria-label=\"Three schedules of four jobs on one machine, drawn as timelines from time 0. The jobs are A lasting 5 units with deadline 8, B lasting 2 with deadline 6, C lasting 4 with deadline 20 and D lasting 7 with deadline 16. The first row runs them in the listed order A then B then C then D, finishing at 18. The second row runs shortest job first: B, C, A, D, so A finishes at 11 and D at 18. The third row runs earliest deadline first: B, A, D, C, finishing at 18. Red dashed vertical lines mark each job deadline of 6, 8, 16 and 20. A job is late where its block ends to the right of its own deadline line.\"><text x=\"8\" y=\"98\" font-size=\"11\" fill=\"#1f2937\">as listed A B C D</text><rect x=\"78.0\" y=\"78\" width=\"75.0\" height=\"30\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"115.5\" y=\"98\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">A</text><rect x=\"153.0\" y=\"78\" width=\"30.0\" height=\"30\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"168.0\" y=\"98\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">B</text><rect x=\"183.0\" y=\"78\" width=\"60.0\" height=\"30\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"213.0\" y=\"98\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">C</text><rect x=\"243.0\" y=\"78\" width=\"105.0\" height=\"30\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"295.5\" y=\"98\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">D</text><line x1=\"198.0\" y1=\"70\" x2=\"198.0\" y2=\"114\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"198.0\" y=\"66\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dA</text><line x1=\"168.0\" y1=\"70\" x2=\"168.0\" y2=\"114\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"168.0\" y=\"66\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dB</text><line x1=\"378.0\" y1=\"70\" x2=\"378.0\" y2=\"114\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"378.0\" y=\"66\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dC</text><line x1=\"318.0\" y1=\"70\" x2=\"318.0\" y2=\"114\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"318.0\" y=\"66\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dD</text><text x=\"8\" y=\"168\" font-size=\"11\" fill=\"#1f2937\">shortest job first</text><rect x=\"78.0\" y=\"148\" width=\"30.0\" height=\"30\" fill=\"#fde68a\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"93.0\" y=\"168\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">B</text><rect x=\"108.0\" y=\"148\" width=\"60.0\" height=\"30\" fill=\"#fde68a\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"138.0\" y=\"168\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">C</text><rect x=\"168.0\" y=\"148\" width=\"75.0\" height=\"30\" fill=\"#fde68a\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"205.5\" y=\"168\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">A</text><rect x=\"243.0\" y=\"148\" width=\"105.0\" height=\"30\" fill=\"#fde68a\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"295.5\" y=\"168\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">D</text><line x1=\"168.0\" y1=\"140\" x2=\"168.0\" y2=\"184\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"168.0\" y=\"136\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dB</text><line x1=\"378.0\" y1=\"140\" x2=\"378.0\" y2=\"184\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"378.0\" y=\"136\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dC</text><line x1=\"198.0\" y1=\"140\" x2=\"198.0\" y2=\"184\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"198.0\" y=\"136\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dA</text><line x1=\"318.0\" y1=\"140\" x2=\"318.0\" y2=\"184\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"318.0\" y=\"136\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dD</text><text x=\"8\" y=\"238\" font-size=\"11\" fill=\"#1f2937\">earliest deadline first</text><rect x=\"78.0\" y=\"218\" width=\"30.0\" height=\"30\" fill=\"#bbf7d0\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"93.0\" y=\"238\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">B</text><rect x=\"108.0\" y=\"218\" width=\"75.0\" height=\"30\" fill=\"#bbf7d0\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"145.5\" y=\"238\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">A</text><rect x=\"183.0\" y=\"218\" width=\"105.0\" height=\"30\" fill=\"#bbf7d0\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"235.5\" y=\"238\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">D</text><rect x=\"288.0\" y=\"218\" width=\"60.0\" height=\"30\" fill=\"#bbf7d0\" stroke=\"#1f2937\" stroke-width=\"1\"/><text x=\"318.0\" y=\"238\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">C</text><line x1=\"168.0\" y1=\"210\" x2=\"168.0\" y2=\"254\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"168.0\" y=\"206\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dB</text><line x1=\"198.0\" y1=\"210\" x2=\"198.0\" y2=\"254\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"198.0\" y=\"206\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dA</text><line x1=\"318.0\" y1=\"210\" x2=\"318.0\" y2=\"254\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"318.0\" y=\"206\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dD</text><line x1=\"378.0\" y1=\"210\" x2=\"378.0\" y2=\"254\" stroke=\"#b91c1c\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\"/><text x=\"378.0\" y=\"206\" font-size=\"10\" fill=\"#b91c1c\" text-anchor=\"middle\">dC</text><line x1=\"78\" y1=\"266\" x2=\"408\" y2=\"266\" stroke=\"#1f2937\"/><line x1=\"78.0\" y1=\"266\" x2=\"78.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"78.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">0</text><line x1=\"108.0\" y1=\"266\" x2=\"108.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"108.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">2</text><line x1=\"138.0\" y1=\"266\" x2=\"138.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"138.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">4</text><line x1=\"168.0\" y1=\"266\" x2=\"168.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"168.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">6</text><line x1=\"198.0\" y1=\"266\" x2=\"198.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"198.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">8</text><line x1=\"228.0\" y1=\"266\" x2=\"228.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"228.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">10</text><line x1=\"258.0\" y1=\"266\" x2=\"258.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"258.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">12</text><line x1=\"288.0\" y1=\"266\" x2=\"288.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"288.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">14</text><line x1=\"318.0\" y1=\"266\" x2=\"318.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"318.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">16</text><line x1=\"348.0\" y1=\"266\" x2=\"348.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"348.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">18</text><line x1=\"378.0\" y1=\"266\" x2=\"378.0\" y2=\"270\" stroke=\"#1f2937\"/><text x=\"378.0\" y=\"282\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">20</text><text x=\"243\" y=\"296\" font-size=\"10\" fill=\"#1f2937\" text-anchor=\"middle\">time (units from 0)</text></svg>",
+        "caption": "The four jobs under three processing orders. The red dashed lines are the deadlines; a block ending to the right of its own line is a late job."
+      },
+      "question": "You are asked to choose the order in which the four cars enter the booth. Work in whole hours, and remember that a job's lateness is measured against its own promise and can be negative.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "The cars are currently processed in the order they were booked: A, then B, then C, then D. Determine the finishing time of each car and the largest lateness of that schedule."
+        },
+        {
+          "label": "b",
+          "marks": 4,
+          "command_term": "Apply",
+          "text": "Apply the shortest-job-first rule, that is, process the cars in increasing order of painting time, breaking any tie by the earlier promise. Give the resulting order, each finishing time, and the largest lateness of that schedule."
+        },
+        {
+          "label": "c",
+          "marks": 5,
+          "command_term": "Explain",
+          "text": "Explain why the schedule that puts the car with the earliest promise first can never produce a larger worst-case lateness than the schedule you found in part (b), however the remaining cars are then arranged. Your explanation should identify the property of the worst-case objective that makes the exchange argument work."
+        },
+        {
+          "label": "d",
+          "marks": 4,
+          "command_term": "Justify",
+          "text": "A fifth car, E, is added. E takes 3 hours and is promised at hour 9. Justify whether the earliest-promise-first order still achieves the smallest possible worst-case lateness for all five cars, and state the value it achieves."
+        }
+      ],
+      "answer": "**Part (a).** The cars run back to back from hour 0, so each finishing time is the running total of the painting times.\n\nA finishes at 0 + 5 = 5. B finishes at 5 + 2 = 7. C finishes at 7 + 4 = 11. D finishes at 11 + 7 = 18. **(M1)** for the running total, **(A1)** for all four finishing times.\n\nThe lateness of each car is its finishing time minus its own promise. A: 5 - 8 = -3. B: 7 - 6 = +1. C: 11 - 20 = -9. D: 18 - 16 = +2. **(A1)** The largest lateness is therefore +2, set by car D.\n\n**Part (b).** The painting times are A 5, B 2, C 4, D 7, so increasing order is B (2), C (4), A (5), D (7). No ties arise, so the tie-break is not needed. **(M1)**\n\nFinishing times: B at 2, C at 2 + 4 = 6, A at 6 + 5 = 11, D at 11 + 7 = 18. **(A1)**\n\nLateness: B is 2 - 6 = -4; C is 6 - 20 = -14; A is 11 - 8 = +3; D is 18 - 16 = +2. **(A1)** The largest lateness is +3, set by car A. **(A1)** So shortest-job-first is worse than the booking order, which is the surprising result the question is built on: it moved the worst lateness from +2 up to +3.\n\n**Part (c).** The objective depends only on the largest lateness, so it is decided by a single job. Consider any schedule and suppose that, at some point, the job with the earliest promise among those not yet started is not the one that runs next. **(M1)** Let that job be X and let the job that actually runs be Y, which therefore has a promise no earlier than X's. Swap X and Y so that X runs in Y's slot and Y runs immediately after. **(M1)**\n\nThe jobs before the swap are untouched, and the jobs after the two swapped ones still finish at the same times, because the pair still occupies the same total length of time. So only X and Y can have their lateness changed. **(A1)** After the swap X finishes earlier than Y did, and its promise was no later than Y's, so X's lateness does not increase. Y finishes exactly when X used to finish, which is at most as late as Y's old finishing time, so Y's lateness does not increase either. **(M1)**\n\nEvery swap of this kind therefore leaves the largest lateness no larger than it was, and repeated swapping sorts the schedule into earliest-promise-first order without ever making the worst case worse. Since we started from an arbitrary schedule, no schedule can beat the earliest-promise-first order on this objective. **(R1)** This is exactly why the reasoning fails for the *average* lateness, where a short job delays fewer jobs and the trade is genuinely different.\n\n**Part (d).** With E added, the promises are B 6, A 8, E 9, D 16, C 20, so the earliest-promise-first order is B, A, E, D, C. **(M1)**\n\nFinishing times: B 2, A 7, E 10, D 17, C 21. Lateness: B -4, A -1, E 10 - 9 = +1, D 17 - 16 = +1, C 21 - 20 = +1. The largest lateness is +1. **(A1)**\n\nThe exchange argument of part (c) never used the number of jobs, only the fact that swapping an earlier-promise job forward cannot worsen either swapped job, so it applies unchanged to five jobs. **(M1)** The achieved value +1 is therefore the smallest possible worst-case lateness; a complete search of all 120 orders confirms that no order does better. **(A1)** Notice that adding E has turned a schedule that was comfortably early everywhere into one that is late on three jobs, which is a property of the job set rather than of the rule.",
+      "markscheme_notes": "**(a)** M1 for treating finishing times as a running total; A1 for all four of 5, 7, 11, 18; A1 for the maximum lateness of +2. A candidate who reports the largest lateness as 2 without the sign is still credited, since the sign is a convention and the value is what is asked for; a candidate who writes -9 or -14 as the largest has compared magnitudes and forfeits the final A1.\n\n**(b)** M1 for the order B, C, A, D. Award A1 for the finishing times 2, 6, 11, 18, A1 for the lateness values, and A1 for the maximum of +3. Follow-through is allowed: a candidate who produces a different order in (b) but reads a maximum lateness consistently off their own finishing times keeps the final A1. A candidate who gives the average lateness instead of the maximum forfeits that A1 and scores at most 3 of 4.\n\n**(c)** M1 for identifying that the objective is decided by one job. M1 for the swap construction. A1 for the observation that the jobs after the pair are unaffected. M1 for showing that neither swapped job's lateness rises. R1 for the conclusion that repetition yields the earliest-promise-first order and that this proves optimality. Do not credit an answer that asserts optimality from the rule's name, or that argues only about the first job; the whole force of the argument is that the swap is safe for both jobs involved.\n\n**(d)** M1 for the order B, A, E, D, C. A1 for the finishing times and the maximum lateness of +1. M1 for explicitly extending the exchange argument rather than re-asserting it. A1 for the justification that +1 is optimal. A candidate who claims the answer changes because the exchange argument depended on there being four jobs scores the M1s but not the A1s.\n\nAcross the question, accept any equivalent formulation of lateness provided the candidate is consistent about the sign.",
+      "explanation": "The item is a trap built out of two heuristics that are both taught, in different contexts, without the objective they belong to.\n\nShortest-job-first is the correct answer to a different question. It minimises the *average* time a job spends in the system, and it is genuinely optimal for that. Students meet it as the scheduling rule and reach for it here. But the workshop is not judged on the average; it is judged on the single worst customer, and those two objectives order the jobs differently. On this job set shortest-job-first produces a worst lateness of +3 while the booking order produces +2 and the earliest-promise order produces -1. The rule that is right for the average is the *worst* of the three candidates for the maximum.\n\nThe second trap is the sign. Because lateness is defined as finish minus promise, a good schedule has a *negative* maximum. A student who is looking for the largest number and who discards signs will report -14 from part (b), or +3 when the answer is -1, and will have inverted the objective without noticing. This is why the stimulus states the convention explicitly and why part (a) is deliberately a schedule that is early on three cars and late on one.\n\nThe reasoning in part (c) is an exchange argument, and the point worth seeing is that the argument is *tight*: it works because the two swapped jobs are adjacent, so nothing after them moves, and because the job moved forward had the earlier promise. Change either condition and it collapses. Part (d) tests whether the student understood the argument or merely memorised its conclusion, by changing the instance in a way that makes the answer worse without changing the rule.\n\nThe classic wrong turn in part (c) is to argue from the first job only, or to claim that the rule is obviously optimal because it is named after the deadline. Neither is a proof: the first job being on time says nothing about the last one, and the whole content of the result is that the swap does not harm the job it displaces.",
+      "provenance": {
+        "inspired_by": "original",
+        "source_family": "original",
+        "adaptation": "Built from the B1.1 bullets on algorithm design and from the guide's requirement that one Paper 2 question assess algorithmic thinking without code. The job set A(5,8) B(2,6) C(4,20) D(7,16) was chosen so that the booking order, shortest-job-first and earliest-promise-first all give *different* maxima (+2, +3, -1), and the added job E(3,9) so that the optimal value changes sign without the rule changing. The optimality of earliest-deadline-first for maximum lateness is a standard result; the instance, the four parts and the exchange argument as written are original.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.003,
+        "nearest_bank_id": "MA_HL_topic_Topic10_HL-paper3_q85",
+        "max_internal_similarity": 0.002,
+        "max_approach_similarity": 0.08,
+        "nearest_approach_id": "MATH-AHL1.16-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/Topic 10",
+        "nearest_internal_id": "PHYS-B.5-102"
+      },
+      "verification": {
+        "method": "Every schedule was enumerated and scored in Python. All 24 orders of the four jobs were scored and the best maximum lateness is -1, attained by B, A, D, C, which is the earliest-promise order; shortest-job-first scores +3 and the booking order scores +2. With E added, all 120 orders were scored; the best is +1 and the earliest-promise order attains it. The figure is generated from the same job data the answers use.",
+        "assertions": [
+          "max([5 - 8, 7 - 6, 11 - 20, 18 - 16]) == 2",
+          "max([2 - 6, 6 - 20, 11 - 8, 18 - 16]) == 3",
+          "max([2 - 6, 7 - 8, 14 - 16, 18 - 20]) == -1",
+          "5 + 2 + 4 + 7 == 18",
+          "max([2 - 6, 7 - 8, 10 - 9, 17 - 16, 21 - 20]) == 1",
+          "5 + 2 + 4 + 7 + 3 == 21",
+          "max([5, 2, 4, 7]) == 7",
+          "-1 < 2 and 2 < 3",
+          "all([x <= 2 for x in [5 - 8, 7 - 6, 11 - 20, 18 - 16]])",
+          "factorial(4) == 24 and factorial(5) == 120",
+          "max([2, 6, 11, 18]) == 18"
+        ],
+        "solution_skeleton": [
+          "read the objective: it is the single largest lateness, not the average",
+          "compute finishing times as a running total of processing times",
+          "compute each lateness as finish minus its own promise, keeping the sign",
+          "identify the largest value, allowing it to be negative",
+          "justify the earliest-promise rule by an adjacent-swap exchange argument",
+          "check the argument survives adding a fifth job"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "difficulty_evidence": {
+        "lever_type": "decoy_technique",
+        "naive_path": "Reach for shortest-job-first because it is the scheduling rule the course taught, compute the four finishing times, and report the largest of the resulting lateness values without checking it against the booking order.",
+        "failure_point": "Shortest-job-first optimises the average time in the system, which is not the objective here; the item is judged on the single worst lateness, and that objective orders the jobs differently, so the trained reflex is the worst of the three candidate orders rather than the best.",
+        "wrong_answer": "A largest lateness of +3 from the shortest-job-first order, reported as the best available schedule, when the earliest-promise order achieves -1."
+      },
+      "status": "published",
+      "created_at": "2026-09-16",
+      "authored_by": "ai"
+    },
+    {
+      "id": "CS-P2B-002",
+      "title": "Five thousand patients, one queue, and a question about the fifth",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "B2.2 (Data structures: arrays, lists, stacks, queues, priority queues and trees, and the operations each supports)",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B2.2 Data structures",
+      "paper": "P2",
+      "section": null,
+      "question_type": "extended_response",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "The two candidate structures are ranked by their asymptotic costs and the ranking is correct for one workload and reversed for the other, so the choice is governed by how often the queue is asked for a middle-ranked patient rather than by which structure is faster in general.",
+      "command_terms": [
+        "Calculate",
+        "Compare",
+        "Recommend",
+        "Justify"
+      ],
+      "tags": [
+        "data structures",
+        "heap",
+        "priority queue",
+        "complexity",
+        "operation counting",
+        "P2"
+      ],
+      "stimulus": {
+        "title": "Triage at a district hospital",
+        "body": "A district hospital holds a waiting list of patients who have been assessed but not yet seen. Each patient has an integer acuity score, and a larger score means more urgent. Two things happen to the list.\n\nThe first is a lookup: a clinician asks for the patient who is currently the fifth most urgent, to decide whether the department can afford to take a less urgent case first. The second is an insertion: a newly assessed patient joins the list.\n\nThe list holds 4096 patients, and the department is choosing between two implementations. The first is a binary max-heap. The second keeps the patients in a single array held in descending order of acuity, so that position 0 is the most urgent patient and position k - 1 is the k-th most urgent.\n\nFor planning purposes treat a comparison or a movement of one element as one operation, take the cost of finding the largest element in a heap as one operation, and take the cost of restoring the heap after removing or adding one element as log base 2 of 4096, which is 12 operations. Inserting into the ordered array costs on average half the array, and a comparison sort of 4096 elements costs 4096 times 12 operations.",
+        "table": null
+      },
+      "figure": {
+        "type": "svg",
+        "content": "<svg viewBox=\"0 0 470 292\" role=\"img\" aria-label=\"Two arrangements of the same seven priority values. The upper panel is a max-heap drawn as a binary tree with root 91; its children are 74 and 68, and their children are 55 and 39 under 74, and 62 and 47 under 68. The lower panel is the same seven values stored in a flat array in descending order 91, 74, 68, 55, 39, 62, 47, with indices 0 to 6 marked beneath the cells. In the heap the largest value is at the root and any position other than the root requires walking down the tree; in the array the k-th largest value for any k is at index k minus one, reached directly.\"><line x1=\"235\" y1=\"46\" x2=\"140\" y2=\"86\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><line x1=\"235\" y1=\"46\" x2=\"330\" y2=\"86\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><line x1=\"140\" y1=\"106\" x2=\"95\" y2=\"146\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><line x1=\"140\" y1=\"106\" x2=\"185\" y2=\"146\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><line x1=\"330\" y1=\"106\" x2=\"285\" y2=\"146\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><line x1=\"330\" y1=\"106\" x2=\"375\" y2=\"146\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><circle cx=\"235\" cy=\"30\" r=\"17\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><text x=\"235\" y=\"34\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">91</text><circle cx=\"140\" cy=\"90\" r=\"17\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><text x=\"140\" y=\"94\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">74</text><circle cx=\"330\" cy=\"90\" r=\"17\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><text x=\"330\" y=\"94\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">68</text><circle cx=\"95\" cy=\"150\" r=\"17\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><text x=\"95\" y=\"154\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">55</text><circle cx=\"185\" cy=\"150\" r=\"17\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><text x=\"185\" y=\"154\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">39</text><circle cx=\"285\" cy=\"150\" r=\"17\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><text x=\"285\" y=\"154\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">62</text><circle cx=\"375\" cy=\"150\" r=\"17\" fill=\"#dbeafe\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><text x=\"375\" y=\"154\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">47</text><text x=\"235\" y=\"186\" font-size=\"10\" fill=\"#1f2937\" text-anchor=\"middle\">a max-heap: the root is the largest, and the children of the node at index i sit at 2i+1 and 2i+2</text><rect x=\"30\" y=\"214\" width=\"35\" height=\"30\" fill=\"#e0e7ff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"47\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">91</text><text x=\"47\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">0</text><rect x=\"65\" y=\"214\" width=\"35\" height=\"30\" fill=\"#e0e7ff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"82\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">74</text><text x=\"82\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">1</text><rect x=\"100\" y=\"214\" width=\"35\" height=\"30\" fill=\"#e0e7ff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"117\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">68</text><text x=\"117\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">2</text><rect x=\"135\" y=\"214\" width=\"35\" height=\"30\" fill=\"#e0e7ff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"152\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">55</text><text x=\"152\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">3</text><rect x=\"170\" y=\"214\" width=\"35\" height=\"30\" fill=\"#e0e7ff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"187\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">39</text><text x=\"187\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">4</text><rect x=\"205\" y=\"214\" width=\"35\" height=\"30\" fill=\"#e0e7ff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"222\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">62</text><text x=\"222\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">5</text><rect x=\"240\" y=\"214\" width=\"35\" height=\"30\" fill=\"#e0e7ff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"257\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">47</text><text x=\"257\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">6</text><rect x=\"275\" y=\"214\" width=\"35\" height=\"30\" fill=\"#ffffff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"292\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\"></text><text x=\"292\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">7</text><rect x=\"310\" y=\"214\" width=\"35\" height=\"30\" fill=\"#ffffff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"327\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\"></text><text x=\"327\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">8</text><rect x=\"345\" y=\"214\" width=\"35\" height=\"30\" fill=\"#ffffff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"362\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\"></text><text x=\"362\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">9</text><rect x=\"380\" y=\"214\" width=\"35\" height=\"30\" fill=\"#ffffff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"397\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\"></text><text x=\"397\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">10</text><rect x=\"415\" y=\"214\" width=\"35\" height=\"30\" fill=\"#ffffff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"432\" y=\"234\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\"></text><text x=\"432\" y=\"258\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">11</text><text x=\"235\" y=\"280\" font-size=\"10\" fill=\"#1f2937\" text-anchor=\"middle\">the same seven values in a flat array, already sorted into descending order</text></svg>",
+        "caption": "The same seven priorities as a max-heap and as a sorted array. The array answers any k-th largest in one step; the heap answers the largest in one step and everything else by walking."
+      },
+      "question": "The department expects two different workloads and has not yet decided which one it will have. Workload X builds the list once and then performs 4096 lookups for the fifth most urgent patient. Workload Y performs 4096 rounds, where each round is one lookup for the fifth most urgent patient followed immediately by one insertion. You should count operations for both structures under both workloads.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Calculate",
+          "text": "Calculate the cost of one lookup for the fifth most urgent patient under each structure, and explain briefly why the two costs differ."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Compare",
+          "text": "Calculate the total number of operations each structure needs for workload X, taking account of the cost of building the structure as well as the cost of the lookups. State which structure is cheaper and by what factor, to one decimal place."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Recommend",
+          "text": "Carry out the same comparison for workload Y, and state which structure is cheaper for that workload."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Justify",
+          "text": "A colleague concludes from the two structures' usual descriptions that the heap must be the right choice because insertion is logarithmic rather than linear. Justify whether that reasoning is sufficient, referring to your answers in parts (b) and (c)."
+        }
+      ],
+      "answer": "**Part (a).** In the max-heap the largest patient is at the root, but the fifth most urgent is not at any fixed position. To reach it you remove the largest patient, restore the heap, and repeat until five patients have come out; then you put the four removed patients back. Each removal costs 12 operations to restore the heap, so the lookup costs 5 x 2 x 12 = **120 operations**. **(M1)** for the 12, **(A1)** for 120.\n\nIn the ordered array the patients are already in descending order, so the fifth most urgent is simply at index 4. Reading it costs **1 operation**. **(A1)**\n\nThe costs differ because the heap is arranged by a *partial* order: it guarantees only that a parent is at least as urgent as its children, which is enough to place the single most urgent patient but says nothing about where the fifth belongs. The array is arranged by a *total* order, which places every patient, and that is what makes an arbitrary rank cheap to read. **(A1)**\n\n**Part (b).** Workload X: 4096 lookups, each 120 operations, gives 4096 x 120 = 491 520 operations. **(M1)** Building the heap from 4096 patients costs 4096 operations. **(A1)** Total for the heap: 4096 + 491 520 = **495 616 operations**.\n\nFor the ordered array, building means sorting, which costs 4096 x 12 = 49 152 operations. **(A1)** The 4096 lookups cost 4096 x 1 = 4096 operations. Total: 49 152 + 4096 = **53 248 operations**. **(M1)**\n\nThe ordered array is cheaper, by 495 616 / 53 248 = **9.3 times** to one decimal place. **(A1)**\n\n**Part (c).** Workload Y: each round is a lookup followed by an insertion, and there are 4096 rounds.\n\nFor the heap, a round costs 120 + 12 = 132 operations, so the total is 4096 x 132 = **540 672 operations**. **(M1)(A1)**\n\nFor the ordered array, a round costs 1 + 2048 = 2049 operations, because inserting into a sorted array of 4096 elements shifts half of it on average. The total is 4096 x 2049 = **8 392 704 operations**. **(M1)** The heap is cheaper for this workload, by 8 392 704 / 540 672 = 15.5 times. **(A1)**\n\nSo the two structures swap places: the array wins workload X by 9.3 times and the heap wins workload Y by 15.5 times.\n\n**Part (d).** The colleague's reasoning is not sufficient, because it is a statement about *insertion* alone and the two workloads do not weight insertion the same way. **(M1)** In workload X there are no insertions after the list is built, so the heap's logarithmic insertion is worth nothing and the array's constant-time rank lookup decides the whole comparison, which is why the array wins by 9.3 times. **(A1)** In workload Y every lookup is followed by an insertion, and there the linear insertion cost of the array dominates everything else, which is why the heap wins by 15.5 times. **(A1)** The conclusion the colleague should draw is that the heap's advantage is conditional on insertions being frequent relative to rank lookups, and the department must first know which workload it has.",
+      "markscheme_notes": "**(a)** M1 for identifying that a heap lookup requires repeated removals, A1 for 120. A1 for 1 operation for the array. A1 for the partial-order versus total-order contrast. Accept any wording that conveys that the heap only orders each parent against its own children, and that this is why a specific rank is not directly addressable. A candidate who claims the fifth most urgent is at a fixed heap index forfeits the final A1.\n\n**(b)** M1 for 4096 x 120, A1 for the build cost of 4096, A1 for the array's sort cost of 49 152, M1 for the array's lookup total, A1 for the 9.3 factor. Follow-through is allowed throughout: a candidate who used a different but consistent heap lookup cost keeps the method marks and the comparison A1 provided the arithmetic of the ratio is right on their own numbers.\n\n**(c)** M1 for the per-round heap cost of 132 and A1 for 540 672; M1 for the per-round array cost of 2049; A1 for 8 392 704 and the correct direction of the comparison. A candidate who omits the array's average shift and uses the full 4096 loses the second M1.\n\n**(d)** M1 for recognising that the claim addresses only insertion. A1 for tying the array's win in (b) to the absence of insertions. A1 for tying the heap's win in (c) to the presence of them. No credit for repeating the asymptotic descriptions without referring to the computed totals.\n\nAccept small rounding differences in the two ratios; the direction of each comparison and the existence of the reversal are what carry the marks.",
+      "explanation": "The item is built so that the standard complexity comparison is not wrong, but is incomplete in a way that changes the answer.\n\nThe textbook statement is that a heap gives logarithmic insertion and constant-time access to the maximum, while a sorted array gives linear insertion. A student who has learned that sentence has learned something true, and it is enough to answer the question the course usually asks, which is about a priority queue that only ever needs the maximum. This item asks for the *fifth* largest, and that single change moves the heap's lookup from constant to linear in the rank, which is the crack the whole question turns on.\n\nThe deeper point is about what each structure orders. A heap enforces a partial order: every parent is at least as large as its own children, and nothing more. That is exactly enough to guarantee the root is the maximum, and it is why the root is cheap and everything else is not. A sorted array enforces a total order, which costs a great deal to maintain under insertion but makes every rank addressable. Students who can say this have understood the structure rather than memorised its cost table.\n\nThe two workloads are the mechanism. Under workload X the array wins by 9.3 times; under workload Y the heap wins by 15.5 times. Neither structure is simply better, and the arithmetic is deliberately close enough that neither answer can be reached by intuition. A student who answers only from the asymptotic descriptions will get part (d) wrong in a specific and diagnosable way, which is the point of asking it.\n\nThe classic wrong turn is to treat the heap as if it were sorted, and to assume that the k-th largest is somewhere convenient. It is not: the only guarantee is that it is not an ancestor of anything larger than itself. The second wrong turn is to forget the cost of building the structure in part (b) and to compare only the lookups, which happens to preserve the direction of the answer here but not the factor.",
+      "provenance": {
+        "inspired_by": "original",
+        "source_family": "original",
+        "adaptation": "Built from the B2.2 bullets on priority queues and trees and the operations each supports. The parameters were chosen so that the two structures reverse: 4096 patients makes the heap lookup exactly 120 operations and the array lookup exactly 1, and the two workloads then give 9.3 times in favour of the array and 15.5 times in favour of the heap. The hospital triage setting is original; the comparison itself is the standard heap-versus-sorted-array trade, which is textbook material rather than a borrowed question.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.002,
+        "nearest_bank_id": "MAAQB_19N_3_AHL_TZ0_HDM_2",
+        "max_internal_similarity": 0.0,
+        "max_approach_similarity": 0.08,
+        "nearest_approach_id": "MATH-AHL3.2-001",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Math AA/AA HL",
+        "nearest_internal_id": null
+      },
+      "verification": {
+        "method": "All operation counts were computed in Python from the stated cost model rather than estimated. log base 2 of 4096 is 12, so the heap lookup is 5 x 2 x 12 = 120 and the per-round heap cost is 132. Workload X totals 495 616 for the heap against 53 248 for the array, a ratio of 9.3; workload Y totals 540 672 against 8 392 704, a ratio of 15.5 in the other direction. The reversal was checked by comparing the two orderings of the winners across the two workloads.",
+        "assertions": [
+          "2 ** 12 == 4096",
+          "5 * 2 * 12 == 120",
+          "4096 + 4096 * 120 == 495616",
+          "4096 * 12 + 4096 == 53248",
+          "495616 > 53248",
+          "round(495616 / 53248, 1) == 9.3",
+          "4096 * (120 + 12) == 540672",
+          "4096 * (1 + 2048) == 8392704",
+          "8392704 > 540672",
+          "round(8392704 / 540672, 1) == 15.5",
+          "4096 // 2 == 2048",
+          "120 + 12 == 132"
+        ],
+        "solution_skeleton": [
+          "state the cost model: 12 operations to restore a heap of 4096",
+          "work out the cost of reaching the fifth largest under each structure",
+          "total the build cost plus the lookup cost for workload X",
+          "total the per-round cost for workload Y",
+          "compare the two winners and notice they are different",
+          "attribute the reversal to how often insertion happens"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "difficulty_evidence": {
+        "lever_type": "quant_vs_judgement",
+        "naive_path": "Recall that a heap gives logarithmic insertion and constant-time maximum access, conclude from that description that the heap is the better structure for a priority queue, and answer both workloads without counting operations for either.",
+        "failure_point": "The qualitative description ranks the structures by insertion cost, but the item asks for the fifth most urgent patient, which turns the heap's lookup into a linear walk, and the two workloads weight insertion so differently that the ranking reverses between them.",
+        "wrong_answer": "Recommending the binary heap for both workloads on the grounds that insertion is logarithmic, when the ordered array is 9.3 times cheaper for the lookup-only workload."
+      },
+      "status": "published",
+      "created_at": "2026-09-16",
+      "authored_by": "ai"
+    },
+    {
+      "id": "CS-P2B-003",
+      "title": "The append that copies half the array",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "B2.4 (Programming algorithms: algorithm design, efficiency, and the analysis of running time)",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B2.4 Programming algorithms",
+      "paper": "P2",
+      "section": null,
+      "question_type": "extended_response",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 15,
+      "difficulty": 5,
+      "challenge_mechanism": "The average cost of an append is one operation, and a single append in the same run costs five hundred and twelve, so an analysis that reports only the average is correct and still wrong about the case the system must survive.",
+      "command_terms": [
+        "Calculate",
+        "Determine",
+        "Explain",
+        "Justify"
+      ],
+      "tags": [
+        "amortised analysis",
+        "dynamic array",
+        "worst case",
+        "complexity",
+        "algorithm efficiency",
+        "P2"
+      ],
+      "stimulus": {
+        "title": "A list that grows itself",
+        "body": "A hospital records a reading every second. The readings are held in a structure that starts empty with room for one reading. When a reading arrives and the structure is full, the structure allocates a new region twice as large, copies every reading it already holds into the new region, and then stores the new reading. Copying one reading costs one operation.\n\nA shift lasts 1024 seconds, so 1024 readings are appended, one per second. The monitoring software runs on a device that must respond within a fixed deadline, and the engineers have been told that the structure is cheap because \"the average append costs about one operation\".",
+        "table": null
+      },
+      "figure": {
+        "type": "svg",
+        "content": "<svg viewBox=\"0 0 470 228\" role=\"img\" aria-label=\"A bar chart of how many elements are copied by each append to a growing array that doubles its capacity when full. The vertical axis is logarithmic, labelled 1, 2, 4, 8, 16, 32, 64, 128, 256 and 512. The horizontal axis is the append number from 0 to about 1024. Only ten appends copy anything at all, at appends 2, 3, 5, 9, 17, 33, 65, 129, 257 and 513, and the number copied at those appends is 1, 2, 4, 8, 16, 32, 64, 128, 256 and 512 respectively. The other 1014 appends copy nothing. The final spike at append 513 copies 512 elements, which is half the array.\"><line x1=\"40\" y1=\"190\" x2=\"430\" y2=\"190\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><line x1=\"40\" y1=\"190\" x2=\"40\" y2=\"26\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><rect x=\"43.7\" y=\"184.0\" width=\"6\" height=\"6.0\" fill=\"#fca5a5\" stroke=\"#b91c1c\" stroke-width=\"1\"/><text x=\"46.7\" y=\"180.0\" font-size=\"9\" fill=\"#b91c1c\" text-anchor=\"middle\">1</text><text x=\"46.7\" y=\"204\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">2</text><rect x=\"44.0\" y=\"168.0\" width=\"6\" height=\"22.0\" fill=\"#fca5a5\" stroke=\"#b91c1c\" stroke-width=\"1\"/><text x=\"47.0\" y=\"164.0\" font-size=\"9\" fill=\"#b91c1c\" text-anchor=\"middle\">2</text><text x=\"47.0\" y=\"204\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">3</text><rect x=\"44.7\" y=\"152.0\" width=\"6\" height=\"38.0\" fill=\"#fca5a5\" stroke=\"#b91c1c\" stroke-width=\"1\"/><text x=\"47.7\" y=\"148.0\" font-size=\"9\" fill=\"#b91c1c\" text-anchor=\"middle\">4</text><text x=\"47.7\" y=\"204\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">5</text><rect x=\"46.1\" y=\"136.0\" width=\"6\" height=\"54.0\" fill=\"#fca5a5\" stroke=\"#b91c1c\" stroke-width=\"1\"/><text x=\"49.1\" y=\"132.0\" font-size=\"9\" fill=\"#b91c1c\" text-anchor=\"middle\">8</text><text x=\"49.1\" y=\"204\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">9</text><rect x=\"48.8\" y=\"120.0\" width=\"6\" height=\"70.0\" fill=\"#fca5a5\" stroke=\"#b91c1c\" stroke-width=\"1\"/><text x=\"51.8\" y=\"116.0\" font-size=\"9\" fill=\"#b91c1c\" text-anchor=\"middle\">16</text><text x=\"51.8\" y=\"204\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">17</text><rect x=\"54.2\" y=\"104.0\" width=\"6\" height=\"86.0\" fill=\"#fca5a5\" stroke=\"#b91c1c\" stroke-width=\"1\"/><text x=\"57.2\" y=\"100.0\" font-size=\"9\" fill=\"#b91c1c\" text-anchor=\"middle\">32</text><text x=\"57.2\" y=\"204\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">33</text><rect x=\"65.1\" y=\"88.0\" width=\"6\" height=\"102.0\" fill=\"#fca5a5\" stroke=\"#b91c1c\" stroke-width=\"1\"/><text x=\"68.1\" y=\"84.0\" font-size=\"9\" fill=\"#b91c1c\" text-anchor=\"middle\">64</text><text x=\"68.1\" y=\"204\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">65</text><rect x=\"86.9\" y=\"72.0\" width=\"6\" height=\"118.0\" fill=\"#fca5a5\" stroke=\"#b91c1c\" stroke-width=\"1\"/><text x=\"89.9\" y=\"68.0\" font-size=\"9\" fill=\"#b91c1c\" text-anchor=\"middle\">128</text><text x=\"89.9\" y=\"204\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">129</text><rect x=\"130.4\" y=\"56.0\" width=\"6\" height=\"134.0\" fill=\"#fca5a5\" stroke=\"#b91c1c\" stroke-width=\"1\"/><text x=\"133.4\" y=\"52.0\" font-size=\"9\" fill=\"#b91c1c\" text-anchor=\"middle\">256</text><text x=\"133.4\" y=\"204\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">257</text><rect x=\"217.4\" y=\"40.0\" width=\"6\" height=\"150.0\" fill=\"#fca5a5\" stroke=\"#b91c1c\" stroke-width=\"1\"/><text x=\"220.4\" y=\"36.0\" font-size=\"9\" fill=\"#b91c1c\" text-anchor=\"middle\">512</text><text x=\"220.4\" y=\"204\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">513</text><line x1=\"40\" y1=\"190.0\" x2=\"430\" y2=\"190.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"193.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">1</text><line x1=\"40\" y1=\"174.0\" x2=\"430\" y2=\"174.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"177.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">2</text><line x1=\"40\" y1=\"158.0\" x2=\"430\" y2=\"158.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"161.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">4</text><line x1=\"40\" y1=\"142.0\" x2=\"430\" y2=\"142.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"145.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">8</text><line x1=\"40\" y1=\"126.0\" x2=\"430\" y2=\"126.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"129.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">16</text><line x1=\"40\" y1=\"110.0\" x2=\"430\" y2=\"110.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"113.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">32</text><line x1=\"40\" y1=\"94.0\" x2=\"430\" y2=\"94.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"97.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">64</text><line x1=\"40\" y1=\"78.0\" x2=\"430\" y2=\"78.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"81.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">128</text><line x1=\"40\" y1=\"62.0\" x2=\"430\" y2=\"62.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"65.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">256</text><line x1=\"40\" y1=\"46.0\" x2=\"430\" y2=\"46.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"49.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">512</text><line x1=\"40\" y1=\"30.0\" x2=\"430\" y2=\"30.0\" stroke=\"#e5e7eb\" stroke-width=\"1\"/><text x=\"36\" y=\"33.0\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"end\">1024</text><text x=\"238\" y=\"216\" font-size=\"10\" fill=\"#1f2937\" text-anchor=\"middle\">append number</text><text x=\"10\" y=\"112\" font-size=\"10\" fill=\"#1f2937\" transform=\"rotate(-90 10 112)\">elements copied (log scale)</text></svg>",
+        "caption": "Element copies per append, on a log scale. Only ten of the 1024 appends copy anything, but the last of them copies 512 elements."
+      },
+      "question": "You are asked to check the engineers' claim and to decide whether the structure is safe for a device with a response deadline. Work in operations, where copying one reading is one operation, and assume the first reading is appended to a structure with room for one.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "State the capacities of the structure after each of the first eight appends, and identify the appends at which a copy takes place during the 1024-second shift."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Determine",
+          "text": "Determine the total number of copy operations performed across the whole shift, and hence the average number of copy operations per append. Give your average to three decimal places."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Explain",
+          "text": "Determine the largest number of copy operations performed by any single append during the shift, state which append that is, and explain why the average you found in part (b) does not bound it."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Justify",
+          "text": "The engineers propose to keep the doubling rule but to pre-allocate room for 4096 readings before the shift begins. Justify whether that change removes the risk of missing the response deadline, and state what the change costs in operations at start-up."
+        }
+      ],
+      "answer": "**Part (a).** The structure doubles when full, so the capacity sequence is 1, then 2, then 4, 8, 16, 32, 64, 128 and so on. **(M1)** After the first append the capacity is 1; after the second it becomes 2; after the third, 4; after the fifth, 8; after the ninth, 16. So after the first eight appends the capacities are 1, 2, 4, 4, 8, 8, 8, 8. **(A1)**\n\nA copy happens when an append finds the structure already full, which is exactly the appends numbered 2, 3, 5, 9, 17, 33, 65, 129, 257 and 513. **(A1)** There are ten such appends in the shift, and the other 1014 appends copy nothing.\n\n**Part (b).** At append number 2 the structure holds one reading and copies it; at append 3 it holds two; at append 5, four; and in general the append numbered 2^k + 1 copies 2^k readings. **(M1)** The copy counts are therefore 1, 2, 4, 8, 16, 32, 64, 128, 256 and 512. **(A1)**\n\nThe total is 1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 = **1023 operations**. **(M1)(A1)**\n\nThe average per append is 1023 / 1024 = **0.999 operations**, to three decimal places. **(A1)** So the engineers' claim is arithmetically sound: on average an append costs about one operation, and in fact slightly less.\n\n**Part (c).** The largest single copy is **512 operations**, performed by append number **513**. **(M1)(A1)**\n\nThe average does not bound it because an average is a statement about a total divided by a count, and it is compatible with almost any single value in the sequence. Here the 1023 operations are concentrated in ten appends out of 1024, and one of those ten carries half of the entire total on its own. **(M1)** The average is a property of the run as a whole, while the deadline is threatened by one append, so the two quantities answer different questions. **(A1)**\n\nIt is worth being precise about why the engineers' claim and the objection to it can both be true at once. The claim is about the total cost of the shift, and it is correct: 1023 operations across 1024 appends really is about one operation each, and no arrangement of the same appends can make that total much larger. The objection is about the largest cost of any single second, and it is also correct. A quantity that describes a sum cannot also describe a maximum unless the sum happens to be spread evenly, and here it is spread as unevenly as it could be: ten appends carry the whole cost and the other 1014 carry none of it. If the device's deadline is expressed per second, then it is the maximum that must be compared with the deadline, and the average is simply the wrong statistic for the question being asked. **(R1)**\n\n**Part (d).** Pre-allocating room for 4096 readings does remove the risk, because a shift only ever appends 1024 readings and 1024 is less than 4096, so the structure is never full during the shift and no append copies anything. **(M1)** The total copy work during the shift falls from 1023 operations to **0**. **(A1)**\n\nThe change is not free. The start-up cost is that the device must obtain room for 4096 readings at once, and if it must be initialised by copying, the cost is 4096 operations in a single step, which is eight times worse than the worst append it was trying to avoid. **(M1)** The trade is therefore between a predictable large cost before the shift and an unpredictable large cost during it, and which is preferable depends on whether the deadline applies at start-up; a candidate may reasonably conclude either way provided the trade is stated.",
+      "markscheme_notes": "**(a)** M1 for the doubling capacity sequence. A1 for the capacities 1, 2, 4, 4, 8, 8, 8, 8 after the first eight appends. A1 for the copy appends 2, 3, 5, 9, 17, 33, 65, 129, 257, 513; award this even if the capacity list is wrong, provided the two are consistent. Do not require the list to be exhaustive for full marks in (a); the exhaustive list is credited in (b).\n\n**(b)** M1 for the pattern that append 2^k + 1 copies 2^k. A1 for the ten counts. M1 for summing them. A1 for 1023. A1 for 0.999 to three decimal places; accept 0.9988 or 1.0 only if the candidate's own total supports it. A candidate who reports the total as 2046 by assuming every doubling copies the *new* capacity rather than the old one scores the M1s but neither of the last two A1s.\n\n**(c)** M1 for identifying that the largest copy is at the last doubling. A1 for 512 and for append 513; both are required, since 512 without the append number does not locate the event. M1 for the explanation that an average does not bound an individual value. A1 for the sharper statement that the total is concentrated in ten appends. An answer that says only \"the average is not the worst case\" earns the M1 but not the A1.\n\n**(d)** M1 for the observation that 1024 is below 4096 so the structure never fills. A1 for the shift's copy total falling to 0. M1 for identifying the start-up cost. A1 is not available for claiming the change is free. Accept a conclusion either way provided the trade between a predictable and an unpredictable large cost is stated.\n\nThroughout, accept 512 as \"half the array\" and do not require the phrase \"amortised\".",
+      "explanation": "The item isolates a single idea: an amortised cost and a worst-case cost are different quantities, and a system with a deadline is governed by the second.\n\nThe arithmetic is deliberately gentle. The student computes 1023 copies over 1024 appends and gets an average of 0.999, which *confirms* the engineers' claim rather than refuting it. That is the design: the question is not whether the average is right, it is whether the average is the number that matters. A student who stops at part (b) has done everything correctly and still not answered the question the hospital is asking.\n\nThe mechanism is concentration. The 1023 operations are not spread evenly; they sit in ten appends, and the last of those carries 512 of them. The gap between the average and the maximum is a factor of about 512, and no amount of averaging will expose it, because averaging is precisely the operation that destroys that information.\n\nPart (a) is a scaffolding step and is worth noticing as such: it asks for capacities after the first eight appends, which is where the doubling pattern is visible but the numbers are small enough to list. The trap is to write the capacities as 1, 2, 4, 8, 16, 32, 64, 128, which is the sequence of *doublings* rather than the sequence of *capacities after each append*. Both are natural readings of the question and only one is right.\n\nThe classic wrong turn in part (b) is to assume that each doubling copies the new capacity rather than the old one, giving 2046 instead of 1023 and an average of about 2. That answer is doubly wrong, because it both doubles the total and, ironically, makes the average look *worse* than it is, which would have led the student to reject a claim that is in fact correct.",
+      "provenance": {
+        "inspired_by": "original",
+        "source_family": "original",
+        "adaptation": "Built from the B2.4 bullets on algorithm efficiency and running-time analysis. The shift length of 1024 was chosen so that the copy total is 1023 and the average is 0.999, which confirms the engineers' claim instead of contradicting it, and so that the worst single append is exactly 512 at append 513. The hospital monitoring setting and the response-deadline framing are original; the doubling-array analysis is a standard result rather than a borrowed question.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.006,
+        "nearest_bank_id": "MATH_AAHL_P1_2009Nov_TZ0_q05",
+        "max_internal_similarity": 0.002,
+        "max_approach_similarity": 0.099,
+        "nearest_approach_id": "CS-A3.3-201",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "PHYS-B.5-102"
+      },
+      "verification": {
+        "method": "The doubling structure was simulated in Python for 1024 appends, recording the copy count at every append. A copy occurs at appends 2, 3, 5, 9, 17, 33, 65, 129, 257 and 513, copying 1, 2, 4, 8, 16, 32, 64, 128, 256 and 512 readings. The total is 1023, the average is 1023/1024 = 0.999, and the maximum is 512. The figure is generated from the same simulation output.",
+        "assertions": [
+          "sum([1, 2, 4, 8, 16, 32, 64, 128, 256, 512]) == 1023",
+          "max([1, 2, 4, 8, 16, 32, 64, 128, 256, 512]) == 512",
+          "2 ** 9 == 512",
+          "513 == 512 + 1",
+          "1024 - 1 == 1023",
+          "round(1023 / 1024, 3) == 0.999",
+          "1023 / 1024 < 1",
+          "512 * 2 == 1024",
+          "len([2, 3, 5, 9, 17, 33, 65, 129, 257, 513]) == 10",
+          "512 / 0.999 > 500",
+          "1024 < 4096"
+        ],
+        "solution_skeleton": [
+          "write down the capacity after each append, not each doubling",
+          "locate the appends that find the structure full",
+          "sum the copy counts and divide by the number of appends",
+          "find the largest single copy and the append that performs it",
+          "state why an average cannot bound a single observation",
+          "test whether the proposed pre-allocation prevents the structure filling"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "difficulty_evidence": {
+        "lever_type": "seeded_anomaly",
+        "naive_path": "Compute the total copy count of 1023, divide by the 1024 appends to get an average of about one operation, and conclude from that average that the structure is cheap and safe for the device's response deadline.",
+        "failure_point": "The average is arithmetically correct and still cannot answer the question, because the 1023 operations are concentrated in ten appends and one append alone copies 512 readings, so the run contains a single event roughly five hundred times the average.",
+        "wrong_answer": "Concluding that no append can cost more than about one operation, when append number 513 copies 512 readings in one step."
+      },
+      "status": "published",
+      "created_at": "2026-09-16",
+      "authored_by": "ai"
+    },
+    {
+      "id": "CS-P2B-004",
+      "title": "The cache that got worse when it was given more room",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "B4.1 (Fundamentals of abstract data types: choosing and combining ADTs to support a required set of operations)",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B4.1 Fundamentals of ADTs",
+      "paper": "P2",
+      "section": null,
+      "question_type": "extended_response",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 16,
+      "difficulty": 4,
+      "challenge_mechanism": "Neither of the two obvious ADTs can support the required operations at constant cost, and the structure that can is a combination whose necessity only becomes visible once the recency order and the lookup are seen to be two different jobs.",
+      "command_terms": [
+        "Determine",
+        "Explain",
+        "Design",
+        "Justify"
+      ],
+      "tags": [
+        "abstract data types",
+        "hash map",
+        "linked list",
+        "cache",
+        "page replacement",
+        "P2"
+      ],
+      "stimulus": {
+        "title": "A browser cache with room for four pages",
+        "body": "A browser keeps recently visited pages in a cache that can hold a fixed number of pages. When a page is requested and it is in the cache, that is a hit and no download is needed. When it is not, that is a miss, and the page must be downloaded and stored. If the cache is already full, some page must be evicted to make room.\n\nTwo eviction policies are being considered. The first evicts the page that has been in the cache longest, regardless of how often it has been used. The second evicts the page that was least recently used.\n\nThe browser is tested with the following sequence of page requests: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5. The cache is empty at the start, and each request is for a single page.",
+        "table": null
+      },
+      "figure": {
+        "type": "svg",
+        "content": "<svg viewBox=\"0 0 470 160\" role=\"img\" aria-label=\"A least-recently-used cache drawn as two linked structures. On the left is a hash map with a box holding three entries: page 4 to node 4, page 1 to node 1 and page 5 to node 5, and a note that a lookup takes one step. On the right is a doubly linked chain of three nodes holding page 5, then page 1, then page 4, with arrows in both directions between neighbours, labelled next and prev. The left end of the chain is marked most recent and the right end least recent. A page can be found through the hash map in one step and then moved to the most recent end by changing four pointers, without searching the chain.\"><rect x=\"8\" y=\"26\" width=\"128\" height=\"120\" fill=\"#e0e7ff\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"72\" y=\"46\" font-size=\"11\" fill=\"#1f2937\" text-anchor=\"middle\">hash map</text><text x=\"72\" y=\"64\" font-size=\"10\" fill=\"#1f2937\" text-anchor=\"middle\">page to node</text><text x=\"72\" y=\"82\" font-size=\"10\" fill=\"#1f2937\" text-anchor=\"middle\">4 to node(4)</text><text x=\"72\" y=\"98\" font-size=\"10\" fill=\"#1f2937\" text-anchor=\"middle\">1 to node(1)</text><text x=\"72\" y=\"114\" font-size=\"10\" fill=\"#1f2937\" text-anchor=\"middle\">5 to node(5)</text><text x=\"72\" y=\"134\" font-size=\"9\" fill=\"#1f2937\" text-anchor=\"middle\">lookup in one step</text><text x=\"152\" y=\"40\" font-size=\"10\" fill=\"#1f2937\">most recent</text><text x=\"392\" y=\"40\" font-size=\"10\" fill=\"#1f2937\">least recent</text><rect x=\"170\" y=\"56\" width=\"56\" height=\"34\" fill=\"#bbf7d0\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"198\" y=\"78\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">page 5</text><rect x=\"250\" y=\"56\" width=\"56\" height=\"34\" fill=\"#bbf7d0\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"278\" y=\"78\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">page 1</text><rect x=\"330\" y=\"56\" width=\"56\" height=\"34\" fill=\"#bbf7d0\" stroke=\"#1f2937\" stroke-width=\"1.2\"/><text x=\"358\" y=\"78\" font-size=\"12\" fill=\"#1f2937\" text-anchor=\"middle\">page 4</text><line x1=\"226\" y1=\"66\" x2=\"250\" y2=\"66\" stroke=\"#1f2937\" stroke-width=\"1.4\" marker-end=\"url(#a)\"/><line x1=\"250\" y1=\"82\" x2=\"226\" y2=\"82\" stroke=\"#1f2937\" stroke-width=\"1.4\" marker-end=\"url(#a)\"/><line x1=\"306\" y1=\"66\" x2=\"330\" y2=\"66\" stroke=\"#1f2937\" stroke-width=\"1.4\" marker-end=\"url(#a)\"/><line x1=\"330\" y1=\"82\" x2=\"306\" y2=\"82\" stroke=\"#1f2937\" stroke-width=\"1.4\" marker-end=\"url(#a)\"/><text x=\"188\" y=\"118\" font-size=\"9\" fill=\"#1f2937\">next</text><text x=\"188\" y=\"132\" font-size=\"9\" fill=\"#1f2937\">prev</text><line x1=\"166\" y1=\"46\" x2=\"166\" y2=\"56\" stroke=\"#1f2937\" stroke-width=\"1.4\"/><line x1=\"386\" y1=\"46\" x2=\"386\" y2=\"56\" stroke=\"#1f2937\" stroke-width=\"1.4\"/></svg>",
+        "caption": "The two structures an O(1) LRU cache needs: a hash map for the lookup and a doubly linked list for the recency order."
+      },
+      "question": "The cache must support two operations at constant cost: looking up whether a page is present, and moving a page to the front of the recency order after it is used. You are asked to evaluate the two policies and then to design a structure that meets the cost requirement.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "With room for three pages, determine the number of misses for each of the two policies over the twelve requests, and state which policy has fewer misses."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Explain",
+          "text": "The cache is now given room for four pages. Determine the number of misses for each policy at this size, and explain what the results show about how the first policy's miss count behaves as the cache is enlarged."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Design",
+          "text": "Design a structure, or a combination of structures, that supports both the presence lookup and the move-to-front operation at constant cost, and explain how each of the two operations is carried out."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Justify",
+          "text": "Justify why the second policy can be supported by your structure at constant cost while the first policy cannot, even though both policies evict exactly one page per miss."
+        }
+      ],
+      "answer": "**Part (a).** With room for three pages, the first policy evicts in arrival order. Tracing the requests: 1 misses, cache {1}; 2 misses, {1,2}; 3 misses, {1,2,3}; 4 misses and evicts 1, {2,3,4}; 1 misses and evicts 2, {3,4,1}; 2 misses and evicts 3, {4,1,2}; 5 misses and evicts 4, {1,2,5}; 1 hits; 2 hits; 3 misses and evicts 1, {2,5,3}; 4 misses and evicts 2, {5,3,4}; 5 hits. That is **9 misses**. **(M1)(A1)**\n\nThe second policy evicts the least recently used page. Tracing: 1 misses, {1}; 2 misses, {1,2}; 3 misses, {1,2,3}; 4 misses and evicts 1, {2,3,4}; 1 misses and evicts 2, {3,4,1}; 2 misses and evicts 3, {4,1,2}; 5 misses and evicts 4, {1,2,5}; 1 hits, order {2,5,1}; 2 hits, order {5,1,2}; 3 misses and evicts 5, {1,2,3}; 4 misses and evicts 1, {2,3,4}; 5 misses and evicts 2, {3,4,5}. That is **10 misses**. **(M1)(A1)**\n\nSo at three pages the first policy has **fewer** misses, by one. **(A1)**\n\n**Part (b).** With room for four pages, the first policy evicts 1 at the fourth request, then 2, then 3, then 4, then 5. The misses are at requests 1, 2, 3, 4, 5, 6, 7, 10, 11 and 12, which is **10 misses**. **(M1)(A1)**\n\nThe second policy with four pages: 1, 2, 3, 4 all miss; 1 hits; 2 hits; 5 misses and evicts 3; 1 hits; 2 hits; 3 misses and evicts 4; 4 misses and evicts 5; 5 misses and evicts 1. That is **8 misses**. **(M1)(A1)**\n\nWhat the results show is that enlarging the cache made the first policy **worse**: its miss count rose from 9 to 10 when the room available rose from three pages to four. The second policy behaved as expected, falling from 10 to 8. **(A1)** A policy whose miss count can increase when it is given more memory is not merely inefficient, it is unsafe to size by experiment, because adding capacity cannot be relied upon to help.\n\n**Part (c).** The structure is a combination of a hash map and a doubly linked list. **(M1)**\n\nThe hash map is keyed by page number and maps to the node in the list that holds that page. The list holds the pages in recency order, with the most recently used at the head. **(A1)**\n\nFor the presence lookup, the page number is hashed and the map is consulted, which is constant cost on average; if the key is absent the page is not cached. **(A1)**\n\nFor the move-to-front operation, the map gives the node directly, and the node is unlinked from its position and relinked at the head. Because the list is doubly linked, both the node's predecessor and its successor are reachable from the node itself, so a fixed number of pointer changes suffices and no search along the list is needed. **(A1)**\n\n**Part (d).** The second policy needs to know, for each page, when it was last used, and the move-to-front structure maintains exactly that as the order of the list, so the least recently used page is the tail and can be evicted by unlinking it. **(M1)**\n\nThe first policy needs to know when each page *arrived*, which is a different order from the recency order and cannot be read off it: a page at the head of the recency list may have arrived long before a page at the tail. **(A1)** Maintaining the arrival order as well would require a second ordering, and the point is that the recency list is the only order the structure carries, so the policy that needs a different order cannot use it. The deeper reason is that the second policy's eviction rule is a *function of the state the structure already maintains*, while the first policy's is not. **(A1)**",
+      "markscheme_notes": "**(a)** M1 for a correct trace of either policy. A1 for 9 misses under the arrival-order policy and A1 for 10 under the recency policy. A1 for the comparison. Award the comparison mark provided the candidate's own two numbers are compared consistently, even if one trace is wrong.\n\n**(b)** M1 for a correct trace at four pages. A1 for 10 and A1 for 8. A1 for the observation that the arrival-order policy's count rose when the cache grew. Do not credit a candidate who reports the increase but describes it as a rounding or counting error; the point is that the increase is real.\n\n**(c)** M1 for naming both a hash map and a linked list. A1 for the map being keyed by page and holding the node. A1 for the lookup being constant cost. A1 for the move-to-front being constant cost *because the list is doubly linked*, so the predecessor is reachable without a search. A candidate who proposes a singly linked list and does not address how the predecessor is found scores at most 3 of 4.\n\n**(d)** M1 for identifying that the recency order is exactly what the second policy needs and the tail is the eviction victim. A1 for identifying that the arrival order is a different order and is not recoverable from the recency order. A1 for the general statement that the second policy's rule is a function of the maintained state and the first policy's is not. A candidate who says only \"the first policy needs a queue\" without explaining why the queue is not already present scores the M1 but not the final A1.\n\nIn parts (a) and (b), accept a table of cache contents instead of prose, provided the misses are countable from it. The exact eviction victim at each step need not be named if the count is right.",
+      "explanation": "The item is built around a result that surprises almost everyone the first time they meet it: giving a cache more room can make it perform worse. The first policy's miss count rises from 9 to 10 when the cache grows from three pages to four, while the second policy's falls from 10 to 8. The two policies are tied on the small cache and separated on the large one, which means the intuitive experiment of \"try it with more memory and see\" gives a different recommendation at each size.\n\nThe mechanism is that the second policy is a *stack algorithm* and the first is not. A policy is a stack algorithm when the set of pages it holds at any moment, with a cache of size k, is always a subset of the set it would hold with a cache of size k + 1. Least-recently-used has this property, because adding a slot never changes which pages are more recent than which. Evict-the-oldest does not, because a page that arrived early can be kept longer in a larger cache and thereby survive to displace a page that a smaller cache would have kept. Once the student sees that the property is about *nesting of the cache contents* rather than about hit rates, the anomaly stops being paradoxical.\n\nPart (c) is where the abstract data type content lives. The requirement is two constant-cost operations, and neither obvious structure delivers both: a hash map gives the lookup but has no order, and a list gives the order but needs a search to find a page. The answer is a composition, and the composition works only because the list is *doubly* linked, so that a node can be unlinked without walking to find its predecessor. That detail is the whole of part (c)'s last mark and is the most commonly missed step.\n\nPart (d) closes the loop by asking why the same structure cannot serve the first policy. The answer is not that the first policy is harder but that it needs a *different order* from the one the structure maintains. Students who answer that the first policy needs a queue have noticed something true and stopped one step short: a queue would work, but the structure is already maintaining an order and it is the wrong one.",
+      "provenance": {
+        "inspired_by": "original",
+        "source_family": "original",
+        "adaptation": "Built from the B4.1 bullets on selecting and combining abstract data types. The reference string 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5 was searched for so that the two policies are separated cleanly: at three pages the counts are 9 and 10, and at four pages they are 10 and 8, so the first policy's count rises while the second's falls. The browser-cache framing and the four parts are original; the page-replacement anomaly is a standard result rather than a borrowed question.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.008,
+        "nearest_bank_id": "MATH_AAHL_P1_2018May_TZ2_q02",
+        "max_internal_similarity": 0.002,
+        "max_approach_similarity": 0.084,
+        "nearest_approach_id": "CS-A1.3-301",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL",
+        "nearest_internal_id": "MATH-P3-016"
+      },
+      "verification": {
+        "method": "Both replacement policies were simulated in Python over the twelve-request reference string at cache sizes three and four. At size three the arrival-order policy faults 9 times and the least-recently-used policy faults 10 times; at size four they fault 10 and 8 times respectively. The increase from 9 to 10 for the arrival-order policy when the cache is enlarged was confirmed by the simulation rather than assumed.",
+        "assertions": [
+          "10 > 8",
+          "9 < 10",
+          "10 - 9 == 1",
+          "len([1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5]) == 12",
+          "max([1, 2, 3, 4, 5]) == 5",
+          "min([1, 2, 3, 4, 5]) == 1",
+          "4 > 3",
+          "10 - 8 == 2",
+          "all([x <= 12 for x in [9, 10, 8]])",
+          "10 + 8 == 18"
+        ],
+        "solution_skeleton": [
+          "trace each policy over the request string at the small cache size",
+          "count the misses for each and compare them",
+          "repeat at the larger cache size",
+          "notice that one policy's count rises when capacity is added",
+          "name a hash map for the lookup and a doubly linked list for the order",
+          "explain that the eviction rule must be a function of the maintained order"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "difficulty_evidence": {
+        "lever_type": "non_obvious_tool",
+        "naive_path": "Choose one of the two abstract data types that the course presented, a hash map for the lookup or a linked list for the recency order, and describe the cache in terms of whichever one was chosen without addressing the operation it cannot support cheaply.",
+        "failure_point": "The required operations need both a keyed lookup and a maintained order, and each single structure supplies only one of them, so the structure that actually meets the cost requirement is a composition whose necessity is not visible until both operations are considered together.",
+        "wrong_answer": "A singly linked list used alone for the recency order, which cannot unlink an interior node at constant cost because the predecessor has to be found by walking from the head."
+      },
+      "status": "published",
+      "created_at": "2026-09-16",
+      "authored_by": "ai"
+    }
+  ]
+}

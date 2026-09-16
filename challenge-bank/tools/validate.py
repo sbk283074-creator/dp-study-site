@@ -72,8 +72,14 @@ PAPER_TYPES = {
     ("Math AA HL", "P1"): {"structured", "extended_response"},
     ("Math AA HL", "P2"): {"structured", "extended_response"},
     ("Math AA HL", "P3"): {"problem_solving"},
-    ("Computer Science HL", "P1"): {"structured", "extended_response"},
-    ("Computer Science HL", "P2"): {"case_study"},
+    # CS HL, from the 2025 guide (first assessment 2027), quoted in STANDARD.md:
+    # P1 Section A is extended-response on Theme A, P1 Section B is the pre-seen
+    # case study, and P2 is extended-response on Theme B ONLY. So `case_study`
+    # belongs on P1 and `extended_response` is the only legal P2 type. The table
+    # previously read P2 -> {"case_study"}, which contradicted the standard it
+    # enforces and let 17 case-study items sit on the wrong paper.
+    ("Computer Science HL", "P1"): {"structured", "extended_response", "case_study"},
+    ("Computer Science HL", "P2"): {"extended_response"},
     ("Business Management SL", "P1"): {"case_study"},
     ("Business Management SL", "P2"): {"structured", "extended_response", "data_based"},
 }
