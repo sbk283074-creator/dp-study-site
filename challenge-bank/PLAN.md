@@ -1279,6 +1279,38 @@ similarity score, and no BM item ships containing HL-only content.
     the fix is a case-study anchor, which is content work and now the top of the next CS batch. 4 CS P1
     theme-A items sit in Section B with no stimulus. CS P1 Section B holds 25 of 41 items while the guide
     gives it 24 of 80 marks, so new CS P1 material should target Section A. Recorded in `STANDARD.md` §7.
+- **Housekeeping — the same sweep applied to the other rendered fields (2026-09-16).** The `section` fix
+  prompted a systematic audit of **every field `build.py` actually reads**, since the defect class is "a
+  field the renderer prints and nothing validates". Four fields were rendered and unchecked:
+  `technology`, `level`, `language`, `subtopic`.
+  - **`technology` was wrong in 11 places and unnormalised everywhere.** It renders as a chip and had
+    drifted into **six strings for three ideas** (`allowed` vs `permitted`; `not_allowed` vs
+    `not allowed`, the first rendering with the underscore visible). Worse, the Maths 2021 guide says
+    Paper 1 is "No technology allowed" while **Paper 2 and Paper 3 are "Technology required"**, and on
+    Paper 2 students "must have access to a GDC at all times" — yet **3 P2 items and 8 P3 items said
+    `not allowed`**, telling the student no calculator is permitted on the papers that mandate one. All
+    eleven are "Show that"/"Prove" items, so the author meant "this question does not need the GDC"; the
+    chip just carries no item-versus-paper qualifier. Fixed to `permitted` rather than `required`, because
+    the paper permits the GDC and the question does not demand it.
+  - **128 items touched, in one line each.** 108 `allowed` → `permitted`, 9 `not_allowed` →
+    `not allowed`, 11 Maths P2/P3 `not allowed` → `permitted` — **128 insertions / 128 deletions across 46
+    files**, verified with `git diff --stat`, so there was no collateral reformatting. `validate.py` went
+    to **128 failures** with the gate added and back to **0** after the migration.
+  - **`TECHNOLOGY_VALUES` closes the vocabulary; `TECHNOLOGY_RULES` encodes the per-paper policy.** The
+    Physics guide's "The use of calculators is permitted" makes `not allowed` false on Physics P1/P2 too,
+    so the rule is stated per paper rather than inferred from the majority value.
+  - **CS and BM have no policy to enforce** — their guides say nothing about calculators — so those
+    values stay author judgement. One open question is recorded rather than invented: **CS P1 is split 17
+    `not allowed` against 15 `permitted` within one paper**, correlating with nothing (not question type,
+    not `language`). Resolving it needs the CS specimen papers.
+  - **`level` and `language` are closed while they are still free.** `level` is stated twice — derived
+    from the subject slug and carried per item, with both printed — so `SUBJECT_LEVEL` requires them to
+    agree; `language` is closed to `python / java / pseudocode / sql`. Both were already correct across
+    all 305 items, which is the point: a rule added while it costs nothing is a rule a later batch cannot
+    drift.
+  - **`subtopic` was checked and deliberately left open.** All 305 items carry one and it is free text by
+    design — it is the author's one-line summary of the item's idea, not a vocabulary — so gating it
+    would be inventing a constraint the material does not have.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet

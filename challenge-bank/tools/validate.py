@@ -133,6 +133,51 @@ def theme_letter(q):
     return ref[0] if ref[:1] in ("A", "B") else None
 
 
+# Canonical `technology` vocabulary. The field is rendered to the student as a
+# chip ("technology: not allowed"), and it had drifted into six strings for three
+# ideas: `allowed` and `permitted` are the same thing, and `not_allowed` was a
+# spelling variant that rendered with the underscore visible on the page.
+TECHNOLOGY_VALUES = {"not allowed", "permitted", "required", "not applicable"}
+
+# (subject, paper) -> the values that paper's own policy rules out. The guides
+# state the technology policy per paper, so a value that contradicts it is a
+# false instruction to the student rather than a style choice:
+#   * Maths AA 2021, "Assessment outline" and "Calculators": Paper 1 is "No
+#     technology allowed", while Paper 2 and Paper 3 are "Technology required"
+#     and on Paper 2 students "must have access to a graphic display calculator
+#     (GDC) at all times". So `not allowed` is false on P2/P3, and
+#     `permitted`/`required` are false on P1.
+#   * Physics 2025: "The use of calculators is permitted" on both Paper 1 and
+#     Paper 2, so `not allowed` is false there.
+#   * The CS and BM guides say nothing about calculators, so those papers have no
+#     rule and the value stays an authoring judgement -- the vocabulary still
+#     applies.
+TECHNOLOGY_RULES = {
+    ("Math AA HL", "P1"): {"permitted", "required"},
+    ("Math AA HL", "P2"): {"not allowed"},
+    ("Math AA HL", "P3"): {"not allowed"},
+    ("Physics HL", "P1"): {"not allowed"},
+    ("Physics HL", "P2"): {"not allowed"},
+}
+
+# The level is stated twice and both copies are rendered: build.py derives one
+# from the subject slug (`subject_level`, "the level lives in the subject slug
+# and nowhere else") and prints the item's own `level` beside it, so a
+# disagreement between the two is visible on the page rather than invisible.
+SUBJECT_LEVEL = {
+    "Math AA HL": "HL",
+    "Physics HL": "HL",
+    "Computer Science HL": "HL",
+    "Business Management SL": "SL",
+}
+
+# `language` renders as a bare chip and names the notation the question is set
+# in. Closed so a typo cannot invent a fifth dialect. `sql` and `pseudocode` are
+# syllabus notation, not exam-paper versions; the CS guide publishes P2 in a
+# Python version and a Java version, so `java` belongs in the set too.
+LANGUAGE_VALUES = {"python", "java", "pseudocode", "sql"}
+
+
 # Per-type overrides. Anything not listed falls back to the subject rule.
 # MCQ floors scale with the size of the cluster: an MCQ cluster has to give a
 # real route to every key, not just "B".
@@ -651,6 +696,32 @@ def check(q, seen_ids, medians):
                 if want_theme and got_theme and got_theme != want_theme:
                     fail.append("%s %s section %s is theme %s only; this item is theme %s"
                                 % (subj, q.get("paper"), sec, want_theme, got_theme))
+
+    # ---- technology --------------------------------------------------------
+    # The value is an item-level judgement (a proof question does not need a
+    # GDC) but it renders with no item-versus-paper qualifier, so it must not
+    # contradict the paper's own policy. See TECHNOLOGY_RULES.
+    tech = q.get("technology")
+    if tech is not None:
+        if tech not in TECHNOLOGY_VALUES:
+            fail.append("technology %r is not one of %s"
+                        % (tech, " / ".join(sorted(TECHNOLOGY_VALUES))))
+        elif tech in TECHNOLOGY_RULES.get((subj, q.get("paper")), set()):
+            fail.append("%s %s: technology %r contradicts the paper's policy"
+                        % (subj, q.get("paper"), tech))
+
+    # ---- level -------------------------------------------------------------
+    # Both copies are rendered, so they must agree. See SUBJECT_LEVEL.
+    want_level = SUBJECT_LEVEL.get(subj)
+    if want_level and q.get("level") != want_level:
+        fail.append("level %r does not match subject %r (expected %r)"
+                    % (q.get("level"), subj, want_level))
+
+    # ---- language ----------------------------------------------------------
+    lang = q.get("language")
+    if lang is not None and lang not in LANGUAGE_VALUES:
+        fail.append("language %r is not one of %s"
+                    % (lang, " / ".join(sorted(LANGUAGE_VALUES))))
 
     # ---- question type ---------------------------------------------------
     # Only items that declare a type are checked here; the 114 legacy items

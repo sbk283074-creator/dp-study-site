@@ -266,7 +266,7 @@ ships below the mark floor, and nothing ships without a passing similarity score
 
 | Gate | Command | Rejects |
 |---|---|---|
-| Quality | `tools/validate.py --strict` | difficulty 1–2, below the marks floor, part marks that do not sum to `marks`, thin fields, missing markscheme annotations, failed assertions, an unearned difficulty label, a `lever_type` outside the taxonomy, an unrecorded or unattributable `source_family`, a `question_type` the declared paper does not contain, a `section` the declared paper does not have |
+| Quality | `tools/validate.py --strict` | difficulty 1–2, below the marks floor, part marks that do not sum to `marks`, thin fields, missing markscheme annotations, failed assertions, an unearned difficulty label, a `lever_type` outside the taxonomy, an unrecorded or unattributable `source_family`, a `question_type` the declared paper does not contain, a `section` the declared paper does not have, a `technology` value the paper's own policy rules out, a `level` that disagrees with the subject, a `language` outside the closed set |
 | Calibration | `tools/difficulty_audit.py --check` | a subject with > 50% of items at difficulty 5, a bank that never uses difficulty 3, evidence coverage below the ratchet floor |
 | Originality | `tools/similarity_check.py` | ≥ 0.35 vs the external corpus (same subject), ≥ 0.25 vs any other item in this bank, ≥ 0.50 on the `solution_skeleton` approach gate |
 

@@ -280,6 +280,19 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   Legitimately sectioned: Physics P1 (the 1A/1B booklet split, 14 `mcq` on A / 17 `data_based` on B),
   Maths P1/P2, CS P1, BM P1/P2. What it leaves: **6 CS P1 theme-B items with no case-study anchor** fit
   neither section and need content, not metadata.
+- **The same sweep found `technology` wrong in 11 places, and the fix was 128 items.** Auditing *every*
+  field `build.py` reads (the defect class is "the renderer prints it and nothing validates it") turned up
+  four unchecked rendered fields. `technology` was the bad one: it renders as a chip and had drifted into
+  **six strings for three ideas**, and the Maths 2021 guide says Paper 2 and Paper 3 are "Technology
+  required" while **3 P2 and 8 P3 items said `not allowed`** — a false instruction on the papers that
+  mandate a GDC. `TECHNOLOGY_VALUES` closes the vocabulary to
+  `not allowed / permitted / required / not applicable` and `TECHNOLOGY_RULES` records the per-paper
+  values policy rules out (Physics is "calculators permitted", so `not allowed` is false there too). The
+  migration was **128 insertions / 128 deletions across 46 files** — one line per item. CS and BM guides
+  say nothing about calculators, so those stay author judgement, with one open question recorded: **CS P1
+  is split 17 `not allowed` / 15 `permitted` within a single paper** and the split correlates with
+  nothing. `level` (stated twice — derived from the slug and per item, both printed) and `language`
+  (`python / java / pseudocode / sql`) were closed while still free; both were already correct.
 - Rebuild: `cd challenge-bank && python3 build.py`.
 
 ---

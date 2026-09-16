@@ -365,6 +365,42 @@ case-study anchor, so they belong in neither CS section. Clearing leaves a count
 of a quiet lie — see §7. `SECTION_RULES` stores the legal set per `(subject, paper)`, empty set
 included, and `SECTION_THEME_RULES` stores the one content rule (CS P1 Section A is theme A).
 
+**The `technology` field had the same problem, and 11 items stated the opposite of the paper's policy
+(fixed 2026-09-16).** `technology` renders as a chip (`technology: not allowed`) and was validated
+nowhere. It had drifted into **six strings for three ideas** — `allowed` and `permitted` are the same
+thing, and `not_allowed` was a spelling variant that rendered with the underscore visible — and the
+values contradicted the guides in eleven places:
+
+| Paper | Guide | Items that said otherwise |
+|---|---|---|
+| Maths AA HL P1 | "No technology allowed" | — (all 61 correct) |
+| Maths AA HL **P2** | **"Technology required"**; students "must have access to a GDC at all times" | **3** said `not allowed` |
+| Maths AA HL **P3** | **"Technology required"** | **8** said `not allowed` |
+| Physics HL P1, P2 | "The use of calculators is permitted" | — (all correct) |
+
+The eleven were all "Show that" / "Prove" items, so the author's *intent* was legible — "this question
+does not need the GDC" — but the chip carries no item-versus-paper qualifier, so on a paper the guide
+says **requires** technology it read as a false instruction to the student. The field stays an
+item-level judgement, which is why the fix is `permitted` rather than `required`: the paper permits the
+GDC, and this question does not demand it. `TECHNOLOGY_VALUES` closes the vocabulary to
+`not allowed / permitted / required / not applicable` and `TECHNOLOGY_RULES` records the per-paper
+values that policy rules out. 128 items were touched — 108 `allowed` → `permitted`, 9 `not_allowed` →
+`not allowed`, 11 Maths P2/P3 `not allowed` → `permitted` — as **128 insertions / 128 deletions across
+46 files**, one line per item.
+
+**The CS and BM guides say nothing about calculators**, so those papers have no policy to enforce and
+their values stay an authoring judgement; the vocabulary still applies. That leaves one open question
+worth recording rather than inventing an answer: **CS P1 is split 17 `not allowed` against 15
+`permitted` within a single paper**, and the split correlates with nothing — not question type, not
+`language`. Resolving it needs the CS specimen papers, not a rule this bank can derive.
+
+**Two more rendered fields are now closed as well.** `level` is stated twice — `build.py` derives one
+from the subject slug and prints the item's own `level` beside it — so `SUBJECT_LEVEL` requires them to
+agree; and `language`, which renders as a bare chip, is closed to
+`python / java / pseudocode / sql` (`LANGUAGE_VALUES`). Both were already correct across all 305 items,
+which is the point: they are cheap checks added while they cost nothing, so a future batch cannot drift
+them silently.
+
 **MCQ rules.** Exactly four options labelled A–D, exactly one marked correct, one mark per question.
 Every option, correct or not, needs a `rationale` of at least eight words that *names the error*: a
 distractor with no stated purpose is noise, not a distractor. The four options should be the correct
