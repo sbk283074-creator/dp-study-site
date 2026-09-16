@@ -1,0 +1,173 @@
+/* BPhO Round 0 — glossary. English term, 中文 gloss, plain-English definition.
+   The exam is in English, so the English term is what matters; the Chinese is there to make it stick. */
+
+window.BPHO_GLOSSARY = [
+
+  /* --- toolkit --- */
+  { en: "SI base unit", zh: "国际单位制基本单位", def: "One of the seven units everything else is built from: kilogram, metre, second, ampere, kelvin, mole, candela." },
+  { en: "derived unit", zh: "导出单位", def: "A unit built from base units, such as the newton (kg m s⁻²) or the volt (kg m² s⁻³ A⁻¹)." },
+  { en: "dimensional analysis", zh: "量纲分析", def: "Working out the form of a relationship by requiring the base units on both sides to match. Used when no numbers are given." },
+  { en: "dimensional consistency", zh: "量纲一致性", def: "The test of whether an equation can possibly be right: every term must reduce to the same base units." },
+  { en: "homogeneous equation", zh: "量纲齐次方程", def: "An equation in which every additive term has identical dimensions. A dimensionally inhomogeneous equation is certainly wrong." },
+  { en: "ratio reasoning", zh: "比例推理", def: "Answering a 'how many times bigger' question by dividing two expressions, so shared constants cancel and no numbers are needed." },
+  { en: "limiting case", zh: "极限情形", def: "Substituting an extreme value (n → 1, θ → 0, m → 0) to see which options survive. A fast way to eliminate wrong answers." },
+  { en: "order of magnitude", zh: "数量级", def: "A factor of ten. An estimate good to within a factor of three is usually enough when the options differ by powers of ten." },
+  { en: "Fermi estimate", zh: "费米估算", def: "An order-of-magnitude answer assembled from rough factors, e.g. people × breaths per minute × minutes in a life." },
+  { en: "binomial approximation", zh: "二项式近似", def: "(1 + x)ⁿ ≈ 1 + nx when x is much less than 1. The source of most of BPhO's supplied approximations." },
+  { en: "small-angle approximation", zh: "小角近似", def: "For θ in radians and much less than 1: sin θ ≈ tan θ ≈ θ, and cos θ ≈ 1 − θ²/2." },
+  { en: "standard form", zh: "科学记数法", def: "A number written as a × 10ⁿ with 1 ≤ a < 10. Essential for keeping track of powers of ten without a calculator." },
+
+  /* --- kinematics --- */
+  { en: "displacement", zh: "位移", def: "Change in position, with direction. A vector, unlike distance." },
+  { en: "instantaneous velocity", zh: "瞬时速度", def: "Velocity at one moment, the gradient of the displacement–time graph at a point." },
+  { en: "uniform acceleration", zh: "匀加速运动", def: "Motion with constant acceleration, the only case the four suvat equations apply to." },
+  { en: "suvat", zh: "匀变速运动公式组", def: "The four constant-acceleration equations linking displacement, initial and final velocity, acceleration and time." },
+  { en: "projectile", zh: "抛体", def: "An object moving under gravity alone, with the horizontal and vertical motions independent of each other." },
+  { en: "terminal speed", zh: "终端速度", def: "The speed at which drag balances weight, so acceleration falls to zero and the object moves at constant velocity." },
+  { en: "relative velocity", zh: "相对速度", def: "The velocity of one body measured in the frame of another, found by vector subtraction." },
+  { en: "closing speed", zh: "接近速率", def: "The rate at which the separation between two approaching bodies decreases." },
+
+  /* --- forces and momentum --- */
+  { en: "free-body diagram", zh: "受力分析图", def: "A sketch of one body with every force acting on it drawn as an arrow from that body. No forces it exerts on other things." },
+  { en: "resultant", zh: "合力", def: "The single force equivalent to all the forces acting on a body together." },
+  { en: "component", zh: "分量", def: "The part of a vector along a chosen axis. Resolving means replacing a vector with two perpendicular components." },
+  { en: "equilibrium", zh: "平衡", def: "Zero resultant force and zero resultant moment. An object at rest or moving at constant velocity." },
+  { en: "triangle of forces", zh: "力三角形", def: "For three coplanar forces in equilibrium, the three vectors placed head-to-tail close to form a triangle." },
+  { en: "friction", zh: "摩擦力", def: "A force opposing relative sliding, at most proportional to the normal contact force." },
+  { en: "normal contact force", zh: "支持力／法向力", def: "The perpendicular push a surface exerts on a body resting on it." },
+  { en: "momentum", zh: "动量", def: "p = mv. Conserved in every collision and explosion, provided no external resultant force acts." },
+  { en: "impulse", zh: "冲量", def: "FΔt, equal to the change in momentum. Graphically, the area under a force–time graph." },
+  { en: "elastic collision", zh: "弹性碰撞", def: "A collision in which kinetic energy as well as momentum is conserved." },
+  { en: "inelastic collision", zh: "非弹性碰撞", def: "A collision in which momentum is conserved but kinetic energy is lost to heat, sound or deformation." },
+  { en: "centre of mass", zh: "质心", def: "The point through which the whole weight of a body can be taken to act." },
+  { en: "moment of a force", zh: "力矩", def: "Force multiplied by the perpendicular distance from the axis to the line of action of the force." },
+  { en: "principle of moments", zh: "力矩平衡原理", def: "For a body in rotational equilibrium, total clockwise moment equals total anticlockwise moment about any chosen axis." },
+  { en: "couple", zh: "力偶", def: "Two equal, opposite and parallel forces whose lines of action differ, producing rotation but no resultant force." },
+  { en: "work done", zh: "做功", def: "Energy transferred by a force, Fs cos θ for a constant force; the area under a force–displacement graph for a variable one." },
+  { en: "power", zh: "功率", def: "Rate of energy transfer, ΔW/Δt, or Fv for a force moving a body at constant speed." },
+  { en: "efficiency", zh: "效率", def: "Useful output energy or power divided by total input. Always less than one in practice." },
+
+  /* --- circular motion --- */
+  { en: "angular speed", zh: "角速度", def: "ω = v/r = 2πf, measured in radians per second." },
+  { en: "radian", zh: "弧度", def: "The angle subtended by an arc equal in length to the radius. A full circle is 2π radians." },
+  { en: "centripetal acceleration", zh: "向心加速度", def: "a = v²/r = ω²r, always directed toward the centre of the circular path." },
+  { en: "centripetal force", zh: "向心力", def: "The resultant force needed for circular motion, mv²/r. Not a new kind of force — it is whatever real force happens to point inward." },
+  { en: "conical pendulum", zh: "圆锥摆", def: "A mass on a string swinging in a horizontal circle, with the string tracing a cone. Standard force-resolution problem." },
+  { en: "banking", zh: "倾斜路面／倾斜", def: "Tilting a track or road so that the normal contact force supplies part of the centripetal force." },
+  { en: "apparent weight", zh: "视重", def: "The reading of a scale, equal to the normal contact force. Differs from mg whenever there is vertical acceleration." },
+
+  /* --- materials --- */
+  { en: "density", zh: "密度", def: "ρ = m/V. Can be found for an irregular solid by weighing it in air and in water." },
+  { en: "Hooke's law", zh: "胡克定律", def: "Extension is proportional to force, up to the limit of proportionality." },
+  { en: "spring constant", zh: "劲度系数", def: "k in F = kΔL. Stiff springs have large k. Add in parallel, reciprocal-add in series." },
+  { en: "elastic limit", zh: "弹性极限", def: "The point beyond which the material does not return to its original length when the load is removed." },
+  { en: "elastic strain energy", zh: "弹性势能", def: "½FΔL = ½kx², the area under a force–extension graph up to the elastic limit." },
+  { en: "tensile stress", zh: "拉伸应力", def: "Force per unit cross-sectional area, F/A, in pascals." },
+  { en: "tensile strain", zh: "拉伸应变", def: "Extension divided by original length, ΔL/L. Dimensionless, often given as a percentage." },
+  { en: "Young modulus", zh: "杨氏模量", def: "Stress divided by strain, E = FL/(AΔL). A property of the material, not of the particular wire." },
+  { en: "stress–strain graph", zh: "应力–应变图", def: "A material's signature: gradient gives the Young modulus, the end of the straight part is the limit of proportionality." },
+  { en: "plastic deformation", zh: "塑性形变", def: "Permanent change of shape, occurring beyond the elastic limit." },
+  { en: "brittle", zh: "脆性的", def: "Fracturing with little or no plastic deformation — glass and cast iron behave this way." },
+  { en: "breaking stress", zh: "断裂应力", def: "The stress at which the material fractures. Also called ultimate tensile strength." },
+  { en: "thermal expansion", zh: "热膨胀", def: "ℓ = ℓ₀(1 + αΔT). Linear expansion coefficient α has units of K⁻¹." },
+  { en: "thermal stress", zh: "热应力", def: "Stress produced when a material is prevented from expanding or contracting as its temperature changes." },
+
+  /* --- waves --- */
+  { en: "progressive wave", zh: "行波", def: "A wave that transfers energy through a medium without transferring the medium itself." },
+  { en: "amplitude", zh: "振幅", def: "Maximum displacement from the equilibrium position. Not the same as the peak-to-peak distance." },
+  { en: "wavelength", zh: "波长", def: "Distance between two consecutive points in phase, such as crest to crest." },
+  { en: "phase difference", zh: "相位差", def: "How far one wave is ahead of another, in radians, degrees, or fractions of a cycle." },
+  { en: "polarisation", zh: "偏振", def: "Restricting a wave's oscillations to one plane. Only transverse waves can be polarised, so it is evidence of transversality." },
+  { en: "superposition", zh: "叠加", def: "Where two waves meet, the resultant displacement is the sum of the individual displacements." },
+  { en: "stationary wave", zh: "驻波", def: "A pattern of fixed nodes and antinodes formed by two identical waves travelling in opposite directions." },
+  { en: "node", zh: "波节", def: "A point of permanently zero displacement in a stationary wave." },
+  { en: "antinode", zh: "波腹", def: "A point of maximum displacement in a stationary wave." },
+  { en: "harmonic", zh: "谐波", def: "A standing-wave pattern at a whole-number multiple of the fundamental frequency." },
+  { en: "intensity", zh: "强度", def: "Power per unit area. For radiation spreading out in three dimensions, it falls as the inverse square of distance." },
+  { en: "inverse-square law", zh: "平方反比定律", def: "I ∝ 1/x², the consequence of a fixed power spreading over a sphere of ever-increasing area." },
+
+  /* --- optics --- */
+  { en: "refractive index", zh: "折射率", def: "n = c/c_s, the ratio of the speed of light in vacuum to its speed in the medium. Air is taken as 1." },
+  { en: "Snell's law", zh: "斯涅尔定律", def: "n₁ sin θ₁ = n₂ sin θ₂ at a boundary between two media." },
+  { en: "total internal reflection", zh: "全反射", def: "Complete reflection at a boundary when travelling from denser to less dense and exceeding the critical angle." },
+  { en: "critical angle", zh: "临界角", def: "sin θ_c = n₂/n₁. Beyond it, no light refracts out of the denser medium at all." },
+  { en: "coherent", zh: "相干的", def: "Waves with a constant phase difference and the same frequency — required for a stable interference pattern." },
+  { en: "path difference", zh: "光程差", def: "The extra distance one wave travels compared with another. Whole wavelengths give constructive interference." },
+  { en: "fringe spacing", zh: "条纹间距", def: "w = λD/s for Young's double slit: wavelength, screen distance, slit separation." },
+  { en: "diffraction grating", zh: "衍射光栅", def: "Many closely spaced slits. Maxima at d sin θ = nλ, giving much sharper fringes than two slits." },
+  { en: "dispersion", zh: "色散", def: "Spreading of a signal because different wavelengths or modes travel at different speeds." },
+  { en: "cladding", zh: "包层", def: "The lower-refractive-index outer layer of an optical fibre that confines light by total internal reflection." },
+
+  /* --- electricity --- */
+  { en: "electric current", zh: "电流", def: "Rate of flow of charge, I = ΔQ/Δt, in amperes." },
+  { en: "potential difference", zh: "电势差", def: "Energy transferred per unit charge between two points, V = W/Q, in volts." },
+  { en: "resistance", zh: "电阻", def: "R = V/I, the opposition to current, in ohms." },
+  { en: "Ohm's law", zh: "欧姆定律", def: "For a metallic conductor at constant temperature, current is proportional to potential difference." },
+  { en: "I–V characteristic", zh: "伏安特性曲线", def: "A graph of current against potential difference identifying a component: straight for a resistor, curved for a lamp, one-sided for a diode." },
+  { en: "thermistor", zh: "热敏电阻", def: "A resistor whose resistance falls as temperature rises (an NTC thermistor)." },
+  { en: "LDR", zh: "光敏电阻", def: "Light-dependent resistor: resistance falls as light intensity rises." },
+  { en: "superconductivity", zh: "超导", def: "Zero electrical resistance below a critical temperature." },
+  { en: "resistivity", zh: "电阻率", def: "ρ = RA/L, a property of the material. Rises with temperature for a metal." },
+  { en: "Kirchhoff's first law", zh: "基尔霍夫第一定律", def: "The sum of currents into a junction equals the sum out — conservation of charge." },
+  { en: "Kirchhoff's second law", zh: "基尔霍夫第二定律", def: "Around any closed loop, the sum of EMFs equals the sum of potential drops — conservation of energy." },
+  { en: "electromotive force", zh: "电动势", def: "Energy transferred per unit charge by a source, ε, measured in volts. Not a force despite the name." },
+  { en: "internal resistance", zh: "内阻", def: "The resistance inside a source, r, which makes the terminal potential difference fall as current rises." },
+  { en: "terminal potential difference", zh: "端电压", def: "The p.d. actually available to the external circuit, ε − Ir." },
+  { en: "potential divider", zh: "分压器", def: "Two or more resistors in series splitting a supply voltage in proportion to their resistances." },
+  { en: "rectification", zh: "整流", def: "Converting alternating current to direct current, as a diode does by conducting in one direction only." },
+  { en: "capacitance", zh: "电容", def: "C = Q/V, charge stored per volt, in farads." },
+  { en: "farad", zh: "法拉", def: "The unit of capacitance. In base units, 1 F = 1 kg⁻¹ m⁻² s⁴ A²." },
+
+  /* --- thermal --- */
+  { en: "specific heat capacity", zh: "比热容", def: "Energy needed to raise the temperature of one kilogram by one kelvin, Q = mcΔT." },
+  { en: "specific latent heat", zh: "比潜热", def: "Energy needed to change the phase of one kilogram at constant temperature, Q = mL." },
+  { en: "calorimetry", zh: "量热法", def: "Measuring energy transfers by temperature change, usually in an insulated container." },
+  { en: "ideal gas", zh: "理想气体", def: "A model gas whose molecules occupy negligible volume and exert no forces except during collisions." },
+  { en: "isothermal", zh: "等温的", def: "At constant temperature, so pV is constant for a fixed mass of gas." },
+  { en: "kelvin", zh: "开尔文", def: "The SI unit of thermodynamic temperature. T(K) = T(°C) + 273.15." },
+
+  /* --- nuclear --- */
+  { en: "nucleon number", zh: "核子数", def: "A, the total number of protons and neutrons in a nucleus. Also called the mass number." },
+  { en: "proton number", zh: "质子数", def: "Z, the number of protons, which fixes the element. Also called the atomic number." },
+  { en: "isotope", zh: "同位素", def: "Nuclei with the same proton number but different nucleon numbers." },
+  { en: "specific charge", zh: "比荷", def: "Charge divided by mass. A nucleus has a lower specific charge than a lone proton because neutrons add mass without charge." },
+  { en: "strong nuclear force", zh: "强核力", def: "The short-range attraction that holds nuclei together, acting over about 3 fm, with a very-short-range repulsion below about 0.5 fm." },
+  { en: "alpha decay", zh: "α 衰变", def: "Emission of a helium nucleus: A falls by 4, Z falls by 2." },
+  { en: "beta-minus decay", zh: "β⁻ 衰变", def: "A neutron converts to a proton, emitting an electron and an antineutrino: A unchanged, Z rises by 1." },
+  { en: "antineutrino", zh: "反中微子", def: "A nearly massless neutral particle emitted alongside the electron in beta-minus decay, carrying away energy and momentum." },
+  { en: "background radiation", zh: "本底辐射", def: "Ionising radiation from the environment. Must be subtracted from a measured count rate before analysis." },
+  { en: "mass–energy equivalence", zh: "质能等价", def: "E = mc². A mass defect appears as energy released in a nuclear process." },
+  { en: "atomic mass unit", zh: "原子质量单位", def: "u, one twelfth of the mass of a carbon-12 atom, about 1.66 × 10⁻²⁷ kg." },
+
+  /* --- quantum --- */
+  { en: "photon", zh: "光子", def: "A quantum of electromagnetic radiation, of energy E = hf = hc/λ." },
+  { en: "photoelectric effect", zh: "光电效应", def: "Emission of electrons from a surface when light above a threshold frequency strikes it." },
+  { en: "work function", zh: "逸出功", def: "φ, the minimum energy needed to remove an electron from a metal surface." },
+  { en: "threshold frequency", zh: "截止频率", def: "The lowest frequency of light that can cause photoemission from a given metal: hf₀ = φ." },
+  { en: "stopping potential", zh: "遏止电压", def: "The reverse potential difference that just prevents the fastest photoelectrons from reaching the anode." },
+  { en: "ionisation", zh: "电离", def: "Removing an electron from an atom entirely." },
+  { en: "excitation", zh: "激发", def: "Raising an electron to a higher energy level within an atom, without removing it." },
+  { en: "electron volt", zh: "电子伏特", def: "The energy gained by an electron accelerated through one volt: 1 eV = 1.60 × 10⁻¹⁹ J." },
+  { en: "line spectrum", zh: "线状光谱", def: "Sharp bright lines from a gas discharge, evidence that atomic energy levels are discrete." },
+  { en: "de Broglie wavelength", zh: "德布罗意波长", def: "λ = h/mv, the wavelength associated with any particle. Confirmed by electron diffraction." },
+  { en: "wave–particle duality", zh: "波粒二象性", def: "The fact that light and matter each show both wave and particle behaviour depending on the experiment." },
+
+  /* --- fluids --- */
+  { en: "pressure", zh: "压强", def: "Force per unit area, p = F/A, in pascals." },
+  { en: "hydrostatic pressure", zh: "液体静压", def: "p = ρgh, the pressure at depth h in a fluid of density ρ. Depends on depth only, not on the shape of the container." },
+  { en: "upthrust", zh: "浮力", def: "The upward force on a body in a fluid, equal to the weight of fluid displaced." },
+  { en: "Archimedes' principle", zh: "阿基米德原理", def: "A body immersed in a fluid experiences an upthrust equal to the weight of the fluid it displaces." },
+  { en: "apparent weight in a fluid", zh: "浸没时的视重", def: "True weight minus upthrust. Weighing in water and in air gives the density of the object." },
+  { en: "pascal", zh: "帕斯卡", def: "The unit of pressure, 1 Pa = 1 N m⁻² = 1 kg m⁻¹ s⁻²." },
+
+  /* --- exam technique --- */
+  { en: "negative marking", zh: "倒扣分", def: "A penalty for wrong answers. Round 0 has none, so a blank is strictly worse than a guess." },
+  { en: "multiple choice", zh: "多项选择（单选）", def: "One correct option out of five, labelled A to E. One mark each." },
+  { en: "data booklet", zh: "数据手册／公式表", def: "A supplied sheet of constants and equations. Permitted in Round 0, but there is little time to consult it." },
+  { en: "proportionality", zh: "正比关系", def: "y ∝ x means y = kx for some constant k. In a ratio question, k cancels and never needs a value." },
+  { en: "linear relationship", zh: "线性关系", def: "A graph that is a straight line. Distinguish it from a proportional relationship, which must also pass through the origin." },
+  { en: "gradient", zh: "斜率", def: "Steepness of a graph, Δy/Δx. Its physical meaning depends on what the axes are." },
+  { en: "intercept", zh: "截距", def: "Where a graph crosses an axis. A non-zero intercept usually signals a systematic offset such as a work function." },
+  { en: "asymptote", zh: "渐近线", def: "A line a curve approaches but never reaches. Useful for identifying which graph describes a given relationship." }
+
+];

@@ -1,6 +1,6 @@
 # dp-study-site — the whole structure
 
-**Verified 2026-09-15 against the live site and both repos. Not recalled — checked.**
+**Verified 2026-09-16 against the live site and both repos. Not recalled — checked.**
 Read this before changing anything in `~/Downloads/dp learning final`.
 
 ---
@@ -8,8 +8,8 @@ Read this before changing anything in `~/Downloads/dp learning final`.
 ## 0. The one-paragraph version
 
 `https://sbk283074-creator.github.io/dp-study-site/` is **one GitHub Pages site** built from **repo A**
-(`~/Downloads/dp learning final`). Inside it sit **five "study spaces"** plus seven subject pages.
-Only **one** of the five owns a backend (the Question Bank). Three separate backends exist in total,
+(`~/Downloads/dp learning final`). Inside it sit **six "study spaces"** plus seven subject pages.
+Only **one** of the six owns a backend (the Question Bank). Three separate backends exist in total,
 and they are **not interchangeable** — two of them serve the *same API*, but one of those is 17 days stale.
 
 ---
@@ -28,9 +28,9 @@ Also ignored: `PYTHON/python-mastery/`, `PYTHON/verify/`, `PYTHON/verify-venv/`,
 
 ---
 
-## 2. The five study spaces — this is the "five websites"
+## 2. The six study spaces — this is the "six websites"
 
-The hub's nav-card row ("Choose where you want to study") numbers them **01–05**:
+The hub's nav-card row ("Choose where you want to study") numbers them **01–06**:
 
 | # | Name | Path in repo A | Live URL | Kind | Backend |
 |---|---|---|---|---|---|
@@ -39,8 +39,9 @@ The hub's nav-card row ("Choose where you want to study") numbers them **01–05
 | 03 | Python Mastery | `PYTHON/index.html` | `/dp-study-site/PYTHON/` | single-file app, 2.2 MB | none |
 | 04 | The World's Wife Lab | `Eng learning/index.html` | `/dp-study-site/Eng%20learning/` | single-file app, 504 KB | none |
 | 05 | Challenge Bank | `challenge-bank/site/` | `/dp-study-site/challenge-bank/site/` | **generated static** | Cloudflare (**AI only**) |
+| 06 | BPhO Round 0 | `bpho/` | `/dp-study-site/bpho/` | static SPA, hash-routed | Cloudflare (**AI only**) |
 
-In the repo but **not** one of the five: the subject pages
+In the repo but **not** one of the six: the subject pages
 `math/ physics/ cs/ english/ chinese/ business/ core/` (static study pages), and
 `study-plan.html` + `exam-toolkit.html`.
 
@@ -300,6 +301,41 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   (`python / java / pseudocode / sql`) were closed while still free; both were already correct.
 - Rebuild: `cd challenge-bank && python3 build.py`.
 
+### 06 · BPhO Round 0 — `bpho/`
+Preparation space for the **British Physics Olympiad Round 0** paper (25 single-answer MCQs,
+60 min, **non-calculator**, 1 mark each, no negative marking, no awards — a selection round only).
+Built 2026-09-16. **Hand-authored static SPA — no build step, no bundler, no `fetch()`.**
+
+- Shell: `bpho/index.html` — plain `<script>` tags in dependency order, then `assets/app.js`.
+- Data lives in `bpho/data/` and ships as **`window.BPHO_*` global assignments**, *not* JSON files.
+  This is deliberate: the pages must work over `file://`, where `fetch()` is blocked by CORS.
+- Content is split across files that each **`concat` onto a shared global**, because one 300 KB+
+  data file is unreviewable:
+  `plan.js` (16 days) · `glossary.js` (141 terms) · `modules-1.js` … `modules-7.js` (14 modules,
+  162 checklist items, 61 worked examples) · `questions-1.js`/`questions-2.js` (81 questions).
+- Two aggregators present the exact shape `app.js` expects and must load **last**:
+  `curriculum.js` → `window.BPHO_CURRICULUM = {modules: (window.BPHO_MODULES || [])}` and
+  `questions.js` → `window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || [])`.
+  **Adding a module means adding a file *and* a `<script>` tag before the aggregator.**
+- Routes (hash-routed): `#/` overview, `#/plan`, `#/m/<CODE>`, `#/practice[/<CODE>]`,
+  `#/glossary`, `#/reference`, `#/mock`. Progress is `localStorage` with export/import JSON.
+- **AI:** every question card carries an "Ask AI about this" button wired to
+  `window.dpAI.open({ref, subject, topic, context, prompt, display, autoSend:true})` — the **same**
+  global widget in focused mode (§3·1), not a second chat UI. The question, its five options, the
+  correct letter and the official solution all ride along in `context`.
+- Module codes are the letters **A, I, L, M, H, B, C, D, E, F, G, K, J, N** — not A–N in order.
+  Each checklist item carries a flag from `CORE` / `NEW` / `R1-ONLY` / `SKIP` and the module carries
+  a priority 1–4. `R1-ONLY` marks material that appears in Round 1 but is **out of scope** for
+  Round 0; module N is explicitly an insurance module of Round 1 material.
+- Scope rule that governs the whole space: **Round 1 evidence is not evidence about Round 0.**
+  BPhO publishes no Round 1 syllabus, so the R0/R1 differential was reconstructed from the Round 0
+  sample paper plus the AQA AS Physics 7407 spec (§3.1–3.5), not from Round 1 papers.
+- Verification (2026-09-16, headless Chromium over `http://127.0.0.1:8899/`): all 8 routes render,
+  81 question cards, answering Q1 gives "Correct", solution reveal opens, a checklist tick
+  **persists across reload**, mock starts with 125 option buttons (25 × 5) and marking produces the
+  result view with 3 stat cards, and the hub card navigates to the space. Zero console/page errors.
+- Rebuild: **none.** Edit the data files directly and reload.
+
 ---
 
 ## 6. Build & deploy map
@@ -307,6 +343,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 | Artifact | Build | Deploy |
 |---|---|---|
 | Hub, subject pages, Lit Lab, Python Mastery | hand-edited / their own `build.py` | push repo A → Pages |
+| `bpho/` | **none** — hand-authored data files, no bundler | push repo A → Pages |
 | `qbank/` | repo B frontend, `VITE_API_BASE_URL` **set** | copy into repo A → push |
 | `challenge-bank/site/` | `python3 build.py` | commit the output → push repo A |
 | platform frontend | `npm run build` | Actions `.github/workflows/deploy.yml` → Pages |
