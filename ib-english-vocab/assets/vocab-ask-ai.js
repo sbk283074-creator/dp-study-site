@@ -69,7 +69,8 @@
 
   // Build the grounding block that travels with the question.
   function contextFor(d) {
-    var lines = ['Word: ' + d.word + (d.ipa ? '  ' + d.ipa : '')];
+    // No "Word:" prefix on this first line — `contextLabel` already emits it.
+    var lines = [d.word + (d.ipa ? '  ' + d.ipa : '')];
     if (d.pos) lines.push('Part of speech: ' + d.pos);
     if (d.definition) lines.push('Definition (from the study site): ' + d.definition);
     if (d.usage) lines.push('Usage pattern taught: ' + d.usage);

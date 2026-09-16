@@ -5289,7 +5289,8 @@ function askAiTerm(i){
   const t=(window.__avTerms||[])[i];
   if(!t) return;
   if(!dpAiReady()){ dpAiNotReady(); return; }
-  const out=["Term: "+t.term,"Category: "+t.category,"Definition: "+t.definition];
+  // The leading "Term:" label is supplied by contextLabel, so don't repeat it.
+  const out=[t.term, "Category: "+t.category, "Definition: "+t.definition];
   if(t.example) out.push("Example from the collection: "+t.example);
   if(t.tip) out.push("Tip: "+t.tip);
   window.dpAI.open({

@@ -361,7 +361,8 @@ function askAiWord(){
     alert('AI 助手还在加载，请稍等片刻再点一次。');
     return;
   }
-  const lines = ['Word: ' + w.w + (w.ipa ? ('  ' + w.ipa) : '')];
+  // 首行不重复写 "Word:"，该前缀由 contextLabel 负责
+  const lines = [w.w + (w.ipa ? ('  ' + w.ipa) : '')];
   if(w.pos) lines.push('Part of speech: ' + w.pos);
   if(w.cat) lines.push('Category: ' + w.cat);
   (w.senses||[]).forEach((s,i)=>{
