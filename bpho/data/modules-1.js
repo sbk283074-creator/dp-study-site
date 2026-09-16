@@ -179,7 +179,8 @@ mass = weight / g ≈ 5 × 10¹⁹ / 10 = 5 × 10¹⁸ kg</div>
 <tr><td>Density of air</td><td>about 1.2 kg m⁻³</td></tr>
 <tr><td>Length of a day</td><td>86 400 s ≈ 10⁵ s</td></tr>
 <tr><td>Power of a human at rest</td><td>about 100 W</td></tr>
-</tbody></table>`
+</tbody></table>
+<div class="callout callout--key"><p><b>A cold anchor worth adding.</b> Seconds in a year: 365 × 24 × 3600 ≈ 3.15 × 10⁷, so just remember 10⁷. Since a day is ≈ 10⁵ s, any long-time estimate checks itself: a decade is 10⁸ s, a human lifetime about 10⁹ s. On an estimation question these let you kill options that are off by a factor of a thousand without doing any physics — the difference between 10⁷ and 10¹⁰ is usually a clean eliminator.</p></div>`
     },
 
     {
@@ -337,6 +338,35 @@ T: −2c = 1  →  c = −½,  hence a = ½</div>
 <p>Confirm with the derivation: at the top, the vertical velocity is zero, so <code>0 = (u sin θ)² − 2gh</code>, giving <code>h = u² sin²θ / 2g</code> ✓.</p>
 <p><b>The lesson.</b> Four of the five options were killed by two facts — what happens at <code>θ = 0</code> and what happens at <code>θ = 90°</code>. That is about forty seconds of work, and it did not require knowing that the vertical component is <code>u sin θ</code>. On a multiple-choice paper, being able to eliminate is worth more than being able to derive.</p>`,
       tag: "Limiting cases — the fastest elimination tool"
+    },
+
+    {
+      q: "<p>The speed <code>v</code> of a transverse wave on a string is known to depend only on the tension <code>T</code> in the string and the mass per unit length <code>μ</code>. By dimensional analysis, which is the correct form?</p><p>A) <code>k√(T/μ)</code> &nbsp; B) <code>k√(μ/T)</code> &nbsp; C) <code>k T/μ</code> &nbsp; D) <code>k√(Tμ)</code> &nbsp; E) <code>k(T/μ)²</code></p>",
+      sol: `<p>Write the dimensions. Tension is a force, so <code>T</code> = M L T⁻². Mass per unit length <code>μ</code> is M L⁻¹. The speed <code>v</code> we are after has dimensions L T⁻¹.</p>
+<p>Now check the dimensions of each option.</p>
+<ul class="tight">
+<li><b>A</b> <code>T/μ</code> = (M L T⁻²)/(M L⁻¹) = L² T⁻², so <code>√(T/μ)</code> = L T⁻¹ — a speed ✓</li>
+<li><b>B</b> <code>μ/T</code> = (M L⁻¹)/(M L T⁻²) = L⁻² T², so <code>√(μ/T)</code> = L⁻¹ T — not a speed ✗</li>
+<li><b>C</b> <code>T/μ</code> = L² T⁻², which is a speed <i>squared</i>, not a speed ✗</li>
+<li><b>D</b> <code>Tμ</code> = (M L T⁻²)(M L⁻¹) = M² T⁻², so <code>√(Tμ)</code> = M T⁻¹ — still carries a mass dimension ✗</li>
+<li><b>E</b> <code>(T/μ)²</code> = (L² T⁻²)² = L⁴ T⁻⁴ — neither a speed nor its square ✗</li>
+</ul>
+<p><b>Answer: A.</b> Dimensional analysis gives <code>v = k√(T/μ)</code>, and the physics fixes <code>k = 1</code>, so the standard result <code>v = √(T/μ)</code> falls straight out of the units alone.</p>
+<p><b>Why the others are there.</b> B is the slip you make if you write <code>μ</code> over <code>T</code> instead of <code>T</code> over <code>μ</code>. C is the dimensional form of <code>v²</code> — the trap for anyone who forgets to take the square root. D keeps the square root but multiplies the two quantities instead of dividing, leaving a spurious M. E double-squares and is the distant distractor. The fast kill: D and E both fail the mass check, and a wave speed must not depend on how you choose to measure mass — so they die first.</p>`,
+      tag: "Dimensional analysis — a less obvious quantity"
+    },
+
+    {
+      q: "<p>A ball is dropped from rest and falls through air whose resistance is not negligible and increases with the speed. Which graph best shows the ball's speed <code>v</code> against time <code>t</code>?</p><p>A) a straight line through the origin<br>B) a parabola through the origin that curves upward<br>C) a curve through the origin that rises then flattens to a horizontal plateau<br>D) a horizontal line at a fixed non-zero speed<br>E) a curve that rises steeply and then falls back towards zero</p>",
+      sol: `<p>Reason about the two ends of the graph — the value at <code>t = 0</code> and the behaviour as <code>t → ∞</code>. Those two facts kill four of the five options without any derivation.</p>
+<ul class="tight">
+<li><b>At t = 0</b> the ball is released from rest, so <code>v = 0</code>. The graph must pass through the origin. Option D is a horizontal line at a non-zero speed, so it never reaches the origin — eliminate.</li>
+<li><b>As t → ∞</b> air resistance grows until it balances the weight, the resultant force becomes zero, and the ball stops accelerating, settling at a constant terminal speed. So the curve must approach a horizontal plateau. Option A (straight line) keeps rising without limit — true only with no drag — eliminate. Option B (parabola, <code>v ∝ t²</code>) rises even faster and also has no plateau; it is in fact the shape of <i>displacement</i> under constant acceleration, not speed — eliminate. Option E falls back towards zero, which would mean the ball slows to a stop, but nothing pushes it upward, so that is unphysical — eliminate.</li>
+<li><b>Option C</b> starts at the origin and flattens to a horizontal plateau: exactly the terminal-speed shape.</li>
+</ul>
+<p><b>Answer: C.</b></p>
+<p><b>The traps.</b> A is the no-resistance answer (<code>v = gt</code>), the most common mistake because students reach for <code>v = u + at</code> by reflex. B confuses speed with distance fallen (<code>s = ½gt²</code>). D forgets the ball starts from rest. E imagines a restoring force that does not exist. The real derivation — solving <code>mg − kv = m dv/dt</code> — was never needed; the two endpoints did all the work, which is the whole point of Step 7.</p>`,
+      tag: "Graph-shape elimination — terminal speed"
     }
   ],
 

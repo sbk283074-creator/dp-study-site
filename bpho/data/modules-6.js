@@ -30,7 +30,9 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <p>Two points separated by a distance <code>Δx</code> along the wave have a phase difference</p>
 <div class="formula">Δφ = 2π Δx/λ</div>
 <p>So a separation of half a wavelength corresponds to <code>π</code> radians, or 180°, or half a cycle. A separation of a whole wavelength corresponds to <code>2π</code> radians, or 360°, which is the same as being in phase. Being able to move between radians, degrees and fractions of a cycle is worth drilling, because questions use all three.</p>
-<div class="callout callout--key"><p><b>The frequency fact worth stating explicitly.</b> When a wave crosses a boundary into a different medium, its <b>speed and wavelength change but its frequency does not</b>. The frequency is set by the source. So <code>v = fλ</code> at the boundary gives <code>v₁/λ₁ = v₂/λ₂</code>. This is the basis of refraction and it is worth knowing as a sentence.</p></div>`
+<div class="callout callout--key"><p><b>The frequency fact worth stating explicitly.</b> When a wave crosses a boundary into a different medium, its <b>speed and wavelength change but its frequency does not</b>. The frequency is set by the source. So <code>v = fλ</code> at the boundary gives <code>v₁/λ₁ = v₂/λ₂</code>. This is the basis of refraction and it is worth knowing as a sentence.</p></div>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> The most common slip is to treat <code>f</code> and <code>v</code> as interchangeable: they are not. Frequency is set by the source (how often it shakes); speed is set by the medium (how fast the disturbance travels). When a wave crosses from one medium to another its speed and wavelength change, but its frequency — and therefore its period — is untouched. If you ever produce a calculation where the frequency changed at a boundary, you have made an error.</p></div>
+<p>中文对照: 位移 displacement, 振幅 amplitude, 波长 wavelength, 频率 frequency, 周期 period, 相位 phase, 波速 wave speed. 记住 <code>v = fλ</code>：波速 = 频率 × 波长。</p>`
     },
 
     {
@@ -47,7 +49,28 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <h3>The electromagnetic spectrum</h3>
 <p>All electromagnetic waves travel at the same speed in a vacuum, <code>c = 3.00 × 10⁸ m s⁻¹</code>, and they differ only in frequency and wavelength. From longest wavelength to shortest:</p>
 <p>radio, microwave, infrared, visible, ultraviolet, X-ray, gamma.</p>
-<p>Visible light spans roughly 400 nm (violet) to 700 nm (red). Remembering that visible wavelengths are of order <code>10⁻⁷ m</code> is useful for the photon-energy estimates in module L.</p>`
+<p>Visible light spans roughly 400 nm (violet) to 700 nm (red). Remembering that visible wavelengths are of order <code>10⁻⁷ m</code> is useful for the photon-energy estimates in module L.</p>
+<div class="callout callout--key"><p><b>A quick test for any wave.</b> Ask: are the oscillations across the direction of travel (transverse) or along it (longitudinal)? Compressions and rarefactions mean longitudinal (sound); crests and troughs mean transverse (string, light). This single classification tells you immediately whether polarisation can occur at all.</p></div>
+<p>中文对照: 横波 transverse wave, 纵波 longitudinal wave, 偏振 polarisation, 压缩 compression, 稀疏 rarefaction. 横波可以偏振，纵波不能。</p>`
+    },
+
+    {
+      h: "Reflection, refraction and transmission at a boundary",
+      body: `<p>When a wave meets a boundary between two media, three things can happen at once: part is <b>reflected</b> back into the first medium, part is <b>transmitted</b> (and usually <b>refracted</b>) into the second, and part may be absorbed. Which dominates depends on how abruptly the wave speed changes at the boundary.</p>
+<div class="formula">reflection: angle of incidence = angle of reflection
+refraction (mechanical): sin θ₁ / sin θ₂ = v₁ / v₂</div>
+<p>The refraction rule for a mechanical wave is the wave-speed analogue of Snell's law: the ray bends towards the normal when it enters the slower medium, because <code>v₂ &lt; v₁</code> makes <code>sin θ₂ &lt; sin θ₁</code>. (For light this becomes <code>n₁ sin θ₁ = n₂ sin θ₂</code>; the optics module covers the light version — the physics is identical, only the labels differ.)</p>
+<h3>Fixed end versus free end</h3>
+<p>For a wave on a string the reflection depends on what the end is doing:</p>
+<ul class="tight">
+<li><b>Fixed end</b> (the string tied down): the end cannot move, so the reflected pulse comes back <b>inverted</b> — a crest reflects as a trough. This is a phase change of <code>π</code> (half a cycle).</li>
+<li><b>Free end</b> (the string attached to a frictionless ring on a vertical pole): the end moves freely, so the reflected pulse comes back <b>upright</b> — no phase change.</li>
+</ul>
+<p>This is exactly why a string fixed at both ends has nodes at the ends: the fixed end is a reflection site with a <code>π</code> phase flip, which is what forces the displacement to zero there.</p>
+<h3>How much is reflected?</h3>
+<p>When the two media have very different wave speeds, most of the energy reflects (think of a wave hitting a wall). When the speeds match, almost nothing reflects and the wave passes through smoothly. This mismatch is why a change in mass per unit length along a string produces a partial reflection at the join — it is how a wave "knows" a boundary is there.</p>
+<div class="callout callout--key"><p><b>中文对照.</b> 反射 reflection, 折射 refraction, 透射 transmission, 边界 boundary, 波速 wave speed. 固定端 fixed end 反射会反相（倒转），自由端 free end 反射不反相。</p></div>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> Do not assume "reflected = inverted" everywhere. Inversion happens at a fixed (or slower-medium) boundary; at a free (or faster-medium) boundary the reflection is upright. The sign of the phase change depends on which medium is "stiffer", not on the wave itself.</p></div>`
     },
 
     {
@@ -68,7 +91,25 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <tr><td>Wavelength</td><td><code>λ</code> is the distance between consecutive crests</td><td>twice the node spacing</td></tr>
 <tr><td>Energy transfer</td><td>yes, along the wave</td><td>no net transfer</td></tr>
 <tr><td>Phase</td><td>points a wavelength apart are in phase</td><td>all points between adjacent nodes are in phase; points either side of a node are in antiphase</td></tr>
-</tbody></table>`
+</tbody></table>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> Superposition does not mean "the larger wave wins". Where a crest meets a trough of equal size the displacement is exactly zero at that instant — but both waves pass through each other unchanged afterwards. Waves in a linear medium do not collide; they superimpose and continue. Never add amplitudes as if one destroyed the other.</p></div>
+<p>中文对照: 叠加 superposition, 驻波 stationary wave, 波节 node, 波腹 antinode. 相干波叠加才会形成稳定驻波。</p>`
+    },
+
+    {
+      h: "Interference and path difference",
+      body: `<p>Two coherent waves arriving at the same point add by superposition. Whether they reinforce or cancel depends on their <b>path difference</b> — the extra distance one has travelled — expressed in wavelengths.</p>
+<table><thead><tr><th>Path difference</th><th>Phase relation</th><th>Result</th></tr></thead><tbody>
+<tr><td><code>nλ</code> (whole number of wavelengths)</td><td>in phase</td><td>constructive — a maximum</td></tr>
+<tr><td><code>(n + ½)λ</code> (odd number of half-wavelengths)</td><td>in antiphase</td><td>destructive — a minimum</td></tr>
+</tbody></table>
+<p>The link between path difference and phase difference is</p>
+<div class="formula">Δφ = 2π × (path difference) / λ</div>
+<p>so a path difference of <code>λ/2</code> corresponds to <code>π</code> radians (antiphase), and a path difference of <code>λ</code> corresponds to <code>2π</code> (back in phase). This is the same <code>2π Δx/λ</code> from the phase-difference formula at the start of the module — now <code>Δx</code> is a difference in route length rather than a separation along one wave.</p>
+<h3>Why coherence matters</h3>
+<p>For a steady pattern the two waves must be <b>coherent</b>: same frequency and a constant phase difference. If two independent sources have a phase difference that jitters randomly, the maxima and minima wander and average out to a uniform glow. That is why interference needs either one source split into two paths or two locked sources.</p>
+<div class="callout callout--key"><p><b>中文对照.</b> 干涉 interference, 路程差 path difference, 相干 coherent, 相长干涉 constructive, 相消干涉 destructive. 路程差为 nλ 时相长，为 (n+½)λ 时相消。</p></div>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> A common slip is to read "a half-wavelength path difference" as destructive but then forget any starting phase. If the two waves already start in antiphase (as at a fixed reflection boundary), a further path difference of <code>λ/2</code> brings them back into phase. Always count the total phase: reflection flip plus path delay.</p></div>`
     },
 
     {
@@ -87,7 +128,9 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <h3>The first harmonic in terms of tension and mass per unit length</h3>
 <p>Combining <code>f = v/2L</code> with the wave speed on a string <code>v = √(T/μ)</code>:</p>
 <div class="formula">f₁ = (1/2L) √(T/μ)</div>
-<p>where <code>T</code> is the tension and <code>μ</code> the mass per unit length. This is the equation a guitar tuner uses: tightening the string increases <code>T</code>, which raises the frequency. Note the square root — doubling the tension raises the pitch by only a factor of <code>√2</code>.</p>`
+<p>where <code>T</code> is the tension and <code>μ</code> the mass per unit length. This is the equation a guitar tuner uses: tightening the string increases <code>T</code>, which raises the frequency. Note the square root — doubling the tension raises the pitch by only a factor of <code>√2</code>.</p>
+<div class="callout callout--key"><p><b>The proportionality worth memorising.</b> For a fixed length and total mass, <code>f₁ ∝ √T</code> and <code>f₁ ∝ 1/√μ</code>. So to raise the pitch by an octave (double <code>f</code>) you must increase the tension by a factor of 4, or quarter the mass per unit length. A guitarist does the first by turning a tuning peg; the second is why bass strings are thicker or wound with metal.</p></div>
+<p>中文对照: 谐波 harmonic, 基频 fundamental frequency, 节点 node, 腹点 antinode, 张力 tension. 第 n 谐波有 n+1 个节点、n 个腹点。</p>`
     },
 
     {
@@ -105,7 +148,9 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <div class="formula">L = (2n − 1)λ/4        f = (2n − 1)v/(4L)        only odd harmonics</div>
 <div class="callout callout--key"><p><b>The result worth remembering, because it feels asymmetric.</b> A closed pipe supports only <b>odd</b> harmonics — the fundamental, the third, the fifth, and so on. The even ones are absent. And for the same length, a closed pipe has a fundamental frequency <b>half</b> that of an open pipe, because <code>v/4L</code> against <code>v/2L</code>. Both facts follow directly from the boundary conditions, and both are commonly asked.</p></div>
 <h3>End correction</h3>
-<p>In reality an antinode sits slightly beyond the open end, so the effective length is a little longer than the physical length. Competition questions sometimes mention this; if they do, add the correction to <code>L</code> before using the formulas.</p>`
+<p>In reality an antinode sits slightly beyond the open end, so the effective length is a little longer than the physical length. Competition questions sometimes mention this; if they do, add the correction to <code>L</code> before using the formulas.</p>
+<div class="callout callout--key"><p><b>Counting without the formula.</b> Draw the boundary conditions: closed end = node, open end = antinode. A closed pipe of length <code>L</code> fits a quarter wavelength at its fundamental (node to antinode), so <code>L = λ/4</code>; each higher odd mode adds another half wavelength. An open pipe fits a half wavelength (antinode to antinode), so <code>L = λ/2</code>. Sketching the pattern beats algebra under pressure, and it is what the exam expects you to do in your head.</p></div>
+<p>中文对照: 管 pipe, 闭管 closed pipe, 开管 open pipe, 奇次谐波 odd harmonics. 闭管只支持奇次谐波，基频是开管的一半。</p>`
     },
 
     {
@@ -126,7 +171,9 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <h3>The sign in the bracket</h3>
 <p>A <code>−</code> sign between the terms, <code>cos(ωt − kx)</code>, means the wave travels in the <code>+x</code> direction. A <code>+</code> sign, <code>cos(ωt + kx)</code>, means it travels in the <code>−x</code> direction. That is worth knowing because a question may ask which way a given wave is going.</p>
 <h3>Sine or cosine</h3>
-<p>The choice of <code>sin</code> or <code>cos</code> only shifts the wave along, so it corresponds to a different starting point. It does not change <code>A</code>, <code>ω</code>, <code>k</code> or <code>v</code> at all. Do not be distracted by it.</p>`
+<p>The choice of <code>sin</code> or <code>cos</code> only shifts the wave along, so it corresponds to a different starting point. It does not change <code>A</code>, <code>ω</code>, <code>k</code> or <code>v</code> at all. Do not be distracted by it.</p>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> The coefficient of <code>x</code> is <code>k = 2π/λ</code>, not <code>λ</code>, and the coefficient of <code>t</code> is <code>ω = 2πf</code>, not <code>f</code>. A question will happily offer <code>λ = 3</code> when the equation actually says <code>k = 3</code>, betting you forget the <code>2π</code>. Always convert: <code>λ = 2π/k</code> and <code>f = ω/2π</code>. Also check the sign in the bracket before declaring a direction.</p></div>
+<p>中文对照: 波数 wave number k, 角频率 angular frequency ω, 行波 travelling wave. <code>v = ω/k</code> 直接得波速。</p>`
     },
 
     {
@@ -151,7 +198,9 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <li><code>v_wave = ω/k = 600/3 = 200 m s⁻¹</code></li>
 <li><code>v_particle(max) = ωA = 600 × 0.02 = 12 m s⁻¹</code></li>
 </ul>
-<p>Note how different 200 and 12 are. That gap is exactly what the wrong options exploit.</p>`
+<p>Note how different 200 and 12 are. That gap is exactly what the wrong options exploit.</p>
+<div class="callout callout--key"><p><b>The cleanest one-line check.</b> Wave speed depends on the medium; particle speed depends on the wave's amplitude and frequency. Shake the same rope harder (larger <code>A</code>) and the particles move faster, but the wave still crawls along at the same speed. So if a question changes only the amplitude, the wave speed cannot change — and the answer that scales with <code>A</code> is the particle speed, not the wave speed.</p></div>
+<p>中文对照: 质点速度 particle speed, 波速 wave speed. 振幅变大只让质点更快，不改变波速。</p>`
     },
 
     {
@@ -167,7 +216,9 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <p>For an ideal gas at constant pressure, heating increases the volume, so the density falls. Since <code>v ∝ 1/√ρ</code> and <code>ρ ∝ 1/T</code>, we get</p>
 <div class="formula">v ∝ √T</div>
 <p>where <code>T</code> is the <b>absolute</b> temperature in kelvin. This is why sound travels faster on a hot day. Note that <code>v ∝ √T</code> means doubling the absolute temperature increases the speed by only a factor of <code>√2 ≈ 1.41</code>.</p>
-<div class="callout callout--warn"><p><b>Kelvin, not Celsius.</b> <code>v ∝ √T</code> requires absolute temperature. Sound travels at about 340 m s⁻¹ at 20 °C, which is 293 K. A question that gives you a Celsius temperature and asks about a speed ratio requires conversion first — and forgetting that is the standard error.</p></div>`
+<div class="callout callout--warn"><p><b>Kelvin, not Celsius.</b> <code>v ∝ √T</code> requires absolute temperature. Sound travels at about 340 m s⁻¹ at 20 °C, which is 293 K. A question that gives you a Celsius temperature and asks about a speed ratio requires conversion first — and forgetting that is the standard error.</p></div>
+<div class="callout callout--warn"><p><b>How to get this wrong, twice over.</b> First, the temperature dependence is <code>v ∝ √T</code> with <i>absolute</i> temperature. If a question gives 20 °C and 40 °C, the ratio is <code>√293 / √313</code>, not <code>√20 / √40</code>. Using Celsius makes the speed ratio look like <code>√0.5 ≈ 0.7</code> — a decrease — when it actually rises slightly. Second, do not confuse <code>v = √(γP/ρ)</code> with the string formula; they share the square root but nothing else.</p></div>
+<p>中文对照: 波速 wave speed, 弦 string, 气体 gas, 开尔文 kelvin. 升温使声速略增，用绝对温度。</p>`
     },
 
     {
@@ -184,7 +235,27 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <h3>Amplitude and intensity</h3>
 <p>Intensity is proportional to the square of the amplitude:</p>
 <div class="formula">I ∝ A²</div>
-<p>So if the amplitude doubles, the intensity quadruples. This is worth connecting to the inverse-square law: from <code>I ∝ 1/r²</code> and <code>I ∝ A²</code>, the amplitude must fall as <code>1/r</code>. Both statements are true and they are consistent, which is a satisfying check.</p>`
+<p>So if the amplitude doubles, the intensity quadruples. This is worth connecting to the inverse-square law: from <code>I ∝ 1/r²</code> and <code>I ∝ A²</code>, the amplitude must fall as <code>1/r</code>. Both statements are true and they are consistent, which is a satisfying check.</p>
+<div class="callout callout--key"><p><b>Two links, one chain.</b> From <code>I ∝ A²</code> and <code>I ∝ 1/r²</code>, the amplitude of a spherical wave falls as <code>A ∝ 1/r</code>. So doubling the distance halves the amplitude but quarters the intensity. A question that asks about amplitude change when the distance doubles wants <code>½</code>, not <code>¼</code> — keep straight which quantity is being asked.</p></div>
+<p>中文对照: 强度 intensity, 振幅 amplitude, 反平方定律 inverse-square law. 距离加倍 → 强度变 ¼，振幅变 ½。</p>`
+    },
+
+    {
+      h: "The Doppler effect",
+      body: `<p>When the source or the observer moves, the frequency measured is not the frequency emitted. The effect is everyday for sound: an approaching ambulance sounds higher in pitch as it comes, lower as it recedes.</p>
+<h3>The two distinct cases</h3>
+<p>The physics differs depending on <i>who</i> moves, because motion of the source changes the <b>wavelength</b> while motion of the observer changes the <b>rate at which wavefronts arrive</b>.</p>
+<table><thead><tr><th>Case</th><th>Formula (speeds small compared with wave speed <code>v</code>)</th></tr></thead><tbody>
+<tr><td>Source moves towards stationary observer at speed <code>v_s</code></td><td><code>f' = f · v / (v − v_s)</code></td></tr>
+<tr><td>Source moves away</td><td><code>f' = f · v / (v + v_s)</code></td></tr>
+<tr><td>Observer moves towards stationary source at speed <code>v_o</code></td><td><code>f' = f · (v + v_o) / v</code></td></tr>
+<tr><td>Observer moves away</td><td><code>f' = f · (v − v_o) / v</code></td></tr>
+</tbody></table>
+<p>The sign rule is the thing to memorise, not the four formulas separately: <b>towards</b> → frequency goes <b>up</b>; <b>away</b> → frequency goes <b>down</b>. A source moving towards you crowds the wavefronts ahead (shorter wavelength), so the same wave speed now carries more cycles per second. An observer moving towards the source simply meets wavefronts more often.</p>
+<h3>Why the two formulas are different</h3>
+<p>For a moving <i>source</i> the wave speed in the medium is unchanged, but the wavelength is: <code>λ' = (v − v_s)/f</code> in front, so <code>f' = v/λ' = v f /(v − v_s)</code>. For a moving <i>observer</i> the wavelength is unchanged, but the relative speed of wavefronts to the observer is <code>v + v_o</code>, so <code>f' = (v + v_o)/λ</code>. Same direction of shift, different algebra — which is exactly why a question will offer you the wrong formula as a distractor.</p>
+<div class="callout callout--key"><p><b>中文对照.</b> 多普勒效应 Doppler effect, 波源 source, 观察者 observer, 频率 frequency. 靠近 → 频率升高，远离 → 频率降低。</p></div>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> The single biggest trap is swapping the source and observer formulas. If the <i>source</i> moves, the wavelength changes and the denominator of <code>v/(v ∓ v_s)</code> is what moves. If the <i>observer</i> moves, the wavelength is fixed and the numerator of <code>(v ± v_o)/v</code> is what moves. Pick the wrong one and you get a distractor option. Also note: for light the classical formulas are replaced by the relativistic Doppler shift, which is <b>not</b> Round 0 material — use these mechanical formulas for sound only.</p></div>`
     }
   ],
 
@@ -231,6 +302,42 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <p><b>The traps.</b> Option B, <code>2.5 × 10⁻³</code>, is what you get from forgetting the factor of 4 — using <code>πr²</code>, the area of a circle rather than a sphere. Option C, <code>1.0 × 10⁻²</code>, is ten times too large, which comes from a powers-of-ten slip in the division.</p>
 <p><b>The extension worth doing.</b> What is the intensity at 8.0 m? By the inverse-square law it is a quarter of the value at 4.0 m, so <code>2.5 × 10⁻⁴ W m⁻²</code>. No need to redo the area calculation — the ratio <code>(4/8)² = ¼</code> gives it immediately. That is exactly the ratio reasoning from module A, and it is the fastest route whenever the distance changes rather than the source.</p>`,
       tag: "Intensity — inverse square"
+    },
+
+    {
+      q: "<p>Two strings A and B have the same length and the same tension, but string B has four times the mass per unit length of string A. What is the ratio <code>f_B / f_A</code> of their fundamental frequencies?</p><p>A) <code>1/4</code> &nbsp; B) <code>1/2</code> &nbsp; C) <code>1</code> &nbsp; D) <code>2</code> &nbsp; E) <code>4</code></p>",
+      sol: `<p>The fundamental frequency of a stretched string is</p>
+<div class="formula">f = (1/2L) √(T/μ)</div>
+<p>Both strings share <code>L</code> and <code>T</code>, so the only differing quantity is <code>μ</code>. Frequency is therefore inversely proportional to the square root of the mass per unit length:</p>
+<div class="formula">f ∝ 1/√μ</div>
+<p>With <code>μ_B = 4 μ_A</code>:</p>
+<div class="formula">f_B / f_A = √(μ_A / μ_B) = √(1/4) = 1/2</div>
+<p><b>Answer: B, <code>1/2</code>.</b></p>
+<p><b>The trap.</b> Option E, <code>4</code>, is what you get if you forget the square root and use <code>f ∝ μ</code> instead of <code>f ∝ 1/√μ</code> — the heavier string vibrates more slowly, not faster. Option A, <code>1/4</code>, comes from using <code>f ∝ 1/μ</code> (inverting but dropping the root). Both are structural errors in the proportionality, which is exactly what this question probes. No arithmetic was needed — only the square-root dependence.</p>
+<p><b>The check.</b> A heavier string stores more inertia per unit length, so it oscillates slower; the answer must be less than 1. That alone eliminates D and E before any formula is written.</p>`,
+      tag: "Frequency ratio — no calculator"
+    },
+
+    {
+      q: "<p>A string of length 1.20 m is fixed at both ends and vibrates in its third harmonic. How many nodes does the standing-wave pattern have, counting the fixed ends?</p><p>A) 2 &nbsp; B) 3 &nbsp; C) 4 &nbsp; D) 5 &nbsp; E) 6</p>",
+      sol: `<p>For the <code>n</code>th harmonic on a string fixed at both ends there are <code>n + 1</code> nodes (including both ends). The third harmonic has <code>n = 3</code>, so the node count is</p>
+<div class="formula">nodes = 3 + 1 = 4</div>
+<p>Check from the geometry: <code>L = nλ/2</code> gives <code>λ = 2L/n = 2 × 1.20 / 3 = 0.80 m</code>. Nodes are spaced <code>λ/2 = 0.40 m</code> apart, and the number of nodes along the string is <code>L / (λ/2) + 1 = 1.20 / 0.40 + 1 = 4</code> ✓.</p>
+<p><b>Answer: C.</b></p>
+<p><b>The traps.</b> Option B, 3, is the number of <b>antinodes</b> in the third harmonic (there are <code>n</code> antinodes) — a quantity you compute on the way and then mislabel. Option A, 2, is the node count of the first harmonic, and option D, 5, is the node count of the fourth harmonic. Each distractor is a genuine count from a different mode, which is what makes this a clean discrimination question.</p>
+<p><b>The rule to learn.</b> <code>n</code>th harmonic → <code>n</code> antinodes and <code>n + 1</code> nodes. Fix that pair and every node/antinode question becomes a one-line lookup.</p>`,
+      tag: "Standing-wave node count"
+    },
+
+    {
+      q: "<p>A stationary source emits sound of frequency <code>f</code>. An observer moves directly towards the source at speed <code>v_o</code>, where <code>v_o</code> is much smaller than the wave speed <code>v</code>. What is the observed frequency <code>f'</code>?</p><p>A) <code>f v / (v − v_o)</code> &nbsp; B) <code>f (v − v_o) / v</code> &nbsp; C) <code>f (v + v_o) / v</code> &nbsp; D) <code>f v / (v + v_o)</code> &nbsp; E) <code>f</code></p>",
+      sol: `<p>The observer moving <b>towards</b> the source meets wavefronts more often, so the observed frequency must be <b>higher</b> than <code>f</code>. With the wavelength unchanged at <code>λ = v/f</code>, the relative speed of wavefronts to the moving observer is <code>v + v_o</code>, giving</p>
+<div class="formula">f' = (v + v_o) / λ = (v + v_o) / (v/f) = f (v + v_o) / v</div>
+<p><b>Answer: C.</b></p>
+<p><b>The trap — and it is the whole point.</b> Option A, <code>f v / (v − v_o)</code>, is the formula for a <b>source</b> moving towards a stationary observer, not a moving observer. The two look similar and both raise the pitch, which is exactly why they are offered side by side: if you cannot tell who is moving, you cannot tell which formula applies. Here the observer moves, so the wavelength is fixed and the <b>numerator</b> carries the <code>v_o</code>; for a moving source the wavelength changes and the <b>denominator</b> carries it.</p>
+<p><b>Why the others die.</b> B has <code>v − v_o</code> in the numerator, which would <i>lower</i> the frequency — that is the observer moving <b>away</b>. D is the source moving away. E is no motion at all. Only C gives a higher frequency with the speed in the numerator where a moving observer puts it.</p>
+<p><b>The direction rule.</b> Towards → up; away → down. Once you know the direction of the shift you have already killed B, D and E, leaving only A and C to distinguish by asking who is moving.</p>`,
+      tag: "Doppler — moving observer"
     }
   ],
 
@@ -274,6 +381,20 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 
   sections: [
     {
+      h: "The law of reflection",
+      body: `<p>The simplest optical rule: a ray reflected from a smooth surface leaves at the same angle it arrived, measured from the <b>normal</b> (the line perpendicular to the surface).</p>
+<div class="formula">θ_incidence = θ_reflection</div>
+<ul class="tight">
+<li><b>Specular reflection</b> (a mirror): the surface is smooth on the scale of the wavelength, so all rays obey the law and a clear image forms.</li>
+<li><b>Diffuse reflection</b> (paper, wall): the surface is rough, so each bit reflects at its own local normal and the reflected light scatters — no image, just illumination.</li>
+</ul>
+<h3>Plane mirrors and images</h3>
+<p>A plane mirror forms a <b>virtual</b> image: the object and image are the same size, the same distance behind the mirror as the object is in front, and the image is laterally inverted (left–right swapped). "Virtual" means the rays do not actually pass through the image point — they only appear to come from there, so the image cannot be projected onto a screen.</p>
+<div class="callout callout--key"><p><b>中文对照.</b> 反射定律 law of reflection, 镜面反射 specular reflection, 漫反射 diffuse reflection, 平面镜 plane mirror, 虚像 virtual image. 入射角等于反射角，均从法线量起。</p></div>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> Always measure from the normal, never from the surface. A ray hitting a surface at 30° to the surface has an angle of incidence of 60° from the normal, and reflects 60° from the normal — which is 30° to the surface on the other side. Mixing up "to the surface" and "to the normal" is the standard reflection error.</p></div>`
+    },
+
+    {
       h: "Refractive index and Snell's law",
       body: `<p>The refractive index of a medium is the ratio of the speed of light in a vacuum to its speed in the medium:</p>
 <div class="formula">n = c/c_s</div>
@@ -283,7 +404,9 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <p>where <code>θ₁</code> and <code>θ₂</code> are measured from the <b>normal</b>, not from the surface. This is the most common error in the topic: an angle measured from the surface must be converted to an angle from the normal before use.</p>
 <div class="callout callout--key"><p><b>What refraction actually is, physically.</b> The frequency is set by the source and cannot change. When light enters a denser medium its speed falls, so <code>λ = v/f</code> falls too. The change of direction is the consequence of the wavefronts bending as one part of the wave slows before the other — exactly like a marching band turning when one flank slows down. That analogy is worth being able to give.</p></div>
 <h3>Which way does the ray bend?</h3>
-<p>Into a denser medium (<code>n</code> increases), the ray bends <b>towards</b> the normal. Into a less dense medium, it bends <b>away</b> from the normal. A quick check: from air into glass, the ray bends towards the normal, and the angle from the normal decreases.</p>`
+<p>Into a denser medium (<code>n</code> increases), the ray bends <b>towards</b> the normal. Into a less dense medium, it bends <b>away</b> from the normal. A quick check: from air into glass, the ray bends towards the normal, and the angle from the normal decreases.</p>
+<div class="callout callout--key"><p><b>Why <code>n = c/c_s</code> and Snell are the same law.</b> From <code>v = fλ</code> with fixed frequency, <code>λ = v/f</code>, so a slower medium has a shorter wavelength. Snell's law <code>n₁ sin θ₁ = n₂ sin θ₂</code> rearranges to <code>sin θ₁ / sin θ₂ = n₂/n₁ = (c/v₂)/(c/v₁) = v₁/v₂</code> — exactly the mechanical refraction rule with speeds. Light bending is just wave speed changing at a boundary.</p></div>
+<p>中文对照: 折射率 refractive index, 斯涅尔定律 Snell's law, 法线 normal, 入射角 angle of incidence. 光从光疏到光密介质会向法线偏折。</p>`
     },
 
     {
@@ -305,7 +428,9 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <tr><td>glass (n = 1.5) → air</td><td>1.50</td><td>42°</td></tr>
 <tr><td>diamond → air</td><td>2.42</td><td>24°</td></tr>
 </tbody></table>
-<p>Diamond's very small critical angle is why it sparkles: light entering it is reflected internally many times before emerging, so a great deal of light is directed back out towards the viewer.</p>`
+<p>Diamond's very small critical angle is why it sparkles: light entering it is reflected internally many times before emerging, so a great deal of light is directed back out towards the viewer.</p>
+<div class="callout callout--key"><p><b>Worked critical-angle estimate, no calculator.</b> For glass <code>n = 1.5</code>, <code>sin θ_c = 1/1.5 = 2/3 ≈ 0.667</code>. Since <code>sin 42° ≈ 0.669</code>, <code>θ_c ≈ 42°</code>. The key is to compare <code>1/n</code> with familiar sines: <code>sin 30° = 0.5</code>, <code>sin 45° ≈ 0.707</code>. If <code>1/n</code> lies between them, the critical angle lies between 30° and 45°. That brackets the answer without any calculator.</p></div>
+<p>中文对照: 全内反射 total internal reflection, 临界角 critical angle. 光从光密到光疏且入射角大于临界角时发生。</p>`
     },
 
     {
@@ -322,7 +447,9 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <h3>Range of angles for emergence</h3>
 <p>A question may ask for the range of incident angles for which light emerges from the second face at all. The boundary case is <code>r₂ = θ_c</code>, which via <code>r₁ + r₂ = A</code> gives <code>r₁ = A − θ_c</code>, and then Snell's law at the first face gives the limiting incident angle. That is the whole calculation, and it is a standard competition question.</p>
 <h3>Dispersion</h3>
-<p>Because <code>n</code> varies slightly with wavelength — larger for violet, smaller for red — the prism spreads white light into a spectrum. The violet end is deviated more. This is <b>dispersion</b>, and it is the same phenomenon that causes rainbows.</p>`
+<p>Because <code>n</code> varies slightly with wavelength — larger for violet, smaller for red — the prism spreads white light into a spectrum. The violet end is deviated more. This is <b>dispersion</b>, and it is the same phenomenon that causes rainbows.</p>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> When applying <code>r₁ + r₂ = A</code>, both <code>r₁</code> and <code>r₂</code> are the <b>internal</b> angles measured from the normal <i>inside</i> the glass. A common slip is to use the external incidence angle as <code>r₁</code>. The first face always refracts the ray <i>towards</i> the normal on entry (going glass-wards from air), so <code>r₁ &lt; θ₁</code>. Compute <code>r₁</code> from Snell first; do not reuse the incidence angle.</p></div>
+<p>中文对照: 棱镜 prism, 顶角 apex angle, 色散 dispersion. 紫光偏折最大，红光最小。</p>`
     },
 
     {
@@ -340,7 +467,71 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <li><b>Absorption</b> — the glass absorbs some of the light, particularly at certain wavelengths. Fibres are made from very pure glass and used at wavelengths where absorption is minimal.</li>
 <li><b>Scattering</b> — imperfections in the glass deflect light out of the core.</li>
 </ul>
-<div class="callout callout--key"><p><b>Why pulse broadening matters.</b> A digital signal is a sequence of pulses. If each pulse spreads out in time, it starts to overlap with its neighbours and the receiver can no longer tell a 1 from a 0. That is why dispersion limits both the maximum length of a fibre link and the maximum data rate. Stating the consequence, not just the mechanism, is what earns the mark.</p></div>`
+<div class="callout callout--key"><p><b>Why pulse broadening matters.</b> A digital signal is a sequence of pulses. If each pulse spreads out in time, it starts to overlap with its neighbours and the receiver can no longer tell a 1 from a 0. That is why dispersion limits both the maximum length of a fibre link and the maximum data rate. Stating the consequence, not just the mechanism, is what earns the mark.</p></div>
+<div class="callout callout--good"><p><b>The acceptance cone.</b> Only rays entering the core within a certain angle are trapped by total internal reflection; this range is set by the difference in refractive index between core and cladding. A larger index step gives a wider acceptance cone and better light capture. Stating the role of the core–cladding index difference is what turns a description into an explanation.</p></div>
+<p>中文对照: 光纤 optical fibre, 纤芯 core, 包层 cladding, 脉冲展宽 pulse broadening. 阶跃折射率 step-index 光纤靠全内反射导光。</p>`
+    },
+
+    {
+      h: "Lenses — converging and diverging, real and virtual images",
+      body: `<p>A lens bends rays by refraction at two curved surfaces. The two types behave oppositely.</p>
+<table><thead><tr><th></th><th>Converging (convex, positive)</th><th>Diverging (concave, negative)</th></tr></thead><tbody>
+<tr><td>Shape</td><td>thicker in the middle</td><td>thinner in the middle</td></tr>
+<tr><td>Action on parallel rays</td><td>brings them to a focus at the focal point <code>F</code></td><td>spreads them as if from a focal point in front</td></tr>
+<tr><td>Image for a real object</td><td>real and inverted if the object is beyond <code>f</code>; virtual, upright and magnified if inside <code>f</code> (a magnifying glass)</td><td>always virtual, upright and diminished</td></tr>
+</tbody></table>
+<h3>Real versus virtual images</h3>
+<ul class="tight">
+<li><b>Real image:</b> the rays actually converge at the image point. It can be projected onto a screen and is always inverted for a single converging lens. Formed when the object is beyond the focal length.</li>
+<li><b>Virtual image:</b> the rays only <i>appear</i> to diverge from the image point; they never meet there. It cannot be projected, is upright, and is what you see when using a magnifying glass or a diverging lens.</li>
+</ul>
+<h3>The three principal rays (for sketching)</h3>
+<ol class="tight">
+<li>A ray parallel to the axis leaves through the focal point (converging) or as if from the focal point (diverging).</li>
+<li>A ray through the centre of the lens is undeviated.</li>
+<li>A ray through the near focal point emerges parallel to the axis (converging).</li>
+</ol>
+<div class="callout callout--key"><p><b>中文对照.</b> 凸透镜 converging lens, 凹透镜 diverging lens, 实像 real image, 虚像 virtual image, 焦点 focal point. 凸透镜物距大于焦距成倒立实像，小于焦距成正立虚像。</p></div>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> Do not assume a converging lens always makes a real image. Place the object inside the focal length (closer than <code>f</code>) and the image flips to virtual, upright and magnified — that is the magnifying glass. The "real vs virtual" outcome depends on where the object sits relative to <code>f</code>, not on the lens type alone (a diverging lens is always virtual, but a converging lens can be either).</p></div>`
+    },
+
+    {
+      h: "The thin lens formula and magnification",
+      body: `<p>For a thin lens the object distance <code>u</code>, image distance <code>v</code> and focal length <code>f</code> are linked by</p>
+<div class="formula">1/u + 1/v = 1/f</div>
+<p>and the linear magnification is the image height over the object height, equal to the ratio of distances:</p>
+<div class="formula">m = v/u</div>
+<p>Using the convention below, a negative <code>v</code> means a virtual image (same side as the object); a negative <code>m</code> means an inverted image.</p>
+<h3>A sign convention that avoids pain</h3>
+<p>For Round 0 the cleanest convention is: distances are positive if measured in the direction of the outgoing (image-side) light. With that rule a converging lens has <code>f &gt; 0</code>; a real image has <code>v &gt; 0</code>; a virtual image has <code>v &lt; 0</code>. The formula then works without extra case-switching.</p>
+<h3>The ratios worth knowing cold (no calculator)</h3>
+<table><thead><tr><th>Object position</th><th>Image position</th><th>Magnification</th><th>Image type</th></tr></thead><tbody>
+<tr><td><code>u = 2f</code></td><td><code>v = 2f</code></td><td><code>m = −1</code></td><td>real, inverted, same size</td></tr>
+<tr><td><code>u &gt; 2f</code></td><td><code>f &lt; v &lt; 2f</code></td><td><code>|m| &lt; 1</code></td><td>real, inverted, diminished</td></tr>
+<tr><td><code>f &lt; u &lt; 2f</code></td><td><code>v &gt; 2f</code></td><td><code>|m| &gt; 1</code></td><td>real, inverted, magnified</td></tr>
+<tr><td><code>u &lt; f</code></td><td><code>v &lt; 0</code></td><td><code>m &gt; 1</code> (upright)</td><td>virtual, upright, magnified</td></tr>
+</tbody></table>
+<div class="callout callout--key"><p><b>中文对照.</b> 薄透镜公式 thin lens formula, 放大率 magnification, 物距 object distance u, 像距 image distance v. <code>m = v/u</code>，负号表示倒立。</p></div>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> The formula is <code>1/u + 1/v = 1/f</code>, <i>not</i> <code>u + v = f</code> and <i>not</i> <code>1/(u+v)</code>. Taking reciprocals is the step people skip. And when the object is inside the focal length, <code>v</code> comes out negative — that negative sign is the signal "virtual", not a mistake to throw away. Keep it; it is the answer.</p></div>`
+    },
+
+    {
+      h: "Lens power, and the eye and camera qualitatively",
+      body: `<p>The <b>power</b> of a lens measures how strongly it bends rays. It is the reciprocal of the focal length, in metres:</p>
+<div class="formula">P = 1/f        (f in metres, P in dioptres, D)</div>
+<p>A short-focal-length lens is powerful (large <code>P</code>); a long-focal-length lens is weak (small <code>P</code>). A converging lens has positive power; a diverging lens has negative power. Lenses placed in contact simply add their powers:</p>
+<div class="formula">P_total = P₁ + P₂</div>
+<p>This is why two weak lenses together can be treated as one lens of combined power — and why opticians prescribe a single number of dioptres.</p>
+<h3>The eye</h3>
+<p>The eye is a converging-lens system: the cornea and the flexible crystalline lens focus light onto the retina at the back. To see objects at different distances the ciliary muscles change the lens's curvature, altering its focal length — this is <b>accommodation</b>.</p>
+<ul class="tight">
+<li><b>Short sight (myopia):</b> the eye is too strong or too long, so distant objects focus in front of the retina. Corrected with a <b>diverging</b> lens.</li>
+<li><b>Long sight (hyperopia):</b> the eye is too weak or too short, so near objects focus behind the retina. Corrected with a <b>converging</b> lens.</li>
+</ul>
+<h3>The camera</h3>
+<p>A camera is the same idea with a fixed lens focusing onto a sensor or film; the aperture controls how much light enters, and focusing moves the lens to change <code>v</code> for the object distance <code>u</code>. Both the eye and the camera are single converging-lens imagers — the only difference is that the eye accommodates <code>f</code> while the camera moves <code>v</code>.</p>
+<div class="callout callout--key"><p><b>中文对照.</b> 屈光度 power (dioptre), 眼睛 eye, 相机 camera, 视网膜 retina, 晶状体 crystalline lens, 近视 myopia, 远视 hyperopia, 调节 accommodation. 近视用凹透镜矫正，远视用凸透镜矫正。</p></div>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> Power is <code>1/f</code> with <code>f</code> in <b>metres</b>. A focal length of 50 cm is <code>f = 0.50 m</code>, so <code>P = 2.0 D</code> — not 0.02 D (that would be using centimetres) and not 50 D (that would be using the number 50 directly). Watch the unit conversion; it is the only arithmetic step here.</p></div>`
     },
 
     {
@@ -353,7 +544,9 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 </tbody></table>
 <h3>Coherence</h3>
 <p>For a stable interference pattern, the two sources must be <b>coherent</b>: the same frequency, and a constant phase difference. Ordinary light sources are not coherent, because they emit in random bursts. This is why a single source is split into two paths — in Young's experiment by passing it through two slits, in a thin film by reflection from the front and back surfaces.</p>
-<div class="callout callout--warn"><p><b>Why the fringes move if you use two separate lamps.</b> Two independent lamps have no fixed phase relationship, so the phase difference at any point changes randomly many times per second. The maxima and minima average out and no pattern is seen. This is the standard explanation question on this topic, and it is worth having ready.</p></div>`
+<div class="callout callout--warn"><p><b>Why the fringes move if you use two separate lamps.</b> Two independent lamps have no fixed phase relationship, so the phase difference at any point changes randomly many times per second. The maxima and minima average out and no pattern is seen. This is the standard explanation question on this topic, and it is worth having ready.</p></div>
+<div class="callout callout--key"><p><b>Path difference versus phase difference.</b> A path difference of one wavelength is a phase difference of <code>2π</code> (back in phase, constructive); half a wavelength is <code>π</code> (antiphase, destructive). The conversion is <code>Δφ = 2π × (path difference)/λ</code>. When a question gives you a path difference in metres, divide by <code>λ</code> first, then decide constructive or destructive from the remainder.</p></div>
+<p>中文对照: 路程差 path difference, 相干 coherent, 相位差 phase difference. 路程差 nλ 相长，(n+½)λ 相消。</p>`
     },
 
     {
@@ -374,7 +567,9 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <tr><td>Increase <code>s</code> (slits further apart)</td><td>spacing <b>decreases</b></td></tr>
 <tr><td>Use white light</td><td>a white central fringe with coloured fringes either side</td></tr>
 </tbody></table>
-<div class="callout callout--key"><p><b>The white-light case, which is sample question S4.</b> With white light, every wavelength gives its own pattern. All wavelengths give a maximum at the centre, so the central fringe is <b>white</b>. Away from the centre the different wavelengths peak at different places, so the fringes are coloured, with red — the longest wavelength — spread furthest. The pattern therefore has a white centre, then coloured fringes whose spacing increases towards the red.</p></div>`
+<div class="callout callout--key"><p><b>The white-light case, which is sample question S4.</b> With white light, every wavelength gives its own pattern. All wavelengths give a maximum at the centre, so the central fringe is <b>white</b>. Away from the centre the different wavelengths peak at different places, so the fringes are coloured, with red — the longest wavelength — spread furthest. The pattern therefore has a white centre, then coloured fringes whose spacing increases towards the red.</p></div>
+<div class="callout callout--key"><p><b>Why the small-angle approximation is safe.</b> Typical numbers: <code>D = 2 m</code>, <code>s = 0.5 mm</code>, so <code>x ≈ nλD/s</code>. For the first fringe with <code>λ = 600 nm</code>, <code>x ≈ 2.4 mm</code>, so <code>tan θ = x/D ≈ 0.0012</code> — far smaller than the ~0.1 where <code>sin θ ≈ tan θ</code> starts to fail. The approximation is not a fudge; it is exact to the precision the answer needs.</p></div>
+<p>中文对照: 杨氏双缝 Young's double slit, 条纹间距 fringe spacing, 白光 white light. 中央条纹为白色，两侧呈彩色。</p>`
     },
 
     {
@@ -390,7 +585,9 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <tr><td>Longer wavelength</td><td>wider central maximum</td></tr>
 </tbody></table>
 <div class="callout callout--key"><p><b>The inverse relationship is the point.</b> Diffraction is <i>more</i> pronounced when the slit is <i>narrower</i> and comparable to the wavelength. A very wide slit diffracts hardly at all, which is why you do not see light bending around doorways. This counter-intuitive inverse dependence is the standard question, and it is the reason the marks are usually qualitative rather than numerical.</p></div>
-<div class="callout callout--warn"><p><b>Do not confuse the two patterns.</b> A <b>double</b> slit gives many evenly spaced fringes of roughly equal brightness. A <b>single</b> slit gives one broad bright band with weak fringes either side. If a question shows you a pattern, the number of fringes and their relative brightness tell you immediately which experiment it came from.</p></div>`
+<div class="callout callout--warn"><p><b>Do not confuse the two patterns.</b> A <b>double</b> slit gives many evenly spaced fringes of roughly equal brightness. A <b>single</b> slit gives one broad bright band with weak fringes either side. If a question shows you a pattern, the number of fringes and their relative brightness tell you immediately which experiment it came from.</p></div>
+<div class="callout callout--key"><p><b>Combining with the double slit.</b> In a real double-slit setup each slit has finite width, so the overall pattern is the sharp double-slit fringes <i>enveloped</i> by the broader single-slit diffraction curve. The single-slit minima can actually wipe out some double-slit maxima — "missing orders". The inverse dependence <code>width ∝ λ/a</code> is the qualitative fact most often tested.</p></div>
+<p>中文对照: 单缝衍射 single-slit diffraction, 中央极大 central maximum, 缺级 missing order. 缝越窄，衍射越显著。</p>`
     },
 
     {
@@ -404,7 +601,9 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <p>For example, 500 lines per millimetre gives <code>d = 1/500 mm = 2 × 10⁻⁶ m</code>. Getting this conversion right is the main arithmetic hurdle in grating questions.</p>
 <h3>The maximum order</h3>
 <p>Since <code>sin θ</code> cannot exceed 1, the largest possible order satisfies <code>n ≤ d/λ</code>. So a grating with <code>d = 2 × 10⁻⁶ m</code> and light of <code>λ = 500 nm = 5 × 10⁻⁷ m</code> can give orders up to <code>2 × 10⁻⁶/5 × 10⁻⁷ = 4</code>. So orders 0, 1, 2, 3 and 4 are visible — and a question asking "how many orders are visible" wants 5, not 4, because the zeroth order counts.</p>
-<div class="callout callout--good"><p><b>Why gratings are used for spectroscopy.</b> The sharpness of the maxima means two very close wavelengths produce two clearly separated lines, whereas with a double slit they would overlap. That is the practical reason gratings are preferred in a spectrometer, and it is a common "why" question.</p></div>`
+<div class="callout callout--good"><p><b>Why gratings are used for spectroscopy.</b> The sharpness of the maxima means two very close wavelengths produce two clearly separated lines, whereas with a double slit they would overlap. That is the practical reason gratings are preferred in a spectrometer, and it is a common "why" question.</p></div>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> Two conversions trip people up. First, <code>d</code> is the spacing between adjacent slits, found from lines per unit length — it is <b>not</b> the slit width. Second, keep units consistent: convert lines per mm to <code>d</code> in metres before using <code>d sin θ = nλ</code>. A grating of 500 lines/mm gives <code>d = 2 × 10⁻⁶ m</code>, not <code>2 × 10⁻³ m</code>. Also remember the zeroth order when counting visible orders.</p></div>
+<p>中文对照: 衍射光栅 diffraction grating, 光栅常量 grating spacing d, 级次 order. 级次 n 满足 n ≤ d/λ。</p>`
     }
   ],
 
@@ -463,6 +662,44 @@ sin θ = 0.50</div>
 <p><b>The trap.</b> Option A is the answer you get by reasoning that water has a higher refractive index and therefore "more refraction", so the fringes should spread. The opposite is true. Option D, a factor of 1.77, comes from using <code>1.33²</code>, which has no basis here.</p>
 <p><b>The physical reading.</b> Shorter wavelength means the waves are more tightly packed, so the maxima occur at smaller angles and the pattern is compressed. The fringes get closer together, and the pattern becomes harder to resolve. That is a real experimental effect and it is why interferometry is easier in air than in a liquid.</p>`,
       tag: "Wavelength in a medium — frequency does not change"
+    },
+
+    {
+      q: "<p>Light in air (refractive index 1.00) strikes a glass surface (refractive index 1.50) at an angle of incidence of 30° to the normal. What is the angle of refraction? Use <code>sin 30° = 0.50</code> and <code>sin 19.5° ≈ 0.33</code>.</p><p>A) 19.5° &nbsp; B) 30° &nbsp; C) 35° &nbsp; D) 42° &nbsp; E) 60°</p>",
+      sol: `<p>Snell's law, with the ray going from air into the denser glass:</p>
+<div class="formula">n₁ sin θ₁ = n₂ sin θ₂
+1.00 × sin 30° = 1.50 × sin θ₂
+sin θ₂ = 0.50 / 1.50 = 1/3 ≈ 0.333</div>
+<p>From the value given, <code>sin 19.5° ≈ 0.33</code>, so <code>θ₂ ≈ 19.5°</code>.</p>
+<p><b>Answer: A.</b></p>
+<p><b>The no-calculator reasoning.</b> Going into a denser medium, the ray bends <i>towards</i> the normal, so the refracted angle must be <b>less</b> than the incident 30°. That eliminates C, D and E immediately. Between A (19.5°) and B (30°, unchanged), bending towards the normal means the angle must shrink, so A. The arithmetic only confirmed what the direction rule already told you.</p>
+<p><b>The traps.</b> B is "no refraction at all" — the answer if you forget Snell entirely. D, 42°, is the critical angle of this glass (<code>sin θ_c = 1/1.5</code>), a value worth knowing so you do not confuse it with a refraction angle. E, 60°, is what you get by inverting the ratio: <code>sin θ₂ = 1.5 × 0.5</code> — using <code>n₁/n₂</code> the wrong way round.</p>`,
+      tag: "Snell's law — ratio, no calculator"
+    },
+
+    {
+      q: "<p>A converging lens of focal length <code>f</code> forms an image of an object placed at distance <code>2f</code>. The object is then moved to distance <code>3f</code>. By what factor does the magnification change?</p><p>A) it doubles &nbsp; B) it halves &nbsp; C) it is unchanged &nbsp; D) it becomes one third &nbsp; E) it becomes two thirds</p>",
+      sol: `<p>Use the lens formula <code>1/u + 1/v = 1/f</code> and <code>m = v/u</code>. First case, <code>u = 2f</code>:</p>
+<div class="formula">1/v = 1/f − 1/(2f) = 1/(2f)   →   v = 2f
+m₁ = v/u = 2f / 2f = 1</div>
+<p>Second case, <code>u = 3f</code>:</p>
+<div class="formula">1/v = 1/f − 1/(3f) = 2/(3f)   →   v = 3f/2
+m₂ = v/u = (3f/2) / (3f) = 1/2</div>
+<p>So the magnification changes from 1 to <code>1/2</code> — it halves.</p>
+<p><b>Answer: B, it halves.</b></p>
+<p><b>The ratio route, which is faster.</b> The image distance at <code>u = 2f</code> is <code>2f</code> (a fact worth knowing: object at 2f gives an image at 2f, same size). At <code>u = 3f</code> the image is between <code>f</code> and <code>2f</code>; computing gives <code>v = 1.5f</code>. Then <code>m₂/m₁ = (1.5f/3f) / (2f/2f) = 0.5/1 = ½</code>. No full reciprocal algebra needed if you know the <code>u = 2f</code> special case.</p>
+<p><b>The traps.</b> D, "one third", comes from confusing the magnification with the object-distance ratio <code>f/3f = 1/3</code>. E, "two thirds", is the ratio <code>v₂/v₁ = (1.5f)/(2f) = 3/4</code> — wrong quantity again. Both distractors use a real ratio from the problem but apply it to the wrong thing, which is the standard lens-formula trap.</p>`,
+      tag: "Lens formula — magnification ratio"
+    },
+
+    {
+      q: "<p>The speed of light in a certain transparent medium is measured to be <code>2.0 × 10⁸ m s⁻¹</code>. The speed of light in a vacuum is <code>3.0 × 10⁸ m s⁻¹</code>. What is the refractive index of the medium?</p><p>A) 0.67 &nbsp; B) 1.5 &nbsp; C) 1.33 &nbsp; D) 2.0 &nbsp; E) 3.0</p>",
+      sol: `<p>The refractive index is the ratio of the speed in a vacuum to the speed in the medium:</p>
+<div class="formula">n = c / c_s = (3.0 × 10⁸) / (2.0 × 10⁸) = 3.0 / 2.0 = 1.5</div>
+<p><b>Answer: B, 1.5.</b></p>
+<p><b>The no-calculator check.</b> The medium is slower than vacuum (as every medium must be), so <code>n</code> must be <b>greater than 1</b>. That alone eliminates A (0.67), which is the reciprocal <code>c_s/c</code> — the single most common slip, because it is tempting to divide the smaller number by the larger. Options C (1.33, water), D (2.0) and E (3.0) are all physically possible indices but do not match the given speeds; only B does.</p>
+<p><b>The conceptual link.</b> Since <code>n = c/c_s</code> and the frequency cannot change across a boundary, this is also <code>n = λ_vacuum / λ_medium</code>. A refractive index of 1.5 means the wavelength inside the medium is two-thirds of its vacuum value — which is exactly why the fringe spacing in Young's experiment shrinks when immersed in liquid (see the existing example on that topic).</p>`,
+      tag: "Refractive index from speed"
     }
   ],
 

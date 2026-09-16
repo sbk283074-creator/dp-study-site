@@ -19,6 +19,9 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <div class="formula">Q = CV</div>
 <p>where <code>Q</code> is the charge on one plate in coulombs, <code>V</code> is the potential difference in volts, and <code>C</code> is the <b>capacitance</b> in farads. Capacitance is a property of the construction of the capacitor — the area of the plates, their separation, and the material between them — not of how it is being used.</p>
 <p>One farad is one coulomb per volt. That is a very large capacitance for a real component, so in practice you meet microfarads (μF), nanofarads (nF) and picofarads (pF).</p>
+<h3>What the capacitance actually measures</h3>
+<p>Because <code>C = Q/V</code>, capacitance is literally how much charge the capacitor can hold per volt across it — a kind of electrical "capacity" (电容, the 中文 name says it directly). A larger capacitance means more charge stored for the same voltage. For a parallel-plate capacitor, two things set the size of <code>C</code>: a bigger plate area <code>A</code> gives more room to park charge, and a smaller plate separation <code>d</code> means the opposite charges sit closer and attract each other more strongly, so more charge piles up at the same voltage. Sliding an insulating material (a dielectric, 电介质) between the plates also raises <code>C</code>. You do not need the formula <code>C = εA/d</code> for Round 0, but the qualitative direction is worth knowing: <b>more area, smaller gap, better dielectric → larger capacitance</b>.</p>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> Do not confuse "capacitance" with "charge". A 10 μF capacitor does not "contain 10 μC" — it contains <code>10 μF × V</code> microcoulombs, whatever <code>V</code> happens to be. Capacitance is a property of the object; charge depends on how you use it. The 中文 picture: capacitance is the bucket (its size), charge is the water you poured in.</p></div>
 <div class="callout callout--key"><p><b>Read <code>Q</code> carefully.</b> The charge <code>Q</code> in the equation is the magnitude of the charge on <i>one</i> plate. The two plates carry equal and opposite charges, so the total net charge on a capacitor is always zero. When a question asks about charge, it means the charge on one plate.</p></div>`
     },
 
@@ -53,7 +56,10 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <h3>Two capacitors in series, the quick form</h3>
 <p>For exactly two capacitors the reciprocal expression rearranges to the product-over-sum form:</p>
 <div class="formula">C_series = C₁C₂ / (C₁ + C₂)</div>
-<p>This is the same structure as the formula for two resistors in parallel. Worth knowing because it is faster than dealing with reciprocals under time pressure.</p>`
+<p>This is the same structure as the formula for two resistors in parallel. Worth knowing because it is faster than dealing with reciprocals under time pressure.</p>
+<h3>A quick numerical feel</h3>
+<p>Suppose <code>C₁ = 2 μF</code> and <code>C₂ = 6 μF</code>. In parallel: <code>C = 2 + 6 = 8 μF</code>. In series: <code>1/C = 1/2 + 1/6 = 4/6 = 2/3</code>, so <code>C = 3/2 = 1.5 μF</code>. Note the pattern: parallel gives the <i>sum</i> (bigger), series gives a value <i>smaller than either</i> (1.5 μF is less than both 2 and 6). If your series answer ever comes out larger than the smaller capacitor, you have inverted something.</p>
+<div class="callout callout--bad"><p><b>How to get this wrong.</b> The most common slip is to add capacitors in series the way you add resistors in series — straight addition. That is backwards. Resistors in series add; capacitors in series reciprocal-add. If a question says "two capacitors in series" and one option is simply <code>C₁ + C₂</code>, that is the resistor rule misapplied, and it is a trap.</p></div>`
     },
 
     {
@@ -65,8 +71,34 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <p>Substituting <code>Q = CV</code> gives the three equivalent forms, all of which appear as options:</p>
 <div class="formula">E = ½QV = ½CV² = Q²/(2C)</div>
 <div class="callout callout--key"><p><b>Why the half.</b> A common wrong option is <code>QV</code> with no half. That would be the energy if the charge had been pushed on at full voltage throughout. It was not — the average voltage during charging is <code>V/2</code>. The factor of ½ is the signature of a linear ramp, and it appears in the same way in the elastic strain energy <code>½FΔL</code> and the kinetic energy <code>½mv²</code>.</p></div>
+<h3>Why all three forms are the same thing</h3>
+<p>The three expressions are not three different energies — they are the same energy written in terms of different pairs of variables. Start from <code>E = ½QV</code>. Substitute <code>Q = CV</code> and you get <code>E = ½(CV)V = ½CV²</code>. Substitute <code>V = Q/C</code> instead and you get <code>E = ½Q(Q/C) = Q²/(2C)</code>. So all three follow from the single fact <code>Q = CV</code> plus the ½ from the triangle. On a multiple-choice paper this matters because the options often offer all three forms and you must recognise that they are equivalent, not competing.</p>
+<div class="callout callout--good"><p><b>Which form to reach for.</b> Pick the form that contains only the quantity held constant. If the charge is fixed (isolated capacitor), use <code>Q²/2C</code>. If the voltage is fixed (still connected to the battery), use <code>½CV²</code>. If you are given both <code>Q</code> and <code>V</code>, use <code>½QV</code>. Choosing the wrong form is exactly how you miss a hidden change in the other variable.</p></div>
 <h3>Where the energy goes</h3>
 <p>When a capacitor charges through a resistor, exactly half the energy supplied by the battery ends up stored in the capacitor, and the other half is dissipated as heat in the resistance. This is true regardless of the size of the resistance, which is a surprising result and a favourite of competition questions. The reason is that the battery supplies <code>QV</code> while the capacitor stores <code>½QV</code>.</p>`
+    },
+
+    {
+      h: "Changing the capacitor: separating plates or inserting a dielectric",
+      body: `<p>Competition questions love to ask what happens to the charge, voltage and stored energy when you alter the capacitor itself. The trick is to fix which quantity is held constant first — that decides everything else.</p>
+<h3>Case 1 — isolated capacitor (charge fixed)</h3>
+<p>If the capacitor is disconnected from the battery, the charge <code>Q</code> cannot change. Now separate the plates: the capacitance falls, because moving the plates apart reduces <code>C</code> (smaller gap → larger capacitance, so bigger gap → smaller <code>C</code>). Since <code>Q = CV</code> with <code>Q</code> fixed, the voltage <code>V</code> must rise. The energy, using the constant-charge form, is</p>
+<div class="formula">E = Q²/(2C)</div>
+<p>With <code>Q</code> fixed and <code>C</code> smaller, the energy <b>increases</b>. Where did the energy come from? You did mechanical work pulling the oppositely-charged plates apart against their attraction. So an isolated capacitor stores more energy when you pull its plates apart.</p>
+<h3>Case 2 — connected to the battery (voltage fixed)</h3>
+<p>If the capacitor stays connected to the battery, the voltage <code>V</code> is held fixed by the battery. Separate the plates and <code>C</code> falls again. Now <code>Q = CV</code> with <code>V</code> fixed means the charge <code>Q</code> <b>falls</b> — charge flows back to the battery. The energy, using the constant-voltage form, is</p>
+<div class="formula">E = ½CV²</div>
+<p>With <code>V</code> fixed and <code>C</code> smaller, the energy <b>decreases</b>. This is the opposite outcome to Case 1, which is exactly why you must state which case you are in.</p>
+<h3>Inserting a dielectric</h3>
+<p>Sliding an insulating slab between the plates raises the capacitance by a factor <code>k</code> (the dielectric constant, 介电常数). Isolated, <code>Q</code> fixed so <code>V</code> drops to <code>V/k</code> and the energy drops to <code>E/k</code>. Connected to the battery, <code>V</code> fixed so <code>Q</code> rises to <code>kQ</code> and the energy rises to <code>kE</code>. The direction always flips with the case.</p>
+<div class="callout callout--warn"><p><b>The error to avoid.</b> Never say "the energy doubles" without saying which quantity is held constant. For the same physical change (plates pulled apart), the energy goes <i>up</i> if isolated and <i>down</i> if connected. The single word "isolated" or "connected" determines the answer, and questions are written so that both outcomes appear as options.</p></div>`
+    },
+
+    {
+      h: "The half-energy rule when charging from a battery",
+      body: `<p>A subtle and frequently-tested result: when you charge a capacitor from a battery of fixed voltage <code>V</code>, the battery supplies energy <code>QV</code> but only <code>½QV</code> ends up stored. The missing half is lost as heat in the resistance of the circuit (or, in the ideal limit, radiated away). This holds for <i>any</i> resistance, large or small.</p>
+<p>Why does it not depend on the resistance? The energy stored depends only on the final state <code>(Q, V)</code>, via <code>½QV</code>. The battery always supplies <code>QV</code> because it moves total charge <code>Q</code> across the fixed potential difference <code>V</code>. The gap between them is fixed by the geometry of the charge–voltage line, not by how fast the charge arrives. So whether the resistor is 1 Ω or 1 MΩ, exactly half the battery's energy is dissipated.</p>
+<div class="callout callout--key"><p><b>How a question uses this.</b> If asked "what fraction of the battery's energy is stored" in a single charging from fixed voltage, the answer is always <code>½</code>. If instead the capacitor is already charged to <code>V</code> and you reconnect it to <code>2V</code> to double the voltage, the extra energy stored is <code>½C(2V)² − ½CV² = 3·½CV²</code> while the battery supplies the extra charge <code>CV</code> at the higher average voltage — a different bookkeeping, so do not blindly reuse the ½.</p></div>`
     }
   ],
 
@@ -121,6 +153,51 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <p><b>The trap.</b> Option B, <code>½CV²</code>, is what you get by treating the pair as a single capacitor of capacitance <code>C</code>. Option A comes from using <code>CV²</code> without the half. Both are there for a reason.</p>
 <p><b>An independent check.</b> Each capacitor carries the same charge and has half the voltage across it, so each stores <code>½C(V/2)² = CV²/8</code>. Two of them give <code>CV²/4</code> ✓. The two routes agree, which is a good habit: whenever a combination question has a second route, take it and compare.</p>`,
       tag: "Series combination feeding the energy formula"
+    },
+
+    {
+      q: "<p>Two 4 μF capacitors are connected in parallel, and that combination is connected in series with an 8 μF capacitor. The whole network is charged to 10 V. What is the total energy stored?</p><p>A) 100 μJ &nbsp; B) 200 μJ &nbsp; C) 400 μJ &nbsp; D) 800 μJ &nbsp; E) 50 μJ</p>",
+      sol: `<p><b>Step 1 — equivalent capacitance.</b> The parallel pair: <code>4 + 4 = 8 μF</code>. Now that 8 μF is in series with the other 8 μF:</p>
+<div class="formula">C_eq = (8 × 8)/(8 + 8) = 64/16 = 4 μF</div>
+<p><b>Step 2 — energy.</b> The whole network is at 10 V, so</p>
+<div class="formula">E = ½ C_eq V² = ½ × 4 × 10⁻⁶ × 10² = ½ × 4 × 10⁻⁶ × 100 = 2.0 × 10⁻⁴ J = 200 μJ</div>
+<p><b>Answer: B, 200 μJ.</b></p>
+<p><b>The trap.</b> Option C, 400 μJ, is what you get if you stop after finding the parallel pair (8 μF) and forget the series step entirely — you use <code>C = 8 μF</code> instead of 4 μF. Option D, 800 μJ, comes from the same 8 μF but omitting the ½. Always finish the combination before touching the energy formula; the energy question is really a combination question wearing a disguise.</p>
+<p><b>The quick sanity check.</b> The series step must reduce the capacitance below the smaller branch (8 μF), so <code>C_eq</code> must be under 8 μF. Any answer using a capacitance of 8 μF or more is automatically wrong.</p>`,
+      tag: "Combination plus energy — finish the network first"
+    },
+
+    {
+      q: "<p>A capacitor is charged to a potential difference V and stores energy E. It remains connected to the battery, and the plate separation is then doubled. What happens to the stored energy?</p><p>A) It halves &nbsp; B) It is unchanged &nbsp; C) It doubles &nbsp; D) It quadruples &nbsp; E) It falls to a quarter</p>",
+      sol: `<p>The capacitor stays connected to the battery, so the voltage <code>V</code> is fixed. Doubling the plate separation halves the capacitance: <code>C₂ = C/2</code>.</p>
+<p>Use the constant-voltage form of the energy:</p>
+<div class="formula">E = ½CV²   →   E₂ = ½(C/2)V² = ½ · E</div>
+<p>So the stored energy <b>halves</b>.</p>
+<p><b>Answer: A.</b></p>
+<p><b>Why you must name the case.</b> If the capacitor had been <i>isolated</i> (disconnected, charge fixed), the same doubling of separation would have <i>doubled</i> the energy — that is option C, which is the trap. Both outcomes appear as options precisely because the answer hinges on the single word "connected". Here "remains connected to the battery" pins the voltage, so the energy follows <code>½CV²</code> and falls.</p>
+<p><b>Physical picture.</b> With the battery holding the voltage fixed, pulling the plates apart forces charge to flow back into the battery, so the capacitor ends up with less charge and less stored energy.</p>`,
+      tag: "Changing the capacitor — voltage held constant"
+    },
+
+    {
+      q: "<p>A 2 μF capacitor is charged to 10 V and then disconnected from the supply. It is connected in parallel with an uncharged 3 μF capacitor. What is the final common potential difference across both?</p><p>A) 2 V &nbsp; B) 4 V &nbsp; C) 6 V &nbsp; D) 8 V &nbsp; E) 10 V</p>",
+      sol: `<p><b>Step 1 — initial charge.</b> On the 2 μF capacitor: <code>Q = CV = 2 × 10⁻⁶ × 10 = 20 μC</code>. The 3 μF capacitor is uncharged.</p>
+<p><b>Step 2 — after connecting.</b> Charge is conserved (no battery in the loop): total charge is still 20 μC. The two capacitors are now in parallel, so they share the same voltage <code>V_f</code> and the combined capacitance is <code>2 + 3 = 5 μF</code>.</p>
+<div class="formula">V_f = Q_total / C_total = 20 μC / 5 μF = 4 V</div>
+<p><b>Answer: B, 4 V.</b></p>
+<p><b>The trap.</b> Option E, 10 V, is the original voltage — it ignores the fact that charge is now shared over a larger total capacitance. Option C, 6 V, is a meaningless average of the two capacitances. The key idea: the total charge is fixed, so adding capacitance at fixed charge <i>lowers</i> the voltage (<code>V = Q/C</code>).</p>
+<p><b>The redistribution check.</b> After connection, the 2 μF capacitor holds <code>2 × 4 = 8 μC</code> and the 3 μF holds <code>3 × 4 = 12 μC</code>; they sum to 20 μC, confirming conservation. The charge has simply moved from one plate group to the other until the voltages equalised.</p>`,
+      tag: "Charge sharing between capacitors at equilibrium"
+    },
+
+    {
+      q: "<p>A capacitor stores a charge of 30 μC when the potential difference across it is 10 V. What is the energy stored?</p><p>A) 150 μJ &nbsp; B) 300 μJ &nbsp; C) 75 μJ &nbsp; D) 30 μJ &nbsp; E) 600 μJ</p>",
+      sol: `<p>Use the form containing the two given quantities, <code>Q</code> and <code>V</code>:</p>
+<div class="formula">E = ½QV = ½ × 30 × 10⁻⁶ × 10 = 150 × 10⁻⁶ J = 150 μJ</div>
+<p><b>Answer: A, 150 μJ.</b></p>
+<p><b>Check with the other two forms.</b> First find <code>C = Q/V = 30 μC / 10 V = 3 μF</code>. Then <code>½CV² = ½ × 3 × 10⁻⁶ × 100 = 150 μJ</code> ✓, and <code>Q²/(2C) = (30×10⁻⁶)² / (2 × 3×10⁻⁶) = 900×10⁻¹² / 6×10⁻⁶ = 150 μJ</code> ✓. All three forms agree — they must, because they are the same energy.</p>
+<p><b>The trap.</b> Option B, 300 μJ, is the missing-half error: <code>QV</code> without the ½. This is the single most common capacitor slip, and it is offered here on purpose. Option C would be a quarter, option D is just the charge misread as an energy, and option E is <code>QV</code> in the wrong unit.</p>`,
+      tag: "Energy — all three forms agree"
     }
   ],
 
@@ -168,6 +245,11 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <tr><td>Blue light</td><td>400 nm</td><td>3.1 eV</td></tr>
 <tr><td>Ultraviolet</td><td>200 nm</td><td>6.2 eV</td></tr>
 </tbody></table>
+<h3>The quick photon-energy rule in eV</h3>
+<p>Because <code>hc = 2.0 × 10⁻²⁵ J m</code> and <code>1 eV = 1.6 × 10⁻¹⁹ J</code>, the photon energy in electron volts is</p>
+<div class="formula">E(eV) = hc/(λ × 1.6 × 10⁻¹⁹) = 2.0 × 10⁻²⁵ / (1.6 × 10⁻¹⁹ λ) = 1.24 × 10⁻⁶ / λ = 1240 eV·nm / λ</div>
+<p>where <code>λ</code> is in nanometres. This is worth memorising as a single number: a 620 nm photon (red) carries about <code>1240/620 = 2 eV</code>, and the energy scales as <code>1/λ</code>. Shorter wavelength means higher energy — which is why ultraviolet (shorter λ) is what knocks electrons out, while infrared (longer λ) cannot.</p>
+<div class="callout callout--key"><p><b>The mental route.</b> Divide 1240 by the wavelength in nm; the result is the photon energy in eV. No joules, no powers of ten. For a 500 nm photon: <code>1240/500 ≈ 2.5 eV</code>, matching the table above. Use this constantly.</p></div>
 <p>Notice that visible photons all carry a few electron volts. This is why the photoelectric effect for most metals needs ultraviolet: typical work functions are 2 to 5 eV, so red light often simply does not have enough energy per photon.</p>`
     },
 
@@ -189,7 +271,12 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <p>Rearranged into straight-line form:</p>
 <div class="formula">E_k(max) = hf − φ</div>
 <p>So a graph of maximum kinetic energy against frequency is a straight line with <b>gradient h</b> and <b>vertical intercept −φ</b>. The horizontal intercept is the threshold frequency <code>f₀ = φ/h</code>.</p>
-<div class="callout callout--good"><p><b>The gradient is <code>h</code> for every metal.</b> That is the point of plotting it: the gradient gives a fundamental constant of nature, while the intercept characterises the particular metal. Questions often give you two metals on one graph and ask which has the larger work function — the answer is whichever line has its horizontal intercept further to the right.</p></div>`
+<div class="callout callout--good"><p><b>The gradient is <code>h</code> for every metal.</b> That is the point of plotting it: the gradient gives a fundamental constant of nature, while the intercept characterises the particular metal. Questions often give you two metals on one graph and ask which has the larger work function — the answer is whichever line has its horizontal intercept further to the right.</p></div>
+<h3>The threshold frequency and the threshold wavelength</h3>
+<p>Set <code>E_k(max) = 0</code> in Einstein's equation to find the minimum frequency that just ejects an electron:</p>
+<div class="formula">hf₀ = φ   →   f₀ = φ/h</div>
+<p>Below <code>f₀</code> no electron is emitted at all, however bright the beam. In wavelength terms, since <code>f = c/λ</code>, there is a longest wavelength <code>λ_max = c/f₀ = hc/φ</code> that can still cause emission. Red light has a long wavelength and low energy; if <code>λ &gt; λ_max</code> the photon is simply too weak, no matter how intense the light.</p>
+<div class="callout callout--key"><p><b>The test.</b> A question may give you a work function in eV and ask for the threshold wavelength. Convert <code>φ</code> to joules (multiply by <code>1.6 × 10⁻¹⁹</code>), then <code>λ_max = hc/φ</code> — or use the 1240 eV·nm rule directly: <code>λ_max(nm) = 1240/φ(eV)</code>. That avoids converting units entirely.</p></div>`
     },
 
     {
@@ -203,7 +290,8 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <tr><td>Increase frequency</td><td>no change (if above threshold)</td><td>increases linearly</td></tr>
 <tr><td>Decrease wavelength</td><td>no change</td><td>increases</td></tr>
 <tr><td>Change the metal to one with a larger φ</td><td>no change</td><td>decreases</td></tr>
-</tbody></table>`
+</tbody></table>
+<div class="callout callout--good"><p><b>Reading the stopping potential off a graph of current against voltage.</b> The photocurrent falls to zero at the reverse voltage <code>−V_s</code>. The kinetic energy of the fastest electron equals <code>eV_s</code>, so <code>V_s = E_k(max)/e</code>. In practice you often just read <code>V_s</code> in volts and quote the kinetic energy in eV with the same number — that is the whole convenience of the electron volt, and it is why stopping-potential questions and eV questions are the same calculation wearing different labels.</p></div>`
     },
 
     {
@@ -217,7 +305,12 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <div class="formula">hf = E₁ − E₂</div>
 <p>Because the levels are discrete, only certain photon energies are possible, so a gas discharge emits sharp bright lines rather than a continuous spread of colours. Conversely, a gas absorbs photons at exactly those same energies, which produces dark lines in a continuous spectrum.</p>
 <div class="callout callout--key"><p><b>The exam point.</b> Line spectra are <i>evidence</i> for discrete energy levels. A question phrased as "what does the existence of line spectra tell us" wants that sentence, not a calculation. A question phrased as "what is the wavelength of the photon emitted in the transition from −3.4 eV to −13.6 eV" wants the energy difference, then <code>λ = hc/ΔE</code>.</p></div>
-<div class="callout callout--warn"><p><b>Watch the signs.</b> Energy levels are usually quoted as negative numbers, measured from the zero of an electron at rest infinitely far away. The energy <i>released</i> when falling from −3.4 eV to −13.6 eV is <code>(−3.4) − (−13.6) = 10.2 eV</code>. Do not get this the wrong way round; the emitted photon has positive energy.</p></div>`
+<div class="callout callout--warn"><p><b>Watch the signs.</b> Energy levels are usually quoted as negative numbers, measured from the zero of an electron at rest infinitely far away. The energy <i>released</i> when falling from −3.4 eV to −13.6 eV is <code>(−3.4) − (−13.6) = 10.2 eV</code>. Do not get this the wrong way round; the emitted photon has positive energy.</p></div>
+<h3>A worked transition</h3>
+<p>In hydrogen the levels are roughly <code>E₁ = −13.6 eV, E₂ = −3.4 eV, E₃ = −1.51 eV</code>, approaching 0 from below as <code>n</code> grows. An electron falling from <code>n = 3</code> to <code>n = 2</code> releases</p>
+<div class="formula">ΔE = E₃ − E₂ = (−1.51) − (−3.4) = 1.89 eV</div>
+<p>and the photon wavelength is <code>λ = hc/ΔE = 1240 eV·nm / 1.89 eV ≈ 656 nm</code> — the red line of the Balmer series. Going all the way from a free electron (<code>n = ∞</code>, energy 0) to <code>n = 1</code> releases 13.6 eV, which is the ionisation energy of hydrogen.</p>
+<div class="callout callout--key"><p><b>Bigger drop, bluer light.</b> Transitions ending at the ground state (<code>n = 1</code>) release the most energy and give the shortest wavelengths (the Lyman series, ultraviolet). Transitions ending at <code>n = 2</code> give the visible Balmer series. The pattern — larger energy gap, shorter wavelength — is what you need for the qualitative questions.</p></div>`
     },
 
     {
@@ -229,7 +322,32 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <p>For a mass of 0.16 kg moving at 30 m s⁻¹, the momentum is about 5 kg m s⁻¹, giving</p>
 <div class="formula">λ ≈ 6.6 × 10⁻³⁴ / 5 ≈ 1.3 × 10⁻³⁴ m</div>
 <p>That is some twenty orders of magnitude smaller than an atomic nucleus. No obstacle is fine enough to diffract it, so the wave behaviour is completely unobservable. For an electron accelerated through 100 V the wavelength is about 0.12 nm, comparable to atomic spacing — which is why crystals work as diffraction gratings for electrons.</p>
-<div class="callout callout--key"><p><b>The duality statement worth memorising.</b> Light and matter each exhibit both wave and particle behaviour; which one you observe depends on the experiment. Interference and diffraction reveal the wave nature; the photoelectric effect and the discrete energy transfers reveal the particle nature.</p></div>`
+<div class="callout callout--key"><p><b>The duality statement worth memorising.</b> Light and matter each exhibit both wave and particle behaviour; which one you observe depends on the experiment. Interference and diffraction reveal the wave nature; the photoelectric effect and the discrete energy transfers reveal the particle nature.</p></div>
+<div class="callout callout--warn"><p><b>Do not mix up the two wavelengths.</b> A photon's wavelength comes from <code>λ = c/f = hc/E</code> (it travels at speed <code>c</code>). A matter particle's wavelength comes from <code>λ = h/mv</code> (it has rest mass). Both reduce to "momentum = h/λ", but you obtain the momentum differently: <code>p = E/c</code> for a photon, <code>p = mv</code> for an electron. Questions test exactly this distinction, so decide which particle you are dealing with before writing a formula.</p></div>`
+    },
+
+    {
+      h: "The electron-volt",
+      body: `<p>The electron volt (eV, 电子伏特) is not a different kind of energy — it is a unit of energy, chosen because atomic and photon energies are tiny in joules. By definition, <b>one electron volt is the energy gained by a single electron accelerated through a potential difference of 1 volt</b>:</p>
+<div class="formula">1 eV = e × 1 V = 1.60 × 10⁻¹⁹ J</div>
+<p>So an electron accelerated through 5 V gains 5 eV = <code>8.0 × 10⁻¹⁹ J</code>. The convenience is that in this topic almost every energy — photon energies, work functions, kinetic energies of photoelectrons — comes out as a small number of eV, and the stopping potential in volts is numerically the kinetic energy in eV.</p>
+<h3>Converting both ways</h3>
+<ul class="tight">
+<li><b>J → eV:</b> divide by <code>1.6 × 10⁻¹⁹</code>. So <code>3.2 × 10⁻¹⁹ J = 2 eV</code>.</li>
+<li><b>eV → J:</b> multiply by <code>1.6 × 10⁻¹⁹</code>. So <code>2.5 eV = 4.0 × 10⁻¹⁹ J</code>.</li>
+</ul>
+<p>For photon energies, the 1240 eV·nm rule folds the conversion in: <code>E(eV) = 1240/λ(nm)</code>. For wavelength, <code>λ(nm) = 1240/E(eV)</code>.</p>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> The electron volt is an energy, not a voltage. Writing "the kinetic energy is 2 V" is wrong; it is 2 eV. Only the stopping potential is measured in volts, and it equals the kinetic energy in eV numerically — but they are different quantities with different units. Keep the distinction in your head even when the numbers match.</p></div>`
+    },
+
+    {
+      h: "Photon momentum",
+      body: `<p>A photon has no mass, yet it carries momentum. Combining <code>E = pc</code> (the energy–momentum relation for a massless particle) with <code>E = hf = hc/λ</code> gives</p>
+<div class="formula">p = E/c = hf/c = h/λ</div>
+<p>So a photon's momentum is <code>h/λ</code> — inversely proportional to its wavelength. A shorter-wavelength (bluer, higher-energy) photon carries more momentum. This is the particle side of light made quantitative: when light reflects off a surface it pushes on it, and the pressure it exerts is the rate of momentum transfer.</p>
+<h3>Why this matters</h3>
+<p>Photon momentum explains the <b>radiation pressure</b> (辐射压) that makes comet tails point away from the Sun and that is proposed for solar sails. It also appears in the Compton effect, where a photon bounces off an electron and loses energy — concrete proof that photons carry momentum, not just energy.</p>
+<div class="callout callout--key"><p><b>Comparing a photon to an electron.</b> Both obey <code>p = h/λ</code>, but the momentum is found differently. For a photon, <code>p = E/c</code>. For an electron of speed <code>v</code>, <code>p = mv</code> (non-relativistic). A 500 nm photon has momentum <code>6.6 × 10⁻³⁴ / 5 × 10⁻⁷ ≈ 1.3 × 10⁻²⁷ kg m s⁻¹</code> — tiny, which is why light pressure is only noticeable at astronomical scales.</p></div>`
     }
   ],
 
@@ -279,6 +397,51 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <p><b>The estimate route, without a calculator.</b> Note that <code>2mE_k ≈ 2 × 9 × 3.2 × 10⁻⁴⁸ = 58 × 10⁻⁴⁸</code>, and <code>√58 ≈ 7.6</code>. Then <code>6.6/7.6 ≈ 0.87</code>, and the powers give <code>10⁻³⁴/10⁻²³ = 10⁻¹¹</code>. So <code>0.87 × 10⁻¹⁰ = 0.087 nm</code>.</p>
 <p><b>The physical check.</b> 0.087 nm is comparable to atomic spacing, which is why 200 V electrons diffract from crystals and 20 000 V electrons do not (they are too fast, so their wavelength is too short). Any answer of order nanometres or larger is physically wrong for this accelerating voltage — that alone kills options B, C and E.</p>`,
       tag: "de Broglie — with the no-calculator route"
+    },
+
+    {
+      q: "<p>The work function of a metal is 2.0 eV. What is the longest wavelength of light that can still eject photoelectrons from it?</p><p>A) 310 nm &nbsp; B) 496 nm &nbsp; C) 620 nm &nbsp; D) 1240 nm &nbsp; E) 2480 nm</p>",
+      sol: `<p>The threshold condition is <code>hf₀ = φ</code>, or in wavelength form <code>λ_max = hc/φ</code>. Using the 1240 eV·nm rule with <code>φ = 2.0 eV</code>:</p>
+<div class="formula">λ_max = 1240 / 2.0 = 620 nm</div>
+<p><b>Answer: C, 620 nm.</b></p>
+<p><b>The trap.</b> Option B, 496 nm, is <code>1240/2.5</code> — it comes from using a work function of 2.5 eV. If you misread the number, you land here. Option D, 1240 nm, is <code>1240/1.0</code>, i.e. using φ = 1.0 eV. Option A is half of the right answer, and option E is double — both are ordering slips. The 1240 rule removes the unit conversion, so the only arithmetic is a single division; check you divided by the right φ.</p>
+<p><b>The physics.</b> Light of wavelength longer than 620 nm (redder, lower energy) cannot free an electron no matter how bright it is. This is exactly why red light often fails to cause the photoelectric effect while violet does.</p>`,
+      tag: "Threshold wavelength from the work function"
+    },
+
+    {
+      q: "<p>Light of wavelength 300 nm shines on a metal of work function 2.0 eV. What stopping potential is needed to reduce the photocurrent to zero?</p><p>A) 1.1 V &nbsp; B) 2.1 V &nbsp; C) 4.1 V &nbsp; D) 6.1 V &nbsp; E) 2.0 V</p>",
+      sol: `<p><b>Photon energy</b> (1240 eV·nm rule):</p>
+<div class="formula">E = 1240 / 300 ≈ 4.13 eV</div>
+<p><b>Maximum kinetic energy</b> of the photoelectrons:</p>
+<div class="formula">E_k(max) = 4.13 − 2.0 = 2.13 eV</div>
+<p>The stopping potential in volts is numerically the kinetic energy in eV, so <code>V_s ≈ 2.1 V</code>.</p>
+<p><b>Answer: B, 2.1 V.</b></p>
+<p><b>The trap.</b> Option C, 4.1 V, is the photon energy before subtracting the work function — the classic "forgot to subtract φ" slip. Option E, 2.0 V, is the work function itself masquerading as an answer. Both are there deliberately. You must subtract <code>φ</code> from <code>hf</code>, never add it and never drop it.</p>
+<p><b>Sanity check.</b> 300 nm is ultraviolet, well above threshold (620 nm), so emission occurs and the stopping potential is positive — consistent with a real answer around 2 V.</p>`,
+      tag: "Stopping potential — full calculation"
+    },
+
+    {
+      q: "<p>What is the momentum of a photon of wavelength 600 nm? Use <code>h = 6.6 × 10⁻³⁴ J s</code>.</p><p>A) 1.1 × 10⁻²⁷ kg m s⁻¹ &nbsp; B) 1.1 × 10⁻²⁶ kg m s⁻¹ &nbsp; C) 1.1 × 10⁻²⁸ kg m s⁻¹ &nbsp; D) 3.3 × 10⁻²⁷ kg m s⁻¹ &nbsp; E) 1.1 × 10⁻²⁵ kg m s⁻¹</p>",
+      sol: `<p>Convert the wavelength to metres: <code>600 nm = 6.0 × 10⁻⁷ m</code>. Then</p>
+<div class="formula">p = h/λ = 6.6 × 10⁻³⁴ / (6.0 × 10⁻⁷) = 1.1 × 10⁻²⁷ kg m s⁻¹</div>
+<p><b>Answer: A.</b></p>
+<p><b>Why the others are powers of ten off.</b> This is an estimation question in disguise: the options differ by factors of ten, so the test is whether you converted nm → m correctly and kept the exponent straight. Forget the ×10⁻⁹ and you are off by 10⁹; slip the exponent by one place and you land on B, C or E. Option D, <code>3.3 × 10⁻²⁷</code>, is the momentum of a 200 nm photon, a different wavelength entirely.</p>
+<p><b>The physical point.</b> Photon momentum is genuinely tiny — about 10⁻²⁷ kg m s⁻¹ — which is why you never feel the pressure of ordinary light, but it adds up for a whole star bearing on a comet tail.</p>`,
+      tag: "Photon momentum — watch the powers of ten"
+    },
+
+    {
+      q: "<p>An electron in a hydrogen atom falls from the n = 2 level (energy −3.4 eV) to the n = 1 level (energy −13.6 eV). What is the wavelength of the emitted photon?</p><p>A) 122 nm &nbsp; B) 656 nm &nbsp; C) 365 nm &nbsp; D) 103 nm &nbsp; E) 91 nm</p>",
+      sol: `<p>The energy released is the positive difference between the levels:</p>
+<div class="formula">ΔE = E₂ − E₁ = (−3.4) − (−13.6) = 10.2 eV</div>
+<p>Now use the 1240 eV·nm rule in reverse:</p>
+<div class="formula">λ = 1240 / 10.2 ≈ 121.6 nm ≈ 122 nm</div>
+<p><b>Answer: A, 122 nm.</b></p>
+<p><b>Why the other options are real spectral lines.</b> Option B, 656 nm, is the red Balmer line from <code>n = 3 → 2</code> — a different transition entirely. Option C, 365 nm, is the Balmer limit (<code>n = ∞ → 2</code>). Option E, 91 nm, is the Lyman limit (<code>n = ∞ → 1</code>), the shortest possible Lyman wavelength. So these are not random numbers; each is a genuine hydrogen wavelength, and the question is really testing whether you picked the right pair of levels.</p>
+<p><b>The sign check.</b> Always subtract the lower (more negative) level from the higher one: <code>(−3.4) − (−13.6) = +10.2 eV</code>. If you reverse it you get −10.2 eV, a negative photon energy, which is impossible.</p>`,
+      tag: "Line spectrum — energy difference to wavelength"
     }
   ],
 
@@ -326,6 +489,7 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <div class="formula">p = ρAhg / A = ρgh</div>
 <p>Note what cancelled: the area. This is the derivation, and it is worth being able to reproduce, because it shows that</p>
 <div class="callout callout--key"><p><b>The pressure at depth depends only on the depth and the density — not on the shape or width of the container.</b> A narrow tube and a wide lake, both 1 m deep, have exactly the same pressure at the bottom. This counter-intuitive result is a favourite competition question.</p></div>
+<div class="callout callout--good"><p><b>Magnitude anchor.</b> Atmospheric pressure is about <code>1.0 × 10⁵ Pa</code> — roughly the weight of the whole atmosphere, or equivalently the pressure at the bottom of 10 m of water (<code>ρgh = 1000 × 10 × 10 = 10⁵ Pa</code>). So every 10 m of water adds one extra atmosphere of pressure. This is why a water barometer would need to be about 10 m tall, while a mercury barometer (13.6× denser) needs only 760 mm.</p></div>
 <p>The total pressure at depth in a liquid open to the atmosphere is <code>p_total = p_atmospheric + ρgh</code>, because the atmosphere is pressing down on the surface too. Unless a question says otherwise, <code>p_atmospheric</code> is about <code>1.0 × 10⁵ Pa</code>.</p>`
     },
 
@@ -336,6 +500,7 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <h3>Where it comes from</h3>
 <p>Pressure increases with depth, so the bottom of a submerged object is pressed upward harder than the top is pressed downward. The difference is the upthrust. This is why the force depends on the volume of the object rather than on its mass or its material — only the volume determines how much fluid is pushed out of the way.</p>
 <div class="callout callout--warn"><p><b>Density in the formula is the fluid's, not the object's.</b> This is the single most common error in this module. A steel block and a wooden block of the same volume, fully submerged, experience exactly the same upthrust, even though the steel is far heavier.</p></div>
+<div class="callout callout--good"><p><b>Maximum upthrust = weight of the whole object's volume of fluid.</b> A fully submerged object displaces its entire volume, so its upthrust is the largest it can ever experience. A floating object displaces only part of its volume, so its upthrust is smaller — exactly equal to its weight. If you are asked "what is the upthrust on this object", first ask whether it is fully submerged or floating; the displaced volume is different in the two cases, and using the full volume for a floating object overcounts.</p></div>
 <h3>Floating and sinking</h3>
 <table><thead><tr><th>Situation</th><th>Comparison</th><th>Result</th></tr></thead><tbody>
 <tr><td>Object sinks to the bottom</td><td><code>ρ_object &gt; ρ_fluid</code></td><td>weight exceeds the maximum possible upthrust</td></tr>
@@ -360,7 +525,8 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 </ol>
 <div class="formula">ρ_object / ρ_water = W / (W − W')</div>
 <p>So the ratio of the two weighings gives the relative density directly, with no need to know the volume at all.</p>
-<div class="callout callout--good"><p><b>Worked in numbers.</b> An object weighs 5.0 N in air and 3.0 N in water. Then <code>ρ_object/ρ_water = 5.0/(5.0 − 3.0) = 2.5</code>, so the density is <code>2500 kg m⁻³</code> — the right order for a rock or a piece of glass. If it weighed 0 N in water it would be neutrally buoyant, and the formula would diverge, which correctly signals that the object is not fully submerged.</p></div>`
+<div class="callout callout--good"><p><b>Worked in numbers.</b> An object weighs 5.0 N in air and 3.0 N in water. Then <code>ρ_object/ρ_water = 5.0/(5.0 − 3.0) = 2.5</code>, so the density is <code>2500 kg m⁻³</code> — the right order for a rock or a piece of glass. If it weighed 0 N in water it would be neutrally buoyant, and the formula would diverge, which correctly signals that the object is not fully submerged.</p></div>
+<div class="callout callout--warn"><p><b>What if the object is denser than water?</b> Then it sinks, and when resting on the bottom the support reads its full weight, because although an upthrust acts, it is smaller than the weight. The weighing-in-water method above assumes the object is fully submerged but still suspended (not resting on the bottom), so the upthrust is genuinely subtracted from the reading. If the object touches the bottom, the normal force from the bottom also helps support it and the simple <code>W − W'</code> formula no longer gives the upthrust.</p></div>`
     },
 
     {
@@ -373,7 +539,37 @@ so  1/C_series = 1/C₁ + 1/C₂</div>
 <li><b>Take moments about a chosen point.</b> Usually the pivot or the edge, because that eliminates an unknown contact force.</li>
 <li><b>Check the limit.</b> If the added mass grows, at what point does the object tip or sink? Setting the restoring moment to zero gives the condition.</li>
 </ol>
-<div class="callout callout--key"><p><b>Why the tipping condition matters.</b> A floating body tips when its centre of mass passes beyond the centre of buoyancy. That is why a boat loaded too far to one side capsizes, and it is exactly the kind of physical reasoning a competition question rewards.</p></div>`
+<div class="callout callout--key"><p><b>Why the tipping condition matters.</b> A floating body tips when its centre of mass passes beyond the centre of buoyancy. That is why a boat loaded too far to one side capsizes, and it is exactly the kind of physical reasoning a competition question rewards.</p></div>
+<div class="callout callout--warn"><p><b>Common slip.</b> When taking moments, use the <i>true</i> weight of the object, not its apparent weight, for the gravitational moment — the upthrust is a separate force acting at the centre of buoyancy. Students often subtract the upthrust from the weight and then also apply an upthrust force, double-counting. Keep the two forces separate: weight down at the centre of mass, upthrust up at the centre of buoyancy.</p></div>`
+    },
+
+    {
+      h: "Atmospheric and gauge pressure",
+      body: `<p>Pressure is quoted in two ways, and the distinction is tested.</p>
+<ul class="tight">
+<li><b>Absolute pressure</b> (绝对压强) is the true pressure, including the atmosphere pressing down from above: <code>p_abs = p_atm + ρgh</code> for a point at depth <code>h</code> in a liquid open to the air.</li>
+<li><b>Gauge pressure</b> (表压) is the pressure <i>above</i> atmospheric — what a pressure gauge actually reads, because the gauge itself is surrounded by air: <code>p_gauge = ρgh</code>.</li>
+</ul>
+<p>So gauge pressure at depth is just <code>ρgh</code>; absolute pressure adds the ~<code>10⁵ Pa</code> of the atmosphere. Tyre pressure is quoted as gauge pressure (the excess over atmospheric), while a diver must compare their lung pressure to the absolute pressure of the surrounding water.</p>
+<div class="callout callout--key"><p><b>Always check which one the question wants.</b> "Pressure at 10 m depth" without qualification usually means absolute, so add <code>10⁵ Pa</code>. "Extra pressure due to the water" means gauge, so just <code>ρgh</code>. Getting these swapped is a routine way to be off by exactly one atmosphere — about <code>10⁵ Pa</code> — which is far larger than any rounding error.</p></div>
+<h3>Worked</h3>
+<p>At 10 m below the surface of water, gauge pressure is <code>ρgh = 1000 × 10 × 10 = 10⁵ Pa</code>, i.e. one atmosphere. Absolute pressure is <code>10⁵ + 10⁵ = 2 × 10⁵ Pa</code>, or two atmospheres. Every further 10 m adds another atmosphere.</p>`
+    },
+
+    {
+      h: "Hydraulic systems and Pascal's principle",
+      body: `<p>Pascal's principle (帕斯卡原理): a pressure change applied to an enclosed fluid is transmitted undiminished to every part of the fluid and to the walls of its container. This is the basis of the hydraulic press (液压机).</p>
+<p>Suppose a force <code>F₁</code> is applied to a small piston of area <code>A₁</code>, producing pressure <code>p = F₁/A₁</code>. That same pressure acts on a large piston of area <code>A₂</code>, producing an output force <code>F₂ = p A₂ = F₁ (A₂/A₁)</code>. So</p>
+<div class="formula">F₁/A₁ = F₂/A₂   →   F₂ = F₁ × A₂/A₁</div>
+<p>The force is multiplied by the area ratio. Because the fluid is (nearly) incompressible, the small piston moves a large distance while the large piston moves a small distance, and the work in equals the work out: <code>F₁ d₁ = F₂ d₂</code> (you trade distance for force, exactly like a lever).</p>
+<div class="callout callout--warn"><p><b>How to get this wrong.</b> The pressure is the same on both pistons, not the force. Students sometimes write <code>F₁ = F₂</code> — that would be true only if the areas were equal. The force scales with area; the pressure does not. Also, a hydraulic system is not a way to get free energy, only a way to trade force for distance, so the work is conserved.</p></div>`
+    },
+
+    {
+      h: "Viscosity, drag and terminal speed (qualitative)",
+      body: `<p>Viscosity (粘度) is a fluid's internal resistance to flow — thick honey has high viscosity, water has low. It is the fluid analogue of friction. When an object moves through a viscous fluid it experiences a drag force opposing its motion; for a small sphere moving slowly the drag is <code>F_drag = 6πηrv</code> (Stokes' law, 斯托克斯定律), proportional to the speed <code>v</code>, the radius <code>r</code> and the viscosity <code>η</code>.</p>
+<p>Because the drag grows with speed, a falling object does not accelerate forever. It reaches a <b>terminal speed</b> when the drag plus upthrust balance its weight, so the net force is zero and it falls at constant speed thereafter. This is the same idea as terminal velocity in air, only the drag law is different.</p>
+<div class="callout callout--key"><p><b>Round 0 scope.</b> Treat viscosity qualitatively: drag increases with speed; there is a terminal speed where forces balance; a more viscous fluid (or a larger, faster object) gives greater drag and a lower terminal speed. Bernoulli's equation and its full derivation are <b>beyond Round 0</b> — do not reach for it. The competition question will ask about direction and limiting behaviour, not a Stokes'-law calculation.</p></div>`
     }
   ],
 
@@ -419,6 +615,45 @@ V_s / V = ρ_wood / ρ_water = 600/1000 = 0.6</div>
 <p><b>Why not D or E.</b> The derivation <code>p = ρgh</code> showed that the cross-sectional area cancelled. So the total mass of liquid and the shape of the base are both irrelevant to the pressure at depth — only depth and density matter. This is the counter-intuitive result worth internalising.</p>
 <p><b>A note on the distinction.</b> The pressure depends only on <code>ρgh</code>, but the <b>force</b> on the base is pressure times area. If the buckets have the same base area, the mercury bucket also has the greater force. If the base areas differed, the comparison of forces would need that extra factor while the comparison of pressures would not.</p>`,
       tag: "Pressure with depth — what does and does not matter"
+    },
+
+    {
+      q: "<p>What is the absolute pressure at a depth of 20 m below the surface of water? Take atmospheric pressure as 1.0 × 10⁵ Pa and g = 10 m s⁻².</p><p>A) 2.0 × 10⁵ Pa &nbsp; B) 3.0 × 10⁵ Pa &nbsp; C) 1.0 × 10⁵ Pa &nbsp; D) 4.0 × 10⁵ Pa &nbsp; E) 2.0 × 10⁶ Pa</p>",
+      sol: `<p>Gauge pressure from the water column:</p>
+<div class="formula">p_gauge = ρgh = 1000 × 10 × 20 = 2.0 × 10⁵ Pa</div>
+<p>Absolute pressure adds the atmosphere pressing on the surface:</p>
+<div class="formula">p_abs = p_atm + p_gauge = 1.0 × 10⁵ + 2.0 × 10⁵ = 3.0 × 10⁵ Pa</div>
+<p><b>Answer: B, 3.0 × 10⁵ Pa</b> (three atmospheres: one from the air, two from the water).</p>
+<p><b>The trap.</b> Option A, <code>2.0 × 10⁵ Pa</code>, is the gauge pressure — the water only, with the atmosphere omitted. Option C is the atmosphere alone. The question asks for absolute pressure, so you must add the <code>10⁵ Pa</code> from the air; leaving it off is the single most common error here and it is wrong by a full atmosphere.</p>
+<p><b>The physical check.</b> Every 10 m of water is one extra atmosphere, so 20 m of water is two atmospheres on top of the one already present — three in total. If your answer were under <code>10⁵ Pa</code> you would be claiming a point underwater feels less pressure than the surface, which is absurd.</p>`,
+      tag: "Absolute versus gauge pressure at depth"
+    },
+
+    {
+      q: "<p>In a hydraulic press a force of 100 N is applied to a piston of area 0.01 m². The output piston has area 0.10 m². What force does the output piston exert, assuming the fluid is ideal?</p><p>A) 10 N &nbsp; B) 100 N &nbsp; C) 1000 N &nbsp; D) 10 000 N &nbsp; E) 100 000 N</p>",
+      sol: `<p>By Pascal's principle the pressure is the same throughout the fluid. The input pressure is</p>
+<div class="formula">p = F₁/A₁ = 100 / 0.01 = 10 000 Pa</div>
+<p>The output force is this pressure times the larger area:</p>
+<div class="formula">F₂ = p A₂ = 10 000 × 0.10 = 1000 N</div>
+<p>Equivalently, in one step: <code>F₂ = F₁ × A₂/A₁ = 100 × 0.10/0.01 = 100 × 10 = 1000 N</code>.</p>
+<p><b>Answer: C, 1000 N.</b></p>
+<p><b>The trap.</b> Option A, 10 N, is the result of inverting the ratio (<code>F₁ × A₁/A₂</code>) — it makes the larger piston produce less force, which violates the whole point of the device. Option B, 100 N, forgets to multiply by the area ratio at all. The force scales with area, so a ten-times larger piston gives a ten-times larger force.</p>
+<p><b>The conservation note.</b> The press trades force for distance: the output piston moves only one-tenth as far as the input, so <code>F₁ d₁ = F₂ d₂</code> and no energy is created. If an option suggested 10 000 N you would be claiming ten times the input work for free.</p>`,
+      tag: "Hydraulic press — Pascal's principle"
+    },
+
+    {
+      q: "<p>A metal block of volume 2.0 × 10⁻³ m³ and density 8000 kg m⁻³ is fully submerged in water of density 1000 kg m⁻³ (g = 10 m s⁻²). What is its apparent weight while submerged?</p><p>A) 20 N &nbsp; B) 140 N &nbsp; C) 160 N &nbsp; D) 180 N &nbsp; E) 100 N</p>",
+      sol: `<p>True weight of the block:</p>
+<div class="formula">W = ρ_obj V g = 8000 × 2.0 × 10⁻³ × 10 = 160 N</div>
+<p>Upthrust = weight of displaced water (use the <i>fluid's</i> density, not the block's):</p>
+<div class="formula">U = ρ_water V g = 1000 × 2.0 × 10⁻³ × 10 = 20 N</div>
+<p>Apparent weight = true weight − upthrust:</p>
+<div class="formula">W_apparent = 160 − 20 = 140 N</div>
+<p><b>Answer: B, 140 N.</b></p>
+<p><b>The trap.</b> Option A, 20 N, is the upthrust alone — the force the water exerts, not the reading on a support. Option C, 160 N, is the true weight in air, ignoring buoyancy entirely. Option D, 180 N, wrongly adds the upthrust to the weight. The support reads the true weight minus the upward buoyant force.</p>
+<p><b>The density check.</b> Because the block is eight times denser than water, it sinks, and the upthrust is only one-eighth of its weight — so the apparent weight is <code>7/8</code> of the true weight, i.e. 140 N, consistent with <code>160 × 7/8</code>.</p>`,
+      tag: "Upthrust and apparent weight of a submerged block"
     }
   ],
 

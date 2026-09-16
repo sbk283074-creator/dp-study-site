@@ -209,6 +209,10 @@ I_total = I₁ + I₂ + …
       body: `<p>Two resistors in series across a supply split the voltage in proportion to their resistances:</p>
 <div class="formula">V_out = V_in × R₂/(R₁ + R₂)</div>
 <p>where <code>V_out</code> is measured across <code>R₂</code>. Note that the output is proportional to the resistance <b>across which it is measured</b> — this is the part people get backwards.</p>
+<h3>Where the formula comes from — one line, no new physics</h3>
+<p>The same current <code>I</code> flows through both resistors because they are in series. The p.d. across the lower one is <code>V_out = IR₂</code>, and the total supply is <code>V_in = I(R₁ + R₂)</code>. Divide the first by the second and the current cancels:</p>
+<div class="formula">V_out / V_in = R₂ / (R₁ + R₂)</div>
+<p>so <code>V_out = V_in × R₂/(R₁ + R₂)</code>. It is just Ohm's law applied twice with the same current. Once you see it that way, the "output is proportional to the resistor you measure across" fact is obvious rather than something to memorise backwards — and it is why, in the thermistor example below, swapping which resistor the output is taken across flips the answer.</p>
 <h3>Why dividers matter</h3>
 <p>They turn a change in resistance into a change in voltage, which is what makes sensors usable. Put a thermistor in a divider and the output voltage becomes a measure of temperature. Put an LDR in and it becomes a measure of light level. In both cases the direction of the response depends on which resistor the output is taken across:</p>
 <ul class="tight">
@@ -311,6 +315,32 @@ I_total = I₁ + I₂ + …
 <p><b>The trap.</b> Option D, 8.0 Ω, is the resistance of the whole loop — the answer you get if you forget that the two arcs are in parallel and add them instead. Option C, 4.0 Ω, is <code>R/2</code>, which is what you get by taking the arithmetic mean of the two arc resistances instead of their parallel combination.</p>
 <p><b>Why this matters.</b> The result <code>R/4</code> for a sliding contact on a loop is worth remembering in its own right, and the technique — identifying that two paths between the same pair of points must be in parallel — is the general move for all network questions.</p>`,
       tag: "Network reduction — sliding contact"
+    },
+    {
+      q: "<p>A potential divider consists of two equal resistors <code>R</code> in series across a supply <code>V</code>, with the output taken across the lower resistor. The lower resistor is then replaced by one of resistance <code>3R</code>. By what factor does the output voltage change?</p><p>A) 1/2 &nbsp; B) 2/3 &nbsp; C) 3/2 &nbsp; D) 2 &nbsp; E) 3</p>",
+      sol: `<p><b>Before the change.</b> The two resistors are equal, so the divider splits the supply equally and the output across the lower one is</p>
+<div class="formula">V_old = V × R/(R + R) = V/2</div>
+<p><b>After the change.</b> The lower resistor is now <code>3R</code>; the top one is still <code>R</code>:</p>
+<div class="formula">V_new = V × 3R/(R + 3R) = V × 3/4 = 3V/4</div>
+<p><b>The factor.</b> Divide the new by the old and the supply <code>V</code> cancels:</p>
+<div class="formula">V_new / V_old = (3V/4) / (V/2) = (3/4) × (2/1) = 3/2</div>
+<p><b>Answer: C — the output increases by a factor of 3/2.</b></p>
+<p><b>The reasoning without arithmetic.</b> The output is proportional to the resistor you measure across. That resistor grew from <code>R</code> to <code>3R</code>, a factor of 3, but it grew relative to a fixed total, so the voltage ratio cannot triple — the denominator grew too. The clean way to see it is exactly the algebra above, which takes about ten seconds and needs no calculator.</p>
+<p><b>The trap.</b> Option B, 2/3, is the old value divided by the new — the inverse factor, for anyone who wrote the ratio the wrong way round. Option D, 2, is what you get if you notice the resistor tripled but forget that the total also increased and simply say "the output tripled". Option E, 3, is the change in the <i>resistor</i>, not the change in the <i>voltage</i>. All three are the same underlying error: conflating the resistance ratio with the voltage ratio. This is the divider analogue of the series/parallel power warning — the shared quantity is current, not voltage, so nothing scales in lockstep with a single resistance.</p>`,
+      tag: "Potential divider — ratio reasoning, no calculator"
+    },
+    {
+      q: "<p>A cell of EMF 12 V and internal resistance 1.0 Ω is connected to an external resistor of 5.0 Ω. What power is dissipated inside the cell itself?</p><p>A) 4.0 W &nbsp; B) 24 W &nbsp; C) 20 W &nbsp; D) 2.0 W &nbsp; E) 10 W</p>",
+      sol: `<p><b>Step 1 — the current.</b> The total resistance in the circuit is the external resistor plus the internal resistance:</p>
+<div class="formula">R_total = R + r = 5.0 + 1.0 = 6.0 Ω
+I = ε/R_total = 12/6.0 = 2.0 A</div>
+<p><b>Step 2 — power inside the cell.</b> The internal resistance <code>r</code> is where the cell's own losses happen. The power dissipated there is</p>
+<div class="formula">P_internal = I²r = (2.0)² × 1.0 = 4.0 W</div>
+<p>Equivalently, the "lost volts" (电位损失) are <code>Ir = 2.0 V</code>, and the lost power is <code>(lost volts) × I = 2.0 × 2.0 = 4.0 W</code> — the same number, which is a free check.</p>
+<p><b>Answer: A.</b></p>
+<p><b>The traps.</b> Option B, 24 W, is <code>εI</code> — the total power the cell supplies, to both the external resistor and to itself. Option C, 20 W, is <code>I²R</code>, the power delivered to the external resistor. Option D, 2.0 W, is the lost volts alone, <code>Ir</code>, without the extra factor of <code>I</code> that turns a voltage into a power. The question asks specifically for the power <i>inside the cell</i>, which is the <code>I²r</code> term in the energy balance <code>εI = I²R + I²r</code>.</p>
+<p><b>The general point.</b> The EMF times the current is the total rate at which the cell converts chemical energy; part goes to the load (<code>I²R</code>) and part is wasted heating the cell (<code>I²r</code>). Check the energy balance: <code>εI = 24 W = 20 W + 4 W</code> ✓. This is exactly the "lost volts" picture made quantitative — the 2.0 V lost internally is not a voltage you can use, and multiplied by the current it is 4 W of heat you did not want.</p>`,
+      tag: "Internal resistance — lost volts and power inside the cell"
     }
   ],
 

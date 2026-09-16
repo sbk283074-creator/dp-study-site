@@ -1,14 +1,14 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 315 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 320 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 230 of 315 do. The difficulty-5
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 235 of 320 do. The difficulty-5
 backlog is **cleared** — no item claims difficulty 5 without evidence — and the 85 items that remain
-unbacked are all difficulty-3 or difficulty-4 claims, a published, ratcheting backlog described in
+unbacked are all difficulty-4 claims, a published, ratcheting backlog described in
 `STANDARD.md` §2.2–§2.5 and measured by `tools/difficulty_audit.py`. All 13
-lever types are in use, the largest share is 15%, and every subject is inside the 50% difficulty-5 cap
-(Maths 45%, Physics 44%, CS 36%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
+lever types are in use, the largest share is 14%, and every subject is inside the 50% difficulty-5 cap
+(Maths 45%, Physics 44%, CS 41%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
 the share was above the cap) and R2 (no item claimed difficulty 3 — the 3-5 scale had collapsed to two
 points) were paid by Batches 21–23, and the backlog pass added a fifth difficulty-3 item. The audit prints
 `calibration OK` and `--check --strict` exits 0.
@@ -16,11 +16,12 @@ The `topic` label is now a closed vocabulary per subject, enforced by `validate.
 question page and filterable on every subject page.**
 **Figure coverage is now a first-class gate rather than a nice-to-have.** Batch 23 raised the share of
 items that carry a self-authored graph to 75 of 301 = 25%; Batch 26 took it to 84 of 310 = 27.1%; Batch 27
-takes it to **89 of 315 = 28.3%** and raises the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.27 to
-**0.28** — the floor may rise and may
+to 89 of 315 = 28.3%; Batch 28 takes it to **94 of 320 = 29.4%** and raises the bank-wide ratchet
+`FIGURE_COVERAGE_FLOOR` from 0.28 to
+**0.29** — the floor may rise and may
 never fall, so a later batch cannot quietly spend the coverage. No subject prints a gap: Maths 18%,
-Physics 37%, CS 43%, BM 21%, against a 15% target — but only **2 non-figure items of headroom** are left
-(n = 317 passes at 0.28, n = 318 fails), so the ratchet now *forces* a batch to carry figures rather than
+Physics 37%, CS 48%, BM 21%, against a 15% target — but only **4 non-figure items of headroom** are left
+(n = 324 passes at 0.29, n = 325 fails), so the ratchet now *forces* a batch to carry figures rather than
 merely encouraging it. Every figure is drawn by hand as a plain-Python SVG
 string builder,
 most of them inline in the batch generator that wrote the item and the named set in
@@ -1411,12 +1412,66 @@ similarity score, and no BM item ships containing HL-only content.
     themselves. This is the gate working, not collateral damage — but a batch's diff is therefore not
     confined to the batch's own files, and a reviewer who expects otherwise will read a healthy diff as a
     mistake.
+- **Batch 28 — DONE (5 items, 315 → 320; the CS P1 Section A gap closed by paper structure).** The brief
+  was a structural one, not a subject-share one, and it came from the guide rather than from the coverage
+  tool: `coverage.py --next 12` returned **0 gaps**, because every node was already covered, so node
+  thinness was a dead end. CS HL Paper 1 is 2 h / 40% / **80 marks**, and the guide splits it into Section
+  A at **56 marks** and Section B at 24. The bank held **12 of its 44 CS P1 items** in Section A. Attributing
+  items to nodes by their id prefix showed why: five Theme A nodes — **A1.4, A2.4, A3.3, A3.4, A4.4** — had
+  **no Section A item at all**, each already carrying an item on another paper or section. All five new
+  items are Section A extended-response items on those five nodes, so Section A went **12 → 17 of 49** and
+  the number of Theme A nodes represented in Section A went **7 → 12**.
+  - **The guide was read for every node before anything was written**, because the brief bound the batch to
+    in-syllabus content. A1.4.1 asks the candidate to *evaluate* interpreters and compilers and names
+    bytecode interpreters and cross-platform development; A2.4.1 asks for the *effectiveness* of firewalls
+    and names rules and the limitations of firewalls; A3.3.6 asks how transactions maintain integrity and
+    names isolation; A3.4.2 names *append-only* and *time-variant* data; A4.4.1 names *consent* and
+    *accountability*. Each item is built on its node's own bullet rather than beside it.
+  - **Two of the five planned items were already owned by existing items, and were replaced.** A
+    de-duplication sweep across all 315 items found that `CS-A3.3-201` (16 marks, COUNT(*) against
+    COUNT(column), AVG, GROUP BY and HAVING over a NULL row) already covered the planned A3.3 item, and
+    that **three** items already covered the planned A4.4 item — `CS-A4.3-301` (a 96% accuracy figure that
+    is an artefact of a scan-level rather than patient-level split, which uses the same 77.5% the planned
+    item was going to use), `CS-P2-007` (one 82% precision figure hiding two areas) and `CS-P2-003`
+    (accuracy on imbalanced data). The slots moved to **A3.3.6 transactions** and **A4.4.1 consent
+    withdrawal**, both of which nothing in the bank covered. The sweep also confirmed three planned items
+    were clear: firewall rule shadowing (2 incidental matches bank-wide), append-only latest-snapshot reads
+    (`CS-A3.4-001` mentions the term once, in passing, about key-value writes) and ACID/lost update (all
+    matches incidental).
+  - **The five items, all difficulty 5, one lever each, all figure-bearing.** `CS-A1.4-301` (13 marks,
+    `derived_limit`): three translation strategies whose compiler-versus-interpreter crossover at N = 75 is
+    never on the cheapest frontier, because the bytecode build costs 840 where the two that cross cost
+    1500. `CS-A2.4-301` (12, `wrong_design_cost`): a four-rule packet filter in which rule 3 is unreachable
+    for every flow, because rule 2's destination set contains rule 3's and sits above it. `CS-A3.3-301`
+    (13, `seeded_anomaly`): two interleaved transfers where both read 500, both commit, and the committed
+    balance is 550 instead of 650. `CS-A3.4-301` (13, `partial_cancellation`): an append-only load table
+    whose two natural wrong totals err in opposite directions, 5600 (over by 2000) and 2600 (under by
+    1000), against a correct 3600 which is neither of them nor their average of 4100. `CS-A4.4-301`
+    (12, `implicit_dependence`): 900 withdrawn records, all 900 of them already used by one of two training
+    runs, against a deletion that is 1.5% of the corpus and removes nothing from the model.
+  - **Every number was verified before any prose was written**, through the gate's own `evaluate()`: 56
+    assertions across the five items, plus ~60 numeric checks. The first run reported five failures, all of
+    them faults of the *checker* rather than the data: the frontier enumeration compared `(cost, letter)`
+    tuples, so it broke ties alphabetically and reported B cheapest through N = 20 and A cheapest from
+    N = 240. Both are exact ties (B = C = 400 at 20; C = A = 2160 at 240), and the item now names them as
+    ties, with the ranges running 0–19 for B, 21–239 for C and 241+ for A. A helper that silently resolves
+    a tie invents a boundary that does not exist — the same class of error the item itself is about.
+  - **Numbers after the wave.** 320 items — Maths 130 / 1903 marks, Physics 90 / 1106, **CS 61 / 901**,
+    BM 39 / 563. Difficulty split **5 / 182 / 133**, evidence **235 / 320**, assertions **3656**, figures
+    **94 (88 svg / 4 code / 2 table) = 29.4%**. Bank-wide difficulty-5 share 42%; CS rose 36% → **41%**,
+    still inside the 50% cap. All five new items are `ok` with **zero warnings**, and the bank total stayed
+    at **0 failures**. Similarity on the new items: external ≤ 0.003, internal ≤ 0.008, approach ≤ 0.191 —
+    `CS-A1.4-301`'s nearest neighbour is `MATH-AHL3.3-001`, not `CS-A1.4-001`, which is the reframing
+    working. `FIGURE_COVERAGE_FLOOR` went 0.28 → **0.29**, leaving **4** non-figure items of headroom.
+  - **The audit's lever section now reads 13 of 13**, and the largest single share fell to **14%**
+    (`non_governing_variable`, 34 of 235). The five levers used here are all distinct, so no share moved by
+    more than a point.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  130 questions / 1903 marks, physics 90 / 1106, CS 56 / 838, BM SL 39 / 563 — all difficulty 3–5, May
+  130 questions / 1903 marks, physics 90 / 1106, CS 61 / 901, BM SL 39 / 563 — all difficulty 3–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that

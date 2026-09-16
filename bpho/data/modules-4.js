@@ -28,7 +28,19 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <h3>The special case <code>u = 0</code></h3>
 <p>Objects released from rest are extremely common, and the equations simplify usefully:</p>
 <div class="formula">v = at        s = ½at²        v² = 2as</div>
-<p>From the last two you can get the useful proportionalities <code>s ∝ t²</code> and <code>v ∝ √s</code>, both of which are the kind of relationship a ratio question will ask about.</p>`
+<p>From the last two you can get the useful proportionalities <code>s ∝ t²</code> and <code>v ∝ √s</code>, both of which are the kind of relationship a ratio question will ask about.</p>
+<h3>Deriving the time-free equation yourself</h3>
+<p>You do not need to memorise all four — only the first two, and you can rebuild the rest. The most useful one, <code>v² = u² + 2as</code>, comes from eliminating <code>t</code> between the other two. Start from</p>
+<div class="formula">v = u + at   →   t = (v − u)/a</div>
+<p>Substitute this into <code>s = ½(u + v)t</code>:</p>
+<div class="formula">s = ½(u + v) · (v − u)/a = ½(v² − u²)/a</div>
+<p>Multiply both sides by <code>2a</code> and rearrange:</p>
+<div class="formula">2as = v² − u²   →   v² = u² + 2as</div>
+<p>Being able to do this in thirty seconds means you can never be stuck if you forget the equation. It also shows <i>why</i> the equation has no <code>t</code> in it — time was eliminated on purpose.</p>
+<h3>Ratio reasoning — no calculator needed</h3>
+<p>Most Round 0 kinematics questions ask for a factor, not a number. Because the suvat equations are proportionalities, you answer them by dividing two versions of the same equation so the constants cancel.</p>
+<div class="callout callout--key"><p><b>The rule for this module.</b> If a question says "by what factor", "how many times", or "what is the ratio", write the relevant equation twice (old situation, new situation) and divide. Never substitute <code>g = 9.81</code>. The classic case is braking: from <code>v² = u² + 2as</code> with <code>v = 0</code>, the stopping distance is <code>s = u²/(2a)</code>, so if the initial speed doubles, the stopping distance quadruples — <code>2² = 4</code> — with no arithmetic at all. This is the single most reusable trick in the module.</p></div>
+<div class="callout callout--bad"><p><b>The quadratic trap.</b> Because <code>s ∝ t²</code>, changing the <i>time</i> by a factor changes the distance by the <i>square</i> of that factor, and changing the <i>speed</i> by a factor changes the distance by its square too. The two most common wrong answers on factor questions are the linear answer (forgetting to square) and the cubed answer (squaring when you should not). Write the proportionality down before you guess.</p></div>`
     },
 
     {
@@ -46,7 +58,13 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <li><b>Straight sloping line on a v–t graph:</b> uniform acceleration. The steeper the line, the larger the acceleration.</li>
 <li><b>Curve on a v–t graph:</b> changing acceleration. A curve flattening out means the acceleration is decreasing — the object is approaching terminal speed.</li>
 <li><b>Parabola on an s–t graph:</b> uniform acceleration, because <code>s ∝ t²</code>.</li>
-</ul>`
+</ul>
+<h3>Why area = displacement (and gradient = acceleration)</h3>
+<p>These are not separate facts to memorise; they follow from the definitions. Velocity is the rate of change of displacement, <code>v = ds/dt</code>, so over a small time <code>Δt</code> the displacement travelled is <code>v Δt</code> — the area of one thin strip under the curve. Adding up all the strips gives the total displacement, which is the area under the graph. Acceleration is <code>a = dv/dt</code>, the gradient.</p>
+<div class="callout callout--warn"><p><b>Always draw the strip first.</b> If a question asks "what does the area represent", picture a single thin rectangle of height <code>v</code> and width <code>Δt</code>: its area has units m s⁻¹ × s = m, a displacement. If the units come out wrong, you have the wrong quantity. This is the dimensional check applied to a graph, and it is faster than reasoning in words.</p></div>
+<h3>Distance versus displacement, made concrete</h3>
+<p>Displacement is the <b>net</b> area (areas below the axis count negative). Distance is the sum of the <b>magnitudes</b> of the areas. They differ whenever the velocity changes sign — when the object turns round. A standard trap is to read the "total area" and report it as distance when the graph crosses the axis, or as displacement when you should have subtracted.</p>
+<div class="callout callout--key"><p><b>Instantaneous versus average.</b> The gradient of an s–t graph at a point is the <i>instantaneous</i> velocity; the gradient of the straight line joining two points is the <i>average</i> velocity over that interval. They are equal only for uniform motion. Confusing them is a quiet source of errors on graph questions.</p></div>`
     },
 
     {
@@ -60,7 +78,31 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <li>Solve the phase with the most information first, then work outward.</li>
 <li>Check the total distance against the area under your sketch.</li>
 </ol>
-<div class="callout callout--key"><p><b>The eliminating-time trick.</b> In multi-phase problems the unknown is often the total time, and setting up equations for it produces a quadratic. If instead you use <code>v² = u² + 2as</code> on each phase, time never appears, and the whole problem becomes linear. This is the single most useful technique in the module.</p></div>`
+<div class="callout callout--key"><p><b>The eliminating-time trick.</b> In multi-phase problems the unknown is often the total time, and setting up equations for it produces a quadratic. If instead you use <code>v² = u² + 2as</code> on each phase, time never appears, and the whole problem becomes linear. This is the single most useful technique in the module.</p></div>
+<h3>What is shared between phases</h3>
+<p>The discipline that prevents errors is writing down, for each phase, which quantity is shared with the neighbour. The common patterns are:</p>
+<ul class="tight">
+<li><b>Velocity shared:</b> the final speed of phase 1 is the initial speed of phase 2. (Most common.)</li>
+<li><b>Position shared:</b> the distance covered in phase 1 plus that in phase 2 equals a given total.</li>
+<li><b>Acceleration shared:</b> the same force acts throughout, so <code>a</code> is the same in two phases with different initial speeds.</li>
+</ul>
+<div class="callout callout--bad"><p><b>The average-speed fallacy.</b> You may only replace a varying speed by an average if the acceleration is uniform over that phase — and even then the average is <code>(u + v)/2</code>, the mean of the <i>endpoints</i>, never "the middle of the range" or the maximum. Using <code>v_max/2</code> for a phase that ramps up from rest is fine, but using it for a phase that starts and ends at different non-zero speeds is wrong.</p></div>`
+    },
+
+    {
+      h: "Vectors in 1D and 2D for kinematics",
+      body: `<p>Kinematic quantities — displacement, velocity, acceleration — are vectors, so they add as vectors. The two skills you need are adding them along a line and adding them in a plane.</p>
+<h3>One dimension</h3>
+<p>In 1D, "adding vectors" is just signed arithmetic. Choose a positive direction once, then every velocity is a signed number. A body moving at <code>+5 m s⁻¹</code> and another at <code>−3 m s⁻¹</code> have a relative speed of <code>8 m s⁻¹</code>, not 2. The sign tells you direction; dropping it is the usual error.</p>
+<h3>Two dimensions</h3>
+<p>In 2D, resolve every vector into perpendicular <code>x</code> and <code>y</code> components, add the components separately, then recombine:</p>
+<div class="formula">R_x = A_x + B_x        R_y = A_y + B_y
+R = √(R_x² + R_y²)        θ = arctan(R_y / R_x)</div>
+<p>The same machinery gives the components of a displacement: if an object moves <code>d</code> at angle <code>θ</code> to the <code>x</code> axis, its displacement components are <code>d cos θ</code> and <code>d sin θ</code>.</p>
+<h3>Why this is the heart of projectile motion</h3>
+<p>A projectile's velocity <code>u</code> at angle <code>θ</code> is nothing but the vector <code>(u cos θ, u sin θ)</code>. The whole of projectile kinematics is this resolution plus the independence of the two axes. Getting fluent at resolving and recombining vectors here pays off directly in the projectile and relative-motion sections, and later in momentum conservation in two dimensions (module C).</p>
+<div class="callout callout--warn"><p><b>Sine or cosine?</b> It depends which axis the angle is measured from. If <code>θ</code> is measured from the <code>x</code> axis, the <code>x</code>-component is <code>cos θ</code>. If it is measured from the <code>y</code> axis, swap them. Always sketch the right triangle and label the adjacent and opposite sides before writing the component — a 5-second sketch prevents a persistent sign error.</p></div>
+<div class="callout callout--bad"><p><b>Never add magnitudes.</b> The resultant of two perpendicular vectors of lengths 3 and 4 is 5 (Pythagoras), not 7. Adding magnitudes is only legitimate when the vectors point the same way. This is the same trap as in relative motion, and it is worth drilling until it is automatic.</p></div>`
     },
 
     {
@@ -82,7 +124,16 @@ range           R = u² sin 2θ / g</div>
 <li><b>Launch from a height:</b> the vertical equation becomes <code>−h = u sin θ × t − ½gt²</code>, where <code>h</code> is the launch height. Solve the quadratic for <code>t</code>, then use the horizontal equation.</li>
 <li><b>Landing on a slope:</b> the condition is that the landing point lies on the slope, so <code>y/x = tan α</code> where <code>α</code> is the slope angle. That gives one equation in <code>t</code>.</li>
 </ul>
-<div class="callout callout--good"><p><b>The independence fact answers a classic question.</b> If a bullet is fired horizontally and another is dropped from the same height at the same instant, they hit the ground together. Both start with zero vertical velocity and both accelerate downward at <code>g</code>. The horizontal motion is irrelevant to the time of fall. This is a favourite conceptual question and it is worth being able to state in one sentence.</p></div>`
+<div class="callout callout--good"><p><b>The independence fact answers a classic question.</b> If a bullet is fired horizontally and another is dropped from the same height at the same instant, they hit the ground together. Both start with zero vertical velocity and both accelerate downward at <code>g</code>. The horizontal motion is irrelevant to the time of fall. This is a favourite conceptual question and it is worth being able to state in one sentence.</p></div>
+<h3>Range and height without doing the full derivation</h3>
+<p>You should know the results, but you can also recover them by combining the two independent motions and checking limits — which is exactly what the sample paper rewards.</p>
+<ul class="tight">
+<li><b>Time of flight.</b> The vertical motion is just an upward throw with initial speed <code>u sin θ</code>. Time up equals time down, so the total time is twice the time to reach the top: <code>t_up = (u sin θ)/g</code>, giving <code>T = 2u sin θ / g</code>.</li>
+<li><b>Maximum height.</b> At the top the vertical velocity is zero, so from <code>v² = u² + 2as</code> with the vertical components: <code>0 = (u sin θ)² − 2gH</code>, hence <code>H = u² sin²θ / (2g)</code>.</li>
+<li><b>Range.</b> Horizontal distance is <code>(u cos θ) × T = (u cos θ)(2u sin θ / g) = u² (2 sin θ cos θ)/g = u² sin 2θ / g</code>.</li>
+</ul>
+<div class="callout callout--key"><p><b>Checking the range by limiting cases.</b> <code>R = u² sin 2θ / g</code> is zero at <code>θ = 0°</code> (thrown flat along the ground) and at <code>θ = 90°</code> (thrown straight up, lands on the launcher) — both physically correct. It peaks at <code>θ = 45°</code> where <code>sin 90° = 1</code>. And it is symmetric about 45°, so <code>θ</code> and <code>90° − θ</code> give the same range. If an option for the range fails any of these limits, you can eliminate it in seconds without re-deriving.</p></div>
+<div class="callout callout--bad"><p><b>Don't pre-empt circular motion.</b> A projectile's acceleration is always the constant vector <code>g</code> downward; there is no "centripetal force" acting on it in flight. Circular motion is a separate module — but when you meet it, remember that the force there points toward the centre and changes direction continuously, whereas a projectile's force is fixed. Keeping the two distinct prevents a common muddle.</p></div>`
     },
 
     {
@@ -98,7 +149,13 @@ range           R = u² sin 2θ / g</div>
 <li><b>Closing speed.</b> Two bodies approaching each other at speeds <code>v₁</code> and <code>v₂</code> along the same line have a closing speed of <code>v₁ + v₂</code>. If they are chasing, the closing speed is the difference.</li>
 <li><b>Bearings.</b> A bearing is measured clockwise from north. If a question gives velocities as bearings, convert to components with east as <code>x</code> and north as <code>y</code> before subtracting.</li>
 </ol>
-<div class="callout callout--key"><p><b>Why relative motion is worth the time.</b> It is a small amount of new content that yields a disproportionately reliable mark, because the questions are formulaic once the vector subtraction is understood. Most students find it unfamiliar, which is precisely why it is a good investment.</p></div>`
+<div class="callout callout--key"><p><b>Why relative motion is worth the time.</b> It is a small amount of new content that yields a disproportionately reliable mark, because the questions are formulaic once the vector subtraction is understood. Most students find it unfamiliar, which is precisely why it is a good investment.</p></div>
+<h3>The triangle of velocities</h3>
+<p>Write the subtraction as <code>v_A = v_B + v_AB</code>. So to get <code>v_A</code> you place <code>v_B</code> and <code>v_AB</code> tip-to-tail. Equivalently, to get <code>v_AB</code> you go from the tip of <code>v_B</code> to the tip of <code>v_A</code> when both are drawn from a common origin. The magnitude is found with the cosine rule when the angle between them is not a right angle:</p>
+<div class="formula">|v_AB|² = v_A² + v_B² − 2 v_A v_B cos φ</div>
+<p>where <code>φ</code> is the angle between the two original velocity vectors. For perpendicular velocities this reduces to Pythagoras.</p>
+<div class="callout callout--good"><p><b>Component method (the safe default).</b> Whenever the geometry is not an obvious right angle, resolve both velocities into <code>x</code> (east) and <code>y</code> (north) components, subtract component by component, then recombine with Pythagoras and <code>arctan</code>. This avoids the sign errors that the cosine rule invites when angles are measured from different references. Always subtract in the same component order: <code>v_AB,x = v_A,x − v_B,x</code>, <code>v_AB,y = v_A,y − v_B,y</code>.</p></div>
+<div class="callout callout--bad"><p><b>The addition trap.</b> The relative speed is almost never the sum or difference of the two speeds — that is only true when they are parallel. For any other angle you must use the vector difference. Adding the magnitudes (as in "3 + 4 = 7") is the most common wrong answer on these questions, and it is a listed distractor.</p></div>`
     },
 
     {
@@ -112,7 +169,10 @@ range           R = u² sin 2θ / g</div>
 <p>As an object falls, drag increases with speed. Eventually drag balances weight:</p>
 <div class="formula">drag = mg   →   acceleration = 0</div>
 <p>From then on the object moves at constant speed — the terminal speed. The approach is asymptotic, so strictly it is never quite reached, which is why the velocity–time graph curves smoothly towards a horizontal line rather than meeting it.</p>
-<div class="callout callout--warn"><p><b>The graph question that follows.</b> A skydiver's velocity–time graph: steep initial slope, then a gradual flattening to a plateau. If the parachute opens, there is an abrupt vertical drop in velocity followed by a new, lower plateau. Being able to sketch this and explain each feature is a common question, and the explanation is always "the drag force changed, so the balance point changed".</p></div>`
+<div class="callout callout--warn"><p><b>The graph question that follows.</b> A skydiver's velocity–time graph: steep initial slope, then a gradual flattening to a plateau. If the parachute opens, there is an abrupt vertical drop in velocity followed by a new, lower plateau. Being able to sketch this and explain each feature is a common question, and the explanation is always "the drag force changed, so the balance point changed".</p></div>
+<h3>Why the approach is asymptotic</h3>
+<p>Drag rises with speed (for a skydiver roughly as <code>v²</code> at high speed), so the net downward force <code>mg − drag</code> shrinks as the speed grows. The acceleration therefore drops continuously toward zero, which is why the velocity approaches its terminal value along a curve that never quite reaches it. The key qualitative facts to state: (i) the initial acceleration is <code>g</code>; (ii) the acceleration decreases monotonically to zero; (iii) the velocity increases monotonically toward the terminal speed. Any graph that shows the velocity overshooting and coming back, or the acceleration going negative before settling, is wrong.</p>
+<div class="callout callout--key"><p><b>Terminal speed is a balance, not a force.</b> At terminal speed the forces are equal and opposite, so the resultant is zero and the acceleration is zero — the object is still moving, just not speeding up. This is the kinematic counterpart of the equilibrium condition <code>F_net = 0</code>, and it is the same idea you will use for an object falling through a fluid or a car at maximum speed against resistive drag (module C, power).</p></div>`
     }
   ],
 
@@ -172,6 +232,33 @@ range           R = u² sin 2θ / g</div>
 <p><b>The trap.</b> Option B, 1/2, is the most common wrong answer, and it comes from assuming the <i>speed</i> halves. It does not — the height quarters, so the speed halves, and the energy quarters. Working in terms of height directly avoids the confusion entirely.</p>
 <p><b>The general principle.</b> For a bouncing ball, height, kinetic energy and the square of the speed all change by the same factor. The speed itself changes by the square root of that factor. Keeping track of which quantities are linear and which are quadratic is the whole skill here, and it is the same skill as in the power questions in module H.</p>`,
       tag: "Energy and height — the linear versus quadratic distinction"
+    },
+
+    {
+      q: "<p>A particle moves so that its velocity–time graph consists of: a straight line from 0 to 6 m s⁻¹ over the first 3 s, then a constant 6 m s⁻¹ for the next 3 s, then a straight line down to 0 over the final 3 s. What is the total displacement, and what is the average velocity over the 9 s?</p><p>A) 27 m, 3 m s⁻¹ &nbsp; B) 36 m, 4 m s⁻¹ &nbsp; C) 45 m, 5 m s⁻¹ &nbsp; D) 54 m, 6 m s⁻¹ &nbsp; E) 36 m, 6 m s⁻¹</p>",
+      sol: `<p>The displacement is the area under the v–t graph. The graph is three pieces: a triangle, a rectangle, and a triangle.</p>
+<p><b>First triangle (0 to 3 s):</b> area = ½ × base × height = ½ × 3 × 6 = 9 m.</p>
+<p><b>Rectangle (3 to 6 s):</b> area = 6 × 3 = 18 m.</p>
+<p><b>Second triangle (6 to 9 s):</b> area = ½ × 3 × 6 = 9 m.</p>
+<p><b>Total displacement</b> = 9 + 18 + 9 = 36 m.</p>
+<p><b>Average velocity</b> = total displacement / total time = 36 / 9 = 4 m s⁻¹.</p>
+<p><b>Answer: B.</b></p>
+<p><b>The trap.</b> Option D, 54 m and 6 m s⁻¹, comes from treating the whole 9 s as if the particle moved at the maximum speed of 6 m s⁻¹ the entire time — that is the area of a 9 × 6 rectangle. But the speed is only 6 for the middle third; the rest of the time it is lower, so the true area is smaller. Option E gives the right displacement but the wrong average velocity (6 instead of 4), a slip in the final division. Option A, 27 m, is what you get by taking only part of the area and stopping early.</p>
+<p><b>The check.</b> The motion is symmetric — speed up for 3 s, coast for 3 s, slow for 3 s. The average velocity is the total area (36) over total time (9), which is 4 m s⁻¹; it is not the peak speed of 6. Computing the area explicitly avoids the temptation to "eyeball" the average from the graph's highest point.</p>`,
+      tag: "Graphical kinematics — area = displacement"
+    },
+
+    {
+      q: "<p>A body starts from rest and moves in a straight line with constant acceleration. The distances it travels during the 1st, 2nd and 3rd seconds of its motion are in the ratio:</p><p>A) 1 : 1 : 1 &nbsp; B) 1 : 2 : 3 &nbsp; C) 1 : 3 : 5 &nbsp; D) 1 : 4 : 9 &nbsp; E) 1 : 2 : 4</p>",
+      sol: `<p>With constant acceleration from rest, the distance travelled in the first <code>n</code> seconds is <code>s_n = ½ a n²</code>. The distance travelled <i>during</i> the nth second is the difference between the distance after <code>n</code> seconds and after <code>n − 1</code> seconds.</p>
+<p><b>1st second:</b> <code>s_1 = ½ a (1)² = ½ a</code>.</p>
+<p><b>2nd second:</b> <code>s_2 − s_1 = ½ a (4) − ½ a (1) = ½ a (3) = 3·(½ a)</code>.</p>
+<p><b>3rd second:</b> <code>s_3 − s_2 = ½ a (9) − ½ a (4) = ½ a (5) = 5·(½ a)</code>.</p>
+<p>So the distances in successive seconds are in the ratio <code>½a : 3·½a : 5·½a = 1 : 3 : 5</code>.</p>
+<p><b>Answer: C.</b></p>
+<p><b>The trap.</b> Option B, 1 : 2 : 3, is the ratio of the <i>cumulative</i> distances if you mistakenly think each second adds a constant extra — it is the arithmetic progression you would get for constant <i>speed</i>, not constant acceleration. Option D, 1 : 4 : 9, is the ratio of the distances from the start at t = 1, 2, 3 s, not the distances <i>during</i> each second. The question asks for per-second distances, so you must subtract consecutive cumulative values. Confusing "distance in the interval" with "distance from the start" is the standard error here.</p>
+<p><b>Why this is a ratio question.</b> The acceleration <code>a</code> cancelled completely — you never needed its value, and the question gave you none. This is the non-calculator pattern: set up the proportionality, divide, and read the ratio. The odd integers 1, 3, 5, 7 … for successive seconds are worth knowing cold; they appear on competition papers in disguise (e.g. "how far in the 5th second compared with the 1st?" — answer 9 times).</p>`,
+      tag: "suvat ratio reasoning — no calculator"
     }
   ],
 
@@ -182,7 +269,9 @@ range           R = u² sin 2θ / g</div>
     "Forgetting to take the square root when solving for <code>t</code> from <code>s = ½gt²</code>.",
     "Assuming the horizontal speed affects the fall time of a projectile. It does not.",
     "Adding the boat's speed and the current's speed when they are perpendicular. Only components along the same direction add.",
-    "Confusing the final speed with the distance travelled in free fall. <code>v = gt</code> gives m s⁻¹; <code>s = ½gt²</code> gives m."
+    "Confusing the final speed with the distance travelled in free fall. <code>v = gt</code> gives m s⁻¹; <code>s = ½gt²</code> gives m.",
+    "Treating area below the axis on a v–t graph as positive distance when asked for displacement, and vice versa — area below the axis is negative displacement but positive distance.",
+    "In successive-second suvat questions, mixing up distance-from-start (1 : 4 : 9) with distance-during-each-second (1 : 3 : 5). Subtract consecutive cumulative distances."
   ],
 
   checklist: [
@@ -220,7 +309,13 @@ range           R = u² sin 2θ / g</div>
 </ul>
 <div class="callout callout--warn"><p><b>The most common error in the whole of mechanics.</b> Students write <code>mg cos θ</code> for the component down the slope. Check the limit: as the slope becomes flat, <code>θ → 0</code>, and the component down the slope must go to <b>zero</b>. Only <code>mg sin θ</code> does that. Always test a limit — it takes two seconds and catches the error every time.</p></div>
 <h3>Equilibrium of three forces</h3>
-<p>If three coplanar forces act at a point and the body is in equilibrium, the three vectors placed head-to-tail form a <b>closed triangle</b>. That turns a force problem into a geometry problem, which is usually faster. Watch for the 3–4–5 triangle and for equilateral arrangements, because they are chosen deliberately.</p>`
+<p>If three coplanar forces act at a point and the body is in equilibrium, the three vectors placed head-to-tail form a <b>closed triangle</b>. That turns a force problem into a geometry problem, which is usually faster. Watch for the 3–4–5 triangle and for equilateral arrangements, because they are chosen deliberately.</p>
+<h3>Resolving to equilibrium</h3>
+<p>The general method, which always works even when there are more than three forces, is to resolve in two perpendicular directions and set each resultant to zero:</p>
+<div class="formula">ΣF_x = 0        ΣF_y = 0</div>
+<p>For a body on a slope, resolve along and perpendicular to the slope — never horizontally and vertically, because the normal force then appears in both equations and the algebra gets messier. Along the slope, equilibrium reads <code>mg sin θ = friction</code>; perpendicular, <code>N = mg cos θ</code>. This is the backbone of every inclined-plane problem.</p>
+<div class="callout callout--key"><p><b>Pick axes that kill a force.</b> Choose a resolution direction perpendicular to a force you do not yet know, so that force has zero component in that equation and drops out. This is the same idea as the moments axis technique — choose your frame to make the unknown vanish. It is the most reliable way to keep inclined-plane working short.</p></div>
+<div class="callout callout--bad"><p><b>Normal force is not always mg.</b> On level ground the normal force equals <code>mg</code>, which is why that case is drilled. On a slope it is <code>mg cos θ</code>; if there is an extra vertical push or the surface accelerates, it is something else. Writing <code>N = mg</code> automatically is the second-most-common mechanics error after the sin/cos swap.</p></div>`
     },
 
     {
@@ -234,7 +329,11 @@ range           R = u² sin 2θ / g</div>
 <div class="callout callout--key"><p><b>The third-law test.</b> A pair of third-law forces must be (i) the same <i>type</i> of force, (ii) equal in magnitude, (iii) opposite in direction, and (iv) acting on <b>two different bodies</b>. A book resting on a table: the weight of the book and the normal force from the table are equal and opposite but they are <b>not</b> a third-law pair, because both act on the book. The third-law partner of the book's weight is the gravitational pull the book exerts on the Earth.</p></div>
 <h3>Free-body diagrams</h3>
 <p>Draw one body. Draw every force acting <b>on</b> it as an arrow starting from the body. Do not draw forces it exerts on other things. Then resolve and apply <code>F = ma</code> in each direction.</p>
-<p>The discipline of drawing the diagram before writing any equation is not optional at competition level, where the forces are rarely all aligned.</p>`
+<p>The discipline of drawing the diagram before writing any equation is not optional at competition level, where the forces are rarely all aligned.</p>
+<h3>Applying F = ma correctly</h3>
+<p>The resultant in <code>F = ma</code> is the <b>net</b> force in a chosen direction, which is the sum of the components of all forces in that direction. A frequent mistake is to include a force that is not acting on the body, or to forget that the normal force and weight are not a third-law pair. Write <code>F_net = ma</code> with the arrow, not just <code>F = ma</code>, to remind yourself it is the resultant.</p>
+<div class="callout callout--key"><p><b>First law as a detection tool.</b> If a body is at rest or moving in a straight line at constant speed, its resultant force is zero — so you can immediately write <code>ΣF = 0</code> in each direction. This is the entrance ticket to every statics problem and to every "constant velocity" problem. Conversely, if the speed or direction is changing, the resultant is non-zero and points in the direction of the acceleration.</p></div>
+<div class="callout callout--good"><p><b>Third law in collisions.</b> During a collision the force on A from B and the force on B from A are equal and opposite and act for the same time, so the <i>impulses</i> are equal and opposite — which is exactly why total momentum is conserved. The third law is the deep reason momentum conservation holds. (More in the momentum section.)</p></div>`
     },
 
     {
@@ -255,7 +354,11 @@ range           R = u² sin 2θ / g</div>
 <h3>Pulleys</h3>
 <p>For two masses <code>m₁</code> and <code>m₂</code> hanging over a frictionless pulley, with <code>m₁ &gt; m₂</code>:</p>
 <div class="formula">a = (m₁ − m₂)g / (m₁ + m₂)        T = 2m₁m₂g/(m₁ + m₂)</div>
-<p>Note the useful check: if <code>m₂ = 0</code>, then <code>a = g</code> ✓. If <code>m₁ = m₂</code>, then <code>a = 0</code> ✓. Both limits are satisfied, which is how you know the formulas are right.</p>`
+<p>Note the useful check: if <code>m₂ = 0</code>, then <code>a = g</code> ✓. If <code>m₁ = m₂</code>, then <code>a = 0</code> ✓. Both limits are satisfied, which is how you know the formulas are right.</p>
+<h3>Tows and chains (the same idea, horizontal)</h3>
+<p>Two blocks pulled by a force <code>F</code> on the front one: treat them as one system to get <code>a = F/(m₁ + m₂)</code>, then isolate the rear block to find the tension in the coupling: <code>T = m_rear × a</code>. The tension is always less than the applied force, and it is largest in the link nearest the pull. This is the horizontal analogue of the pulley, and the whole-system-then-one-body route is identical.</p>
+<div class="callout callout--warn"><p><b>Inclined connected bodies.</b> When the system includes a slope, resolve the weights along the slope first (use <code>mg sin θ</code>) before applying the whole-system acceleration formula. The driving force is then the sum of the components that pull the system one way minus those that pull the other; the total mass is still the sum of all masses. Students who forget to resolve the weight on the slope get an acceleration far too large.</p></div>
+<div class="callout callout--bad"><p><b>The tension is internal to the system.</b> When you treat two connected bodies as one, the coupling tension cancels because it is equal and opposite on the two bodies. If you include it anyway, you double-count. Only when you isolate a single body does the tension reappear — and then it acts on that body only.</p></div>`
     },
 
     {
@@ -273,7 +376,12 @@ range           R = u² sin 2θ / g</div>
 <p>The block slides when <code>mg sin θ &gt; μmg cos θ</code>, which simplifies to</p>
 <div class="formula">tan θ &gt; μ</div>
 <p>The mass cancels. This is why the sliding angle depends on the materials but not on how heavy the block is — a result worth knowing because it is counter-intuitive and therefore likely to be asked.</p>
-<div class="callout callout--good"><p><b>Qualitative friction questions.</b> Many competition questions ask what happens to friction when something changes, without numbers. The answer always follows from asking "is the object still in equilibrium?" If yes, friction adjusts to maintain equilibrium. If no, friction is at its maximum and the object accelerates. Getting that distinction right is most of the marks.</p></div>`
+<div class="callout callout--good"><p><b>Qualitative friction questions.</b> Many competition questions ask what happens to friction when something changes, without numbers. The answer always follows from asking "is the object still in equilibrium?" If yes, friction adjusts to maintain equilibrium. If no, friction is at its maximum and the object accelerates. Getting that distinction right is most of the marks.</p></div>
+<h3>Static versus kinetic friction</h3>
+<p>There are two coefficients and they are not equal. Static friction <code>μ_s</code> governs the <i>maximum</i> before sliding; kinetic friction <code>μ_k</code> governs sliding, and typically <code>μ_k &lt; μ_s</code>. So it takes more force to <i>start</i> a block moving than to keep it moving — the familiar "stick then slip" feel. In Round 0 problems the coefficient is usually given as a single <code>μ</code>; assume it is the relevant one for the stated state (static if not yet sliding, kinetic if sliding).</p>
+<h3>Limiting equilibrium</h3>
+<p>The phrase "limiting equilibrium" means the object is still at rest but the friction has reached its maximum <code>μN</code> — any tiny extra force would start it moving. At that exact point the along-slope forces balance with friction at full strength, giving the cleanest version of the sliding condition. It is the boundary case and the one most questions probe.</p>
+<div class="callout callout--key"><p><b>The direction of friction is not "down the slope" by default.</b> Friction opposes the <i>impending</i> relative motion. A block being pushed up a slope has friction acting down the slope; a block that would slide down if unrestrained has friction acting up the slope. Decide the direction of impending slip first, then draw friction opposing it. Getting this backwards is a quiet, common error.</p></div>`
     },
 
     {
@@ -293,7 +401,32 @@ range           R = u² sin 2θ / g</div>
 <tr><td>inelastic</td><td>conserved</td><td>reduced</td></tr>
 <tr><td>explosion</td><td>conserved (zero before, zero after)</td><td>increased, from stored energy</td></tr>
 </tbody></table>
-<div class="callout callout--key"><p><b>The explosion case confuses people.</b> An explosion starts with total momentum zero and must end with total momentum zero, so the fragments fly apart with equal and opposite momenta. Kinetic energy, by contrast, <i>increases</i> — it comes from chemical or elastic energy stored in the object. Momentum conservation and energy conservation are separate statements, and confusing them is the most common error in this topic.</p></div>`
+<div class="callout callout--key"><p><b>The explosion case confuses people.</b> An explosion starts with total momentum zero and must end with total momentum zero, so the fragments fly apart with equal and opposite momenta. Kinetic energy, by contrast, <i>increases</i> — it comes from chemical or elastic energy stored in the object. Momentum conservation and energy conservation are separate statements, and confusing them is the most common error in this topic.</p></div>
+<h3>One dimension: the conservation equation</h3>
+<p>Along a single line, with initial velocities <code>u</code> and final velocities <code>v</code>:</p>
+<div class="formula">m₁u₁ + m₂u₂ = m₁v₁ + m₂v₂</div>
+<p>Choose one direction as positive and keep the sign of every velocity. The whole skill is sign discipline plus algebra — no new physics. If the collision is perfectly elastic you may also use the relative-speed rule <code>u₁ − u₂ = −(v₁ − v₂)</code> (approach speed equals separation speed), which together with momentum conservation solves for both final velocities without energy algebra.</p>
+<h3>Two dimensions: conserve each component separately</h3>
+<p>Momentum is a vector, so conservation holds independently in <code>x</code> and <code>y</code>:</p>
+<div class="formula">Σp_x (before) = Σp_x (after)        Σp_y (before) = Σp_y (after)</div>
+<p>This is the same component method as in kinematics and forces. A classic shape: a moving particle breaks into two; you know one fragment's velocity, so the other is fixed by subtracting its momentum from the initial total, component by component. Draw the momentum vectors before writing equations.</p>
+<div class="callout callout--bad"><p><b>Elastic does not mean "bounces back".</b> Elastic means kinetic energy is conserved; it says nothing about direction. And inelastic does <i>not</i> mean momentum is lost — momentum is conserved in <i>every</i> collision, elastic or not, provided no large external force acts during the impact. The only thing that changes between elastic and inelastic is the kinetic energy. Writing "momentum is not conserved in an inelastic collision" is the canonical wrong statement.</p></div>`
+    },
+
+    {
+      h: "Collision types — elastic, inelastic, and restitution",
+      body: `<p>Every collision conserves momentum (provided no large external force acts during the impact). What differs between collisions is the kinetic energy.</p>
+<table><thead><tr><th>Type</th><th>Momentum</th><th>Kinetic energy</th><th>Relative speed</th></tr></thead><tbody>
+<tr><td>elastic</td><td>conserved</td><td>conserved</td><td>separation speed = approach speed</td></tr>
+<tr><td>perfectly inelastic (stick)</td><td>conserved</td><td>reduced to minimum</td><td>separation speed = 0 (move together)</td></tr>
+<tr><td>partially inelastic</td><td>conserved</td><td>reduced</td><td>separation speed = e × approach speed, 0 &lt; e &lt; 1</td></tr>
+</tbody></table>
+<h3>The coefficient of restitution</h3>
+<p>For a 1D collision the coefficient of restitution <code>e</code> relates the relative speeds before and after:</p>
+<div class="formula">e = (separation speed) / (approach speed) = (v₂ − v₁) / (u₁ − u₂)</div>
+<p>with <code>e = 1</code> for perfectly elastic and <code>e = 0</code> for a perfectly inelastic "stick together" collision. A bounce off a fixed wall with restitution <code>e</code> reverses the velocity's normal component and scales it by <code>e</code>, which is why the bounce example in module B gave a height ratio of <code>e²</code>: the speed scales by <code>e</code>, and height goes as speed squared.</p>
+<div class="callout callout--key"><p><b>How to solve any 1D collision.</b> Write momentum conservation (one equation). If the collision is elastic, also write the relative-speed equation (a second equation). Two equations, two unknown final velocities — solve. If it is inelastic and the bodies stick, there is only one final velocity, so momentum alone suffices. Do not reach for an energy equation unless asked; the relative-speed form is cleaner.</p></div>
+<div class="callout callout--bad"><p><b>The lie to avoid.</b> "Inelastic collisions lose momentum." No — they lose <i>kinetic energy</i>, never momentum. Momentum is conserved in all of them. If an option says momentum is not conserved in an inelastic collision, it is wrong by definition.</p></div>`
     },
 
     {
@@ -314,7 +447,14 @@ range           R = u² sin 2θ / g</div>
 <div class="callout callout--key"><p><b>The relationship worth internalising.</b> Because <code>P = Fv</code>, a car at constant engine power produces a driving force that is inversely proportional to its speed. That is why acceleration falls off at high speed, and why a car climbing a hill at constant power must change down a gear — reducing the speed increases the force available.</p></div>
 <h3>Conservation of energy</h3>
 <div class="formula">ΔEp = mgΔh        Ek = ½mv²</div>
-<p>In a closed system the total energy is constant. In practice, energy "lost" to friction is not destroyed — it becomes internal energy, warming the surfaces. Tracking where the energy went, rather than only how much, is what distinguishes a good answer on a competition paper.</p>`
+<p>In a closed system the total energy is constant. In practice, energy "lost" to friction is not destroyed — it becomes internal energy, warming the surfaces. Tracking where the energy went, rather than only how much, is what distinguishes a good answer on a competition paper.</p>
+<h3>Energy conservation as a problem-solving tool</h3>
+<p>For many problems the energy method avoids resolving forces entirely. A block sliding down a frictionless slope of height <code>h</code> reaches the bottom with <code>½mv² = mgh</code>, so <code>v = √(2gh)</code> — independent of the slope angle and length. This is a ratio/limiting-case result: the speed depends only on the vertical drop. Where friction acts, the work it does, <code>F_friction × distance</code>, is removed from the mechanical energy.</p>
+<div class="formula">gain in Ek + gain in Ep + work done against friction = 0   (with signs chosen consistently)</div>
+<h3>Efficiency</h3>
+<p>Efficiency is useful output energy divided by total input energy (or useful power over total power), and it is always less than 1 (or less than 100%). A value above 1 is impossible for a passive device and is a sure sign of an error.</p>
+<div class="callout callout--key"><p><b>Power as a rate.</b> <code>P = Fv</code> is the instantaneous power when a force <code>F</code> acts on a body moving at velocity <code>v</code> in the force's direction. At constant engine power, the available driving force is <code>F = P/v</code>, so it falls as speed rises — this is why a car accelerates hardest at low speed and why it must change down a gear to climb a hill. Combine with <code>F_net = ma</code> to get <code>a = (P/v − R)/m</code> where <code>R</code> is the resistive force.</p></div>
+<div class="callout callout--bad"><p><b>Work done needs the displacement in the force's direction.</b> A person carrying a heavy box horizontally at constant speed does <i>no work</i> on the box (the supporting force is vertical, the motion is horizontal, <code>cos 90° = 0</code>). The effort felt is biological, not mechanical work. Conflating "I am tired" with "I did work on the object" is the trap these questions exploit.</p></div>`
     },
 
     {
@@ -346,7 +486,11 @@ R_right = (WL/2 + Px) / L</div>
 <h3>Couples</h3>
 <p>Two equal, opposite, parallel forces whose lines of action are separated by distance <code>d</code> form a couple. The resultant force is zero, but there is a resultant moment:</p>
 <div class="formula">moment of a couple = Fd</div>
-<p>Because the resultant force is zero, a couple produces pure rotation with no translation. This is what a screwdriver applies to a screw, and it is the reason a couple's moment is the same about every axis — a fact worth knowing because it removes the need to choose an axis at all.</p>`
+<p>Because the resultant force is zero, a couple produces pure rotation with no translation. This is what a screwdriver applies to a screw, and it is the reason a couple's moment is the same about every axis — a fact worth knowing because it removes the need to choose an axis at all.</p>
+<h3>Two-support and hinged-rod problems</h3>
+<p>Beyond the simple plank, the family includes a rod hinged to a wall with a cable, or a ladder leaning against a wall and floor. The method is unchanged: take moments about the hinge (or one support) to eliminate the reaction there, solve for the remaining unknown, then resolve forces to find the rest. For a ladder, remember there are normally <i>two</i> friction forces (at wall and floor) and two normal forces; draw all four.</p>
+<div class="callout callout--key"><p><b>Vertical resolution is your free check.</b> After finding reactions by moments, sum all vertical forces and confirm they balance, and sum all horizontal forces and confirm they balance. A non-zero sum means a force was missed or a moment was taken wrongly. This two-line check catches most moments errors before they cost a mark.</p></div>
+<div class="callout callout--bad"><p><b>The ladder-angle trap.</b> A ladder is most stable when steep (large angle to the horizontal) because the normal force at the wall then has a shorter lever and the required friction is smaller. Questions often ask how the friction force changes as the ladder is made steeper or the load is moved up — answer by re-taking moments about the base and watching which lever arm changed. Do not guess "it increases"; derive the lever arm.</p></div>`
     },
 
     {
@@ -371,7 +515,10 @@ R_right = (WL/2 + Px) / L</div>
 <tr><td>Uniform disc or sphere</td><td>geometric centre</td></tr>
 <tr><td>Uniform semicircular plate</td><td><code>4r/3π</code> from the diameter</td></tr>
 <tr><td>Uniform solid hemisphere</td><td><code>3r/8</code> from the flat face</td></tr>
-</tbody></table>`
+</tbody></table>
+<h3>The tipping condition</h3>
+<p>A body resting on a base tips when its centre of mass moves outside the base of support. Quantitatively, take moments about the pivot (the edge of the base): the body is stable while the weight's line of action falls <i>inside</i> the base, and it tips the instant that line passes outside. For a block of height <code>h</code> and base width <code>w</code> on a slope of angle <code>θ</code>, tipping begins when <code>tan θ = w/h</code> (the COM's vertical line passes through the lower edge). Compare this with the <i>sliding</i> condition <code>tan θ = μ</code> from the friction section: whichever occurs at the smaller angle happens first.</p>
+<div class="callout callout--key"><p><b>Tipping vs sliding — a favourite paired question.</b> On a gradually steepening slope, does the object slide or tip first? Compute both critical angles, <code>tan θ_slide = μ</code> and <code>tan θ_tip = w/h</code>, and compare. If <code>μ &gt; w/h</code> it tips first; if <code>μ &lt; w/h</code> it slides first. Stating both and comparing is the complete answer.</p></div>`
     }
   ],
 
@@ -458,6 +605,34 @@ d = 0.40 m</div>
 <p><b>The check.</b> Take moments about the pivot again with the answer in place. Clockwise: rule <code>0.40</code> plus the second mass <code>1.0 × 0.40 = 0.40</code>, total <code>0.80</code>. Anticlockwise: <code>0.80</code> ✓. The two sides balance.</p>
 <p><b>The traps.</b> Option A, 50 cm, is the rule's centre of mass — the answer you get by forgetting the second mass entirely. Option B, 60 cm, comes from measuring the 0.40 m from the wrong end of the rule. Both are structural errors about <i>where distances are measured from</i>, which is why the sketch matters more than the arithmetic.</p>`,
       tag: "Moments with a pivot — and the value of a sketch"
+    },
+
+    {
+      q: "<p>A truck of mass 2m moving at speed u collides head-on with a stationary truck of mass m. The two trucks couple together and move off as one. What is their common speed?</p><p>A) u/3 &nbsp; B) u/2 &nbsp; C) 2u/3 &nbsp; D) u &nbsp; E) 2u</p>",
+      sol: `<p>Momentum is conserved in the collision (no large external force during impact). Take the initial direction of the moving truck as positive. Before: total momentum = <code>(2m)u + m·0 = 2mu</code>. After they stick, the combined mass is <code>3m</code> moving at unknown speed <code>V</code>, so total momentum = <code>3mV</code>.</p>
+<p>Set them equal:</p>
+<div class="formula">3mV = 2mu   →   V = 2mu / (3m) = 2u/3</div>
+<p><b>Answer: C, 2u/3.</b></p>
+<p><b>The trap.</b> Option B, u/2, is the arithmetic mean of the two speeds, which is what you get if you average without weighting by mass — momentum is weighted by mass, not by counting vehicles. Option E, 2u, would mean the coupled pair moves faster than the original truck, which is impossible because kinetic energy cannot increase in a collision with no stored energy released. Option D, u, conserves speed but not momentum. Only C conserves momentum.</p>
+<p><b>Non-calculator note.</b> The mass <code>m</code> cancelled, so the answer is a pure ratio <code>2/3</code> of <code>u</code> regardless of the actual mass. This is the ratio pattern again: set up the conservation equation and let the shared quantity divide out.</p>
+<p><b>Energy check.</b> Initial KE = ½(2m)u² = mu². Final KE = ½(3m)(2u/3)² = ½·3m·4u²/9 = (2/3)mu². So two thirds of the kinetic energy is lost — expected for an inelastic collision. The missing third became sound, heat and deformation.</p>`,
+      tag: "Conservation of momentum — 1D inelastic"
+    },
+
+    {
+      q: "<p>Two identical particles, each of mass m, collide and stick together. Before the collision one moves east at 3 m s⁻¹ and the other moves north at 4 m s⁻¹. What is the speed of the combined particle immediately after the collision?</p><p>A) 2.5 m s⁻¹ &nbsp; B) 3.5 m s⁻¹ &nbsp; C) 5 m s⁻¹ &nbsp; D) 7 m s⁻¹ &nbsp; E) 1.0 m s⁻¹</p>",
+      sol: `<p>Momentum is conserved as a vector, so conserve components separately. Take east as <code>+x</code>, north as <code>+y</code>.</p>
+<p><b>Before:</b> particle 1 contributes <code>(3m, 0)</code>; particle 2 contributes <code>(0, 4m)</code>. Total initial momentum = <code>(3m, 4m)</code>.</p>
+<p><b>After:</b> the two stick into one body of mass <code>2m</code> moving at velocity <code>(V_x, V_y)</code>. Its momentum is <code>(2m V_x, 2m V_y)</code>.</p>
+<p><b>Conserve x:</b> <code>3m = 2m V_x</code> → <code>V_x = 1.5</code>.</p>
+<p><b>Conserve y:</b> <code>4m = 2m V_y</code> → <code>V_y = 2.0</code>.</p>
+<p>The speed is the magnitude of the combined velocity:</p>
+<div class="formula">V = √(1.5² + 2.0²) = √(2.25 + 4.00) = √6.25 = 2.5 m s⁻¹</div>
+<p><b>Answer: A, 2.5 m s⁻¹.</b></p>
+<p><b>The trap.</b> Option C, 5 m s⁻¹, is the magnitude of the <i>total momentum</i> (the 3–4–5 triangle: √(3m)² + (4m)² = 5m), but you must divide by the total mass <code>2m</code> to get a speed — forgetting that division is the common error. Option D, 7, is <code>3 + 4</code> (adding magnitudes as if parallel). Option E, 1, is <code>4 − 3</code> (subtracting magnitudes). Option B, 3.5, is the arithmetic mean of 3 and 4, which ignores that momentum is mass-weighted and vectorial.</p>
+<p><b>Non-calculator note.</b> The mass <code>m</code> cancelled throughout, leaving a pure 3–4–5 triangle scaled by 1/2. Spotting the triple <code>√(3²+4²) = 5</code> then halving for the doubled mass is the whole calculation — no calculator.</p>
+<p><b>Energy.</b> Initial KE = ½m·3² + ½m·4² = ½m(9 + 16) = 12.5m. Final KE = ½(2m)(2.5)² = ½·2m·6.25 = 6.25m. Exactly half the KE is lost — expected, since a stick-together collision is perfectly inelastic. Momentum is conserved; kinetic energy is not. That distinction is the whole point of the topic.</p>`,
+      tag: "Conservation of momentum — 2D, sticking"
     }
   ],
 
@@ -470,7 +645,9 @@ d = 0.40 m</div>
     "Confusing momentum conservation with energy conservation. An explosion conserves momentum but increases kinetic energy.",
     "Treating weight and apparent weight as the same thing. A scale measures the normal contact force.",
     "Thinking a force perpendicular to the motion does work. It does not — <code>cos 90° = 0</code>.",
-    "Guessing which side of a pivot a mass goes on instead of writing signed distances and letting the algebra decide."
+    "Guessing which side of a pivot a mass goes on instead of writing signed distances and letting the algebra decide.",
+    "Claiming momentum is not conserved in an inelastic collision. Momentum is conserved in every collision; only kinetic energy is lost.",
+    "Forgetting to divide total momentum by total mass when bodies stick together — the 3–4–5 triangle gives the momentum magnitude, not the speed."
   ],
 
   checklist: [

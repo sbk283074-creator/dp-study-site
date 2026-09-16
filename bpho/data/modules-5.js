@@ -34,7 +34,10 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <p>because a small rotation of a vector of length <code>v</code> changes it by <code>v</code> times the angle, exactly as a small arc of a circle of radius <code>v</code>. Dividing by the time:</p>
 <div class="formula">a = Δv/Δt = v (Δθ/Δt) = vω</div>
 <p>And since <code>ω = v/r</code>, this gives <code>a = v²/r</code> ✓.</p>
-<div class="callout callout--key"><p><b>The direction is the whole point.</b> The acceleration is perpendicular to the velocity at every instant, pointing at the centre. That is why the <i>speed</i> stays constant while the velocity changes — a force perpendicular to the motion does no work, so kinetic energy is unchanged. This connection to the work–energy idea is worth stating explicitly if a question asks you to explain why the speed does not change.</p></div>`
+<div class="callout callout--key"><p><b>The direction is the whole point.</b> The acceleration is perpendicular to the velocity at every instant, pointing at the centre. That is why the <i>speed</i> stays constant while the velocity changes — a force perpendicular to the motion does no work, so kinetic energy is unchanged. This connection to the work–energy idea is worth stating explicitly if a question asks you to explain why the speed does not change.</p></div>
+<h3>The two forms of the acceleration, and why both are right</h3>
+<p>You will see <code>a = v²/r</code> and <code>a = ω²r</code>. They are identical: substitute <code>v = ωr</code> into the first and you get <code>(ωr)²/r = ω²r</code>. Use whichever the question hands you. If angular speed is given, use <code>ω²r</code> directly and skip converting to <code>v</code> — fewer steps, fewer slips.</p>
+<div class="callout callout--warn"><p><b>Acceleration, not force.</b> A frequent error is to write <code>mv²/r</code> and call it the acceleration. <code>mv²/r</code> has units of newtons; the acceleration is <code>v²/r</code> (m s⁻²). Keep the two separate: acceleration is what the velocity does, force is mass times that.</p></div>`
     },
 
     {
@@ -92,7 +95,10 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <h3>At the bottom</h3>
 <p>At the bottom, gravity acts downward but the normal force acts upward, so</p>
 <div class="formula">N − mg = mv²/r   →   N = m(g + v²/r)</div>
-<p>The contact force is larger than the weight. This is why you feel heavier at the bottom of a dip in the road, and why a loop-the-loop track must be strongest at its lowest point.</p>`
+<p>The contact force is larger than the weight. This is why you feel heavier at the bottom of a dip in the road, and why a loop-the-loop track must be strongest at its lowest point.</p>
+<h3>The energy link between bottom and top</h3>
+<p>By conservation of energy, the speed needed at the bottom to just complete the loop is <code>√(5gr)</code>. The top needs <code>√(gr)</code>; rising through height <code>2r</code> costs kinetic energy <code>2mgr</code>. So <code>½m v_bottom² = ½m(gr) + 2mgr = 2.5 mgr</code>, giving <code>v_bottom = √(5gr)</code>. This is a favourite derivation and worth reproducing on blank paper.</p>
+<div class="callout callout--warn"><p><b>String versus rigid track.</b> On the inside of a rigid track the normal force can point either way, so the limiting case is <code>N = 0</code> at the top. On a string the tension can only pull, never push, so the same <code>v = √(gr)</code> applies but for the opposite reason — the string goes slack if the speed drops below it. Same answer, mirror-image reasoning.</p></div>`
     },
 
     {
@@ -106,7 +112,10 @@ Horizontally:    N sin θ = mv²/r</div>
 <p>So the design speed for a given bank angle is <code>v = √(rg tan θ)</code>. Above that speed friction must help inward; below it, friction must act outward to stop the car sliding down the banking.</p>
 <h3>The leaning cyclist</h3>
 <p>A cyclist leaning into a turn at angle <code>θ</code> from the vertical has the same equation, <code>tan θ = v²/(rg)</code>. The reason is the same: the resultant of the normal force and friction must point from the contact point through the centre of mass, and that resultant supplies the centripetal force.</p>
-<div class="callout callout--key"><p><b>The result worth memorising.</b> <code>tan θ = v²/(rg)</code> for both banking and leaning, with no dependence on mass. It is the same equation in two disguises, and recognising that saves you deriving it twice.</p></div>`
+<div class="callout callout--key"><p><b>The result worth memorising.</b> <code>tan θ = v²/(rg)</code> for both banking and leaning, with no dependence on mass. It is the same equation in two disguises, and recognising that saves you deriving it twice.</p></div>
+<h3>What happens away from the design speed</h3>
+<p>The equation <code>tan θ = v²/(rg)</code> holds only at the one speed where friction does nothing. Above it, friction must act down the slope (inward and downward) to add centripetal force; below it, friction acts up the slope to keep the car from sliding down the banking. A banked track is only "safe without friction" at a single speed.</p>
+<div class="callout callout--bad"><p><b>Two slips to avoid.</b> First, applying a flat-road friction argument to a banked track and ignoring the horizontal component of the normal force. Second, writing <code>N = mg</code> on a bank — it is not, because part of the weight is balanced by the vertical component of <code>N</code> while part of <code>N</code> is horizontal. On a bank, <code>N = mg/cos θ</code>, which exceeds the weight.</p></div>`
     },
 
     {
@@ -123,7 +132,10 @@ Horizontally:    N sin θ = mv²/r</div>
 <h3>Estimating the size of the effect</h3>
 <p>With <code>ω = 2π/86400 ≈ 7.3 × 10⁻⁵ rad s⁻¹</code> and <code>R = 6.4 × 10⁶ m</code>:</p>
 <div class="formula">ω²R ≈ (7.3 × 10⁻⁵)² × 6.4 × 10⁶ ≈ 3.4 × 10⁻² m s⁻²</div>
-<p>That is about 0.34% of <code>g</code>, which is the size of the effect. Estimating it takes about thirty seconds with the powers of ten, and it is the kind of calculation a competition question will expect.</p>`
+<p>That is about 0.34% of <code>g</code>, which is the size of the effect. Estimating it takes about thirty seconds with the powers of ten, and it is the kind of calculation a competition question will expect.</p>
+<h3>The general case at latitude λ</h3>
+<p>Away from the equator the path about the Earth's axis has radius <code>R cos λ</code>, so the required centripetal force is <code>mω²R cos λ</code> directed horizontally towards the axis. This has a component along the local vertical that reduces the normal force by roughly <code>mω²R cos²λ</code>. The effect is maximal at the equator and vanishes at the poles, matching the two limits already derived.</p>
+<div class="callout callout--key"><p><b>Two effects, both reduce equatorial weight.</b> The centripetal effect found above removes about 0.34%. Separately, the Earth's spin makes it bulge, so <code>R</code> is larger at the equator and <code>g</code> is genuinely smaller there too — another ~0.2%. Knowing both lets you explain the full ~0.5% difference a question may ask about.</p></div>`
     },
 
     {
@@ -138,6 +150,19 @@ Horizontally:    N sin θ = mv²/r</div>
 <div class="formula">T ∝ r^(3/2)</div>
 <p>So a satellite at four times the orbital radius has a period <code>4^(3/2) = 8</code> times as long. That is Kepler's third law, and you have just derived it from circular motion alone — without any field theory.</p>
 <div class="callout callout--warn"><p><b>Stay on the right side of the scope boundary.</b> BPhO excludes gravitational fields. Deriving <code>T ∝ r^(3/2)</code> from <code>mv²/r = mg</code> is circular motion and is fair. Discussing gravitational potential energy, escape velocity, or field lines is field theory and is not. If a question asks for a ratio of periods, do it this way.</p></div>`
+    },
+
+    {
+      h: "Estimating in rotating systems — drums, centrifuges, swings",
+      body: `<p>The circular-motion ideas above are most useful on the paper when they let you <b>estimate</b> an acceleration or force in an unfamiliar rotating situation. The recipe is always the same: find the radius, find the angular speed (often from a stated rpm), then compute <code>a = ω²r</code> or <code>F = mω²r</code>.</p>
+<h3>The washing-machine drum</h3>
+<p>A drum of radius 0.25 m spinning at 1200 rpm. Convert: <code>f = 1200/60 = 20 Hz</code>, so <code>ω = 2π × 20 ≈ 126 rad s⁻¹</code>. Then</p>
+<div class="formula">a = ω²r ≈ (126)² × 0.25 ≈ 1.6 × 10⁴ × 0.25 ≈ 4 × 10³ m s⁻²</div>
+<p>That is about 400 g — the clothes are pressed against the drum wall with a force some four hundred times their weight. This is exactly why water is forced out through the holes: the water cannot get the centripetal force it needs from the drum and so it travels straight, leaving the cloth behind.</p>
+<h3>The laboratory centrifuge</h3>
+<p>The same arithmetic explains why a centrifuge at, say, 10 000 rpm with a 0.10 m radius produces accelerations of order 10⁵ m s⁻² — enough to sediment particles that gravity alone would take days to settle. The point for the paper is not the biology but the scaling: acceleration grows with the <b>square</b> of the angular speed, so doubling the rpm quadruples the effective g.</p>
+<div class="callout callout--key"><p><b>The estimation reflex.</b> When a rotating-system question gives you an rpm and a radius and asks for an acceleration or a multiple of g, your job is to convert rpm to Hz (divide by 60), multiply by 2π for ω, square it, and multiply by r. No mass needed for the acceleration; add the mass only if a force is asked for.</p></div>
+<div class="callout callout--warn"><p><b>The units trap recurs here.</b> <code>ω²r</code> with ω in rpm gives a nonsense answer — rpm is not radians per second. The conversion <code>× 2π/60</code> is mandatory. A question that offers options differing by factors of 60 or 3600 is testing exactly whether you remembered it.</p></div>`
     }
   ],
 
@@ -197,6 +222,38 @@ T = 2 × 3.1 × √(0.25/10) = 6.2 × √0.025</div>
 <p><b>What this is and is not.</b> This is Kepler's third law, derived from circular motion alone. It uses only <code>mv²/r = mg</code> and <code>g ∝ 1/r²</code>, which are fair game. If you find yourself writing <code>GMm/r²</code> with the gravitational constant, you have moved into field theory, which BPhO excludes from Round 0 — the derivation above avoids that entirely.</p>
 <p><b>The physical reading.</b> A satellite eight times further out takes eight times as long. The Moon, at about 60 Earth radii, has a period of about 27 days, and <code>60^(3/2) ≈ 465</code> times the period of a low-Earth satellite of about 90 minutes gives roughly 29 days — close enough to confirm the law with a rough mental estimate.</p>`,
       tag: "Orbital period ratio — Kepler from circular motion"
+    },
+
+    {
+      q: "<p>Two objects, 1 and 2, each move in a horizontal circle of the same radius <code>R</code> and have the same mass <code>m</code>. The centripetal force on object 2 is four times that on object 1. What is the ratio <code>v₂/v₁</code> of their speeds?</p><p>A) 1 &nbsp; B) 2 &nbsp; C) 4 &nbsp; D) ½ &nbsp; E) 16</p>",
+      sol: `<p>Centripetal force is <code>F = mv²/r</code>. With the same mass and the same radius, <code>F ∝ v²</code>, so <code>v ∝ √F</code>.</p>
+<div class="formula">v₂/v₁ = √(F₂/F₁) = √4 = 2</div>
+<p><b>Answer: B, 2.</b></p>
+<p><b>The trap.</b> Option C, 4, is the ratio of the <i>forces</i>, offered to anyone who forgets that speed enters as a <i>square</i> and so the speed ratio is the <i>square root</i> of the force ratio. Option A, 1, would follow from thinking the speed is independent of the force. Option D, ½, is the inverse, the result of flipping the ratio. Option E, 16, is the force ratio squared — a double squaring error.</p>
+<p><b>The physical reading.</b> Doubling the speed quadruples the required centripetal force. This is the same <code>v²</code> dependence that makes stopping distance grow with the square of the speed, and it is why a small increase in cornering speed demands a much larger frictional grip from the tyres.</p>`,
+      tag: "Ratio of speeds for the same radius — the v² dependence"
+    },
+
+    {
+      q: "<p>A roller-coaster car of mass <code>500 kg</code> passes over the top of a vertical loop of radius <code>8.0 m</code> at a speed of <code>12 m s⁻¹</code>. Take <code>g = 10 m s⁻²</code>. What is the normal force exerted by the track on the car at the top?</p><p>A) 1000 N &nbsp; B) 4000 N &nbsp; C) 5000 N &nbsp; D) 9000 N &nbsp; E) 14000 N</p>",
+      sol: `<p>At the top of the loop both gravity and the normal force point towards the centre, so they add to supply the centripetal force:</p>
+<div class="formula">N + mg = mv²/r</div>
+<p>Solve for N:</p>
+<div class="formula">N = m(v²/r − g) = 500 × (144/8.0 − 10) = 500 × (18 − 10) = 500 × 8 = 4000 N</div>
+<p><b>Answer: B, 4000 N.</b></p>
+<p><b>The traps.</b> Option C, 5000 N, is just the weight <code>mg</code> — the mistake of thinking the track only has to support the car's weight. Option D, 9000 N, is the full centripetal force <code>mv²/r = 500 × 18</code> — the error of forgetting to subtract the weight, i.e. treating gravity as if it acted outward. Option E, 14000 N, is <code>mv²/r + mg</code>, a sign error from writing <code>N − mg = mv²/r</code> (the bottom-of-the-loop equation) at the top. Keep the geometry straight: at the top both forces point inward and add.</p>
+<p><b>The sanity check.</b> The centripetal force needed is 9000 N and gravity already supplies 5000 N of it, so the track need only supply the remaining 4000 N. That is why a car can stay on the track at the top even when it feels lightest — gravity is doing most of the turning.</p>`,
+      tag: "Force needed in a loop — normal force at the top"
+    },
+
+    {
+      q: "<p>A conical pendulum has a string of length <code>1.2 m</code>. The bob moves in a horizontal circle of radius <code>0.60 m</code>. What angle does the string make with the vertical?</p><p>A) 30° &nbsp; B) 45° &nbsp; C) 60° &nbsp; D) 90° &nbsp; E) 26.6°</p>",
+      sol: `<p>In a conical pendulum the radius of the horizontal circle is the horizontal component of the string: <code>r = ℓ sin θ</code>. Hence</p>
+<div class="formula">sin θ = r/ℓ = 0.60/1.2 = 0.50   →   θ = 30°</div>
+<p><b>Answer: A, 30°.</b></p>
+<p><b>The traps.</b> Option C, 60°, comes from writing <code>cos θ = r/ℓ</code> — confusing the adjacent and opposite sides of the triangle. Option E, 26.6°, comes from using <code>tan θ = r/ℓ = 0.5</code>; that is the wrong ratio because <code>tan θ = r / (vertical drop)</code>, not <code>r/ℓ</code>. Option D, 90°, would mean the string horizontal, which is impossible for a real conical pendulum because then tension could have no vertical component to balance the weight. Always draw the triangle and label which side is the radius.</p>
+<p><b>The quick check.</b> The vertical drop is <code>ℓ cos θ = 1.2 × cos 30° ≈ 1.04 m</code>, and <code>tan θ = 0.60/1.04 ≈ 0.577</code>, which is <code>tan 30°</code> ✓ — consistent. If you had found 60° the vertical drop would be <code>1.2 × 0.5 = 0.60 m</code> and <code>tan</code> would be 1.0, contradicting the geometry.</p>`,
+      tag: "Conical pendulum angle — which trig ratio"
     }
   ],
 
@@ -248,7 +305,10 @@ T = 2 × 3.1 × √(0.25/10) = 6.2 × √0.025</div>
 <tr><td>Lead</td><td>11 300</td></tr>
 <tr><td>Mercury</td><td>13 600</td></tr>
 </tbody></table>
-<p>Knowing the order of magnitude of these is useful for sanity-checking answers. If a question about a steel block yields a density of 300 kg m⁻³, something has gone wrong.</p>`
+<p>Knowing the order of magnitude of these is useful for sanity-checking answers. If a question about a steel block yields a density of 300 kg m⁻³, something has gone wrong.</p>
+<h3>Density is an intensive property</h3>
+<p>Density does not depend on how much material you have — cut a steel block in half and each half still has density 7800 kg m⁻³. That is what makes it a property of the <i>material</i>, like the Young modulus, rather than of the <i>sample</i>. It also means that for a uniform object, mass and volume always scale together: double the volume and you double the mass.</p>
+<div class="callout callout--warn"><p><b>The unit trap.</b> <code>1 g cm⁻³ = 1000 kg m⁻³</code>. A density quoted as <code>7.8 g cm⁻³</code> for steel is <code>7800 kg m⁻³</code>, not 7.8. The factor of 1000 is the single most common slip when converting between the two units, and questions will offer both forms as options.</p></div>`
     },
 
     {
@@ -264,7 +324,10 @@ T = 2 × 3.1 × √(0.25/10) = 6.2 × √0.025</div>
 </tbody></table>
 <div class="callout callout--key"><p><b>Note that this is the opposite of the resistor rules in one respect and the same in another.</b> Springs in parallel add, like resistors in series. Springs in series reciprocal-add, like resistors in parallel. It is the same pair of structures, mapped onto each other. If you remember the resistor rules you already know these.</p></div>
 <h3>Why series is softer</h3>
-<p>Put two identical springs in series and hang a load. Each spring experiences the <b>same force</b>, so each stretches by the same amount. The total extension is doubled, so the effective stiffness is halved. That reasoning is worth being able to give, because the parallel case has the mirror-image argument.</p>`
+<p>Put two identical springs in series and hang a load. Each spring experiences the <b>same force</b>, so each stretches by the same amount. The total extension is doubled, so the effective stiffness is halved. That reasoning is worth being able to give, because the parallel case has the mirror-image argument.</p>
+<h3>The limit of proportionality versus the elastic limit</h3>
+<p>These two limits are close but not the same, and a question may ask you to distinguish them. The <b>limit of proportionality</b> is where the force–extension graph stops being a straight line — a geometric fact about the graph. The <b>elastic limit</b> is where the material stops returning to its original length on unloading — a physical fact about the material. You can pass the limit of proportionality and still recover fully; pass the elastic limit and you have a permanent set.</p>
+<div class="callout callout--key"><p><b>Why Hooke's law holds at all.</b> It is the linear regime of interatomic forces. Stretch a bond a little and the restoring force is proportional to the displacement — exactly like a tiny spring at every bond. Push far enough and the relationship bends, which is the limit of proportionality in macroscopic language.</p></div>`
     },
 
     {
@@ -276,7 +339,10 @@ T = 2 × 3.1 × √(0.25/10) = 6.2 × √0.025</div>
 <h3>The non-linear case</h3>
 <p>If the force–extension graph is not a straight line, the stored energy is still the area under the curve — but you can no longer use the triangle formula. Questions sometimes give a graph and ask for the energy as the area of a trapezium or a counted number of squares. Read the axes carefully: a graph of force against extension has area in joules, but a graph of force against <i>length</i> does not.</p>
 <h3>Energy conversions</h3>
-<p>Elastic strain energy converts to kinetic and gravitational energy in many problems: a spring launching a projectile, a bungee jumper, a bow. The method is always conservation of energy, with <code>½kx²</code> as one of the terms.</p>`
+<p>Elastic strain energy converts to kinetic and gravitational energy in many problems: a spring launching a projectile, a bungee jumper, a bow. The method is always conservation of energy, with <code>½kx²</code> as one of the terms.</p>
+<h3>Deriving E = ½kx² from the average force</h3>
+<p>The force grows linearly from 0 to <code>F = kx</code> as the spring stretches. The work done is the average force times the distance: <code>(0 + kx)/2 × x = ½kx²</code>. Equivalently it is the area of the triangle under the force–extension graph. The factor of ½ is unavoidable because the force is not constant — it is zero at the start.</p>
+<div class="callout callout--bad"><p><b>The error to avoid.</b> Writing <code>Fx = kx²</code> for the stored energy uses the final force throughout, ignoring that the force started at zero. That overestimates the energy by a factor of 2. Whenever you see a force–extension graph, take the <i>area</i>, and for a triangle the area is half the base times the height.</p></div>`
     },
 
     {
@@ -310,7 +376,10 @@ tensile strain  ε = ΔL/L         (dimensionless)</div>
 <tr><td>Polymeric</td><td>Curved graph, large strain, often returns slowly</td><td>rubber, polythene</td></tr>
 </tbody></table>
 <div class="callout callout--good"><p><b>The comparison question.</b> When asked to compare two materials from their graphs, the useful comparisons are: which has the larger Young modulus (steeper initial gradient), which is stronger (higher ultimate tensile stress), and which is more brittle (less strain before fracture). Answer in those three terms and you have covered the physics.</p></div>
-<div class="callout callout--warn"><p><b>Do not confuse stress with force and strain with extension.</b> The ultimate tensile <i>stress</i> is a fixed property of a material; the breaking <i>force</i> depends on the cross-sectional area. A thick and a thin wire of the same steel break at the same stress but different forces. Questions exploit this distinction regularly.</p></div>`
+<div class="callout callout--warn"><p><b>Do not confuse stress with force and strain with extension.</b> The ultimate tensile <i>stress</i> is a fixed property of a material; the breaking <i>force</i> depends on the cross-sectional area. A thick and a thin wire of the same steel break at the same stress but different forces. Questions exploit this distinction regularly.</p></div>
+<h3>The three comparisons a question will ask</h3>
+<p>When two materials are compared from their graphs, the useful quantities are: the initial gradient (the Young modulus — steeper is stiffer), the height of the curve at its peak (the ultimate tensile stress — higher is stronger), and the strain at fracture (smaller is more brittle). Answer in exactly those three terms and you have covered the physics.</p>
+<div class="callout callout--good"><p><b>Reading a curve you have never seen.</b> Even an unfamiliar material graph yields to the same questions: where does it stop being straight (limit of proportionality)? Does it then curve gently (ductile) or break almost immediately (brittle)? Does it return to the origin on unloading (elastic) or leave a gap (plastic)? The features are the same vocabulary for every material.</p></div>`
     },
 
     {
@@ -346,7 +415,10 @@ tensile strain  ε = ΔL/L         (dimensionless)</div>
 <div class="formula">σ = 2 × 10¹¹ × 1.2 × 10⁻⁵ × 30 ≈ 7 × 10⁷ Pa</div>
 <p>That is about 70 MPa — comparable to the yield stress of mild steel. So a fully constrained steel rail heated by 30 °C can buckle or fracture. That is precisely why rails are laid with gaps, or pre-stressed under tension.</p>
 <div class="callout callout--good"><p><b>The general lesson, and it generalises usefully.</b> Whenever a constraint prevents a natural change, the constraint generates a stress proportional to how much change was prevented. The same structure appears in a rod prevented from contracting when cooled, in a wire whose ends are fixed, and in a bimetallic strip. Recognising the pattern is worth more than memorising <code>EαΔT</code>.</p></div>
-<div class="callout callout--warn"><p><b>Check whether the question says the rod is free or constrained.</b> If free, use <code>Δℓ = αℓ₀ΔT</code> and there is no stress. If constrained, use <code>σ = EαΔT</code> and there is no change in length. A question that gives you both <code>α</code> and <code>E</code> is usually a constrained one, because a free rod needs only <code>α</code>.</p></div>`
+<div class="callout callout--warn"><p><b>Check whether the question says the rod is free or constrained.</b> If free, use <code>Δℓ = αℓ₀ΔT</code> and there is no stress. If constrained, use <code>σ = EαΔT</code> and there is no change in length. A question that gives you both <code>α</code> and <code>E</code> is usually a constrained one, because a free rod needs only <code>α</code>.</p></div>
+<h3>A second way to remember σ = EαΔT</h3>
+<p>Treat the prevented expansion as if it had happened and then been compressed back. The free expansion would be strain <code>αΔT</code>; compressing the rod back to its original length imposes that same strain in the opposite sense. Hooke's law in material form is <code>σ = Eε</code>, so the stress is <code>E × αΔT</code>. Seeing it as "reverse the free expansion" makes the formula derivable rather than memorised.</p>
+<div class="callout callout--key"><p><b>The everyday pay-off.</b> This is why a thermostat bimetallic strip bends (two <code>α</code>s fighting), why glass cracks if heated unevenly (the hot side wants to expand but the cold side restrains it, generating stress), and why large structures are built with expansion joints or deliberate pre-stress. The same <code>EαΔT</code> underlies all three.</p></div>`
     }
   ],
 

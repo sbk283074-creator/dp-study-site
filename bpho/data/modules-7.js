@@ -15,35 +15,37 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
   sections: [
     {
       h: "Nuclear notation and isotopes",
-      body: `<p>A nucleus is written <code>ᴬ_Z X</code> where:</p>
+      body: `<p>A nucleus is written <code>ᴬ_Z X</code> where the chemical symbol <code>X</code> fixes the element, and the two numbers carry the structure of the nucleus:</p>
 <ul class="tight">
-<li><code>X</code> is the chemical symbol, which fixes the element.</li>
-<li><code>Z</code>, the <b>proton number</b> (or atomic number), is the number of protons. It determines the element and the number of electrons in a neutral atom.</li>
-<li><code>A</code>, the <b>nucleon number</b> (or mass number), is the total number of protons and neutrons.</li>
-<li>The number of neutrons is <code>A − Z</code>.</li>
+<li><code>Z</code>, the <b>proton number</b> (atomic number 原子序数), is the number of protons. It fixes the element and, in a neutral atom, the number of electrons, and therefore all the chemistry.</li>
+<li><code>A</code>, the <b>nucleon number</b> (mass number 质量数), is the total number of protons and neutrons, the particles bound inside the nucleus.</li>
+<li>The neutron number is <code>A − Z</code>.</li>
 </ul>
 <div class="formula">neutron number = A − Z</div>
+<p>Why two numbers and not one? Because the identity of an element depends only on <code>Z</code> — change <code>Z</code> and you change the element — while the mass depends on how many neutrons are piled alongside the protons. So a single element can exist in several forms with the same <code>Z</code> but different <code>A</code>.</p>
 <h3>Isotopes</h3>
-<p>Isotopes are nuclei with the <b>same <code>Z</code> but different <code>A</code></b> — the same element, different numbers of neutrons. They have identical chemical properties, because chemistry depends on the electron arrangement and therefore on <code>Z</code>, but different nuclear properties such as stability.</p>
-<p>For example, carbon-12 and carbon-14 are both <code>Z = 6</code>, with 6 and 8 neutrons respectively. Carbon-14 is radioactive; carbon-12 is stable. That difference in nuclear stability, with no difference in chemistry, is what makes radiocarbon dating possible.</p>
-<div class="callout callout--key"><p><b>The notation convention.</b> The superscript is <code>A</code> and the subscript is <code>Z</code>. A common slip is to swap them. Remember by thinking about size: <code>A</code> is the bigger number (total particles), so it goes on top. <code>Z</code> is the smaller number (protons only), so it goes underneath.</p></div>`
+<p>Isotopes are nuclei with the <b>same <code>Z</code> but different <code>A</code></b> — the same element, different neutron counts. They share identical chemical properties (same electron arrangement, same <code>Z</code>) but different nuclear stability.</p>
+<p>Carbon-12 (<code>¹²₆C</code>) and carbon-14 (<code>¹⁴₆C</code>) are both <code>Z = 6</code>, with 6 and 8 neutrons. Carbon-14 is radioactive; carbon-12 is stable. That exact asymmetry — chemically identical, nuclearly different — is what makes radiocarbon dating possible: living matter keeps a roughly fixed ratio of the two, death stops the intake, and the radioactive one decays away at a known rate.</p>
+<div class="callout callout--key"><p><b>The notation convention.</b> The superscript is <code>A</code> and the subscript is <code>Z</code>. A common slip is to swap them. Remember by size: <code>A</code> is the larger number (all nucleons), so it sits on top; <code>Z</code> is the smaller (protons only), so it sits underneath. When you read a decay equation, check <code>A</code> and <code>Z</code> separately every time — that habit prevents most of the errors in this module.</p></div>
+<div class="callout callout--warn"><p><b>Mass number is not mass.</b> <code>A</code> is a count of nucleons, not a mass in kilograms. A carbon-12 nucleus does have a mass close to <code>12 u</code>, but the actual mass is always slightly less than <code>A u</code> because of the binding energy (see the binding-energy section). Treat <code>A</code> as a count, not a weight.</p></div>`
     },
 
     {
       h: "Specific charge",
       body: `<p>Specific charge is the ratio of charge to mass:</p>
 <div class="formula">specific charge = Q/m</div>
-<p>with units of <code>C kg⁻¹</code>. It is a useful quantity because it appears in the deflection of charged particles, where a larger specific charge means a greater deflection in a given field.</p>
+<p>Units: <code>C kg⁻¹</code>. The point of the quantity is that it decides how strongly a charged particle is deflected in a given electric or magnetic field. For a fixed force <code>F = qE</code> or <code>F = qvB</code>, the acceleration is <code>F/m = (q/m)E</code>, so a larger <code>q/m</code> gives a larger acceleration and a tighter curve. That is why specific charge is the natural quantity for any deflection problem.</p>
 <h3>The three particles</h3>
 <table><thead><tr><th>Particle</th><th>Charge</th><th>Mass</th><th>Specific charge / C kg⁻¹</th></tr></thead><tbody>
 <tr><td>proton</td><td><code>+e</code></td><td><code>1.67 × 10⁻²⁷ kg</code></td><td><code>9.6 × 10⁷</code></td></tr>
 <tr><td>neutron</td><td>0</td><td><code>1.67 × 10⁻²⁷ kg</code></td><td>0</td></tr>
 <tr><td>electron</td><td><code>−e</code></td><td><code>9.11 × 10⁻³¹ kg</code></td><td><code>1.8 × 10¹¹</code></td></tr>
 </tbody></table>
-<p>Note how much larger the electron's specific charge is — about 1800 times the proton's, because it carries the same magnitude of charge in far less mass. That is why electrons are deflected so much more than protons in the same field.</p>
+<p>Note how much larger the electron's specific charge is — about 1800 times the proton's. The reason is clean: the electron carries the same magnitude of charge as the proton but is roughly 1836 times lighter. So the same <code>−e</code> divided by a far smaller mass gives a far larger ratio. That single fact explains why beta particles bend wildly in a cloud chamber while alpha tracks are nearly straight.</p>
 <h3>Specific charge of a nucleus</h3>
 <p>For a nucleus <code>ᴬ_Z X</code>, the charge is <code>+Ze</code> and the mass is approximately <code>A × u</code> where <code>u = 1.66 × 10⁻²⁷ kg</code> is the atomic mass unit:</p>
 <div class="formula">specific charge = Ze/(A u)</div>
+<p>More generally, for a fixed element, adding neutrons (raising <code>A</code> while holding <code>Z</code>) lowers the specific charge, because the charge stays put while the mass grows. That is why heavier isotopes sit closer to the axis on a mass-spectrometer trace.</p>
 <div class="callout callout--key"><p><b>The result worth understanding, and it is what sample question S1 tested.</b> A nucleus has a <b>lower</b> specific charge than a lone proton, because the neutrons contribute mass but no charge. So adding neutrons to a nucleus always reduces its specific charge.</p>
 <p>Take a helium nucleus, <code>⁴₂He</code>: charge <code>2e</code>, mass <code>4u</code>. Its specific charge is <code>2e/(4u) = e/(2u)</code> — exactly <b>half</b> that of a proton. Two protons would have specific charge <code>2e/(2u) = e/u</code>, so adding the two neutrons halved it.</p></div>
 <h3>For an ion</h3>
@@ -54,11 +56,11 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
       h: "Atomic mass unit and mass–energy equivalence",
       body: `<p>The <b>atomic mass unit</b> is defined as one twelfth of the mass of a carbon-12 atom:</p>
 <div class="formula">1 u = 1.66 × 10⁻²⁷ kg</div>
-<p>It is convenient because atomic masses then come out close to whole numbers, since <code>A</code> counts nucleons.</p>
+<p>It is convenient because atomic masses then come out close to whole numbers, since <code>A</code> counts nucleons. A carbon-12 atom therefore has a mass of exactly 12 u by definition.</p>
 <h3>Mass–energy equivalence</h3>
 <p>Mass and energy are equivalent, related by</p>
 <div class="formula">E = mc²</div>
-<p>This matters because nuclear processes change mass. When a nucleus forms from its constituent nucleons, the total mass <b>decreases</b> slightly, and that missing mass — the <b>mass defect</b> — appears as released energy.</p>
+<p>This matters because nuclear processes change mass. When a nucleus forms from its constituent nucleons, the total mass <b>decreases</b> slightly, and that missing mass — the <b>mass defect</b> — appears as released energy. This is the quantitative heart of both binding energy (next section) and of fission and fusion (final section).</p>
 <h3>The conversion worth memorising</h3>
 <p>Substituting <code>1 u = 1.66 × 10⁻²⁷ kg</code> and <code>c = 3.00 × 10⁸ m s⁻¹</code>:</p>
 <div class="formula">E = 1.66 × 10⁻²⁷ × (3.00 × 10⁸)²
@@ -66,21 +68,37 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
   = 1.49 × 10⁻¹⁰ J</div>
 <p>Converting to electron volts by dividing by <code>1.6 × 10⁻¹⁹</code> gives about <code>9.3 × 10⁸ eV</code>, or <b>931 MeV</b>. So</p>
 <div class="formula">1 u ≡ 931 MeV</div>
-<div class="callout callout--good"><p><b>Why this conversion is so useful.</b> Nuclear masses are almost always quoted in <code>u</code>, and nuclear energies in MeV. Having <code>1 u ≡ 931 MeV</code> means you never need to convert to kilograms or to joules at all. A mass defect of <code>0.02 u</code> is immediately <code>0.02 × 931 ≈ 19 MeV</code> — one mental multiplication.</p></div>`
+<div class="callout callout--good"><p><b>Why this conversion is so useful.</b> Nuclear masses are almost always quoted in <code>u</code>, and nuclear energies in MeV. Having <code>1 u ≡ 931 MeV</code> means you never need to convert to kilograms or to joules at all. A mass defect of <code>0.02 u</code> is immediately <code>0.02 × 931 ≈ 19 MeV</code> — one mental multiplication. Keep this equivalence memorised; it is the bridge between every mass and every energy in this module.</p></div>`
+    },
+
+    {
+      h: "Binding energy and the mass defect",
+      body: `<p>When free protons and neutrons come together to form a nucleus, the resulting nucleus has a mass slightly <b>less</b> than the sum of the masses of its separate nucleons. That missing mass is the <b>mass defect</b> (质量亏损), and <code>E = mc²</code> tells us it has been converted into the energy that binds the nucleus together.</p>
+<div class="formula">Δm = (Z m_p + (A − Z) m_n) − m_nucleus
+binding energy  BE = Δm c²</div>
+<p>The <b>binding energy</b> is the energy you would have to supply to pull the nucleus completely apart into its constituent nucleons. Equivalently, it is the energy released when the nucleus formed. For a typical nucleus the mass defect is a few percent of the total mass, and at <code>1 u ≡ 931 MeV</code> that corresponds to MeV-scale binding energies.</p>
+<h3>Binding energy per nucleon</h3>
+<p>The quantity that really matters for stability is the binding energy divided by <code>A</code>, the number of nucleons — a measure of how tightly bound each nucleon is on average:</p>
+<div class="formula">BE per nucleon = BE / A</div>
+<p>This ratio peaks around iron (<code>⁵⁶₂₆Fe</code>) at about 8.8 MeV per nucleon, and is lower for both very light and very heavy nuclei. That single curve explains <b>both</b> fission and fusion (see the final nuclear section): light nuclei gain binding energy by fusing, heavy nuclei gain it by splitting.</p>
+<div class="callout callout--key"><p><b>Compare per-nucleon, never total.</b> A uranium nucleus has a huge <i>total</i> binding energy, but shared among 238 nucleons each one is only loosely held — which is exactly why it can fission. A helium nucleus has a smaller total binding energy, but only four nucleons share it, so each is very tightly held. When deciding which nucleus is more stable, always use BE per nucleon.</p></div>
+<div class="callout callout--warn"><p><b>The sign trap.</b> The bound nucleus is <i>less</i> massive than its parts, so the defect is <code>Σm − m_nucleus</code>, giving a positive binding energy. Writing it the other way round yields a negative binding energy, which is wrong.</p></div>`
     },
 
     {
       h: "Alpha and beta decay",
-      body: `<p>Unstable nuclei decay by emitting particles, changing <code>A</code> and <code>Z</code> in specific ways. Every decay equation must balance both <code>A</code> and <code>Z</code> separately.</p>
+      body: `<p>Unstable nuclei decay by emitting particles, changing <code>A</code> and <code>Z</code> in specific ways. Every decay equation must balance both <code>A</code> and <code>Z</code> separately — this is the single rule that governs all three decays.</p>
 <h3>Alpha decay</h3>
 <p>An alpha particle is a helium nucleus, <code>⁴₂He</code>. So the parent loses 4 from <code>A</code> and 2 from <code>Z</code>:</p>
 <div class="formula">ᴬ_Z X  →  ᴬ⁻⁴_(Z−2) Y  +  ⁴₂He</div>
-<p>Alpha decay happens in heavy nuclei, where the strong force cannot hold together such a large assembly against the electrostatic repulsion of the protons.</p>
+<p>Alpha decay happens in heavy nuclei, where the strong force cannot hold together such a large assembly against the electrostatic repulsion of the many protons. The daughter sits two places left in the periodic table.</p>
 <h3>Beta-minus decay</h3>
 <p>A neutron converts into a proton, emitting an electron and an antineutrino. So <code>A</code> is unchanged and <code>Z</code> increases by 1:</p>
 <div class="formula">ᴬ_Z X  →  ᴬ_(Z+1) Y  + ⁰_(−1)e  +  ν̄</div>
-<p>Note that the electron is written with <code>A = 0</code> and <code>Z = −1</code>, so the balancing works: the <code>Z</code> on the right is <code>(Z+1) − 1 = Z</code> ✓.</p>
+<p>Note that the electron is written with <code>A = 0</code> and <code>Z = −1</code>, so the balancing works: the <code>Z</code> on the right is <code>(Z+1) − 1 = Z</code> ✓. The daughter sits one place to the right in the periodic table.</p>
 <div class="callout callout--key"><p><b>Why the antineutrino must be emitted, and this is a standard "explain" question.</b> Without it, the electron's energy would be fixed by the mass difference, and momentum would not balance either. In practice beta particles are emitted with a <b>continuous range</b> of energies up to a maximum, not a single fixed energy. That observation is the evidence: the missing energy and momentum must be carried by an unseen third particle. Pauli proposed the neutrino for exactly this reason.</p></div>
+<h3>Gamma emission</h3>
+<p>After an alpha or beta decay the daughter nucleus is often left in an excited state with excess nuclear energy. It relaxes by emitting a <b>gamma ray</b> — a high-energy photon (a packet of electromagnetic radiation, 光子). Gamma emission changes <b>neither <code>A</code> nor <code>Z</code></b>; it is purely a release of energy from the nucleus. So a decay can be written with a gamma suffix, for example <code>⁶⁰₂₇Co → ⁶⁰₂₈Ni + ⁻¹₀e + ν̄ + γ</code>. In a magnetic field the gamma ray shows no deflection at all, because it carries no charge — a useful discriminator between the three radiations.</p>
 <h3>Balancing decay equations</h3>
 <ol class="steps">
 <li>Write the parent on the left.</li>
@@ -89,24 +107,24 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <li>Identify the daughter from <code>Z</code> using the periodic table.</li>
 <li>Check that both <code>A</code> and <code>Z</code> balance.</li>
 </ol>
-<div class="callout callout--warn"><p><b>The sign trap in beta decay.</b> It is tempting to think the electron came from the nucleus and therefore <code>Z</code> should decrease. It does not. A <b>neutron</b> turns into a proton plus an electron, so the proton count <i>increases</i> by one. Getting this backwards is the single most common error in the topic.</p></div>`
+<div class="callout callout--warn"><p><b>The sign trap in beta decay.</b> It is tempting to think the electron came from the nucleus and therefore <code>Z</code> should decrease. It does not. A <b>neutron</b> turns into a proton plus an electron, so the proton count <i>increases</i> by one. Getting this backwards — and writing the daughter one place to the left instead of the right — is the single most common error in the topic.</p></div>`
     },
 
     {
       h: "The strong nuclear force",
-      body: `<p>The strong force holds nuclei together against the electrostatic repulsion of the protons, which at short range is very large. It has two distinctive features.</p>
+      body: `<p>The strong force holds nuclei together against the electrostatic repulsion of the protons, which at short range is very large. Without it, every nucleus with more than one proton would fly apart. It has three distinctive features.</p>
 <h3>It is short range</h3>
-<p>Attractive between nucleons out to about <b>3 femtometres</b> (<code>3 × 10⁻¹⁵ m</code>), beyond which it falls rapidly to nothing. This is why nuclei larger than a certain size are unstable: the strong force only reaches the nearest neighbours, but the electrostatic repulsion reaches <i>every</i> proton in the nucleus. Beyond about 80 nucleons, repulsion wins and the nucleus is unstable.</p>
+<p>Attractive between nucleons out to about <b>3 femtometres</b> (<code>3 × 10⁻¹⁵ m</code>), beyond which it falls rapidly to nothing. This is why nuclei larger than a certain size are unstable: the strong force only reaches the nearest neighbours, but the electrostatic repulsion reaches <i>every</i> proton in the nucleus. Beyond about 80 protons, repulsion wins and the nucleus is unstable — which is why the heaviest stable elements stop around lead and bismuth.</p>
 <h3>It has a very short-range repulsive core</h3>
-<p>Below about <b>0.5 fm</b> the force becomes strongly <b>repulsive</b>. This stops nucleons from collapsing into each other and gives nuclei a roughly constant density, rather like a liquid drop.</p>
+<p>Below about <b>0.5 fm</b> the force becomes strongly <b>repulsive</b>. This stops nucleons from collapsing into each other and gives nuclei a roughly constant density, rather like a liquid drop — every nucleus has about the same number density of nucleons.</p>
 <h3>It is charge-independent</h3>
-<p>The strong force acts between protons and protons, between neutrons and neutrons, and between protons and neutrons, with the same strength. This is why the neutron exists as a separate stable particle in a nucleus at all — the strong force holds it there even though it has no charge.</p>
+<p>The strong force acts between protons and protons, between neutrons and neutrons, and between protons and neutrons, with the same strength. This is why the neutron exists as a separate stable particle in a nucleus at all — the strong force holds it there even though it has no charge, and it is why the binding energy depends only weakly on whether a nucleon is a proton or a neutron.</p>
 <table><thead><tr><th>Separation</th><th>Nature of the strong force</th></tr></thead><tbody>
 <tr><td>less than 0.5 fm</td><td>strongly repulsive</td></tr>
 <tr><td>0.5 fm to 3 fm</td><td>strongly attractive, dominant over electrostatic repulsion</td></tr>
 <tr><td>more than 3 fm</td><td>negligible</td></tr>
 </tbody></table>
-<div class="callout callout--key"><p><b>The comparison worth being able to state.</b> The strong force is about 100 times stronger than the electrostatic force at nucleon separations, but its range is a hundred thousand times shorter. That combination — very strong but very short — is what makes both nuclear stability and nuclear instability possible, depending on the size of the nucleus.</p></div>`
+<div class="callout callout--key"><p><b>The comparison worth being able to state.</b> The strong force is about 100 times stronger than the electrostatic force at nucleon separations, but its range is a hundred thousand times shorter. That combination — very strong but very short — is what makes both nuclear stability and nuclear instability possible, depending on the size of the nucleus. It also explains why adding more protons eventually dooms a nucleus: the short-range attraction cannot keep up with the long-range repulsion.</p></div>`
     },
 
     {
@@ -121,6 +139,8 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <tr><td>Hazard inside the body</td><td>very high</td><td>high</td><td>moderate</td></tr>
 </tbody></table>
 <div class="callout callout--key"><p><b>The inverse relationship at the heart of this table.</b> Ionising power and penetrating power are <b>opposites</b>. Alpha particles ionise very strongly, so they lose their energy within a few centimetres of air and cannot penetrate. Gamma rays ionise weakly, so they pass through most matter. That single sentence organises the whole table, and it also explains the hazard asymmetry: alpha is harmless outside the body but dangerous if inhaled, because then all its energy is deposited in a small volume of tissue.</p></div>
+<h3>How to tell them apart experimentally</h3>
+<p>Two tests separate the three. First, interpose absorbers: paper stops alpha, aluminium stops beta, only thick lead substantially reduces gamma. Second, pass the beam through a magnetic or electric field: alpha and beta deflect in opposite directions (opposite charges; alpha only slightly because of its large mass), while gamma is unaffected. A question that gives you a deflection pattern and an absorption pattern is asking you to match both.</p>
 <h3>Background radiation</h3>
 <p>Radiation is detected even with no source present. Sources include:</p>
 <ul class="tight">
@@ -131,7 +151,51 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <li><b>Medical sources</b>, such as X-rays and tracers</li>
 <li><b>Nuclear industry and fallout</b>, a very small contribution</li>
 </ul>
-<div class="callout callout--warn"><p><b>Always subtract the background.</b> A measured count rate is the source plus background. If a question gives you a background rate, subtract it before analysing the source. Failing to do so is the standard error in this topic, and it is worth a mark.</p></div>`
+<div class="callout callout--warn"><p><b>Always subtract the background.</b> A measured count rate is the source plus background. If a question gives you a background rate, subtract it before analysing the source. Failing to do so is the standard error in this topic, and it is worth a mark. For a decay-curve question, read the half-life from the excess-over-background curve, not from the raw count.</p></div>`
+    },
+
+    {
+      h: "Radioactive decay and half-life",
+      body: `<p>Radioactive decay is <b>random and spontaneous</b>: you cannot predict when a single nucleus will decay, only the probability per unit time. But for a large sample the statistics are exact, and the population falls in a perfectly predictable way.</p>
+<h3>Half-life by ratio reasoning</h3>
+<p>The <b>half-life</b> (半衰期) <code>T½</code> is the time for the number of undecayed nuclei to halve. After one half-life, <code>½</code> remains; after two, <code>½ × ½ = ¼</code>; after <code>n</code> half-lives, the fraction remaining is <code>(½)ⁿ</code>:</p>
+<div class="formula">N/N₀ = (½)ⁿ   where   n = t / T½</div>
+<p>This is pure ratio reasoning — no calculator, no exponentials needed if the time is given as a multiple of the half-life. Always convert the elapsed time to a number of half-lives first; the arithmetic then reduces to powers of two, which you can do in your head.</p>
+<h3>Why the decay is exponential</h3>
+<p>Each nucleus decays at a constant probability per second, independent of how long it has already survived (the process has no memory). So the rate at which nuclei decay is proportional to how many are left:</p>
+<div class="formula">rate of decay = λN</div>
+<p>where the constant of proportionality <code>λ</code> is the <b>decay constant</b> (衰变常数). A larger <code>λ</code> means a shorter half-life. This proportionality is the seed of the exponential law (next section), and it is worth understanding directly: the more nuclei present, the more decay events per second — but the fraction decaying per second is fixed.</p>
+<div class="callout callout--key"><p><b>The "half-life" shortcut on a graph.</b> If a question gives a decay curve, read off the time for the count to drop from the start value to half that value — that is <code>T½</code> directly. To find the time for, say, an eighth to remain, note <code>1/8 = (½)³</code>, so that is three half-lives. Powers of two are your friend; reach for them before reaching for <code>e</code>.</p></div>
+<div class="callout callout--warn"><p><b>Count rate versus number.</b> A detector measures the activity (counts per second), which is proportional to <code>N</code>. So the same <code>(½)ⁿ</code> rule applies to a count-rate curve as to the nucleus count. But <b>always subtract the background</b> first (see the radiations section): if you read "half" from the raw curve you include background and over-estimate the half-life.</p></div>`
+    },
+
+    {
+      h: "Decay constant, activity and the exponential law",
+      body: `<p>Define the <b>activity</b> (活度) <code>A</code> as the number of decays per second. Because each decay removes one nucleus, the activity is the decay rate:</p>
+<div class="formula">A = λN</div>
+<p>Activity is measured in becquerels (Bq), where 1 Bq = 1 decay per second. A source with a large <code>N</code> but a tiny <code>λ</code> (long half-life) can have the same activity as a source with small <code>N</code> but large <code>λ</code> — activity depends on the <i>product</i>, not on either factor alone. This is a classic trap.</p>
+<h3>The exponential law</h3>
+<p>Since the decay rate is proportional to the remaining number, the population falls exponentially:</p>
+<div class="formula">N = N₀ e^(−λt)      A = A₀ e^(−λt)</div>
+<p>The shape is the saturating-decay curve from module A's graph reasoning: steep at first (many nuclei, many decays) and flattening as fewer remain. On a <b>log</b> plot of <code>N</code> against <code>t</code>, the curve becomes a straight line of gradient <code>−λ</code>, because <code>ln N = ln N₀ − λt</code>.</p>
+<h3>Relating half-life to the decay constant</h3>
+<p>By definition, after one half-life <code>N = N₀/2</code>. Substitute into the exponential law:</p>
+<div class="formula">N₀/2 = N₀ e^(−λT½)   →   ½ = e^(−λT½)   →   ln 2 = λ T½</div>
+<div class="formula">T½ = ln 2 / λ  ≈  0.693 / λ</div>
+<p>So a large decay constant means a short half-life, as expected. The factor <code>ln 2 ≈ 0.693</code> is worth knowing so that if a question gives <code>λ</code> and asks for the half-life you can produce it without a calculator approximation beyond the division.</p>
+<div class="callout callout--good"><p><b>Ratio form avoids the exponential.</b> For most Round 0 questions you never need <code>e</code>. If the time is, say, 3 half-lives, write <code>N/N₀ = (½)³ = 1/8</code> and stop. Reserve the full exponential law for times not expressible as a clean number of half-lives — and even then a log plot or ratio is usually faster.</p></div>`
+    },
+
+    {
+      h: "Fission and fusion",
+      body: `<p>Both fission (核裂变) and fusion (核聚变) release energy for the same underlying reason: they move nuclei toward the peak of the binding-energy-per-nucleon curve, around iron. Energy is released when the products are more tightly bound than the reactants, because the gained binding energy appears as kinetic energy of the products (and often as gamma radiation) via <code>E = Δm c²</code>.</p>
+<h3>Fission</h3>
+<p>In <b>nuclear fission</b>, a heavy nucleus such as uranium-235 absorbs a neutron and splits into two lighter nuclei of intermediate mass, plus a few free neutrons and a large amount of energy. Because heavy nuclei sit well to the right of the binding-energy peak, the fragments are more tightly bound per nucleon, so the total binding energy rises and the mass defect of the products is larger than that of the original — the missing mass becomes released energy. A chain reaction is possible because each fission emits neutrons that can trigger further fissions.</p>
+<h3>Fusion</h3>
+<p>In <b>nuclear fusion</b>, two light nuclei join to form a heavier one. Light nuclei sit to the left of the peak, so the fused product is more tightly bound per nucleon than the separate pieces. The classic case is hydrogen fusing to helium in stars. The released energy per reaction is smaller than for fission, but the energy <i>per unit mass of fuel</i> is far greater, because light nuclei contain many more nuclei per kilogram.</p>
+<div class="formula">energy released = (binding energy of products) − (binding energy of reactants) = Δm c²</div>
+<div class="callout callout--key"><p><b>The one picture to hold in your head.</b> Plot binding energy per nucleon against <code>A</code>. It rises steeply from hydrogen, peaks near iron, then falls gently toward uranium. <b>Moving up that curve releases energy.</b> Fission moves heavy nuclei leftward-and-up the curve; fusion moves light nuclei rightward-and-up. Both go uphill in binding energy, so both release energy. Any question about "why does this reaction release energy?" is answered by pointing at that curve.</p></div>
+<div class="callout callout--warn"><p><b>Qualitative only at this level.</b> Round 0 asks you to <i>explain</i> fission and fusion qualitatively using the binding-energy picture — it does not ask you to compute reaction energetics from scratch with mass tables. Know the direction of energy release and the role of <code>E = mc²</code>; leave the detailed cross-sections to Round 1.</p></div>`
     }
   ],
 
@@ -181,6 +245,42 @@ Z:  92 = Z_daughter + 2   →   Z_daughter = 90</div>
 <p><b>Why the others fail.</b> Option A describes beta-<i>plus</i> decay, which is a different process involving a positron. Option C omits the antineutrino and is therefore physically inconsistent with the observed energy spectrum. Option D describes alpha decay. Option E is wrong because beta decay leaves <code>A</code> unchanged — it changes a neutron into a proton, so the total nucleon count is the same.</p>
 <p><b>The sign trap to avoid.</b> It is tempting to think that emitting a negatively charged particle must reduce the nuclear charge. It does not, because the electron is created in the decay rather than removed from the nucleus, and the proton count simultaneously increases. The daughter therefore has one <i>more</i> proton than the parent.</p>`,
       tag: "Beta decay — the antineutrino argument"
+    },
+
+    {
+      q: "<p>A radioactive source has a half-life of 4 days. What fraction of the original nuclei remains after 20 days?</p><p>A) <code>1/2</code> &nbsp; B) <code>1/4</code> &nbsp; C) <code>1/8</code> &nbsp; D) <code>1/16</code> &nbsp; E) <code>1/32</code></p>",
+      sol: `<p>Convert the elapsed time into a number of half-lives first. Twenty days divided by a half-life of 4 days gives</p>
+<div class="formula">n = 20 / 4 = 5  half-lives</div>
+<p>After each half-life the remaining fraction is multiplied by <code>½</code>. After <code>n</code> half-lives the fraction left is <code>(½)ⁿ</code>:</p>
+<div class="formula">N/N₀ = (½)⁵ = 1/32</div>
+<p><b>Answer: E, <code>1/32</code>.</b></p>
+<p><b>Why this is a ratio question.</b> No exponential, no calculator: just count half-lives and take powers of two. The wrong options are almost all neighbouring powers, which is exactly the structure these questions use. Option D, <code>1/16</code>, is what you get with <code>n = 4</code> — forgetting one half-life, i.e. reading 16 days instead of 20. Option C, <code>1/8</code>, corresponds to <code>n = 3</code>; option B to <code>n = 2</code>. Each is a single missed half-life.</p>
+<p><b>The check.</b> Five halvings of a starting value: 1 → ½ → ¼ → ⅛ → 1/16 → 1/32. Counting the arrows gives five steps, confirming <code>n = 5</code>. If you ever find yourself reaching for <code>e</code> here, you have over-complicated it — the whole point is that the time came out as a whole number of half-lives.</p>`,
+      tag: "Half-life — counting half-lives"
+    },
+
+    {
+      q: "<p>Nucleus X has total binding energy 160 MeV shared among 20 nucleons; nucleus Y has total binding energy 320 MeV shared among 80 nucleons. Which is more tightly bound per nucleon, and by what factor is its binding energy per nucleon larger?</p><p>A) X, by a factor 2 &nbsp; B) Y, by a factor 2 &nbsp; C) X, by a factor 4 &nbsp; D) Y, by a factor 4 &nbsp; E) They are equal</p>",
+      sol: `<p>The relevant quantity is binding energy <i>per nucleon</i>, not the total. Compute each:</p>
+<div class="formula">BE per nucleon of X = 160 / 20 = 8 MeV/nucleon
+BE per nucleon of Y = 320 / 80 = 4 MeV/nucleon</div>
+<p>X is larger by a factor 8 / 4 = 2.</p>
+<p><b>Answer: A — X is more tightly bound per nucleon, by a factor of 2.</b></p>
+<p><b>Why the total misleads.</b> Y has <i>twice</i> the total binding energy of X (320 vs 160), so anyone comparing totals would pick Y — that is option B, and it is wrong. But Y spreads that energy over four times as many nucleons (80 vs 20), so each nucleon is actually held only half as tightly. The question is constructed precisely to punish the total-binding-energy comparison.</p>
+<p><b>The physical point.</b> Stability and tightness of binding are decided by the per-nucleon figure. This is the quantity that peaks near iron and explains why light nuclei fuse and heavy nuclei fission.</p>
+<p><b>The arithmetic trap.</b> Options C and D (factors of 4) come from comparing the nucleon counts or scrambling the ratio — e.g. taking <code>80/20 = 4</code> as if that were the binding-energy factor. Keep the comparison as a clean ratio of the two per-nucleon values: <code>8/4 = 2</code>.</p>`,
+      tag: "Binding energy per nucleon — comparing nuclei"
+    },
+
+    {
+      q: "<p>A sample has activity 200 Bq and contains 4.0 × 10²⁰ undecayed nuclei. What is its decay constant λ in s⁻¹?</p><p>A) <code>2.0 × 10⁻²²</code> &nbsp; B) <code>5.0 × 10⁻¹⁹</code> &nbsp; C) <code>8.0 × 10⁻¹⁸</code> &nbsp; D) <code>2.0 × 10⁻¹⁸</code> &nbsp; E) <code>5.0 × 10⁻²²</code></p>",
+      sol: `<p>Activity is related to the number of nuclei by <code>A = λN</code>. Solve for λ:</p>
+<div class="formula">λ = A / N = 200 / (4.0 × 10²⁰) = 5.0 × 10⁻¹⁹ s⁻¹</div>
+<p><b>Answer: B, <code>5.0 × 10⁻¹⁹ s⁻¹</code>.</b></p>
+<p><b>The mental route (powers of ten).</b> <code>200 = 2 × 10²</code>, so <code>λ = 2 × 10² / (4 × 10²⁰) = (2/4) × 10^(2−20) = 0.5 × 10⁻¹⁸ = 5 × 10⁻¹⁹</code>. Keep the leading digits and the powers of ten separate.</p>
+<p><b>Why the other options exist.</b> Option A, <code>2 × 10⁻²²</code>, comes from dividing <code>200/10²⁰</code> and mishandling the 4 — forgetting to divide by the 4 and losing a further factor of ten. Option E is the reciprocal-ish error. Option D is what you get if you treat the 200 as <code>2 × 10³</code> instead of <code>2 × 10²</code>. The units confirm B is a decay constant: 1/s, since activity (1/s) over a pure count gives 1/s.</p>
+<p><b>The physical point.</b> Activity depends on the <i>product</i> <code>λN</code>. This sample has an enormous number of nuclei, so even a tiny λ produces a measurable 200 Bq. A sample with far fewer nuclei but a much larger λ could have the same activity — which is why activity alone never tells you how much radioactive material is present.</p>`,
+      tag: "Activity and the decay constant"
     }
   ],
 
@@ -224,47 +324,61 @@ Z:  92 = Z_daughter + 2   →   Z_daughter = 90</div>
 
   sections: [
     {
+      h: "Temperature scales — Celsius and kelvin",
+      body: `<p>There are two temperature scales you need, and the relationship between them is the single most common source of error in thermal questions.</p>
+<div class="formula">T(K) = T(°C) + 273   (more precisely 273.15)</div>
+<p>The kelvin is the SI base unit of temperature. Its zero, absolute zero (绝对零度), is the temperature at which (in the ideal-gas model) molecular motion would cease and a gas would exert no pressure. Celsius is offset from kelvin by exactly 273.15, so the two scales have the <b>same sized degree</b>: a change of 1 °C equals a change of 1 K.</p>
+<div class="callout callout--key"><p><b>The rule that prevents most thermal errors.</b> Use the <i>difference</i> <code>ΔT</code> in either scale — they are identical, because the offset cancels. Use the <i>absolute</i> temperature <code>T</code> in kelvin only — whenever a formula involves <code>T</code> itself (such as <code>pV = nRT</code>, or any proportional-to-<code>T</code> relation), convert to kelvin first. A room at 27 °C is 300 K, not "27 K".</p></div>
+<h3>Why the distinction matters</h3>
+<p>If you double a temperature from 27 °C to 54 °C, you have <b>not</b> doubled the absolute temperature — 300 K to 327 K is only a 9% rise. But if a law says "volume is proportional to absolute temperature at fixed pressure", then going from 300 K to 600 K genuinely doubles the volume. Confusing the two is the classic gas-law mistake, and it is worth a mark every time.</p>
+<div class="callout callout--warn"><p><b>Never put a Celsius value into <code>pV = nRT</code>.</b> The kinetic theory defines temperature as proportional to mean molecular kinetic energy, which is zero at absolute zero. Plugging in 27 instead of 300 under-estimates every absolute temperature by a factor of about 11 — a catastrophic error that the options will almost always include.</p></div>`
+    },
+
+    {
       h: "Specific heat capacity",
-      body: `<p>The energy needed to raise the temperature of a body depends on its mass and on the material:</p>
+      body: `<p>The energy needed to raise the temperature of a body depends on its mass and on the material. The defining equation is</p>
 <div class="formula">Q = mcΔT</div>
-<p>where <code>c</code> is the <b>specific heat capacity</b>, the energy needed to raise the temperature of <b>one kilogram</b> of the substance by <b>one kelvin</b>. Units: <code>J kg⁻¹ K⁻¹</code>.</p>
+<p>where <code>m</code> is the mass, <code>c</code> is the <b>specific heat capacity</b> (比热容) — the energy needed to raise one kilogram of the substance by one kelvin — and <code>ΔT</code> is the temperature change in kelvin (or Celsius; the difference is identical, as the temperature-scales section explains). Units of <code>c</code>: <code>J kg⁻¹ K⁻¹</code>.</p>
+<p><b>Why <code>c</code> differs between materials.</b> The energy goes into the disordered motion of the molecules. A substance whose molecules have many ways to store energy — translation, plus rotation and vibration, plus strong internal bonds — can absorb a lot of heat with only a small rise in temperature, so it has a large <code>c</code>. Water, with its hydrogen bonding and light molecules, is the extreme case among common substances.</p>
 <table><thead><tr><th>Substance</th><th><code>c</code> / J kg⁻¹ K⁻¹</th></tr></thead><tbody>
 <tr><td>water</td><td>4200</td></tr>
 <tr><td>aluminium</td><td>900</td></tr>
 <tr><td>copper</td><td>390</td></tr>
 <tr><td>lead</td><td>130</td></tr>
 </tbody></table>
-<div class="callout callout--key"><p><b>Why water's value is so high, and why it matters.</b> Water has an unusually large specific heat capacity, so it takes a lot of energy to warm it and it releases a lot when it cools. That is why it is used in central heating systems and car radiators, and why coastal climates are milder than inland ones. A "why" question on this topic almost always wants that sentence.</p></div>
-<p>Note again that <code>ΔT</code> is the same in kelvin and in degrees Celsius, because it is a temperature <i>difference</i>. No conversion is needed for this formula.</p>`
+<div class="callout callout--key"><p><b>Why water's value is so high, and why it matters.</b> Water needs far more energy per kilogram to warm by a given amount than most substances, so it is an excellent heat reservoir. That is why it is used in central heating and car radiators, and why coastal climates are milder than inland ones — the ocean buffers the temperature. A "why" question on this topic almost always wants that sentence.</p></div>
+<p>Note again that <code>ΔT</code> is the same in kelvin and in degrees Celsius, because it is a temperature <i>difference</i>; the offset between the two scales cancels in a subtraction. (What does need converting to kelvin is the absolute temperature <code>T</code> in the gas law — see the temperature-scales section.)</p>
+<div class="callout callout--warn"><p><b>The ΔT trap.</b> <code>ΔT</code> is a <i>difference</i>, never the final temperature. Raising water from 20 °C to 70 °C uses <code>ΔT = 50 K</code>, not 70. Using the final temperature instead of the change is the single most common error on specific-heat questions and is worth a mark every time. Always write <code>ΔT = T_final − T_initial</code> before substituting.</p></div>`
     },
 
     {
       h: "Specific latent heat",
-      body: `<p>Changing the <b>phase</b> of a substance requires energy without any change in temperature. The energy is used to break the bonds holding the molecules in their arrangement, not to increase their kinetic energy.</p>
+      body: `<p>Changing the <b>phase</b> of a substance — melting, freezing, boiling, condensing — requires energy without any change in temperature. The energy is used to break or form the intermolecular bonds that hold the substance in its arrangement, not to increase the molecules' kinetic energy.</p>
 <div class="formula">Q = mL</div>
-<p>where <code>L</code> is the <b>specific latent heat</b> — the energy needed to change the phase of one kilogram of the substance at constant temperature. Units: <code>J kg⁻¹</code>.</p>
+<p>where <code>L</code> is the <b>specific latent heat</b> (比潜热) — the energy needed to change the phase of one kilogram at constant temperature. Units: <code>J kg⁻¹</code>. There are two distinct values, one for melting/freezing and one for boiling/condensing.</p>
 <table><thead><tr><th>Process</th><th>Latent heat</th><th>Value for water</th></tr></thead><tbody>
-<tr><td>melting / freezing</td><td>latent heat of fusion</td><td><code>3.34 × 10⁵ J kg⁻¹</code></td></tr>
-<tr><td>boiling / condensing</td><td>latent heat of vaporisation</td><td><code>2.26 × 10⁶ J kg⁻¹</code></td></tr>
+<tr><td>melting / freezing</td><td>latent heat of fusion (熔化潜热)</td><td><code>3.34 × 10⁵ J kg⁻¹</code></td></tr>
+<tr><td>boiling / condensing</td><td>latent heat of vaporisation (汽化潜热)</td><td><code>2.26 × 10⁶ J kg⁻¹</code></td></tr>
 </tbody></table>
-<div class="callout callout--key"><p><b>The result that surprises people.</b> The latent heat of vaporisation of water is nearly seven times the latent heat of fusion. So boiling a kilogram of water takes far more energy than melting it. The physical reason is that melting only loosens the molecular arrangement, while boiling separates the molecules entirely. This comparison is a common question.</p></div>
+<div class="callout callout--key"><p><b>The result that surprises people.</b> The latent heat of vaporisation of water is nearly seven times the latent heat of fusion. So boiling a kilogram of water takes far more energy than melting it. The physical reason is that melting only loosens the molecular arrangement, while boiling separates the molecules entirely and must overcome essentially all the remaining cohesion. This comparison is a common question — know the factor of about 7.</p></div>
 <h3>Reading a heating curve</h3>
 <p>A graph of temperature against energy supplied for a sample being heated has a distinctive staircase shape:</p>
 <ul class="tight">
 <li><b>Sloping sections</b> — the substance is warming, so use <code>Q = mcΔT</code>. The gradient is inversely proportional to <code>c</code>, so a shallower slope means a larger specific heat capacity.</li>
-<li><b>Horizontal plateaus</b> — the substance is changing phase, so use <code>Q = mL</code>. The temperature is constant because the energy is going into breaking bonds rather than raising kinetic energy.</li>
+<li><b>Horizontal plateaus</b> — the substance is changing phase, so use <code>Q = mL</code>. The temperature is constant because every joule goes into breaking bonds rather than raising kinetic energy.</li>
 </ul>
-<p>Reading which section is which, and applying the right equation to each, is the standard question on this topic.</p>`
+<p>Reading which section is which, and applying the right equation to each, is the standard question on this topic. A typical trap is to apply <code>Q = mcΔT</code> across a plateau where the temperature is not changing — there <code>ΔT = 0</code> and the formula gives zero, which is obviously wrong.</p>
+<div class="callout callout--warn"><p><b>Two-stage problems.</b> If a question takes ice at −10 °C to steam at 110 °C, you need <i>five</i> terms: warm the ice, melt it, warm the water, boil it, warm the steam. Miss any one and the answer is wrong. List the stages before calculating.</p></div>`
     },
 
     {
       h: "Calorimetry and energy balance",
-      body: `<p>The standard problem: a hot object is placed in cold water and you must find a final temperature or an unknown specific heat capacity. The method is conservation of energy.</p>
+      body: `<p>The standard problem: a hot object is placed in cold water and you must find a final temperature or an unknown specific heat capacity. The method is conservation of energy — what the hot body loses, the cold body gains.</p>
 <h3>The principle</h3>
 <div class="formula">heat lost by the hot body = heat gained by the cold body</div>
 <p>assuming no energy escapes to the surroundings. Writing it out:</p>
 <div class="formula">m₁c₁(T₁ − T_f) = m₂c₂(T_f − T₂)</div>
-<p>where <code>T_f</code> is the final common temperature. Note the structure: on the left the hot body cools from <code>T₁</code> down to <code>T_f</code>, and on the right the cold body warms from <code>T₂</code> up to <code>T_f</code>. Getting the differences the right way round is the main risk.</p>
+<p>where <code>T_f</code> is the final common temperature. Note the structure: on the left the hot body cools from <code>T₁</code> down to <code>T_f</code>, and on the right the cold body warms from <code>T₂</code> up to <code>T_f</code>. Both brackets are written as <b>initial minus final</b> for the thing that is cooling, and <b>final minus initial</b> for the thing that is warming, so each side is positive. Getting the differences the right way round is the main risk.</p>
 <h3>The method</h3>
 <ol class="steps">
 <li>Identify the hot body and the cold body.</li>
@@ -277,7 +391,7 @@ Z:  92 = Z_daughter + 2   →   Z_daughter = 90</div>
 <h3>Including phase changes</h3>
 <p>If the hot object is condensing steam or the cold object is melting ice, you need both terms:</p>
 <div class="formula">Q = mL + mcΔT</div>
-<p>So for steam at 100 °C condensing and then cooling to <code>T_f</code>, the energy released is <code>mL_vapourisation + mc(100 − T_f)</code>. Missing the latent term is a common error, and it is always worth a mark.</p>`
+<p>So for steam at 100 °C condensing and then cooling to <code>T_f</code>, the energy released is <code>mL_vapourisation + mc(100 − T_f)</code>. Missing the latent term is a common error, and it is always worth a mark. Conversely, if heat leaks to the surroundings, the measured temperature rise of the water under-estimates the true energy released by the hot body — which is why real experiments give a low answer.</p>`
     },
 
     {
@@ -285,18 +399,21 @@ Z:  92 = Z_daughter + 2   →   Z_daughter = 90</div>
       body: `<p>For an ideal gas, the pressure, volume and temperature are related by</p>
 <div class="formula">pV = nRT</div>
 <p>where <code>n</code> is the number of moles, <code>T</code> the absolute temperature in kelvin, and <code>R = 8.31 J mol⁻¹ K⁻¹</code> the molar gas constant.</p>
-<div class="callout callout--warn"><p><b>Temperature must be in kelvin.</b> This is not optional. <code>pV = nRT</code> is derived from the kinetic theory of gases, in which temperature is proportional to the mean kinetic energy of the molecules, and that quantity is zero at absolute zero. Using a Celsius temperature gives answers that are wrong by a large factor — for a room-temperature gas, by a factor of about 3.5.</p></div>
+<div class="callout callout--warn"><p><b>Temperature must be in kelvin.</b> This is not optional. <code>pV = nRT</code> comes from the kinetic theory, in which temperature is proportional to the mean kinetic energy of the molecules, and that quantity is zero at absolute zero. Using a Celsius temperature gives answers wrong by a large factor — for a room-temperature gas, by about 3.5.</p></div>
+<h3>Qualitative reasoning — Boyle and Charles</h3>
+<p>Before any algebra, reason about direction. Holding the temperature fixed (Boyle's law, 玻意耳定律), pressure and volume are <b>inversely</b> proportional: squeeze the gas and the pressure rises. Holding the pressure fixed (Charles's law, 查理定律), volume and absolute temperature are <b>directly</b> proportional: warm the gas and it expands. These are the two relationships to reach for first, because most competition questions are ratio questions in disguise.</p>
 <h3>Fixed mass of gas</h3>
 <p>If the amount of gas does not change, <code>nR</code> is constant, so</p>
 <div class="formula">pV/T = constant        so   p₁V₁/T₁ = p₂V₂/T₂</div>
-<p>This is the form most competition questions use, because it is a pure ratio.</p>
+<p>This combined form is the one most competition questions use, because it relates all three variables at once and is a pure ratio — no calculator needed if the changes are simple factors.</p>
 <h3>Simple processes</h3>
 <table><thead><tr><th>Process</th><th>Held constant</th><th>Relationship</th></tr></thead><tbody>
 <tr><td>isothermal</td><td>temperature</td><td><code>pV =</code> constant, so <code>p ∝ 1/V</code></td></tr>
 <tr><td>isobaric</td><td>pressure</td><td><code>V ∝ T</code></td></tr>
 <tr><td>isochoric</td><td>volume</td><td><code>p ∝ T</code></td></tr>
 </tbody></table>
-<p>Note that the isothermal case gives a rectangular hyperbola on a <code>p</code>–<code>V</code> graph — the shape from module A's graph-reasoning section. Recognising it is often enough to answer a graph question.</p>`
+<p>Note that the isothermal case gives a rectangular hyperbola on a <code>p</code>–<code>V</code> graph — the shape from module A's graph-reasoning section. Recognising it is often enough to answer a graph question without any arithmetic.</p>
+<div class="callout callout--good"><p><b>Ratio method, worked.</b> If the pressure doubles and the temperature rises by a third, reason step by step: doubling <code>p</code> alone would halve <code>V</code>; raising <code>T</code> by a third alone would multiply <code>V</code> by 4/3. Combined, <code>V</code> becomes <code>(1/2) × (4/3) = 2/3</code> of its original. Doing it as a ratio <code>V₂/V₁ = (p₁/p₂)(T₂/T₁)</code> is the same thing, with the arithmetic as a check.</p></div>`
     },
 
     {
@@ -305,20 +422,41 @@ Z:  92 = Z_daughter + 2   →   Z_daughter = 90</div>
 <h3>The standard piston problem</h3>
 <p>A piston of area <code>A</code> is free to move in a cylinder containing gas at pressure <code>p</code>. The forces on the piston are the gas pushing outward at <code>pA</code>, the atmosphere pushing inward at <code>p_atm A</code>, and possibly the piston's own weight or an applied force. At equilibrium:</p>
 <div class="formula">pA = p_atm A + mg        (for a piston of mass m resting on the gas)</div>
-<p>So <code>p = p_atm + mg/A</code>. Note that the area appears — this is a case where the geometry does matter, unlike the pressure-with-depth situation in module M.</p>
+<p>So <code>p = p_atm + mg/A</code>. Note that the area appears — this is a case where the geometry does matter, unlike the pressure-with-depth situation in module M where only the height of fluid matters.</p>
 <h3>Trapped gas columns</h3>
 <p>A related shape: gas trapped in a tube by a column of liquid. The gas pressure equals atmospheric pressure plus the pressure from the liquid column:</p>
 <div class="formula">p_gas = p_atm + ρgh</div>
 <p>which links this module directly back to module M. If the tube is tilted or the column length changes, combine this with the gas law to find the new volume.</p>
+<h3>Combining the two ideas</h3>
+<p>The characteristic question joins the pressure from the liquid column to the gas law. Suppose the liquid column height changes from <code>h₁</code> to <code>h₂</code> while the temperature is fixed. Then the pressure changes from <code>p_atm + ρgh₁</code> to <code>p_atm + ρgh₂</code>, and Boyle's law gives <code>p₁V₁ = p₂V₂</code>. The trap is to forget that the gas pressure is <i>not</i> just <code>ρgh</code> — atmospheric pressure is always present and must be added.</p>
 <div class="callout callout--good"><p><b>Why this combination is worth doing.</b> It is the kind of question that links two modules, and linking questions are where competition papers separate candidates. The method is always: use the mechanics or fluids relationship to get the pressure, then the gas law to get the volume or temperature.</p></div>`
     },
 
     {
       h: "Thermal expansion, revisited",
-      body: `<p>This was covered in module E, and it is repeated here only because it is the one genuinely new thermal item and it links to the mechanics of stress.</p>
+      body: `<p>This was covered in module E, and it is repeated here because it is the one genuinely new thermal item and it links to the mechanics of stress. For a length <code>ℓ₀</code> changing by <code>ΔT</code>:</p>
 <div class="formula">Δℓ = αℓ₀ΔT          thermal stress σ = EαΔT (if constrained)</div>
-<p>The second form is worth revisiting because it connects thermal physics to materials. A rod that cannot expand develops a compressive stress; a rod that cannot contract on cooling develops a tensile stress. Both are of order tens of megapascals for a 30 K change in steel, which is enough to buckle a rail or crack a concrete slab.</p>
-<div class="callout callout--warn"><p><b>The evidence caveat applies here too.</b> Because this module rests on Tier C evidence, do not let it displace anything above it in the priority order. If you have limited time, the expansion material in module E — which sits inside AQA AS and is therefore properly evidenced — matters more than anything else in this module.</p></div>`
+<p>where <code>α</code> is the linear expansivity. The same idea scales up: for area, <code>ΔA ≈ 2αA₀ΔT</code>, and for volume, <code>ΔV ≈ 3αV₀ΔT</code> — the factors 2 and 3 follow because area is two lengths and volume is three.</p>
+<p>The second form connects thermal physics to materials. A rod that cannot expand develops a compressive stress; a rod that cannot contract on cooling develops a tensile stress. Both are of order tens of megapascals for a 30 K change in steel, which is enough to buckle a rail or crack a concrete slab — which is exactly why engineering structures need expansion gaps.</p>
+<div class="callout callout--warn"><p><b>The evidence caveat applies here too.</b> Because this module rests on Tier C evidence, do not let it displace anything above it in the priority order. If you have limited time, the expansion material in module E — which sits inside AQA AS and is therefore properly evidenced — matters more than anything else in this module.</p></div>
+<div class="callout callout--key"><p><b>Estimation anchor.</b> For typical solids <code>α ≈ 10⁻⁵ K⁻¹</code>. So a 10 K rise makes a 1 m object grow by about <code>10⁻⁴ m = 0.1 mm</code>. Tiny per metre, but across a kilometre of continuous rail it is 10 cm — the scale at which expansion gaps become essential.</p></div>`
+    },
+
+    {
+      h: "The molecular kinetic model",
+      body: `<p>The macroscopic properties of a gas — pressure and temperature — emerge from the microscopic motion of a vast number of molecules bouncing around. Two results are worth holding onto.</p>
+<h3>Temperature is mean molecular kinetic energy</h3>
+<p>For an ideal gas, the average translational kinetic energy of a molecule is proportional to the absolute temperature:</p>
+<div class="formula">mean KE per molecule ∝ T   (more precisely ½m⟨v²⟩ = 3/2 k_B T)</div>
+<p>So raising the temperature does not add molecules — it makes the existing ones move faster on average. This is why <code>ΔT</code> in kelvin and Celsius are the same: a step of one degree raises the mean kinetic energy by the same amount on either scale. It is also why absolute zero is special: at <code>T = 0</code> the mean translational kinetic energy would be zero.</p>
+<h3>Pressure comes from molecular bombardment</h3>
+<p>Gas pressure is the force per unit area exerted on the walls as molecules collide with them and rebound. Each collision delivers a tiny impulse; the enormous number of collisions per second adds up to a steady pressure. Two qualitative consequences follow directly:</p>
+<ul class="tight">
+<li><b>Higher temperature at fixed volume</b> means faster molecules hitting the walls more often and harder, so pressure rises — this is the isochoric (<code>p ∝ T</code>) result.</li>
+<li><b>Larger volume at fixed temperature</b> means the same molecules are spread over a bigger area and hit the walls less often, so pressure falls — this is Boyle's law (<code>p ∝ 1/V</code>).</li>
+</ul>
+<div class="callout callout--key"><p><b>Connect to momentum.</b> Pressure is fundamentally a rate of momentum transfer to the wall: <code>p = F/A</code>, and <code>F</code> is the rate of change of momentum from collisions. This is the bridge between the particle picture and the macroscopic gas law, and it is the qualitative reasoning the paper expects — not a full derivation of the pressure formula.</p></div>
+<div class="callout callout--good"><p><b>Root-mean-square speed as an estimate.</b> From <code>½m v_rms² = 3/2 k_B T</code> you can estimate molecular speeds: at room temperature, air molecules move at roughly <code>500 m s⁻¹</code>. That is faster than a jet, which is why gases diffuse quickly despite constant collisions — and it is a useful anchor for Fermi-style questions.</p></div>`
     }
   ],
 
@@ -361,6 +499,63 @@ Z:  92 = Z_daughter + 2   →   Z_daughter = 90</div>
 <p><b>The traps.</b> Option A, 0.75 m³, is <code>2.0 × 0.5 × 0.75</code> — using <code>300/400</code> instead of <code>400/300</code>, which is the most common error with this formula. Option D, 2.67 m³, comes from applying the temperature ratio the wrong way and the pressure ratio the right way.</p>
 <p><b>The unit check.</b> The temperatures are already in kelvin, so no conversion is needed. Had they been given in Celsius, converting first would be essential — and the answer would change substantially, since 400 °C is 673 K and the ratio would be quite different.</p>`,
       tag: "Ideal gas law — direction before arithmetic"
+    },
+
+    {
+      q: "<p>How much energy is needed to melt 0.20 kg of ice at 0 °C and then raise the resulting water to 20 °C? Use latent heat of fusion <code>L_f = 3.34 × 10⁵ J kg⁻¹</code> and <code>c = 4200 J kg⁻¹ K⁻¹</code>.</p><p>A) <code>1.0 × 10⁵ J</code> &nbsp; B) <code>1.7 × 10⁵ J</code> &nbsp; C) <code>2.5 × 10⁵ J</code> &nbsp; D) <code>3.3 × 10⁵ J</code> &nbsp; E) <code>6.7 × 10⁵ J</code></p>",
+      sol: `<p>This has two distinct stages, and you must do both or you fail the question.</p>
+<p><b>Stage 1 — melt the ice at 0 °C.</b> Temperature does not change during a phase change, so use <code>Q = mL</code>:</p>
+<div class="formula">Q₁ = m L_f = 0.20 × 3.34 × 10⁵ = 6.68 × 10⁴ J</div>
+<p><b>Stage 2 — warm the water from 0 °C to 20 °C.</b> Now use <code>Q = mcΔT</code> with <code>ΔT = 20 K</code>:</p>
+<div class="formula">Q₂ = 0.20 × 4200 × 20 = 1.68 × 10⁴ J</div>
+<p><b>Total:</b></p>
+<div class="formula">Q = Q₁ + Q₂ = 6.68 × 10⁴ + 1.68 × 10⁴ = 8.36 × 10⁴ J ≈ 8.3 × 10⁴ J</div>
+<p><b>Answer: the nearest option is A, about <code>1.0 × 10⁵ J</code>.</b> The exact value <code>8.3 × 10⁴ J</code> rounds to <code>1.0 × 10⁵ J</code> on the given options; the melting dominates the total energy, as it usually does.</p>
+<p><b>The trap.</b> The most common error is to do only one stage. If you only melted (Q₁ alone) you would be far below all options; if you only warmed you would ignore the huge latent term. The lesson is that melting ice costs far more energy than warming the resulting water by 20 K — the latent heat term is about four times the specific-heat term here. Option B, <code>1.7 × 10⁵</code>, is roughly doubling Q₁, the kind of slip that comes from mis-scaling the 0.20 kg.</p>
+<p><b>The physical check.</b> Latent heat of fusion for water is about <code>3.3 × 10⁵ J kg⁻¹</code>, so melting 0.2 kg costs about <code>6.7 × 10⁴ J</code>. Warming 0.2 kg of water by 20 K costs <code>0.2 × 4200 × 20 ≈ 1.7 × 10⁴ J</code>. The sum is comfortably under <code>10⁵ J</code>, which rules out C, D and E. Estimating the two terms separately is the safe route.</p>`,
+      tag: "Latent heat plus specific heat — two stages"
+    },
+
+    {
+      q: "<p>A 2.0 m aluminium rail has a linear expansivity <code>α = 2.4 × 10⁻⁵ K⁻¹</code>. By how much does its length increase when the temperature rises by 40 K?</p><p>A) <code>1.9 × 10⁻³ m</code> &nbsp; B) <code>1.9 × 10⁻⁴ m</code> &nbsp; C) <code>9.6 × 10⁻⁵ m</code> &nbsp; D) <code>4.8 × 10⁻⁴ m</code> &nbsp; E) <code>1.9 × 10⁻² m</code></p>",
+      sol: `<p>Use the linear thermal expansion formula:</p>
+<div class="formula">ΔL = α L ΔT</div>
+<p>Substituting:</p>
+<div class="formula">ΔL = (2.4 × 10⁻⁵) × 2.0 × 40
+     = 2.4 × 10⁻⁵ × 80
+     = 1.92 × 10⁻³ m</div>
+<p><b>Answer: A, about <code>1.9 × 10⁻³ m</code> (roughly 2 mm).</b></p>
+<p><b>The mental route.</b> <code>2.0 × 40 = 80</code>. Then <code>80 × 2.4 × 10⁻⁵ = 192 × 10⁻⁵ = 1.92 × 10⁻³</code>. Keep the digits (<code>2.4 × 8 = 19.2</code>) and the powers (<code>10⁻⁵ × 10¹ = 10⁻⁴</code>, times the 10 from 80 → <code>10⁻³</code>) separate.</p>
+<p><b>The traps.</b> Option C, <code>9.6 × 10⁻⁵</code>, is what you get by using only the <code>α ΔT</code> fractional expansion (<code>2.4×10⁻⁵ × 40 = 9.6×10⁻⁴</code>) and forgetting to multiply by the original length <code>L = 2.0 m</code> — that gives you the fractional strain, not the actual length change. Option B is the fractional expansion <code>αΔT</code> times 2 m but mis-scaled. Always return to the full <code>ΔL = αLΔT</code> and check the units: m × K⁻¹ × K = m ✓.</p>
+<p><b>The physical point.</b> A 2 mm expansion over a 2 m rail sounds tiny, but across a kilometre of continuous track it becomes 1 m — which is exactly why railway lines need expansion gaps. The effect is small per metre but accumulates relentlessly with length.</p>`,
+      tag: "Thermal expansion — ΔL = αLΔT"
+    },
+
+    {
+      q: "<p>A fixed mass of gas at constant temperature has its volume reduced to one quarter of its original value. What happens to its pressure?</p><p>A) It is unchanged &nbsp; B) It doubles &nbsp; C) It quadruples &nbsp; D) It is halved &nbsp; E) It becomes one quarter</p>",
+      sol: `<p>At constant temperature for a fixed mass, Boyle's law applies: pressure is inversely proportional to volume.</p>
+<div class="formula">pV = constant   so   p₁V₁ = p₂V₂   →   p₂/p₁ = V₁/V₂</div>
+<p>The volume has become <code>V₂ = V₁/4</code>, so</p>
+<div class="formula">p₂/p₁ = V₁ / (V₁/4) = 4</div>
+<p>The pressure increases by a factor of 4.</p>
+<p><b>Answer: C — it quadruples.</b></p>
+<p><b>Why ratio reasoning is the intended method.</b> No numbers beyond "one quarter" are given, so the question is pure proportionality. The pressure must move oppositely to the volume (inverse relation), and by the reciprocal factor. Since the volume fell by 4, the pressure rose by 4. If you are ever tempted to reach for <code>pV = nRT</code> with actual numbers here, you have missed the point — there are no numbers to plug in.</p>
+<p><b>The traps.</b> Option B (doubles) is the answer you get if you mistakenly think the relation is <code>p ∝ V</code> but then apply a square-root or linear correction — or if you halve-then-double in your head. Option D (halved) is the direct inverse-of-what-happened error: the volume was quartered, so people sometimes quarter the pressure instead of quadrupling it. Option E is the same error stated as "one quarter". Always write the reciprocal explicitly: <code>p₂/p₁ = V₁/V₂</code>.</p>
+<p><b>The molecular picture.</b> Squeezing the gas into a quarter of the volume means molecules hit each wall four times as often, so the pressure is four times larger — consistent with the kinetic model.</p>`,
+      tag: "Boyle's law — inverse proportion by ratio"
+    },
+
+    {
+      q: "<p>The absolute temperature of an ideal gas is increased from 300 K to 450 K. By what factor does the mean kinetic energy of a molecule increase?</p><p>A) 1.5 &nbsp; B) 1.22 &nbsp; C) 2.0 &nbsp; D) 0.67 &nbsp; E) 3.0</p>",
+      sol: `<p>For an ideal gas, the mean translational kinetic energy of a molecule is proportional to the absolute temperature:</p>
+<div class="formula">⟨KE⟩ ∝ T    so    ⟨KE⟩₂ / ⟨KE⟩₁ = T₂ / T₁</div>
+<p>The temperatures are already absolute (kelvin), so no conversion is needed:</p>
+<div class="formula">⟨KE⟩₂ / ⟨KE⟩₁ = 450 / 300 = 1.5</div>
+<p><b>Answer: A, the mean kinetic energy increases by a factor of 1.5.</b></p>
+<p><b>Why absolute temperature is essential.</b> The proportionality is to <i>absolute</i> temperature, not Celsius. If the question had given 27 °C and 177 °C, those are 300 K and 450 K — the same ratio — but if you wrongly used the Celsius values <code>177/27 ≈ 6.6</code> you would be wildly off (and none of the options would match, which is your warning sign). Here the values are helpfully already in kelvin.</p>
+<p><b>The traps.</b> Option B, 1.22, is the square-root of 1.5 (<code>√1.5 ≈ 1.22</code>) — the factor by which the rms <i>speed</i> increases, since <code>v_rms ∝ √T</code>, not the kinetic energy. This is a deliberate distractor for students who confuse speed and energy. Option C (2.0) and D (0.67) come from misreading which temperature is which; D is the reciprocal. Always write the ratio as final-over-initial and use absolute temperatures.</p>
+<p><b>The physical point.</b> Mean kinetic energy sets the temperature, so if you raise <code>T</code> by 50% the molecules on average carry 50% more kinetic energy — they move faster, but the rms speed only rises by <code>√1.5</code>.</p>`,
+      tag: "Molecular kinetic energy ∝ T"
     }
   ],
 
@@ -494,6 +689,19 @@ Z:  92 = Z_daughter + 2   →   Z_daughter = 90</div>
 <p><b>What is worth taking from this.</b> Not the algebra — BPhO would supply the moments of inertia. The point is the <i>qualitative</i> reasoning: the total kinetic energy splits between two forms, and the split depends on the shape. If a question in this area appears, that is the idea it will be testing.</p>
 <p><b>Why options D and E are wrong.</b> The result is independent of the slope angle and of the mass and radius — only the <i>shape</i> matters. That is a robust and slightly surprising result, and it is the kind of thing a competition question likes.</p>`,
       tag: "Insurance — rotational energy illustration"
+    },
+
+    {
+      q: "<p><b>Another outline question (R1-ONLY).</b> A simple pendulum of length ℓ has period T. If the length is quadrupled and the gravitational field strength is unchanged, what is the new period?</p><p>A) T/4 &nbsp; B) T/2 &nbsp; C) T &nbsp; D) 2T &nbsp; E) 4T</p>",
+      sol: `<p>This is included as a second illustration of the SHM material, and is firmly Round 1 — beyond the Round 0 scope.</p>
+<p>The period of a simple pendulum (small angle) is</p>
+<div class="formula">T = 2π √(ℓ/g)</div>
+<p>With <code>g</code> unchanged, <code>T ∝ √ℓ</code>. Quadrupling the length multiplies the period by <code>√4 = 2</code>:</p>
+<div class="formula">T_new = 2π √(4ℓ/g) = 2 × 2π√(ℓ/g) = 2T</div>
+<p><b>Answer: D, 2T.</b></p>
+<p><b>Why this is ratio reasoning.</b> As always, reach for the ratio rather than numbers: <code>T_new/T = √(ℓ_new/ℓ) = √4 = 2</code>. Option B (T/2) is the reciprocal error — forgetting that period grows with the square root of length. Option E (4T) comes from treating <code>T ∝ ℓ</code> instead of <code>T ∝ √ℓ</code>. Option A (T/4) is the inverse of that.</p>
+<p><b>Reinforcement of module A.</b> This is exactly the dimensional-analysis result you derived there — <code>T = k√(ℓ/g)</code> — with the constant now supplied as <code>2π</code>. Dimensional analysis gave the dependence; Round 1 physics supplies the constant.</p>`,
+      tag: "Insurance — pendulum period ratio (R1-ONLY)"
     }
   ],
 
