@@ -1266,9 +1266,9 @@
     // Both ship as one self-contained file (assets/tools-widget.js). Which of the
     // two bars a page gets is decided PER PAGE from the URL path, so no per-page
     // edits are needed:
-    //     /math/ , /physics/ , /bpho/   -> Formula Booklet + Calculator
+    //     /math/ , /physics/ , /bpho/ , /qbank/ , /challenge-bank/  -> Formula Booklet + Calculator
     //     /cs/ , /business/             -> Calculator only (no Formula)
-    //     every other page (english, chinese, core, vocab, qbank, hub, ...) -> neither
+    //     every other page (english, chinese, core, vocab, hub, ...) -> neither
     // We publish the choice on window.__dpToolsConfig and only load tools-widget.js
     // when the page is allowed at least one tool; tools-widget.js then strips the
     // disabled bar(s) itself, so Ask AI + Sites shift right automatically.
@@ -1277,8 +1277,8 @@
       if (document.querySelector("script[data-dp-tools]")) return;
       var p = location.pathname.toLowerCase();
       var cfg = { formula: false, calc: false };
-      if (p.indexOf("/math/") > -1 || p.indexOf("/physics/") > -1 || p.indexOf("/bpho/") > -1) {
-        cfg.formula = true; cfg.calc = true;                 // math / physics / BPhO
+      if (p.indexOf("/math/") > -1 || p.indexOf("/physics/") > -1 || p.indexOf("/bpho/") > -1 || p.indexOf("/qbank/") > -1 || p.indexOf("/challenge-bank/") > -1) {
+        cfg.formula = true; cfg.calc = true;                 // math / physics / BPhO / qbank / challenge-bank
       } else if (p.indexOf("/cs/") > -1 || p.indexOf("/business/") > -1) {
         cfg.formula = false; cfg.calc = true;                // CS / Business: calc only
       }
