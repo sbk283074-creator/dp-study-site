@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-5.8-401 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>5.8 A stationary value that is exactly zero, so a crossing of the axis becomes a touching point and the root count drops by one</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-5.8-401</p>
+<button type="button" class="q-done-page" data-qid="MATH-5.8-401" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="MATH-5.8-401">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Topic 5: Calculus</span><span class="chip chip-key">SL 5.8 Local maximum and minimum points; SL 5.11 Definite integrals, including the analytical approach; 5.2 Increasing and decreasing functions</span><span class="chip">P1 · Section A</span><span class="chip">6 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not_allowed</span><span class="chip">Show that</span><span class="chip">Find</span><span class="chip">Explain</span></div>
+
+<figure><svg viewBox="0 0 460 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The graph of the derivative of f on the interval from x = 0 to x = 9, with the axes marked 0, 3, 6 and 9. It is a triangular wave: it rises in a straight line from (0, 0) to (3, 3), falls in a straight line to (6, -3) and rises again to (9, 3). The part of the wave that lies below the x-axis is shaded."><g font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"><line x1="60" y1="130" x2="430" y2="130" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round"/><line x1="60" y1="130" x2="60" y2="40" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round"/><line x1="60" y1="130" x2="60" y2="134" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round"/><text x="60" y="146" font-size="10" fill="#64748b" text-anchor="middle" font-weight="400">0</text><line x1="180" y1="130" x2="180" y2="134" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round"/><text x="180" y="146" font-size="10" fill="#64748b" text-anchor="middle" font-weight="400">3</text><line x1="300" y1="130" x2="300" y2="134" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round"/><text x="300" y="146" font-size="10" fill="#64748b" text-anchor="middle" font-weight="400">6</text><line x1="420" y1="130" x2="420" y2="134" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round"/><text x="420" y="146" font-size="10" fill="#64748b" text-anchor="middle" font-weight="400">9</text><text x="245.0" y="162" font-size="11" fill="#64748b" text-anchor="middle" font-weight="400">x</text><text x="26" y="85.0" font-size="11" fill="#64748b" text-anchor="middle" font-weight="400" font-style="italic">y</text><line x1="60" y1="130" x2="430" y2="130" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round"/><polygon points="180,40 300,220 240.0,130" fill="#fde68a" stroke="none" stroke-width="0" opacity="1"/><polyline points="60,130 180,40 300,220 420,40" fill="none" stroke="#1d4ed8" stroke-width="2.0" stroke-linejoin="round" stroke-linecap="round"/><text x="70" y="58" font-size="12" fill="#1d4ed8" text-anchor="start" font-weight="600">y = f'(x)</text></g></svg></figure>
+<section id="q-print">
+<h2>Question</h2>
+<p>The figure shows the graph of $y = f'(x)$ for $0 \leq x \leq 9$. It is made up of the three straight line segments joining $(0,\,0)$ to $(3,\,3)$, $(3,\,3)$ to $(6,\,-3)$ and $(6,\,-3)$ to $(9,\,3)$.</p>
+<p>It is given that $f(0) = -2.25$.</p>
+<p>(a) Show that $f(7.5) = 0$.</p>
+<p>(b) Find the exact value of the other solution of the equation $f(x) = 0$ in the interval $0 \leq x \leq 9$.</p>
+<p>(c) State the number of distinct solutions of $f(x) = 0$ in $0 \leq x \leq 9$, and explain why the graph of $y = f(x)$ does not cross the $x$-axis at $x = 7.5$.</p>
+<ol class="parts"><li><span class="marks">[2 marks]</span><strong>(a)</strong> <p>Using the areas between the graph of $y = f'(x)$ and the $x$-axis, show that $f(7.5) = 0$.</p> <em>(Show that)</em></li><li><span class="marks">[2 marks]</span><strong>(b)</strong> <p>Find the exact value of the other solution of $f(x) = 0$ in the interval $0 \leq x \leq 9$.</p> <em>(Find)</em></li><li><span class="marks">[2 marks]</span><strong>(c)</strong> <p>State how many distinct solutions $f(x) = 0$ has in $0 \leq x \leq 9$ and explain why the graph of $y = f(x)$ touches rather than crosses the $x$-axis at $x = 7.5$.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 6 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Math AA HL" data-ai-diff="5" data-ai-marks="6" data-ai-ref="MATH-5.8-401">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>The figure shows the graph of $y = f&#x27;(x)$ for $0 \leq x \leq 9$. It is made up of the three straight line segments joining $(0,\,0)$ to $(3,\,3)$, $(3,\,3)$ to $(6,\,-3)$ and $(6,\,-3)$ to $(9,\,3)$.
+
+It is given that $f(0) = -2.25$.
+
+(a) Show that $f(7.5) = 0$.
+
+(b) Find the exact value of the other solution of the equation $f(x) = 0$ in the interval $0 \leq x \leq 9$.
+
+(c) State the number of distinct solutions of $f(x) = 0$ in $0 \leq x \leq 9$, and explain why the graph of $y = f(x)$ does not cross the $x$-axis at $x = 7.5$.
+
+(a) Using the areas between the graph of $y = f&#x27;(x)$ and the $x$-axis, show that $f(7.5) = 0$. [2 marks] (Show that)
+(b) Find the exact value of the other solution of $f(x) = 0$ in the interval $0 \leq x \leq 9$. [2 marks] (Find)
+(c) State how many distinct solutions $f(x) = 0$ has in $0 \leq x \leq 9$ and explain why the graph of $y = f(x)$ touches rather than crosses the $x$-axis at $x = 7.5$. [2 marks] (Explain)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The area between the graph of $f'$ and the axis from $0$ to $3$ is the triangle $\tfrac{1}{2} \times 3 \times 3 = 4.5$, and from $3$ to $4.5$, where $f'$ is still positive, it is $\tfrac{1}{2} \times 1.5 \times 3 = 2.25$. So $f(4.5) = -2.25 + 4.5 + 2.25 = 4.5$ <strong>(M1)</strong>. From $4.5$ to $6$ the signed area is $-\tfrac{1}{2} \times 1.5 \times 3 = -2.25$ and from $6$ to $7.5$ it is another $-2.25$, so $f(7.5) = 4.5 - 2.25 - 2.25 = 0$ <strong>(A1)</strong>.</p>
+<p><strong>(b)</strong> On $0 \leq x \leq 3$ the graph of $f'$ is the line $f'(x) = x$, so $f(x) = -2.25 + \tfrac{x^{2}}{2}$ on that interval <strong>(M1)</strong>. Setting $f(x) = 0$ gives $x^{2} = 4.5$, so $x = \sqrt{4.5} = \tfrac{3\sqrt{2}}{2} \approx 2.12$, which lies in $[0,\,3]$. Since $f' \geq 0$ throughout $[0,\,4.5]$ the function is increasing there and this is the only solution in that interval; on $[4.5,\,7.5]$ the function falls from $4.5$ to $0$ without reaching zero again before the endpoint, and on $[7.5,\,9]$ it rises from $0$. The other solution is therefore $x = \tfrac{3\sqrt{2}}{2}$ <strong>(A1)</strong>.</p>
+<p><strong>(c)</strong> There are two distinct solutions <strong>(A1)</strong>: $x = \tfrac{3\sqrt{2}}{2}$, where the graph crosses the axis, and $x = 7.5$. At $x = 7.5$ the graph of $f'$ crosses the axis, so $f'(7.5) = 0$ and $x = 7.5$ is a stationary point of $f$; part (a) shows that the value there is exactly $0$. The function is decreasing immediately before $7.5$ and increasing immediately after it, so the graph comes down to the axis, touches it at its minimum and turns back up. It does not cross, the root is a repeated one, and the three roots that two turning points suggest never materialise <strong>(A1)</strong>.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) for an area calculation that reaches $f(4.5) = 4.5$; (A1) for the two negative contributions and the conclusion $f(7.5) = 0$. A candidate who rounds the areas to $4.5$, $2$, $-2$, $-2$ and obtains $f(7.5) = 0.5$ has done the right mathematics on the wrong numbers and cannot be credited: the whole part turns on the value being *exactly* zero, and the gradient of the segment is $-2$, so the areas are exact halves and there is nothing to round.</p>
+<p>(b) (M1) for identifying $f'(x) = x$ on the first segment and integrating to $-2.25 + \tfrac{x^{2}}{2}$; (A1) for $\tfrac{3\sqrt{2}}{2}$ together with a statement that it lies in $[0,\,3]$. Decimal $2.12$ is acceptable only if the exact form is also given, since the part says *exact*.</p>
+<p>(c) (A1) for the answer two; (A1) for linking $f'(7.5) = 0$ with $f(7.5) = 0$ to conclude that the axis is touched rather than crossed. Credit should not be withheld from a candidate who says the root is repeated instead of using the words touch and cross.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This is a question about whether zero is a number. The candidate obtains $f(7.5) = 0$ by adding and subtracting areas that are all exact halves, and the temptation at that point is to treat the result as an indication that the arithmetic has gone wrong, because a stationary point that sits exactly on the axis feels like a coincidence. It is not a coincidence: it is the design. The initial value $-2.25$ is chosen to be exactly the negative of the area accumulated by $x = 4.5$ minus the area given back by $x = 7.5$.</p>
+<p>Once $f(7.5) = 0$ is established, the root count follows from the sign of $f'$: the function rises through zero once, reaches a maximum, falls to touch the axis at its minimum, and rises again. The answer two is smaller than the three that two turning points suggest, and the missing root is not missing at all -- it has merged with the stationary point. That is the kind of thing a candidate can check: a sketch of $f$ built from the accumulated area makes the touching obvious, and a candidate who sketches it before answering will not need to be told.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Topic 5: Calculus — 5.8 A stationary value that is exactly zero, so a crossing of the axis becomes a touching point and the root count drops by one</dd></div>
+  <div><dt>Challenge lever</dt><dd>The numbers are chosen so that the local minimum of f is exactly zero. Every area in the question is a half-integer, the arithmetic is a few lines, and the only thing that decides the answer is whether the candidate carries the last quarter of a square unit or rounds it away. Two turning points in the graph of f&#x27; invite the answer three; the true count is two, and the second of them is a repeated root rather than a crossing. The item is therefore not a test of integration technique -- there is nothing to integrate -- but of whether a candidate treats a computed value of zero as a value or as a sign that they have made an error.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>SL 5.8 Local maximum and minimum points; SL 5.11 Definite integrals, including the analytical approach; 5.2 Increasing and decreasing functions</dd></div>
+  <div><dt>Inspiration</dt><dd>adapted</dd></div>
+  <div><dt>Adaptation</dt><dd>Three changes. Structure: the areas are chosen so that the minimum is exactly zero rather than merely small, which converts the usual root-counting exercise into a question about a repeated root. Given and asked: the initial value is given as -2.25 and the candidate is asked to show the minimum is zero rather than to estimate it from a sketch. Reasoning chain: a third part asks for the exact value of the crossing root, which requires recovering f&#x27;(x) = x on the first segment and integrating, a step the parent form does not need.</dd></div>
+  <div><dt>Verification</dt><dd>Every area and every root in the answer is checked by direct arithmetic in the validator&#x27;s own evaluator, including the position of each root relative to the segment it is claimed to lie on.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MAAQB_18M_2_SL_TZ1_T_4 (similarity 0.024)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL5.8-201 (similarity 0.035)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-15</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B2.4-402 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>B2.4 The same loop taking twelve iterations on one three-digit pair and two on another, and the worst case that has to be derived</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B2.4-402</p>
+<button type="button" class="q-done-page" data-qid="CS-B2.4-402" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-B2.4-402">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B2.4 Programming algorithms (B2.4.1 the complexity of an algorithm, B2.4.3 the suitability of an algorithm for a stated purpose), with B2.3 Programming constructs (tracing the execution of a loop)</span><span class="chip">P1 · Section A</span><span class="chip">7 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not_allowed</span><span class="chip">State</span><span class="chip">Explain</span><span class="chip">Determine</span></div>
+
+<figure><svg viewBox="0 0 470 286" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two traces of the same Euclidean loop. For A = 377 and B = 233 the pairs of values are (233, 144), (144, 89), (89, 55), (55, 34), (34, 21), (21, 13), (13, 8), (8, 5), (5, 3), (3, 2), (2, 1) and (1, 0): twelve iterations. For A = 1000 and B = 3 the pairs are (3, 1) and (1, 0): two iterations. Both inputs are three-digit numbers, so size alone does not explain the difference."><g font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"><text x="40" y="30" font-size="12" fill="#1e293b" text-anchor="start" font-weight="600">A = 377, B = 233</text><text x="40" y="56" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(233, 144)</text><text x="40" y="78" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(144, 89)</text><text x="40" y="100" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(89, 55)</text><text x="40" y="122" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(55, 34)</text><text x="40" y="144" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(34, 21)</text><text x="40" y="166" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(21, 13)</text><text x="40" y="188" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(13, 8)</text><text x="240" y="56" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(8, 5)</text><text x="240" y="78" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(5, 3)</text><text x="240" y="100" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(3, 2)</text><text x="240" y="122" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">(2, 1)</text><text x="240" y="144" font-size="11" fill="#1e293b" text-anchor="start" font-weight="400">(1, 0)</text><text x="330" y="30" font-size="11" fill="#b91c1c" text-anchor="start" font-weight="600">12 iterations</text><line x1="400" y1="46" x2="400" y2="194" stroke="#b91c1c" stroke-width="1.2" stroke-dasharray="4 3" stroke-linecap="round"/><text x="40" y="230" font-size="12" fill="#1e293b" text-anchor="start" font-weight="600">A = 1000, B = 3</text><text x="40" y="252" font-size="11" fill="#0f766e" text-anchor="start" font-weight="400">(3, 1)   (1, 0)  ->  2 iterations</text></g></svg></figure>
+<section id="q-print">
+<h2>Question</h2>
+<p>The figure shows two traces of the same function, which is written below. Division is integer division and MOD returns the remainder.</p>
+<p>FUNCTION f(a, b)<br>    WHILE b &gt; 0 DO<br>        t = a MOD b<br>        a = b<br>        b = t<br>    END WHILE<br>    RETURN a<br>END FUNCTION</p>
+<p>One iteration means one execution of the loop body. For the input a = 377, b = 233 the loop body is executed twelve times and the successive pairs of values are listed in the figure. For the input a = 1000, b = 3 the loop body is executed twice. Both inputs are three-digit numbers, and neither of the two inputs is noticeably harder to read than the other.</p>
+<p>(a) State the value returned by the function for the input a = 377, b = 233, and state the value returned for the input a = 1000, b = 3.</p>
+<p>(b) Explain what property of the pair (a, b) determines how many iterations the loop performs, and explain why the number of digits in a and b does not determine it.</p>
+<p>(c) Determine the largest number of iterations the loop can perform for any input pair with 1 &lt;= b &lt;= a &lt;= 1000, and state a pair of values that achieves it. Justify your answer in terms of the sequence of remainders.</p>
+<ol class="parts"><li><span class="marks">[2 marks]</span><strong>(a)</strong> <p>State the value returned by the function for the input a = 377, b = 233, and state the value returned for the input a = 1000, b = 3.</p> <em>(State)</em></li><li><span class="marks">[2 marks]</span><strong>(b)</strong> <p>Explain what property of the pair (a, b) determines how many iterations the loop performs, and explain why the number of digits in a and b does not determine it.</p> <em>(Explain)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Determine the largest number of iterations the loop can perform for any input pair with 1 &lt;= b &lt;= a &lt;= 1000, and state a pair of values that achieves it, justifying your answer in terms of the sequence of remainders.</p> <em>(Determine)</em></li></ol>
+<p class="reveal-note">Total: 7 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="4" data-ai-marks="7" data-ai-ref="CS-B2.4-402">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>The figure shows two traces of the same function, which is written below. Division is integer division and MOD returns the remainder.
+
+FUNCTION f(a, b)
+    WHILE b &gt; 0 DO
+        t = a MOD b
+        a = b
+        b = t
+    END WHILE
+    RETURN a
+END FUNCTION
+
+One iteration means one execution of the loop body. For the input a = 377, b = 233 the loop body is executed twelve times and the successive pairs of values are listed in the figure. For the input a = 1000, b = 3 the loop body is executed twice. Both inputs are three-digit numbers, and neither of the two inputs is noticeably harder to read than the other.
+
+(a) State the value returned by the function for the input a = 377, b = 233, and state the value returned for the input a = 1000, b = 3.
+
+(b) Explain what property of the pair (a, b) determines how many iterations the loop performs, and explain why the number of digits in a and b does not determine it.
+
+(c) Determine the largest number of iterations the loop can perform for any input pair with 1 &lt;= b &lt;= a &lt;= 1000, and state a pair of values that achieves it. Justify your answer in terms of the sequence of remainders.
+
+(a) State the value returned by the function for the input a = 377, b = 233, and state the value returned for the input a = 1000, b = 3. [2 marks] (State)
+(b) Explain what property of the pair (a, b) determines how many iterations the loop performs, and explain why the number of digits in a and b does not determine it. [2 marks] (Explain)
+(c) Determine the largest number of iterations the loop can perform for any input pair with 1 &lt;= b &lt;= a &lt;= 1000, and state a pair of values that achieves it, justifying your answer in terms of the sequence of remainders. [3 marks] (Determine)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The loop returns the last non-zero value of b before the remainder reaches zero, which is the largest integer that divides both of the original inputs. For a = 377 and b = 233 the figure ends at the pair (1, 0), so the value returned is 1 (A1). For a = 1000 and b = 3 the pairs are (3, 1) and (1, 0), so the value returned is also 1 (A1). Both inputs therefore produce the same answer, and the number of iterations differs by a factor of six.</p>
+<p><strong>(b)</strong> The number of iterations is set by how quickly the pair of values shrinks, and that is set by the size of the quotient produced at each step. When a is much larger than b the first remainder is small, so the pair collapses in a step or two: at a = 1000, b = 3 the quotient is 333 and the remainder is 1, and the loop is over almost immediately (M1). When a is only slightly larger than b the quotient is 1 and the remainder is a minus b, so the pair (a, b) becomes (b, a minus b) and shrinks by only a small factor each time; in the trace for 377 and 233 every quotient is 1 and the values fall by the golden ratio, 377 to 233 to 144 to 89 and so on, which is the slowest shrinkage the loop can produce (A1). The number of digits is not the governing quantity because it only bounds how many halvings are available, and the actual count is usually far below that bound: two inputs of three digits can need two iterations or twelve, and the deciding factor is the ratio of the two numbers and how close the quotients come to 1, not how large the numbers are.</p>
+<p><strong>(c)</strong> The largest number of iterations is 14, attained by a = 987 and b = 610 (A1). The justification runs backwards through the loop. If the pair (a, b) with a greater than b takes n iterations, then after one iteration it becomes (b, a MOD b) and that pair takes n minus 1 iterations, so the smallest pair needing n iterations is obtained by making the quotient 1 at every step, which gives the backward recurrence a = b + c where c is the next value in the sequence (M1). Starting from the smallest possible end, the pair (1, 0), and reversing the rule gives (1, 1), (2, 1), (3, 2), (5, 3), (8, 5) and so on: the Fibonacci sequence, in which the largest value is 987 at the sixteenth term. If a pair takes 14 iterations then its larger member is at least 987, so any pair with both values at most 1000 that needs 14 iterations must sit exactly at 987 and 610, and 15 iterations would require a larger member of at least 1597, which is above the limit. Checking the two candidates confirms it: the pair (987, 610) takes 14 iterations, while the pair (1000, 999) takes 2 and the pair (233, 144) takes 11 (A1). The same argument explains why the trace in the figure is the slow case for its size: 377 and 233 are the fourteenth and thirteenth Fibonacci numbers, so they are the worst pair below 400, and scaling them up to 987 and 610 keeps them the worst pair below 1000.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (A1) for 1 from the first input, with the final pair (1, 0) identified; (A1) for 1 from the second. The second mark is for the second value as well as the statement that both answers agree; a candidate who writes only one value scores at most one mark. Do not accept a candidate who reads the returned value as the number of iterations.</p>
+<p>(b) (M1) for the observation that the size of the quotient at each step sets how fast the pair shrinks, with the contrast between a large quotient and a quotient of 1; (A1) for the statement that the count is fixed by the ratio of the inputs and how close the successive quotients come to 1, and that the number of digits only gives an upper bound that is usually not attained. A candidate who says only that the algorithm is logarithmic, or that larger inputs take longer, does not answer the question and scores nothing: the figure shows the larger inputs taking the fewer iterations.</p>
+<p>(c) (A1) for 14 as the maximum; (M1) for the backward recurrence with a quotient of 1 at every step, from which the Fibonacci sequence follows; (A1) for 987 and 610 as an attaining pair, together with the check that 15 iterations would need a value above 1000. Accept 377 and 233 as the attaining pair for a limit of 400 if stated as such, but for a limit of 1000 the answer is 987 and 610. A candidate who gives 14 without deriving it, or who gives the number of digits as the bound, loses the middle mark.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The trap in this item is a slogan that is true. The loop is logarithmic in the size of its inputs, the syllabus says so, and every candidate will write it down. What the slogan does not do is predict anything about a particular pair, and the figure supplies two pairs of the same size whose costs differ by a factor of six and whose answers are identical. So the candidate has to abandon the slogan and look at what the loop actually does to the numbers.</p>
+<p>What it does is replace (a, b) by (b, a MOD b). The size of the second value after one iteration is a MOD b, which is the remainder that is left after removing as many copies of b as will fit. If b is small compared with a the quotient is large and the remainder is small, so the pair drops by a large factor immediately; that is the 1000 and 3 case, where the quotient is 333 and the pair goes straight to (3, 1). If b is close to a the quotient is 1 and the remainder is a minus b, so the pair only slides along by the difference; that is the Fibonacci case, and its slow rate is the golden ratio, which is the slowest rate any pair can achieve. Quoting a logarithm hides all of this because a logarithm is a bound and the question is about actual counts.</p>
+<p>The worst case is worth deriving because the derivation is a single reversal of the loop. Ask instead which pair is the smallest that can need a given number of iterations, and the answer is forced: to need many iterations from as small a starting point as possible, every quotient has to be 1, which means each pair is built from the next by adding, which is exactly the Fibonacci recurrence. The worst pair below a limit is therefore the largest pair of consecutive Fibonacci numbers below it, and for 1000 that is 987 and 610. The trace in the figure is the same phenomenon one scale down, which is a useful thing to notice: the answer to a worst-case question about an algorithm is often sitting visibly in the example that was chosen to illustrate the algorithm, if the example is chosen honestly.</p>
+<p>There is one further general point. The number of digits is a convenient proxy for the cost of an algorithm when the cost really does depend on magnitude, and it is a misleading one whenever the cost depends on structure instead. Here the three-digit number 999 paired with 1000 costs two iterations and the three-digit pair 987 and 610 costs fourteen. Two inputs of the same length, seven times the work, decided entirely by how the numbers relate to each other rather than by how big they are.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme B: Computational thinking and problem-solving — B2.4 The same loop taking twelve iterations on one three-digit pair and two on another, and the worst case that has to be derived</dd></div>
+  <div><dt>Challenge lever</dt><dd>Every candidate has been told that this loop is logarithmic and that the cost therefore depends on the size of the inputs, and both statements are true in the way that makes them useless here. Two pairs of three-digit numbers differ by a factor of six in the number of iterations, so the size of the inputs plainly is not what sets the cost, and quoting a logarithm does not produce the twelve or the two. The quantity that sets the cost is how quickly the remainders shrink, and the slowest possible shrinking happens when every quotient is one, which forces the pair to be consecutive terms of the Fibonacci sequence. That gives the worst case as a derived number rather than a quoted one: the largest input that can still take n iterations is a Fibonacci number, so the maximum for inputs up to a thousand is fourteen iterations, attained at 377 and 233 scaled up to 987 and 610. The figure is constructed so that the slow pair and the fast pair have the same number of digits and the same answer, which removes both the size of the inputs and the value returned as ways of explaining the difference.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B2.4 Programming algorithms (B2.4.1 the complexity of an algorithm, B2.4.3 the suitability of an algorithm for a stated purpose), with B2.3 Programming constructs (tracing the execution of a loop)</dd></div>
+  <div><dt>Inspiration</dt><dd>A Level Computer Science material on algorithm efficiency and on tracing the Euclidean algorithm</dd></div>
+  <div><dt>Adaptation</dt><dd>The source presents the loop, asks the candidate to trace it on two given pairs and states its complexity as logarithmic. Here the two traced pairs are chosen to have the same number of digits and the same returned value while differing by a factor of six in iterations, which removes both size and answer as explanations, and the candidate is asked to explain what does govern the count and then to derive the worst case below 1000 rather than quote it. The total number of iterations for every pair up to the limit was checked by exhaustive enumeration so that the stated maximum of 14 and the attaining pair 987 and 610 are answers to a question with a unique solution.</dd></div>
+  <div><dt>Verification</dt><dd>The loop was executed in Python for every pair a, b with 1 &lt;= b &lt;= a &lt;= 1000 and the iteration count recorded. The maximum over the whole range is 14, attained at a = 987 and b = 610. The traced pairs give 12 for (377, 233) and 2 for (1000, 3), matching the figure, and both return 1. The pair (1000, 999) takes 2 iterations and (233, 144) takes 11. The Fibonacci sequence to the nineteenth term was generated to confirm that 987, the sixteenth term, is the largest Fibonacci number not exceeding 1000 and that 1597, the seventeenth, exceeds it, so a fifteenth iteration is impossible within the limit.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>CS_HL_P2_2016Nov_q16 (similarity 0.01)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL2.6-001 (similarity 0.003)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-15</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

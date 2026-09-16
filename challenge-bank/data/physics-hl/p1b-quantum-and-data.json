@@ -13,7 +13,7 @@
       "technology": "allowed",
       "language": null,
       "marks": 5,
-      "difficulty": 5,
+      "difficulty": 4,
       "challenge_mechanism": "Three of the five items turn on a unit rather than an idea: nanometres against metres, electron-volts against joules, and the factor of two inside the kinetic energy expression, so a student who knows the physics but loses the unit loses the mark.",
       "command_terms": [
         "Calculate",
@@ -241,7 +241,13 @@
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "difficulty_evidence": {
+        "lever_type": "non_obvious_tool",
+        "naive_path": "Substitute the given numbers into the photoelectric equation in the units in which they are stated and read the answer off the calculator.",
+        "failure_point": "The quantities are given in nanometres, electron-volts and milliwatts while the constants are in metres, joules and watts, and the kinetic energy expression carries a factor of one half; a physically correct method still returns a distractor if any of those is lost.",
+        "wrong_answer": "Answers obtained without converting the wavelength or the work function, and a maximum kinetic energy found from the photon energy without subtracting the work function."
+      }
     },
     {
       "id": "PHYS-A.3-101",
@@ -394,7 +400,13 @@
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "difficulty_evidence": {
+        "lever_type": "decoy_technique",
+        "naive_path": "Take the ratio of force to extension for the first row, assume it holds throughout, and use the elastic potential energy formula to find the work done.",
+        "failure_point": "The first differences of the force column are not constant, so the spring stiffens and Hooke's law does not hold over the range used; the work has to be found by numerical integration because no single formula covers the whole extension.",
+        "wrong_answer": "A spring constant taken from the first row and applied everywhere, a work value from the elastic formula, and a launch speed computed from that work."
+      }
     },
     {
       "id": "PHYS-B.3-101",
@@ -546,7 +558,13 @@
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "difficulty_evidence": {
+        "lever_type": "seeded_anomaly",
+        "naive_path": "Compute the ratio of pressure times volume to temperature for each setting, see that the values are close, and report their mean as the invariant.",
+        "failure_point": "One row is not consistent with the other five, and deciding whether it is anomalous or merely imprecise requires propagating three instrument uncertainties into the calculated quantity rather than comparing it with the others by eye.",
+        "wrong_answer": "A mean invariant that includes the inconsistent row, and a judgement of anomaly made without an uncertainty on the calculated quantity."
+      }
     }
   ]
 }

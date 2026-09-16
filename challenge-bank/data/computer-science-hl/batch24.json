@@ -1,0 +1,343 @@
+{
+  "questions": [
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P1",
+      "section": "A",
+      "technology": "not_allowed",
+      "question_type": "structured",
+      "id": "CS-B2.4-401",
+      "syllabus_ref": "B2.4 Programming algorithms (B2.4.2 searching and sorting algorithms, B2.4.3 the suitability of an algorithm for a stated purpose), with B1.1 Approaches to computational thinking and B2.2 Data structures",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B2.4 Binary search on an array that is ordered except for one transposed pair",
+      "marks": 6,
+      "difficulty": 5,
+      "command_terms": [
+        "State",
+        "Explain",
+        "Determine"
+      ],
+      "tags": [
+        "binary search",
+        "linear search",
+        "precondition",
+        "sorted data",
+        "complexity",
+        "tracing an algorithm"
+      ],
+      "stimulus": null,
+      "figure": {
+        "type": "svg",
+        "content": "<svg viewBox=\"0 0 790 150\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"An array of twelve boxes holding the values 2, 5, 8, 21, 13, 34, 55, 89, 144, 233, 377 and 610, with the positions numbered from 0 to 11 underneath. The entries 21 and 13, in positions 3 and 4, are shaded in amber to show that this adjacent pair has been transposed.\"><g font-family=\"ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif\"><rect x=\"40\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#f8fafc\" stroke=\"#64748b\" stroke-width=\"1.3\"/><text x=\"69.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">2</text><text x=\"69.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">0</text><rect x=\"102\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#f8fafc\" stroke=\"#64748b\" stroke-width=\"1.3\"/><text x=\"131.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">5</text><text x=\"131.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">1</text><rect x=\"164\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#f8fafc\" stroke=\"#64748b\" stroke-width=\"1.3\"/><text x=\"193.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">8</text><text x=\"193.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">2</text><rect x=\"226\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#fde68a\" stroke=\"#b45309\" stroke-width=\"1.3\"/><text x=\"255.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">21</text><text x=\"255.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">3</text><rect x=\"288\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#fde68a\" stroke=\"#b45309\" stroke-width=\"1.3\"/><text x=\"317.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">13</text><text x=\"317.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">4</text><rect x=\"350\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#f8fafc\" stroke=\"#64748b\" stroke-width=\"1.3\"/><text x=\"379.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">34</text><text x=\"379.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">5</text><rect x=\"412\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#f8fafc\" stroke=\"#64748b\" stroke-width=\"1.3\"/><text x=\"441.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">55</text><text x=\"441.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">6</text><rect x=\"474\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#f8fafc\" stroke=\"#64748b\" stroke-width=\"1.3\"/><text x=\"503.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">89</text><text x=\"503.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">7</text><rect x=\"536\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#f8fafc\" stroke=\"#64748b\" stroke-width=\"1.3\"/><text x=\"565.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">144</text><text x=\"565.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">8</text><rect x=\"598\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#f8fafc\" stroke=\"#64748b\" stroke-width=\"1.3\"/><text x=\"627.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">233</text><text x=\"627.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">9</text><rect x=\"660\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#f8fafc\" stroke=\"#64748b\" stroke-width=\"1.3\"/><text x=\"689.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">377</text><text x=\"689.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">10</text><rect x=\"722\" y=\"46\" width=\"58\" height=\"34\" rx=\"3\" fill=\"#f8fafc\" stroke=\"#64748b\" stroke-width=\"1.3\"/><text x=\"751.0\" y=\"68\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"middle\" font-weight=\"600\">610</text><text x=\"751.0\" y=\"96\" font-size=\"10\" fill=\"#64748b\" text-anchor=\"middle\" font-weight=\"400\">11</text><text x=\"40\" y=\"126\" font-size=\"11\" fill=\"#b45309\" text-anchor=\"start\" font-weight=\"600\">the two entries in amber were transposed</text></g></svg>"
+      },
+      "challenge_mechanism": "Binary search is taught as the fast search and its precondition is stated once and then forgotten. Here the array satisfies the precondition everywhere except at one adjacent pair, and that single transposition is enough to hide one value from the algorithm while leaving the other eleven reachable, so a candidate who trusts the array to be sorted reports a present value as absent. The trace in the figure is the whole argument: the third comparison lands on the larger of the two transposed entries, concludes from it that everything to its right must also be too large, and throws away the right half of the array, which contains the target. Nothing about the algorithm is wrong and nothing about the trace is wrong; what is wrong is the assumption the candidate brought to the array. The second half of the item then forces the candidate to say how much of the array survives the damage, which is the question that separates 'binary search needs sorted data' as a slogan from knowing what breaks when the data is not sorted.",
+      "question": "The figure shows an array of twelve entries held in positions numbered 0 to 11. Reading from position 0 the values are 2, 5, 8, 21, 13, 34, 55, 89, 144, 233, 377 and 610.\n\nEleven of the twelve entries are in ascending order. Exactly one pair of adjacent entries has been transposed, and the two entries concerned are shaded in the figure. The array belongs to a frozen data set. Its contents may not be changed, no entry may be moved, and the array may not be re-sorted or copied into a new order.\n\nA binary search is used to look for the target value 13. The implementation takes the middle position as the integer part of (lo + hi) divided by 2, compares the entry at that position with the target, moves lo to that position plus one when the entry is smaller than the target, and moves hi to that position minus one when the entry is larger. The figure traces the comparisons the search makes. An entry that has been compared once is never compared again.\n\n(a) State the position and the value examined at each of the three comparisons, and state the position at which 13 is stored.\n\n(b) Explain why the search reports that 13 is absent although 13 is stored in the array, and state the property of the data that the search relies on.\n\n(c) Determine the number of comparisons a linear search from position 0 makes before it finds 13, and determine how many of the twelve stored values this binary search still locates.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 2,
+          "command_term": "State",
+          "text": "State the position and the value examined at each of the three comparisons the search makes, and state the position at which the value 13 is stored."
+        },
+        {
+          "label": "b",
+          "marks": 2,
+          "command_term": "Explain",
+          "text": "Explain why the search reports that 13 is absent although 13 is stored in the array, and state the property of the stored data that the search relies on."
+        },
+        {
+          "label": "c",
+          "marks": 2,
+          "command_term": "Determine",
+          "text": "Determine the number of comparisons a linear search from position 0 makes before it finds 13, and determine how many of the twelve stored values this binary search still locates."
+        }
+      ],
+      "answer": "**(a)** The first comparison is at position 5, holding 34. Because 34 is greater than the target, hi becomes 4. The second comparison is at position (0 + 4) / 2 = 2, holding 8. Because 8 is less than the target, lo becomes 3. The third comparison is at position (3 + 4) / 2 = 3, holding 21, and because 21 is greater than the target, hi becomes 2 (A1). The value 13 is stored at position 4, one place to the right of the entry it was compared against (A1).\n\n**(b)** Discarding a half of the array is legitimate only when the entries are in ascending order. In that case an entry greater than the target proves that every entry to its right is at least as great and therefore also greater than the target, so the whole right-hand block can be abandoned with no risk of abandoning the target. That inference is what the third comparison makes, and here it is false: position 3 holds 21 and position 4 holds 13, so the entry immediately to the right is smaller than the entry that was compared, and the half thrown away contains the value being sought. After the third comparison hi has become 2 while lo is 3, so lo is greater than hi, the interval is empty, the loop terminates and the search reports that 13 is not present (M1). The search is behaving correctly as written; the array is not sorted, and sorted order, or at least non-decreasing order, is the precondition it depends on (A1). One adjacent transposition is enough to break it, and the figure places the transposition so that the third comparison lands on the larger of the two entries and draws the false inference from it.\n\n**(c)** A linear search from position 0 compares 2 with the target, then 5, then 8, then 21, and only at the fifth comparison reaches position 4, where the entry is 13. It therefore makes five comparisons (A1). The binary search still locates eleven of the twelve stored values. Every value other than 13 is found at the position where it is stored, including 21 at position 3, because the comparison at position 3 succeeds and the search stops before any half is discarded. The single value that is unreachable is 13 itself, the smaller of the two transposed entries: it has moved to a position to the right of a larger value, so a comparison against that larger value consults the ordering, finds the ordering wrong, and discards the half that holds the target. The other transposed entry, 21, has moved one place to the left and remains reachable, which is why exactly one value, and not two, is lost (A1). In general a single swap that puts a larger entry before a smaller one can hide the smaller entry and only the smaller entry, because it is the smaller entry that now lies on the far side of a larger neighbour.",
+      "markscheme_notes": "(a) (A1) for the three comparisons: position 5 holding 34, position 2 holding 8 and position 3 holding 21, in that order; (A1) for position 4 as the location of 13. Accept the comparisons quoted as values rather than positions provided the positions are attached to them. Do not accept a candidate who lists the comparisons out of order, because the order is what the trace in the figure establishes.\n\n(b) (M1) for the argument that a comparison against a larger entry is used to justify discarding the right-hand half and that this inference requires the array to be in ascending order; (A1) for naming sorted or non-decreasing order as the precondition, and for connecting the failure to the pair 21, 13 rather than to the algorithm. A candidate who says the algorithm is faulty, or that the middle position is being computed wrongly, loses the second mark: the implementation is exactly as specified and every step of it is correct. Do not accept 'the array is not sorted' as the whole answer; the mark is for showing which discarded half contained the target and why the discard looked sound.\n\n(c) (A1) for five comparisons, with the five entries identified; (A1) for eleven of the twelve, or equivalently for the statement that 13 alone is unreachable. Award the second mark to a candidate who identifies 13 as the lost value and explains that 21 survives because the comparison against 21 succeeds before a half is discarded.",
+      "explanation": "The item is short and needs almost no arithmetic. What it needs is for the candidate to notice that the array is not what it appears to be, and that the trace in the figure is not an error but a consequence. Every textbook figure for binary search shows a sorted array, so the sortedness is read off the picture and never checked, and the precondition is learned as a remark attached to the algorithm rather than as a load-bearing assumption.\n\nThe trace is chosen so that the failure looks like ordinary progress. The first comparison discards the top half, which is correct and unremarkable. The second discards positions 0 and 1, which is also correct: 2 and 5 really are both less than 13, so those two entries are safely abandoned. The third comparison is the one that matters, and it reports 21, a value that is genuinely greater than the target. Every comparison has produced a true statement about the entry it examined. What the search then does with the last true statement is to generalise from it to a whole block of the array, and that generalisation is the only step that is false.\n\nThe count in part (c) is where the lesson becomes quantitative. Binary search does not merely fail here; it fails on one of twelve values while succeeding on the other eleven, and the value it loses is the smaller of the two transposed entries. So the damage from a single transposition is exactly one value, and it is predictable in advance: a swap that places a larger entry before a smaller one can hide the smaller entry, and nothing else. That is worth knowing because it tells you which way the failure will show up. A test suite that checks a handful of values chosen from the array will very likely pass, since only one value in twelve is affected, and the defect will surface in production on the one value nobody sampled.\n\nIt is also worth stating plainly why linear search is the right tool here. The array is frozen, it is unordered in one place, and no amount of cleverness in the search can recover an ordering that is not there. Five comparisons against a linear scan is the honest cost, and the same five comparisons do not depend on the array being sorted at all. When the data cannot be re-ordered and cannot be trusted to satisfy a precondition, the algorithm that does not need the precondition is the correct choice, whatever its asymptotic cost.",
+      "provenance": {
+        "inspired_by": "AP Computer Science A free-response material on binary search and on the number of comparisons a search performs",
+        "adaptation": "The source presents binary search on an ordered array and asks for a trace or a count of comparisons. Here the array is ordered everywhere except at one adjacent pair, and the transposition is placed so that the third comparison draws a false inference from a true comparison. The question asks the candidate to state which half was wrongly discarded and which value was lost, to name the precondition, and to count how many of the twelve values survive, which is a question the source material does not pose. The array has also been changed from the usual small ascending run to a structured sequence of twelve values whose middle positions produce a clean three-comparison trace, and the frozen-data-set framing is added so that re-sorting is not available as an answer.",
+        "resource_origin": "AP Computer Science A material on searching algorithms, including the binary-search unit and the standard treatment of its precondition",
+        "source_url": null,
+        "rights": "original",
+        "source_family": "us-ap"
+      },
+      "difficulty_evidence": {
+        "lever_type": "seeded_anomaly",
+        "naive_path": "Read the array as ordered, follow the three comparisons the figure shows, observe that the last of them reports 21 against a target of 13, and conclude that the value 13 is not present in the array at all.",
+        "failure_point": "The array is not ordered: position 3 holds 21 and position 4 holds 13, so the inference that everything to the right of a larger entry is also larger is false, and the third comparison discards the half that contains the target. The trace is correct and the algorithm is correct; the premise the candidate supplied without checking is what fails.",
+        "wrong_answer": "13 is reported absent, or the search is described as having a bug, or the array is said to need re-sorting before a binary search can be used, when the array is frozen and the honest statement is that 13 sits at position 4 and a linear scan reaches it in five comparisons while eleven of the twelve values remain reachable by binary search."
+      },
+      "verification": {
+        "method": "The array was written out as [2, 5, 8, 21, 13, 34, 55, 89, 144, 233, 377, 610] and the binary search loop of the question was executed in Python at the stated middle-position rule for every value in the array. The search finds all eleven values other than 13 and fails on 13, with the three comparisons at positions 5, 2 and 3 in that order; the comparison at position 3 sets hi to 2 while lo is 3, so the loop exits. A linear scan from position 0 reaches the target at the fifth comparison. The count of descending adjacent pairs in the array is one, confirming that exactly one transposition has been made.",
+        "assertions": [
+          "len([2,5,8,21,13,34,55,89,144,233,377,610]) == 12",
+          "(0 + 11) // 2 == 5",
+          "[2,5,8,21,13,34,55,89,144,233,377,610][5] == 34 and 34 > 13",
+          "(0 + 4) // 2 == 2",
+          "[2,5,8,21,13,34,55,89,144,233,377,610][2] == 8 and 8 < 13",
+          "(3 + 4) // 2 == 3",
+          "[2,5,8,21,13,34,55,89,144,233,377,610][3] == 21 and 21 > 13",
+          "sum(1 for i in range(11) if [2,5,8,21,13,34,55,89,144,233,377,610][i] > [2,5,8,21,13,34,55,89,144,233,377,610][i + 1]) == 1",
+          "[2, 5, 8, 21, 13].index(13) + 1 == 5",
+          "(lambda A, T: ([(lo := 0, hi := 11, hit := False)] and [((m := (lo + hi) // 2), (hit := hit or A[m] == T), (lo := m + 1 if A[m] < T else lo), (hi := m - 1 if A[m] > T else hi)) for _ in range(3)] and (not hit)))([2,5,8,21,13,34,55,89,144,233,377,610], 13)",
+          "(lambda A, T: ([(lo := 0, hi := 11, hit := False)] and [((m := (lo + hi) // 2), (hit := hit or A[m] == T), (lo := m + 1 if A[m] < T else lo), (hi := m - 1 if A[m] > T else hi)) for _ in range(3)] and hit))([2,5,8,21,13,34,55,89,144,233,377,610], 21)",
+          "all((lambda A, T: ([(lo := 0, hi := 11, hit := False)] and [((m := (lo + hi) // 2), (hit := hit or A[m] == T), (lo := m + 1 if A[m] < T else lo), (hi := m - 1 if A[m] > T else hi)) for _ in range(4)] and (hit == (T != 13))))([2,5,8,21,13,34,55,89,144,233,377,610], T) for T in [2,5,8,21,13,34,55,89,144,233,377,610])"
+        ],
+        "solution_skeleton": [
+          "Read the figure and list the twelve stored values with their positions.",
+          "State the array as an ordered list and confirm only one adjacent pair is out of order.",
+          "Run the comparison rule at positions 5, 2 and 3 and record the three entries 34, 8 and 21.",
+          "Observe that hi becomes 2 while lo is 3, so the interval is empty and the search exits without a hit.",
+          "Scan linearly from position 0 and count five comparisons to reach 13 at position 4.",
+          "Test every stored value against the same search rule and record that eleven are found and only 13 is lost."
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.002,
+        "nearest_bank_id": "CS_HL_P2_2013Nov_q01",
+        "checked_at": "2026-09-11",
+        "note": "not yet scanned; tools/similarity_check.py --write fills this in",
+        "nearest_bank_label": "bank:Computer Science/CS HL",
+        "max_internal_similarity": 0.002,
+        "nearest_internal_id": "CS-A1.2-002",
+        "max_approach_similarity": 0.071,
+        "nearest_approach_id": "CS-B2.4-002"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P1",
+      "section": "A",
+      "technology": "not_allowed",
+      "question_type": "structured",
+      "id": "CS-B2.2-401",
+      "syllabus_ref": "B2.2 Data structures (hash tables, collisions and the cost of the operations they support), with B2.4 Programming algorithms (B2.4.1 the complexity of an algorithm)",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B2.2 Two hash tables of different sizes holding the same six keys: the load factor is not what decides the number of collisions",
+      "marks": 6,
+      "difficulty": 5,
+      "command_terms": [
+        "Calculate",
+        "Explain",
+        "Determine"
+      ],
+      "tags": [
+        "hash table",
+        "collision",
+        "load factor",
+        "chaining",
+        "modular arithmetic",
+        "table size"
+      ],
+      "stimulus": null,
+      "figure": {
+        "type": "svg",
+        "content": "<svg viewBox=\"0 0 700 270\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Two hash tables holding the same six keys, which are the byte offsets 4096, 4112, 4128, 4144, 4160 and 4176 of six 16-byte records. In the left table, of size 16, one slot is drawn in red and holds all six keys; the other fifteen slots are empty. In the right table, of size 17, six slots are drawn in blue, numbered 16 down to 11, and each holds one of the keys; the remaining slots are empty.\"><g font-family=\"ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif\"><text x=\"40\" y=\"34\" font-size=\"11\" fill=\"#1e293b\" text-anchor=\"start\" font-weight=\"600\">table size 16:  h(k) = k mod 16</text><rect x=\"40\" y=\"50\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"60\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">0</text><rect x=\"40\" y=\"50\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#fee2e2\" stroke=\"#b91c1c\" stroke-width=\"1.1\"/><text x=\"86\" y=\"60\" font-size=\"8\" fill=\"#b91c1c\" text-anchor=\"middle\" font-weight=\"600\">6 keys chained</text><rect x=\"40\" y=\"63\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"73\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">1</text><rect x=\"40\" y=\"76\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"86\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">2</text><rect x=\"40\" y=\"89\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"99\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">3</text><rect x=\"40\" y=\"102\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"112\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">4</text><rect x=\"40\" y=\"115\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"125\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">5</text><rect x=\"40\" y=\"128\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"138\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">6</text><rect x=\"40\" y=\"141\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"151\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">7</text><rect x=\"40\" y=\"154\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"164\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">8</text><rect x=\"40\" y=\"167\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"177\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">9</text><rect x=\"40\" y=\"180\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"190\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">10</text><rect x=\"40\" y=\"193\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"203\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">11</text><rect x=\"40\" y=\"206\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"216\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">12</text><rect x=\"40\" y=\"219\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"229\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">13</text><rect x=\"40\" y=\"232\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"242\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">14</text><rect x=\"40\" y=\"245\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"34\" y=\"255\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">15</text><text x=\"420\" y=\"34\" font-size=\"11\" fill=\"#1e293b\" text-anchor=\"start\" font-weight=\"600\">table size 17:  h(k) = k mod 17</text><rect x=\"420\" y=\"50\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"60\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">0</text><rect x=\"420\" y=\"63\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"73\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">1</text><rect x=\"420\" y=\"76\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"86\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">2</text><rect x=\"420\" y=\"89\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"99\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">3</text><rect x=\"420\" y=\"102\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"112\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">4</text><rect x=\"420\" y=\"115\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"125\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">5</text><rect x=\"420\" y=\"128\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"138\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">6</text><rect x=\"420\" y=\"141\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"151\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">7</text><rect x=\"420\" y=\"154\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"164\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">8</text><rect x=\"420\" y=\"167\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"177\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">9</text><rect x=\"420\" y=\"180\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"190\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">10</text><rect x=\"420\" y=\"193\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"203\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">11</text><rect x=\"420\" y=\"193\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#dbeafe\" stroke=\"#1d4ed8\" stroke-width=\"1.0\"/><text x=\"466\" y=\"203\" font-size=\"8\" fill=\"#1d4ed8\" text-anchor=\"middle\" font-weight=\"400\">4096 + 16 x 5</text><rect x=\"420\" y=\"206\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"216\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">12</text><rect x=\"420\" y=\"206\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#dbeafe\" stroke=\"#1d4ed8\" stroke-width=\"1.0\"/><text x=\"466\" y=\"216\" font-size=\"8\" fill=\"#1d4ed8\" text-anchor=\"middle\" font-weight=\"400\">4096 + 16 x 4</text><rect x=\"420\" y=\"219\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"229\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">13</text><rect x=\"420\" y=\"219\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#dbeafe\" stroke=\"#1d4ed8\" stroke-width=\"1.0\"/><text x=\"466\" y=\"229\" font-size=\"8\" fill=\"#1d4ed8\" text-anchor=\"middle\" font-weight=\"400\">4096 + 16 x 3</text><rect x=\"420\" y=\"232\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"242\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">14</text><rect x=\"420\" y=\"232\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#dbeafe\" stroke=\"#1d4ed8\" stroke-width=\"1.0\"/><text x=\"466\" y=\"242\" font-size=\"8\" fill=\"#1d4ed8\" text-anchor=\"middle\" font-weight=\"400\">4096 + 16 x 2</text><rect x=\"420\" y=\"245\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"255\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">15</text><rect x=\"420\" y=\"245\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#dbeafe\" stroke=\"#1d4ed8\" stroke-width=\"1.0\"/><text x=\"466\" y=\"255\" font-size=\"8\" fill=\"#1d4ed8\" text-anchor=\"middle\" font-weight=\"400\">4096 + 16 x 1</text><rect x=\"420\" y=\"258\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#ffffff\" stroke=\"#dbe2ea\" stroke-width=\"0.8\"/><text x=\"414\" y=\"268\" font-size=\"9\" fill=\"#64748b\" text-anchor=\"end\" font-weight=\"400\">16</text><rect x=\"420\" y=\"258\" width=\"92\" height=\"12\" rx=\"2\" fill=\"#dbeafe\" stroke=\"#1d4ed8\" stroke-width=\"1.0\"/><text x=\"466\" y=\"268\" font-size=\"8\" fill=\"#1d4ed8\" text-anchor=\"middle\" font-weight=\"400\">4096 + 16 x 0</text></g></svg>"
+      },
+      "challenge_mechanism": "The load factor is the first number anybody computes about a hash table and it is reported on every data-structures slide, so it is reached for automatically. Here it is a decoy of a precise kind: the table of size 16 has the lower load factor, 0.375 against 0.353, and is catastrophically worse, because the six keys are byte offsets separated by a stride of 16 and every one of them is therefore a multiple of 16. The quantity that decides the outcome is the relation between the stride and the table size, and the relation is that the six keys occupy distinct slots exactly when no multiple of the stride up to five times it is divisible by the size. A candidate who answers from the load factor gets the ranking of the two tables exactly backwards, and the reversal is not marginal: one table holds all six keys in a single chain and the other spreads them perfectly, at almost the same load factor. The second half of the item makes the point structural rather than anecdotal by asking for the smallest size that separates all six keys, which cannot be reached by estimating and has to be found by working through the sizes.",
+      "question": "A program stores six records in a hash table. Each record is 16 bytes long and they lie consecutively in a memory image, so the six keys passed to the hash function are the byte offsets 4096, 4112, 4128, 4144, 4160 and 4176.\n\nThe hash function is h(k) = k mod m, where m is the size of the table and the result is the slot number. Collisions are resolved by chaining, so every slot holds a list of the keys that hash to it and a lookup walks that list. The figure shows the same six keys in two tables, one of size 16 and one of size 17. The load factor of a table is the number of stored keys divided by the number of slots.\n\nA colleague proposes to enlarge the table from 17 slots to 20 slots in order to reduce the number of collisions.\n\n(a) Calculate the load factor of each of the two tables shown, and state the number of slots occupied in each.\n\n(b) Explain why the table of size 16 stores all six keys in one slot although its load factor is the lower of the two, and state which quantity decides how the keys are distributed.\n\n(c) Determine the number of slots occupied for table sizes 8, 16, 17 and 20, and hence determine the smallest table size of 20 or less that stores all six keys in distinct slots.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 2,
+          "command_term": "Calculate",
+          "text": "Calculate the load factor of each of the two tables shown, and state the number of slots occupied by the six keys in each table."
+        },
+        {
+          "label": "b",
+          "marks": 2,
+          "command_term": "Explain",
+          "text": "Explain why the table of size 16 stores all six keys in a single slot although its load factor is the lower of the two, and state which quantity decides how the keys are distributed."
+        },
+        {
+          "label": "c",
+          "marks": 2,
+          "command_term": "Determine",
+          "text": "Determine the number of slots occupied for table sizes 8, 16, 17 and 20, and hence determine the smallest table size of 20 or less that stores all six keys in distinct slots."
+        }
+      ],
+      "answer": "**(a)** The table of size 16 holds six keys in sixteen slots, so its load factor is 6 / 16 = 0.375 (A1). The table of size 17 holds the same six keys in seventeen slots, so its load factor is 6 / 17 = 0.353 to three decimal places, which is lower. The table of size 16 occupies one slot, because every key hashes to slot 0: 4096 is a multiple of 16, and every other key is 4096 plus a multiple of 16, so every key leaves the same remainder, zero. The table of size 17 occupies six slots, holding 4096 in slot 16, 4112 in slot 15, 4128 in slot 14, 4144 in slot 13, 4160 in slot 12 and 4176 in slot 11 (A1).\n\n**(b)** The load factor measures how full a table is, not how the keys are arranged within it, and those are different questions. Here all six keys are congruent modulo 16 because the gap between consecutive keys is 16 and 16 divides 16 exactly, so the remainder is the same for every one of them and the chain has length six whatever the load factor says (M1). In the table of size 17 the same gap of 16 shares no common factor with 17, which is prime, so adding 16 repeatedly cycles through six different remainders before repeating. The quantity that decides the distribution is the relationship between the stride, 16, and the table size: the keys collide when the stride and the size have a common factor, and in the extreme case of the size dividing the stride exactly, every key lands in the same slot (A1). A table of size 8 or 16 divides the stride and collapses completely, while a table of size 17 is coprime to it and separates the keys perfectly.\n\n**(c)** For a table of size 8 every offset is a multiple of 8, so all six keys hash to slot 0 and one slot is occupied. For size 16 the same collapse gives one slot. For size 17 the six remainders are 16, 15, 14, 13, 12 and 11, all different, so six slots are occupied (A1). For size 20 the key 4096 gives remainder 16 and the key 4176 gives remainder 16 as well, because 4176 = 4096 + 80 and 80 is a multiple of 20; the six remainders are 16, 12, 8, 4, 0 and 16, so five slots are occupied. The smallest size of 20 or less that separates all six keys is 7: the remainders there are 1, 5, 4, 3, 2 and 6, six distinct values, and no size below 7 can separate six keys because it does not have six slots (A1). The proposal to enlarge the table from 17 slots to 20 slots would therefore make matters worse rather than better, reducing the number of occupied slots from six to five and lengthening the chain in slot 16 to two keys.",
+      "markscheme_notes": "(a) (A1) for 0.375 and 0.353, with the lower value explicitly attached to the table of size 17; (A1) for one slot and six slots. The slot numbers 16 down to 11 are not required, but a candidate who lists them has demonstrated the arithmetic and should be credited.\n\n(b) (M1) for the observation that the gap between consecutive keys is a multiple of the table size in the first case and shares no factor with it in the second; (A1) for naming the relationship between the stride and the table size, or the greatest common factor of the two, as the deciding quantity. Do not accept 'the table is too small' or a restatement of the load factor as the explanation: the whole point of the part is that a smaller load factor did not help. Accept a candidate who phrases the condition as the six keys being congruent modulo the table size.\n\n(c) (A1) for the four counts 1, 1, 6 and 5, correctly attached to 8, 16, 17 and 20; (A1) for 7. A candidate who gives 7 with the reason that no smaller size has six slots earns the mark; a candidate who gives 7 from a list without justification does not. Accept 17 as an answer to 'smallest size above 16', but the question asks for the smallest overall and 7 is the answer.",
+      "explanation": "The two panels in the figure are arranged so that the smaller table is the better one and the difference is not small. Six keys in one chain against six keys in six chains is a factor of six in the average lookup cost, and the tables it is choosing between have load factors of 0.375 and 0.353, a difference of about six per cent. Anyone who ranks the two by load factor gets the order exactly wrong, and does so with a number that is an accepted measure and is not being misused: the load factor is genuinely 0.375, and it genuinely is lower than 0.353. The error is not arithmetic, it is choosing a measure that does not answer the question.\n\nWhat does answer the question is the arithmetic of the stride. The keys are not arbitrary; they are consecutive 16-byte records, which is what a real allocator produces, and every key therefore differs from the first by a multiple of 16. The remainder after division by a table size m is the same for all six keys exactly when m divides every one of the five gaps, that is when m divides 16. Sizes 1, 2, 4, 8 and 16 destroy the table; every other size gives some spreading, and a size coprime to 16 gives complete spreading, because then the five additions of 16 generate five distinct non-zero residues. Seventeen is prime and coprime to 16, which is why it is perfect; fourteen is not coprime either, but because 16 has only one factor of 2 above 8 the multiples 16, 32, 48, 64 and 80 reduced modulo 14 give 2, 4, 6, 8 and 10, which are still six distinct offsets, so it works as well.\n\nThe general lesson is that a hash function built from the identity of a key and a modulus is only as good as the relationship between the data and the modulus, and that a prime table size is the standard defence precisely because it removes the possibility of a common factor. It is worth noticing that the colleague in the question makes a mistake that looks like prudence. Enlarging a table is the ordinary response to collisions, it costs memory, and here it reduces the number of occupied slots while increasing the longest chain. Raising a resource is not the same as fixing a distribution.",
+      "provenance": {
+        "inspired_by": "Undergraduate course material on hash tables, collisions and the load factor, including the usual advice to choose a prime table size",
+        "adaptation": "The source presents the load factor as the quantity to keep below a threshold and illustrates collisions with arbitrary integer keys. Here the six keys are the byte offsets of consecutive fixed-length records, which is what makes the stride a multiple of the table size rather than a coincidence, and the question is built so that the table with the lower load factor is the worse of the two. The candidate is asked to explain the reversal, to name the quantity that actually decides the distribution, and to find the smallest table size that separates all six keys, which requires searching a range of sizes rather than applying a rule of thumb. The colleague's proposal to enlarge the table from 17 to 20 slots is added because it is worse than the original, which the source material provides no reason to check.",
+        "resource_origin": "Undergraduate data-structures course material on open addressing and separate chaining, including the standard treatment of the load factor as the determinant of chain length",
+        "source_url": null,
+        "rights": "original",
+        "source_family": "other"
+      },
+      "difficulty_evidence": {
+        "lever_type": "non_governing_variable",
+        "naive_path": "Compute the load factor of each table, find that the table of size 16 has the lower of the two at 0.375 against 0.353, and conclude that the smaller load factor accounts for the difference in behaviour between the tables.",
+        "failure_point": "The load factor is a measure of fullness and does not describe the arrangement of the keys, so it does not govern the number of collisions here at all. What governs it is whether the stride of 16 and the table size share a common factor: when the size divides the stride every key is congruent to every other and the chain holds all six, which happens at sizes 8 and 16 and would happen at 1, 2 and 4 as well, while sizes coprime to 16 separate the keys completely.",
+        "wrong_answer": "The table of size 17 is judged to be the more collision-prone of the two because its load factor is the lower, and the colleague's proposal to enlarge the table to 20 slots is accepted, which reduces the number of occupied slots from six to five and lengthens one chain to two keys."
+      },
+      "verification": {
+        "method": "The six keys 4096 + 16k for k = 0 to 5 were reduced modulo every table size from 1 to 40 and the number of distinct remainders recorded. Sizes 8 and 16 give one distinct remainder, matching the collapse shown in the figure; sizes 7, 9, 11, 13, 14, 15, 17, 18 and 19 give six. Size 20 gives five, because 4096 and 4176 are congruent modulo 20. The smallest size giving six distinct remainders is 7. The load factors were computed as 6/16 = 0.375 and 6/17 = 0.35294 and confirmed to be in the order stated, so that the worse table has the lower load factor.",
+        "assertions": [
+          "all((4096 + 16 * k) % 16 == 0 for k in range(6))",
+          "approx(6 / 16, 0.375, 1e-12)",
+          "approx(6 / 17, 0.352941, 1e-6)",
+          "4096 % 17 == 16 and 4112 % 17 == 15 and 4176 % 17 == 11",
+          "4096 % 7 == 1 and 4128 % 7 == 5 and 4176 % 7 == 4",
+          "4096 % 32 == 0 and 4112 % 32 == 16",
+          "len([1 for i in range(6) if all((4096 + 16 * i) % 8 != (4096 + 16 * j) % 8 for j in range(i))]) == 1",
+          "len([1 for i in range(6) if all((4096 + 16 * i) % 16 != (4096 + 16 * j) % 16 for j in range(i))]) == 1",
+          "len([1 for i in range(6) if all((4096 + 16 * i) % 17 != (4096 + 16 * j) % 17 for j in range(i))]) == 6",
+          "len([1 for i in range(6) if all((4096 + 16 * i) % 20 != (4096 + 16 * j) % 20 for j in range(i))]) == 5",
+          "len([1 for i in range(6) if all((4096 + 16 * i) % 7 != (4096 + 16 * j) % 7 for j in range(i))]) == 6",
+          "len([1 for i in range(6) if all((4096 + 16 * i) % 6 != (4096 + 16 * j) % 6 for j in range(i))]) == 3",
+          "min(m for m in range(6, 21) if len([1 for i in range(6) if all((4096 + 16 * i) % m != (4096 + 16 * j) % m for j in range(i))]) == 6) == 7",
+          "len([m for m in range(6, 21) if len([1 for i in range(6) if all((4096 + 16 * i) % m != (4096 + 16 * j) % m for j in range(i))]) == 6]) == 9",
+          "all(len([1 for i in range(6) if all((4096 + 16 * i) % m != (4096 + 16 * j) % m for j in range(i))]) < 6 for m in (8, 16, 32, 64))"
+        ],
+        "solution_skeleton": [
+          "Write the six keys as 4096 + 16k for k = 0 to 5.",
+          "Reduce each key modulo 16 and record that every remainder is zero.",
+          "Reduce each key modulo 17 and record the six distinct remainders 16 to 11.",
+          "Divide six by each table size to obtain the two load factors and compare them.",
+          "Reduce the six keys modulo 8, 16, 17 and 20 and count the distinct remainders in each case.",
+          "Locate the smallest size in the range that yields six distinct remainders."
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.003,
+        "nearest_bank_id": "AI-PHY-T4-STR-01",
+        "checked_at": "2026-09-11",
+        "note": "not yet scanned; tools/similarity_check.py --write fills this in",
+        "nearest_bank_label": "generated:physics_ai_batch1.json",
+        "max_internal_similarity": 0.003,
+        "nearest_internal_id": "MATH-AHL4.5-001",
+        "max_approach_similarity": 0.062,
+        "nearest_approach_id": "MATH-P3-017"
+      }
+    },
+    {
+      "level": "HL",
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-15",
+      "updated_at": "2026-09-15",
+      "subject": "Computer Science HL",
+      "paper": "P1",
+      "section": "A",
+      "technology": "not_allowed",
+      "question_type": "structured",
+      "id": "CS-B2.4-402",
+      "syllabus_ref": "B2.4 Programming algorithms (B2.4.1 the complexity of an algorithm, B2.4.3 the suitability of an algorithm for a stated purpose), with B2.3 Programming constructs (tracing the execution of a loop)",
+      "topic": "Theme B: Computational thinking and problem-solving",
+      "subtopic": "B2.4 The same loop taking twelve iterations on one three-digit pair and two on another, and the worst case that has to be derived",
+      "marks": 7,
+      "difficulty": 4,
+      "command_terms": [
+        "State",
+        "Explain",
+        "Determine"
+      ],
+      "tags": [
+        "Euclidean algorithm",
+        "loop trace",
+        "worst case",
+        "complexity",
+        "Fibonacci",
+        "remainder"
+      ],
+      "stimulus": null,
+      "figure": {
+        "type": "svg",
+        "content": "<svg viewBox=\"0 0 470 286\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Two traces of the same Euclidean loop. For A = 377 and B = 233 the pairs of values are (233, 144), (144, 89), (89, 55), (55, 34), (34, 21), (21, 13), (13, 8), (8, 5), (5, 3), (3, 2), (2, 1) and (1, 0): twelve iterations. For A = 1000 and B = 3 the pairs are (3, 1) and (1, 0): two iterations. Both inputs are three-digit numbers, so size alone does not explain the difference.\"><g font-family=\"ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif\"><text x=\"40\" y=\"30\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"start\" font-weight=\"600\">A = 377, B = 233</text><text x=\"40\" y=\"56\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(233, 144)</text><text x=\"40\" y=\"78\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(144, 89)</text><text x=\"40\" y=\"100\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(89, 55)</text><text x=\"40\" y=\"122\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(55, 34)</text><text x=\"40\" y=\"144\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(34, 21)</text><text x=\"40\" y=\"166\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(21, 13)</text><text x=\"40\" y=\"188\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(13, 8)</text><text x=\"240\" y=\"56\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(8, 5)</text><text x=\"240\" y=\"78\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(5, 3)</text><text x=\"240\" y=\"100\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(3, 2)</text><text x=\"240\" y=\"122\" font-size=\"11\" fill=\"#1d4ed8\" text-anchor=\"start\" font-weight=\"400\">(2, 1)</text><text x=\"240\" y=\"144\" font-size=\"11\" fill=\"#1e293b\" text-anchor=\"start\" font-weight=\"400\">(1, 0)</text><text x=\"330\" y=\"30\" font-size=\"11\" fill=\"#b91c1c\" text-anchor=\"start\" font-weight=\"600\">12 iterations</text><line x1=\"400\" y1=\"46\" x2=\"400\" y2=\"194\" stroke=\"#b91c1c\" stroke-width=\"1.2\" stroke-dasharray=\"4 3\" stroke-linecap=\"round\"/><text x=\"40\" y=\"230\" font-size=\"12\" fill=\"#1e293b\" text-anchor=\"start\" font-weight=\"600\">A = 1000, B = 3</text><text x=\"40\" y=\"252\" font-size=\"11\" fill=\"#0f766e\" text-anchor=\"start\" font-weight=\"400\">(3, 1)   (1, 0)  ->  2 iterations</text></g></svg>"
+      },
+      "challenge_mechanism": "Every candidate has been told that this loop is logarithmic and that the cost therefore depends on the size of the inputs, and both statements are true in the way that makes them useless here. Two pairs of three-digit numbers differ by a factor of six in the number of iterations, so the size of the inputs plainly is not what sets the cost, and quoting a logarithm does not produce the twelve or the two. The quantity that sets the cost is how quickly the remainders shrink, and the slowest possible shrinking happens when every quotient is one, which forces the pair to be consecutive terms of the Fibonacci sequence. That gives the worst case as a derived number rather than a quoted one: the largest input that can still take n iterations is a Fibonacci number, so the maximum for inputs up to a thousand is fourteen iterations, attained at 377 and 233 scaled up to 987 and 610. The figure is constructed so that the slow pair and the fast pair have the same number of digits and the same answer, which removes both the size of the inputs and the value returned as ways of explaining the difference.",
+      "question": "The figure shows two traces of the same function, which is written below. Division is integer division and MOD returns the remainder.\n\nFUNCTION f(a, b)\n    WHILE b > 0 DO\n        t = a MOD b\n        a = b\n        b = t\n    END WHILE\n    RETURN a\nEND FUNCTION\n\nOne iteration means one execution of the loop body. For the input a = 377, b = 233 the loop body is executed twelve times and the successive pairs of values are listed in the figure. For the input a = 1000, b = 3 the loop body is executed twice. Both inputs are three-digit numbers, and neither of the two inputs is noticeably harder to read than the other.\n\n(a) State the value returned by the function for the input a = 377, b = 233, and state the value returned for the input a = 1000, b = 3.\n\n(b) Explain what property of the pair (a, b) determines how many iterations the loop performs, and explain why the number of digits in a and b does not determine it.\n\n(c) Determine the largest number of iterations the loop can perform for any input pair with 1 <= b <= a <= 1000, and state a pair of values that achieves it. Justify your answer in terms of the sequence of remainders.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 2,
+          "command_term": "State",
+          "text": "State the value returned by the function for the input a = 377, b = 233, and state the value returned for the input a = 1000, b = 3."
+        },
+        {
+          "label": "b",
+          "marks": 2,
+          "command_term": "Explain",
+          "text": "Explain what property of the pair (a, b) determines how many iterations the loop performs, and explain why the number of digits in a and b does not determine it."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Determine the largest number of iterations the loop can perform for any input pair with 1 <= b <= a <= 1000, and state a pair of values that achieves it, justifying your answer in terms of the sequence of remainders."
+        }
+      ],
+      "answer": "**(a)** The loop returns the last non-zero value of b before the remainder reaches zero, which is the largest integer that divides both of the original inputs. For a = 377 and b = 233 the figure ends at the pair (1, 0), so the value returned is 1 (A1). For a = 1000 and b = 3 the pairs are (3, 1) and (1, 0), so the value returned is also 1 (A1). Both inputs therefore produce the same answer, and the number of iterations differs by a factor of six.\n\n**(b)** The number of iterations is set by how quickly the pair of values shrinks, and that is set by the size of the quotient produced at each step. When a is much larger than b the first remainder is small, so the pair collapses in a step or two: at a = 1000, b = 3 the quotient is 333 and the remainder is 1, and the loop is over almost immediately (M1). When a is only slightly larger than b the quotient is 1 and the remainder is a minus b, so the pair (a, b) becomes (b, a minus b) and shrinks by only a small factor each time; in the trace for 377 and 233 every quotient is 1 and the values fall by the golden ratio, 377 to 233 to 144 to 89 and so on, which is the slowest shrinkage the loop can produce (A1). The number of digits is not the governing quantity because it only bounds how many halvings are available, and the actual count is usually far below that bound: two inputs of three digits can need two iterations or twelve, and the deciding factor is the ratio of the two numbers and how close the quotients come to 1, not how large the numbers are.\n\n**(c)** The largest number of iterations is 14, attained by a = 987 and b = 610 (A1). The justification runs backwards through the loop. If the pair (a, b) with a greater than b takes n iterations, then after one iteration it becomes (b, a MOD b) and that pair takes n minus 1 iterations, so the smallest pair needing n iterations is obtained by making the quotient 1 at every step, which gives the backward recurrence a = b + c where c is the next value in the sequence (M1). Starting from the smallest possible end, the pair (1, 0), and reversing the rule gives (1, 1), (2, 1), (3, 2), (5, 3), (8, 5) and so on: the Fibonacci sequence, in which the largest value is 987 at the sixteenth term. If a pair takes 14 iterations then its larger member is at least 987, so any pair with both values at most 1000 that needs 14 iterations must sit exactly at 987 and 610, and 15 iterations would require a larger member of at least 1597, which is above the limit. Checking the two candidates confirms it: the pair (987, 610) takes 14 iterations, while the pair (1000, 999) takes 2 and the pair (233, 144) takes 11 (A1). The same argument explains why the trace in the figure is the slow case for its size: 377 and 233 are the fourteenth and thirteenth Fibonacci numbers, so they are the worst pair below 400, and scaling them up to 987 and 610 keeps them the worst pair below 1000.",
+      "markscheme_notes": "(a) (A1) for 1 from the first input, with the final pair (1, 0) identified; (A1) for 1 from the second. The second mark is for the second value as well as the statement that both answers agree; a candidate who writes only one value scores at most one mark. Do not accept a candidate who reads the returned value as the number of iterations.\n\n(b) (M1) for the observation that the size of the quotient at each step sets how fast the pair shrinks, with the contrast between a large quotient and a quotient of 1; (A1) for the statement that the count is fixed by the ratio of the inputs and how close the successive quotients come to 1, and that the number of digits only gives an upper bound that is usually not attained. A candidate who says only that the algorithm is logarithmic, or that larger inputs take longer, does not answer the question and scores nothing: the figure shows the larger inputs taking the fewer iterations.\n\n(c) (A1) for 14 as the maximum; (M1) for the backward recurrence with a quotient of 1 at every step, from which the Fibonacci sequence follows; (A1) for 987 and 610 as an attaining pair, together with the check that 15 iterations would need a value above 1000. Accept 377 and 233 as the attaining pair for a limit of 400 if stated as such, but for a limit of 1000 the answer is 987 and 610. A candidate who gives 14 without deriving it, or who gives the number of digits as the bound, loses the middle mark.",
+      "explanation": "The trap in this item is a slogan that is true. The loop is logarithmic in the size of its inputs, the syllabus says so, and every candidate will write it down. What the slogan does not do is predict anything about a particular pair, and the figure supplies two pairs of the same size whose costs differ by a factor of six and whose answers are identical. So the candidate has to abandon the slogan and look at what the loop actually does to the numbers.\n\nWhat it does is replace (a, b) by (b, a MOD b). The size of the second value after one iteration is a MOD b, which is the remainder that is left after removing as many copies of b as will fit. If b is small compared with a the quotient is large and the remainder is small, so the pair drops by a large factor immediately; that is the 1000 and 3 case, where the quotient is 333 and the pair goes straight to (3, 1). If b is close to a the quotient is 1 and the remainder is a minus b, so the pair only slides along by the difference; that is the Fibonacci case, and its slow rate is the golden ratio, which is the slowest rate any pair can achieve. Quoting a logarithm hides all of this because a logarithm is a bound and the question is about actual counts.\n\nThe worst case is worth deriving because the derivation is a single reversal of the loop. Ask instead which pair is the smallest that can need a given number of iterations, and the answer is forced: to need many iterations from as small a starting point as possible, every quotient has to be 1, which means each pair is built from the next by adding, which is exactly the Fibonacci recurrence. The worst pair below a limit is therefore the largest pair of consecutive Fibonacci numbers below it, and for 1000 that is 987 and 610. The trace in the figure is the same phenomenon one scale down, which is a useful thing to notice: the answer to a worst-case question about an algorithm is often sitting visibly in the example that was chosen to illustrate the algorithm, if the example is chosen honestly.\n\nThere is one further general point. The number of digits is a convenient proxy for the cost of an algorithm when the cost really does depend on magnitude, and it is a misleading one whenever the cost depends on structure instead. Here the three-digit number 999 paired with 1000 costs two iterations and the three-digit pair 987 and 610 costs fourteen. Two inputs of the same length, seven times the work, decided entirely by how the numbers relate to each other rather than by how big they are.",
+      "provenance": {
+        "inspired_by": "A Level Computer Science material on algorithm efficiency and on tracing the Euclidean algorithm",
+        "adaptation": "The source presents the loop, asks the candidate to trace it on two given pairs and states its complexity as logarithmic. Here the two traced pairs are chosen to have the same number of digits and the same returned value while differing by a factor of six in iterations, which removes both size and answer as explanations, and the candidate is asked to explain what does govern the count and then to derive the worst case below 1000 rather than quote it. The total number of iterations for every pair up to the limit was checked by exhaustive enumeration so that the stated maximum of 14 and the attaining pair 987 and 610 are answers to a question with a unique solution.",
+        "resource_origin": "OCR A Level Computer Science (H446) and AQA A Level Computer Science (7517) material on the efficiency of algorithms, including the Euclidean algorithm as a worked example of a loop whose cost depends on its inputs",
+        "source_url": null,
+        "rights": "original",
+        "source_family": "uk-alevel"
+      },
+      "difficulty_evidence": {
+        "lever_type": "derived_limit",
+        "naive_path": "Note that both inputs are three-digit numbers, quote the logarithmic complexity of the loop, and conclude that the two runs should need a comparable number of iterations, since the number of digits sets how much work the algorithm does.",
+        "failure_point": "The count is set by how fast the remainders shrink, which is set by the size of the successive quotients: a large quotient collapses the pair in one step, while a quotient of 1 at every step shrinks it only by the golden ratio, and that slowest case is reached only by consecutive Fibonacci numbers. The worst case below 1000 is therefore a derived number, fourteen, and quoting a logarithm neither produces it nor explains why twelve iterations occur on one three-digit pair while two occur on another.",
+        "wrong_answer": "The two traces are reconciled by saying that the algorithm is logarithmic, which predicts a handful of iterations for both pairs and leaves the worst case unbounded at two or three, and the maximum for inputs up to 1000 is given as four or five from the logarithm of 1000 rather than as the fourteen that 987 and 610 actually require."
+      },
+      "verification": {
+        "method": "The loop was executed in Python for every pair a, b with 1 <= b <= a <= 1000 and the iteration count recorded. The maximum over the whole range is 14, attained at a = 987 and b = 610. The traced pairs give 12 for (377, 233) and 2 for (1000, 3), matching the figure, and both return 1. The pair (1000, 999) takes 2 iterations and (233, 144) takes 11. The Fibonacci sequence to the nineteenth term was generated to confirm that 987, the sixteenth term, is the largest Fibonacci number not exceeding 1000 and that 1597, the seventeenth, exceeds it, so a fifteenth iteration is impossible within the limit.",
+        "assertions": [
+          "(lambda a, b: ([(x := a, y := b)] and len([((z := x % y), (x := y), (y := z)) for _ in range(40) if y > 0])))(377, 233) == 12",
+          "(lambda a, b: ([(x := a, y := b)] and len([((z := x % y), (x := y), (y := z)) for _ in range(40) if y > 0])))(1000, 3) == 2",
+          "(lambda a, b: ([(x := a, y := b)] and len([((z := x % y), (x := y), (y := z)) for _ in range(40) if y > 0])))(987, 610) == 14",
+          "(lambda a, b: ([(x := a, y := b)] and len([((z := x % y), (x := y), (y := z)) for _ in range(40) if y > 0])))(233, 144) == 11",
+          "(lambda a, b: ([(x := a, y := b)] and len([((z := x % y), (x := y), (y := z)) for _ in range(40) if y > 0])))(1000, 999) == 2",
+          "all((lambda a, b: ([(x := a, y := b)] and len([((z := x % y), (x := y), (y := z)) for _ in range(40) if y > 0])))(a, b) <= 14 for a in range(1, 1001) for b in range(1, a))",
+          "approx((1 + sqrt(5)) / 2, 1.618033988749895, 1e-12)",
+          "approx(987 / 610, (1 + sqrt(5)) / 2, 1e-3)",
+          "approx(1597 / 1000, 1.597, 1e-12)"
+        ],
+        "solution_skeleton": [
+          "Read the traced pairs from the figure and identify the returned value as the last non-zero second member.",
+          "Trace the loop on (1000, 3) and record that the quotient 333 produces the remainder 1 in one step.",
+          "Compare the successive quotients in the two traces and note that the slow one has every quotient equal to 1.",
+          "Reverse the loop by imposing a quotient of 1 at every step, giving the Fibonacci recurrence.",
+          "Generate the Fibonacci sequence and locate 987 as the largest term not exceeding 1000.",
+          "Enumerate every pair up to 1000 and confirm that the maximum iteration count is 14 at 987 and 610."
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "originality": {
+        "max_similarity": 0.01,
+        "nearest_bank_id": "CS_HL_P2_2016Nov_q16",
+        "checked_at": "2026-09-11",
+        "note": "not yet scanned; tools/similarity_check.py --write fills this in",
+        "nearest_bank_label": "bank:Computer Science/CS HL",
+        "max_internal_similarity": 0.003,
+        "nearest_internal_id": "MATH-AHL2.6-001",
+        "max_approach_similarity": 0.0,
+        "nearest_approach_id": null
+      }
+    }
+  ]
+}

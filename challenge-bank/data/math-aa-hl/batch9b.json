@@ -209,7 +209,7 @@
       "technology": "not allowed",
       "language": null,
       "marks": 16,
-      "difficulty": 5,
+      "difficulty": 4,
       "challenge_mechanism": "The displacement is a cubic whose velocity factorises into two distinct roots, so the particle reverses direction twice and the total distance is not the net displacement.",
       "command_terms": [
         "Show that",
@@ -294,7 +294,13 @@
       "authored_by": "ai",
       "created_at": "2026-09-11",
       "updated_at": "2026-09-11",
-      "question_type": "structured"
+      "question_type": "structured",
+      "difficulty_evidence": {
+        "lever_type": "decoy_technique",
+        "naive_path": "Integrate the velocity from the start of the interval to the end and report the value of that definite integral as the distance travelled.",
+        "failure_point": "The velocity changes sign twice inside the interval, so the definite integral cancels the two legs against the middle one and returns the net displacement; only splitting the journey at the rest times and adding the absolute values of the legs gives the distance.",
+        "wrong_answer": "A distance equal to the net displacement, obtained from a single definite integral, with the two reversals of direction left out of the calculation."
+      }
     },
     {
       "id": "MATH-AHL5.10-001",
@@ -309,7 +315,7 @@
       "technology": "permitted",
       "language": null,
       "marks": 16,
-      "difficulty": 5,
+      "difficulty": 3,
       "challenge_mechanism": "The integrand mixes a power, a reciprocal, an exponential and a sine, so the antiderivative must combine a logarithm with a cosine and then be pinned by an initial value.",
       "command_terms": [
         "Find"
@@ -389,7 +395,13 @@
       "authored_by": "ai",
       "created_at": "2026-09-11",
       "updated_at": "2026-09-11",
-      "question_type": "structured"
+      "question_type": "structured",
+      "difficulty_evidence": {
+        "lever_type": "exceptional_parameter",
+        "naive_path": "Integrate each term by raising the power by one and dividing by the new power, applying that rule to the reciprocal term as well as to the polynomial term.",
+        "failure_point": "The power rule has exactly one exponent it cannot serve, and the reciprocal term is that exponent, so the antiderivative needs a logarithm where the rest of the expression needs powers and trigonometric functions.",
+        "wrong_answer": "A polynomial expression offered for the reciprocal term, or a logarithm written without the absolute value, and a constant of integration omitted from the general antiderivative."
+      }
     },
     {
       "id": "MATH-AHL5.11-001",
@@ -404,7 +416,7 @@
       "technology": "permitted",
       "language": null,
       "marks": 16,
-      "difficulty": 5,
+      "difficulty": 4,
       "challenge_mechanism": "The region is bounded by a parabola and a line whose intersection gives two limits, and the area is the integral of the upper curve minus the lower over that interval.",
       "command_terms": [
         "Find",
@@ -462,8 +474,8 @@
         "checked_at": "2026-09-11",
         "nearest_bank_label": "bank:Mathematics/AA HL",
         "nearest_internal_id": "MATH-AHL5.8-201",
-        "max_approach_similarity": 0.154,
-        "nearest_approach_id": "MATH-AHL5.15-001"
+        "max_approach_similarity": 0.192,
+        "nearest_approach_id": "MATH-AHL5.17-401"
       },
       "verification": {
         "method": "Every value was recomputed independently: the intersection equation x^2 - 2x - 3 = 0 with roots minus 1 and 3, the antiderivative -x^3/3 + x^2 + 3x evaluated at 3 giving 9 and at minus 1 giving minus 5/3, the total area 9 - (-5/3) = 32/3, and the right-hand area from 0 to 3 giving 9.",
@@ -486,7 +498,13 @@
       "authored_by": "ai",
       "created_at": "2026-09-11",
       "updated_at": "2026-09-11",
-      "question_type": "extended_response"
+      "question_type": "extended_response",
+      "difficulty_evidence": {
+        "lever_type": "binding_constraint",
+        "naive_path": "Integrate the parabola minus the line between the two intersection points and report the result as the enclosed area.",
+        "failure_point": "Which curve lies above the other on the interval is a separate fact that has to be established from the sign of their difference; if the subtraction is taken in the wrong order the integral returns the negative of the area, and the bounds alone do not reveal the order.",
+        "wrong_answer": "A negative area, or an area obtained without checking which curve is on top, and a right-hand portion found by integrating from the wrong endpoint."
+      }
     }
   ]
 }

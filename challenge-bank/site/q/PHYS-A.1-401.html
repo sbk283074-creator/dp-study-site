@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PHYS-A.1-401 — Physics HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A.1 A bouncing ball that comes to rest in finite time after infinitely many bounces</h1>
+<p class="lede"><a href="../physics-hl/index.html">Physics HL</a> · PHYS-A.1-401</p>
+<button type="button" class="q-done-page" data-qid="PHYS-A.1-401" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="PHYS-A.1-401">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme A: Space, time and motion</span><span class="chip chip-key">A.1 Kinematics: velocity-time graphs, acceleration, displacement from the area under a graph, motion under gravity. With the mathematics of geometric series</span><span class="chip">P2 · Section A</span><span class="chip">6 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: allowed</span><span class="chip">Show that</span><span class="chip">Determine</span><span class="chip">Explain</span></div>
+
+<figure><svg viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A velocity-time graph for a bouncing ball, with the time axis labelled 0, 1, 2, 3 and 4 seconds underneath the plot and the velocity axis crossing the plot at v = 0. Velocity falls in a straight line from zero to -5 metres per second in the first 0.5 seconds, then jumps vertically to +4, falls in a straight line to -4, jumps to +3.2, and continues in the same way, each successive flight being shorter than the one before."><g font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"><line x1="60" y1="150" x2="420" y2="150" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round"/><line x1="60" y1="150" x2="60" y2="45" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round"/><line x1="60" y1="150" x2="60" y2="154" stroke="#64748b" stroke-width="1.1" stroke-linecap="round"/><line x1="60" y1="156" x2="60" y2="244" stroke="#dbe2ea" stroke-width="0.7" stroke-linecap="round"/><text x="60" y="258" font-size="10" fill="#64748b" text-anchor="middle" font-weight="400">0</text><line x1="134" y1="150" x2="134" y2="154" stroke="#64748b" stroke-width="1.1" stroke-linecap="round"/><line x1="134" y1="156" x2="134" y2="244" stroke="#dbe2ea" stroke-width="0.7" stroke-linecap="round"/><text x="134" y="258" font-size="10" fill="#64748b" text-anchor="middle" font-weight="400">1</text><line x1="208" y1="150" x2="208" y2="154" stroke="#64748b" stroke-width="1.1" stroke-linecap="round"/><line x1="208" y1="156" x2="208" y2="244" stroke="#dbe2ea" stroke-width="0.7" stroke-linecap="round"/><text x="208" y="258" font-size="10" fill="#64748b" text-anchor="middle" font-weight="400">2</text><line x1="282" y1="150" x2="282" y2="154" stroke="#64748b" stroke-width="1.1" stroke-linecap="round"/><line x1="282" y1="156" x2="282" y2="244" stroke="#dbe2ea" stroke-width="0.7" stroke-linecap="round"/><text x="282" y="258" font-size="10" fill="#64748b" text-anchor="middle" font-weight="400">3</text><line x1="356" y1="150" x2="356" y2="154" stroke="#64748b" stroke-width="1.1" stroke-linecap="round"/><line x1="356" y1="156" x2="356" y2="244" stroke="#dbe2ea" stroke-width="0.7" stroke-linecap="round"/><text x="356" y="258" font-size="10" fill="#64748b" text-anchor="middle" font-weight="400">4</text><text x="240" y="276" font-size="11" fill="#64748b" text-anchor="middle" font-weight="400">t / s</text><text x="64" y="38" font-size="11" fill="#64748b" text-anchor="start" font-weight="400" font-style="italic">v / m s-1</text><polyline points="60,150 97.0,235" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><line x1="97.0" y1="235.0" x2="97.0" y2="82.0" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/><polyline points="97.0,82.0 156.2,218.0" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><line x1="156.2" y1="218.0" x2="156.2" y2="95.6" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/><polyline points="156.2,95.6 203.56,204.4" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><line x1="203.56" y1="204.4" x2="203.56" y2="106.47999999999999" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/><polyline points="203.56,106.47999999999999 241.448,193.52" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><line x1="241.448" y1="193.52" x2="241.448" y2="115.184" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/><polyline points="241.448,115.184 271.75840000000005,184.816" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><line x1="271.75840000000005" y1="184.816" x2="271.75840000000005" y2="122.1472" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/><polyline points="271.75840000000005,122.1472 296.00672,177.8528" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><line x1="296.00672" y1="177.8528" x2="296.00672" y2="127.71776" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/><polyline points="296.00672,127.71776 315.40537600000005,172.28224" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><line x1="315.40537600000005" y1="172.28224" x2="315.40537600000005" y2="132.174208" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/><polyline points="315.40537600000005,132.174208 330.9243008,167.825792" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><line x1="330.9243008" y1="167.825792" x2="330.9243008" y2="135.7393664" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round"/><polyline points="330.9243008,135.7393664 343.33944064,164.2606336" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></g></svg></figure>
+<section id="q-print">
+<h2>Question</h2>
+<p>A ball is released from rest at a height of $1.25\ \mathrm{m}$ above a horizontal floor and falls freely. Take $g = 10\ \mathrm{m\,s^{-2}}$.</p>
+<p>Immediately after each bounce the speed of the ball is $0.8$ times its speed immediately before that bounce, and it leaves the floor vertically. The figure shows the velocity--time graph for the motion.</p>
+<p>(a) Show that the interval between the first and second bounces is $0.8\ \mathrm{s}$, and that the intervals between successive bounces form a geometric sequence with common ratio $0.8$.</p>
+<p>(b) Determine the time at which the ball stops bouncing.</p>
+<p>(c) State how many bounces the ball makes before it stops, and explain how that is consistent with your answer to part (b).</p>
+<ol class="parts"><li><span class="marks">[2 marks]</span><strong>(a)</strong> <p>Show that the interval between the first and second bounces is $0.8\ \mathrm{s}$, and that successive such intervals form a geometric sequence with common ratio $0.8$.</p> <em>(Show that)</em></li><li><span class="marks">[2 marks]</span><strong>(b)</strong> <p>Determine the time at which the ball stops bouncing.</p> <em>(Determine)</em></li><li><span class="marks">[2 marks]</span><strong>(c)</strong> <p>State how many bounces the ball makes before it stops and explain how that number is consistent with the finite time found in part (b).</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 6 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Physics HL" data-ai-diff="5" data-ai-marks="6" data-ai-ref="PHYS-A.1-401">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>A ball is released from rest at a height of $1.25\ \mathrm{m}$ above a horizontal floor and falls freely. Take $g = 10\ \mathrm{m\,s^{-2}}$.
+
+Immediately after each bounce the speed of the ball is $0.8$ times its speed immediately before that bounce, and it leaves the floor vertically. The figure shows the velocity--time graph for the motion.
+
+(a) Show that the interval between the first and second bounces is $0.8\ \mathrm{s}$, and that the intervals between successive bounces form a geometric sequence with common ratio $0.8$.
+
+(b) Determine the time at which the ball stops bouncing.
+
+(c) State how many bounces the ball makes before it stops, and explain how that is consistent with your answer to part (b).
+
+(a) Show that the interval between the first and second bounces is $0.8\ \mathrm{s}$, and that successive such intervals form a geometric sequence with common ratio $0.8$. [2 marks] (Show that)
+(b) Determine the time at which the ball stops bouncing. [2 marks] (Determine)
+(c) State how many bounces the ball makes before it stops and explain how that number is consistent with the finite time found in part (b). [2 marks] (Explain)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The speed just before the first bounce follows from $v^{2} = 2gh$: $v = \sqrt{2 \times 10 \times 1.25} = 5.0\ \mathrm{m\,s^{-1}}$ (M1). Just after that bounce the speed is $0.8 \times 5.0 = 4.0\ \mathrm{m\,s^{-1}}$ upwards, so the time to rise and fall back to the floor is</p>
+<p>$$\frac{2u}{g} = \frac{2 \times 4.0}{10} = 0.8\ \mathrm{s} \quad \text{(A1)}.$$</p>
+<p>Each bounce multiplies the speed by $0.8$ and the flight time is proportional to the speed, so each interval is $0.8$ times the previous one: the intervals are $0.8,\ 0.64,\ 0.512,\ \ldots$, a geometric sequence with common ratio $0.8$ (A1).</p>
+<p><strong>(b)</strong> The first fall takes $\tfrac{v}{g} = \tfrac{5.0}{10} = 0.5\ \mathrm{s}$ (M1). The total time is that first fall plus the sum to infinity of the bounce intervals:</p>
+<p>$$T = 0.5 + \frac{0.8}{1 - 0.8} = 0.5 + 4.0 = 4.5\ \mathrm{s} \quad \text{(A1)}.$$</p>
+<p><strong>(c)</strong> Infinitely many (A1). The intervals form a convergent geometric series, and a convergent series of positive terms can have infinitely many of them: the partial sums approach $4.5\ \mathrm{s}$ from below and never exceed it. The model has no smallest bounce and no last bounce -- for every bounce there is a later one -- yet the total time is finite, because the time each bounce takes shrinks faster than the number of bounces grows (A1). The ball does not stop at the instant of a bounce: $4.5\ \mathrm{s}$ is the limit of the bounce times, and it is approached, not attained.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) for the impact speed of 5.0 m/s from v-squared = 2gh or from an equivalent route; (A1) for the rebound speed 4.0 m/s and the flight time 0.8 s; (A1) for the statement that the flight time scales with the speed, so the ratio of successive intervals is also 0.8. A candidate who computes the second interval explicitly as 0.64 s and infers the ratio from that is creditable.</p>
+<p>(b) (M1) for the 0.5 s first fall; (A1) for recognising the infinite sum and evaluating it as 4.0 s, giving 4.5 s in total. A candidate who adds a finite number of terms and rounds should not receive the second mark: the question asks when the ball stops, and the answer is the limit, not an approximation to it.</p>
+<p>(c) (A1) for 'infinitely many'; (A1) for the explanation. The explanation must do more than repeat that the series converges -- it should say why that answers the apparent contradiction, namely that the number of terms and the size of their sum are different questions. Credit the observation that 4.5 s is a limit that is approached rather than an instant at which a bounce occurs.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This is Zeno's paradox wearing a kinematics costume, and it is worth asking because both halves of it are counter-intuitive to a candidate who has met geometric series only as a means of adding up a finite list. An infinite list of positive terms is expected to sum to infinity; it does not, and the reason is that the terms shrink in a fixed ratio.</p>
+<p>The physics is doing real work here too. The rebound speed is a fixed fraction of the impact speed, the flight time is proportional to the speed, and so the times inherit the ratio 0.8 directly from the speeds. A candidate who reaches for the heights instead -- each rebound height is 0.64 of the previous one -- gets the same ratio after an extra step, since the time varies as the square root of the height. Either route lands on the same sum, and that is a useful thing to check: if the two routes disagreed, the model would be inconsistent.</p>
+<p>What the item is really testing is whether a candidate can hold two facts at once: the motion has a definite end at 4.5 s, and it has no final bounce. Both are true, and the discomfort of holding them together is the difficulty.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme A: Space, time and motion — A.1 A bouncing ball that comes to rest in finite time after infinitely many bounces</dd></div>
+  <div><dt>Challenge lever</dt><dd>Two intuitions collide and both are wrong. The first is that infinitely many bounces must take infinitely long; the second, its mirror image, is that a ball which stops after 4.5 s must have made some finite number of bounces. The resolution is that the flight times form a geometric sequence with ratio 0.8, whose sum converges, and that a convergent sum of infinitely many positive terms is exactly what &#x27;comes to rest&#x27; means here. Nothing in the arithmetic is harder than summing a geometric series; what is hard is accepting that the answer to &#x27;how many bounces&#x27; is not a number.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A.1 Kinematics: velocity-time graphs, acceleration, displacement from the area under a graph, motion under gravity. With the mathematics of geometric series</dd></div>
+  <div><dt>Inspiration</dt><dd>adapted</dd></div>
+  <div><dt>Adaptation</dt><dd>Three changes. Given and asked: the fraction is given as a speed ratio and the height is chosen so that the first fall takes exactly 0.5 s and the total is exactly 4.5 s, both whole numbers of tenths. Structure: the velocity-time graph is supplied so the candidate can see the intervals shrinking rather than only being told they do. Reasoning chain: a third part asks directly how many bounces occur, which the parent form leaves implicit and which is the whole point.</dd></div>
+  <div><dt>Verification</dt><dd>The impact speed, the first-flight time, each successive interval and the convergent sum are all recomputed, and the ratio is checked to be less than one so that the sum to infinity is valid.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PHYS_HL_P1_2017May_TZ2_q05 (similarity 0.021)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-3.13-401 (similarity 0.01)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-15</dd></div>
+</dl>
+<div class="pager"><a href="../physics-hl/index.html">← All Physics HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-3.13-401 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>3.13 The closest point of a line segment is an endpoint when the foot of the perpendicular falls outside it</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-3.13-401</p>
+<button type="button" class="q-done-page" data-qid="MATH-3.13-401" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="MATH-3.13-401">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Topic 3: Geometry and trigonometry</span><span class="chip chip-key">SL 3.13 The definition of the scalar product of two vectors; SL 3.12 Concept of a vector, position vectors and displacement vectors; 3.1 The distance between two points in three dimensions</span><span class="chip">P1 · Section A</span><span class="chip">6 marks</span><span class="chip chip-hard">difficulty 4</span><span class="chip">technology: not_allowed</span><span class="chip">Show that</span><span class="chip">Find</span><span class="chip">Explain</span></div>
+
+<figure><svg viewBox="0 42 470 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A horizontal line with two marked points A at (2, 1, 0) and B at (4, 5, 2), and a third point P at (9, 4, 3) lying off the line. The part of the line between A and B is drawn as a thick blue segment labelled segment AB; the line itself is drawn faintly and continues beyond both A and B."><g font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"><line x1="70" y1="150" x2="420" y2="150" stroke="#64748b" stroke-width="1.2" stroke-linecap="round"/><text x="424" y="154" font-size="11" fill="#64748b" text-anchor="start" font-weight="400">line AB</text><line x1="100" y1="150" x2="250" y2="150" stroke="#1d4ed8" stroke-width="3.6" stroke-linecap="round"/><circle cx="100" cy="150" r="4.6" fill="#1e293b"/><circle cx="250" cy="150" r="4.6" fill="#1e293b"/><circle cx="330" cy="60" r="4.6" fill="#1d4ed8"/><text x="100" y="172" font-size="11" fill="#1e293b" text-anchor="middle" font-weight="400">A (2, 1, 0)</text><text x="250" y="172" font-size="11" fill="#1e293b" text-anchor="middle" font-weight="400">B (4, 5, 2)</text><text x="339" y="56" font-size="11" fill="#1d4ed8" text-anchor="start" font-weight="400">P (9, 4, 3)</text><text x="175.0" y="172" font-size="10" fill="#1d4ed8" text-anchor="middle" font-weight="600">segment AB</text></g></svg></figure>
+<section id="q-print">
+<h2>Question</h2>
+<p>The points $A$, $B$ and $P$ have position vectors</p>
+<p>$$\mathbf{a} = 2\mathbf{i} + \mathbf{j}, \qquad \mathbf{b} = 4\mathbf{i} + 5\mathbf{j} + 2\mathbf{k}, \qquad \mathbf{p} = 9\mathbf{i} + 4\mathbf{j} + 3\mathbf{k}.$$</p>
+<p>The figure shows the plane containing all three points, with the line through $A$ and $B$ drawn horizontally and the segment $AB$ marked on it.</p>
+<p>(a) Show that the point of the line through $A$ and $B$ that is closest to $P$ does not lie on the segment $AB$.</p>
+<p>(b) Find the shortest distance from $P$ to the segment $AB$.</p>
+<p>(c) A candidate obtains $\sqrt{73/3} \approx 4.93$. State what this value is the distance from $P$ to, and explain why it is not the answer to part (b).</p>
+<ol class="parts"><li><span class="marks">[2 marks]</span><strong>(a)</strong> <p>Show that the point of the line through $A$ and $B$ that is closest to $P$ does not lie on the segment $AB$.</p> <em>(Show that)</em></li><li><span class="marks">[2 marks]</span><strong>(b)</strong> <p>Find the shortest distance from $P$ to the segment $AB$.</p> <em>(Find)</em></li><li><span class="marks">[2 marks]</span><strong>(c)</strong> <p>State what the value $\sqrt{73/3} \approx 4.93$ is the distance from $P$ to, and explain why it is smaller than the answer to part (b) yet is not a possible answer to it.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 6 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Math AA HL" data-ai-diff="4" data-ai-marks="6" data-ai-ref="MATH-3.13-401">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>The points $A$, $B$ and $P$ have position vectors
+
+$$\mathbf{a} = 2\mathbf{i} + \mathbf{j}, \qquad \mathbf{b} = 4\mathbf{i} + 5\mathbf{j} + 2\mathbf{k}, \qquad \mathbf{p} = 9\mathbf{i} + 4\mathbf{j} + 3\mathbf{k}.$$
+
+The figure shows the plane containing all three points, with the line through $A$ and $B$ drawn horizontally and the segment $AB$ marked on it.
+
+(a) Show that the point of the line through $A$ and $B$ that is closest to $P$ does not lie on the segment $AB$.
+
+(b) Find the shortest distance from $P$ to the segment $AB$.
+
+(c) A candidate obtains $\sqrt{73/3} \approx 4.93$. State what this value is the distance from $P$ to, and explain why it is not the answer to part (b).
+
+(a) Show that the point of the line through $A$ and $B$ that is closest to $P$ does not lie on the segment $AB$. [2 marks] (Show that)
+(b) Find the shortest distance from $P$ to the segment $AB$. [2 marks] (Find)
+(c) State what the value $\sqrt{73/3} \approx 4.93$ is the distance from $P$ to, and explain why it is smaller than the answer to part (b) yet is not a possible answer to it. [2 marks] (Explain)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> $\overrightarrow{AB} = 2\mathbf{i} + 4\mathbf{j} + 2\mathbf{k}$ and $\overrightarrow{AP} = 7\mathbf{i} + 3\mathbf{j} + 3\mathbf{k}$, so $\overrightarrow{AP}\cdot\overrightarrow{AB} = 14 + 12 + 6 = 32$ and $|\overrightarrow{AB}|^{2} = 4 + 16 + 4 = 24$ <strong>(M1)</strong>. The closest point of the line is $\mathbf{a} + t\,\overrightarrow{AB}$ with $t = \dfrac{\overrightarrow{AP}\cdot\overrightarrow{AB}}{|\overrightarrow{AB}|^{2}} = \dfrac{32}{24} = \dfrac{4}{3}$, and since $\tfrac{4}{3} &gt; 1$ that point lies beyond $B$ and therefore outside the segment $AB$ <strong>(A1)</strong>.</p>
+<p><strong>(b)</strong> Because the closest point of the *line* is outside the segment, the closest point of the segment is its nearest endpoint, namely $B$ <strong>(M1)</strong>, and the distance is $|\overrightarrow{BP}| = |5\mathbf{i} - \mathbf{j} + \mathbf{k}| = \sqrt{25 + 1 + 1} = \sqrt{27} = 3\sqrt{3} \approx 5.20$ <strong>(A1)</strong>.</p>
+<p><strong>(c)</strong> $\sqrt{73/3}$ is the perpendicular distance from $P$ to the infinite line through $A$ and $B$: $|\overrightarrow{AP}|^{2} = 49 + 9 + 9 = 67$, and $67 - \dfrac{32^{2}}{24} = 67 - \dfrac{128}{3} = \dfrac{73}{3}$ <strong>(M1)</strong>. It is not the answer to (b) because the foot of that perpendicular is not a point of the segment. A segment is a bounded set, and the closest point of a bounded set need not be where the perpendicular falls: it can be, and here is, an endpoint. The perpendicular distance is smaller because it is measured to a point the segment does not contain, so it is a lower bound that the segment cannot attain <strong>(A1)</strong>.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p>(a) (M1) for the two ingredients of the projection, $\overrightarrow{AP}\cdot\overrightarrow{AB} = 32$ and $|\overrightarrow{AB}|^{2} = 24$, however they are obtained; (A1) for $t = \tfrac{4}{3}$ together with the observation that the point corresponding to $t &gt; 1$ lies beyond $B$. The comparison with $1$ is the mark: a candidate who computes $t = \tfrac{4}{3}$ and says nothing about what it means has done the arithmetic and missed the part.</p>
+<p>(b) (M1) for recognising that the endpoint is now the closest point; (A1) for $\sqrt{27} = 3\sqrt{3}$. Accept $5.20$.</p>
+<p>(c) (M1) for identifying the value as the distance to the line and reproducing the calculation that produces it; (A1) for the point that the segment is bounded so the minimum over the segment is attained at an endpoint. Do not credit 'it is wrong because the foot is outside' without the consequence, which is that the smaller number is unattainable.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The formula for the distance from a point to a line is a formula about a line, and nothing in it remembers where the segment ends. That gap is the entire question. The parameter $t$ carries the information -- $0 \leq t \leq 1$ means the foot is on the segment, $t &lt; 0$ means it is before $A$, $t &gt; 1$ means it is beyond $B$ -- and a candidate who computes $t$ only in order to substitute it into a distance formula will never read it.</p>
+<p>The two numbers are close enough to be uncomfortable: $4.93$ against $5.20$. That is deliberate. A large discrepancy would give the game away, whereas this one looks like rounding, and a candidate who has not checked $t$ has no reason to prefer the larger of two plausible answers. The right habit is to read the parameter before using it, which is also the right habit in the optimisation questions where a maximum turns out to sit at the end of an interval rather than at a stationary point.</p>
+<p>There is a second lesson in the arithmetic itself. Nothing here is difficult: a scalar product, a squared length, and a comparison of one fraction with one integer. What makes the item worth six marks is that the comparison is the whole question, and it is the step a candidate is most likely to skip on the way to a formula they have already memorised. A bank that only ever asks for the perpendicular distance teaches that formula; this one asks whether the formula is the right thing to reach for.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Topic 3: Geometry and trigonometry — 3.13 The closest point of a line segment is an endpoint when the foot of the perpendicular falls outside it</dd></div>
+  <div><dt>Challenge lever</dt><dd>The standard method -- project the displacement on to the direction vector and take the length of the remainder -- answers a different question. It gives the distance from P to the infinite line, and it is the right answer only when the foot of the perpendicular happens to lie between A and B. Here the parameter comes out at 4/3, so the foot is beyond B and the closest point of the segment is B itself. The constraint that the point must lie on the segment, which is the whole content of the word segment, is the one thing the formula does not know about, and a candidate who has internalised the formula as &#x27;the distance from a point to a line&#x27; will not think to check it.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>SL 3.13 The definition of the scalar product of two vectors; SL 3.12 Concept of a vector, position vectors and displacement vectors; 3.1 The distance between two points in three dimensions</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Written against the HL vector bullet directly. The coordinate values are chosen so that the scalar product is 32 and the squared length 24, making the parameter exactly 4/3 -- safely outside the segment but not so far outside that the figure looks obviously wrong -- and so that the two distances, sqrt(27) and sqrt(73/3), differ by only about five per cent.</dd></div>
+  <div><dt>Verification</dt><dd>Every scalar product, squared length and distance quoted in the answer is recomputed, and the two candidate distances are compared to confirm that the perpendicular one is the smaller of the two.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2011May_TZ1_q02 (similarity 0.01)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL3.17-102 (similarity 0.017)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-15</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=5" defer></script>
+</body>
+</html>

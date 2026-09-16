@@ -1,23 +1,25 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 277 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 301 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 113 of 277 do. The remaining 164 are
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 137 of 301 do. The remaining 164 are
 a published, ratcheting backlog — see `STANDARD.md` §2.2–§2.5 and `tools/difficulty_audit.py`. All 13
-lever types are in use, and the Physics difficulty-5 share has been designed down from 62% to **47%**,
-which brings every subject inside the 50% cap with the calibration debt cleared. **The last calibration
-debt is now cleared too:** R2 (*"no item claims difficulty 3 — the 3-5 scale has collapsed to two
-points"*) was paid by Batch 21, which adds three difficulty-3 items, one each in Maths, CS and BM. The
-audit prints `calibration OK` and `--check --strict` exits 0 for the first time. Physics still claims no
-difficulty-3 item; that is a design gap rather than a slot to fill, and it is recorded below.
+lever types are in use, the largest share is 13%, and every subject is inside the 50% difficulty-5 cap
+(Maths 48%, Physics 45%, CS 35%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
+the share was above the cap) and R2 (no item claimed difficulty 3 — the 3-5 scale had collapsed to two
+points) were paid by Batches 21–23, which carry one difficulty-3 item per subject. The audit prints
+`calibration OK` and `--check --strict` exits 0.
 The `topic` label is now a closed vocabulary per subject, enforced by `validate.py`, and is shown on every
 question page and filterable on every subject page.**
-**Figure coverage is now a first-class gate rather than a nice-to-have.** Batches 22 and 22b raise the
-share of items that carry a self-authored graph to **52 of 277 = 19%**, and move the bank-wide ratchet
-`FIGURE_COVERAGE_FLOOR` from 0.17 to 0.19 — the floor may rise and may
-never fall, so a later batch cannot quietly spend the coverage. Every figure is drawn by hand as a
-plain-Python SVG string builder in `tools/make_figures.py`: no charting library, no plotting package, no
+**Figure coverage is now a first-class gate rather than a nice-to-have.** Batch 23 raises the share of
+items that carry a self-authored graph to **75 of 301 = 25%**, and moves the bank-wide ratchet
+`FIGURE_COVERAGE_FLOOR` from 0.20 to 0.24 — the floor may rise and may
+never fall, so a later batch cannot quietly spend the coverage. With it, the last reported per-subject gap
+closes: Maths, stuck at 11% since the standard took force, now stands at 15% against a 15% target, and no
+subject prints a gap on the audit run. Every figure is drawn by hand as a plain-Python SVG string builder,
+most of them inline in the batch generator that wrote the item and the named set in
+`tools/make_figures.py`: no charting library, no plotting package, no
 image model. `validate.py` rejects the fingerprints of all of them (`<canvas`, `plotly`, `matplotlib`,
 `chart.js`, `highcharts`, `echarts`, `vega`, `bokeh`, `data:image/`), so "without other tools" is a
 property the gate checks rather than a promise the prose makes.
@@ -1112,6 +1114,60 @@ similarity score, and no BM item ships containing HL-only content.
   - **Numbers after the wave.** 285 items — Maths 119 / 1803 marks, Physics 84 / 1060, CS 46 / 715,
     BM 36 / 532. Difficulty split **4 at d3, 164 at d4, 117 at d5**; every subject inside the 50% cap
     (Maths 49%, Physics 44%, CS 33%, BM 19%). Evidence present **121 / 285**; assertions **3271**.
+- **Batch 23, the lean-devious wave — 285 → 301.** Sixteen items, and the point of the batch is the
+  opposite of the batch before it: the median item in this bank is about fifteen marks and these are six
+  marks in the sciences, ten or eleven in Business Management, with **every single one carrying an inline
+  SVG figure**. Difficulty is compacted rather than spread — each item takes one turn in the reasoning
+  and almost no arithmetic — and each of the sixteen was designed from a different lever, with the two
+  thinnest levers in the bank (`variable_swap` at 3%, `quant_vs_judgement` at 4%) each given an item.
+  - **Mathematics (6).** A decreasing bijection of $[0,\,6]$ onto itself whose graph therefore meets its
+    own inverse at two points that are *not* on $y = x$ (`MATH-2.2-401`); a derivative graph whose area
+    makes $f(7.5)$ exactly zero, so a crossing becomes a touching point and the root count drops by one
+    (`MATH-5.8-401`); the closest point of a segment that is an *endpoint*, because the foot of the
+    perpendicular falls outside it (`MATH-3.13-401`); the moment of a region recovered from its symmetry
+    without ever knowing the function (`MATH-5.11-401`); a sideways parabola whose chord bounds a region
+    needing one integral in $y$ and two in $x$, split at $x = 1$ (`MATH-AHL5.17-401`); and two unbounded
+    tails drawn at the same scale, one enclosing exactly one unit of area and one enclosing none, decided
+    entirely by whether the exponent exceeds $1$ (`MATH-5.11-402`).
+  - **Physics (4).** A $p$–$V$ cycle whose path crosses itself, so the net work is the *difference* of
+    the two lobe areas, $200 - 50 = 150\ \mathrm{J}$, and not their sum (`PHYS-B.4-401`); a ball that
+    comes to rest in finite time after infinitely many bounces, the intervals forming a geometric series
+    with ratio $0.8$ (`PHYS-A.1-401`); a string plucked at $\tfrac{L}{3}$ where every harmonic with a node
+    at the plucking point cannot be excited at all (`PHYS-C.4-401`); and a ramp on which the required
+    force peaks at an intermediate angle while the work needed falls steadily as the ramp steepens
+    (`PHYS-A.3-401`).
+  - **Computer Science (3).** A binary search defeated by one adjacent transposition: eleven of the twelve
+    stored values are still found and only $13$ is lost, because the comparison that discards the half
+    holding it reports a true value (`CS-B2.4-401`); six byte offsets with a stride of $16$ that all land
+    in slot $0$ of a table of size $16$ at a load factor of $0.375$, while a table of size $17$ separates
+    them perfectly at almost the same load factor (`CS-B2.2-401`); and a Euclidean loop needing twelve
+    iterations on one three-digit pair and two on another, with the worst case below $1000$ derived from
+    the Fibonacci recurrence as $14$, at $(987,\,610)$ (`CS-B2.4-402`).
+  - **Business Management (3).** A six-month cash-flow forecast in which one $-8000$ outflow leaves five
+    of six closing balances negative, the opening balance is not printed and has to be recovered from
+    January, and the $15\,000$ peak breaches a $10\,000$ facility (`BM-3.7-401`); a firm whose market
+    share rises in both regions and falls overall because the region where it is weak grew by 75% while
+    the one where it is strong halved, and whose own volume fell from 290 to 258 units in a market of
+    constant size (`BM-4.1-401`); and two liquidity ratios that both rise while the firm gives away two
+    thirds of its cash and its working capital stays unchanged at £160\,000 (`BM-3.5-401`).
+  - **The lever spread was chosen deliberately.** `variable_swap` and `quant_vs_judgement` were the two
+    thinnest levers in the bank at the start of the wave; both gained an item, as did
+    `partial_cancellation`, `aggregate_recovery`, `derived_limit` and `seeded_anomaly`. All thirteen
+    levers remain in use and the largest share falls to 13%.
+  - **The figure gap closed on its own.** Maths had been stuck at 11% against a 15% per-subject target
+    since the standard took force; it stands at **15%** now, so the audit no longer prints a gap for any
+    subject. Bank-wide coverage went **59 → 75 (21% → 25%)** and the ratchet moves
+    `FIGURE_COVERAGE_FLOOR` **0.20 → 0.24**. All 16 new figures are built by plain Python string
+    builders, so the validator's fingerprint check (`<canvas`, `plotly`, `matplotlib`, `chart.js`,
+    `highcharts`, `echarts`, `vega`, `bokeh`, `data:image/`) stays satisfied by construction.
+  - **Three gates bit, all fixed at the item.** `MATH-5.11-401` shipped a part whose command term was
+    `Hence find`, which is not in the closed list — the text keeps the phrase, the term becomes `Hence`.
+    `BM-3.7-401` and `BM-3.5-401` each carried a seven-step `solution_skeleton` against a three-to-six
+    rule, and the fix merged steps rather than dropping them, so no reasoning left the markscheme.
+  - **Numbers after the wave.** 301 items — Maths 125 / 1839 marks, Physics 88 / 1085, CS 49 / 734,
+    BM 39 / 563; 4221 marks in all. Difficulty split **4 at d3, 171 at d4, 126 at d5**; every subject
+    inside the 50% cap (Maths 48%, Physics 45%, CS 35%, BM 23%). Evidence present **137 / 301**, and
+    `labels the evidence does not permit: 0`. Assertions **3447**.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet

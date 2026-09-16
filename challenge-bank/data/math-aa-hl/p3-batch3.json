@@ -14,7 +14,7 @@
       "technology": "permitted",
       "language": null,
       "marks": 16,
-      "difficulty": 5,
+      "difficulty": 4,
       "challenge_mechanism": "Three methods are forced in sequence and each is harder to start than the last: inclusion-exclusion gives a closed form with alternating signs, a conditioning argument gives a recurrence with no alternating signs, and only the closed form reveals that the answer is the nearest integer to n!/e, which is a statement no recurrence would suggest. The convergence to 1/e is surprising enough that a candidate who computes it correctly still has to be told why it should be true.",
       "command_terms": [
         "Show that",
@@ -110,7 +110,13 @@
       "status": "published",
       "created_at": "2026-09-11",
       "updated_at": "2026-09-11",
-      "authored_by": "ai"
+      "authored_by": "ai",
+      "difficulty_evidence": {
+        "lever_type": "derived_limit",
+        "naive_path": "Compute D_n by counting derangements case by case for the small values of n asked about, and divide by n! to read off the probability.",
+        "failure_point": "The recurrence and the closed form look like two ways of writing the same numbers, but only the alternating-sign closed form exhibits the geometric behaviour that makes p_n converge to 1/e and makes D_n the nearest integer to n!/e; the recurrence conceals both statements.",
+        "wrong_answer": "A probability that drifts without a limit, or a limit reported as 0 on the grounds that the number of derangements is negligible compared with n!, together with no statement about the nearest-integer property."
+      }
     },
     {
       "id": "MATH-P3-011",
@@ -220,7 +226,13 @@
       "status": "published",
       "created_at": "2026-09-11",
       "updated_at": "2026-09-11",
-      "authored_by": "ai"
+      "authored_by": "ai",
+      "difficulty_evidence": {
+        "lever_type": "exceptional_parameter",
+        "naive_path": "Apply the geometric series formula to the quotient and substitute z = 1, treating the pole that the formula excludes as a value that can simply be plugged in.",
+        "failure_point": "The quotient (z^n - 1)/(z - 1) is only apparently singular at z = 1, and it is exactly there that the product of distances has to be read; the value the closed form refuses to evaluate is the single value the question needs.",
+        "wrong_answer": "A product of distances left in trigonometric form, such as the numerical value of the sine product for the given n, with the identity that the product equals n never extracted."
+      }
     }
   ]
 }
