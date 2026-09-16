@@ -105,7 +105,13 @@
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "difficulty_evidence": {
+        "lever_type": "wrong_design_cost",
+        "naive_path": "Add a timeout to each resource request so that a stalled process gives up and retries, and describe the deadlock as solved.",
+        "failure_point": "Deadlock is a structural consequence of the order in which resources are claimed, so a timeout does not remove it; it converts a permanent stall into repeated wasted work, and only imposing one global order on the claims breaks the cycle.",
+        "wrong_answer": "A timeout described as the fix, with throughput reported as unchanged and the circular wait left in place."
+      }
     },
     {
       "id": "CS-P2-005",
@@ -214,7 +220,13 @@
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "difficulty_evidence": {
+        "lever_type": "non_obvious_tool",
+        "naive_path": "Strengthen the secret the lock and the reader share, and lengthen the code it produces, so that the response cannot be guessed.",
+        "failure_point": "The weakness is not the strength of the secret but that the same bits are accepted on every use, so a recorded exchange can be replayed whatever the secret is; the missing property is freshness rather than secrecy.",
+        "wrong_answer": "A longer shared secret offered as the remedy, with the replay of a recorded exchange still possible and no value introduced that the attacker cannot predict."
+      }
     },
     {
       "id": "CS-P2-006",
@@ -441,7 +453,13 @@
       "status": "published",
       "authored_by": "ai",
       "created_at": "2026-09-11",
-      "updated_at": "2026-09-11"
+      "updated_at": "2026-09-11",
+      "difficulty_evidence": {
+        "lever_type": "quant_vs_judgement",
+        "naive_path": "Read the overall precision of 82 per cent, judge the model acceptable, and recommend that it be deployed across all areas.",
+        "failure_point": "The aggregate hides rates that differ by a factor of four between areas, and the area that complains has better recall at much worse precision, so the burden of the model's errors falls unequally on the groups it serves.",
+        "wrong_answer": "Deployment recommended on the headline figure, with no per-area confusion matrices and no acknowledgement that which error to minimise is a value judgement rather than a calculation."
+      }
     }
   ]
 }

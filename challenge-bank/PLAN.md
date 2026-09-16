@@ -3,12 +3,14 @@
 **Cohort: class of 2028 (final examination session May 2028).**
 **Status: live. 301 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 137 of 301 do. The remaining 164 are
-a published, ratcheting backlog — see `STANDARD.md` §2.2–§2.5 and `tools/difficulty_audit.py`. All 13
-lever types are in use, the largest share is 13%, and every subject is inside the 50% difficulty-5 cap
-(Maths 48%, Physics 45%, CS 35%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 216 of 301 do. The difficulty-5
+backlog is **cleared** — no item claims difficulty 5 without evidence — and the 85 items that remain
+unbacked are all difficulty-3 or difficulty-4 claims, a published, ratcheting backlog described in
+`STANDARD.md` §2.2–§2.5 and measured by `tools/difficulty_audit.py`. All 13
+lever types are in use, the largest share is 15%, and every subject is inside the 50% difficulty-5 cap
+(Maths 45%, Physics 44%, CS 35%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
 the share was above the cap) and R2 (no item claimed difficulty 3 — the 3-5 scale had collapsed to two
-points) were paid by Batches 21–23, which carry one difficulty-3 item per subject. The audit prints
+points) were paid by Batches 21–23, and the backlog pass added a fifth difficulty-3 item. The audit prints
 `calibration OK` and `--check --strict` exits 0.
 The `topic` label is now a closed vocabulary per subject, enforced by `validate.py`, and is shown on every
 question page and filterable on every subject page.**
@@ -1168,6 +1170,30 @@ similarity score, and no BM item ships containing HL-only content.
     BM 39 / 563; 4221 marks in all. Difficulty split **4 at d3, 171 at d4, 126 at d5**; every subject
     inside the 50% cap (Maths 48%, Physics 45%, CS 35%, BM 23%). Evidence present **137 / 301**, and
     `labels the evidence does not permit: 0`. Assertions **3447**.
+- **Backlog pass — the difficulty-5 evidence debt is cleared (no change to the item count).** The 79 items
+  that claimed difficulty 5 with no evidence were read one at a time and given a `difficulty_evidence`
+  block: 36 Maths, 31 Physics, 10 CS, 2 BM. The headline number the audit publishes —
+  `difficulty 5 with no evidence` — went **79 → 0**, and `labels the evidence does not permit` stayed at
+  **0** throughout, which is the check that would have caught a correction that went the wrong way.
+  Evidence coverage rose **137 → 216 of 301 (46% → 72%)** and the grandfathered backlog fell
+  **164 → 85**; all 85 outstanding items are difficulty-3 or difficulty-4 claims.
+  - **Five labels came down and none went up**, which is the outcome §4.7 asks for rather than a
+    transcription. `MATH-P3-010` 5→4 — its heaviest part is the first (`5, 4, 4, 3`), so the arc test
+    scores 0 and the item tops out at 7 of 9; `MATH-AHL5.9-001` 5→4; `MATH-AHL5.10-001` 5→3 — its own
+    author note gives the trap as a sign slip on the cosine term, and a slip is not a lever;
+    `MATH-AHL5.11-001` 5→4; `PHYS-E.2-101` 5→4 — the mechanism names units rather than an idea. The pass
+    therefore widened the 3–5 range as well as shortening the top of it: difficulty-3 items went
+    **4 → 5**, bank-wide d5 **42% → 40%**, Maths **48% → 45%**, Physics **45% → 44%**.
+  - **The levers were spread, not piled up.** The largest single share stayed at **15%**
+    (`non_governing_variable`, 33 of 216) while the evidenced set grew by 58%, so the backlog was not
+    concentrated in the levers that were already busy. All 13 lever types remain in use.
+  - **Two items are flagged rather than relabelled.** `MATH-AHL5.13-001` (repeated application of
+    l'Hôpital) and `MATH-AHL4.11-001` (independence tested against the definition rather than by
+    comparing the two conditional rates) keep difficulty 5 because the rubric permits it and their
+    mechanisms name something to notice, but both sit near the bottom of the tier and are worth a second
+    read before a later batch leans on them.
+  - **This is not evidence that the bank got harder.** No question text, answer or mark allocation
+    changed; the only edits are the 79 `difficulty_evidence` blocks and the five labels above.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet

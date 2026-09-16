@@ -115,7 +115,13 @@
       "authored_by": "ai",
       "created_at": "2026-09-11",
       "updated_at": "2026-09-11",
-      "question_type": "case_study"
+      "question_type": "case_study",
+      "difficulty_evidence": {
+        "lever_type": "wrong_design_cost",
+        "naive_path": "Trace the constructor, see that the fee is set from the seat count, and accept the value the single-seat test object reports.",
+        "failure_point": "The superclass constructor calls a method the subclass overrides, so the subclass's field is read before it has been assigned; the tests pass because the single-seat case coincides with the class-level default, while every larger plan caches the wrong fee.",
+        "wrong_answer": "The fee reported by the test object taken as correct, and a conclusion that the design works because the test suite passes, with no calculation of what the larger plans actually cache."
+      }
     }
   ]
 }

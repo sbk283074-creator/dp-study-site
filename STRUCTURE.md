@@ -215,18 +215,19 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 ### 05 · Challenge Bank — `challenge-bank/`
 **Fully generated. The JSON is the source of truth, not the HTML.**
 - Data: `challenge-bank/data/{math-aa-hl,physics-hl,computer-science-hl,business-management-sl}/*.json`
-  — **267 questions** (Math AA HL 111, Physics HL 84, CS HL 41, BM SL 31), as of commit `PENDING`.
-  **Do not count these with a glob.** The filenames are not uniform — `batch21.json`, `batch22.json` and
-  `batch22c.json` sit beside `p3-batch2.json`, `p1b-data.json`, `abstract-data-types.json`,
-  `p2-case-study.json`, `gravitational-fields.json` — and `fig-*.json` are figure *assets*, not item
-  files. A `data/*/batch*.json` glob returns 187 against the true 267; use `tools/validate.py`'s `load()`.
+  — **301 questions** (Math AA HL 125, Physics HL 88, CS HL 49, BM SL 39), as of commit `PENDING`.
+  **Do not count these with a glob.** The filenames are not uniform — `batch21.json`, `batch22.json`,
+  `batch22c.json` and `batch23.json` sit beside `p3-batch2.json`, `p1b-data.json`,
+  `abstract-data-types.json`, `p2-case-study.json`, `gravitational-fields.json` — and `fig-*.json` are
+  figure *assets*, not item files. A `data/*/batch*.json` glob returns 187 against the true 301; use
+  `tools/validate.py`'s `load()`, which also returns **`(file, question)` tuples**, not bare questions.
   (Two Physics writers targeted `physics-hl/batch22.json` at once on 2026-09-16 and one clobbered the
   other; the surviving pair was refiled as `batch22c.json`. **One wave, one filename.**)
 - Builder: `challenge-bank/build.py` (55 KB) — emits the entire `site/`.
 - Tooling: `challenge-bank/tools/*.py` — `validate.py` (43 KB), `make_figures.py` (40 KB), `fix_json.py`,
   `ship.py`, `coverage.py`, `difficulty_audit.py`, …
 - Docs: `README.md`, `STANDARD.md`, `PLAN.md`, `AUDIT_*.md`.
-- Output: `challenge-bank/site/` — `index.html`, `q/` (267 question pages), one index per
+- Output: `challenge-bank/site/` — `index.html`, `q/` (301 question pages), one index per
   subject, `papers/`, `assets/site.js`.
 - **AI:** four launcher buttons per question (full worked solution / hint only / guided steps /
   mark my attempt), generated into `site/assets/site.js` from a Python string in `build.py`. They call
@@ -237,12 +238,23 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - **Figures:** hand-authored inline SVG stored in the question JSON as
   `figure = {type:"svg", content, caption}`. `build.py::figure_html` handles **three** types, not one —
   `svg` (`<figure>` + optional `<figcaption>`), `table` (delegates to `table_html`) and `code`
-  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 267 items: **52
-  figure-bearing (46 svg / 4 code / 2 table) = 19%**. No charting library is involved anywhere: every
+  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 301 items: **75
+  figure-bearing (69 svg / 4 code / 2 table) = 25%**, with every subject above the 15% per-subject
+  target (Maths 15%, Physics 35%, CS 35%, BM 21%). No charting library is involved anywhere: every
   figure is a plain-Python SVG string builder in `tools/make_figures.py`, and `validate.py` fails on the
   fingerprints of matplotlib / Chart.js / plotly / vega / bokeh / `<canvas` / `data:image/`, so the
-  "without other tools" rule is gate-enforced. A stimulus table is separate from a figure: it lives in
-  `stimulus.table` and is emitted by `stimulus_html`, so an item can carry a table with no `figure`.
+  "without other tools" rule is gate-enforced. `FIGURE_COVERAGE_FLOOR` in `difficulty_audit.py` is a
+  **ratchet** (now 0.24): it may rise and may never fall. A stimulus table is separate from a figure: it
+  lives in `stimulus.table` and is emitted by `stimulus_html`, so an item can carry a table with no
+  `figure`.
+- **Difficulty is evidenced, and the top-tier debt is cleared.** Every item must carry
+  `difficulty_evidence` (`lever_type` from a closed 13-term taxonomy + `naive_path` + `failure_point` +
+  `wrong_answer`); the rubric scores it out of 9 and the label must be earned (d5 needs 8). As of
+  2026-09-16: **216 of 301 items evidenced, `difficulty 5 with no evidence: 0`**, and the 85 outstanding
+  items are all difficulty-3 or difficulty-4 claims. Reading the 79-item difficulty-5 backlog produced
+  **five label corrections, all downwards** — `MATH-P3-010` 5→4, `MATH-AHL5.9-001` 5→4,
+  `MATH-AHL5.10-001` 5→3, `MATH-AHL5.11-001` 5→4, `PHYS-E.2-101` 5→4 — while
+  `labels the evidence does not permit` stayed at 0.
 - Rebuild: `cd challenge-bank && python3 build.py`.
 
 ---

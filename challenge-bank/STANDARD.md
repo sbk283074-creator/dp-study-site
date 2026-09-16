@@ -344,12 +344,14 @@ Three rules, all enforced:
 The failure mode this rule exists to prevent is a bank that looks thorough and is not: at Batch 21 the
 bank stood at **45/255 = 18%**, with **Maths at 8.3% (9/109)** and **BM at 0% (0/30)**. Maths and BM are
 the two subjects with the widest gap between what the guide presents and what the bank contains. Batches
-22 and 22b were written against that gap and moved it: the bank now stands at **52/267 = 19%**, with
-**Maths at 10% (11/111)** and **BM at 3% (1/31)** — the first figure ever to appear in a BM item.
-`FIGURE_COVERAGE_FLOOR` was raised from 0.17 to **0.19** in the same change that earned it, which is the
-ratchet working as designed: coverage rose, and the floor followed it up so the gain cannot be spent
-later. Maths and BM are both still under the 15% per-subject target, and the audit prints exactly how many
-more items each needs (Maths 6, BM 4). That is the intended state — a visible gap, not a red pipeline.
+22 and 22b were written against that gap and moved it, and the figure work that followed kept moving it:
+the bank now stands at **75/301 = 25%**, with **Maths at 15% (19/125)** — at the per-subject target for
+the first time — **Physics at 35% (31/88)**, **CS at 35% (17/49)** and **BM at 21% (8/39)**, against 0%
+for BM at Batch 21. `FIGURE_COVERAGE_FLOOR` was raised from 0.17 to **0.19** in the same change that
+earned it and has since been raised again to **0.24**, which is the ratchet working as designed: coverage
+rose, and the floor followed it up so the gain cannot be spent later. Every subject now clears the 15%
+per-subject target, so the audit prints no gap. That is the intended state — the gap visible until it is
+closed, and then a floor that stops it reopening.
 
 **Solution skeleton.** Every new item carries `verification.solution_skeleton`: three to six short
 steps naming the *method*, not the answer ("linearise by squaring and fit the gradient", not "find k").
@@ -494,9 +496,32 @@ the item's own answer says so. The mechanism was corrected to the real lever rat
 bent to match the false claim. **Where the prose and the answer disagree, the answer wins.**
 
 **Do not mass-generate the prose.** Writing plausible `naive_path` / `failure_point` / `wrong_answer`
-text for 164 items without reading each one reproduces precisely the failure this section exists to fix.
-Clear the backlog subject by subject, reading the item, and **lower any label the evidence does not
-support** rather than inventing evidence to protect the label.
+text for the remaining 85 items without reading each one reproduces precisely the failure this section
+exists to fix. Clear the backlog subject by subject, reading the item, and **lower any label the evidence
+does not support** rather than inventing evidence to protect the label. The 79-item pass described below
+is the worked example: the five corrections are exactly the ones a transcription would have missed,
+because a transcription cannot disagree with the label it is defending.
+
+**The difficulty-5 backlog is cleared.** On 2026-09-16 the 79 items that claimed difficulty 5 with no
+evidence — 36 Maths, 31 Physics, 10 CS, 2 BM — were read one at a time and given evidence. The headline
+number is now **0**: no item in the bank claims difficulty 5 without a lever written down. 85 items still
+carry no `difficulty_evidence`, all of them difficulty-3 or difficulty-4 claims, and they remain a
+published backlog rather than a hidden one.
+
+Reading the 79 produced **five label corrections, all downwards** — the outcome this section asks for,
+not an accident:
+
+| item | was | now | why the evidence does not permit 5 |
+|---|---:|---:|---|
+| `MATH-P3-010` | 5 | 4 | the heaviest part is the first (`5, 4, 4, 3`), so the arc test scores 0 and the item tops out at 7 of 9 |
+| `MATH-AHL5.9-001` | 5 | 4 | one clean idea — split the journey at the rest times — rather than a complete defeat |
+| `MATH-AHL5.10-001` | 5 | 3 | the author's own note gives the trap as a sign slip on the cosine term, and a slip is not a lever |
+| `MATH-AHL5.11-001` | 5 | 4 | one clean idea — establish which curve is on top — on a flat four-part arc |
+| `PHYS-E.2-101` | 5 | 4 | the mechanism names units rather than an idea |
+
+`labels the evidence does not permit` stayed at **0** throughout, which is the check that would have
+caught a correction that went the wrong way. One of the five landed at difficulty 3, so the pass widened
+the 3–5 range rather than only shortening the top of it.
 
 ---
 
@@ -624,9 +649,11 @@ rather than only a sum. Run it after any change to the rubric.
 4. **Status:** new items are `draft` until the gates pass, then `published`.
 5. **Re-brief:** coverage is re-measured after every batch; the next brief comes from the new gaps.
 
-Current state: 267 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
+Current state: 301 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
 priority-2 node is done** — Maths 32/32 must + 51/51 should (83/83 overall), Physics 24/24 (complete),
-CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 267
-carry `verification.assertions` (3003 assertions in total), `validate.py` reports 0 failures, and 103 of
-the 267 carry a `difficulty_evidence` block — the other 164 are the grandfathered backlog described in
-§4.7, which `--strict` reports as warnings and plain `--check` ignores unless the bank gets worse.
+CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 301
+carry `verification.assertions` (3447 assertions in total), `validate.py` reports 0 failures, and 216 of
+the 301 carry a `difficulty_evidence` block — the other 85 are the grandfathered backlog described in
+§4.7, which `--strict` reports as warnings and plain `--check` ignores unless the bank gets worse. **No
+item claims difficulty 5 without evidence**; all 85 outstanding items are difficulty-3 or difficulty-4
+claims.

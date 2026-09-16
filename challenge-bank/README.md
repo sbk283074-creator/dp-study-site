@@ -26,7 +26,7 @@ design and provably not copied.
 Physics 24/24, CS 25/25, BM 26/26 + 8/8 Toolkit. The bank covers **all 166 syllabus nodes** across the
 four subjects; the only remaining work is the optional priority-3 ("stretch") tail.
 
-All 301 items are difficulty 3–5 (**4 at difficulty 3, 171 at difficulty 4, 126 at difficulty 5**), and
+All 301 items are difficulty 3–5 (**5 at difficulty 3, 175 at difficulty 4, 121 at difficulty 5**), and
 pass `validate.py`
 with **0 failures**. The originality gate is clean: **0 items above threshold**, highest external score
 0.090, highest internal score 0.073 and highest approach score 0.366 (limits 0.35 / 0.25 / 0.50). The
@@ -73,22 +73,41 @@ What the audit reports today:
 
 | | now | at the 2026-09-13 baseline |
 |---|---|---|
-| items with evidence for the label | **137 / 301** | 0 / 172 |
-| difficulty 5 with no evidence | **79** | 79 |
+| items with evidence for the label | **216 / 301** | 0 / 172 |
+| difficulty 5 with no evidence | **0** | 79 |
 | labels the evidence does not permit | **0** | — |
-| items claiming difficulty 5 | 42% | 46% |
-| items claiming difficulty 3 | **1%** | 0% |
+| items claiming difficulty 5 | 40% | 46% |
+| items claiming difficulty 3 | **2%** | 0% |
 
-Only the evidence row has moved much, and that is the honest reading. What changed on 2026-09-13 is not
-the distribution but the fact that the bank now *states its backlog as a number* instead of passing every
-per-item rule while telling the student nothing. Evidence is being backfilled subject by subject, by
-reading each item — **never mass-generated**, which would reproduce the exact defect. The 79 items that
-claim difficulty 5 without evidence are pre-standard and remain a published, measured backlog.
+The evidence row is now the story, and it is the intended one. What changed on 2026-09-13 is not the
+distribution but the fact that the bank now *states its backlog as a number* instead of passing every
+per-item rule while telling the student nothing. Evidence was then backfilled subject by subject, by
+reading each item — **never mass-generated**, which would reproduce the exact defect. The whole
+difficulty-5 backlog has since been cleared: **no item in the bank claims difficulty 5 without
+evidence.** 85 items still carry no `difficulty_evidence` at all, but every one of them is a
+difficulty-3 or difficulty-4 claim, so the audit reports them as a backlog rather than as an unbacked
+top-tier label.
+
+**Clearing it was not a transcription exercise.** The 79 items were read one at a time, and reading them
+produced four label corrections in the direction §4.7 asks for — down, never up:
+
+| item | was | now | why the evidence does not permit 5 |
+|---|---:|---:|---|
+| `MATH-P3-010` | 5 | 4 | the heaviest part is the first (`5, 4, 4, 3`), so the arc test scores 0 and the item tops out at 7/9 |
+| `MATH-AHL5.9-001` | 5 | 4 | a single clean idea — split the journey at the rest times — rather than a complete defeat |
+| `MATH-AHL5.10-001` | 5 | 3 | the author's own note gives the trap as a sign slip on the cosine term; a slip is not a lever (§5.2) |
+| `MATH-AHL5.11-001` | 5 | 4 | a single clean idea — establish which curve is on top — and a flat four-part arc |
+| `PHYS-E.2-101` | 5 | 4 | the mechanism names units rather than an idea: *"a student who knows the physics but loses the unit loses the mark"* |
+
+Five corrections in total, all downwards, out of 79 items read — and the remaining 74 kept their label
+because the mechanism named something the candidate has to *notice, reject or invert* rather than merely
+get right. `labels the evidence does not permit` stayed at **0** throughout, which is the check that
+would have caught a correction that went the wrong way.
 
 **The 3–5 range is now in use.** R2 — *"no item claims difficulty 3 — the 3-5 scale has collapsed to two
-points"* — was the last calibration debt, and it is paid: **four** items now claim difficulty 3 — Maths
-(`MATH-AHL2.15-201`), CS (`CS-B2.2-201`), BM (`BM-4.1-201`) and, since Batch 22b, Physics
-(`PHYS-A.3-201`). The audit prints `calibration OK` and `--check --strict`, which fails on a debt as well
+points"* — was the last calibration debt, and it is paid: **five** items now claim difficulty 3 — Maths
+(`MATH-AHL2.15-201` and, from the backlog pass, `MATH-AHL5.10-001`), CS (`CS-B2.2-201`), BM
+(`BM-4.1-201`) and, since Batch 22b, Physics (`PHYS-A.3-201`). The audit prints `calibration OK` and `--check --strict`, which fails on a debt as well
 as on a regression, exits 0 for the first time. **Physics's single difficulty-3 item is worth a note**,
 because the batch that recorded the gap also argued it should stay open: *"every Physics node whose
 natural idea is a single clean lever — orbital energy in D.1, the two-stage Doppler shift in C.5, the end
@@ -97,15 +116,16 @@ an item that uses it, so a Physics difficulty-3 item needs a new design rather t
 item that closed it is on **A.3**, a node with no such incumbent, and it is a genuinely single-lever
 question rather than a relabelled hard one — which is the distinction the earlier note was protecting.
 
-**The rubric score cannot produce a difficulty-3 item, and this is worth knowing before trying.**
-Measured across all 137 evidenced items: **every one scores 9/9**, including all 78 at difficulty 4 and
-all 31 at difficulty 5. The score is a documentation gate — are the three evidence statements present, long
-enough and mutually distinct, and do the arc and assertion-density tests hold — and it does not measure
-how many *ideas* an item contains. So a 9/9 item may honestly declare 3, and the three new items do. The
-only alternative would be to hollow out an evidence field to drag the score down to 4–6, which would make
-the claim *less* falsifiable, and §2.2 exists precisely to stop that. A difficulty-3 claim therefore rests
-on §2.3's own test — "a single clean lever rather than a complete defeat" — and is written so that once
-the candidate has seen the lever the rest is routine.
+**The rubric score is a documentation gate, not a difficulty meter, and this is worth knowing before
+trying.** Measured across all 216 evidenced items: **196 score 9/9**, 19 score 8/9 and one scores 7/9 —
+and 8 of 9 is already enough for the top label, so a score below 9 is not by itself a demotion. What the
+score tests is whether the three evidence statements are present, long enough and mutually distinct, and
+whether the arc and assertion-density tests hold; it does not measure how many *ideas* an item contains.
+So a 9/9 item may honestly declare 3, and the five difficulty-3 items do. The only alternative would be
+to hollow out an evidence field to drag the score down to 4–6, which would make the claim *less*
+falsifiable, and §2.2 exists precisely to stop that. A difficulty-3 claim therefore rests on §2.3's own
+test — "a single clean lever rather than a complete defeat" — and is written so that once the candidate
+has seen the lever the rest is routine.
 
 The Physics difficulty-5 share was the other breach, and it has been paid down the intended way — add d4
 items rather than relabel earned d5 items. It stood at **62% at the baseline**, rose to **63%** in Batch
@@ -117,12 +137,15 @@ items were again all written at difficulty 4, taking it down again to **46%**. T
 worked off rather than relabelled, and with Physics inside the cap the self-imposed rule lapsed: **Batch
 20 adds two Physics items at difficulty 5 and two at difficulty 4, taking the share to 47%**, still
 inside the cap and still below the 62% baseline. Batches 22 and 22b then added nine Physics items — six at
-difficulty 4 and three at difficulty 5 — landing at **44%**; Batch 23 then added four Physics items, all at difficulty 4, for **45%**. The calibration gate is checked against
+difficulty 4 and three at difficulty 5 — landing at **44%**; Batch 23 then added four Physics items, all at difficulty 4, for **45%**. The backlog pass then moved one further Physics item — `PHYS-E.2-101`, a photoelectric MCQ cluster whose own mechanism names units rather than an idea — from 5 down to 4, taking the share to **44%**. The calibration gate is checked against
 the baseline on
 every run, so a share that rose past 49% would stop the pipeline rather than pass quietly.
 
 Batch 15 also closed the last gap in the lever taxonomy: **all 13 lever types are in use**, and the
-largest single share is 16% of evidenced items, so the bank is no longer one trick in different clothes.
+largest single share is **15%** of evidenced items (`non_governing_variable`, 33 of 216), so the bank is
+no longer one trick in different clothes. That share barely moved while 79 items were added to the
+evidenced set, which is the useful reading: the backlog was spread across the taxonomy rather than
+concentrated in the levers that were already busy.
 
 `tools/prove_difficulty_gates.py` guards the gates themselves: it injects one defect at a time — an
 invented `lever_type`, a `wrong_answer` that restates `naive_path`, a difficulty 5 with no evidence — and
