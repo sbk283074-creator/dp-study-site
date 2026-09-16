@@ -218,10 +218,14 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   — **305 questions** (Math AA HL 125, Physics HL 88, CS HL 53, BM SL 39), as of commit `48a5dfa`.
   **Do not count these with a glob.** The filenames are not uniform — `batch21.json`, `batch22.json`,
   `batch22c.json` and `batch23.json` sit beside `p3-batch2.json`, `p1b-data.json`,
-  `abstract-data-types.json`, `p2-case-study.json`, `p2-theme-b.json`, `gravitational-fields.json` — and
-  `fig-*.json` are
-  figure *assets*, not item files. A `data/*/batch*.json` glob returns 187 against the true 305; use
+  `abstract-data-types.json`, `p2-case-study.json`, `p2-theme-b.json`, `gravitational-fields.json`. A
+  `data/*/batch*.json` glob matches **68 files holding 233 of the 305 items** (re-measured 2026-09-16), so
+  it silently misses 72; the number drifts as the bank grows, so re-measure rather than quoting it. Use
   `tools/validate.py`'s `load()`, which also returns **`(file, question)` tuples**, not bare questions.
+  **`fig-*.json` are *not* figure assets** — `physics-hl/fig-circuit-structured.json` and
+  `fig-standing-wave.json` hold real items (`PHYS-B.5-102`, `PHYS-C.4-102`) and `load()` reads them. The
+  figure assets live in `data/_figures.json`, a dict of named SVG builders with no `questions` key, which
+  is what the `_` prefix makes `load()` skip.
   (Two Physics writers targeted `physics-hl/batch22.json` at once on 2026-09-16 and one clobbered the
   other; the surviving pair was refiled as `batch22c.json`. **One wave, one filename.**)
 - Builder: `challenge-bank/build.py` (55 KB) — emits the entire `site/`.
@@ -264,6 +268,18 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   **17 failures with no data change**, and the 17 items were then re-filed by their own `topic` field
   (9 Theme A → P1, 8 Theme B → P2 as `extended_response`). Per-paper distribution is now Maths P1 61 /
   P2 35 / P3 29, Physics P1A 14 clusters (70 questions) / P1B 17 / P2 57, CS P1 41 / P2 12, BM P1 10 / P2 29.
+- **`section` is checked too, and the same lesson applied twice.** `section` renders as a student-visible
+  chip (`P1 · Section A`) and feeds the paper builder, and was validated nowhere. `SECTION_RULES` in
+  `validate.py` now holds the legal set per `(subject, paper)` — **empty set included**, which is what
+  makes "this paper has no sections" enforceable — and `SECTION_THEME_RULES` holds CS P1 Section A ⇒
+  theme A. Adding the rule exposed **60 of 305 items** with a label their paper does not have: **47
+  Physics P2** and **10 Maths P3** were split into sections those papers do not contain (read off the
+  guide PDFs: Physics P2 is "short-answer and extended-response questions" with no split named, Maths P3
+  is "two compulsory extended response problem-solving questions"), and **3 CS P1** items were theme B in
+  Section A. All 60 were cleared rather than reassigned — **60 deletions, 0 insertions across 23 files**.
+  Legitimately sectioned: Physics P1 (the 1A/1B booklet split, 14 `mcq` on A / 17 `data_based` on B),
+  Maths P1/P2, CS P1, BM P1/P2. What it leaves: **6 CS P1 theme-B items with no case-study anchor** fit
+  neither section and need content, not metadata.
 - Rebuild: `cd challenge-bank && python3 build.py`.
 
 ---

@@ -303,6 +303,25 @@ extended-response. Two further CS rules from the guide: one P2 question is **alg
 no code to read or write**, and some questions **prohibit named built-ins** (`sort`, `pop`, `len`, `max`,
 `min`) — a question that can be answered by `sorted()` is not testing the algorithm.
 
+**Which papers have sections at all** — the legal sets, read off the guides rather than inferred from
+the table above, and enforced by `SECTION_RULES` in `tools/validate.py`:
+
+| Paper | Legal `section` | Where that comes from |
+|---|---|---|
+| Physics HL P1 | `A`, `B` | "Paper 1 is presented as two separate booklets" — 1A is 40 MCQ, 1B is data-based |
+| Physics HL P2 | **none** | "short-answer and extended-response questions"; no split named anywhere in the guide |
+| Maths AA HL P1, P2 | `A`, `B` | "Section A, short-response" / "Section B, extended-response" |
+| Maths AA HL P3 | **none** | "two compulsory extended response problem-solving questions" |
+| CS HL P1 | `A`, `B` | Section A 56 (theme A) + Section B 24 (pre-seen case study) |
+| CS HL P2 | **none** | extended-response on theme B |
+| BM SL P1, P2 | `A`, `B` | P1 20 + 10, P2 20 + 20 (no local guide; verified online) |
+
+A section is only checked when one is present. How many items carry one is a coverage question, not an
+error: **207 of the 305 items sit on a paper that has sections, and 197 of those carry a label** — the
+10 that do not are 7 CS P1, 2 BM P1 and 1 BM P2. The remaining **98 items are on the three papers with
+no sections at all** (Physics P2 57, Maths P3 29, CS P2 12), where a label is not merely missing but
+impossible.
+
 **The CS Paper 2 type table was wrong, and the gate could not see it (fixed 2026-09-16).** `PAPER_TYPES`
 in `tools/validate.py` read `("Computer Science HL", "P2"): {"case_study"}`, which contradicts the
 paragraph above and the guide. The consequence was not a warning but a blind spot: 17 CS items were
@@ -319,6 +338,32 @@ and the 17 items were moved to the paper their own `topic` field names. Two less
 2. **Check that every legal paper/type pair actually has items.** Coverage was 100% by syllabus node
    throughout, which is exactly why nobody looked at the papers. Node coverage and paper coverage are
    different claims, and only the first was being measured.
+
+**The `section` label was never checked either (fixed 2026-09-16).** `section` is rendered to the
+student as a chip — `P1 · Section A` — and fed to the paper builder, so a wrong value is user-visible
+guidance, not metadata. It was validated nowhere. Auditing it against the guides found **60 of 305
+items** carrying a label their paper does not have: **47 Physics P2**, **10 Maths P3**, and **3 CS P1**
+items whose theme is B while Section A is reserved for theme A. Three things kept it invisible:
+
+1. **The label was plausible.** "Physics P2 · Section B" reads like real structure, and the *pre-2025*
+   syllabus did split P2 into short-answer and extended-response sections, so the label looked like
+   history rather than error. It is not history either. On Physics P2 the label separates nothing:
+   `section: A` holds 4 structured and 2 extended-response items and `section: B` holds 20 and 21, and
+   all 57 items are `level: HL`, so it does not encode the SL/AHL split either. It correlates with
+   nothing at all.
+2. **Half the field was right, which is worse than none of it.** Physics P1's A/B *is* meaningful — the
+   1A/1B booklet split — and it separates perfectly (14 `mcq` on A, 17 `data_based` on B). A field that
+   is correct in one subject and noise in another invites the assumption that it is correct everywhere.
+3. **The check has to be per-paper, not per-subject.** A rule reading "section must be `A` or `B`"
+   passes every one of these 60 items. Only an empty legal set — "this paper has no sections" — catches
+   them, which is why `SECTION_RULES` stores the empty set explicitly rather than omitting the key.
+
+The 60 labels were **cleared, not reassigned**. For the Physics and Maths items the paper simply has no
+sections, so there is nothing to reassign them to. For the three CS items, moving them to Section B
+would trade a false claim for a different one: Section B is the pre-seen case study and these carry no
+case-study anchor, so they belong in neither CS section. Clearing leaves a countable work order instead
+of a quiet lie — see §7. `SECTION_RULES` stores the legal set per `(subject, paper)`, empty set
+included, and `SECTION_THEME_RULES` stores the one content rule (CS P1 Section A is theme A).
 
 **MCQ rules.** Exactly four options labelled A–D, exactly one marked correct, one mark per question.
 Every option, correct or not, needs a `rationale` of at least eight words that *names the error*: a
@@ -682,3 +727,21 @@ and was true throughout the CS Paper 2 error described in §2.4: every CS node h
 80-mark Paper 2 component had none of its legal question type. When a coverage claim is quoted, say which
 kind it is. The per-paper distribution is worth reading beside it — after Batch 25 it is Maths P1 61 /
 P2 35 / P3 29, Physics P1A 14 clusters (70 questions) / P1B 17 / P2 57, CS P1 41 / P2 12, BM P1 10 / P2 29.
+
+**The section audit left a bounded work order (§4.3).** Clearing the 60 false labels removed wrong claims
+but did not supply right ones, and one group cannot be given a label without new content:
+
+- **6 CS P1 items are theme B with no case-study anchor**, so they fit neither section: Section A is
+  theme A, and Section B is the pre-seen case study. Three are now unlabelled — `CS-B2.2-401`,
+  `CS-B2.4-401`, `CS-B2.4-402` — and three still claim Section B with no stimulus — `CS-B2.4-002`,
+  `CS-B2.4-003`, `CS-B2.4-301`. The fix is content, not metadata: give each a case-study anchor and it
+  becomes a legitimate Section B item. These six are the top of the next CS batch.
+- **4 CS P1 theme-A items sit in Section B with no stimulus** — `CS-A1.2-002`, `CS-A1.3-301`,
+  `CS-A2.3-002`, `CS-A2.3-301`. Section A is theme A and does not need a scenario, so these read as
+  Section A items filed one section over.
+- **`CS-B2.4-001`** is theme B, carries a stimulus, and has no section — the one item that can simply be
+  labelled Section B.
+
+CS P1 is also weighted the wrong way round against the real paper: Section B holds **25 of the 41 items**
+while the guide gives it **24 of the 80 marks**. Section A is both the larger component and the thinner
+one, so new CS P1 material should target it.

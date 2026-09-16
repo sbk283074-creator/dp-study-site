@@ -84,6 +84,55 @@ PAPER_TYPES = {
     ("Business Management SL", "P2"): {"structured", "extended_response", "data_based"},
 }
 
+# (subject, paper) -> the section labels that paper actually has. An empty set
+# means the paper has no sections and no item on it may declare one.
+#
+# Verified on 2026-09-16 against the guide PDFs themselves, not against the prose
+# in STANDARD.md -- the whole point of the CS P2 bug was that the prose and the
+# table had drifted apart with nothing checking either:
+#   * Physics 2025 guide, "External assessment details" (HL): "Paper 1 is
+#     presented as two separate booklets" -- Paper 1A (40 MCQ, 40 marks) and
+#     Paper 1B (data-based, 20 marks). Paper 2 is "short-answer and extended-
+#     response questions" with no section split named anywhere in the guide.
+#   * Maths AA 2021 guide: Paper 1 and Paper 2 each name "Section A, short-
+#     response" and "Section B, extended-response". Paper 3 is "two compulsory
+#     extended response problem-solving questions" -- no sections.
+#   * CS 2025 guide: P1 Section A (56 marks, theme A) + Section B (24 marks,
+#     pre-seen case study); Paper 2 is extended-response on theme B, no sections.
+#   * BM SL: P1 and P2 both have A/B. No local guide; taken from STANDARD.md 4.3,
+#     which records the online verification.
+SECTION_RULES = {
+    ("Physics HL", "P1"): {"A", "B"},
+    ("Physics HL", "P2"): set(),
+    ("Math AA HL", "P1"): {"A", "B"},
+    ("Math AA HL", "P2"): {"A", "B"},
+    ("Math AA HL", "P3"): set(),
+    ("Computer Science HL", "P1"): {"A", "B"},
+    ("Computer Science HL", "P2"): set(),
+    ("Business Management SL", "P1"): {"A", "B"},
+    ("Business Management SL", "P2"): {"A", "B"},
+}
+
+# The one section rule that is about content rather than a legal label set. CS HL
+# P1 Section A is "extended-response questions linked to ... theme A", so a
+# theme-B item cannot sit there. Theme B on P1 has exactly one legal home -- the
+# case study in Section B -- so a theme-B P1 item with no case-study anchor fits
+# neither section and has to leave `section` unset rather than claim a false one.
+SECTION_THEME_RULES = {
+    ("Computer Science HL", "P1", "A"): "A",
+}
+
+
+def theme_letter(q):
+    """CS syllabus refs open with the theme letter: 'B2.4 Programming ...' -> 'B'.
+
+    Returns None when the ref does not name a theme, so the caller can skip the
+    check rather than guess.
+    """
+    ref = str(q.get("syllabus_ref") or "").strip()
+    return ref[0] if ref[:1] in ("A", "B") else None
+
+
 # Per-type overrides. Anything not listed falls back to the subject rule.
 # MCQ floors scale with the size of the cluster: an MCQ cluster has to give a
 # real route to every key, not just "B".
@@ -576,6 +625,32 @@ def check(q, seen_ids, medians):
         floor_ctx = MIN_CONTEXT.get(subj, 60)
     if context < floor_ctx:
         fail.append("total context %d words < %d" % (context, floor_ctx))
+
+    # ---- section -----------------------------------------------------------
+    # `section` is rendered to the student as a chip ("P1 · Section A") and fed
+    # to the paper builder, so a wrong label is user-visible guidance, not
+    # metadata. It was never validated, and by 2026-09-16 sixty items carried a
+    # label their paper does not have: 47 Physics P2 items and 10 Maths P3 items
+    # were split into sections those papers do not contain, and 3 theme-B items
+    # sat in CS P1 Section A, which the guide reserves for theme A. A label is
+    # only checked when it is present -- how many items carry one is a coverage
+    # question, tracked in STANDARD.md, not an error.
+    if (subj, q.get("paper")) in SECTION_RULES:
+        legal = SECTION_RULES[(subj, q.get("paper"))]
+        sec = q.get("section")
+        if sec:
+            if not legal:
+                fail.append("%s %s has no sections; item declares section %r"
+                            % (subj, q.get("paper"), sec))
+            elif sec not in legal:
+                fail.append("%s %s section %r not in %s"
+                            % (subj, q.get("paper"), sec, "/".join(sorted(legal))))
+            else:
+                want_theme = SECTION_THEME_RULES.get((subj, q.get("paper"), sec))
+                got_theme = theme_letter(q)
+                if want_theme and got_theme and got_theme != want_theme:
+                    fail.append("%s %s section %s is theme %s only; this item is theme %s"
+                                % (subj, q.get("paper"), sec, want_theme, got_theme))
 
     # ---- question type ---------------------------------------------------
     # Only items that declare a type are checked here; the 114 legacy items

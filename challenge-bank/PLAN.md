@@ -24,7 +24,13 @@ most of them inline in the batch generator that wrote the item and the named set
 `tools/make_figures.py`: no charting library, no plotting package, no
 image model. `validate.py` rejects the fingerprints of all of them (`<canvas`, `plotly`, `matplotlib`,
 `chart.js`, `highcharts`, `echarts`, `vega`, `bokeh`, `data:image/`), so "without other tools" is a
-property the gate checks rather than a promise the prose makes.
+property the gate checks rather than a promise the prose makes.**
+**The `section` label is a checked property too, as of 2026-09-16.** `SECTION_RULES` in `validate.py`
+records the legal section set for every `(subject, paper)` — including the empty set, which is what makes
+"this paper has no sections" enforceable — and `SECTION_THEME_RULES` records that CS P1 Section A is
+theme A. Adding the rule exposed **60 of 305 items** carrying a label their paper does not have (47
+Physics P2, 10 Maths P3, 3 CS P1); all 60 were cleared, and the 6 CS P1 theme-B items this leaves
+without a home are the next CS batch's work order (`STANDARD.md` §7).
 
 New folder: `challenge-bank/` (inside `dp learning final/`). It holds the question data and a
 standalone static website that collects and presents the questions.
@@ -1242,6 +1248,37 @@ similarity score, and no BM item ships containing HL-only content.
     **5 / 178 / 122**. Evidence present **220 / 305**, assertions **3491**, `difficulty 5 with no
     evidence` **0**, `labels the evidence does not permit` **0**. All 13 levers in use; largest share
     still 15%. `calibration OK`.
+- **Housekeeping — the `section` field was never validated (2026-09-16).** The follow-up flagged when the
+  CS Paper 2 table was fixed: three theme-B items were sitting in CS P1 Section A, which the guide
+  reserves for theme A. Auditing the field properly found the same defect class at four times the size,
+  because `section` is rendered to the student as a chip (`P1 · Section A`) and fed to the paper builder,
+  and nothing checked it.
+  - **60 of 305 items carried a label their paper does not have.** **47 Physics P2** and **10 Maths P3**
+    items were split into sections those papers do not contain — the Physics 2025 guide says Paper 2 is
+    "short-answer and extended-response questions" with no split named anywhere, and the Maths 2021 guide
+    says Paper 3 is "two compulsory extended response problem-solving questions". **3 CS P1** items were
+    theme B in Section A.
+  - **Three things kept it invisible.** The label was plausible — "Physics P2 · Section B" reads like
+    structure, and the pre-2025 syllabus *did* split P2 into sections, so it looked like history. It is
+    not history: on Physics P2 the label separates nothing (A holds 4 structured + 2 extended-response,
+    B holds 20 + 21) and all 57 items are `level: HL`, so it does not encode SL/AHL either. Half the
+    field *was* right — Physics P1's A/B is the real 1A/1B booklet split and separates perfectly, 14 `mcq`
+    on A against 17 `data_based` on B — which is worse than none of it, because a field correct in one
+    subject invites the assumption it is correct everywhere. And the check has to be per-paper: "section
+    must be A or B" passes all 60.
+  - **`SECTION_RULES` now stores the legal set per `(subject, paper)`, empty set included** — the empty
+    set is the whole point, since it is what makes "this paper has no sections" checkable. The legal sets
+    were read off the guide PDFs, not inferred from the prose table in `STANDARD.md` §4.3, because prose
+    and code drifting apart is exactly what the CS P2 bug was. `SECTION_THEME_RULES` holds the one
+    content rule, CS P1 Section A ⇒ theme A.
+  - **The 60 labels were cleared, not reassigned.** `tools/validate.py` went from `0 failures` to **60**
+    with the gate added and back to **0** after the migration, which is a single-line deletion in each of
+    23 files — **60 deletions, 0 insertions**, verified by `git diff --stat`, so there was no collateral
+    reformatting. A byte-identity round-trip self-check runs before anything is written.
+  - **What it leaves.** 6 CS P1 items are theme B with no case-study anchor and so fit neither section;
+    the fix is a case-study anchor, which is content work and now the top of the next CS batch. 4 CS P1
+    theme-A items sit in Section B with no stimulus. CS P1 Section B holds 25 of 41 items while the guide
+    gives it 24 of 80 marks, so new CS P1 material should target Section A. Recorded in `STANDARD.md` §7.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
