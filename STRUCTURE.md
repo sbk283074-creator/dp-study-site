@@ -52,14 +52,18 @@ In the repo but **not** one of the six (the hub has no nav card for these): the 
 
 | File | Size | What it does | Backend |
 |---|---|---|---|
-| `assets/ai-widget.js` | 68 KB | the **one** chat implementation — global **Ask AI** + site navigator, *and* the focused per-item mode (§3·1) | `ib-dp-platform-api.pages.dev/api/ask` |
+| `assets/ai-widget.js` | 68 KB | the **one** chat implementation — global **Ask AI** + site navigator, *and* the focused per-item mode (§3·1). Also the **loader for the other two widgets** | `ib-dp-platform-api.pages.dev/api/ask` |
 | `assets/tools-widget.js` | 52 KB | Formula Booklet + Scientific Calculator; injected *by* ai-widget.js | none |
+| `assets/search-widget.js` | 20 KB | the global search palette (§3·2); injected *by* ai-widget.js | none |
 | `assets/css/main.css` | 33 KB | site styling | — |
-| `assets/js/app.js` | 24 KB | nav, search, page behaviour | — |
-| `assets/js/search-index.js` | **1.68 MB** | pre-built search index (`tools/build_search_index.py`) | — |
+| `assets/js/app.js` | 24 KB | nav, the hub's inline search box, page behaviour | — |
+| `assets/js/search-index.js` | **765 KB** (175 KB gzip) | pre-built search index (`tools/build_search_index.py`), read by *both* search UIs | — |
 
 Referenced by **absolute URL** (`https://sbk283074-creator.github.io/dp-study-site/assets/…`),
-so editing the one file updates every page at once.
+so editing the one file updates every page at once. **429 pages load `ai-widget.js`**, which
+is what makes it the mount point for every other widget: add a `load<Thing>()` IIFE beside
+`loadTools()` and the whole site gets it, with no HTML edits. A widget change still needs
+`ai-widget.js?v=` bumped (§7 trap 8) or browsers keep the cached copy.
 
 ### 3·1 There is ONE chat implementation, and it has a public hook
 
@@ -111,6 +115,42 @@ Gotchas worth knowing before touching it:
   Book rows are still placeholders (`question` = `"[See question image. Source: …]"`,
   `answer`/`explanation` = `__AI_FILL__`), so the AI cannot actually answer a Books question.
 
+### 3·2 There is also ONE search, and it is on every page (added 2026-09-16)
+
+`assets/search-widget.js` — one self-contained palette: **⌘K / Ctrl+K**, or the `/` key, or the
+launcher button bottom-left (deliberately bottom-**left**: the AI and tools clusters own
+bottom-right). Results are grouped by space, matched terms are highlighted, ↑↓/↵/esc work, and
+on a phone it goes full-screen.
+
+It answers from `assets/js/search-index.js` (**849 entries**), fetched **only when the palette is
+first opened**. The index is a plain `window.DP_SEARCH_INDEX=[…]` assignment, not JSON, so it
+loads by `<script>` and therefore works over `file://`.
+
+Two UIs read that one index — this palette and the hub's inline box in `app.js`. They agree
+because both key off `path` / `title` / `heads` / `text`; the palette adds `space`, `kind`,
+`badge`, `hash` and an absolute `url`. **If you change the index shape, keep those four keys.**
+
+What the index covers, and the two things it cannot scrape:
+
+| Source | How |
+|---|---|
+| Tracked HTML (hub, 7 subjects, core, guides, both vocab spaces, qbank, Lit Lab, 5 Challenge Bank indexes, 9 paper pages) | scraped, text capped at 460 chars |
+| 320-odd Challenge Bank questions | `challenge-bank/site/q/*.html`, labelled with id / topic / difficulty / marks / paper |
+| `PYTHON/index.html` (2.2 MB, hash-routed) | split into its **40 `<section class="chapter" id="slug">`** blocks → `#/<slug>` deep links |
+| **BPhO** (shell page; content is `window.BPHO_*`) | `tools/bpho_dump.mjs` evaluates the `data/*.js` globals → 353 entries (plan, modules, glossary, worked examples, 81 questions) |
+| **World's Wife Lab** (content is one inline `const SEED` literal) | `tools/englab_dump.mjs` brace-matches and evaluates `SEED` → 30 poems with text, key passages and analysis |
+
+- **The Lab gained `#poem=<id>` deep links** for this (§5·04), because a poem result has to open
+  *that* poem. The BPhO and Python results deep-link through the routes those apps already had.
+- **The palette does NOT query the Question Bank API.** `/api/questions` accepts `search` and
+  silently **ignores** it: `medusa`, `entropy` and `quantum` all return the same first rows with
+  `total` always 17,366. Rendering that as live results would invent matches, so it offers one row
+  that hands the query to the bank instead. `total` is also unusable as a headline figure — it
+  counts the 7,304 book rows the bank's own UI hides.
+- **Only git-tracked HTML is indexed.** The previous builder walked the working tree, so 84 of its
+  161 entries (76 pygame docs in the gitignored `PYTHON/verify-venv/`, 8 in the gitignored 13 GB
+  `dp learning/`) pointed at pages that do not deploy. `git ls-files` is the scope now.
+
 ---
 
 ## 4. The three backends — and which one is current
@@ -150,8 +190,14 @@ Gotchas worth knowing before touching it:
 
 ### 01 · Hub — `index.html` (22 KB)
 Hand-written static HTML. Carries `data-page-node-id` attributes (92 of them) injected by an external
-page builder — harmless, and a rebuild may re-add them. Loads `main.css`, `app.js`, `search-index.js`,
-`ai-widget.js`. **No build step** — edit the HTML directly.
+page builder — harmless, and a rebuild may re-add them. Loads `main.css`, `app.js`, and `ai-widget.js`
+(which is what pulls in the tools and the search palette). **No build step** — edit the HTML directly.
+`index.html` no longer loads `search-index.js` itself; both search UIs fetch it on demand.
+
+The hub is the **only** place with an inline search box (`#search-input` / `#results`, wired in
+`app.js`). ⌘K was claimed by both that box and the palette; the palette now listens in the **capture
+phase** and calls `stopPropagation()`, so ⌘K opens the palette and the inline box keeps its value.
+Both read the same index, so both answer correctly.
 
 ### 02 · Question Bank — `qbank/`
 **Not written here.** It is the *built* frontend of repo B.
@@ -233,6 +279,16 @@ Rebuild: run `PYTHON/python-mastery/build.py` → emits `PYTHON/index.html`. **N
 Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sources are the poem files
 `Eng learning/Poems/*.docx` plus root `.docx`/`.pdf`. Loads the shared `ai-widget.js` by absolute URL.
 **No backend, no in-repo build step.**
+
+- **All 30 poems and their analysis live in one inline `const SEED` literal**, not in the DOM —
+  nothing is rendered until you pick a poem. So a crawler sees only the toolbar, which is why the
+  old search index had one entry for the whole lab reading "Read & Annotate  Analysis  Key lines".
+  `tools/englab_dump.mjs` extracts the literal by brace matching and evaluates it (§3·2).
+- **`#poem=<id>` deep links** (added 2026-09-16, for the search palette): a small script *after* the
+  app's own `<script>` reads the hash and reuses the app's `currentPoem` / `switchView()` /
+  `render()`. It is a no-op without a hash, and it works because `let currentPoem` at the top level
+  of a classic script is visible to a later one. The lab itself has **no** hash routing of its own —
+  `selectPoem`/`currentPoem` are plain state, and there is no `URLSearchParams` anywhere.
 
 ### 05 · Challenge Bank — `challenge-bank/`
 **Fully generated. The JSON is the source of truth, not the HTML.**
@@ -407,6 +463,7 @@ Two consequences worth remembering:
 | Artifact | Build | Deploy |
 |---|---|---|
 | Hub, subject pages, Lit Lab, Python Mastery | hand-edited / their own `build.py` | push repo A → Pages |
+| `assets/js/search-index.js` | `cd repo root && python3 tools/build_search_index.py` (needs `node` for the BPhO and Lit Lab dumpers; skips them with a warning if absent) | commit the output → push repo A |
 | `bpho/` | **none** — hand-authored data files, no bundler | push repo A → Pages |
 | `qbank/` | repo B frontend, `VITE_API_BASE_URL` **set** | copy into repo A → push |
 | `challenge-bank/site/` | `python3 build.py` | commit the output → push repo A |
@@ -436,7 +493,7 @@ Two consequences worth remembering:
 5. **`start.command` is not version-controlled** — repo A does not own `~/Downloads/dp learning/`.
 6. **The qbank bundle must be built with `VITE_API_BASE_URL`**, or every API call 404s (see §5·02).
 7. **`ib-dp-platform.netlify.app` is stale and has no Git connection** (`repo_url: None`), so pushes never reach it. The Cloudflare host is the current one. It **cannot be retired**, though — it is the only host with a `/figures` route (§4).
-8. **Repointing `qbank/index.html` — change ONLY the hashed `<script type="module">` line.** The widget cache-buster just below it (`ai-widget.js?v=…`, **`?v=5`** as of 2026-09-15) is a separate concern; drop it and the shared widget goes missing. **Read the current value out of the file rather than assuming it** — it was bumped four times in one day (`v2` → `v3` print rule → `v4`/`v5` the route-change fix). There are also **two hardcoded copies inside `challenge-bank/build.py`**, which generates that whole site; bump the HTML alone and the next build silently reverts it.
+8. **Repointing `qbank/index.html` — change ONLY the hashed `<script type="module">` line.** The widget cache-buster just below it (`ai-widget.js?v=…`, **`?v=13`** as of 2026-09-16) is a separate concern; drop it and the shared widget — and with it the search palette and the tools — goes missing. **Read the current value out of the file rather than assuming it**; nobody keeps a changelog of these bumps. There are also **two hardcoded copies inside `challenge-bank/build.py`**, which generates that whole site: bump the HTML alone and the next build silently reverts it. Those two copies had drifted to `?v=5` while the site was on `v12`, so a Challenge Bank rebuild would have quietly dropped the site back seven versions. Bump **all four places at once** — `challenge-bank/build.py` (2), and every HTML file (there is no build step for the hub/subjects/Lit Lab/BPhO, so they are edited in place).
 9. **React `setState` is not synchronous.** `setCategory('past'); runSearch()` reads the *previous* render's value, so a filter silently needs two clicks. Pass the value you are about to set (`load(0, {category: c})`).
 10. **The Bash tool's `grep` can silently return nothing** for patterns that demonstrably exist. Use the Grep tool.
 11. **`agent-browser screenshot` takes `[selector] [path]`** — there is no `--path` flag; passing one fails with "Element not found" at exit 0.
