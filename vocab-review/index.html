@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>词汇复习站 · Vocabulary Review</title>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=9" defer></script>
+<style>
+  :root{
+    --bg:#f5f7fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280;
+    --line:#e5e7eb; --brand:#4f46e5; --brand2:#6366f1; --ok:#16a34a;
+    --warn:#d97706; --bad:#dc2626; --soft:#eef2ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6}
+  header{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;padding:14px 18px;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  header h1{font-size:18px;margin:0;font-weight:700}
+  header .sub{font-size:12px;opacity:.85}
+  nav{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+  nav button{background:rgba(255,255,255,.15);color:#fff;border:0;padding:7px 12px;border-radius:8px;
+    cursor:pointer;font-size:13px}
+  nav button.active{background:#fff;color:var(--brand);font-weight:700}
+  .wrap{max-width:980px;margin:18px auto;padding:0 14px}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  input[type=text],select,textarea{font:inherit;padding:8px 10px;border:1px solid var(--line);
+    border-radius:9px;background:#fff;color:var(--ink)}
+  input[type=text]{flex:1;min-width:180px}
+  .count{font-size:12px;color:var(--muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+  .wcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;
+    transition:.15s;position:relative}
+  .wcard:hover{box-shadow:0 6px 18px rgba(0,0,0,.08);transform:translateY(-2px)}
+  .wcard .wd{font-size:17px;font-weight:700}
+  .wcard .ph{color:var(--muted);font-size:13px}
+  .wcard .cat{position:absolute;top:12px;right:12px;font-size:11px;color:var(--brand);
+    background:var(--soft);padding:2px 8px;border-radius:20px}
+  .star{position:absolute;bottom:10px;right:12px;font-size:18px;color:#cbd5e1;cursor:pointer}
+  .star.on{color:#f59e0b}
+  /* ---------- 详情页（重点优化） ---------- */
+  #detail{display:none}
+  .detail-card{max-width:880px;margin:6px auto 0;background:var(--card);border:1px solid var(--line);
+    border-radius:18px;overflow:hidden;box-shadow:0 12px 34px rgba(31,41,55,.08)}
+  .detail-head{display:flex;align-items:flex-start;gap:16px;padding:24px 26px;
+    background:linear-gradient(135deg,#eef2ff,#f8faff);border-bottom:1px solid var(--line)}
+  .detail-head .h-main{flex:1;min-width:0}
+  .d-word{margin:0;font-size:34px;font-weight:800;letter-spacing:.3px;line-height:1.18;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .d-word .speak{font-size:14px;padding:5px 12px}
+  .d-ipa{margin-top:9px;font-size:17px;color:#4338ca;font-family:Georgia,"Times New Roman",serif}
+  .d-ipa .speak{font-size:12px;padding:3px 9px;margin-left:4px}
+  .d-meta{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+  .chip{display:inline-block;background:var(--soft);color:var(--brand);font-size:12px;
+    padding:3px 11px;border-radius:20px;font-weight:700}
+  .chip.cat{background:#ecfeff;color:#0e7490}
+  .d-close{flex:none;background:#fff;border:1px solid var(--line);color:var(--muted);width:36px;height:36px;
+    border-radius:10px;font-size:20px;line-height:1;cursor:pointer;transition:.15s}
+  .d-close:hover{color:var(--bad);border-color:#fecaca}
+  .detail-body{padding:22px 26px 26px}
+  .senses{display:flex;flex-direction:column;gap:14px}
+  .dsense{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:15px 17px;border:1px solid var(--line);
+    border-radius:13px;background:#fcfcfe}
+  .dsense-no{height:fit-content;text-align:center;font-size:12px;font-weight:700;color:var(--brand);
+    background:var(--soft);border-radius:9px;padding:7px 0}
+  .dsense-body{min-width:0}
+  .def{font-size:17px;font-weight:700;margin-bottom:9px;line-height:1.5}
+  .ex{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+  .ex li{position:relative;padding:3px 4px 3px 24px;color:#374151;font-size:14.5px;line-height:1.6;
+    border-radius:7px;cursor:pointer;transition:.12s}
+  .ex li::before{content:"“";position:absolute;left:4px;top:-3px;font-size:22px;color:#c7d2fe;font-weight:700}
+  .ex li:hover{background:#eef2ff;color:var(--brand)}
+  .ex li::after{content:"🔊";position:absolute;right:6px;top:50%;transform:translateY(-50%);
+    font-size:12px;opacity:0;transition:.12s}
+  .ex li:hover::after{opacity:.6}
+  .note{margin-top:11px;font-size:13px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;
+    padding:8px 12px;border-radius:9px;line-height:1.55}
+  .note b{color:#b45309}
+  .rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+  .rel-box{background:#f8fafc;border:1px solid var(--line);border-radius:13px;padding:14px 16px}
+  .rel-box h4{margin:0 0 11px;font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase}
+  .rel-box.syn h4{color:#0e7490}
+  .rel-box.ant h4{color:#be123c}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chips span{background:#fff;border:1px solid var(--line);border-radius:18px;padding:4px 12px;font-size:13.5px}
+  .chips.syn span{border-color:#a5f3fc;color:#0e7490}
+  .chips.ant span{border-color:#fecdd3;color:#be123c}
+  .diff{margin-top:16px;font-size:14px;background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;
+    padding:13px 15px;border-radius:11px;line-height:1.65}
+  .diff b{color:#047857}
+  .d-actions{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap;align-items:center}
+  .d-actions .btn.ghost{border-color:#fcd34d;color:#b45309}
+  @media(max-width:640px){
+    .dsense{grid-template-columns:1fr}
+    .dsense-no{text-align:left;width:fit-content;padding:5px 12px}
+    .rel-grid{grid-template-columns:1fr}
+    .d-word{font-size:27px}
+    .detail-head,.detail-body{padding-left:18px;padding-right:18px}
+  }
+  /* 复习区复用简单样式（不与详情页栅格冲突） */
+  .sense{margin:10px 0}
+  .sense .def{font-weight:700;font-size:16px;margin-bottom:6px}
+  .sense ol{margin:6px 0;padding-left:20px}
+  .sense ol li{margin:3px 0;color:#374151}
+  .btn{background:var(--brand);color:#fff;border:0;padding:9px 14px;border-radius:9px;cursor:pointer;
+    font-size:14px}
+  .btn.ghost{background:#fff;color:var(--brand);border:1px solid var(--brand)}
+  .btn.sm{padding:6px 10px;font-size:13px}
+  .speak{margin-left:8px;background:var(--soft);color:var(--brand);border:0;border-radius:8px;
+    padding:4px 9px;cursor:pointer;font-size:13px}
+  /* review */
+  .rv{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;
+    min-height:280px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+  .rv .q{font-size:30px;font-weight:800;margin-bottom:4px}
+  .rv .qph{color:var(--muted);margin-bottom:14px}
+  .rv .a{width:100%;text-align:left;margin-top:10px}
+  .rv .hidden{display:none}
+  .rvbtns{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;justify-content:center}
+  .rvbtns button{padding:9px 14px;border-radius:10px;border:0;cursor:pointer;font-size:14px;color:#fff}
+  .b-again{background:var(--bad)} .b-hard{background:var(--warn)} .b-good{background:var(--ok)} .b-easy{background:var(--brand2)}
+  .addform{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:10px}
+  .addform label{font-size:13px;color:var(--muted)}
+  .addform .row{display:grid;gap:4px}
+  .footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
+  .tag{display:inline-block;background:var(--soft);color:var(--brand);font-size:11px;padding:2px 8px;border-radius:20px;margin:2px}
+  .empty{text-align:center;color:var(--muted);padding:40px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>词汇复习站</h1>
+    <div class="sub">音标 · 读音 · 释义 · 例句(≥3) · 注意点 · 近/反义词及差别 — 可收藏、可复习</div>
+  </div>
+  <nav>
+    <button data-tab="browse" class="active">浏览</button>
+    <button data-tab="fav">收藏</button>
+    <button data-tab="review">复习</button>
+    <button data-tab="add">添加</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <!-- 浏览 -->
+  <section id="browse">
+    <div class="bar">
+      <input type="text" id="search" placeholder="搜索单词或释义…">
+      <select id="catfilter"><option value="">全部分类</option></select>
+      <span class="count" id="bcount"></span>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- 收藏 -->
+  <section id="fav" style="display:none">
+    <div class="bar"><span class="count" id="fcount"></span></div>
+    <div class="grid" id="favgrid"></div>
+  </section>
+
+  <!-- 详情 -->
+  <section id="detail">
+    <div class="detail-card" id="detailCard"></div>
+  </section>
+
+  <!-- 复习 -->
+  <section id="review" style="display:none">
+    <div class="bar">
+      <button class="btn" id="startReview">开始复习</button>
+      <span class="count" id="rvinfo"></span>
+    </div>
+    <div class="rv" id="rvbox">
+      <div class="empty">点击「开始复习」，优先安排本期到期的单词（Leitner 间隔重复）。</div>
+    </div>
+  </section>
+
+  <!-- 添加 -->
+  <section id="add" style="display:none">
+    <form class="addform" id="addForm">
+      <div class="row"><label>单词 *</label><input type="text" id="aw" required></div>
+      <div class="row"><label>音标（IPA，可空）</label><input type="text" id="aipa"></div>
+      <div class="row"><label>词性（如 v. / n. / adj.）</label><input type="text" id="apos"></div>
+      <div class="row"><label>分类（如 学术写作）</label><input type="text" id="acat" value="自定义"></div>
+      <div class="row"><label>释义 *（一行一个义项，格式：释义 | 例句1 | 例句2 | 例句3 | 注意点）</label>
+        <textarea id="asenses" rows="6" required placeholder="假定；假设 | The theory postulates a link. | It is postulated that... | We postulate a common ancestor. | 后接 that 从句"></textarea></div>
+      <div class="row"><label>近义词（逗号分隔）</label><input type="text" id="asyn"></div>
+      <div class="row"><label>反义词（逗号分隔）</label><input type="text" id="aant"></div>
+      <div class="row"><label>近义词差别</label><input type="text" id="asdiff"></div>
+      <button class="btn" type="submit">添加到词库</button>
+      <span class="count" id="addmsg"></span>
+    </form>
+  </section>
+</div>
+
+<div class="footer">数据来自 data.js（可继续追加）。收藏与复习进度保存在本机浏览器。若双击打开后收藏不生效，请用 <code>python3 -m http.server</code> 在本目录起一个本地服务再访问。</div>
+
+<script src="data.js"></script>
+<script src="data_extra.js"></script>
+<script src="data_extra2.js"></script>
+<script src="data_extra3.js"></script>
+<script src="data_extra4.js"></script>
+<script src="data_extra5.js"></script>
+<script src="data_extra6.js"></script>
+<script>
+/* ---------- 存储（localStorage，带降级） ---------- */
+const LS = {
+  get(k,def){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def; }catch(e){ return def; } },
+  set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+};
+let FAV = LS.get('vr_fav', []);          // 收藏单词数组
+let REV = LS.get('vr_rev', {});          // {word:{box,due}}  复习状态
+let CUSTOM = LS.get('vr_custom', []);     // 自定义单词
+
+/* 合并词库 */
+function allWords(){
+  const merged = WORDS.concat(EXTRA).concat(EXTRA2).concat(EXTRA3).concat(EXTRA4).concat(EXTRA5).concat(EXTRA6).concat(CUSTOM);
+  const seen = new Set(); const out = [];
+  for(const w of merged){ if(seen.has(w.w)) continue; seen.add(w.w); out.push(w); }
+  return out;
+}
+function favSet(){ return new Set(FAV); }
+
+/* 发音 */
+function speak(text, rate){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='en-US'; u.rate = rate||0.95;
+  const v = speechSynthesis.getVoices().find(x=>/en[-_]US/i.test(x.lang));
+  if(v) u.voice=v;
+  speechSynthesis.speak(u);
+}
+if('speechSynthesis' in window){ speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices(); }
+
+/* ---------- 渲染：浏览 / 收藏列表 ---------- */
+function cardHTML(w, fav){
+  const f = favSet().has(w.w) ? 'on':'';
+  return `<div class="wcard" data-w="${esc(w.w)}">
+    <span class="cat">${esc(w.cat||'')}</span>
+    <div class="wd">${esc(w.w)}</div>
+    <div class="ph">${esc(w.ipa||'')}</div>
+    <span class="star ${f}" data-star="${esc(w.w)}" title="收藏">${f?'★':'☆'}</span>
+  </div>`;
+}
+function renderGrid(target, list){
+  if(!list.length){ target.innerHTML='<div class="empty">暂无单词。</div>'; return; }
+  target.innerHTML = list.map(w=>cardHTML(w)).join('');
+  target.querySelectorAll('.wcard').forEach(c=>{
+    c.addEventListener('click', e=>{
+      if(e.target.dataset.star!==undefined) return;
+      openDetail(c.dataset.w);
+    });
+  });
+  target.querySelectorAll('.star').forEach(s=>{
+    s.addEventListener('click', e=>{
+      e.stopPropagation();
+      toggleFav(s.dataset.star);
+      const on=favSet().has(s.dataset.star);
+      s.classList.toggle('on', on); s.textContent = on?'★':'☆';
+      if(currentTab==='fav') renderFav();
+    });
+  });
+}
+
+/* ---------- 分类筛选 ---------- */
+function fillCats(){
+  const cats = [...new Set(allWords().map(w=>w.cat).filter(Boolean))].sort();
+  const sel = document.getElementById('catfilter');
+  cats.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
+}
+function renderBrowse(){
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const cat = document.getElementById('catfilter').value;
+  let list = allWords().filter(w=>{
+    if(cat && w.cat!==cat) return false;
+    if(q){ return (w.w.toLowerCase().includes(q) || (w.senses||[]).some(s=>(s.def||'').toLowerCase().includes(q))); }
+    return true;
+  });
+  renderGrid(document.getElementById('grid'), list);
+  document.getElementById('bcount').textContent = `共 ${list.length} 个`;
+}
+function renderFav(){
+  const set=favSet();
+  const list=allWords().filter(w=>set.has(w.w));
+  renderGrid(document.getElementById('favgrid'), list);
+  document.getElementById('fcount').textContent = `已收藏 ${list.length} 个`;
+}
+function toggleFav(w){
+  const s=favSet();
+  if(s.has(w)) FAV=FAV.filter(x=>x!==w); else FAV.push(w);
+  LS.set('vr_fav', FAV);
+}
+
+/* ---------- 详情 ---------- */
+let inDetail=false;
+function openDetail(wd){
+  const w = allWords().find(x=>x.w===wd); if(!w) return;
+  const syn=(w.syn||[]).filter(Boolean), ant=(w.ant||[]).filter(Boolean);
+  const favon=favSet().has(w.w);
+
+  const sensesHTML = (w.senses||[]).map((s,i)=>{
+    const ex = (s.ex && s.ex.length)
+      ? '<ol class="ex">'+s.ex.map(e=>`<li>${esc(e)}</li>`).join('')+'</ol>' : '';
+    const note = s.note ? `<div class="note"><b>注意：</b>${esc(s.note)}</div>` : '';
+    return `<div class="dsense"><div class="dsense-no">义 ${i+1}</div>
+      <div class="dsense-body"><div class="def">${esc(s.def||'')}</div>${ex}${note}</div></div>`;
+  }).join('');
+
+  let rel = '';
+  if(syn.length||ant.length){
+    rel = '<div class="rel-grid">';
+    if(syn.length) rel += `<div class="rel-box syn"><h4>近义词</h4><div class="chips syn">${syn.map(s=>`<span>${esc(s)}</span>`).join('')}</div></div>`;
+    if(ant.length) rel += `<div class="rel-box ant"><h4>反义词</h4><div class="chips ant">${ant.map(s=>`<span>${esc(s)}</span>`).join('')}</div></div>`;
+    rel += '</div>';
+  }
+  const diff = w.synDiff ? `<div class="diff"><b>近义词差别：</b>${esc(w.synDiff)}</div>` : '';
+
+  document.getElementById('detailCard').innerHTML = `
+    <div class="detail-head">
+      <div class="h-main">
+        <h2 class="d-word">${esc(w.w)} <button class="speak" onclick="speak('${esc(w.w)}')">🔊 朗读</button></h2>
+        <div class="d-ipa">${esc(w.ipa||'')} ${w.ipa?`<button class="speak" onclick="speak('${esc(w.w)}',0.6)">慢速</button>`:''}</div>
+        <div class="d-meta"><span class="chip">${esc(w.pos||'')}</span><span class="chip cat">${esc(w.cat||'')}</span></div>
+      </div>
+      <button class="d-close" title="返回列表" onclick="goBack()">×</button>
+    </div>
+    <div class="detail-body">
+      <div class="senses">${sensesHTML}</div>
+      ${rel}
+      ${diff}
+      <div class="d-actions">
+        <button class="btn ghost sm" id="detFavBtn" onclick="quickFav('${esc(w.w)}')">${favon?'★ 已收藏':'☆ 收藏'}</button>
+        <button class="btn sm" onclick="goBack()">← 返回列表</button>
+      </div>
+    </div>`;
+
+  // 例句点击朗读
+  document.querySelectorAll('#detailCard .ex li').forEach(li=>{
+    li.addEventListener('click', ()=>speak(li.textContent));
+  });
+
+  document.getElementById('browse').style.display='none';
+  document.getElementById('fav').style.display='none';
+  document.getElementById('detail').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+  inDetail=true;
+}
+function quickFav(w){
+  toggleFav(w);
+  if(inDetail){
+    const btn=document.getElementById('detFavBtn');
+    if(btn) btn.textContent = favSet().has(w)?'★ 已收藏':'☆ 收藏';
+  } else {
+    if(currentTab==='fav') renderFav(); else renderBrowse();
+  }
+}
+function goBack(){
+  inDetail=false;
+  document.getElementById('detail').style.display='none';
+  if(currentTab==='fav'){ renderFav(); document.getElementById('fav').style.display='block'; }
+  else { renderBrowse(); document.getElementById('browse').style.display='block'; }
+}
+
+/* ---------- 复习（Leitner） ---------- */
+const INTERVALS=[1,3,7,16,30]; // box1..box5 对应天数
+function today(){ return new Date(); }
+function dueDate(box){ const d=new Date(); d.setDate(d.getDate()+INTERVALS[box-1]); return d.getTime(); }
+function ensureRev(){
+  allWords().forEach(w=>{ if(!REV[w.w]) REV[w.w]={box:1,due:Date.now()}; });
+  LS.set('vr_rev', REV);
+}
+function dueWords(){
+  ensureRev();
+  const now=Date.now();
+  return allWords().filter(w=> REV[w.w] && REV[w.w].due<=now);
+}
+let rvQueue=[], rvIdx=0;
+function startReview(){
+  rvQueue = dueWords().sort((a,b)=>REV[a.w].due-REV[b.w].due);
+  rvIdx=0;
+  if(!rvQueue.length){ document.getElementById('rvbox').innerHTML='<div class="empty">本期没有到期单词 🎉 随时可点「开始复习」温习全部。</div>'; return; }
+  showRev();
+}
+function showRev(){
+  const box=document.getElementById('rvbox');
+  if(rvIdx>=rvQueue.length){ box.innerHTML='<div class="empty">本轮复习完成 ✅ 共 '+rvQueue.length+' 个。</div>'; document.getElementById('rvinfo').textContent=''; return; }
+  const w=rvQueue[rvIdx];
+  box.innerHTML = `<div class="q">${esc(w.w)}</div>
+    <div class="qph">${esc(w.pos||'')} ${esc(w.ipa||'')} <button class="speak" onclick="speak('${esc(w.w)}')">🔊</button></div>
+    <button class="btn ghost" id="rvshow">显示答案</button>
+    <div class="a hidden" id="rvans"></div>
+    <div class="rvbtns hidden" id="rvrate">
+      <button class="b-again" data-r="again">忘记</button>
+      <button class="b-hard" data-r="hard">模糊</button>
+      <button class="b-good" data-r="good">记得</button>
+      <button class="b-easy" data-r="easy">熟练</button>
+    </div>`;
+  document.getElementById('rvshow').onclick=()=>{
+    const a=document.getElementById('rvans'); const r=document.getElementById('rvrate');
+    a.innerHTML = (w.senses||[]).map(s=>`<div class="sense"><div class="def">${esc(s.def)}</div><ol>${(s.ex||[]).map(e=>`<li>${esc(e)}</li>`).join('')}</ol></div>`).join('')
+      + (w.synDiff?`<div class="diff">近义词差别：${esc(w.synDiff)}</div>`:'');
+    a.classList.remove('hidden'); r.classList.remove('hidden');
+  };
+  document.getElementById('rvrate').querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>rate(w.w, b.dataset.r);
+  });
+  document.getElementById('rvinfo').textContent = `进度 ${rvIdx+1}/${rvQueue.length}`;
+}
+function rate(wd, r){
+  const st = REV[wd] || {box:1,due:Date.now()};
+  if(r==='again') st.box=1;
+  else if(r==='hard') st.box=Math.max(1, st.box-1);
+  else if(r==='good') st.box=Math.min(5, st.box+1);
+  else if(r==='easy') st.box=Math.min(5, st.box+2);
+  st.due = dueDate(st.box);
+  REV[wd]=st; LS.set('vr_rev', REV);
+  rvIdx++; showRev();
+}
+
+/* ---------- 添加单词 ---------- */
+document.getElementById('addForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const w=document.getElementById('aw').value.trim();
+  if(!w){ return; }
+  const senses = document.getElementById('asenses').value.split('\n').map(l=>{
+    const p=l.split('|').map(s=>s.trim());
+    return { def:p[0]||'', ex:p.slice(1,4).filter(Boolean), note:p[4]||'' };
+  }).filter(s=>s.def);
+  const obj = {
+    w, ipa:document.getElementById('aipa').value.trim(),
+    pos:document.getElementById('apos').value.trim(),
+    cat:document.getElementById('acat').value.trim()||'自定义',
+    senses,
+    syn:document.getElementById('asyn').value.split(',').map(s=>s.trim()).filter(Boolean),
+    ant:document.getElementById('aant').value.split(',').map(s=>s.trim()).filter(Boolean),
+    synDiff:document.getElementById('asdiff').value.trim()
+  };
+  CUSTOM.push(obj); LS.set('vr_custom', CUSTOM);
+  if(!REV[w]){ REV[w]={box:1,due:Date.now()}; LS.set('vr_rev',REV); }
+  fillCats(); renderBrowse();
+  document.getElementById('addmsg').textContent='已添加：'+w;
+  e.target.reset(); document.getElementById('acat').value='自定义';
+});
+
+/* ---------- 标签切换 ---------- */
+let currentTab='browse';
+document.querySelectorAll('nav button').forEach(b=>{
+  b.onclick=()=>{
+    currentTab=b.dataset.tab;
+    inDetail=false;
+    document.getElementById('detail').style.display='none';
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    ['browse','fav','review','add'].forEach(t=>document.getElementById(t).style.display = (t===currentTab)?'block':'none');
+    if(currentTab==='browse') renderBrowse();
+    if(currentTab==='fav') renderFav();
+    if(currentTab==='review'){ document.getElementById('rvinfo').textContent='待复习 '+dueWords().length+' 个'; }
+  };
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && inDetail) goBack(); });
+document.getElementById('search').addEventListener('input', renderBrowse);
+document.getElementById('catfilter').addEventListener('change', renderBrowse);
+document.getElementById('startReview').addEventListener('click', startReview);
+
+/* ---------- 工具 ---------- */
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---------- 初始化 ---------- */
+fillCats(); renderBrowse();
+</script>
+</body>
+</html>
