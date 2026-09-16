@@ -312,7 +312,7 @@ Built 2026-09-16. **Hand-authored static SPA — no build step, no bundler, no `
 - Content is split across files that each **`concat` onto a shared global**, because one 300 KB+
   data file is unreviewable:
   `plan.js` (16 days) · `glossary.js` (141 terms) · `modules-1.js` … `modules-7.js` (14 modules,
-  162 checklist items, 61 worked examples) · `questions-1.js`/`questions-2.js` (81 questions).
+  162 checklist items, **100 worked examples**) · `questions-1.js`/`questions-2.js` (81 questions).
 - Two aggregators present the exact shape `app.js` expects and must load **last**:
   `curriculum.js` → `window.BPHO_CURRICULUM = {modules: (window.BPHO_MODULES || [])}` and
   `questions.js` → `window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || [])`.

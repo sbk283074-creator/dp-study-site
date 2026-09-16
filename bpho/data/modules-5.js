@@ -21,7 +21,10 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <h3>Why radians and not degrees</h3>
 <p>A radian is defined so that the arc length equals the radius: <code>s = rθ</code>. That clean relationship is what makes <code>ω = v/r</code> true without any conversion factor. In degrees the same relationship would need a factor of <code>π/180</code>, which is why every formula in this module assumes radians.</p>
 <div class="formula">2π radians = 360°        1 rad ≈ 57.3°</div>
-<div class="callout callout--key"><p><b>The conversion worth being able to do in your head.</b> Revs per minute to radians per second: multiply by <code>2π/60 ≈ 0.105</code>. So 3000 rpm is about <code>3000 × 0.105 = 315 rad s⁻¹</code>. That estimate is usually enough to choose between options.</p></div>`
+<div class="callout callout--key"><p><b>The conversion worth being able to do in your head.</b> Revs per minute to radians per second: multiply by <code>2π/60 ≈ 0.105</code>. So 3000 rpm is about <code>3000 × 0.105 = 315 rad s⁻¹</code>. That estimate is usually enough to choose between options.</p></div>
+<h3>Where ω = v/r comes from</h3>
+<p>Start from the radian definition <code>θ = s/r</code>, where <code>s</code> is arc length. Differentiate with respect to time: <code>dθ/dt = (1/r)(ds/dt)</code>. The left side is <code>ω</code> and <code>ds/dt</code> is the speed <code>v</code>, so <code>ω = v/r</code>. The factor of <code>1/r</code> appears with no extra constant only because radians are defined this way; in degrees you would carry a <code>π/180</code>.</p>
+<div class="callout callout--bad"><p><b>How to get this wrong.</b> Never put a frequency in rpm straight into <code>ω = 2πf</code>. A wheel at 600 rpm is at <code>f = 10 Hz</code>, so <code>ω = 2π × 10 ≈ 63 rad s⁻¹</code>, not <code>2π × 600</code>. The missing factor of 60 is the most common slip and it is off by exactly 60.</p></div>`
     },
 
     {
@@ -55,7 +58,10 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <tr><td>Clothes in a spin dryer</td><td>the normal force from the drum wall</td></tr>
 </tbody></table>
 <div class="callout callout--bad"><p><b>The error to avoid.</b> Do not draw a "centripetal force" arrow on a free-body diagram alongside the tension and the weight. That double-counts. Draw only the real forces, then note that their resultant must be <code>mv²/r</code>.</p></div>
-<div class="callout callout--warn"><p><b>On centrifugal force.</b> A question may mention it. In an inertial frame there is no outward force — the sensation of being pushed outward in a turning car is the consequence of your own inertia, not a force. If the question is set in a rotating frame then a centrifugal term is legitimate bookkeeping, but Round 0 works in inertial frames.</p></div>`
+<div class="callout callout--warn"><p><b>On centrifugal force.</b> A question may mention it. In an inertial frame there is no outward force — the sensation of being pushed outward in a turning car is the consequence of your own inertia, not a force. If the question is set in a rotating frame then a centrifugal term is legitimate bookkeeping, but Round 0 works in inertial frames.</p></div>
+<h3>The productive first line for every problem</h3>
+<p>Before anything else, write an equation of the form "real force(s) towards the centre = mv²/r". For a mass on a string in a horizontal circle that is simply <code>T = mv²/r</code>; for a car on a banked track it is <code>N sin θ = mv²/r</code> paired with <code>N cos θ = mg</code>. The instant you are tempted to draw a new arrow labelled "centripetal force", stop — you would be counting an existing force twice.</p>
+<div class="callout callout--bad"><p><b>The centrifugal mistake.</b> In a turning car you feel pushed outward, but that outward push is not a force on you — it is your inertia resisting the inward acceleration. A multiple-choice option describing an outward force in an inertial frame is always a trap.</p></div>`
     },
 
     {
@@ -79,7 +85,10 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <li>Resolve <b>horizontally towards the centre</b> and set it equal to <code>mv²/r</code>.</li>
 <li>Divide one equation by the other to eliminate the unknown force — usually tension or the normal contact force.</li>
 <li>Substitute <code>v = ωr</code> or <code>ω = 2π/T</code> to get the quantity asked for.</li>
-</ol>`
+</ol>
+<h3>Why the conical pendulum's period hides the mass and the speed</h3>
+<p>The result <code>T = 2π√(ℓ cos θ/g)</code> contains neither <code>m</code> nor <code>v</code>. For a fixed string length and angle, the period is fixed; the bob automatically adjusts its speed so that the horizontal component of tension supplies exactly <code>mv²/r</code>. Use this as a check: if you ever derive a conical-pendulum period containing the mass, you have made an algebraic error, because <code>m</code> must cancel.</p>
+<div class="callout callout--key"><p><b>The effective-length memory trick.</b> <code>ℓ cos θ</code> is the vertical drop of the bob below the pivot. So a conical pendulum of length <code>ℓ</code> at angle <code>θ</code> has the same period as an ordinary pendulum of length <code>ℓ cos θ</code>. Picture the vertical drop, not the string, and the formula becomes unforgettable.</p></div>`
     },
 
     {
@@ -149,6 +158,8 @@ Horizontally:    N sin θ = mv²/r</div>
 <p>If two orbits have radii <code>r₁</code> and <code>r₂</code> and the field strength at each radius follows <code>g ∝ 1/r²</code>, then</p>
 <div class="formula">T ∝ r^(3/2)</div>
 <p>So a satellite at four times the orbital radius has a period <code>4^(3/2) = 8</code> times as long. That is Kepler's third law, and you have just derived it from circular motion alone — without any field theory.</p>
+<h3>Speed and period both follow simple ratios</h3>
+<p>For a given central body, <code>v = √(gr)</code> with <code>g ∝ 1/r²</code> gives <code>v ∝ 1/√r</code>, so doubling the radius lowers the orbital speed by <code>√2</code>. Combined with <code>T ∝ r^(3/2)</code>, these two ratios answer almost every orbital question Round 0 can pose. The trick is to keep everything as a ratio so the field strength <code>g</code> never needs a number.</p>
 <div class="callout callout--warn"><p><b>Stay on the right side of the scope boundary.</b> BPhO excludes gravitational fields. Deriving <code>T ∝ r^(3/2)</code> from <code>mv²/r = mg</code> is circular motion and is fair. Discussing gravitational potential energy, escape velocity, or field lines is field theory and is not. If a question asks for a ratio of periods, do it this way.</p></div>`
     },
 
@@ -355,7 +366,10 @@ tensile strain  ε = ΔL/L         (dimensionless)</div>
 <p>with units of pascals, because strain is dimensionless. Typical values are of order <code>10¹⁰</code> to <code>10¹¹ Pa</code> for metals.</p>
 <div class="callout callout--key"><p><b>Why the Young modulus is more useful than the spring constant.</b> Two wires of the same steel but different lengths and thicknesses have different spring constants, so the spring constant does not characterise the steel. They have the <b>same</b> Young modulus, because the geometry cancelled. That is the whole point of the quantity, and it is the sentence a question asking "why" wants.</p></div>
 <h3>The gradient of a stress–strain graph</h3>
-<p>Rearranging, <code>σ = Eε</code>. So a graph of stress against strain is a straight line through the origin with gradient <code>E</code>. That is the standard way the Young modulus is measured, and the straight portion of the graph is exactly the region where Hooke's law holds.</p>`
+<p>Rearranging, <code>σ = Eε</code>. So a graph of stress against strain is a straight line through the origin with gradient <code>E</code>. That is the standard way the Young modulus is measured, and the straight portion of the graph is exactly the region where Hooke's law holds.</p>
+<h3>How the Young modulus is actually measured</h3>
+<p>In the standard experiment a long wire is loaded in steps and its extension measured with a vernier or a spirit level and micrometer screw (Searle's apparatus is the classic arrangement). You plot load <code>F</code> against extension <code>ΔL</code>; the gradient is <code>k = EA/L</code>, so <code>E = (gradient × L)/A</code>. Equivalently, convert each point to stress and strain and plot stress against strain — the gradient is then <code>E</code> directly. Either way you need the original length <code>L</code> and the cross-sectional area <code>A</code> (from the wire's diameter, measured with a micrometer), because the geometry must be divided out to reach a property of the material.</p>
+<div class="callout callout--key"><p><b>Why measure E and not just k?</b> A thick, short wire has a large <code>k</code>; a thin, long one has a small <code>k</code>. Both can be the same steel. <code>E</code> removes that dependence, so it characterises the steel itself. That is the sentence a "why" question is looking for.</p></div>`
     },
 
     {
@@ -383,6 +397,23 @@ tensile strain  ε = ΔL/L         (dimensionless)</div>
     },
 
     {
+      h: "Elastic and plastic deformation",
+      body: `<p>When a material is loaded and then unloaded, two outcomes are possible, and the distinction is one of the most-tested ideas in this module.</p>
+<h3>Elastic deformation</h3>
+<p>If the load is removed and the sample returns exactly to its original length, the deformation was <b>elastic</b>. Microscopically the atoms were displaced from their equilibrium positions but the bonds sprang back. This happens below the elastic limit, and throughout this region the stress–strain graph is retraced on unloading — the loading and unloading curves coincide.</p>
+<h3>Plastic deformation</h3>
+<p>Beyond the elastic limit the atoms have been pushed past a point of no return: dislocations move, bonds rearrange, and the sample keeps some permanent extension after the load is gone. The unloading curve is now a different straight line, parallel to the original elastic line but offset — it meets the strain axis at a non-zero value, the <b>permanent set</b>. The area between the loading and unloading curves is the energy dissipated as heat in the plastic flow.</p>
+<h3>Why the two behaviours differ between materials</h3>
+<table><thead><tr><th>Type</th><th>Elastic/plastic signature</th><th>Example</th></tr></thead><tbody>
+<tr><td>Brittle</td><td>Almost entirely elastic right up to a sudden fracture; negligible plastic region</td><td>glass, ceramics</td></tr>
+<tr><td>Ductile</td><td>Large elastic region followed by a long plastic region before fracture; can be drawn into wire</td><td>copper, mild steel</td></tr>
+<tr><td>Polymeric</td><td>Elastic-like at first but the unloading curve may not retrace exactly (hysteresis); large reversible strain for rubber</td><td>rubber, polythene</td></tr>
+</tbody></table>
+<div class="callout callout--key"><p><b>The test a question uses.</b> Draw the unloading curve. If it returns to the origin, the deformation was elastic. If it returns to a non-zero strain, it was plastic and that offset is the permanent set. The parallel shift of the two lines (same gradient = same <code>E</code>) is the detail that separates a full answer from a partial one.</p></div>
+<div class="callout callout--warn"><p><b>Elastic does not mean rubbery.</b> Steel is superbly elastic below its limit — remove the load and it is exactly as before. Rubber is elastic in the everyday sense but its stress–strain curve is curved and shows hysteresis. Do not equate "elastic" with "stretchy"; equate it with "fully recovers".</p></div>`
+    },
+
+    {
       h: "Thermal expansion",
       body: `<p>Materials expand when heated. For a rod of original length <code>ℓ₀</code>:</p>
 <div class="formula">ℓ = ℓ₀(1 + αΔT)</div>
@@ -397,7 +428,10 @@ tensile strain  ε = ΔL/L         (dimensionless)</div>
 <li><b>Bimetallic strips</b> — two metals with different <code>α</code> bonded together bend when heated, and this is used in thermostats.</li>
 <li><b>Thermal stress</b> — if expansion is prevented, the constraint generates a large stress. This is the next section and it is the more interesting problem.</li>
 <li><b>Precision measurement</b> — a pendulum clock's period depends on the length of its rod, so temperature changes make it drift. This is why Invar, with a very small <code>α</code>, is used in clocks and measuring instruments.</li>
-</ul>`
+</ul>
+<h3>Area and volume expansion (the easy generalisation)</h3>
+<p>Each linear dimension grows by the same fraction, so a surface area scales as <code>(1+αΔT)² ≈ 1+2αΔT</code> and a volume as <code>(1+αΔT)³ ≈ 1+3αΔT</code>. Thus an area expands with coefficient about <code>2α</code> and a volume with about <code>3α</code>. The approximations hold because <code>αΔT</code> is tiny — for a metal heated by 100 K, <code>αΔT ≈ 10⁻³</code>, so the higher-order terms are negligible.</p>
+<div class="callout callout--warn"><p><b>ΔT needs no conversion, but check the sign.</b> A temperature <i>difference</i> is identical in kelvin and Celsius, so substitute directly. The trap is usually the sign: cooling gives a negative ΔT and a contraction, not an expansion — a question about a pipe that shrinks on cooling is testing whether you keep the sign.</p></div>`
     },
 
     {
@@ -470,6 +504,38 @@ tensile strain  ε = ΔL/L         (dimensionless)</div>
 <p><b>The other distractors.</b> Option C, 0.30, is the extension in metres, not a strain — reporting a length where a ratio is wanted. Option D, 1.2, is <code>1.8/1.5</code>, the ratio of lengths rather than the fractional change. Option E, 1.8, is just the final length.</p>
 <p><b>Why strain is dimensionless.</b> It is a length divided by a length, so the units cancel. That means you should never report strain with a unit — and if you find yourself writing one, something has gone wrong. It is often expressed as a percentage: here, 20%.</p>`,
       tag: "Strain — which length goes in the denominator"
+    },
+
+    {
+      q: "<p>A spring of stiffness <code>k = 400 N m⁻¹</code> is compressed by <code>0.20 m</code> from its natural length. How much elastic strain energy is stored?</p><p>A) 2 J &nbsp; B) 8 J &nbsp; C) 16 J &nbsp; D) 40 J &nbsp; E) 80 J</p>",
+      sol: `<p>Use the area under the force–extension graph, which is a triangle because the force grows linearly from zero:</p>
+<div class="formula">E = ½ k x² = ½ × 400 × (0.20)²</div>
+<p>Work the powers separately: <code>(0.20)² = 0.040</code>, then <code>½ × 400 × 0.040 = 200 × 0.040 = 8.0 J</code>.</p>
+<p><b>Answer: B, 8 J.</b></p>
+<p><b>The trap, and it is the most common in this topic.</b> Option C, 16 J, is <code>kx²</code> with the factor of ½ omitted — equivalently it is <code>Fx</code> where <code>F = kx = 80 N</code> is the final force. That treats the force as constant at its maximum value, ignoring that it started at zero. The stored energy is always the <i>average</i> force times the distance, which is half of that. Options D (40 J) and E (80 J) are the average force and the peak force respectively, reported as if they were energies — keep your quantities straight: force is not energy.</p>`,
+      tag: "Elastic potential energy ½kx² — the missing ½"
+    },
+
+    {
+      q: "<p>Two springs, of stiffness <code>300 N m⁻¹</code> and <code>600 N m⁻¹</code>, are connected in parallel. A load of <code>45 N</code> hangs from the combination. By how much does it extend?</p><p>A) 0.050 m &nbsp; B) 0.075 m &nbsp; C) 0.150 m &nbsp; D) 0.225 m &nbsp; E) 0.025 m</p>",
+      sol: `<p>In parallel the two springs share the load and their stiffnesses add:</p>
+<div class="formula">k_total = k₁ + k₂ = 300 + 600 = 900 N m⁻¹</div>
+<p>Then the extension of the combination is</p>
+<div class="formula">x = F / k_total = 45 / 900 = 0.050 m</div>
+<p><b>Answer: A, 0.050 m (5.0 cm).</b></p>
+<p><b>The traps, each a different misreading of the arrangement.</b> Option B, 0.075 m, is what you get using only the stiffer spring (<code>45/600</code>) — as if the softer one were absent. Option C, 0.150 m, uses only the softer spring (<code>45/300</code>). Option D, 0.225 m, is the series answer: there the extensions add (<code>45/300 + 45/600 = 0.075 + 0.150 = 0.225 m</code>), so this option catches anyone who mixed up series and parallel. Option E is the result of halving once more by mistake. Build the intuition: parallel is stiffer, so it extends <i>less</i> than either spring alone would — any answer larger than 0.075 m cannot be a parallel result.</p>`,
+      tag: "Springs in parallel — stiffness adds"
+    },
+
+    {
+      q: "<p>A steel wire has cross-sectional area <code>2.0 × 10⁻⁶ m²</code>. Steel has an ultimate tensile stress of <code>5.0 × 10⁸ Pa</code>. What is the maximum tension the wire can support before it breaks?</p><p>A) <code>5.0 × 10² N</code> &nbsp; B) <code>1.0 × 10³ N</code> &nbsp; C) <code>2.5 × 10³ N</code> &nbsp; D) <code>1.0 × 10⁶ N</code> &nbsp; E) <code>1.0 × 10⁹ N</code></p>",
+      sol: `<p>Breaking occurs when the stress reaches the ultimate tensile stress. Stress is force per area, so the maximum force is</p>
+<div class="formula">F_max = σ_uts × A = (5.0 × 10⁸) × (2.0 × 10⁻⁶)</div>
+<p>Multiply the leading digits and the powers separately: <code>5.0 × 2.0 = 10</code>, and <code>10⁸ × 10⁻⁶ = 10²</code>, so <code>10 × 10² = 1.0 × 10³ N</code>.</p>
+<p><b>Answer: B, <code>1.0 × 10³ N</code> (1000 N).</b></p>
+<p><b>The distinction this question tests.</b> Ultimate tensile <i>stress</i> is a property of the steel (the same for every steel wire); the breaking <i>force</i> depends on how thick the wire is. A thick and a thin wire of the same steel break at the same stress but at very different forces — that is why you must multiply by the area, not just quote the stress.</p>
+<p><b>The order-of-magnitude traps.</b> Option A, <code>5.0 × 10² N</code>, comes from using half the area (<code>1.0 × 10⁻⁶ m²</code>) — dropping the factor of 2. Option C, <code>2.5 × 10³ N</code>, is what you get if the area is misread as <code>5.0 × 10⁻⁶ m²</code>. Options D and E are powers-of-ten slips: D forgets the minus sign on the exponent (using <code>10⁻³</code> instead of <code>10⁻⁶</code>), and E forgets the <code>10⁻⁶</code> entirely and multiplies <code>5.0 × 10⁸</code> by 2. Handle the digits and the powers in two separate streams and these slips disappear.</p>`,
+      tag: "Breaking force from ultimate tensile stress"
     }
   ],
 
