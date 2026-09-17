@@ -251,7 +251,23 @@ time = 500/50 = 10 s</div>
 
 {
   id: "C-01", module: "C", topic: "Inclined plane", diff: 1,
-  q: "A block of weight 100 N rests on a smooth slope inclined at 30° to the horizontal. What is the component of its weight acting down the slope?",
+  q: `<p>A block of weight 100 N rests on a smooth slope inclined at 30° to the horizontal. What is the component of its weight acting down the slope?</p>
+<figure class="fig">
+<svg viewBox="0 0 480 240" role="img" aria-label="A block of weight 100 newtons resting on a smooth slope inclined at 30 degrees to the horizontal.">
+<text x="240" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">A block on a smooth 30° slope</text>
+<polygon points="80,210 360,48 360,210" fill="#f1f3f7" stroke="#cbd2dd" stroke-width="1.5"/>
+<line x1="46" y1="210" x2="444" y2="210" stroke="#9aa4b4" stroke-width="2.5"/>
+<path d="M130,210 A50,50 0 0 0 123,185" fill="none" stroke="#7b8494" stroke-width="1.5"/>
+<text x="138" y="203" font-size="12.5" fill="#4a5262">30°</text>
+<rect x="170" y="107" width="36" height="36" rx="2" fill="#e8eefc" stroke="#1f2937" stroke-width="2" transform="rotate(-30 188 125)"/>
+<line x1="188" y1="125" x2="188" y2="192" stroke="#b3352f" stroke-width="3" marker-end="url(#cq1-r)"/>
+<text x="198" y="188" font-size="12.5" font-weight="600" fill="#b3352f">W = 100 N</text>
+<text x="300" y="170" font-size="12" fill="#7b8494">smooth</text>
+<defs>
+<marker id="cq1-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+</defs>
+</svg>
+</figure>`,
   opts: ["100 N", "87 N", "50 N", "25 N", "43 N"],
   ans: 2,
   sol: `<p>Resolve the weight along and perpendicular to the slope:</p>
@@ -266,7 +282,35 @@ perpendicular:         mg cos θ = 100 × cos 30° = 100 × 0.87 = 87 N</div>
 },
 {
   id: "C-02", module: "C", topic: "Moments", diff: 1,
-  q: "A uniform beam of weight 400 N and length 6.0 m rests on two supports, one at each end. A load of 200 N is placed at the midpoint. What is the reaction force at each support?",
+  q: `<p>A uniform beam of weight 400 N and length 6.0 m rests on two supports, one at each end. A load of 200 N is placed at the midpoint. What is the reaction force at each support?</p>
+<figure class="fig">
+<svg viewBox="0 0 480 250" role="img" aria-label="A uniform beam on two supports at its ends, carrying its own weight of 400 newtons and a 200 newton load, both at the midpoint.">
+<text x="240" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">A uniform beam on two end supports</text>
+<rect x="70" y="120" width="340" height="14" rx="2" fill="#e2e6ed" stroke="#1f2937" stroke-width="2"/>
+<polygon points="56,150 84,150 70,134" fill="#f1f3f7" stroke="#1f2937" stroke-width="1.5"/>
+<polygon points="396,150 424,150 410,134" fill="#f1f3f7" stroke="#1f2937" stroke-width="1.5"/>
+<line x1="70" y1="120" x2="70" y2="82" stroke="#1f7a53" stroke-width="2.5" marker-end="url(#cq2-g)"/>
+<line x1="410" y1="120" x2="410" y2="82" stroke="#1f7a53" stroke-width="2.5" marker-end="url(#cq2-g)"/>
+<text x="62" y="98" text-anchor="end" font-size="12.5" font-weight="600" fill="#1f7a53">R</text>
+<text x="418" y="98" font-size="12.5" font-weight="600" fill="#1f7a53">R</text>
+<line x1="230" y1="134" x2="230" y2="176" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cq2-r)"/>
+<line x1="250" y1="134" x2="250" y2="192" stroke="#2f5fd0" stroke-width="2.5" marker-end="url(#cq2-b)"/>
+<text x="222" y="190" text-anchor="end" font-size="12" font-weight="600" fill="#b3352f">400 N</text>
+<text x="258" y="208" font-size="12" font-weight="600" fill="#2f5fd0">200 N</text>
+<text x="240" y="112" text-anchor="middle" font-size="11" fill="#7b8494">both act at the midpoint</text>
+<line x1="70" y1="222" x2="410" y2="222" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="70" y1="216" x2="70" y2="228" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="240" y1="216" x2="240" y2="228" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="410" y1="216" x2="410" y2="228" stroke="#7b8494" stroke-width="1.5"/>
+<text x="155" y="240" text-anchor="middle" font-size="12" fill="#4a5262">3.0 m</text>
+<text x="325" y="240" text-anchor="middle" font-size="12" fill="#4a5262">3.0 m</text>
+<defs>
+<marker id="cq2-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f7a53"/></marker>
+<marker id="cq2-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+<marker id="cq2-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5fd0"/></marker>
+</defs>
+</svg>
+</figure>`,
   opts: ["300 N each", "200 N each", "400 N each", "600 N each", "100 N each"],
   ans: 0,
   sol: `<p>The arrangement is symmetric, so each support carries half the total load.</p>
@@ -301,7 +345,26 @@ anticlockwise: R_right × 6.0</div>
 },
 {
   id: "C-04", module: "C", topic: "Impulse", diff: 2,
-  q: "A force acting on a body rises uniformly from zero to 20 N over 0.50 s, then falls uniformly back to zero over the next 0.50 s. What is the total impulse delivered?",
+  q: `<p>A force acting on a body rises uniformly from zero to 20 N over 0.50 s, then falls uniformly back to zero over the next 0.50 s. What is the total impulse delivered?</p>
+<figure class="fig">
+<svg viewBox="0 0 480 240" role="img" aria-label="A triangular force-time graph rising from zero to 20 newtons over 0.50 seconds and falling back to zero over the next 0.50 seconds.">
+<text x="240" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Force–time graph for the impulse</text>
+<line x1="90" y1="50" x2="90" y2="196" stroke="#1f2937" stroke-width="2"/>
+<line x1="90" y1="190" x2="436" y2="190" stroke="#1f2937" stroke-width="2"/>
+<polygon points="436,190 426,185 426,195" fill="#1f2937"/>
+<polygon points="90,50 85,60 95,60" fill="#1f2937"/>
+<polygon points="90,190 255,70 420,190" fill="#e8eefc" stroke="#2f5fd0" stroke-width="2.5"/>
+<line x1="255" y1="70" x2="86" y2="70" stroke="#cbd2dd" stroke-width="1.4" stroke-dasharray="4 4"/>
+<line x1="255" y1="70" x2="255" y2="190" stroke="#cbd2dd" stroke-width="1.4" stroke-dasharray="4 4"/>
+<text x="82" y="74" text-anchor="end" font-size="12" font-weight="600" fill="#2f5fd0">20</text>
+<text x="90" y="208" text-anchor="middle" font-size="12" fill="#4a5262">0</text>
+<text x="255" y="208" text-anchor="middle" font-size="12" fill="#4a5262">0.50</text>
+<text x="420" y="208" text-anchor="middle" font-size="12" fill="#4a5262">1.0</text>
+<text x="82" y="44" text-anchor="end" font-size="12.5" fill="#4a5262">F / N</text>
+<text x="255" y="228" text-anchor="middle" font-size="12.5" fill="#4a5262">t / s</text>
+<text x="290" y="140" font-size="12" fill="#4a5262">shaded area = impulse</text>
+</svg>
+</figure>`,
   opts: ["10 N s", "5 N s", "20 N s", "2.5 N s", "40 N s"],
   ans: 0,
   sol: `<p>The impulse is the area under the force–time graph. The graph is a triangle with base 1.0 s and height 20 N:</p>
@@ -344,7 +407,32 @@ anticlockwise: R_right × 6.0</div>
 },
 {
   id: "C-07", module: "C", topic: "Connected bodies", diff: 2,
-  q: "Masses of 4.0 kg and 2.0 kg hang on either side of a frictionless pulley, connected by a light string. What is the acceleration of the system? Use <code>g = 10 m s⁻²</code>.",
+  q: `<p>Masses of 4.0 kg and 2.0 kg hang on either side of a frictionless pulley, connected by a light string. What is the acceleration of the system? Use <code>g = 10 m s⁻²</code>.</p>
+<figure class="fig">
+<svg viewBox="0 0 460 240" role="img" aria-label="A 4 kilogram mass and a 2 kilogram mass hanging on either side of a frictionless pulley.">
+<text x="230" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Two masses over a frictionless pulley</text>
+<circle cx="230" cy="62" r="24" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<circle cx="230" cy="62" r="4" fill="#1f2937"/>
+<path d="M206,62 A24,24 0 0 1 254,62" fill="none" stroke="#1f2937" stroke-width="2"/>
+<line x1="206" y1="62" x2="206" y2="150" stroke="#1f2937" stroke-width="2"/>
+<line x1="254" y1="62" x2="254" y2="150" stroke="#1f2937" stroke-width="2"/>
+<rect x="188" y="150" width="36" height="36" rx="2" fill="#e8eefc" stroke="#1f2937" stroke-width="2"/>
+<rect x="236" y="150" width="36" height="36" rx="2" fill="#e8eefc" stroke="#1f2937" stroke-width="2"/>
+<text x="206" y="173" text-anchor="middle" font-size="11.5" fill="#14181f">4.0 kg</text>
+<text x="254" y="173" text-anchor="middle" font-size="11.5" fill="#14181f">2.0 kg</text>
+<line x1="206" y1="186" x2="206" y2="222" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cq7-r)"/>
+<line x1="254" y1="186" x2="254" y2="222" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cq7-r)"/>
+<line x1="170" y1="152" x2="170" y2="192" stroke="#5b3fa8" stroke-width="2.5" marker-end="url(#cq7-p)"/>
+<line x1="290" y1="192" x2="290" y2="152" stroke="#5b3fa8" stroke-width="2.5" marker-end="url(#cq7-p)"/>
+<text x="162" y="176" text-anchor="end" font-size="12.5" font-weight="600" fill="#5b3fa8">a</text>
+<text x="298" y="176" font-size="12.5" font-weight="600" fill="#5b3fa8">a</text>
+<text x="230" y="234" text-anchor="middle" font-size="11.5" fill="#4a5262">the heavier mass descends</text>
+<defs>
+<marker id="cq7-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+<marker id="cq7-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b3fa8"/></marker>
+</defs>
+</svg>
+</figure>`,
   opts: ["5.0 m s⁻²", "3.3 m s⁻²", "6.7 m s⁻²", "10 m s⁻²", "1.7 m s⁻²"],
   ans: 1,
   sol: `<p>Use the whole-system approach: the driving force is the <b>difference</b> in weights, and the mass being accelerated is the <b>total</b> mass.</p>
@@ -622,7 +710,27 @@ v = 10 m s⁻¹</div>
 
 {
   id: "G-01", module: "G", topic: "Critical angle", diff: 1,
-  q: "Light travels in a medium of refractive index 1.5. What is the critical angle at the boundary with air? Take <code>sin 42° ≈ 0.669</code>.",
+  q: `<p>Light travels in a medium of refractive index 1.5. What is the critical angle at the boundary with air? Take <code>sin 42° ≈ 0.669</code>.</p>
+<figure class="fig">
+<svg viewBox="0 0 460 230" role="img" aria-label="Light inside glass meeting a glass-air boundary at the critical angle, so the refracted ray runs along the surface.">
+<text x="230" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">At the critical angle the ray grazes the surface</text>
+<rect x="50" y="44" width="370" height="76" fill="#f7f8fa"/>
+<rect x="50" y="120" width="370" height="90" fill="#eef2fb"/>
+<line x1="50" y1="120" x2="420" y2="120" stroke="#1f2937" stroke-width="2"/>
+<line x1="200" y1="40" x2="200" y2="196" stroke="#7b8494" stroke-width="1.4" stroke-dasharray="6 5"/>
+<line x1="119" y1="210" x2="200" y2="120" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cg1-r)"/>
+<line x1="200" y1="120" x2="404" y2="116" stroke="#a8641a" stroke-width="2.5" marker-end="url(#cg1-a)"/>
+<path d="M200,180 A60,60 0 0 1 160,165" fill="none" stroke="#7b8494" stroke-width="1.4"/>
+<text x="154" y="186" text-anchor="end" font-size="12.5" font-weight="600" fill="#b3352f">θ_c = ?</text>
+<text x="62" y="64" font-size="12" fill="#4a5262">air   n = 1.00</text>
+<text x="62" y="200" font-size="12" fill="#4a5262">medium  n = 1.50</text>
+<text x="252" y="108" font-size="11.5" fill="#a8641a">refracted ray along the surface</text>
+<defs>
+<marker id="cg1-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+<marker id="cg1-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8641a"/></marker>
+</defs>
+</svg>
+</figure>`,
   opts: ["60°", "30°", "49°", "42°", "90°"],
   ans: 3,
   sol: `<p>Use <code>sin θ_c = n₂/n₁</code> with <code>n₂ = 1</code> for air:</p>
@@ -637,7 +745,28 @@ v = 10 m s⁻¹</div>
 },
 {
   id: "G-02", module: "G", topic: "Snell's law", diff: 1,
-  q: "Light in air strikes a glass surface (<code>n = 1.5</code>) at an angle of incidence of 30°. What is the angle of refraction? Take <code>sin 19.5° ≈ 0.334</code>.",
+  q: `<p>Light in air strikes a glass surface (<code>n = 1.5</code>) at an angle of incidence of 30°. What is the angle of refraction? Take <code>sin 19.5° ≈ 0.334</code>.</p>
+<figure class="fig">
+<svg viewBox="0 0 460 230" role="img" aria-label="A ray of light passing from air into glass, incident at 30 degrees to the normal.">
+<text x="230" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">From air into glass: the ray bends towards the normal</text>
+<rect x="50" y="44" width="370" height="76" fill="#f7f8fa"/>
+<rect x="50" y="120" width="370" height="90" fill="#eef2fb"/>
+<line x1="50" y1="120" x2="420" y2="120" stroke="#1f2937" stroke-width="2"/>
+<line x1="220" y1="36" x2="220" y2="200" stroke="#7b8494" stroke-width="1.4" stroke-dasharray="6 5"/>
+<line x1="174" y1="30" x2="220" y2="120" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cg2-r)"/>
+<line x1="220" y1="120" x2="256" y2="210" stroke="#2f5fd0" stroke-width="2.5" marker-end="url(#cg2-b)"/>
+<path d="M220,60 A60,60 0 0 0 190,72" fill="none" stroke="#7b8494" stroke-width="1.4"/>
+<path d="M220,180 A60,60 0 0 0 240,175" fill="none" stroke="#7b8494" stroke-width="1.4"/>
+<text x="186" y="68" text-anchor="end" font-size="12.5" font-weight="600" fill="#b3352f">30°</text>
+<text x="248" y="172" font-size="12.5" font-weight="600" fill="#2f5fd0">θ₂ = ?</text>
+<text x="62" y="64" font-size="12" fill="#4a5262">air   n₁ = 1.00</text>
+<text x="62" y="200" font-size="12" fill="#4a5262">glass  n₂ = 1.50</text>
+<defs>
+<marker id="cg2-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+<marker id="cg2-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5fd0"/></marker>
+</defs>
+</svg>
+</figure>`,
   opts: ["48°", "30°", "15°", "45°", "19.5°"],
   ans: 4,
   sol: `<p>Apply Snell's law with <code>n₁ = 1</code> for air:</p>
@@ -655,7 +784,42 @@ sin θ₂ = 0.333</div>
 },
 {
   id: "G-03", module: "G", topic: "Young's double slit", diff: 2,
-  q: "In a Young's double slit experiment the slits are 1.0 mm apart and the screen is 2.0 m from the slits. Light of wavelength 500 nm is used. What is the fringe spacing?",
+  q: `<p>In a Young's double slit experiment the slits are 1.0 mm apart and the screen is 2.0 m from the slits. Light of wavelength 500 nm is used. What is the fringe spacing?</p>
+<figure class="fig">
+<svg viewBox="0 0 480 280" role="img" aria-label="Two slits a distance s apart, a screen a distance D away, and the bright fringes on the screen with spacing w.">
+<defs>
+<marker id="ds-ar" markerWidth="8" markerHeight="8" refX="6.4" refY="2.8" orient="auto">
+<path d="M0,0 L6.4,2.8 L0,5.6 z" fill="#7b8494"/>
+</marker>
+</defs>
+<text x="240" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Young's double slit: s, D and w</text>
+
+<line x1="100" y1="46" x2="100" y2="110" stroke="#1f2937" stroke-width="3"/>
+<line x1="100" y1="118" x2="100" y2="136" stroke="#1f2937" stroke-width="3"/>
+<line x1="100" y1="144" x2="100" y2="220" stroke="#1f2937" stroke-width="3"/>
+<line x1="430" y1="40" x2="430" y2="220" stroke="#1f2937" stroke-width="2.5"/>
+
+<line x1="100" y1="114" x2="430" y2="130" stroke="#a8641a" stroke-width="1.4"/>
+<line x1="100" y1="140" x2="430" y2="130" stroke="#a8641a" stroke-width="1.4"/>
+
+<rect x="430" y="45" width="12" height="10" fill="#2f5fd0"/>
+<rect x="430" y="85" width="12" height="10" fill="#2f5fd0"/>
+<rect x="430" y="125" width="12" height="10" fill="#2f5fd0"/>
+<rect x="430" y="165" width="12" height="10" fill="#2f5fd0"/>
+<rect x="430" y="205" width="12" height="10" fill="#2f5fd0"/>
+
+<line x1="72" y1="114" x2="72" y2="140" stroke="#7b8494" stroke-width="1.5" marker-start="url(#ds-ar)" marker-end="url(#ds-ar)"/>
+<text x="64" y="131" text-anchor="end" font-size="12" font-weight="600" fill="#2f5fd0">s</text>
+
+<line x1="462" y1="90" x2="462" y2="130" stroke="#7b8494" stroke-width="1.5" marker-start="url(#ds-ar)" marker-end="url(#ds-ar)"/>
+<text x="470" y="114" font-size="12" font-weight="600" fill="#2f5fd0">w</text>
+
+<line x1="100" y1="238" x2="430" y2="238" stroke="#7b8494" stroke-width="1.5" marker-start="url(#ds-ar)" marker-end="url(#ds-ar)"/>
+<text x="265" y="232" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">D</text>
+
+<text x="240" y="264" text-anchor="middle" font-size="12" fill="#4a5262">s = 1.0 mm,  D = 2.0 m,  λ = 500 nm</text>
+</svg>
+</figure>`,
   opts: ["0.50 mm", "1.0 mm", "2.0 mm", "0.25 mm", "4.0 mm"],
   ans: 1,
   sol: `<p>Use <code>w = λD/s</code>, with everything in metres:</p>
@@ -674,7 +838,55 @@ D = 2.0 m</div>
 },
 {
   id: "G-04", module: "G", topic: "Diffraction grating", diff: 2,
-  q: "A diffraction grating has a slit spacing of <code>2.0 × 10⁻⁶ m</code>. Light of wavelength 500 nm is incident normally. What is the angle of the first-order maximum? Take <code>sin 14.5° ≈ 0.25</code>.",
+  q: `<p>A diffraction grating has a slit spacing of <code>2.0 × 10⁻⁶ m</code>. Light of wavelength 500 nm is incident normally. What is the angle of the first-order maximum? Take <code>sin 14.5° ≈ 0.25</code>.</p>
+<figure class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label="Light falling normally on a diffraction grating, with the zeroth, first and second order maxima leaving at increasing angles to the normal.">
+<defs>
+<marker id="gr-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+<path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f2937"/>
+</marker>
+<marker id="gr-ar-blue" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+<path d="M0,0 L7,3.2 L0,6.4 z" fill="#2f5fd0"/>
+</marker>
+</defs>
+<text x="240" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Orders from a diffraction grating</text>
+
+<line x1="180" y1="46" x2="180" y2="250" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="60" x2="189" y2="60" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="78" x2="189" y2="78" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="96" x2="189" y2="96" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="114" x2="189" y2="114" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="132" x2="189" y2="132" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="150" x2="189" y2="150" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="168" x2="189" y2="168" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="186" x2="189" y2="186" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="204" x2="189" y2="204" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="222" x2="189" y2="222" stroke="#1f2937" stroke-width="2"/>
+<line x1="171" y1="240" x2="189" y2="240" stroke="#1f2937" stroke-width="2"/>
+
+<line x1="54" y1="150" x2="170" y2="150" stroke="#1f2937" stroke-width="2.2" marker-end="url(#gr-ar)"/>
+<text x="54" y="138" font-size="11.5" fill="#4a5262">incident light</text>
+
+<line x1="184" y1="150" x2="462" y2="150" stroke="#7b8494" stroke-width="1.4" stroke-dasharray="6 4"/>
+<text x="462" y="142" text-anchor="end" font-size="11.5" fill="#7b8494">normal</text>
+
+<line x1="180" y1="150" x2="450" y2="150" stroke="#2f5fd0" stroke-width="2.2" marker-end="url(#gr-ar-blue)"/>
+<line x1="180" y1="150" x2="420" y2="87.9" stroke="#1f7a53" stroke-width="2.2"/>
+<line x1="180" y1="150" x2="390" y2="28.7" stroke="#a8641a" stroke-width="2.2"/>
+
+<path d="M250 150 A70 70 0 0 0 247.8 132.5" fill="none" stroke="#1f7a53" stroke-width="1.6"/>
+<text x="272" y="140" font-size="11.5" font-weight="600" fill="#1f7a53">14.5°</text>
+<path d="M280 150 A100 100 0 0 0 266.6 100" fill="none" stroke="#a8641a" stroke-width="1.6"/>
+<text x="296" y="106" font-size="11.5" font-weight="600" fill="#a8641a">30°</text>
+
+<text x="444" y="170" text-anchor="end" font-size="11.5" font-weight="600" fill="#2f5fd0">n = 0</text>
+<text x="428" y="92" font-size="11.5" font-weight="600" fill="#1f7a53">n = 1</text>
+<text x="398" y="30" font-size="11.5" font-weight="600" fill="#a8641a">n = 2</text>
+
+<text x="180" y="272" text-anchor="middle" font-size="11.5" fill="#7b8494">diffraction grating</text>
+<text x="240" y="292" text-anchor="middle" font-size="12" fill="#4a5262">d = 2.0 × 10⁻⁶ m,  λ = 500 nm</text>
+</svg>
+</figure>`,
   opts: ["7.0°", "30°", "14.5°", "45°", "60°"],
   ans: 2,
   sol: `<p>Use <code>d sin θ = nλ</code> with <code>n = 1</code>:</p>

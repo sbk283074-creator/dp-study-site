@@ -7,7 +7,34 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 
 {
   id: "H-01", module: "H", topic: "Series and parallel", diff: 1,
-  q: "Two 6.0 Ω resistors are connected in parallel, and this combination is connected in series with a 3.0 Ω resistor. What is the total resistance?",
+  q: `<p>Two 6.0 Ω resistors are connected in parallel, and this combination is connected in series with a 3.0 Ω resistor. What is the total resistance?</p>
+<figure class="fig">
+<svg viewBox="0 0 460 220" role="img" aria-label="A circuit with two 6 ohm resistors in parallel, connected in series with a 3 ohm resistor.">
+<text x="230" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Two 6 Ω in parallel, in series with 3 Ω</text>
+<line x1="70" y1="134" x2="70" y2="60" stroke="#1f2937" stroke-width="2"/>
+<line x1="70" y1="60" x2="390" y2="60" stroke="#1f2937" stroke-width="2"/>
+<line x1="390" y1="60" x2="390" y2="170" stroke="#1f2937" stroke-width="2"/>
+<line x1="390" y1="170" x2="70" y2="170" stroke="#1f2937" stroke-width="2"/>
+<line x1="70" y1="170" x2="70" y2="146" stroke="#1f2937" stroke-width="2"/>
+<line x1="56" y1="146" x2="84" y2="146" stroke="#1f2937" stroke-width="2"/>
+<line x1="62" y1="134" x2="78" y2="134" stroke="#1f2937" stroke-width="4.5"/>
+<rect x="140" y="52" width="40" height="16" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="160" y="44" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">3.0 Ω</text>
+<line x1="300" y1="60" x2="300" y2="88" stroke="#1f2937" stroke-width="2"/>
+<rect x="292" y="88" width="16" height="36" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="300" y1="124" x2="300" y2="170" stroke="#1f2937" stroke-width="2"/>
+<line x1="360" y1="60" x2="360" y2="88" stroke="#1f2937" stroke-width="2"/>
+<rect x="352" y="88" width="16" height="36" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="360" y1="124" x2="360" y2="170" stroke="#1f2937" stroke-width="2"/>
+<text x="286" y="112" text-anchor="end" font-size="12" font-weight="600" fill="#2f5fd0">6.0 Ω</text>
+<text x="346" y="112" text-anchor="end" font-size="12" font-weight="600" fill="#2f5fd0">6.0 Ω</text>
+<circle cx="300" cy="60" r="3" fill="#1f2937"/>
+<circle cx="360" cy="60" r="3" fill="#1f2937"/>
+<circle cx="300" cy="170" r="3" fill="#1f2937"/>
+<circle cx="360" cy="170" r="3" fill="#1f2937"/>
+<text x="230" y="196" text-anchor="middle" font-size="11.5" fill="#7b8494">reduce the parallel pair first</text>
+</svg>
+</figure>`,
   opts: ["6.0 Ω", "15 Ω", "4.5 Ω", "9.0 Ω", "3.0 Ω"],
   ans: 0,
   sol: `<p><b>Step 1 — the parallel pair.</b> For two equal resistors in parallel the combined resistance is half of one:</p>
@@ -36,7 +63,40 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 },
 {
   id: "H-03", module: "H", topic: "Internal resistance", diff: 2,
-  q: "A cell of EMF 9.0 V and internal resistance 1.0 Ω is connected to an 8.0 Ω resistor. What is the terminal potential difference of the cell?",
+  q: `<p>A cell of EMF 9.0 V and internal resistance 1.0 Ω is connected to an 8.0 Ω resistor. What is the terminal potential difference of the cell?</p>
+<figure class="fig">
+<svg viewBox="0 0 460 240" role="img" aria-label="A cell of EMF 9 volts with internal resistance 1 ohm driving an 8 ohm resistor, with a voltmeter connected across the cell terminals.">
+<text x="230" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">The voltmeter reads the terminal pd</text>
+
+<line x1="100" y1="70" x2="210" y2="70" stroke="#1f2937" stroke-width="2"/>
+<line x1="270" y1="70" x2="380" y2="70" stroke="#1f2937" stroke-width="2"/>
+<rect x="210" y="62" width="60" height="16" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="240" y="52" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2f5fd0">R = 8.0 Ω</text>
+
+<line x1="380" y1="70" x2="380" y2="190" stroke="#1f2937" stroke-width="2"/>
+<line x1="380" y1="190" x2="100" y2="190" stroke="#1f2937" stroke-width="2"/>
+
+<line x1="100" y1="70" x2="100" y2="96" stroke="#1f2937" stroke-width="2"/>
+<line x1="84" y1="96" x2="116" y2="96" stroke="#1f2937" stroke-width="2.5"/>
+<line x1="92" y1="110" x2="108" y2="110" stroke="#1f2937" stroke-width="5"/>
+<line x1="100" y1="110" x2="100" y2="130" stroke="#1f2937" stroke-width="2"/>
+<rect x="92" y="130" width="16" height="34" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="100" y1="164" x2="100" y2="190" stroke="#1f2937" stroke-width="2"/>
+<text x="128" y="101" font-size="12.5" font-weight="600" fill="#b3352f">ε = 9.0 V</text>
+<text x="128" y="152" font-size="12.5" font-weight="600" fill="#b3352f">r = 1.0 Ω</text>
+
+<line x1="100" y1="70" x2="34" y2="70" stroke="#7b8494" stroke-width="1.6" stroke-dasharray="5 4"/>
+<line x1="34" y1="70" x2="34" y2="113" stroke="#7b8494" stroke-width="1.6" stroke-dasharray="5 4"/>
+<line x1="100" y1="190" x2="34" y2="190" stroke="#7b8494" stroke-width="1.6" stroke-dasharray="5 4"/>
+<line x1="34" y1="190" x2="34" y2="147" stroke="#7b8494" stroke-width="1.6" stroke-dasharray="5 4"/>
+<circle cx="34" cy="130" r="17" fill="#ffffff" stroke="#7b8494" stroke-width="1.8" stroke-dasharray="5 4"/>
+<text x="34" y="136" text-anchor="middle" font-size="14" font-weight="600" fill="#4a5262">V</text>
+<circle cx="100" cy="70" r="3" fill="#1f2937"/>
+<circle cx="100" cy="190" r="3" fill="#1f2937"/>
+
+<text x="230" y="222" text-anchor="middle" font-size="11.5" fill="#7b8494">both ε and r sit inside the cell; the voltmeter is across the pair</text>
+</svg>
+</figure>`,
   opts: ["7.0 V", "9.0 V", "1.0 V", "8.0 V", "4.5 V"],
   ans: 3,
   sol: `<p><b>Step 1 — total resistance.</b></p>
@@ -53,7 +113,46 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 },
 {
   id: "H-04", module: "H", topic: "Opposing EMFs", diff: 2,
-  q: "Two cells of EMF 6.0 V and 2.0 V are connected in a single loop with a 4.0 Ω resistor, opposing each other. The cells have negligible internal resistance. What is the current in the loop?",
+  q: `<p>Two cells of EMF 6.0 V and 2.0 V are connected in a single loop with a 4.0 Ω resistor, opposing each other. The cells have negligible internal resistance. What is the current in the loop?</p>
+<figure class="fig">
+<svg viewBox="0 0 460 250" role="img" aria-label="A single loop containing a 6 volt cell and a 2 volt cell connected positive-to-positive, in series with a 4 ohm resistor.">
+<defs>
+<marker id="oe-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+<path d="M0,0 L7,3.2 L0,6.4 z" fill="#2f5fd0"/>
+</marker>
+</defs>
+<text x="230" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Two cells in one loop</text>
+
+<line x1="100" y1="76" x2="210" y2="76" stroke="#1f2937" stroke-width="2"/>
+<line x1="270" y1="76" x2="380" y2="76" stroke="#1f2937" stroke-width="2"/>
+<rect x="210" y="68" width="60" height="16" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="240" y="58" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2f5fd0">R = 4.0 Ω</text>
+
+<line x1="380" y1="76" x2="380" y2="196" stroke="#1f2937" stroke-width="2"/>
+<line x1="380" y1="196" x2="308" y2="196" stroke="#1f2937" stroke-width="2"/>
+<line x1="292" y1="196" x2="188" y2="196" stroke="#1f2937" stroke-width="2"/>
+<line x1="172" y1="196" x2="100" y2="196" stroke="#1f2937" stroke-width="2"/>
+<line x1="100" y1="196" x2="100" y2="76" stroke="#1f2937" stroke-width="2"/>
+
+<line x1="172" y1="180" x2="172" y2="212" stroke="#1f2937" stroke-width="5"/>
+<line x1="188" y1="176" x2="188" y2="216" stroke="#1f2937" stroke-width="2.5"/>
+<text x="176" y="166" text-anchor="middle" font-size="12" font-weight="600" fill="#1f7a53">6.0 V</text>
+
+<line x1="292" y1="176" x2="292" y2="216" stroke="#1f2937" stroke-width="2.5"/>
+<line x1="308" y1="180" x2="308" y2="212" stroke="#1f2937" stroke-width="5"/>
+<text x="304" y="166" text-anchor="middle" font-size="12" font-weight="600" fill="#a8641a">2.0 V</text>
+
+<line x1="164" y1="76" x2="124" y2="76" stroke="#2f5fd0" stroke-width="2.4" marker-end="url(#oe-ar)"/>
+<text x="144" y="64" text-anchor="middle" font-size="11.5" fill="#2f5fd0">I</text>
+
+<circle cx="100" cy="76" r="3" fill="#1f2937"/>
+<circle cx="100" cy="196" r="3" fill="#1f2937"/>
+<circle cx="188" cy="196" r="3" fill="#1f2937"/>
+<circle cx="292" cy="196" r="3" fill="#1f2937"/>
+
+<text x="230" y="240" text-anchor="middle" font-size="11.5" fill="#7b8494">note which terminal of each cell is positive</text>
+</svg>
+</figure>`,
   opts: ["4.0 A", "2.0 A", "0.50 A", "1.5 A", "1.0 A"],
   ans: 4,
   sol: `<p>Because the cells oppose each other, the net EMF is their <b>difference</b>:</p>
@@ -102,7 +201,46 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 },
 {
   id: "H-07", module: "H", topic: "Rectification", diff: 3,
-  q: "A sinusoidal supply of peak voltage 10 V is connected through a diode to a 5.0 Ω resistor, so that half-wave rectification occurs. What is the average power dissipated in the resistor?",
+  q: `<p>A sinusoidal supply of peak voltage 10 V is connected through a diode to a 5.0 Ω resistor, so that half-wave rectification occurs. What is the average power dissipated in the resistor?</p>
+<figure class="fig">
+<svg viewBox="0 0 480 420" role="img" aria-label="A half-wave rectifier circuit, with the input sine wave and the half-wave rectified output drawn below it.">
+<text x="240" y="24" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Half-wave rectification</text>
+
+<circle cx="100" cy="110" r="14" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<path d="M89 110 Q94.5 101 100 110 Q105.5 119 111 110" fill="none" stroke="#1f2937" stroke-width="1.6"/>
+<line x1="100" y1="96" x2="100" y2="75" stroke="#1f2937" stroke-width="2"/>
+<line x1="100" y1="124" x2="100" y2="145" stroke="#1f2937" stroke-width="2"/>
+<line x1="100" y1="75" x2="200" y2="75" stroke="#1f2937" stroke-width="2"/>
+<polygon points="200,64 200,86 236,75" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="236" y1="64" x2="236" y2="86" stroke="#1f2937" stroke-width="3"/>
+<line x1="236" y1="75" x2="380" y2="75" stroke="#1f2937" stroke-width="2"/>
+<line x1="380" y1="75" x2="380" y2="145" stroke="#1f2937" stroke-width="2"/>
+<line x1="380" y1="145" x2="260" y2="145" stroke="#1f2937" stroke-width="2"/>
+<rect x="200" y="137" width="60" height="16" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="200" y1="145" x2="100" y2="145" stroke="#1f2937" stroke-width="2"/>
+<text x="80" y="114" text-anchor="end" font-size="12" font-weight="600" fill="#2f5fd0">a.c. supply</text>
+<text x="218" y="56" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">diode</text>
+<text x="230" y="172" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">R = 5.0 Ω</text>
+
+<line x1="55" y1="290" x2="452" y2="290" stroke="#cbd2dd" stroke-width="1.6"/>
+<line x1="55" y1="240" x2="445" y2="240" stroke="#e2e6ed" stroke-width="1.2" stroke-dasharray="5 4"/>
+<line x1="55" y1="340" x2="445" y2="340" stroke="#e2e6ed" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="50" y="244" text-anchor="end" font-size="11" fill="#7b8494">10 V</text>
+<text x="50" y="294" text-anchor="end" font-size="11" fill="#7b8494">0</text>
+<text x="50" y="344" text-anchor="end" font-size="11" fill="#7b8494">−10 V</text>
+<text x="456" y="294" font-size="11.5" font-style="italic" fill="#7b8494">t</text>
+
+<path d="M60 290 C94.6 223.3 120.4 223.3 155 290 C189.6 356.7 215.4 356.7 250 290 C284.6 223.3 310.4 223.3 345 290 C379.6 356.7 410.4 356.7 440 290"
+ fill="none" stroke="#7b8494" stroke-width="1.8" stroke-dasharray="6 4"/>
+<path d="M60 290 C94.6 223.3 120.4 223.3 155 290 L250 290 C284.6 223.3 310.4 223.3 345 290 L440 290"
+ fill="none" stroke="#2f5fd0" stroke-width="2.6"/>
+
+<line x1="60" y1="378" x2="100" y2="378" stroke="#7b8494" stroke-width="1.8" stroke-dasharray="6 4"/>
+<text x="108" y="382" font-size="11.5" fill="#4a5262">supply voltage</text>
+<line x1="250" y1="378" x2="290" y2="378" stroke="#2f5fd0" stroke-width="2.6"/>
+<text x="298" y="382" font-size="11.5" fill="#4a5262">voltage across R</text>
+</svg>
+</figure>`,
   opts: ["10 W", "5.0 W", "20 W", "2.5 W", "40 W"],
   ans: 1,
   sol: `<p>For a sinusoid of peak voltage <code>V₀</code>, the average of <code>V²</code> over a full cycle is <code>V₀²/2</code>. Half-wave rectification allows current during only half the cycle, so the average of <code>V²</code> falls to <code>V₀²/4</code>.</p>
@@ -121,7 +259,32 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 },
 {
   id: "H-08", module: "H", topic: "Potential divider", diff: 1,
-  q: "A 2.0 kΩ resistor and a 4.0 kΩ resistor are connected in series across a 12 V supply. What is the potential difference across the 4.0 kΩ resistor?",
+  q: `<p>A 2.0 kΩ resistor and a 4.0 kΩ resistor are connected in series across a 12 V supply. What is the potential difference across the 4.0 kΩ resistor?</p>
+<figure class="fig">
+<svg viewBox="0 0 460 262" role="img" aria-label="A 12 volt supply connected across a 2 kilohm and a 4 kilohm resistor in series, with the output taken across the 4 kilohm resistor.">
+<text x="230" y="24" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">A potential divider</text>
+
+<text x="230" y="42" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1f7a53">12 V</text>
+<line x1="212" y1="52" x2="248" y2="52" stroke="#1f2937" stroke-width="2.5"/>
+<line x1="220" y1="64" x2="240" y2="64" stroke="#1f2937" stroke-width="5"/>
+<line x1="230" y1="64" x2="230" y2="86" stroke="#1f2937" stroke-width="2"/>
+<rect x="214" y="86" width="32" height="44" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="256" y="112" font-size="12.5" font-weight="600" fill="#2f5fd0">R₁ = 2.0 kΩ</text>
+<line x1="230" y1="130" x2="230" y2="166" stroke="#1f2937" stroke-width="2"/>
+<circle cx="230" cy="148" r="3.2" fill="#1f2937"/>
+<rect x="214" y="166" width="32" height="44" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="256" y="192" font-size="12.5" font-weight="600" fill="#2f5fd0">R₂ = 4.0 kΩ</text>
+<line x1="230" y1="210" x2="230" y2="228" stroke="#1f2937" stroke-width="2"/>
+<circle cx="230" cy="228" r="3.2" fill="#1f2937"/>
+
+<line x1="230" y1="148" x2="392" y2="148" stroke="#2f5fd0" stroke-width="1.8"/>
+<line x1="230" y1="228" x2="392" y2="228" stroke="#2f5fd0" stroke-width="1.8"/>
+<line x1="392" y1="148" x2="392" y2="228" stroke="#2f5fd0" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="404" y="193" font-size="12.5" font-weight="600" fill="#2f5fd0">V_out</text>
+
+<text x="230" y="252" text-anchor="middle" font-size="11.5" fill="#7b8494">the supply splits in the ratio of the two resistances</text>
+</svg>
+</figure>`,
   opts: ["8.0 V", "4.0 V", "6.0 V", "12 V", "3.0 V"],
   ans: 0,
   sol: `<p>Use the potential divider formula with the output across <code>R₂ = 4.0 kΩ</code>:</p>
@@ -135,7 +298,28 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 },
 {
   id: "H-09", module: "H", topic: "Network reduction", diff: 3,
-  q: "A wire loop of total resistance 12 Ω has a sliding contact that can be moved round it. What is the maximum equivalent resistance measurable between the contact and a fixed point on the loop?",
+  q: `<p>A wire loop of total resistance 12 Ω has a sliding contact that can be moved round it. What is the maximum equivalent resistance measurable between the contact and a fixed point on the loop?</p>
+<figure class="fig">
+<svg viewBox="0 0 460 258" role="img" aria-label="A circular wire loop with a fixed point A and a movable contact B, dividing the loop into two arcs.">
+<text x="230" y="24" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">One loop, two arcs, one measurement</text>
+
+<circle cx="190" cy="138" r="78" fill="none" stroke="#e2e6ed" stroke-width="1.5"/>
+<path d="M190 60 A78 78 0 0 1 257.5 177" fill="none" stroke="#2f5fd0" stroke-width="3.2"/>
+<path d="M190 60 A78 78 0 1 0 257.5 177" fill="none" stroke="#a8641a" stroke-width="3.2"/>
+
+<circle cx="190" cy="60" r="4.2" fill="#1f2937"/>
+<circle cx="257.5" cy="177" r="4.2" fill="#1f2937"/>
+<text x="190" y="48" text-anchor="middle" font-size="13" font-weight="700" fill="#14181f">A</text>
+<text x="272" y="190" font-size="13" font-weight="700" fill="#14181f">B</text>
+
+<text x="274" y="104" font-size="12.5" font-weight="600" fill="#2f5fd0">12x</text>
+<text x="106" y="182" text-anchor="end" font-size="12.5" font-weight="600" fill="#a8641a">12(1 − x)</text>
+<text x="274" y="120" font-size="10.5" fill="#7b8494">shorter arc</text>
+<text x="106" y="198" text-anchor="end" font-size="10.5" fill="#7b8494">longer arc</text>
+
+<text x="230" y="244" text-anchor="middle" font-size="11.5" fill="#7b8494">both arcs connect the same pair of points, so they are in parallel</text>
+</svg>
+</figure>`,
   opts: ["6.0 Ω", "3.0 Ω", "12 Ω", "1.5 Ω", "4.0 Ω"],
   ans: 1,
   sol: `<p>The contact divides the loop into two arcs. If a fraction <code>x</code> of the total length lies on one side, the arc resistances are <code>12x</code> and <code>12(1 − x)</code>.</p>

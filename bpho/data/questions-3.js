@@ -482,7 +482,37 @@ force–distance graph the work — one idea, three topics.</p>`,
 
 {
   id: "C-10", module: "C", topic: "Moments", diff: 2,
-  q: "A uniform beam of weight 100 N and length 4.0 m rests on supports at each end. A load of 300 N is placed 1.0 m from the left support. What is the reaction at the right support?",
+  q: `<p>A uniform beam of weight 100 N and length 4.0 m rests on supports at each end. A load of 300 N is placed 1.0 m from the left support. What is the reaction at the right support?</p>
+<figure class="fig">
+<svg viewBox="0 0 480 236" role="img" aria-label="A uniform beam 4 metres long on supports at each end, carrying its own 100 newton weight at the centre and a 300 newton load 1 metre from the left support.">
+<defs>
+<marker id="bm-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+<path d="M0,0 L7,3.2 L0,6.4 z" fill="#b3352f"/>
+</marker>
+<marker id="bm-dim" markerWidth="8" markerHeight="8" refX="6.4" refY="2.8" orient="auto">
+<path d="M0,0 L6.4,2.8 L0,5.6 z" fill="#7b8494"/>
+</marker>
+</defs>
+<text x="240" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">A uniform beam on two end supports</text>
+
+<line x1="160" y1="52" x2="160" y2="110" stroke="#b3352f" stroke-width="2.4" marker-end="url(#bm-ar)"/>
+<text x="160" y="44" text-anchor="middle" font-size="12" font-weight="600" fill="#b3352f">300 N</text>
+<line x1="240" y1="86" x2="240" y2="110" stroke="#b3352f" stroke-width="2.4" marker-end="url(#bm-ar)"/>
+<text x="240" y="78" text-anchor="middle" font-size="12" font-weight="600" fill="#b3352f">100 N</text>
+
+<rect x="80" y="116" width="320" height="12" fill="#e8eefc" stroke="#1f2937" stroke-width="2"/>
+<polygon points="66,128 94,128 80,152" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<polygon points="386,128 414,128 400,152" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="58" y1="152" x2="422" y2="152" stroke="#cbd2dd" stroke-width="1.6"/>
+<text x="80" y="172" text-anchor="middle" font-size="12" font-weight="600" fill="#1f7a53">R_L</text>
+<text x="400" y="172" text-anchor="middle" font-size="12" font-weight="600" fill="#1f7a53">R_R</text>
+
+<line x1="80" y1="192" x2="160" y2="192" stroke="#7b8494" stroke-width="1.5" marker-start="url(#bm-dim)" marker-end="url(#bm-dim)"/>
+<text x="120" y="186" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2f5fd0">1.0 m</text>
+<line x1="80" y1="216" x2="400" y2="216" stroke="#7b8494" stroke-width="1.5" marker-start="url(#bm-dim)" marker-end="url(#bm-dim)"/>
+<text x="240" y="210" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2f5fd0">4.0 m</text>
+</svg>
+</figure>`,
   opts: ["200 N", "125 N", "150 N", "75 N", "400 N"],
   ans: 1,
   sol: `<p>Take moments about the left support so that the left reaction has no
@@ -537,7 +567,28 @@ kinetic energy is not.</p>`,
 },
 {
   id: "C-12", module: "C", topic: "Impulse", diff: 2,
-  q: "A force on a body rises uniformly from 0 to 12 N in 2.0 s, stays at 12 N for 3.0 s, then falls uniformly to 0 in 1.0 s. What is the total impulse?",
+  q: `<p>A force on a body rises uniformly from 0 to 12 N in 2.0 s, stays at 12 N for 3.0 s, then falls uniformly to 0 in 1.0 s. What is the total impulse?</p>
+<figure class="fig">
+<svg viewBox="0 0 480 240" role="img" aria-label="A trapezium-shaped force-time graph: rising to 12 newtons in 2 seconds, flat for 3 seconds, then falling to zero in 1 second.">
+<text x="240" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Force–time graph for the impulse</text>
+<line x1="90" y1="50" x2="90" y2="196" stroke="#1f2937" stroke-width="2"/>
+<line x1="90" y1="190" x2="446" y2="190" stroke="#1f2937" stroke-width="2"/>
+<polygon points="446,190 436,185 436,195" fill="#1f2937"/>
+<polygon points="90,50 85,60 95,60" fill="#1f2937"/>
+<polygon points="90,190 203,70 373,70 430,190" fill="#e8eefc" stroke="#2f5fd0" stroke-width="2.5"/>
+<line x1="203" y1="70" x2="86" y2="70" stroke="#cbd2dd" stroke-width="1.4" stroke-dasharray="4 4"/>
+<line x1="203" y1="70" x2="203" y2="190" stroke="#cbd2dd" stroke-width="1.4" stroke-dasharray="4 4"/>
+<line x1="373" y1="70" x2="373" y2="190" stroke="#cbd2dd" stroke-width="1.4" stroke-dasharray="4 4"/>
+<text x="82" y="74" text-anchor="end" font-size="12" font-weight="600" fill="#2f5fd0">12</text>
+<text x="90" y="208" text-anchor="middle" font-size="12" fill="#4a5262">0</text>
+<text x="203" y="208" text-anchor="middle" font-size="12" fill="#4a5262">2.0</text>
+<text x="373" y="208" text-anchor="middle" font-size="12" fill="#4a5262">5.0</text>
+<text x="430" y="208" text-anchor="middle" font-size="12" fill="#4a5262">6.0</text>
+<text x="82" y="44" text-anchor="end" font-size="12.5" fill="#4a5262">F / N</text>
+<text x="438" y="212" text-anchor="end" font-size="12.5" fill="#4a5262">t / s</text>
+<text x="288" y="150" font-size="12" fill="#4a5262">area = impulse</text>
+</svg>
+</figure>`,
   opts: ["48 N s", "54 N s", "36 N s", "72 N s", "24 N s"],
   ans: 1,
   sol: `<p>The impulse is the area under the force–time graph. The shape is a
@@ -562,7 +613,46 @@ multiple-choice paper, and recognising the shape is faster than either.</p>`,
 },
 {
   id: "C-13", module: "C", topic: "Connected bodies", diff: 3,
-  q: "A 3.0 kg block on a smooth horizontal table is connected by a light string over a pulley to a hanging 1.0 kg mass. What is the acceleration of the system? Use <code>g = 10 m s⁻²</code>.",
+  q: `<p>A 3.0 kg block on a smooth horizontal table is connected by a light string over a pulley to a hanging 1.0 kg mass. What is the acceleration of the system? Use <code>g = 10 m s⁻²</code>.</p>
+<figure class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label="A 3 kilogram block on a smooth table connected by a string over a pulley at the table edge to a hanging 1 kilogram mass.">
+<defs>
+<marker id="cb-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+<path d="M0,0 L7,3.2 L0,6.4 z" fill="#2f5fd0"/>
+</marker>
+<marker id="cb-wt" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+<path d="M0,0 L7,3.2 L0,6.4 z" fill="#b3352f"/>
+</marker>
+</defs>
+<text x="240" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Block, string, pulley, hanging mass</text>
+
+<rect x="50" y="140" width="270" height="7" fill="#cbd2dd" stroke="#cbd2dd"/>
+<line x1="50" y1="140" x2="320" y2="140" stroke="#1f2937" stroke-width="2"/>
+<text x="150" y="170" text-anchor="middle" font-size="11.5" fill="#7b8494">smooth table</text>
+
+<rect x="120" y="108" width="70" height="32" fill="#e8eefc" stroke="#1f2937" stroke-width="2"/>
+<text x="155" y="129" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">3.0 kg</text>
+
+<line x1="190" y1="140" x2="306" y2="140" stroke="#a8641a" stroke-width="2"/>
+<circle cx="320" cy="140" r="14" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<circle cx="320" cy="140" r="2.6" fill="#1f2937"/>
+<line x1="334" y1="140" x2="334" y2="196" stroke="#a8641a" stroke-width="2"/>
+<text x="296" y="176" text-anchor="end" font-size="11.5" fill="#4a5262">pulley</text>
+
+<rect x="312" y="196" width="44" height="40" fill="#f1f3f7" stroke="#1f2937" stroke-width="2"/>
+<text x="334" y="221" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">1.0 kg</text>
+<line x1="334" y1="236" x2="334" y2="266" stroke="#b3352f" stroke-width="2.4" marker-end="url(#cb-wt)"/>
+<text x="346" y="260" font-size="11.5" font-weight="600" fill="#b3352f">mg</text>
+
+<line x1="206" y1="120" x2="252" y2="120" stroke="#2f5fd0" stroke-width="2.4" marker-end="url(#cb-ar)"/>
+<text x="229" y="112" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">a</text>
+
+<text x="282" y="130" text-anchor="middle" font-size="12" font-weight="600" fill="#a8641a">T</text>
+<text x="348" y="172" font-size="12" font-weight="600" fill="#a8641a">T</text>
+
+<text x="240" y="290" text-anchor="middle" font-size="11.5" fill="#7b8494">the string is light and the pulley is frictionless</text>
+</svg>
+</figure>`,
   opts: ["10 m s⁻²", "3.3 m s⁻²", "5.0 m s⁻²", "2.5 m s⁻²", "1.0 m s⁻²"],
   ans: 3,
   sol: `<p>Treat the two masses as one system. The only external force driving the
@@ -674,7 +764,28 @@ you to recognise the swap immediately.</p>`,
 },
 {
   id: "C-17", module: "C", topic: "Equilibrium", diff: 2,
-  q: "A body is held in equilibrium by three forces: 8 N horizontally to the right, 6 N vertically upward, and a third force F. What is the magnitude of F?",
+  q: `<p>A body is held in equilibrium by three forces: 8 N horizontally to the right, 6 N vertically upward, and a third force F. What is the magnitude of F?</p>
+<figure class="fig">
+<svg viewBox="0 0 460 250" role="img" aria-label="Two perpendicular forces of 8 newtons to the right and 6 newtons upward, their resultant, and the third force needed for equilibrium.">
+<text x="230" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Three forces in equilibrium</text>
+<line x1="170" y1="150" x2="310" y2="150" stroke="#2f5fd0" stroke-width="3" marker-end="url(#cq17-b)"/>
+<line x1="170" y1="150" x2="170" y2="60" stroke="#1f7a53" stroke-width="3" marker-end="url(#cq17-g)"/>
+<line x1="170" y1="150" x2="61" y2="220" stroke="#b3352f" stroke-width="3" marker-end="url(#cq17-r)"/>
+<line x1="170" y1="150" x2="310" y2="60" stroke="#a8641a" stroke-width="2" stroke-dasharray="6 4"/>
+<polyline points="170,134 186,134 186,150" fill="none" stroke="#7b8494" stroke-width="1.5"/>
+<text x="240" y="142" font-size="12.5" font-weight="600" fill="#2f5fd0">8 N</text>
+<text x="160" y="112" text-anchor="end" font-size="12.5" font-weight="600" fill="#1f7a53">6 N</text>
+<text x="320" y="56" font-size="12" fill="#a8641a">resultant = 10 N</text>
+<text x="52" y="236" font-size="12.5" font-weight="600" fill="#b3352f">F = ?</text>
+<text x="184" y="176" font-size="12" fill="#4a5262">body</text>
+<circle cx="170" cy="150" r="4" fill="#1f2937"/>
+<defs>
+<marker id="cq17-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5fd0"/></marker>
+<marker id="cq17-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f7a53"/></marker>
+<marker id="cq17-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+</defs>
+</svg>
+</figure>`,
   opts: ["48 N", "14 N", "2 N", "10 N", "100 N"],
   ans: 3,
   sol: `<p>For equilibrium the resultant is zero, so F must exactly cancel the
@@ -698,7 +809,36 @@ triangle is better for drawing, the resultant is better for calculation.</p>`,
 },
 {
   id: "C-18", module: "C", topic: "Centre of mass", diff: 2,
-  q: "Three masses, 1.0 kg, 2.0 kg and 3.0 kg, sit on a line at x = 0, x = 2.0 m and x = 5.0 m. Where is their centre of mass?",
+  q: `<p>Three masses, 1.0 kg, 2.0 kg and 3.0 kg, sit on a line at x = 0, x = 2.0 m and x = 5.0 m. Where is their centre of mass?</p>
+<figure class="fig">
+<svg viewBox="0 0 480 232" role="img" aria-label="Three masses of 1, 2 and 3 kilograms on a number line at positions zero, two and five metres, drawn as bars whose heights are proportional to the masses.">
+<text x="240" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Three masses on a line</text>
+
+<rect x="56" y="132" width="28" height="18" fill="#e8eefc" stroke="#2f5fd0" stroke-width="2"/>
+<rect x="196" y="114" width="28" height="36" fill="#e8eefc" stroke="#2f5fd0" stroke-width="2"/>
+<rect x="406" y="96" width="28" height="54" fill="#e8eefc" stroke="#2f5fd0" stroke-width="2"/>
+<text x="70" y="124" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2f5fd0">1.0 kg</text>
+<text x="210" y="106" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2f5fd0">2.0 kg</text>
+<text x="420" y="88" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2f5fd0">3.0 kg</text>
+
+<line x1="56" y1="150" x2="444" y2="150" stroke="#1f2937" stroke-width="2"/>
+<line x1="70" y1="144" x2="70" y2="156" stroke="#1f2937" stroke-width="2"/>
+<line x1="140" y1="144" x2="140" y2="156" stroke="#1f2937" stroke-width="2"/>
+<line x1="210" y1="144" x2="210" y2="156" stroke="#1f2937" stroke-width="2"/>
+<line x1="280" y1="144" x2="280" y2="156" stroke="#1f2937" stroke-width="2"/>
+<line x1="350" y1="144" x2="350" y2="156" stroke="#1f2937" stroke-width="2"/>
+<line x1="420" y1="144" x2="420" y2="156" stroke="#1f2937" stroke-width="2"/>
+<text x="70" y="174" text-anchor="middle" font-size="11.5" fill="#7b8494">0</text>
+<text x="140" y="174" text-anchor="middle" font-size="11.5" fill="#7b8494">1</text>
+<text x="210" y="174" text-anchor="middle" font-size="11.5" fill="#7b8494">2</text>
+<text x="280" y="174" text-anchor="middle" font-size="11.5" fill="#7b8494">3</text>
+<text x="350" y="174" text-anchor="middle" font-size="11.5" fill="#7b8494">4</text>
+<text x="420" y="174" text-anchor="middle" font-size="11.5" fill="#7b8494">5</text>
+
+<text x="240" y="200" text-anchor="middle" font-size="11.5" font-style="italic" fill="#7b8494">position / m</text>
+<text x="240" y="222" text-anchor="middle" font-size="11.5" fill="#7b8494">the bar heights are proportional to the masses</text>
+</svg>
+</figure>`,
   opts: ["1.67 m", "2.33 m", "2.50 m", "3.50 m", "3.17 m"],
   ans: 4,
   sol: `<p>Use the weighted average: multiply each position by its mass, add, and
@@ -1349,7 +1489,38 @@ sensitive: a 0.1% stretch changes the resistance by 0.2%.</p>`,
 },
 {
   id: "H-13", module: "H", topic: "Loaded potential divider", diff: 3,
-  q: "A 12 V supply of negligible internal resistance is connected across a 400 Ω resistor and a 600 Ω resistor in series. A 600 Ω load resistor is then connected across the 600 Ω resistor. What is the pd across the load?",
+  q: `<p>A 12 V supply of negligible internal resistance is connected across a 400 Ω resistor and a 600 Ω resistor in series. A 600 Ω load resistor is then connected across the 600 Ω resistor. What is the pd across the load?</p>
+<figure class="fig">
+<svg viewBox="0 0 460 262" role="img" aria-label="A 12 volt supply across a 400 ohm and a 600 ohm resistor in series, with a 600 ohm load connected across the 600 ohm resistor.">
+<text x="230" y="24" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">A divider with a load across the bottom arm</text>
+
+<text x="230" y="42" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1f7a53">12 V</text>
+<line x1="212" y1="52" x2="248" y2="52" stroke="#1f2937" stroke-width="2.5"/>
+<line x1="220" y1="64" x2="240" y2="64" stroke="#1f2937" stroke-width="5"/>
+<line x1="230" y1="64" x2="230" y2="86" stroke="#1f2937" stroke-width="2"/>
+
+<rect x="214" y="86" width="32" height="44" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="256" y="112" font-size="12.5" font-weight="600" fill="#2f5fd0">R₁ = 400 Ω</text>
+<line x1="230" y1="130" x2="230" y2="166" stroke="#1f2937" stroke-width="2"/>
+<circle cx="230" cy="148" r="3.2" fill="#1f2937"/>
+<rect x="214" y="166" width="32" height="44" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="256" y="192" font-size="12.5" font-weight="600" fill="#2f5fd0">R₂ = 600 Ω</text>
+<line x1="230" y1="210" x2="230" y2="228" stroke="#1f2937" stroke-width="2"/>
+<circle cx="230" cy="228" r="3.2" fill="#1f2937"/>
+
+<line x1="230" y1="148" x2="370" y2="148" stroke="#1f2937" stroke-width="2"/>
+<line x1="370" y1="148" x2="370" y2="170" stroke="#1f2937" stroke-width="2"/>
+<rect x="354" y="170" width="32" height="44" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="370" y1="214" x2="370" y2="228" stroke="#1f2937" stroke-width="2"/>
+<line x1="370" y1="228" x2="230" y2="228" stroke="#1f2937" stroke-width="2"/>
+<circle cx="370" cy="148" r="3.2" fill="#1f2937"/>
+<circle cx="370" cy="228" r="3.2" fill="#1f2937"/>
+<text x="394" y="196" font-size="12.5" font-weight="600" fill="#a8641a">600 Ω</text>
+<text x="394" y="212" font-size="10.5" fill="#7b8494">load</text>
+
+<text x="230" y="252" text-anchor="middle" font-size="11.5" fill="#7b8494">the load sits in parallel with R₂, so that arm is no longer 600 Ω alone</text>
+</svg>
+</figure>`,
   opts: ["6.0 V", "7.2 V", "5.1 V", "4.0 V", "3.6 V"],
   ans: 2,
   sol: `<p>The load is in parallel with the 600 Ω resistor, so it changes the
@@ -1401,7 +1572,38 @@ conclusions — the circuit configuration decides which.</p>`,
 },
 {
   id: "H-15", module: "H", topic: "Voltmeter loading", diff: 3,
-  q: "A 10 V supply of negligible internal resistance is connected in series with two 100 kΩ resistors. A voltmeter of resistance 100 kΩ is connected across one of them. What does the voltmeter read?",
+  q: `<p>A 10 V supply of negligible internal resistance is connected in series with two 100 kΩ resistors. A voltmeter of resistance 100 kΩ is connected across one of them. What does the voltmeter read?</p>
+<figure class="fig">
+<svg viewBox="0 0 460 262" role="img" aria-label="A 10 volt supply across two 100 kilohm resistors in series, with a 100 kilohm voltmeter connected across one of them.">
+<text x="230" y="24" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">A voltmeter is a resistor too</text>
+
+<text x="230" y="42" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1f7a53">10 V</text>
+<line x1="212" y1="52" x2="248" y2="52" stroke="#1f2937" stroke-width="2.5"/>
+<line x1="220" y1="64" x2="240" y2="64" stroke="#1f2937" stroke-width="5"/>
+<line x1="230" y1="64" x2="230" y2="86" stroke="#1f2937" stroke-width="2"/>
+
+<rect x="214" y="86" width="32" height="44" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="256" y="112" font-size="12.5" font-weight="600" fill="#2f5fd0">100 kΩ</text>
+<line x1="230" y1="130" x2="230" y2="166" stroke="#1f2937" stroke-width="2"/>
+<circle cx="230" cy="148" r="3.2" fill="#1f2937"/>
+<rect x="214" y="166" width="32" height="44" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="256" y="192" font-size="12.5" font-weight="600" fill="#2f5fd0">100 kΩ</text>
+<line x1="230" y1="210" x2="230" y2="228" stroke="#1f2937" stroke-width="2"/>
+<circle cx="230" cy="228" r="3.2" fill="#1f2937"/>
+
+<line x1="230" y1="148" x2="370" y2="148" stroke="#7b8494" stroke-width="1.8" stroke-dasharray="5 4"/>
+<line x1="370" y1="148" x2="370" y2="170" stroke="#7b8494" stroke-width="1.8" stroke-dasharray="5 4"/>
+<circle cx="370" cy="190" r="20" fill="#ffffff" stroke="#7b8494" stroke-width="1.8" stroke-dasharray="5 4"/>
+<text x="370" y="197" text-anchor="middle" font-size="15" font-weight="600" fill="#4a5262">V</text>
+<line x1="370" y1="210" x2="370" y2="228" stroke="#7b8494" stroke-width="1.8" stroke-dasharray="5 4"/>
+<line x1="370" y1="228" x2="230" y2="228" stroke="#7b8494" stroke-width="1.8" stroke-dasharray="5 4"/>
+<circle cx="370" cy="148" r="3.2" fill="#1f2937"/>
+<circle cx="370" cy="228" r="3.2" fill="#1f2937"/>
+<text x="398" y="194" font-size="12.5" font-weight="600" fill="#a8641a">100 kΩ</text>
+
+<text x="230" y="252" text-anchor="middle" font-size="11.5" fill="#7b8494">attaching the meter changes the very circuit it is measuring</text>
+</svg>
+</figure>`,
   opts: ["5.0 V", "3.3 V", "6.7 V", "2.5 V", "10 V"],
   ans: 1,
   sol: `<p>A real voltmeter is a resistor, and connecting it changes the circuit
@@ -1428,7 +1630,36 @@ ordinary multimeter.</p>`,
 },
 {
   id: "H-16", module: "H", topic: "Maximum power transfer", diff: 3,
-  q: "A cell of emf 12 V and internal resistance 2.0 Ω is connected to a variable external resistor <code>R</code>. What is the maximum power that can be delivered to <code>R</code>?",
+  q: `<p>A cell of emf 12 V and internal resistance 2.0 Ω is connected to a variable external resistor <code>R</code>. What is the maximum power that can be delivered to <code>R</code>?</p>
+<figure class="fig">
+<svg viewBox="0 0 460 240" role="img" aria-label="A 12 volt cell with internal resistance 2 ohms connected in a loop with a variable resistor R.">
+<defs>
+<marker id="vr-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto">
+<path d="M0,0 L7,3.2 L0,6.4 z" fill="#1f2937"/>
+</marker>
+</defs>
+<text x="230" y="24" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">A cell driving a variable load</text>
+
+<line x1="90" y1="80" x2="200" y2="80" stroke="#1f2937" stroke-width="2"/>
+<rect x="200" y="72" width="60" height="16" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="260" y1="80" x2="390" y2="80" stroke="#1f2937" stroke-width="2"/>
+<line x1="188" y1="112" x2="268" y2="50" stroke="#1f2937" stroke-width="1.8" marker-end="url(#vr-ar)"/>
+<text x="246" y="138" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2f5fd0">R, variable</text>
+
+<line x1="390" y1="80" x2="390" y2="190" stroke="#1f2937" stroke-width="2"/>
+<line x1="390" y1="190" x2="90" y2="190" stroke="#1f2937" stroke-width="2"/>
+<line x1="90" y1="190" x2="90" y2="174" stroke="#1f2937" stroke-width="2"/>
+<rect x="82" y="140" width="16" height="34" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="90" y1="140" x2="90" y2="120" stroke="#1f2937" stroke-width="2"/>
+<line x1="82" y1="120" x2="98" y2="120" stroke="#1f2937" stroke-width="5"/>
+<line x1="74" y1="106" x2="106" y2="106" stroke="#1f2937" stroke-width="2.5"/>
+<line x1="90" y1="106" x2="90" y2="80" stroke="#1f2937" stroke-width="2"/>
+<text x="118" y="111" font-size="12.5" font-weight="600" fill="#b3352f">ε = 12 V</text>
+<text x="118" y="162" font-size="12.5" font-weight="600" fill="#b3352f">r = 2.0 Ω</text>
+
+<text x="230" y="222" text-anchor="middle" font-size="11.5" fill="#7b8494">R can be set to any value; the question asks for the best one</text>
+</svg>
+</figure>`,
   opts: ["18 W", "36 W", "72 W", "9 W", "24 W"],
   ans: 0,
   sol: `<p>Power in <code>R</code> is maximal when <code>R</code> equals the

@@ -42,6 +42,28 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <tr><td>Diode</td><td>flat in reverse, sharp rise in forward</td><td>conducts in one direction only</td></tr>
 <tr><td>Thermistor (NTC)</td><td>resistance falls with temperature</td><td>more charge carriers released as it warms</td></tr>
 </tbody></table>
+<figure class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label="Graph of current against potential difference for three components: a straight line for an ohmic resistor, a curve that flattens for a filament lamp, and a flat-then-sharp curve for a diode.">
+<text x="240" y="24" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">I–V characteristics of the three standard components</text>
+<line x1="110" y1="46" x2="110" y2="238" stroke="#1f2937" stroke-width="2"/>
+<line x1="46" y1="230" x2="454" y2="230" stroke="#1f2937" stroke-width="2"/>
+<polygon points="454,230 444,225 444,235" fill="#1f2937"/>
+<polygon points="110,46 105,56 115,56" fill="#1f2937"/>
+<path d="M110,230 L286,72" fill="none" stroke="#2f5fd0" stroke-width="2.5"/>
+<path d="M110,230 Q205,108 340,88" fill="none" stroke="#a8641a" stroke-width="2.5"/>
+<path d="M54,232 L150,230 Q176,228 186,140 L192,70" fill="none" stroke="#1f7a53" stroke-width="2.5"/>
+<text x="296" y="70" font-size="12" font-weight="600" fill="#2f5fd0">ohmic resistor</text>
+<text x="348" y="98" font-size="12" font-weight="600" fill="#a8641a">filament lamp</text>
+<text x="200" y="60" font-size="12" font-weight="600" fill="#1f7a53">diode</text>
+<text x="446" y="250" text-anchor="end" font-size="12.5" fill="#4a5262">V</text>
+<text x="100" y="42" text-anchor="end" font-size="12.5" fill="#4a5262">I</text>
+<text x="102" y="246" text-anchor="end" font-size="12" fill="#7b8494">O</text>
+<text x="196" y="152" font-size="11.5" fill="#7b8494">≈0.6 V</text>
+<text x="36" y="264" font-size="11.5" fill="#7b8494">reverse bias</text>
+<text x="238" y="142" font-size="11.5" fill="#7b8494">flattens → R rises</text>
+</svg>
+<figcaption><b>Read the shape, not the numbers.</b> A straight line through the origin means constant resistance. A curve that <i>flattens</i> as <code>V</code> rises means resistance is <b>increasing</b> — the filament is heating. A curve that is flat then shoots up at a threshold means one-way conduction — a diode. The direction of the bend is the whole answer.</figcaption>
+</figure>
 <div class="callout callout--good"><p><b>The direction of the bend is the giveaway.</b> If a graph of <code>I</code> against <code>V</code> flattens as <code>V</code> rises, the resistance is increasing — a lamp. If it steepens sharply at a threshold, it is a diode. There is no third option on this paper.</p></div>`
     },
 
@@ -80,6 +102,42 @@ I_total = I₁ + I₂ + …
 1/R_total = 1/R₁ + 1/R₂ + …</div>
 <p>For exactly two resistors in parallel, the product-over-sum form is faster:</p>
 <div class="formula">R_parallel = R₁R₂ / (R₁ + R₂)</div>
+<figure class="fig">
+<svg viewBox="0 0 480 268" role="img" aria-label="Two circuits side by side: in series a single loop with two resistors, in parallel two branches across the same cell.">
+<text x="128" y="28" text-anchor="middle" font-size="13" font-weight="600" fill="#14181f">Series — one path</text>
+<text x="360" y="28" text-anchor="middle" font-size="13" font-weight="600" fill="#14181f">Parallel — several paths</text>
+<line x1="240" y1="40" x2="240" y2="248" stroke="#e2e6ed" stroke-width="1.5" stroke-dasharray="5 5"/>
+<polyline points="56,134 56,70 200,70 200,190 56,190 56,146" fill="none" stroke="#1f2937" stroke-width="2"/>
+<line x1="42" y1="146" x2="70" y2="146" stroke="#1f2937" stroke-width="2"/>
+<line x1="49" y1="134" x2="63" y2="134" stroke="#1f2937" stroke-width="4.5"/>
+<rect x="96" y="62" width="28" height="16" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<rect x="144" y="62" width="28" height="16" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="110" y="100" text-anchor="middle" font-size="12" fill="#4a5262">R₁</text>
+<text x="158" y="100" text-anchor="middle" font-size="12" fill="#4a5262">R₂</text>
+<polygon points="76,64 88,70 76,76" fill="#2f5fd0"/>
+<text x="82" y="58" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">I</text>
+<text x="128" y="218" text-anchor="middle" font-size="11.5" fill="#4a5262">same I through both</text>
+<text x="128" y="236" text-anchor="middle" font-size="11.5" fill="#4a5262">R = R₁ + R₂</text>
+<polyline points="270,134 270,70 450,70 450,190 270,190 270,146" fill="none" stroke="#1f2937" stroke-width="2"/>
+<line x1="256" y1="146" x2="284" y2="146" stroke="#1f2937" stroke-width="2"/>
+<line x1="263" y1="134" x2="277" y2="134" stroke="#1f2937" stroke-width="4.5"/>
+<line x1="330" y1="70" x2="330" y2="110" stroke="#1f2937" stroke-width="2"/>
+<line x1="330" y1="138" x2="330" y2="190" stroke="#1f2937" stroke-width="2"/>
+<rect x="322" y="110" width="16" height="28" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="400" y1="70" x2="400" y2="110" stroke="#1f2937" stroke-width="2"/>
+<line x1="400" y1="138" x2="400" y2="190" stroke="#1f2937" stroke-width="2"/>
+<rect x="392" y="110" width="16" height="28" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="348" y="130" font-size="12" fill="#4a5262">R₁</text>
+<text x="418" y="130" font-size="12" fill="#4a5262">R₂</text>
+<polygon points="324,86 330,96 336,86" fill="#2f5fd0"/>
+<polygon points="394,86 400,96 406,86" fill="#2f5fd0"/>
+<text x="318" y="80" text-anchor="end" font-size="12" font-weight="600" fill="#2f5fd0">I₁</text>
+<text x="412" y="80" font-size="12" font-weight="600" fill="#2f5fd0">I₂</text>
+<text x="360" y="218" text-anchor="middle" font-size="11.5" fill="#4a5262">same V across each branch</text>
+<text x="360" y="236" text-anchor="middle" font-size="11.5" fill="#4a5262">1/R = 1/R₁ + 1/R₂</text>
+</svg>
+<figcaption><b>What is shared decides everything.</b> In <b>series</b> the current is common, so the potential differences add. In <b>parallel</b> the potential difference is common, so the currents add. Every "which resistor dissipates more power?" question is answered by asking which quantity is shared — and the same logic gives the two instant sanity checks: series total is <i>larger</i> than the largest resistor, parallel total is <i>smaller</i> than the smallest.</figcaption>
+</figure>
 <div class="callout callout--key"><p><b>Two facts that eliminate options instantly.</b> The total resistance of a series combination is always <b>larger</b> than the largest individual resistance. The total resistance of a parallel combination is always <b>smaller</b> than the smallest individual resistance. If an option violates either, it is wrong — no calculation needed.</p></div>
 <h3>Cells in series and in parallel</h3>
 <table><thead><tr><th>Arrangement</th><th>EMF</th><th>Internal resistance</th></tr></thead><tbody>
@@ -139,9 +197,73 @@ I_total = I₁ + I₂ + …
 <li><b>vertical intercept</b> = <code>ε</code>, the EMF (measured at zero current, when there is no <code>Ir</code> loss)</li>
 <li><b>gradient</b> = <code>−r</code>, the negative of the internal resistance</li>
 </ul>
+<figure class="fig">
+<svg viewBox="0 0 480 240" role="img" aria-label="Left: a cell with internal resistance r driving an external resistor R, with a voltmeter across R. Right: terminal potential difference against current, a straight line with intercept epsilon and gradient minus r.">
+<text x="240" y="24" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Internal resistance: the circuit, and the V–I line</text>
+<line x1="56" y1="116" x2="56" y2="80" stroke="#1f2937" stroke-width="2"/>
+<line x1="56" y1="80" x2="196" y2="80" stroke="#1f2937" stroke-width="2"/>
+<line x1="196" y1="80" x2="196" y2="190" stroke="#1f2937" stroke-width="2"/>
+<line x1="196" y1="190" x2="56" y2="190" stroke="#1f2937" stroke-width="2"/>
+<line x1="56" y1="190" x2="56" y2="166" stroke="#1f2937" stroke-width="2"/>
+<line x1="42" y1="128" x2="70" y2="128" stroke="#1f2937" stroke-width="2"/>
+<line x1="48" y1="116" x2="62" y2="116" stroke="#1f2937" stroke-width="4.5"/>
+<line x1="56" y1="128" x2="56" y2="140" stroke="#1f2937" stroke-width="2"/>
+<rect x="48" y="140" width="16" height="26" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="74" y="158" font-size="12" font-weight="600" fill="#b3352f">r</text>
+<rect x="34" y="104" width="46" height="76" fill="none" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="57" y="100" text-anchor="middle" font-size="11.5" fill="#7b8494">cell</text>
+<rect x="112" y="72" width="32" height="16" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="128" y="64" text-anchor="middle" font-size="12" fill="#4a5262">R</text>
+<line x1="112" y1="80" x2="112" y2="142" stroke="#1f2937" stroke-width="2"/>
+<line x1="144" y1="80" x2="144" y2="142" stroke="#1f2937" stroke-width="2"/>
+<circle cx="128" cy="142" r="14" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="128" y="147" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2f5fd0">V</text>
+<polygon points="84,74 96,80 84,86" fill="#2f5fd0"/>
+<text x="90" y="68" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">I</text>
+<line x1="300" y1="86" x2="300" y2="196" stroke="#1f2937" stroke-width="2"/>
+<line x1="300" y1="190" x2="456" y2="190" stroke="#1f2937" stroke-width="2"/>
+<polygon points="456,190 446,185 446,195" fill="#1f2937"/>
+<polygon points="300,86 295,96 305,96" fill="#1f2937"/>
+<line x1="300" y1="96" x2="430" y2="190" stroke="#2f5fd0" stroke-width="2.5"/>
+<line x1="300" y1="96" x2="290" y2="96" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="290" y="100" text-anchor="end" font-size="12" font-weight="600" fill="#2f5fd0">ε</text>
+<text x="430" y="208" text-anchor="middle" font-size="11.5" fill="#4a5262">ε/r</text>
+<text x="454" y="208" text-anchor="end" font-size="12.5" fill="#4a5262">I</text>
+<text x="292" y="82" text-anchor="end" font-size="12.5" fill="#4a5262">V</text>
+<text x="378" y="130" font-size="11.5" fill="#4a5262">gradient = −r</text>
+<text x="150" y="228" text-anchor="middle" font-size="11.5" fill="#4a5262">V_terminal = ε − Ir</text>
+</svg>
+<figcaption><b>The cell is an EMF in series with its own resistance.</b> Only the terminal p.d. is available to the external circuit, and it <i>falls</i> as the current rises — which is why headlights dim when the starter motor draws a big current. Plot <code>V</code> against <code>I</code> and you get a straight line: the intercept is <code>ε</code> (read at zero current, where there is no <code>Ir</code> loss) and the gradient is <code>−r</code>.</figcaption>
+</figure>
 <div class="callout callout--key"><p><b>The maximum power transfer result.</b> For a fixed EMF and internal resistance driving an external resistor <code>R</code>, the current is <code>ε/(R + r)</code>, so the power in <code>R</code> is</p>
 <div class="formula">P = ε²R/(R + r)²</div>
 <p>This is maximised when <code>R = r</code>, giving <code>P_max = ε²/(4r)</code>. It is a standard competition result, and the algebra is a good exercise in ratio reasoning.</p></div>
+<figure class="fig">
+<svg viewBox="0 0 460 300" role="img" aria-label="A graph of the power delivered to the load against the ratio of load resistance to internal resistance. The curve rises steeply, peaks at a ratio of one, and then falls away slowly.">
+<text x="230" y="22" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Power delivered to R against R/r</text>
+
+<line x1="70" y1="72" x2="70" y2="252" stroke="#cbd2dd" stroke-width="1.6"/>
+<line x1="64" y1="250" x2="448" y2="250" stroke="#cbd2dd" stroke-width="1.6"/>
+<line x1="64" y1="80" x2="448" y2="80" stroke="#e2e6ed" stroke-width="1.2" stroke-dasharray="5 4"/>
+<line x1="107" y1="80" x2="107" y2="250" stroke="#e2e6ed" stroke-width="1.2" stroke-dasharray="5 4"/>
+
+<polyline points="70,250 73.7,193.7 75.6,172.9 77.4,155.6 79.3,141.2 88.5,98.9 97.8,83.4 107,80 125.5,86.8 144,98.9 181,122.5 218,141.2 292,166.7 366,182.8 440,193.7" fill="none" stroke="#2f5fd0" stroke-width="2.6"/>
+
+<circle cx="107" cy="80" r="4.2" fill="#1f7a53"/>
+<text x="114" y="72" font-size="12" font-weight="600" fill="#1f7a53">R = r</text>
+
+<text x="66" y="62" text-anchor="end" font-size="11.5" fill="#4a5262">P / P_max</text>
+<text x="62" y="84" text-anchor="end" font-size="11" fill="#7b8494">1</text>
+<text x="62" y="254" text-anchor="end" font-size="11" fill="#7b8494">0</text>
+<text x="70" y="268" text-anchor="middle" font-size="11" fill="#7b8494">0</text>
+<text x="107" y="268" text-anchor="middle" font-size="11" fill="#7b8494">1</text>
+<text x="144" y="268" text-anchor="middle" font-size="11" fill="#7b8494">2</text>
+<text x="255" y="268" text-anchor="middle" font-size="11" fill="#7b8494">5</text>
+<text x="440" y="268" text-anchor="middle" font-size="11" fill="#7b8494">10</text>
+<text x="255" y="290" text-anchor="middle" font-size="11.5" font-style="italic" fill="#7b8494">R / r</text>
+</svg>
+<figcaption><b>The curve is the whole story in one picture.</b> The axes are both ratios, so this single curve covers every cell and every load. It rises almost vertically at first — a very small external resistance already draws a useful current — then peaks sharply at <code>R = r</code> and falls away slowly and asymmetrically. The fall is slow because a large <code>R</code> merely chokes the current, whereas a small <code>R</code> burns the energy inside the cell. Read the efficiency off the same point: at the peak the internal resistance dissipates exactly as much as the load, so only <b>50%</b> of the power reaches <code>R</code>.</figcaption>
+</figure>
 <h3>The short-circuit limit</h3>
 <p>If <code>R = 0</code>, the current is <code>ε/r</code> and the terminal p.d. is zero — all the energy is being dissipated inside the source. That is a short circuit, and it is why the result matters practically.</p>`
     },
@@ -157,6 +279,30 @@ I_total = I₁ + I₂ + …
 <li><b>Add up all resistances</b> in the loop, including any internal resistances.</li>
 <li><b>Divide.</b> Then use the current to find potential differences or powers in individual components.</li>
 </ol>
+<figure class="fig">
+<svg viewBox="0 0 480 240" role="img" aria-label="A single loop containing a resistor and two cells whose positive plates face opposite ways, so the cells oppose each other.">
+<text x="240" y="26" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Two opposing EMFs in one loop</text>
+<line x1="100" y1="70" x2="380" y2="70" stroke="#1f2937" stroke-width="2"/>
+<line x1="380" y1="70" x2="380" y2="170" stroke="#1f2937" stroke-width="2"/>
+<line x1="380" y1="170" x2="250" y2="170" stroke="#1f2937" stroke-width="2"/>
+<line x1="240" y1="170" x2="140" y2="170" stroke="#1f2937" stroke-width="2"/>
+<line x1="130" y1="170" x2="100" y2="170" stroke="#1f2937" stroke-width="2"/>
+<line x1="100" y1="170" x2="100" y2="70" stroke="#1f2937" stroke-width="2"/>
+<rect x="220" y="62" width="40" height="16" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<text x="240" y="54" text-anchor="middle" font-size="12" fill="#4a5262">R</text>
+<line x1="250" y1="156" x2="250" y2="184" stroke="#1f2937" stroke-width="2"/>
+<line x1="240" y1="162" x2="240" y2="178" stroke="#1f2937" stroke-width="4.5"/>
+<line x1="130" y1="156" x2="130" y2="184" stroke="#1f2937" stroke-width="2"/>
+<line x1="140" y1="162" x2="140" y2="178" stroke="#1f2937" stroke-width="4.5"/>
+<text x="246" y="204" text-anchor="middle" font-size="12" font-weight="600" fill="#b3352f">ε₁ = 6.0 V</text>
+<text x="134" y="204" text-anchor="middle" font-size="12" font-weight="600" fill="#1f7a53">ε₂ = 2.0 V</text>
+<polygon points="192,64 180,70 192,76" fill="#2f5fd0"/>
+<text x="186" y="58" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">I</text>
+<text x="330" y="112" text-anchor="middle" font-size="12" fill="#4a5262">net EMF = ε₁ − ε₂</text>
+<text x="330" y="132" text-anchor="middle" font-size="12" fill="#4a5262">I = (ε₁ − ε₂) / R</text>
+</svg>
+<figcaption><b>Opposing sources subtract.</b> Both cells sit in the same loop, but their positive plates face opposite ways, so their EMFs act against each other and the net driving EMF is the <i>difference</i>. The larger cell drives the current; the smaller one is driven <i>against</i> its own EMF, so it <b>absorbs</b> energy rather than supplying it — it is charging. If the two EMFs were equal, the net EMF would be zero and no current would flow at all.</figcaption>
+</figure>
 <div class="callout callout--warn"><p><b>The trap.</b> If the two EMFs are equal, the net EMF is zero and no current flows — even though both sources are working and there are resistors in the loop. Students often want to add the EMFs, or to assume that a circuit with two batteries must have current in it. Neither is true.</p></div>
 <div class="callout callout--key"><p><b>Where the energy goes.</b> The smaller EMF is being <i>driven</i> by the larger one, which means it is absorbing energy rather than supplying it. If it is a rechargeable cell, it is charging. That is the physical content of the question, and it is worth stating explicitly if the question asks you to explain rather than calculate.</p></div>`
     },
@@ -212,6 +358,37 @@ I_total = I₁ + I₂ + …
 <h3>Where the formula comes from — one line, no new physics</h3>
 <p>The same current <code>I</code> flows through both resistors because they are in series. The p.d. across the lower one is <code>V_out = IR₂</code>, and the total supply is <code>V_in = I(R₁ + R₂)</code>. Divide the first by the second and the current cancels:</p>
 <div class="formula">V_out / V_in = R₂ / (R₁ + R₂)</div>
+<figure class="fig">
+<svg viewBox="0 0 480 290" role="img" aria-label="A potential divider: two resistors in series across a supply, with the output voltage taken across the lower resistor R2.">
+<text x="240" y="26" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">The potential divider</text>
+<line x1="150" y1="50" x2="350" y2="50" stroke="#1f2937" stroke-width="2"/>
+<line x1="150" y1="255" x2="350" y2="255" stroke="#1f2937" stroke-width="2"/>
+<line x1="250" y1="50" x2="250" y2="90" stroke="#1f2937" stroke-width="2"/>
+<rect x="242" y="90" width="16" height="42" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="250" y1="132" x2="250" y2="170" stroke="#1f2937" stroke-width="2"/>
+<circle cx="250" cy="170" r="4" fill="#2f5fd0"/>
+<rect x="242" y="170" width="16" height="42" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<line x1="250" y1="212" x2="250" y2="255" stroke="#1f2937" stroke-width="2"/>
+<line x1="150" y1="50" x2="150" y2="128" stroke="#1f2937" stroke-width="2"/>
+<line x1="136" y1="128" x2="164" y2="128" stroke="#1f2937" stroke-width="2"/>
+<line x1="142" y1="148" x2="158" y2="148" stroke="#1f2937" stroke-width="4.5"/>
+<line x1="150" y1="148" x2="150" y2="255" stroke="#1f2937" stroke-width="2"/>
+<line x1="250" y1="170" x2="330" y2="170" stroke="#1f2937" stroke-width="2"/>
+<circle cx="334" cy="170" r="4.5" fill="#1f2937"/>
+<line x1="310" y1="172" x2="310" y2="253" stroke="#5b3fa8" stroke-width="1.5" stroke-dasharray="4 4"/>
+<polygon points="310,172 305,182 315,182" fill="#5b3fa8"/>
+<polygon points="310,253 305,243 315,243" fill="#5b3fa8"/>
+<text x="268" y="118" font-size="12" font-weight="600" fill="#4a5262">R₁</text>
+<text x="268" y="198" font-size="12" font-weight="600" fill="#4a5262">R₂</text>
+<text x="126" y="142" text-anchor="end" font-size="12.5" font-weight="600" fill="#b3352f">V_in</text>
+<text x="322" y="216" font-size="12.5" font-weight="600" fill="#5b3fa8">V_out</text>
+<text x="344" y="164" font-size="12" fill="#4a5262">output</text>
+<polygon points="244,62 250,74 256,62" fill="#2f5fd0"/>
+<text x="264" y="70" font-size="12" font-weight="600" fill="#2f5fd0">I</text>
+<text x="240" y="280" text-anchor="middle" font-size="11.5" fill="#4a5262">V_out = V_in × R₂ / (R₁ + R₂)</text>
+</svg>
+<figcaption><b>The output follows the resistor you measure across.</b> The same current passes through both resistors, so the supply divides in proportion to the resistances — <b>not</b> equally. Because the formula is a ratio of two resistances, the units cancel, so kilohms never need converting. Sanity-check with the limits: make <code>R₂</code> much larger than <code>R₁</code> and the output approaches the full supply.</figcaption>
+</figure>
 <p>so <code>V_out = V_in × R₂/(R₁ + R₂)</code>. It is just Ohm's law applied twice with the same current. Once you see it that way, the "output is proportional to the resistor you measure across" fact is obvious rather than something to memorise backwards — and it is why, in the thermistor example below, swapping which resistor the output is taken across flips the answer.</p>
 <h3>Why dividers matter</h3>
 <p>They turn a change in resistance into a change in voltage, which is what makes sensors usable. Put a thermistor in a divider and the output voltage becomes a measure of temperature. Put an LDR in and it becomes a measure of light level. In both cases the direction of the response depends on which resistor the output is taken across:</p>

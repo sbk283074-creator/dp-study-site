@@ -307,6 +307,31 @@ range           R = u² sin 2θ / g</div>
 <li><b>along the slope:</b> <code>mg sin θ</code> — this is the component that accelerates the body down the slope</li>
 <li><b>perpendicular to the slope:</b> <code>mg cos θ</code> — this is balanced by the normal contact force</li>
 </ul>
+<figure class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label="A block on a 30 degree slope with its weight resolved into a component down the slope and a component perpendicular to the slope.">
+<defs>
+<marker id="ci-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+<marker id="ci-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5fd0"/></marker>
+<marker id="ci-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f7a53"/></marker>
+</defs>
+<text x="240" y="22" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Resolving the weight on a slope</text>
+<polygon points="80,250 380,77 380,250" fill="#f1f3f7" stroke="#cbd2dd" stroke-width="1.5"/>
+<line x1="40" y1="250" x2="452" y2="250" stroke="#cbd2dd" stroke-width="2"/>
+<path d="M124,250 A44,44 0 0 0 118,228" fill="none" stroke="#7b8494" stroke-width="1.5"/>
+<text x="132" y="243" font-size="13" fill="#4a5262">30°</text>
+<rect x="184" y="133" width="40" height="40" rx="2" fill="#e8eefc" stroke="#1f2937" stroke-width="2" transform="rotate(-30 204 153)"/>
+<circle cx="204" cy="153" r="3" fill="#1f2937"/>
+<line x1="167" y1="175" x2="204" y2="239" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line x1="241" y1="218" x2="204" y2="239" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line x1="204" y1="153" x2="204" y2="239" stroke="#b3352f" stroke-width="3" marker-end="url(#ci-r)"/>
+<line x1="204" y1="153" x2="167" y2="175" stroke="#2f5fd0" stroke-width="3" marker-end="url(#ci-b)"/>
+<line x1="204" y1="153" x2="241" y2="218" stroke="#1f7a53" stroke-width="3" marker-end="url(#ci-g)"/>
+<text x="214" y="232" font-size="13" font-weight="600" fill="#b3352f">mg</text>
+<text x="156" y="170" font-size="13" font-weight="600" fill="#2f5fd0" text-anchor="end">mg sin θ</text>
+<text x="252" y="228" font-size="13" font-weight="600" fill="#1f7a53">mg cos θ</text>
+</svg>
+<figcaption><b>One vector becomes two.</b> The weight <b>mg</b> (red) is replaced by <b>mg sin θ</b> down the slope (blue) and <b>mg cos θ</b> into the slope (green). The dashed lines close the rectangle, which is the visual proof that the two components add back to the original vector. Test the limit: flatten the slope and only <code>mg sin θ</code> vanishes — so that must be the one pulling the block downhill.</figcaption>
+</figure>
 <div class="callout callout--warn"><p><b>The most common error in the whole of mechanics.</b> Students write <code>mg cos θ</code> for the component down the slope. Check the limit: as the slope becomes flat, <code>θ → 0</code>, and the component down the slope must go to <b>zero</b>. Only <code>mg sin θ</code> does that. Always test a limit — it takes two seconds and catches the error every time.</p></div>
 <h3>Equilibrium of three forces</h3>
 <p>If three coplanar forces act at a point and the body is in equilibrium, the three vectors placed head-to-tail form a <b>closed triangle</b>. That turns a force problem into a geometry problem, which is usually faster. Watch for the 3–4–5 triangle and for equilateral arrangements, because they are chosen deliberately.</p>
@@ -330,6 +355,40 @@ range           R = u² sin 2θ / g</div>
 <h3>Free-body diagrams</h3>
 <p>Draw one body. Draw every force acting <b>on</b> it as an arrow starting from the body. Do not draw forces it exerts on other things. Then resolve and apply <code>F = ma</code> in each direction.</p>
 <p>The discipline of drawing the diagram before writing any equation is not optional at competition level, where the forces are rarely all aligned.</p>
+<figure class="fig">
+<svg viewBox="0 0 480 290" role="img" aria-label="Free-body diagram of a block on a rough horizontal surface, showing the four forces that act on the block.">
+<defs>
+<marker id="cf-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+<marker id="cf-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f7a53"/></marker>
+<marker id="cf-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5fd0"/></marker>
+<marker id="cf-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8641a"/></marker>
+</defs>
+<text x="240" y="22" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Every force acting ON the block</text>
+<line x1="56" y1="200" x2="424" y2="200" stroke="#9aa4b4" stroke-width="2.5"/>
+<g stroke="#cbd2dd" stroke-width="1.5">
+<line x1="70" y1="200" x2="58" y2="213"/>
+<line x1="110" y1="200" x2="98" y2="213"/>
+<line x1="150" y1="200" x2="138" y2="213"/>
+<line x1="190" y1="200" x2="178" y2="213"/>
+<line x1="230" y1="200" x2="218" y2="213"/>
+<line x1="270" y1="200" x2="258" y2="213"/>
+<line x1="310" y1="200" x2="298" y2="213"/>
+<line x1="350" y1="200" x2="338" y2="213"/>
+<line x1="390" y1="200" x2="378" y2="213"/>
+</g>
+<rect x="180" y="142" width="110" height="58" rx="3" fill="#e8eefc" stroke="#1f2937" stroke-width="2"/>
+<circle cx="235" cy="171" r="3.5" fill="#1f2937"/>
+<line x1="235" y1="171" x2="235" y2="98" stroke="#1f7a53" stroke-width="3" marker-end="url(#cf-g)"/>
+<line x1="235" y1="171" x2="235" y2="252" stroke="#b3352f" stroke-width="3" marker-end="url(#cf-r)"/>
+<line x1="235" y1="171" x2="360" y2="171" stroke="#2f5fd0" stroke-width="3" marker-end="url(#cf-b)"/>
+<line x1="235" y1="171" x2="138" y2="171" stroke="#a8641a" stroke-width="3" marker-end="url(#cf-a)"/>
+<text x="245" y="94" font-size="13" font-weight="600" fill="#1f7a53">N</text>
+<text x="245" y="268" font-size="13" font-weight="600" fill="#b3352f">W = mg</text>
+<text x="368" y="166" font-size="13" font-weight="600" fill="#2f5fd0">F</text>
+<text x="132" y="166" font-size="13" font-weight="600" fill="#a8641a" text-anchor="end">f</text>
+</svg>
+<figcaption><b>Draw one body, then every force on it.</b> The normal force <b>N</b> and the weight <b>W</b> are equal and opposite — but they are <i>not</i> a third-law pair, because both act on the block. The third-law partner of <b>W</b> is the pull the block exerts on the Earth. If the block moves at constant velocity, <code>F = f</code> and <code>N = W</code>.</figcaption>
+</figure>
 <h3>Applying F = ma correctly</h3>
 <p>The resultant in <code>F = ma</code> is the <b>net</b> force in a chosen direction, which is the sum of the components of all forces in that direction. A frequent mistake is to include a force that is not acting on the body, or to forget that the normal force and weight are not a third-law pair. Write <code>F_net = ma</code> with the arrow, not just <code>F = ma</code>, to remind yourself it is the resultant.</p>
 <div class="callout callout--key"><p><b>First law as a detection tool.</b> If a body is at rest or moving in a straight line at constant speed, its resultant force is zero — so you can immediately write <code>ΣF = 0</code> in each direction. This is the entrance ticket to every statics problem and to every "constant velocity" problem. Conversely, if the speed or direction is changing, the resultant is non-zero and points in the direction of the acceleration.</p></div>
@@ -355,6 +414,50 @@ range           R = u² sin 2θ / g</div>
 <p>For two masses <code>m₁</code> and <code>m₂</code> hanging over a frictionless pulley, with <code>m₁ &gt; m₂</code>:</p>
 <div class="formula">a = (m₁ − m₂)g / (m₁ + m₂)        T = 2m₁m₂g/(m₁ + m₂)</div>
 <p>Note the useful check: if <code>m₂ = 0</code>, then <code>a = g</code> ✓. If <code>m₁ = m₂</code>, then <code>a = 0</code> ✓. Both limits are satisfied, which is how you know the formulas are right.</p>
+<figure class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label="Two connected-body arrangements: two masses hanging over a pulley, and a block on a table connected over a pulley to a hanging mass.">
+<defs>
+<marker id="cp-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+<marker id="cp-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b3fa8"/></marker>
+</defs>
+<text x="120" y="24" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">Both masses hanging</text>
+<text x="344" y="24" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">One mass on a table</text>
+<line x1="240" y1="38" x2="240" y2="290" stroke="#e2e6ed" stroke-width="1.5" stroke-dasharray="5 5"/>
+<circle cx="120" cy="62" r="22" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<circle cx="120" cy="62" r="4" fill="#1f2937"/>
+<path d="M98,62 A22,22 0 0 1 142,62" fill="none" stroke="#1f2937" stroke-width="2"/>
+<line x1="98" y1="62" x2="98" y2="150" stroke="#1f2937" stroke-width="2"/>
+<line x1="142" y1="62" x2="142" y2="150" stroke="#1f2937" stroke-width="2"/>
+<rect x="82" y="150" width="32" height="36" rx="2" fill="#e8eefc" stroke="#1f2937" stroke-width="2"/>
+<rect x="126" y="150" width="32" height="36" rx="2" fill="#e8eefc" stroke="#1f2937" stroke-width="2"/>
+<text x="98" y="173" text-anchor="middle" font-size="12.5" fill="#14181f">m₁</text>
+<text x="142" y="173" text-anchor="middle" font-size="12.5" fill="#14181f">m₂</text>
+<line x1="98" y1="186" x2="98" y2="224" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cp-r)"/>
+<line x1="142" y1="186" x2="142" y2="224" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cp-r)"/>
+<text x="98" y="240" text-anchor="middle" font-size="12" fill="#b3352f">m₁g</text>
+<text x="142" y="240" text-anchor="middle" font-size="12" fill="#b3352f">m₂g</text>
+<line x1="66" y1="152" x2="66" y2="192" stroke="#5b3fa8" stroke-width="2.5" marker-end="url(#cp-p)"/>
+<line x1="176" y1="192" x2="176" y2="152" stroke="#5b3fa8" stroke-width="2.5" marker-end="url(#cp-p)"/>
+<text x="58" y="176" text-anchor="end" font-size="12.5" font-weight="600" fill="#5b3fa8">a</text>
+<text x="184" y="176" font-size="12.5" font-weight="600" fill="#5b3fa8">a</text>
+<rect x="268" y="178" width="136" height="10" rx="2" fill="#e2e6ed" stroke="#1f2937" stroke-width="1.5"/>
+<rect x="288" y="146" width="62" height="32" rx="2" fill="#e8eefc" stroke="#1f2937" stroke-width="2"/>
+<text x="319" y="167" text-anchor="middle" font-size="12.5" fill="#14181f">m₁</text>
+<line x1="350" y1="162" x2="394" y2="162" stroke="#1f2937" stroke-width="2"/>
+<circle cx="408" cy="162" r="14" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
+<circle cx="408" cy="162" r="3.5" fill="#1f2937"/>
+<path d="M394,162 A14,14 0 0 1 422,162" fill="none" stroke="#1f2937" stroke-width="2"/>
+<line x1="422" y1="162" x2="422" y2="222" stroke="#1f2937" stroke-width="2"/>
+<rect x="408" y="222" width="28" height="30" rx="2" fill="#e8eefc" stroke="#1f2937" stroke-width="2"/>
+<text x="422" y="242" text-anchor="middle" font-size="12.5" fill="#14181f">m₂</text>
+<line x1="422" y1="252" x2="422" y2="286" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cp-r)"/>
+<text x="432" y="276" font-size="12" fill="#b3352f">m₂g</text>
+<text x="336" y="205" text-anchor="middle" font-size="12" fill="#4a5262">smooth table</text>
+<line x1="252" y1="130" x2="386" y2="130" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="319" y="124" text-anchor="middle" font-size="12" fill="#7b8494">T pulls both, so T cancels</text>
+</svg>
+<figcaption><b>The tension is internal, so it disappears.</b> Treat the whole system as one body and the driving force is the <i>difference</i> of the weights while the accelerated mass is the <i>sum</i>. Only when you isolate a single body does <b>T</b> come back — and then it acts on that body alone.</figcaption>
+</figure>
 <h3>Tows and chains (the same idea, horizontal)</h3>
 <p>Two blocks pulled by a force <code>F</code> on the front one: treat them as one system to get <code>a = F/(m₁ + m₂)</code>, then isolate the rear block to find the tension in the coupling: <code>T = m_rear × a</code>. The tension is always less than the applied force, and it is largest in the link nearest the pull. This is the horizontal analogue of the pulley, and the whole-system-then-one-body route is identical.</p>
 <div class="callout callout--warn"><p><b>Inclined connected bodies.</b> When the system includes a slope, resolve the weights along the slope first (use <code>mg sin θ</code>) before applying the whole-system acceleration formula. The driving force is then the sum of the components that pull the system one way minus those that pull the other; the total mass is still the sum of all masses. Students who forget to resolve the weight on the slope get an acceleration far too large.</p></div>
@@ -379,6 +482,29 @@ range           R = u² sin 2θ / g</div>
 <div class="callout callout--good"><p><b>Qualitative friction questions.</b> Many competition questions ask what happens to friction when something changes, without numbers. The answer always follows from asking "is the object still in equilibrium?" If yes, friction adjusts to maintain equilibrium. If no, friction is at its maximum and the object accelerates. Getting that distinction right is most of the marks.</p></div>
 <h3>Static versus kinetic friction</h3>
 <p>There are two coefficients and they are not equal. Static friction <code>μ_s</code> governs the <i>maximum</i> before sliding; kinetic friction <code>μ_k</code> governs sliding, and typically <code>μ_k &lt; μ_s</code>. So it takes more force to <i>start</i> a block moving than to keep it moving — the familiar "stick then slip" feel. In Round 0 problems the coefficient is usually given as a single <code>μ</code>; assume it is the relevant one for the stated state (static if not yet sliding, kinetic if sliding).</p>
+<figure class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label="Graph of friction force against applied force: it rises at 45 degrees while the block is static, then drops to a lower constant value once sliding begins.">
+<text x="240" y="24" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Friction versus applied force</text>
+<line x1="96" y1="52" x2="96" y2="250" stroke="#1f2937" stroke-width="2"/>
+<line x1="96" y1="250" x2="438" y2="250" stroke="#1f2937" stroke-width="2"/>
+<line x1="96" y1="94" x2="252" y2="94" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line x1="96" y1="150" x2="252" y2="150" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line x1="252" y1="94" x2="252" y2="250" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="4 4"/>
+<polyline points="96,250 252,94" fill="none" stroke="#2f5fd0" stroke-width="3"/>
+<line x1="252" y1="94" x2="252" y2="150" stroke="#a8641a" stroke-width="3"/>
+<polyline points="252,150 438,150" fill="none" stroke="#a8641a" stroke-width="3"/>
+<circle cx="252" cy="94" r="4.5" fill="#2f5fd0"/>
+<text x="88" y="98" text-anchor="end" font-size="12.5" font-weight="600" fill="#2f5fd0">μ_s N</text>
+<text x="88" y="154" text-anchor="end" font-size="12.5" font-weight="600" fill="#a8641a">μ_k N</text>
+<text x="252" y="268" text-anchor="middle" font-size="12.5" fill="#4a5262">F_s = μ_s N</text>
+<text x="262" y="84" font-size="12" fill="#5b3fa8">limiting equilibrium</text>
+<text x="146" y="190" font-size="12.5" fill="#2f5fd0">static: f = F</text>
+<text x="348" y="172" text-anchor="middle" font-size="12.5" fill="#a8641a">sliding: f = μ_k N</text>
+<text x="438" y="272" text-anchor="end" font-size="12.5" fill="#4a5262">applied force F</text>
+<text transform="translate(40,166) rotate(-90)" text-anchor="middle" font-size="12.5" fill="#4a5262">friction force f</text>
+</svg>
+<figcaption><b>Two regimes, one graph.</b> While the block is still at rest, friction matches the applied force exactly, so the line rises at 45°. At the peak the block is in <b>limiting equilibrium</b>. Once it slips, friction drops to the smaller kinetic value and stays flat — which is why it is harder to <i>start</i> something moving than to keep it moving.</figcaption>
+</figure>
 <h3>Limiting equilibrium</h3>
 <p>The phrase "limiting equilibrium" means the object is still at rest but the friction has reached its maximum <code>μN</code> — any tiny extra force would start it moving. At that exact point the along-slope forces balance with friction at full strength, giving the cleanest version of the sliding condition. It is the boundary case and the one most questions probe.</p>
 <div class="callout callout--key"><p><b>The direction of friction is not "down the slope" by default.</b> Friction opposes the <i>impending</i> relative motion. A block being pushed up a slope has friction acting down the slope; a block that would slide down if unrestrained has friction acting up the slope. Decide the direction of impending slip first, then draw friction opposing it. Getting this backwards is a quiet, common error.</p></div>`
@@ -482,6 +608,38 @@ range           R = u² sin 2θ / g</div>
 <div class="formula">R_right × L = W × (L/2) + P × x
 R_right = (WL/2 + Px) / L</div>
 <p>The left reaction never appeared. That is the technique working exactly as intended.</p>
+<figure class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label="A uniform plank on two supports with a load P at distance x from the left support, and the moment arms measured from the left support.">
+<defs>
+<marker id="cm-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f7a53"/></marker>
+<marker id="cm-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+<marker id="cm-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5fd0"/></marker>
+</defs>
+<text x="240" y="24" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Take moments about the left support</text>
+<line x1="70" y1="96" x2="70" y2="266" stroke="#5b3fa8" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text transform="translate(48,182) rotate(-90)" text-anchor="middle" font-size="12" fill="#5b3fa8">chosen axis</text>
+<rect x="70" y="140" width="340" height="14" rx="2" fill="#e2e6ed" stroke="#1f2937" stroke-width="2"/>
+<polygon points="56,182 84,182 70,154" fill="#f1f3f7" stroke="#1f2937" stroke-width="1.5"/>
+<polygon points="396,182 424,182 410,154" fill="#f1f3f7" stroke="#1f2937" stroke-width="1.5"/>
+<line x1="70" y1="140" x2="70" y2="104" stroke="#1f7a53" stroke-width="2.5" marker-end="url(#cm-g)"/>
+<line x1="410" y1="140" x2="410" y2="104" stroke="#1f7a53" stroke-width="2.5" marker-end="url(#cm-g)"/>
+<text x="62" y="120" text-anchor="end" font-size="12" font-weight="600" fill="#1f7a53">R_left</text>
+<text x="418" y="120" font-size="12" font-weight="600" fill="#1f7a53">R_right</text>
+<line x1="70" y1="192" x2="240" y2="192" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line x1="70" y1="212" x2="165" y2="212" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="4 4"/>
+<line x1="240" y1="154" x2="240" y2="190" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cm-r)"/>
+<text x="248" y="186" font-size="12" font-weight="600" fill="#b3352f">W (beam, at L/2)</text>
+<line x1="165" y1="154" x2="165" y2="208" stroke="#2f5fd0" stroke-width="2.5" marker-end="url(#cm-b)"/>
+<text x="173" y="204" font-size="12" font-weight="600" fill="#2f5fd0">P</text>
+<text x="150" y="186" text-anchor="middle" font-size="12" fill="#4a5262">L/2</text>
+<text x="112" y="228" text-anchor="middle" font-size="12" fill="#4a5262">x</text>
+<line x1="70" y1="244" x2="410" y2="244" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="70" y1="238" x2="70" y2="250" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="410" y1="238" x2="410" y2="250" stroke="#7b8494" stroke-width="1.5"/>
+<text x="240" y="264" text-anchor="middle" font-size="12.5" fill="#4a5262">L</text>
+</svg>
+<figcaption><b>Pick the axis that kills an unknown.</b> Taking moments about the left support gives <code>R_left</code> a lever arm of <b>zero</b>, so it vanishes: <code>R_right × L = W × (L/2) + P × x</code>. A uniform plank's weight acts at its midpoint, so its moment arm is <code>L/2</code> — not <code>L</code>, and not <code>x</code>.</figcaption>
+</figure>
 <div class="callout callout--warn"><p><b>Two things to be careful about.</b> First, a uniform plank's weight acts at its <b>midpoint</b>, so the moment arm is <code>L/2</code> — a frequent omission. Second, if the plank is not uniform, or has an additional mass stuck to it, you must find the combined centre of mass first and treat the total weight as acting there.</p></div>
 <h3>Couples</h3>
 <p>Two equal, opposite, parallel forces whose lines of action are separated by distance <code>d</code> form a couple. The resultant force is zero, but there is a resultant moment:</p>
@@ -499,6 +657,40 @@ R_right = (WL/2 + Px) / L</div>
 <h3>Composite bodies</h3>
 <p>Treat each part as a point mass at its own centre of mass, then find the weighted average position:</p>
 <div class="formula">x_cm = (m₁x₁ + m₂x₂ + …) / (m₁ + m₂ + …)</div>
+<figure class="fig">
+<svg viewBox="0 0 480 260" role="img" aria-label="Three masses on a number line at 0, 2 and 5 metres, with their centre of mass marked at 3.17 metres.">
+<text x="240" y="24" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Centre of mass of three masses on a line</text>
+<line x1="60" y1="150" x2="452" y2="150" stroke="#1f2937" stroke-width="2"/>
+<polygon points="452,150 444,145 444,155" fill="#1f2937"/>
+<g stroke="#cbd2dd" stroke-width="1.5">
+<line x1="80" y1="150" x2="80" y2="160"/>
+<line x1="150" y1="150" x2="150" y2="160"/>
+<line x1="220" y1="150" x2="220" y2="160"/>
+<line x1="290" y1="150" x2="290" y2="160"/>
+<line x1="360" y1="150" x2="360" y2="160"/>
+<line x1="430" y1="150" x2="430" y2="160"/>
+</g>
+<g font-size="11.5" fill="#7b8494" text-anchor="middle">
+<text x="80" y="178">0</text>
+<text x="150" y="178">1.0</text>
+<text x="220" y="178">2.0</text>
+<text x="290" y="178">3.0</text>
+<text x="360" y="178">4.0</text>
+<text x="430" y="178">5.0</text>
+</g>
+<text x="452" y="198" text-anchor="end" font-size="12" fill="#4a5262">position / m</text>
+<circle cx="80" cy="142" r="8" fill="#e8eefc" stroke="#2f5fd0" stroke-width="2"/>
+<circle cx="220" cy="138" r="12" fill="#e8eefc" stroke="#2f5fd0" stroke-width="2"/>
+<circle cx="430" cy="135" r="15" fill="#e8eefc" stroke="#2f5fd0" stroke-width="2"/>
+<text x="80" y="120" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">1.0 kg</text>
+<text x="220" y="112" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">2.0 kg</text>
+<text x="430" y="106" text-anchor="middle" font-size="12" font-weight="600" fill="#2f5fd0">3.0 kg</text>
+<line x1="302" y1="58" x2="302" y2="200" stroke="#5b3fa8" stroke-width="1.5" stroke-dasharray="6 4"/>
+<polygon points="302,154 293,168 311,168" fill="#5b3fa8"/>
+<text x="302" y="50" text-anchor="middle" font-size="12.5" font-weight="600" fill="#5b3fa8">centre of mass 3.17 m</text>
+</svg>
+<figcaption><b>A weighted average, not a plain average.</b> The 3.0 kg mass is three times the 1.0 kg one, so it pulls the centre of mass towards itself. A plain average of the positions would give 2.33 m — the answer you get by ignoring the masses entirely. The check: the centre of mass must lie <i>between</i> the outermost masses and <i>nearer the heavier one</i>.</figcaption>
+</figure>
 <h3>The added-mass problem</h3>
 <p>A common competition shape: a uniform object has an extra mass stuck to one end, and you must find the new centre of mass, then use it in a moments calculation. The procedure is:</p>
 <ol class="steps">

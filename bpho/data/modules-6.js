@@ -405,6 +405,33 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <div class="callout callout--key"><p><b>What refraction actually is, physically.</b> The frequency is set by the source and cannot change. When light enters a denser medium its speed falls, so <code>λ = v/f</code> falls too. The change of direction is the consequence of the wavefronts bending as one part of the wave slows before the other — exactly like a marching band turning when one flank slows down. That analogy is worth being able to give.</p></div>
 <h3>Which way does the ray bend?</h3>
 <p>Into a denser medium (<code>n</code> increases), the ray bends <b>towards</b> the normal. Into a less dense medium, it bends <b>away</b> from the normal. A quick check: from air into glass, the ray bends towards the normal, and the angle from the normal decreases.</p>
+<figure class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label="A ray of light passing from air into glass, bending towards the normal so the angle of refraction is smaller than the angle of incidence.">
+<defs>
+<marker id="cr-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+<marker id="cr-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5fd0"/></marker>
+</defs>
+<text x="240" y="24" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Refraction: the ray bends towards the normal</text>
+<rect x="50" y="60" width="380" height="90" fill="#f7f8fa"/>
+<rect x="50" y="150" width="380" height="106" fill="#eef2fb"/>
+<line x1="50" y1="150" x2="430" y2="150" stroke="#1f2937" stroke-width="2"/>
+<line x1="240" y1="46" x2="240" y2="252" stroke="#7b8494" stroke-width="1.4" stroke-dasharray="6 5"/>
+<text x="248" y="54" font-size="11.5" fill="#7b8494">normal</text>
+<line x1="150" y1="60" x2="240" y2="150" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cr-r)"/>
+<line x1="240" y1="150" x2="298" y2="256" stroke="#2f5fd0" stroke-width="2.5" marker-end="url(#cr-b)"/>
+<line x1="240" y1="150" x2="330" y2="60" stroke="#cbd2dd" stroke-width="1.5" stroke-dasharray="5 4"/>
+<path d="M240,90 A60,60 0 0 0 198,108" fill="none" stroke="#7b8494" stroke-width="1.4"/>
+<path d="M240,210 A60,60 0 0 0 268,203" fill="none" stroke="#7b8494" stroke-width="1.4"/>
+<text x="204" y="132" text-anchor="end" font-size="12" font-weight="600" fill="#b3352f">θ₁ = 45°</text>
+<text x="276" y="196" font-size="12" font-weight="600" fill="#2f5fd0">θ₂ ≈ 28°</text>
+<text x="62" y="82" font-size="12" fill="#4a5262">air   n₁ = 1.00</text>
+<text x="62" y="242" font-size="12" fill="#4a5262">glass  n₂ = 1.50</text>
+<text x="146" y="52" font-size="12" fill="#b3352f">incident ray</text>
+<text x="306" y="272" font-size="12" fill="#2f5fd0">refracted ray</text>
+<text x="336" y="56" font-size="12" fill="#9aa4b4">reflected (faint)</text>
+</svg>
+<figcaption><b>Both angles are measured from the normal.</b> Entering the denser medium the ray slows, so it turns <i>towards</i> the normal and <code>θ₂ &lt; θ₁</code>. A useful check: any answer with <code>θ₂ &gt; θ₁</code> on entering glass is wrong before you finish the arithmetic. Note also that Snell's law relates the <i>sines</i>, not the angles — <code>θ₂</code> is not <code>θ₁/n</code>.</figcaption>
+</figure>
 <div class="callout callout--key"><p><b>Why <code>n = c/c_s</code> and Snell are the same law.</b> From <code>v = fλ</code> with fixed frequency, <code>λ = v/f</code>, so a slower medium has a shorter wavelength. Snell's law <code>n₁ sin θ₁ = n₂ sin θ₂</code> rearranges to <code>sin θ₁ / sin θ₂ = n₂/n₁ = (c/v₂)/(c/v₁) = v₁/v₂</code> — exactly the mechanical refraction rule with speeds. Light bending is just wave speed changing at a boundary.</p></div>
 <p>中文对照: 折射率 refractive index, 斯涅尔定律 Snell's law, 法线 normal, 入射角 angle of incidence. 光从光疏到光密介质会向法线偏折。</p>`
     },
@@ -416,6 +443,37 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <div class="formula">n₁ sin θ_c = n₂ × 1        so   sin θ_c = n₂/n₁</div>
 <p>When the second medium is air, <code>n₂ ≈ 1</code>, and this simplifies to the form most often used:</p>
 <div class="formula">sin θ_c = 1/n</div>
+<figure class="fig">
+<svg viewBox="0 0 480 320" role="img" aria-label="Two rays inside glass hitting the surface: one below the critical angle refracts out into the air, one above it is totally internally reflected.">
+<defs>
+<marker id="ct-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5fd0"/></marker>
+<marker id="ct-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f7a53"/></marker>
+</defs>
+<text x="240" y="26" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Total internal reflection: two incidence angles</text>
+<rect x="40" y="50" width="400" height="110" fill="#f7f8fa"/>
+<rect x="40" y="160" width="400" height="96" fill="#eef2fb"/>
+<line x1="40" y1="160" x2="440" y2="160" stroke="#1f2937" stroke-width="2"/>
+<line x1="140" y1="54" x2="140" y2="250" stroke="#7b8494" stroke-width="1.4" stroke-dasharray="6 5"/>
+<line x1="360" y1="54" x2="360" y2="250" stroke="#7b8494" stroke-width="1.4" stroke-dasharray="6 5"/>
+<line x1="112" y1="220" x2="140" y2="160" stroke="#2f5fd0" stroke-width="2.5" marker-end="url(#ct-b)"/>
+<line x1="140" y1="160" x2="213" y2="70" stroke="#2f5fd0" stroke-width="2.5" marker-end="url(#ct-b)"/>
+<line x1="274" y1="220" x2="360" y2="160" stroke="#1f7a53" stroke-width="2.5" marker-end="url(#ct-g)"/>
+<line x1="360" y1="160" x2="232" y2="70" stroke="#1f7a53" stroke-width="2.5" marker-end="url(#ct-g)"/>
+<path d="M140,220 A60,60 0 0 1 115,214" fill="none" stroke="#7b8494" stroke-width="1.4"/>
+<path d="M140,100 A60,60 0 0 1 178,113" fill="none" stroke="#7b8494" stroke-width="1.4"/>
+<path d="M360,220 A60,60 0 0 1 311,194" fill="none" stroke="#7b8494" stroke-width="1.4"/>
+<text x="108" y="236" text-anchor="end" font-size="12" font-weight="600" fill="#2f5fd0">θ₁ = 25°</text>
+<text x="186" y="106" font-size="12" font-weight="600" fill="#2f5fd0">θ₂ ≈ 39°</text>
+<text x="306" y="216" text-anchor="end" font-size="12" font-weight="600" fill="#1f7a53">θ₁ = 55°</text>
+<text x="50" y="68" font-size="12" fill="#4a5262">air   n = 1.00</text>
+<text x="50" y="248" font-size="12" fill="#4a5262">glass  n = 1.50</text>
+<line x1="56" y1="282" x2="84" y2="282" stroke="#2f5fd0" stroke-width="3"/>
+<text x="92" y="286" font-size="12" fill="#2f5fd0">θ₁ = 25° &lt; θ_c: refracts out, bending away</text>
+<line x1="56" y1="304" x2="84" y2="304" stroke="#1f7a53" stroke-width="3"/>
+<text x="92" y="308" font-size="12" fill="#1f7a53">θ₁ = 55° &gt; θ_c: totally internally reflected</text>
+</svg>
+<figcaption><b>Above the critical angle, nothing gets out.</b> Inside the glass the ray bends <i>away</i> from the normal as it tries to escape. At <code>θ_c</code> the refracted ray would run along the surface; beyond it, refraction is impossible and <b>all</b> the light reflects back inside. For glass <code>sin θ_c = 1/1.5 ≈ 0.667</code>, so <code>θ_c ≈ 42°</code> — and the two rays above sit either side of it.</figcaption>
+</figure>
 <h3>The two conditions for total internal reflection</h3>
 <ol class="tight">
 <li>Light must be travelling from a denser medium to a less dense one. It cannot happen the other way.</li>
@@ -491,6 +549,34 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <li>A ray through the centre of the lens is undeviated.</li>
 <li>A ray through the near focal point emerges parallel to the axis (converging).</li>
 </ol>
+<figure class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label="Ray diagram for a converging lens with the object beyond 2F, showing a real inverted image formed beyond the far focal point.">
+<defs>
+<marker id="cl-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>
+<marker id="cl-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f7a53"/></marker>
+</defs>
+<text x="240" y="26" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Converging lens: object beyond 2F</text>
+<line x1="30" y1="170" x2="466" y2="170" stroke="#cbd2dd" stroke-width="1.5"/>
+<path d="M280,78 Q301,170 280,262 Q259,170 280,78 z" fill="#dbe6fb" stroke="#2f5fd0" stroke-width="2"/>
+<circle cx="190" cy="170" r="3.5" fill="#1f2937"/>
+<circle cx="370" cy="170" r="3.5" fill="#1f2937"/>
+<circle cx="100" cy="170" r="3" fill="#9aa4b4"/>
+<circle cx="460" cy="170" r="3" fill="#9aa4b4"/>
+<text x="190" y="190" text-anchor="middle" font-size="12" fill="#4a5262">F</text>
+<text x="370" y="190" text-anchor="middle" font-size="12" fill="#4a5262">F′</text>
+<text x="100" y="190" text-anchor="middle" font-size="12" fill="#9aa4b4">2F</text>
+<text x="460" y="190" text-anchor="middle" font-size="12" fill="#9aa4b4">2F′</text>
+<polyline points="70,124 280,124 437,204" fill="none" stroke="#2f5fd0" stroke-width="2"/>
+<line x1="70" y1="124" x2="437" y2="204" stroke="#a8641a" stroke-width="2"/>
+<polyline points="70,124 280,204 437,204" fill="none" stroke="#5b3fa8" stroke-width="2"/>
+<line x1="70" y1="170" x2="70" y2="124" stroke="#b3352f" stroke-width="3" marker-end="url(#cl-r)"/>
+<line x1="437" y1="170" x2="437" y2="204" stroke="#1f7a53" stroke-width="3" marker-end="url(#cl-g)"/>
+<text x="64" y="118" text-anchor="end" font-size="12" font-weight="600" fill="#b3352f">object</text>
+<text x="446" y="222" text-anchor="end" font-size="12" font-weight="600" fill="#1f7a53">image</text>
+<text x="286" y="72" font-size="12" fill="#2f5fd0">converging lens</text>
+</svg>
+<figcaption><b>Three rays, one crossing point.</b> A ray parallel to the axis leaves through <b>F′</b>; a ray through the centre goes straight on; a ray through <b>F</b> emerges parallel. All three meet at the image, which is <b>real</b> (the rays genuinely converge there, so it can be projected on a screen) and <b>inverted</b>. Move the object inside <code>F</code> and the rays diverge instead — the image flips to virtual, upright and magnified, which is the magnifying glass.</figcaption>
+</figure>
 <div class="callout callout--key"><p><b>中文对照.</b> 凸透镜 converging lens, 凹透镜 diverging lens, 实像 real image, 虚像 virtual image, 焦点 focal point. 凸透镜物距大于焦距成倒立实像，小于焦距成正立虚像。</p></div>
 <div class="callout callout--warn"><p><b>How to get this wrong.</b> Do not assume a converging lens always makes a real image. Place the object inside the focal length (closer than <code>f</code>) and the image flips to virtual, upright and magnified — that is the magnifying glass. The "real vs virtual" outcome depends on where the object sits relative to <code>f</code>, not on the lens type alone (a diverging lens is always virtual, but a converging lens can be either).</p></div>`
     },
@@ -560,6 +646,41 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <p>For small angles, <code>sin θ ≈ tan θ = x/D</code> where <code>x</code> is the distance from the centre of the pattern. So</p>
 <div class="formula">s x/D = nλ   →   x = nλD/s</div>
 <p>The spacing between consecutive maxima is therefore <code>λD/s</code> ✓. Notice that the small-angle approximation from module A is doing real work here — that is why BPhO supplies it.</p>
+<figure class="fig">
+<svg viewBox="0 0 480 300" role="img" aria-label="Geometry of Young's double slit experiment: two slits a distance s apart, a screen a distance D away, and the fringe spacing w marked on the screen.">
+<text x="240" y="24" text-anchor="middle" font-size="14" font-weight="600" fill="#14181f">Young's double slit: where w = λD/s comes from</text>
+<rect x="84" y="40" width="12" height="78" fill="#1f2937"/>
+<rect x="84" y="122" width="12" height="56" fill="#1f2937"/>
+<rect x="84" y="182" width="12" height="78" fill="#1f2937"/>
+<text x="30" y="36" font-size="11.5" fill="#7b8494">double slit</text>
+<rect x="344" y="40" width="9" height="220" fill="#e2e6ed" stroke="#cbd2dd" stroke-width="1"/>
+<line x1="96" y1="150" x2="344" y2="150" stroke="#cbd2dd" stroke-width="1.2" stroke-dasharray="5 5"/>
+<line x1="90" y1="120" x2="340" y2="110" stroke="#2f5fd0" stroke-width="2"/>
+<line x1="90" y1="180" x2="340" y2="110" stroke="#a8641a" stroke-width="2"/>
+<line x1="90" y1="120" x2="106" y2="176" stroke="#5b3fa8" stroke-width="1.4" stroke-dasharray="4 4"/>
+<line x1="90" y1="180" x2="106" y2="176" stroke="#5b3fa8" stroke-width="3.5"/>
+<text x="114" y="196" font-size="11.5" fill="#5b3fa8">path difference = s sin θ</text>
+<line x1="70" y1="120" x2="70" y2="180" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="64" y1="120" x2="76" y2="120" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="64" y1="180" x2="76" y2="180" stroke="#7b8494" stroke-width="1.5"/>
+<text x="58" y="154" text-anchor="end" font-size="12" font-weight="600" fill="#4a5262">s</text>
+<line x1="90" y1="272" x2="344" y2="272" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="90" y1="266" x2="90" y2="278" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="344" y1="266" x2="344" y2="278" stroke="#7b8494" stroke-width="1.5"/>
+<text x="217" y="290" text-anchor="middle" font-size="12" fill="#4a5262">D</text>
+<line x1="386" y1="110" x2="386" y2="150" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="380" y1="110" x2="392" y2="110" stroke="#7b8494" stroke-width="1.5"/>
+<line x1="380" y1="150" x2="392" y2="150" stroke="#7b8494" stroke-width="1.5"/>
+<text x="398" y="134" font-size="12" font-weight="600" fill="#4a5262">w</text>
+<line x1="353" y1="150" x2="378" y2="150" stroke="#1f2937" stroke-width="5"/>
+<line x1="353" y1="110" x2="378" y2="110" stroke="#1f2937" stroke-width="3.5"/>
+<line x1="353" y1="190" x2="378" y2="190" stroke="#1f2937" stroke-width="3.5"/>
+<line x1="353" y1="70" x2="378" y2="70" stroke="#9aa4b4" stroke-width="2.5"/>
+<line x1="353" y1="230" x2="378" y2="230" stroke="#9aa4b4" stroke-width="2.5"/>
+<text x="424" y="52" text-anchor="end" font-size="11.5" fill="#7b8494">screen</text>
+</svg>
+<figcaption><b>Maxima where the path difference is a whole number of wavelengths.</b> The two rays arrive at a screen point with path difference <code>s sin θ</code> (purple construction). Bright fringes sit at <code>s sin θ = nλ</code>. For the small angles involved, <code>sin θ ≈ x/D</code>, so consecutive maxima are separated by <code>w = λD/s</code>. <b>Read the graph as ratios:</b> finer slits or a farther screen widen the fringes; pushing the slits apart narrows them.</figcaption>
+</figure>
 <h3>How the pattern changes</h3>
 <table><thead><tr><th>Change</th><th>Effect on fringe spacing</th></tr></thead><tbody>
 <tr><td>Increase <code>λ</code> (red instead of blue)</td><td>spacing increases</td></tr>

@@ -471,6 +471,44 @@ Built 2026-09-16. **Hand-authored static SPA — no build step, no bundler, no `
   counter moving 0 → 9 of 25; result view shows the stat grid, 25 topic rows, weak topics and a
   5-step repair plan; leaving the mock removes `#mocktimer`; the untimed mock renders with no clock.
   **Zero 4xx responses and zero page errors.**
+- **Hand-drawn figures (2026-09-17).** Every diagram in the space is **inline SVG authored by hand
+  into the data strings** — no image files, no image-generation tool, no fetched asset. That is forced
+  by the `file://` constraint for the same reason the data is: an external `.svg` would be a second
+  network request, and the pages must work from disk.
+  **38 figures** ship: **16 in the explanations** (`modules-3.js` 6 for H·circuits, `modules-4.js` 6
+  for C·forces, `modules-6.js` 4 for G·optics) and **22 in the question stems** (`questions-1.js` 8,
+  `questions-2.js` 6, `questions-3.js` 5 … plus the H/I shards). Markup is
+  `<figure class="fig"><svg viewBox="0 0 W H" role="img" aria-label="…">…</svg>` with an optional
+  `<figcaption>`; `assets/style.css` scales the SVG with `width:100%;height:auto;max-width:560px`, so
+  figures are responsive with **no fixed `width`/`height`** on the `<svg>`.
+  Three rules make them safe in this codebase:
+  1. **A question stem that carries a figure must be a backtick template string.** `q` was a
+     double-quoted string; SVG attributes also use `"`, so the field had to be converted to
+     `` q: `<p>…</p><figure…>…</figure>` ``. Backticks are safe here because the SVG contains no
+     `${`. `sol` and section `body` were already backticked.
+  2. **Marker ids must be globally unique across every figure.** HTML documents have **no id
+     namespace**, so two figures each defining `id="a"` collide and one of them silently renders with
+     the wrong arrowhead. Every marker is therefore prefixed per figure (`cq2-*`, `ds-*`, `gr-*`,
+     `oe-*`, `vr-*`, `bm-*`, `cb-*`, …). Current total: 40 ids, all distinct.
+  3. **Colours are literal hex, not CSS variables.** `app.js` injects `q.q` / `s.body` / `x.sol` into
+     `innerHTML` **raw** (only labels and ids pass through `esc()`), so SVG survives intact — but a
+     `var(--ink)` inside a `<text fill>` resolves against the SVG's own context, not the page. Figures
+     hand-colour with `#14181f` ink · `#4a5262` ink-2 · `#7b8494` ink-3 · `#e2e6ed`/`#cbd2dd` lines ·
+     `#2f5fd0` accent · `#b3352f` bad · `#1f7a53` good · `#a8641a` warn · `#5b3fa8` purple.
+  **A figure must encode the discriminator the question tests, not decorate it** — the half-wave
+  rectified waveform shows the *same peak, half the area*; the friction graph shows the *drop* at
+  limiting equilibrium; the lamp I–V curve *flattens* while the diode is *flat then vertical*; the
+  double-slit figure carries the `s sin θ` construction. Figures that merely illustrate the apparatus
+  are worth less than ones that carry the argument.
+  *Verification.* `/tmp/lint-svg.js` walks every `<figure class="fig">` and asserts: no dangling
+  `url(#id)`, no `x2`/`y2` on a `<text>`, balanced tags, `viewBox="0 0 W H"`, `role="img"` +
+  `aria-label`, and **no duplicate id across the whole space**. It found one real geometry bug — an
+  SVG arc written `A78 78 0 1 1` (large-arc **and** sweep both set) renders with an *enlarged* radius
+  and bulged outside the circle; the long arc needs `large-arc=1, sweep=0`. Screenshot every figure
+  with Playwright before believing it: presence in the DOM is not the same as being drawn correctly.
+  The browser pass asserts **100 `.ex`, 16 explanation figures, 22 question figures, zero
+  zero-size SVGs, zero console errors**, and that no raw `viewBox`/`stroke-width` text leaks into a
+  paragraph.
 - Rebuild: **none.** Edit the data files directly and reload.
 
 ### 07 · The two vocabulary spaces — `ib-english-vocab/` and `vocab-review/`
