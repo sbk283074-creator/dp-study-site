@@ -317,7 +317,7 @@ the table above, and enforced by `SECTION_RULES` in `tools/validate.py`:
 | BM SL P1, P2 | `A`, `B` | P1 20 + 10, P2 20 + 20 (no local guide; verified online) |
 
 A section is only checked when one is present. How many items carry one is a coverage question, not an
-error: **220 of the 320 items sit on a paper that has sections, and 210 of those carry a label** — the
+error: **225 of the 325 items sit on a paper that has sections, and 215 of those carry a label** — the
 10 that do not are 7 CS P1, 2 BM P1 and 1 BM P2. The remaining **100 items are on the three papers with
 no sections at all** (Physics P2 59, Maths P3 29, CS P2 12), where a label is not merely missing but
 impossible.
@@ -398,7 +398,7 @@ worth recording rather than inventing an answer: **CS P1 is split 17 `not allowe
 **Two more rendered fields are now closed as well.** `level` is stated twice — `build.py` derives one
 from the subject slug and prints the item's own `level` beside it — so `SUBJECT_LEVEL` requires them to
 agree; and `language`, which renders as a bare chip, is closed to
-`python / java / pseudocode / sql` (`LANGUAGE_VALUES`). Both were already correct across all 320 items,
+`python / java / pseudocode / sql` (`LANGUAGE_VALUES`). Both were already correct across all 325 items,
 which is the point: they are cheap checks added while they cost nothing, so a future batch cannot drift
 them silently.
 
@@ -409,6 +409,17 @@ route plus the three or four most predictable wrong ones — wrong part of a for
 a unit slip, a quantity confused with its rate of change. An MCQ cluster is one bank item whose parts
 are the individual questions; length floors scale with the cluster (45 words of answer per MCQ), so a
 five-question cluster needs roughly 225 words of answer, not 45.
+
+**The answer key must be spread, and this was a live defect in this bank.** Every MCQ cluster here was
+authored with the correct option first, which is harmless for a single item and puts the key at A in
+**all fourteen** pre-existing clusters. The site renders the answer text but not the options, so a
+student working through the answer booklet reads the letter A twenty-five times in a row — the same class
+of defect the BPhO wave found, in a different bank. From Batch 29 the assembler applies a fixed rotation
+(**A6 B6 C7 D6** over its 25 questions) and asserts that the letter stated in the answer matches the
+keyed option; the option texts, rationales and arithmetic are untouched, and the rotation is applied when
+authoring rather than by reordering options in the JSON, which would silently invalidate the rationales.
+**Redistributing the fourteen existing clusters is an open follow-up**, and it needs the same
+letter-versus-key assertion before it ships.
 
 **Data-based rules.** Must carry a data table or a figure, and must exercise uncertainty, graphing or
 experimental critique. Seed one genuine anomaly into the dataset and make the candidate find it, name a
@@ -444,11 +455,12 @@ The failure mode this rule exists to prevent is a bank that looks thorough and i
 bank stood at **45/255 = 18%**, with **Maths at 8.3% (9/109)** and **BM at 0% (0/30)**. Maths and BM are
 the two subjects with the widest gap between what the guide presents and what the bank contains. Batches
 22 and 22b were written against that gap and moved it, and the figure work that followed kept moving it:
-the bank now stands at **94/320 = 29%**, with **Maths at 18% (24/130)** — above the per-subject target —
-**CS at 48% (29/61)**, **Physics at 37% (33/90)** and **BM at 21% (8/39)**, against 0%
+the bank now stands at **98/325 = 30%**, with **Maths at 18% (24/130)** — above the per-subject target —
+**CS at 48% (29/61)**, **Physics at 39% (37/95)** and **BM at 21% (8/39)**, against 0%
 for BM at Batch 21. `FIGURE_COVERAGE_FLOOR` was raised from 0.17 to **0.19** in the same change that
-earned it and has since been raised five times more, to **0.24**, then to **0.25** by Batch 25, then to
-**0.27** by Batch 26, then to **0.28** by Batch 27, then to **0.29** by Batch 28, which is the
+earned it and has since been raised six times more, to **0.24**, then to **0.25** by Batch 25, then to
+**0.27** by Batch 26, then to **0.28** by Batch 27, then to **0.29** by Batch 28, then to **0.30** by
+Batch 29, which is the
 ratchet working as designed: coverage
 rose, and the floor followed it up so the gain cannot be spent later. Every subject now clears the 15%
 per-subject target, so the audit prints no gap. That is the intended state — the gap visible until it is
@@ -753,19 +765,19 @@ rather than only a sum. Run it after any change to the rubric.
 4. **Status:** new items are `draft` until the gates pass, then `published`.
 5. **Re-brief:** coverage is re-measured after every batch; the next brief comes from the new gaps.
 
-Current state: 320 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
+Current state: 325 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
 priority-2 node is done** — Maths 32/32 must + 51/51 should (83/83 overall), Physics 24/24 (complete),
-CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 320
-carry `verification.assertions` (3656 assertions in total), `validate.py` reports 0 failures, and 235 of
-the 320 carry a `difficulty_evidence` block — the other 85 are the grandfathered backlog described in
+CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 325
+carry `verification.assertions` (3769 assertions in total), `validate.py` reports 0 failures, and 240 of
+the 325 carry a `difficulty_evidence` block — the other 85 are the grandfathered backlog described in
 §4.7, which `--strict` reports as warnings and plain `--check` ignores unless the bank gets worse. **No
 item claims difficulty 5 without evidence**; all 85 outstanding items are difficulty-4 claims.
 
 **Node coverage is not paper coverage, and only the first was being measured.** The 100% above is true
 and was true throughout the CS Paper 2 error described in §2.4: every CS node had an item, while the
 80-mark Paper 2 component had none of its legal question type. When a coverage claim is quoted, say which
-kind it is. The per-paper distribution is worth reading beside it — after Batch 28 it is Maths P1 64 /
-P2 37 / P3 29, Physics P1A 14 clusters (70 questions) / P1B 17 / P2 59, **CS P1 49** / P2 12, BM P1 10 / P2 29.
+kind it is. The per-paper distribution is worth reading beside it — after Batch 29 it is Maths P1 64 /
+P2 37 / P3 29, Physics P1A 19 clusters (95 questions) / P1B 17 / P2 59, CS P1 49 / P2 12, BM P1 10 / P2 29.
 Batch 28 was aimed by exactly this paragraph: with node coverage at 100%, `coverage.py --next 12` reported
 **0 gaps**, so the brief had to come from the paper structure instead. The guide gives CS HL Paper 1
 Section A **56 of its 80 marks**, while the bank held 12 of its 44 CS P1 items there and five Theme A nodes

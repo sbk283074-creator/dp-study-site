@@ -17,16 +17,16 @@ design and provably not copied.
 | Subject | Guide in force | Questions | Nodes covered |
 |---|---|---:|---:|
 | Math AA HL | 2021 (runs to Nov 2028) | 130 | 83 / 83 (100%) |
-| Physics HL | 2025 | 90 | 24 / 24 (100%) |
+| Physics HL | 2025 | 95 | 24 / 24 (100%) |
 | Computer Science HL | 2027 (new Theme A/B) | 61 | 25 / 25 (100%) |
 | Business Management SL | 2024 | 39 | 34 / 34 (100%) |
-| **Total** | | **320** | **166 / 166 (100%)** |
+| **Total** | | **325** | **166 / 166 (100%)** |
 
 **Every priority-1 ("must-cover") and priority-2 ("should-cover") node is done** — Maths 32/32 + 51/51,
 Physics 24/24, CS 25/25, BM 26/26 + 8/8 Toolkit. The bank covers **all 166 syllabus nodes** across the
 four subjects; the only remaining work is the optional priority-3 ("stretch") tail.
 
-All 320 items are difficulty 3–5 (**5 at difficulty 3, 182 at difficulty 4, 133 at difficulty 5**), and
+All 325 items are difficulty 3–5 (**5 at difficulty 3, 185 at difficulty 4, 135 at difficulty 5**), and
 pass `validate.py`
 with **0 failures**. The originality gate is clean: **0 items above threshold**, highest external score
 0.090, highest internal score 0.073 and highest approach score 0.366 (limits 0.35 / 0.25 / 0.50). The
@@ -34,12 +34,12 @@ approach maximum is `MATH-AHL1.11-201` against `MATH-AHL1.11-001`, two items on 
 the partial-fractions-then-telescoping method — the gate judges the method different enough, and the two
 are different questions with different answers (¾ against ¼).
 
-Every item carries a `verification.assertions` list — **3656 machine-checked assertions** in total — so
+Every item carries a `verification.assertions` list — **3769 machine-checked assertions** in total — so
 the arithmetic in every answer is re-derived by the validator on each run, not merely asserted by the
-author. **94 items are figure-bearing (29%)**, with the SVG inlined into `question.figure` so a page
+author. **98 items are figure-bearing (30%)**, with the SVG inlined into `question.figure` so a page
 renders identically on `file://` and over HTTP.
 
-**The figures are hand-drawn, and the gate enforces it.** Every one of the 94 is emitted as raw SVG by a
+**The figures are hand-drawn, and the gate enforces it.** Every one of the 98 is emitted as raw SVG by a
 plain-Python string builder — some in `tools/make_figures.py`, which writes the named set in
 `data/_figures.json`, and the rest inline in the batch generator that authored the item — with no
 charting library, no plotting package and no image model anywhere in the chain. That is not a style
@@ -50,21 +50,27 @@ their own curve from the same expression the markscheme integrates, so the pictu
 drift apart: Batch 23's two unbounded tails are plotted from `1/x**2` and `1/sqrt(x)`, the very
 integrands whose antiderivatives the answer evaluates.
 Coverage is tracked as a **ratchet**: `difficulty_audit.py` holds a bank-wide floor
-(`FIGURE_COVERAGE_FLOOR`, now **0.29**) that may rise but may never fall, so a later batch cannot add
+(`FIGURE_COVERAGE_FLOOR`, now **0.30**) that may rise but may never fall, so a later batch cannot add
 text-only items and let the share sag back. Batch 26 raised it from 0.25 to 0.27; Batch 27 to 0.28;
-Batch 28 raised it again, because all five of its items carry a hand-authored figure, which moved
-coverage to 94/320 = 29.4% and let the floor follow it up. That leaves
-only **4 non-figure items of headroom** (n = 324 passes at 0.29; n = 325 fails), so a plain-text batch
-is still effectively ruled out — the ratchet has reached the point where it forces the issue rather than
-merely encouraging it. Batches 27 and 28 were both aimed by reading the per-subject column rather than
-the gap line, which never prints because no subject is below target. Batch 28 went further and chose its
-five items by **paper structure**: CS P1 Section A carries 56 of that paper's 80 marks, but it held only
-12 of the bank's 44 CS P1 items, and five Theme A nodes — A1.4, A2.4, A3.3, A3.4 and A4.4 — had no
-Section A item at all. Batch 28 fills exactly those five, taking Section A to **17 of 49**, the number of
-Theme A nodes represented in Section A from 7 to 12, and CS's figure share from 43% to **48%**. The
+Batch 28 to 0.29, because all five of its items carry a hand-authored figure, which moved coverage to
+94/320 = 29.4%; Batch 29 to **0.30**, because four of its five do, which moved coverage to
+98/325 = 30.2%. That leaves
+only **1 non-figure item of headroom** (98/326 = 30.06% still passes; 98/327 = 29.97% fails), so a
+plain-text batch is effectively ruled out — the ratchet has reached the point where it forces the issue
+rather than merely encouraging it. Batches 27 and 28 were both aimed by reading the per-subject column
+rather than the gap line, which never prints because no subject is below target. Batch 28 went further
+and chose its five items by **paper structure**: CS P1 Section A carries 56 of that paper's 80 marks, but
+it held only 12 of the bank's 44 CS P1 items, and five Theme A nodes — A1.4, A2.4, A3.3, A3.4 and A4.4 —
+had no Section A item at all. Batch 28 fills exactly those five, taking Section A to **17 of 49**, the
+number of Theme A nodes represented in Section A from 7 to 12, and CS's figure share from 43% to **48%**.
+Batch 29 read the same column one level down and found the **component** rather than the subject: Physics
+P1A held 14 MCQ clusters carrying 70 of the bank's 1131 Physics marks — 6% — and only **one** of those 14
+carried a figure, so the most graphic component of the real paper was the least graphic in the bank. It
+adds five five-mark clusters on the five Physics nodes that had no P1A item at all (A.3, B.3, C.1, C.4,
+E.3), taking P1A from 14 clusters to 19 and the MCQ figure share from **1/14 to 5/19**. The
 per-subject companion
 (`FIGURE_SUBJECT_TARGET = 0.15`) is *reported* rather than enforced, and no subject prints a gap:
-**CS 48%, Physics 37%, BM 21%, Maths 18%**.
+**CS 48%, Physics 39%, BM 21%, Maths 18%**.
 
 **Sourcing is recorded, not claimed.** 114 items are drawn from other syllabuses — 高考, 强基, 竞赛,
 A-Level, Further Maths, AP, 新加坡 A-Level, four from IB itself, and six recorded as `other` — and each names
@@ -84,7 +90,7 @@ What the audit reports today:
 
 | | now | at the 2026-09-13 baseline |
 |---|---|---|
-| items with evidence for the label | **235 / 320** | 0 / 172 |
+| items with evidence for the label | **240 / 325** | 0 / 172 |
 | difficulty 5 with no evidence | **0** | 79 |
 | labels the evidence does not permit | **0** | — |
 | items claiming difficulty 5 | 42% | 46% |
@@ -128,7 +134,7 @@ item that closed it is on **A.3**, a node with no such incumbent, and it is a ge
 question rather than a relabelled hard one — which is the distinction the earlier note was protecting.
 
 **The rubric score is a documentation gate, not a difficulty meter, and this is worth knowing before
-trying.** Measured across all 235 evidenced items: **215 score 9/9**, 19 score 8/9 and one scores 7/9 —
+trying.** Measured across all 240 evidenced items: **220 score 9/9**, 19 score 8/9 and one scores 7/9 —
 and 8 of 9 is already enough for the top label, so a score below 9 is not by itself a demotion. What the
 score tests is whether the three evidence statements are present, long enough and mutually distinct, and
 whether the arc and assertion-density tests hold; it does not measure how many *ideas* an item contains.
@@ -155,13 +161,17 @@ the baseline on
 every run, so a share that rose past 49% would stop the pipeline rather than pass quietly.
 
 Batch 15 also closed the last gap in the lever taxonomy: **all 13 lever types are in use**, and the
-largest single share is **14%** of evidenced items (`non_governing_variable`, 34 of 235), so the bank is
+largest single share is **15%** of evidenced items (`non_governing_variable`, 35 of 240), so the bank is
 no longer one trick in different clothes. That share barely moved while the evidenced set grew from
-**38 items to 235** — it was 18% of those 38, measured at the Batch 15 commit — which is the useful
+**38 items to 240** — it was 18% of those 38, measured at the Batch 15 commit — which is the useful
 reading: the backfill was spread across the taxonomy rather than concentrated in the levers that were
 already busy. Batch 28 used five distinct levers (`derived_limit`, `wrong_design_cost`,
 `seeded_anomaly`, `partial_cancellation`, `implicit_dependence`), one per item, so no share moved by
-more than a point. Batch 28 added no Physics items, so the Physics share above is unchanged at 44%.
+more than a point. Batch 29 used five more, again one per item, and took `variable_swap` — the thinnest
+lever in the bank, at 5 items before the wave — to 6; here too no share moved by more than a point either
+way. Batches 28 and 29 added no Maths items, and Batch 28 added no Physics items, so the Physics share
+above is unchanged at 44%: Batch 29's three difficulty-4 and two difficulty-5 Physics items leave it
+where it was.
 
 `tools/prove_difficulty_gates.py` guards the gates themselves: it injects one defect at a time — an
 invented `lever_type`, a `wrong_answer` that restates `naive_path`, a difficulty 5 with no evidence — and

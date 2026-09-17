@@ -46,7 +46,9 @@ SUBJECT_ORDER = ["Math AA HL", "Physics HL", "Computer Science HL", "Business Ma
 # The bank-wide floor is a RATCHET -- it may rise and may not fall -- and the
 # per-subject target is reported as a gap rather than a debt, so it stays visible
 # without turning the pipeline red on a backlog that is being paid down.
-FIGURE_COVERAGE_FLOOR = 0.29        # bank-wide, ratchet (measured 94/320 = 29.4%, 2026-09-16)
+FIGURE_COVERAGE_FLOOR = 0.30        # bank-wide, ratchet (measured 98/325 = 30.2%, 2026-09-17)
+                                    # headroom: 1 non-figure item (98/326 = 30.06% still passes;
+                                    # 98/327 = 29.97% fails -- the next batch must carry figures)
 FIGURE_SUBJECT_TARGET = 0.15        # per subject, reported gap
 
 # The state measured on 2026-09-13, when the standard took force.

@@ -21,7 +21,7 @@
   window.__dpSearchLoaded = true;
 
   var HUB = "https://sbk283074-creator.github.io/dp-study-site/";
-  var INDEX_URL = HUB + "assets/js/search-index.js?v=3";
+  var INDEX_URL = HUB + "assets/js/search-index.js?v=4";
 
   var IDX = null;
   var LOADING = false;

@@ -135,7 +135,7 @@ What the index covers, and the two things it cannot scrape:
 | Source | How |
 |---|---|
 | Tracked HTML (hub, 7 subjects, core, guides, both vocab spaces, qbank, Lit Lab, 5 Challenge Bank indexes, 9 paper pages) | scraped, text capped at 460 chars |
-| 320-odd Challenge Bank questions | `challenge-bank/site/q/*.html`, labelled with id / topic / difficulty / marks / paper |
+| 325 Challenge Bank questions | `challenge-bank/site/q/*.html`, labelled with id / topic / difficulty / marks / paper |
 | `PYTHON/index.html` (2.2 MB, hash-routed) | split into its **40 `<section class="chapter" id="slug">`** blocks → `#/<slug>` deep links |
 | **BPhO** (shell page; content is `window.BPHO_*`) | `tools/bpho_dump.mjs` evaluates the `data/*.js` globals → 435 entries (plan, modules, glossary, worked examples, 163 questions). It **auto-discovers** `modules-N.js` / `questions-N.js` by glob — a hand-maintained file list silently dropped `questions-3.js` from the index once, so new shards are now picked up automatically |
 | **World's Wife Lab** (content is one inline `const SEED` literal) | `tools/englab_dump.mjs` brace-matches and evaluates `SEED` → 30 poems with text, key passages and analysis |
@@ -293,15 +293,19 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 ### 05 · Challenge Bank — `challenge-bank/`
 **Fully generated. The JSON is the source of truth, not the HTML.**
 - Data: `challenge-bank/data/{math-aa-hl,physics-hl,computer-science-hl,business-management-sl}/*.json`
-  — **315 questions** (Math AA HL 130, Physics HL 90, CS HL 56, BM SL 39), as of commit `78cc2cf`.
+  — **325 questions** (Math AA HL 130, Physics HL 95, CS HL 61, BM SL 39). Re-measured 2026-09-17;
+  the count comes from `tools/validate.py`'s `load()`, never from a glob.
   **Do not count these with a glob.** The filenames are not uniform — `batch21.json`, `batch22.json`,
   `batch22c.json` and `batch23.json` sit beside `p3-batch2.json`, `p1b-data.json`,
   `abstract-data-types.json`, `p2-case-study.json`, `p2-theme-b.json`, `gravitational-fields.json`. A
-  `data/*/batch*.json` glob matches **68 files holding 233 of the 315 items** (re-measured 2026-09-16), so
-  it silently misses 82; the number drifts as the bank grows, so re-measure rather than quoting it. Batch
+  `data/*/batch*.json` glob matches **68 files holding 233 of the 325 items** (re-measured 2026-09-17), so
+  it silently misses 92; the number drifts as the bank grows, so re-measure rather than quoting it. Batch
   26 is the proof: it added two files and the glob figure **did not move at all**, because both are named
   `…-batch26.json` — and Batch 27 repeated it, its one file being `figures-batch27.json`, which the glob
-  does not match either. Use
+  does not match either. Batch 29's one file is `p1a-mcq-batch5.json`, and it does not match either —
+  `batch*.json` needs the filename to *begin* with `batch` — so the glob figure has now been frozen at
+  233 for three consecutive waves (26, 27, 29) and would read the same if the bank had not grown at all.
+  `data/*/*batch*.json` (84 files) is the pattern that works; neither is a substitute for `load()`. Use
   `tools/validate.py`'s `load()`, which also returns **`(file, question)` tuples**, not bare questions.
   **`fig-*.json` are *not* figure assets** — `physics-hl/fig-circuit-structured.json` and
   `fig-standing-wave.json` hold real items (`PHYS-B.5-102`, `PHYS-C.4-102`) and `load()` reads them. The
@@ -313,7 +317,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - Tooling: `challenge-bank/tools/*.py` — `validate.py` (43 KB), `make_figures.py` (40 KB), `fix_json.py`,
   `ship.py`, `coverage.py`, `difficulty_audit.py`, …
 - Docs: `README.md`, `STANDARD.md`, `PLAN.md`, `AUDIT_*.md`.
-- Output: `challenge-bank/site/` — `index.html`, `q/` (315 question pages), one index per
+- Output: `challenge-bank/site/` — `index.html`, `q/` (325 question pages), one index per
   subject, `papers/`, `assets/site.js`.
 - **AI:** four launcher buttons per question (full worked solution / hint only / guided steps /
   mark my attempt), generated into `site/assets/site.js` from a Python string in `build.py`. They call

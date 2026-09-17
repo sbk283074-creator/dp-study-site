@@ -1,13 +1,13 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 320 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 325 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 235 of 320 do. The difficulty-5
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 240 of 325 do. The difficulty-5
 backlog is **cleared** — no item claims difficulty 5 without evidence — and the 85 items that remain
 unbacked are all difficulty-4 claims, a published, ratcheting backlog described in
 `STANDARD.md` §2.2–§2.5 and measured by `tools/difficulty_audit.py`. All 13
-lever types are in use, the largest share is 14%, and every subject is inside the 50% difficulty-5 cap
+lever types are in use, the largest share is 15%, and every subject is inside the 50% difficulty-5 cap
 (Maths 45%, Physics 44%, CS 41%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
 the share was above the cap) and R2 (no item claimed difficulty 3 — the 3-5 scale had collapsed to two
 points) were paid by Batches 21–23, and the backlog pass added a fifth difficulty-3 item. The audit prints
@@ -16,12 +16,13 @@ The `topic` label is now a closed vocabulary per subject, enforced by `validate.
 question page and filterable on every subject page.**
 **Figure coverage is now a first-class gate rather than a nice-to-have.** Batch 23 raised the share of
 items that carry a self-authored graph to 75 of 301 = 25%; Batch 26 took it to 84 of 310 = 27.1%; Batch 27
-to 89 of 315 = 28.3%; Batch 28 takes it to **94 of 320 = 29.4%** and raises the bank-wide ratchet
-`FIGURE_COVERAGE_FLOOR` from 0.28 to
-**0.29** — the floor may rise and may
+to 89 of 315 = 28.3%; Batch 28 to 94 of 320 = 29.4%; Batch 29 takes it to **98 of 325 = 30.2%** and raises
+the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.29 to
+**0.30** — the floor may rise and may
 never fall, so a later batch cannot quietly spend the coverage. No subject prints a gap: Maths 18%,
-Physics 37%, CS 48%, BM 21%, against a 15% target — but only **4 non-figure items of headroom** are left
-(n = 324 passes at 0.29, n = 325 fails), so the ratchet now *forces* a batch to carry figures rather than
+Physics 39%, CS 48%, BM 21%, against a 15% target — but only **1 non-figure item of headroom** is left
+(98/326 = 30.06% passes, 98/327 = 29.97% fails), so the ratchet now *forces* a batch to carry figures
+rather than
 merely encouraging it. Every figure is drawn by hand as a plain-Python SVG
 string builder,
 most of them inline in the batch generator that wrote the item and the named set in
@@ -1466,12 +1467,108 @@ similarity score, and no BM item ships containing HL-only content.
   - **The audit's lever section now reads 13 of 13**, and the largest single share fell to **14%**
     (`non_governing_variable`, 34 of 235). The five levers used here are all distinct, so no share moved by
     more than a point.
+- **Batch 29 — DONE (5 Physics HL Paper 1A MCQ clusters, 320 → 325).** The brief was a component of the
+  paper rather than a node, because `coverage.py --next 12` returned **0 gaps** for the third wave running.
+  Physics Paper 1 is 2 h and carries 60 of the 150 written marks — 40 for P1A (MCQ) and 20 for P1B
+  (data-based) — but the bank held **14 MCQ clusters carrying 70 of its 1106 Physics marks, 6%**, against
+  a 27% share of the written assessment. Worse, only **one** of those 14 carried a figure, so the component
+  that is *most* graphic in the real paper was the least graphic in the bank. This wave adds five clusters,
+  five marks each, one per theme, on the five Physics nodes that had no P1A cluster at all: **A.3, B.3,
+  C.1, C.4, E.3** (D is the only theme whose every node already carried one).
+  - **MCQ has its own length contract, and it is per question rather than per item.** `validate.py`
+    measures an MCQ cluster against `per_part_answer` (45 words a question), `base_notes + per_part_notes`
+    and `base_expl + per_part_expl`, and skips the subject-median test entirely — a five-mark cluster is
+    judged as five one-mark questions, not as a 15-mark extended response. Without that the whole cluster
+    would be failed by a median built from 15-mark items. Final counts: answer 269–385 words against a
+    225 floor, notes 228–315 against 155, explanation 395–469 against 185, context 201–241 against 175.
+  - **Every cluster was designed from a different lever, and the two thinnest levers in the bank were
+    both used.** `MATH`-side shares at the start of the wave were `variable_swap` 5 and `quant_vs_judgement`
+    10; this wave takes `variable_swap` to 6 with the closed-pipe/open-pipe reversal below. Physics gains
+    five distinct levers — `non_governing_variable`, `derived_limit`, `decoy_technique`, `variable_swap`,
+    `implicit_dependence` — and no share moves by more than a point. All 13 levers remain in use.
+  - **`PHYS-A.3-501` (A.3 Work, energy and power, d4).** A force-distance graph that rises to 6.0 N,
+  holds, and falls back to zero, against a constant 2.0 N of friction that the figure does not show. The
+  lever is `non_governing_variable`: the greatest applied force does not decide where the kinetic energy
+  peaks. Setting F(x) = 2.0 N on the falling branch, F = 16.0 − 2.0x, puts the peak at **x = 7.0 m** —
+  two metres past the force maximum and one metre before the force vanishes. Five distractors are the
+  exact results of five named errors: 48.0 J from peak-force-times-distance, 27.0 J from a missed
+  triangle, 11.0 J by carrying that 27.0 J forward, 3.37/4.69 m s⁻¹ for displacement and distance
+  interchanged, and 20.2 W from reusing the final speed in an instantaneous-power question.
+  - **`PHYS-B.3-501` (B.3 Gas laws, d5).** A p–V diagram whose second change is a *straight line*. Because
+    the isotherms of an ideal gas are rectangular hyperbolae, a straight segment must cut through a family
+    of them and cross a maximum in its interior. Writing p = 4.0×10⁵ − 5.0×10⁷V gives
+    pV = 4.0×10⁵V − 5.0×10⁷V², a downward parabola stationary at **V = 4.0×10⁻³ m³**, the midpoint, where
+    pV = 800 against **600 at both labelled endpoints** — so the gas is a third hotter in the middle of the
+    line than at either end and reaches **1200 K**. Deliberately, nothing here asks for work or energy:
+    the area under a p–V graph is B.4, and the trap lives entirely in the state variables, which is what
+    keeps the item inside its own node. The distractor 2700 K multiplies the greatest pressure by the
+    greatest volume, a corner the gas never occupies.
+  - **`PHYS-C.1-501` (C.1 Simple harmonic motion, d4).** A vertical mass-spring oscillator, where the
+    equilibrium position is not the unstretched length. The lever is `decoy_technique` and both decoys are
+    *correct physics*: the pendulum period 2π√(L/g) is a real formula and 1.42 s is a real number, but this
+    oscillator's period is 2π√(m/k), which collapses to **2π√(e/g) = 1.00 s** once mg = ke is substituted —
+    the mass cancels and the amplitude never appears. And 1.000 m is the correct greatest length for a mass
+    released from the spring's natural length; this mass is released 0.050 m below equilibrium, so the
+    longest length is **0.800 m**. A correct result from a different setup is the most convincing kind of
+    wrong answer, which is why both are offered.
+  - **`PHYS-C.4-501` (C.4 Standing waves and resonance, d5).** Two 0.850 m pipes, one stopped at one end,
+    one open at both ends, and the same comparison asked twice with a different quantity held fixed. At
+    equal length the stopped pipe is an octave lower — 100 Hz against 200 Hz. At equal pitch the stopped
+    pipe is **half as long** — 0.850 m against **1.70 m**. The ranking reverses, so the distractor built for
+    the second comparison (0.425 m) is exactly what a candidate who carries the first ordering across will
+    choose. Alongside it, the harmonic number and the position in the list of resonances are made to
+    diverge: the stopped pipe supports only odd harmonics, so the third *resonance* is 500 Hz while the third
+    *harmonic* is 300 Hz, and 400 Hz is not a quiet resonance but no resonance at all.
+  - **`PHYS-E.3-501` (E.3 Radioactive decay, d4).** This is the one item of the five with no figure, and the
+    omission is deliberate: the natural figure here is a decay curve, and a decay curve drawn against a
+    background line would print the answers to parts (c) and (d) straight onto the page. The lever is
+    `implicit_dependence`. The exponential governs the activity and nothing else: 960 and 120 counts over
+    120 s with a 4.0% detector give a corrected rate of 7.00 s⁻¹ and an activity of **175 Bq**, and the
+    corrected rate really does quarter to 1.75 s⁻¹ in 24 h — but the recorded rate falls only from 8.00 to
+    **2.75 s⁻¹**, a factor of **2.91**, because a constant background commutes with no fold-change. The
+    same offset puts the halving of the recorded rate at **14.7 h** rather than 12 h: a term that does not
+    decay can only delay a fall towards it. Every distractor is the number the exponential alone would give.
+  - **Four figures, and a fifth item deliberately without one.** Physics MCQ figure share goes **1/14 to
+    5/19** — the component where a figure is most obviously wanted was the one carrying almost none.
+    All four are built by the same plain-Python string builders, so the validator's fingerprint check stays
+    satisfied by construction, and all four were audited against the giveaway rule **as parsed text nodes**,
+    not by reading the SVG: the force-distance graph prints no areas, the p–V diagram prints no pV products
+    and no temperatures, the spring diagram stops at the equilibrium length and never shows the lowest
+    point, and the pipes carry no standing-wave envelope. The rendered contact sheet then caught one real
+    defect the text audit could not: the p–V y-axis label `p / 10⁵ Pa` overflowed the `viewBox` and was
+    clipped to `› / 10⁵ Pa`, which is why it is now rotated.
+  - **The answer key was distributed, and the defect it fixes was found in this bank's own MCQ.** Every
+    cluster is authored with the correct option first, which is fine for one item and puts the key at A in
+    **all fourteen** pre-existing MCQ clusters. The site renders the answer text but not the options, so a
+    student working through the answer booklet would read the letter A twenty-five times in a row — the same
+    class of defect the BPhO wave found, in a different bank. The spread is a fixed rotation applied in the
+    assembler (**A6 B6 C7 D6** over the 25 questions), with a check that the letter stated in the answer
+    matches the keyed option, and the option texts, rationales and arithmetic are untouched. Whether the
+    existing fourteen should be redistributed too is a follow-up worth doing; it is noted in `STANDARD.md`.
+  - **Two gates bit, both fixed at the item.** The `PHYS-B.3-501` distractor written as "0.2407 mol" was
+    wrong physics, not wrong arithmetic: dividing by 900 K instead of 300 K gives **0.0267 mol** —
+    a *smaller* answer, because a higher temperature means fewer moles for the same pV. 0.2407 mol is the
+    result of carrying the *volume* of state B into the numerator instead, and both errors are now separate
+    options with the rationales they deserve. The self-check caught it before the file was written, because
+    every distractor is asserted in `verification.assertions`.
+  - **Numbers after the wave.** 325 items — Maths 130 / 1903 marks, **Physics 95 / 1131**, CS 61 / 901,
+    BM 39 / 563; 4498 marks in all. Difficulty split **5 / 185 / 135**; every subject inside the 50% cap
+    (Maths 45%, Physics 44%, CS 41%, BM 23%). Evidence **240 / 325 (74%)**, `difficulty 5 with no evidence`
+    **0**, `labels the evidence does not permit` **0**, assertions **3769**. Physics P1 goes 31 items / 301
+    marks to **36 / 326**, and P1A from 14 clusters to 19.
+  - **The ratchet moved to its tightest setting yet.** Coverage went **94/320 = 29.4% → 98/325 = 30.2%**, so
+    `FIGURE_COVERAGE_FLOOR` moves **0.29 → 0.30**. That leaves **1 non-figure item of headroom** (98/326 =
+    30.06% still passes, 98/327 = 29.97% fails) — the next batch carries a figure on almost every item or
+    it does not ship. Similarity on the new items: external ≤ 0.018, internal ≤ 0.044, approach ≤ 0.160; the nearest
+    external neighbour of the gas-laws item is `PH_HL_Option_B_HL-paper2_q14`, and of the decay item
+    `PHYS_HL_P1_2004May_TZ2_q37`. Bank-wide maxima are unchanged at 0.090 external / 0.073 internal /
+    0.366 approach.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  130 questions / 1903 marks, physics 90 / 1106, CS 61 / 901, BM SL 39 / 563 — all difficulty 3–5, May
+  130 questions / 1903 marks, physics 95 / 1131, CS 61 / 901, BM SL 39 / 563 — all difficulty 3–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that
