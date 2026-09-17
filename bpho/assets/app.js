@@ -544,6 +544,13 @@
       '<button class="btn" data-act="mockuntimed">Untimed mock</button>' +
       '<span class="small">60 minutes, no calculator — same conditions as the paper.</span></div>';
 
+    /* Past-paper mock: the 25-question 2025 Round 0 paper, in paper order. Use this as the final
+       practice attempt — same format, same clock, same scoring. */
+    h += '<div class="toolbar">' +
+      '<button class="btn btn--paper" data-act="mockpaper">📝 2025 past paper — timed</button>' +
+      '<button class="btn" data-act="mockpaperu">2025 past paper — untimed</button>' +
+      '<span class="small">The actual 2025 paper. Final practice mock.</span></div>';
+
     h += '<div class="chiprow">' +
       chip("all", "All modules", practiceFilter === "all", "pf") +
       DATA.curriculum.filter(function (m) {
@@ -958,6 +965,8 @@
     else if (a === "strestart") { if (code) { delete state.selftest[code]; save(); render(); } }
     else if (a === "mock") startMock("timed");
     else if (a === "mockuntimed") startMock("untimed");
+    else if (a === "mockpaper") startMockPaper("R0-2025", "timed");
+    else if (a === "mockpaperu") startMockPaper("R0-2025", "untimed");
     else if (a === "marksubmit") finishMock();
     else if (a === "mockquit") { if (confirm("Abandon this mock?")) { state.mock = null; save(); location.hash = "#/practice"; } }
     else if (a === "mockclear") { state.mock = null; save(); location.hash = "#/practice"; }
@@ -975,6 +984,24 @@
       ids: ids, picks: {}, started: Date.now(),
       // Real Round 0: 25 questions in 60 minutes. Untimed keeps the paper but
       // drops the clock, for learning the material rather than the pace.
+      mode: mode === "untimed" ? "untimed" : "timed",
+      seconds: mode === "untimed" ? 0 : 60 * 60,
+      marked: false, elapsed: 0, autoSubmitted: false
+    };
+    save();
+    location.hash = "#/mock";
+    render();
+  }
+
+  /* Fixed-paper mock: assemble the 25 questions in a single named paper (e.g. the 2025 Round 0
+     paper) in their stored order, and launch them as a Round 0 mock. Used as the final practice
+     attempt once the rest of the curriculum is in place. */
+  function startMockPaper(tag, mode) {
+    var ids = DATA.questions.filter(function (q) { return q.paper === tag; })
+                            .map(function (q) { return q.id; });
+    if (!ids.length) { alert("No questions tagged " + tag); return; }
+    state.mock = {
+      ids: ids, picks: {}, started: Date.now(),
       mode: mode === "untimed" ? "untimed" : "timed",
       seconds: mode === "untimed" ? 0 : 60 * 60,
       marked: false, elapsed: 0, autoSubmitted: false
