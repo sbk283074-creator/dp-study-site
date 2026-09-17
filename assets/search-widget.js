@@ -21,7 +21,7 @@
   window.__dpSearchLoaded = true;
 
   var HUB = "https://sbk283074-creator.github.io/dp-study-site/";
-  var INDEX_URL = HUB + "assets/js/search-index.js?v=2";
+  var INDEX_URL = HUB + "assets/js/search-index.js?v=3";
 
   var IDX = null;
   var LOADING = false;
@@ -165,7 +165,11 @@
   function runSearch(q) {
     var phrase = q.toLowerCase().trim();
     var terms = phrase.split(/\s+/).filter(function (t) { return t.length > 1; });
-    if (!terms.length) return [];
+    // Every other exit returns the {rows, total, terms} shape. Returning a bare
+    // array here made the first keystroke of every query throw
+    // ("undefined is not an object (evaluating 'res.rows.map')") for any
+    // single-character token, so keep the shape.
+    if (!terms.length) return { rows: [], total: 0, terms: terms };
     var scored = [];
     for (var i = 0; i < IDX.length; i++) {
       var s = scoreDoc(IDX[i], terms, phrase);

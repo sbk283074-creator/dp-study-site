@@ -37,47 +37,47 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 {
   id: "H-03", module: "H", topic: "Internal resistance", diff: 2,
   q: "A cell of EMF 9.0 V and internal resistance 1.0 Ω is connected to an 8.0 Ω resistor. What is the terminal potential difference of the cell?",
-  opts: ["8.0 V", "9.0 V", "1.0 V", "7.0 V", "4.5 V"],
-  ans: 0,
+  opts: ["7.0 V", "9.0 V", "1.0 V", "8.0 V", "4.5 V"],
+  ans: 3,
   sol: `<p><b>Step 1 — total resistance.</b></p>
 <div class="formula">R_total = R + r = 8.0 + 1.0 = 9.0 Ω</div>
 <p><b>Step 2 — current.</b></p>
 <div class="formula">I = ε/R_total = 9.0/9.0 = 1.0 A</div>
 <p><b>Step 3 — terminal potential difference.</b> This is the EMF minus the internal loss:</p>
 <div class="formula">V = ε − Ir = 9.0 − (1.0 × 1.0) = 8.0 V</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: D.</b></p>
 <p><b>The cross-check.</b> The external resistor has 1.0 A through 8.0 Ω, so <code>V = IR = 8.0 V</code> ✓. The two routes must agree, and taking the second one when time allows is a free error check.</p>
 <p><b>Why the terminal p.d. is less than the EMF.</b> The EMF is the energy given to each coulomb by the cell; the terminal p.d. is what remains after the cell's own internal resistance has taken its share. The difference, <code>Ir = 1.0 V</code>, is dissipated inside the cell as heat.</p>
-<p><b>The traps.</b> Option B, 9.0 V, is the EMF, which a voltmeter would read only with no current flowing. Option C, 1.0 V, is the internal loss alone — the amount lost, not the amount delivered. Option D, 7.0 V, comes from subtracting the full internal resistance rather than the loss.</p>`,
+<p><b>The traps.</b> Option B, 9.0 V, is the EMF, which a voltmeter would read only with no current flowing. Option C, 1.0 V, is the internal loss alone — the amount lost, not the amount delivered. Option A, 7.0 V, comes from subtracting the full internal resistance rather than the loss.</p>`,
   trap: "Reporting the EMF when the terminal potential difference is asked for."
 },
 {
   id: "H-04", module: "H", topic: "Opposing EMFs", diff: 2,
   q: "Two cells of EMF 6.0 V and 2.0 V are connected in a single loop with a 4.0 Ω resistor, opposing each other. The cells have negligible internal resistance. What is the current in the loop?",
-  opts: ["1.0 A", "2.0 A", "0.50 A", "1.5 A", "4.0 A"],
-  ans: 0,
+  opts: ["4.0 A", "2.0 A", "0.50 A", "1.5 A", "1.0 A"],
+  ans: 4,
   sol: `<p>Because the cells oppose each other, the net EMF is their <b>difference</b>:</p>
 <div class="formula">ε_net = 6.0 − 2.0 = 4.0 V</div>
 <p>The total resistance in the loop is 4.0 Ω, so</p>
 <div class="formula">I = ε_net/R = 4.0/4.0 = 1.0 A</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: E.</b></p>
 <p><b>Which way does the current flow, and what happens to the smaller cell?</b> The 6.0 V cell drives the current, so it flows in the direction that cell pushes. The 2.0 V cell is therefore being driven <i>against</i> its own EMF, which means it is absorbing energy rather than supplying it — it is being charged. If the question asks about energy flow, that is the answer.</p>
-<p><b>The traps.</b> Option B, 2.0 A, is what you get from <b>adding</b> the EMFs: <code>8.0/4.0 = 2.0</code>. That is the answer for cells connected the same way round, not opposing. Option E, 4.0 A, is the net EMF reported as a current.</p>
+<p><b>The traps.</b> Option B, 2.0 A, is what you get from <b>adding</b> the EMFs: <code>8.0/4.0 = 2.0</code>. That is the answer for cells connected the same way round, not opposing. Option A, 4.0 A, is the net EMF reported as a current.</p>
 <p><b>The energy check, worth doing once.</b> The large cell delivers <code>6.0 × 1.0 = 6.0 W</code>. The resistor dissipates <code>I²R = 4.0 W</code>. The small cell absorbs <code>2.0 × 1.0 = 2.0 W</code>. And <code>6.0 = 4.0 + 2.0</code> ✓. Energy conservation checks out, which confirms both the magnitude and the direction.</p>`,
   trap: "Adding opposing EMFs. Opposing sources give the difference, and the smaller one absorbs energy."
 },
 {
   id: "H-05", module: "H", topic: "Reconfiguring cells", diff: 3,
   q: "Two identical cells, each of EMF <code>ε</code> and internal resistance <code>r</code>, drive a fixed external resistor <code>R</code> where <code>R</code> is much larger than <code>r</code>. The cells can be connected in series or in parallel. What is the ratio of the power delivered to <code>R</code> in the series case to that in the parallel case?",
-  opts: ["4", "2", "1", "8", "16"],
-  ans: 0,
+  opts: ["8", "2", "1", "4", "16"],
+  ans: 3,
   sol: `<p>Since <code>R ≫ r</code>, the internal resistance is a negligible part of the total in both cases, so <code>R_total ≈ R</code>.</p>
 <p><b>Series.</b> The EMFs add, so the current is <code>2ε/R</code>, and</p>
 <div class="formula">P_series ≈ (2ε/R)² R = 4ε²/R</div>
 <p><b>Parallel.</b> The EMF is that of one cell, so the current is <code>ε/R</code>, and</p>
 <div class="formula">P_parallel ≈ (ε/R)² R = ε²/R</div>
 <p><b>Ratio.</b> <code>P_series/P_parallel = 4</code>.</p>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: D.</b></p>
 <p><b>Why the factor is 4 and not 2.</b> Power goes as the <b>square</b> of the current, so doubling the EMF quadruples the power. Answering 2 is the single most common error on this type of question, and option B is there for exactly that reason.</p>
 <p><b>Why the <code>R ≫ r</code> condition is essential.</b> If <code>r</code> were comparable to <code>R</code>, the parallel arrangement's much smaller internal resistance would start to matter. The exact forms are:</p>
 <div class="formula">P_series = 4ε²R/(R + 2r)²      P_parallel = ε²R/(R + r/2)²</div>
@@ -88,26 +88,26 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 {
   id: "H-06", module: "H", topic: "Resistivity", diff: 2,
   q: "A wire of length 2.0 m and cross-sectional area <code>1.0 × 10⁻⁶ m²</code> is made of a material of resistivity <code>1.7 × 10⁻⁸ Ω m</code>. What is its resistance?",
-  opts: ["0.034 Ω", "0.34 Ω", "3.4 Ω", "0.017 Ω", "0.068 Ω"],
-  ans: 0,
+  opts: ["0.068 Ω", "0.34 Ω", "3.4 Ω", "0.017 Ω", "0.034 Ω"],
+  ans: 4,
   sol: `<p>Use <code>R = ρL/A</code>:</p>
 <div class="formula">R = (1.7 × 10⁻⁸ × 2.0)/(1.0 × 10⁻⁶)</div>
 <p>Handle the digits and the powers separately. Digits: <code>1.7 × 2.0 = 3.4</code>. Powers: <code>10⁻⁸/10⁻⁶ = 10⁻²</code>. So</p>
 <div class="formula">R = 3.4 × 10⁻² Ω = 0.034 Ω</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: E.</b></p>
 <p><b>The sanity check that does not need a calculation.</b> Copper has a resistivity of order <code>10⁻⁸ Ω m</code>, and a metre of thin copper wire has a resistance of order hundredths of an ohm. So the answer must be small — well under 1 Ω. That eliminates options B and C immediately.</p>
-<p><b>The traps.</b> Option B, 0.34 Ω, is a factor of ten too large — the most likely error with exponents this small. Option C, 3.4 Ω, is a hundred times too large. Option D, 0.017 Ω, is the answer for a 1 m wire. Option E, 0.068 Ω, is double the correct answer.</p>
+<p><b>The traps.</b> Option B, 0.34 Ω, is a factor of ten too large — the most likely error with exponents this small. Option C, 3.4 Ω, is a hundred times too large. Option D, 0.017 Ω, is the answer for a 1 m wire. Option A, 0.068 Ω, is double the correct answer.</p>
 <p><b>Why the powers-of-ten discipline matters so much here.</b> There are three exponents in play (<code>10⁻⁸</code>, <code>10⁻⁶</code>, and the implicit <code>10⁰</code> on the length), and tracking them inside a single calculation is where errors happen. Writing the digits and the powers as two separate streams, as above, is the reliable method.</p>`,
   trap: "Powers-of-ten errors. Compute the leading digits and the exponents separately."
 },
 {
   id: "H-07", module: "H", topic: "Rectification", diff: 3,
   q: "A sinusoidal supply of peak voltage 10 V is connected through a diode to a 5.0 Ω resistor, so that half-wave rectification occurs. What is the average power dissipated in the resistor?",
-  opts: ["5.0 W", "10 W", "20 W", "2.5 W", "40 W"],
-  ans: 0,
+  opts: ["10 W", "5.0 W", "20 W", "2.5 W", "40 W"],
+  ans: 1,
   sol: `<p>For a sinusoid of peak voltage <code>V₀</code>, the average of <code>V²</code> over a full cycle is <code>V₀²/2</code>. Half-wave rectification allows current during only half the cycle, so the average of <code>V²</code> falls to <code>V₀²/4</code>.</p>
 <div class="formula">P_avg = V₀²/(4R) = 100/(4 × 5.0) = 100/20 = 5.0 W</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: B.</b></p>
 <p><b>The three cases, worth having side by side.</b></p>
 <table><thead><tr><th>Supply</th><th>Average of <code>V²</code></th><th>Average power here</th></tr></thead><tbody>
 <tr><td>full sine wave</td><td><code>V₀²/2</code></td><td>10 W</td></tr>
@@ -136,29 +136,29 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 {
   id: "H-09", module: "H", topic: "Network reduction", diff: 3,
   q: "A wire loop of total resistance 12 Ω has a sliding contact that can be moved round it. What is the maximum equivalent resistance measurable between the contact and a fixed point on the loop?",
-  opts: ["3.0 Ω", "6.0 Ω", "12 Ω", "1.5 Ω", "4.0 Ω"],
-  ans: 0,
+  opts: ["6.0 Ω", "3.0 Ω", "12 Ω", "1.5 Ω", "4.0 Ω"],
+  ans: 1,
   sol: `<p>The contact divides the loop into two arcs. If a fraction <code>x</code> of the total length lies on one side, the arc resistances are <code>12x</code> and <code>12(1 − x)</code>.</p>
 <p>These two arcs are in <b>parallel</b> between the two measurement points, so</p>
 <div class="formula">R_eq = xR(1 − x)R/(xR + (1 − x)R) = x(1 − x)R</div>
 <p>with <code>R = 12 Ω</code>. The product <code>x(1 − x)</code> is maximised at <code>x = ½</code>, where it equals ¼. So</p>
 <div class="formula">R_max = ¼ × 12 = 3.0 Ω</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: B.</b></p>
 <p><b>Check the extremes.</b> At <code>x = 0</code> or <code>x = 1</code> the contact coincides with the fixed point, so the resistance is zero ✓. At the midpoint the answer is <code>R/4</code> ✓. Both limits match the formula, which confirms the structure.</p>
-<p><b>The traps.</b> Option C, 12 Ω, is the resistance of the whole loop — the answer you get by forgetting that the two arcs are in parallel. Option B, 6.0 Ω, is <code>R/2</code>, which is what you get by taking the arithmetic mean of the two arc resistances rather than their parallel combination.</p>
+<p><b>The traps.</b> Option C, 12 Ω, is the resistance of the whole loop — the answer you get by forgetting that the two arcs are in parallel. Option A, 6.0 Ω, is <code>R/2</code>, which is what you get by taking the arithmetic mean of the two arc resistances rather than their parallel combination.</p>
 <p><b>Why the technique matters more than the result.</b> The move here is recognising that two paths between the same pair of points must be in parallel. That same recognition is what collapses a balanced bridge, a square with diagonals, and most other awkward networks. The specific result <code>R/4</code> is worth remembering, but the technique is worth more.</p>`,
   trap: "Adding the two arcs instead of combining them in parallel."
 },
 {
   id: "H-10", module: "H", topic: "Power in series", diff: 2,
   q: "A 2.0 Ω resistor and a 4.0 Ω resistor are connected in series with a battery. What is the ratio of the power dissipated in the 4.0 Ω resistor to that in the 2.0 Ω resistor?",
-  opts: ["2", "0.5", "4", "1", "8"],
-  ans: 0,
+  opts: ["4", "0.5", "2", "1", "8"],
+  ans: 2,
   sol: `<p>In series, the <b>current</b> is the same through both resistors, so use the form of the power equation containing <code>I</code>:</p>
 <div class="formula">P = I²R</div>
 <p>Since <code>I²</code> is common, <code>P ∝ R</code>:</p>
 <div class="formula">P₄/P₂ = R₄/R₂ = 4.0/2.0 = 2</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: C.</b></p>
 <p><b>The general result, which is the real content of the question.</b> In a <b>series</b> circuit the largest resistance dissipates the most power. In a <b>parallel</b> circuit the largest resistance dissipates the <b>least</b>. Getting that backwards is extremely common, and the reason is that the shared quantity is different: current in series, voltage in parallel.</p>
 <p><b>Why the parallel case reverses.</b> In parallel the voltage is shared, so <code>P = V²/R</code> and power is <b>inversely</b> proportional to resistance. The 4.0 Ω resistor would then dissipate <i>half</i> the power of the 2.0 Ω one — a ratio of 0.5, which is option B, present as a distractor.</p>
 <p><b>How to remember it.</b> Ask which quantity is common. If it is the current (series), use <code>I²R</code> and the bigger resistor wins. If it is the voltage (parallel), use <code>V²/R</code> and the smaller resistor wins. That reasoning takes five seconds and never fails.</p>`,
@@ -167,13 +167,7 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 {
   id: "H-11", module: "H", topic: "Superconductivity", diff: 1,
   q: "Which of the following is a correct statement about superconductivity?",
-  opts: [
-    "Below a critical temperature the resistance becomes exactly zero",
-    "Resistance falls gradually to a small but non-zero value",
-    "The material becomes an insulator below the critical temperature",
-    "The critical temperature is the same for all superconductors",
-    "Resistance is exactly zero at all temperatures above the critical temperature"
-  ],
+  opts: ["Below a critical temperature the resistance becomes exactly zero", "Resistance falls gradually to a small but non-zero value", "The material becomes an insulator below the critical temperature", "The critical temperature is the same for all superconductors", "Resistance is exactly zero at all temperatures above the critical temperature"],
   ans: 0,
   sol: `<p>Below a critical temperature, a superconductor has <b>exactly zero</b> resistance — not small, zero.</p>
 <p><b>Answer: A.</b></p>
@@ -189,29 +183,29 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 {
   id: "I-01", module: "I", topic: "Capacitance", diff: 1,
   q: "A capacitor of capacitance 5.0 μF is charged to a potential difference of 12 V. What charge is stored on one plate?",
-  opts: ["60 μC", "2.4 μC", "0.42 μC", "600 μC", "17 μC"],
-  ans: 0,
+  opts: ["2.4 μC", "60 μC", "0.42 μC", "600 μC", "17 μC"],
+  ans: 1,
   sol: `<p>Use <code>Q = CV</code>:</p>
 <div class="formula">Q = 5.0 × 10⁻⁶ × 12 = 60 × 10⁻⁶ C = 60 μC</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: B.</b></p>
 <p><b>The mental route.</b> <code>5 × 12 = 60</code>, and the prefix <code>μ</code> carries through unchanged. There is no need to write the powers of ten at all if both quantities are handled in their prefixed forms consistently.</p>
 <p><b>The meaning of "on one plate".</b> The two plates carry equal and opposite charges, so the net charge on a capacitor is always zero. When a question asks about "the charge on a capacitor", it means the magnitude on one plate. The phrasing matters because a question could ask about the net charge, and the answer would then be zero.</p>
-<p><b>The traps.</b> Option B, 2.4 μC, comes from dividing instead of multiplying. Option D, 600 μC, is a factor of ten too large. Option E, 17 μC, is <code>12/5 × 7</code>-ish, an arithmetic slip.</p>
+<p><b>The traps.</b> Option A, 2.4 μC, comes from dividing instead of multiplying. Option D, 600 μC, is a factor of ten too large. Option E, 17 μC, is <code>12/5 × 7</code>-ish, an arithmetic slip.</p>
 <p><b>The related quantities to keep distinct.</b> Charge <code>Q</code> in coulombs, potential difference <code>V</code> in volts, capacitance <code>C</code> in farads. The farad is a coulomb per volt, so <code>60 μC / 12 V = 5 μF</code> ✓ — a quick confirmation that the three quantities are consistent.</p>`,
   trap: "Dividing by V instead of multiplying, or confusing the charge on one plate with the net charge."
 },
 {
   id: "I-02", module: "I", topic: "Capacitors in parallel", diff: 1,
   q: "A 2.0 μF capacitor and a 3.0 μF capacitor are connected in parallel. What is the combined capacitance?",
-  opts: ["5.0 μF", "1.2 μF", "6.0 μF", "2.5 μF", "0.83 μF"],
-  ans: 0,
+  opts: ["2.5 μF", "1.2 μF", "6.0 μF", "5.0 μF", "0.83 μF"],
+  ans: 3,
   sol: `<p>Capacitors in parallel add:</p>
 <div class="formula">C_total = C₁ + C₂ = 2.0 + 3.0 = 5.0 μF</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: D.</b></p>
 <p><b>Why parallel adds, physically.</b> In parallel, both capacitors have the same potential difference, so the total charge stored is the sum of the individual charges. Putting capacitors in parallel is equivalent to making one capacitor with a larger plate area, and larger area means more capacitance.</p>
 <p><b>The contrast with series.</b> In series the capacitors carry the same charge and the voltages add, giving <code>1/C = 1/2 + 1/3</code>, so <code>C = 1.2 μF</code> — which is option B, present deliberately. Note that the series combination is smaller than the smaller capacitor, which is the standard sanity check.</p>
 <p><b>The memory hook.</b> Capacitors combine the <b>opposite</b> way to resistors: parallel adds, series reciprocal-adds. Springs behave the same way as capacitors. If you remember one of the three, you can reconstruct the others by asking which quantity is shared.</p>
-<p><b>The traps.</b> Option B, 1.2 μF, is the series result. Option D, 2.5 μF, is the arithmetic mean. Option E, 0.83 μF, is the reciprocal of the sum.</p>`,
+<p><b>The traps.</b> Option B, 1.2 μF, is the series result. Option A, 2.5 μF, is the arithmetic mean. Option E, 0.83 μF, is the reciprocal of the sum.</p>`,
   trap: "Using the series rule for a parallel arrangement. Capacitors are the opposite of resistors."
 },
 {
@@ -231,15 +225,15 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 {
   id: "I-04", module: "I", topic: "Capacitors in series", diff: 1,
   q: "Two capacitors of 6.0 μF each are connected in series. What is the combined capacitance?",
-  opts: ["3.0 μF", "12 μF", "6.0 μF", "1.5 μF", "36 μF"],
-  ans: 0,
+  opts: ["1.5 μF", "12 μF", "6.0 μF", "3.0 μF", "36 μF"],
+  ans: 3,
   sol: `<p>For two capacitors in series, use the product-over-sum form:</p>
 <div class="formula">C_series = (6.0 × 6.0)/(6.0 + 6.0) = 36/12 = 3.0 μF</div>
 <p>Or equivalently, for two <i>identical</i> capacitors in series the combination is half of one: <code>6.0/2 = 3.0 μF</code>.</p>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: D.</b></p>
 <p><b>Why series reduces capacitance.</b> In series the capacitors carry the same charge, and the total voltage is the sum of the individual voltages. A larger voltage for the same charge means a smaller capacitance — so the combination is always smaller than the smallest individual capacitor. Putting capacitors in series is equivalent to increasing the plate separation, which reduces capacitance.</p>
 <p><b>The sanity check.</b> The answer must be less than 6.0 μF. That eliminates options B and C immediately, and the identical-capacitor shortcut confirms 3.0 μF.</p>
-<p><b>The traps.</b> Option B, 12 μF, is the parallel result. Option D, 1.5 μF, is a quarter rather than a half. Option E, 36 μF, is the product without dividing by the sum.</p>
+<p><b>The traps.</b> Option B, 12 μF, is the parallel result. Option A, 1.5 μF, is a quarter rather than a half. Option E, 36 μF, is the product without dividing by the sum.</p>
 <p><b>The rule worth remembering.</b> For <code>n</code> identical capacitors of value <code>C</code> in series, the combination is <code>C/n</code>. Exactly the same as for identical resistors in parallel, which is a useful parallel to notice.</p>`,
   trap: "Using the parallel rule for a series arrangement, or forgetting the sanity check."
 },
@@ -249,11 +243,11 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 {
   id: "J-01", module: "J", topic: "Specific heat capacity", diff: 1,
   q: "How much energy is needed to raise the temperature of 0.50 kg of a metal of specific heat capacity <code>900 J kg⁻¹ K⁻¹</code> by 20 K?",
-  opts: ["9.0 kJ", "18 kJ", "4.5 kJ", "90 kJ", "1.8 kJ"],
-  ans: 0,
+  opts: ["90 kJ", "18 kJ", "4.5 kJ", "9.0 kJ", "1.8 kJ"],
+  ans: 3,
   sol: `<p>Use <code>Q = mcΔT</code>:</p>
 <div class="formula">Q = 0.50 × 900 × 20 = 9000 J = 9.0 kJ</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: D.</b></p>
 <p><b>The mental route.</b> <code>0.5 × 900 = 450</code>, then <code>450 × 20 = 9000</code>. Both steps are easy, and tracking the thousands separately keeps the arithmetic clean.</p>
 <p><b>The trap.</b> Option B, 18 kJ, is exactly double and comes from using <code>m = 1.0 kg</code> instead of 0.50 kg. Option C, 4.5 kJ, is half the correct answer. Both are factors-of-two slips, which are the commonest error in this topic after <code>ΔT</code> mistakes.</p>
 <p><b>Why ΔT needs no conversion.</b> A temperature <i>change</i> of 20 K is the same as a change of 20 °C. Only absolute temperatures need the 273 conversion, and this formula uses a difference. So there is no conversion step here at all — a genuine saving.</p>
@@ -263,15 +257,15 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 {
   id: "J-02", module: "J", topic: "Latent heat", diff: 1,
   q: "How much energy is needed to melt 0.20 kg of ice at 0 °C? The specific latent heat of fusion of water is <code>3.34 × 10⁵ J kg⁻¹</code>.",
-  opts: ["67 kJ", "6.7 kJ", "670 kJ", "33 kJ", "134 kJ"],
-  ans: 0,
+  opts: ["6.7 kJ", "67 kJ", "670 kJ", "33 kJ", "134 kJ"],
+  ans: 1,
   sol: `<p>Use <code>Q = mL</code>:</p>
 <div class="formula">Q = 0.20 × 3.34 × 10⁵ = 6.68 × 10⁴ J ≈ 67 kJ</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: B.</b></p>
 <p><b>The mental route.</b> <code>0.2 × 3.34 = 0.668</code>, then <code>× 10⁵ = 6.68 × 10⁴</code>. Converting to kilojoules gives 66.8 kJ.</p>
 <p><b>Why there is no temperature term.</b> Melting happens at constant temperature. The energy goes into breaking the bonds holding the molecules in their lattice, not into increasing their kinetic energy — which is why the temperature does not change during the phase transition. Using <code>Q = mcΔT</code> here would be wrong, because <code>ΔT</code> is zero.</p>
 <p><b>The comparison that matters.</b> The latent heat of <b>vaporisation</b> of water is <code>2.26 × 10⁶ J kg⁻¹</code>, nearly seven times the latent heat of fusion. So boiling 0.20 kg of water would take about 450 kJ against the 67 kJ needed to melt the same mass. Melting only loosens the molecular arrangement; boiling separates the molecules entirely. That comparison is a common question.</p>
-<p><b>The traps.</b> Option B, 6.7 kJ, is a factor of ten too small — a powers-of-ten slip, which is the most likely error with an exponent of <code>10⁵</code>. Option D, 33 kJ, uses <code>m = 0.1 kg</code>. Option E, 134 kJ, uses <code>m = 0.4 kg</code>.</p>`,
+<p><b>The traps.</b> Option A, 6.7 kJ, is a factor of ten too small — a powers-of-ten slip, which is the most likely error with an exponent of <code>10⁵</code>. Option D, 33 kJ, uses <code>m = 0.1 kg</code>. Option E, 134 kJ, uses <code>m = 0.4 kg</code>.</p>`,
   trap: "Using Q = mcΔT for a phase change, or a powers-of-ten slip with the latent heat."
 },
 {
@@ -291,15 +285,15 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 {
   id: "J-04", module: "J", topic: "Pressure and equilibrium", diff: 2,
   q: "A gas is trapped in a cylinder by a piston of area <code>0.010 m²</code> and mass 5.0 kg. The atmospheric pressure is <code>1.0 × 10⁵ Pa</code>. What is the pressure of the gas? Use <code>g = 10 m s⁻²</code>.",
-  opts: ["1.05 × 10⁵ Pa", "1.5 × 10⁵ Pa", "5.0 × 10⁵ Pa", "1.0 × 10⁵ Pa", "1.005 × 10⁵ Pa"],
-  ans: 0,
+  opts: ["5.0 × 10⁵ Pa", "1.5 × 10⁵ Pa", "1.05 × 10⁵ Pa", "1.0 × 10⁵ Pa", "1.005 × 10⁵ Pa"],
+  ans: 2,
   sol: `<p>At equilibrium, the gas pressure supports both the atmosphere and the piston's weight. The pressure from the piston is its weight divided by the area:</p>
 <div class="formula">p_piston = mg/A = (5.0 × 10)/0.010 = 50/0.010 = 5000 Pa</div>
 <p>So the total gas pressure is</p>
 <div class="formula">p = 1.0 × 10⁵ + 5.0 × 10³ = 1.05 × 10⁵ Pa</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: C.</b></p>
 <p><b>Why the area matters here but not in hydrostatics.</b> In a liquid at depth, the area cancelled out of the derivation of <code>p = ρgh</code>. Here the piston's weight is fixed but the area over which it is spread is not, so the area genuinely matters. Noticing which situation you are in is part of the question.</p>
-<p><b>The traps.</b> Option D, <code>1.0 × 10⁵ Pa</code>, is the atmospheric pressure alone, forgetting the piston. Option E, <code>1.005 × 10⁵ Pa</code>, is what you get from using the piston's <i>mass</i> rather than its weight. Option B, <code>1.5 × 10⁵ Pa</code>, and option C are arithmetic slips.</p>
+<p><b>The traps.</b> Option D, <code>1.0 × 10⁵ Pa</code>, is the atmospheric pressure alone, forgetting the piston. Option E, <code>1.005 × 10⁵ Pa</code>, is what you get from using the piston's <i>mass</i> rather than its weight. Option B, <code>1.5 × 10⁵ Pa</code>, and option A are arithmetic slips.</p>
 <p><b>The related shape worth knowing.</b> For a gas trapped in a tube by a column of liquid, the same structure applies with <code>p = p_atm + ρgh</code>. That links this module directly back to module M, and a question that combines the two is exactly the kind of linking question a competition paper likes.</p>`,
   trap: "Using the piston's mass rather than its weight, or forgetting the atmospheric pressure."
 },
@@ -309,30 +303,31 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 {
   id: "K-01", module: "K", topic: "Nuclear notation", diff: 1,
   q: "How many neutrons are there in a nucleus of <code>²³⁵₉₂U</code>?",
-  opts: ["143", "92", "235", "327", "235.0"],
-  ans: 0,
+  opts: ["327", "92", "235", "143", "235.0"],
+  ans: 3,
   sol: `<p>The superscript is the nucleon number <code>A</code>, the total number of protons and neutrons. The subscript is the proton number <code>Z</code>.</p>
 <div class="formula">neutrons = A − Z = 235 − 92 = 143</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: D.</b></p>
 <p><b>The notation convention, worth stating explicitly.</b> <code>A</code> is the larger number and goes on top; <code>Z</code> is the smaller number and goes underneath. A common slip is to swap them, which would give 92 as the neutron count — option B, present as a distractor.</p>
 <p><b>Why uranium-235 is important.</b> It is the fissile isotope used in nuclear reactors, and it makes up only about 0.7% of natural uranium, the rest being uranium-238. That low abundance is why enrichment is needed. The nuclear notation is the entry point to all of that.</p>
-<p><b>The traps.</b> Option B, 92, is the proton number, not the neutron count. Option C, 235, is the nucleon number. Option D, 327, is <code>A + Z</code>, which is what you get by adding instead of subtracting. Option E is the nucleon number expressed with a spurious decimal.</p>
+<p><b>The traps.</b> Option B, 92, is the proton number, not the neutron count. Option C, 235, is the nucleon number. Option A, 327, is <code>A + Z</code>, which is what you get by adding instead of subtracting. Option E is the nucleon number expressed with a spurious decimal.</p>
 <p><b>The related skill.</b> Given a notation, you should be able to state the number of protons, the number of neutrons, and the charge on the bare nucleus (<code>+Ze</code>) without hesitation. Those three facts cover nearly every question that begins with a nuclear symbol.</p>`,
   trap: "Swapping A and Z, or adding them instead of subtracting."
 },
 {
   id: "K-02", module: "K", topic: "Specific charge", diff: 2,
   q: "What is the specific charge of a proton? Use <code>e = 1.6 × 10⁻¹⁹ C</code> and <code>m_p = 1.67 × 10⁻²⁷ kg</code>.",
-  opts: ["9.6 × 10⁷ C kg⁻¹", "1.8 × 10¹¹ C kg⁻¹", "4.8 × 10⁷ C kg⁻¹", "1.6 × 10⁻¹⁹ C kg⁻¹", "5.7 × 10⁸ C kg⁻¹"],
-  ans: 0,
+  opts: ["5.7 × 10⁸ C kg⁻¹", "1.8 × 10¹¹ C kg⁻¹", "4.8 × 10⁷ C kg⁻¹", "1.6 × 10⁻¹⁹ C kg⁻¹", "9.6 × 10⁷ C kg⁻¹"],
+  ans: 4,
   sol: `<p>Specific charge is charge divided by mass:</p>
 <div class="formula">Q/m = 1.6 × 10⁻¹⁹ / 1.67 × 10⁻²⁷</div>
 <p>Handle the digits and the powers separately. Digits: <code>1.6/1.67 ≈ 0.96</code>. Powers: <code>10⁻¹⁹/10⁻²⁷ = 10⁸</code>. So</p>
 <div class="formula">Q/m ≈ 9.6 × 10⁷ C kg⁻¹</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: E.</b></p>
 <p><b>Why this value is worth memorising.</b> It appears whenever a charged particle is deflected in a field, and it lets you compare the deflection of different particles instantly. The electron's specific charge is about 1800 times larger, at <code>1.8 × 10¹¹ C kg⁻¹</code> — option B, present as the electron's value.</p>
 <p><b>Why the electron's value is so much larger.</b> The electron carries the same magnitude of charge as the proton but in about <code>1/1800</code> of the mass. That is why electrons are deflected far more than protons in the same field, and it is the basis of the historical measurement of the electron's mass-to-charge ratio.</p>
-<p><b>The nucleus comparison.</b> A helium nucleus, <code>⁴₂He</code>, has specific charge <code>2e/(4u) = e/(2u)</code> — half the proton's, at <code>4.8 × 10⁷ C kg⁻¹</code> (option C). A nucleus always has a lower specific charge than a lone proton, because neutrons add mass without adding charge.</p>`,
+<p><b>The nucleus comparison.</b> A helium nucleus, <code>⁴₂He</code>, has specific charge <code>2e/(4u) = e/(2u)</code> — half the proton's, at <code>4.8 × 10⁷ C kg⁻¹</code> (option C). A nucleus always has a lower specific charge than a lone proton, because neutrons add mass without adding charge.</p>
+<p><b>The remaining two options.</b> Option A, <code>5.7 × 10⁸ C kg⁻¹</code>, is the proton's specific charge multiplied by about six — the sort of number you reach by dividing the mass by the charge instead of the other way round and then adjusting the power of ten to compensate. Option D, <code>1.6 × 10⁻¹⁹ C kg⁻¹</code>, is simply the charge <code>e</code> on its own: the elementary charge, not a charge-to-mass ratio at all. It is there to catch anyone who reads "specific charge" as "charge" and stops. The units in the answer — <code>C kg⁻¹</code> rather than <code>C</code> — rule it out before any arithmetic.</p>`,
   trap: "Confusing the proton's specific charge with the electron's, which is about 1800 times larger."
 },
 {
@@ -353,13 +348,13 @@ Z:  88 = Z_daughter + 2   →   Z_daughter = 86</div>
 {
   id: "K-04", module: "K", topic: "Beta decay", diff: 2,
   q: "Carbon-14, <code>¹⁴₆C</code>, undergoes beta-minus decay. What is the proton number of the daughter nucleus?",
-  opts: ["7", "5", "6", "14", "8"],
-  ans: 0,
+  opts: ["6", "5", "7", "14", "8"],
+  ans: 2,
   sol: `<p>In beta-minus decay a neutron converts into a proton, emitting an electron and an antineutrino:</p>
 <div class="formula">n → p + e⁻ + ν̄</div>
 <p>The nucleon number <code>A</code> is unchanged, and the proton number <code>Z</code> <b>increases by 1</b>:</p>
 <div class="formula">¹⁴₆C → ¹⁴₇N + ⁰₋₁e + ν̄</div>
-<p><b>Answer: A, Z = 7</b>, which is nitrogen.</p>
+<p><b>Answer: C, Z = 7</b>, which is nitrogen.</p>
 <p><b>The sign trap, and it is the whole point of the question.</b> It is tempting to think that emitting a negatively charged particle must reduce the nuclear charge. It does not — the electron is <i>created</i> in the decay rather than removed from the nucleus, and the proton count simultaneously increases. Getting this backwards gives <code>Z = 5</code>, which is option B.</p>
 <p><b>Why the antineutrino is essential.</b> If only an electron were emitted, its energy would be fixed by the mass difference between parent and daughter. In practice beta particles emerge with a <b>continuous range</b> of energies up to a maximum, and momentum would not balance either. Both problems are solved by a third, nearly massless neutral particle carrying away the missing energy and momentum. That is the historical argument for the neutrino.</p>
 <p><b>The balancing check.</b> On the right, <code>A = 14 + 0 = 14</code> ✓ and <code>Z = 7 + (−1) = 6</code> ✓. The electron's <code>Z</code> of −1 is what makes the books balance.</p>`,
@@ -368,11 +363,11 @@ Z:  88 = Z_daughter + 2   →   Z_daughter = 86</div>
 {
   id: "K-05", module: "K", topic: "Mass–energy equivalence", diff: 2,
   q: "A nuclear reaction converts a mass of 0.010 u into energy. How much energy is released? Use <code>1 u ≡ 931 MeV</code>.",
-  opts: ["9.3 MeV", "0.010 MeV", "93 MeV", "931 MeV", "1.5 × 10⁻¹² MeV"],
-  ans: 0,
+  opts: ["1.5 × 10⁻¹² MeV", "0.010 MeV", "93 MeV", "931 MeV", "9.3 MeV"],
+  ans: 4,
   sol: `<p>Use the conversion directly:</p>
 <div class="formula">E = 0.010 × 931 = 9.31 MeV</div>
-<p><b>Answer: A, about 9.3 MeV.</b></p>
+<p><b>Answer: E, about 9.3 MeV.</b></p>
 <p><b>Why the conversion is worth memorising.</b> Nuclear masses are quoted in <code>u</code> and nuclear energies in MeV, so <code>1 u ≡ 931 MeV</code> lets you move between them with one multiplication. Converting to kilograms and using <code>E = mc²</code> would take three steps and introduce three chances of a powers-of-ten error. On a no-calculator paper that difference is decisive.</p>
 <p><b>Why the conversion factor is 931.</b> Substituting <code>1 u = 1.66 × 10⁻²⁷ kg</code> and <code>c = 3.00 × 10⁸ m s⁻¹</code> into <code>E = mc²</code> gives <code>1.49 × 10⁻¹⁰ J</code>. Dividing by <code>1.6 × 10⁻¹⁹</code> to convert to electron volts gives <code>9.3 × 10⁸ eV</code>, or 931 MeV.</p>
 <p><b>The physical magnitude check.</b> A few MeV per nuclear reaction is typical — compare a chemical reaction, where the energy release is of order a few eV. The ratio of about a million is why nuclear energy is so much more concentrated than chemical energy. If your answer had come out in the electron-volt range, the conversion would have gone wrong.</p>
@@ -385,44 +380,44 @@ Z:  88 = Z_daughter + 2   →   Z_daughter = 86</div>
 {
   id: "L-01", module: "L", topic: "Photon energy", diff: 1,
   q: "What is the energy of a photon of wavelength 500 nm? Use <code>hc = 2.0 × 10⁻²⁵ J m</code>.",
-  opts: ["4.0 × 10⁻¹⁹ J", "2.0 × 10⁻¹⁹ J", "1.0 × 10⁻¹⁹ J", "4.0 × 10⁻²⁵ J", "6.0 × 10⁻¹⁹ J"],
-  ans: 0,
+  opts: ["2.0 × 10⁻¹⁹ J", "4.0 × 10⁻¹⁹ J", "1.0 × 10⁻¹⁹ J", "4.0 × 10⁻²⁵ J", "6.0 × 10⁻¹⁹ J"],
+  ans: 1,
   sol: `<p>Use <code>E = hc/λ</code> with the wavelength in metres:</p>
 <div class="formula">E = 2.0 × 10⁻²⁵ / (500 × 10⁻⁹) = 2.0 × 10⁻²⁵ / (5.0 × 10⁻⁷)</div>
 <p>Digits: <code>2.0/5.0 = 0.40</code>. Powers: <code>10⁻²⁵/10⁻⁷ = 10⁻¹⁸</code>. So</p>
 <div class="formula">E = 4.0 × 10⁻¹⁹ J</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: B.</b></p>
 <p><b>Convert to electron volts as a check.</b> <code>4.0 × 10⁻¹⁹ / 1.6 × 10⁻¹⁹ = 2.5 eV</code>. A 500 nm photon is green light, and green photons do carry about 2.5 eV. That matches the table in the curriculum and confirms the answer.</p>
-<p><b>The traps.</b> Option B, <code>2.0 × 10⁻¹⁹</code>, is a factor of two too small. Option D is <code>hc</code> reported as an energy. All the options are within an order of magnitude, so this is a genuine calculation rather than an estimate — but the powers-of-ten discipline still makes it fast.</p>
+<p><b>The traps.</b> Option A, <code>2.0 × 10⁻¹⁹</code>, is a factor of two too small. Option D is <code>hc</code> reported as an energy. All the options are within an order of magnitude, so this is a genuine calculation rather than an estimate — but the powers-of-ten discipline still makes it fast.</p>
 <p><b>Why <code>hc = 2.0 × 10⁻²⁵ J m</code> is worth memorising.</b> It converts a two-step calculation into one step. Photon energy in joules is <code>hc/λ</code>, and for any visible wavelength you can do the division mentally. The exact value is <code>1.99 × 10⁻²⁵</code>, so rounding to 2.0 introduces less than 1% error — negligible at this level.</p>`,
   trap: "Forgetting to convert nanometres to metres, which changes the answer by a factor of 10⁹."
 },
 {
   id: "L-02", module: "L", topic: "Photoelectric effect", diff: 1,
   q: "Light of photon energy 4.0 eV falls on a metal of work function 2.5 eV. What is the maximum kinetic energy of the emitted electrons?",
-  opts: ["1.5 eV", "6.5 eV", "4.0 eV", "2.5 eV", "0.6 eV"],
-  ans: 0,
+  opts: ["2.5 eV", "6.5 eV", "4.0 eV", "1.5 eV", "0.6 eV"],
+  ans: 3,
   sol: `<p>Use Einstein's photoelectric equation:</p>
 <div class="formula">hf = φ + E_k(max)
 E_k(max) = 4.0 − 2.5 = 1.5 eV</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: D.</b></p>
 <p><b>Why subtraction and not addition.</b> The photon delivers 4.0 eV to one electron. The electron must spend 2.5 eV escaping the metal, and whatever remains becomes kinetic energy. So the two quantities subtract. Option B, 6.5 eV, is the sum, which would mean the electron gains energy by escaping — physically impossible.</p>
 <p><b>The threshold check.</b> Emission occurs only if <code>hf &gt; φ</code>, that is, if the photon energy exceeds the work function. Here <code>4.0 &gt; 2.5</code> ✓, so emission happens. If the question had given a photon energy below 2.5 eV, the correct answer would be that no electrons are emitted at all — a trap worth watching for.</p>
-<p><b>The traps.</b> Option C, 4.0 eV, is the photon energy before subtracting the work function. Option D, 2.5 eV, is the work function itself. Option E, 0.6 eV, is a division rather than a subtraction.</p>
+<p><b>The traps.</b> Option C, 4.0 eV, is the photon energy before subtracting the work function. Option A, 2.5 eV, is the work function itself. Option E, 0.6 eV, is a division rather than a subtraction.</p>
 <p><b>The related quantity.</b> The stopping potential needed to just prevent these electrons from reaching the anode would be 1.5 V, since <code>eV_s = E_k(max)</code> and the energy is in electron volts. That is the whole convenience of the unit: the stopping potential in volts is numerically equal to the maximum kinetic energy in electron volts.</p>`,
   trap: "Adding the work function instead of subtracting it, or missing that emission requires hf > φ."
 },
 {
   id: "L-03", module: "L", topic: "de Broglie", diff: 2,
   q: "An electron moves with speed <code>v</code>. If its speed is doubled, what happens to its de Broglie wavelength?",
-  opts: ["It halves", "It doubles", "It is unchanged", "It falls to a quarter", "It quadruples"],
-  ans: 0,
+  opts: ["It doubles", "It halves", "It is unchanged", "It falls to a quarter", "It quadruples"],
+  ans: 1,
   sol: `<p>The de Broglie wavelength is</p>
 <div class="formula">λ = h/mv</div>
 <p>Since <code>h</code> and <code>m</code> are constant, <code>λ ∝ 1/v</code>. Doubling the speed halves the wavelength.</p>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: B.</b></p>
 <p><b>The inverse relationship is the point.</b> Faster particles have shorter wavelengths. This is why electron microscopes use high accelerating voltages: shorter wavelengths mean better resolution, because the diffraction limit improves as the wavelength falls.</p>
-<p><b>The traps.</b> Option B, doubling, is the error of assuming a direct proportionality. Option D, falling to a quarter, is what you would get if the wavelength depended on <code>v²</code> — which it does not, because <code>λ = h/p</code> and momentum is linear in speed at non-relativistic energies.</p>
+<p><b>The traps.</b> Option A, doubling, is the error of assuming a direct proportionality. Option D, falling to a quarter, is what you would get if the wavelength depended on <code>v²</code> — which it does not, because <code>λ = h/p</code> and momentum is linear in speed at non-relativistic energies.</p>
 <p><b>The momentum form is the more fundamental one.</b> <code>λ = h/p</code> holds even at relativistic speeds, where <code>p = mv</code> does not. For Round 0 the non-relativistic form is sufficient, but knowing that the fundamental relationship is with momentum rather than with speed is worth noting.</p>
 <p><b>The magnitude check.</b> A typical electron accelerated through 100 V has a wavelength of about 0.12 nm, comparable to atomic spacing. That is why crystals work as diffraction gratings for electrons, and why the effect is unobservable for macroscopic objects — a cricket ball's wavelength is some twenty orders of magnitude smaller than a nucleus.</p>`,
   trap: "Assuming the wavelength is proportional to speed rather than inversely proportional."
@@ -444,13 +439,13 @@ E_k(max) = 4.0 − 2.5 = 1.5 eV</div>
 {
   id: "L-05", module: "L", topic: "Line spectra", diff: 2,
   q: "An electron in a hydrogen atom falls from an energy level of −1.5 eV to a level of −3.4 eV. What is the energy of the emitted photon?",
-  opts: ["1.9 eV", "4.9 eV", "3.4 eV", "1.5 eV", "0.90 eV"],
-  ans: 0,
+  opts: ["4.9 eV", "1.9 eV", "3.4 eV", "1.5 eV", "0.90 eV"],
+  ans: 1,
   sol: `<p>The photon carries the energy difference between the levels:</p>
 <div class="formula">E = E_initial − E_final = (−1.5) − (−3.4) = 1.9 eV</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: B.</b></p>
 <p><b>The sign handling, which is where this goes wrong.</b> Energy levels are quoted as negative numbers, measured from the zero of an electron at rest infinitely far away. The electron is <i>losing</i> energy by falling to a lower level, and that lost energy is emitted as a photon. Subtracting the more negative number from the less negative one gives a positive result, which is what an emitted photon must have.</p>
-<p><b>The traps.</b> Option B, 4.9 eV, is the <b>sum</b> of the two magnitudes, which would correspond to ionising the atom from the lower level rather than to a transition between them. Option C, 3.4 eV, is the ionisation energy from the lower level. Option D, 1.5 eV, is the magnitude of the upper level.</p>
+<p><b>The traps.</b> Option A, 4.9 eV, is the <b>sum</b> of the two magnitudes, which would correspond to ionising the atom from the lower level rather than to a transition between them. Option C, 3.4 eV, is the ionisation energy from the lower level. Option D, 1.5 eV, is the magnitude of the upper level.</p>
 <p><b>Why line spectra matter.</b> Because the levels are discrete, only certain photon energies are possible, so a gas discharge emits sharp bright lines rather than a continuous spectrum. That observation is the <b>evidence</b> for quantised energy levels, and a question phrased as "what does the existence of line spectra tell us" wants that sentence rather than a calculation.</p>
 <p><b>Where this goes next.</b> In a real hydrogen spectrum the visible lines are the Balmer series, arising from transitions down to the <code>n = 2</code> level at −3.4 eV. The transition here, from −1.5 eV to −3.4 eV, is one of those — a red line at about 656 nm, which is why hydrogen discharge tubes glow pink.</p>`,
   trap: "Adding the magnitudes instead of subtracting, or getting the sign of the emitted photon wrong."
@@ -475,12 +470,12 @@ E_k(max) = 4.0 − 2.5 = 1.5 eV</div>
 {
   id: "M-02", module: "M", topic: "Floating fraction", diff: 1,
   q: "A block of density <code>750 kg m⁻³</code> floats in water of density <code>1000 kg m⁻³</code>. What percentage of its volume is above the water surface?",
-  opts: ["25%", "75%", "50%", "33%", "20%"],
-  ans: 0,
+  opts: ["20%", "75%", "50%", "33%", "25%"],
+  ans: 4,
   sol: `<p>For a floating body, upthrust equals weight, which gives the submerged fraction directly:</p>
 <div class="formula">V_submerged/V = ρ_block/ρ_water = 750/1000 = 0.75</div>
 <p>So 75% is submerged, which means <b>25% is above the surface</b>.</p>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: E.</b></p>
 <p><b>The trap, and it is the whole question.</b> Option B, 75%, is the submerged fraction — the number you calculate first. The question asks for the fraction <i>above</i> the water. This kind of inversion is one of the commonest ways to lose a mark on a question you actually understood, and it is worth pausing on the wording every time.</p>
 <p><b>The sanity check.</b> The block is less dense than water, so it should float with more than half submerged but not by much — 75/25 is right for a density ratio of 0.75. If your answer had the block floating with only a sliver submerged, the density ratio would have to be much smaller.</p>
 <p><b>The general result.</b> The submerged fraction equals the ratio of the object's density to the fluid's density. So an ice cube (917 kg m⁻³) floats in water with about 92% submerged — which is why icebergs show only a small fraction above the surface, and why that hidden fraction is dangerous to shipping.</p>`,
@@ -489,30 +484,30 @@ E_k(max) = 4.0 − 2.5 = 1.5 eV</div>
 {
   id: "M-03", module: "M", topic: "Density by weighing", diff: 2,
   q: "An object weighs 8.0 N in air and 6.0 N when fully immersed in water. What is its density? Take <code>ρ_water = 1000 kg m⁻³</code>.",
-  opts: ["4000 kg m⁻³", "1333 kg m⁻³", "2000 kg m⁻³", "8000 kg m⁻³", "1000 kg m⁻³"],
-  ans: 0,
+  opts: ["2000 kg m⁻³", "1333 kg m⁻³", "4000 kg m⁻³", "8000 kg m⁻³", "1000 kg m⁻³"],
+  ans: 2,
   sol: `<p>The upthrust is the difference between the two weighings:</p>
 <div class="formula">upthrust = 8.0 − 6.0 = 2.0 N</div>
 <p>Divide the true weight by the upthrust and the unknown volume and <code>g</code> both cancel:</p>
 <div class="formula">ρ_object/ρ_water = W/(W − W') = 8.0/(8.0 − 6.0) = 8.0/2.0 = 4.0</div>
 <div class="formula">ρ_object = 4.0 × 1000 = 4000 kg m⁻³</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: C.</b></p>
 <p><b>Why this is a ratio question.</b> You never needed the volume and you never needed <code>g</code>. The two weighings give the density ratio directly. If you started by computing <code>V</code> from <code>2.0 = 1000 × V × 9.81</code>, you took the long route and probably ran out of time.</p>
 <p><b>The physical check.</b> A density of 4000 kg m⁻³ is between aluminium (2700) and steel (7800), which is plausible for a dense mineral or a ceramic. If your answer had come out at 500 kg m⁻³ it would be less dense than water, and the object could not have sunk — so the answer must exceed 1000.</p>
-<p><b>The traps.</b> Option C, 2000 kg m⁻³, is <code>W/(W − W')</code> with a slip, or the answer you get from using <code>W'</code> in the numerator. Option B, 1333 kg m⁻³, comes from inverting the ratio. Option D, 8000 kg m⁻³, is <code>8.0/1.0</code>, using the wrong difference.</p>`,
+<p><b>The traps.</b> Option A, 2000 kg m⁻³, is <code>W/(W − W')</code> with a slip, or the answer you get from using <code>W'</code> in the numerator. Option B, 1333 kg m⁻³, comes from inverting the ratio. Option D, 8000 kg m⁻³, is <code>8.0/1.0</code>, using the wrong difference.</p>`,
   trap: "Computing the volume when the two weighings already give the density ratio directly."
 },
 {
   id: "M-04", module: "M", topic: "Archimedes' principle", diff: 1,
   q: "A body of volume <code>2.0 × 10⁻³ m³</code> is fully submerged in water. What is the upthrust on it? Take <code>ρ = 1000 kg m⁻³</code> and <code>g = 10 m s⁻²</code>.",
-  opts: ["20 N", "2.0 N", "200 N", "10 N", "0.20 N"],
-  ans: 0,
+  opts: ["10 N", "2.0 N", "200 N", "20 N", "0.20 N"],
+  ans: 3,
   sol: `<p>The upthrust equals the weight of fluid displaced, and since the body is fully submerged the displaced volume is its own volume:</p>
 <div class="formula">upthrust = ρ_fluid V g = 1000 × 2.0 × 10⁻³ × 10 = 20 N</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: D.</b></p>
 <p><b>The critical point: it is the fluid's density, not the object's.</b> This is the single most common error in the module. A steel block and a wooden block of the same volume, both fully submerged, experience <b>exactly the same upthrust</b> — even though the steel is far heavier. Only the volume matters, because only the volume determines how much fluid is pushed out of the way.</p>
 <p><b>Why the upthrust does not depend on depth.</b> For an incompressible fluid, the pressure difference between the top and bottom of the object is the same at any depth, because both pressures increase by the same amount as you go deeper. So the upthrust is the same however deep the object sits. This is counter-intuitive and worth being able to state.</p>
-<p><b>The traps.</b> Option B, 2.0 N, and option E, 0.20 N, are powers-of-ten slips. Option D, 10 N, is <code>ρV</code> without the <code>g</code> — a mass reported as a force.</p>
+<p><b>The traps.</b> Option B, 2.0 N, and option E, 0.20 N, are powers-of-ten slips. Option A, 10 N, is <code>ρV</code> without the <code>g</code> — a mass reported as a force.</p>
 <p><b>The floating comparison.</b> If this body had a weight of 20 N, it would be neutrally buoyant — hovering fully submerged. If its weight were less than 20 N, it would float with part of its volume above the surface. So the upthrust sets the threshold for floating, and comparing it with the weight answers every floating question.</p>`,
   trap: "Using the object's density instead of the fluid's. Upthrust depends on displaced volume only."
 },
@@ -538,15 +533,15 @@ E_k(max) = 4.0 − 2.5 = 1.5 eV</div>
 {
   id: "N-02", module: "N", topic: "Pendulum", diff: 2,
   q: "<b>Insurance question.</b> A simple pendulum has a length of 2.5 m. What is its period? Take <code>g = 10 m s⁻²</code> and <code>π ≈ 3.1</code>.",
-  opts: ["3.1 s", "1.6 s", "6.3 s", "0.50 s", "2.0 s"],
-  ans: 0,
+  opts: ["0.50 s", "1.6 s", "6.3 s", "3.1 s", "2.0 s"],
+  ans: 3,
   sol: `<p>For small oscillations, use</p>
 <div class="formula">T = 2π√(ℓ/g) = 2 × 3.1 × √(2.5/10) = 6.2 × √0.25 = 6.2 × 0.5 = 3.1 s</div>
-<p><b>Answer: A.</b></p>
+<p><b>Answer: D.</b></p>
 <p><b>The numbers were chosen to be clean.</b> <code>2.5/10 = 0.25</code> and <code>√0.25 = 0.5</code> exactly, so the only multiplication needed is <code>2π × 0.5 = π</code>. That is why the answer is numerically equal to the value of <code>π</code> — a coincidence of the chosen length, not a general rule.</p>
 <p><b>The small-angle condition, which is the physics behind the formula.</b> The period formula assumes the restoring force is proportional to the displacement, which requires <code>sin θ ≈ θ</code>. That is the small-angle approximation from module A. At large amplitudes the motion is not simple harmonic and the period becomes longer. A question that gives a large amplitude is testing whether you notice this.</p>
 <p><b>The mass does not appear.</b> The period of a pendulum is independent of the mass of the bob. That follows from the derivation — gravity accelerates all masses equally — and it is worth stating, because a question may include a mass as a distractor.</p>
-<p><b>The traps.</b> Option C, 6.3 s, is <code>2π</code> with the square root omitted. Option D, 0.50 s, is <code>√(ℓ/g)</code> alone. Option B, 1.6 s, is <code>π/2</code>.</p>`,
+<p><b>The traps.</b> Option C, 6.3 s, is <code>2π</code> with the square root omitted. Option A, 0.50 s, is <code>√(ℓ/g)</code> alone. Option B, 1.6 s, is <code>π/2</code>.</p>`,
   trap: "Thinking the period depends on the mass of the bob, or forgetting the 2π."
 },
 {

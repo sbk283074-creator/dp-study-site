@@ -11,7 +11,8 @@
     curriculum: (window.BPHO_CURRICULUM || { modules: [] }).modules,
     questions: window.BPHO_QUESTIONS || [],
     glossary: window.BPHO_GLOSSARY || [],
-    plan: window.BPHO_PLAN || []
+    plan: window.BPHO_PLAN || [],
+    guidance: window.BPHO_GUIDANCE || {}
   };
 
   /* ---------------- state ---------------- */
@@ -19,7 +20,8 @@
   var state = load();
 
   function blank() {
-    return { checks: {}, answers: {}, days: {}, done: {}, mock: null, examDate: EXAM_DATE, v: 1 };
+    return { checks: {}, answers: {}, days: {}, done: {}, mock: null, selftest: {},
+             examDate: EXAM_DATE, v: 1 };
   }
 
   function load() {
@@ -263,6 +265,26 @@
       '<p class="sub">Target: 11/25 — the UK-region qualifying line, which is the route open to you as an overseas candidate.</p>' +
       "</div>";
 
+    h += '<h2>Where to start</h2>';
+    h += '<p class="sub">Modules in the order their prerequisites allow. Each one opens with what it ' +
+      "assumes you can already do, and a three-question check you can take before committing to it.</p>";
+    h += '<ol class="steps">';
+    gdOrder().forEach(function (c) {
+      var mm = mod(c);
+      var g = gd(c);
+      var st = state.selftest[c];
+      var badge = "";
+      if (st && st.done) {
+        var n = (g.starter || []).filter(function (s, i) { return (st.picks || {})[i] === s.ans; }).length;
+        badge = ' <span class="flag ' + (n === 3 ? "flag--tierA" : "flag--new") + '">check ' + n + "/3</span>";
+      }
+      h += '<li><a href="#/m/' + c + '"><b>' + esc(c) + "</b> · " + esc(mm ? mm.short : c) + "</a>" +
+        badge + (g && g.before && g.before.length
+          ? '<span class="small"> — after ' + g.before.join(", ") + "</span>" : "") +
+        "</li>";
+    });
+    h += "</ol>";
+
     h += '<h2>The plan</h2>';
     h += '<div class="card">' +
       "<p>" + planDone + " of " + DATA.plan.length + " days marked complete.</p>" +
@@ -323,6 +345,126 @@
     return h;
   }
 
+  /* ---------------- study guidance (prereq · order · self-test) ---------------- */
+
+  function gd(code) { return DATA.guidance[code] || null; }
+
+  /** Modules that declare `code` as a prerequisite — derived, never stored. */
+  function gdAfter(code) {
+    return DATA.curriculum
+      .filter(function (m) {
+        var g = gd(m.code);
+        return g && (g.before || []).indexOf(code) >= 0;
+      })
+      .map(function (m) { return m.code; });
+  }
+
+  /** A recommended reading order: respect the declared prerequisites first,
+      then the curriculum's own priority. Simple stable topo sort. */
+  function gdOrder() {
+    var codes = DATA.curriculum.map(function (m) { return m.code; });
+    var placed = [], seen = {};
+    var guard = 0;
+    while (placed.length < codes.length && guard++ < 200) {
+      var progressed = false;
+      for (var i = 0; i < codes.length; i++) {
+        var c = codes[i];
+        if (seen[c]) continue;
+        var g = gd(c);
+        var pre = (g && g.before) || [];
+        var ready = pre.every(function (p) { return seen[p] || codes.indexOf(p) < 0; });
+        if (!ready) continue;
+        placed.push(c); seen[c] = true; progressed = true;
+      }
+      if (!progressed) {
+        // cycle or unknown prerequisite: fall back to curriculum priority
+        for (var k = 0; k < codes.length; k++) if (!seen[codes[k]]) { placed.push(codes[k]); seen[codes[k]] = true; }
+      }
+    }
+    return placed;
+  }
+
+  function prereqChips(codes, emptyText) {
+    if (!codes.length) return '<span class="small">' + (emptyText || "none") + "</span>";
+    return codes.map(function (c) {
+      var m = mod(c);
+      return '<a class="gchip" href="#/m/' + c + '">' + esc(c) + " · " + esc(m ? m.short : c) + "</a>";
+    }).join("");
+  }
+
+  function selfTestBlock(code) {
+    var g = gd(code);
+    if (!g || !g.starter || !g.starter.length) return "";
+    var st = state.selftest[code] || {};
+    var picks = st.picks || {};
+    var shown = !!st.done;
+
+    var h = '<section class="guide" id="selftest"><h2>Are you ready? — 3-question check</h2>';
+    h += '<p class="sub">Answer all three, then check. These are gates, not a score: if you miss one, ' +
+      "read the module rather than guessing again.</p>";
+
+    g.starter.forEach(function (s, i) {
+      var pick = picks[i];
+      h += '<div class="stq"><p class="stq__q"><b>' + (i + 1) + ".</b> " + s.q + "</p>";
+      h += '<div class="stq__opts">';
+      s.opts.forEach(function (o, k) {
+        var cls = "stopt";
+        if (shown) {
+          if (k === s.ans) cls += " is-right";
+          else if (k === pick) cls += " is-wrong";
+        } else if (k === pick) cls += " is-picked";
+        h += '<button type="button" class="' + cls + '" data-st="' + esc(code) + '" data-i="' + i +
+          '" data-k="' + k + '"><span class="stopt__k">' + "ABC"[k] + '</span><span>' + o + "</span></button>";
+      });
+      h += "</div>";
+      if (shown) {
+        var ok = pick === s.ans;
+        h += '<p class="stq__why ' + (ok ? "ok" : "no") + '">' +
+          (ok ? "<b>Correct.</b> " : (pick === undefined || pick === null ? "<b>Not answered.</b> " : "<b>Not quite.</b> ")) +
+          esc(s.why) + "</p>";
+      }
+      h += "</div>";
+    });
+
+    if (shown) {
+      var score = g.starter.filter(function (s, i) { return picks[i] === s.ans; }).length;
+      h += '<div class="callout ' + (score === g.starter.length ? "callout--good" : "callout--warn") + '"><p>' +
+        (score === g.starter.length
+          ? "<b>" + score + " / 3 — go on.</b> You have what this module assumes. Work through the sections, then the examples."
+          : "<b>" + score + " / 3.</b> Read the prerequisite material first — the links above take you straight to it — then come back and try again.") +
+        "</p></div>";
+      h += '<p><button class="btn btn--sm" data-act="strestart" data-code="' + esc(code) + '">Reset this check</button></p>';
+    } else {
+      var all = g.starter.every(function (s, i) { return picks[i] !== undefined && picks[i] !== null; });
+      h += '<p><button class="btn btn--primary" data-act="stcheck" data-code="' + esc(code) + '"' +
+        (all ? "" : " disabled") + ">Check my answers</button>" +
+        '<span class="small" style="margin-left:10px">' +
+        (all ? "ready to check" : "answer all three first") + "</span></p>";
+    }
+    h += "</section>";
+    return h;
+  }
+
+  function guidanceBlock(code) {
+    var g = gd(code);
+    if (!g) return "";
+    var after = gdAfter(code);
+
+    var h = '<section class="guide">';
+    h += "<h2>Before you start</h2>";
+    h += '<div class="guide__prereq">' + g.prereq + "</div>";
+
+    h += '<div class="guide__row"><div class="guide__col">' +
+      '<h4>Learn this first</h4><div class="guide__chips">' +
+        prereqChips(g.before || [], "nothing — start here") + "</div></div>";
+    h += '<div class="guide__col"><h4>This unlocks</h4><div class="guide__chips">' +
+      prereqChips(after, "no other module depends on this") + "</div></div></div>";
+    h += "</section>";
+
+    h += selfTestBlock(code);
+    return h;
+  }
+
   function viewModule(code) {
     var m = mod(code);
     if (!m) return "<h1>Module not found</h1><p><a href=\"#/\">Back to overview</a></p>";
@@ -336,6 +478,8 @@
       '<span class="flag flag--tierA">' + esc(m.tier) + "</span>" +
       '<span class="small">' + d + " of " + t + " items ticked</span></div>";
     h += '<div class="bar" style="margin-bottom:20px"><i style="width:' + pct(d, t) + '%"></i></div>';
+
+    h += guidanceBlock(code);
 
     if (m.warn) h += '<div class="callout callout--warn">' + m.warn + "</div>";
 
@@ -396,7 +540,8 @@
     h += '<p class="lede">Competition-style multiple choice. Attempt each one properly — work it out on paper, then reveal the solution.</p>';
 
     h += '<div class="toolbar">' +
-      '<button class="btn btn--primary" data-act="mock">Start a 25-question mock</button>' +
+      '<button class="btn btn--primary" data-act="mock">Timed mock — 25 in 60 min</button>' +
+      '<button class="btn" data-act="mockuntimed">Untimed mock</button>' +
       '<span class="small">60 minutes, no calculator — same conditions as the paper.</span></div>';
 
     h += '<div class="chiprow">' +
@@ -500,15 +645,28 @@
     var m = state.mock;
     if (!m) return "<h1>No mock in progress</h1><p><a href=\"#/practice\">Back to practice</a></p>";
 
-    var spent = Math.floor((Date.now() - m.started) / 1000);
-    var left = Math.max(0, m.seconds - spent);
+    var timed = !!m.seconds;
+    var left = mockSecondsLeft();
+    var answered = m.ids.filter(function (id) { return m.picks[id]; }).length;
 
     var h = '<a class="toplink" href="#/practice">← Practice</a>';
-    h += "<h1>Mock paper</h1>";
-    h += '<div class="callout callout--key"><p><b>' + m.ids.length + " questions · " + Math.floor(left / 60) + ":" +
-      ("0" + (left % 60)).slice(-2) + " remaining.</b> No calculator. One mark each, no negative marking.</p></div>";
+    h += "<h1>Mock paper" + (timed ? " — timed" : " — untimed") + "</h1>";
+
+    if (timed) {
+      h += '<div class="mockclock' + (left <= 300 ? " is-low" : "") + '">' +
+        '<div class="mockclock__row"><span class="mockclock__t" id="mocktimer">' + fmtClock(left) +
+        "</span><span class=\"small\">remaining · 60 minutes for " + m.ids.length + " questions</span></div>" +
+        '<div class="bar"><i id="mocktimebar" style="width:' + (100 * left / m.seconds) + '%"></i></div>' +
+        '<p class="sub" style="margin:8px 0 0">The paper marks itself when the clock reaches zero. ' +
+        "There is no negative marking, so fill in every question before then.</p></div>";
+    } else {
+      h += '<div class="callout callout--key"><p><b>' + m.ids.length +
+        " questions, no clock.</b> Use this to learn the material; switch to a timed mock once " +
+        "accuracy is holding up.</p></div>";
+    }
 
     h += '<div class="toolbar"><button class="btn btn--primary" data-act="marksubmit">Mark my paper</button>' +
+      '<span class="small">' + answered + " of " + m.ids.length + " answered</span>" +
       '<button class="btn" data-act="mockquit">Abandon</button></div>';
 
     m.ids.forEach(function (id, i) {
@@ -526,45 +684,163 @@
     return h;
   }
 
-  function viewMockResult() {
-    var m = state.mock;
-    if (!m || !m.marked) return "<h1>No result</h1><p><a href=\"#/practice\">Back to practice</a></p>";
-    var score = 0, blank = 0;
-    var rows = m.ids.map(function (id, i) {
+  /* Reduce a finished mock into per-topic and per-module accuracy, and the
+     ordered list of things to fix. Pure function so it is easy to reason about. */
+  function analyseMock(m) {
+    var items = [], score = 0, blank = 0, perTopic = {}, perModule = {};
+    m.ids.forEach(function (id, i) {
       var q = byQid(id);
+      if (!q) return;
       var pick = m.picks[id] || null;
       var ok = pick === "ABCDE"[q.ans];
       if (ok) score++; else if (!pick) blank++;
-      return "<tr><td>Q" + (i + 1) + "</td><td>" + esc(q.topic) + "</td><td>" + (pick || "—") +
-        "</td><td>" + "ABCDE"[q.ans] + "</td><td>" + (ok ? "✓" : "✗") + "</td></tr>";
-    }).join("");
+      var it = { n: i + 1, q: q, pick: pick, ok: ok };
+      items.push(it);
+
+      var t = perTopic[q.topic] || (perTopic[q.topic] = { topic: q.topic, module: q.module, n: 0, ok: 0, missed: [] });
+      t.n++; if (ok) t.ok++; else t.missed.push(q.id);
+
+      var mm = perModule[q.module] || (perModule[q.module] = { code: q.module, n: 0, ok: 0, missed: [] });
+      mm.n++; if (ok) mm.ok++; else mm.missed.push(q.id);
+    });
+
+    function arr(o) {
+      return Object.keys(o).map(function (k) { return o[k]; })
+        .sort(function (a, b) {
+          // worst accuracy first, then the topic with the most questions
+          var pa = a.ok / a.n, pb = b.ok / b.n;
+          if (pa !== pb) return pa - pb;
+          return b.n - a.n;
+        });
+    }
+    return {
+      items: items, score: score, blank: blank, total: m.ids.length,
+      topics: arr(perTopic), modules: arr(perModule),
+      wrong: items.filter(function (x) { return !x.ok; })
+    };
+  }
+
+  function viewMockResult() {
+    var m = state.mock;
+    if (!m || !m.marked) return "<h1>No result</h1><p><a href=\"#/practice\">Back to practice</a></p>";
+    var a = analyseMock(m);
+    var LINE = 11;
 
     var h = '<a class="toplink" href="#/practice">← Practice</a>';
     h += "<h1>Mock result</h1>";
+
     h += '<div class="grid2">' +
-      '<div class="stat"><b>' + score + " / " + m.ids.length + "</b><span>correct</span></div>" +
-      '<div class="stat"><b>' + (score >= 11 ? "Above" : "Below") + "</b><span>the 11/25 qualifying line</span></div>" +
-      '<div class="stat"><b>' + blank + "</b><span>left blank — never do this</span></div>" +
+      '<div class="stat"><b>' + a.score + " / " + a.total + "</b><span>correct</span></div>" +
+      '<div class="stat"><b>' + (a.score >= LINE ? "Above" : "Below") + "</b><span>the " + LINE + "/25 qualifying line</span></div>" +
+      '<div class="stat"><b>' + a.blank + "</b><span>left blank — never do this</span></div>" +
+      '<div class="stat"><b>' + (m.mode === "timed" ? fmtClock(m.elapsed || 0) : "—") + "</b><span>" +
+      (m.mode === "timed" ? (m.autoSubmitted ? "ran out of time" : "time taken of 60:00") : "untimed") + "</span></div>" +
       "</div>";
 
-    h += '<div class="callout ' + (score >= 11 ? "callout--good" : "callout--warn") + '"><p>' +
-      (score >= 11
-        ? "<b>You are on track.</b> Keep the accuracy and work on speed."
-        : "<b>Below the line.</b> Look at which topics the misses cluster in — that is where the next session goes.") +
+    h += '<div class="callout ' + (a.score >= LINE ? "callout--good" : "callout--warn") + '"><p>' +
+      (a.score >= LINE
+        ? "<b>You are on track.</b> Keep the accuracy and work on speed — the next step is a timed mock under real conditions."
+        : "<b>Below the line.</b> The repair plan below is ordered by where the marks actually are, not by module number.") +
       "</p></div>";
 
-    h += "<h2>Question by question</h2>";
-    h += "<table><thead><tr><th>#</th><th>Topic</th><th>You</th><th>Answer</th><th></th></tr></thead><tbody>" + rows + "</tbody></table>";
+    /* ---- review by topic ------------------------------------------------ */
+    h += '<h2>Review by topic</h2>';
+    h += '<p class="sub">Every topic you met, worst first. Anything below 100% is where the next hour goes.</p>';
+    h += "<table><thead><tr><th>Topic</th><th>Module</th><th>Score</th><th>Accuracy</th><th></th></tr></thead><tbody>";
+    a.topics.forEach(function (t) {
+      var p = pct(t.ok, t.n);
+      h += "<tr" + (p < 100 ? ' class="row-weak"' : "") + "><td>" + esc(t.topic) + "</td>" +
+        '<td><a href="#/m/' + esc(t.module) + '">' + esc(t.module) + "</a></td>" +
+        "<td>" + t.ok + " / " + t.n + "</td>" +
+        '<td><span class="minibar"><i style="width:' + p + '%"></i></span> ' + p + "%</td>" +
+        '<td>' + (p < 100 ? '<a class="btn btn--sm" href="#/practice/' + esc(t.module) + '">Practise</a>' : "") + "</td></tr>";
+    });
+    h += "</tbody></table>";
 
-    h += '<div class="toolbar"><button class="btn" data-act="mockclear">Clear and practise freely</button></div>';
+    /* ---- weak-topic recommendations ------------------------------------- */
+    var weakModules = a.modules.filter(function (x) { return x.ok < x.n; });
+    if (weakModules.length) {
+      h += '<h2>Weak topics — what to do about them</h2>';
+      h += '<div class="card">';
+      h += '<p class="sub" style="margin-top:0">Ranked by how many marks are available, not by how ' +
+        "bad the score looks. Two marks lost in one module beats one mark lost in two.</p><ul class=\"tight\">";
+      weakModules.forEach(function (x) {
+        var mm = mod(x.code);
+        var g = gd(x.code);
+        var st = state.selftest[x.code];
+        var avail = DATA.questions.filter(function (q) { return q.module === x.code; }).length;
+        h += '<li><b>' + esc(x.code) + " · " + esc(mm ? mm.short : x.code) + "</b> — " +
+          x.ok + "/" + x.n + " on this paper, " + avail + " questions in the bank.";
+        var bits = [];
+        bits.push('<a href="#/m/' + esc(x.code) + '">Re-read the module</a>');
+        if (g && g.starter) {
+          bits.push(st && st.done ? '<span class="small">readiness check already taken</span>'
+            : '<a href="#/m/' + esc(x.code) + '">Take the readiness check</a>');
+        }
+        bits.push('<a href="#/practice/' + esc(x.code) + '">Practise this module</a>');
+        h += '<div class="small">' + bits.join(" · ") + "</div></li>";
+      });
+      h += "</ul></div>";
+    } else {
+      h += '<h2>Weak topics</h2><div class="callout callout--good"><p><b>None on this paper.</b> ' +
+        "Every topic you met was clean. Take another mock — a different 25 questions will find the gaps.</p></div>";
+    }
+
+    /* ---- post-mock repair plan ------------------------------------------ */
+    h += "<h2>Repair plan</h2>";
+    h += '<ol class="steps">';
+    if (a.blank > 0) {
+      h += "<li><b>Stop leaving blanks.</b> There is no negative marking, so an unanswered question is " +
+        "a mark thrown away. On this paper that was " + a.blank + " question" + (a.blank === 1 ? "" : "s") +
+        " — guessing would have been worth about " + Math.round(a.blank / 5) + " mark" + (Math.round(a.blank / 5) === 1 ? "" : "s") +
+        " on average. Fill in every answer before the clock stops.</li>";
+    }
+    var plan = weakModules.slice(0, 3);
+    plan.forEach(function (x, idx) {
+      var mm = mod(x.code);
+      var missedTopics = {};
+      x.missed.forEach(function (id) { var q = byQid(id); if (q) missedTopics[q.topic] = 1; });
+      var names = Object.keys(missedTopics).join(", ");
+      h += "<li><b>Session " + (idx + 1) + " — module " + esc(x.code) + " (" + esc(mm ? mm.short : x.code) + ").</b> " +
+        "Read the module, take its three-question readiness check, then work the " + x.missed.length +
+        " question" + (x.missed.length === 1 ? "" : "s") + " you missed" +
+        (names ? " on " + esc(names) : "") + ". Finish on the module's own question set before moving on." +
+        ' <a href="#/m/' + esc(x.code) + '">Open module ' + esc(x.code) + "</a></li>";
+    });
+    if (a.score >= LINE && m.mode !== "timed") {
+      h += "<li><b>Now do it timed.</b> Your accuracy qualifies; pace is the open question. " +
+        "Run a 60-minute mock and see whether the score survives the clock.</li>";
+    }
+    if (a.score >= LINE && m.mode === "timed" && !m.autoSubmitted) {
+      h += "<li><b>Bank the time.</b> You finished with time to spare. Spend it checking the questions " +
+        "you guessed — one re-check per paper is usually a mark.</li>";
+    }
+    if (m.autoSubmitted) {
+      h += "<li><b>You ran out of time.</b> Practise at pace: take 25 questions and give yourself " +
+        "50 minutes, then 45. Speed on this paper comes from recognising the method, not from working faster.</li>";
+    }
+    h += '<li><b>Then take another mock.</b> A fresh 25 questions will tell you whether the repair held.</li>';
+    h += "</ol>";
+
+    h += '<div class="toolbar">' +
+      '<button class="btn btn--primary" data-act="mock">New timed mock</button>' +
+      '<button class="btn" data-act="mockuntimed">New untimed mock</button>' +
+      '<button class="btn" data-act="mockclear">Clear and practise freely</button></div>';
+
+    h += "<h2>Question by question</h2>";
+    h += "<table><thead><tr><th>#</th><th>Topic</th><th>You</th><th>Answer</th><th></th></tr></thead><tbody>" +
+      a.items.map(function (x) {
+        return "<tr" + (x.ok ? "" : ' class="row-weak"') + "><td>Q" + x.n + "</td><td>" + esc(x.q.topic) +
+          "</td><td>" + (x.pick || "—") + "</td><td>" + "ABCDE"[x.q.ans] + "</td><td>" +
+          (x.ok ? "✓" : "✗") + "</td></tr>";
+      }).join("") + "</tbody></table>";
 
     h += "<h2>Review the ones you missed</h2>";
-    m.ids.forEach(function (id) {
-      var q = byQid(id);
-      if (!q) return;
-      if (m.picks[id] === "ABCDE"[q.ans]) return;
-      h += questionCard(q);
-    });
+    if (!a.wrong.length) {
+      h += '<p class="sub">Nothing missed. Take another mock.</p>';
+    } else {
+      a.wrong.forEach(function (x) { h += questionCard(x.q); });
+    }
     return h;
   }
 
@@ -590,6 +866,10 @@
     window.scrollTo(0, 0);
     bindAll(main);
     paintNav(view, parts[1]);
+
+    // Only a live, timed mock gets a clock. Leaving the view must kill it.
+    stopMockTimer();
+    if (view === "mock" && state.mock && !state.mock.marked && state.mock.seconds) startMockTimer();
   }
 
   function bindAll(root) {
@@ -611,6 +891,19 @@
         save();
         var box = b.closest(".day");
         if (box) box.classList.toggle("day--done", b.checked);
+      });
+    });
+
+    root.querySelectorAll("[data-st]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var code = b.getAttribute("data-st");
+        var i = b.getAttribute("data-i"), k = parseInt(b.getAttribute("data-k"), 10);
+        var st = state.selftest[code] || { picks: {}, done: false };
+        if (st.done) return;               // locked once checked — press Reset
+        st.picks[i] = k;
+        state.selftest[code] = st;
+        save();
+        render();
       });
     });
 
@@ -641,18 +934,31 @@
     }
 
     root.querySelectorAll("[data-act]").forEach(function (b) {
-      b.addEventListener("click", function () { act(b.getAttribute("data-act")); });
+      b.addEventListener("click", function () { act(b.getAttribute("data-act"), b); });
     });
 
     var imp = root.querySelector('[data-act="import"]');
     if (imp) imp.addEventListener("change", function () { if (imp.files[0]) importProgress(imp.files[0]); });
   }
 
-  function act(a) {
+  function act(a, el) {
+    var code = el && el.getAttribute ? el.getAttribute("data-code") : null;
     if (a === "export") exportProgress();
     else if (a === "reset") reset();
-    else if (a === "mock") startMock();
-    else if (a === "marksubmit") { state.mock.marked = true; save(); location.hash = "#/mock"; render(); }
+    else if (a === "stcheck") {
+      if (!code) return;
+      var st = state.selftest[code] || { picks: {}, done: false };
+      st.done = true;
+      state.selftest[code] = st;
+      save();
+      render();
+      var box = document.getElementById("selftest");
+      if (box) box.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    else if (a === "strestart") { if (code) { delete state.selftest[code]; save(); render(); } }
+    else if (a === "mock") startMock("timed");
+    else if (a === "mockuntimed") startMock("untimed");
+    else if (a === "marksubmit") finishMock();
     else if (a === "mockquit") { if (confirm("Abandon this mock?")) { state.mock = null; save(); location.hash = "#/practice"; } }
     else if (a === "mockclear") { state.mock = null; save(); location.hash = "#/practice"; }
     else if (a === "setdate") {
@@ -661,13 +967,71 @@
     }
   }
 
-  function startMock() {
+  function startMock(mode) {
     var pool = DATA.questions.slice();
     for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
     var ids = pool.slice(0, Math.min(25, pool.length)).map(function (q) { return q.id; });
-    state.mock = { ids: ids, picks: {}, started: Date.now(), seconds: 60 * 60, marked: false };
+    state.mock = {
+      ids: ids, picks: {}, started: Date.now(),
+      // Real Round 0: 25 questions in 60 minutes. Untimed keeps the paper but
+      // drops the clock, for learning the material rather than the pace.
+      mode: mode === "untimed" ? "untimed" : "timed",
+      seconds: mode === "untimed" ? 0 : 60 * 60,
+      marked: false, elapsed: 0, autoSubmitted: false
+    };
     save();
     location.hash = "#/mock";
+    render();
+  }
+
+  function finishMock(auto) {
+    var m = state.mock;
+    if (!m || m.marked) return;
+    m.marked = true;
+    m.autoSubmitted = !!auto;
+    m.elapsed = Math.floor((Date.now() - m.started) / 1000);
+    save();
+    if (auto) alert("Time is up. Your paper has been marked automatically.");
+    location.hash = "#/mock";
+    render();
+  }
+
+  /* ---- live clock for a timed mock ------------------------------------- */
+  var MOCK_TIMER = null;
+
+  function stopMockTimer() {
+    if (MOCK_TIMER) { clearInterval(MOCK_TIMER); MOCK_TIMER = null; }
+  }
+
+  function mockSecondsLeft() {
+    var m = state.mock;
+    if (!m || !m.seconds) return null;
+    return Math.max(0, m.seconds - Math.floor((Date.now() - m.started) / 1000));
+  }
+
+  function fmtClock(s) {
+    s = Math.max(0, Math.floor(s));
+    return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2);
+  }
+
+  function startMockTimer() {
+    stopMockTimer();
+    var m = state.mock;
+    if (!m || m.marked || !m.seconds) return;
+    MOCK_TIMER = setInterval(function () {
+      var m2 = state.mock;
+      if (!m2 || m2.marked) { stopMockTimer(); return; }
+      var left = mockSecondsLeft();
+      var el = document.getElementById("mocktimer");
+      if (el) {
+        el.textContent = fmtClock(left);
+        el.classList.toggle("is-low", left <= 300);
+        el.classList.toggle("is-out", left <= 60);
+      }
+      var bar = document.getElementById("mocktimebar");
+      if (bar) bar.style.width = (100 * left / m2.seconds) + "%";
+      if (left <= 0) { stopMockTimer(); finishMock(true); }
+    }, 1000);
   }
 
   function paintNav(view, code) {

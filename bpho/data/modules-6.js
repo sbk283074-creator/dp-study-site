@@ -266,7 +266,7 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <div class="formula">0.80 = 3λ/2   →   λ = 2 × 0.80/3 = 1.60/3 ≈ 0.53 m</div>
 <p><b>Answer: C.</b></p>
 <p><b>The picture, which is faster than the formula.</b> In the third harmonic there are three antinodes and four nodes. The four nodes divide the string into three equal segments, each of which is half a wavelength. So each segment is <code>0.80/3 = 0.267 m</code>, and the wavelength is twice that, <code>0.533 m</code> ✓. Sketching the harmonic and counting segments is more reliable than recalling the formula under pressure.</p>
-<p><b>The traps.</b> Option A, 0.27 m, is the segment length — half a wavelength — which is the quantity you compute first and then forget to double. Option B, 0.40 m, is the second harmonic's wavelength, and option D, 0.80 m, is the fundamental's. All three are the wavelengths of other harmonics, which is what makes this a good discrimination question.</p>
+<p><b>The traps.</b> Option A, 0.27 m, is the segment length — half a wavelength — which is the quantity you compute first and then forget to double. Option B, <code>0.40 m</code>, is the <b>fourth</b> harmonic's wavelength, and option D, <code>0.80 m</code>, is the <b>second</b> harmonic's — equal to the string length itself. All three are the wavelengths of other harmonics, which is what makes this a good discrimination question.</p>
 <p><b>The general check.</b> Higher harmonics have <b>shorter</b> wavelengths, so the third harmonic must have a wavelength less than the fundamental's 1.60 m and less than the second harmonic's 0.80 m. That eliminates D and E immediately and leaves only A, B or C — and the segment argument settles it.</p>`,
       tag: "Harmonics on a string"
     },

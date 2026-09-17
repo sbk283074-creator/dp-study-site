@@ -16,12 +16,21 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIR = path.join(ROOT, 'bpho', 'data');
 
+// Discover the sharded content files rather than listing them by hand: a new
+// `questions-N.js` / `modules-N.js` shard used to be silently dropped from the
+// search index unless someone remembered to edit this file (it happened, and
+// 82 questions went missing). Sorted numerically so the `concat onto a shared
+// global` files are applied in the order the browser applies them.
+const shards = (prefix) =>
+  fs.readdirSync(DIR)
+    .filter((f) => new RegExp(`^${prefix}-\\d+\\.js$`).test(f))
+    .sort((a, b) => parseInt(a.match(/\d+/)[0], 10) - parseInt(b.match(/\d+/)[0], 10));
+
 const FILES = [
   'plan.js',
   'glossary.js',
-  'modules-1.js', 'modules-2.js', 'modules-3.js', 'modules-4.js',
-  'modules-5.js', 'modules-6.js', 'modules-7.js',
-  'questions-1.js', 'questions-2.js',
+  ...shards('modules'),
+  ...shards('questions'),
 ];
 
 const win = {};

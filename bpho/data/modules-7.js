@@ -472,16 +472,17 @@ BE per nucleon of Y = 320 / 80 = 4 MeV/nucleon</div>
       tag: "Specific heat capacity — the ΔT trap"
     },
     {
-      q: "<p>A 0.50 kg block of metal at 100 °C is dropped into 1.0 kg of water at 20 °C. The final temperature is 25 °C. What is the specific heat capacity of the metal? Use <code>c_water = 4200 J kg⁻¹ K⁻¹</code>.</p><p>A) 130 J kg⁻¹ K⁻¹ &nbsp; B) 210 J kg⁻¹ K⁻¹ &nbsp; C) 420 J kg⁻¹ K⁻¹ &nbsp; D) 840 J kg⁻¹ K⁻¹ &nbsp; E) 4200 J kg⁻¹ K⁻¹</p>",
+      q: "<p>A 0.50 kg block of metal at 100 °C is dropped into 1.0 kg of water at 20 °C. The final temperature is 25 °C. What is the specific heat capacity of the metal? Use <code>c_water = 4200 J kg⁻¹ K⁻¹</code>.</p><p>A) 130 J kg⁻¹ K⁻¹ &nbsp; B) 210 J kg⁻¹ K⁻¹ &nbsp; C) 420 J kg⁻¹ K⁻¹ &nbsp; D) 560 J kg⁻¹ K⁻¹ &nbsp; E) 4200 J kg⁻¹ K⁻¹</p>",
       sol: `<p><b>Energy gained by the water.</b> It warms from 20 °C to 25 °C, so <code>ΔT = 5 K</code>:</p>
 <div class="formula">Q_water = 1.0 × 4200 × 5 = 21 000 J</div>
 <p><b>Energy lost by the metal.</b> It cools from 100 °C to 25 °C, so <code>ΔT = 75 K</code>:</p>
 <div class="formula">Q_metal = 0.50 × c × 75 = 37.5c</div>
 <p><b>Equate them.</b> Heat lost equals heat gained:</p>
 <div class="formula">37.5c = 21 000   →   c = 560 J kg⁻¹ K⁻¹</div>
-<p><b>Answer: the nearest option is C, 420 J kg⁻¹ K⁻¹</b>, and the discrepancy is worth pausing over: the calculation gives 560, which sits between B and C but closer to C. If the intended option list were C and D, the answer would be C. In a real paper, an answer that does not match an option means a number has been misread — so re-check the masses and the temperatures before choosing.</p>
+<p><b>Answer: D, 560 J kg⁻¹ K⁻¹.</b> The metal's value is far below water's 4200, which is exactly what you should expect: metals heat and cool easily, so the same energy moves their temperature much further than it moves water's.</p>
+<p><b>Where the wrong options come from.</b> Option C, 420, is what you get by taking the metal's temperature change as 100 K — its <i>starting</i> temperature — instead of the 75 K it actually fell through: <code>21 000 / (0.50 × 100) = 420</code>. Option B, 210, makes that same slip and also uses the water's 1.0 kg for the metal. Option E, 4200, is water's own specific heat capacity: picking it means you have calculated the water's value rather than the metal's. Only D survives the full equation <code>0.50 × c × 75 = 21 000</code>.</p>
 <p><b>The method being tested.</b> Notice the structure: the water's temperature change is small (5 K) and the metal's is large (75 K), and the metal's mass is half the water's. The specific heat capacity comes out of the ratio. Writing the two energy expressions separately, and only then equating them, is the discipline that prevents sign and ordering errors.</p>
-<p><b>The sanity check that matters most.</b> The final temperature, 25 °C, lies between 20 °C and 100 °C ✓. If your algebra had produced a final temperature outside that range, something would be wrong. And the metal's specific heat capacity should be smaller than water's — metals heat and cool easily — which it is at 560 against 4200. Both checks pass, which confirms the structure even though the numbers do not land on an option.</p>`,
+<p><b>The sanity check that matters most.</b> The final temperature, 25 °C, lies between 20 °C and 100 °C ✓. If your algebra had produced a final temperature outside that range, something would be wrong. And the metal's specific heat capacity should be smaller than water's — metals heat and cool easily — which it is at 560 against 4200. Both checks pass, and unlike a bare calculation they would still have caught an error even if the arithmetic had gone wrong.</p>`,
       tag: "Calorimetry — heat lost equals heat gained"
     },
     {
@@ -502,7 +503,7 @@ BE per nucleon of Y = 320 / 80 = 4 MeV/nucleon</div>
     },
 
     {
-      q: "<p>How much energy is needed to melt 0.20 kg of ice at 0 °C and then raise the resulting water to 20 °C? Use latent heat of fusion <code>L_f = 3.34 × 10⁵ J kg⁻¹</code> and <code>c = 4200 J kg⁻¹ K⁻¹</code>.</p><p>A) <code>1.0 × 10⁵ J</code> &nbsp; B) <code>1.7 × 10⁵ J</code> &nbsp; C) <code>2.5 × 10⁵ J</code> &nbsp; D) <code>3.3 × 10⁵ J</code> &nbsp; E) <code>6.7 × 10⁵ J</code></p>",
+      q: "<p>How much energy is needed to melt 0.20 kg of ice at 0 °C and then raise the resulting water to 20 °C? Use latent heat of fusion <code>L_f = 3.34 × 10⁵ J kg⁻¹</code> and <code>c = 4200 J kg⁻¹ K⁻¹</code>.</p><p>A) <code>8.4 × 10⁴ J</code> &nbsp; B) <code>1.7 × 10⁵ J</code> &nbsp; C) <code>2.5 × 10⁵ J</code> &nbsp; D) <code>3.3 × 10⁵ J</code> &nbsp; E) <code>6.7 × 10⁵ J</code></p>",
       sol: `<p>This has two distinct stages, and you must do both or you fail the question.</p>
 <p><b>Stage 1 — melt the ice at 0 °C.</b> Temperature does not change during a phase change, so use <code>Q = mL</code>:</p>
 <div class="formula">Q₁ = m L_f = 0.20 × 3.34 × 10⁵ = 6.68 × 10⁴ J</div>
@@ -510,7 +511,7 @@ BE per nucleon of Y = 320 / 80 = 4 MeV/nucleon</div>
 <div class="formula">Q₂ = 0.20 × 4200 × 20 = 1.68 × 10⁴ J</div>
 <p><b>Total:</b></p>
 <div class="formula">Q = Q₁ + Q₂ = 6.68 × 10⁴ + 1.68 × 10⁴ = 8.36 × 10⁴ J ≈ 8.3 × 10⁴ J</div>
-<p><b>Answer: the nearest option is A, about <code>1.0 × 10⁵ J</code>.</b> The exact value <code>8.3 × 10⁴ J</code> rounds to <code>1.0 × 10⁵ J</code> on the given options; the melting dominates the total energy, as it usually does.</p>
+<p><b>Answer: A, <code>8.4 × 10⁴ J</code>.</b> The melting term dominates, as it usually does — latent heat contributes four times what the 20 K warming does. Notice that the total stays <i>below</i> 10⁵ J, which is exactly what the estimate above predicts, so B, C, D and E are all too large by a factor of two or more.</p>
 <p><b>The trap.</b> The most common error is to do only one stage. If you only melted (Q₁ alone) you would be far below all options; if you only warmed you would ignore the huge latent term. The lesson is that melting ice costs far more energy than warming the resulting water by 20 K — the latent heat term is about four times the specific-heat term here. Option B, <code>1.7 × 10⁵</code>, is roughly doubling Q₁, the kind of slip that comes from mis-scaling the 0.20 kg.</p>
 <p><b>The physical check.</b> Latent heat of fusion for water is about <code>3.3 × 10⁵ J kg⁻¹</code>, so melting 0.2 kg costs about <code>6.7 × 10⁴ J</code>. Warming 0.2 kg of water by 20 K costs <code>0.2 × 4200 × 20 ≈ 1.7 × 10⁴ J</code>. The sum is comfortably under <code>10⁵ J</code>, which rules out C, D and E. Estimating the two terms separately is the safe route.</p>`,
       tag: "Latent heat plus specific heat — two stages"
@@ -526,7 +527,7 @@ BE per nucleon of Y = 320 / 80 = 4 MeV/nucleon</div>
      = 1.92 × 10⁻³ m</div>
 <p><b>Answer: A, about <code>1.9 × 10⁻³ m</code> (roughly 2 mm).</b></p>
 <p><b>The mental route.</b> <code>2.0 × 40 = 80</code>. Then <code>80 × 2.4 × 10⁻⁵ = 192 × 10⁻⁵ = 1.92 × 10⁻³</code>. Keep the digits (<code>2.4 × 8 = 19.2</code>) and the powers (<code>10⁻⁵ × 10¹ = 10⁻⁴</code>, times the 10 from 80 → <code>10⁻³</code>) separate.</p>
-<p><b>The traps.</b> Option C, <code>9.6 × 10⁻⁵</code>, is what you get by using only the <code>α ΔT</code> fractional expansion (<code>2.4×10⁻⁵ × 40 = 9.6×10⁻⁴</code>) and forgetting to multiply by the original length <code>L = 2.0 m</code> — that gives you the fractional strain, not the actual length change. Option B is the fractional expansion <code>αΔT</code> times 2 m but mis-scaled. Always return to the full <code>ΔL = αLΔT</code> and check the units: m × K⁻¹ × K = m ✓.</p>
+<p><b>The traps, and the unit check that catches them.</b> The fractional expansion alone is <code>α ΔT = 2.4 × 10⁻⁵ × 40 = 9.6 × 10⁻⁴</code> — a pure number, with no unit of length. Stopping there, or losing a power of ten on the way, is how options B, C and D arise: B is the answer a factor ten too small, C smaller again, and D is what you get from using a temperature rise of 10 K instead of 40 K. Option E is a factor ten too large. Always return to the full <code>ΔL = αLΔT</code> and check the units: <code>m × K⁻¹ × K = m</code> ✓. If the units do not come out as a length, you have computed the strain rather than the extension.</p>
 <p><b>The physical point.</b> A 2 mm expansion over a 2 m rail sounds tiny, but across a kilometre of continuous track it becomes 1 m — which is exactly why railway lines need expansion gaps. The effect is small per metre but accumulates relentlessly with length.</p>`,
       tag: "Thermal expansion — ΔL = αLΔT"
     },

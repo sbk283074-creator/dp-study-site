@@ -137,7 +137,7 @@ What the index covers, and the two things it cannot scrape:
 | Tracked HTML (hub, 7 subjects, core, guides, both vocab spaces, qbank, Lit Lab, 5 Challenge Bank indexes, 9 paper pages) | scraped, text capped at 460 chars |
 | 320-odd Challenge Bank questions | `challenge-bank/site/q/*.html`, labelled with id / topic / difficulty / marks / paper |
 | `PYTHON/index.html` (2.2 MB, hash-routed) | split into its **40 `<section class="chapter" id="slug">`** blocks → `#/<slug>` deep links |
-| **BPhO** (shell page; content is `window.BPHO_*`) | `tools/bpho_dump.mjs` evaluates the `data/*.js` globals → 353 entries (plan, modules, glossary, worked examples, 81 questions) |
+| **BPhO** (shell page; content is `window.BPHO_*`) | `tools/bpho_dump.mjs` evaluates the `data/*.js` globals → 435 entries (plan, modules, glossary, worked examples, 163 questions). It **auto-discovers** `modules-N.js` / `questions-N.js` by glob — a hand-maintained file list silently dropped `questions-3.js` from the index once, so new shards are now picked up automatically |
 | **World's Wife Lab** (content is one inline `const SEED` literal) | `tools/englab_dump.mjs` brace-matches and evaluates `SEED` → 30 poems with text, key passages and analysis |
 
 - **The Lab gained `#poem=<id>` deep links** for this (§5·04), because a poem result has to open
@@ -389,13 +389,34 @@ Built 2026-09-16. **Hand-authored static SPA — no build step, no bundler, no `
 - Content is split across files that each **`concat` onto a shared global**, because one 300 KB+
   data file is unreviewable:
   `plan.js` (16 days) · `glossary.js` (141 terms) · `modules-1.js` … `modules-7.js` (14 modules,
-  162 checklist items, **100 worked examples**) · `questions-1.js`/`questions-2.js` (81 questions).
+  162 checklist items, **100 worked examples**) · `questions-1.js` … `questions-3.js`
+  (**163 questions**) · `guidance.js` (`window.BPHO_GUIDANCE` — one entry per module, see below).
+  `guidance.js` is **not** an aggregator: it must load before `assets/app.js`, and `app.js` falls back
+  to `{}` if it is missing, so the space degrades to no-guidance rather than breaking.
 - Two aggregators present the exact shape `app.js` expects and must load **last**:
   `curriculum.js` → `window.BPHO_CURRICULUM = {modules: (window.BPHO_MODULES || [])}` and
   `questions.js` → `window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || [])`.
   **Adding a module means adding a file *and* a `<script>` tag before the aggregator.**
 - Routes (hash-routed): `#/` overview, `#/plan`, `#/m/<CODE>`, `#/practice[/<CODE>]`,
   `#/glossary`, `#/reference`, `#/mock`. Progress is `localStorage` with export/import JSON.
+- **Study guidance** (`guidance.js`, one entry per module code): `prereq` (what you must already be
+  able to do), `before[]` (module codes to read first), `starter[3]` (a three-question readiness
+  check, `{q, opts[3], ans, why}`) and `review`. The `before[]` edges are the single source of truth
+  for two derived views: the overview's **"Where to start"** `<ol class="steps">` is a stable
+  topological sort of them (`gdOrder()`), and each module's **"This unlocks"** column is computed by
+  inverting them (`gdAfter()`) — never stored, so the two can never disagree. Module A is the sole
+  entry point; its "Learn this first" column reads *"nothing — start here"*.
+  The readiness check is a **gate, not a score**: the Check button stays `disabled` until all three
+  are answered, and a miss recommends re-reading rather than retrying.
+- **Mock system**: two modes on `#/practice`. *Timed* is the real format — 25 random questions in
+  60 min, live `#mocktimer` clock with `is-low` (≤300 s) and `is-out` (≤60 s) states, auto-marking at
+  zero. *Untimed* drops the clock (`seconds: 0`) so the same paper can be used to learn the material.
+  The single interval is stopped on **every** render and restarted only for a live unmarked timed mock
+  (`stopMockTimer()` then conditional `startMockTimer()`), so it cannot leak across routes.
+  The result view gives a **by-topic table** (worst first), **weak-topic recommendations** ranked by
+  marks available (`a.modules`), and a **repair plan** — an `ol.steps` that leads with *stop leaving
+  blanks* (no negative marking ⇒ a blank is a thrown-away mark), then up to three per-module sessions
+  naming the topics missed, then mode-specific advice, then "take another mock".
 - **AI:** every question card carries an "Ask AI about this" button wired to
   `window.dpAI.open({ref, subject, topic, context, prompt, display, autoSend:true})` — the **same**
   global widget in focused mode (§3·1), not a second chat UI. The question, its five options, the
@@ -423,6 +444,26 @@ Built 2026-09-16. **Hand-authored static SPA — no build step, no bundler, no `
   old version passes and the new one is never exercised. "you are here" reads 0 on localhost for
   **every** space, because the widget compares against `HUB + item` (a live absolute path) while the
   local path is shorter; that is a harness artefact, not a defect.
+- **Audit + expansion (2026-09-17).** A full audit of the 100 worked examples and the question bank
+  found one systemic defect: **every one of the 81 answers was option A**, and the solutions all read
+  "Answer: A". Fixed by redistributing the correct option across A–E and remapping every option
+  letter quoted inside the solution text, then re-checking each swap against the option values.
+  Four worked examples had genuine errors (`F` third-harmonic option mislabelled as the *second*
+  harmonic's wavelength; `J` calorimetry option 420 that no computation produced; `J` ice-melt option
+  1.0 × 10⁵ where the sum is 8.4 × 10⁴; `J` aluminium expansivity unit). The bank then grew
+  **81 → 163** with 82 new questions (new `questions-3.js`) written to be non-calculator and
+  ratio/multi-step where possible.
+  Current invariants, all machine-checked: 163 questions / 14 modules / 14 guidance entries · answer
+  spread **A 34, B 33, C 32, D 32, E 32** · **0** duplicate options · **0** malformed 5-option
+  arrays · **0** solutions whose stated letter disagrees with the `ans` index · **0** duplicate IDs ·
+  **0** topology violations in the reading order. `applications`-style dead data (`trap`) is left
+  alone — it is never rendered.
+  Browser pass re-run 2026-09-17 (headless Chromium, `http://127.0.0.1:8123/bpho/index.html`):
+  overview shows 163; module E renders its guidance block, readiness check gated then marking
+  *2 / 3*; timed mock shows 25 questions with the clock ticking 59:59 → 59:57 and the answered
+  counter moving 0 → 9 of 25; result view shows the stat grid, 25 topic rows, weak topics and a
+  5-step repair plan; leaving the mock removes `#mocktimer`; the untimed mock renders with no clock.
+  **Zero 4xx responses and zero page errors.**
 - Rebuild: **none.** Edit the data files directly and reload.
 
 ### 07 · The two vocabulary spaces — `ib-english-vocab/` and `vocab-review/`
