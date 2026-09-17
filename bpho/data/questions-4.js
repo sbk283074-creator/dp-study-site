@@ -8,6 +8,9 @@
    really come up. Each question carries `paper:"R0-2025"` so
    `startMockPaper("R0-2025", mode)` can assemble them in paper order.
 
+   `key` names the key points each question turns on; the lessons behind them live in
+   data/concepts.js. Each has a full lesson in tools/paper2025/concepts_a/b/c.py.
+
    Diagrams are inline SVG generated from computed geometry (angles from Snell's law, node
    positions from the printed figure) rather than traced by hand. */
 
@@ -23,6 +26,7 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
     ["E", "Stress, strain and the Young modulus"],
     ["A", "Using units to eliminate options"]
   ],
+  key: ["stressstrain", "strainenergy", "units-elim"],
   q: `<p>A uniform elastic wire of length <code>L</code> and cross-section <code>A</code> is subject to a tensile stress <code>σ</code>, which results in a tensile strain <code>ε</code>. Find the work done on the wire.</p>`,
   opts: [`LAσε`, `σA / (εL)`, `σL / (2εA)`, `εA / (σL)`, `½LAσε`],
   ans: 4,
@@ -70,6 +74,7 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
     ["G", "Refractive index and the normal"],
     ["A", "Reading the diagram before quoting a formula"]
   ],
+  key: ["refractive", "snell", "readdiagram"],
   q: `<p>The diagram below shows the refraction of a light ray travelling from a medium with refractive index <code>n₁</code> into a medium with refractive index <code>n₂</code>. Which equation relates the angles <code>θ₁</code> and <code>θ₂</code>?</p><figure class="fig">
 <svg viewBox="0 0 480 300" role="img" aria-label="A ray crossing a horizontal boundary between medium n1 above and n2 below, drawn with both angles marked between the ray and the boundary surface rather than between the ray and the normal.">
 <defs>
@@ -116,6 +121,7 @@ n₁ cos θ₁ = n₂ cos θ₂</div>
     ["C", "Impulse = Ft = change of momentum"],
     ["A", "Dimensional consistency"]
   ],
+  key: ["units", "momentum", "dimensions"],
   q: `<p>Which of these is <b>not</b> a unit of impulse?</p>
 <table><tbody><tr><td><b>A</b></td><td>N s</td><td><b>B</b></td><td>W s² m⁻¹</td><td><b>C</b></td><td>Pa m³</td></tr><tr><td><b>D</b></td><td>kg m s⁻¹</td><td><b>E</b></td><td>C V s m⁻¹</td><td></td><td></td></tr></tbody></table>`,
   opts: [`N s`, `W s² m⁻¹`, `Pa m³`, `kg m s⁻¹`, `C V s m⁻¹`],
@@ -143,6 +149,7 @@ E  C V s m⁻¹      = kg m² s⁻² · s · m⁻¹ = kg m s⁻¹   ✔</div>
     ["K", "Conservation of mass number and charge"],
     ["K", "Decay series and the nuclear equation"]
   ],
+  key: ["nuclide", "alphabeta", "decayseries"],
   q: `<p>Uranium-238 (²³⁸₉₂U) decays to lead-206 (²⁰⁶₈₂Pb) via a series of alpha and beta minus decays only. How many beta minus decays occur in total?</p>`,
   opts: [`4`, `6`, `8`, `10`, `12`],
   ans: 1,
@@ -175,6 +182,7 @@ Z: 92 − 8(2) + 6(1) = 82       ✔</div>
     ["F", "Phase difference in radians and degrees"],
     ["F", "Coherence and the two-source conditions"]
   ],
+  key: ["waves", "superposition", "pathphase", "coherence"],
   q: `<p>Two coherent waves of equal amplitude and wavelength 1.8 m, originating from the same source, arrive at the same detector with a path difference of 7.5 m. Which of these options describes the type of interference that occurs at the detector?</p>`,
   opts: [`fully destructive`, `mostly destructive`, `mostly constructive`, `fully constructive`, `not enough information`],
   ans: 2,
@@ -201,6 +209,7 @@ phase difference = 2π × 1/6 = 60°</div>
     ["H", "Equivalent resistance of a network"],
     ["A", "Searching a small space exhaustively instead of guessing"]
   ],
+  key: ["resistance", "seriesparallel", "search"],
   q: `<p>A resistor shop sells individual resistors (the stock is unlimited). The price for each resistor is as follows: 2 Ω for £3, 3 Ω for £1, 6 Ω for £3, 8 Ω for £4, 12 Ω for £2.</p><p>What is the least you would need to spend to make a combination of resistors equivalent to exactly 4 Ω?</p>`,
   opts: [`£3`, `£4`, `£5`, `£6`, `£7`],
   ans: 1,
@@ -277,6 +286,7 @@ in series with the fourth:  1 Ω + 3 Ω = 4 Ω,  cost 4 × £1 = £4</div>
     ["B", "Motion at constant velocity: s = vt"],
     ["A", "Reading the direction of a velocity arrow"]
   ],
+  key: ["kinematics", "relvel", "readdiagram"],
   q: `<p>Two particles A &amp; B travel along a straight line at a constant speed with velocities as shown in the diagram. Their initial separation is 18 m. How far does particle A travel before colliding with B?</p><figure class="fig">
 <svg viewBox="0 0 480 160" role="img" aria-label="Two dots on a horizontal line, A moving right at six metres per second and B also moving right at three metres per second, with the eighteen metre gap between them marked by a dimension line.">
 <defs>
@@ -324,6 +334,7 @@ in series with the fourth:  1 Ω + 3 Ω = 4 Ω,  cost 4 × £1 = £4</div>
     ["H", "Series and parallel networks, emf and potential difference"],
     ["H", "Kirchhoff's laws without algebra"]
   ],
+  key: ["charge", "meters", "kirchhoff"],
   q: `<p>A cell of emf <code>ε</code> (and negligible internal resistance) is connected to an ideal voltmeter, an ideal ammeter and three resistors <code>R</code> as shown below. What are the readings on the voltmeter and ammeter respectively?</p><figure class="fig">
 <svg viewBox="0 0 470 288" role="img" aria-label="A circuit: a cell in series with a resistor in the top branch, a resistor from the left node to a middle node, an ammeter from that middle node to the right node, and a voltmeter from the left node to the middle node with a resistor from the middle node to the right node.">
 <defs>
@@ -397,6 +408,7 @@ right-hand node → (ammeter, 0 Ω) → middle node → middle resistor R → le
     ["H", "Resistance of a uniform wire R = ρL/A"],
     ["A", "Ratio reasoning — the shared constants cancel"]
   ],
+  key: ["standingwaves", "lineardensity", "resistivity", "ratio"],
   q: `<p>Two uniform metal wires of the same length are made from the same material. Separately, the wires are subject to the same force on both ends, and the first harmonic frequency of each is measured. The frequencies are in the ratio 2 : 1. What is the ratio of their electrical resistances?</p><p><i>[Hint: the speed of a transverse wave on a string is v = √(T/μ).]</i></p>`,
   opts: [`4 : 1`, `3 : 1`, `√3 : 1`, `2 : 1`, `√2 : 1`],
   ans: 0,
@@ -428,6 +440,7 @@ R₁ / R₂ = A₂ / A₁ = 4</div>
     ["A", "Moles and Avogadro's number"],
     ["A", "Standard-form arithmetic without a calculator"]
   ],
+  key: ["stdform", "estimate", "moles"],
   q: `<p>Estimate the number of atoms which make up the Earth.</p>`,
   opts: [`10⁵⁰`, `10⁵⁵`, `10⁶⁰`, `10⁶⁵`, `10⁷⁰`],
   ans: 0,
@@ -457,6 +470,7 @@ R₁ / R₂ = A₂ / A₁ = 4</div>
     ["L", "hf = E₁ − E₂ for a transition"],
     ["A", "Counting combinations instead of listing them"]
   ],
+  key: ["photons", "levels", "counting"],
   q: `<p>The first ten energy levels of an atom are labelled <code>n = 1, 2, …, 10</code>. Assuming all transitions are possible, find the maximum number of unique photon energies corresponding to transitions between <code>n = 10</code> and <code>n = 1</code>.</p>`,
   opts: [`45`, `55`, `90`, `100`, `110`],
   ans: 0,
@@ -487,6 +501,7 @@ R₁ / R₂ = A₂ / A₁ = 4</div>
     ["C", "Kinetic energy written as p²/2m"],
     ["A", "Testing an algebraic answer on limiting cases"]
   ],
+  key: ["momcons", "ke", "limits"],
   q: `<p>A body, initially at rest, explodes into two fragments of masses <code>m</code> and <code>am</code> where <code>a &gt; 1</code>. The total kinetic energy after the explosion is <code>E</code>. Find the kinetic energy of the larger mass.</p>`,
   opts: [`E/(1 + a)`, `aE/(1 + a²)`, `a²E/(1 + a²)`, `a³E/(1 + a³)`, `E/a`],
   ans: 0,
@@ -527,6 +542,7 @@ B:  2E/(1 + 4) = 0.400E            ✘</div>
     ["A", "The dimensions of h, c and pressure"],
     ["L", "Quantum effects and the Casimir effect"]
   ],
+  key: ["dimensions", "casimir"],
   q: `<p>The pressure <code>p</code> exerted on two closely spaced parallel plates due to quantum effects is dependent only upon Planck's constant <code>h</code>, the speed of light <code>c</code> and the plate separation <code>r</code>. Find the proportionality relation between <code>p</code> and <code>r</code>.</p>`,
   opts: [`p ∝ 1/r`, `p ∝ 1/r²`, `p ∝ 1/r³`, `p ∝ 1/r⁴`, `p ∝ 1/r⁵`],
   ans: 3,
@@ -559,6 +575,7 @@ from L:      γ = −1 − 2α − β = −1 − 2 − 1 = −4</div>
     ["C", "Statics: stable equilibrium and the support condition"],
     ["A", "Geometry of intersecting circles; small-change reasoning"]
   ],
+  key: ["com", "toppling", "statics"],
   q: `<p>A thin uniform circular biscuit of radius <code>b</code> is balanced horizontally on the thin circular rim of a teacup, which has radius <code>3b/2</code>, positioned as far as possible from the cup's centre. It is then slowly pushed inwards towards the centre of the teacup. What is the maximum distance it can be pushed before it falls?</p>`,
   opts: [`((√3 − 1)/2) b`, `((5 − √3)/5) b`, `((√5 − 2)/3) b`, `((3 − √5)/2) b`, `((√3 − 1)/3) b`],
   ans: 3,
@@ -625,6 +642,7 @@ from L:      γ = −1 − 2α − β = −1 − 2 − 1 = −4</div>
     ["J", "Specific latent heat of fusion and Q = mL"],
     ["A", "Integer answers and no-calculator arithmetic"]
   ],
+  key: ["specificheat", "latentheat", "stdform"],
   q: `<p>An insulated cup contains 500 g of water at 20 °C. Identical ice cubes, each of mass 25 g and at 0 °C, are added to the cup. What is the maximum number of cubes that can be added so that, at equilibrium, the mixture is entirely liquid?</p><p>Specific heat capacity of water = 4 × 10³ J kg⁻¹ K⁻¹<br>Specific latent heat of fusion of ice = 3 × 10⁵ J kg⁻¹</p>`,
   opts: [`4`, `5`, `6`, `7`, `8`],
   ans: 1,
@@ -656,6 +674,7 @@ from L:      γ = −1 − 2α − β = −1 − 2 − 1 = −4</div>
     ["G", "Speed of light in a medium: v = c / n"],
     ["A", "Surds and reciprocals without a calculator"]
   ],
+  key: ["snell", "lightspeed", "surds"],
   q: `<p>A ray of light is incident on a glass cube of side length <code>a</code> and refractive index <code>√2</code>. The angle of incidence is 30°. Find the time taken for the light to travel to the opposite face.</p>`,
   opts: [`√(8/7) · a/c`, `(4/√7) · a/c`, `(√2/3) · a/c`, `(4/√3) · a/c`, `(4/√2) · a/c`],
   ans: 1,
@@ -715,6 +734,7 @@ sin θ₂ = 0.5 / √2 = 1 / (2√2)</div>
     ["L", "Stopping potential: eV_s = h(f − f₀)"],
     ["I", "Q = CV for a parallel-plate capacitor"]
   ],
+  key: ["photoelectric", "stopping", "capacitors"],
   q: `<p>An uncharged, isolated parallel plate capacitor has capacitance <code>C</code>. Monochromatic light of frequency <code>f</code> is incident on one of the metal plates, which has threshold frequency <code>f₀</code>. Emitted photoelectrons are then captured by the other plate. Once the capacitor charge has reached a steady value, how many electrons have been transferred between the plates? (<code>h</code> is Planck's constant and <code>e</code> is the magnitude of the electron charge.)</p>`,
   opts: [`Ch(f + f₀)/e`, `Cf₀(f + f₀)/e²`, `Ch(f − f₀)/e`, `Cf(f + f₀)/e²`, `Ch(f − f₀)/e²`],
   ans: 4,
@@ -744,6 +764,7 @@ V_s = h(f − f₀) / e</div>
     ["A", "Small-angle approximations — and knowing when they are unnecessary"],
     ["A", "Turning points: why a first-order change can vanish"]
   ],
+  key: ["projectile", "smallangle", "limits"],
   q: `<p>Two particles are projected from ground level at the same speed <code>v</code>, but at two different angles to the horizontal: <code>(π/4 + α)</code> and <code>(π/4 − α)</code>, where <code>α</code> itself is a small angle in radians. Find the difference between the horizontal ranges of the two particles.</p>`,
   opts: [`0`, `αv²/g`, `2αv²/g`, `αv²/(2g)`, `4αv²/g`],
   ans: 0,
@@ -775,6 +796,7 @@ sin(π/2 − 2α) = cos 2α</div>
     ["K", "Half-life from data"],
     ["A", "Logarithms without a calculator"]
   ],
+  key: ["expdecay", "logs"],
   q: `<p>The half-life of a radioactive substance is <code>T</code>. What is the time taken for one third of the substance to decay?</p>`,
   opts: [`(2/3) T`, `√(2/3) · T`, `T log₂(3/2)`, `T log₂(3)`, `T<sup>2/3</sup>`],
   ans: 2,
@@ -805,6 +827,7 @@ t = T log₂(3/2)</div>
     ["C", "Hooke's law and the onset of simple harmonic motion"],
     ["A", "Reasoning about graph shape: jumps, turning points, limits"]
   ],
+  key: ["force", "hookeslaw", "shm", "graphshape"],
   q: `<p>Jerk is defined as the rate of change of acceleration with respect to time, <code>j = da/dt</code>.</p><p>A bungee jumper attached to a slack rope falls from a height. Once the rope is taut, it acts as an ideal spring which subsequently brings the jumper to instantaneous rest. Which of the following graphs shows the jerk <code>j</code> as a function of time <code>t</code>, up to this moment?</p>`,
   opts: [`<svg class="gopt" viewBox="0 0 182 126" role="img" aria-label="A jerk graph that jumps at the dashed line and then falls in a straight line to zero.">
 <defs>
@@ -934,6 +957,7 @@ j = da/dt = −ω² v</div>
     ["B", "Uniform acceleration"],
     ["A", "Ratio reasoning"]
   ],
+  key: ["vectors-resolve", "kinematics", "moments", "statics"],
   q: `<p>A light inextensible string is attached to one end of a rigid rod of negligible weight and of length <code>ℓ</code>, with its other end freely hinged at O. The other end of the string is attached to the ceiling, so that the string is vertical, and the rod makes an angle of 30° to the horizontal. A small smooth ring of mass <code>m</code> is released from rest at the upper end of the rod and slides downwards along it.</p><figure class="fig">
 <svg viewBox="0 0 480 262" role="img" aria-label="A rod hinged at its lower-left end at O making thirty degrees with the horizontal, with a vertical string from the ceiling down to its upper end where a small ring of mass m is released.">
 <defs>
@@ -1074,6 +1098,7 @@ E  0.87 g/ℓ   a spurious √3 — e.g. reaching for cos 30° instead of sin 30
     ["D", "Centripetal force"],
     ["A", "Ratio reasoning"]
   ],
+  key: ["circular", "conical", "ratio"],
   q: `<p>A conical pendulum consists of a bob attached to a light inextensible string of length<code>ℓ</code>, with the upper end fixed. The bob moves in a horizontal circle so that the string makes an angle of 30° to the vertical. By what factor must the angular frequency be increased for this angle to double to 60°?</p>`,
   opts: [`√√3`, `√2`, `√3`, `2`, `3`],
   ans: 0,
@@ -1169,6 +1194,7 @@ B = √2 = 1.414   a near-miss decoy sitting just above the true 1.32</div>
     ["H", "Potential divider"],
     ["A", "Order of magnitude"]
   ],
+  key: ["loggraphs", "inversesquare", "divider"],
   q: `<p>The resistance <code>R</code> of a light-dependent resistor (LDR) depends on the lightintensity <code>I</code>. A logarithmic plot relating these variables is shown below.</p><figure class="fig">
 <svg viewBox="0 0 480 268" role="img" aria-label="A straight line on a graph of log R against log I, falling from 5.2 on the vertical axis at zero on the horizontal axis to 1.8 at four on the horizontal axis.">
 <defs>
@@ -1252,6 +1278,7 @@ E = 0.9 R₀   almost no change at all</div>
     ["A", "Small-parameter approximations"],
     ["A", "Geometric approximation"]
   ],
+  key: ["com", "pe-gpe", "smallchange"],
   q: `<p>A uniform ladder of mass <code>m</code> rests against a wall in static equilibrium at an angleof 45° to the vertical. The base of the ladder is pushed a small distance <code>a</code> towards the wall. Which of these options gives the best approximation for the change in gravitational potential energy of the ladder?</p>`,
   opts: [`½ mga`, `(1/√2) mga`, `mga`, `√2 mga`, `2 mga`],
   ans: 0,
@@ -1338,6 +1365,7 @@ E = 2 mga      over-corrected in both directions at once</div>
     ["H", "Series and parallel"],
     ["A", "Ratio reasoning"]
   ],
+  key: ["seriesparallel", "networks", "ratio"],
   q: `<p>Consider the arrangement of 12 identical resistors below. The equivalent resistance is measuredbetween the following pairs of points: PR, PS, PU, QS, QT. Which measurement gives the median (middle value) resistance?</p><figure class="fig">
 <svg viewBox="0 0 480 300" role="img" aria-label="A square grid of nine nodes joined by twelve identical resistors, labelled P, Q and R along the top row, S at the centre, and T and U along the bottom row.">
 <defs>

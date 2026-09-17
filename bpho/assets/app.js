@@ -13,7 +13,8 @@
     glossary: window.BPHO_GLOSSARY || [],
     plan: window.BPHO_PLAN || [],
     guidance: window.BPHO_GUIDANCE || {},
-    priority: window.BPHO_PRIORITY || null
+    priority: window.BPHO_PRIORITY || null,
+    concepts: window.BPHO_CONCEPTS || []
   };
 
   /* ---------------- what the 2025 paper actually tested ----------------
@@ -36,7 +37,7 @@
   var state = load();
 
   function blank() {
-    return { checks: {}, answers: {}, days: {}, done: {}, mock: null, selftest: {},
+    return { checks: {}, answers: {}, days: {}, done: {}, read: {}, mock: null, selftest: {},
              examDate: EXAM_DATE, v: 1 };
   }
 
@@ -209,7 +210,12 @@
     }
     html += '<button class="btn btn--sm" type="button" data-ai="' + q.id + '">Ask AI about this</button>';
     html += "</div>";
-    html += revealBlock("Show full solution", q.sol + (q.trap ? '<p><b>Trap:</b> ' + q.trap + "</p>" : ""));
+    html += revealBlock("Show full solution",
+      q.sol + (q.trap ? '<p><b>Trap:</b> ' + q.trap + "</p>" : "") +
+      ((q.key || []).length
+        ? '<div class="mcq__rel"><span class="small">The key points this question turns on:</span> ' +
+          keyChips(q.key) + "</div>"
+        : ""));
     html += "</div>";
     return html;
   }
@@ -315,6 +321,28 @@
       '<div class="bar bar--purple"><i style="width:' + pct(planDone, DATA.plan.length) + '%"></i></div>' +
       '<p style="margin-top:14px"><a class="btn btn--primary" href="#/plan">Open the plan</a></p>' +
       "</div>";
+
+    /* ---- the teaching layer ---- */
+    if (CON.length) {
+      h += "<h2>Learn the key points</h2>";
+      h += '<div class="card">' +
+        "<p>Every question in the 2025 paper names the key points it turns on, and each of those is a " +
+        "short lesson written as if you have met none of it before \u2014 what the quantity is, where the " +
+        "formula comes from, what each symbol and unit means, and the trap the paper is setting. " +
+        CON.length + " points in all, ordered so nothing depends on something you have not read.</p>" +
+        '<div class="bar"><i style="width:' + pct(conDone(), CON.length) + '%"></i></div>' +
+        '<p class="small" style="margin-top:8px">' + conDone() + " of " + CON.length + " read.</p>" +
+        '<p style="margin-top:14px"><a class="btn btn--primary" href="#/learn">Start at the beginning</a></p>' +
+        "</div>";
+      var hot = CON.slice().sort(function (a, b) {
+        return (b.q || []).length - (a.q || []).length;
+      }).filter(function (x) { return (x.q || []).length > 1; }).slice(0, 8);
+      if (hot.length) {
+        h += '<p class="sub">The points the paper leans on hardest — these are each used by more ' +
+          "than one question:</p>";
+        h += '<div class="mcq__rel">' + keyChips(hot.map(function (x) { return x.id; })) + "</div>";
+      }
+    }
 
     /* ---- what the paper actually asked: the only hard evidence there is ---- */
     if (PRI && PRI.total) {
@@ -618,6 +646,19 @@
 
     var qs = DATA.questions.filter(function (q) { return q.module === code; });
     if (qs.length) {
+      /* the lessons behind this module's questions, so a weak module is one click from the theory */
+      var cpts = CON.filter(function (x) {
+        return x.m === code || (x.q || []).some(function (qid) {
+          return qs.some(function (q) { return q.id === qid; });
+        });
+      });
+      if (cpts.length) {
+        h += "<h2>Key points in this module</h2>";
+        h += '<p class="sub">' + cpts.length + " lessons, each written from first principles. " +
+          "The ones the 2025 paper actually leaned on are listed with their questions.</p>";
+        h += '<div class="mcq__rel">' + keyChips(cpts.map(function (x) { return x.id; })) + "</div>";
+      }
+
       h += "<h2>Practice — " + qs.length + " questions</h2>";
       h += '<p class="sub">Round 0 format: five options, no calculator, one mark each.</p>';
       h += '<p><a class="btn" href="#/practice/' + code + '">Practise this module only</a></p>';
@@ -967,6 +1008,151 @@
     return h;
   }
 
+  /* ---------------- key points: the teaching layer ----------------
+     Every past-paper question names the key points it uses (`key`), and every key point is a
+     short lesson written from zero. The lessons are chained by `pre` (prerequisites), so the
+     course can be read top to bottom without ever meeting a term before it is defined.
+     `stage` groups them: 0 toolkit · 1 mechanics · 2 materials & thermal · 3 waves & optics ·
+     4 electricity · 5 quantum & nuclear. */
+
+  var CON = DATA.concepts;
+  var CONBY = {};
+  CON.forEach(function (x) { CONBY[x.id] = x; });
+  var STAGES = [
+    ["The toolkit", "Not physics topics — the techniques that decide whether you can even start a question. Read these first."],
+    ["Mechanics", "Force, motion, momentum, energy, rotation."],
+    ["Materials and thermal", "How real stuff stretches, and how heat is counted."],
+    ["Waves and optics", "Superposition, standing waves, and what happens at a boundary."],
+    ["Electricity", "Charge, resistance, and the circuits the paper keeps testing."],
+    ["Quantum and nuclear", "Photons, energy levels, and what nuclei do."]
+  ];
+  /* reading order: stage first, then prerequisites before dependants within the stage */
+  var CONORDER = (function () {
+    var out = [];
+    function visit(x, seen) {
+      if (seen[x.id]) return;
+      seen[x.id] = 1;
+      x.pre.forEach(function (p) { if (CONBY[p]) visit(CONBY[p], seen); });
+      out.push(x);
+    }
+    var bys = {};
+    CON.forEach(function (x) { (bys[x.stage] = bys[x.stage] || []).push(x); });
+    var seen = {};
+    Object.keys(bys).sort().forEach(function (s) {
+      bys[s].forEach(function (x) { visit(x, seen); });
+    });
+    return out;
+  })();
+  var CONPOS = {};
+  CONORDER.forEach(function (x, i) { CONPOS[x.id] = i; });
+
+  function conDone() { return Object.keys(state.read || {}).filter(function (k) { return state.read[k]; }).length; }
+
+  function keyChips(ids, cls) {
+    return (ids || []).filter(function (k) { return CONBY[k]; }).map(function (k) {
+      var c = CONBY[k];
+      return '<a class="' + (cls || "kchip") + '" href="#/c/' + esc(k) + '" title="' + esc(c.one) + '">' +
+        '<b>' + esc(c.m) + "</b>" + esc(c.t) + "</a>";
+    }).join("");
+  }
+
+  function viewLearn() {
+    var h = '<a class="toplink" href="#/">← Overview</a>';
+    h += "<h1>Key points, in order</h1>";
+    h += '<p class="sub">Everything the 2025 paper used, taught from nothing. ' +
+      CON.length + " points, " + conDone() + " read. Each one is self-contained: what the idea is, " +
+      "where the formula comes from, what every symbol and unit means, and the trap the paper sets. " +
+      "Work down the list — nothing here depends on something you have not read yet.</p>";
+    h += '<div class="bar" style="margin-bottom:22px"><i style="width:' + pct(conDone(), CON.length) + '%"></i></div>';
+
+    var stage = -1;
+    CONORDER.forEach(function (c, i) {
+      if (c.stage !== stage) {
+        stage = c.stage;
+        if (STAGES[stage]) {
+          h += '<h2 style="margin-top:26px">' + (stage + 0 === stage ? "Stage " + stage : "") +
+            (STAGES[stage] ? " · " + esc(STAGES[stage][0]) : "") + "</h2>";
+          h += '<p class="sub">' + esc(STAGES[stage][1]) + "</p>";
+        }
+      }
+      var read = state.read && state.read[c.id];
+      h += '<div class="card lesson' + (read ? " lesson--read" : "") + '" id="c-' + esc(c.id) + '">';
+      h += '<div class="lesson__head">' +
+        '<span class="lesson__n">' + (i + 1) + "</span>" +
+        '<a class="lesson__t" href="#/c/' + esc(c.id) + '">' + esc(c.t) + "</a>" +
+        '<span class="flag flag--paper">' + esc(c.m) + "</span>" +
+        '<button class="btn btn--xs" type="button" data-read="' + esc(c.id) + '">' +
+        (read ? "✓ Read" : "Mark read") + "</button>" +
+        "</div>";
+      h += '<p class="lesson__one">' + esc(c.one) + "</p>";
+      h += '<div class="lesson__foot">' +
+        '<span class="small">Used in ' + (c.q || []).map(function (qid) {
+          return '<a href="#/q/' + esc(qid) + '">' + esc(qid.replace("R0-", "Q")) + "</a>";
+        }).join(" · ") + "</span>" +
+        (c.pre.length ? '<span class="small"> · needs ' + c.pre.map(function (p) {
+          return '<a href="#/c/' + esc(p) + '">' + esc(CONBY[p] ? CONBY[p].t : p) + "</a>";
+        }).join(", ") + "</span>" : "") +
+        "</div>";
+      h += "</div>";
+    });
+    return h;
+  }
+
+  function viewConcept(id) {
+    var c = CONBY[id];
+    if (!c) return '<h1>No such key point</h1><p><a href="#/learn">Back to the course</a></p>';
+    var i = CONPOS[id];
+    var next = CONORDER[i + 1];
+    var after = CON.filter(function (x) { return x.pre.indexOf(id) >= 0; });
+
+    var h = '<a class="toplink" href="#/learn">← All key points</a>';
+    h += '<div class="card lesson lesson--full">';
+    h += '<div class="lesson__head">' +
+      '<span class="lesson__n">' + (i + 1) + " / " + CON.length + "</span>" +
+      '<a class="flag flag--paper" href="#/m/' + esc(c.m) + '">' + esc(c.m) + "</a>" +
+      '<button class="btn btn--xs" type="button" data-read="' + esc(id) + '">' +
+      ((state.read && state.read[id]) ? "✓ Read" : "Mark read") + "</button>" +
+      "</div>";
+    h += "<h1>" + esc(c.t) + "</h1>";
+    h += '<p class="lead">' + esc(c.one) + "</p>";
+    if (c.pre.length) {
+      h += '<div class="mcq__rel"><span class="small">Read first:</span> ' + keyChips(c.pre) + "</div>";
+    }
+    h += '<div class="lesson__body">' + c.body + "</div>";
+    if (c.used) {
+      h += '<div class="callout callout--key"><b>Where the paper uses it.</b> ' + c.used + "</div>";
+    }
+    if ((c.q || []).length) {
+      h += "<h2>Questions that use this</h2>";
+      h += '<p class="sub">' + c.q.map(function (qid) {
+        var q = DATA.questions.filter(function (x) { return x.id === qid; })[0];
+        return '<a class="btn btn--xs" href="#/q/' + esc(qid) + '">' +
+          esc(qid.replace("R0-", "Q")) + (q ? " · " + esc(q.topic) : "") + "</a>";
+      }).join(" ") + "</p>";
+    }
+    if (after.length) {
+      h += '<div class="mcq__rel"><span class="small">This unlocks:</span> ' +
+        keyChips(after.map(function (x) { return x.id; })) + "</div>";
+    }
+    h += '<div class="lesson__nav">' +
+      (next ? '<a class="btn btn--primary" href="#/c/' + esc(next.id) + '">Next: ' + esc(next.t) + " →</a>" :
+        '<a class="btn btn--primary" href="#/practice">That is the whole course — go practise</a>') +
+      "</div>";
+    h += "</div>";
+    return h;
+  }
+
+  function viewQuestion(id) {
+    var q = DATA.questions.filter(function (x) { return x.id === id; })[0];
+    if (!q) return '<h1>No such question</h1><p><a href="#/practice">Back to practice</a></p>';
+    var h = '<a class="toplink" href="#/practice">← Practice</a>';
+    h += "<h1>" + esc(q.topic) + "</h1>";
+    h += '<p class="sub">' + esc(q.id.replace("R0-", "Question ")) +
+      " · " + esc(mod(q.module) ? mod(q.module).title : q.module) + "</p>";
+    h += questionCard(q);
+    return h;
+  }
+
   /* ---------------- router ---------------- */
 
   function render() {
@@ -980,6 +1166,9 @@
     else if (view === "plan") html = viewPlan();
     else if (view === "m") html = viewModule(parts[1]);
     else if (view === "practice") { if (parts[1]) practiceFilter = parts[1]; html = viewPractice(practiceFilter === "all" ? null : practiceFilter); }
+    else if (view === "learn") html = viewLearn();
+    else if (view === "c") html = viewConcept(parts[1]);
+    else if (view === "q") html = viewQuestion(parts[1]);
     else if (view === "glossary") html = viewGlossary();
     else if (view === "reference") html = viewReference();
     else if (view === "mock") html = (state.mock && state.mock.marked) ? viewMockResult() : viewMock();
@@ -1036,6 +1225,16 @@
         if (g === "pf") { practiceFilter = v; location.hash = v === "all" ? "#/practice" : "#/practice/" + v; }
         if (g === "pd") { practiceDiff = v; render(); }
         if (g === "pp") { practicePaper = v; render(); }
+      });
+    });
+
+    root.querySelectorAll("[data-read]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var id = b.getAttribute("data-read");
+        state.read = state.read || {};
+        state.read[id] = !state.read[id];
+        save();
+        render();
       });
     });
 
@@ -1214,6 +1413,8 @@
       '<a class="navlink" data-view="home" href="#/"><span class="navlink__code">◎</span><span class="navlink__t">Overview</span></a>' +
       '<a class="navlink" data-view="plan" href="#/plan"><span class="navlink__code">▤</span><span class="navlink__t">The plan</span></a>' +
       '<a class="navlink" data-view="practice" href="#/practice"><span class="navlink__code">✎</span><span class="navlink__t">Practice</span></a>' +
+      '<a class="navlink" data-view="learn" href="#/learn"><span class="navlink__code">✦</span><span class="navlink__t">Key points</span>' +
+      (CON.length ? '<span class="navlink__n">' + conDone() + "/" + CON.length + "</span>" : "") + "</a>" +
       "</div>";
 
     var groups = { 1: "Priority 1", 2: "Priority 2", 3: "Priority 3", 4: "Insurance" };
