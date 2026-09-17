@@ -1,14 +1,14 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 325 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 331 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 240 of 325 do. The difficulty-5
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 246 of 331 do. The difficulty-5
 backlog is **cleared** — no item claims difficulty 5 without evidence — and the 85 items that remain
 unbacked are all difficulty-4 claims, a published, ratcheting backlog described in
 `STANDARD.md` §2.2–§2.5 and measured by `tools/difficulty_audit.py`. All 13
 lever types are in use, the largest share is 15%, and every subject is inside the 50% difficulty-5 cap
-(Maths 45%, Physics 44%, CS 41%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
+(Maths 48%, Physics 44%, CS 41%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
 the share was above the cap) and R2 (no item claimed difficulty 3 — the 3-5 scale had collapsed to two
 points) were paid by Batches 21–23, and the backlog pass added a fifth difficulty-3 item. The audit prints
 `calibration OK` and `--check --strict` exits 0.
@@ -16,12 +16,13 @@ The `topic` label is now a closed vocabulary per subject, enforced by `validate.
 question page and filterable on every subject page.**
 **Figure coverage is now a first-class gate rather than a nice-to-have.** Batch 23 raised the share of
 items that carry a self-authored graph to 75 of 301 = 25%; Batch 26 took it to 84 of 310 = 27.1%; Batch 27
-to 89 of 315 = 28.3%; Batch 28 to 94 of 320 = 29.4%; Batch 29 takes it to **98 of 325 = 30.2%** and raises
-the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.29 to
-**0.30** — the floor may rise and may
-never fall, so a later batch cannot quietly spend the coverage. No subject prints a gap: Maths 18%,
-Physics 39%, CS 48%, BM 21%, against a 15% target — but only **1 non-figure item of headroom** is left
-(98/326 = 30.06% passes, 98/327 = 29.97% fails), so the ratchet now *forces* a batch to carry figures
+to 89 of 315 = 28.3%; Batch 28 to 94 of 320 = 29.4%; Batch 29 to 98 of 325 = 30.2%; Batch 30 takes it to
+**104 of 331 = 31.4%** and raises
+the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.30 to
+**0.31** — the floor may rise and may
+never fall, so a later batch cannot quietly spend the coverage. No subject prints a gap: CS 48%,
+Physics 39%, Maths 22%, BM 21%, against a 15% target — but only **4 non-figure items of headroom** are left
+(104/335 = 31.04% passes, 104/336 = 30.95% fails), so the ratchet now *forces* a batch to carry figures
 rather than
 merely encouraging it. Every figure is drawn by hand as a plain-Python SVG
 string builder,
@@ -1563,12 +1564,116 @@ similarity score, and no BM item ships containing HL-only content.
     external neighbour of the gas-laws item is `PH_HL_Option_B_HL-paper2_q14`, and of the decay item
     `PHYS_HL_P1_2004May_TZ2_q37`. Bank-wide maxima are unchanged at 0.090 external / 0.073 internal /
     0.366 approach.
+- **Batch 30 — DONE (6 Maths AA HL Section A short-response items, 325 → 331).** The brief was a *section*
+  of a paper — the third level of the same idea after Batch 28's subject and Batch 29's component — because
+  `coverage.py --next 12` returned **0 gaps** for the fourth wave running and no subject was below the 15%
+  figure target. Maths Paper 1 and Paper 2 are each 2 h and 110 marks, and roughly half of those marks sit
+  in **Section A**, the short-response section; Paper 3 is 1 h and 55 marks of problem-solving only. The bank
+  held P1 Section A at **7 items / 47 marks = 5.1% of P1's marks** and P2 Section A at **2 items / 31 marks
+  = 5.5%** — against about 50% in the real papers — so Maths was a bank of extended-response questions
+  almost end to end. P2's two Section A items were also the wrong *shape*: 15- and 16-mark
+  `extended_response` items in a section built for short answers. This wave adds six 6-mark `structured`
+  items, three on P1 Section A and three on P2 Section A, on six nodes that had an item but no figure:
+  **2.11, 5.4, 3.4** (P1) and **4.2, 3.3, 4.6** (P2).
+  - **A Section A item is 6 marks in three parts, and that is a constraint rather than a habit.** The real
+    paper's short-response questions run 4–7 marks over two or three parts, so 6 marks split 2/2/2 is the
+    modal shape and the one a student meets most often. It is also the shape that makes the arc test
+    (`parts[0].marks > max(rest)`) fail **by construction**, so each of the six needs `arc = 2` to support a
+    difficulty-5 claim at all: the three evidence fields cap at 6 and the assertion test at 1, and 6 + 1 = 7
+    is short of the 8 a d5 label requires. All six carry distinct levers — `exceptional_parameter`,
+    `aggregate_recovery`, `decoy_technique`, `non_obvious_tool`, `non_governing_variable`,
+    `implicit_dependence` — and all six score **9/9**. The P1 items carry `technology: "not allowed"` and
+    the P2 items `"required"`, because P1 is the paper that does not permit a calculator.
+  - **`MATH-2.11-601` (2.11 Transformations of graphs, P1 A, d5, `exceptional_parameter`).** A parabola
+    through the marked points $(0,\,5)$ and $(6,\,5)$: those two points fix $b = -6$ and $c = 5$ and place
+    the axis at $x = 3$. The lever is that $g(x) = f(6-x)$ is a **reflection in $x = 3$**, and that is the
+    one member of the family of reflections in vertical lines that fixes this particular parabola — every
+    other member of the family moves it. A candidate expands $f(6-x)$, sees an expression that does not
+    look like $f(x)$, and concludes the graph has moved. The figure marks the two points and the dashed
+    axis but prints neither $x = 3$ nor the vertex.
+  - **`MATH-5.4-601` (5.4 Tangents and normals, P1 A, d5, `aggregate_recovery`).** The two tangents from
+    the external point $P(3,\,8)$ to $y = x^2$. Writing the tangent at $x = t$ as $y = 2tx - t^2$ makes
+    "the tangent passes through $P$" the quadratic $t^2 - 6t + 8 = 0$ with roots **2 and 4**, so there are
+    two tangents — $y = 4x - 4$ and $y = 8x - 16$ — meeting at $P$ and cutting the $y$-axis at $(0,\,-4)$
+    and $(0,\,-16)$. The triangle they form with the axis has base 12 and height 3 and area **18**. The
+    naive path differentiates at $x = 3$ because that is $P$'s $x$-coordinate and reports the single
+    tangent $y = 6x - 9$; the lever is that the second root has to be recovered before any part can be
+    finished. 14 assertions.
+  - **`MATH-3.4-601` (3.4 Radian measure, P1 A, d5, `decoy_technique`).** A sector whose perimeter equals
+    the circumference of its own circle. Setting $2r + r\theta = 2\pi r$ gives $\theta = 2\pi - 2$, area
+    $36(\pi - 1) \approx 77.1$ cm², and a ratio $\frac{\pi - 1}{\pi} \approx 0.682$ that is the same for
+    every circle because $r$ cancels. The decoy is the figure: the shaded wedge reads as a region bounded
+    by one curved edge, and a candidate who takes the perimeter to be the arc alone gets $\theta = 2\pi$ —
+    the whole circle, with area $36\pi$ and ratio 1.
+  - **`MATH-4.2-601` (4.2 Presentation of data, P2 A, d5, `non_obvious_tool`).** A histogram of 160
+    observations with unequal class widths. Densities 2, 4 and 2 across the classes 0–10, 10–30 and 30–60
+    give counts 20, 80 and 60; the number between 5 and 25 is $20(0.5) + 80(0.75) = $ **70**, and the median
+    is the 80th value, three-quarters of the way into the 80-strong middle class, at **25**. The lever is
+    that the bar height is a density and not a count, so the area is the only quantity that adds to 160 —
+    the naive path reads 2, 4, 2 as frequencies, gets a total of 8 against a stated 160, and puts the median
+    at the midpoint of the tallest bar.
+  - **`MATH-3.3-601` (3.3 Applications of trigonometry, P2 A, d5, `non_governing_variable`).** 12 km on a
+    bearing of 020°, then 9 km on 140°. The angle of the triangle at $B$ is set by the **back-bearing
+    $200°$** measured at $B$, not by the given 020° measured at $A$, so it is 60° and not $140° - 20° =
+    120°$. Then $AC^2 = 117$, $AC = 3\sqrt{13} = 10.8$ km, and the bearing of $C$ from $A$ is
+    $020° + 46.1° = 066.1°$ — with $133.9°$ as the competing obtuse solution, rejected because the figure
+    puts $C$ to the right of $AB$.
+  - **`MATH-4.6-601` (4.6 Venn diagrams and conditional probability, P2 A, d5, `implicit_dependence`).**
+    120 people, 40 of whom visited $P$ only, 30 both, 20 $Q$ only and 30 neither. Then
+    $P(P \mid Q') = \frac{40}{70} = \frac{4}{7}$ and $P(Q \mid P') = \frac{20}{50} = \frac{2}{5}$, while
+    $P(P)P(Q) = \frac{35}{144} \ne \frac{1}{4} = P(P \cap Q)$, so the events are not independent. The
+    lever is the denominator: conditioning restricts the sample to the conditioning event, and 120 is not
+    the number to divide by — the naive path divides every count by 120 and then rounds 0.243 and 0.25 to
+    the same value.
+  - **Every figure is computed from the item's own numbers, and the render pass caught what the text could
+    not.** Each is drawn from the same algebra the markscheme evaluates — the parabola from its own
+    coefficients, the histogram bars from density × width, the bearing triangle from the two given legs and
+    bearings — so the picture cannot drift from the answer. Rendered to a contact sheet through headless
+    Chrome, the first pass found four defects no text audit can see: the parabola **clipped** at the
+    top-left because $f(-1) = 12$ exceeded the plotted $y$-range, a sector angle label floating with no arc
+    drawn at the vertex, a histogram $y$-axis name colliding with its own tick labels, and the bearings
+    figure printing "020 deg" into "AC" as one word with the leg labels sitting on the lines they named. A
+    second render found a worse class of defect: three figures **printed their own answers** — the parabola
+    labelled $x = 3$ and $(3,\,-4)$, the sector labelled 6 cm, $\theta = 2\pi - 2$ and arc $AB = 4\pi$ cm
+    when the arc length was not even given. The labels went, the marks stayed. The rule is now written
+    down: **a figure that prints the answer is worse than no figure.**
+  - **One item's markscheme named a distractor its own arithmetic does not produce, and no gate could see
+    it.** `MATH-3.3-601`'s notes told the marker that a candidate using 120° as the included angle
+    "obtains $AC^2 = 441$ and $AC = 21$". But $441 = 12^2 + 9^2 + 216$ is what the cosine rule returns when
+    $\cos = -1$ — the two legs treated as collinear, which is the *straight-line* error, not the 120° error
+    at all; the 120° error gives $AC^2 = 333$ and $AC = 18.2$ km with a bearing of 045.3°. `validate.py`
+    checks the assertions, not the prose that names a distractor, and the assertions were correct, so the
+    wrong number survived a full ship and sat in a rendered markscheme. It was found by reading the item's
+    prose against its own numbers while writing this entry — which is the point at which the difficulty
+    evidence stops being paperwork. Three fields were corrected and four assertions added to pin both
+    errors, so the numbers in the prose are now machine-checked; `ship.py` was re-run and the site rebuilt.
+  - **Numbers after the wave.** 331 items — **Maths 136 / 1939 marks**, Physics 95 / 1131, CS 61 / 901,
+    BM 39 / 563; **4534 marks** in all. Difficulty split **5 / 185 / 141**; every subject inside the 50% cap
+    (Maths **48%**, Physics 44%, CS 41%, BM 23%). Evidence **246 / 331 (74%)**, `difficulty 5 with no
+    evidence` **0**, `labels the evidence does not permit` **0**, assertions **3828**. Maths P1 goes 64
+    items to **67** and its Section A from 7 to **10** (5.1% → 7.1% of P1's marks); Maths P2 goes 37 to
+    **40** and its Section A from 2 to **5** (5.5% → 8.6%). Maths's figure share goes **18% → 22%** — its
+    best ever, and the first time it has cleared a fifth.
+  - **The ratchet moved further than in any wave since Batch 23.** Coverage went
+    **98/325 = 30.2% → 104/331 = 31.4%**, so `FIGURE_COVERAGE_FLOOR` moves **0.30 → 0.31**. That leaves
+    **4 non-figure items of headroom** (104/335 = 31.04% still passes, 104/336 = 30.95% fails) — up from 1,
+    because every item in the wave carries a figure and six items is a large addition against a small gap.
+    Similarity on the new items: external ≤ 0.050, internal ≤ 0.030, approach ≤ 0.223; the nearest external
+    neighbour of the parabola item is `MAAQB_17N_1_SL_TZ0_T_11` and of the bearings item
+    `MAAQB_20N_2_SL_TZ0_S_10`. Bank-wide maxima are unchanged at 0.090 external / 0.073 internal / 0.366
+    approach.
+  - **The answer target fell 290 → 280 in the same wave, measuring the downward ratchet a second time.**
+    The six items were written to the 290-word target, which is *below* Maths's 362-word median by
+    construction; six items joining 130 moved the median to **349.5** and the target to **280**. Batch 29's
+    five Physics items did the same thing to the Physics cell one wave earlier, 326 → 320. The authoring
+    skill previously claimed the target *rises* as the bank grows; it now says the opposite, with both
+    measurements written down.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  130 questions / 1903 marks, physics 95 / 1131, CS 61 / 901, BM SL 39 / 563 — all difficulty 3–5, May
+  136 questions / 1939 marks, physics 95 / 1131, CS 61 / 901, BM SL 39 / 563 — all difficulty 3–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that

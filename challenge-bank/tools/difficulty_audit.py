@@ -46,9 +46,10 @@ SUBJECT_ORDER = ["Math AA HL", "Physics HL", "Computer Science HL", "Business Ma
 # The bank-wide floor is a RATCHET -- it may rise and may not fall -- and the
 # per-subject target is reported as a gap rather than a debt, so it stays visible
 # without turning the pipeline red on a backlog that is being paid down.
-FIGURE_COVERAGE_FLOOR = 0.30        # bank-wide, ratchet (measured 98/325 = 30.2%, 2026-09-17)
-                                    # headroom: 1 non-figure item (98/326 = 30.06% still passes;
-                                    # 98/327 = 29.97% fails -- the next batch must carry figures)
+FIGURE_COVERAGE_FLOOR = 0.31        # bank-wide, ratchet (measured 104/331 = 31.4%, 2026-09-17)
+                                    # headroom: 4 non-figure items (104/335 = 31.04% still passes;
+                                    # 104/336 = 30.95% fails). Batch 30 was the first Maths wave
+                                    # since Batch 27 and took Maths 24/130 = 18% to 30/136 = 22%.
 FIGURE_SUBJECT_TARGET = 0.15        # per subject, reported gap
 
 # The state measured on 2026-09-13, when the standard took force.

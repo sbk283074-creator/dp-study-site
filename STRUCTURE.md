@@ -135,7 +135,7 @@ What the index covers, and the two things it cannot scrape:
 | Source | How |
 |---|---|
 | Tracked HTML (hub, 7 subjects, core, guides, both vocab spaces, qbank, Lit Lab, 5 Challenge Bank indexes, 9 paper pages) | scraped, text capped at 460 chars |
-| 325 Challenge Bank questions | `challenge-bank/site/q/*.html`, labelled with id / topic / difficulty / marks / paper |
+| 331 Challenge Bank questions | `challenge-bank/site/q/*.html`, labelled with id / topic / difficulty / marks / paper |
 | `PYTHON/index.html` (2.2 MB, hash-routed) | split into its **40 `<section class="chapter" id="slug">`** blocks → `#/<slug>` deep links |
 | **BPhO** (shell page; content is `window.BPHO_*`) | `tools/bpho_dump.mjs` evaluates the `data/*.js` globals → 435 entries (plan, modules, glossary, worked examples, 163 questions). It **auto-discovers** `modules-N.js` / `questions-N.js` by glob — a hand-maintained file list silently dropped `questions-3.js` from the index once, so new shards are now picked up automatically |
 | **World's Wife Lab** (content is one inline `const SEED` literal) | `tools/englab_dump.mjs` brace-matches and evaluates `SEED` → 30 poems with text, key passages and analysis |
@@ -293,20 +293,21 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 ### 05 · Challenge Bank — `challenge-bank/`
 **Fully generated. The JSON is the source of truth, not the HTML.**
 - Data: `challenge-bank/data/{math-aa-hl,physics-hl,computer-science-hl,business-management-sl}/*.json`
-  — **325 questions** (Math AA HL 130, Physics HL 95, CS HL 61, BM SL 39). Re-measured 2026-09-17;
+  — **331 questions** (Math AA HL 136, Physics HL 95, CS HL 61, BM SL 39). Re-measured 2026-09-17;
   the count comes from `tools/validate.py`'s `load()`, never from a glob.
   **Do not count these with a glob.** The filenames are not uniform — `batch21.json`, `batch22.json`,
   `batch22c.json` and `batch23.json` sit beside `p3-batch2.json`, `p1b-data.json`,
   `abstract-data-types.json`, `p2-case-study.json`, `p2-theme-b.json`, `gravitational-fields.json`. A
-  `data/*/batch*.json` glob matches **68 files holding 233 of the 325 items** (re-measured 2026-09-17), so
-  it silently misses 92; the number drifts as the bank grows, so re-measure rather than quoting it. Batch
+  `data/*/batch*.json` glob matches **68 files holding 233 of the 331 items** (re-measured 2026-09-17), so
+  it silently misses 98; the number drifts as the bank grows, so re-measure rather than quoting it. Batch
   26 is the proof: it added two files and the glob figure **did not move at all**, because both are named
   `…-batch26.json` — and Batch 27 repeated it, its one file being `figures-batch27.json`, which the glob
-  does not match either. Batch 28's one file is `p1a-theme-a-batch28.json` and Batch 29's is
-  `p1a-mcq-batch5.json`, and neither matches — `batch*.json` needs the filename to *begin* with `batch`
-  — so the glob figure has now been frozen at 233 for four consecutive waves (26, 27, 28, 29) and would
-  read the same if the bank had not grown at all: 315 → 325 items moved it by exactly zero.
-  `data/*/*batch*.json` (84 files holding 292 of the 325) is the pattern that works; neither is a
+  does not match either. Batch 28's one file is `p1a-theme-a-batch28.json`, Batch 29's is
+  `p1a-mcq-batch5.json` and Batch 30's is `section-a-batch30.json`, and none of the three matches —
+  `batch*.json` needs the filename to *begin* with `batch`
+  — so the glob figure has now been frozen at 233 for five consecutive waves (26, 27, 28, 29, 30) and would
+  read the same if the bank had not grown at all: 315 → 331 items moved it by exactly zero.
+  `data/*/*batch*.json` (85 files holding 298 of the 331) is the pattern that works; neither is a
   substitute for `load()`. Use
   `tools/validate.py`'s `load()`, which also returns **`(file, question)` tuples**, not bare questions.
   **`fig-*.json` are *not* figure assets** — `physics-hl/fig-circuit-structured.json` and
@@ -319,7 +320,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - Tooling: `challenge-bank/tools/*.py` — `validate.py` (43 KB), `make_figures.py` (40 KB), `fix_json.py`,
   `ship.py`, `coverage.py`, `difficulty_audit.py`, …
 - Docs: `README.md`, `STANDARD.md`, `PLAN.md`, `AUDIT_*.md`.
-- Output: `challenge-bank/site/` — `index.html`, `q/` (325 question pages), one index per
+- Output: `challenge-bank/site/` — `index.html`, `q/` (331 question pages), one index per
   subject, `papers/`, `assets/site.js`.
 - **AI:** four launcher buttons per question (full worked solution / hint only / guided steps /
   mark my attempt), generated into `site/assets/site.js` from a Python string in `build.py`. They call
@@ -330,21 +331,21 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - **Figures:** hand-authored inline SVG stored in the question JSON as
   `figure = {type:"svg", content, caption}`. `build.py::figure_html` handles **three** types, not one —
   `svg` (`<figure>` + optional `<figcaption>`), `table` (delegates to `table_html`) and `code`
-  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 325 items: **98
-  figure-bearing (92 svg / 4 code / 2 table) = 30%**, with every subject above the 15% per-subject
-  target (Maths 18%, Physics 39%, CS 48%, BM 21%). No charting library is involved anywhere: every
+  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 331 items: **104
+  figure-bearing (98 svg / 4 code / 2 table) = 31%**, with every subject above the 15% per-subject
+  target (Maths 22%, Physics 39%, CS 48%, BM 21%). No charting library is involved anywhere: every
   figure is a plain-Python SVG string builder in `tools/make_figures.py`, and `validate.py` fails on the
   fingerprints of matplotlib / Chart.js / plotly / vega / bokeh / `<canvas` / `data:image/`, so the
   "without other tools" rule is gate-enforced. `FIGURE_COVERAGE_FLOOR` in `difficulty_audit.py` is a
-  **ratchet** (now 0.30): it may rise and may never fall, and it is now the binding constraint — one
-  non-figure item of headroom remains, so a new batch must carry figures. A stimulus table is separate
+  **ratchet** (now 0.31): it may rise and may never fall, and it is now the binding constraint — four
+  non-figure items of headroom remain, so a new batch must carry figures. A stimulus table is separate
   from a figure: it
   lives in `stimulus.table` and is emitted by `stimulus_html`, so an item can carry a table with no
   `figure`.
 - **Difficulty is evidenced, and the top-tier debt is cleared.** Every item must carry
   `difficulty_evidence` (`lever_type` from a closed 13-term taxonomy + `naive_path` + `failure_point` +
   `wrong_answer`); the rubric scores it out of 9 and the label must be earned (d5 needs 8). As of
-  2026-09-17: **240 of 325 items evidenced, `difficulty 5 with no evidence: 0`**, and the 85 outstanding
+  2026-09-17: **246 of 331 items evidenced, `difficulty 5 with no evidence: 0`**, and the 85 outstanding
   items are all difficulty-4 claims. Reading the 79-item difficulty-5 backlog produced
   **five label corrections, all downwards** — `MATH-P3-010` 5→4, `MATH-AHL5.9-001` 5→4,
   `MATH-AHL5.10-001` 5→3, `MATH-AHL5.11-001` 5→4, `PHYS-E.2-101` 5→4 — while
@@ -355,8 +356,8 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   type** — the 80-mark component was unmodelled while the audit reported 100% node coverage. Correcting
   the table to P1 → `{structured, extended_response, case_study}`, P2 → `{extended_response}` produced
   **17 failures with no data change**, and the 17 items were then re-filed by their own `topic` field
-  (9 Theme A → P1, 8 Theme B → P2 as `extended_response`). Per-paper distribution is now Maths P1 64 /
-  P2 37 / P3 29, Physics P1A **19 clusters (95 questions)** / P1B 17 / P2 59, **CS P1 49** / P2 12,
+  (9 Theme A → P1, 8 Theme B → P2 as `extended_response`). Per-paper distribution is now Maths P1 67 /
+  P2 40 / P3 29, Physics P1A **19 clusters (95 questions)** / P1B 17 / P2 59, **CS P1 49** / P2 12,
   BM P1 10 / P2 29.
 - **`section` is checked too, and the same lesson applied twice.** `section` renders as a student-visible
   chip (`P1 · Section A`) and feeds the paper builder, and was validated nowhere. `SECTION_RULES` in
@@ -367,7 +368,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   guide PDFs: Physics P2 is "short-answer and extended-response questions" with no split named, Maths P3
   is "two compulsory extended response problem-solving questions"), and **3 CS P1** items were theme B in
   Section A. All 60 were cleared rather than reassigned — **60 deletions, 0 insertions across 23 files**.
-  Legitimately sectioned: Physics P1 (the 1A/1B booklet split, 14 `mcq` on A / 17 `data_based` on B),
+  Legitimately sectioned: Physics P1 (the 1A/1B booklet split, 19 `mcq` on A / 17 `data_based` on B),
   Maths P1/P2, CS P1, BM P1/P2. What it leaves: **6 CS P1 theme-B items with no case-study anchor** fit
   neither section and need content, not metadata.
 - **The same sweep found `technology` wrong in 11 places, and the fix was 128 items.** Auditing *every*
