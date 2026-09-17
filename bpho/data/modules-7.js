@@ -176,11 +176,11 @@ binding energy  BE = Δm c²</div>
 <p>Activity is measured in becquerels (Bq), where 1 Bq = 1 decay per second. A source with a large <code>N</code> but a tiny <code>λ</code> (long half-life) can have the same activity as a source with small <code>N</code> but large <code>λ</code> — activity depends on the <i>product</i>, not on either factor alone. This is a classic trap.</p>
 <h3>The exponential law</h3>
 <p>Since the decay rate is proportional to the remaining number, the population falls exponentially:</p>
-<div class="formula">N = N₀ e^(−λt)      A = A₀ e^(−λt)</div>
+<div class="formula">N = N₀ e<sup>−λt</sup>      A = A₀ e<sup>−λt</sup></div>
 <p>The shape is the saturating-decay curve from module A's graph reasoning: steep at first (many nuclei, many decays) and flattening as fewer remain. On a <b>log</b> plot of <code>N</code> against <code>t</code>, the curve becomes a straight line of gradient <code>−λ</code>, because <code>ln N = ln N₀ − λt</code>.</p>
 <h3>Relating half-life to the decay constant</h3>
 <p>By definition, after one half-life <code>N = N₀/2</code>. Substitute into the exponential law:</p>
-<div class="formula">N₀/2 = N₀ e^(−λT½)   →   ½ = e^(−λT½)   →   ln 2 = λ T½</div>
+<div class="formula">N₀/2 = N₀ e<sup>−λT½</sup>   →   ½ = e<sup>−λT½</sup>   →   ln 2 = λ T½</div>
 <div class="formula">T½ = ln 2 / λ  ≈  0.693 / λ</div>
 <p>So a large decay constant means a short half-life, as expected. The factor <code>ln 2 ≈ 0.693</code> is worth knowing so that if a question gives <code>λ</code> and asks for the half-life you can produce it without a calculator approximation beyond the division.</p>
 <div class="callout callout--good"><p><b>Ratio form avoids the exponential.</b> For most Round 0 questions you never need <code>e</code>. If the time is, say, 3 half-lives, write <code>N/N₀ = (½)³ = 1/8</code> and stop. Reserve the full exponential law for times not expressible as a clean number of half-lives — and even then a log plot or ratio is usually faster.</p></div>`
@@ -277,7 +277,7 @@ BE per nucleon of Y = 320 / 80 = 4 MeV/nucleon</div>
       sol: `<p>Activity is related to the number of nuclei by <code>A = λN</code>. Solve for λ:</p>
 <div class="formula">λ = A / N = 200 / (4.0 × 10²⁰) = 5.0 × 10⁻¹⁹ s⁻¹</div>
 <p><b>Answer: B, <code>5.0 × 10⁻¹⁹ s⁻¹</code>.</b></p>
-<p><b>The mental route (powers of ten).</b> <code>200 = 2 × 10²</code>, so <code>λ = 2 × 10² / (4 × 10²⁰) = (2/4) × 10^(2−20) = 0.5 × 10⁻¹⁸ = 5 × 10⁻¹⁹</code>. Keep the leading digits and the powers of ten separate.</p>
+<p><b>The mental route (powers of ten).</b> <code>200 = 2 × 10²</code>, so <code>λ = 2 × 10² / (4 × 10²⁰) = (2/4) × 10<sup>2−20</sup> = 0.5 × 10⁻¹⁸ = 5 × 10⁻¹⁹</code>. Keep the leading digits and the powers of ten separate.</p>
 <p><b>Why the other options exist.</b> Option A, <code>2 × 10⁻²²</code>, comes from dividing <code>200/10²⁰</code> and mishandling the 4 — forgetting to divide by the 4 and losing a further factor of ten. Option E is the reciprocal-ish error. Option D is what you get if you treat the 200 as <code>2 × 10³</code> instead of <code>2 × 10²</code>. The units confirm B is a decay constant: 1/s, since activity (1/s) over a pure count gives 1/s.</p>
 <p><b>The physical point.</b> Activity depends on the <i>product</i> <code>λN</code>. This sample has an enormous number of nuclei, so even a tiny λ produces a measurable 200 Bq. A sample with far fewer nuclei but a much larger λ could have the same activity — which is why activity alone never tells you how much radioactive material is present.</p>`,
       tag: "Activity and the decay constant"
@@ -303,8 +303,8 @@ BE per nucleon of Y = 320 / 80 = 4 MeV/nucleon</div>
     { id: "K5", flag: "CORE", text: "The strong nuclear force: attraction out to about 3 fm, very-short-range repulsion below about 0.5 fm, and charge independence." },
     { id: "K6", flag: "CORE", text: "Properties, absorption and relative hazard of alpha, beta and gamma; the inverse relationship between ionising and penetrating power." },
     { id: "K7", flag: "R1-ONLY", text: "Inverse-square law for gamma radiation <code>I = k/x²</code>. Round 1 material — insurance only." },
-    { id: "K8", flag: "R1-ONLY", text: "The random nature of decay; <code>ΔN/Δt = −λN</code>; <code>N = N₀e^(−λt)</code>. Round 1 material — insurance only." },
-    { id: "K9", flag: "R1-ONLY", text: "Activity <code>A = λN</code> and <code>A = A₀e^(−λt)</code>. Round 1 material — insurance only." },
+    { id: "K8", flag: "R1-ONLY", text: "The random nature of decay; <code>ΔN/Δt = −λN</code>; <code>N = N₀e<sup>−λt</sup></code>. Round 1 material — insurance only." },
+    { id: "K9", flag: "R1-ONLY", text: "Activity <code>A = λN</code> and <code>A = A₀e<sup>−λt</sup></code>. Round 1 material — insurance only." },
     { id: "K10", flag: "R1-ONLY", text: "Half-life <code>T½ = ln2/λ</code>; reading half-life from decay curves and from log graphs. Round 1 material — insurance only." },
     { id: "K11", flag: "R1-ONLY", text: "Decay chains and their energy accounting. Round 1 material — insurance only." },
     { id: "K12", flag: "R1-ONLY", text: "Kinetic energy released in alpha decay; momentum conservation in a two-body decay. Round 1 material — insurance only." },

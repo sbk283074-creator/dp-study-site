@@ -101,7 +101,7 @@ W = J/s = kg m² s⁻² / s = kg m² s⁻³</div>
 <div class="formula">√(a² + d²) − a ≈ d²/(2a) = 0.01/2.0 = 0.005 m</div>
 <p><b>Answer: B, 0.005 m.</b></p>
 <p><b>Confirm it directly.</b> <code>√(1.0² + 0.10²) = √1.01 = 1.00499</code>, so the excess is 0.00499 m ≈ 0.005 m ✓. The approximation is accurate to better than 0.2% here.</p>
-<p><b>Where the approximation comes from.</b> Factor out <code>a</code> and expand: <code>a(1 + d²/a²)^(1/2) ≈ a(1 + d²/2a²) = a + d²/2a</code>. It is the binomial approximation applied to a geometric quantity, and being able to rebuild it means you never need to memorise it.</p>
+<p><b>Where the approximation comes from.</b> Factor out <code>a</code> and expand: <code>a(1 + d²/a²)<sup>1/2</sup> ≈ a(1 + d²/2a²) = a + d²/2a</code>. It is the binomial approximation applied to a geometric quantity, and being able to rebuild it means you never need to memorise it.</p>
 <p><b>The traps.</b> Option C, 0.100 m, is <code>d</code> itself — the error of assuming the hypotenuse grows linearly with the displacement. Option E, 0.010 m, is <code>d²/a</code>, missing the factor of 2. Both are the kind of error that comes from not deriving the result.</p>
 <p><b>The physical significance.</b> The excess is <b>second order</b> in <code>d</code>, not first order. That is why a mass hanging on a taut string barely moves vertically when you push it sideways: the string has almost no slack. This fact is the basis of the small-oscillation analysis of a pendulum.</p>`,
   trap: "Assuming a distance grows linearly with a small displacement. It grows quadratically."
@@ -547,13 +547,13 @@ v = 10 m s⁻¹</div>
   ans: 1,
   sol: `<p>Gravity supplies the centripetal force, so <code>mg = mv²/r</code>, giving <code>v = √(gr)</code>. Substituting into <code>T = 2πr/v</code>:</p>
 <div class="formula">T = 2πr/√(gr) = 2π √(r/g)</div>
-<p>Since <code>g ∝ 1/r²</code>, we get <code>T ∝ √(r · r²) = r^(3/2)</code>. Taking the ratio with <code>r_B = 2r_A</code>:</p>
-<div class="formula">T_B/T_A = 2^(3/2) = (√2)³ = 2.83</div>
+<p>Since <code>g ∝ 1/r²</code>, we get <code>T ∝ √(r · r²) = r<sup>3/2</sup></code>. Taking the ratio with <code>r_B = 2r_A</code>:</p>
+<div class="formula">T_B/T_A = 2<sup>3/2</sup> = (√2)³ = 2.83</div>
 <p><b>Answer: B, 2.8.</b></p>
-<p><b>How to get <code>2^(3/2)</code> without a calculator.</b> Split the exponent: <code>2^(3/2) = 2¹ × 2^(1/2) = 2 × 1.41 = 2.83</code>. That is two easy steps rather than one awkward one, and it works for any fractional exponent.</p>
+<p><b>How to get <code>2<sup>3/2</sup></code> without a calculator.</b> Split the exponent: <code>2<sup>3/2</sup> = 2¹ × 2<sup>1/2</sup> = 2 × 1.41 = 2.83</code>. That is two easy steps rather than one awkward one, and it works for any fractional exponent.</p>
 <p><b>The traps.</b> Option A, 2.0, is the linear guess — period proportional to radius. Option C, 4.0, is <code>r²</code>, which is the dependence of <code>g</code> rather than of the period. Option D, 1.4, is <code>√2</code>, the answer you get by forgetting the <code>2πr</code> factor in the period.</p>
 <p><b>What this is, and what it is not.</b> This is Kepler's third law, derived from circular motion alone — no field theory required. BPhO excludes gravitational fields from Round 0, so a question will be phrased as a ratio like this one rather than asking for <code>GMm/r²</code>. Staying on this side of the boundary is the point of the exercise.</p>`,
-  trap: "Assuming the period is proportional to the radius. It goes as r^(3/2)."
+  trap: "Assuming the period is proportional to the radius. It goes as r<sup>3/2</sup>."
 },
 
 /* ===================== MODULE E — materials ===================== */

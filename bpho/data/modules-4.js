@@ -161,9 +161,9 @@ range           R = u² sin 2θ / g</div>
     {
       h: "Free fall, bounces, and terminal speed",
       body: `<h3>Successive bounces</h3>
-<p>When a ball bounces, the speed after the bounce is a fixed fraction of the speed before it, governed by the coefficient of restitution. If that fraction is <code>e</code>, then after <code>n</code> bounces the speed is <code>e^n u</code>.</p>
+<p>When a ball bounces, the speed after the bounce is a fixed fraction of the speed before it, governed by the coefficient of restitution. If that fraction is <code>e</code>, then after <code>n</code> bounces the speed is <code>e<sup>n</sup> u</code>.</p>
 <p>Since the height reached goes as the square of the speed, and the time of flight is proportional to the speed:</p>
-<div class="formula">h_n / h_0 = e^(2n)        t_n / t_0 = e^n</div>
+<div class="formula">h_n / h_0 = e<sup>2n</sup>        t_n / t_0 = e<sup>n</sup></div>
 <p>So the heights form a geometric series with ratio <code>e²</code>, while the times form one with ratio <code>e</code>. Summing a geometric series to infinity gives the total time and the total distance, which is a standard competition question.</p>
 <h3>Terminal speed</h3>
 <p>As an object falls, drag increases with speed. Eventually drag balances weight:</p>

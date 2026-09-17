@@ -105,6 +105,20 @@ a:hover { text-decoration: underline; }
 .navlink.on .navlink__code { color: var(--accent); }
 .navlink__t { flex: 1 1 auto; min-width: 0; }
 .navlink__tick { flex: 0 0 auto; font-size: 11px; color: var(--good); }
+/* count of marks this module carried on the 2025 paper */
+.navlink__n {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  min-width: 17px;
+  text-align: center;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--ink-3);
+}
+.navlink__n.hot { background: var(--bad-soft); color: var(--bad); }
 
 .main { flex: 1 1 auto; min-width: 0; padding: 26px 32px 80px; max-width: 940px; }
 
@@ -161,6 +175,59 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
 .flag--r1 { background: var(--warn-soft); color: var(--warn); }
 .flag--skip { background: var(--surface-2); color: var(--ink-3); }
 .flag--tierA { background: var(--good-soft); color: var(--good); }
+.flag--paper { background: var(--bad-soft); color: var(--bad); }
+
+/* ---------- the "what the paper tested" table ---------- */
+
+table.yield { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+table.yield th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line-2);
+}
+table.yield td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+table.yield tr:last-child td { border-bottom: 0; }
+table.yield tr.yield--hot td { background: var(--bad-soft); }
+table.yield tr.yield--mid td { background: var(--accent-soft); }
+table.yield tr.yield--cold td { color: var(--ink-3); }
+table.yield td:first-child { color: var(--ink-3); font-family: var(--mono); width: 26px; }
+table.yield a { font-weight: 600; }
+
+/* ---------- "draws on" chips on each question ---------- */
+
+.mcq__rel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 6px;
+  align-items: center;
+  margin: 0 0 7px;
+}
+.relchip {
+  display: inline-block;
+  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-2);
+  color: var(--ink-2);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.relchip b {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-right: 5px;
+}
+.relchip:hover { border-color: var(--accent); color: var(--accent-ink); }
+
+.btn--xs { font-size: 11.5px; padding: 3px 9px; }
 
 /* ---------- formula ---------- */
 
@@ -173,7 +240,14 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 28px 0; }
   border-radius: 0 8px 8px 0;
   margin: 10px 0 14px;
   overflow-x: auto;
+  /* multi-line derivations and ASCII circuit sketches must keep their line breaks
+     and their column alignment — without this the whole block collapses to one line */
+  white-space: pre-wrap;
+  line-height: 1.55;
+  tab-size: 4;
 }
+.formula sup { font-size: 0.72em; line-height: 0; }
+.formula sub { font-size: 0.72em; line-height: 0; }
 
 /* ---------- derivations & steps ---------- */
 

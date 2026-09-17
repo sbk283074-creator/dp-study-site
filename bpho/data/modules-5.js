@@ -156,11 +156,11 @@ Horizontally:    N sin θ = mv²/r</div>
 <p>From <code>v = √(gr)</code> and <code>T = 2πr/v</code>:</p>
 <div class="formula">T = 2π √(r³/g)</div>
 <p>If two orbits have radii <code>r₁</code> and <code>r₂</code> and the field strength at each radius follows <code>g ∝ 1/r²</code>, then</p>
-<div class="formula">T ∝ r^(3/2)</div>
-<p>So a satellite at four times the orbital radius has a period <code>4^(3/2) = 8</code> times as long. That is Kepler's third law, and you have just derived it from circular motion alone — without any field theory.</p>
+<div class="formula">T ∝ r<sup>3/2</sup></div>
+<p>So a satellite at four times the orbital radius has a period <code>4<sup>3/2</sup> = 8</code> times as long. That is Kepler's third law, and you have just derived it from circular motion alone — without any field theory.</p>
 <h3>Speed and period both follow simple ratios</h3>
-<p>For a given central body, <code>v = √(gr)</code> with <code>g ∝ 1/r²</code> gives <code>v ∝ 1/√r</code>, so doubling the radius lowers the orbital speed by <code>√2</code>. Combined with <code>T ∝ r^(3/2)</code>, these two ratios answer almost every orbital question Round 0 can pose. The trick is to keep everything as a ratio so the field strength <code>g</code> never needs a number.</p>
-<div class="callout callout--warn"><p><b>Stay on the right side of the scope boundary.</b> BPhO excludes gravitational fields. Deriving <code>T ∝ r^(3/2)</code> from <code>mv²/r = mg</code> is circular motion and is fair. Discussing gravitational potential energy, escape velocity, or field lines is field theory and is not. If a question asks for a ratio of periods, do it this way.</p></div>`
+<p>For a given central body, <code>v = √(gr)</code> with <code>g ∝ 1/r²</code> gives <code>v ∝ 1/√r</code>, so doubling the radius lowers the orbital speed by <code>√2</code>. Combined with <code>T ∝ r<sup>3/2</sup></code>, these two ratios answer almost every orbital question Round 0 can pose. The trick is to keep everything as a ratio so the field strength <code>g</code> never needs a number.</p>
+<div class="callout callout--warn"><p><b>Stay on the right side of the scope boundary.</b> BPhO excludes gravitational fields. Deriving <code>T ∝ r<sup>3/2</sup></code> from <code>mv²/r = mg</code> is circular motion and is fair. Discussing gravitational potential energy, escape velocity, or field lines is field theory and is not. If a question asks for a ratio of periods, do it this way.</p></div>`
     },
 
     {
@@ -224,14 +224,14 @@ T = 2 × 3.1 × √(0.25/10) = 6.2 × √0.025</div>
 <div class="formula">mg = mv²/r   →   v = √(gr)</div>
 <p>Now use the period, <code>T = 2πr/v</code>, and substitute for <code>v</code>:</p>
 <div class="formula">T = 2πr/√(gr) = 2π √(r/g)</div>
-<p>Since the field strength itself follows <code>g ∝ 1/r²</code>, we get <code>√(r/g) ∝ √(r · r²) = r^(3/2)</code>. So</p>
-<div class="formula">T ∝ r^(3/2)</div>
+<p>Since the field strength itself follows <code>g ∝ 1/r²</code>, we get <code>√(r/g) ∝ √(r · r²) = r<sup>3/2</sup></code>. So</p>
+<div class="formula">T ∝ r<sup>3/2</sup></div>
 <p>Taking the ratio with <code>r_B = 4r_A</code>:</p>
-<div class="formula">T_B/T_A = 4^(3/2) = (√4)³ = 2³ = 8</div>
+<div class="formula">T_B/T_A = 4<sup>3/2</sup> = (√4)³ = 2³ = 8</div>
 <p><b>Answer: D.</b></p>
 <p><b>The trap.</b> Option B, 4, is what you get by assuming the period is proportional to the radius — a linear guess. Option E, 16, comes from using <code>r²</code>, which is the field-strength dependence rather than the period dependence. Option A, 2, is <code>√4</code>, the result of forgetting that the period has both the <code>2πr</code> factor and the <code>1/v</code> factor.</p>
 <p><b>What this is and is not.</b> This is Kepler's third law, derived from circular motion alone. It uses only <code>mv²/r = mg</code> and <code>g ∝ 1/r²</code>, which are fair game. If you find yourself writing <code>GMm/r²</code> with the gravitational constant, you have moved into field theory, which BPhO excludes from Round 0 — the derivation above avoids that entirely.</p>
-<p><b>The physical reading.</b> A satellite eight times further out takes eight times as long. The Moon, at about 60 Earth radii, has a period of about 27 days, and <code>60^(3/2) ≈ 465</code> times the period of a low-Earth satellite of about 90 minutes gives roughly 29 days — close enough to confirm the law with a rough mental estimate.</p>`,
+<p><b>The physical reading.</b> A satellite eight times further out takes eight times as long. The Moon, at about 60 Earth radii, has a period of about 27 days, and <code>60<sup>3/2</sup> ≈ 465</code> times the period of a low-Earth satellite of about 90 minutes gives roughly 29 days — close enough to confirm the law with a rough mental estimate.</p>`,
       tag: "Orbital period ratio — Kepler from circular motion"
     },
 
@@ -274,7 +274,7 @@ T = 2 × 3.1 × √(0.25/10) = 6.2 × √0.025</div>
     "Setting the vertical resolution equal to <code>mv²/r</code> in a vertical circle. Only the direction towards the centre gets <code>mv²/r</code>.",
     "Forgetting that in a conical pendulum the effective length is <code>ℓ cos θ</code>, the vertical drop, not <code>ℓ</code>.",
     "Using <code>v²/r</code> for the acceleration when the angular speed is given. Use <code>ω²r</code> directly rather than converting.",
-    "Assuming the period of an orbit goes as the radius rather than as <code>r^(3/2)</code>.",
+    "Assuming the period of an orbit goes as the radius rather than as <code>r<sup>3/2</sup></code>.",
     "Straying into gravitational potential or escape velocity, which are field theory and excluded from Round 0.",
     "Forgetting that the mass cancels in nearly every circular-motion result, and doing unnecessary arithmetic."
   ],
@@ -287,7 +287,7 @@ T = 2 × 3.1 × √(0.25/10) = 6.2 × √0.025</div>
     { id: "D5", flag: "NEW", text: "Vertical circles; the minimum speed at the top <code>√(gr)</code>; the normal force at the bottom." },
     { id: "D6", flag: "NEW", text: "Banking and cornering; the lean angle of a cyclist; <code>tan θ = v²/(rg)</code> in both cases." },
     { id: "D7", flag: "NEW", text: "Apparent weight variation with latitude; the pole versus equator comparison, and estimating the size of the effect." },
-    { id: "D8", flag: "NEW", text: "Orbital motion by equating <code>mv²/r</code> to <code>mg</code>; the period and speed ratios, and <code>T ∝ r^(3/2)</code>." },
+    { id: "D8", flag: "NEW", text: "Orbital motion by equating <code>mv²/r</code> to <code>mg</code>; the period and speed ratios, and <code>T ∝ r<sup>3/2</sup></code>." },
     { id: "D9", flag: "R1-ONLY", text: "Kepler-style orbital ratios involving gravitational potential or orbital energy. Field theory — insurance only, and mostly out of scope." },
     { id: "D10", flag: "CORE", text: "Estimating centripetal acceleration and force in unfamiliar rotating situations, such as a washing machine drum or a centrifuge." }
   ]

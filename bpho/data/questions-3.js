@@ -178,7 +178,7 @@ start. The curve is steepest at t = 0 and gets shallower. That eliminates option
 which has the gradient the wrong way round, and option B, whose constant gradient
 would mean the opposition never changed.</p>
 <p><b>Answer: C.</b> It is exponential decay,
-<code>I = (V/R) e^(−t/RC)</code>, but the shape follows from the physics alone.</p>
+<code>I = (V/R) e<sup>−t/RC</sup></code>, but the shape follows from the physics alone.</p>
 <p><b>Why the reasoning beats the formula here.</b> A competition paper will often
 give you a family of graphs differing only in starting value and curvature. Asking
 three questions — where does it start, where does it end, and does the gradient
@@ -923,8 +923,8 @@ identifies it without any trigonometry.</p>`,
 <code>g</code> itself falls as <code>1/r²</code>, so the speed depends on the
 radius twice over.</p>
 <div class="formula">v = √(g r),  and g ∝ 1/r²
-v ∝ √(r / r²) = √(1/r) = r^(−1/2)
-v_B / v_A = (9)^(−1/2) = 1/√9 = 1/3</div>
+v ∝ √(r / r²) = √(1/r) = r<sup>−1/2</sup>
+v_B / v_A = (9)<sup>−1/2</sup> = 1/√9 = 1/3</div>
 <p><b>Answer: E, 1/3.</b> The outer satellite moves at a third of the speed.</p>
 <p><b>Two dependences, one answer.</b> Moving outward weakens gravity, which on
 its own would slow the satellite; it also lengthens the path, which on its own
@@ -935,7 +935,7 @@ trying to see the result in one step.</p>
 Option C, 3, and option D, 9, put the ratio the wrong way up — a natural mistake,
 since "nine times further out" invites "nine times". Option A, 1/√3, uses a radius
 ratio of 3 rather than 9.</p>
-<p><b>The companion result.</b> The <i>period</i> goes as <code>r^(3/2)</code>, so
+<p><b>The companion result.</b> The <i>period</i> goes as <code>r<sup>3/2</sup></code>, so
 the same factor of 9 in radius gives a factor of 27 in period — nine times further
 out, a third of the speed, twenty-seven times the period. Keeping the two
 exponents straight is the whole of orbital ratio work.</p>`,
@@ -1720,9 +1720,9 @@ pushed past its rating. Balancing resistors are used to stop exactly that.</p>`,
   q: "A capacitor discharges through a resistor. How long does it take for its charge to fall to one eighth of its initial value? Give your answer in terms of the time constant <code>RC</code>.",
   opts: ["3 RC", "8 RC", "2.1 RC", "0.69 RC", "1.4 RC"],
   ans: 2,
-  sol: `<p>Discharge is exponential: <code>Q = Q₀ e^(−t/RC)</code>. Set the ratio
+  sol: `<p>Discharge is exponential: <code>Q = Q₀ e<sup>−t/RC</sup></code>. Set the ratio
 and take logs. Because <code>⅛ = 2⁻³</code> you can also do it by halvings.</p>
-<div class="formula">Q/Q₀ = ⅛ = e^(−t/RC)
+<div class="formula">Q/Q₀ = ⅛ = e<sup>−t/RC</sup>
 ln(⅛) = −t/RC   ⇒   t = RC × ln 8 = RC × 2.079 ≈ 2.1 RC
 
 check by halvings: half-life = RC ln 2 = 0.693 RC
@@ -1999,7 +1999,7 @@ the length of one. Option A, 6 h, counts two halvings, which would take 800 down
 to 200 rather than 100. Option D, 12 h, counts a single halving. Option E, 2 h,
 counts six halvings, which would leave 12.5 Bq.</p>
 <p><b>When you do need the formula.</b> If the ratio is not a power of two — say
-800 to 150 — you must use <code>A = A₀ e^(−λt)</code> with
+800 to 150 — you must use <code>A = A₀ e<sup>−λt</sup></code> with
 <code>λ = ln 2 / T½</code>. But the halving count still gives you a bracket to
 check the answer against: three half-lives gives 100, so the half-life must be a
 little over 4 h.</p>`,
@@ -2010,8 +2010,8 @@ little over 4 h.</p>`,
   opts: ["0.693/λ", "λ/0.693", "1/λ", "0.693 λ", "2/λ"],
   ans: 0,
   sol: `<p>Start from the exponential law and set the activity to half.</p>
-<div class="formula">N = N₀ e^(−λt)
-N = N₀/2  ⇒  e^(−λt) = ½  ⇒  λt = ln 2
+<div class="formula">N = N₀ e<sup>−λt</sup>
+N = N₀/2  ⇒  e<sup>−λt</sup> = ½  ⇒  λt = ln 2
 T½ = ln 2 / λ = 0.693 / λ</div>
 <p><b>Answer: A, 0.693/λ.</b></p>
 <p><b>The distinction that catches people out.</b> <code>1/λ</code> is <i>not</i>

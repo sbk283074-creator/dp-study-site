@@ -12,8 +12,24 @@
     questions: window.BPHO_QUESTIONS || [],
     glossary: window.BPHO_GLOSSARY || [],
     plan: window.BPHO_PLAN || [],
-    guidance: window.BPHO_GUIDANCE || {}
+    guidance: window.BPHO_GUIDANCE || {},
+    priority: window.BPHO_PRIORITY || null
   };
+
+  /* ---------------- what the 2025 paper actually tested ----------------
+     One real Round 0 paper exists, so it is the only hard evidence about where the 25 marks go.
+     `PRI` is derived from the bank itself (data/priority.js) and drives the ordering of the nav,
+     the overview, and the practice filters. Everything degrades gracefully if it is missing. */
+  var PRI = DATA.priority;
+  function pmod(code) { return PRI ? PRI.forCode(code) : null; }              /* {code,n,rel,rank,...} */
+  function pcount(code) { var m = pmod(code); return m ? m.n : 0; }           /* marks on the paper */
+  function prank(code) { var m = pmod(code); return m ? m.rank : 99; }
+  /* most-tested first, falling back to the hand-set module priority when counts tie.
+     Takes module OBJECTS (DATA.curriculum entries) — hence the .code lookups. */
+  function yieldSort(a, b) {
+    return (pcount(b.code) - pcount(a.code)) || (prank(a.code) - prank(b.code)) ||
+      ((a.priority || 9) - (b.priority || 9)) || a.code.localeCompare(b.code);
+  }
 
   /* ---------------- state ---------------- */
 
@@ -161,8 +177,16 @@
       "<span>" + esc(mod(q.module) ? mod(q.module).title : q.module) + "</span>" +
       "<span>· " + esc(q.topic) + "</span>" +
       '<span>· <span class="flag ' + (q.diff === 3 ? "flag--r1" : q.diff === 2 ? "flag--new" : "flag--tierA") + '">' +
-      (q.diff === 3 ? "challenge" : q.diff === 2 ? "extension" : "core") + "</span></span>" +
+        (q.diff === 3 ? "challenge" : q.diff === 2 ? "extension" : "core") + "</span></span>" +
+      (q.paper ? '<span class="flag flag--paper">' + esc(String(q.paper).replace("R0-", "R0 ")) + "</span>" : "") +
       "</div>";
+    /* the topics this question actually draws on — clicking one opens that module */
+    if (q.rel && q.rel.length) {
+      html += '<div class="mcq__rel"><span class="small">Draws on:</span> ' +
+        q.rel.map(function (r) {
+          return '<a class="relchip" href="#/m/' + esc(r[0]) + '"><b>' + esc(r[0]) + "</b>" + esc(r[1]) + "</a>";
+        }).join("") + "</div>";
+    }
     html += '<p class="mcq__q">' + q.q + "</p>";
     html += '<div class="mcq__opts">';
     q.opts.forEach(function (o, i) {
@@ -292,14 +316,47 @@
       '<p style="margin-top:14px"><a class="btn btn--primary" href="#/plan">Open the plan</a></p>' +
       "</div>";
 
+    /* ---- what the paper actually asked: the only hard evidence there is ---- */
+    if (PRI && PRI.total) {
+      h += '<h2>What the 2025 paper actually tested</h2>';
+      h += '<p class="sub">There is exactly one Round 0 past paper in existence. These are the ' +
+        PRI.total + " marks it spent, module by module — so this table, not anyone's opinion, is " +
+        "what sets the priorities below. <b>Marks</b> counts questions whose main topic is that " +
+        "module; <b>used in</b> also counts questions that lean on it.</p>";
+      h += '<div class="card" style="padding:6px 4px 2px"><table class="yield"><thead><tr>' +
+        "<th></th><th>Module</th><th>Marks</th><th>Used in</th><th>Share</th><th></th></tr></thead><tbody>";
+      PRI.modules.forEach(function (m) {
+        if (!m.n && !m.rel) return;                       /* hide modules the paper never touched */
+        var w = Math.round((m.n / PRI.total) * 100);
+        h += '<tr class="' + (m.n >= 3 ? "yield--hot" : m.n ? "yield--mid" : "yield--cold") + '">' +
+          "<td><b>" + m.rank + "</b></td>" +
+          '<td><a href="#/m/' + esc(m.code) + '"><b>' + esc(m.code) + "</b> · " + esc(m.short) + "</a></td>" +
+          "<td><b>" + m.n + "</b></td>" +
+          "<td>" + (m.rel || "—") + "</td>" +
+          '<td style="min-width:120px"><div class="bar" style="margin:0"><i style="width:' + w + '%"></i></div>' +
+          '<span class="small">' + m.share + "%</span></td>" +
+          "<td>" + (m.n ? '<a class="btn btn--xs" href="#/practice/' + esc(m.code) + '">Drill</a>' : "") + "</td>" +
+          "</tr>";
+      });
+      h += "</tbody></table></div>";
+      h += '<div class="callout callout--key"><p><b>Read the top two rows again.</b> Mechanics ' +
+        "(forces, energy, statics) and circuits took " +
+        ((pcount("C") + pcount("H")) ) + " of the " + PRI.total + " marks between them — " +
+        Math.round(((pcount("C") + pcount("H")) / PRI.total) * 100) + "%. The toolkit (module A) is " +
+        "not a topic you revise separately; it is what the other " + (PRI.total - pcount("A")) +
+        " questions are made of.</p></div>";
+    }
+
     h += '<h2>Modules</h2>';
-    h += '<p class="sub">In the order the plan covers them. Tick items off as you go.</p>';
-    DATA.curriculum.forEach(function (m) {
-      var d = modDone(m.code), t = modChecks(m.code).length;
+    h += '<p class="sub">Most-tested first, using the table above. Tick items off as you go.</p>';
+    DATA.curriculum.slice().sort(yieldSort).forEach(function (m) {
+      var d = modDone(m.code), t = modChecks(m.code).length, n = pcount(m.code);
       h += '<div class="card" style="padding:14px 18px">' +
         '<div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">' +
         '<span class="navlink__code" style="flex:0 0 auto">' + esc(m.code) + "</span>" +
         '<a href="#/m/' + m.code + '" style="font-weight:600;font-size:15.5px">' + esc(m.title) + "</a>" +
+        (PRI ? '<span class="flag ' + (n >= 3 ? "flag--r1" : n ? "flag--new" : "flag--tierA") + '">' +
+          n + " / " + PRI.total + " marks</span>" : "") +
         '<span class="small" style="margin-left:auto">' + d + "/" + t + "</span></div>" +
         '<div class="bar" style="margin-top:8px"><i style="width:' + pct(d, t) + '%"></i></div>' +
         "</div>";
@@ -479,6 +536,30 @@
       '<span class="small">' + d + " of " + t + " items ticked</span></div>";
     h += '<div class="bar" style="margin-bottom:20px"><i style="width:' + pct(d, t) + '%"></i></div>';
 
+    /* ---- how much of the one real paper this module is worth ---- */
+    var pm = pmod(code);
+    if (PRI && pm) {
+      var ids = (PRI.drawsOn[code] || []);
+      if (pm.n) {
+        h += '<div class="callout callout--key"><p><b>' + pm.n + " of the " + PRI.total +
+          " marks on the 2025 paper (" + pm.share + "%)</b> sat on this module — ranked " +
+          pm.rank + " of " + PRI.modules.length + ". " +
+          '<a href="#/practice/' + esc(code) + '">Drill it here.</a></p></div>';
+      } else {
+        h += '<div class="callout callout--warn"><p><b>No mark on the 2025 paper sat here directly.</b> ' +
+          (ids.length
+            ? "It was still used inside " + ids.length + " question" + (ids.length === 1 ? "" : "s") +
+              ", so it is worth knowing but it is not where the marks are."
+            : "Treat it as insurance: revise it only once the modules above the line are solid.") +
+          "</p></div>";
+      }
+      if (ids.length) {
+        h += '<p class="sub">Used in: ' + ids.map(function (id) {
+          return '<a href="#/practice/' + esc(code) + '">' + esc(id.replace("R0-", "Q")) + "</a>";
+        }).join(" · ") + "</p>";
+      }
+    }
+
     h += guidanceBlock(code);
 
     if (m.warn) h += '<div class="callout callout--warn">' + m.warn + "</div>";
@@ -517,6 +598,24 @@
       }).join("") + "</ul>";
     }
 
+    /* ---- the actual 2025 questions that sat on this module, with the topics they drew on ---- */
+    var pq = (PRI && PRI.byModule[code]) || [];
+    if (pq.length) {
+      h += "<h2>What the 2025 paper asked from this module</h2>";
+      h += '<p class="sub">' + pq.length + " of the " + PRI.total + " questions — answer " +
+        (pq.length === 1 ? "it" : "these") + " and you have banked every mark this module is worth.</p>";
+      h += '<ul class="tight">';
+      pq.forEach(function (id) {
+        var q = byQid(id);
+        if (!q) return;
+        var rels = (q.rel || []).filter(function (r) { return r[0] === code; })
+          .map(function (r) { return esc(r[1]); });
+        h += "<li><b>" + esc(id.replace("R0-", "Q")) + "</b> — " + esc(q.topic) +
+          (rels.length ? ' <span class="small">· ' + rels.join(", ") + "</span>" : "") + "</li>";
+      });
+      h += "</ul>";
+    }
+
     var qs = DATA.questions.filter(function (q) { return q.module === code; });
     if (qs.length) {
       h += "<h2>Practice — " + qs.length + " questions</h2>";
@@ -529,11 +628,17 @@
 
   var practiceFilter = "all";
   var practiceDiff = "all";
+  var practicePaper = "all";
 
   function viewPractice(code) {
     var list = DATA.questions.slice();
     if (code) list = list.filter(function (q) { return q.module === code; });
+    if (practicePaper === "paper") list = list.filter(function (q) { return q.paper === "R0-2025"; });
     if (practiceDiff !== "all") list = list.filter(function (q) { return String(q.diff) === practiceDiff; });
+    /* no module filter and no paper filter → surface the most-tested modules first */
+    if (!code && practicePaper === "all") {
+      list.sort(function (a, b) { return (pcount(b.module) - pcount(a.module)) || (prank(a.module) - prank(b.module)); });
+    }
 
     var h = '<a class="toplink" href="#/">← Overview</a>';
     h += "<h1>Practice</h1>";
@@ -551,13 +656,24 @@
       '<button class="btn" data-act="mockpaperu">2025 past paper — untimed</button>' +
       '<span class="small">The actual 2025 paper. Final practice mock.</span></div>';
 
+    /* Modules that carry the most marks on the one real paper come first, with the count shown,
+       so it is obvious where to spend the time. */
     h += '<div class="chiprow">' +
       chip("all", "All modules", practiceFilter === "all", "pf") +
       DATA.curriculum.filter(function (m) {
         return DATA.questions.some(function (q) { return q.module === m.code; });
-      }).map(function (m) {
-        return chip(m.code, m.code + " · " + m.title, practiceFilter === m.code, "pf");
+      }).sort(yieldSort).map(function (m) {
+        var n = pcount(m.code);
+        return chip(m.code, m.code + " · " + m.short +
+          (PRI ? " (" + n + (n === 1 ? " mark)" : " marks)") : ""), practiceFilter === m.code, "pf");
       }).join("") + "</div>";
+
+    if (PRI && PRI.total) {
+      h += '<div class="chiprow">' +
+        chip("all", "Whole bank", practicePaper === "all", "pp") +
+        chip("paper", "2025 paper only — " + PRI.total + " questions", practicePaper === "paper", "pp") +
+        "</div>";
+    }
 
     h += '<div class="chiprow">' +
       chip("all", "Any difficulty", practiceDiff === "all", "pd") +
@@ -919,6 +1035,7 @@
         var g = b.getAttribute("data-chip"), v = b.getAttribute("data-val");
         if (g === "pf") { practiceFilter = v; location.hash = v === "all" ? "#/practice" : "#/practice/" + v; }
         if (g === "pd") { practiceDiff = v; render(); }
+        if (g === "pp") { practicePaper = v; render(); }
       });
     });
 
@@ -1104,10 +1221,15 @@
       var ms = DATA.curriculum.filter(function (m) { return m.priority === p; });
       if (!ms.length) return;
       h += '<div class="side__group"><h4>' + groups[p] + "</h4>";
-      ms.forEach(function (m) {
+      /* within each priority band, put the modules the 2025 paper tested hardest first, and
+         show how many of the 25 marks each one carried */
+      ms.slice().sort(yieldSort).forEach(function (m) {
+        var n = pcount(m.code);
         h += '<a class="navlink" data-view="m" data-code="' + m.code + '" href="#/m/' + m.code + '">' +
           '<span class="navlink__code">' + esc(m.code) + '</span>' +
           '<span class="navlink__t">' + esc(m.short || m.title) + '</span>' +
+          (PRI ? '<span class="navlink__n' + (n ? " hot" : "") + '" title="' + n +
+            ' of the 25 marks on the 2025 paper">' + n + "</span>" : "") +
           '<span class="navlink__tick" data-tick="' + m.code + '"></span></a>';
       });
       h += "</div>";

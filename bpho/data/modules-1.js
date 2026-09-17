@@ -63,7 +63,7 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <h3>The method, in five moves</h3>
 <ol class="steps">
 <li><b>List the quantities the answer can depend on</b>, with their dimensions. The question almost always names them.</li>
-<li><b>Assume a product form</b>: <code>result = k × (quantity 1)^a × (quantity 2)^b × …</code> where <code>k</code> is a dimensionless constant.</li>
+<li><b>Assume a product form</b>: <code>result = k × (quantity 1)<sup>a</sup> × (quantity 2)<sup>b</sup> × …</code> where <code>k</code> is a dimensionless constant.</li>
 <li><b>Write the dimensions of both sides</b>, using M, L, T for mass, length and time (add I for current and Θ for temperature if needed).</li>
 <li><b>Equate the exponents</b> of M, L, T separately. That gives you a set of simultaneous equations.</li>
 <li><b>Solve for a, b, c.</b> Then state the answer with <code>k</code> left unknown.</li>
@@ -73,16 +73,16 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <p>Suppose the speed <code>v</code> of a transverse wave on a string depends only on the tension <code>T</code> and the mass per unit length <code>μ</code>. Find the form of the relationship.</p>
 <ol class="steps">
 <li>Quantities: <code>v</code> (m s⁻¹), <code>T</code> (N = kg m s⁻²), <code>μ</code> (kg m⁻¹).</li>
-<li>Assume <code>v = k T^a μ^b</code>.</li>
-<li>Dimensions: left side is L T⁻¹. Right side is (M L T⁻²)^a (M L⁻¹)^b = M^(a+b) L^(a−b) T^(−2a).</li>
+<li>Assume <code>v = k T<sup>a</sup> μ<sup>b</sup></code>.</li>
+<li>Dimensions: left side is L T⁻¹. Right side is (M L T⁻²)<sup>a</sup> (M L⁻¹)<sup>b</sup> = M<sup>a+b</sup> L<sup>a−b</sup> T<sup>−2a</sup>.</li>
 <li>Equate: for M, <code>a + b = 0</code>. For L, <code>a − b = 1</code>. For T, <code>−2a = −1</code>.</li>
 <li>From T: <code>a = ½</code>. Then from M: <code>b = −½</code>. Check L: <code>½ − (−½) = 1</code> ✓.</li>
 </ol>
 <div class="formula">v = k √(T/μ)</div>
 <p>The physics supplies <code>k = 1</code>, so <code>v = √(T/μ)</code> — which is the standard result, and you have just derived it without knowing anything about waves.</p>
 <h3>The same method on a pendulum</h3>
-<p>Period <code>T</code> depends on length <code>ℓ</code>, mass <code>m</code> and gravitational field strength <code>g</code>. Assume <code>T = k ℓ^a m^b g^c</code>.</p>
-<div class="formula">L⁰ M⁰ T¹ = L^a · M^b · (L T⁻²)^c
+<p>Period <code>T</code> depends on length <code>ℓ</code>, mass <code>m</code> and gravitational field strength <code>g</code>. Assume <code>T = k ℓ<sup>a</sup> m<sup>b</sup> g<sup>c</sup></code>.</p>
+<div class="formula">L⁰ M⁰ T¹ = L<sup>a</sup> · M<sup>b</sup> · (L T⁻²)<sup>c</sup>
 M: b = 0
 L: a + c = 0
 T: −2c = 1  →  c = −½,  so a = ½</div>
@@ -143,7 +143,7 @@ T: −2c = 1  →  c = −½,  so a = ½</div>
 </tbody></table>
 <h3>Deriving the geometric one, so you never have to memorise it</h3>
 <p>Factor out the large quantity:</p>
-<div class="formula">√(a² + d²) = a √(1 + d²/a²) = a (1 + d²/a²)^(1/2)</div>
+<div class="formula">√(a² + d²) = a √(1 + d²/a²) = a (1 + d²/a²)<sup>1/2</sup></div>
 <p>Apply <code>(1 + x)ⁿ ≈ 1 + nx</code> with <code>x = d²/a²</code> and <code>n = ½</code>:</p>
 <div class="formula">≈ a (1 + ½ · d²/a²) = a + d²/(2a)</div>
 <p>Subtract the <code>a</code> and you have it: <code>√(a² + d²) − a ≈ d²/(2a)</code>.</p>
@@ -198,7 +198,7 @@ mass = weight / g ≈ 5 × 10¹⁹ / 10 = 5 × 10¹⁸ kg</div>
 <tr><td><code>y ∝ 1/x</code></td><td>rectangular hyperbola</td><td>Falls steeply at small x, flattens towards the axis</td></tr>
 <tr><td><code>y ∝ 1/x²</code></td><td>steeper hyperbola</td><td>Falls even faster, hugs the axis sooner</td></tr>
 <tr><td><code>y = kx²</code></td><td>parabola through origin</td><td>Flat at first, then rises rapidly</td></tr>
-<tr><td><code>y = a(1 − e^(−kx))</code></td><td>saturating growth</td><td>Rises through origin, flattens to a plateau at <code>a</code></td></tr>
+<tr><td><code>y = a(1 − e<sup>−kx</sup>)</code></td><td>saturating growth</td><td>Rises through origin, flattens to a plateau at <code>a</code></td></tr>
 <tr><td><code>y = kx + c</code></td><td>straight line, non-zero intercept</td><td>Straight but does not pass through the origin</td></tr>
 </tbody></table>
 <div class="callout callout--key"><p><b>The fastest discriminator.</b> Find the value at <code>x = 0</code> and the behaviour as <code>x → ∞</code>. Between them, those two facts kill at least two options on almost every graph question.</p></div>`
@@ -265,11 +265,11 @@ mass = weight / g ≈ 5 × 10¹⁹ / 10 = 5 × 10¹⁸ kg</div>
     {
       q: "<p>A simple pendulum has a bob of mass <code>m</code> on a string of length <code>ℓ</code>. Its period is believed to depend on <code>m</code>, <code>ℓ</code> and <code>g</code>. Use dimensional analysis to determine which of these is the correct form.</p><p>A) <code>T = k√(ℓ/g)</code> &nbsp; B) <code>T = k√(ℓg)</code> &nbsp; C) <code>T = kℓ/g</code> &nbsp; D) <code>T = kmℓ/g</code> &nbsp; E) <code>T = k√(mℓ/g)</code></p>",
       sol: `<p>Write the dimensions of each quantity: <code>T</code> is a time, L⁰M⁰T¹. The length <code>ℓ</code> is L. The mass <code>m</code> is M. The field strength <code>g</code> is an acceleration, L T⁻².</p>
-<p>Assume <code>T = k ℓ^a m^b g^c</code> and match exponents:</p>
+<p>Assume <code>T = k ℓ<sup>a</sup> m<sup>b</sup> g<sup>c</sup></code> and match exponents:</p>
 <div class="formula">L: a + c = 0
 M: b = 0
 T: −2c = 1  →  c = −½,  hence a = ½</div>
-<p>So <code>T = k ℓ^(1/2) g^(−1/2) = k√(ℓ/g)</code>. Mass does not appear at all, which is correct physics — a pendulum's period is independent of the mass of the bob.</p>
+<p>So <code>T = k ℓ<sup>1/2</sup> g<sup>−1/2</sup> = k√(ℓ/g)</code>. Mass does not appear at all, which is correct physics — a pendulum's period is independent of the mass of the bob.</p>
 <p><b>Answer: A.</b></p>
 <p>Notice how quickly the others die on the same check. B has <code>ℓg</code> = L² T⁻², whose square root is L T⁻¹, a speed. C is L/(L T⁻²) = T², a time squared. D carries an extra M. E carries an M under a square root. Only A is a time.</p>`,
       tag: "Dimensional analysis — the sample-paper shape"
@@ -303,7 +303,7 @@ T: −2c = 1  →  c = −½,  hence a = ½</div>
       q: "<p>Two points on a horizontal line are separated by a distance <code>2a</code>. A mass hangs from the midpoint on a string of total length <code>2a</code>, so that each half of the string has length <code>a</code> and the mass sits directly between the two points. The mass is now displaced horizontally by a small distance <code>d</code>. By how much does the length of the string change?</p><p>A) <code>d</code> &nbsp; B) <code>d²/a</code> &nbsp; C) <code>d²/2a</code> &nbsp; D) <code>d²/4a</code> &nbsp; E) <code>d²/a²</code></p>",
       sol: `<p>Consider one half of the string. Before the displacement it has length <code>a</code> and is horizontal. After a horizontal displacement <code>d</code> of the lower end, that half forms the hypotenuse of a right triangle with legs <code>a</code> and <code>d</code>.</p>
 <p>So the new length of that half is <code>√(a² + d²)</code>. Apply the approximation:</p>
-<div class="formula">√(a² + d²) = a(1 + d²/a²)^(1/2) ≈ a(1 + d²/2a²) = a + d²/(2a)</div>
+<div class="formula">√(a² + d²) = a(1 + d²/a²)<sup>1/2</sup> ≈ a(1 + d²/2a²) = a + d²/(2a)</div>
 <p>So each half stretches by <code>d²/(2a)</code>. There are two halves, so the total string length increases by <code>2 × d²/(2a) = d²/a</code>.</p>
 <p><b>Answer: B, <code>d²/a</code>.</b></p>
 <p><b>The trap.</b> Option C is the change in <i>one half</i>, and it is the number most people arrive at first because they only look at the triangle they drew. The question asks about the whole string, which has two halves. Read what is being asked — this distinction is a favourite of the sample paper's style.</p>
