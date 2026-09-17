@@ -302,10 +302,12 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   it silently misses 92; the number drifts as the bank grows, so re-measure rather than quoting it. Batch
   26 is the proof: it added two files and the glob figure **did not move at all**, because both are named
   `…-batch26.json` — and Batch 27 repeated it, its one file being `figures-batch27.json`, which the glob
-  does not match either. Batch 29's one file is `p1a-mcq-batch5.json`, and it does not match either —
-  `batch*.json` needs the filename to *begin* with `batch` — so the glob figure has now been frozen at
-  233 for three consecutive waves (26, 27, 29) and would read the same if the bank had not grown at all.
-  `data/*/*batch*.json` (84 files) is the pattern that works; neither is a substitute for `load()`. Use
+  does not match either. Batch 28's one file is `p1a-theme-a-batch28.json` and Batch 29's is
+  `p1a-mcq-batch5.json`, and neither matches — `batch*.json` needs the filename to *begin* with `batch`
+  — so the glob figure has now been frozen at 233 for four consecutive waves (26, 27, 28, 29) and would
+  read the same if the bank had not grown at all: 315 → 325 items moved it by exactly zero.
+  `data/*/*batch*.json` (84 files holding 292 of the 325) is the pattern that works; neither is a
+  substitute for `load()`. Use
   `tools/validate.py`'s `load()`, which also returns **`(file, question)` tuples**, not bare questions.
   **`fig-*.json` are *not* figure assets** — `physics-hl/fig-circuit-structured.json` and
   `fig-standing-wave.json` hold real items (`PHYS-B.5-102`, `PHYS-C.4-102`) and `load()` reads them. The
@@ -328,21 +330,21 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - **Figures:** hand-authored inline SVG stored in the question JSON as
   `figure = {type:"svg", content, caption}`. `build.py::figure_html` handles **three** types, not one —
   `svg` (`<figure>` + optional `<figcaption>`), `table` (delegates to `table_html`) and `code`
-  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 315 items: **89
-  figure-bearing (83 svg / 4 code / 2 table) = 28%**, with every subject above the 15% per-subject
-  target (Maths 18%, Physics 37%, CS 43%, BM 21%). No charting library is involved anywhere: every
+  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 325 items: **98
+  figure-bearing (92 svg / 4 code / 2 table) = 30%**, with every subject above the 15% per-subject
+  target (Maths 18%, Physics 39%, CS 48%, BM 21%). No charting library is involved anywhere: every
   figure is a plain-Python SVG string builder in `tools/make_figures.py`, and `validate.py` fails on the
   fingerprints of matplotlib / Chart.js / plotly / vega / bokeh / `<canvas` / `data:image/`, so the
   "without other tools" rule is gate-enforced. `FIGURE_COVERAGE_FLOOR` in `difficulty_audit.py` is a
-  **ratchet** (now 0.28): it may rise and may never fall, and it is now the binding constraint — two
-  non-figure items of headroom remain, so a new batch must carry figures. A stimulus table is separate
+  **ratchet** (now 0.30): it may rise and may never fall, and it is now the binding constraint — one
+  non-figure item of headroom remains, so a new batch must carry figures. A stimulus table is separate
   from a figure: it
   lives in `stimulus.table` and is emitted by `stimulus_html`, so an item can carry a table with no
   `figure`.
 - **Difficulty is evidenced, and the top-tier debt is cleared.** Every item must carry
   `difficulty_evidence` (`lever_type` from a closed 13-term taxonomy + `naive_path` + `failure_point` +
   `wrong_answer`); the rubric scores it out of 9 and the label must be earned (d5 needs 8). As of
-  2026-09-16: **230 of 315 items evidenced, `difficulty 5 with no evidence: 0`**, and the 85 outstanding
+  2026-09-17: **240 of 325 items evidenced, `difficulty 5 with no evidence: 0`**, and the 85 outstanding
   items are all difficulty-4 claims. Reading the 79-item difficulty-5 backlog produced
   **five label corrections, all downwards** — `MATH-P3-010` 5→4, `MATH-AHL5.9-001` 5→4,
   `MATH-AHL5.10-001` 5→3, `MATH-AHL5.11-001` 5→4, `PHYS-E.2-101` 5→4 — while
@@ -354,7 +356,8 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   the table to P1 → `{structured, extended_response, case_study}`, P2 → `{extended_response}` produced
   **17 failures with no data change**, and the 17 items were then re-filed by their own `topic` field
   (9 Theme A → P1, 8 Theme B → P2 as `extended_response`). Per-paper distribution is now Maths P1 64 /
-  P2 37 / P3 29, Physics P1A 14 clusters (70 questions) / P1B 17 / P2 59, CS P1 44 / P2 12, BM P1 10 / P2 29.
+  P2 37 / P3 29, Physics P1A **19 clusters (95 questions)** / P1B 17 / P2 59, **CS P1 49** / P2 12,
+  BM P1 10 / P2 29.
 - **`section` is checked too, and the same lesson applied twice.** `section` renders as a student-visible
   chip (`P1 · Section A`) and feeds the paper builder, and was validated nowhere. `SECTION_RULES` in
   `validate.py` now holds the legal set per `(subject, paper)` — **empty set included**, which is what
