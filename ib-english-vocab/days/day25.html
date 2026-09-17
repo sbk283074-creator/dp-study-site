@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 25</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards (interactive reveal) */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid, .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 25 / 112 — Sound &amp; Metre</div>
+  <div class="date">Thursday, 17 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 4)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">22</div>
+      <div class="dot done">23</div>
+      <div class="dot done">24</div>
+      <div class="dot today">25</div>
+      <div class="dot">26</div>
+      <div class="dot">27</div>
+      <div class="dot">28</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 22:</strong></td><td>Stylistic &amp; Linguistic Analysis — linguistic-metalanguage + argumentative-essay terms (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 23:</strong></td><td>Syntax &amp; Discourse Analysis — sentence functions, coordination/subordination, discourse markers (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 24:</strong></td><td>Critical Theory Vocabulary — feminist / Marxist / postcolonial / psychoanalytic lenses (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 25 →</strong></td><td><strong>Sound &amp; Metre</strong> — phonological &amp; prosodic analysis (12 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 26:</strong></td><td>Lexical &amp; Semantic Analysis — semantic field, ambiguity, connotation revisited</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 27:</strong></td><td>Mixed consolidation of the Week 4 metalanguage toolkit</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 28:</strong></td><td>Week 4 review &amp; assessment — apply the metalanguage to a live passage</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Day 10 spaced review<br>(Mood &amp; Atmosphere — 15-day gap)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Sound &amp; Metre</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Days 22–24 handed you the <em>metalanguage</em> (how sentences and arguments are built) and the <em>lenses</em> (from which position you read). Today you drop to the <em>sound</em> level — the phonology and prosody that make a text audible. And because memory follows the forgetting curve, today also reaches back <strong>15 days</strong> to Day 10's <em>mood &amp; atmosphere</em> adjectives: the words you use to say how a passage <em>feels</em> are exactly the words a sound pattern is built to produce, so the long-term review and the new material reinforce each other.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 10 spaced review at the 15-day interval (mood/atmosphere — your feeling-vocabulary) &rarr; (2) 12 new sound &amp; metre terms: sound-repetition devices + prosodic feet &amp; line-structure &rarr; (3) three distinction boxes (alliteration/assonance, iamb/trochee, caesura/enjambment) &rarr; (4) practice.
+
+  <!-- ============ DAY 10 SPACED REVIEW (15-DAY GAP) ============ -->
+  <h2><span class="icon">🔁</span> Day 10 Spaced Review — 12 Mood &amp; Atmosphere Adjectives</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    A spaced-repetition pass on the <em>mood &amp; atmosphere</em> toolkit from Day 10 — at the 15-day interval, the long-term consolidation point where a word either becomes permanent or slips. These twelve name the <em>emotional weather</em> of a text: sombre, spectral, haunting, elegiac, foreboding, melancholic, wistful, languid, ethereal, glacial, febrile, visceral. They are the direct ancestors of today's <em>sound</em> vocabulary — every sound pattern you learn today is a <em>mechanism</em> for producing one of these moods. Read each, <strong>recall its precise shade before looking</strong>, then check.
+  </p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">sombre</div>
+      <div class="rdef"><em>Dark, gloomy, serious in tone; heavy with gravity or sadness.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">spectral</div>
+      <div class="rdef"><em>Ghostly, phantom-like; belonging to another, uncanny world.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">haunting</div>
+      <div class="rdef"><em>Lingering in the mind; disturbingly memorable, not easily shaken off.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">elegiac</div>
+      <div class="rdef"><em>Mournful, lamenting; sorrow for what is lost or passing.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">foreboding</div>
+      <div class="rdef"><em>Ominous; suggesting something bad is about to happen.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">melancholic</div>
+      <div class="rdef"><em>Deeply pensive, inwardly wistful-sad; given to thoughtful sorrow.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">wistful</div>
+      <div class="rdef"><em>Sadly longing; gentle regret for something absent or past.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">languid</div>
+      <div class="rdef"><em>Weak, sluggish, lacking energy; tiredly slow or indolent.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">ethereal</div>
+      <div class="rdef"><em>Delicate, light, airy; too perfect or refined for this world.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">glacial</div>
+      <div class="rdef"><em>Cold, hostile, emotionally frozen; lacking warmth or feeling.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">febrile</div>
+      <div class="rdef"><em>Feverish, agitated, restless; barely-contained nervous energy.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">visceral</div>
+      <div class="rdef"><em>Felt in the gut; raw, instinctive, bodily rather than intellectual.</em></div>
+    </div>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> Today's new sound terms are the <em>how</em> to Day 10's <em>what</em>. Try the link now: a <em>febrile</em> atmosphere is often built with plosive alliteration (p, t, k) and broken enjambment; a <em>sombre</em> one with low, repeated consonance and end-stopped lines; an <em>ethereal</em> one with liquid euphony and open vowels. If you can still separate the three Day 10 pairs (sombre/melancholic, spectral/ethereal, foreboding/haunting) without peeking, you have them for good. Today's sound devices give you the causal story — mood is sound made felt.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Sound &amp; Metre Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge">NEW CATEGORY — "SOUND &amp; METRE"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">From the sentence to the syllable.</strong> You can now name <em>what</em> language does (Days 22–23) and <em>from which position</em> you read it (Day 24). Today you learn to name <em>how it sounds</em> — the phonological and prosodic metalanguage that turns "I like the rhythm" into "the trochaic opening enacts the forge's hammer-stroke." We split the twelve into two families: <strong>sound-repetition devices</strong> (alliteration, assonance, consonance, onomatopoeia, sibilance, rhyme — the music of individual sounds) and <strong>prosody &amp; line-structure</strong> (metre, iamb, trochee, caesura, enjambment, euphony — the architecture of the verse line). In IB, sound analysis is never decorative: the pattern <em>is</em> the argument, and the examiner rewards a candidate who can say <em>why</em> a sound matters, not just that it is there. These terms complete the stylistic toolkit before the Week 4 consolidation.
+  </p>
+
+  <!-- Word 1: alliteration -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">alliteration</span>
+      <span class="ipa">/əˌlɪtəˈreɪʃn/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The deliberate repetition of an initial consonant sound in neighbouring words or stressed syllables — a sonic hook that binds a line and draws the ear (and thus the attention) to the words it links.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The] alliterative [chain] [binds] the line" · "[A tumbling] alliteration of t-sounds [drives] the clause" · "[Initial] p-alliteration [pounds]"
+    </div>
+    <p class="example">
+      "In <em>Beowulf</em>, the alliterative half-lines — 'fyrst forð gewát; flota wæs on ýðum' — make the verse cohere by sound before sense: the Old English ear is led by the repeated consonant rather than by end-rhyme, the beat carrying the story."
+      <span class="source">— Beowulf analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Repetition of a <em>sound at the start</em> of words (contrast assonance = vowel, consonance = consonant anywhere). In IB, never just name it — say what the repeated sound <em>does</em>: plosives (p, t, k) = speed, violence, or menace; liquids (l, m, r) = comfort, flow, or lull. Link to Day 22's <em>foregrounding</em>: sound that draws the ear is meaning made audible. Root: Latin <em>ad-</em> + <em>littera</em>, 'letter'. It is the headline device of Anglo-Saxon verse and of every advert jingle you have ever remembered.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> initial alliteration · alliterative chain · heavy alliteration · alliterative verse · plosive alliteration</p>
+  </div>
+
+  <!-- Word 2: assonance -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">assonance</span>
+      <span class="ipa">/ˈæsənəns/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The repetition of a vowel sound in nearby words whose consonants differ — an internal rhyme of vowel music that knits a line beneath the surface, often carrying mood without the obviousness of end-rhyme.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A long o] assonance [sustains] the line" · "[The] vowel-echo [weaves] the stanza" · "[Held] a-vowels [open] the mouth"
+    </div>
+    <p class="example">
+      "In Tennyson's 'the rhyme of the far-off bell / from the answering sea', the long <em>o</em> assonance slows the line into a tolling — the vowel itself seems to mourn, long before the sense declares the grief."
+      <span class="source">— Tennyson analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Vowel repetition (not consonant — that is consonance; not initial — that is alliteration). Assonance quietly carries <em>mood</em> — link to Day 10's feeling-family: a held open vowel (a, ah) = space or despair; a tight closed vowel (i) = tension or restraint. It is the subtle cousin of rhyme; deploy it for poems that refuse end-rhyme yet still sing. The examiner notices when you catch the <em>half-heard</em> vowel-music.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> vowel assonance · sustained assonance · internal assonance · assonance and rhyme · euphonious assonance</p>
+  </div>
+
+  <!-- ALLITERATION vs ASSONANCE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: alliteration vs. assonance</h4>
+    <p>Both repeat sound, but the seam is <em>consonant vs. vowel</em> and <em>position</em>:</p>
+    <p style="margin-top:8px;">
+      <strong>alliteration</strong> — Repetition of an <em>initial consonant</em> sound across words ("peter picked a peck").<br>
+      &rarr; "The <em>f</em>ortnight's <em>f</em>rost <em>f</em>ramed the field." — the ear is caught at every word-start.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>assonance</strong> — Repetition of a <em>vowel</em> sound inside words, regardless of initial consonant ("the light of the fire").<br>
+      &rarr; "The t<em>i</em>ny m<em>i</em>ne's b<em>i</em>te." — the vowels chime while the consonants change.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: are the repeated sounds <em>consonants at the start</em> (alliteration) or <em>vowels anywhere</em> (assonance)? They often travel together, but naming the right one shows you hear the mechanism. In IB, the sophisticated move is 'the alliterative p-pound enacts panic, while the assonant long <em>o</em> simultaneously slows the line into dread' — you read both layers at once. Keep this pair beside today's consonance/sibilance in your sound-device shelf.
+    </p>
+  </div>
+
+  <!-- Word 3: consonance -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">consonance</span>
+      <span class="ipa">/ˈkɒnsənəns/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The repetition of a consonant sound at <em>any</em> position in nearby words (initial, medial, or final) — a subtler, less obvious cousin of alliteration that creates texture the reader feels but may not consciously name.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A muted] consonance of m-sounds [hums]" · "[The repeated] k [underpins] the dread" · "[Final] t-consonance [taps] shut"
+    </div>
+    <p class="example">
+      "In Plath's 'the moon is no door', the repeated m and d consonance hums beneath the sense — a low, mechanical music that matches the poem's trapped, inward turning."
+      <span class="source">— Sylvia Plath analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Consonant repetition at <em>any</em> position (unlike alliteration, which is initial only). Sibilance (today) is a <em>subset</em> of consonance — the s-family specifically. In IB, noticing half-heard consonance shows sophistication: it is sound-level <em>cohesion</em> (Day 22) binding a passage you cannot quite explain by sense alone. Name the consonant and the effect (a held m = enclosure; a tapped t = closure or death).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> repeated consonance · muted consonance · medial consonance · consonance and assonance · harsh consonance</p>
+  </div>
+
+  <!-- Word 4: onomatopoeia -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">onomatopoeia</span>
+      <span class="ipa">/ˌɒnəmætəˈpiːə/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A word whose sound imitates the thing it names (buzz, crash, whisper, hiss) — language that performs what it denotes, collapsing the gap between signifier and signified.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The] onomatopoeic [crack] [enacts] the break" · "[A] hiss [that is] the snake" · "[The] word [sounds like] its thing"
+    </div>
+    <p class="example">
+      "In Tennyson's 'the moan of doves in immemorial elms', the long, open vowels are near-onomatopoeic with mourning itself — the line sounds like the grief it describes, the word and the thing briefly the same."
+      <span class="source">— Tennyson analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The word that <em>is</em> its sound. Distinct from mere sound-patterning (alliteration) — onomatopoeia names the object in its own noise. Connect to Day 22's <em>foregrounding</em> and Day 26's semantic field (the word's meaning and its sound fuse). Greek: <em>onoma</em> (name) + <em>poiein</em> (to make) — 'name-making'. Watch: not every noisy word is onomatopoeic; it must echo its <em>referent</em>, not just be loud.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> onomatopoeic word · near-onomatopoeia · onomatopoeic effect · sound-imitating · the word enacts its sense</p>
+  </div>
+
+  <!-- Word 5: sibilance -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">sibilance</span>
+      <span class="ipa">/ˈsɪbɪləns/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The heavy repetition of sibilant sounds (s, sh, z, soft c) — a hissing, whispering texture often used to evoke secrecy, menace, or intimacy, the s-specific subset of consonance with a strong affective charge.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A] sibilant [hiss] [threads] the line" · "[The] soft s [conspire] / [whisper]" · "[S]ounds that [hush]"
+    </div>
+    <p class="example">
+      "In Shakespeare's whispered confidences — 'so sweet, so soft, so slow' — the sibilance is a shared secret made audible; the hiss enacts the intimacy, or the menace, the line names."
+      <span class="source">— Shakespeare analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> A specific, loaded form of <em>consonance</em> (the s-family). It carries affect: sibilance = stealth, menace, or intimacy (a confidence half-spoken). Contrast with the hard plosives of alliteration when a poem moves from threat to tenderness. Link to Day 24's <em>othering</em> — a hissed 's' can mark the alien 'other'. Name it precisely; examiners reward the specific over the vague 'repetition of sound'.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> sibilant s · heavy sibilance · whispered sibilance · hissing sibilance · sibilant texture</p>
+  </div>
+
+  <!-- Word 6: rhyme -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">rhyme</span>
+      <span class="ipa">/raɪm/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The correspondence of terminal sounds between words — full/perfect (exact) or half/slant (near) — a structural music that closes lines and marks pattern, signalling order or, in its breaking, its absence.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A closed] rhyme [buttons] the stanza" · "[Slant] rhyme [destabilises] the closure" · "[End] rhyme [marks] the turn"
+    </div>
+    <p class="example">
+      "In Wilfred Owen's <em>Anthem for Doomed Youth</em>, the near-rhymes — 'guns' / 'orisons', 'pall' / 'bugle' — are half-rhymes that refuse to close, the broken rhyme enacting the broken rites of war."
+      <span class="source">— Owen analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> End-rhyme is <em>structure</em>; internal rhyme is <em>texture</em>. Distinguish full rhyme (exact) from slant/half rhyme (near) — the latter is the sophisticated choice, signalling unease or incompletion. Link to Day 23's <em>coordination</em>: rhyme is sound-level coordination of line-ends. In IB, a poet who 'should' rhyme but doesn't (blank verse, half-rhyme) is making an argument; name the broken pattern as a broken world.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> full rhyme · half rhyme · slant rhyme · end rhyme · internal rhyme · rhyme scheme</p>
+  </div>
+
+  <!-- Word 7: metre -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">metre</span>
+      <span class="ipa">/ˈmiːtə(r)/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The regular rhythmic pattern of a line of verse, measured in feet (units of stressed and unstressed syllables) — the underlying pulse or grid against which meaning, and its disruptions, are played out.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[Iambic] metre [carries] the argument" · "[A] disrupted [metre] [signals] the break" · "[The] default [pentameter] [breathes]"
+    </div>
+    <p class="example">
+      "In Shakespeare's blank verse, the iambic pentameter is the default breath; when Macbeth's 'Out, out, brief candle' snaps the metre, the rupture performs his despair — the form breaks as the man breaks."
+      <span class="source">— Macbeth analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Metre = the <em>system</em>; the foot (iamb, trochee — next words) = its <em>unit</em>. Distinguish from <em>rhythm</em> (the actual, variable sound) — metre is the grid, rhythm is what the voice does to it. The IB payoff is <em>metrical disruption</em>: where a poet breaks the pattern, something breaks in the world. Link to Day 22's <em>cohesion</em> (expectation) and Day 23's <em>fronting</em> (emphasis by position).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> iambic metre · trochaic metre · metrical pattern · disrupted metre · metrical foot</p>
+  </div>
+
+  <!-- Word 8: iamb -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">iamb</span>
+      <span class="ipa">/ˈaɪæm/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A metrical foot of two syllables, unstressed then stressed (da-DUM) — the natural English beat, the pulse of everyday words like 'today' and 'behold', and the foundation of iambic pentameter.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[An] iambic [line] [mimics] speech" · "[The] rising [iamb] [ascends] the sense" · "[Five] iambs [a line]"
+    </div>
+    <p class="example">
+      "Shakespeare's 'Shall I / comPARE / thee TO / a SUM / mer's DAY' is iambic pentameter — five da-DUMs that sound like ordinary English speech elevated, the rising foot carrying argument as breath."
+      <span class="source">— Shakespeare's sonnets</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Rising foot (weak-strong). The default of English verse; its familiarity makes it feel 'natural', so a poet's departures register sharply. Contrast with trochee (next box) — falling. In IB, iambic = ease, speech, the diurnal; a <em>metrical substitution</em> (a trochee where an iamb is expected) is emphasis by irregularity. Root: Latin <em>iambus</em>, from Greek <em>iambos</em>.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> iambic foot · iambic pentameter · rising iamb · iambic line · substituted iamb</p>
+  </div>
+
+  <!-- Word 9: trochee -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">trochee</span>
+      <span class="ipa">/ˈtrəʊkiː/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A metrical foot of two syllables, stressed then unstressed (DUM-da) — a falling, often march-like or incantatory beat, the mirror-image of the iamb.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A] trochaic [opening] [strikes] the ear" · "[The] falling [beat] [weighs] each word" · "[Trochees] [hammer]"
+    </div>
+    <p class="example">
+      "In Blake's 'Tiger Tiger burning bright', the trochee falls on every word — DUM-da, DUM-da — the descending beat mimicking the hammer-strokes of the forge, weight before release."
+      <span class="source">— Blake, The Tyger</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Falling foot (strong-weak), the mirror of the iamb (box 2). Trochee feels urgent, incantatory, or solemn because it starts loud and drops — unlike the iamb's gentle rise. In IB, trochaic openings (or a line that begins on a trochee amid iambs) signal force, command, or ritual. Name the foot and the feeling; metre is never neutral. Root: Greek <em>trokhaios</em>, 'running'.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> trochaic foot · trochaic opening · falling trochee · trochaic line · trochaic beat</p>
+  </div>
+
+  <!-- IAMB vs TROCHEE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: iamb vs. trochee</h4>
+    <p>Both are two-syllable metrical feet, but the seam is <em>direction of stress</em> — rising vs. falling:</p>
+    <p style="margin-top:8px;">
+      <strong>iamb</strong> — Unstressed then stressed: da-DUM (rising). "beHOLD", "toDAY".<br>
+      &rarr; "Shall I comPARE thee TO a SUMmer's DAY" — the line rises into each stress, mimicking speech.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>trochee</strong> — Stressed then unstressed: DUM-da (falling). "TIGer", "DOgwood".<br>
+      &rarr; "TIGer TIGer BURNing BRIGHT" — the line falls from each stress, mimicking the hammer.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: does the foot <em>rise</em> (iamb) or <em>fall</em> (trochee)? The iamb is the default English beat (natural, speech-like, diurnal); the trochee is the marked beat (urgent, incantatory, solemn). In IB, the analytical gold is the <em>mixed</em> line: an iambic poem that opens a line or a sentence on a trochee is emphasizing by irregularity — 'DO not / go GENtle' begins on a trochee to shout the command. Name the foot, then name the feeling it produces; the metre is the argument's pulse.
+    </p>
+  </div>
+
+  <!-- Word 10: caesura -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">caesura</span>
+      <span class="ipa">/sɪˈzjʊərə/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A deliberate pause or break <em>within</em> a line of verse (marked by punctuation, syntax, or both) — a breath that shapes sense and pace, controlling where the reader is made to stop.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A] central [caesura] [halts] the line" · "[The] mid-line [pause] [mirrors] the grief" · "[A] broken [caesura] [withholds] the name"
+    </div>
+    <p class="example">
+      "In <em>Beowulf</em>, the caesura splits each long line into two balances — 'Hwæt! We gardena / in geardagum' — the pause itself a structural beat, the Old English line breathing at its centre."
+      <span class="source">— Beowulf analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Pause <em>within</em> the line (contrast enjambment, box 3 — run-over <em>between</em> lines). A caesura can be a full stop, a dash, or merely a syntactic break. In IB, the caesura is control of breath and thought: where a poet stops mid-line, the reader stops too — often to mark a turn, a grief, or a withheld name. Link to Day 23's <em>fronting</em> and <em>ellipsis</em> (what is left unsaid).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> central caesura · mid-line caesura · marked caesura · syntactic caesura · the line breathes</p>
+  </div>
+
+  <!-- Word 11: enjambment -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">enjambment</span>
+      <span class="ipa">/ɪnˈdʒæmbmənt/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The running-over of a sentence or clause from one line (or couplet) to the next <em>without</em> terminal punctuation — syntax that refuses the line-break's pause, accelerating or suspending the sense.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The] enjambed [line] [accelerates] the sense" · "[Syntax] spills [across] the break" · "[Run-on] enjambment [delays] the closure"
+    </div>
+    <p class="example">
+      "In Wordsworth's 'continuous as the stars that shine / And twinkle on the milky way', the enjambment lets the sentence spill over the line-end, the form mimicking the endless, unpunctuated sweep of the daffodils."
+      <span class="source">— Wordsworth, Daffodils</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Run-on across the line-break (contrast caesura, box 3 — pause within). Enjambment = speed, surprise, or suspended sense; end-stopped lines (punctuated at the line-end) = closure, control. In IB, the tension between enjambment and end-stopping is a primary analytic: a poet who enjambs at a crucial word delays or destabilises meaning. Link to Day 23's <em>coordination/subordination</em> and Day 22's <em>cohesion</em>.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> enjambed line · run-on enjambment · syntactic enjambment · enjambment and caesura · end-stopped vs enjambed</p>
+  </div>
+
+  <!-- CAESURA vs ENJAMBMENT distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: caesura vs. enjambment</h4>
+    <p>Both are about the line-break, but the seam is <em>pause within vs. run-over between</em>:</p>
+    <p style="margin-top:8px;">
+      <strong>caesura</strong> — A <em>pause inside</em> the line (mid-line breath, marked by punctuation or syntax).<br>
+      &rarr; "The woods are lovely, dark — / and deep." The dash halts you mid-line.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>enjambment</strong> — A <em>run-over between</em> lines (no pause at the break; the sentence spills across).<br>
+      &rarr; "The woods are lovely, dark / and deep." The sense refuses to stop at the line-end.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: at the line-break, does the poet <em>stop</em> (caesura / end-stop) or <em>carry on</em> (enjambment)? They are the two poles of line-control. In IB, the sophisticated reading tracks the <em>fluctuation</em>: a stanza that enjambs furiously then suddenly end-stops has shifted from flux to finality — often at a death, a decision, or a closure. Pair this with today's metre: a caesura and an enjambment are where meaning meets the grid.
+    </p>
+  </div>
+
+  <!-- Word 12: euphony -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">euphony</span>
+      <span class="ipa">/ˈjuːfəni/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">Pleasing, smooth, harmonious sound — the music of consonants and vowels arranged for beauty, ease, or comfort to the ear (and, by its shadow <em>cacophony</em>, the absence that marks rupture).</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A] euphonious [line] [soothes] the ear" · "[The] soft [cadence] [lulls]" · "[Liquid] l-sounds [enchant]"
+    </div>
+    <p class="example">
+      "In Keats's <em>Ode to a Nightingale</em>, the euphony — liquid l's, open vowels, gentle sibilants — is a sonic balm that enacts the poet's desire to flee the world's 'weariness' into song."
+      <span class="source">— Keats analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Sound that pleases (contrast its shadow, <em>cacophony</em> — harsh, clashing sound, which you should name when a text turns ugly). Euphony is not mere 'nice sound'; in IB it often encodes comfort, seduction, or the lure of art — and its absence marks rupture. Pair with Day 10's <em>ethereal</em> mood (both enchant) and Day 24's lenses (who gets the beautiful sound, and who is denied it?). Root: Greek <em>eu-</em> (good) + <em>phōnē</em> (sound).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> euphonious line · liquid euphony · soft euphony · euphony vs cacophony · the music of the line</p>
+  </div>
+
+  <!-- ============ PRACTICE ============ -->
+  <h2><span class="icon">✏️</span> Practice — Hear the Argument</h2>
+  <div class="practice-box">
+    <p style="font-size:14px; color:var(--ink-soft);">Four drills. Write short answers; the model notes follow each.</p>
+    <ol>
+      <li>
+        <strong>Name the device.</strong> For each line, name the sound/metre term (and the family) that applies:
+        <br><span style="color:var(--ink);">a)</span> "The fair breeze blew, the white foam flew" &rarr; <em>alliteration</em> (sound-repetition, initial f/b);
+        <span style="color:var(--ink);">b)</span> "the silken, sad, uncertain rustling" &rarr; <em>sibilance</em> (consonance subset, s-family);
+        <span style="color:var(--ink);">c)</span> "Shall I compare thee to a summer's day" &rarr; <em>iambic</em> (rising foot, metre);
+        <span style="color:var(--ink);">d)</span> "Tyger Tyger burning bright" &rarr; <em>trochaic</em> (falling foot, metre);
+        <span style="color:var(--ink);">e)</span> "the moan of doves … immemorial elms" &rarr; <em>assonance</em> (long o vowel-echo) + near-<em>onomatopoeia</em>.
+      </li>
+      <li>
+        <strong>Pair sound with the Day 10 mood.</strong> Take one Day 10 mood word and explain, in one sentence, which sound device would build it:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Model</span>
+          A <em>sombre</em> tone is built with low, repeated <em>consonance</em> (m, d, l) and end-stopped lines that refuse relief; a <em>febrile</em> atmosphere is built with plosive <em>alliteration</em> (p, t, k) and broken <em>enjambment</em> that will not let the breath settle. Sound is the cause; mood is the effect.
+        </div>
+      </li>
+      <li>
+        <strong>Scan and mark.</strong> Scan this line — mark the feet and identify any caesura or enjambment:
+        <br><span style="color:var(--ink);">"My mistress' eyes are nothing like the sun."</span>
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Model</span>
+          Scansion: "my MIS / tress' EYES / are NO / thing LIKE / the SUN" — predominantly <em>iambic</em> pentameter (five da-DUM), with the opening trochaic substitution ("MY mis") emphasising the possessive. The line is <em>end-stopped</em> (full stop), so no enjambment; a caesura could fall after "eyes" for breath. The steady iambs mimic plain, reasoned speech — fitting a poem that refuses poetic exaggeration.
+        </div>
+      </li>
+      <li>
+        <strong>Distinguish on demand.</strong> In one sentence each, keep these Day 25 pairs exam-ready: (i) <em>alliteration</em> vs. <em>assonance</em> (initial consonant vs. internal vowel); (ii) <em>iamb</em> vs. <em>trochee</em> (rising da-DUM vs. falling DUM-da); (iii) <em>caesura</em> vs. <em>enjambment</em> (pause within vs. run-over between lines). Stack them beside the fifteen Week 3 distinctions, the three Day 23 syntax pairs, and the four Day 24 theory seams.
+      </li>
+    </ol>
+  </div>
+
+  <!-- ============ TIPS ============ -->
+  <h2><span class="icon">🎯</span> Study Tips — Sound Is Sense Made Audible</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Sound is never decorative — it is the argument.</strong> Never write "the poet uses alliteration" without saying <em>why</em>. The repeated plosive enacts panic; the held vowel enacts grief; the broken rhyme enacts a broken world. The examiner rewards the candidate who moves from "I like the rhythm" to "the trochaic opening performs the forge's hammer-stroke." Link every device to an effect (and to a Day 10 mood).
+    </li>
+    <li>
+      <strong>Keep the three repetition families straight by position.</strong> alliteration = initial consonant; assonance = vowel anywhere; consonance = consonant anywhere (with sibilance as its s-subset). They overlap constantly, but naming the precise layer — "alliterative p-pound <em>and</em> assonant long-o" — is what separates band 5 from band 7.
+    </li>
+    <li>
+      <strong>Metre is the grid; rhythm is the voice.</strong> Metre is the underlying pattern (iambic pentameter); rhythm is what the actual voice does to it. The IB payoff is <em>disruption</em>: the line that breaks its own metre is the line where the world breaks. Always scan the default, then hunt for the exception.
+    </li>
+    <li>
+      <strong>The iamb/trochee opposition is rising vs. falling affect.</strong> Iamb = natural, speech-like, diurnal ease; trochee = urgent, incantatory, solemn force. A poem that is mostly iambic but opens a line on a trochee is emphasising by irregularity. Name the foot, then the feeling — metre is never neutral.
+    </li>
+    <li>
+      <strong>Caesura vs. enjambment = the line's breath-control.</strong> Pause within (caesura / end-stop) vs. run-over between (enjambment). Track the fluctuation across a stanza: furious enjambment that suddenly end-stops has shifted from flux to finality — often at a death or a closure. This is where meaning meets the grid.
+    </li>
+    <li>
+      <strong>Euphony and its shadow name comfort vs. rupture.</strong> Euphony encodes beauty, seduction, or the lure of art; cacophony (its harsh twin) marks fracture. And bring Day 24's lenses: ask who is granted the beautiful sound and who is denied it — sound analysis becomes cultural critique the moment you notice the distribution.
+    </li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 26 (Next): Week 4, Day 5 — Lexical &amp; Semantic Analysis</strong><br>
+    You can now hear the text (today) and read it from a position (Day 24). Day 26 moves to the <em>word level</em>: semantic field, ambiguity, connotation revisited, denotation, and lexical cohesion — how a writer's choice of <em>which</em> words (not just how they sound) builds meaning. This closes the Week 4 metalanguage toolkit before the Day 27 consolidation and Day 28 assessment.<br><br>
+    <strong style="color:var(--ink);">Milestone:</strong> 228 words learned (of ~1,300). Week 4 continues — the full stylistic toolkit is nearly complete. 🏆
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 4, Day 25<br>
+  228 words learned so far (+12 today) · 1,072 to go · Week 4 continues 🏆
+</footer>
+
+
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+<script src="../assets/vocab-ask-ai.js" defer></script>
+</body>
+</html>
