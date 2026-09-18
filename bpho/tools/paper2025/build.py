@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
 """Assemble q1..q5 + generated figures into bpho/data/questions-4.js."""
-import re, os, sys, json
+import io, re, os, sys, json
 from fractions import Fraction
-sys.path.insert(0, '/tmp/bpho25')
+
+# Everything resolves beside this file. The generator used to import from and read
+# figures out of /tmp/bpho25, which made the committed questions-4.js unreproducible
+# as soon as /tmp was cleared.
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
 import q1, q2, q3, q4, q5
 from keys import KEYS
 
-FIGDIR = '/tmp/bpho25/fig'
+FIGDIR = os.path.join(HERE, 'fig')
+OUT = os.path.normpath(os.path.join(HERE, '..', '..', 'data', 'questions-4.js'))
 QS = q1.QUESTIONS + q2.QUESTIONS + q3.QUESTIONS + q4.QUESTIONS + q5.QUESTIONS
 QS.sort(key=lambda d: d['n'])
 
@@ -256,6 +262,5 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 """
 
 out = HEAD + ",\n\n".join(blocks) + "\n\n]);\n"
-os.makedirs('/tmp/bpho25/out', exist_ok=True)
-open('/tmp/bpho25/out/questions-4.js', 'w', encoding='utf-8').write(out)
-print("wrote /tmp/bpho25/out/questions-4.js", len(out), "bytes")
+io.open(OUT, 'w', encoding='utf-8').write(out)
+print("wrote", OUT, len(out), "bytes")

@@ -57,7 +57,7 @@ In the repo but **not** one of the six (the hub has no nav card for these): the 
 | `assets/search-widget.js` | 20 KB | the global search palette (§3·2); injected *by* ai-widget.js | none |
 | `assets/css/main.css` | 33 KB | site styling | — |
 | `assets/js/app.js` | 24 KB | nav, the hub's inline search box, page behaviour | — |
-| `assets/js/search-index.js` | **765 KB** (175 KB gzip) | pre-built search index (`tools/build_search_index.py`), read by *both* search UIs | — |
+| `assets/js/search-index.js` | **853 KB** | pre-built search index (`tools/build_search_index.py`), read by *both* search UIs | — |
 
 Referenced by **absolute URL** (`https://sbk283074-creator.github.io/dp-study-site/assets/…`),
 so editing the one file updates every page at once. **429 pages load `ai-widget.js`**, which
@@ -122,7 +122,7 @@ launcher button bottom-left (deliberately bottom-**left**: the AI and tools clus
 bottom-right). Results are grouped by space, matched terms are highlighted, ↑↓/↵/esc work, and
 on a phone it goes full-screen.
 
-It answers from `assets/js/search-index.js` (**849 entries**), fetched **only when the palette is
+It answers from `assets/js/search-index.js` (**980 entries**), fetched **only when the palette is
 first opened**. The index is a plain `window.DP_SEARCH_INDEX=[…]` assignment, not JSON, so it
 loads by `<script>` and therefore works over `file://`.
 
@@ -397,8 +397,9 @@ Built 2026-09-16. **Hand-authored static SPA — no build step, no bundler, no `
 - Content is split across files that each **`concat` onto a shared global**, because one 300 KB+
   data file is unreviewable:
   `plan.js` (16 days) · `glossary.js` (141 terms) · `modules-1.js` … `modules-7.js` (14 modules,
-  162 checklist items, **100 worked examples**) · `questions-1.js` … `questions-3.js`
-  (**163 questions**) · `guidance.js` (`window.BPHO_GUIDANCE` — one entry per module, see below).
+  162 checklist items, **100 worked examples**) · `questions-1.js` … `questions-3.js` (**163 authored questions**) ·
+  `questions-4.js` (**25**, the 2025 past paper) · `questions-5.js` (**12**, the published sample
+  sheet) · `guidance.js` (`window.BPHO_GUIDANCE` — one entry per module, see below).
   `guidance.js` is **not** an aggregator: it must load before `assets/app.js`, and `app.js` falls back
   to `{}` if it is missing, so the space degrades to no-guidance rather than breaking.
 - Two aggregators present the exact shape `app.js` expects and must load **last**:
@@ -510,7 +511,59 @@ Built 2026-09-16. **Hand-authored static SPA — no build step, no bundler, no `
   The browser pass asserts **100 `.ex`, 16 explanation figures, 22 question figures, zero
   zero-size SVGs, zero console errors**, and that no raw `viewBox`/`stroke-width` text leaks into a
   paragraph.
-- Rebuild: **none.** Edit the data files directly and reload.
+- **The two named papers, their generators, and the /tmp trap (2026-09-18).** The space ships two
+  real question sets, each a named paper a mock can be assembled from:
+  - `questions-4.js` — **25 questions**, the 2025 past paper, `paper:"R0-2025"`. Its key is the
+    **printed** one (A 8, B 5, C 5, D 3, E 4).
+  - `questions-5.js` — **12 questions**, the published 2025 **sample sheet**, `paper:"R0-SAMPLE"`.
+    BPhO prints no key for it, so the key was derived from first principles and checked against the
+    sheet's own geometry. It has **no answer C** (B 6, D 3, E 2, A 1). That is the real sheet, not a
+    defect, so `tools/r0sample/build.py` **pins the sequence** instead of requiring all five letters —
+    "correcting" the distribution toward uniformity would falsify the record.
+  Four of the twelve are decidable only from the drawing, which is why their figures are **generated
+  from measured geometry** rather than described: the plate polarity in **S3** (both long plates are on
+  the left, so the link carries 0.50 A, not 1.5 A), the exponent on option E of **S6**
+  (`A² s³ J⁻¹` is a farad·second, so only `s Ω⁻¹` is a capacitance), the load position in **S7** (the
+  outline path begins at the midpoint of the R–R edge — that is what makes moments about that edge
+  clean), and the curvature in **S8** (only E decreases *and* flattens without reaching the axis, the
+  `arcsin(1/n)` shape).
+  - **Generators.** `data/questions-4.js` comes from `tools/paper2025/{q1..q5,figs,keys,build}.py`;
+    `data/questions-5.js` from `tools/r0sample/{qs,figs,keys,build}.py`. Both emit into `bpho/data/`,
+    and both figure scripts write `fig/` **beside themselves**. They used to import from and read
+    figures out of `/tmp/bpho25`, which made the committed `questions-4.js` **unreproducible the moment
+    `/tmp` was cleared** — and nothing in the repo said so. Everything now resolves relative to the
+    script's own file, and that fix is verified the only way it can be: regenerate `questions-4.js` and
+    diff against the committed copy — **byte-identical**.
+    The teaching layer works the same way: `tools/paper2025/build_concepts.py` reads
+    `concepts_a/b/c/d.py` **and both `keys.py` maps**, loaded by explicit path (both banks ship a file
+    of that name, so a plain `import keys` would silently shadow one with the other). It emits
+    `data/concepts.js` — **71 key points, 129 links across the two banks**. The sample sheet needed four
+    points the past paper never tested: `criticalangle`, `secondorder`, `apparentweight`, `tailmass`
+    (all authored in `concepts_d.py`). Rebuilding was diffed and shown to be **purely additive**: 144
+    lines added, 28 replaced (3 header lines, 24 `q:` arrays that gained a sample id, 1 trailing comma).
+  - **Gates — and the ones that were watched to fail.** `build.py` checks each answer against the
+    derived key, that `sol` states the same letter, five distinct options, no unresolved `{{FIG}}`, no
+    caret or ASCII exponent, every decimal hand-computable, and that every question is keyed. The
+    non-calculator lint deliberately **does not strip the SVG**: a figure label is exactly as visible as
+    a sentence, and on the past paper an evaluated 20.7° sat in an axis label no candidate could
+    produce. Three defects were planted and each was *required* to fail — a flipped answer (caught by
+    two gates), a calculator-only decimal **inside a figure label** (caught: the past paper's bug shape),
+    and a **caret inside a figure label**, a real hole because `supify()` runs on the stem *before* the
+    SVG is inlined. `tools/r0sample/verify_figs.py` separately asserts every drawn coordinate falls
+    inside its `viewBox` — the defect that made the first five figures render **completely empty**,
+    which looks identical to correct until it is rasterised.
+  - **UI.** `#/practice` gained a second paper chip and a second mock toolbar. The mock clock now
+    derives from the question count (`SECONDS_PER_QUESTION = 144`, the paper's own 2.4 min per question)
+    instead of a hardcoded `60 * 60`, so the 12-question sheet gets **29 minutes** while the 25-question
+    paper still gets 60. The result page no longer judges the sample against **11/25** — BPhO sets no
+    pass mark on it, so it is scored against the **44% that line implies**, and says so. Ids are
+    labelled through `qLabel()` / `qLabelLong()` / `paperLabel()`: a bare `replace("R0-", "Q")` left the
+    sample ids leaking through as `R0S-01` into links that read `Q…` everywhere else.
+  - **Rebuild:** `python tools/paper2025/figs.py && python tools/paper2025/build.py` for the past paper
+    (same two under `tools/r0sample/` for the sample sheet), then
+    `python tools/paper2025/build_concepts.py` for the teaching layer. `build.py` reads `fig/`, so
+    regenerate the figures after any change to them. Everything else in the space is still hand-edited
+    directly.
 
 ### 07 · The two vocabulary spaces — `ib-english-vocab/` and `vocab-review/`
 

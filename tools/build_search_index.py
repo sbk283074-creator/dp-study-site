@@ -331,14 +331,22 @@ def bpho_docs():
         })
 
     for q in data.get('questions', []):
+        # '#/q/<id>', NOT '#/practice/<id>'. The practice route takes a MODULE code
+        # (`viewPractice(code)` filters `q.module === code`), so a question id there
+        # matches nothing and every question hit in the palette landed on the generic
+        # practice index with "No questions match that filter." That silently broke
+        # the deep link for all 200 questions -- the authored bank, the 25 past-paper
+        # questions and the 12 sample questions alike. '#/q/<id>' is the route that
+        # actually resolves a question, so it is what the index must emit.
+        qid = str(q.get('id', ''))
         docs.append({
-            'path': base, 'hash': '#/practice/' + str(q.get('id', '')),
-            'title': (q.get('q') or '')[:150] or ("Question %s" % q.get('id')),
+            'path': base, 'hash': '#/q/' + qid,
+            'title': (q.get('q') or '')[:150] or ("Question %s" % qid),
             'space': 'BPhO Round 0', 'subject': 'BPhO', 'kind': 'bpho-question',
             'badge': ("%s · d%s" % (q.get('topic', ''), q.get('diff', ''))).strip(' ·'),
             'heads': [],
             'text': ' '.join([q.get('q', '')] + list(q.get('opts', [])))[:TEXT_CAP],
-            'url': HUB + base + '#/practice/' + str(q.get('id', '')),
+            'url': HUB + base + '#/q/' + qid,
         })
     return docs
 

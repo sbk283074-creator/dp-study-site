@@ -535,10 +535,15 @@ FIGURES = {
 
 if __name__ == "__main__":
     import os
-    os.makedirs("/tmp/bpho25/fig", exist_ok=True)
+    # Write beside this file, not into a scratch directory. This used to hardcode
+    # /tmp/bpho25/fig, which made the committed data/questions-4.js impossible to
+    # regenerate once /tmp was cleared -- the generator read a directory that no
+    # longer existed, and nothing in the repo said so.
+    OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fig")
+    os.makedirs(OUT, exist_ok=True)
     for k, fn in FIGURES.items():
-        open(f"/tmp/bpho25/fig/{k}.svg", "w").write(fn())
+        open(os.path.join(OUT, k + ".svg"), "w").write(fn())
         print(k, len(fn()))
     for i, g in enumerate(r0_20_opts()):
-        open(f"/tmp/bpho25/fig/r0-20-{'ABCDE'[i]}.svg", "w").write(g)
+        open(os.path.join(OUT, "r0-20-%s.svg" % "ABCDE"[i]), "w").write(g)
     print("r0-20 done")

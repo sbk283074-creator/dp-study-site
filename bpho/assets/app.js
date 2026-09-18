@@ -32,6 +32,34 @@
       ((a.priority || 9) - (b.priority || 9)) || a.code.localeCompare(b.code);
   }
 
+  /* ---------------- question labels and paper names ----------------
+     Two banks share this app: the 2025 paper ("R0-01".."R0-25") and the 2025 sample
+     sheet ("R0S-01".."R0S-12"). A single replace("R0-", "Q") is not enough -- the
+     sample ids contain no "R0-" at all, so they leaked through as "R0S-01" into links
+     that read "Q..." everywhere else. Read the prefix explicitly instead. */
+  function qLabel(id) {
+    var t = String(id);
+    if (t.indexOf("R0S-") === 0) return "S" + t.slice(4);
+    return t.replace("R0-", "Q");
+  }
+  function qLabelLong(id) {
+    var t = String(id);
+    if (t.indexOf("R0S-") === 0) return "Sample question S" + t.slice(4);
+    return t.replace("R0-", "Question ");
+  }
+  /* The card flag. "R0-SAMPLE" is a tag, not English. */
+  function paperLabel(p) {
+    if (p === "R0-SAMPLE") return "2025 sample";
+    return String(p).replace("R0-", "R0 ");
+  }
+
+  /* Round 0 gives 60 minutes for 25 questions -- 2.4 minutes each. The fixed-paper
+     mock used to hardcode 60 * 60 seconds, which would have handed the 12-question
+     sample sheet a full hour, nearly three times the pace the paper actually runs at. */
+  var SECONDS_PER_QUESTION = 144;
+  function paperSeconds(n) { return n * SECONDS_PER_QUESTION; }
+  function fmtMinutes(sec) { return Math.round(sec / 60) + " minutes"; }
+
   /* ---------------- state ---------------- */
 
   var state = load();
@@ -179,7 +207,7 @@
       "<span>· " + esc(q.topic) + "</span>" +
       '<span>· <span class="flag ' + (q.diff === 3 ? "flag--r1" : q.diff === 2 ? "flag--new" : "flag--tierA") + '">' +
         (q.diff === 3 ? "challenge" : q.diff === 2 ? "extension" : "core") + "</span></span>" +
-      (q.paper ? '<span class="flag flag--paper">' + esc(String(q.paper).replace("R0-", "R0 ")) + "</span>" : "") +
+      (q.paper ? '<span class="flag flag--paper">' + esc(paperLabel(q.paper)) + "</span>" : "") +
       "</div>";
     /* the topics this question actually draws on — clicking one opens that module */
     if (q.rel && q.rel.length) {
@@ -583,7 +611,7 @@
       }
       if (ids.length) {
         h += '<p class="sub">Used in: ' + ids.map(function (id) {
-          return '<a href="#/practice/' + esc(code) + '">' + esc(id.replace("R0-", "Q")) + "</a>";
+          return '<a href="#/practice/' + esc(code) + '">' + esc(qLabel(id)) + "</a>";
         }).join(" · ") + "</p>";
       }
     }
@@ -638,7 +666,7 @@
         if (!q) return;
         var rels = (q.rel || []).filter(function (r) { return r[0] === code; })
           .map(function (r) { return esc(r[1]); });
-        h += "<li><b>" + esc(id.replace("R0-", "Q")) + "</b> — " + esc(q.topic) +
+        h += "<li><b>" + esc(qLabel(id)) + "</b> — " + esc(q.topic) +
           (rels.length ? ' <span class="small">· ' + rels.join(", ") + "</span>" : "") + "</li>";
       });
       h += "</ul>";
@@ -675,6 +703,7 @@
     var list = DATA.questions.slice();
     if (code) list = list.filter(function (q) { return q.module === code; });
     if (practicePaper === "paper") list = list.filter(function (q) { return q.paper === "R0-2025"; });
+    if (practicePaper === "sample") list = list.filter(function (q) { return q.paper === "R0-SAMPLE"; });
     if (practiceDiff !== "all") list = list.filter(function (q) { return String(q.diff) === practiceDiff; });
     /* no module filter and no paper filter → surface the most-tested modules first */
     if (!code && practicePaper === "all") {
@@ -697,6 +726,14 @@
       '<button class="btn" data-act="mockpaperu">2025 past paper — untimed</button>' +
       '<span class="small">The actual 2025 paper. Final practice mock.</span></div>';
 
+    /* The sample sheet, as its own short mock. 12 questions at the paper's own pace is
+       about 29 minutes, so the clock is scaled from the question count -- see
+       paperSeconds(). */
+    h += '<div class="toolbar">' +
+      '<button class="btn btn--paper" data-act="mocksample">🔎 2025 sample sheet — timed</button>' +
+      '<button class="btn" data-act="mocksampleu">2025 sample sheet — untimed</button>' +
+      '<span class="small">The 12 published sample questions, in order. Shorter clock.</span></div>';
+
     /* Modules that carry the most marks on the one real paper come first, with the count shown,
        so it is obvious where to spend the time. */
     h += '<div class="chiprow">' +
@@ -709,10 +746,18 @@
           (PRI ? " (" + n + (n === 1 ? " mark)" : " marks)") : ""), practiceFilter === m.code, "pf");
       }).join("") + "</div>";
 
-    if (PRI && PRI.total) {
+    /* One chip per named paper, with the count read from the bank rather than from
+       PRI: the sample sheet carries no marks on the real paper, so PRI knows nothing
+       about it and a PRI.total chip labelled only the past paper. */
+    var paperCount = DATA.questions.filter(function (q) { return q.paper === "R0-2025"; }).length;
+    var sampleCount = DATA.questions.filter(function (q) { return q.paper === "R0-SAMPLE"; }).length;
+    if (paperCount || sampleCount) {
       h += '<div class="chiprow">' +
         chip("all", "Whole bank", practicePaper === "all", "pp") +
-        chip("paper", "2025 paper only — " + PRI.total + " questions", practicePaper === "paper", "pp") +
+        (paperCount ? chip("paper", "2025 paper only — " + paperCount + " questions",
+          practicePaper === "paper", "pp") : "") +
+        (sampleCount ? chip("sample", "2025 sample sheet — " + sampleCount + " questions",
+          practicePaper === "sample", "pp") : "") +
         "</div>";
     }
 
@@ -819,7 +864,7 @@
     if (timed) {
       h += '<div class="mockclock' + (left <= 300 ? " is-low" : "") + '">' +
         '<div class="mockclock__row"><span class="mockclock__t" id="mocktimer">' + fmtClock(left) +
-        "</span><span class=\"small\">remaining · 60 minutes for " + m.ids.length + " questions</span></div>" +
+        "</span><span class=\"small\">remaining · " + fmtMinutes(m.seconds) + " for " + m.ids.length + " questions</span></div>" +
         '<div class="bar"><i id="mocktimebar" style="width:' + (100 * left / m.seconds) + '%"></i></div>' +
         '<p class="sub" style="margin:8px 0 0">The paper marks itself when the clock reaches zero. ' +
         "There is no negative marking, so fill in every question before then.</p></div>";
@@ -888,23 +933,35 @@
     var m = state.mock;
     if (!m || !m.marked) return "<h1>No result</h1><p><a href=\"#/practice\">Back to practice</a></p>";
     var a = analyseMock(m);
-    var LINE = 11;
+    var LINE = 11;                      /* 11/25, the UK-region qualifying line */
+    /* The sample sheet is not the paper. BPhO sets no pass mark on it, so judging a
+       12-question practice sheet against "11 out of 25" would be a false comparison:
+       11 is unreachable and 0 is not a fail. Score it against the accuracy that line
+       implies (11/25 = 44%) and say which of the two is being used. */
+    var isSample = m.paper === "R0-SAMPLE";
+    var PASS_FRAC = LINE / 25;
+    var passed = isSample ? (a.total > 0 && a.score / a.total >= PASS_FRAC) : (a.score >= LINE);
 
     var h = '<a class="toplink" href="#/practice">← Practice</a>';
     h += "<h1>Mock result</h1>";
 
     h += '<div class="grid2">' +
       '<div class="stat"><b>' + a.score + " / " + a.total + "</b><span>correct</span></div>" +
-      '<div class="stat"><b>' + (a.score >= LINE ? "Above" : "Below") + "</b><span>the " + LINE + "/25 qualifying line</span></div>" +
+      '<div class="stat"><b>' + (isSample ? Math.round(100 * a.score / a.total) + "%" : (passed ? "Above" : "Below")) +
+        "</b><span>" + (isSample ? "the 44% that 11/25 implies" : "the " + LINE + "/25 qualifying line") + "</span></div>" +
       '<div class="stat"><b>' + a.blank + "</b><span>left blank — never do this</span></div>" +
       '<div class="stat"><b>' + (m.mode === "timed" ? fmtClock(m.elapsed || 0) : "—") + "</b><span>" +
-      (m.mode === "timed" ? (m.autoSubmitted ? "ran out of time" : "time taken of 60:00") : "untimed") + "</span></div>" +
+      (m.mode === "timed" ? (m.autoSubmitted ? "ran out of time" : "time taken of " + fmtClock(m.seconds)) : "untimed") + "</span></div>" +
       "</div>";
 
-    h += '<div class="callout ' + (a.score >= LINE ? "callout--good" : "callout--warn") + '"><p>' +
-      (a.score >= LINE
-        ? "<b>You are on track.</b> Keep the accuracy and work on speed — the next step is a timed mock under real conditions."
-        : "<b>Below the line.</b> The repair plan below is ordered by where the marks actually are, not by module number.") +
+    h += '<div class="callout ' + (passed ? "callout--good" : "callout--warn") + '"><p>' +
+      (passed
+        ? (isSample
+          ? "<b>You are on track.</b> That is the accuracy the 11/25 line implies. Twelve questions is a style check, not a mock — the real paper is 25 in 60 minutes."
+          : "<b>You are on track.</b> Keep the accuracy and work on speed — the next step is a timed mock under real conditions.")
+        : (isSample
+          ? "<b>Below the accuracy the 11/25 line implies.</b> The repair plan below is ordered by where the marks actually are, not by module number."
+          : "<b>Below the line.</b> The repair plan below is ordered by where the marks actually are, not by module number.")) +
       "</p></div>";
 
     /* ---- review by topic ------------------------------------------------ */
@@ -1087,7 +1144,7 @@
       h += '<p class="lesson__one">' + esc(c.one) + "</p>";
       h += '<div class="lesson__foot">' +
         '<span class="small">Used in ' + (c.q || []).map(function (qid) {
-          return '<a href="#/q/' + esc(qid) + '">' + esc(qid.replace("R0-", "Q")) + "</a>";
+          return '<a href="#/q/' + esc(qid) + '">' + esc(qLabel(qid)) + "</a>";
         }).join(" · ") + "</span>" +
         (c.pre.length ? '<span class="small"> · needs ' + c.pre.map(function (p) {
           return '<a href="#/c/' + esc(p) + '">' + esc(CONBY[p] ? CONBY[p].t : p) + "</a>";
@@ -1127,7 +1184,7 @@
       h += '<p class="sub">' + c.q.map(function (qid) {
         var q = DATA.questions.filter(function (x) { return x.id === qid; })[0];
         return '<a class="btn btn--xs" href="#/q/' + esc(qid) + '">' +
-          esc(qid.replace("R0-", "Q")) + (q ? " · " + esc(q.topic) : "") + "</a>";
+          esc(qLabel(qid)) + (q ? " · " + esc(q.topic) : "") + "</a>";
       }).join(" ") + "</p>";
     }
     if (after.length) {
@@ -1147,7 +1204,7 @@
     if (!q) return '<h1>No such question</h1><p><a href="#/practice">Back to practice</a></p>';
     var h = '<a class="toplink" href="#/practice">← Practice</a>';
     h += "<h1>" + esc(q.topic) + "</h1>";
-    h += '<p class="sub">' + esc(q.id.replace("R0-", "Question ")) +
+    h += '<p class="sub">' + esc(qLabelLong(q.id)) +
       " · " + esc(mod(q.module) ? mod(q.module).title : q.module) + "</p>";
     h += questionCard(q);
     return h;
@@ -1283,6 +1340,8 @@
     else if (a === "mockuntimed") startMock("untimed");
     else if (a === "mockpaper") startMockPaper("R0-2025", "timed");
     else if (a === "mockpaperu") startMockPaper("R0-2025", "untimed");
+    else if (a === "mocksample") startMockPaper("R0-SAMPLE", "timed");
+    else if (a === "mocksampleu") startMockPaper("R0-SAMPLE", "untimed");
     else if (a === "marksubmit") finishMock();
     else if (a === "mockquit") { if (confirm("Abandon this mock?")) { state.mock = null; save(); location.hash = "#/practice"; } }
     else if (a === "mockclear") { state.mock = null; save(); location.hash = "#/practice"; }
@@ -1318,8 +1377,11 @@
     if (!ids.length) { alert("No questions tagged " + tag); return; }
     state.mock = {
       ids: ids, picks: {}, started: Date.now(),
+      // The tag is stored so the result page can tell the real paper from the sample
+      // sheet: 11/25 is a claim about the paper only, and is false for 12 questions.
+      paper: tag,
       mode: mode === "untimed" ? "untimed" : "timed",
-      seconds: mode === "untimed" ? 0 : 60 * 60,
+      seconds: mode === "untimed" ? 0 : paperSeconds(ids.length),
       marked: false, elapsed: 0, autoSubmitted: false
     };
     save();
