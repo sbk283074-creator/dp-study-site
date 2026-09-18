@@ -37,20 +37,42 @@
      sheet ("R0S-01".."R0S-12"). A single replace("R0-", "Q") is not enough -- the
      sample ids contain no "R0-" at all, so they leaked through as "R0S-01" into links
      that read "Q..." everywhere else. Read the prefix explicitly instead. */
+  /* Three banks share this app now: the 2025 paper ("R0-01".."R0-25"), the 2025 sample
+     sheet ("R0S-01".."R0S-12") and the original drill bank ("S01-01".."S40-25"). A drill
+     id already reads as "section 01, question 01", so it is shown as it stands -- but it
+     needs an explicit branch of its own, because the catch-all `replace("R0-", "Q")`
+     below is a no-op on it and would have passed it through looking like a match. */
+  var BANK_ID = /^S(\d\d)-(\d\d)$/;
   function qLabel(id) {
     var t = String(id);
     if (t.indexOf("R0S-") === 0) return "S" + t.slice(4);
+    if (BANK_ID.test(t)) return t;
     return t.replace("R0-", "Q");
   }
   function qLabelLong(id) {
     var t = String(id);
     if (t.indexOf("R0S-") === 0) return "Sample question S" + t.slice(4);
+    var m = BANK_ID.exec(t);
+    if (m) return "Drill bank section " + (+m[1]) + ", question " + (+m[2]);
     return t.replace("R0-", "Question ");
   }
   /* The card flag. "R0-SAMPLE" is a tag, not English. */
   function paperLabel(p) {
     if (p === "R0-SAMPLE") return "2025 sample";
+    var m = /^BANK-S(\d\d)$/.exec(String(p));
+    if (m) return "Drill bank section " + (+m[1]);
     return String(p).replace("R0-", "R0 ");
+  }
+  /* Every drill-bank paper tag actually present in the data, in order.  Read from the
+     bank rather than hardcoded, so publishing section 2 needs no change here. */
+  function bankTags() {
+    var seen = [], out = [];
+    DATA.questions.forEach(function (q) {
+      if (q.paper && q.paper.indexOf("BANK-") === 0 && seen.indexOf(q.paper) < 0) {
+        seen.push(q.paper); out.push(q.paper);
+      }
+    });
+    return out.sort();
   }
 
   /* Round 0 gives 60 minutes for 25 questions -- 2.4 minutes each. The fixed-paper
@@ -704,6 +726,7 @@
     if (code) list = list.filter(function (q) { return q.module === code; });
     if (practicePaper === "paper") list = list.filter(function (q) { return q.paper === "R0-2025"; });
     if (practicePaper === "sample") list = list.filter(function (q) { return q.paper === "R0-SAMPLE"; });
+    if (practicePaper.indexOf("BANK-") === 0) list = list.filter(function (q) { return q.paper === practicePaper; });
     if (practiceDiff !== "all") list = list.filter(function (q) { return String(q.diff) === practiceDiff; });
     /* no module filter and no paper filter → surface the most-tested modules first */
     if (!code && practicePaper === "all") {
@@ -734,6 +757,20 @@
       '<button class="btn" data-act="mocksampleu">2025 sample sheet — untimed</button>' +
       '<span class="small">The 12 published sample questions, in order. Shorter clock.</span></div>';
 
+    /* The original drill bank: 40 sections of 25, each one built to the real paper's own
+       module mix, so any section works as a full-length mock.  Read from the data, so
+       publishing another section adds its own launcher with no change here. */
+    bankTags().forEach(function (tag) {
+      var n = DATA.questions.filter(function (q) { return q.paper === tag; }).length;
+      h += '<div class="toolbar">' +
+        '<button class="btn btn--paper" data-act="mockbank" data-code="' + esc(tag) + '">🏋 ' +
+          esc(paperLabel(tag)) + ' — timed</button>' +
+        '<button class="btn" data-act="mockbanku" data-code="' + esc(tag) + '">' +
+          esc(paperLabel(tag)) + ' — untimed</button>' +
+        '<span class="small">' + n + ' original questions, same module mix as the 2025 ' +
+          'paper. Written to be at least as hard, and every answer hand-checked.</span></div>';
+    });
+
     /* Modules that carry the most marks on the one real paper come first, with the count shown,
        so it is obvious where to spend the time. */
     h += '<div class="chiprow">' +
@@ -751,13 +788,19 @@
        about it and a PRI.total chip labelled only the past paper. */
     var paperCount = DATA.questions.filter(function (q) { return q.paper === "R0-2025"; }).length;
     var sampleCount = DATA.questions.filter(function (q) { return q.paper === "R0-SAMPLE"; }).length;
-    if (paperCount || sampleCount) {
+    var banks = bankTags();
+    if (paperCount || sampleCount || banks.length) {
       h += '<div class="chiprow">' +
         chip("all", "Whole bank", practicePaper === "all", "pp") +
         (paperCount ? chip("paper", "2025 paper only — " + paperCount + " questions",
           practicePaper === "paper", "pp") : "") +
         (sampleCount ? chip("sample", "2025 sample sheet — " + sampleCount + " questions",
           practicePaper === "sample", "pp") : "") +
+        banks.map(function (tag) {
+          var n = DATA.questions.filter(function (q) { return q.paper === tag; }).length;
+          return chip(tag, paperLabel(tag) + " — " + n + " questions",
+            practicePaper === tag, "pp");
+        }).join("") +
         "</div>";
     }
 
@@ -934,21 +977,25 @@
     if (!m || !m.marked) return "<h1>No result</h1><p><a href=\"#/practice\">Back to practice</a></p>";
     var a = analyseMock(m);
     var LINE = 11;                      /* 11/25, the UK-region qualifying line */
-    /* The sample sheet is not the paper. BPhO sets no pass mark on it, so judging a
-       12-question practice sheet against "11 out of 25" would be a false comparison:
-       11 is unreachable and 0 is not a fail. Score it against the accuracy that line
-       implies (11/25 = 44%) and say which of the two is being used. */
-    var isSample = m.paper === "R0-SAMPLE";
+    /* The 11/25 line is a claim about a 25-question paper, and only about one. BPhO sets
+       no pass mark on the 12-question sample sheet, so judging that against "11 out of
+       25" is a false comparison: 11 is unreachable there and 0 is not a fail. Decide by
+       the LENGTH of what was actually sat, not by the paper's tag -- a drill-bank section
+       is 25 questions and IS judged against 11/25, while a shorter sheet is judged
+       against the 44% that line implies. The tag-based test this replaced scored a
+       full-length bank section as if it were the 12-question sample. */
     var PASS_FRAC = LINE / 25;
-    var passed = isSample ? (a.total > 0 && a.score / a.total >= PASS_FRAC) : (a.score >= LINE);
+    var isFullPaper = a.total === 25;
+    var passed = isFullPaper ? (a.score >= LINE)
+                             : (a.total > 0 && a.score / a.total >= PASS_FRAC);
 
     var h = '<a class="toplink" href="#/practice">← Practice</a>';
     h += "<h1>Mock result</h1>";
 
     h += '<div class="grid2">' +
       '<div class="stat"><b>' + a.score + " / " + a.total + "</b><span>correct</span></div>" +
-      '<div class="stat"><b>' + (isSample ? Math.round(100 * a.score / a.total) + "%" : (passed ? "Above" : "Below")) +
-        "</b><span>" + (isSample ? "the 44% that 11/25 implies" : "the " + LINE + "/25 qualifying line") + "</span></div>" +
+      '<div class="stat"><b>' + (isFullPaper ? (passed ? "Above" : "Below") : Math.round(100 * a.score / a.total) + "%") +
+        "</b><span>" + (isFullPaper ? "the " + LINE + "/25 qualifying line" : "the 44% that 11/25 implies") + "</span></div>" +
       '<div class="stat"><b>' + a.blank + "</b><span>left blank — never do this</span></div>" +
       '<div class="stat"><b>' + (m.mode === "timed" ? fmtClock(m.elapsed || 0) : "—") + "</b><span>" +
       (m.mode === "timed" ? (m.autoSubmitted ? "ran out of time" : "time taken of " + fmtClock(m.seconds)) : "untimed") + "</span></div>" +
@@ -956,12 +1003,12 @@
 
     h += '<div class="callout ' + (passed ? "callout--good" : "callout--warn") + '"><p>' +
       (passed
-        ? (isSample
-          ? "<b>You are on track.</b> That is the accuracy the 11/25 line implies. Twelve questions is a style check, not a mock — the real paper is 25 in 60 minutes."
-          : "<b>You are on track.</b> Keep the accuracy and work on speed — the next step is a timed mock under real conditions.")
-        : (isSample
-          ? "<b>Below the accuracy the 11/25 line implies.</b> The repair plan below is ordered by where the marks actually are, not by module number."
-          : "<b>Below the line.</b> The repair plan below is ordered by where the marks actually are, not by module number.")) +
+        ? (isFullPaper
+          ? "<b>You are on track.</b> Keep the accuracy and work on speed — the next step is a timed mock under real conditions."
+          : "<b>You are on track.</b> That is the accuracy the 11/25 line implies. " + a.total + " questions is a style check, not a mock — the real paper is 25 in 60 minutes.")
+        : (isFullPaper
+          ? "<b>Below the line.</b> The repair plan below is ordered by where the marks actually are, not by module number."
+          : "<b>Below the accuracy the 11/25 line implies.</b> The repair plan below is ordered by where the marks actually are, not by module number.")) +
       "</p></div>";
 
     /* ---- review by topic ------------------------------------------------ */
@@ -1342,6 +1389,10 @@
     else if (a === "mockpaperu") startMockPaper("R0-2025", "untimed");
     else if (a === "mocksample") startMockPaper("R0-SAMPLE", "timed");
     else if (a === "mocksampleu") startMockPaper("R0-SAMPLE", "untimed");
+    /* The drill bank launchers carry their own paper tag, so one handler serves every
+       section and no new branch is needed when section 2 is published. */
+    else if (a === "mockbank") startMockPaper(code, "timed");
+    else if (a === "mockbanku") startMockPaper(code, "untimed");
     else if (a === "marksubmit") finishMock();
     else if (a === "mockquit") { if (confirm("Abandon this mock?")) { state.mock = null; save(); location.hash = "#/practice"; } }
     else if (a === "mockclear") { state.mock = null; save(); location.hash = "#/practice"; }
