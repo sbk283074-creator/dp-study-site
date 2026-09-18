@@ -180,11 +180,23 @@ def visible(t: str) -> str:
 
 
 def norm_opt(s: str) -> str:
-    """Option text reduced to what a candidate would read, for duplicate detection."""
+    """Option text reduced to what a candidate would read, for duplicate detection.
+
+    Case is PRESERVED, deliberately.  The first version lowercased everything, which is
+    the natural instinct for text comparison and is wrong for this domain: in physics the
+    case IS part of the symbol.  `k` and `K`, `m` and `M`, `r` and `R` are different
+    quantities, and `M` and `m` are even different prefixes on the same unit.  Folding
+    case made S02-19's five genuinely distinct options -- k(1 - k/K), k(1 + k/K),
+    k(1 - K/k), K(1 - k/K), k -- all read as "k(1 - k/k)" and reported three duplicates
+    that do not exist.
+
+    A candidate looking at that option list sees five different expressions, so a
+    duplicate check that cannot see the difference is measuring the wrong reader.
+    """
     s = visible(s)
     s = s.replace("−", "-").replace("–", "-").replace("×", "x").replace("·", "*")
     s = re.sub(r"\s+", " ", s)
-    return s.strip().lower().rstrip(".")
+    return s.strip().rstrip(".")
 
 
 def tags_balanced(t: str) -> str | None:
@@ -210,8 +222,14 @@ def tags_balanced(t: str) -> str | None:
 
 
 def supify(t: str) -> str:
-    """`x^n` reads as a literal caret on screen.  Turn it into a real superscript."""
-    return re.sub(r"([A-Za-z0-9\)\]])\^\(?([^()<>\s,;]+)\)?",
+    """`x^n` reads as a literal caret on screen.  Turn it into a real superscript.
+
+    The base may end in `;`, because the base is usually an HTML ENTITY: `&lambda;^2`,
+    `&omega;^2`, `&theta;^2`.  Without `;` in the class the repair silently skips every
+    one of them -- the caret survives to the reader and only the lint notices, which is
+    exactly how S02-03 was caught.
+    """
+    return re.sub(r"([A-Za-z0-9\)\];])\^\(?([^()<>\s,;]+)\)?",
                   lambda m: m.group(1) + "<sup>" + m.group(2) + "</sup>", t)
 
 
@@ -225,6 +243,16 @@ APPROX_RE = re.compile(r"≈|≪|for small|small angle|small parameter|to first 
                        r"first-order|second order|negligible|approximately|roughly|"
                        r"order of magnitude|power of ten|estimation", re.I)
 SYM_OPT_RE = re.compile(r"[A-Za-z]\s*[/*^]|</?sup>|<code>|√|∝|π|θ|λ|ρ|σ|ε|μ|ω|α|β|γ|Δ")
+# Where the solution stops reasoning and starts explaining the wrong answers.  Both
+# headings are in use: Section 1 writes "Why the other four are wrong.", Section 2 writes
+# "The distractors."  The approximation scan must stop here, because a bullet explaining
+# a distractor mentions approximations in order to REJECT them -- "(5/2)sqrt(2h/g) adds
+# three terms and stops, taking the tail to be negligible" is evidence that the intended
+# path does NOT approximate.  Scanning through it flagged S02-04 as approximate when its
+# whole point is the exact sum of a geometric series.
+DISTRACTOR_RE = re.compile(
+    r"<b>\s*(?:the\s+distractors|why\s+the\s+other\s+(?:four|three|two)\s+are\s+wrong"
+    r"|why\s+the\s+others?\s+are\s+wrong|the\s+wrong\s+options?)\b", re.I)
 
 
 def features(q: dict) -> dict:
@@ -254,7 +282,11 @@ def features(q: dict) -> dict:
     # <div class="formula"> block is normally one relation applied, so when the
     # numbering is absent the formula blocks are the better estimate of chain length.
     moves = n_steps if n_steps >= 2 else max(n_steps, n_formula)
-    approx = bool(APPROX_RE.search(vis_sol))
+    # The approximation flag describes the INTENDED path, so it is read off the reasoning
+    # only -- never off the distractor commentary, which names approximations in order to
+    # reject them.  See DISTRACTOR_RE.
+    m_dis = DISTRACTOR_RE.search(sol)
+    approx = bool(APPROX_RE.search(visible(sol[:m_dis.start()] if m_dis else sol)))
     fig = "<svg" in stem
     trap = len(visible(q.get("trap", "") or "").strip())
     sym_opts = sum(1 for o in opts if SYM_OPT_RE.search(visible(o)))
@@ -546,9 +578,18 @@ def _sympify(t: str):
                 # unhelpful "'Symbol' object is not callable".
                 "floor", "ceiling", "Max", "Min", "sign", "factorial", "root",
                 "asin", "acos", "atan", "atan2", "sinh", "cosh", "tanh", "ln",
-                "Piecewise", "Eq", "Ne", "Sum", "Product", "N"}
+                "Piecewise", "Eq", "Ne", "Sum", "Product", "N",
+                # angle converters.  sympy has no `radians`/`degrees`, so an author who
+                # writes a prism check the way the physics reads --
+                # "2*degrees(asin(sqrt(2)*sin(radians(30)))) - 60" -- gets them bound as
+                # free Symbols and the check dies with "'Symbol' object is not callable".
+                # Supplying them is not a convenience: writing the check in the units the
+                # problem is stated in is what makes it an independent route.
+                "radians", "degrees"}
     names = set(re.findall(r"[A-Za-z_][A-Za-z_0-9]*", t))
     local = {n: sympy.Symbol(n, positive=True) for n in names if n not in reserved}
+    local.setdefault("radians", lambda d: sympy.sympify(d) * sympy.pi / 180)
+    local.setdefault("degrees", lambda r: sympy.sympify(r) * 180 / sympy.pi)
     return sympy.sympify(t, locals=local)
 
 
@@ -563,6 +604,38 @@ def _is_boolean(x) -> bool:
         return isinstance(x, sympy.logic.boolalg.BooleanAtom)
     except AttributeError:
         return isinstance(x, bool)
+
+
+def _has_float(x) -> bool:
+    """Does this expression contain an inexact number anywhere inside it?"""
+    try:
+        return bool(x.has(sympy.Float))
+    except Exception:
+        try:
+            return isinstance(x, float)
+        except Exception:
+            return False
+
+
+def _equal(a, b) -> bool:
+    """Are two check results the same, allowing for inexact numbers?
+
+    `simplify(got - want) != 0` is the right test for exact algebra, and the wrong test
+    the moment a float appears: an author who writes an expected value as a decimal --
+    "0.7071067811865476" for sqrt(2)/2 -- is stating the answer to the precision a
+    double carries, and the subtraction leaves -5.55e-17 rather than 0.  Demanding
+    bit-exactness there would fail a correct check for having been written in the units
+    the question is stated in.
+
+    So: exact when both sides are exact, and a tight RELATIVE tolerance (1e-9) as soon
+    as either side is a float.  The tolerance is far tighter than any distinction a
+    five-option paper can draw -- a genuinely wrong check is out by percent, not by
+    parts in a billion -- so this cannot launder a wrong answer into a pass.
+    """
+    if _has_float(a) or _has_float(b):
+        fa, fb = complex(sympy.N(a)), complex(sympy.N(b))
+        return abs(fa - fb) <= 1e-9 * max(1.0, abs(fb), abs(fa))
+    return sympy.simplify(a - b) == 0
 
 
 def check_numeric(chk: dict) -> str | None:
@@ -589,7 +662,7 @@ def check_numeric(chk: dict) -> str | None:
         # try and then repeated the same comparison outside it, unguarded -- so anything
         # that was not a plain number took the unprotected path.
         try:
-            if sympy.simplify(got - want) != 0:
+            if not _equal(got, want):
                 return "check says %s but the expression evaluates to %s" % (want, got)
         except Exception as e:
             return "check could not be evaluated: %s" % e
@@ -606,7 +679,7 @@ def check_numeric(chk: dict) -> str | None:
             return ("symbolic check did not evaluate to an expression -- parsed as %r"
                     % (a,))
         try:
-            if sympy.simplify(a - b) != 0:
+            if not _equal(a, b):
                 return "symbolic check failed: %s is not equal to %s" % (a, b)
         except Exception as e:
             return "symbolic check could not be evaluated: %s" % e
@@ -1057,6 +1130,13 @@ def gate_section(n: int, base=None, verbose=True, questions=None):
                 if v in CALC_OK:
                     continue
                 if len(v.replace(".", "").lstrip("0")) <= 2:
+                    continue
+                # A single decimal place is a half, a quarter, a fifth or a tenth -- it is
+                # mental arithmetic by construction, and no calculator is implied.  This
+                # matters because the fraction exemption below is a NUMERATOR cap, and
+                # 22.5 = 45/2 is rejected by it for having a numerator of 45.  Rejecting
+                # 22.5 (half of the correct 45 degrees, in S02-09) is plainly wrong.
+                if re.fullmatch(r"\d+\.\d", v):
                     continue
                 fr = Fraction(v)
                 if fr.denominator <= 20 and fr.numerator <= 40:

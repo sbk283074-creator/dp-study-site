@@ -29,9 +29,19 @@ def find(mutated, qid):
 MUTANTS = []
 
 
-def mutant(name, gate, desc):
+def mutant(name, gate, desc, must_not_fire=False):
+    """Register a mutant.
+
+    `must_not_fire=True` is for the INVERSE assertion, and it is not decoration.  Every
+    other mutant here proves a gate fires when it should; none of them would have caught
+    the duplicate-option check rejecting S02-19, where five genuinely different
+    expressions were reported as duplicates because the check folded the case of the
+    symbols.  A gate that fires when it should NOT is as broken as one that stays silent,
+    and the only way to test that direction is to build content that is correct and
+    assert the gate keeps quiet.
+    """
     def deco(fn):
-        MUTANTS.append((name, gate, desc, fn))
+        MUTANTS.append((name, gate, desc, fn, must_not_fire))
         return fn
     return deco
 
@@ -220,12 +230,34 @@ def m29(qs):
     q["sol"] = q["sol"] + "<p>and so the answer follows"
 
 
+@mutant("structure.duplicate_written_differently", "G1",
+        "duplicate an option, writing it with entities instead of plain characters")
+def m30(qs):
+    # The duplicate check normalises entities, so this IS a duplicate and must be caught.
+    # Without this mutant, the case-preserving rewrite of norm_opt could have been
+    # "passed" by a check that had simply stopped normalising anything.
+    q = find(qs, "S01-17")
+    q["opts"][3] = q["opts"][0].replace(" x ", " &times; ").replace("10<sup>", "10 <sup>")
+
+
+@mutant("structure.case_only_difference", "G1",
+        "two options differing only in the case of a symbol, which is NOT a duplicate",
+        must_not_fire=True)
+def m31(qs):
+    # In physics the case IS the symbol: k and K, m and M, r and R are different
+    # quantities.  A candidate reads these two options as different expressions, so the
+    # duplicate check must stay silent.  It did not, before norm_opt stopped lowercasing.
+    q = find(qs, "S01-11")
+    q["opts"][2] = "<code>v = k r</code>"
+    q["opts"][3] = "<code>v = K r</code>"
+
+
 def main():
     base = G.baseline()
     print("mutation self-test: break one thing, check the right gate notices")
     print("%d mutants\n" % len(MUTANTS))
     missed = []
-    for name, gate, desc, fn in MUTANTS:
+    for name, gate, desc, fn, must_not in MUTANTS:
         qs = copy.deepcopy(GOOD)
         try:
             fn(qs)
@@ -235,7 +267,14 @@ def main():
             continue
         errs, _ = G.gate_section(1, base=base, verbose=False, questions=qs)
         hit = [e for e in errs if e.startswith(gate)]
-        if hit:
+        if must_not:
+            if hit:
+                missed.append((name, gate, "false positive: %s" % hit[0]))
+                print("  %-42s %-3s  *** FALSE POSITIVE ***  %s"
+                      % (name, gate, hit[0][:60]))
+            else:
+                print("  %-42s %-3s  correctly silent" % (name, gate))
+        elif hit:
             print("  %-42s %-3s  caught: %s" % (name, gate, hit[0][:78]))
         else:
             missed.append((name, gate, "gate did not fire"))
@@ -246,7 +285,8 @@ def main():
         for name, gate, why in missed:
             print("   %s (%s): %s" % (name, gate, why))
         return 1
-    print("all %d mutants were caught -- every gate has been shown to fail" % len(MUTANTS))
+    print("all %d mutants behaved -- every gate has been shown to fail, and the "
+          "false-positive guard has been shown to stay quiet" % len(MUTANTS))
     return 0
 
 

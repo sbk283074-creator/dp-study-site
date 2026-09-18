@@ -15,8 +15,12 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# id -> (method, working, answer letter)
-LEDGER = {
+# section number -> {id: (method, working, answer letter)}
+#
+# The letter is what the working gives, written down BEFORE comparing it with the stored
+# key.  If the two disagree, that is the finding -- not something to be tidied away by
+# editing the letter.
+LEDGER = {1: {
     "S01-01": (
         "solve the two equations of motion and eliminate a",
         "2mg - T = 2ma and T - mg = ma; adding gives mg = 3ma so a = g/3; "
@@ -146,28 +150,184 @@ LEDGER = {
         "raise one half to the power of the number of half-lives",
         "fraction = (1/2)^1.5 = 1/2^(3/2) = 1/(2 sqrt2) = 1/2.828 = 0.354",
         "D"),
+},
+
+2: {
+    "S02-01": (
+        "match dimensions and take the square root",
+        "[v] = L T^-1; [gamma] = N/m = M T^-2; [rho] = M L^-3; [lambda] = L. "
+        "Try gamma/(rho lambda): (M T^-2)/((M L^-3)(L)) = (M T^-2)/(M L^-2) = L^2 T^-2; "
+        "square root gives L T^-1, which is a speed. The other four: "
+        "sqrt(gamma rho/lambda) = M L^-2 T^-1; sqrt(gamma lambda/rho) = L^2 T^-1; "
+        "gamma/(rho lambda) = L^2 T^-2; sqrt(gamma rho)/lambda = M L^-5/2 T^-1",
+        "C"),
+    "S02-02": (
+        "write the self-similar relation and solve the quadratic",
+        "R_eq = R + R R_eq/(R + R_eq); multiply out: R_eq^2 = R^2 + R R_eq; "
+        "R_eq^2 - R R_eq - R^2 = 0; R_eq = R(1 + sqrt5)/2. "
+        "Numerical check with R = 1: 1 + 1.618/2.618 = 1 + 0.618 = 1.618, which is the root",
+        "A"),
+    "S02-03": (
+        "threshold wavelength gives the work function, then subtract",
+        "hc = 1240 eV nm, so the threshold photon energy is 1240/620 = 2.0 eV and that is "
+        "the work function. At 310 nm the photon energy is 1240/310 = 4.0 eV. "
+        "Kinetic energy = 4.0 - 2.0 = 2.0 eV",
+        "E"),
+    "S02-04": (
+        "build the series and sum it",
+        "t_0 = sqrt(2h/g). Rebound to h/4 gives a rise-and-fall of 2 sqrt(2(h/4)/g) = "
+        "2 x (1/2) sqrt(2h/g) = t_0, so the bounces are t_0, t_0/2, t_0/4, ... "
+        "Total = t_0 + t_0(1 + 1/2 + 1/4 + ...) = t_0 + t_0 x 2 = 3 sqrt(2h/g)",
+        "B"),
+    "S02-05": (
+        "divide the two force equations to kill the tension",
+        "T cos(theta) = mg and T sin(theta) = m omega^2 L sin(theta) so T = m omega^2 L; "
+        "dividing gives 1/cos(theta) = omega^2 L/g, so omega^2 = g/(L cos theta) and "
+        "T = 2 pi sqrt(L cos theta/g)",
+        "D"),
+    "S02-06": (
+        "rate of change of momentum",
+        "mass arriving per second = rho A v; it carries speed v and leaves with none, so "
+        "the momentum destroyed per second is (rho A v)(v) = rho A v^2, and that is the "
+        "force. Units: (kg m^-3)(m^2)(m^2 s^-2) = kg m s^-2 = N",
+        "E"),
+    "S02-07": (
+        "write the extension for each wire and equate",
+        "e = FL/(AE) for the first. For the second A falls by a factor of four (diameter "
+        "halved) and L doubles, so e = F2(2L)/((A/4)E) = 8 F2 L/(AE). Equating: "
+        "F L/(AE) = 8 F2 L/(AE) so F2 = F/8",
+        "A"),
+    "S02-08": (
+        "approaching source, so the denominator is v minus the source speed",
+        "f' = f v/(v - v_s) = f v/(v - v/5) = f v/((4/5)v) = (5/4) f",
+        "A"),
+    "S02-09": (
+        "apply the minimum-deviation relation and undo the sine",
+        "n sin(A/2) = sin((A + D)/2) with A = 60 and n = sqrt2: "
+        "sqrt2 x sin30 = sqrt2 x 0.5 = 0.7071 = sin45, so (60 + D)/2 = 45 and D = 30 deg",
+        "C"),
+    "S02-10": (
+        "common voltage, so power goes as 1/R",
+        "P_3 = V^2/3 and P_6 = V^2/6, total = V^2(2/6 + 1/6) = V^2/2. "
+        "Fraction = (V^2/3)/(V^2/2) = 2/3, and the smaller resistor takes the larger share",
+        "B"),
+    "S02-11": (
+        "count the halvings on a logarithmic axis",
+        "800/100 = 8 and 8 = 2^3, so three halvings span the twelve minutes; "
+        "T = 12/3 = 4 min. Check: 800 -> 400 -> 200 -> 100 lands on the stated point",
+        "C"),
+    "S02-12": (
+        "reduce from the inside out, keeping the internal resistance in the loop",
+        "6 || 6 = 3; R_ext = 3 + 3 = 6; R_total = 6 + 2 = 8; I = 12/8 = 1.5 A; "
+        "P = I^2 R = 2.25 x 3 = 6.75 W. Check: terminal p.d. 12 - 3 = 9 V, drop across "
+        "the 3 ohm is 4.5 V, leaving 4.5 V across the pair, which 1.5 A gives",
+        "B"),
+    "S02-13": (
+        "conserve momentum, then divide by the combined mass",
+        "p_before = 2.0 x 3.0 = 6.0 kg m/s; p_after = (2.0 + 2.0)v = 4.0v; "
+        "v = 6.0/4.0 = 1.5 m/s. Energy check: 9.0 J before, 4.5 J after, so half is lost, "
+        "which is what sticking means",
+        "B"),
+    "S02-14": (
+        "conserve charge, then compare the two energies",
+        "Q = CV is fixed. C_total = C + 2C = 3C so V_new = Q/(3C) = V/3. "
+        "E_before = Q^2/(2C); E_after = Q^2/(6C). Ratio 1/3 remains, so 2/3 is lost. "
+        "Check: the result contains no resistance, so a thicker wire loses the same 2/3",
+        "E"),
+    "S02-15": (
+        "floating means submerged fraction equals the density ratio",
+        "rho_L V_sub g = rho_b V g so V_sub/V = rho_b/rho_L. Water: 3/4 = rho_b/1000 so "
+        "rho_b = 750. Unknown liquid: 1/2 = 750/rho_L so rho_L = 1500 kg/m^3. "
+        "Direction: denser liquid holds the block higher, and 1/2 < 3/4",
+        "D"),
+    "S02-16": (
+        "longest wavelength that still gives a minimum",
+        "delta = 3.5 - 2.5 = 1.0 m. Minimum needs delta = (n + 1/2)lambda, so the longest "
+        "wavelength is at n = 0: lambda = 2 x 1.0 = 2.0 m. f = 340/2.0 = 170 Hz. "
+        "Next member: lambda = 1.0/1.5 = 0.67 m giving 510 Hz, so 170 Hz is the lowest",
+        "B"),
+    "S02-17": (
+        "gradient gives stiffness, then convert to the modulus",
+        "k = F/x = 40/(2.0e-3) = 2.0e4 N/m. E = (F/x)(L/A) = 2.0e4 x 2.0/(1.0e-7) = "
+        "2.0e4 x 2.0e7 = 4.0e11 Pa. Units: (N/m)(m/m^2) = N/m^2 = Pa",
+        "C"),
+    "S02-18": (
+        "reduce to a proportionality before putting anything in",
+        "E = hc/lambda and N = P/E, so N = P lambda/(hc) and N is proportional to "
+        "P lambda. Doubling P doubles N; halving lambda halves N; the product of the two "
+        "factors is 2 x 1/2 = 1, so N is unchanged",
+        "C"),
+    "S02-19": (
+        "divide by the large quantity, then expand",
+        "kK/(k + K); divide top and bottom by K: k/(1 + k/K). With x = k/K small and "
+        "n = -1, (1 + x)^n = 1 + nx gives 1 - k/K, so the result is k(1 - k/K). "
+        "Numerical check with k = 1, K = 100: 100/101 = 0.990099 and 1 - 0.01 = 0.99",
+        "A"),
+    "S02-20": (
+        "count the positions in the ring, then remove the object",
+        "Repeated reflection in two planes meeting at 60 deg is rotation in steps of "
+        "60 deg, so the bead and its images occupy 360/60 = 6 equally spaced positions. "
+        "One of those is the bead, so the number of images is 6 - 1 = 5",
+        "C"),
+    "S02-21": (
+        "count the pairs of levels",
+        "Every pair of levels gives a possible photon energy, because a single gamma can "
+        "carry the whole difference. With four levels: 3 + 2 + 1 = 6. "
+        "The six differences are 7, 6, 4, 3, 2 and 1 MeV, all distinct",
+        "D"),
+    "S02-22": (
+        "subtract the two motions",
+        "v_1 - v_2 = g(t + delta_t) - g t = g delta_t, a constant. "
+        "Separation = (1/2)g(t + delta_t)^2 - (1/2)g t^2 = g delta_t t + "
+        "(1/2)g delta_t^2, which is linear in t. So it grows at a constant rate. "
+        "At t = 0 it is already (1/2)g delta_t^2, the head start",
+        "B"),
+    "S02-23": (
+        "pressure balance at the lower mercury surface",
+        "rho_oil h = rho_Hg (2x), so x = rho_oil h/(2 rho_Hg). In centimetres: "
+        "850 x 16/(2 x 13600) = 13600/27200 = 0.5 cm = 5.0 mm. "
+        "Check the size: 0.5/16 = 1/32, and the densities are in the ratio 13600/850 = 16",
+        "B"),
+    "S02-24": (
+        "density times volume, then check against a known mass",
+        "V = 10 x 8 x 3 = 240 m^3; m = 1.2 x 240 = 288 kg, about 300 kg. "
+        "Check: the same room full of water would be 240 x 1000 = 240000 kg, and air is "
+        "about a thousandth as dense, so a few hundred kilograms is right",
+        "C"),
+    "S02-25": (
+        "find the photon energy, double it, subtract the same work function",
+        "hf = phi + E_k = 2.0 + 1.0 = 3.0 eV. Halving lambda doubles hf to 6.0 eV. "
+        "The work function is a property of the metal, so E_k = 6.0 - 2.0 = 4.0 eV. "
+        "Check the direction: the photon energy doubled but the kinetic energy went up by "
+        "four, which is what a fixed subtraction does",
+        "D"),
+},
 }
 
 
 def main():
-    import sec01
-    by_id = {q["id"]: q for q in sec01.QUESTIONS}
+    import importlib
+
     out = {}
     missing = []
-    for qid, (method, working, letter) in sorted(LEDGER.items()):
-        if qid not in by_id:
-            missing.append(qid)
-            continue
-        q = by_id[qid]
-        stated = "ABCDE"[q["ans"]]
-        out[qid] = {
-            "verified": letter == stated,
-            "method": method,
-            "working": working,
-            "hand_answer": letter,
-            "stored_answer": stated,
-            "agrees": letter == stated,
-        }
+    for sec_no, entries in sorted(LEDGER.items()):
+        mod = importlib.import_module("sec%02d" % sec_no)
+        by_id = {q["id"]: q for q in mod.QUESTIONS}
+        for qid, (method, working, letter) in sorted(entries.items()):
+            if qid not in by_id:
+                missing.append(qid)
+                continue
+            q = by_id[qid]
+            stated = "ABCDE"[q["ans"]]
+            out[qid] = {
+                "section": sec_no,
+                "verified": letter == stated,
+                "method": method,
+                "working": working,
+                "hand_answer": letter,
+                "stored_answer": stated,
+                "agrees": letter == stated,
+            }
     if missing:
         raise SystemExit("ledger names questions that do not exist: %s" % missing)
     path = os.path.join(HERE, "ledger.json")
@@ -175,8 +335,13 @@ def main():
         json.dump(out, fh, indent=1, ensure_ascii=False, sort_keys=True)
         fh.write("\n")
     bad = [k for k, v in out.items() if not v["agrees"]]
-    print("ledger: %d questions, %d agree with the stored key"
-          % (len(out), len(out) - len(bad)))
+    per_sec = {}
+    for v in out.values():
+        per_sec[v["section"]] = per_sec.get(v["section"], 0) + 1
+    print("ledger: %d questions across %d section(s) (%s), %d agree with the stored key"
+          % (len(out), len(per_sec),
+             ", ".join("S%02d: %d" % (k, per_sec[k]) for k in sorted(per_sec)),
+             len(out) - len(bad)))
     if bad:
         print("DISAGREEMENTS (a human says the stored answer is wrong):")
         for k in bad:

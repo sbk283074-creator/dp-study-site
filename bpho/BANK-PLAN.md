@@ -191,13 +191,23 @@ filter chips and the mock launchers are both derived from the data, so publishin
 
 | | Sections | Questions | Status |
 |---|---|---|---|
-| Done | 1 | 25 | gated, hand-checked, published |
-| Planned | 2–40 | 975 | not started |
+| Done | 1–2 | 50 | gated, hand-checked, published |
+| Planned | 3–40 | 950 | not started |
 
 **Section 1** — `S01`, 15 figures, mix `A3 B2 C4 D2 E1 F2 G2 H4 I1 J2 K2`, answer sequence
 `BCBEDBECADCDEABEDCBABECAD`, measured median **14.8** against the paper's 13.5 and p25
-**13.4** against the paper's 11.5. All ten gates pass, all 29 mutants are caught, 25/25
+**13.4** against the paper's 11.5. All ten gates pass, all 31 mutants are caught, 25/25
 hand-verified in `ledger.json`, and it is live as `BANK-S01` in the practice view.
+
+**Section 2** — `S02`, 8 figures, mix `A3 B2 C2 D1 E2 F2 G2 H3 I1 K2 L3 M2`, answer sequence
+`CAEBDEAACBCBBEDBCCACDBBCD`, measured median **16.2** against the paper's 13.5 and p25
+**15.1** against the paper's 11.5, min 11.6, hardest `S02-05` (conical pendulum) at 20.5.
+Bands `d2=8 d3=17` — deliberately harder than the real paper, per the brief. All ten gates
+pass, 25/25 hand-verified, live as `BANK-S02`.
+
+Sections 1–2 together: 50 questions, 23 figures, 50/50 hand-checked, 31 mutants caught,
+and `verify_site.js` discovers both tags from `window.BPHO_QUESTIONS` rather than naming
+them, so sections 3–40 are checked the moment they publish.
 
 ## 9. File map
 
@@ -205,9 +215,10 @@ hand-verified in `ledger.json`, and it is live as `BANK-S01` in the practice vie
 |---|---|
 | `spec.py` | the 40-section blueprint: targets, allocator, per-section mixes |
 | `secNN.py` | the questions themselves — **the source of truth** |
-| `figs.py` | hand-authored SVG figures → `fig/` |
+| `figsNN.py` | hand-authored SVG figures per section → `fig/` |
+| `svgkit.py` | shared SVG primitives (`ell(...)` sampled ellipses, palette) |
 | `gates.py` | the ten gates, the difficulty scorer, the fingerprint |
-| `mutants.py` | 29 mutants proving the gates have teeth |
+| `mutants.py` | 31 mutants proving the gates have teeth, both directions |
 | `make_ledger.py` | builds `ledger.json`, the hand-check record |
 | `ledger.json` | per-question method, working, and hand-derived answer |
 | `build_site.py` | gates, then emits `bpho/data/bank-NN.js` |
@@ -232,3 +243,18 @@ hand-verified in `ledger.json`, and it is live as `BANK-S01` in the practice vie
   reports "0 figures on every route" and looks like a site-wide regression.
 - **A timed mock renders stem figures only** — solutions sit in `display:none`
   `.reveal__body` until revealed. That is expected, not a missing figure.
+- **A probe that reads the raw `q['sol']` disagrees with the gate.** The gate measures
+  `_sol`/`_stem`/`_opts`, which are `expand_figs(supify(...))` of the source. Measuring raw
+  strings made every figure question read one point low — an instrument defect that would
+  have had me "fix" a correct question. Any probe must run `gate_section` first and measure
+  the gate's own fields.
+- **A gate can be wrong in the *loud* direction too.** Two of this project's checks fired
+  false positives: the `approx` scan read a *distractor's* "taking the tail to be
+  negligible" as evidence the solution used an approximation, and the duplicate-option check
+  collapsed `k` and `K` because it lowercased before comparing. Both would have corrupted
+  correct content. Mutants now test the silent direction as well
+  (`structure.case_only_difference`, `must_not_fire=True`).
+- **A clipped `<text>` is invisible in the source.** `/tmp/lint-svg.js` estimates text width
+  at 0.55 em/char (0.58 bold), decodes entities, and errors when a run leaves the viewBox.
+  It caught `fig/s02-11.svg` running 180 px past the right edge. Screenshots still catch what
+  lint cannot: label collisions and a dashed box that fails to enclose the thing it labels.
