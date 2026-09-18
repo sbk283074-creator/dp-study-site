@@ -714,14 +714,14 @@ sin θ₂ = 0.5 / √2 = 1 / (2√2)</div>
 <path d="M238.0,38.0 A46.0,46.0 0 0 0 215.0,44.2" fill="none" stroke="#b3352f" stroke-width="1.8"/>
 <path d="M238.0,130.0 A46.0,46.0 0 0 0 254.3,127.0" fill="none" stroke="#b3352f" stroke-width="1.8"/>
 <text x="202" y="56" text-anchor="middle" font-size="12.5" font-weight="600" fill="#b3352f">30°</text>
-<text x="272" y="136" text-anchor="middle" font-size="12.5" font-weight="600" fill="#b3352f">20.7°</text>
+<text x="272" y="136" text-anchor="middle" font-size="12.5" font-weight="600" fill="#b3352f">θ₂</text>
 <text x="202" y="232" font-size="13.5" font-style="italic" fill="#14181f">n = √2</text>
 <line x1="130.0" y1="84.0" x2="130.0" y2="260.0" stroke="#7b8494" stroke-width="1.4" marker-start="url(#f16-dimS)" marker-end="url(#f16-dim)"/>
 <text x="120.0" y="177" text-anchor="end" font-size="13" font-weight="600" fill="#4a5262">a</text>
 <text x="270.5" y="188" text-anchor="end" font-size="11.5" fill="#4a5262">path = a / cos θ₂</text>
 <circle cx="304.5" cy="260.0" r="4" fill="#b3352f"/>
 </svg>
-<figcaption><b>Why the path is <code>a / cos θ₂</code>.</b> The ray enters the top face and leaves through the opposite face a distance <code>a</code> below it, so it covers <code>a / cos θ₂ = a / cos 20.7°</code> of glass at speed <code>c/√2</code>.</figcaption>
+<figcaption><b>Why the path is <code>a / cos θ₂</code>.</b> The ray enters the top face and leaves through the opposite face a distance <code>a</code> below it, so the distance it covers inside the glass is <code>a / cos θ₂</code>, at speed <code>c/√2</code>. The angle itself is left as <code>θ₂</code>: this paper is non-calculator, and <code>cos θ₂</code> is obtained exactly from <code>sin² θ₂ + cos² θ₂ = 1</code> rather than from an evaluated angle.</figcaption>
 </figure>
 <p><b>Step 3 — the speed inside the glass.</b></p>
 <div class="formula">v = c / n = c / √2</div>
@@ -854,7 +854,7 @@ half-life has elapsed — and more than none has, so more than zero. The bounds 
 <p><b>Carry the general form.</b> If a fraction <code>f</code> remains,</p>
 <div class="formula">t = T log₂(1/f)</div>
 <p>Check it on two cases you know by heart: <code>f = 1/2</code> gives <code>t = T log₂2 = T</code> ✔, and <code>f = 1/4</code> gives <code>2T</code> ✔. A general formula that reproduces the standard cases is worth remembering, and these two are the ones it will be tested against.</p>
-<p><b>How to do <code>log₂(3/2)</code> without a calculator.</b> Split it: <code>log₂(3/2) = log₂3 − 1</code>, and <code>log₂3</code> is between <code>log₂2 = 1</code> and <code>log₂4 = 2</code>, closer to 1.5 than to 2 — so 0.585 is plausible before you compute anything. If the options had required the value rather than the expression, that bracket would be enough to choose.</p>
+<p><b>How to do <code>log₂(3/2)</code> without a calculator.</b> Split it: <code>log₂(3/2) = log₂3 − 1</code>, and <code>log₂3</code> is between <code>log₂2 = 1</code> and <code>log₂4 = 2</code>, closer to 1.5 than to 2 — so for the record 0.585 is plausible before you compute anything. If the options had required the value rather than the expression, that bracket would be enough to choose.</p>
 <p><b>Relevant topics:</b> exponential decay; half-life; the decay law in index form; logarithms.</p>`,
   trap: "Reading one third decayed as one third remaining and answering <code>T log₂3 ≈ 1.6T</code>. Two thirds remains, so <code>t = T log₂(3/2)</code>, which the bounds put between <code>0.5T</code> and <code>1T</code> — less than a half-life is wrong; <i>under one</i> half-life is right."
 },

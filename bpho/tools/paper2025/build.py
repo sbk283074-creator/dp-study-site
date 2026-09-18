@@ -58,14 +58,22 @@ CALC_OK = {
     "1.069":  "option A as printed",
     "0.366":  "option A as printed",
     # ── numbers the text explicitly tells you NOT to compute ─────────────
-    "41.4":   "arccos 0.75, in the sentence 'a number no one can produce without a calculator'",
-    "48.6":   "arcsin 0.75, in the sentence 'a number you never have to write down'",
-    "20.7":   "arcsin(1/(2*sqrt2)), in the sentence 'would need a calculator and nothing here needs it'",
-    "1.585":  "log2(3), in the sentence 'for the record, no step above needed it'",
-    "0.585":  "log2(3/2), same sentence",
     "1.633":  "sqrt(8/3), quoted only as an upper bound",
-    "4.1667": "25/6, shown and immediately replaced by the exact fraction",
 }
+
+# ── numbers only a calculator produces ────────────────────────────────────
+# These may appear ONLY where the surrounding text tells the reader not to
+# compute them — that is the point of printing them at all: the sentence around
+# 41.4 degrees is teaching that you do not need it. A bare one is a defect.
+CALC_FLAGGED = {"41.4", "48.6", "20.7", "1.585", "0.585", "4.1667"}
+
+# Any of these within reach of the number counts as flagging it.
+FLAG_PHRASES = [
+    "without a calculator", "would need a calculator", "nothing here needs",
+    "no step above needed", "for the record", "never have to write down",
+    "not asked for", "left unnumbered", "do not evaluate", "rather than evaluate",
+    "stop there", "reach for a decimal", "on a calculator",
+]
 
 
 def load_fig(key):
@@ -144,8 +152,12 @@ for d in QS:
     # --- gate 5b: non-calculator lint -------------------------------------
     # Round 0 is non-calculator. Every decimal in the visible text of a solution
     # must therefore be one the reader can produce by hand. See CALC_OK above.
+    # NOTE: the SVG is deliberately NOT stripped here. A figure label is just as
+    # visible as a sentence, and one of them was printing an evaluated 20.7 degrees
+    # as an angle label — a number no candidate can produce. Stripping the SVG first
+    # (as an earlier version did) hides exactly that class of defect. Only the
+    # attribute text inside tags is removed.
     def visible(t):
-        t = re.sub(r'<svg[\s\S]*?</svg>', ' ', t)
         return re.sub(r'<[^>]+>', ' ', t)
 
     for label, txt in (('stem', q), ('sol', sol), ('trap', trap)):
@@ -156,12 +168,30 @@ for d in QS:
                 continue
             if len(v.replace('.', '').lstrip('0')) <= 2:
                 continue
-            if Fraction(v).denominator <= 20:
+            # A "simple fraction" must be simple in BOTH parts. 20.7 is 207/10, whose
+            # denominator is 10 -- so a denominator-only test waves through every
+            # one-decimal number, which is how 20.7 sat in a figure label unnoticed.
+            fr = Fraction(v)
+            if fr.denominator <= 20 and fr.numerator <= 40:
                 continue
-            ctx = vt[max(0, m.start() - 55):m.end() + 25].replace('\n', ' ')
+            # Scope the flag test to the ENCLOSING SENTENCE, not a fixed window. A
+            # window is too coarse: a bare "20.7" will pass simply because a legitimately
+            # flagged "rather than evaluate 20.7" sits sixty characters away.
+            a = max(vt.rfind('.', 0, m.start()), vt.rfind('!', 0, m.start()),
+                    vt.rfind('?', 0, m.start()))
+            ends = [e for e in (vt.find('.', m.end()), vt.find('!', m.end()),
+                                vt.find('?', m.end())) if e >= 0]
+            b = min(ends) if ends else len(vt)
+            sent = vt[a + 1:b + 1].lower()
+            if v in CALC_FLAGGED:
+                if any(ph in sent for ph in FLAG_PHRASES):
+                    continue
+                errors.append("%s: %s in %s is calculator-only and nothing in its sentence says so -- %s"
+                              % (d['id'], v, label, ' '.join(vt[a + 1:b + 1].split())[:95]))
+                continue
             errors.append("%s: decimal %s in %s is neither 2-sig-fig nor a small fraction "
                           "nor in CALC_OK -- %s"
-                          % (d['id'], v, label, ' '.join(ctx.split())[:85]))
+                          % (d['id'], v, label, ' '.join(vt[max(0, m.start() - 60):m.end() + 30].split())[:85]))
 
     rel = ',\n    '.join('["%s", "%s"]' % (a, b) for a, b in d['rel'])
     kp = d['id'] not in KEYS and 'MISSING' or ', '.join('"%s"' % k for k in KEYS[d['id']])

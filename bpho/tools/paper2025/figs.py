@@ -438,7 +438,7 @@ def r0_16():
     s += f'<path d="M{ex_},{ay0-R1} A{R1},{R1} 0 0 0 {ex_-R1*math.sin(th1):.1f},{ay0-R1*math.cos(th1):.1f}" fill="none" stroke="{BAD}" stroke-width="1.8"/>\n'
     s += f'<path d="M{ex_},{ay0+R2} A{R2},{R2} 0 0 0 {ex_+R2*math.sin(th2):.1f},{ay0+R2*math.cos(th2):.1f}" fill="none" stroke="{BAD}" stroke-width="1.8"/>\n'
     s += f'<text x="{ex_-36:.0f}" y="{ay0-28:.0f}" text-anchor="middle" font-size="12.5" font-weight="600" fill="{BAD}">30°</text>\n'
-    s += f'<text x="{ex_+34:.0f}" y="{ay0+52:.0f}" text-anchor="middle" font-size="12.5" font-weight="600" fill="{BAD}">20.7°</text>\n'
+    s += f'<text x="{ex_+34:.0f}" y="{ay0+52:.0f}" text-anchor="middle" font-size="12.5" font-weight="600" fill="{BAD}">\u03b8\u2082</text>\n'
     s += f'<text x="{ax0+52:.0f}" y="{ay0+148:.0f}" font-size="13.5" font-style="italic" fill="{INK}">n = √2</text>\n'
     s += f'<line x1="{ax0-20}" y1="{ay0}" x2="{ax0-20}" y2="{ay1}" stroke="{INK3}" stroke-width="1.4" marker-start="url(#{p}-dimS)" marker-end="url(#{p}-dim)"/>\n'
     s += f'<text x="{ax0-30}" y="{ay0+side/2+5:.0f}" text-anchor="end" font-size="13" font-weight="600" fill="{INK2}">a</text>\n'
@@ -446,8 +446,10 @@ def r0_16():
     s += f'<circle cx="{rx:.1f}" cy="{ry:.1f}" r="4" fill="{BAD}"/>'
     return fig(s, "0 0 480 290",
                "<b>Why the path is <code>a / cos θ₂</code>.</b> The ray enters the top face and leaves through "
-               "the opposite face a distance <code>a</code> below it, so it covers "
-               "<code>a / cos θ₂ = a / cos 20.7°</code> of glass at speed <code>c/√2</code>.",
+               "the opposite face a distance <code>a</code> below it, so the distance it covers inside the "
+               "glass is <code>a / cos θ₂</code>, at speed <code>c/√2</code>. The angle itself is left as "
+               "<code>θ₂</code>: this paper is non-calculator, and <code>cos θ₂</code> is obtained exactly "
+               "from <code>sin² θ₂ + cos² θ₂ = 1</code> rather than from an evaluated angle.",
                "A square glass block with a ray meeting the top face at thirty degrees to the normal, refracting to a steeper path inside the block and leaving through the bottom face, with the side labelled a.")
 
 

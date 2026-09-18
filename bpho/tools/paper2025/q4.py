@@ -165,7 +165,7 @@ half-life has elapsed — and more than none has, so more than zero. The bounds 
 <p><b>Carry the general form.</b> If a fraction <code>f</code> remains,</p>
 <div class="formula">t = T log₂(1/f)</div>
 <p>Check it on two cases you know by heart: <code>f = 1/2</code> gives <code>t = T log₂2 = T</code> ✔, and <code>f = 1/4</code> gives <code>2T</code> ✔. A general formula that reproduces the standard cases is worth remembering, and these two are the ones it will be tested against.</p>
-<p><b>How to do <code>log₂(3/2)</code> without a calculator.</b> Split it: <code>log₂(3/2) = log₂3 − 1</code>, and <code>log₂3</code> is between <code>log₂2 = 1</code> and <code>log₂4 = 2</code>, closer to 1.5 than to 2 — so 0.585 is plausible before you compute anything. If the options had required the value rather than the expression, that bracket would be enough to choose.</p>
+<p><b>How to do <code>log₂(3/2)</code> without a calculator.</b> Split it: <code>log₂(3/2) = log₂3 − 1</code>, and <code>log₂3</code> is between <code>log₂2 = 1</code> and <code>log₂4 = 2</code>, closer to 1.5 than to 2 — so for the record 0.585 is plausible before you compute anything. If the options had required the value rather than the expression, that bracket would be enough to choose.</p>
 <p><b>Relevant topics:</b> exponential decay; half-life; the decay law in index form; logarithms.</p>""",
     "trap": "Reading one third decayed as one third remaining and answering <code>T log₂3 ≈ 1.6T</code>. Two thirds remains, so <code>t = T log₂(3/2)</code>, which the bounds put between <code>0.5T</code> and <code>1T</code> — less than a half-life is wrong; <i>under one</i> half-life is right.",
 },

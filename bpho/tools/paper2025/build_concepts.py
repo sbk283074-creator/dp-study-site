@@ -98,20 +98,48 @@ CALC_OK = {
     "0.583":  "7/12, named as the wrong thing to write instead of the fraction",
     "1.07":   "2*sqrt2/sqrt7, shown as 2.83/2.65 to compare two options",
     "1.51":   "4/sqrt7, the same comparison",
+    "2.65":   "sqrt7, from 2.65^2 = 7.02",
     "2.83":   "2*sqrt2 = 2 x 1.414, the upper bracket",
 }
+# Numbers only a calculator produces. These may appear ONLY where the surrounding
+# text tells the reader not to compute them -- that is the whole point of printing
+# 20.7 degrees at all. A bare one is a defect.
+CALC_FLAGGED = {"41.4", "48.6", "20.7", "1.585", "0.585", "4.1667"}
+FLAG_PHRASES = [
+    "without a calculator", "would need a calculator", "nothing here needs",
+    "no step above needed", "for the record", "never have to write down",
+    "not asked for", "left unnumbered", "do not evaluate", "rather than evaluate",
+    "stop there", "reach for a decimal", "on a calculator",
+]
+
 for x in CONCEPTS:
-    txt = re.sub(r'<svg[\s\S]*?</svg>', ' ', x["body"])
-    txt = re.sub(r'<[^>]+>', ' ', txt)
+    txt = re.sub(r'<[^>]+>', ' ', x["body"])
     for m in re.finditer(r'(?<![\w.])(\d+\.\d+)(?![\w])', txt):
         v = m.group(1)
         if v in CALC_OK:
             continue
         if len(v.replace('.', '').lstrip('0')) <= 2:
             continue
-        if Fraction(v).denominator <= 20:
+        # simple in BOTH parts: 20.7 is 207/10, so a denominator-only test would
+        # wave through every one-decimal number
+        fr = Fraction(v)
+        if fr.denominator <= 20 and fr.numerator <= 40:
             continue
-        ctx = txt[max(0, m.start() - 55):m.end() + 25].replace('\n', ' ')
+        # Scope the flag test to the ENCLOSING SENTENCE, not a fixed window: a bare
+        # "20.7" must not pass because a flagged one sits sixty characters away.
+        _a = max(txt.rfind('.', 0, m.start()), txt.rfind('!', 0, m.start()),
+                 txt.rfind('?', 0, m.start()))
+        _ends = [e for e in (txt.find('.', m.end()), txt.find('!', m.end()),
+                             txt.find('?', m.end())) if e >= 0]
+        _b = min(_ends) if _ends else len(txt)
+        sent = txt[_a + 1:_b + 1].lower()
+        if v in CALC_FLAGGED:
+            if any(ph in sent for ph in FLAG_PHRASES):
+                continue
+            errors.append("%s: %s is calculator-only and nothing in its sentence says so -- %s"
+                          % (x["id"], v, ' '.join(txt[_a + 1:_b + 1].split())[:95]))
+            continue
+        ctx = txt[max(0, m.start() - 60):m.end() + 30].replace('\n', ' ')
         errors.append("%s: decimal %s is neither 2-sig-fig nor a small fraction nor in "
                       "CALC_OK -- %s" % (x["id"], v, ' '.join(ctx.split())[:85]))
 
