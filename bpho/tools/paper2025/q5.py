@@ -108,6 +108,16 @@ horizontal:  T sin θ = m ω² r = m ω² ℓ sin θ</div>
 cos 30° / cos 60° = √3</div>
 <div class="formula">ω₂ / ω₁ = √√3 = 3^(1/4) ≈ 1.32</div>
 <p><b>Answer: A, √√3.</b></p>
+<p><b>You can pick it out without evaluating the fourth root at all.</b> Raise each option to the fourth
+power — the answer must give exactly 3, and fourth powers are just squaring twice:</p>
+<div class="formula">A  √√3  →  (√√3)^4 = 3            ✔
+B  √2   →  (√2)^4  = 4            ✘
+C  √3   →  (√3)^4  = 9            ✘
+D  2    →  2^4     = 16           ✘
+E  3    →  3^4     = 81           ✘</div>
+<p>One line, no arithmetic beyond 2² = 4 and 3² = 9. If you do want the size of it, take it in two easy
+square roots: <code>√3 = 1.732</code>, then find the number whose square is 1.732 — <code>1.3² = 1.69</code>
+is low and <code>1.32² = 1.742</code> is high, so it is about <code>1.316</code>. Either way you land on A.</p>
 {{FIG:r0-22}}
 <p><b>Why the answer is so small — the physical check.</b> Doubling the angle from 30° to 60° sounds like a 
             "dramatic change, and two things do change a lot: the radius grows from <code>0.50ℓ</code> to 
@@ -168,11 +178,18 @@ B = √2 = 1.414   a near-miss decoy sitting just above the true 1.32</div>
 <div class="formula">I ∝ 1 / d²        ⇒        d → d/2  gives  I → 4I</div>
 <p><b>Step 3 — combine.</b></p>
 <div class="formula">R_new / R₀ = (4I / I)^(−0.85) = 4^(−0.85)</div>
-<p>Now the arithmetic, done the way you would do it without a calculator. Write it in base 2:</p>
-<div class="formula">4^0.85 = 2^1.70 = 2 × 2^0.70</div>
-<p>and <code>2^0.70</code> is a little above <code>2^0.5 = 1.41</code> and a little below 
-            "<code>2^0.75 = 1.68</code>; call it <code>1.62</code>. So</p>
-<div class="formula">4^0.85 ≈ 2 × 1.62 = 3.25        ⇒        4^(−0.85) ≈ 1 / 3.25 ≈ 0.31</div>
+<p><b>Now bracket it — do not try to compute it.</b> <code>4^(−0.85)</code> has no mental evaluation, and
+it does not need one. The exponent −0.85 lies between −1 and −3/4, and for a base bigger than 1 a more
+negative power is a smaller number, so</p>
+<div class="formula">4^(−1)      &lt;  4^(−0.85)  &lt;  4^(−3/4)
+   1/4      &lt;  4^(−0.85)  &lt;  1 / 4^(3/4)</div>
+<p>and the right-hand bound is easy:
+<code>4^(3/4) = (2²)^(3/4) = 2^(3/2) = 2√2 = 2 × 1.414 = 2.83</code>, so</p>
+<div class="formula">0.25  &lt;  4^(−0.85)  &lt;  1/2.83  =  0.354</div>
+<p>Of the five options — 0.1, 0.3, 0.5, 0.7, 0.9 — <b>only 0.3 lies between 0.25 and 0.354</b>. The
+question is settled by two powers you can do in your head, and the gradient never had to be read to
+better than “about −0.9”. That is the whole trick of this paper: bound the answer, then let the options
+do the rounding.</p>
 <p><b>Answer: B, 0.3 R₀.</b></p>
 <p><b>The robustness check that matters most here.</b> Suppose you read the gradient as exactly 
             "<code>−1</code> instead of <code>−0.85</code> — a very reasonable mis-reading of a hand-drawn 
@@ -184,7 +201,7 @@ B = √2 = 1.414   a near-miss decoy sitting just above the true 1.32</div>
             "question is telling you.</p>
 <p><b>Where the wrong options come from.</b></p>
 <div class="formula">C = 0.5 R₀   used I ∝ 1/d, not 1/d²  →  2^(−0.85) ≈ 0.55
-A = 0.1 R₀   used I ∝ 1/d³, or 4^(−1.7) ≈ 0.095
+A = 0.1 R₀   used I ∝ 1/d³, or 4^(−1.7) ≈ 0.1
 D = 0.7 R₀   treated the change as small — as if the axes were linear
 E = 0.9 R₀   almost no change at all</div>
 <p>C is the one to watch for: “halve the distance, so halve the intensity” is the single most common error 
@@ -196,7 +213,7 @@ E = 0.9 R₀   almost no change at all</div>
 3. raise that factor to the power n</div>
 <p><b>Relevant topics:</b> log–log plots and power laws; inverse-square law for a point source; estimating 
             "powers of 2 without a calculator.</p>""",
-    "trap": "Halving the distance and halving the intensity. A point source obeys <code>I ∝ 1/d²</code>, so halving <code>d</code> <i>quadruples</i> <code>I</code>; that error leads straight to option C.",
+    "trap": "Halving the distance and halving the intensity — that error leads straight to option C, 0.5R₀ — or trying to evaluate <code>4^(−0.85)</code> directly. Bracket it: it lies between <code>4^(−1) = 0.25</code> and <code>4^(−3/4) = 1/(2√2) = 0.354</code>, and 0.3 is the only option in that window.",
 },
 
 {
@@ -311,7 +328,7 @@ P—A and R—B  →  ½ Ω          A—C and B—U  →  ½ Ω</div>
 <div class="formula">V_C = ¾ V_A ,   V_A = (V_Q + 2 V_S)/4 ,   V_S = (V_Q + 2 V_A)/4
 ⇒  V_A = 2V_Q/7 ,  and at Q:  2(V_Q − 9V_Q/14) + V_Q = 1
 ⇒  V_Q = 7/12</div>
-<div class="formula">R_QS = 7/12 Ω ≈ 0.583 Ω</div>
+<div class="formula">R_QS = 7/12 Ω</div>
 <p><b>PR — reduce by M, antisymmetrically.</b> Now P and R are a mirrored <i>pair</i>, so the excitation is 
             "antisymmetric: <code>V(Q) = V(S) = V(T) = ½(V_P + V_R)</code>, and those three axis nodes sit at 
             "the same potential, so the links Q—S and S—T carry no current. Consider the left half with the 
@@ -335,11 +352,16 @@ I from P = (V − V_A) + (V − V/2) = 0.3V + 0.5V = 4V/5</div>
             "<code>V_RC = 1/4</code>, <code>V_TB = 1/8</code> with 1 A injected at P, so</p>
 <div class="formula">R_PS = 7/8 Ω = 0.875 Ω</div>
 <p><b>Now take the median.</b></p>
-<div class="formula">QS   = 7/12  ≈ 0.583     (smallest)
-PS   = 7/8   = 0.875
-QT   = 1     = 1.000     ←  middle of five
-PR   = 5/4   = 1.250
-PU   = 3/2   = 1.500     (largest)</div>
+<div class="formula">QS = 7/12      PS = 7/8      QT = 1      PR = 5/4      PU = 3/2</div>
+<p>Order them <b>by cross-multiplying, never by converting to decimals</b> — that is the whole point of
+keeping them as fractions. <code>7/12</code> against <code>7/8</code>: compare <code>7 × 8 = 56</code> with
+<code>7 × 12 = 84</code>, so <code>7/12 &lt; 7/8</code>. <code>7/8</code> against <code>1</code>:
+<code>7 &lt; 8</code>. <code>1</code> against <code>5/4</code>: <code>4 &lt; 5</code>. And <code>5/4</code>
+against <code>3/2</code>: <code>10 &lt; 12</code>. So the order is</p>
+<div class="formula">7/12  &lt;  7/8  &lt;  1  &lt;  5/4  &lt;  3/2
+ QS       PS      QT     PR      PU
+                   ↑
+              the median</div>
 <p><b>Answer: E, QT.</b></p>
 <p><b>Two shortcuts that get you there faster.</b> First, you never needed PS, PU or PR to any precision: 
             "QS is obviously the smallest (Q and S are joined by a single resistor with the rest of the grid in 

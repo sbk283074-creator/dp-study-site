@@ -21,7 +21,7 @@ QUESTIONS = [
 <div class="formula">n₁ sin θ₁ = n₂ sin θ₂
 1 × sin 30° = √2 × sin θ₂
 sin θ₂ = 0.5 / √2 = 1 / (2√2)</div>
-<p>So <code>θ₂ = 20.7°</code>. The ray bends <i>towards</i> the normal on entering the glass, as it must.</p>
+<p><b>Do not evaluate the angle.</b> “θ₂ = 20.7°” would need a calculator and nothing here needs it: keep <code>sin θ₂ = 1/(2√2)</code> and carry it forward. All you should conclude at this point is the direction — the ray bends <i>towards</i> the normal on entering the glass, because it enters a denser medium, so <code>θ₂ &lt; 30°</code>. That single inequality is what does the work later.</p>
 <p><b>Step 2 — how far it travels inside.</b> The ray enters through one face and leaves through the opposite face, a distance <code>a</code> away. Because the ray is at angle <code>θ₂</code> to the normal, the path is the hypotenuse of a right-angled triangle whose adjacent side is <code>a</code>:</p>
 <div class="formula">path = a / cos θ₂</div>
 {{FIG:r0-16}}
@@ -33,8 +33,25 @@ sin θ₂ = 0.5 / √2 = 1 / (2√2)</div>
   = a √2 / (c · √7/(2√2))
   = 2√2 · √2 · a / (√7 c)
   = 4a / (√7 c)</div>
-<p><b>Answer: B, (4/√7) · a/c.</b> Numerically <code>4/√7 = 1.512</code>, so the light takes about <code>1.5 a/c</code> — longer than <code>a/c</code>, as it must be, since it travels further than <code>a</code> and it travels more slowly.</p>
-<p><b>Two sanity checks that take ten seconds each.</b> First, the answer must be larger than <code>a/c</code> (both effects make it slower), which removes option C, <code>√2/3 = 0.47</code>. Second, it must be less than <code>√2 a/c = 1.414a/c</code> for a path of <code>a</code> at speed <code>c/√2</code> — no wait, the path is longer than <code>a</code>, so it must exceed <code>√2 = 1.414</code>: that removes A, <code>1.069</code>. What remains is B at 1.512 and D, E at 2.31 and 2.83, which would require a path of more than <code>1.6a</code> — and the longest possible path across a cube of side <code>a</code> between opposite faces is unbounded only if the ray is nearly grazing, which 20.7° is not.</p>
+<p><b>Answer: B, (4/√7) · a/c.</b> As a rough size, <code>√7 ≈ 2.65</code> (because <code>2.65² = 7.02</code>), so the light takes about <code>4/2.65 ≈ 1.5 a/c</code> — longer than <code>a/c</code>, as it must be, since it travels further than <code>a</code> and it travels more slowly. But you can reach B without that division at all, which is the point of the next check.</p>
+<p><b>Identifying B without evaluating anything.</b> Two crude bounds, both from facts you already have.</p>
+<p><i>Lower bound.</i> The path through the glass is longer than <code>a</code> (the ray is not normal to the
+face), and the speed is <code>c/√2</code>, so <code>t &gt; a/(c/√2) = √2 · a/c</code>.</p>
+<p><i>Upper bound.</i> You know <code>θ₂ &lt; 30°</code>, so <code>cos θ₂ &gt; cos 30° = √3/2</code>, so the
+path <code>a/cos θ₂ &lt; 2a/√3</code>, and</p>
+<div class="formula">t = (path) / (c/√2)  &lt;  (2a/√3) · (√2/c)  =  √(8/3) · a/c</div>
+<p>So the answer lies strictly between <code>√2 = 1.414</code> and <code>√(8/3) = 1.633</code>. Now compare
+the five options <b>by squaring them</b> — no roots, no decimals:</p>
+<div class="formula">bounds squared:        2          &lt;  t^2  &lt;  8/3 = 2.67
+A  √(8/7)   →   8/7   = 1.14     too small
+B  4/√7     →  16/7   = 2.29     ✔  inside
+C  √2/3     →   2/9   = 0.22     too small
+D  4/√3     →  16/3   = 5.33     too big
+E  4/√2     →  16/2   = 8.00     too big</div>
+<p>B is the only one that fits, and the decision used nothing but two inequalities and five easy divisions.
+This is what “non-calculator” actually asks of you: bound the answer, then test the options against the
+bounds. The full derivation above is how you <i>confirm</i> it; the bounds are how you <i>find</i> it in
+forty seconds.</p>
 <p><b>Where the wrong options come from.</b> A, <code>√(8/7) a/c = 1.069 a/c</code>, is exactly <code>a/(cos θ₂ · c)</code>: the correct path, travelled at speed <code>c</code> — that is, with the refractive index forgotten in the speed but kept in the angle. It is the most instructive of the four wrong answers, because it is right in three places and wrong in one. C, D and E are the other combinations of the same ingredients: the depth <code>a</code> against the diagonal <code>a√2</code>, and the speed <code>c</code> against <code>c/√2</code>.</p>
 <p><b>The method.</b> Always write the time as <code>t = path / speed</code> before substituting anything, and write both the path and the speed as multiples of <code>a</code> and <code>c</code>. Then the answer is forced to be <code>(something) × a/c</code>, and the only question left is which surd the something is. That is exactly the form all five options take, which is a strong hint that the paper expects this route.</p>
 <p><b>Relevant topics:</b> Snell's law; speed of light in a medium; geometric path length; surd manipulation.</p>""",
@@ -133,14 +150,24 @@ sin(π/2 − 2α) = cos 2α</div>
 t / T = log(3/2) / log 2
 t = T log₂(3/2)</div>
 <p><b>Answer: C, T log₂(3/2).</b></p>
-<p><b>Read the answer to check it.</b> <code>log₂(3/2) = log₂3 − log₂2 = 1.585 − 1 = 0.585</code>, so <code>t = 0.585 T</code>. That is less than one half-life, which is required: less than half the substance has gone, so less than a half-life has passed. And it is positive, which is required too.</p>
-<p><b>Why the other options are wrong.</b> A, <code>(2/3)T</code>, assumes the decay is linear in time — at <code>t = (2/3)T</code> it would have the substance decaying at a constant rate, which is not what radioactive decay does. D, <code>T log₂3 = 1.585T</code>, is the answer to a different question: it is the time for two thirds to have decayed, i.e. one third remaining, because it comes from <code>(1/2)^(t/T) = 1/3</code>. That is the single most common slip here, and it is why the question says “one third decay” rather than “one third remaining”. E, <code>T^(2/3)</code>, is dimensionally impossible — a half-life raised to a power is not a time — so it dies on inspection. B, <code>√(2/3) T = 0.816T</code>, is a third plausible-looking number with no derivation behind it; you cannot get a square root out of an exponential decay law.</p>
+<p><b>Read the answer to check it — by bounding, not by calculating.</b> You cannot evaluate
+<code>log₂3</code> without a calculator, and you do not need to. Trap 3 between two powers of 2 you can
+compute in your head:</p>
+<div class="formula">2^1.5 = 2 × √2 = 2 × 1.414 = 2.83 &lt; 3 &lt; 2^2 = 4
+=&gt;   1.5 &lt; log₂3 &lt; 2
+=&gt;   0.5 &lt; log₂3 − 1 &lt; 1
+=&gt;   0.5 &lt; log₂(3/2) &lt; 1,   so  t is between 0.5T and 1T</div>
+<p>That is exactly what the physics demands: less than half the substance has decayed, so less than one
+half-life has elapsed — and more than none has, so more than zero. The bounds give you the answer's
+<i>whereabouts</i>, which is all a multiple-choice question ever asks for. (For the record
+<code>log₂3 = 1.585</code> and <code>t = 0.585T</code>, but note that no step above needed either number.)</p>
+<p><b>Why the other options are wrong.</b> A, <code>(2/3)T</code>, assumes the decay is linear in time — at <code>t = (2/3)T</code> it would have the substance decaying at a constant rate, which is not what radioactive decay does. D, <code>T log₂3</code> (a little under <code>2T</code>, by the bound above), is the answer to a different question: it is the time for two thirds to have decayed, i.e. one third remaining, because it comes from <code>(1/2)^(t/T) = 1/3</code>. That is the single most common slip here, and it is why the question says “one third decay” rather than “one third remaining”. E, <code>T^(2/3)</code>, is dimensionally impossible — a half-life raised to a power is not a time — so it dies on inspection. B, <code>√(2/3) T ≈ 0.82T</code>, is a third plausible-looking number with no derivation behind it; you cannot get a square root out of an exponential decay law.</p>
 <p><b>Carry the general form.</b> If a fraction <code>f</code> remains,</p>
 <div class="formula">t = T log₂(1/f)</div>
 <p>Check it on two cases you know by heart: <code>f = 1/2</code> gives <code>t = T log₂2 = T</code> ✔, and <code>f = 1/4</code> gives <code>2T</code> ✔. A general formula that reproduces the standard cases is worth remembering, and these two are the ones it will be tested against.</p>
 <p><b>How to do <code>log₂(3/2)</code> without a calculator.</b> Split it: <code>log₂(3/2) = log₂3 − 1</code>, and <code>log₂3</code> is between <code>log₂2 = 1</code> and <code>log₂4 = 2</code>, closer to 1.5 than to 2 — so 0.585 is plausible before you compute anything. If the options had required the value rather than the expression, that bracket would be enough to choose.</p>
 <p><b>Relevant topics:</b> exponential decay; half-life; the decay law in index form; logarithms.</p>""",
-    "trap": "Reading one third decayed as one third remaining and answering <code>T log₂3 = 1.585T</code>. Two thirds remains, so <code>t = T log₂(3/2) = 0.585T</code> — less than a half-life.",
+    "trap": "Reading one third decayed as one third remaining and answering <code>T log₂3 ≈ 1.6T</code>. Two thirds remains, so <code>t = T log₂(3/2)</code>, which the bounds put between <code>0.5T</code> and <code>1T</code> — less than a half-life is wrong; <i>under one</i> half-life is right.",
 },
 
 {

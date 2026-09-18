@@ -268,11 +268,17 @@ so   R ∝ I<sup>−0.85</sup></div>
 <p>The negative gradient says what you would expect of an LDR: brighter light, lower resistance.</p>
 
 <p><b>Using it without a calculator.</b> Halving the distance to a point source makes the intensity 4 times
-larger, so:</p>
-<div class="formula">R/R₀ = 4<sup>−0.85</sup>
-4<sup>3/4</sup> = 2<sup>3/2</sup> = 2√2 ≈ 2.83,  and 4<sup>0.1</sup> ≈ 1.15
-so  4<sup>0.85</sup> ≈ 2.83 × 1.15 ≈ 3.3   →   R/R₀ ≈ 1/3.3 ≈ 0.3</div>
-<p>Since the options are 0.1, 0.3, 0.5, 0.7, 0.9, the answer is 0.3 R₀.</p>
+larger, so <code>R/R₀ = 4<sup>−0.85</sup></code>. That number has no mental evaluation, and it does not need
+one — <b>bracket it</b>. The exponent −0.85 lies between −1 and −3/4, and for a base bigger than 1 a more
+negative power is a smaller number, so</p>
+<div class="formula">4<sup>−1</sup>  &lt;  4<sup>−0.85</sup>  &lt;  4<sup>−3/4</sup>
+ 1/4    &lt;  4<sup>−0.85</sup>  &lt;  1 / 4<sup>3/4</sup></div>
+<p>The right-hand bound is easy because <code>4<sup>3/4</sup> = (2²)<sup>3/4</sup> = 2<sup>3/2</sup> = 2√2 = 2 × 1.414 = 2.83</code>,
+so</p>
+<div class="formula">0.25  &lt;  4<sup>−0.85</sup>  &lt;  1 / 2.83  =  0.354</div>
+<p>Of the options 0.1, 0.3, 0.5, 0.7, 0.9, <b>only 0.3 lies between 0.25 and 0.354</b>. Two powers you can
+do in your head settle the question, and the gradient never had to be known to better than “about −0.85”.
+This is what a non-calculator paper asks of you: bound the answer, then let the options do the rounding.</p>
 
 <p><b>Traps.</b> Reading the gradient as the gradient of the original curve (it is not); getting the axes
 the wrong way round (that gives you 1/n); and using log₁₀ versus ln inconsistently — the <i>gradient</i>

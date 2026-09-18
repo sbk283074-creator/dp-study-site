@@ -10,9 +10,76 @@
    read first; it is acyclic and never points at a later stage. `q` is the reverse
    index: which of the 25 past-paper questions use this point.
 
-   66 key points, used 77 times across the paper.
+   67 key points, used 85 times across the paper.
 */
 window.BPHO_CONCEPTS = [
+  {
+    id: "nocalc", m: "A", stage: 0, t: "The paper is non-calculator: six ways to get a number by hand",
+    pre: [],
+    one: "No calculator is allowed, so the paper is built so that every answer is reachable by exact algebra, by bracketing, or from a handful of memorised constants.",
+    body: `<p><b>The rule.</b> Round 0 is 25 questions in 60 minutes with <b>no calculator</b>. That is not an
+extra hardship bolted onto the paper — it is a design constraint, and the examiners honour it. It means
+every question has a route that never needs you to multiply two three-digit numbers or evaluate an
+awkward trig function. If your route needs a calculator, you have missed the intended one. Treat that as
+a signal, not as bad luck.</p>
+
+<p><b>1 · Cancel before you multiply.</b> Almost never substitute numbers early. Keep symbols, cancel
+what cancels, and only put numbers in at the very end. In this paper most questions collapse to a ratio
+in which every awkward constant cancels — that is the whole point of “ratio reasoning”.</p>
+
+<p><b>2 · Keep surds and fractions exact.</b> Write <code>√5/2</code>, not <code>1.118</code>, and
+<code>7/12</code>, not <code>0.583</code>. Exact forms compare exactly; decimals compare approximately
+and cost you time. Convert to a decimal only on the last line, and only if the options are decimals.</p>
+
+<p><b>3 · To compare two positive quantities, square them.</b> This removes every square root:</p>
+<div class="formula">compare 4/√7  with  √2  ?
+(4/√7)<sup>2</sup> = 16/7 = 2.286      (√2)<sup>2</sup> = 2
+2.286 &gt; 2       =&gt;       4/√7 &gt; √2</div>
+<p>Both sides positive, so squaring preserves the order. No root evaluated, nothing memorised. The same
+trick orders <code>√3</code>, <code>√5</code>, <code>2</code> or checks whether a candidate answer is
+above or below a bound.</p>
+
+<p><b>4 · Compare fractions by cross-multiplying.</b> To decide whether <code>7/12 &lt; 7/8</code>,
+compare <code>7 × 8 = 56</code> with <code>7 × 12 = 84</code>: since 56 &lt; 84, <code>7/12 &lt; 7/8</code>.
+Never find a common denominator, and never reach for a decimal.</p>
+
+<p><b>5 · Bracket and eliminate — the strongest technique here.</b> You usually do not need the number,
+only to know which <i>option</i> it is. Build two crude bounds you can compute instantly and keep only
+the option between them:</p>
+<div class="formula">4<sup>-0.85</sup>:  the exponent -0.85 lies between -1 and -0.5
+4<sup>-1</sup>  = 1/4  = 0.25
+4<sup>-1/2</sup> = 1/2  = 0.50
+=&gt;  0.25 &lt; 4<sup>-0.85</sup> &lt; 0.50,  and -0.85 is nearer -1
+=&gt;  about 0.3.  Options: 0.1, 0.3, 0.5, 0.7, 0.9  =&gt;  B, uniquely.</div>
+<p>Two powers of a half, and the question is finished. This is why the options are spaced so widely: they
+are meant to be separated by bounds, not by computation.</p>
+
+<p><b>6 · Bound a logarithm rather than evaluate it.</b> You never need <code>log₂3</code>; you need to
+know where it sits. Trap 3 between two powers of 2 you can compute:</p>
+<div class="formula">2<sup>1.5</sup> = 2√2 ≈ 2.83 &lt; 3 &lt; 2<sup>2</sup> = 4
+=&gt;  1.5 &lt; log₂3 &lt; 2
+=&gt;  0.5 &lt; log₂(3/2) &lt; 1</div>
+<p>That is enough to identify the answer and to reject its neighbours.</p>
+
+<p><b>The constants worth having in your head.</b> You are allowed to know these; the paper gives you
+<code>c</code>, <code>e</code>, <code>g</code> and <code>h</code> on the formula sheet:</p>
+<div class="formula">√2 = 1.414      √3 = 1.732      √5 = 2.236      √10 = 3.162
+π  = 3.14       g  ≈ 10 (use 9.8 only when the options are tight)
+2<sup>10</sup> = 1024     ln 2 = 0.693     log₁₀2 = 0.301
+sin 30° = ½     sin 45° = 1/√2   sin 60° = √3/2   (same row for cos, reversed)</div>
+<p>And one recovery trick: if you need <code>√5</code> and have forgotten it, square candidates.
+<code>2.2² = 4.84</code> is low, <code>2.3² = 5.29</code> is high, <code>2.24² = 5.018</code> — so
+<code>√5 ≈ 2.236</code>. Squaring is always available when memory is not.</p>
+
+<p><b>Traps.</b> Reaching for decimals out of habit, which costs accuracy and time at once. Substituting
+<i>g</i> = 9.8 when the options only differ at one significant figure (use 10, and check with 9.8 only if
+two options survive). Evaluating an angle you do not need — in the refraction questions the answer is a
+ratio of path lengths, and <code>θ₂</code> never has to be written down. And the worst one: doing a long
+multiplication, getting 4.1667, and then rounding it to 4 when what mattered was the fraction
+<code>25/6 = 4 + 1/6</code>.</p>`,
+    used: "Used by the questions where the arithmetic itself is the discriminator: Q5 (keep 25/6 as a fraction), Q14 (√5 by squaring), Q16 (compare by squaring), Q19 (bound the log), Q22 (√√3), Q23 (bracket 4<sup>-0.85</sup>), Q25 (order five fractions).",
+    q: ["R0-02", "R0-05", "R0-14", "R0-16", "R0-19", "R0-22", "R0-23", "R0-25"]
+  },
   {
     id: "units", m: "A", stage: 0, t: "Quantities, base units and derived units",
     pre: [],
@@ -998,7 +1065,10 @@ number of cubes such that all the ice just melts (final temperature 0 °C). Ener
 water cooling to 0 °C:</p>
 <div class="formula">Q = mcΔT = 0.5 × 4200 × 20 = 42 000 J
 per cube: Q = mL = 0.025 × 3.3×10⁵ = 8250 J
-number = 42 000 / 8250 = 5.09  →  5 whole cubes</div>
+how many cubes?  bracket the division instead of evaluating it:
+5 cubes need 5 × 8250 = 41 250 J  ≤  42 000 J   ✓  enough
+6 cubes need 6 × 8250 = 49 500 J   &gt;  42 000 J   ✗  not enough
+→  5 whole cubes</div>
 <p>The answer is 5, not 6: the sixth cube would not fully melt, so the final state would be ice and water
 together at 0 °C — which contradicts “so that all the ice melts”. Whenever a question asks for a number
 of discrete objects, <b>round down</b> and then sanity-check the boundary case.</p>
@@ -1068,16 +1138,19 @@ because the wave repeats. Only the <b>fractional part</b> matters:</p>
 fraction ½      →  exactly out of step  →  fully destructive
 fraction ¼ or ¾ →  quarter-cycle off    →  in between</div>
 <p><b>Example (Q5).</b> λ = 1.8 m and Δx = 7.5 m:</p>
-<div class="formula">7.5 / 1.8 = 4.166…
-whole part: 4      (irrelevant)
-fraction:   0.167 ≈ 1/6 of a cycle</div>
-<p>One sixth of a cycle is close to 0 rather than to ½, so the waves arrive nearly in step — the result is
-<b>mostly constructive</b>. A quick way to see it: 7.5 m is 4 whole wavelengths (7.2 m) plus 0.3 m, and
-0.3 m out of 1.8 m is a sixth of a cycle — far from the half-cycle needed for cancellation.</p>
+<div class="formula">7.5 / 1.8 = 75/18 = 25/6 = 4 + 1/6 of a cycle
+whole part: 4            (irrelevant — the wave repeats)
+fraction:   1/6 of a cycle</div>
+<p>Cancel the fraction first: 75/18 divides by 3 top and bottom, giving 25/6, and 25/6 is 4 with 1 left over,
+so the excess is <b>one sixth of a cycle</b> — no division to carry out. Compare 1/6 against the
+quarter-cycle midpoint by cross-multiplying: 1 × 4 &lt; 6 × 1, so 1/6 &lt; 1/4 and the waves are
+nearer in step than out of step. The result is <b>mostly constructive</b>. You can see the same thing without
+any arithmetic: 7.5 m is 4 whole wavelengths (7.2 m) plus 0.3 m, and 0.3 m out of 1.8 m is a sixth of a
+cycle — far from the half-cycle needed for cancellation.</p>
 
 <p><b>Traps.</b> Forgetting to discard the whole number of wavelengths (the commonest error); and converting
 to radians when the question only needs the fraction — the fraction of a cycle is the direct answer.</p>`,
-    used: "Q5: 7.5/1.8 = 4.17 wavelengths → fraction 0.17 → mostly constructive.",
+    used: "Q5: 7.5/1.8 = 4 + 1/6 wavelengths → excess 1/6, which is under the 1/4 midpoint → mostly constructive.",
     q: ["R0-05"]
   },
   {
@@ -1195,8 +1268,14 @@ sin θ₁ / sin θ₂ = v₁ / v₂ = n₂ / n₁, which rearranges to the law a
 
 <p><b>Worked (Q16).</b> Air to glass, n₂ = √2, angle of incidence 30°:</p>
 <div class="formula">1 · sin 30° = √2 · sin θ₂
-sin θ₂ = 0.5 / 1.414 = 0.354       θ₂ ≈ 20.7°</div>
-<p>The ray bends towards the normal, as expected going into glass.</p>
+sin θ₂ = 0.5 / √2 = 1/(2√2) = 0.354</div>
+<p><b>Stop here.</b> The paper is non-calculator, and θ₂ itself — about 20.7° — is a number
+you cannot produce without a calculator and are never asked for. What you need is the <i>direction</i>:
+<code>sin θ₂ = 0.354 &lt; sin 30° = 0.5</code>, so θ₂ &lt; 30°, so the ray has
+bent <b>towards</b> the normal on entering the glass. That single inequality is the whole physical content of
+the step, and it needs no arcsine. Carrying <code>sin θ₂</code> forward as an exact surd is also what
+lets the next step give <code>cos θ₂</code> from <code>sin² + cos² = 1</code> without ever
+evaluating an angle.</p>
 
 <p><b>Traps.</b> Writing n₁ sin θ₂ = n₂ sin θ₁ (inverted — check it by asking which medium gives the
 smaller angle); and using degrees/radians inconsistently when evaluating trig functions.</p>`,
@@ -1516,11 +1595,17 @@ so   R ∝ I<sup>−0.85</sup></div>
 <p>The negative gradient says what you would expect of an LDR: brighter light, lower resistance.</p>
 
 <p><b>Using it without a calculator.</b> Halving the distance to a point source makes the intensity 4 times
-larger, so:</p>
-<div class="formula">R/R₀ = 4<sup>−0.85</sup>
-4<sup>3/4</sup> = 2<sup>3/2</sup> = 2√2 ≈ 2.83,  and 4<sup>0.1</sup> ≈ 1.15
-so  4<sup>0.85</sup> ≈ 2.83 × 1.15 ≈ 3.3   →   R/R₀ ≈ 1/3.3 ≈ 0.3</div>
-<p>Since the options are 0.1, 0.3, 0.5, 0.7, 0.9, the answer is 0.3 R₀.</p>
+larger, so <code>R/R₀ = 4<sup>−0.85</sup></code>. That number has no mental evaluation, and it does not need
+one — <b>bracket it</b>. The exponent −0.85 lies between −1 and −3/4, and for a base bigger than 1 a more
+negative power is a smaller number, so</p>
+<div class="formula">4<sup>−1</sup>  &lt;  4<sup>−0.85</sup>  &lt;  4<sup>−3/4</sup>
+ 1/4    &lt;  4<sup>−0.85</sup>  &lt;  1 / 4<sup>3/4</sup></div>
+<p>The right-hand bound is easy because <code>4<sup>3/4</sup> = (2²)<sup>3/4</sup> = 2<sup>3/2</sup> = 2√2 = 2 × 1.414 = 2.83</code>,
+so</p>
+<div class="formula">0.25  &lt;  4<sup>−0.85</sup>  &lt;  1 / 2.83  =  0.354</div>
+<p>Of the options 0.1, 0.3, 0.5, 0.7, 0.9, <b>only 0.3 lies between 0.25 and 0.354</b>. Two powers you can
+do in your head settle the question, and the gradient never had to be known to better than “about −0.85”.
+This is what a non-calculator paper asks of you: bound the answer, then let the options do the rounding.</p>
 
 <p><b>Traps.</b> Reading the gradient as the gradient of the original curve (it is not); getting the axes
 the wrong way round (that gives you 1/n); and using log₁₀ versus ln inconsistently — the <i>gradient</i>
@@ -1776,10 +1861,10 @@ nothing else — which is all the question wants.</p>`,
 /* question → key points, the forward direction of the same index */
 window.BPHO_QKEYS = {
   "R0-01": ["stressstrain", "strainenergy", "units-elim"],
-  "R0-02": ["refractive", "snell", "readdiagram"],
+  "R0-02": ["refractive", "snell", "readdiagram", "nocalc"],
   "R0-03": ["units", "momentum", "dimensions"],
   "R0-04": ["nuclide", "alphabeta", "decayseries"],
-  "R0-05": ["waves", "superposition", "pathphase", "coherence"],
+  "R0-05": ["waves", "superposition", "pathphase", "coherence", "nocalc"],
   "R0-06": ["resistance", "seriesparallel", "search"],
   "R0-07": ["kinematics", "relvel", "readdiagram"],
   "R0-08": ["charge", "meters", "kirchhoff"],
@@ -1788,16 +1873,16 @@ window.BPHO_QKEYS = {
   "R0-11": ["photons", "levels", "counting"],
   "R0-12": ["momcons", "ke", "limits"],
   "R0-13": ["dimensions", "casimir"],
-  "R0-14": ["com", "toppling", "statics"],
+  "R0-14": ["com", "toppling", "statics", "nocalc"],
   "R0-15": ["specificheat", "latentheat", "stdform"],
-  "R0-16": ["snell", "lightspeed", "surds"],
+  "R0-16": ["snell", "lightspeed", "surds", "nocalc"],
   "R0-17": ["photoelectric", "stopping", "capacitors"],
   "R0-18": ["projectile", "smallangle", "limits"],
-  "R0-19": ["expdecay", "logs"],
+  "R0-19": ["expdecay", "logs", "nocalc"],
   "R0-20": ["force", "hookeslaw", "shm", "graphshape"],
   "R0-21": ["vectors-resolve", "kinematics", "moments", "statics"],
-  "R0-22": ["circular", "conical", "ratio"],
-  "R0-23": ["loggraphs", "inversesquare", "divider"],
+  "R0-22": ["circular", "conical", "ratio", "nocalc"],
+  "R0-23": ["loggraphs", "inversesquare", "divider", "nocalc"],
   "R0-24": ["com", "pe-gpe", "smallchange"],
-  "R0-25": ["seriesparallel", "networks", "ratio"]
+  "R0-25": ["seriesparallel", "networks", "ratio", "nocalc"]
 };

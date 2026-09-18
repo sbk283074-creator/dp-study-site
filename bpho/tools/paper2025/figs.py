@@ -114,11 +114,11 @@ def r0_02():
     s += f'<text x="118" y="{cy+28:.0f}" text-anchor="middle" font-size="13.5" font-style="italic" fill="{INK}">n\u2082</text>\n'
     s += f'<text x="300" y="{cy-14:.0f}" text-anchor="middle" font-size="11.5" fill="{INK3}">surface</text>'
     cap = ("<b>\u03b8\u2081 and \u03b8\u2082 are measured from the <i>surface</i>, not from the normal.</b> Drawn to scale "
-           "for <code>n\u2081 = 1.5</code>, <code>n\u2082 = 1</code> and <code>\u03b8\u2081 = 60\u00b0</code>: the refracted ray sits at "
-           f"<code>\u03b8\u2082 = {math.degrees(th2):.1f}\u00b0</code> to the surface, which is "
-           f"<code>{90-math.degrees(th2):.1f}\u00b0</code> to the normal. Check it against Snell in the normal form: "
-           f"<code>1.5 sin 30\u00b0 = 1 sin {90-math.degrees(th2):.1f}\u00b0 = 0.75</code> \u2014 which is exactly what "
-           "<code>n\u2081 cos \u03b8\u2081 = n\u2082 cos \u03b8\u2082</code> asserts.")
+           "for <code>n\u2081 = 1.5</code>, <code>n\u2082 = 1</code> and <code>\u03b8\u2081 = 60\u00b0</code>. "
+           "<code>\u03b8\u2082</code> is drawn to scale but left unnumbered: this paper is non-calculator and "
+           "no option asks for its value. All you need from the sketch is the <i>comparison</i> \u2014 "
+           "<code>\u03b8\u2082 &lt; \u03b8\u2081</code>, so the ray meets the surface more steeply and has bent "
+           "<i>away</i> from the normal on leaving the denser medium.")
     return fig(s, "0 0 480 300", cap,
                "A ray crossing a horizontal boundary between medium n1 above and n2 below, drawn with both angles marked between the ray and the boundary surface rather than between the ray and the normal.")
 
@@ -140,9 +140,9 @@ def r0_07():
     s += f'<line x1="{ax}" y1="{y+58}" x2="{bx}" y2="{y+58}" stroke="{INK3}" stroke-width="1.5" marker-start="url(#{p}-dimS)" marker-end="url(#{p}-dim)"/>\n'
     s += f'<text x="{(ax+bx)/2}" y="{y+78}" text-anchor="middle" font-size="12.5" font-weight="600" fill="{ACC}">initial separation 18 m</text>'
     return fig(s, "0 0 480 160",
-               "<b>Read the arrows before you compute.</b> Both particles travel the same way, so the gap "
-               "closes at <code>6 − 3 = 3 m s⁻¹</code>. If they were approaching each other the closing speed "
-               "would be <code>9 m s⁻¹</code>, A would travel 12 m — and 12 m is not on the list.",
+               "<b>Read the arrows before you reach for a formula.</b> The two velocity arrows point the "
+               "same way. That single observation decides which arithmetic applies — and the diagram is "
+               "the only place it is stated.",
                "Two dots on a horizontal line, A moving right at six metres per second and B also moving right at three metres per second, with the eighteen metre gap between them marked by a dimension line.")
 
 
@@ -187,9 +187,9 @@ def r0_08():
     s += f'<text x="147" y="{M-18}" text-anchor="middle" font-size="13.5" font-style="italic" fill="{INK}">R</text>\n'
     s += f'<text x="335" y="{B-18}" text-anchor="middle" font-size="13.5" font-style="italic" fill="{INK}">R</text>'
     return fig(s, "0 0 470 288",
-               "<b>Two of these five components are decoys.</b> The ammeter is ideal, so its branch has zero "
-               "resistance and short-circuits the resistor beside it; the voltmeter is ideal, so its branch "
-               "carries no current at all. What is left is the cell in series with two resistors.",
+               "<b>The circuit as printed.</b> Five components, two of them meters. Before you write "
+               "anything down, decide what an <i>ideal</i> ammeter and an <i>ideal</i> voltmeter each do to "
+               "the branch they sit in.",
                "A circuit: a cell in series with a resistor in the top branch, a resistor from the left node to a middle node, an ammeter from that middle node to the right node, and a voltmeter from the left node to the middle node with a resistor from the middle node to the right node.")
 
 
@@ -279,9 +279,9 @@ def r0_21():
     s += f'<text x="{ex:.1f}" y="30" text-anchor="middle" font-size="11.5" fill="{INK3}">ceiling</text>\n'
     s += f'<text x="{ex+10:.1f}" y="{(ey+42)/2:.0f}" font-size="12" fill="{INK2}">string</text>'
     return fig(s, "0 0 480 262",
-               "<b>The ring is released at the top end — the end the string is tied to — and slides down "
-               "towards the hinge.</b> So its distance from O is <code>ℓ − s</code>, and <code>s</code> grows "
-               "like <code>t²</code>: that is where the <code>t²</code> in the given tension comes from.",
+               "<b>The rod is held still by the string; the ring slides along it.</b> Note which end the "
+               "ring starts at, and that the rod keeps the ring at a fixed angle — the motion is one-"
+               "dimensional along the rod, not vertical.",
                "A rod hinged at its lower-left end at O making thirty degrees with the horizontal, with a vertical string from the ceiling down to its upper end where a small ring of mass m is released.")
 
 
@@ -303,9 +303,10 @@ def r0_23():
     s += f'<text x="{x0+8}" y="{y5-8}" font-size="11.5" fill="{INK3}">(0, 5.2)</text>\n'
     s += f'<text x="{xs-8}" y="{y2+26}" text-anchor="end" font-size="11.5" fill="{INK3}">(4, 1.8)</text>'
     return fig(s, "0 0 480 268",
-               "<b>A straight line on log–log axes.</b> Its gradient is "
-               "<code>(1.8 − 5.2)/(4 − 0) = −0.85</code>, so <code>R ∝ I<sup>−0.85</sup></code>. Halving the "
-               "distance multiplies the intensity by four, and <code>4<sup>−0.85</sup> ≈ 0.31</code>.",
+               "<b>A straight line on log–log axes</b>, so <code>R ∝ I<sup>n</sup></code> with "
+               "<code>n</code> equal to the gradient. Both scales are logarithmic, and the two end points "
+               "are marked. (Reading the gradient off the plot is part of the question; what you then do "
+               "with a fractional power is the rest of it.)",
                "A straight line on a graph of log R against log I, falling from 5.2 on the vertical axis at zero on the horizontal axis to 1.8 at four on the horizontal axis.")
 
 

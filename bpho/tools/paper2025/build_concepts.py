@@ -7,9 +7,10 @@ Gate: unique ids · every prerequisite exists · no cycles · a prerequisite nev
       by at least one question.
 """
 import io
-import json
+import re
 import os
 import sys
+from fractions import Fraction
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -60,6 +61,59 @@ def dfs(u, stack):
 for i in ids:
     if mark[i] == WHITE:
         dfs(i, [])
+
+# ── gate 3b: notation lint — literal caret powers in a lesson
+for x in CONCEPTS:
+    for m in re.finditer(r'\^', x["body"]):
+        errors.append("%s: caret notation %r in body" % (x["id"], x["body"][m.start():m.start() + 10]))
+
+# ── gate 3c: non-calculator lint ------------------------------------------
+# Round 0 is non-calculator, so a lesson may only show a decimal the reader can
+# produce by hand. Accept if it is (a) at most 2 significant figures, (b) exactly a
+# fraction with denominator <= 20, or (c) listed below with the hand route. Everything
+# else fails, so a calculator-only number cannot creep into the teaching layer.
+CALC_OK = {
+    # memorised constants, and the rounded forms of them used for comparison
+    "1.414": "sqrt2, standard",       "1.41":  "sqrt2 rounded, in the 'worth memorising' list",
+    "1.732": "sqrt3, standard",       "1.73":  "sqrt3 rounded, in the 'worth memorising' list",
+    "2.236": "sqrt5, standard",       "2.24":  "sqrt5 rounded, in the 'worth memorising' list",
+    "3.162": "sqrt10, standard",      "3.14":  "pi to 3 s.f.",
+    "0.693": "ln 2, standard",        "0.301": "log10 2, standard",
+    "0.707": "1/sqrt2, in the 'worth memorising' list",
+    "0.477": "log10 3, quoted only to show that the base matters",
+    "6.02":  "Avogadro's number, 6.02 x 10^23",
+    "6.63":  "Planck's constant, 6.63 x 10^-34",
+    "1.33":  "refractive index of water, a datum",
+    # recovered by squaring a 2-dp candidate, with the square shown
+    "4.84":  "2.2^2,  the squaring check",   "5.29":  "2.3^2, the squaring check",
+    "5.018": "2.24^2, the squaring check",
+    # one small-integer division
+    "2.286": "16/7, shown as '= 16/7 = 2.286'",
+    # numbers the text explicitly tells you not to use, or not to write
+    "4.1667": "25/6, named in the sentence 'the worst one: doing a long multiplication'",
+    "1.585":  "log2 3, in the sentence 'worth knowing the size'",
+    "0.585":  "log2(3/2), same sentence",
+    "0.354":  "1/(2*sqrt2), followed immediately by 'Stop here ... left unnumbered'",
+    "1.118":  "sqrt5/2, named as the wrong thing to write instead of the surd",
+    "0.583":  "7/12, named as the wrong thing to write instead of the fraction",
+    "1.07":   "2*sqrt2/sqrt7, shown as 2.83/2.65 to compare two options",
+    "1.51":   "4/sqrt7, the same comparison",
+    "2.83":   "2*sqrt2 = 2 x 1.414, the upper bracket",
+}
+for x in CONCEPTS:
+    txt = re.sub(r'<svg[\s\S]*?</svg>', ' ', x["body"])
+    txt = re.sub(r'<[^>]+>', ' ', txt)
+    for m in re.finditer(r'(?<![\w.])(\d+\.\d+)(?![\w])', txt):
+        v = m.group(1)
+        if v in CALC_OK:
+            continue
+        if len(v.replace('.', '').lstrip('0')) <= 2:
+            continue
+        if Fraction(v).denominator <= 20:
+            continue
+        ctx = txt[max(0, m.start() - 55):m.end() + 25].replace('\n', ' ')
+        errors.append("%s: decimal %s is neither 2-sig-fig nor a small fraction nor in "
+                      "CALC_OK -- %s" % (x["id"], v, ' '.join(ctx.split())[:85]))
 
 # ── gate 4: the question → key-point mapping resolves both ways
 for qid, ks in KEYS.items():

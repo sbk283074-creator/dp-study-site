@@ -14,6 +14,72 @@ def c(i, m, stage, title, pre, summary, body, used):
 
 # ───────────────────────────── STAGE 0 · THE TOOLKIT ─────────────────────────────
 
+c("nocalc", "A", 0, "The paper is non-calculator: six ways to get a number by hand", [],
+  "No calculator is allowed, so the paper is built so that every answer is reachable by exact algebra, by bracketing, or from a handful of memorised constants.",
+  """
+<p><b>The rule.</b> Round 0 is 25 questions in 60 minutes with <b>no calculator</b>. That is not an
+extra hardship bolted onto the paper — it is a design constraint, and the examiners honour it. It means
+every question has a route that never needs you to multiply two three-digit numbers or evaluate an
+awkward trig function. If your route needs a calculator, you have missed the intended one. Treat that as
+a signal, not as bad luck.</p>
+
+<p><b>1 · Cancel before you multiply.</b> Almost never substitute numbers early. Keep symbols, cancel
+what cancels, and only put numbers in at the very end. In this paper most questions collapse to a ratio
+in which every awkward constant cancels — that is the whole point of “ratio reasoning”.</p>
+
+<p><b>2 · Keep surds and fractions exact.</b> Write <code>√5/2</code>, not <code>1.118</code>, and
+<code>7/12</code>, not <code>0.583</code>. Exact forms compare exactly; decimals compare approximately
+and cost you time. Convert to a decimal only on the last line, and only if the options are decimals.</p>
+
+<p><b>3 · To compare two positive quantities, square them.</b> This removes every square root:</p>
+<div class="formula">compare 4/√7  with  √2  ?
+(4/√7)<sup>2</sup> = 16/7 = 2.286      (√2)<sup>2</sup> = 2
+2.286 &gt; 2       =&gt;       4/√7 &gt; √2</div>
+<p>Both sides positive, so squaring preserves the order. No root evaluated, nothing memorised. The same
+trick orders <code>√3</code>, <code>√5</code>, <code>2</code> or checks whether a candidate answer is
+above or below a bound.</p>
+
+<p><b>4 · Compare fractions by cross-multiplying.</b> To decide whether <code>7/12 &lt; 7/8</code>,
+compare <code>7 × 8 = 56</code> with <code>7 × 12 = 84</code>: since 56 &lt; 84, <code>7/12 &lt; 7/8</code>.
+Never find a common denominator, and never reach for a decimal.</p>
+
+<p><b>5 · Bracket and eliminate — the strongest technique here.</b> You usually do not need the number,
+only to know which <i>option</i> it is. Build two crude bounds you can compute instantly and keep only
+the option between them:</p>
+<div class="formula">4<sup>-0.85</sup>:  the exponent -0.85 lies between -1 and -0.5
+4<sup>-1</sup>  = 1/4  = 0.25
+4<sup>-1/2</sup> = 1/2  = 0.50
+=&gt;  0.25 &lt; 4<sup>-0.85</sup> &lt; 0.50,  and -0.85 is nearer -1
+=&gt;  about 0.3.  Options: 0.1, 0.3, 0.5, 0.7, 0.9  =&gt;  B, uniquely.</div>
+<p>Two powers of a half, and the question is finished. This is why the options are spaced so widely: they
+are meant to be separated by bounds, not by computation.</p>
+
+<p><b>6 · Bound a logarithm rather than evaluate it.</b> You never need <code>log₂3</code>; you need to
+know where it sits. Trap 3 between two powers of 2 you can compute:</p>
+<div class="formula">2<sup>1.5</sup> = 2√2 ≈ 2.83 &lt; 3 &lt; 2<sup>2</sup> = 4
+=&gt;  1.5 &lt; log₂3 &lt; 2
+=&gt;  0.5 &lt; log₂(3/2) &lt; 1</div>
+<p>That is enough to identify the answer and to reject its neighbours.</p>
+
+<p><b>The constants worth having in your head.</b> You are allowed to know these; the paper gives you
+<code>c</code>, <code>e</code>, <code>g</code> and <code>h</code> on the formula sheet:</p>
+<div class="formula">√2 = 1.414      √3 = 1.732      √5 = 2.236      √10 = 3.162
+π  = 3.14       g  ≈ 10 (use 9.8 only when the options are tight)
+2<sup>10</sup> = 1024     ln 2 = 0.693     log₁₀2 = 0.301
+sin 30° = ½     sin 45° = 1/√2   sin 60° = √3/2   (same row for cos, reversed)</div>
+<p>And one recovery trick: if you need <code>√5</code> and have forgotten it, square candidates.
+<code>2.2² = 4.84</code> is low, <code>2.3² = 5.29</code> is high, <code>2.24² = 5.018</code> — so
+<code>√5 ≈ 2.236</code>. Squaring is always available when memory is not.</p>
+
+<p><b>Traps.</b> Reaching for decimals out of habit, which costs accuracy and time at once. Substituting
+<i>g</i> = 9.8 when the options only differ at one significant figure (use 10, and check with 9.8 only if
+two options survive). Evaluating an angle you do not need — in the refraction questions the answer is a
+ratio of path lengths, and <code>θ₂</code> never has to be written down. And the worst one: doing a long
+multiplication, getting 4.1667, and then rounding it to 4 when what mattered was the fraction
+<code>25/6 = 4 + 1/6</code>.</p>
+""",
+  "Used by the questions where the arithmetic itself is the discriminator: Q5 (keep 25/6 as a fraction), Q14 (√5 by squaring), Q16 (compare by squaring), Q19 (bound the log), Q22 (√√3), Q23 (bracket 4<sup>-0.85</sup>), Q25 (order five fractions).")
+
 c("units", "A", 0, "Quantities, base units and derived units", [],
   "Every physical quantity is a number times a unit, and every unit can be written using seven base units.",
   """
@@ -252,7 +318,7 @@ log_b(x) = log x / log b           change of base</div>
 <p><b>Why a log appears in decay questions.</b> Exponential decay is N = N₀ · 2<sup>−t/T</sup>: the
 unknown t is in the <i>exponent</i>, and the only way to get an exponent down is to take a log of both
 sides. “How long until one third has decayed?” means N/N₀ = 2/3, so:</p>
-<div class="formula">2/3 = 2^(−t/T)
+<div class="formula">2/3 = 2<sup>−t/T</sup>
 log₂(2/3) = −t/T
 t = −T · log₂(2/3) = T · log₂(3/2)</div>
 <p>No calculator is needed to recognise the answer — the options are written with logs in them. But it is

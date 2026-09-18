@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Assemble q1..q5 + generated figures into bpho/data/questions-4.js."""
 import re, os, sys, json
+from fractions import Fraction
 sys.path.insert(0, '/tmp/bpho25')
 import q1, q2, q3, q4, q5
 from keys import KEYS
@@ -14,6 +15,57 @@ OFFICIAL = dict(zip(range(1, 26),
     "A A D D B B E A C D "
     "A A B A E".split()))
 LET = "ABCDE"
+
+# ── non-calculator allowlist ──────────────────────────────────────────────
+# Round 0 is non-calculator, so every decimal in the visible text of a solution
+# must be one the reader can produce by hand. Gate 5b accepts a decimal if it is:
+#   (a) at most 2 significant figures      -- reading off a graph, halving, given data;
+#   (b) exactly a fraction with denominator <= 20  -- pure mental arithmetic;
+#   (c) listed below, where the entry states the hand route.
+# An entry here is a CLAIM that the number is hand-computable, so the comment has
+# to say how. Anything else fails the build.
+CALC_OK = {
+    # ── irrational constants worth knowing ────────────────────────────────
+    "1.414":  "sqrt2, standard",
+    "1.732":  "sqrt3, standard",
+    "1.73":   "sqrt3 to 2 dp, shown as a rough size only",
+    # ── recovered by squaring a 2-dp candidate (the text shows the check) ─
+    "2.236":  "sqrt5, from 2.236^2 = 5.00",
+    "2.65":   "sqrt7, from 2.65^2 = 7.02",
+    # ── one small-integer division ────────────────────────────────────────
+    "1.14":   "8/7",
+    "2.29":   "16/7",
+    "2.67":   "8/3",
+    "5.33":   "16/3, from 40/7.5 = 400/75",
+    "7.02":   "2.65^2, the squaring check",
+    # ── one operation on a memorised constant ─────────────────────────────
+    "2.83":   "2*sqrt2 = 2 x 1.414",
+    "0.354":  "1/(2*sqrt2) = 1/2.83",
+    "0.764":  "3 - sqrt5 = 3 - 2.236",
+    "0.382":  "(3 - sqrt5)/2 = 0.764/2",
+    "1.118":  "sqrt5/2 = 2.236/2",
+    "2.268":  "3 - 2(0.366), one subtraction",
+    # ── squaring checks, each shown with its square ───────────────────────
+    "4.84":   "2.2^2,  the squaring check",
+    "5.29":   "2.3^2,  the squaring check",
+    "5.018":  "2.24^2, the squaring check",
+    "5.14":   "2.268^2, the squaring check",
+    "1.69":   "1.3^2,  the squaring check",
+    "1.742":  "1.32^2, the squaring check",
+    "1.32":   "3^(1/4), by squaring candidates: 1.3^2 = 1.69 low, 1.32^2 = 1.742 high",
+    "1.316":  "3^(1/4), same squaring bracket, quoted as 'about'",
+    # ── option values read off the paper, never computed ─────────────────
+    "1.069":  "option A as printed",
+    "0.366":  "option A as printed",
+    # ── numbers the text explicitly tells you NOT to compute ─────────────
+    "41.4":   "arccos 0.75, in the sentence 'a number no one can produce without a calculator'",
+    "48.6":   "arcsin 0.75, in the sentence 'a number you never have to write down'",
+    "20.7":   "arcsin(1/(2*sqrt2)), in the sentence 'would need a calculator and nothing here needs it'",
+    "1.585":  "log2(3), in the sentence 'for the record, no step above needed it'",
+    "0.585":  "log2(3/2), same sentence",
+    "1.633":  "sqrt(8/3), quoted only as an upper bound",
+    "4.1667": "25/6, shown and immediately replaced by the exact fraction",
+}
 
 
 def load_fig(key):
@@ -87,6 +139,29 @@ for d in QS:
             errors.append("%s: caret notation %r in %s" % (d['id'], txt[m.start():m.start() + 8], label))
         for m in re.finditer(r'\b[mMs]\s*-\s*[123]\b', txt):
             errors.append("%s: ascii exponent %r in %s" % (d['id'], m.group(0), label))
+
+
+    # --- gate 5b: non-calculator lint -------------------------------------
+    # Round 0 is non-calculator. Every decimal in the visible text of a solution
+    # must therefore be one the reader can produce by hand. See CALC_OK above.
+    def visible(t):
+        t = re.sub(r'<svg[\s\S]*?</svg>', ' ', t)
+        return re.sub(r'<[^>]+>', ' ', t)
+
+    for label, txt in (('stem', q), ('sol', sol), ('trap', trap)):
+        vt = visible(txt)
+        for m in re.finditer(r'(?<![\w.])(\d+\.\d+)(?![\w])', vt):
+            v = m.group(1)
+            if v in CALC_OK:
+                continue
+            if len(v.replace('.', '').lstrip('0')) <= 2:
+                continue
+            if Fraction(v).denominator <= 20:
+                continue
+            ctx = vt[max(0, m.start() - 55):m.end() + 25].replace('\n', ' ')
+            errors.append("%s: decimal %s in %s is neither 2-sig-fig nor a small fraction "
+                          "nor in CALC_OK -- %s"
+                          % (d['id'], v, label, ' '.join(ctx.split())[:85]))
 
     rel = ',\n    '.join('["%s", "%s"]' % (a, b) for a, b in d['rel'])
     kp = d['id'] not in KEYS and 'MISSING' or ', '.join('"%s"' % k for k in KEYS[d['id']])

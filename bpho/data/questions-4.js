@@ -74,7 +74,7 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
     ["G", "Refractive index and the normal"],
     ["A", "Reading the diagram before quoting a formula"]
   ],
-  key: ["refractive", "snell", "readdiagram"],
+  key: ["refractive", "snell", "readdiagram", "nocalc"],
   q: `<p>The diagram below shows the refraction of a light ray travelling from a medium with refractive index <code>n₁</code> into a medium with refractive index <code>n₂</code>. Which equation relates the angles <code>θ₁</code> and <code>θ₂</code>?</p><figure class="fig">
 <svg viewBox="0 0 480 300" role="img" aria-label="A ray crossing a horizontal boundary between medium n1 above and n2 below, drawn with both angles marked between the ray and the boundary surface rather than between the ray and the normal.">
 <defs>
@@ -95,7 +95,7 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 <text x="118" y="198" text-anchor="middle" font-size="13.5" font-style="italic" fill="#14181f">n₂</text>
 <text x="300" y="156" text-anchor="middle" font-size="11.5" fill="#7b8494">surface</text>
 </svg>
-<figcaption><b>θ₁ and θ₂ are measured from the <i>surface</i>, not from the normal.</b> Drawn to scale for <code>n₁ = 1.5</code>, <code>n₂ = 1</code> and <code>θ₁ = 60°</code>: the refracted ray sits at <code>θ₂ = 41.4°</code> to the surface, which is <code>48.6°</code> to the normal. Check it against Snell in the normal form: <code>1.5 sin 30° = 1 sin 48.6° = 0.75</code> — which is exactly what <code>n₁ cos θ₁ = n₂ cos θ₂</code> asserts.</figcaption>
+<figcaption><b>θ₁ and θ₂ are measured from the <i>surface</i>, not from the normal.</b> Drawn to scale for <code>n₁ = 1.5</code>, <code>n₂ = 1</code> and <code>θ₁ = 60°</code>. <code>θ₂</code> is drawn to scale but left unnumbered: this paper is non-calculator and no option asks for its value. All you need from the sketch is the <i>comparison</i> — <code>θ₂ &lt; θ₁</code>, so the ray meets the surface more steeply and has bent <i>away</i> from the normal on leaving the denser medium.</figcaption>
 </figure>`,
   opts: [`n₁ sin θ₁ = n₂ sin θ₂`, `n₁ sin θ₂ = n₂ sin θ₁`, `n₁ cos θ₁ = n₂ cos θ₂`, `n₁ cos θ₂ = n₂ cos θ₁`, `n₁ sin θ₁ = n₂ cos θ₂`],
   ans: 2,
@@ -106,7 +106,7 @@ n₁ sin i = n₂ sin r
 n₁ sin(90° − θ₁) = n₂ sin(90° − θ₂)
 n₁ cos θ₁ = n₂ cos θ₂</div>
 <p><b>Answer: C, n₁ cos θ₁ = n₂ cos θ₂.</b></p>
-<p><b>Check it against a case you know.</b> The figure is drawn for <code>n₁ = 1.5</code> and <code>n₂ = 1</code> with <code>θ₁ = 60°</code>. Then <code>cos θ₂ = 1.5 × cos 60° = 0.75</code>, so <code>θ₂ = 41.4°</code>. Snell in the normal form confirms it: <code>1.5 sin 30° = 0.75 = 1 × sin 48.6°</code>. The ray leaves the glass at a smaller angle to the surface, bending away from the normal — exactly as light does on the way out of a denser medium.</p>
+<p><b>Check it against a case you know.</b> The figure is drawn for <code>n₁ = 1.5</code> and <code>n₂ = 1</code> with <code>θ₁ = 60°</code>. Then <code>cos θ₂ = 1.5 × cos 60° = 0.75</code> — and <b>stop there</b>. You do not need θ₂ itself: “41.4°” is a number no one can produce without a calculator, and nothing in this question asks for it. What you need is only whether θ₂ is larger or smaller than θ₁, which <code>cos θ₂ = 0.75 &gt; cos 60° = 0.5</code> answers immediately: cos θ₂ is bigger, so θ₂ is the smaller angle, so the ray bent away from the normal. (Snell in the normal form says the same thing: <code>1.5 sin 30° = 0.75 = 1 × sin θ₂′</code> where θ₂′ = 48.6° from the normal — again a number you never have to write down.) The ray leaves the glass at a smaller angle to the surface, bending away from the normal — exactly as light does on the way out of a denser medium.</p>
 <p><b>The limiting case that kills A.</b> Slide the incident ray down until it travels along the interface: <code>θ₁ → 90°</code>. In this picture that means the ray is travelling parallel to the boundary, and it should keep travelling parallel to it — nothing in the problem singles out either side. Option C gives <code>cos θ₁ → 0</code>, hence <code>cos θ₂ → 0</code>, hence <code>θ₂ → 90°</code>: still along the boundary. ✔ Option A would give <code>sin θ₂ = n₁/n₂</code>, a definite angle to the surface, so the same limiting ray would suddenly refract — nonsense.</p>
 <p><b>Where the other options come from.</b> A is Snell's law with the angles to the normal — the wrong angles for this diagram. B is A with the refractive indices swapped. D is C with the indices swapped. E mixes a sine with a cosine, which no physical law does.</p>
 <p><b>The transferable rule.</b> Before substituting into any standard formula, read which angle the diagram actually marks. A marked angle is a fact about the figure; a remembered formula is a fact about a different figure until you have checked the two agree.</p>
@@ -182,24 +182,24 @@ Z: 92 − 8(2) + 6(1) = 82       ✔</div>
     ["F", "Phase difference in radians and degrees"],
     ["F", "Coherence and the two-source conditions"]
   ],
-  key: ["waves", "superposition", "pathphase", "coherence"],
+  key: ["waves", "superposition", "pathphase", "coherence", "nocalc"],
   q: `<p>Two coherent waves of equal amplitude and wavelength 1.8 m, originating from the same source, arrive at the same detector with a path difference of 7.5 m. Which of these options describes the type of interference that occurs at the detector?</p>`,
   opts: [`fully destructive`, `mostly destructive`, `mostly constructive`, `fully constructive`, `not enough information`],
   ans: 2,
   sol: `<p><b>Turn the path difference into a number of wavelengths.</b> That single step decides everything:</p>
-<div class="formula">Δx / λ = 7.5 / 1.8 = 4.1667 wavelengths</div>
-<p><b>Read what 4.1667 means.</b> Four whole wavelengths contribute nothing — a shift of a whole wavelength is a shift of a whole cycle. What is left over is the fractional part:</p>
-<div class="formula">fraction = 0.1667 = 1/6 of a wavelength
+<div class="formula">Δx / λ = 7.5 / 1.8 = 75/18 = 25/6 = 4 + 1/6 wavelengths</div>
+<p><b>Do that division as a fraction, not on a calculator.</b> 7.5/1.8 = 75/18; both divide by 3, so it is 25/6, and 25/6 = 4 remainder 1, so <b>4 whole wavelengths plus 1/6</b>. The “4” is what misleads people who reach for a decimal and see 4.1667. Keeping the fraction makes the remainder obvious — and the remainder is the only part that matters. Four whole wavelengths contribute nothing — a shift of a whole wavelength is a shift of a whole cycle. What is left over is the fractional part:</p>
+<div class="formula">fractional part = 1/6 of a wavelength
 phase difference = 2π × 1/6 = 60°</div>
 <p><b>Six degrees of a cycle is a long way from half a cycle.</b> At 60° the two waves are much more in step than out of step. The resultant amplitude is</p>
 <div class="formula">2A cos(φ/2) = 2A cos 30° = 1.73A</div>
 <p>against <code>2A</code> for perfect reinforcement — 87% of it. That is “mostly constructive”.</p>
 <p><b>Answer: C, mostly constructive.</b></p>
-<p><b>Why not fully constructive.</b> That requires the path difference to be a whole number of wavelengths, and 4.1667 is not 4. The test that makes this quick: compare 4.1667 with its nearest integers. It is 0.167 from 4 (fully constructive) and 0.333 from 4.5 (fully destructive). It is nearer to constructive, and 0.167 is well inside the 0.25 cut-off — so the answer is “mostly”, on the constructive side.</p>
+<p><b>Why not fully constructive.</b> That requires the path difference to be a whole number of wavelengths, and 25/6 is not a whole number. The test that makes this quick: compare the remainder 1/6 against the midpoint 1/4. Since 1/6 &lt; 1/4 (cross-multiply: 4 &lt; 6), the shift is closer to “in step” than to “out of step” — so the answer is “mostly”, on the constructive side. No decimal needed anywhere.</p>
 <p><b>Why not E, not enough information.</b> The two waves are coherent, they come from the same source, and they arrive with equal amplitude. Given the wavelength and the path difference, the phase relationship at the detector is completely determined. What is <i>not</i> determined is the absolute amplitude — you cannot say the detector reads 1.73A without knowing A — but the question asks about the type of interference, which is a question about phase, and phase is fixed.</p>
 <p><b>The general rule worth carrying into the exam.</b> Work in fractions of a wavelength: a whole number gives fully constructive, a half-odd number (<code>n + ½</code>) gives fully destructive, and anything else is “mostly” whichever side of the midpoint it falls. Then convert to radians (×2π) or degrees (×360°) only if the question asks for them.</p>
 <p><b>Relevant topics:</b> superposition; path and phase difference; coherence; interference conditions.</p>`,
-  trap: "Rounding 4.17 wavelengths to 4 and calling it fully constructive — or treating “from the same source” as a reason to doubt the information given."
+  trap: "Turning 7.5/1.8 into 4.1667 on a calculator, rounding it to 4, and calling it fully constructive — or treating “from the same source” as a reason to doubt the information given."
 },
 
 {
@@ -306,7 +306,7 @@ in series with the fourth:  1 Ω + 3 Ω = 4 Ω,  cost 4 × £1 = £4</div>
 <line x1="90.0" y1="120.0" x2="330.0" y2="120.0" stroke="#7b8494" stroke-width="1.5" marker-start="url(#f7-dimS)" marker-end="url(#f7-dim)"/>
 <text x="210.0" y="140.0" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2f5fd0">initial separation 18 m</text>
 </svg>
-<figcaption><b>Read the arrows before you compute.</b> Both particles travel the same way, so the gap closes at <code>6 − 3 = 3 m s⁻¹</code>. If they were approaching each other the closing speed would be <code>9 m s⁻¹</code>, A would travel 12 m — and 12 m is not on the list.</figcaption>
+<figcaption><b>Read the arrows before you reach for a formula.</b> The two velocity arrows point the same way. That single observation decides which arithmetic applies — and the diagram is the only place it is stated.</figcaption>
 </figure>`,
   opts: [`18 m`, `27 m`, `36 m`, `45 m`, `54 m`],
   ans: 2,
@@ -375,7 +375,7 @@ in series with the fourth:  1 Ω + 3 Ω = 4 Ω,  cost 4 × £1 = £4</div>
 <text x="147" y="122.0" text-anchor="middle" font-size="13.5" font-style="italic" fill="#14181f">R</text>
 <text x="335" y="222.0" text-anchor="middle" font-size="13.5" font-style="italic" fill="#14181f">R</text>
 </svg>
-<figcaption><b>Two of these five components are decoys.</b> The ammeter is ideal, so its branch has zero resistance and short-circuits the resistor beside it; the voltmeter is ideal, so its branch carries no current at all. What is left is the cell in series with two resistors.</figcaption>
+<figcaption><b>The circuit as printed.</b> Five components, two of them meters. Before you write anything down, decide what an <i>ideal</i> ammeter and an <i>ideal</i> voltmeter each do to the branch they sit in.</figcaption>
 </figure>`,
   opts: [`ε/3 , ε/(3R)`, `ε/3 , ε/(2R)`, `ε/3 , ε/R`, `ε/2 , ε/(3R)`, `ε/2 , ε/(2R)`],
   ans: 4,
@@ -575,7 +575,7 @@ from L:      γ = −1 − 2α − β = −1 − 2 − 1 = −4</div>
     ["C", "Statics: stable equilibrium and the support condition"],
     ["A", "Geometry of intersecting circles; small-change reasoning"]
   ],
-  key: ["com", "toppling", "statics"],
+  key: ["com", "toppling", "statics", "nocalc"],
   q: `<p>A thin uniform circular biscuit of radius <code>b</code> is balanced horizontally on the thin circular rim of a teacup, which has radius <code>3b/2</code>, positioned as far as possible from the cup's centre. It is then slowly pushed inwards towards the centre of the teacup. What is the maximum distance it can be pushed before it falls?</p>`,
   opts: [`((√3 − 1)/2) b`, `((5 − √3)/5) b`, `((√5 − 2)/3) b`, `((3 − √5)/2) b`, `((√3 − 1)/3) b`],
   ans: 3,
@@ -626,6 +626,18 @@ from L:      γ = −1 − 2α − β = −1 − 2 − 1 = −4</div>
 <p><b>Step 5 — subtract.</b></p>
 <div class="formula">distance pushed = d_start − d_min = 1.5b − (√5/2) b = ((3 − √5)/2) b ≈ 0.382 b</div>
 <p><b>Answer: D, ((3 − √5)/2) b.</b></p>
+<p><b>Getting there without a calculator.</b> The options are decimals, so at the very end you do have to
+turn a surd into one — but you never need long division. Recover <code>√5</code> by squaring candidates:
+<code>2.2² = 4.84</code> (too small), <code>2.3² = 5.29</code> (too big), <code>2.24² = 5.018</code>
+(just over), so <code>√5 ≈ 2.236</code>. Then</p>
+<div class="formula">(3 − √5)/2 ≈ (3 − 2.236)/2 = 0.764/2 = 0.382</div>
+<p>and 0.382 is option D. Notice what you did <i>not</i> need: <code>1.118b</code> in Step 3, any decimal
+for <code>√(5)/2</code>, or a single division harder than halving 0.764.</p>
+<p><b>The stronger check, which needs no number at all.</b> Square to compare instead of evaluating. The
+answer must be <code>(3 − √5)/2</code>, so it must satisfy <code>√5 = 3 − 2×</code>(the answer). Test
+option A, 0.366: <code>3 − 2(0.366) = 2.268</code>, and <code>2.268² = 5.14 ≠ 5</code>. Test option D,
+0.382: <code>3 − 2(0.382) = 2.236</code>, and <code>2.236² = 5.00</code> ✓. Squaring settles it exactly,
+and it is the technique to reach for whenever the options are decimals but the answer is a surd.</p>
 <p><b>The limiting case that checks the whole derivation.</b> Make the cup exactly as wide as the biscuit: <code>R = b</code>. Then the general result gives</p>
 <div class="formula">d_min = √(R² − b²) = 0,  so the push is R − 0 = b</div>
 <p>A biscuit the size of the rim can be pushed a full radius off centre before it topples — it is supported until its centre reaches the rim's centre. That is clearly right, and only an expression built on <code>√(R² − b²)</code> behaves that way.</p>
@@ -674,7 +686,7 @@ from L:      γ = −1 − 2α − β = −1 − 2 − 1 = −4</div>
     ["G", "Speed of light in a medium: v = c / n"],
     ["A", "Surds and reciprocals without a calculator"]
   ],
-  key: ["snell", "lightspeed", "surds"],
+  key: ["snell", "lightspeed", "surds", "nocalc"],
   q: `<p>A ray of light is incident on a glass cube of side length <code>a</code> and refractive index <code>√2</code>. The angle of incidence is 30°. Find the time taken for the light to travel to the opposite face.</p>`,
   opts: [`√(8/7) · a/c`, `(4/√7) · a/c`, `(√2/3) · a/c`, `(4/√3) · a/c`, `(4/√2) · a/c`],
   ans: 1,
@@ -683,7 +695,7 @@ from L:      γ = −1 − 2α − β = −1 − 2 − 1 = −4</div>
 <div class="formula">n₁ sin θ₁ = n₂ sin θ₂
 1 × sin 30° = √2 × sin θ₂
 sin θ₂ = 0.5 / √2 = 1 / (2√2)</div>
-<p>So <code>θ₂ = 20.7°</code>. The ray bends <i>towards</i> the normal on entering the glass, as it must.</p>
+<p><b>Do not evaluate the angle.</b> “θ₂ = 20.7°” would need a calculator and nothing here needs it: keep <code>sin θ₂ = 1/(2√2)</code> and carry it forward. All you should conclude at this point is the direction — the ray bends <i>towards</i> the normal on entering the glass, because it enters a denser medium, so <code>θ₂ &lt; 30°</code>. That single inequality is what does the work later.</p>
 <p><b>Step 2 — how far it travels inside.</b> The ray enters through one face and leaves through the opposite face, a distance <code>a</code> away. Because the ray is at angle <code>θ₂</code> to the normal, the path is the hypotenuse of a right-angled triangle whose adjacent side is <code>a</code>:</p>
 <div class="formula">path = a / cos θ₂</div>
 <figure class="fig">
@@ -719,8 +731,25 @@ sin θ₂ = 0.5 / √2 = 1 / (2√2)</div>
   = a √2 / (c · √7/(2√2))
   = 2√2 · √2 · a / (√7 c)
   = 4a / (√7 c)</div>
-<p><b>Answer: B, (4/√7) · a/c.</b> Numerically <code>4/√7 = 1.512</code>, so the light takes about <code>1.5 a/c</code> — longer than <code>a/c</code>, as it must be, since it travels further than <code>a</code> and it travels more slowly.</p>
-<p><b>Two sanity checks that take ten seconds each.</b> First, the answer must be larger than <code>a/c</code> (both effects make it slower), which removes option C, <code>√2/3 = 0.47</code>. Second, it must be less than <code>√2 a/c = 1.414a/c</code> for a path of <code>a</code> at speed <code>c/√2</code> — no wait, the path is longer than <code>a</code>, so it must exceed <code>√2 = 1.414</code>: that removes A, <code>1.069</code>. What remains is B at 1.512 and D, E at 2.31 and 2.83, which would require a path of more than <code>1.6a</code> — and the longest possible path across a cube of side <code>a</code> between opposite faces is unbounded only if the ray is nearly grazing, which 20.7° is not.</p>
+<p><b>Answer: B, (4/√7) · a/c.</b> As a rough size, <code>√7 ≈ 2.65</code> (because <code>2.65² = 7.02</code>), so the light takes about <code>4/2.65 ≈ 1.5 a/c</code> — longer than <code>a/c</code>, as it must be, since it travels further than <code>a</code> and it travels more slowly. But you can reach B without that division at all, which is the point of the next check.</p>
+<p><b>Identifying B without evaluating anything.</b> Two crude bounds, both from facts you already have.</p>
+<p><i>Lower bound.</i> The path through the glass is longer than <code>a</code> (the ray is not normal to the
+face), and the speed is <code>c/√2</code>, so <code>t &gt; a/(c/√2) = √2 · a/c</code>.</p>
+<p><i>Upper bound.</i> You know <code>θ₂ &lt; 30°</code>, so <code>cos θ₂ &gt; cos 30° = √3/2</code>, so the
+path <code>a/cos θ₂ &lt; 2a/√3</code>, and</p>
+<div class="formula">t = (path) / (c/√2)  &lt;  (2a/√3) · (√2/c)  =  √(8/3) · a/c</div>
+<p>So the answer lies strictly between <code>√2 = 1.414</code> and <code>√(8/3) = 1.633</code>. Now compare
+the five options <b>by squaring them</b> — no roots, no decimals:</p>
+<div class="formula">bounds squared:        2          &lt;  t<sup>2</sup>  &lt;  8/3 = 2.67
+A  √(8/7)   →   8/7   = 1.14     too small
+B  4/√7     →  16/7   = 2.29     ✔  inside
+C  √2/3     →   2/9   = 0.22     too small
+D  4/√3     →  16/3   = 5.33     too big
+E  4/√2     →  16/2   = 8.00     too big</div>
+<p>B is the only one that fits, and the decision used nothing but two inequalities and five easy divisions.
+This is what “non-calculator” actually asks of you: bound the answer, then test the options against the
+bounds. The full derivation above is how you <i>confirm</i> it; the bounds are how you <i>find</i> it in
+forty seconds.</p>
 <p><b>Where the wrong options come from.</b> A, <code>√(8/7) a/c = 1.069 a/c</code>, is exactly <code>a/(cos θ₂ · c)</code>: the correct path, travelled at speed <code>c</code> — that is, with the refractive index forgotten in the speed but kept in the angle. It is the most instructive of the four wrong answers, because it is right in three places and wrong in one. C, D and E are the other combinations of the same ingredients: the depth <code>a</code> against the diagonal <code>a√2</code>, and the speed <code>c</code> against <code>c/√2</code>.</p>
 <p><b>The method.</b> Always write the time as <code>t = path / speed</code> before substituting anything, and write both the path and the speed as multiples of <code>a</code> and <code>c</code>. Then the answer is forced to be <code>(something) × a/c</code>, and the only question left is which surd the something is. That is exactly the form all five options take, which is a strong hint that the paper expects this route.</p>
 <p><b>Relevant topics:</b> Snell's law; speed of light in a medium; geometric path length; surd manipulation.</p>`,
@@ -796,7 +825,7 @@ sin(π/2 − 2α) = cos 2α</div>
     ["K", "Half-life from data"],
     ["A", "Logarithms without a calculator"]
   ],
-  key: ["expdecay", "logs"],
+  key: ["expdecay", "logs", "nocalc"],
   q: `<p>The half-life of a radioactive substance is <code>T</code>. What is the time taken for one third of the substance to decay?</p>`,
   opts: [`(2/3) T`, `√(2/3) · T`, `T log₂(3/2)`, `T log₂(3)`, `T<sup>2/3</sup>`],
   ans: 2,
@@ -810,14 +839,24 @@ sin(π/2 − 2α) = cos 2α</div>
 t / T = log(3/2) / log 2
 t = T log₂(3/2)</div>
 <p><b>Answer: C, T log₂(3/2).</b></p>
-<p><b>Read the answer to check it.</b> <code>log₂(3/2) = log₂3 − log₂2 = 1.585 − 1 = 0.585</code>, so <code>t = 0.585 T</code>. That is less than one half-life, which is required: less than half the substance has gone, so less than a half-life has passed. And it is positive, which is required too.</p>
-<p><b>Why the other options are wrong.</b> A, <code>(2/3)T</code>, assumes the decay is linear in time — at <code>t = (2/3)T</code> it would have the substance decaying at a constant rate, which is not what radioactive decay does. D, <code>T log₂3 = 1.585T</code>, is the answer to a different question: it is the time for two thirds to have decayed, i.e. one third remaining, because it comes from <code>(1/2)<sup>t/T</sup> = 1/3</code>. That is the single most common slip here, and it is why the question says “one third decay” rather than “one third remaining”. E, <code>T<sup>2/3</sup></code>, is dimensionally impossible — a half-life raised to a power is not a time — so it dies on inspection. B, <code>√(2/3) T = 0.816T</code>, is a third plausible-looking number with no derivation behind it; you cannot get a square root out of an exponential decay law.</p>
+<p><b>Read the answer to check it — by bounding, not by calculating.</b> You cannot evaluate
+<code>log₂3</code> without a calculator, and you do not need to. Trap 3 between two powers of 2 you can
+compute in your head:</p>
+<div class="formula">2<sup>1.5</sup> = 2 × √2 = 2 × 1.414 = 2.83 &lt; 3 &lt; 2<sup>2</sup> = 4
+=&gt;   1.5 &lt; log₂3 &lt; 2
+=&gt;   0.5 &lt; log₂3 − 1 &lt; 1
+=&gt;   0.5 &lt; log₂(3/2) &lt; 1,   so  t is between 0.5T and 1T</div>
+<p>That is exactly what the physics demands: less than half the substance has decayed, so less than one
+half-life has elapsed — and more than none has, so more than zero. The bounds give you the answer's
+<i>whereabouts</i>, which is all a multiple-choice question ever asks for. (For the record
+<code>log₂3 = 1.585</code> and <code>t = 0.585T</code>, but note that no step above needed either number.)</p>
+<p><b>Why the other options are wrong.</b> A, <code>(2/3)T</code>, assumes the decay is linear in time — at <code>t = (2/3)T</code> it would have the substance decaying at a constant rate, which is not what radioactive decay does. D, <code>T log₂3</code> (a little under <code>2T</code>, by the bound above), is the answer to a different question: it is the time for two thirds to have decayed, i.e. one third remaining, because it comes from <code>(1/2)<sup>t/T</sup> = 1/3</code>. That is the single most common slip here, and it is why the question says “one third decay” rather than “one third remaining”. E, <code>T<sup>2/3</sup></code>, is dimensionally impossible — a half-life raised to a power is not a time — so it dies on inspection. B, <code>√(2/3) T ≈ 0.82T</code>, is a third plausible-looking number with no derivation behind it; you cannot get a square root out of an exponential decay law.</p>
 <p><b>Carry the general form.</b> If a fraction <code>f</code> remains,</p>
 <div class="formula">t = T log₂(1/f)</div>
 <p>Check it on two cases you know by heart: <code>f = 1/2</code> gives <code>t = T log₂2 = T</code> ✔, and <code>f = 1/4</code> gives <code>2T</code> ✔. A general formula that reproduces the standard cases is worth remembering, and these two are the ones it will be tested against.</p>
 <p><b>How to do <code>log₂(3/2)</code> without a calculator.</b> Split it: <code>log₂(3/2) = log₂3 − 1</code>, and <code>log₂3</code> is between <code>log₂2 = 1</code> and <code>log₂4 = 2</code>, closer to 1.5 than to 2 — so 0.585 is plausible before you compute anything. If the options had required the value rather than the expression, that bracket would be enough to choose.</p>
 <p><b>Relevant topics:</b> exponential decay; half-life; the decay law in index form; logarithms.</p>`,
-  trap: "Reading one third decayed as one third remaining and answering <code>T log₂3 = 1.585T</code>. Two thirds remains, so <code>t = T log₂(3/2) = 0.585T</code> — less than a half-life."
+  trap: "Reading one third decayed as one third remaining and answering <code>T log₂3 ≈ 1.6T</code>. Two thirds remains, so <code>t = T log₂(3/2)</code>, which the bounds put between <code>0.5T</code> and <code>1T</code> — less than a half-life is wrong; <i>under one</i> half-life is right."
 },
 
 {
@@ -994,7 +1033,7 @@ j = da/dt = −ω² v</div>
 <text x="340.9" y="30" text-anchor="middle" font-size="11.5" fill="#7b8494">ceiling</text>
 <text x="350.9" y="64" font-size="12" fill="#4a5262">string</text>
 </svg>
-<figcaption><b>The ring is released at the top end — the end the string is tied to — and slides down towards the hinge.</b> So its distance from O is <code>ℓ − s</code>, and <code>s</code> grows like <code>t²</code>: that is where the <code>t²</code> in the given tension comes from.</figcaption>
+<figcaption><b>The rod is held still by the string; the ring slides along it.</b> Note which end the ring starts at, and that the rod keeps the ring at a fixed angle — the motion is one-dimensional along the rod, not vertical.</figcaption>
 </figure><p>Given that the tension in the string <code>T</code> at time <code>t</code> (while the ring is in motion) is <code>T = mg(1 − kt²)</code>, select the correct expression for <code>k</code>.</p>`,
   opts: [`g / 4ℓ`, `g / 2ℓ`, `g / ℓ`, `g / (√2 ℓ)`, `√3 g / (2ℓ)`],
   ans: 0,
@@ -1063,7 +1102,7 @@ normal reaction N, perpendicular to the rod, at distance r  →  lever arm r</di
 <text x="340.9" y="30" text-anchor="middle" font-size="11.5" fill="#7b8494">ceiling</text>
 <text x="350.9" y="64" font-size="12" fill="#4a5262">string</text>
 </svg>
-<figcaption><b>The ring is released at the top end — the end the string is tied to — and slides down towards the hinge.</b> So its distance from O is <code>ℓ − s</code>, and <code>s</code> grows like <code>t²</code>: that is where the <code>t²</code> in the given tension comes from.</figcaption>
+<figcaption><b>The rod is held still by the string; the ring slides along it.</b> Note which end the ring starts at, and that the rod keeps the ring at a fixed angle — the motion is one-dimensional along the rod, not vertical.</figcaption>
 </figure>
 <p><b>The <code>t = 0</code> check works.</b> Putting <code>r = ℓ</code> gives <code>T = mg</code>, exactly as 
             "the given form requires. And as the ring reaches the hinge, <code>r → 0</code> and the tension 
@@ -1098,7 +1137,7 @@ E  0.87 g/ℓ   a spurious √3 — e.g. reaching for cos 30° instead of sin 30
     ["D", "Centripetal force"],
     ["A", "Ratio reasoning"]
   ],
-  key: ["circular", "conical", "ratio"],
+  key: ["circular", "conical", "ratio", "nocalc"],
   q: `<p>A conical pendulum consists of a bob attached to a light inextensible string of length<code>ℓ</code>, with the upper end fixed. The bob moves in a horizontal circle so that the string makes an angle of 30° to the vertical. By what factor must the angular frequency be increased for this angle to double to 60°?</p>`,
   opts: [`√√3`, `√2`, `√3`, `2`, `3`],
   ans: 0,
@@ -1119,6 +1158,16 @@ horizontal:  T sin θ = m ω² r = m ω² ℓ sin θ</div>
 cos 30° / cos 60° = √3</div>
 <div class="formula">ω₂ / ω₁ = √√3 = 3<sup>1/4</sup> ≈ 1.32</div>
 <p><b>Answer: A, √√3.</b></p>
+<p><b>You can pick it out without evaluating the fourth root at all.</b> Raise each option to the fourth
+power — the answer must give exactly 3, and fourth powers are just squaring twice:</p>
+<div class="formula">A  √√3  →  (√√3)<sup>4</sup> = 3            ✔
+B  √2   →  (√2)<sup>4</sup>  = 4            ✘
+C  √3   →  (√3)<sup>4</sup>  = 9            ✘
+D  2    →  2<sup>4</sup>     = 16           ✘
+E  3    →  3<sup>4</sup>     = 81           ✘</div>
+<p>One line, no arithmetic beyond 2² = 4 and 3² = 9. If you do want the size of it, take it in two easy
+square roots: <code>√3 = 1.732</code>, then find the number whose square is 1.732 — <code>1.3² = 1.69</code>
+is low and <code>1.32² = 1.742</code> is high, so it is about <code>1.316</code>. Either way you land on A.</p>
 <figure class="fig">
 <svg viewBox="0 0 480 250" role="img" aria-label="A conical pendulum: a string from a fixed point making thirty degrees with the vertical, with the bob on a dashed horizontal circle, and a second fainter string at sixty degrees with a larger circle.">
 <defs>
@@ -1194,7 +1243,7 @@ B = √2 = 1.414   a near-miss decoy sitting just above the true 1.32</div>
     ["H", "Potential divider"],
     ["A", "Order of magnitude"]
   ],
-  key: ["loggraphs", "inversesquare", "divider"],
+  key: ["loggraphs", "inversesquare", "divider", "nocalc"],
   q: `<p>The resistance <code>R</code> of a light-dependent resistor (LDR) depends on the lightintensity <code>I</code>. A logarithmic plot relating these variables is shown below.</p><figure class="fig">
 <svg viewBox="0 0 480 268" role="img" aria-label="A straight line on a graph of log R against log I, falling from 5.2 on the vertical axis at zero on the horizontal axis to 1.8 at four on the horizontal axis.">
 <defs>
@@ -1219,7 +1268,7 @@ B = √2 = 1.414   a near-miss decoy sitting just above the true 1.32</div>
 <text x="130.0" y="54.0" font-size="11.5" fill="#7b8494">(0, 5.2)</text>
 <text x="388.0" y="214.0" text-anchor="end" font-size="11.5" fill="#7b8494">(4, 1.8)</text>
 </svg>
-<figcaption><b>A straight line on log–log axes.</b> Its gradient is <code>(1.8 − 5.2)/(4 − 0) = −0.85</code>, so <code>R ∝ I<sup>−0.85</sup></code>. Halving the distance multiplies the intensity by four, and <code>4<sup>−0.85</sup> ≈ 0.31</code>.</figcaption>
+<figcaption><b>A straight line on log–log axes</b>, so <code>R ∝ I<sup>n</sup></code> with <code>n</code> equal to the gradient. Both scales are logarithmic, and the two end points are marked. (Reading the gradient off the plot is part of the question; what you then do with a fractional power is the rest of it.)</figcaption>
 </figure><p>A point light source placed a distance <code>d</code> from the LDR illuminates it, and its resistance is measured to be <code>R₀</code>. Which of the following is a good approximation for the LDR resistance when the distance to the light source is halved?</p>`,
   opts: [`0.1 R₀`, `0.3 R₀`, `0.5 R₀`, `0.7 R₀`, `0.9 R₀`],
   ans: 1,
@@ -1239,11 +1288,18 @@ B = √2 = 1.414   a near-miss decoy sitting just above the true 1.32</div>
 <div class="formula">I ∝ 1 / d²        ⇒        d → d/2  gives  I → 4I</div>
 <p><b>Step 3 — combine.</b></p>
 <div class="formula">R_new / R₀ = (4I / I)<sup>−0.85</sup> = 4<sup>−0.85</sup></div>
-<p>Now the arithmetic, done the way you would do it without a calculator. Write it in base 2:</p>
-<div class="formula">4<sup>0.85</sup> = 2<sup>1.70</sup> = 2 × 2<sup>0.70</sup></div>
-<p>and <code>2<sup>0.70</sup></code> is a little above <code>2<sup>0.5</sup> = 1.41</code> and a little below 
-            "<code>2<sup>0.75</sup> = 1.68</code>; call it <code>1.62</code>. So</p>
-<div class="formula">4<sup>0.85</sup> ≈ 2 × 1.62 = 3.25        ⇒        4<sup>−0.85</sup> ≈ 1 / 3.25 ≈ 0.31</div>
+<p><b>Now bracket it — do not try to compute it.</b> <code>4<sup>−0.85</sup></code> has no mental evaluation, and
+it does not need one. The exponent −0.85 lies between −1 and −3/4, and for a base bigger than 1 a more
+negative power is a smaller number, so</p>
+<div class="formula">4<sup>−1</sup>      &lt;  4<sup>−0.85</sup>  &lt;  4<sup>−3/4</sup>
+   1/4      &lt;  4<sup>−0.85</sup>  &lt;  1 / 4<sup>3/4</sup></div>
+<p>and the right-hand bound is easy:
+<code>4<sup>3/4</sup> = (2²)<sup>3/4</sup> = 2<sup>3/2</sup> = 2√2 = 2 × 1.414 = 2.83</code>, so</p>
+<div class="formula">0.25  &lt;  4<sup>−0.85</sup>  &lt;  1/2.83  =  0.354</div>
+<p>Of the five options — 0.1, 0.3, 0.5, 0.7, 0.9 — <b>only 0.3 lies between 0.25 and 0.354</b>. The
+question is settled by two powers you can do in your head, and the gradient never had to be read to
+better than “about −0.9”. That is the whole trick of this paper: bound the answer, then let the options
+do the rounding.</p>
 <p><b>Answer: B, 0.3 R₀.</b></p>
 <p><b>The robustness check that matters most here.</b> Suppose you read the gradient as exactly 
             "<code>−1</code> instead of <code>−0.85</code> — a very reasonable mis-reading of a hand-drawn 
@@ -1255,7 +1311,7 @@ B = √2 = 1.414   a near-miss decoy sitting just above the true 1.32</div>
             "question is telling you.</p>
 <p><b>Where the wrong options come from.</b></p>
 <div class="formula">C = 0.5 R₀   used I ∝ 1/d, not 1/d²  →  2<sup>−0.85</sup> ≈ 0.55
-A = 0.1 R₀   used I ∝ 1/d³, or 4<sup>−1.7</sup> ≈ 0.095
+A = 0.1 R₀   used I ∝ 1/d³, or 4<sup>−1.7</sup> ≈ 0.1
 D = 0.7 R₀   treated the change as small — as if the axes were linear
 E = 0.9 R₀   almost no change at all</div>
 <p>C is the one to watch for: “halve the distance, so halve the intensity” is the single most common error 
@@ -1267,7 +1323,7 @@ E = 0.9 R₀   almost no change at all</div>
 3. raise that factor to the power n</div>
 <p><b>Relevant topics:</b> log–log plots and power laws; inverse-square law for a point source; estimating 
             "powers of 2 without a calculator.</p>`,
-  trap: "Halving the distance and halving the intensity. A point source obeys <code>I ∝ 1/d²</code>, so halving <code>d</code> <i>quadruples</i> <code>I</code>; that error leads straight to option C."
+  trap: "Halving the distance and halving the intensity — that error leads straight to option C, 0.5R₀ — or trying to evaluate <code>4<sup>−0.85</sup></code> directly. Bracket it: it lies between <code>4<sup>−1</sup> = 0.25</code> and <code>4<sup>−3/4</sup> = 1/(2√2) = 0.354</code>, and 0.3 is the only option in that window."
 },
 
 {
@@ -1365,7 +1421,7 @@ E = 2 mga      over-corrected in both directions at once</div>
     ["H", "Series and parallel"],
     ["A", "Ratio reasoning"]
   ],
-  key: ["seriesparallel", "networks", "ratio"],
+  key: ["seriesparallel", "networks", "ratio", "nocalc"],
   q: `<p>Consider the arrangement of 12 identical resistors below. The equivalent resistance is measuredbetween the following pairs of points: PR, PS, PU, QS, QT. Which measurement gives the median (middle value) resistance?</p><figure class="fig">
 <svg viewBox="0 0 480 300" role="img" aria-label="A square grid of nine nodes joined by twelve identical resistors, labelled P, Q and R along the top row, S at the centre, and T and U along the bottom row.">
 <defs>
@@ -1496,7 +1552,7 @@ P—A and R—B  →  ½ Ω          A—C and B—U  →  ½ Ω</div>
 <div class="formula">V_C = ¾ V_A ,   V_A = (V_Q + 2 V_S)/4 ,   V_S = (V_Q + 2 V_A)/4
 ⇒  V_A = 2V_Q/7 ,  and at Q:  2(V_Q − 9V_Q/14) + V_Q = 1
 ⇒  V_Q = 7/12</div>
-<div class="formula">R_QS = 7/12 Ω ≈ 0.583 Ω</div>
+<div class="formula">R_QS = 7/12 Ω</div>
 <p><b>PR — reduce by M, antisymmetrically.</b> Now P and R are a mirrored <i>pair</i>, so the excitation is 
             "antisymmetric: <code>V(Q) = V(S) = V(T) = ½(V_P + V_R)</code>, and those three axis nodes sit at 
             "the same potential, so the links Q—S and S—T carry no current. Consider the left half with the 
@@ -1520,11 +1576,16 @@ I from P = (V − V_A) + (V − V/2) = 0.3V + 0.5V = 4V/5</div>
             "<code>V_RC = 1/4</code>, <code>V_TB = 1/8</code> with 1 A injected at P, so</p>
 <div class="formula">R_PS = 7/8 Ω = 0.875 Ω</div>
 <p><b>Now take the median.</b></p>
-<div class="formula">QS   = 7/12  ≈ 0.583     (smallest)
-PS   = 7/8   = 0.875
-QT   = 1     = 1.000     ←  middle of five
-PR   = 5/4   = 1.250
-PU   = 3/2   = 1.500     (largest)</div>
+<div class="formula">QS = 7/12      PS = 7/8      QT = 1      PR = 5/4      PU = 3/2</div>
+<p>Order them <b>by cross-multiplying, never by converting to decimals</b> — that is the whole point of
+keeping them as fractions. <code>7/12</code> against <code>7/8</code>: compare <code>7 × 8 = 56</code> with
+<code>7 × 12 = 84</code>, so <code>7/12 &lt; 7/8</code>. <code>7/8</code> against <code>1</code>:
+<code>7 &lt; 8</code>. <code>1</code> against <code>5/4</code>: <code>4 &lt; 5</code>. And <code>5/4</code>
+against <code>3/2</code>: <code>10 &lt; 12</code>. So the order is</p>
+<div class="formula">7/12  &lt;  7/8  &lt;  1  &lt;  5/4  &lt;  3/2
+ QS       PS      QT     PR      PU
+                   ↑
+              the median</div>
 <p><b>Answer: E, QT.</b></p>
 <p><b>Two shortcuts that get you there faster.</b> First, you never needed PS, PU or PR to any precision: 
             "QS is obviously the smallest (Q and S are joined by a single resistor with the rest of the grid in 

@@ -53,7 +53,7 @@ n₁ sin i = n₂ sin r
 n₁ sin(90° − θ₁) = n₂ sin(90° − θ₂)
 n₁ cos θ₁ = n₂ cos θ₂</div>
 <p><b>Answer: C, n₁ cos θ₁ = n₂ cos θ₂.</b></p>
-<p><b>Check it against a case you know.</b> The figure is drawn for <code>n₁ = 1.5</code> and <code>n₂ = 1</code> with <code>θ₁ = 60°</code>. Then <code>cos θ₂ = 1.5 × cos 60° = 0.75</code>, so <code>θ₂ = 41.4°</code>. Snell in the normal form confirms it: <code>1.5 sin 30° = 0.75 = 1 × sin 48.6°</code>. The ray leaves the glass at a smaller angle to the surface, bending away from the normal — exactly as light does on the way out of a denser medium.</p>
+<p><b>Check it against a case you know.</b> The figure is drawn for <code>n₁ = 1.5</code> and <code>n₂ = 1</code> with <code>θ₁ = 60°</code>. Then <code>cos θ₂ = 1.5 × cos 60° = 0.75</code> — and <b>stop there</b>. You do not need θ₂ itself: “41.4°” is a number no one can produce without a calculator, and nothing in this question asks for it. What you need is only whether θ₂ is larger or smaller than θ₁, which <code>cos θ₂ = 0.75 &gt; cos 60° = 0.5</code> answers immediately: cos θ₂ is bigger, so θ₂ is the smaller angle, so the ray bent away from the normal. (Snell in the normal form says the same thing: <code>1.5 sin 30° = 0.75 = 1 × sin θ₂′</code> where θ₂′ = 48.6° from the normal — again a number you never have to write down.) The ray leaves the glass at a smaller angle to the surface, bending away from the normal — exactly as light does on the way out of a denser medium.</p>
 <p><b>The limiting case that kills A.</b> Slide the incident ray down until it travels along the interface: <code>θ₁ → 90°</code>. In this picture that means the ray is travelling parallel to the boundary, and it should keep travelling parallel to it — nothing in the problem singles out either side. Option C gives <code>cos θ₁ → 0</code>, hence <code>cos θ₂ → 0</code>, hence <code>θ₂ → 90°</code>: still along the boundary. ✔ Option A would give <code>sin θ₂ = n₁/n₂</code>, a definite angle to the surface, so the same limiting ray would suddenly refract — nonsense.</p>
 <p><b>Where the other options come from.</b> A is Snell's law with the angles to the normal — the wrong angles for this diagram. B is A with the refractive indices swapped. D is C with the indices swapped. E mixes a sine with a cosine, which no physical law does.</p>
 <p><b>The transferable rule.</b> Before substituting into any standard formula, read which angle the diagram actually marks. A marked angle is a fact about the figure; a remembered formula is a fact about a different figure until you have checked the two agree.</p>
@@ -141,19 +141,19 @@ Z: 92 − 8(2) + 6(1) = 82       ✔</div>
              "not enough information"],
     "ans": 2,
     "sol": """<p><b>Turn the path difference into a number of wavelengths.</b> That single step decides everything:</p>
-<div class="formula">Δx / λ = 7.5 / 1.8 = 4.1667 wavelengths</div>
-<p><b>Read what 4.1667 means.</b> Four whole wavelengths contribute nothing — a shift of a whole wavelength is a shift of a whole cycle. What is left over is the fractional part:</p>
-<div class="formula">fraction = 0.1667 = 1/6 of a wavelength
+<div class="formula">Δx / λ = 7.5 / 1.8 = 75/18 = 25/6 = 4 + 1/6 wavelengths</div>
+<p><b>Do that division as a fraction, not on a calculator.</b> 7.5/1.8 = 75/18; both divide by 3, so it is 25/6, and 25/6 = 4 remainder 1, so <b>4 whole wavelengths plus 1/6</b>. The “4” is what misleads people who reach for a decimal and see 4.1667. Keeping the fraction makes the remainder obvious — and the remainder is the only part that matters. Four whole wavelengths contribute nothing — a shift of a whole wavelength is a shift of a whole cycle. What is left over is the fractional part:</p>
+<div class="formula">fractional part = 1/6 of a wavelength
 phase difference = 2π × 1/6 = 60°</div>
 <p><b>Six degrees of a cycle is a long way from half a cycle.</b> At 60° the two waves are much more in step than out of step. The resultant amplitude is</p>
 <div class="formula">2A cos(φ/2) = 2A cos 30° = 1.73A</div>
 <p>against <code>2A</code> for perfect reinforcement — 87% of it. That is “mostly constructive”.</p>
 <p><b>Answer: C, mostly constructive.</b></p>
-<p><b>Why not fully constructive.</b> That requires the path difference to be a whole number of wavelengths, and 4.1667 is not 4. The test that makes this quick: compare 4.1667 with its nearest integers. It is 0.167 from 4 (fully constructive) and 0.333 from 4.5 (fully destructive). It is nearer to constructive, and 0.167 is well inside the 0.25 cut-off — so the answer is “mostly”, on the constructive side.</p>
+<p><b>Why not fully constructive.</b> That requires the path difference to be a whole number of wavelengths, and 25/6 is not a whole number. The test that makes this quick: compare the remainder 1/6 against the midpoint 1/4. Since 1/6 &lt; 1/4 (cross-multiply: 4 &lt; 6), the shift is closer to “in step” than to “out of step” — so the answer is “mostly”, on the constructive side. No decimal needed anywhere.</p>
 <p><b>Why not E, not enough information.</b> The two waves are coherent, they come from the same source, and they arrive with equal amplitude. Given the wavelength and the path difference, the phase relationship at the detector is completely determined. What is <i>not</i> determined is the absolute amplitude — you cannot say the detector reads 1.73A without knowing A — but the question asks about the type of interference, which is a question about phase, and phase is fixed.</p>
 <p><b>The general rule worth carrying into the exam.</b> Work in fractions of a wavelength: a whole number gives fully constructive, a half-odd number (<code>n + ½</code>) gives fully destructive, and anything else is “mostly” whichever side of the midpoint it falls. Then convert to radians (×2π) or degrees (×360°) only if the question asks for them.</p>
 <p><b>Relevant topics:</b> superposition; path and phase difference; coherence; interference conditions.</p>""",
-    "trap": "Rounding 4.17 wavelengths to 4 and calling it fully constructive — or treating “from the same source” as a reason to doubt the information given.",
+    "trap": "Turning 7.5/1.8 into 4.1667 on a calculator, rounding it to 4, and calling it fully constructive — or treating “from the same source” as a reason to doubt the information given.",
 },
 
 ]

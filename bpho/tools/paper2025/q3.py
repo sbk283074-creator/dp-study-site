@@ -144,6 +144,18 @@ from L:      γ = −1 − 2α − β = −1 − 2 − 1 = −4</div>
 <p><b>Step 5 — subtract.</b></p>
 <div class="formula">distance pushed = d_start − d_min = 1.5b − (√5/2) b = ((3 − √5)/2) b ≈ 0.382 b</div>
 <p><b>Answer: D, ((3 − √5)/2) b.</b></p>
+<p><b>Getting there without a calculator.</b> The options are decimals, so at the very end you do have to
+turn a surd into one — but you never need long division. Recover <code>√5</code> by squaring candidates:
+<code>2.2² = 4.84</code> (too small), <code>2.3² = 5.29</code> (too big), <code>2.24² = 5.018</code>
+(just over), so <code>√5 ≈ 2.236</code>. Then</p>
+<div class="formula">(3 − √5)/2 ≈ (3 − 2.236)/2 = 0.764/2 = 0.382</div>
+<p>and 0.382 is option D. Notice what you did <i>not</i> need: <code>1.118b</code> in Step 3, any decimal
+for <code>√(5)/2</code>, or a single division harder than halving 0.764.</p>
+<p><b>The stronger check, which needs no number at all.</b> Square to compare instead of evaluating. The
+answer must be <code>(3 − √5)/2</code>, so it must satisfy <code>√5 = 3 − 2×</code>(the answer). Test
+option A, 0.366: <code>3 − 2(0.366) = 2.268</code>, and <code>2.268² = 5.14 ≠ 5</code>. Test option D,
+0.382: <code>3 − 2(0.382) = 2.236</code>, and <code>2.236² = 5.00</code> ✓. Squaring settles it exactly,
+and it is the technique to reach for whenever the options are decimals but the answer is a surd.</p>
 <p><b>The limiting case that checks the whole derivation.</b> Make the cup exactly as wide as the biscuit: <code>R = b</code>. Then the general result gives</p>
 <div class="formula">d_min = √(R² − b²) = 0,  so the push is R − 0 = b</div>
 <p>A biscuit the size of the rim can be pushed a full radius off centre before it topples — it is supported until its centre reaches the rim's centre. That is clearly right, and only an expression built on <code>√(R² − b²)</code> behaves that way.</p>

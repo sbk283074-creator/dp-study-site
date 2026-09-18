@@ -98,7 +98,10 @@ number of cubes such that all the ice just melts (final temperature 0 °C). Ener
 water cooling to 0 °C:</p>
 <div class="formula">Q = mcΔT = 0.5 × 4200 × 20 = 42 000 J
 per cube: Q = mL = 0.025 × 3.3×10⁵ = 8250 J
-number = 42 000 / 8250 = 5.09  →  5 whole cubes</div>
+how many cubes?  bracket the division instead of evaluating it:
+5 cubes need 5 × 8250 = 41 250 J  ≤  42 000 J   ✓  enough
+6 cubes need 6 × 8250 = 49 500 J   &gt;  42 000 J   ✗  not enough
+→  5 whole cubes</div>
 <p>The answer is 5, not 6: the sixth cube would not fully melt, so the final state would be ice and water
 together at 0 °C — which contradicts “so that all the ice melts”. Whenever a question asks for a number
 of discrete objects, <b>round down</b> and then sanity-check the boundary case.</p>
@@ -167,17 +170,20 @@ because the wave repeats. Only the <b>fractional part</b> matters:</p>
 fraction ½      →  exactly out of step  →  fully destructive
 fraction ¼ or ¾ →  quarter-cycle off    →  in between</div>
 <p><b>Example (Q5).</b> λ = 1.8 m and Δx = 7.5 m:</p>
-<div class="formula">7.5 / 1.8 = 4.166…
-whole part: 4      (irrelevant)
-fraction:   0.167 ≈ 1/6 of a cycle</div>
-<p>One sixth of a cycle is close to 0 rather than to ½, so the waves arrive nearly in step — the result is
-<b>mostly constructive</b>. A quick way to see it: 7.5 m is 4 whole wavelengths (7.2 m) plus 0.3 m, and
-0.3 m out of 1.8 m is a sixth of a cycle — far from the half-cycle needed for cancellation.</p>
+<div class="formula">7.5 / 1.8 = 75/18 = 25/6 = 4 + 1/6 of a cycle
+whole part: 4            (irrelevant — the wave repeats)
+fraction:   1/6 of a cycle</div>
+<p>Cancel the fraction first: 75/18 divides by 3 top and bottom, giving 25/6, and 25/6 is 4 with 1 left over,
+so the excess is <b>one sixth of a cycle</b> — no division to carry out. Compare 1/6 against the
+quarter-cycle midpoint by cross-multiplying: 1 × 4 &lt; 6 × 1, so 1/6 &lt; 1/4 and the waves are
+nearer in step than out of step. The result is <b>mostly constructive</b>. You can see the same thing without
+any arithmetic: 7.5 m is 4 whole wavelengths (7.2 m) plus 0.3 m, and 0.3 m out of 1.8 m is a sixth of a
+cycle — far from the half-cycle needed for cancellation.</p>
 
 <p><b>Traps.</b> Forgetting to discard the whole number of wavelengths (the commonest error); and converting
 to radians when the question only needs the fraction — the fraction of a cycle is the direct answer.</p>
 """,
-  "Q5: 7.5/1.8 = 4.17 wavelengths → fraction 0.17 → mostly constructive.")
+  "Q5: 7.5/1.8 = 4 + 1/6 wavelengths → excess 1/6, which is under the 1/4 midpoint → mostly constructive.")
 
 c("coherence", "F", 3, "Coherence: what two sources need in order to interfere", ["superposition", "waves"],
   "Two sources only produce a steady interference pattern if they keep a constant phase relationship — which in practice means the same frequency and a fixed phase difference.",
@@ -289,8 +295,14 @@ sin θ₁ / sin θ₂ = v₁ / v₂ = n₂ / n₁, which rearranges to the law a
 
 <p><b>Worked (Q16).</b> Air to glass, n₂ = √2, angle of incidence 30°:</p>
 <div class="formula">1 · sin 30° = √2 · sin θ₂
-sin θ₂ = 0.5 / 1.414 = 0.354       θ₂ ≈ 20.7°</div>
-<p>The ray bends towards the normal, as expected going into glass.</p>
+sin θ₂ = 0.5 / √2 = 1/(2√2) = 0.354</div>
+<p><b>Stop here.</b> The paper is non-calculator, and θ₂ itself — about 20.7° — is a number
+you cannot produce without a calculator and are never asked for. What you need is the <i>direction</i>:
+<code>sin θ₂ = 0.354 &lt; sin 30° = 0.5</code>, so θ₂ &lt; 30°, so the ray has
+bent <b>towards</b> the normal on entering the glass. That single inequality is the whole physical content of
+the step, and it needs no arcsine. Carrying <code>sin θ₂</code> forward as an exact surd is also what
+lets the next step give <code>cos θ₂</code> from <code>sin² + cos² = 1</code> without ever
+evaluating an angle.</p>
 
 <p><b>Traps.</b> Writing n₁ sin θ₂ = n₂ sin θ₁ (inverted — check it by asking which medium gives the
 smaller angle); and using degrees/radians inconsistently when evaluating trig functions.</p>
