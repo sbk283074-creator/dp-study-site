@@ -604,13 +604,13 @@ from L:      γ = −1 − 2α − β = −1 − 2 − 1 = −4</div>
 <line x1="295.0" y1="158.0" x2="295.0" y2="210.0" stroke="#cbd2dd" stroke-width="1.2" stroke-dasharray="4 4"/>
 <text x="138" y="148" text-anchor="middle" font-size="12" font-weight="600" fill="#4a5262">R = 3b/2</text>
 <text x="329" y="148" text-anchor="middle" font-size="12" font-weight="600" fill="#4a5262">b</text>
-<text x="246" y="228" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2f5fd0">d = R at the start</text>
-<text x="178" y="164" text-anchor="end" font-size="13.5" font-weight="600" fill="#14181f">O</text>
+<text x="210" y="228" text-anchor="middle" font-size="12.5" font-weight="600" fill="#2f5fd0">d = R at the start</text>
+<text x="178" y="172" text-anchor="end" font-size="13.5" font-weight="600" fill="#14181f">O</text>
 <text x="297" y="148" text-anchor="start" font-size="13.5" font-weight="600" fill="#2f5fd0">C</text>
 <text x="283.0" y="99.8" font-size="13" font-weight="600" fill="#5b3fa8">P</text>
 <text x="283.0" y="224.2" font-size="13" font-weight="600" fill="#5b3fa8">Q</text>
 <text x="67" y="176" text-anchor="start" font-size="11.5" fill="#7b8494">cup rim</text>
-<text x="255" y="250" text-anchor="middle" font-size="11.5" fill="#2f5fd0">biscuit</text>
+<text x="255" y="260" text-anchor="middle" font-size="11.5" fill="#2f5fd0">biscuit</text>
 </svg>
 <figcaption><b>The geometry of the balance.</b> The rim (radius <code>R</code>) crosses the biscuit's edge (radius <code>b</code>) at P and Q. The biscuit stays up while its centre of mass C lies inside the segment cut off by the chord PQ — so it falls the moment C reaches that chord.</figcaption>
 </figure>
@@ -968,11 +968,11 @@ j = da/dt = −ω² v</div>
 <path d="M152.0,132 C190,80 220,64 258,66 C306,68 372,128 414,200" fill="none" stroke="#2f5fd0" stroke-width="2.8" stroke-linejoin="round"/>
 <circle cx="152.0" cy="132" r="3.6" fill="#2f5fd0"/>
 <text x="70.0" y="190.0" font-size="11.5" fill="#7b8494">free fall: a = g, so j = 0</text>
-<text x="160.0" y="56" font-size="11.5" font-weight="600" fill="#b3352f">rope goes taut: j jumps</text>
-<text x="266" y="58" font-size="11.5" font-weight="600" fill="#2f5fd0">a = 0: speed greatest, so |j| greatest</text>
+<text x="72.0" y="52" font-size="11.5" font-weight="600" fill="#b3352f">rope goes taut: j jumps</text>
+<text x="442" y="52" text-anchor="end" font-size="11.5" font-weight="600" fill="#2f5fd0">a = 0: speed greatest, so |j| greatest</text>
 <text x="436.0" y="220.0" text-anchor="end" font-size="12" font-style="italic" fill="#4a5262">t</text>
 <text x="54.0" y="46.0" text-anchor="end" font-size="12" font-style="italic" fill="#4a5262">j</text>
-<text x="418" y="190.0" text-anchor="end" font-size="11.5" font-weight="600" fill="#1f7a53">v = 0: at rest, j = 0</text>
+<text x="390" y="190.0" text-anchor="end" font-size="11.5" font-weight="600" fill="#1f7a53">v = 0: at rest, j = 0</text>
 </svg>
 <figcaption><b>The graph the correct option has to have.</b> Flat at zero while the rope is slack; a discontinuous jump at the instant it goes taut; a rise to a maximum as the jumper is still speeding up; and a return to exactly zero at the moment of instantaneous rest.</figcaption>
 </figure>
@@ -999,13 +999,6 @@ j = da/dt = −ω² v</div>
   key: ["vectors-resolve", "kinematics", "moments", "statics"],
   q: `<p>A light inextensible string is attached to one end of a rigid rod of negligible weight and of length <code>ℓ</code>, with its other end freely hinged at O. The other end of the string is attached to the ceiling, so that the string is vertical, and the rod makes an angle of 30° to the horizontal. A small smooth ring of mass <code>m</code> is released from rest at the upper end of the rod and slides downwards along it.</p><figure class="fig">
 <svg viewBox="0 0 480 262" role="img" aria-label="A rod hinged at its lower-left end at O making thirty degrees with the horizontal, with a vertical string from the ceiling down to its upper end where a small ring of mass m is released.">
-<defs>
-<marker id="f21-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker>
-<marker id="f21-arA" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#2f5fd0"/></marker>
-<marker id="f21-arB" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#b3352f"/></marker>
-<marker id="f21-dim" markerWidth="8" markerHeight="8" refX="6.4" refY="2.8" orient="auto"><path d="M0,0 L6.4,2.8 L0,5.6 z" fill="#7b8494"/></marker>
-<marker id="f21-dimS" markerWidth="8" markerHeight="8" refX="0.6" refY="2.8" orient="auto"><path d="M6.4,0 L0,2.8 L6.4,5.6 z" fill="#7b8494"/></marker>
-</defs>
 <line x1="40" y1="42" x2="446" y2="42" stroke="#14181f" stroke-width="2.2"/>
 <line x1="60" y1="42" x2="48" y2="30" stroke="#cbd2dd" stroke-width="1.6"/>
 <line x1="92" y1="42" x2="80" y2="30" stroke="#cbd2dd" stroke-width="1.6"/>
@@ -1068,13 +1061,6 @@ normal reaction N, perpendicular to the rod, at distance r  →  lever arm r</di
 <p><b>Answer: A, k = g / 4ℓ.</b></p>
 <figure class="fig">
 <svg viewBox="0 0 480 262" role="img" aria-label="A rod hinged at its lower-left end at O making thirty degrees with the horizontal, with a vertical string from the ceiling down to its upper end where a small ring of mass m is released.">
-<defs>
-<marker id="f21-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker>
-<marker id="f21-arA" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#2f5fd0"/></marker>
-<marker id="f21-arB" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#b3352f"/></marker>
-<marker id="f21-dim" markerWidth="8" markerHeight="8" refX="6.4" refY="2.8" orient="auto"><path d="M0,0 L6.4,2.8 L0,5.6 z" fill="#7b8494"/></marker>
-<marker id="f21-dimS" markerWidth="8" markerHeight="8" refX="0.6" refY="2.8" orient="auto"><path d="M6.4,0 L0,2.8 L6.4,5.6 z" fill="#7b8494"/></marker>
-</defs>
 <line x1="40" y1="42" x2="446" y2="42" stroke="#14181f" stroke-width="2.2"/>
 <line x1="60" y1="42" x2="48" y2="30" stroke="#cbd2dd" stroke-width="1.6"/>
 <line x1="92" y1="42" x2="80" y2="30" stroke="#cbd2dd" stroke-width="1.6"/>
@@ -1255,7 +1241,7 @@ B = √2 = 1.414   a near-miss decoy sitting just above the true 1.32</div>
 </defs>
 <line x1="122.0" y1="216.0" x2="452.0" y2="216.0" stroke="#14181f" stroke-width="1.8" marker-end="url(#f23-ar)"/>
 <line x1="122.0" y1="216.0" x2="122.0" y2="40" stroke="#14181f" stroke-width="1.8" marker-end="url(#f23-ar)"/>
-<text x="448.0" y="234.0" text-anchor="end" font-size="12" font-style="italic" fill="#4a5262">log(I / W m⁻²)</text>
+<text x="452.0" y="256.0" text-anchor="end" font-size="12" font-style="italic" fill="#4a5262">log(I / W m⁻²)</text>
 <text x="114.0" y="42" text-anchor="end" font-size="12" font-style="italic" fill="#4a5262">log(R / Ω)</text><line x1="122.0" y1="62.0" x2="396.0" y2="188.0" stroke="#2f5fd0" stroke-width="2.6"/>
 <line x1="116.0" y1="62.0" x2="128.0" y2="62.0" stroke="#14181f" stroke-width="1.8"/>
 <text x="110.0" y="67.0" text-anchor="end" font-size="13" font-weight="600" fill="#b3352f">5.2</text>
@@ -1424,13 +1410,6 @@ E = 2 mga      over-corrected in both directions at once</div>
   key: ["seriesparallel", "networks", "ratio", "nocalc"],
   q: `<p>Consider the arrangement of 12 identical resistors below. The equivalent resistance is measuredbetween the following pairs of points: PR, PS, PU, QS, QT. Which measurement gives the median (middle value) resistance?</p><figure class="fig">
 <svg viewBox="0 0 480 300" role="img" aria-label="A square grid of nine nodes joined by twelve identical resistors, labelled P, Q and R along the top row, S at the centre, and T and U along the bottom row.">
-<defs>
-<marker id="f25-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker>
-<marker id="f25-arA" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#2f5fd0"/></marker>
-<marker id="f25-arB" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#b3352f"/></marker>
-<marker id="f25-dim" markerWidth="8" markerHeight="8" refX="6.4" refY="2.8" orient="auto"><path d="M0,0 L6.4,2.8 L0,5.6 z" fill="#7b8494"/></marker>
-<marker id="f25-dimS" markerWidth="8" markerHeight="8" refX="0.6" refY="2.8" orient="auto"><path d="M6.4,0 L0,2.8 L6.4,5.6 z" fill="#7b8494"/></marker>
-</defs>
 <line x1="128.0" y1="72.0" x2="352.0" y2="72.0" stroke="#14181f" stroke-width="2"/>
 
 <line x1="128.0" y1="164.0" x2="352.0" y2="164.0" stroke="#14181f" stroke-width="2"/>
@@ -1485,13 +1464,6 @@ E = 2 mga      over-corrected in both directions at once</div>
 <p>Twelve resistors: six horizontal (two per row) and six vertical (two per column).</p>
 <figure class="fig">
 <svg viewBox="0 0 480 300" role="img" aria-label="A square grid of nine nodes joined by twelve identical resistors, labelled P, Q and R along the top row, S at the centre, and T and U along the bottom row.">
-<defs>
-<marker id="f25-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker>
-<marker id="f25-arA" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#2f5fd0"/></marker>
-<marker id="f25-arB" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#b3352f"/></marker>
-<marker id="f25-dim" markerWidth="8" markerHeight="8" refX="6.4" refY="2.8" orient="auto"><path d="M0,0 L6.4,2.8 L0,5.6 z" fill="#7b8494"/></marker>
-<marker id="f25-dimS" markerWidth="8" markerHeight="8" refX="0.6" refY="2.8" orient="auto"><path d="M6.4,0 L0,2.8 L6.4,5.6 z" fill="#7b8494"/></marker>
-</defs>
 <line x1="128.0" y1="72.0" x2="352.0" y2="72.0" stroke="#14181f" stroke-width="2"/>
 
 <line x1="128.0" y1="164.0" x2="352.0" y2="164.0" stroke="#14181f" stroke-width="2"/>

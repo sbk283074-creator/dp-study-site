@@ -265,9 +265,12 @@ window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 <text x="230" y="24" text-anchor="middle" font-size="13.5" font-weight="600" fill="#14181f">A potential divider</text>
 
 <text x="230" y="42" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1f7a53">12 V</text>
-<line x1="212" y1="52" x2="248" y2="52" stroke="#1f2937" stroke-width="2.5"/>
-<line x1="220" y1="64" x2="240" y2="64" stroke="#1f2937" stroke-width="5"/>
+<line x1="220" y1="52" x2="240" y2="52" stroke="#1f2937" stroke-width="5"/>
+<line x1="212" y1="64" x2="248" y2="64" stroke="#1f2937" stroke-width="2.5"/>
 <line x1="230" y1="64" x2="230" y2="86" stroke="#1f2937" stroke-width="2"/>
+<line x1="220" y1="52" x2="104" y2="52" stroke="#1f2937" stroke-width="2"/>
+<line x1="104" y1="52" x2="104" y2="228" stroke="#1f2937" stroke-width="2"/>
+<line x1="104" y1="228" x2="230" y2="228" stroke="#1f2937" stroke-width="2"/>
 <rect x="214" y="86" width="32" height="44" fill="#ffffff" stroke="#1f2937" stroke-width="2"/>
 <text x="256" y="112" font-size="12.5" font-weight="600" fill="#2f5fd0">R₁ = 2.0 kΩ</text>
 <line x1="230" y1="130" x2="230" y2="166" stroke="#1f2937" stroke-width="2"/>

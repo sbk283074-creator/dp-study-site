@@ -585,7 +585,7 @@ kinetic energy is not.</p>`,
 <text x="373" y="208" text-anchor="middle" font-size="12" fill="#4a5262">5.0</text>
 <text x="430" y="208" text-anchor="middle" font-size="12" fill="#4a5262">6.0</text>
 <text x="82" y="44" text-anchor="end" font-size="12.5" fill="#4a5262">F / N</text>
-<text x="438" y="212" text-anchor="end" font-size="12.5" fill="#4a5262">t / s</text>
+<text x="446" y="228" text-anchor="end" font-size="12.5" fill="#4a5262">t / s</text>
 <text x="288" y="150" font-size="12" fill="#4a5262">area = impulse</text>
 </svg>
 </figure>`,

@@ -50,17 +50,18 @@ window.BPHO_MODULES = (window.BPHO_MODULES || []).concat([
 <polygon points="454,230 444,225 444,235" fill="#1f2937"/>
 <polygon points="110,46 105,56 115,56" fill="#1f2937"/>
 <path d="M110,230 L286,72" fill="none" stroke="#2f5fd0" stroke-width="2.5"/>
-<path d="M110,230 Q205,108 340,88" fill="none" stroke="#a8641a" stroke-width="2.5"/>
+<path d="M110,230 C198,151 290,104 350,96" fill="none" stroke="#a8641a" stroke-width="2.5"/>
 <path d="M54,232 L150,230 Q176,228 186,140 L192,70" fill="none" stroke="#1f7a53" stroke-width="2.5"/>
 <text x="296" y="70" font-size="12" font-weight="600" fill="#2f5fd0">ohmic resistor</text>
-<text x="348" y="98" font-size="12" font-weight="600" fill="#a8641a">filament lamp</text>
+<text x="360" y="110" font-size="12" font-weight="600" fill="#a8641a">filament lamp</text>
 <text x="200" y="60" font-size="12" font-weight="600" fill="#1f7a53">diode</text>
 <text x="446" y="250" text-anchor="end" font-size="12.5" fill="#4a5262">V</text>
 <text x="100" y="42" text-anchor="end" font-size="12.5" fill="#4a5262">I</text>
 <text x="102" y="246" text-anchor="end" font-size="12" fill="#7b8494">O</text>
-<text x="196" y="152" font-size="11.5" fill="#7b8494">≈0.6 V</text>
+<line x1="150" y1="230" x2="150" y2="236" stroke="#7b8494" stroke-width="1.3"/>
+<text x="150" y="250" text-anchor="middle" font-size="11.5" fill="#7b8494">≈0.6 V</text>
 <text x="36" y="264" font-size="11.5" fill="#7b8494">reverse bias</text>
-<text x="238" y="142" font-size="11.5" fill="#7b8494">flattens → R rises</text>
+<text x="250" y="146" font-size="11.5" fill="#7b8494">flattens → R rises</text>
 </svg>
 <figcaption><b>Read the shape, not the numbers.</b> A straight line through the origin means constant resistance. A curve that <i>flattens</i> as <code>V</code> rises means resistance is <b>increasing</b> — the filament is heating. A curve that is flat then shoots up at a threshold means one-way conduction — a diode. The direction of the bend is the whole answer.</figcaption>
 </figure>

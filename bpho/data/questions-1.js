@@ -721,9 +721,9 @@ v = 10 m s⁻¹</div>
 <line x1="119" y1="210" x2="200" y2="120" stroke="#b3352f" stroke-width="2.5" marker-end="url(#cg1-r)"/>
 <line x1="200" y1="120" x2="404" y2="116" stroke="#a8641a" stroke-width="2.5" marker-end="url(#cg1-a)"/>
 <path d="M200,180 A60,60 0 0 1 160,165" fill="none" stroke="#7b8494" stroke-width="1.4"/>
-<text x="154" y="186" text-anchor="end" font-size="12.5" font-weight="600" fill="#b3352f">θ_c = ?</text>
+<text x="130" y="186" text-anchor="end" font-size="12.5" font-weight="600" fill="#b3352f">θ_c = ?</text>
 <text x="62" y="64" font-size="12" fill="#4a5262">air   n = 1.00</text>
-<text x="62" y="200" font-size="12" fill="#4a5262">medium  n = 1.50</text>
+<text x="62" y="148" font-size="12" fill="#4a5262">medium  n = 1.50</text>
 <text x="252" y="108" font-size="11.5" fill="#a8641a">refracted ray along the surface</text>
 <defs>
 <marker id="cg1-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b3352f"/></marker>

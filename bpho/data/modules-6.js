@@ -463,8 +463,8 @@ k = 2π/λ       (wave number, rad m⁻¹)</div>
 <path d="M140,100 A60,60 0 0 1 178,113" fill="none" stroke="#7b8494" stroke-width="1.4"/>
 <path d="M360,220 A60,60 0 0 1 311,194" fill="none" stroke="#7b8494" stroke-width="1.4"/>
 <text x="108" y="236" text-anchor="end" font-size="12" font-weight="600" fill="#2f5fd0">θ₁ = 25°</text>
-<text x="186" y="106" font-size="12" font-weight="600" fill="#2f5fd0">θ₂ ≈ 39°</text>
-<text x="306" y="216" text-anchor="end" font-size="12" font-weight="600" fill="#1f7a53">θ₁ = 55°</text>
+<text x="194" y="106" font-size="12" font-weight="600" fill="#2f5fd0">θ₂ ≈ 39°</text>
+<text x="264" y="216" text-anchor="end" font-size="12" font-weight="600" fill="#1f7a53">θ₁ = 55°</text>
 <text x="50" y="68" font-size="12" fill="#4a5262">air   n = 1.00</text>
 <text x="50" y="248" font-size="12" fill="#4a5262">glass  n = 1.50</text>
 <line x1="56" y1="282" x2="84" y2="282" stroke="#2f5fd0" stroke-width="3"/>
