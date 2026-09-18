@@ -2,11 +2,15 @@
    "The file was written" is not the same as "the page works" -- this drives a real
    browser over the local server and asserts what a student would see.
 
-   Run from bpho/:  node tools/bank/verify_site.js     (needs the static server on
-   127.0.0.1:8901, which is rooted at the whole DP site, not at bpho/) */
+   Run from bpho/:  node tools/bank/verify_site.js [base-url]
+   Default base is the local static server on 127.0.0.1:8901, which is rooted at the whole
+   DP site -- so the study space is /bpho/index.html, not /index.html. Pass the Pages URL
+   to check the deployed copy instead:
+     node tools/bank/verify_site.js https://sbk283074-creator.github.io/dp-study-site/bpho/index.html
+*/
 const { chromium } = require('/Users/lucas.ma/.workbuddy-ai/binaries/node/workspace/node_modules/playwright-core');
 
-const BASE = 'http://127.0.0.1:8901/bpho/index.html';
+const BASE = process.argv[2] || 'http://127.0.0.1:8901/bpho/index.html';
 const TAG = 'BANK-S01';
 
 let fails = 0;
