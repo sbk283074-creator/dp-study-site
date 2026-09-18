@@ -123,7 +123,9 @@ needs sympy); `python` on its own will not do.
 PY=/Users/lucas.ma/.workbuddy-ai/binaries/python/envs/default/bin/python
 
 # 1. write the figures for the section into fig/, then LOOK at them
-$PY figs.py
+#    NOT OPTIONAL: the gate and the build read fig/*.svg, not figsNN.py. Editing the
+#    figure source without this step gates and publishes the OLD figure, silently.
+$PY figs.py 3
 
 # 2. write secNN.py, then gate it until it is clean
 $PY gates.py sec01
@@ -191,8 +193,8 @@ filter chips and the mock launchers are both derived from the data, so publishin
 
 | | Sections | Questions | Status |
 |---|---|---|---|
-| Done | 1–2 | 50 | gated, hand-checked, published |
-| Planned | 3–40 | 950 | not started |
+| Done | 1–3 | 75 | gated, hand-checked, published |
+| Planned | 4–40 | 925 | not started |
 
 **Section 1** — `S01`, 15 figures, mix `A3 B2 C4 D2 E1 F2 G2 H4 I1 J2 K2`, answer sequence
 `BCBEDBECADCDEABEDCBABECAD`, measured median **14.8** against the paper's 13.5 and p25
@@ -209,14 +211,32 @@ Sections 1–2 together: 50 questions, 23 figures, 50/50 hand-checked, 31 mutant
 and `verify_site.js` discovers both tags from `window.BPHO_QUESTIONS` rather than naming
 them, so sections 3–40 are checked the moment they publish.
 
+**Section 3** — `S03`, 11 figures, mix `A3 B2 C4 D1 E1 F2 G2 H3 I1 J2 K2 L1 M1`, answer
+sequence `CDBAECABEDCAEBDACEBDACBED`, measured median **15.2** against the paper's 13.5,
+p25 **14.2** against 11.5, min 11.6, max 18.3 (`S03-14`, deceleration ∝ v), and 12
+questions at or above the paper's own p75. Bands `d2=13 d3=12`; the section has **no
+diff-1 question at all**, which is the brief's "same or even harder" taken literally — the
+easiest question sits just above the real paper's 25th percentile. All ten gates pass,
+25/25 hand-verified, live as `BANK-S03`.
+
+Section 3 was authored with every correct option first and then permuted deterministically
+(`opts` and `distractors` rotated together), so the answer balance of 5 per letter holds by
+construction rather than by luck, and the prose letters were rewritten to match — never the
+key. Six figure defects were found by *looking*, five of which no existing check could see:
+an open bridge circuit, an open series loop, two labels with a wire running through them,
+dangling component dashes, a "normal" drawn along the wrong axis, and the `<sup>` breakout
+below.
+
 ## 9. File map
 
 | File | Role |
 |---|---|
 | `spec.py` | the 40-section blueprint: targets, allocator, per-section mixes |
 | `secNN.py` | the questions themselves — **the source of truth** |
-| `figsNN.py` | hand-authored SVG figures per section → `fig/` |
-| `svgkit.py` | shared SVG primitives (`ell(...)` sampled ellipses, palette) |
+| `figsNN.py` | hand-authored SVG figures per section |
+| `figs.py` | **runs every `figsNN.py` and writes `fig/*.svg`** — the gate and build read these |
+| `fig/*.svg` | the generated figures, the actual input to gating and publishing |
+| `svgkit.py` | shared SVG primitives (`ell(...)` sampled ellipses, palette); raises on breakout tags |
 | `gates.py` | the ten gates, the difficulty scorer, the fingerprint |
 | `mutants.py` | 31 mutants proving the gates have teeth, both directions |
 | `make_ledger.py` | builds `ledger.json`, the hand-check record |
@@ -258,3 +278,31 @@ them, so sections 3–40 are checked the moment they publish.
   at 0.55 em/char (0.58 bold), decodes entities, and errors when a run leaves the viewBox.
   It caught `fig/s02-11.svg` running 180 px past the right edge. Screenshots still catch what
   lint cannot: label collisions and a dashed box that fails to enclose the thing it labels.
+- **`<sup>` and `<sub>` are HTML foreign-content *breakout* tags, so they must never appear
+  inside an inline `<svg>`.** The HTML parser closes the `svg` at that point and parses the
+  rest of the figure as HTML: `s03-06`'s axis label `velocity / m s<sup>-1</sup>` threw the
+  `-1` **and** the whole `time / s` label out of the graph, and both still rendered — in the
+  wrong place. It is silent by every measure that existed: the `svg` keeps its box (a size
+  check passes), `<sup></sup>` balances perfectly (the tag-balance lint passes), and the
+  figure looks right if you screenshot the `svg` alone. `svgkit.svg()` now **raises** on any
+  breakout tag at build time, and the linter checks the source for figures that bypass
+  `svgkit`. Use `<tspan font-size="8" dy="-4">` instead.
+- **`figsNN.py` is not what the gate and the build read.** They read `fig/<key>.svg`, which
+  `figs.py` writes. Editing `figsNN.py` and re-running `build_site.py` publishes the *old*
+  figure and reports success — the rebuild byte count was identical and the fix looked
+  applied. Regenerate with `figs.py N` first, and confirm by grepping the built
+  `data/bank-NN.js` for the new text, not the source.
+- **A harness that measures a hidden element reports a defect that is not there.** Nine
+  "ZERO-SIZE svg" failures on `#/practice` were all figures inside collapsed solution
+  panels, where `getBoundingClientRect()` is legitimately `0x0`. The harness now walks the
+  ancestor chain and reports hidden figures separately from broken ones. Before "fixing" a
+  zero-size figure, ask whether it is being displayed at all.
+- **A collision linter's "crosses 0px" is a lead, not a verdict.** `/tmp/lint-text-path.js`
+  reported `s03-10`'s labels as grazing by 0 px; at 2x the branch wire ran *straight through*
+  the middle of `3.0 kΩ` and through `load`, splitting both. Its sampling understates. Treat
+  a non-zero-or-suspicious reading as "look at this figure", not as "this figure is fine".
+- **A lint that scans the whole figure wrapper cries wolf.** The breakout check first ran
+  over everything between `<figure class="fig">` and `</figure>` and flagged harmless
+  `<b>`/`<code>` that authors legitimately put *after* the `svg`. A non-greedy wrapper
+  capture can also span two figures if a `</figure>` is ever missing. Narrow every per-figure
+  check to the `<svg>…</svg>` span.

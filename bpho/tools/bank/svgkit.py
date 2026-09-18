@@ -71,7 +71,23 @@ _SIG = {
 }
 
 
+# HTML foreign-content BREAKOUT tag names.  When the HTML parser meets one of these
+# inside an inline <svg>, it closes the svg and parses the remainder as HTML.  A figure
+# built with <sup> therefore loses its exponent AND every element written after it, and
+# it fails silently: the svg keeps its box, so a size check, a tag-balance lint and a
+# screenshot of the svg alone all still look fine.  `sub` and `sup` are the two that a
+# physics figure naturally reaches for, so they are rejected at build time.
+BREAKOUT_IN_SVG = ("sup", "sub", "span", "code", "em", "strong", "b", "i", "small",
+                   "p", "div", "br", "hr", "table", "ul", "ol", "li", "font")
+
+
 def svg(w, h, label, body):
+    bad = [t for t in BREAKOUT_IN_SVG if ("<%s>" % t) in body or ("<%s " % t) in body]
+    if bad:
+        raise SystemExit(
+            "figure uses %s inside inline SVG -- the HTML parser will close the svg there "
+            "and drop the rest of the figure into the page. Use <tspan> instead."
+            % ", ".join("<%s>" % t for t in bad))
     return ('<figure class="fig">\n'
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %g %g" role="img" '
             'aria-label="%s">\n%s\n</svg>\n</figure>' % (w, h, label, body))

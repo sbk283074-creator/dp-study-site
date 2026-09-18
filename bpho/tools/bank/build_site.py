@@ -27,10 +27,12 @@ import gates as G
 FIGDIR = os.path.join(HERE, "fig")
 OUTDIR = os.path.normpath(os.path.join(HERE, "..", "..", "data"))
 
-# section number -> module name.  Adding section 2 is one line here plus sec02.py.
+# section number -> module name.  Adding a section is one line here plus its secNN.py
+# and figsNN.py.
 SECTIONS = {
     1: "sec01",
     2: "sec02",
+    3: "sec03",
 }
 
 # Fields the site app reads.  Everything else in the source (distractors, profile,

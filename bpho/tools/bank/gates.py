@@ -221,6 +221,9 @@ def tags_balanced(t: str) -> str | None:
     return None
 
 
+SUP_RE = re.compile(r"([A-Za-z0-9\)\];])\^(?:\(([^()<>]+)\)|([^()<>\s,;/]+))")
+
+
 def supify(t: str) -> str:
     """`x^n` reads as a literal caret on screen.  Turn it into a real superscript.
 
@@ -228,9 +231,38 @@ def supify(t: str) -> str:
     `&omega;^2`, `&theta;^2`.  Without `;` in the class the repair silently skips every
     one of them -- the caret survives to the reader and only the lint notices, which is
     exactly how S02-03 was caught.
+
+    The exponent comes in two forms, and they need separate alternatives:
+
+      * parenthesised -- `e^(-kt)`, `r^(-3/2)`, `x^(a b)` -- which MAY contain a slash;
+      * bare -- `x^2`, `10^-5`, `T^-1` -- which may NOT.
+
+    A single class that allowed `/` in the bare form mis-parsed the most ordinary unit
+    notation there is.  `m^2/s^2` matched `m` + `^` + `2/s`, swallowed the `/s`, and left
+    an orphaned `^2` behind; `(3.0 x 10^8)^2` consumed the closing bracket as an optional
+    trailing paren, so the following `)^2` had no base left to attach to.  Both were
+    invisible in the source and only surfaced as surviving carets on S03-23.
     """
-    return re.sub(r"([A-Za-z0-9\)\];])\^\(?([^()<>\s,;]+)\)?",
-                  lambda m: m.group(1) + "<sup>" + m.group(2) + "</sup>", t)
+    return re.sub(SUP_RE,
+                  lambda m: m.group(1) + "<sup>" + (m.group(2) or m.group(3)) + "</sup>",
+                  t)
+
+
+# Forms that must come out of supify with no caret left.  Asserted at run time, because
+# the failure mode is a caret the reader sees and no test otherwise looks for.
+SUP_FORMS = [
+    "x^2", "10^-5", "T^-1", "&lambda;^2", "&omega;^2",
+    "m^2/s^2", "m s^-2", "10^16 m^2/s^2", "(3.0 x 10^8)^2", "9.0 x 10^16",
+    "e^(-kt)", "r^(-3/2)", "x^(a b)", "A^(1/3)", "(1 + x)^n", "V^2/R",
+    "s^-1", "kg m^-3", "240^2/60", "2.0 x 10^-4 m^3", "r0^3",
+]
+
+
+def supify_selfcheck():
+    """Raise if any known notation form leaves a caret behind."""
+    bad = [f for f in SUP_FORMS if "^" in supify(f)]
+    if bad:
+        raise SystemExit("supify left a caret in: %s" % ", ".join(repr(b) for b in bad))
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -1386,6 +1418,7 @@ def cmd_all():
 
 
 if __name__ == "__main__":
+    supify_selfcheck()
     arg = sys.argv[1] if len(sys.argv) > 1 else "papers"
     if arg == "papers":
         sys.exit(cmd_papers())

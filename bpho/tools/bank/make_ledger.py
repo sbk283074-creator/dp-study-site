@@ -302,6 +302,180 @@ LEDGER = {1: {
         "four, which is what a fixed subtraction does",
         "D"),
 },
+
+3: {
+    "S03-01": (
+        "take moments about B, so the unknown there drops out",
+        "uniform beam: the 240 N acts at the 3.0 m midpoint. The load is 2.0 m from A, so "
+        "6.0 - 2.0 = 4.0 m from B. F_A x 6.0 = 240 x 3.0 + 360 x 4.0 = 720 + 1440 = 2160; "
+        "F_A = 2160/6.0 = 360 N. Check: the two supports carry 600 N, so B has 240 N, and "
+        "moments about A give F_B x 6.0 = 240 x 3.0 + 360 x 2.0 = 1440, F_B = 240 N",
+        "C"),
+    "S03-02": (
+        "put each candidate through the base dimensions",
+        "[gamma] = N/m = kg s^-2; [rho] = kg m^-3; [r] = m; want s^-1. "
+        "gamma/(rho r^3) = (kg s^-2)/((kg m^-3)(m^3)) = (kg s^-2)/kg = s^-2, and the square "
+        "root is s^-1, a frequency. Rejected: gamma/(rho r) gives m^2 s^-2, whose root is "
+        "m s^-1, a speed; gamma r^3/rho gives m^6 s^-2; gamma rho/r^3 gives kg^2 m^-6 s^-2; "
+        "and gamma/(rho r^3) without the root is a frequency squared",
+        "D"),
+    "S03-03": (
+        "set limiting friction equal to the weight",
+        "the wall pushes back horizontally with the whole push, so N = F and the limiting "
+        "friction is mu N = 0.40 F. On the point of sliding down, 0.40 F = mg = 2.0 x 10 = "
+        "20 N, so F = 20/0.40 = 50 N. Check: F = 50 N gives N = 50 N and f_max = 20 N, "
+        "exactly the weight, so the block is on the point of moving and no smaller push holds",
+        "B"),
+    "S03-04": (
+        "balance is a ratio between the two dividers",
+        "balance needs the detector nodes at the same potential: 3.0/3.0 = 6.0/R, so "
+        "R = 6.0 k. Check by potentials: the top node sits at 12 x 6.0/(3.0 + 6.0) = 8.0 V "
+        "and the bottom node at 12 x 6.0/(3.0 + 6.0) = 8.0 V, equal, so no current flows "
+        "through G",
+        "A"),
+    "S03-05": (
+        "turn the gradient into a rate of climb",
+        "a 10% gradient means tan(theta) = 0.10, and at that small angle sin(theta) is also "
+        "about 0.10. Rising at 5.0 x 0.10 = 0.50 m/s against a weight of 80 x 10 = 800 N "
+        "needs 800 x 0.50 = 400 W. Check the size: lifting 800 N half a metre every second "
+        "is 400 J per second",
+        "E"),
+    "S03-06": (
+        "split the area into two triangles and a rectangle",
+        "0-2.0 s: (1/2) x 2.0 x 12 = 12 m. 2.0-5.0 s: 3.0 x 12 = 36 m. 5.0-8.0 s: "
+        "(1/2) x 3.0 x 12 = 18 m. Total 12 + 36 + 18 = 66 m. Check: holding the peak 12 m/s "
+        "for the whole 8.0 s would be 96 m, and the two ramps take away 12 + 18 = 30 m, "
+        "leaving 66 m",
+        "C"),
+    "S03-07": (
+        "use the elastic result for a stationary target",
+        "v_target = 2 m u/(m + 3m) = 2mu/(4m) = u/2. Check against both conservation laws: "
+        "the incoming particle keeps (m - 3m)/(4m) u = -u/2, so p_after = m(-u/2) + 3m(u/2) "
+        "= mu = p_before; and KE after = (1/2)m(u/2)^2 + (1/2)(3m)(u/2)^2 = mu^2/8 + "
+        "3mu^2/8 = mu^2/2 = KE before",
+        "A"),
+    "S03-08": (
+        "count three loops, so the length holds three half wavelengths",
+        "the third harmonic has three loops, so L = 3 lambda/2 and lambda = 2L/3 = "
+        "2(0.60)/3 = 0.40 m. f = v/lambda = 120/0.40 = 300 Hz. Check: the fundamental is "
+        "v/2L = 120/1.2 = 100 Hz and the third harmonic is 3 x 100 = 300 Hz",
+        "B"),
+    "S03-09": (
+        "divide the real depth by the refractive index",
+        "for near-normal viewing the apparent depth is real depth / n = 2.4/1.5 = 1.6 m. "
+        "Check the direction: a ray leaving the water bends away from the normal, so the "
+        "stone is seen higher than it is, and 1.6 is less than 2.4",
+        "E"),
+    "S03-10": (
+        "reduce the loaded pair, then divide the supply",
+        "the load puts 3.0 k in parallel with 3.0 k: (3.0 x 3.0)/(3.0 + 3.0) = 1.5 k. "
+        "Total 6.0 + 1.5 = 7.5 k, so the parallel section takes 12 x 1.5/7.5 = 2.4 V. "
+        "Check against the unloaded divider: without the load the tap gives 12 x 3.0/9.0 = "
+        "4.0 V, and loading a divider can only pull the tap down, so 2.4 is less than 4.0",
+        "D"),
+    "S03-11": (
+        "latent heat divided by power",
+        "energy = mL = 0.50 x 2.3e6 = 1.15e6 J. t = E/P = 1.15e6/2000 = 575 s. "
+        "Check the size: 575 s is a little under ten minutes, which is the right order for "
+        "boiling away half a kilogram of already-boiling water",
+        "C"),
+    "S03-12": (
+        "show that volume and mass both go as A",
+        "V = (4/3) pi r^3 = (4/3) pi r0^3 A, so the volume is proportional to A, and the "
+        "mass is proportional to A as well. Density = mass/volume is therefore independent "
+        "of A, so it is unchanged. Check with the two values: A = 27 gives r = 3r0 and "
+        "V = 27(4/3)pi r0^3; A = 216 gives r = 6r0 and V = 216(4/3)pi r0^3, the same volume "
+        "per nucleon",
+        "A"),
+    "S03-13": (
+        "find the new edge length, then compare total areas",
+        "1000 cubes means 10 along each edge, so each side is 1.0/10 = 0.10 cm. Original "
+        "area 6 x 1.0^2 = 6.0 cm^2. Each small cube 6 x 0.10^2 = 0.060 cm^2, so the total "
+        "is 1000 x 0.060 = 60 cm^2. Ratio 60/6.0 = 10. Check by the rule: cutting into n "
+        "pieces along each edge multiplies the total area by n, and n = 10",
+        "E"),
+    "S03-14": (
+        "separate the variables, then integrate the speed",
+        "a = dv/dt = -kv separates to dv/v = -k dt, so v = u e^(-kt). Distance = integral "
+        "of v dt from 0 to infinity = u/k. Check by dimensions: [u/k] = (m s^-1)/(s^-1) = m, "
+        "a length. Check the size: a larger k stops the particle sooner, and u/k falls as k "
+        "rises",
+        "B"),
+    "S03-15": (
+        "impulse is the area under the force-time graph",
+        "the graph is a triangle of base 0.20 s and height 20 N, so impulse = "
+        "(1/2) x 0.20 x 20 = 2.0 N s. That is the change in momentum from rest, so "
+        "v = 2.0/2.0 = 1.0 m/s. Check the size: an average force of 10 N acting for 0.20 s "
+        "on 2.0 kg gives 10 x 0.20/2.0 = 1.0 m/s",
+        "D"),
+    "S03-16": (
+        "divide the resolved equations to remove N and m",
+        "resolve: N cos(theta) = mg vertically and N sin(theta) = mv^2/r horizontally. "
+        "Dividing gives tan(theta) = v^2/(rg) = 15^2/(30 x 10) = 225/300 = 0.75, and "
+        "tan(37 deg) is about 0.75, so theta is 37 deg. Check the direction: a faster car "
+        "needs a steeper bank, and 0.75 is just below 1, so the angle is just below 45 deg",
+        "A"),
+    "S03-17": (
+        "stress gives an area, then the circle relation gives the diameter",
+        "W = 1000 x 10 = 1.0e4 N. At the breaking stress A = W/stress = 1.0e4/1.0e9 = "
+        "1.0e-5 m^2. For a circle A = pi d^2/4, so d = sqrt(4A/pi) = sqrt(1.273e-5) = "
+        "3.57e-3 m, about 3.6 mm. Check the order: a few millimetres is right for a steel "
+        "cable lifting a tonne, and 36 mm would be a structural column",
+        "C"),
+    "S03-18": (
+        "require sin(theta) not to exceed 1",
+        "d = 1 mm/300 = 3.33e-6 m. The highest order is set by sin(theta) <= 1, so "
+        "n <= d/lambda = 3.33e-6/5.0e-7 = 6.67 and the largest whole number is 6. "
+        "Check the next one: n = 7 would need sin(theta) = 7 x 5.0e-7/3.33e-6 = 1.05, "
+        "which does not exist",
+        "E"),
+    "S03-19": (
+        "the lens equation, then a separate ratio",
+        "1/v = 1/f - 1/u = 1/20 - 1/30 = (3 - 2)/60 = 1/60, so v = 60 cm. Magnification "
+        "m = v/u = 60/30 = 2. Check the region: the object sits between f and 2f, which "
+        "gives a real image beyond 2f magnified by more than one, and 2 is more than one",
+        "B"),
+    "S03-20": (
+        "convert the ratings to resistances, then share a common current",
+        "R = V^2/P, so R_60 = 240^2/60 = 960 ohm and R_100 = 240^2/100 = 576 ohm. In "
+        "series the current is common, so each lamp takes I^2 R and the larger resistance "
+        "takes the larger share; 960 is greater than 576, so the 60 W lamp is brighter. "
+        "Check numerically: 960:576 = 5:3, total 1536 ohm, I = 240/1536 = 0.156 A, giving "
+        "23 W in the 60 W lamp and 14 W in the 100 W lamp",
+        "D"),
+    "S03-21": (
+        "series capacitors share the voltage inversely with C",
+        "series capacitors carry the same charge, so V = Q/C makes the voltages inversely "
+        "proportional to the capacitances: 2.0 and 6.0 uF share 12 V in the ratio 6:2 = 3:1, "
+        "so the 2.0 uF takes 9.0 V. Check: C_series = (2.0 x 6.0)/8.0 = 1.5 uF, "
+        "Q = 1.5e-6 x 12 = 1.8e-5 C, and V = Q/C = 1.8e-5/2.0e-6 = 9.0 V",
+        "A"),
+    "S03-22": (
+        "apply the linear expansion relation",
+        "delta_L = L0 alpha delta_T = 2.0 x 1.9e-5 x (120 - 20) = 2.0 x 1.9e-5 x 100 = "
+        "3.8e-3 m = 3.8 mm. Check the size: the fractional change is 1.9e-5 x 100 = "
+        "1.9e-3, about two parts in a thousand, and 1.9e-3 x 2.0 m = 3.8 mm",
+        "C"),
+    "S03-23": (
+        "multiply the mass defect by c squared",
+        "E = delta_m c^2 = 3.6e-30 x (3.0e8)^2 = 3.6e-30 x 9.0e16 = 3.24e-13 J. Check the "
+        "order: 1e-30 kg is about 0.6 atomic mass units converted wholly, which should be a "
+        "few hundred keV to a couple of MeV, and 3.24e-13 J is about 2.0 MeV",
+        "B"),
+    "S03-24": (
+        "photon energy minus the work function, read as volts",
+        "photon energy = 1240/400 = 3.1 eV. Maximum kinetic energy = 3.1 - 2.0 = 1.1 eV, "
+        "and the stopping potential in volts is numerically the maximum kinetic energy in "
+        "electronvolts, so 1.1 V. Check the direction: the stopping potential must be less "
+        "than the photon energy, and it is the difference rather than the sum",
+        "E"),
+    "S03-25": (
+        "weight minus the upthrust",
+        "weight = 0.50 x 10 = 5.0 N. Upthrust = rho V g = 1000 x 2.0e-4 x 10 = 2.0 N. "
+        "Reading = 5.0 - 2.0 = 3.0 N. Check the density: the stone is 0.50/2.0e-4 = "
+        "2500 kg/m^3, denser than water, so it sinks and the reading stays positive",
+        "D"),
+},
 }
 
 
