@@ -14,7 +14,11 @@
     plan: window.BPHO_PLAN || [],
     guidance: window.BPHO_GUIDANCE || {},
     priority: window.BPHO_PRIORITY || null,
-    concepts: window.BPHO_CONCEPTS || []
+    concepts: window.BPHO_CONCEPTS || [],
+    /* The downloadable PDFs, read from the generated manifest.  Empty if the PDFs were
+       never built, and the Papers area then says so instead of offering dead links. */
+    papers: window.BPHO_PAPERS || [],
+    papersBuilt: window.BPHO_PAPERS_BUILT || ""
   };
 
   /* ---------------- what the 2025 paper actually tested ----------------
@@ -81,6 +85,11 @@
   var SECONDS_PER_QUESTION = 144;
   function paperSeconds(n) { return n * SECONDS_PER_QUESTION; }
   function fmtMinutes(sec) { return Math.round(sec / 60) + " minutes"; }
+  /* Download sizes are shown so a 1.2 MB markscheme is not a surprise on a phone. */
+  function fmtBytes(b) {
+    if (!b) return "";
+    return b >= 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.round(b / 1024) + " KB";
+  }
 
   /* ---------------- state ---------------- */
 
@@ -371,6 +380,19 @@
       '<div class="bar bar--purple"><i style="width:' + pct(planDone, DATA.plan.length) + '%"></i></div>' +
       '<p style="margin-top:14px"><a class="btn btn--primary" href="#/plan">Open the plan</a></p>' +
       "</div>";
+
+    /* ---- the papers, as printable PDFs ---- */
+    if (DATA.papers.length) {
+      var pq = DATA.papers.reduce(function (a, p) { return a + (p.n || 0); }, 0);
+      h += "<h2>Papers to print</h2>";
+      h += '<div class="card">' +
+        "<p>" + DATA.papers.length + " papers as real PDFs \u2014 the two sheets BPhO has published and " +
+        "every section of the drill bank, " + pq + " questions in all. Each comes with a matching " +
+        "markscheme PDF, so you can sit a paper on paper under the real clock and mark it properly " +
+        "afterwards.</p>" +
+        '<p style="margin-top:14px"><a class="btn btn--primary" href="#/papers">Papers &amp; downloads</a></p>' +
+        "</div>";
+    }
 
     /* ---- the teaching layer ---- */
     if (CON.length) {
@@ -771,6 +793,14 @@
           'paper. Written to be at least as hard, and every answer hand-checked.</span></div>';
     });
 
+    /* The same papers, as files.  Some of the practice above is better done on paper --
+       printing a sheet removes the reveal button and the temptation to peek. */
+    if (DATA.papers.length) {
+      h += '<div class="toolbar">' +
+        '<a class="btn" href="#/papers">⤓ Download any paper as a PDF</a>' +
+        '<span class="small">Every paper here, plus its markscheme, printable and offline.</span></div>';
+    }
+
     /* Modules that carry the most marks on the one real paper come first, with the count shown,
        so it is obvious where to spend the time. */
     h += '<div class="chiprow">' +
@@ -821,6 +851,118 @@
 
   function chip(val, label, on, group) {
     return '<button class="chip' + (on ? " on" : "") + '" type="button" data-chip="' + group + '" data-val="' + esc(val) + '">' + esc(label) + "</button>";
+  }
+
+  /* ---------------- the papers area ----------------
+     A place for the *papers* rather than for the questions: the two sheets BPhO has
+     published, and each section of the original drill bank, every one of them as a real
+     PDF of questions plus a matching markscheme PDF.  This is a different job from
+     Practice -- there you answer one question at a time and the app marks you; here you
+     take away a sheet you can print, sit against a clock, and mark on paper.
+
+     Every link is read from data/papers.js, which the PDF builder writes from the files
+     it actually produced.  Nothing here is hardcoded, so a section that has no PDF yet
+     simply does not appear -- a hand-written link would be a dead download the first time
+     someone added a section and forgot to rebuild. */
+  function viewPapers() {
+    var P = DATA.papers;
+
+    var h = '<a class="toplink" href="#/">← Overview</a>';
+    h += "<h1>Papers &amp; downloads</h1>";
+    h += '<p class="lede">Every paper on this site as a real PDF. Each one comes with a ' +
+      "matching markscheme: a quick answer key, a full worked solution for every question, " +
+      "and the trap the question was built around.</p>";
+
+    if (!P.length) {
+      h += '<div class="callout callout--warn"><p><b>The PDFs have not been built yet.</b> ' +
+        "From the <code>bpho/</code> folder run <code>node tools/papers/build_pdfs.js</code> " +
+        "and reload this page. The questions themselves are unaffected and are still " +
+        'available under <a href="#/practice">Practice</a>.</p></div>';
+      return h;
+    }
+
+    var nQ = 0, nPages = 0, nBytes = 0, nFig = 0;
+    P.forEach(function (p) {
+      nQ += p.n || 0;
+      nPages += (p.qPages || 0) + (p.mPages || 0);
+      nBytes += (p.qBytes || 0) + (p.mBytes || 0);
+      nFig += p.figures || 0;
+    });
+
+    h += '<div class="grid2">' +
+      '<div class="stat"><b>' + P.length + "</b><span>papers, each with its own markscheme</span></div>" +
+      '<div class="stat"><b>' + nQ + "</b><span>questions in total</span></div>" +
+      '<div class="stat"><b>' + nFig + "</b><span>figures drawn for them</span></div>" +
+      '<div class="stat"><b>' + nPages + "</b><span>pages of PDF, " + fmtBytes(nBytes) + " to download</span></div>" +
+      "</div>";
+
+    h += '<div class="callout callout--key"><p><b>How to use these.</b> Print the question ' +
+      "paper (or open it on a second screen), sit it in one go against the clock with no " +
+      "calculator, and only then open the markscheme and mark yourself. Two marks per " +
+      "question is roughly the standard to hold yourself to; the 2025 UK qualifying line was " +
+      "11 out of 25.</p></div>";
+
+    /* The badge is the honest part of the card.  An original question mistaken for a real
+       one mis-calibrates revision, so the two kinds are never mixed in one list. */
+    var official = P.filter(function (p) { return p.kind === "official"; });
+    var own = P.filter(function (p) { return p.kind !== "official"; });
+
+    function group(title, blurb, list) {
+      if (!list.length) return "";
+      var g = '<h2>' + esc(title) + '</h2><p class="sub">' + blurb + "</p>";
+      list.forEach(function (p) { g += paperCard(p); });
+      return g;
+    }
+
+    h += group("Official BPhO material",
+      "Reproduced from what BPhO has published, for personal study. These are the only " +
+      "questions on this site that come from BPhO itself.", official);
+    h += group("Original drill bank",
+      "Written for this course in the Round 0 format and held to its rules — 25 questions, " +
+      "60 minutes, no calculator, one answer in five. Not BPhO material.", own);
+
+    h += '<div class="callout"><p class="small">Built ' + esc(DATA.papersBuilt) +
+      ". The 250 curriculum questions live under <a href=\"#/practice\">Practice</a> instead: " +
+      "they are organised by topic rather than laid out as a paper, so they are not offered " +
+      "as a download.</p></div>";
+
+    h += '<footer class="foot">A paper is rebuilt from the same data the site loads, in the ' +
+      "same order, so a PDF can never disagree with the page it was downloaded from.</footer>";
+    return h;
+  }
+
+  /* One paper, as a card: what it is, what is in it, and the two downloads. */
+  function paperCard(p) {
+    var mins = Math.round((p.seconds || 0) / 60);
+    var isOfficial = p.kind === "official";
+    var h = '<div class="card paper">';
+
+    h += '<div class="paper__top"><h3 class="paper__t">' + esc(p.label) + "</h3>" +
+      '<span class="flag ' + (isOfficial ? "flag--tierA" : "flag--new") + '">' +
+      (isOfficial ? "Official BPhO material" : "Original · written for this course") +
+      "</span></div>";
+
+    h += '<p class="paper__note">' + esc(p.note) + "</p>";
+
+    h += '<ul class="paper__meta">' +
+      "<li><b>" + p.n + "</b> questions</li>" +
+      "<li><b>" + mins + "</b> minutes</li>" +
+      (p.figures ? "<li><b>" + p.figures + "</b> figure" + (p.figures === 1 ? "" : "s") + "</li>" : "") +
+      "<li><b>" + ((p.qPages || 0) + (p.mPages || 0)) + "</b> PDF pages</li>" +
+      "<li>" + (p.modules || "").split(" ").length + " modules — <code>" + esc(p.modules) + "</code></li>" +
+      "</ul>";
+
+    h += '<div class="toolbar">' +
+      '<a class="btn btn--primary" href="' + esc(p.questions) + '" download>' +
+        "⤓ Question paper <span class=\"paper__sz\">PDF · " + fmtBytes(p.qBytes) + "</span></a>" +
+      '<a class="btn btn--paper" href="' + esc(p.markscheme) + '" download>' +
+        "⤓ Markscheme <span class=\"paper__sz\">PDF · " + fmtBytes(p.mBytes) + "</span></a>" +
+      '<a class="btn btn--ghost btn--sm" href="' + esc(p.questions) + '" target="_blank" rel="noopener">' +
+        "Open the questions</a>" +
+      "</div>";
+
+    h += "</div>";
+    return h;
   }
 
   function viewGlossary() {
@@ -1270,6 +1412,7 @@
     else if (view === "plan") html = viewPlan();
     else if (view === "m") html = viewModule(parts[1]);
     else if (view === "practice") { if (parts[1]) practiceFilter = parts[1]; html = viewPractice(practiceFilter === "all" ? null : practiceFilter); }
+    else if (view === "papers") html = viewPapers();
     else if (view === "learn") html = viewLearn();
     else if (view === "c") html = viewConcept(parts[1]);
     else if (view === "q") html = viewQuestion(parts[1]);
@@ -1526,6 +1669,8 @@
       '<a class="navlink" data-view="home" href="#/"><span class="navlink__code">◎</span><span class="navlink__t">Overview</span></a>' +
       '<a class="navlink" data-view="plan" href="#/plan"><span class="navlink__code">▤</span><span class="navlink__t">The plan</span></a>' +
       '<a class="navlink" data-view="practice" href="#/practice"><span class="navlink__code">✎</span><span class="navlink__t">Practice</span></a>' +
+      '<a class="navlink" data-view="papers" href="#/papers"><span class="navlink__code">⤓</span><span class="navlink__t">Papers &amp; PDFs</span>' +
+      (DATA.papers.length ? '<span class="navlink__n">' + DATA.papers.length + "</span>" : "") + "</a>" +
       '<a class="navlink" data-view="learn" href="#/learn"><span class="navlink__code">✦</span><span class="navlink__t">Key points</span>' +
       (CON.length ? '<span class="navlink__n">' + conDone() + "/" + CON.length + "</span>" : "") + "</a>" +
       "</div>";

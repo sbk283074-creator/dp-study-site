@@ -13,11 +13,20 @@
    verified by a script that never looked at it.  Discovering the tags from
    window.BPHO_QUESTIONS means every section that ships is checked by construction, and
    the script needs no edit for sections 3 through 40.
+
+   It also checks the papers area: that every card matches the generated manifest, and
+   that every download link fetches a file whose first bytes really are %PDF-.
 */
 const { chromium } = require('/Users/lucas.ma/.workbuddy-ai/binaries/node/workspace/node_modules/playwright-core');
 
 const BASE = process.argv[2] || 'http://127.0.0.1:8901/bpho/index.html';
 const FIG_MIN = 8;            // spec.FIG_MIN -- the same floor the gate enforces
+
+/* The directory BASE sits in, so a download link can be fetched.  The PDF paths in
+   data/papers.js are relative to index.html ("papers/x.pdf"), which is what makes them
+   work over file:// as well as over Pages, so the check has to resolve them the same way
+   the browser does rather than gluing them onto BASE. */
+const DIR = /\/[^/]*\.[^/]*$/.test(BASE) ? BASE.replace(/[^/]*$/, '') : BASE.replace(/\/?$/, '/');
 
 let fails = 0;
 function ok(cond, label, extra) {
@@ -151,7 +160,68 @@ async function go(page, hash) {
     ok(/(\d+)\s*\/\s*25\s*correct/.test(res), 'a score out of 25 is reported');
   }
 
-  // ── 7. nothing threw along the way ────────────────────────────────────────
+  // ── 7. the papers area, and that every download link is a real file ────────
+  /* "The PDFs exist" and "the download works" are different claims.  This fetches every
+     link the page offers and checks the first five bytes, because a rendered download
+     page pointing at a 404 looks perfectly fine and is worse than no page at all.  It
+     also cross-checks each paper's question count against the live bank -- the PDFs are
+     built from that same data, so a mismatch means the papers are stale. */
+  console.log('\n--- papers & downloads ---');
+  await go(page, '#/papers');
+  const pap = await page.evaluate(() => {
+    const m = document.getElementById('main');
+    const nav = document.querySelector('.navlink[data-view="papers"]');
+    return {
+      nav: nav ? nav.classList.contains('on') : null,
+      h1: (m.querySelector('h1') || {}).textContent || '',
+      man: window.BPHO_PAPERS || [],
+      cards: [...m.querySelectorAll('.paper')].map(c => ({
+        title: c.querySelector('.paper__t').textContent.trim(),
+        flag: c.querySelector('.flag').textContent.trim(),
+        dl: [...c.querySelectorAll('a[download]')].map(a => a.getAttribute('href')),
+      })),
+    };
+  });
+  ok(pap.man.length > 0, 'the PDF manifest loaded', pap.man.length + ' paper(s)');
+  ok(pap.nav === true, 'the nav entry highlights on this route');
+  ok(pap.cards.length === pap.man.length, 'one card per manifest entry',
+     pap.cards.length + ' cards / ' + pap.man.length + ' entries');
+
+  /* The reverse direction, which is the one that actually breaks in practice: every
+     drill-bank section in the bank must have a built PDF.  A manifest that is merely
+     MISSING a section produces a page that still looks complete and correct, so nothing
+     else would ever catch "added section 4, forgot to rebuild the PDFs".  This is the
+     check that makes forgetting loud. */
+  const missing = tags.filter(t => !pap.man.some(p => p.tag === t));
+  ok(missing.length === 0,
+     'every bank section has a built PDF (node tools/papers/build_pdfs.js)',
+     missing.length ? 'MISSING: ' + missing.join(', ') : tags.length + ' sections, all present');
+
+  for (const p of pap.man) {
+    const card = pap.cards.find(c => c.title === p.label);
+    ok(!!card, p.tag + ': has a card');
+    if (!card) continue;
+
+    ok(card.dl.length === 2, p.tag + ': offers exactly two downloads', card.dl.join(', '));
+    const official = p.kind === 'official';
+    ok(official ? /Official BPhO/.test(card.flag) : /Original/.test(card.flag),
+       p.tag + ': the provenance badge is right', JSON.stringify(card.flag));
+
+    for (const href of card.dl) {
+      const r = await page.request.get(DIR + href);
+      const body = await r.body();
+      const magic = body.slice(0, 5).toString('latin1');
+      ok(r.status() === 200 && magic === '%PDF-',
+         p.tag + ': ' + href + ' is a real PDF',
+         r.status() + ' ' + Math.round(body.length / 1024) + 'KB ' + magic);
+    }
+
+    const live = await page.evaluate(tag =>
+      (window.BPHO_QUESTIONS || []).filter(q => q.paper === tag).length, p.tag);
+    ok(live === p.n, p.tag + ': the PDF count matches the live bank', p.n + ' vs ' + live);
+  }
+
+  // ── 8. nothing threw along the way ────────────────────────────────────────
   console.log('');
   ok(errors.length === 0, 'no console or page errors', errors.slice(0, 4).join(' | '));
 

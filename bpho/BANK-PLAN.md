@@ -145,8 +145,13 @@ Then, from `bpho/`:
 ```sh
 NODE=/Users/lucas.ma/.workbuddy-ai/binaries/node/versions/22.22.2-2/bin/node
 $NODE tools/bank/check_site_data.js data/bank-01.js   # the generated JS loads, right shape
+$NODE tools/papers/build_pdfs.js                      # rebuild the downloadable papers
 $NODE tools/bank/verify_site.js                       # drives a real browser over 127.0.0.1:8901
 ```
+
+**The PDF step is not optional.** A new section gets a card in the Papers area only once
+`build_pdfs.js` has run, and `verify_site.js` now *fails* if a bank section in the data has
+no built PDF — that check is the whole reason the omission is loud instead of silent.
 
 Both harnesses live in the repo, not `/tmp` — a documented workflow should not depend on
 files that vanish. `verify_site.js` needs the static server on `127.0.0.1:8901`, which is
@@ -189,6 +194,29 @@ Never hand-edit it — edit `secNN.py`. The site app picks up new sections on it
 filter chips and the mock launchers are both derived from the data, so publishing section
 2 needs no change to `assets/app.js` or `index.html` beyond one `<script>` tag.
 
+## 7b. The Papers area (`#/papers`)
+
+A separate place in the study space for the **papers** rather than the questions: the two
+sheets BPhO has published, and every drill-bank section, each as a real PDF of questions
+plus a matching markscheme PDF. It is a different job from Practice — there you answer one
+question at a time and the app marks you; here you take away a sheet you can print, sit
+against a clock, and mark on paper.
+
+- **Real PDFs, pre-generated, committed.** `tools/papers/build_pdfs.js` renders them with
+  headless Chromium rather than a PDF library, because every question may carry a
+  hand-authored inline SVG: Chromium already renders those, honours `break-inside: avoid`
+  so a question is never split across a page boundary, and supplies page numbers for free.
+- **The pages are read from the same data files the site loads, in the same order**, so a
+  PDF cannot disagree with the page it was downloaded from.
+- **The manifest is generated, never hand-written.** The script writes `data/papers.js`
+  from the files it actually produced, and the site renders its links from that list. A
+  hardcoded link would be a dead download the moment someone added a section and forgot to
+  rebuild — and `verify_site.js` fetches every link and checks the first bytes are `%PDF-`.
+- Page counts come from counting `/Type /Page` in the raw bytes (with a `(?!s)` lookahead so
+  the `/Type /Pages` tree node is not counted). Verified against PyMuPDF on every file.
+- The provenance badge is the honest part of each card: an original question mistaken for a
+  real one mis-calibrates revision, so the two kinds are never mixed in one list.
+
 ## 8. Progress
 
 | | Sections | Questions | Status |
@@ -227,6 +255,15 @@ an open bridge circuit, an open series loop, two labels with a wire running thro
 dangling component dashes, a "normal" drawn along the wrong axis, and the `<sup>` breakout
 below.
 
+**Papers area** — built alongside section 3. `#/papers` lists all five papers as PDFs (10
+files, 190 pages, 6.6 MB): the 2025 paper, the sample sheet, and sections 1–3, each with its
+markscheme. Both PDF defects found were found by rendering a page to PNG and *looking* at
+it, not by any check: the markscheme's first solution was pushed to page 2 by a
+`break-inside: avoid` on a block that is by nature long, leaving "Worked solutions" over
+half a blank sheet. `verify_site.js` now checks the area in both directions — every card
+matches the manifest and every link fetches real `%PDF-` bytes, *and* every bank section in
+the data has a built PDF.
+
 ## 9. File map
 
 | File | Role |
@@ -246,6 +283,8 @@ below.
 | `verify_site.js` | Playwright end-to-end check that the bank works inside the study site |
 | `extract_papers.js` | pulls the real paper and sample sheet out of the PDFs into `papers.json` |
 | `papers.json` | the real 2025 paper and sample sheet, for calibration |
+| `../papers/build_pdfs.js` | renders every paper + markscheme to real PDFs; writes `data/papers.js` |
+| `../papers/inspect_pdfs.py` | opens the built PDFs and reports page counts / renders a page to PNG |
 
 ## 10. Traps hit while building this
 
@@ -306,3 +345,20 @@ below.
   `<b>`/`<code>` that authors legitimately put *after* the `svg`. A non-greedy wrapper
   capture can also span two figures if a `</figure>` is ever missing. Narrow every per-figure
   check to the `<svg>…</svg>` span.
+- **A layout defect in a generated PDF is invisible to every check that reads the data.**
+  No page count, byte size, or data-level assertion could see that the markscheme's first
+  worked solution had been pushed to page 2, leaving "Worked solutions" sitting over half a
+  blank sheet — the cause was `break-inside: avoid` on a block that is long *by nature*.
+  A solution must be allowed to break; keep the heading with what follows
+  (`.ms__head { break-after: avoid }`) and let the prose flow with `orphans`/`widows`.
+  Rendering a page to PNG and looking at it is the only thing that catches this class, and
+  it caught both PDF defects there were.
+- **Editing the PDF builder does not change the PDFs.** `papers/*.pdf` and `data/papers.js`
+  are output; a fix in `build_pdfs.js` is invisible until the build is re-run, and the
+  stale files look perfectly normal. Same shape as the `figsNN.py` trap above: know which
+  layer a checker reads before believing it.
+- **Counting pages by scanning the bytes needs a lookahead, not `[^s]`.** `/Type /Pages` is
+  the page *tree* node and must not be counted, but `/\/Type\s*\/Page[^s]/g` consumes the
+  character after each match, so two adjacent page objects can be miscounted as one. Use
+  `(?![s])`. Cross-checked against PyMuPDF on all ten files: 11/34, 6/16, 12/28, 10/31,
+  10/32 — exact.
