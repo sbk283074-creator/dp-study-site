@@ -487,6 +487,30 @@ def m39(qs):
     G.spec.SECTIONS[0]["noncalc_min"] = 13
 
 
+@mutant("numerics.symbolic_check_with_decimal", "G7",
+        "write a symbolic check as a decimal and a fraction of the same quantity",
+        must_not_fire=True)
+def m40(qs):
+    # S01-03's check is sqrt(r) against r**(1/2), both exact, so it never touched the
+    # float path.  Rewriting it as 1.5*sqrt(r) against 3*sqrt(r)/2 puts a Float and a
+    # free symbol in the same expression, which is exactly the shape that used to raise.
+    # The two sides are equal, so the correct verdict is silence: a gate that reports an
+    # error here is reporting its own inability to evaluate, not a fault in the content.
+    find(qs, "S01-03")["check"] = {"kind": "sym",
+                                   "got": "1.5*r**(1/2)", "want": "3*sqrt(r)/2"}
+
+
+@mutant("numerics.symbolic_check_decimal_is_wrong", "G7",
+        "same shape, but the decimal is six per cent out")
+def m41(qs):
+    # The partner to m40.  Without this, m40 would be satisfied by a branch that returns
+    # True unconditionally, and the fix would have traded a false failure for a false
+    # pass.  1.6 against 3/2 is out by 6.7 per cent -- four orders of magnitude above the
+    # 1e-9 relative tolerance the comparison uses.
+    find(qs, "S01-03")["check"] = {"kind": "sym",
+                                   "got": "1.6*r**(1/2)", "want": "3*sqrt(r)/2"}
+
+
 def main():
     base = G.baseline()
     print("mutation self-test: break one thing, check the right gate notices")

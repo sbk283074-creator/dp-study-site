@@ -681,6 +681,33 @@ def _has_float(x) -> bool:
             return False
 
 
+# Distinct primes for the symbolic spot-check below.  Distinct so that two different
+# symbols can never collapse onto the same value, and all at least 2 so that no symbol is
+# substituted at 0 or 1 -- the two points at which an identity can hold vacuously or the
+# expression can blow up.
+_CHECK_PRIMES = (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37)
+
+
+def _spot_equal(a, b) -> bool:
+    """Are two SYMBOLIC expressions the same, when at least one carries a float?
+
+    Substituting a distinct prime for each free symbol and comparing numerically is how a
+    symbolic identity is normally spot-checked.  It handles the two cases the exact test
+    cannot: an irrational written as its decimal (0.7071067811865476 against sqrt(2)/2)
+    and a decimal coefficient written in place of a fraction.
+
+    It cannot launder a wrong expression into a pass.  Two different rational functions
+    agree only on a measure-zero set, the primes keep every symbol away from 0 and 1, and
+    the tolerance is 1e-9 relative -- a genuinely wrong check is out by percent.
+    """
+    syms = sorted(a.free_symbols | b.free_symbols, key=str)
+    if len(syms) > len(_CHECK_PRIMES):
+        return False
+    subs = {s: sympy.Integer(p) for s, p in zip(syms, _CHECK_PRIMES)}
+    fa, fb = complex(sympy.N(a.subs(subs))), complex(sympy.N(b.subs(subs)))
+    return abs(fa - fb) <= 1e-9 * max(1.0, abs(fb), abs(fa))
+
+
 def _equal(a, b) -> bool:
     """Are two check results the same, allowing for inexact numbers?
 
@@ -697,6 +724,14 @@ def _equal(a, b) -> bool:
     parts in a billion -- so this cannot launder a wrong answer into a pass.
     """
     if _has_float(a) or _has_float(b):
+        # A SYMBOLIC expression carrying a float cannot take the numeric path: `N()` of
+        # something that still has free symbols is not a number, and the comparison dies
+        # with sympy's own "Cannot convert expression to float".  That message names
+        # sympy's internals rather than the author's mistake, and it fires on the
+        # ordinary case of writing a coefficient as a decimal -- `0.60*rho_w*V` for
+        # `3*rho_w*V/5`, which is how that question's own options are printed.
+        if getattr(a, "free_symbols", None) or getattr(b, "free_symbols", None):
+            return _spot_equal(a, b)
         fa, fb = complex(sympy.N(a)), complex(sympy.N(b))
         return abs(fa - fb) <= 1e-9 * max(1.0, abs(fb), abs(fa))
     return sympy.simplify(a - b) == 0

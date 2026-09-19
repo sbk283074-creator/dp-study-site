@@ -71,7 +71,7 @@ median while never setting anything that hard is not "the same or harder", it is
 that has removed the question which actually selects. So the standard now has a **top end**
 as well: see G5b below, and `DIFFICULTY-AUDIT.md` for the measurement that found it.
 
-Two things that were removed because they flattered the author's own work:
+Three things that flattered the author's own work, and what was done about them:
 
 - an `elim` term (whether the solution says "eliminate") scored **0.00 on all 25 real
   questions** and 2.40 average on the new ones, inflating the apparent gap from +1.3 to
@@ -79,6 +79,10 @@ Two things that were removed because they flattered the author's own work:
 - a `moves` cap of 6 truncated **only the real paper's hardest question** (13 moves),
   capping the yardstick at 18.7. Lifting it raised the paper's max to 27.4 and exposed
   that the bank's hardest question (17.3) is well below the paper's hardest.
+- numbering a **sanity check** as a "Step" inflated `moves` by one per question, and 19 of
+  section 6's 25 solutions ended that way. The paper's own solutions average 2.44 numbered
+  steps; section 6's averaged 5.48. The term is not wrong, but it counts what it is given,
+  so the bank's counting convention has to match the paper's. See §8.
 
 ## 4. The ten gates
 
@@ -92,7 +96,7 @@ Two things that were removed because they flattered the author's own work:
 | **G4** profile vs solution | the declared reasoning chain (steps, relations, insight, shape) is cross-checked against the solution text, so a chain cannot be over- or under-stated |
 | **G5** difficulty | measured score vs the real paper's quartiles, plus band counts — and three clauses added after the difficulty audit: **G5b** the top end (≥ 2 questions at ≥ 9 moves, hardest ≥ 22.0), **G5c** the non-calculator axes (per-section `noncalc_min` and `approx_min`), and a **floor** (nothing below 8.0, the paper's own easiest) |
 | **G6** similarity | **logic**-level overlap between every pair, not wording |
-| **G7** numerics | every answer re-derived independently of the solution, in exact arithmetic |
+| **G7** numerics | every answer re-derived independently of the solution, in exact arithmetic. A **symbolic** check whose coefficient is written as a decimal is evaluated by substituting a distinct prime per free symbol (`_spot_equal`), because `N()` of an expression with free symbols is not a number and the comparison used to die with sympy's "Cannot convert expression to float" |
 | **G8** figures | at least 8 figure-bearing questions; every referenced figure exists; figure geometry is checked |
 | **G9** balance | no answer letter appears more than 10 times in 25 |
 | **G10** hand-check ledger | at least 20 of 25 carry a hand-verified entry in `ledger.json` |
@@ -105,7 +109,7 @@ weaker check that only fires when the logic does not.
 ### Why the gates are not trusted on their own
 
 `tools/bank/mutants.py` is the answer to *"don't trust your tool that you write only"*.
-It takes the real, passing section, breaks **exactly one thing** in each of 29 ways, re-runs
+It takes the real, passing section, breaks **exactly one thing** in each of 41 ways, re-runs
 the whole suite, and asserts the right gate notices. A mutation that slips through is a
 hole in the suite and is reported as a failure.
 
@@ -228,8 +232,8 @@ against a clock, and mark on paper.
 
 | | Sections | Questions | Status |
 |---|---|---|---|
-| Done | 1–5 | 125 | gated, hand-checked, published, difficulty-audited |
-| Planned | 6–40 | 875 | not started |
+| Done | 1–6 | 150 | gated, hand-checked, published, difficulty-audited |
+| Planned | 7–40 | 850 | not started |
 
 **Open item carried forward: sections 1–5 under-use the approximation axis.** They sit
 at 6–12 non-calculator questions per section and **1–2** requiring an approximation,
@@ -256,12 +260,40 @@ why the median test passed for four sections.
 | **G5c per-section non-calculator floors** — `noncalc_min` and `approx_min` on the plan, 16 and 10 for sections 6–40 | stops the non-calculator axes being satisfied on paper by symbolic options alone |
 | **four questions replaced** in sections 4 and 5 | the ceiling moved from 20.5 to 24.2/25.4, each replacement hand-worked in `ledger.json` |
 
-The gate suite is now **39 mutants** (`python mutants.py`), all behaving: every gate has
+The gate suite is now **41 mutants** (`python mutants.py`), all behaving: every gate has
 been shown to fail on demand and the one content-correct mutant has been shown to keep the
 suite quiet. Four of the new gates needed more than one mutant to prove, because a mutant
 caught by a *neighbouring* clause has demonstrated nothing — the three failures and what
 each one taught are recorded beside the mutants in `mutants.py` and summarised in
 `DIFFICULTY-AUDIT.md` section 6b.
+
+### What section 6 found: the bank numbers steps more finely than the paper does
+
+Building section 6 turned up a defect the remediation had not looked for, and it is a
+*measurement* defect rather than a content one. The real 2025 paper's solutions average
+**2.44 numbered steps** with a maximum of 5; section 6's averaged **5.48** with a maximum
+of 10 — while carrying *fewer* formulas per question (4.00 against 5.04) and the same
+number of relations (2.00 against 1.96). Every point of section 6's excess median came
+from one term, `moves`, and 19 of its 25 solutions ended with a numbered verification —
+"Step 5 — check the size", "Step 6 — check the direction".
+
+A sanity check does not obtain the answer, and numbering it as a step made the section read
+uniformly harder than the paper instead of peaked like it. The fix keeps every word of
+those paragraphs and removes only the number: the trailing step becomes an unnumbered
+"Sanity check.", and the profile loses the matching step. That one change moved the section
+from **21 of 25 questions above the paper's p75 to 15**, and its easiest question from 10.0
+to 8.4 — against the paper's own 8.3.
+
+The lesson generalises, and it is why G5b tests `moves` rather than trusting the declared
+`diff`: **a scorer that counts numbered steps can be satisfied by numbering more of them.**
+The counter is that a numbered step has to be a derivation move, which is a judgement no
+gate can make — so it is held by the hand ledger and by reading the paper's own solutions
+beside the bank's. Two other things surfaced with it: `_equal` could not evaluate a
+symbolic check containing a decimal at all (it reported sympy's "Cannot convert expression
+to float" as though the author had erred), and the logarithms in two estimate questions
+were written to three significant figures, which no candidate without a calculator can
+produce. Both are fixed, and the first has two mutants (`m40`, `m41`) proving the new
+branch passes a correct decimal form and still catches a wrong one.
 
 **Section 1** — `S01`, 15 figures, mix `A3 B2 C4 D2 E1 F2 G2 H4 I1 J2 K2`, answer sequence
 `BCBEDBECADCAEABADCBABECAD`, measured median **15.2** against the paper's 13.5, p25 **14.6**
@@ -307,11 +339,25 @@ dimensional-analysis question was replaced after scoring 7.7, below anything the
 sets, because it asked the candidate to *recognise* a combination rather than build one.
 Non-calculator 7 / 2. All ten gates pass, 25/25 hand-verified, live as `BANK-S05`.
 
+**Section 6** — `S06`, 12 figures, mix `A3 B2 C3 D1 E2 F2 G2 H4 I1 J1 K2 L1 M1`, answer
+sequence `ACBDEBACEDBAECDAEBCDACBED`, measured median **16.8** against 13.5, p25 **14.5**
+against 11.5, min 8.4. Hardest `S06-04` at **23.2** (a nested parallel pair, a series
+resistor and the cell's internal resistance, reduced in ten moves and then walked back down
+to the current in the innermost resistor) and `S06-15` at 21.6 (a pulley that goes slack,
+so the motion has two regimes). Bands `d1=1 d2=9 d3=15`.
+
+Section 6 is the **first section authored against the new standards** rather than
+grandfathered into them, so it is the first held to `NONCALC_PAPER = 16` and
+`APPROX_PAPER = 10` — and it clears both at **18** and **13**, where sections 1–5 sit at
+6–12 and 1–2. It is also the section that produced the step-granularity finding above, and
+the one that needed a tool fix rather than a content fix. Its first gate run reported 27
+failures; the section now passes all ten with 25/25 hand-checked.
+
 **Papers area** — `#/papers` lists every paper as a downloadable PDF: the 2025 paper, the
-sample sheet, and sections 1–5, each with its markscheme — **7 papers, 14 PDFs, 276
-pages, 9.3 MB**. Both PDF defects found were found by rendering a page to PNG and *looking*
-at it, not by any check: the markscheme's first solution was pushed to page 2 by a
-`break-inside: avoid` on a block that is by nature long, leaving "Worked solutions" over
+sample sheet, and sections 1–6, each with its markscheme — **8 papers, 16 PDFs, 309
+pages, 10.2 MB**. Both PDF defects found were found by rendering a page to PNG and
+*looking* at it, not by any check: the markscheme's first solution was pushed to page 2 by
+a `break-inside: avoid` on a block that is by nature long, leaving "Worked solutions" over
 half a blank sheet. `verify_site.js` checks the area in both directions — every card
 matches the manifest and every link fetches real `%PDF-` bytes, *and* every bank section in
 the data has a built PDF.
@@ -327,7 +373,8 @@ the data has a built PDF.
 | `fig/*.svg` | the generated figures, the actual input to gating and publishing |
 | `svgkit.py` | shared SVG primitives (`ell(...)` sampled ellipses, palette); raises on breakout tags |
 | `gates.py` | the ten gates, the difficulty scorer, the fingerprint |
-| `mutants.py` | 39 mutants proving the gates have teeth, both directions |
+| `measure.py` | read-only re-measurement of a section the way the gate measures it — encodes the absolute-figdir and `supify` traps |
+| `mutants.py` | 41 mutants proving the gates have teeth, both directions |
 | `make_ledger.py` | builds `ledger.json`, the hand-check record |
 | `ledger.json` | per-question method, working, and hand-derived answer |
 | `build_site.py` | gates, then emits `bpho/data/bank-NN.js` |

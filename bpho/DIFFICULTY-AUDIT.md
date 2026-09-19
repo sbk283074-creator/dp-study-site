@@ -182,6 +182,7 @@ published with a weak ceiling, and the whole bank was then re-measured:
 | sec 3 | 15.80 | 24.30 | 10 | 3 |
 | sec 4 | 15.20 | 24.20 | 10 | 2 |
 | sec 5 | 14.20 | 25.40 | 10 | 2 |
+| sec 6 | 16.80 | 23.20 | 10 | 2 |
 
 Before the fix the bank's hardest question scored **20.50 at six moves**, and there were
 **zero** questions above six moves in 125. Every section now carries at least two questions
@@ -205,7 +206,13 @@ Measured on the same scorer, bank-wide, after the fix:
 |---|---|---|---|---|
 | **R0-2025** | **10 / 25 = 40 %** | **10 / 25 = 40 %** | **16 / 25 = 64 %** | 6 / 25 = 24 % |
 | bank after the fix (125) | 12 / 125 = 10 % | 31 / 125 = 25 % | 41 / 125 = 33 % | 59 / 125 = 47 % |
-| per section (approx / either) | S01 6/12 · S02 2/8 · S03 1/6 · S04 1/8 · S05 2/7 | | | |
+| bank with section 6 (150) | 25 / 150 = 17 % | 39 / 150 = 26 % | 59 / 150 = 39 % | 71 / 150 = 47 % |
+| per section (approx / either) | S01 6/12 · S02 2/8 · S03 1/6 · S04 1/8 · S05 2/7 · **S06 13/18** | | | |
+
+Section 6 is the first section written *to* the new floors rather than grandfathered into
+them, and it clears both: **13 approximations against a floor of 10**, and **18 by either
+axis against a floor of 16**. It moves the bank-wide approximation rate from 10 % to 17 %,
+still well under the paper's 40 % — the remaining gap is entirely sections 1–5.
 
 Finding 4a is **not** closed, and the honest reading is that the approximation rate did not
 move at all — the four rebuilt questions were rebuilt for depth. Two consequences follow,
@@ -252,9 +259,57 @@ the pattern is worth stating once:
   was attached to the mutation alone, so the floor was put back before the gate read it and
   the mutant reported `MISSED` for a mutation nobody ever saw.
 
-The suite is now **39 mutants**, and `mutants.py` asserts that all 39 behave: every gate has
+The suite is now **41 mutants**, and `mutants.py` asserts that all 41 behave: every gate has
 been shown to fail on demand, and the one content-correct mutant
 (`structure.case_only_difference`) has been shown to keep it quiet.
+
+The last two were added for a tool fix rather than a gate, and they are the clearest
+example of why one mutant per change is not enough. `_equal` routed any expression
+containing a float to its numeric path, where `N()` of an expression that still has free
+symbols is not a number — so a *symbolic* check whose coefficient was written as a decimal
+died with sympy's "Cannot convert expression to float", reporting a tool defect as an
+authoring error. The fix substitutes a distinct prime for each free symbol and compares
+numerically. `m40` writes the same quantity as a decimal and as a fraction and asserts the
+gate stays **silent**; `m41` writes the decimal six per cent out and asserts it **fires**.
+Without `m41`, `m40` would be satisfied by a branch that returned `True` unconditionally,
+and the fix would have traded a false failure for a false pass.
+
+### 6c. A fourth finding, made while building section 6
+
+Sections 1–5 were repaired against this audit. Section 6 was the first built against it, and
+building it turned up a defect the audit had not looked for — in the bank's *convention*
+rather than in its content.
+
+The real 2025 paper's solutions average **2.44 numbered steps**, maximum 5 (its mean `moves`
+is 3.36, because five of its solutions number nothing and fall back on their formula count).
+Section 6's averaged **5.48 numbered steps**, maximum 10 — while carrying *fewer* formulas
+per question (4.00 against 5.04) and the same number of relations (2.00 against 1.96). Since
+`moves` is the dominant term in the scorer, that one difference accounted for the whole of
+section 6's excess median, and it made the section read **uniformly** harder than the paper
+instead of peaked like it: 21 of its 25 questions sat above the paper's p75, where the paper
+has 6.
+
+The cause was a habit, not a mistake in any single question: 19 of the 25 solutions ended
+with a numbered verification — "Step 5 — check the size", "Step 6 — check the direction".
+A sanity check does not obtain the answer. Demoting those steps to unnumbered prose, keeping
+every word, moved the section to **15 of 25** above p75 and its easiest question from 10.0
+to **8.4**, against the paper's own 8.3.
+
+| | paper 2025 | section 6 before | section 6 after |
+|---|---|---|---|
+| mean `moves` | 3.36 | 5.48 | 4.72 |
+| mean numbered steps | 2.44 | 5.48 | 4.72 |
+| max numbered steps | 5 | 10 | 10 |
+| mean formulas per question | 5.04 | 4.00 | 4.00 |
+| questions above p75 | 6 | 21 | 15 |
+| easiest question | 8.3 | 10.0 | 8.4 |
+
+The general lesson is uncomfortable and worth writing down: **a scorer that counts numbered
+steps can be satisfied by numbering more of them.** The audit's own instrument was
+gameable by presentation, and nothing in the ten gates could have caught it, because every
+gate agreed with every other gate. What caught it was reading the paper's solutions beside
+the bank's and comparing the *granularity* of the numbering — which is a judgement, not a
+check, and is why G10's hand ledger and this document both exist.
 
 ---
 
@@ -262,29 +317,26 @@ been shown to fail on demand, and the one content-correct mutant
 
 ```sh
 cd bpho/tools/bank
-python - <<'EOF'
-import gates, json, io, copy, os
-data = json.load(io.open('papers.json', encoding='utf-8'))
-ref = [q for q in data['questions'] if q['paper'] == 'R0-2025']
-def show(name, qs):
-    sc = sorted(gates.difficulty(q) for q in qs)
-    mv = [gates.features(q)['moves'] for q in qs]
-    print('%-10s med=%.2f max=%.2f moves med=%d max=%d' %
-          (name, gates.median(sc), max(sc), gates.median(mv), max(mv)))
-show('R0-2025', ref)
-for n in range(1, 6):
-    qs = gates.load_section(n).QUESTIONS
-    ex = []
-    for q in qs:
-        q = copy.deepcopy(q); e = []
-        q['stem'] = gates.expand_figs(q['stem'], 'fig', set(), e)
-        ex.append(q)
-    show('sec%02d' % n, ex)
-EOF
+python measure.py paper     # the real 2025 paper, question by question
+python measure.py all       # every section, summary
+python measure.py 6         # one section, per-question breakdown
+python gates.py all         # the ten gates
+python mutants.py           # proof the gates have teeth
 ```
 
-**The trap this avoids:** importing a section and scoring it directly reports every
-figure-bearing question 1.00 too low, because the stem still holds `{{FIG:key}}`. The
-first pass of this audit did exactly that and produced a section 4 median of 13.6 against
-the gate's 14.6. Expand the figures first, or the numbers will not reconcile with
-`gates.py`.
+`measure.py` exists because getting this measurement right is not obvious, and the two ways
+to get it wrong are both silent:
+
+* **The figure directory must be absolute** (`gates.HERE/fig`, not `"fig"`). A relative path
+  resolves only if the working directory happens to be `tools/bank`; when it does not,
+  `expand_figs` returns `<!-- MISSING FIGURE ... -->` rather than raising, every
+  figure-bearing question loses its `fig` term, and the scores come out **1.00 too low**.
+  That cost an hour in the section-6 session: six questions appeared to disagree with the
+  gate by exactly 1.0 and the discrepancy looked like a scorer bug rather than a path bug.
+* **The text must be `supify`-ed before scoring.** The `symbolic` flag and the formula count
+  both read rendered text, so a helper that scores the raw source disagrees with the gate it
+  is supposed to be checking.
+
+The first pass of this audit made the first mistake, which is why it originally reported a
+section 4 median of 13.6 against the gate's 14.6. If your numbers do not reconcile with
+`gates.py`, check the path before you check the scorer.

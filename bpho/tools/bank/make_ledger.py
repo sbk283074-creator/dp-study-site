@@ -801,6 +801,138 @@ LEDGER = {1: {
         "F_large = 100 x 20 = 2000 N",
         "A"),
 },
+6: {
+    "S06-01": (
+        "parallel the voltmeter with the 8.0 ohm, then divide the supply",
+        "values read off the figure: 12 V cell, 4.0 ohm, 8.0 ohm, voltmeter 24 ohm across "
+        "the 8.0 ohm; 8.0 || 24 = (8.0 x 24)/(8.0 + 24) = 192/32 = 6.0 ohm; total "
+        "4.0 + 6.0 = 10 ohm; I = 12/10 = 1.2 A; the voltmeter reads the p.d. across the "
+        "pair, 1.2 x 6.0 = 7.2 V",
+        "A"),
+    "S06-02": (
+        "propagate a small change through a square root",
+        "T = 2 pi sqrt(l/g), so T goes as l^(1/2); a 4.0 % change in l becomes "
+        "(1/2) x 4.0 % = 2.0 % in T",
+        "C"),
+    "S06-03": (
+        "resolve on the incline, then ADD friction because the block moves up",
+        "the figure gives a 30 degree incline; W = 2.0 x 10 = 20 N; along the plane "
+        "20 sin 30 = 10 N; perpendicular 20 cos 30 = 17.3 N, so N = 17.3 N; "
+        "f = 0.25 x 17.3 = 4.3 N down the slope; constant speed so F = 10 + 4.3 = 14.3 N, "
+        "which is 14 N to two significant figures",
+        "B"),
+    "S06-04": (
+        "reduce inside out, then walk back down the p.d.s",
+        "6.0 || 3.0 = 18/9 = 2.0; second branch 4.0 + 2.0 = 6.0; 6.0 || 6.0 = 3.0; total "
+        "2.0 + 5.0 + 3.0 = 10 ohm; I = 12/10 = 1.2 A; section p.d. 1.2 x 3.0 = 3.6 V; "
+        "branch current 3.6/6.0 = 0.60 A; pair p.d. 0.60 x 2.0 = 1.2 V; "
+        "I(3.0 ohm) = 1.2/3.0 = 0.40 A; P = 0.40^2 x 3.0 = 0.48 W",
+        "D"),
+    "S06-05": (
+        "estimate a rate times a lifetime, then round on the sqrt(10) boundary",
+        "70 x 60 x 24 x 365 = 3.68e7 beats a year; over 80 years that is 2.94e9; the "
+        "boundary between 10^9 and 10^10 is sqrt(10) x 10^9 = 3.16e9, and 2.94 is below "
+        "it, so the answer is 10^9",
+        "E"),
+    "S06-06": (
+        "area under the velocity-time graph over the whole 12 s",
+        "triangle 0.5 x 4.0 x v = 2v; rectangle 6.0 x v = 6v; triangle 0.5 x 2.0 x v = v; "
+        "total 9v; 9v/12 = 3v/4",
+        "B"),
+    "S06-07": (
+        "two conservation laws, then divide to eliminate v",
+        "mu = 2mv cos(th); (1/2)mu^2 = 2 x (1/2)mv^2 so u = sqrt2 v; then "
+        "sqrt2 v = 2v cos(th) gives cos(th) = sqrt2/2 and th = 45 degrees",
+        "A"),
+    "S06-08": (
+        "strain, then stress, then force, then mass",
+        "strain = 1.0e-3/2.0 = 5.0e-4; stress = 2.0e11 x 5.0e-4 = 1.0e8 Pa; "
+        "F = 1.0e8 x 1.0e-6 = 100 N; m = 100/10 = 10 kg",
+        "C"),
+    "S06-09": (
+        "algebraic superposition, carrying the sign",
+        "+3.0 cm and -1.0 cm add to +2.0 cm; with A = 3.0 cm that is 2.0/3.0 of A, "
+        "so 2A/3",
+        "E"),
+    "S06-10": (
+        "Snell for the index, then v = c/n",
+        "n = sin 60 / sin 30 = (sqrt3/2)/(1/2) = sqrt3 = 1.73; "
+        "v = 3.0e8/1.73 = 1.73e8, so 1.7 x 10^8 m/s",
+        "D"),
+    "S06-11": (
+        "find the current, then the power in the internal resistance",
+        "I = eps/(R + r); the power dissipated inside the cell is I^2 r = "
+        "eps^2 r/(R + r)^2",
+        "B"),
+    "S06-12": (
+        "activity times the interval, valid because lambda t is tiny",
+        "lambda t = 1.0e-8 x 60 = 6.0e-7, far below 1, so the number decaying is "
+        "N lambda t = 4.0e20 x 6.0e-7 = 2.4e14",
+        "A"),
+    "S06-13": (
+        "carry every conversion, then round on the sqrt(10) boundary",
+        "12 x 60 = 720 breaths an hour; 720 x 24 = 17 280 a day; 17 280 x 0.50 = 8640 "
+        "litres; the boundary between 10^3 and 10^4 is sqrt(10) x 10^3 = 3162, and 8640 "
+        "is above it, so 10^4",
+        "E"),
+    "S06-14": (
+        "subtract the velocities as vectors, then Pythagoras",
+        "v_P - v_Q = (15 east) - (20 north); the two are perpendicular, so the magnitude "
+        "is sqrt(15^2 + 20^2) = sqrt(625) = 25 m/s",
+        "C"),
+    "S06-15": (
+        "two regimes: accelerating while the string is taut, then friction alone",
+        "driving force 2.0 x 10 - 0.20 x 3.0 x 10 = 20 - 6.0 = 14 N over 5.0 kg, so "
+        "a = 2.8 m/s^2; after 1.0 m, v^2 = 2 x 2.8 x 1.0 = 5.6; then only friction acts, "
+        "a = -0.20 x 10 = -2.0 m/s^2, so s = 5.6/(2 x 2.0) = 1.4 m",
+        "D"),
+    "S06-16": (
+        "friction supplies the centripetal force",
+        "mu m g = m v^2/r, so v^2 = mu g r and v = sqrt(mu g r)",
+        "A"),
+    "S06-17": (
+        "linear expansion over the temperature rise",
+        "dT = 120 - 20 = 100 K; dL = 2.0 x 1.2e-5 x 100 = 2.4e-3 m = 2.4 mm",
+        "E"),
+    "S06-18": (
+        "receding-source Doppler, then expand to first order",
+        "a receding source gives f' = f u/(u + v) = f/(1 + v/u); expanding gives "
+        "f(1 - v/u) to first order",
+        "B"),
+    "S06-19": (
+        "apparent depth is the real depth divided by the index",
+        "3.0/1.5 = 2.0 m, which is less than the real depth, as a pool must look shallower",
+        "C"),
+    "S06-20": (
+        "combine the pair, take the pair's p.d., then divide by 2.0 ohm",
+        "6.0 || 2.0 = 12/8 = 1.5 ohm; total 3.0 + 1.5 = 4.5 ohm; I = 6.0/4.5 = 1.333 A; "
+        "pair p.d. = 1.333 x 1.5 = 2.0 V; I(2.0 ohm) = 2.0/2.0 = 1.0 A",
+        "D"),
+    "S06-21": (
+        "charge is conserved and energy is not; compare the two energies",
+        "Q = 4.0e-6 x 10 = 4.0e-5 C; energy before = (1/2) x 4.0e-6 x 100 = 2.0e-4 J; "
+        "after sharing, C = 10e-6 and V = 4.0e-5/10e-6 = 4.0 V, so the energy is "
+        "(1/2) x 10e-6 x 16 = 8.0e-5 J; the fraction lost is "
+        "(2.0e-4 - 8.0e-5)/2.0e-4 = 60 %",
+        "A"),
+    "S06-22": (
+        "the plateau is the melting stage; power times time over the mass",
+        "plateau 6.0 min = 360 s; E = 150 x 360 = 54 000 J; "
+        "L = 54 000/0.30 = 180 000 = 1.8 x 10^5 J/kg",
+        "C"),
+    "S06-23": (
+        "count the half-lives, then halve that many times",
+        "24/8.0 = 3 half-lives; (1/2)^3 = 1/8",
+        "B"),
+    "S06-24": (
+        "set the photon energy equal to the work function at threshold",
+        "hc/lambda = phi at threshold, so lambda = hc/phi",
+        "E"),
+    "S06-25": (
+        "upthrust equals weight, then cancel g",
+        "rho_w x 0.60V x g = m g, so m = 0.60 rho_w V",
+        "D"),
+},
 }
 
 
