@@ -1509,6 +1509,7 @@ N / N0 = (1/2)<sup>3</sup> = 1/8</div>
         "approx": False,
         "symbolic": False,
         "figure_essential": False,
+        "scope_note": "The de Broglie relation is named because the question uses it as a definition to be quoted, not as a result to be derived. The physics being tested is p = h/lambda plus KE = p^2/2m -- momentum and energy, both Year 12 -- and the answer is a pure mass ratio. It sits in the photoelectric-effect chapter of every Year 12 spec.",
     },
     "check": {"kind": "sym", "got": "(p**2/(2*m_e))/(p**2/(2*m_p))", "want": "m_p/m_e"},
     "sol": '''<p><b>What is being tested.</b> Whether you can turn a wavelength condition into a momentum condition and then follow the mass through. No numbers are needed until the last line, and the mass ratio is given so that none are needed then either.</p>

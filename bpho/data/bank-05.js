@@ -5,15 +5,15 @@
    The module mix is this section's allocation from the plan (A3 B2 C3 D2 E1 F2 G2 H3 I1 J1 K2 L2 M1), so this section works
    as a full-length mock.
 
-   Before this file was written the section was put through ten gates: structure,
+   Before this file was written the section was put through eleven gates: structure,
    distractor quality, agreement between key and solution, notation and the
    non-calculator rule, declared-profile vs solution, measured difficulty against the
    real paper's own quartiles, logic-level similarity, an independent numeric
-   re-derivation of every answer, figure geometry, and answer-letter balance.  The
-   gate suite itself is tested by 31 mutants, each of which breaks one thing and
-   asserts that the right gate notices.
+   re-derivation of every answer, figure geometry, answer-letter balance, and scope
+   against the official Round 0 topic note.  The gate suite itself is tested by 44
+   mutants, each of which breaks one thing and asserts that the right gate notices.
 
-   Derived key: A C E B D D A C E B B D A C E E B D A C C E B D A
+   Derived key: A C E B D D A C E B B D A C E E B D A C A E B D A
 
    Figures are hand-authored inline SVG in tools/bank/fig/, not generated images. */
 
@@ -785,27 +785,66 @@ D = 1.5 m</div>
 },
 
 {
-  id: "S05-21", module: "I", topic: "An RC charging circuit: the time constant", diff: 2, rel: [["I", "The time constant of an RC circuit is tau = R C"], ["I", "Both R and C must be in base units before multiplying"], ["A", "Converting microfarads and megohms consistently"]], key: ["timeconstant", "rc", "capacitor"], ans: 2, paper: "BANK-S05",
-  rel: [["I", "The time constant of an RC circuit is tau = R C"], ["I", "Both R and C must be in base units before multiplying"], ["A", "Converting microfarads and megohms consistently"]],
-  q: `<p>A 2.0 microfarad capacitor is charged through a 1.0 megohm resistor by a 6.0 V supply. What is the time constant of the circuit?</p>`,
-  opts: ["12 s", "3.0 s", "2.0 s", "0.50 s", "1.0 s"],
-  sol: `<p><b>What is being tested.</b> The RC time constant tau = R C, and the cancellation of the mega- and micro- prefixes.</p>
-<p><b>Step 1 — the formula.</b> For a resistor and capacitor in series the time constant is</p>
-<div class="formula">tau = R C</div>
-<p><b>Step 2 — base units.</b></p>
-<div class="formula">R = 1.0 megohm = 1.0 x 10^6 ohm
-C = 2.0 microfarad = 2.0 x 10^-6 F</div>
-<p><b>Step 3 — multiply.</b> The <code>10^6</code> and <code>10^-6</code> cancel:</p>
-<div class="formula">tau = (1.0 x 10^6) x (2.0 x 10^-6) = 2.0 s</div>
-<p>So <b>Answer: C.</b></p>
-<p><b>Step 4 — check.</b> A megohm times a microfarad is a second exactly, so 1.0 x 2.0 = 2.0 s is the right order; the supply voltage does not enter the time constant at all.</p>
+  id: "S05-21", module: "I", topic: "A parallel pair in series with a third capacitor: the p.d. across the single one, from the charge the whole chain carries", diff: 3, rel: [["I", "Capacitors in parallel add, because they sit across the same p.d. and their charges add"], ["I", "Capacitors in series combine as reciprocals, and one charge passes through the whole chain"], ["I", "Q = CV applied first to the network, to get the charge, and then to the single capacitor, to get its p.d."], ["A", "Working from the outside in: the charge is the quantity that a series chain does not change"]], key: ["capacitors", "parallel", "series", "charge"], ans: 0, paper: "BANK-S05",
+  rel: [["I", "Capacitors in parallel add, because they sit across the same p.d. and their charges add"], ["I", "Capacitors in series combine as reciprocals, and one charge passes through the whole chain"], ["I", "Q = CV applied first to the network, to get the charge, and then to the single capacitor, to get its p.d."], ["A", "Working from the outside in: the charge is the quantity that a series chain does not change"]],
+  q: `<p>The 2.0 &#181;F and 4.0 &#181;F capacitors are connected in parallel, and that pair is joined in series with the 3.0 &#181;F capacitor across a 12 V supply, as the diagram shows.</p><figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 484 232" role="img" aria-label="A circuit: a 12 volt supply on the left.  Across it, the top branch holds two capacitors in parallel, 2.0 microfarads in the upper branch and 4.0 microfarads in the lower branch, the two branches leaving one node and rejoining at another.  That pair is in series with a single 3.0 microfarad capacitor on the right-hand side of the loop.">
+<defs><marker id="s05-21-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>
+<line x1="80" y1="74" x2="160" y2="74" stroke="#14181f" stroke-width="1.8"/>
+<line x1="320" y1="74" x2="400" y2="74" stroke="#14181f" stroke-width="1.8"/>
+<line x1="400" y1="74" x2="400" y2="124" stroke="#14181f" stroke-width="1.8"/>
+<line x1="400" y1="136" x2="400" y2="210" stroke="#14181f" stroke-width="1.8"/>
+<line x1="400" y1="210" x2="80" y2="210" stroke="#14181f" stroke-width="1.8"/>
+<line x1="80" y1="74" x2="80" y2="124" stroke="#14181f" stroke-width="1.8"/>
+<line x1="80" y1="136" x2="80" y2="210" stroke="#14181f" stroke-width="1.8"/>
+<line x1="62" y1="124" x2="98" y2="124" stroke="#14181f" stroke-width="2.6"/>
+<line x1="72" y1="136" x2="88" y2="136" stroke="#14181f" stroke-width="2.6"/>
+<text x="56" y="120" font-size="11.5" text-anchor="end" fill="#14181f">12 V</text>
+<line x1="384" y1="124" x2="416" y2="124" stroke="#14181f" stroke-width="2.6"/>
+<line x1="384" y1="136" x2="416" y2="136" stroke="#14181f" stroke-width="2.6"/>
+<text x="424" y="134" font-size="11.5" fill="#14181f">3.0 &#181;F</text>
+<line x1="160" y1="74" x2="160" y2="38" stroke="#14181f" stroke-width="1.8"/>
+<line x1="160" y1="38" x2="212" y2="38" stroke="#14181f" stroke-width="1.8"/>
+<line x1="228" y1="38" x2="320" y2="38" stroke="#14181f" stroke-width="1.8"/>
+<line x1="320" y1="38" x2="320" y2="74" stroke="#14181f" stroke-width="1.8"/>
+<line x1="212" y1="24" x2="212" y2="52" stroke="#14181f" stroke-width="2.6"/>
+<line x1="228" y1="24" x2="228" y2="52" stroke="#14181f" stroke-width="2.6"/>
+<line x1="160" y1="74" x2="160" y2="112" stroke="#14181f" stroke-width="1.8"/>
+<line x1="160" y1="112" x2="212" y2="112" stroke="#14181f" stroke-width="1.8"/>
+<line x1="228" y1="112" x2="320" y2="112" stroke="#14181f" stroke-width="1.8"/>
+<line x1="320" y1="112" x2="320" y2="74" stroke="#14181f" stroke-width="1.8"/>
+<line x1="212" y1="98" x2="212" y2="126" stroke="#14181f" stroke-width="2.6"/>
+<line x1="228" y1="98" x2="228" y2="126" stroke="#14181f" stroke-width="2.6"/>
+<circle cx="160" cy="74" r="3.6" fill="#14181f" stroke="#14181f" stroke-width="1.6"/>
+<circle cx="320" cy="74" r="3.6" fill="#14181f" stroke="#14181f" stroke-width="1.6"/>
+<text x="220" y="18" font-size="11.5" text-anchor="middle" fill="#14181f">2.0 &#181;F</text>
+<text x="220" y="142" font-size="11.5" text-anchor="middle" fill="#14181f">4.0 &#181;F</text>
+<text x="240" y="62" font-size="11" fill="#b3352f">in parallel</text>
+<text x="240" y="168" font-size="11" text-anchor="middle" fill="#b3352f">the pair is in series</text>
+<text x="240" y="182" font-size="11" text-anchor="middle" fill="#b3352f">with the 3.0 &#181;F</text>
+</svg>
+</figure><p>What is the potential difference across the 3.0 &#181;F capacitor?</p>`,
+  opts: ["8.0 V", "4.0 V", "6.0 V", "12 V", "2.0 V"],
+  sol: `<p><b>What is being tested.</b> Whether you read the circuit before you calculate. Two capacitors here add, and the third does not, and getting the two rules the wrong way round is the whole trap. Nothing here needs a calculator: every number divides cleanly.</p>
+<p><b>Step 1 — read the topology.</b> The 2.0 &#181;F and the 4.0 &#181;F are connected in parallel with each other: their left-hand plates meet at one node and their right-hand plates meet at another, so they sit across the same potential difference. That pair is then in series with the 3.0 &#181;F, because every coulomb that leaves the pair has to pass through the 3.0 &#181;F on its way back to the supply.</p>
+<p><b>Step 2 — replace the parallel pair by one capacitor.</b> Parallel capacitors add, because both sit across the same p.d. and their charges simply add:</p>
+<div class="formula">C_pair = 2.0 + 4.0 = 6.0 &#181;F</div>
+<p><b>Step 3 — combine that with the 3.0 &#181;F in series.</b> Series capacitors combine as reciprocals, so the network is smaller than either part:</p>
+<div class="formula">1/C = 1/6.0 + 1/3.0 = 1/6.0 + 2/6.0 = 3/6.0
+C = 2.0 &#181;F</div>
+<p><b>Step 4 — the charge the supply delivers.</b> The whole network is across 12 V, so</p>
+<div class="formula">Q = C V = 2.0 &#215; 12 = 24 &#181;C</div>
+<p><b>Step 5 — put that charge on the 3.0 &#181;F capacitor.</b> This is the step that decides the question. A series chain carries one charge: the pair and the single capacitor are one after the other in the same loop, so the same 24 &#181;C sits on both. Therefore</p>
+<div class="formula">V = Q / C = 24 / 3.0 = 8.0 V</div>
+<p>So <b>Answer: A.</b></p>
+<p><b>Sanity check.</b> The pair carries the same 24 &#181;C, so its p.d. is 24/6.0 = 4.0 V. The two p.d.s must add to the supply: 8.0 + 4.0 = 12 V. They do. And the answer is the larger share, which is what the smaller capacitance should get.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>12 s</b> multiplies the capacitance by the voltage (<code>2.0e-6 x 6.0</code> with stray factors).</p>
-<p>&middot; <b>3.0 s</b> uses <code>R/C = 1.0e6 / 2.0e-6</code> inverted into an enormous number mishandled.</p>
-<p>&middot; <b>0.50 s</b> divides the two, cancelling the prefixes the wrong way.</p>
-<p>&middot; <b>1.0 s</b> returns the resistance in megohms as the time.</p>
-<p><b>Relevant topics:</b> the RC time constant; tau = R C; prefix cancellation.</p>`,
-  trap: `Multiplying the capacitance by the supply voltage, or using R/C instead of R times C. The time constant is R C, and 1.0 megohm times 2.0 microfarad is exactly 2.0 s; the voltage is irrelevant.`
+<p>&middot; <b>4.0 V</b> is the p.d. across the parallel pair. It is a real quantity in this circuit, it is reached by the same working, and it is the wrong side of the loop.</p>
+<p>&middot; <b>6.0 V</b> splits the 12 V equally between the pair and the single capacitor. That would be right only if the pair and the single capacitor had the same capacitance, which they do not: 6.0 &#181;F against 3.0 &#181;F.</p>
+<p>&middot; <b>12 V</b> treats the 3.0 &#181;F as though it were the only component, so that it takes the whole supply. It does not: the pair is in series with it and takes its share.</p>
+<p>&middot; <b>2.0 V</b> takes the network&#8217;s total capacitance, 2.0 &#181;F, and reports the number as a voltage.</p>
+<p><b>Relevant topics:</b> capacitors in parallel; capacitors in series; the charge carried by a series chain; <code>Q = CV</code> applied to a network and then to one component.</p>`,
+  trap: `Applying the wrong rule to the wrong part: adding the pair is right, and adding the 3.0 &#181;F to the pair as well gives 9.0 &#181;F and a nonsense 2.7 V. The chain rule is that series carries one charge, so the 3.0 &#181;F takes all 24 &#181;C and the 6.0 &#181;F pair has to share it.`
 },
 
 {

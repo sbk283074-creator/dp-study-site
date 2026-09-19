@@ -39,6 +39,9 @@ THE TEN GATES
                        through by a curve or ray
   G9  balance          the answer letters are spread, as on the real paper
   G10 hand-check       the ledger of questions a human actually worked through
+  G11 scope            no question may test material the official Round 0 note
+                       excludes.  A keyword scan cannot be precise, so a hit demands a
+                       `scope_note` recording why the question is in scope anyway.
 
 WHAT IT CANNOT DO
 -----------------
@@ -155,6 +158,64 @@ FLAG_PHRASES = [
     "not asked for", "left unnumbered", "do not evaluate", "rather than evaluate",
     "stop there", "reach for a decimal", "on a calculator", "a standard approximation",
 ]
+
+# ── G11 scope ────────────────────────────────────────────────────────────────
+# The official Round 0 scope note is one sentence long and its exclusions are
+# explicit: Year 12 (England) topics only, and NOT electric, magnetic or
+# gravitational fields, particle physics, "etc."  The topic map in the research
+# folder expands that into a list (research/Round-0-topic-map.md section 6).
+#
+# The bank is a TRAINING tool, so a question outside the scope is worse than a
+# missing one: it spends the candidate's time on material the paper will never ask
+# and quietly teaches them that the scope is wider than it is.  S05-21 was an RC
+# time-constant question -- "capacitors (not time dependent charging, but a
+# knowledge that Q = CV)" is the exact wording of the official note -- and it passed
+# all ten gates.  Nothing in the suite knew what the paper is allowed to test.
+#
+# A keyword scan cannot be precise, so this gate does not pretend to be.  It uses a
+# short list of phrases that can occur in an out-of-scope question and almost
+# nowhere else, and when one fires it demands a `scope_note` on the profile saying
+# why the question is nevertheless in scope.  A false positive then costs one
+# sentence of recorded judgement -- which is itself worth having -- instead of a
+# silent pass (which is how S05-21 shipped) or a silent block (which would be worse,
+# because it would teach the author to avoid the word rather than the topic).
+SCOPE_BLOCK = [
+    ("RC charging", r"time constant of (?:the|an|this|a) (?:circuit|RC)|"
+                    r"RC (?:circuit|time constant)|charging curve|discharging curve|"
+                    r"time to (?:charge|discharge)|tau\s*=\s*R\s*C|63\s*%"),
+    ("SHM", r"simple harmonic|\bSHM\b|x\s*=\s*A\s*cos|damping|natural frequency|"
+            r"forced oscillation"),
+    ("electric field", r"electric field|Gauss'?s? law|electric potential|field lines|"
+                       r"flux linkage|Faraday'?s law|Lenz'?s law"),
+    ("magnetic field", r"magnetic field|flux density|electromagnetic induction|"
+                       r"motor effect|Fleming'?s|tesla\b|Hall effect"),
+    ("gravitational field", r"gravitational field (?:lines|potential|strength of)|"
+                            r"escape velocity|orbital (?:speed|period) of a satellite"),
+    ("particle physics", r"quark|lepton|hadron|baryon|meson|antiparticle|standard model|"
+                         r"Higgs|neutrino oscillation"),
+    ("rotational dynamics", r"moment of inertia|angular momentum|"
+                            r"rotational kinetic energy|angular acceleration|torque\b"),
+    ("reactor detail", r"control rod|moderator|coolant|chain reaction|critical mass|enrich"),
+    ("QM beyond photoelectric", r"wavefunction|wave function|uncertainty principle|"
+                                r"Schr(?:ö|o)dinger|de Broglie|matter wave"),
+]
+
+
+def scope_texts(q: dict):
+    """Every field a candidate could read, for the scope scan.
+
+    The profile is deliberately NOT scanned: `insight` and `relations` are the
+    author's notes to the gate, not something the candidate sees, and an author
+    should be free to name the out-of-scope idea they are steering around.
+    """
+    yield "topic", q.get("topic", "")
+    yield "stem", q.get("stem", "")
+    yield "sol", q.get("sol", "")
+    yield "trap", q.get("trap", "")
+    for o in q.get("opts", []):
+        yield "option", o
+    for d in q.get("distractors", []):
+        yield "distractor", d
 
 
 def _sentence_at(t: str, pos: int) -> str:
@@ -1494,6 +1555,21 @@ def gate_section(n: int, base=None, verbose=True, questions=None):
     if len(checked) < HANDCHECK_MIN:
         errs.append("G10: only %d of 25 questions are hand-checked, at least %d required "
                     "(the tool cannot verify its own physics)" % (len(checked), HANDCHECK_MIN))
+
+    # ---- G11 scope ---------------------------------------------------------
+    for q in qs:
+        note = (q.get("profile") or {}).get("scope_note")
+        for field, text in scope_texts(q):
+            for label, pat in SCOPE_BLOCK:
+                m = re.search(pat, text or "", re.I)
+                if not m:
+                    continue
+                if note:
+                    continue
+                errs.append("G11 %s: the %s says %r, which reads as %s -- out of the "
+                            "official Round 0 scope. Either rewrite it, or set "
+                            "profile.scope_note saying why it is in scope anyway"
+                            % (q["id"], field, m.group(0), label))
 
     stats = {
         "section": n, "code": plan["code"], "n": len(qs),

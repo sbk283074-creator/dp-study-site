@@ -46,7 +46,7 @@ The paper's hardest question is **13** moves. The bank's hardest is **6**. The b
 
 ## 2. Why it happened — depth was never a gate
 
-The ten gates check that a question is *well-formed*: correct structure, plausible
+The eleven gates check that a question is *well-formed*: correct structure, plausible
 distractors, a profile that agrees with its solution, a declared band that matches its
 measured band, no duplicated logic, a hand-checked key. **Not one of them ever asked
 whether a question was hard.** `spec.SECTIONS` fixes the topic mix; nothing fixed the
@@ -259,9 +259,10 @@ the pattern is worth stating once:
   was attached to the mutation alone, so the floor was put back before the gate read it and
   the mutant reported `MISSED` for a mutation nobody ever saw.
 
-The suite is now **41 mutants**, and `mutants.py` asserts that all 41 behave: every gate has
-been shown to fail on demand, and the one content-correct mutant
-(`structure.case_only_difference`) has been shown to keep it quiet.
+The suite is now **44 mutants**, and `mutants.py` asserts that all 44 behave: every gate has
+been shown to fail on demand, and the three content-correct mutants
+(`structure.case_only_difference`, `numerics.symbolic_check_with_decimal`,
+`scope.recorded_judgement_is_honoured`) have been shown to keep it quiet.
 
 The last two were added for a tool fix rather than a gate, and they are the clearest
 example of why one mutant per change is not enough. `_equal` routed any expression
@@ -306,10 +307,61 @@ to **8.4**, against the paper's own 8.3.
 
 The general lesson is uncomfortable and worth writing down: **a scorer that counts numbered
 steps can be satisfied by numbering more of them.** The audit's own instrument was
-gameable by presentation, and nothing in the ten gates could have caught it, because every
+gameable by presentation, and nothing in the eleven gates could have caught it, because every
 gate agreed with every other gate. What caught it was reading the paper's solutions beside
 the bank's and comparing the *granularity* of the numbering — which is a judgement, not a
 check, and is why G10's hand ledger and this document both exist.
+
+---
+
+## 6d. A fifth finding: a question that was hard, well-made, and out of syllabus
+
+Not a difficulty finding, but it belongs here, because it is the same lesson from a
+different direction: **the gate suite only knows the properties somebody wrote a gate
+for.**
+
+`S05-21` asked for the time constant of an RC charging circuit. The official Round 0
+scope note is one sentence long and says capacitors mean *"not time dependent charging,
+but a knowledge that Q = CV"* — an exclusion as explicit as a syllabus ever gets. The
+question passed **all ten** gates. Structure, distractors, agreement, profile, measured
+difficulty, logic similarity, independent numerics, figure geometry, letter balance and
+the hand-check ledger all agreed it was a good question, and they were all right: it was
+well made. It was simply about something the paper will never ask.
+
+Every gate asks *"is this question well made?"*. None of them asked *"is this question
+in the syllabus?"*, so a whole class of defect had no gate — not because the class was
+unimportant, but because nobody had named it.
+
+**The fix is two things.**
+
+1. **G11, a scope gate.** A short list of phrases that can occur in an out-of-scope
+   question and almost nowhere else (RC charging, SHM, electric / magnetic /
+   gravitational fields, particle physics, rotational dynamics, reactor detail, QM
+   beyond the photoelectric effect), scanned over every field a candidate reads.
+
+2. **A recorded judgement instead of a silent pass.** A keyword scan cannot be precise.
+   `S01-01` legitimately says a smooth pulley exerts "no frictional torque", and
+   *torque* is otherwise the signature of out-of-scope rotational dynamics. Tightening
+   the pattern until it stops firing would also stop it catching the real thing, so a
+   hit is cleared by writing `profile.scope_note` — one sentence saying why the question
+   is in scope anyway. `scope.recorded_judgement_is_honoured` is a `must_not_fire`
+   mutant proving the hatch works, because a gate whose only outcome is "rewrite it"
+   teaches the author to avoid a **word** rather than to think about a **topic**.
+
+**The replacement.** `S05-21` is now a series-parallel capacitor network — two
+capacitors in parallel, that pair in series with a third, across 12 V, and the question
+is the p.d. across the single one. It is inside `Q = CV`, it scores 16.2 (band 3), and
+it is a *better* question than the one it replaced: it is the only capacitor question in
+the bank whose answer depends on **reading a topology** before any arithmetic starts.
+The parallel pair adds, the series link does not, and the two rules pull in opposite
+directions — which is exactly the kind of discriminator a multiple-choice paper can
+test and a calculator cannot help with.
+
+**The general form, worth carrying forward:** when a whole class of defect has no gate,
+the reason is almost never that the class is unimportant. It is that nobody thought to
+name it. Section 5's defect was found by asking a question the suite had never been
+asked — *what is this paper allowed to test?* — and reading the answer off the official
+note rather than off the bank.
 
 ---
 
@@ -320,7 +372,7 @@ cd bpho/tools/bank
 python measure.py paper     # the real 2025 paper, question by question
 python measure.py all       # every section, summary
 python measure.py 6         # one section, per-question breakdown
-python gates.py all         # the ten gates
+python gates.py all         # the eleven gates
 python mutants.py           # proof the gates have teeth
 ```
 

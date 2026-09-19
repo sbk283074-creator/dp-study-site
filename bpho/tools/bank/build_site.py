@@ -23,6 +23,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 import gates as G
+import mutants as M
 
 FIGDIR = os.path.join(HERE, "fig")
 OUTDIR = os.path.normpath(os.path.join(HERE, "..", "..", "data"))
@@ -130,13 +131,13 @@ def build_one(sec_no: int, base) -> str | None:
    The module mix is this section's allocation from the plan (%s), so this section works
    as a full-length mock.
 
-   Before this file was written the section was put through ten gates: structure,
+   Before this file was written the section was put through eleven gates: structure,
    distractor quality, agreement between key and solution, notation and the
    non-calculator rule, declared-profile vs solution, measured difficulty against the
    real paper's own quartiles, logic-level similarity, an independent numeric
-   re-derivation of every answer, figure geometry, and answer-letter balance.  The
-   gate suite itself is tested by 31 mutants, each of which breaks one thing and
-   asserts that the right gate notices.
+   re-derivation of every answer, figure geometry, answer-letter balance, and scope
+   against the official Round 0 topic note.  The gate suite itself is tested by %d
+   mutants, each of which breaks one thing and asserts that the right gate notices.
 
    Derived key: %s
 
@@ -144,7 +145,7 @@ def build_one(sec_no: int, base) -> str | None:
 
 window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 
-""" % (sec_no, sec_no, sec_no, len(qs), sec_no, mixstr,
+""" % (sec_no, sec_no, sec_no, len(qs), sec_no, mixstr, len(M.MUTANTS),
        " ".join(letters))
 
     out = head + ",\n\n".join(blocks) + "\n\n]);\n"

@@ -15,6 +15,8 @@ discriminator its question turns on, never decoration:
   s05-15  the square with its corner removed, and the corner it was removed from
   s05-16  the latitude angle, which is the angle in cos^2
   s05-20  the two cells facing each other, not aiding
+  s05-21  the topology: two branches that leave one node and rejoin at another (parallel),
+          in series with the single capacitor on the only path back to the supply
   s05-25  the two piston areas, whose ratio is 20 and whose ratio squared is 400
 
 Rules that fail silently if broken: marker ids carry the figure key (HTML has no id
@@ -556,6 +558,72 @@ def f25():
                ar + '\n' + '\n'.join(b))
 
 
+# ═════════════════════════════════════════════════════════════════════════════
+# 21 — a parallel pair in series with a third capacitor
+# ═════════════════════════════════════════════════════════════════════════════
+def f21():
+    """Two capacitors in parallel, and that pair in series with a third.
+
+    The discriminator is the TOPOLOGY, so the figure has to make the two relations
+    unmistakable and visually different: the pair sits in two branches that leave one
+    node and rejoin at another (parallel), while the single capacitor sits on the one
+    path between the supply and that pair (series).  A reader who cannot see which is
+    which cannot start, which is why this figure is essential rather than support.
+    """
+    b = [mk('s05-21-ar')]
+    xl, xr, yt, yb = 80.0, 400.0, 74.0, 210.0
+    xa, xb = 160.0, 320.0                       # the two nodes of the parallel pair
+    yup, ylo = 38.0, 112.0                      # the pair's two branches
+
+    # the loop, minus the gaps the components sit in
+    b.append(L(xl, yt, xa, yt, INK, 1.8))
+    b.append(L(xb, yt, xr, yt, INK, 1.8))
+    b.append(L(xr, yt, xr, 124, INK, 1.8))
+    b.append(L(xr, 136, xr, yb, INK, 1.8))
+    b.append(L(xr, yb, xl, yb, INK, 1.8))
+    b.append(L(xl, yt, xl, 124, INK, 1.8))
+    b.append(L(xl, 136, xl, yb, INK, 1.8))
+
+    # the supply, on the left: a long plate and a short one, positive uppermost
+    b.append(L(62, 124, 98, 124, INK, 2.6))
+    b.append(L(72, 136, 88, 136, INK, 2.6))
+    b.append(T(56, 120, '12 V', 11.5, 'end'))
+
+    # the single capacitor, on the right: two plates of EQUAL length, which is what
+    # distinguishes it from the supply above.  The label goes clear of the plates --
+    # anchored `end` it would run back through them.
+    b.append(L(384, 124, 416, 124, INK, 2.6))
+    b.append(L(384, 136, 416, 136, INK, 2.6))
+    b.append(T(424, 134, '3.0 &#181;F', 11.5, 'start'))
+
+    # the parallel pair: two branches between node A and node B
+    for yy in (yup, ylo):
+        b.append(L(xa, yt, xa, yy, INK, 1.8))
+        b.append(L(xa, yy, 212, yy, INK, 1.8))
+        b.append(L(228, yy, xb, yy, INK, 1.8))
+        b.append(L(xb, yy, xb, yt, INK, 1.8))
+        # the capacitor in this branch: two plates of equal length, perpendicular to it
+        b.append(L(212, yy - 14, 212, yy + 14, INK, 2.6))
+        b.append(L(228, yy - 14, 228, yy + 14, INK, 2.6))
+
+    b.append(CI(xa, yt, 3.6, INK, 1.6, INK))
+    b.append(CI(xb, yt, 3.6, INK, 1.6, INK))
+
+    b.append(T(220, 18, '2.0 &#181;F', 11.5, 'middle'))
+    b.append(T(220, 142, '4.0 &#181;F', 11.5, 'middle'))
+    b.append(T(240, 62, 'in parallel', 11, 'start', RED))
+    b.append(T(240, 168, 'the pair is in series', 11, 'middle', RED))
+    b.append(T(240, 182, 'with the 3.0 &#181;F', 11, 'middle', RED))
+
+    return svg(484, 232,
+               'A circuit: a 12 volt supply on the left.  Across it, the top branch holds '
+               'two capacitors in parallel, 2.0 microfarads in the upper branch and 4.0 '
+               'microfarads in the lower branch, the two branches leaving one node and '
+               'rejoining at another.  That pair is in series with a single 3.0 '
+               'microfarad capacitor on the right-hand side of the loop.',
+               '\n'.join(b))
+
+
 FIGS = {
     's05-02': f02,
     's05-03': f03,
@@ -568,6 +636,7 @@ FIGS = {
     's05-15': f15,
     's05-16': f16,
     's05-20': f20,
+    's05-21': f21,
     's05-22': f22,
     's05-25': f25,
 }

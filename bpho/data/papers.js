@@ -77,11 +77,11 @@ window.BPHO_PAPERS = [
   "note": "Original questions written for this course, in the Round 0 format. Not BPhO material.",
   "n": 25,
   "seconds": 3600,
-  "figures": 10,
+  "figures": 11,
   "modules": "A B C D E F G H I J K L M",
   "questions": "papers/bank-s03-questions.pdf",
   "markscheme": "papers/bank-s03-markscheme.pdf",
-  "qBytes": 468042,
+  "qBytes": 476598,
   "mBytes": 875714,
   "qPages": 10,
   "mPages": 35
@@ -109,14 +109,14 @@ window.BPHO_PAPERS = [
   "note": "Original questions written for this course, in the Round 0 format. Not BPhO material.",
   "n": 25,
   "seconds": 3600,
-  "figures": 13,
+  "figures": 14,
   "modules": "A B C D E F G H I J K L M",
   "questions": "papers/bank-s05-questions.pdf",
   "markscheme": "papers/bank-s05-markscheme.pdf",
-  "qBytes": 586575,
-  "mBytes": 639324,
+  "qBytes": 615152,
+  "mBytes": 649632,
   "qPages": 13,
-  "mPages": 23
+  "mPages": 24
  },
  {
   "tag": "BANK-S06",

@@ -67,6 +67,7 @@ QUESTIONS = [
         "approx": False,
         "symbolic": True,
         "figure_essential": False,
+        "scope_note": "The word `torque` appears once, in the aside that a smooth pulley exerts no frictional torque. Rotational dynamics is out of scope; this is a Newton's-laws question about two blocks and a string, and the aside exists to justify taking one tension rather than two.",
     },
     "check": {"kind": "sym", "got": "2*m*g - 2*m*(g/3)", "want": "4*m*g/3"},
     "sol": '''<p><b>What is being tested.</b> Whether you realise that a pulley system in motion is <i>not</i> in equilibrium. The single most common answer to this question is <code>mg</code>, and it is wrong for a reason worth understanding.</p>

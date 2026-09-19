@@ -511,6 +511,44 @@ def m41(qs):
                                    "got": "1.6*r**(1/2)", "want": "3*sqrt(r)/2"}
 
 
+@mutant("scope.rc_charging_in_a_capacitor_question", "G11",
+        "ask for an RC time constant, which the official scope note excludes")
+def m42(qs):
+    # The exact defect that shipped.  S05-21 asked for "the time constant of the circuit",
+    # and the official Round 0 note says capacitors mean "not time dependent charging, but
+    # a knowledge that Q = CV".  All ten gates of the day passed it, because none of them
+    # knew what the paper is allowed to test.
+    find(qs, "S01-17")["stem"] = ("<p>A capacitor is charged through a resistor from a "
+                                  "supply. What is the time constant of the circuit?</p>")
+
+
+@mutant("scope.recorded_judgement_is_honoured", "G11",
+        "the same wording, with the in-scope justification written down",
+        must_not_fire=True)
+def m43(qs):
+    # The partner to m42, and the reason G11 is allowed to be a crude keyword scan.  A
+    # legitimate mention exists: S01-01 says a smooth pulley exerts "no frictional torque",
+    # and the word torque is otherwise the signature of out-of-scope rotational dynamics.
+    # The escape hatch has to be shown to work, or the gate would teach the author to avoid
+    # a WORD rather than to think about a TOPIC.
+    q = find(qs, "S01-17")
+    q["stem"] = ("<p>A capacitor is charged through a resistor from a supply. What is the "
+                 "time constant of the circuit?</p>")
+    q["profile"]["scope_note"] = ("The RC wording is quoted only in order to say that this "
+                                  "question does not use it; the answer needs Q = CV.")
+
+
+@mutant("scope.marker_in_a_distractor_counts", "G11",
+        "smuggle the out-of-scope idea into a wrong option instead of the stem")
+def m44(qs):
+    # The scan has to cover every field a candidate reads, not just the stem.  A distractor
+    # is where an out-of-scope idea is most likely to survive review, because the author is
+    # thinking about the error rather than about the syllabus.
+    q = find(qs, "S01-17")
+    q["distractors"][2] = ("uses the time constant of the circuit instead of the charge, "
+                           "which is the RC answer to a different question")
+
+
 def main():
     base = G.baseline()
     print("mutation self-test: break one thing, check the right gate notices")

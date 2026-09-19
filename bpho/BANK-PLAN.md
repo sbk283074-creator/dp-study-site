@@ -84,7 +84,7 @@ Three things that flattered the author's own work, and what was done about them:
   steps; section 6's averaged 5.48. The term is not wrong, but it counts what it is given,
   so the bank's counting convention has to match the paper's. See §8.
 
-## 4. The ten gates
+## 4. The eleven gates
 
 `tools/bank/gates.py`. Run one section with `gates.py sec01`.
 
@@ -100,6 +100,19 @@ Three things that flattered the author's own work, and what was done about them:
 | **G8** figures | at least 8 figure-bearing questions; every referenced figure exists; figure geometry is checked |
 | **G9** balance | no answer letter appears more than 10 times in 25 |
 | **G10** hand-check ledger | at least 20 of 25 carry a hand-verified entry in `ledger.json` |
+| **G11** scope | nothing may test material the official Round 0 note excludes (fields, particle physics, RC charging, SHM, rotational dynamics, reactor detail, QM beyond the photoelectric effect). The scan is deliberately crude, so a hit is satisfied by a `profile.scope_note` recording why the question is in scope anyway — a recorded judgement, not a silent pass |
+
+**G11 exists because of a question that passed all ten of the others.** `S05-21` asked for
+the time constant of an RC circuit. The official scope note is one sentence long and says
+capacitors mean *"not time dependent charging, but a knowledge that Q = CV"* — the
+exclusion is about as explicit as it gets — and the question shipped anyway, because
+nothing in the suite knew what the paper is allowed to test. It has been replaced by a
+series-parallel capacitor network, which is inside `Q = CV` and is a better question.
+
+The lesson is the one this file keeps relearning: **a gate suite only knows the properties
+somebody wrote a gate for.** Every gate here was written in response to a defect that got
+through, and the list of gates is therefore a list of the mistakes made so far, not a
+description of what makes a question good.
 
 **G6 is deliberately not a text check.** The fingerprint is a set of curated features
 (`key` tags, relation tokens, reasoning shape, depth band, approximation / symbolic /
@@ -109,9 +122,16 @@ weaker check that only fires when the logic does not.
 ### Why the gates are not trusted on their own
 
 `tools/bank/mutants.py` is the answer to *"don't trust your tool that you write only"*.
-It takes the real, passing section, breaks **exactly one thing** in each of 41 ways, re-runs
+It takes the real, passing section, breaks **exactly one thing** in each of 44 ways, re-runs
 the whole suite, and asserts the right gate notices. A mutation that slips through is a
 hole in the suite and is reported as a failure.
+
+Three of the 44 assert the **opposite** direction — that a gate stays *quiet* on content
+that is correct. That direction matters as much: `S02-19` was once reported as having five
+duplicate options when its five expressions were genuinely distinct, because the duplicate
+check folded the case of the symbols. A gate that fires when it should not is as broken as
+one that stays silent, and the only way to test it is to build correct content and assert
+silence.
 
 It has found three real bugs, two of them robustness holes in the gates themselves, plus
 one gate that had been **passing vacuously**:
@@ -260,7 +280,7 @@ why the median test passed for four sections.
 | **G5c per-section non-calculator floors** — `noncalc_min` and `approx_min` on the plan, 16 and 10 for sections 6–40 | stops the non-calculator axes being satisfied on paper by symbolic options alone |
 | **four questions replaced** in sections 4 and 5 | the ceiling moved from 20.5 to 24.2/25.4, each replacement hand-worked in `ledger.json` |
 
-The gate suite is now **41 mutants** (`python mutants.py`), all behaving: every gate has
+The gate suite is now **44 mutants** (`python mutants.py`), all behaving: every gate has
 been shown to fail on demand and the one content-correct mutant has been shown to keep the
 suite quiet. Four of the new gates needed more than one mutant to prove, because a mutant
 caught by a *neighbouring* clause has demonstrated nothing — the three failures and what
@@ -298,21 +318,21 @@ branch passes a correct decimal form and still catches a wrong one.
 **Section 1** — `S01`, 15 figures, mix `A3 B2 C4 D2 E1 F2 G2 H4 I1 J2 K2`, answer sequence
 `BCBEDBECADCAEABADCBABECAD`, measured median **15.2** against the paper's 13.5, p25 **14.6**
 against 11.5, min 12.6, hardest `S01-16` at **26.9** and `S01-12` at 24.2 (both ten moves).
-Non-calculator: 12 by either axis, 6 by approximation. All ten gates pass, 25/25
+Non-calculator: 12 by either axis, 6 by approximation. All eleven gates pass, 25/25
 hand-verified, live as `BANK-S01`.
 
 **Section 2** — `S02`, 8 figures, mix `A3 B2 C2 D1 E2 F2 G2 H3 I1 K2 L3 M2`, answer
 sequence `CAABDEAACBCBAEDBCCACDBBCD`, measured median **16.6** against 13.5, p25 **15.6**
 against 11.5, min 11.6, hardest `S02-03` and `S02-13` at **23.2**. Bands `d2=6 d3=19` —
-deliberately harder than the real paper, per the brief. Non-calculator 8 / 2. All ten gates
+deliberately harder than the real paper, per the brief. Non-calculator 8 / 2. All eleven gates
 pass, 25/25 hand-verified, live as `BANK-S02`.
 
-**Section 3** — `S03`, 10 figures, mix `A3 B2 C4 D1 E1 F2 G2 H3 I1 J2 K2 L1 M1`, answer
+**Section 3** — `S03`, 11 figures, mix `A3 B2 C4 D1 E1 F2 G2 H3 I1 J2 K2 L1 M1`, answer
 sequence `CDBAEAABEDAAABDAAEBDACBED`, measured median **15.8** against 13.5, p25 **15.2**
 against 11.5, min 11.6, hardest `S03-17` at **24.3**; **three** deep questions, the most in
 the bank. Bands `d2=9 d3=16`; the section has **no diff-1 question at all**, which is the
 brief's "same or even harder" taken literally — the easiest question sits above the real
-paper's 25th percentile. Non-calculator 6 / 1, the weakest of the five. All ten gates pass,
+paper's 25th percentile. Non-calculator 6 / 1, the weakest of the five. All eleven gates pass,
 25/25 hand-verified, live as `BANK-S03`.
 
 Section 3 was authored with every correct option first and then permuted deterministically
@@ -323,21 +343,39 @@ see: an open bridge circuit, an open series loop, two labels with a wire running
 them, dangling component dashes, a "normal" drawn along the wrong axis, and the `<sup>`
 breakout below.
 
+Section 3 later produced a seventh, of a different kind: `fig/s03-06.svg` was registered
+in `figs03.py` and **referenced by no stem at all**. It drew an 8.0-second *car* journey
+peaking at 12 m/s, while the question asks about a 60-second *train* journey peaking at
+10 m/s — a leftover from an earlier draft of the question. Dead weight, invisible to every
+check because a figure nobody references is never rendered. It was redrawn to the train's
+journey and referenced from the stem as `figure_support` (the stem already carries every
+number, so the figure supports rather than enables). `S03-06` 23.2 → 24.2, band unchanged.
+`fig/` is now 73 files, 73 references, zero orphans — worth re-checking whenever a section
+is finished.
+
 **Section 4** — `S04`, 13 figures, mix `A3 B2 C3 D2 E1 F2 G2 H4 I1 J1 K2 L2`, answer
 sequence `CABACABDEADBECDBAECDEBDCA`, measured median **15.2** against 13.5, p25 **12.6**
 against 11.5, min 11.6. Hardest `S04-04` and `S04-15`, both at **24.2** and both ten moves:
 a five-resistor circuit reduced in three stages, and a ball whose bounces halve only the
-vertical velocity so the flight times form a geometric series. Non-calculator 8 / 1. All ten
+vertical velocity so the flight times form a geometric series. Non-calculator 8 / 1. All eleven
 gates pass, 25/25 hand-verified, live as `BANK-S04`.
 
-**Section 5** — `S05`, 13 figures, mix `A3 B2 C3 D2 E1 F2 G2 H3 I1 J1 K2 L2 M1`, answer
+**Section 5** — `S05`, 14 figures, mix `A3 B2 C3 D2 E1 F2 G2 H3 I1 J1 K2 L2 M1`, answer
 sequence `ACEBDDACEBBDACEEBDACCEBDA`, measured median **14.2** against 13.5, p25 **14.1**
 against 11.5, min 8.2 — the bank's first section with a diff-1 question, and the section
 that found the G5 floor. Hardest `S05-06` at **25.4** (ramp → rough floor → inelastic
 collision → slide) and `S05-22` at 24.2 (ice warmed, melted, warmed again). Its opening
 dimensional-analysis question was replaced after scoring 7.7, below anything the real paper
 sets, because it asked the candidate to *recognise* a combination rather than build one.
-Non-calculator 7 / 2. All ten gates pass, 25/25 hand-verified, live as `BANK-S05`.
+
+Section 5 also produced the one **out-of-scope** question the bank has had. `S05-21`
+asked for the time constant of an RC circuit; the official Round 0 note is explicit that
+capacitors mean *"not time dependent charging, but a knowledge that Q = CV"*, and it had
+passed all ten gates of the day. It is now a series-parallel capacitor network — inside
+`Q = CV`, and a better question, because it is the only capacitor question in the bank
+whose answer depends on **reading a topology** before doing any arithmetic. Gate **G11**
+exists because of it.
+Non-calculator 7 / 2. All eleven gates pass, 25/25 hand-verified, live as `BANK-S05`.
 
 **Section 6** — `S06`, 12 figures, mix `A3 B2 C3 D1 E2 F2 G2 H4 I1 J1 K2 L1 M1`, answer
 sequence `ACBDEBACEDBAECDAEBCDACBED`, measured median **16.8** against 13.5, p25 **14.5**
@@ -351,7 +389,7 @@ grandfathered into them, so it is the first held to `NONCALC_PAPER = 16` and
 `APPROX_PAPER = 10` — and it clears both at **18** and **13**, where sections 1–5 sit at
 6–12 and 1–2. It is also the section that produced the step-granularity finding above, and
 the one that needed a tool fix rather than a content fix. Its first gate run reported 27
-failures; the section now passes all ten with 25/25 hand-checked.
+failures; the section now passes all eleven with 25/25 hand-checked.
 
 **Papers area** — `#/papers` lists every paper as a downloadable PDF: the 2025 paper, the
 sample sheet, and sections 1–6, each with its markscheme — **8 papers, 16 PDFs, 309
@@ -372,9 +410,9 @@ the data has a built PDF.
 | `figs.py` | **runs every `figsNN.py` and writes `fig/*.svg`** — the gate and build read these |
 | `fig/*.svg` | the generated figures, the actual input to gating and publishing |
 | `svgkit.py` | shared SVG primitives (`ell(...)` sampled ellipses, palette); raises on breakout tags |
-| `gates.py` | the ten gates, the difficulty scorer, the fingerprint |
+| `gates.py` | the eleven gates, the difficulty scorer, the fingerprint |
 | `measure.py` | read-only re-measurement of a section the way the gate measures it — encodes the absolute-figdir and `supify` traps |
-| `mutants.py` | 41 mutants proving the gates have teeth, both directions |
+| `mutants.py` | 44 mutants proving the gates have teeth, both directions |
 | `make_ledger.py` | builds `ledger.json`, the hand-check record |
 | `ledger.json` | per-question method, working, and hand-derived answer |
 | `build_site.py` | gates, then emits `bpho/data/bank-NN.js` |
@@ -435,6 +473,30 @@ the data has a built PDF.
   panels, where `getBoundingClientRect()` is legitimately `0x0`. The harness now walks the
   ancestor chain and reports hidden figures separately from broken ones. Before "fixing" a
   zero-size figure, ask whether it is being displayed at all.
+- **The gate suite only knows the properties somebody wrote a gate for.** `S05-21` asked
+  for an RC time constant, which the official Round 0 note excludes in as many words, and
+  it passed **all ten** gates — structure, distractors, agreement, profile, difficulty,
+  similarity, numerics, figures, balance, hand-check. Every one of those asks "is this
+  question well made?", and none of them asked "is this question *in the syllabus*?".
+  G11 now does. The general form: when a whole class of defect has no gate, the reason is
+  almost never that the class is unimportant — it is that nobody thought to name it.
+- **A scope scan cannot be precise, so it should not pretend to be.** G11 is a keyword
+  scan and will always have false positives: `S01-01` legitimately says a smooth pulley
+  exerts "no frictional torque", and *torque* is otherwise the signature of out-of-scope
+  rotational dynamics. Weakening the pattern until it stops firing would also stop it
+  catching the real thing. Instead a hit is cleared by writing `profile.scope_note` — one
+  sentence of recorded judgement. A false positive then costs a sentence, a true positive
+  costs a rewrite, and neither can pass silently. `scope.recorded_judgement_is_honoured`
+  is a `must_not_fire` mutant that proves the escape hatch works, because a gate whose
+  only outcome is "rewrite it" teaches the author to avoid a **word** rather than to think
+  about a **topic**.
+- **`fig/` can hold a figure no stem references.** `fig/s03-06.svg` was registered in
+  `figs03.py` and referenced by nothing — it drew an 8-second car journey while the
+  question asks about a 60-second train. No check saw it, because a figure nobody
+  references is never rendered, never linted, and never sized. Count `fig/*.svg` against
+  the `{{FIG:...}}` placeholders across all sections whenever a section is finished: they
+  should be equal, and the difference in each direction means something different (an
+  orphan is dead weight, a dangling reference is a G8 failure).
 - **A collision linter's "crosses 0px" is a lead, not a verdict.** `/tmp/lint-text-path.js`
   reported `s03-10`'s labels as grazing by 0 px; at 2x the branch wire ran *straight through*
   the middle of `3.0 kΩ` and through `load`, splitting both. Its sampling understates. Treat

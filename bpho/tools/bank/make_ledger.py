@@ -775,9 +775,15 @@ LEDGER = {1: {
         "I = 22(0.45 - 0.1 I)/0.27, so 0.27 I = 9.9 - 2.2 I, 2.47 I = 9.9, I = 4.0 mA",
         "C"),
     "S05-21": (
-        "time constant tau = R C",
-        "tau = (1.0 x 10^6) x (2.0 x 10^-6) = 2.0 s",
-        "C"),
+        "network capacitance first, then the charge on the whole chain, then that same "
+        "charge on the single capacitor",
+        "the 2.0 and 4.0 microfarad capacitors are in parallel, so they add: C_pair = 6.0 uF. "
+        "That pair is in series with 3.0 uF, so 1/C = 1/6.0 + 1/3.0 = 0.50 per uF, C = 2.0 uF. "
+        "The supply delivers Q = C V = 2.0 x 12 = 24 uC. A series chain carries one charge, so "
+        "the 3.0 uF holds all 24 uC and V = 24 / 3.0 = 8.0 V. Check: the pair holds the same "
+        "24 uC, so its p.d. is 24/6.0 = 4.0 V, and 8.0 + 4.0 = 12 V, the supply. The bigger "
+        "capacitance takes the smaller share, as it must",
+        "A"),
     "S05-22": (
         "three stages: warm the ice, melt it, then warm the water; then divide the total by "
         "the power",
