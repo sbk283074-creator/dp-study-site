@@ -350,7 +350,7 @@ R = 6.0 k&Omega;</div>
             ("B", "Average speed is the whole distance divided by the whole time, so the slow stages carry more weight"),
             ("A", "Keeping the three stages separate in a table rather than trying to write one equation for the journey")],
     "key": ["average", "speed", "stages", "acceleration"],
-    "stem": '<p>A train starts from rest and accelerates uniformly at 0.50 m s<sup>-2</sup> for 20 s. It then runs at constant speed for 30 s, and finally decelerates uniformly at 1.0 m s<sup>-2</sup> until it comes to rest.</p><p>What is the average speed for the whole journey?</p>',
+    "stem": '<p>A train starts from rest and accelerates uniformly at 0.50 m s<sup>-2</sup> for 20 s. It then runs at constant speed for 30 s, and finally decelerates uniformly at 1.0 m s<sup>-2</sup> until it comes to rest. The whole journey is shown below. {{FIG:s03-06}}</p><p>What is the average speed for the whole journey?</p>',
     "opts": ['7.5 m s<sup>-1</sup>', '10 m s<sup>-1</sup>', '8.3 m s<sup>-1</sup>', '9.0 m s<sup>-1</sup>', '5.0 m s<sup>-1</sup>'],
     "ans": 0,
     "distractors": ['correct',
@@ -379,7 +379,7 @@ R = 6.0 k&Omega;</div>
         "shape": "graph-reading",
         "approx": False,
         "symbolic": False,
-        "figure_essential": False,
+        "figure_support": True,
     },
     "check": {"kind": "eval", "expr": "(100 + 300 + 50)/60", "want": "7.5"},
     "sol": '''<p><b>What is being tested.</b> Whether you know what an average speed is. It is the whole distance divided by the whole time &#8212; nothing else. It is <i>not</i> the mean of the speeds the train happened to travel at, and it is not the speed at any particular moment.</p>

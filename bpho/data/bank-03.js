@@ -247,7 +247,56 @@ R = 6.0 k&Omega;</div>
 {
   id: "S03-06", module: "B", topic: "A three-stage journey: the average speed is a time-weighted mean, not a simple one", diff: 3, rel: [["B", "The area under a velocity-time graph is the distance travelled, stage by stage"], ["B", "Each stage is uniform acceleration or uniform velocity, so the standard equations apply within it and only within it"], ["B", "Average speed is the whole distance divided by the whole time, so the slow stages carry more weight"], ["A", "Keeping the three stages separate in a table rather than trying to write one equation for the journey"]], key: ["average", "speed", "stages", "acceleration"], ans: 0, paper: "BANK-S03",
   rel: [["B", "The area under a velocity-time graph is the distance travelled, stage by stage"], ["B", "Each stage is uniform acceleration or uniform velocity, so the standard equations apply within it and only within it"], ["B", "Average speed is the whole distance divided by the whole time, so the slow stages carry more weight"], ["A", "Keeping the three stages separate in a table rather than trying to write one equation for the journey"]],
-  q: `<p>A train starts from rest and accelerates uniformly at 0.50 m s<sup>-2</sup> for 20 s. It then runs at constant speed for 30 s, and finally decelerates uniformly at 1.0 m s<sup>-2</sup> until it comes to rest.</p><p>What is the average speed for the whole journey?</p>`,
+  q: `<p>A train starts from rest and accelerates uniformly at 0.50 m s<sup>-2</sup> for 20 s. It then runs at constant speed for 30 s, and finally decelerates uniformly at 1.0 m s<sup>-2</sup> until it comes to rest. The whole journey is shown below. <figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 282" role="img" aria-label="A velocity-time graph for a train over 60 seconds: velocity rises uniformly from zero to 10 metres per second over the first 20 seconds, holds at 10 metres per second until 50 seconds, and then falls uniformly back to zero over the last 10 seconds">
+<defs><marker id="s03-06-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>
+<line x1="139" y1="232" x2="139" y2="56" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="194" y1="232" x2="194" y2="56" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="249" y1="232" x2="249" y2="56" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="304" y1="232" x2="304" y2="56" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="359" y1="232" x2="359" y2="56" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="414" y1="232" x2="414" y2="56" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="84" y1="202" x2="414" y2="202" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="84" y1="172" x2="414" y2="172" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="84" y1="142" x2="414" y2="142" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="84" y1="112" x2="414" y2="112" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="84" y1="82" x2="414" y2="82" stroke="#e6eaf2" stroke-width="1"/>
+<line x1="84" y1="56" x2="84" y2="232" stroke="#14181f" stroke-width="1.8"/>
+<line x1="84" y1="232" x2="414" y2="232" stroke="#14181f" stroke-width="1.8"/>
+<line x1="84" y1="232" x2="84" y2="238" stroke="#14181f" stroke-width="1.4"/>
+<text x="84" y="253" font-size="11" text-anchor="middle" fill="#14181f">0</text>
+<line x1="139" y1="232" x2="139" y2="238" stroke="#14181f" stroke-width="1.4"/>
+<text x="139" y="253" font-size="11" text-anchor="middle" fill="#14181f">10</text>
+<line x1="194" y1="232" x2="194" y2="238" stroke="#14181f" stroke-width="1.4"/>
+<text x="194" y="253" font-size="11" text-anchor="middle" fill="#14181f">20</text>
+<line x1="249" y1="232" x2="249" y2="238" stroke="#14181f" stroke-width="1.4"/>
+<text x="249" y="253" font-size="11" text-anchor="middle" fill="#14181f">30</text>
+<line x1="304" y1="232" x2="304" y2="238" stroke="#14181f" stroke-width="1.4"/>
+<text x="304" y="253" font-size="11" text-anchor="middle" fill="#14181f">40</text>
+<line x1="359" y1="232" x2="359" y2="238" stroke="#14181f" stroke-width="1.4"/>
+<text x="359" y="253" font-size="11" text-anchor="middle" fill="#14181f">50</text>
+<line x1="414" y1="232" x2="414" y2="238" stroke="#14181f" stroke-width="1.4"/>
+<text x="414" y="253" font-size="11" text-anchor="middle" fill="#14181f">60</text>
+<line x1="78" y1="232" x2="84" y2="232" stroke="#14181f" stroke-width="1.4"/>
+<text x="74" y="236" font-size="11" text-anchor="end" fill="#14181f">0</text>
+<line x1="78" y1="202" x2="84" y2="202" stroke="#14181f" stroke-width="1.4"/>
+<text x="74" y="206" font-size="11" text-anchor="end" fill="#14181f">2</text>
+<line x1="78" y1="172" x2="84" y2="172" stroke="#14181f" stroke-width="1.4"/>
+<text x="74" y="176" font-size="11" text-anchor="end" fill="#14181f">4</text>
+<line x1="78" y1="142" x2="84" y2="142" stroke="#14181f" stroke-width="1.4"/>
+<text x="74" y="146" font-size="11" text-anchor="end" fill="#14181f">6</text>
+<line x1="78" y1="112" x2="84" y2="112" stroke="#14181f" stroke-width="1.4"/>
+<text x="74" y="116" font-size="11" text-anchor="end" fill="#14181f">8</text>
+<line x1="78" y1="82" x2="84" y2="82" stroke="#14181f" stroke-width="1.4"/>
+<text x="74" y="86" font-size="11" text-anchor="end" fill="#14181f">10</text>
+<line x1="194" y1="82" x2="194" y2="232" stroke="#7b8494" stroke-width="1.2" stroke-dasharray="5 4"/>
+<line x1="359" y1="82" x2="359" y2="232" stroke="#7b8494" stroke-width="1.2" stroke-dasharray="5 4"/>
+<line x1="84" y1="82" x2="194" y2="82" stroke="#7b8494" stroke-width="1.2" stroke-dasharray="5 4"/>
+<polyline points="84,232 194,82 359,82 414,232" fill="none" stroke="#2f5fd0" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="88" y="48" font-size="11.5" fill="#7b8494">velocity / m s<tspan font-size="8" dy="-4">-1</tspan></text>
+<text x="414" y="274" font-size="11.5" text-anchor="end" fill="#7b8494">time / s</text>
+</svg>
+</figure></p><p>What is the average speed for the whole journey?</p>`,
   opts: ["7.5 m s<sup>-1</sup>", "10 m s<sup>-1</sup>", "8.3 m s<sup>-1</sup>", "9.0 m s<sup>-1</sup>", "5.0 m s<sup>-1</sup>"],
   sol: `<p><b>What is being tested.</b> Whether you know what an average speed is. It is the whole distance divided by the whole time &#8212; nothing else. It is <i>not</i> the mean of the speeds the train happened to travel at, and it is not the speed at any particular moment.</p>
 <p><b>Step 1 — the speed at the end of the first stage.</b> The train starts from rest and accelerates at 0.50 m s<sup>-2</sup> for 20 s:</p>

@@ -197,40 +197,45 @@ def f_04():
 
 
 def f_06():
-    """Velocity against time for a car: ramps up, holds, ramps down.
+    """Velocity against time for the train of S03-06: ramps up, holds, ramps down.
 
-    The discriminator is the COMPOUND SHAPE.  A reader who treats the graph as a
-    rectangle gets 96 m; the figure has to make the two ramps unmistakable, and the
-    guides to the peak have to be there so 12 m/s and 2.0 s can be read exactly.
+    The discriminator is the COMPOUND SHAPE, and specifically that the three stages are
+    NOT equal in area.  A reader who treats the graph as one rectangle at the top speed
+    gets 600 m and an average of 10 m/s; the true total is 450 m over 60 s.  So the figure
+    has to make both ramps unmistakable and let 20 s, 50 s and 10 m/s be read exactly --
+    which is what the two dashed guides do.
+
+    (This figure previously drew an 8.0-second car journey that appears nowhere in the
+    question -- a leftover from an earlier draft.  The stem's train is now what is drawn.)
     """
     W, H = 500, 282
     b = [mk('s03-06-ar')]
     x0, y0 = 84.0, 232.0
-    ps = 42.0                                  # px per second
-    pv = 12.5                                  # px per metre per second
-    pts = [(0, 0), (2, 12), (5, 12), (8, 0)]
+    ps = 5.5                                   # px per second
+    pv = 15.0                                  # px per metre per second
+    pts = [(0, 0), (20, 10), (50, 10), (60, 0)]
 
-    for k in range(1, 9):
-        b.append(L(x0 + k * ps, y0, x0 + k * ps, 56, WALL, 1.0))
     for k in range(1, 7):
-        b.append(L(x0, y0 - k * 2 * pv, x0 + 8 * ps, y0 - k * 2 * pv, WALL, 1.0))
+        b.append(L(x0 + k * 10 * ps, y0, x0 + k * 10 * ps, 56, WALL, 1.0))
+    for k in range(1, 6):
+        b.append(L(x0, y0 - k * 2 * pv, x0 + 60 * ps, y0 - k * 2 * pv, WALL, 1.0))
 
     b.append(L(x0, 56, x0, y0, INK, 1.8))
-    b.append(L(x0, y0, x0 + 8 * ps, y0, INK, 1.8))
+    b.append(L(x0, y0, x0 + 60 * ps, y0, INK, 1.8))
 
-    for t in range(0, 9, 2):
+    for t in range(0, 61, 10):
         x = x0 + t * ps
         b.append(L(x, y0, x, y0 + 6, INK, 1.4))
         b.append(T(x, y0 + 21, '%g' % t, 11, 'middle', INK))
-    for v in range(0, 13, 4):
+    for v in range(0, 11, 2):
         y = y0 - v * pv
         b.append(L(x0 - 6, y, x0, y, INK, 1.4))
         b.append(T(x0 - 10, y + 4, '%g' % v, 11, 'end', INK))
 
-    # the peak, and the guides that let it be read
-    px, py = x0 + 2 * ps, y0 - 12 * pv
-    b.append(_dash(px, py, px, y0))
-    b.append(_dash(x0, py, px, py))
+    # the plateau, and the guides that let both its ends be read exactly
+    for t in (20, 50):
+        b.append(_dash(x0 + t * ps, y0 - 10 * pv, x0 + t * ps, y0))
+    b.append(_dash(x0, y0 - 10 * pv, x0 + 20 * ps, y0 - 10 * pv))
     b.append(PL([(x0 + t * ps, y0 - v * pv) for t, v in pts], BLUE, 2.6))
 
     # NOT <sup>.  `sup` (and `sub`) are HTML foreign-content BREAKOUT tags: inside an
@@ -240,12 +245,12 @@ def f_06():
     # tspan is the SVG-native way to raise the exponent.
     b.append(T(x0 + 4, 48, 'velocity / m s<tspan font-size="8" dy="-4">-1</tspan>',
                11.5, 'start', GREY))
-    b.append(T(x0 + 8 * ps, y0 + 42, 'time / s', 11.5, 'end', GREY))
+    b.append(T(x0 + 60 * ps, y0 + 42, 'time / s', 11.5, 'end', GREY))
 
-    return svg(W, H, 'A velocity-time graph for a car over 8.0 seconds: velocity rises '
-                      'from zero to 12 metres per second in the first 2.0 seconds, stays '
-                      'at 12 for the next 3.0 seconds, and falls back to zero over the '
-                      'last 3.0 seconds', '\n'.join(b))
+    return svg(W, H, 'A velocity-time graph for a train over 60 seconds: velocity rises '
+                      'uniformly from zero to 10 metres per second over the first 20 '
+                      'seconds, holds at 10 metres per second until 50 seconds, and then '
+                      'falls uniformly back to zero over the last 10 seconds', '\n'.join(b))
 
 
 def f_08():
