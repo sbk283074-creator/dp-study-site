@@ -654,6 +654,129 @@ LEDGER = {1: {
         "particle carries more kinetic energy at the same momentum, and 1836 is more than 1",
         "A"),
 },
+5: {
+    "S05-01": (
+        "compare dimensions of each candidate with pressure F/A",
+        "pressure = F/A = M L^-1 T^-2. energy/volume = M L^2 T^-2 / L^3 = M L^-1 T^-2, the same. "
+        "power/area = M L T^-3, force/length = M T^-2, momentum/volume = M L^-2 T^-1, "
+        "mass/(area x time) = M L^-2 T^-1; all different from pressure",
+        "A"),
+    "S05-02": (
+        "take moments about the hinge",
+        "clockwise: 150 N at 2.0 m plus 45 N at 4.0 m = 300 + 180 = 480 N m. Only the vertical "
+        "part of the cable tension turns the rod; with a 3-4-5 triangle that part is T x 3/5 "
+        "acting at 4.0 m, so (3T/5) x 4.0 = 480, 12T/5 = 480, T = 200 N",
+        "C"),
+    "S05-03": (
+        "the two branch currents give the two midpoint voltages",
+        "left branch total 2.0 + 6.0 = 8.0 ohm, so its top 2.0 ohm drops 12 x 2/8 = 3.0 V; "
+        "right branch total 6.0 + 3.0 = 9.0 ohm, so its top 6.0 ohm drops 12 x 6/9 = 8.0 V. "
+        "X sits 3.0 V below the top rail, Y sits 8.0 V below it, so V_X - V_Y = 8.0 - 3.0 = 5.0 V",
+        "E"),
+    "S05-04": (
+        "multiply out the seconds in a year",
+        "365 x 24 x 3600 = 31,536,000 s. log10 of that is 7.5 and it is just under 10^7.5, "
+        "so the nearest power of ten is 10^7",
+        "B"),
+    "S05-05": (
+        "area under the v-t graph: two triangles plus a rectangle",
+        "triangle 0-5 s = 1/2 x 5 x 20 = 50 m; rectangle 5-15 s = 10 x 20 = 200 m; "
+        "triangle 15-19 s = 1/2 x 4 x 20 = 40 m; total = 50 + 200 + 40 = 290 m",
+        "D"),
+    "S05-06": (
+        "vertical balance for the block on the table",
+        "the hanging block is 3.0 kg, so the string tension is 3.0 x 9.8 = 29.4 N. The 5.0 kg "
+        "block on the table carries its full weight 5.0 x 9.8 = 49 N down and the normal "
+        "reaction up (the string is horizontal), so N = 49 N",
+        "D"),
+    "S05-07": (
+        "energy between lowest and highest points, then taut-string condition at the top",
+        "1/2 m u^2 = m g (2r) + 1/2 m v^2, so v^2 = u^2 - 4gr. At the top the string stays taut "
+        "if m v^2/r >= m g, i.e. v^2 >= g r, so u^2 - 4gr >= g r, u^2 >= 5gr, u >= sqrt(5gr)",
+        "A"),
+    "S05-08": (
+        "transverse velocity is -wave speed times the local slope",
+        "v_y = -v (dy/dx). At Q the slope dy/dx = -0.40, so v_y = -1.5 x (-0.40) = +0.60 m/s, "
+        "i.e. 0.60 m/s upward",
+        "C"),
+    "S05-09": (
+        "thin lens formula, then magnification",
+        "1/v = 1/f - 1/u = 1/20 - 1/12 = (3-5)/60 = -2/60, so v = -30 cm. "
+        "m = -v/u = -(-30)/12 = 2.5",
+        "E"),
+    "S05-10": (
+        "net emf over the total resistance",
+        "the cells oppose, so net emf = 12 - 6 = 6 V. Total resistance = 3.0 + 1.0 + 2.0 = "
+        "6.0 ohm. I = 6 / 6.0 = 1.0 A",
+        "B"),
+    "S05-11": (
+        "count the half-lives",
+        "24 days / 8.0 days = 3 half-lives, so the fraction remaining is (1/2)^3 = 1/8",
+        "B"),
+    "S05-12": (
+        "photon momentum p = h/lambda",
+        "p = 6.6 x 10^-34 / (600 x 10^-9) = 1.1 x 10^-27 kg m s^-1",
+        "D"),
+    "S05-13": (
+        "average speed, then convert m/s to km/h",
+        "speed = 100 m / 10 s = 10 m/s; multiply by 3.6 gives 36 km/h",
+        "A"),
+    "S05-14": (
+        "time of fall from the height, then the horizontal range",
+        "t = sqrt(2h/g) = sqrt(2 x 20 / 10) = 2.0 s; range = 12 x 2.0 = 24 m",
+        "C"),
+    "S05-15": (
+        "Pythagoras for the resultant, then equal and opposite",
+        "resultant of 3 N and 4 N at right angles = sqrt(3^2 + 4^2) = 5 N; the equilibrating "
+        "force is 5 N opposite to the resultant",
+        "E"),
+    "S05-16": (
+        "radius of the latitude circle, then centripetal acceleration",
+        "a point at latitude lambda sits R cos(lambda) from the spin axis, so its a = omega^2 R "
+        "cos(lambda); the equatorial value is omega^2 R, and the ratio is cos(lambda)",
+        "E"),
+    "S05-17": (
+        "centre of mass by negative mass",
+        "treat the uncut 2a square as mass 4 at (a, a) and the removed a-square as mass 1 at "
+        "(a/2, 3a/2); remaining mass 3. x_new = (4a - a/2)/3 = 7a/6; the horizontal shift from "
+        "x = a is 7a/6 - a = a/6",
+        "B"),
+    "S05-18": (
+        "fringe spacing beta = lambda D / d",
+        "beta = (500 x 10^-9 x 1.5) / (1.0 x 10^-3) = 7.5 x 10^-4 m = 0.75 mm "
+        "(convert nm and mm to metres first)",
+        "D"),
+    "S05-19": (
+        "sin of the critical angle is the ratio of the refractive indices",
+        "sin(theta_c) = n_air / n_glass = 1.00 / 1.50 = 0.67",
+        "A"),
+    "S05-20": (
+        "intersection of the load line with the diode segment",
+        "load line V = 1.0 - 0.1 I_mA; diode line I_mA = 22(V - 0.55)/0.27. Substituting gives "
+        "I = 22(0.45 - 0.1 I)/0.27, so 0.27 I = 9.9 - 2.2 I, 2.47 I = 9.9, I = 4.0 mA",
+        "C"),
+    "S05-21": (
+        "time constant tau = R C",
+        "tau = (1.0 x 10^6) x (2.0 x 10^-6) = 2.0 s",
+        "C"),
+    "S05-22": (
+        "energy needed equals power times time",
+        "energy = m L = 0.20 x 3.3 x 10^5 = 6.6 x 10^4 J; at 1.0 x 10^3 W, t = 6.6 x 10^4 / 1000 = 66 s",
+        "E"),
+    "S05-23": (
+        "mass-energy with the given shortcut",
+        "E = (defect in u) x (930 MeV per u) = 0.20 x 930 = 186 MeV",
+        "B"),
+    "S05-24": (
+        "photoelectric maximum kinetic energy K_max = hf - phi",
+        "K_max = 5.0 eV - 2.0 eV = 3.0 eV",
+        "D"),
+    "S05-25": (
+        "Pascal: the force scales with the piston area",
+        "pressure is equal, so F_large / F_small = A_large / A_small = 40 / 2.0 = 20; "
+        "F_large = 100 x 20 = 2000 N",
+        "A"),
+},
 }
 
 

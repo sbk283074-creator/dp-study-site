@@ -34,6 +34,7 @@ SECTIONS = {
     2: "sec02",
     3: "sec03",
     4: "sec04",
+    5: "sec05",
 }
 
 # Fields the site app reads.  Everything else in the source (distractors, profile,
