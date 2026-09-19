@@ -84,7 +84,7 @@ Three things that flattered the author's own work, and what was done about them:
   steps; section 6's averaged 5.48. The term is not wrong, but it counts what it is given,
   so the bank's counting convention has to match the paper's. See §8.
 
-## 4. The eleven gates
+## 4. The twelve gates
 
 `tools/bank/gates.py`. Run one section with `gates.py sec01`.
 
@@ -101,6 +101,16 @@ Three things that flattered the author's own work, and what was done about them:
 | **G9** balance | no answer letter appears more than 10 times in 25 |
 | **G10** hand-check ledger | at least 20 of 25 carry a hand-verified entry in `ledger.json` |
 | **G11** scope | nothing may test material the official Round 0 note excludes (fields, particle physics, RC charging, SHM, rotational dynamics, reactor detail, QM beyond the photoelectric effect). The scan is deliberately crude, so a hit is satisfied by a `profile.scope_note` recording why the question is in scope anyway — a recorded judgement, not a silent pass |
+| **G12** renderable text | the two author-written fields the site renders with `esc()` — `topic` and every `rel` label — must be **plain text**. HTML in them is shown to the candidate verbatim, so `u<sup>2</sup>` reads as "u<sup>2</sup>". Write the character, not the markup: `²` not a sup tag, `θ` not a numeric entity. The field is escaped because `priority.js` reuses a `rel` label as a topic *name*, and the topics page escapes it there too — so the label cannot be HTML in either place |
+
+**G12 exists because a defect was invisible in the source and obvious in a screenshot.**
+Sections 4, 6 and 7 had written 19 `rel` labels as HTML. On the page they read
+`u<sup>2</sup> sin<sup>2</sup>&#952; / 2g`, tags and entity and all, for four sections
+before it was noticed — and it was noticed by *looking at a figure*, not by any check.
+Every gate had passed them: the labels were well written, they simply could not be read.
+The lesson is G11's lesson a second time — the suite only knows the properties somebody
+wrote a gate for — with a twist: this property was not about the physics at all, but about
+which of two renderers a field happens to pass through.
 
 **G11 exists because of a question that passed all ten of the others.** `S05-21` asked for
 the time constant of an RC circuit. The official scope note is one sentence long and says
@@ -122,7 +132,7 @@ weaker check that only fires when the logic does not.
 ### Why the gates are not trusted on their own
 
 `tools/bank/mutants.py` is the answer to *"don't trust your tool that you write only"*.
-It takes the real, passing section, breaks **exactly one thing** in each of 44 ways, re-runs
+It takes the real, passing section, breaks **exactly one thing** in each of 46 ways, re-runs
 the whole suite, and asserts the right gate notices. A mutation that slips through is a
 hole in the suite and is reported as a failure.
 
@@ -252,15 +262,15 @@ against a clock, and mark on paper.
 
 | | Sections | Questions | Status |
 |---|---|---|---|
-| Done | 1–6 | 150 | gated, hand-checked, published, difficulty-audited |
-| Planned | 7–40 | 850 | not started |
+| Done | 1–7 | 175 | gated, hand-checked, published, difficulty-audited |
+| Planned | 8–40 | 825 | not started |
 
 **Open item carried forward: sections 1–5 under-use the approximation axis.** They sit
 at 6–12 non-calculator questions per section and **1–2** requiring an approximation,
 against the 2025 paper's 16 and 10 out of 25. Sections 6–40 are now gated at the
 paper's own numbers (`spec.NONCALC_PAPER` / `APPROX_PAPER`); sections 1–5 are
 grandfathered at the floors they meet, because rewriting 125 published questions is a
-different piece of work from getting the next 875 right. Closing it means revisiting
+different piece of work from getting the next 825 right. Closing it means revisiting
 roughly sixty questions. See `DIFFICULTY-AUDIT.md` sections 4a and 6a.
 
 ### The difficulty remediation (2026-09-19)
@@ -280,7 +290,7 @@ why the median test passed for four sections.
 | **G5c per-section non-calculator floors** — `noncalc_min` and `approx_min` on the plan, 16 and 10 for sections 6–40 | stops the non-calculator axes being satisfied on paper by symbolic options alone |
 | **four questions replaced** in sections 4 and 5 | the ceiling moved from 20.5 to 24.2/25.4, each replacement hand-worked in `ledger.json` |
 
-The gate suite is now **44 mutants** (`python mutants.py`), all behaving: every gate has
+The gate suite is now **46 mutants** (`python mutants.py`), all behaving: every gate has
 been shown to fail on demand and the one content-correct mutant has been shown to keep the
 suite quiet. Four of the new gates needed more than one mutant to prove, because a mutant
 caught by a *neighbouring* clause has demonstrated nothing — the three failures and what
@@ -318,13 +328,13 @@ branch passes a correct decimal form and still catches a wrong one.
 **Section 1** — `S01`, 15 figures, mix `A3 B2 C4 D2 E1 F2 G2 H4 I1 J2 K2`, answer sequence
 `BCBEDBECADCAEABADCBABECAD`, measured median **15.2** against the paper's 13.5, p25 **14.6**
 against 11.5, min 12.6, hardest `S01-16` at **26.9** and `S01-12` at 24.2 (both ten moves).
-Non-calculator: 12 by either axis, 6 by approximation. All eleven gates pass, 25/25
+Non-calculator: 12 by either axis, 6 by approximation. All twelve gates pass, 25/25
 hand-verified, live as `BANK-S01`.
 
 **Section 2** — `S02`, 8 figures, mix `A3 B2 C2 D1 E2 F2 G2 H3 I1 K2 L3 M2`, answer
 sequence `CAABDEAACBCBAEDBCCACDBBCD`, measured median **16.6** against 13.5, p25 **15.6**
 against 11.5, min 11.6, hardest `S02-03` and `S02-13` at **23.2**. Bands `d2=6 d3=19` —
-deliberately harder than the real paper, per the brief. Non-calculator 8 / 2. All eleven gates
+deliberately harder than the real paper, per the brief. Non-calculator 8 / 2. All twelve gates
 pass, 25/25 hand-verified, live as `BANK-S02`.
 
 **Section 3** — `S03`, 11 figures, mix `A3 B2 C4 D1 E1 F2 G2 H3 I1 J2 K2 L1 M1`, answer
@@ -332,7 +342,7 @@ sequence `CDBAEAABEDAAABDAAEBDACBED`, measured median **15.8** against 13.5, p25
 against 11.5, min 11.6, hardest `S03-17` at **24.3**; **three** deep questions, the most in
 the bank. Bands `d2=9 d3=16`; the section has **no diff-1 question at all**, which is the
 brief's "same or even harder" taken literally — the easiest question sits above the real
-paper's 25th percentile. Non-calculator 6 / 1, the weakest of the five. All eleven gates pass,
+paper's 25th percentile. Non-calculator 6 / 1, the weakest of the five. All twelve gates pass,
 25/25 hand-verified, live as `BANK-S03`.
 
 Section 3 was authored with every correct option first and then permuted deterministically
@@ -361,7 +371,7 @@ vertical velocity so the flight times form a geometric series. Non-calculator 8 
 gates pass, 25/25 hand-verified, live as `BANK-S04`.
 
 **Section 5** — `S05`, 14 figures, mix `A3 B2 C3 D2 E1 F2 G2 H3 I1 J1 K2 L2 M1`, answer
-sequence `ACEBDDACEBBDACEEBDACCEBDA`, measured median **14.2** against 13.5, p25 **14.1**
+sequence `ACEBDDACEBBDACEEBDACCEBDA`, measured median **15.2** against 13.5, p25 **14.2**
 against 11.5, min 8.2 — the bank's first section with a diff-1 question, and the section
 that found the G5 floor. Hardest `S05-06` at **25.4** (ramp → rough floor → inelastic
 collision → slide) and `S05-22` at 24.2 (ice warmed, melted, warmed again). Its opening
@@ -375,7 +385,7 @@ passed all ten gates of the day. It is now a series-parallel capacitor network �
 `Q = CV`, and a better question, because it is the only capacitor question in the bank
 whose answer depends on **reading a topology** before doing any arithmetic. Gate **G11**
 exists because of it.
-Non-calculator 7 / 2. All eleven gates pass, 25/25 hand-verified, live as `BANK-S05`.
+Non-calculator 7 / 2. All twelve gates pass, 25/25 hand-verified, live as `BANK-S05`.
 
 **Section 6** — `S06`, 12 figures, mix `A3 B2 C3 D1 E2 F2 G2 H4 I1 J1 K2 L1 M1`, answer
 sequence `ACBDEBACEDBAECDAEBCDACBED`, measured median **16.8** against 13.5, p25 **14.5**
@@ -389,11 +399,38 @@ grandfathered into them, so it is the first held to `NONCALC_PAPER = 16` and
 `APPROX_PAPER = 10` — and it clears both at **18** and **13**, where sections 1–5 sit at
 6–12 and 1–2. It is also the section that produced the step-granularity finding above, and
 the one that needed a tool fix rather than a content fix. Its first gate run reported 27
-failures; the section now passes all eleven with 25/25 hand-checked.
+failures; the section now passes all twelve with 25/25 hand-checked.
+
+**Section 7** — `S07`, 13 figures, mix `A3 B2 C4 D1 E1 F2 G2 H3 I1 J2 K2 L2`, answer
+sequence `CADBEACEBDEBACDBDAECDBCCB`, measured median **13.6** against 13.5, p25 **12.6**
+against 11.5, min 11.0, max **24.6**. Bands `d1=2 d2=16 d3=7`. Hardest `S07-24` and
+`S07-25`, both at **24.6** and both nine moves: a photoelectric cell whose stopping
+potential is read off a graph, giving the work function, which is then subtracted from
+`hc/λ`; and a photon-count estimate that runs a lamp's power through a photon energy and
+then through the solid angle of a 2.0 cm² detector on a 3.0 m sphere. Non-calculator
+**17** / approximation **11** against floors of 16 and 10.
+
+Section 7 is the section that made the **measurement** subtlety explicit. Its author
+declared four questions as needing an approximation; measured on the rendered text the
+number was six, against a floor of ten. The flags were honest — the *text* was the
+problem. `features()` reads `approx` and `symbolic` from what a candidate actually sees,
+not from the profile, which is why the profile cannot be used to argue with a gate. The
+fix was to design to the axis rather than audit against it: eleven questions now carry a
+genuine approximation (a small-change expansion, an order-of-magnitude estimate, an
+interpolated graph reading, a gauge-offset argument), and the section clears both floors
+with room.
+
+It also carries the bank's first **recorded scope judgement** that was not prompted by a
+gate hit. `S07-19` asks what fraction of the energy supplied by a battery ends up in the
+resistor when a capacitor charges — a *charging* question, which is a word the official
+note uses when it excludes "time dependent charging". The exclusion is about the time
+behaviour, and the question is built so that `R` cancels (the trap is precisely the
+candidate who looks for it), so a `scope_note` records why it is in scope rather than
+letting it pass silently or deleting a good question to avoid a word.
 
 **Papers area** — `#/papers` lists every paper as a downloadable PDF: the 2025 paper, the
-sample sheet, and sections 1–6, each with its markscheme — **8 papers, 16 PDFs, 309
-pages, 10.2 MB**. Both PDF defects found were found by rendering a page to PNG and
+sample sheet, and sections 1–7, each with its markscheme — **9 papers, 18 PDFs, 351
+pages, 11.5 MB**. Both PDF defects found were found by rendering a page to PNG and
 *looking* at it, not by any check: the markscheme's first solution was pushed to page 2 by
 a `break-inside: avoid` on a block that is by nature long, leaving "Worked solutions" over
 half a blank sheet. `verify_site.js` checks the area in both directions — every card
@@ -410,9 +447,9 @@ the data has a built PDF.
 | `figs.py` | **runs every `figsNN.py` and writes `fig/*.svg`** — the gate and build read these |
 | `fig/*.svg` | the generated figures, the actual input to gating and publishing |
 | `svgkit.py` | shared SVG primitives (`ell(...)` sampled ellipses, palette); raises on breakout tags |
-| `gates.py` | the eleven gates, the difficulty scorer, the fingerprint |
+| `gates.py` | the twelve gates, the difficulty scorer, the fingerprint |
 | `measure.py` | read-only re-measurement of a section the way the gate measures it — encodes the absolute-figdir and `supify` traps |
-| `mutants.py` | 44 mutants proving the gates have teeth, both directions |
+| `mutants.py` | 46 mutants proving the gates have teeth, both directions |
 | `make_ledger.py` | builds `ledger.json`, the hand-check record |
 | `ledger.json` | per-question method, working, and hand-derived answer |
 | `build_site.py` | gates, then emits `bpho/data/bank-NN.js` |

@@ -5,12 +5,13 @@
    The module mix is this section's allocation from the plan (A3 B2 C3 D2 E1 F2 G2 H4 I1 J1 K2 L2), so this section works
    as a full-length mock.
 
-   Before this file was written the section was put through eleven gates: structure,
+   Before this file was written the section was put through twelve gates: structure,
    distractor quality, agreement between key and solution, notation and the
    non-calculator rule, declared-profile vs solution, measured difficulty against the
    real paper's own quartiles, logic-level similarity, an independent numeric
-   re-derivation of every answer, figure geometry, answer-letter balance, and scope
-   against the official Round 0 topic note.  The gate suite itself is tested by 44
+   re-derivation of every answer, figure geometry, answer-letter balance, scope
+   against the official Round 0 topic note, and renderable text (the fields the site
+   escapes must be plain text, not markup).  The gate suite itself is tested by 46
    mutants, each of which breaks one thing and asserts that the right gate notices.
 
    Derived key: C A B A C A B D E A D B E C D B A E C D E B D C A
@@ -77,8 +78,8 @@ I = E / R total = 6.0 / 9.0 = 2/3 A</div>
 },
 
 {
-  id: "S04-02", module: "A", topic: "Dimensional analysis: finding the combination of G, M and r that has the dimensions of a time", diff: 2, rel: [["A", "Matching the dimensions of a combination to those of the quantity wanted"], ["A", "The dimensions of G, read off its units N m<sup>2</sup> kg<sup>-2</sup>"], ["D", "The period of a body in a circular orbit about a much heavier body"]], key: ["dimensions", "orbit", "period", "combination"], ans: 0, paper: "BANK-S04",
-  rel: [["A", "Matching the dimensions of a combination to those of the quantity wanted"], ["A", "The dimensions of G, read off its units N m<sup>2</sup> kg<sup>-2</sup>"], ["D", "The period of a body in a circular orbit about a much heavier body"]],
+  id: "S04-02", module: "A", topic: "Dimensional analysis: finding the combination of G, M and r that has the dimensions of a time", diff: 2, rel: [["A", "Matching the dimensions of a combination to those of the quantity wanted"], ["A", "The dimensions of G, read off its units N m² kg⁻²"], ["D", "The period of a body in a circular orbit about a much heavier body"]], key: ["dimensions", "orbit", "period", "combination"], ans: 0, paper: "BANK-S04",
+  rel: [["A", "Matching the dimensions of a combination to those of the quantity wanted"], ["A", "The dimensions of G, read off its units N m² kg⁻²"], ["D", "The period of a body in a circular orbit about a much heavier body"]],
   q: `<p>A satellite moves in a circular orbit of radius <code>r</code> about a planet of mass <code>M</code>. The only quantities available to describe the motion are <code>r</code>, <code>M</code>, and the gravitational constant <code>G</code>, whose units are N m<sup>2</sup> kg<sup>-2</sup>.</p><p>Which of the following has the dimensions of a time?</p>`,
   opts: ["2&#960;&#8730;(r<sup>3</sup>/GM)", "2&#960;&#8730;(GM/r)", "2&#960;&#8730;(GM/r<sup>3</sup>)", "2&#960; r<sup>3</sup>/(GM)", "2&#960; GM/r<sup>2</sup>"],
   sol: `<p><b>What is being tested.</b> Whether you can use dimensions as a working tool rather than as a checklist. Here the dimensions alone pick out exactly one of the five options, with no physics beyond the units of <code>G</code>.</p>
@@ -316,8 +317,8 @@ I = E / R total = 6.0 / 9.0 = 2/3 A</div>
 },
 
 {
-  id: "S04-06", module: "B", topic: "Two projectiles at complementary angles: the ratio of their times of flight", diff: 2, rel: [["B", "The time of flight of a projectile depends only on the vertical component of its velocity"], ["B", "The range of a projectile on level ground and the identity sin 2&#952; = sin(180&#176; &#8722; 2&#952;)"], ["A", "A ratio of two sines evaluated without a calculator"]], key: ["projectile", "complementary", "flighttime", "range"], ans: 0, paper: "BANK-S04",
-  rel: [["B", "The time of flight of a projectile depends only on the vertical component of its velocity"], ["B", "The range of a projectile on level ground and the identity sin 2&#952; = sin(180&#176; &#8722; 2&#952;)"], ["A", "A ratio of two sines evaluated without a calculator"]],
+  id: "S04-06", module: "B", topic: "Two projectiles at complementary angles: the ratio of their times of flight", diff: 2, rel: [["B", "The time of flight of a projectile depends only on the vertical component of its velocity"], ["B", "The range of a projectile on level ground and the identity sin 2θ = sin(180° − 2θ)"], ["A", "A ratio of two sines evaluated without a calculator"]], key: ["projectile", "complementary", "flighttime", "range"], ans: 0, paper: "BANK-S04",
+  rel: [["B", "The time of flight of a projectile depends only on the vertical component of its velocity"], ["B", "The range of a projectile on level ground and the identity sin 2θ = sin(180° − 2θ)"], ["A", "A ratio of two sines evaluated without a calculator"]],
   q: `<p>The figure shows two balls projected from the same point on level ground with the same speed, one at 60&#176; and one at 30&#176; to the horizontal. <figure class="fig">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 292" role="img" aria-label="Two projectiles launched from the same point with the same speed, one at 60 degrees and one at 30 degrees to the horizontal; the 60 degree arc is three times as high and both land at the same distance">
 <defs><marker id="s04-06-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>

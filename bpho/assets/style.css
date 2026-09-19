@@ -228,12 +228,20 @@ table.yield a { font-weight: 600; }
   display: inline-block;
   font-size: 11.5px;
   padding: 2px 8px;
-  border-radius: 999px;
+  border-radius: 10px;
   background: var(--surface-2);
   border: 1px solid var(--line-2);
   color: var(--ink-2);
   text-decoration: none;
-  white-space: nowrap;
+  /* These labels are whole sentences ("Energy stored in a spring is half the stiffness
+     times the square of the extension"), not tags.  `nowrap` made each one a single
+     unbreakable flex item, so it overflowed the card and the candidate could not read
+     the end of it.  Let them wrap, and keep the radius moderate so a two-line chip does
+     not become a pill with bulging ends. */
+  white-space: normal;
+  max-width: 100%;
+  min-width: 0;
+  line-height: 1.45;
 }
 .relchip b {
   font-family: var(--mono);

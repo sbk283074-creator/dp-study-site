@@ -939,6 +939,149 @@ LEDGER = {1: {
         "rho_w x 0.60V x g = m g, so m = 0.60 rho_w V",
         "D"),
 },
+7: {
+    "S07-01": (
+        "solve for the three exponents, one equation per base unit",
+        "[h] = kg m^2 s^-1, [c] = m s^-1, [G] = m^3 kg^-1 s^-2; write h^a c^b G^d. "
+        "kg: a - d = 0 so a = d. m: 2a + b + 3d = 1, with d = a, so 5a + b = 1. "
+        "s: -a - b - 2d = 0, with d = a, so -3a - b = 0, i.e. b = -3a. "
+        "Then 5a - 3a = 1 so a = 1/2, d = 1/2, b = -3/2. "
+        "Combination h^(1/2) G^(1/2) c^(-3/2) = sqrt(hG/c^3)",
+        "C"),
+    "S07-02": (
+        "volume of the slab, times the liquid water content, then grams to kilograms",
+        "V = 1000 x 1000 x 500 = 5.0e8 m^3; m = 5.0e8 x 0.50 = 2.5e8 g; "
+        "/1000 = 2.5e5 kg",
+        "A"),
+    "S07-03": (
+        "cube the ratio, to first order in the fractional error",
+        "V goes as r^3, so V_meas/V_true = (1 + 0.010)^3 = 1 + 3(0.010) + ... "
+        "= 1.030 to first order; the volume is 3.0% too large. "
+        "Exact check: 1.01^3 = 1.030301",
+        "D"),
+    "S07-04": (
+        "divide the height by the range and cancel u^2 and g",
+        "H = u^2 sin^2(t)/(2g); R = u^2 sin(2t)/g = 2u^2 sin(t)cos(t)/g; "
+        "H/R = sin^2(t)/(4 sin(t)cos(t)) = sin(t)/(4cos(t)) = tan(t)/4",
+        "B"),
+    "S07-05": (
+        "horizontal component unchanged, vertical component from the fall",
+        "v_x = u; v_y^2 = 0 + 2gh so v_y = sqrt(2gh); tan(theta) = v_y/v_x = sqrt(2gh)/u",
+        "E"),
+    "S07-06": (
+        "conserve momentum, then compare the two kinetic energies",
+        "mu = (m + 3m)v so v = u/4; KE_before = (1/2)mu^2; "
+        "KE_after = (1/2)(4m)(u/4)^2 = (1/2)(4m)(u^2/16) = mu^2/8; "
+        "lost = mu^2/2 - mu^2/8 = 3mu^2/8; fraction = (3/8)/(1/2) = 3/4",
+        "A"),
+    "S07-07": (
+        "treat the hole as negative mass and take moments about the disc's centre",
+        "full disc: area 4 pi a^2 at 0. hole: area pi a^2 at +a. "
+        "remaining area 3 pi a^2; moment = 4 pi a^2(0) - pi a^2(a) = -pi a^3; "
+        "centroid = -pi a^3/(3 pi a^2) = -a/3, i.e. a/3 from the centre on the side "
+        "away from the hole",
+        "C"),
+    "S07-08": (
+        "set the drag equal to the weight",
+        "at terminal speed the resultant is zero, so mg = k v^2 and v = sqrt(mg/k)",
+        "E"),
+    "S07-09": (
+        "resolve along and perpendicular to the horizontal; the normals are 30 and 60 "
+        "degrees from it",
+        "the left face is at 60 deg, so its normal is at 30 deg to the horizontal; the "
+        "right face is at 30 deg, so its normal is at 60 deg. "
+        "Horizontally: N_L cos30 = N_R cos60, so 0.866 N_L = 0.5 N_R and N_R = 1.732 N_L. "
+        "Vertically: N_L sin30 + N_R sin60 = W, so 0.5 N_L + 0.866(1.732 N_L) = W, "
+        "giving 0.5 N_L + 1.5 N_L = 2 N_L = W. So N_L = W/2",
+        "B"),
+    "S07-10": (
+        "the centre does not accelerate, so only the rim's own acceleration is left",
+        "the centre travels in a straight line at constant speed, so a_centre = 0. The "
+        "top point is on the rim, at distance r from the centre, with omega = v/r, so "
+        "its acceleration relative to the centre is omega^2 r = v^2/r towards the "
+        "centre. Total a = v^2/r",
+        "D"),
+    "S07-11": (
+        "find the strain that clamping forces on, then multiply by E",
+        "free expansion would be alpha dT L; the rod cannot change length, so the strain "
+        "imposed is -alpha dT; stress = E x strain = E alpha dT",
+        "E"),
+    "S07-12": (
+        "P/rho is fixed by the gas law at constant temperature",
+        "for a fixed mass at constant T, PV = const and V = m/rho, so P/rho = const. "
+        "v = sqrt(gamma P/rho) is therefore unchanged",
+        "B"),
+    "S07-13": (
+        "decide which side of 512 the unknown lies on from the direction the beat rate "
+        "moves",
+        "4 beats/s means the unknown is 516 or 508. Loading the 512 fork lowers its "
+        "frequency. If the unknown were 516 the gap would widen and the beats would "
+        "rise; the beats fell to 2, so the gap narrowed, so the unknown is below 512: "
+        "512 - 4 = 508",
+        "A"),
+    "S07-14": (
+        "similar triangles from the eye to the top of the head and to the feet",
+        "each ray meets the mirror at half the height between the eye and the point it "
+        "came from, so the mirror spans half the total height: 1.70/2 = 0.85 m",
+        "C"),
+    "S07-15": (
+        "divide the wavelength by the diameter",
+        "5.5e-7 / 0.10 = 5.5e-6 rad",
+        "D"),
+    "S07-16": (
+        "kilowatts times hours times days, then pence to pounds",
+        "2.0 kW x 3 h x 30 = 180 kWh; 180 x 15p = 2700p = 27 pounds",
+        "B"),
+    "S07-17": (
+        "the e.m.f. stays at one cell's value while the internal resistances halve",
+        "two 1.0 ohm sources in parallel give 0.5 ohm; I = 1.5/(2.0 + 0.5) = 1.5/2.5 "
+        "= 0.60 A",
+        "D"),
+    "S07-18": (
+        "balance length is proportional to e.m.f., so use the ratio of the two lengths",
+        "E/1.5 = 60.0/45.0 = 4/3, so E = 1.5 x 4/3 = 2.0 V",
+        "A"),
+    "S07-19": (
+        "energy supplied by the battery against energy stored on the capacitor",
+        "charge through the battery = CV, so energy supplied = CV^2; stored = (1/2)CV^2; "
+        "dissipated = CV^2 - (1/2)CV^2 = (1/2)CV^2; fraction = 1/2",
+        "E"),
+    "S07-20": (
+        "equate the fall in gravitational energy to mc dT and cancel the mass",
+        "mgh = mc dT so dT = gh/c = (10 x 20)/130 = 200/130 = 1.538 K, about 1.5 K",
+        "C"),
+    "S07-21": (
+        "absolute temperatures, absolute pressures, then back to the gauge",
+        "T1 = 20 + 273 = 293 K, T2 = 50 + 273 = 323 K. Gauge 2.0 atm means absolute "
+        "3.0 atm. p2 = 3.0 x 323/293 = 3.307 atm absolute; back on the gauge, "
+        "3.307 - 1.0 = 2.307, about 2.3 atm",
+        "D"),
+    "S07-22": (
+        "subtract the background at both ends, then look for a power of two",
+        "source alone: 840 - 200 = 640 at t = 0, and 240 - 200 = 40 at t = 80 s. "
+        "640/40 = 16 = 2^4, so four half-lives in 80 s: 80/4 = 20 s. "
+        "Check at 20 s: 640/2 + 200 = 520, which is what the curve shows",
+        "B"),
+    "S07-23": (
+        "binding energy per nucleon times the number of nucleons",
+        "the change per nucleon is 8.5 - 7.6 = 0.9 MeV; every one of the 236 nucleons "
+        "gains it, so E = 0.9 x 236 = 212.4 MeV, about 210 MeV",
+        "C"),
+    "S07-24": (
+        "threshold frequency from the graph, then hc/lambda minus the work function",
+        "the line crosses the axis at 5.0e14 Hz, so phi = 6.6e-34 x 5.0e14 = 3.3e-19 J. "
+        "At 330 nm, E = (6.6e-34 x 3.0e8)/3.3e-7 = 1.98e-25/3.3e-7 = 6.0e-19 J. "
+        "KE = 6.0e-19 - 3.3e-19 = 2.7e-19 J; in electronvolts 2.7/1.6 = 1.6875, "
+        "about 1.7 eV",
+        "C"),
+    "S07-25": (
+        "photon energy, photons per second, then the fraction of a sphere",
+        "light power = 0.050 x 100 = 5.0 W; E = (6.6e-34 x 3.0e8)/5.5e-7 = 3.6e-19 J; "
+        "N = 5.0/3.6e-19 = 1.389e19 per second. Sphere at 3.0 m: 4 pi (3.0)^2 = 113.1 m^2; "
+        "detector 2.0 cm^2 = 2.0e-4 m^2; fraction = 2.0e-4/113.1 = 1.768e-6. "
+        "Photons = 1.389e19 x 1.768e-6 = 2.456e13, about 2.5e13 per second",
+        "B"),
+},
 }
 
 

@@ -5,12 +5,13 @@
    The module mix is this section's allocation from the plan (A3 B2 C3 D2 E1 F2 G2 H3 I1 J1 K2 L2 M1), so this section works
    as a full-length mock.
 
-   Before this file was written the section was put through eleven gates: structure,
+   Before this file was written the section was put through twelve gates: structure,
    distractor quality, agreement between key and solution, notation and the
    non-calculator rule, declared-profile vs solution, measured difficulty against the
    real paper's own quartiles, logic-level similarity, an independent numeric
-   re-derivation of every answer, figure geometry, answer-letter balance, and scope
-   against the official Round 0 topic note.  The gate suite itself is tested by 44
+   re-derivation of every answer, figure geometry, answer-letter balance, scope
+   against the official Round 0 topic note, and renderable text (the fields the site
+   escapes must be plain text, not markup).  The gate suite itself is tested by 46
    mutants, each of which breaks one thing and asserts that the right gate notices.
 
    Derived key: A C E B D D A C E B B D A C E E B D A C A E B D A

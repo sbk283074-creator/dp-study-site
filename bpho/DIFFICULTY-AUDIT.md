@@ -46,7 +46,7 @@ The paper's hardest question is **13** moves. The bank's hardest is **6**. The b
 
 ## 2. Why it happened — depth was never a gate
 
-The eleven gates check that a question is *well-formed*: correct structure, plausible
+The twelve gates check that a question is *well-formed*: correct structure, plausible
 distractors, a profile that agrees with its solution, a declared band that matches its
 measured band, no duplicated logic, a hand-checked key. **Not one of them ever asked
 whether a question was hard.** `spec.SECTIONS` fixes the topic mix; nothing fixed the
@@ -181,13 +181,15 @@ published with a weak ceiling, and the whole bank was then re-measured:
 | sec 2 | 16.60 | 23.20 | 10 | 2 |
 | sec 3 | 15.80 | 24.30 | 10 | 3 |
 | sec 4 | 15.20 | 24.20 | 10 | 2 |
-| sec 5 | 14.20 | 25.40 | 10 | 2 |
+| sec 5 | 15.20 | 25.40 | 10 | 2 |
 | sec 6 | 16.80 | 23.20 | 10 | 2 |
+| sec 7 | 13.60 | 24.60 | 9 | 2 |
 
 Before the fix the bank's hardest question scored **20.50 at six moves**, and there were
 **zero** questions above six moves in 125. Every section now carries at least two questions
-whose chain is ten moves long, each of them hand-worked in `ledger.json` with its relations
-enumerated, and each of them gated by G5b so that a section cannot drift back to flat.
+whose chain is nine moves or longer, each of them hand-worked in `ledger.json` with its
+relations enumerated, and each of them gated by G5b so that a section cannot drift back to
+flat.
 
 The four questions that bought the ceiling, and what each one costs the candidate:
 
@@ -206,13 +208,16 @@ Measured on the same scorer, bank-wide, after the fix:
 |---|---|---|---|---|
 | **R0-2025** | **10 / 25 = 40 %** | **10 / 25 = 40 %** | **16 / 25 = 64 %** | 6 / 25 = 24 % |
 | bank after the fix (125) | 12 / 125 = 10 % | 31 / 125 = 25 % | 41 / 125 = 33 % | 59 / 125 = 47 % |
-| bank with section 6 (150) | 25 / 150 = 17 % | 39 / 150 = 26 % | 59 / 150 = 39 % | 71 / 150 = 47 % |
-| per section (approx / either) | S01 6/12 · S02 2/8 · S03 1/6 · S04 1/8 · S05 2/7 · **S06 13/18** | | | |
+| bank with section 6 (150) | 25 / 150 = 17 % | 39 / 150 = 26 % | 59 / 150 = 39 % | 73 / 150 = 49 % |
+| bank with section 7 (175) | 36 / 175 = 21 % | 47 / 175 = 27 % | 77 / 175 = 44 % | 86 / 175 = 49 % |
+| per section (approx / either) | S01 6/12 · S02 2/8 · S03 1/6 · S04 1/8 · S05 2/7 · **S06 13/18** · **S07 11/17** | | | |
 
 Section 6 is the first section written *to* the new floors rather than grandfathered into
 them, and it clears both: **13 approximations against a floor of 10**, and **18 by either
 axis against a floor of 16**. It moves the bank-wide approximation rate from 10 % to 17 %,
-still well under the paper's 40 % — the remaining gap is entirely sections 1–5.
+still well under the paper's 40 % — the remaining gap is entirely sections 1–5. Section 7
+holds the same standard at **11 and 17**, and its own finding (6e) is that meeting the
+floor required measuring the *rendered* text rather than trusting the declared flags.
 
 Finding 4a is **not** closed, and the honest reading is that the approximation rate did not
 move at all — the four rebuilt questions were rebuilt for depth. Two consequences follow,
@@ -222,7 +227,7 @@ and they are different in kind:
   (`noncalc_min`, `approx_min`) and G5c reads them, so sections 6–40 are held to the paper's
   own profile — **16 and 10 out of 25** — rather than to a number invented for them.
   Sections 1–5 are grandfathered at the floors they actually meet (6 and 1): rewriting 125
-  published questions is a different piece of work from getting the next 875 right, and
+  published questions is a different piece of work from getting the next 825 right, and
   doing the second while the first is tracked is strictly better than doing neither.
 * **Sections 1–5 are an open item, not an implication.** They sit at 6–12 and 1–2 against
   a target of 16 and 10. Closing that means revisiting roughly sixty questions; it is listed
@@ -259,7 +264,7 @@ the pattern is worth stating once:
   was attached to the mutation alone, so the floor was put back before the gate read it and
   the mutant reported `MISSED` for a mutation nobody ever saw.
 
-The suite is now **44 mutants**, and `mutants.py` asserts that all 44 behave: every gate has
+The suite is now **46 mutants**, and `mutants.py` asserts that all 46 behave: every gate has
 been shown to fail on demand, and the three content-correct mutants
 (`structure.case_only_difference`, `numerics.symbolic_check_with_decimal`,
 `scope.recorded_judgement_is_honoured`) have been shown to keep it quiet.
@@ -307,7 +312,7 @@ to **8.4**, against the paper's own 8.3.
 
 The general lesson is uncomfortable and worth writing down: **a scorer that counts numbered
 steps can be satisfied by numbering more of them.** The audit's own instrument was
-gameable by presentation, and nothing in the eleven gates could have caught it, because every
+gameable by presentation, and nothing in the twelve gates could have caught it, because every
 gate agreed with every other gate. What caught it was reading the paper's solutions beside
 the bank's and comparing the *granularity* of the numbering — which is a judgement, not a
 check, and is why G10's hand ledger and this document both exist.
@@ -365,6 +370,92 @@ note rather than off the bank.
 
 ---
 
+## 6e. A sixth finding: the profile is a claim, the measurement is the fact
+
+Building section 7 turned up a *measurement* subtlety that no gate had had to expose
+before, because sections 6's numbers happened to agree with its declarations.
+
+`difficulty()` scores `approx` and `symbolic` from **the rendered text** — what a
+candidate sees — and not from the `profile` flags. The two can disagree, and when they do
+the profile is the one that is wrong. Section 7's author declared **four** questions as
+needing an approximation. Measured, the number was **six**, against a floor of ten.
+
+The flags were not dishonest. Each of the four did need one. But six other questions also
+used one — an order-of-magnitude estimate, a small-change expansion — without the author
+noticing, because the flag was being written from memory of the *plan* rather than read
+back off the *solution*. That is the same failure as the orphan figure and the
+drawn-but-unlabelled angle: the artefact and the description of the artefact had drifted,
+and only one of them is what the candidate meets.
+
+**The consequence for how a section is written.** `measure.py` exists precisely so the
+author can see the gate's numbers before the gate does, and the lesson of section 7 is to
+use it *while* writing rather than after. The section was then rebuilt to the axis: 17 of
+25 non-calculator and 11 requiring an approximation, against floors of 16 and 10, with
+each approximation a real one — a small-change expansion, an order-of-magnitude estimate,
+an interpolated graph reading, a gauge-offset argument. Section 7 measures median 13.6
+against the paper's 13.5, p25 12.6 against 11.5, min 11.0, max 24.6 at nine moves.
+
+**And a first: a recorded scope judgement nobody asked for.** G11 was built so that a
+crude scan could be cleared by a written reason. `S07-19` — what fraction of a battery's
+supplied energy is lost in the resistor while a capacitor charges — trips no marker, so
+no judgement was demanded. It got one anyway, because it is a *charging* question and
+"time dependent charging" is a phrase the official note uses. The exclusion is about the
+time behaviour; the question is built so that `R` cancels and the trap is exactly the
+candidate who looks for it. Writing the note costs a sentence and means the decision is
+auditable; not writing it would have left a borderline call invisible, which is the state
+`S05-21` shipped in. **A recorded judgement is worth having even when the gate is
+silent** — the gate exists to force the *hard* cases into writing, not to define which
+cases deserve thought.
+
+---
+
+## 6f. A seventh finding: text that could not be read
+
+This one was not a difficulty finding and was not found by a check. It was found by
+**looking at a screenshot of a figure** while verifying section 7 — and it had been live
+on the site for four sections.
+
+`assets/app.js` inserts most question fields as HTML (`q.q`, `opts`, `sol`, `trap`) but
+**escapes two author-written ones**: `topic` and every `rel[i][1]` label. It has to
+escape the label, because `data/priority.js` reuses it as a topic *name* and the topics
+page escapes it there as well — so it cannot be HTML in either place.
+
+Nineteen labels across sections 4, 6 and 7 had been written as HTML anyway. On the page
+they read:
+
+```
+The maximum height of a projectile is u<sup>2</sup> sin<sup>2</sup>&#952; / 2g
+```
+
+— tags, entity and all, exactly as typed. A candidate sees that on the question page and,
+as a topic name, on the topics page. Every gate passed them. The labels were well
+written; they simply could not be read.
+
+**The fix is the data, not the renderer.** Rendering `rel[1]` as HTML would fix the
+question page and leave the topics page broken, so the labels were rewritten in plain
+Unicode — `u² sin²θ / 2g` — which is the convention sections 1–3 and 5 had used all
+along ("Energy stored in a spring is half the stiffness times the square of the
+extension"). The whole site already writes `²`, `½`, `θ`, `√` and `≈` as characters.
+
+**And a gate, G12.** In a field that will be escaped, `<`, `>` and `&` have no legitimate
+use, so the check is deliberately blunt: markup in an escaped field fails. Two mutants
+pin it — `render.markup_in_a_rel_label` must fire, and `render.plain_unicode_is_fine`
+must stay **silent**, because a gate that fired on every non-ASCII character would forbid
+the site's own typography. **The suite is 46 mutants.**
+
+The lesson is G11's lesson a second time, with a twist. G11 existed because a whole class
+of defect — "is it in the syllabus?" — had no gate. G12 existed because a class of defect
+had no gate for a reason nobody would have guessed: it was not about the *physics* at
+all, but about **which of two renderers a field happens to pass through**. A question can
+be correct, hard, original, in scope and beautifully written, and still be unreadable,
+because the string it is written in is going to be escaped.
+
+**The general form:** when a screenshot shows something a check cannot, that is not a gap
+in the checks. It is evidence that the property being checked and the property that
+matters are different properties.
+
+---
+
 ## 7. Reproducing this audit
 
 ```sh
@@ -372,7 +463,7 @@ cd bpho/tools/bank
 python measure.py paper     # the real 2025 paper, question by question
 python measure.py all       # every section, summary
 python measure.py 6         # one section, per-question breakdown
-python gates.py all         # the eleven gates
+python gates.py all         # the twelve gates
 python mutants.py           # proof the gates have teeth
 ```
 

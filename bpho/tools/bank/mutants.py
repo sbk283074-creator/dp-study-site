@@ -549,6 +549,34 @@ def m44(qs):
                            "which is the RC answer to a different question")
 
 
+@mutant("render.markup_in_a_rel_label", "G12",
+        "write a superscript as HTML in a field the site renders as plain text")
+def m45(qs):
+    # The defect that actually shipped, in four sections at once.  `assets/app.js`
+    # escapes `rel[i][1]` and `topic` because `priority.js` reuses a rel label as a
+    # topic NAME, so HTML in one of those fields is shown to the candidate verbatim --
+    # the page read "u<sup>2</sup> sin<sup>2</sup>&#952; / 2g".  Every other gate passed
+    # it: the label was well written, it simply could not be read.
+    q = find(qs, "S01-01")
+    q["rel"] = [list(r) for r in q["rel"]]
+    q["rel"][0][1] = ("The maximum height of a projectile is "
+                      "u<sup>2</sup> sin<sup>2</sup>&#952; / 2g")
+
+
+@mutant("render.plain_unicode_is_fine", "G12",
+        "the same label written with the characters themselves",
+        must_not_fire=True)
+def m46(qs):
+    # The partner to m45, and the whole point of G12's bluntness.  A gate that fired on
+    # every non-ASCII character would forbid the site's own typography -- the study space
+    # already writes ², ½, θ, √ and ≈ as characters throughout.  What G12 forbids is
+    # MARKUP in a field that will be escaped, not the characters those entities stand for.
+    q = find(qs, "S01-01")
+    q["rel"] = [list(r) for r in q["rel"]]
+    q["rel"][0][1] = ("Newton's second law applied to each block in turn, with "
+                      "v\u00b2 = u\u00b2 + 2as for the 30\u00b0 slope")
+
+
 def main():
     base = G.baseline()
     print("mutation self-test: break one thing, check the right gate notices")

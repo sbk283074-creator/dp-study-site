@@ -11,8 +11,8 @@ four things, and it is deliberately built so that it can be *shown to fail* --
 see mutants.py, which breaks known-good questions and asserts the gate catches
 each break.
 
-THE TEN GATES
--------------
+THE TWELVE GATES
+----------------
   G1  structure        ids, counts, five distinct options, ans in range, module mix
                        matches the evidence-based section plan, required fields
   G2  distractors      every wrong option must encode a NAMED plausible error.
@@ -42,6 +42,10 @@ THE TEN GATES
   G11 scope            no question may test material the official Round 0 note
                        excludes.  A keyword scan cannot be precise, so a hit demands a
                        `scope_note` recording why the question is in scope anyway.
+  G12 renderable text  the fields the site renders with `esc()` -- `topic` and every
+                       `rel` label -- must be plain text.  HTML written into one of them
+                       is shown to the candidate verbatim, so `u<sup>2</sup>` reads as
+                       "u<sup>2</sup>".  Write the character, not the markup.
 
 WHAT IT CANNOT DO
 -----------------
@@ -199,6 +203,32 @@ SCOPE_BLOCK = [
     ("QM beyond photoelectric", r"wavefunction|wave function|uncertainty principle|"
                                 r"Schr(?:ö|o)dinger|de Broglie|matter wave"),
 ]
+
+
+def escaped_texts(q: dict):
+    """The fields the site renders with `esc()`, and therefore must be PLAIN TEXT.
+
+    `assets/app.js` inserts `q.q`, `opts`, `sol` and `trap` as HTML, but it ESCAPES
+    two author-written fields: `topic` and every `rel[i][1]` label.  It has to: a
+    `rel` label is reused as a topic *name* by `data/priority.js`, and the topics page
+    escapes it there as well, so the label cannot be HTML in either place.
+
+    The consequence is that HTML written into one of these fields is shown to the
+    candidate literally.  Section 7 shipped eleven labels like
+    `u<sup>2</sup> sin<sup>2</sup>&#952; / 2g`, which displayed on the page as exactly
+    that -- tags, entity and all.  Nothing caught it: every gate asked whether the
+    question was well made, and it was.  G12 asks whether the text can be *read*.
+    """
+    yield "topic", q.get("topic", "")
+    for i, r in enumerate(q.get("rel", []) or []):
+        if isinstance(r, (list, tuple)) and len(r) > 1:
+            yield "rel[%d]" % i, r[1]
+
+
+# In an escaped field these three characters have no legitimate use.  Deliberately
+# blunt: `&` is included because the site turns it into `&amp;`, so even a bare
+# ampersand would be shown doubled, and no question in the bank has ever needed one.
+ESCAPED_BAD_RE = re.compile(r"[<>&]")
 
 
 def scope_texts(q: dict):
@@ -1150,7 +1180,7 @@ def load_section(n: int):
 
 
 def gate_section(n: int, base=None, verbose=True, questions=None):
-    """Run all ten gates on one section.  Returns (errors, stats).
+    """Run all twelve gates on one section.  Returns (errors, stats).
 
     `questions` overrides the module's own list.  It exists for mutants.py, which
     deliberately breaks a known-good question and asserts that the right gate notices.
@@ -1570,6 +1600,23 @@ def gate_section(n: int, base=None, verbose=True, questions=None):
                             "official Round 0 scope. Either rewrite it, or set "
                             "profile.scope_note saying why it is in scope anyway"
                             % (q["id"], field, m.group(0), label))
+
+    # ---- G12 renderable text -----------------------------------------------
+    # The site escapes `topic` and the `rel` labels, so HTML in them is displayed to the
+    # candidate verbatim.  Section 7 shipped eleven such labels and read `&#952;` and
+    # `<sup>2</sup>` on the page for four sections before anyone noticed -- a defect no
+    # other gate could see, because the text was perfectly well *written*; it just could
+    # not be *read*.  The fix is to write the character, not the markup: `²` not
+    # `<sup>2</sup>`, `θ` not `&#952;`.
+    for q in qs:
+        for field, text in escaped_texts(q):
+            m = ESCAPED_BAD_RE.search(text or "")
+            if m:
+                errs.append("G12 %s: the %s contains %r, but this field is rendered as "
+                            "PLAIN TEXT, so the candidate would see %r literally. Write "
+                            "the character itself: a superscript two, not a sup tag; the "
+                            "Greek letter, not a numeric entity."
+                            % (q["id"], field, m.group(0), (text or "")[:60]))
 
     stats = {
         "section": n, "code": plan["code"], "n": len(qs),
