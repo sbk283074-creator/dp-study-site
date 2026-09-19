@@ -11,7 +11,7 @@
    real paper's own quartiles, logic-level similarity, an independent numeric
    re-derivation of every answer, figure geometry, answer-letter balance, scope
    against the official Round 0 topic note, and renderable text (the fields the site
-   escapes must be plain text, not markup).  The gate suite itself is tested by 46
+   escapes must be plain text, not markup).  The gate suite itself is tested by 51
    mutants, each of which breaks one thing and asserts that the right gate notices.
 
    Derived key: C A D B E A C E B D E B A C D B D A E C D B C C B
@@ -428,7 +428,7 @@ v = &#8730;(m g / k)</div>
 <text x="234.971" y="121.878" font-size="12.5" text-anchor="end" fill="#1f7a53">N</text>
 </svg>
 </figure><p>Which expression gives the force exerted by the left face?</p>`,
-  opts: ["<code>W</code>/&#8730;3", "<code>W</code>/2", "&#8730;3<code>W</code>/2", "<code>W</code>", "2<code>W</code>/&#8730;3"],
+  opts: ["<code>W</code>/&#8730;3", "<code>W</code>/2", "<code>W</code>&#8730;3/2", "<code>W</code>", "2<code>W</code>/&#8730;3"],
   sol: `<p><b>What is being tested.</b> Whether you resolve along the right directions. A normal reaction acts perpendicular to the surface it comes from, so the angle a face makes with the horizontal is <i>not</i> the angle its force makes with the vertical -- it is the complement. Getting that the right way round is the whole question.</p>
 <p><b>Step 1 — the two normals and their angles.</b> The left face rises at 60&#176; to the horizontal, so its normal is at 60&#176; to the <i>vertical</i>... read carefully: a normal is perpendicular to the face, so it is at 30&#176; to the vertical and 60&#176; to the horizontal. The right face rises at 30&#176;, so its normal is at 60&#176; to the vertical and 30&#176; to the horizontal. The two normals are at 30&#176; and 60&#176; to the vertical, and they point up and inwards.</p>
 <p><b>Step 2 — resolve horizontally.</b> There is no horizontal acceleration, so the two horizontal components cancel:</p>
@@ -445,10 +445,10 @@ N_left (1/2) + N_left (3/2) = W
 2 N_left = W
 N_left = W/2</div>
 <p>So <b>Answer: B.</b></p>
-<p><b>Sanity check.</b> The right face carries <code>N_right = &#8730;3 N_left = &#8730;3 W/2 &#8776; 0.87W</code>. The two add up to <code>0.50W + 0.87W = 1.37W</code>, which is more than <code>W</code> -- and that is right, because they are not parallel: only their vertical components add, and those come to <code>W</code> exactly. As a second check, if both faces were at 45&#176; each would carry <code>W/&#8730;2 &#8776; 0.71W</code>; tilting one face steeper must increase the load on the other, and <code>0.87 &gt; 0.71</code>.</p>
+<p><b>Sanity check.</b> The right face carries <code>N_right = &#8730;3 N_left = W&#8730;3/2 &#8776; 0.87W</code>. The two add up to <code>0.50W + 0.87W = 1.37W</code>, which is more than <code>W</code> -- and that is right, because they are not parallel: only their vertical components add, and those come to <code>W</code> exactly. As a second check, if both faces were at 45&#176; each would carry <code>W/&#8730;2 &#8776; 0.71W</code>; tilting one face steeper must increase the load on the other, and <code>0.87 &gt; 0.71</code>.</p>
 <p><b>The distractors.</b></p>
 <p>&middot; <b>W/&#8730;3</b> gives the steeper face the larger share. It is the natural guess -- a steeper wall looks more load-bearing -- and it is backwards, because a steeper face pushes more nearly horizontally and so carries less of the weight.</p>
-<p>&middot; <b>&#8730;3W/2</b> is the force on the <i>shallower</i> face. It is a real quantity in this problem and not the one asked for.</p>
+<p>&middot; <b>W&#8730;3/2</b> is the force on the <i>shallower</i> face. It is a real quantity in this problem and not the one asked for.</p>
 <p>&middot; <b>W</b> splits the weight evenly between the faces, which would be right only if both faces were at the same angle.</p>
 <p>&middot; <b>2W/&#8730;3</b> resolves the weight along the steeper face instead of perpendicular to it, which is the direction a block would slide in rather than the direction the face pushes.</p>
 <p><b>Relevant topics:</b> normal reactions; resolving a weight into components along two given directions; three forces in equilibrium.</p>`,

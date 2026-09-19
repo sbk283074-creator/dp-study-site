@@ -25,8 +25,8 @@ Per-section figures live in figsNN.py and import from here:
 """
 import math
 import os
+import re
 
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fig')
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fig')
 
 INK = '#14181f'
@@ -80,6 +80,10 @@ _SIG = {
 BREAKOUT_IN_SVG = ("sup", "sub", "span", "code", "em", "strong", "b", "i", "small",
                    "p", "div", "br", "hr", "table", "ul", "ol", "li", "font")
 
+# A named character reference.  Valid in HTML, UNDEFINED in XML -- and fig/*.svg is an XML
+# document.  The five predefined XML entities (amp, lt, gt, quot, apos) are excluded.
+NAMED_ENT = re.compile(r"&(?!(?:amp|lt|gt|quot|apos)\b)[A-Za-z][A-Za-z0-9]*;")
+
 
 def svg(w, h, label, body):
     bad = [t for t in BREAKOUT_IN_SVG if ("<%s>" % t) in body or ("<%s " % t) in body]
@@ -88,6 +92,22 @@ def svg(w, h, label, body):
             "figure uses %s inside inline SVG -- the HTML parser will close the svg there "
             "and drop the rest of the figure into the page. Use <tspan> instead."
             % ", ".join("<%s>" % t for t in bad))
+    # A NAMED entity (&theta;, &Omega;, &mu;, &radic;) is not defined in XML, so a figure
+    # containing one is not a well-formed SVG document.  It still renders on the site,
+    # because the page is HTML and the figure is inlined -- which is exactly why this
+    # survived: nothing in the toolchain parses fig/*.svg, and the page looks right.  The
+    # file only fails when it is opened on its own, as `image/svg+xml`, where the browser
+    # uses the XML parser.  Seven figures had shipped that way.
+    #
+    # Use the numeric reference (&#952;) or the character itself (theta).  Numeric is the
+    # house form, and is what the rest of the bank already writes.
+    ents = sorted(set(NAMED_ENT.findall(body)))
+    if ents:
+        raise SystemExit(
+            "figure uses the named entity/entities %s -- those are not defined in XML, so "
+            "fig/*.svg stops being a well-formed SVG document (it still renders inline, "
+            "which is how it hides). Use the numeric reference, e.g. &#952; for theta."
+            % ", ".join(ents))
     return ('<figure class="fig">\n'
             '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %g %g" role="img" '
             'aria-label="%s">\n%s\n</svg>\n</figure>' % (w, h, label, body))

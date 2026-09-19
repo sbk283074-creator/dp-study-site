@@ -558,7 +558,7 @@ v = &#8730;(m g / k)</div>
     "stem": '<p>A uniform cylinder of weight <code>W</code> rests in a V-groove. The left face of the groove is inclined at 60&#176; to the horizontal and the right face at 30&#176;, as the diagram shows. Both faces are smooth.</p>{{FIG:s07-09}}<p>Which expression gives the force exerted by the left face?</p>',
     "opts": ['<code>W</code>/&#8730;3',
              '<code>W</code>/2',
-             '&#8730;3<code>W</code>/2',
+             '<code>W</code>&#8730;3/2',
              '<code>W</code>',
              '2<code>W</code>/&#8730;3'],
     "ans": 1,
@@ -602,10 +602,10 @@ N_left (1/2) + N_left (3/2) = W
 2 N_left = W
 N_left = W/2</div>
 <p>So <b>Answer: B.</b></p>
-<p><b>Sanity check.</b> The right face carries <code>N_right = &#8730;3 N_left = &#8730;3 W/2 &#8776; 0.87W</code>. The two add up to <code>0.50W + 0.87W = 1.37W</code>, which is more than <code>W</code> -- and that is right, because they are not parallel: only their vertical components add, and those come to <code>W</code> exactly. As a second check, if both faces were at 45&#176; each would carry <code>W/&#8730;2 &#8776; 0.71W</code>; tilting one face steeper must increase the load on the other, and <code>0.87 &gt; 0.71</code>.</p>
+<p><b>Sanity check.</b> The right face carries <code>N_right = &#8730;3 N_left = W&#8730;3/2 &#8776; 0.87W</code>. The two add up to <code>0.50W + 0.87W = 1.37W</code>, which is more than <code>W</code> -- and that is right, because they are not parallel: only their vertical components add, and those come to <code>W</code> exactly. As a second check, if both faces were at 45&#176; each would carry <code>W/&#8730;2 &#8776; 0.71W</code>; tilting one face steeper must increase the load on the other, and <code>0.87 &gt; 0.71</code>.</p>
 <p><b>The distractors.</b></p>
 <p>&middot; <b>W/&#8730;3</b> gives the steeper face the larger share. It is the natural guess -- a steeper wall looks more load-bearing -- and it is backwards, because a steeper face pushes more nearly horizontally and so carries less of the weight.</p>
-<p>&middot; <b>&#8730;3W/2</b> is the force on the <i>shallower</i> face. It is a real quantity in this problem and not the one asked for.</p>
+<p>&middot; <b>W&#8730;3/2</b> is the force on the <i>shallower</i> face. It is a real quantity in this problem and not the one asked for.</p>
 <p>&middot; <b>W</b> splits the weight evenly between the faces, which would be right only if both faces were at the same angle.</p>
 <p>&middot; <b>2W/&#8730;3</b> resolves the weight along the steeper face instead of perpendicular to it, which is the direction a block would slide in rather than the direction the face pushes.</p>
 <p><b>Relevant topics:</b> normal reactions; resolving a weight into components along two given directions; three forces in equilibrium.</p>''',
@@ -738,6 +738,13 @@ N_left = W/2</div>
 {
     "n": 12, "id": "S07-12", "module": "F", "diff": 1,
     "topic": "The speed of sound in a gas compressed at constant temperature: it does not change, because the density rises in step with the pressure",
+    # NOTE the form of the radical here.  A `rel` label is rendered as PLAIN TEXT --
+    # assets/app.js escapes it, because priority.js reuses the label as a topic NAME --
+    # so an entity in this field reaches the candidate verbatim as `&#8730;`.  Every
+    # other field of the question is injected as HTML and takes the numeric reference.
+    # The two policies are not an inconsistency: they follow the two renderers.  G12
+    # enforces the plain-text one; the G3 form lint enforces the HTML one, and it
+    # deliberately does not look at this field.
     "rel": [("F", "The speed of sound in a gas is √(γP/ρ), so it depends on the ratio of pressure to density and not on either alone"),
             ("F", "Compressing at constant temperature raises the pressure and the density by the same factor"),
             ("A", "Recognising a ratio that is unchanged when both of its parts are multiplied by the same number")],

@@ -166,7 +166,7 @@ V_out = 12 x (2.0 / 8.0) = 12 x 1/4 = 3.0 V</div>
             ("C", "Terminal velocity is the balance of drag against weight")],
     "key": ["dimensions", "ratio", "nocalc"],
     "stem": '<p>A spherical raindrop falls through still air and reaches a terminal speed <code>v</code>. The drag force on the drop depends only on the drop\u2019s radius <code>r</code>, the density of the air <code>&rho;</code> and <code>v</code> itself. The drop is much denser than the air, and the air is much less dense than water (density <code>&rho;<sub>w</sub></code>).</p><p>How does <code>v</code> depend on <code>r</code>?</p>',
-    "opts": ["v &prop; r", "v &prop; &radic;r", "v &prop; r&sup2;", "v &prop; 1/&radic;r", "v does not depend on r"],
+    "opts": ["v &prop; r", "v &prop; &#8730;r", "v &prop; r&sup2;", "v &prop; 1/&#8730;r", "v does not depend on r"],
     "ans": 1,
     "distractors": [
         "takes the drag to be proportional to the radius rather than to the cross-sectional area",
@@ -209,12 +209,12 @@ L:  1 = -3a + b + c = -3 + b + 2   so b = 2</div>
 <p><b>Step 3 — collect the powers of r.</b> Divide both sides by <code>r&sup2;</code>:</p>
 <div class="formula">v&sup2; &prop; r &times; (&rho;<sub>w</sub> g / &rho;)</div>
 <p><b>Step 4 — take the square root.</b> Everything except <code>r</code> is a constant for a given drop and a given air density, so</p>
-<div class="formula">v &prop; &radic;r</div>
-<p><b>Answer: B, v &prop; &radic;r.</b></p>
+<div class="formula">v &prop; &#8730;r</div>
+<p><b>Answer: B, v &prop; &#8730;r.</b></p>
 <p><b>Why the other four are wrong.</b></p>
 <p>· <b>v &prop; r</b> comes from using <code>r</code> in place of the area in the drag law. It is the single most common slip, and the dimensional analysis above is what rules it out: <code>&rho; r v&sup2;</code> has dimensions <code>M L&#8315;&sup1; T&#8315;&sup2;</code>, which is a pressure, not a force.</p>
 <p>· <b>v &prop; r&sup2;</b> comes from dropping the square root at the end, or from treating the weight as going as <code>r&sup3;</code> while the drag goes as <code>r</code>.</p>
-<p>· <b>v &prop; 1/&radic;r</b> inverts the answer. It would mean a large drop falls more slowly than a small one, which is the opposite of what happens: this is why drizzle drifts and large drops sting.</p>
+<p>· <b>v &prop; 1/&#8730;r</b> inverts the answer. It would mean a large drop falls more slowly than a small one, which is the opposite of what happens: this is why drizzle drifts and large drops sting.</p>
 <p>· <b>v independent of r</b> would require the drag and the weight to grow at the same rate in <code>r</code>. They do not — <code>r&sup2;</code> against <code>r&sup3;</code>.</p>
 <p><b>The wider point.</b> Whenever a question says a quantity depends only on a list of others, dimensions alone may fix the answer. Try it first: it is often faster than the physics, and it is a check on the physics afterwards. Here it gave both the <code>r&sup2;</code> in the drag law and the final square root.</p>
 <p><b>Relevant topics:</b> dimensional analysis; drag; terminal velocity; proportional reasoning.</p>''',
@@ -233,7 +233,7 @@ L:  1 = -3a + b + c = -3 + b + 2   so b = 2</div>
             ("A", "Deciding which conservation law applies to which stage")],
     "key": ["momcons", "ke", "hookeslaw"],
     "stem": '<p>A bullet of mass <code>m</code> travelling horizontally at speed <code>u</code> strikes and embeds itself in a block of mass <code>3m</code> resting on a frictionless horizontal surface. The block is attached to a fixed spring of stiffness <code>k</code>. {{FIG:s01-04}}</p><p>What is the maximum compression of the spring?</p>',
-    "opts": ["u&radic;(m/k)", "(u/4)&radic;(m/k)", "(u/4)&radic;(2m/k)", "2u&radic;(m/k)", "(u/2)&radic;(m/k)"],
+    "opts": ["u&#8730;(m/k)", "(u/4)&#8730;(m/k)", "(u/4)&#8730;(2m/k)", "2u&#8730;(m/k)", "(u/2)&#8730;(m/k)"],
     "ans": 4,
     "distractors": [
         "stores the bullet's original kinetic energy, as though the collision were elastic",
@@ -269,14 +269,14 @@ L:  1 = -3a + b + c = -3 + b + 2   so b = 2</div>
 <div class="formula">4m x (u/4)&sup2; = k x&sup2;
 4m x u&sup2;/16 = k x&sup2;
 m u&sup2; / 4 = k x&sup2;
-x = (u/2) &radic;(m/k)</div>
-<p><b>Answer: E, (u/2)&radic;(m/k).</b></p>
+x = (u/2) &#8730;(m/k)</div>
+<p><b>Answer: E, (u/2)&#8730;(m/k).</b></p>
 <p><b>Why the other four are wrong.</b> Each one is the same chain with one step mis-set, which is why they are all dimensionally a length:</p>
-<p>· <b>u&radic;(m/k)</b> stores the bullet's <i>original</i> kinetic energy, <code>0.5 m u&sup2;</code>. That is the energy before the collision, most of which has already been lost as heat and sound.</p>
-<p>· <b>(u/4)&radic;(m/k)</b> gets <code>V = u/4</code> right but then stores <code>0.5 m V&sup2;</code>, using the bullet's mass alone for the moving mass. The moving mass is <code>4m</code>.</p>
-<p>· <b>(u/4)&radic;(2m/k)</b> stores <code>0.5 x (2m) x V&sup2;</code> — the bullet plus only <i>one</i> of the three block masses. You can check the mass directly: with <code>2m</code> the compression comes to <code>(u/4)&radic;(2m/k)</code>, which is <code>1/&radic;2</code> of the correct value, and a compression smaller than the true one would leave the block still moving.</p>
-<p>· <b>2u&radic;(m/k)</b> assumes the post-collision speed is still <code>u</code>, so no momentum was lost at all. Putting <code>V = u</code> into <code>x = V&radic;(4m/k)</code> gives exactly this.</p>
-<p><b>The trap.</b> The word "embeds" is the instruction. It tells you the collision is perfectly inelastic, so you must run momentum first and energy second. A candidate who writes <code>0.5 m u&sup2; = 0.5 k x&sup2;</code> has used energy across a stage where energy is not conserved, and will get <code>u&radic;(m/k)</code>.</p>
+<p>· <b>u&#8730;(m/k)</b> stores the bullet's <i>original</i> kinetic energy, <code>0.5 m u&sup2;</code>. That is the energy before the collision, most of which has already been lost as heat and sound.</p>
+<p>· <b>(u/4)&#8730;(m/k)</b> gets <code>V = u/4</code> right but then stores <code>0.5 m V&sup2;</code>, using the bullet's mass alone for the moving mass. The moving mass is <code>4m</code>.</p>
+<p>· <b>(u/4)&#8730;(2m/k)</b> stores <code>0.5 x (2m) x V&sup2;</code> — the bullet plus only <i>one</i> of the three block masses. You can check the mass directly: with <code>2m</code> the compression comes to <code>(u/4)&#8730;(2m/k)</code>, which is <code>1/&#8730;2</code> of the correct value, and a compression smaller than the true one would leave the block still moving.</p>
+<p>· <b>2u&#8730;(m/k)</b> assumes the post-collision speed is still <code>u</code>, so no momentum was lost at all. Putting <code>V = u</code> into <code>x = V&#8730;(4m/k)</code> gives exactly this.</p>
+<p><b>The trap.</b> The word "embeds" is the instruction. It tells you the collision is perfectly inelastic, so you must run momentum first and energy second. A candidate who writes <code>0.5 m u&sup2; = 0.5 k x&sup2;</code> has used energy across a stage where energy is not conserved, and will get <code>u&#8730;(m/k)</code>.</p>
 <p><b>Relevant topics:</b> conservation of momentum; inelastic collisions; elastic potential energy; two-stage problems.</p>''',
     "trap": "Applying energy conservation across the collision. The collision is inelastic, so most of the kinetic energy is lost; only momentum survives it. Energy conservation starts <i>after</i> the bullet has embedded.",
 },
@@ -411,7 +411,7 @@ x = (u/2) &radic;(m/k)</div>
             ("A", "Reading a physical interval off the difference between two roots")],
     "key": ["kinematics", "surds", "graphshape"],
     "stem": '<p>A ball is thrown vertically upward from ground level with speed <code>u</code>. It passes a point at height <code>h</code> twice: once on the way up and once on the way down. {{FIG:s01-07}}</p><p>What is the time interval between the two passages?</p>',
-    "opts": ["&radic;(u&sup2; - 2gh)/g", "u/g", "2&radic;(2gh)/g", "2u/g", "2&radic;(u&sup2; - 2gh)/g"],
+    "opts": ["&#8730;(u&sup2; - 2gh)/g", "u/g", "2&#8730;(2gh)/g", "2u/g", "2&#8730;(u&sup2; - 2gh)/g"],
     "ans": 4,
     "distractors": [
         "gives only the time from the highest point down to the height h, which is one root's distance from the apex rather than the gap between the roots",
@@ -444,20 +444,20 @@ x = (u/2) &radic;(m/k)</div>
 <div class="formula">0.5 g t&sup2; - u t + h = 0</div>
 <p>This is a quadratic in <code>t</code>, so it has two roots. That is the whole content of "it passes the point twice": one root is the time on the way up, the other the time on the way down.</p>
 <p><b>Step 3 — solve the quadratic.</b> With <code>a = 0.5g</code>, <code>b = -u</code>, <code>c = h</code>:</p>
-<div class="formula">t = [ u &plusmn; &radic;(u&sup2; - 2gh) ] / g</div>
-<p>The two roots are <code>t&#8321; = (u - &radic;(u&sup2; - 2gh))/g</code> and <code>t&#8322; = (u + &radic;(u&sup2; - 2gh))/g</code>.</p>
+<div class="formula">t = [ u &plusmn; &#8730;(u&sup2; - 2gh) ] / g</div>
+<p>The two roots are <code>t&#8321; = (u - &#8730;(u&sup2; - 2gh))/g</code> and <code>t&#8322; = (u + &#8730;(u&sup2; - 2gh))/g</code>.</p>
 <p><b>Step 4 — subtract.</b> The interval is</p>
-<div class="formula">t&#8322; - t&#8321; = 2&radic;(u&sup2; - 2gh) / g</div>
+<div class="formula">t&#8322; - t&#8321; = 2&#8730;(u&sup2; - 2gh) / g</div>
 <p>Notice that <code>u</code> has cancelled entirely from the difference. That is worth pausing on: the interval depends on <code>h</code> and <code>g</code>, but not on how hard the ball was thrown — as long as it is thrown hard enough to get there at all.</p>
-<p><b>Answer: E, 2&radic;(u&sup2; - 2gh)/g.</b></p>
+<p><b>Answer: E, 2&#8730;(u&sup2; - 2gh)/g.</b></p>
 <p><b>Why the other four are wrong.</b></p>
-<p>· <b>&radic;(u&sup2; - 2gh)/g</b> is exactly half the answer. It is the time from the apex down to <code>h</code>, because at the apex the speed is zero and the time to fall a distance <code>(u&sup2;/2g - h)</code> is <code>&radic;(2(u&sup2;/2g - h)/g) = &radic;(u&sup2; - 2gh)/g</code>. By symmetry that is also the time from <code>h</code> up to the apex, so the full interval is twice it.</p>
+<p>· <b>&#8730;(u&sup2; - 2gh)/g</b> is exactly half the answer. It is the time from the apex down to <code>h</code>, because at the apex the speed is zero and the time to fall a distance <code>(u&sup2;/2g - h)</code> is <code>&#8730;(2(u&sup2;/2g - h)/g) = &#8730;(u&sup2; - 2gh)/g</code>. By symmetry that is also the time from <code>h</code> up to the apex, so the full interval is twice it.</p>
 <p>· <b>u/g</b> is the time to reach the highest point — the middle of the interval, not its length.</p>
-<p>· <b>2&radic;(2gh)/g</b> drops the <code>u&sup2;</code> term, which is what you get by treating the ball as simply dropped from height <code>h</code>. That would require the ball to have zero speed at <code>h</code>, in which case it would only be there once.</p>
+<p>· <b>2&#8730;(2gh)/g</b> drops the <code>u&sup2;</code> term, which is what you get by treating the ball as simply dropped from height <code>h</code>. That would require the ball to have zero speed at <code>h</code>, in which case it would only be there once.</p>
 <p>· <b>2u/g</b> is the whole flight time, ground to ground. It is the special case <code>h = 0</code>, and it is the largest the interval can ever be.</p>
 <p><b>A quick numerical check.</b> Take <code>u = 5 m/s</code>, <code>g = 10 N kg&#8315;&#185;</code> and <code>h = 0.8 m</code>. Then <code>u&sup2; - 2gh = 25 - 16 = 9</code>, so the interval is <code>2 x 3 / 10 = 0.6 s</code>. Solving the quadratic directly gives roots <code>0.8 s</code> and <code>0.2 s</code>, whose difference is indeed <code>0.6 s</code>. The formula and the two-times route agree.</p>
 <p><b>Relevant topics:</b> constant acceleration; quadratic equations; symmetry of projectile motion.</p>''',
-    "trap": "Answering <code>&radic;(u&sup2; - 2gh)/g</code> — half the interval. That is the time from the apex down to <code>h</code>, and by symmetry it is also the time from <code>h</code> up to the apex, so the gap between the two passages is twice it.",
+    "trap": "Answering <code>&#8730;(u&sup2; - 2gh)/g</code> — half the interval. That is the time from the apex down to <code>h</code>, and by symmetry it is also the time from <code>h</code> up to the apex, so the gap between the two passages is twice it.",
 },
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -564,7 +564,7 @@ T = 200 N</div>
 <div class="formula">mg = m v&sup2; / r</div>
 <p><b>Step 4 — solve and evaluate.</b> The mass cancels, which is worth noticing: the answer does not depend on how heavy the car is.</p>
 <div class="formula">v&sup2; = g r = 10 x 20 = 200
-v = &radic;200 &asymp; 14 m/s</div>
+v = &#8730;200 &asymp; 14 m/s</div>
 <p><b>Answer: A, 14 m/s.</b></p>
 <p><b>Why the other four are wrong.</b></p>
 <p>· <b>10 m/s</b> comes from setting <code>N = mg/2</code> as the losing-contact condition, i.e. from assuming the car leaves when the reaction has merely halved. It leaves when the reaction reaches zero.</p>
@@ -645,7 +645,7 @@ f = f&#8320;, 3f&#8320;, 5f&#8320;, ...</div>
             ("A", "A minimum condition: the equality case of an inequality")],
     "key": ["criticalangle", "snell", "refractive"],
     "stem": '<p>A ray of light enters a glass prism normally through one of the short faces. The prism is a right-angled isosceles triangle, so the ray meets the long face at 45&deg;. {{FIG:s01-11}}</p><p>What is the smallest refractive index the glass can have if the ray is to be totally internally reflected at the long face?</p>',
-    "opts": ["1.2", "4/3", "&radic;2", "1.5", "&radic;3"],
+    "opts": ["1.2", "4/3", "&#8730;2", "1.5", "&#8730;3"],
     "ans": 2,
     "distractors": [
         "uses the sine of 55 degrees in place of the sine of 45 degrees",
@@ -681,16 +681,16 @@ f = f&#8320;, 3f&#8320;, 5f&#8320;, ...</div>
 <p>So the requirement is <code>sin 45&deg; &gt; 1/n</code>, or equivalently</p>
 <div class="formula">n &gt; 1 / sin 45&deg;</div>
 <p><b>Step 4 — the smallest value.</b> The question asks for the smallest <code>n</code>, which is the equality case:</p>
-<div class="formula">n_min = 1 / sin 45&deg; = 1 / (1/&radic;2) = &radic;2 &asymp; 1.4</div>
-<p><b>Answer: C, &radic;2.</b></p>
+<div class="formula">n_min = 1 / sin 45&deg; = 1 / (1/&#8730;2) = &#8730;2 &asymp; 1.4</div>
+<p><b>Answer: C, &#8730;2.</b></p>
 <p><b>Why the other four are wrong.</b></p>
-<p>· <b>1.5</b> is a typical glass, and it does give total internal reflection here (since <code>1.5 &gt; &radic;2</code>). It is wrong only because the question asks for the <i>smallest</i> index that works. Reading the question as "will it reflect?" instead of "what is the threshold?" is the trap.</p>
-<p>· <b>4/3</b> is the refractive index of water, quoted because it is a familiar number. It is <i>below</i> <code>&radic;2</code>, so a prism made of it would leak the ray out at the long face.</p>
+<p>· <b>1.5</b> is a typical glass, and it does give total internal reflection here (since <code>1.5 &gt; &#8730;2</code>). It is wrong only because the question asks for the <i>smallest</i> index that works. Reading the question as "will it reflect?" instead of "what is the threshold?" is the trap.</p>
+<p>· <b>4/3</b> is the refractive index of water, quoted because it is a familiar number. It is <i>below</i> <code>&#8730;2</code>, so a prism made of it would leak the ray out at the long face.</p>
 <p>· <b>1.2</b> uses <code>sin 55&deg;</code> in place of <code>sin 45&deg;</code>, and is well below the threshold.</p>
-<p>· <b>&radic;3</b> uses 30&deg; instead of 45&deg;. A 30-60-90 prism would indeed have a threshold of <code>1/sin 30&deg; = 2</code>, not <code>&radic;3</code>, so this option is wrong twice over.</p>
+<p>· <b>&#8730;3</b> uses 30&deg; instead of 45&deg;. A 30-60-90 prism would indeed have a threshold of <code>1/sin 30&deg; = 2</code>, not <code>&#8730;3</code>, so this option is wrong twice over.</p>
 <p><b>The wider point.</b> Prisms that turn a beam through 90&deg; or 180&deg; by total internal reflection are common in optical instruments, and they rely on exactly this: the glass must be chosen so that 45&deg; exceeds the critical angle. Ordinary crown glass at <code>n = 1.5</code> clears the threshold with a little room to spare, which is why such prisms are made of it.</p>
 <p><b>Relevant topics:</b> total internal reflection; critical angle; prism geometry; threshold conditions.</p>''',
-    "trap": "Choosing <code>1.5</code> because that is a typical glass and it does reflect. The question asks for the smallest index that works, which is the equality case <code>1/sin 45&deg; = &radic;2</code>.",
+    "trap": "Choosing <code>1.5</code> because that is a typical glass and it does reflect. The question asks for the smallest index that works, which is the equality case <code>1/sin 45&deg; = &#8730;2</code>.",
 },
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -1156,14 +1156,14 @@ W_perpendicular = 50 x 0.80 = 40 N   (into the plane)</div>
 10 = &omega;&sup2; x 50
 &omega;&sup2; = 0.20</div>
 <p><b>Step 3 — angular frequency to period.</b></p>
-<div class="formula">&omega; = &radic;0.20 &asymp; 0.45 rad/s
+<div class="formula">&omega; = &#8730;0.20 &asymp; 0.45 rad/s
 T = 2&pi; / &omega; &asymp; 6.28 / 0.45 &asymp; 14 s</div>
-<p>An equivalent route is <code>T = 2&pi;&radic;(r/g)</code>, which some people find easier to remember because it goes straight from the geometry to the period.</p>
+<p>An equivalent route is <code>T = 2&pi;&#8730;(r/g)</code>, which some people find easier to remember because it goes straight from the geometry to the period.</p>
 <p><b>Answer: C, 14 s.</b></p>
 <p><b>Check the answer physically.</b> A period of 14 s is about seven rotations a minute. That is slow enough to be comfortable and fast enough to be useful — which is roughly why proposals of this kind quote periods of this order. If your answer had been a fraction of a second the crew would be centrifuged; if it had been hours the "gravity" would be imperceptible.</p>
 <p><b>Why the other four are wrong.</b></p>
 <p>· <b>1.4 s</b> comes from <code>&omega; = g/r = 0.20</code> used directly as an angular frequency without taking the square root, which makes <code>&omega;</code> far too small and <code>T</code> far too short.</p>
-<p>· <b>2.8 s</b> is <code>2&pi;&radic;(g/r)</code>, the ratio the wrong way up.</p>
+<p>· <b>2.8 s</b> is <code>2&pi;&#8730;(g/r)</code>, the ratio the wrong way up.</p>
 <p>· <b>20 s</b> uses the diameter <code>100 m</code> instead of the radius. The centripetal acceleration uses the distance from the axis, which is the radius.</p>
 <p>· <b>31 s</b> is <code>2&pi;r/g</code>, with the square root dropped. A units check catches it: <code>r/g</code> has units of s&sup2;, not s.</p>
 <p><b>The wider point.</b> Notice that the mass of the astronaut never appeared, and neither did the mass of the station. Apparent gravity set by rotation is independent of mass, which is why a station of any size can be spun to give 1g at a chosen radius.</p>
@@ -1337,18 +1337,18 @@ height = 3.0 x 10&#8312; Pa</div>
 <p><b>Step 3 — Snell's law at the end face.</b> Light comes from air (index 1) into the core (index <code>n&#8321;</code>), and the angle inside is <code>&alpha;</code>:</p>
 <div class="formula">sin &theta;<sub>a</sub> = n&#8321; sin &alpha; = n&#8321; cos &theta;<sub>c</sub></div>
 <p><b>Step 4 — eliminate the internal angle.</b> Since <code>sin &theta;<sub>c</sub> = n&#8322;/n&#8321;</code>,</p>
-<div class="formula">cos &theta;<sub>c</sub> = &radic;(1 - (n&#8322;/n&#8321;)&sup2;) = &radic;(n&#8321;&sup2; - n&#8322;&sup2;) / n&#8321;</div>
+<div class="formula">cos &theta;<sub>c</sub> = &#8730;(1 - (n&#8322;/n&#8321;)&sup2;) = &#8730;(n&#8321;&sup2; - n&#8322;&sup2;) / n&#8321;</div>
 <p>so</p>
-<div class="formula">sin &theta;<sub>a</sub> = n&#8321; x &radic;(n&#8321;&sup2; - n&#8322;&sup2;) / n&#8321; = &radic;(n&#8321;&sup2; - n&#8322;&sup2;)</div>
+<div class="formula">sin &theta;<sub>a</sub> = n&#8321; x &#8730;(n&#8321;&sup2; - n&#8322;&sup2;) / n&#8321; = &#8730;(n&#8321;&sup2; - n&#8322;&sup2;)</div>
 <p>The refractive index of the core has cancelled, which is a good sign — the answer depends on the <i>difference</i> between the two indices. Now put the numbers in:</p>
-<div class="formula">sin &theta;<sub>a</sub> = &radic;(1.5&sup2; - 1.2&sup2;) = &radic;(2.25 - 1.44) = &radic;0.81 = 0.9</div>
+<div class="formula">sin &theta;<sub>a</sub> = &#8730;(1.5&sup2; - 1.2&sup2;) = &#8730;(2.25 - 1.44) = &#8730;0.81 = 0.9</div>
 <p><b>Answer: B, 0.9.</b></p>
 <p><b>Why the other four are wrong.</b></p>
 <p>· <b>0.8</b> is <code>n&#8322;/n&#8321;</code>, the sine of the critical angle <i>inside</i> the fibre. It is an angle at the wall, not at the end face, and the two are different angles at different boundaries.</p>
 <p>· <b>0.45</b> is half the correct value, as though only the core mattered and the cladding could be ignored.</p>
 <p>· <b>1.0</b> would mean every ray entering the end face is guided, which would require the cladding to be absent altogether. With <code>n&#8322;</code> only slightly below <code>n&#8321;</code> the acceptance is indeed close to 1, but not equal to it.</p>
 <p>· <b>1.2</b> quotes the cladding index as a sine. A sine of 1.2 does not exist, so the option is impossible on its face.</p>
-<p><b>The wider point.</b> The quantity <code>&radic;(n&#8321;&sup2; - n&#8322;&sup2;)</code> is called the numerical aperture, and it is what optical engineers specify for a fibre, because it fixes how much light can be launched into it. Notice that a small difference between the two indices gives a small acceptance angle, which is why single-mode fibres are hard to couple light into.</p>
+<p><b>The wider point.</b> The quantity <code>&#8730;(n&#8321;&sup2; - n&#8322;&sup2;)</code> is called the numerical aperture, and it is what optical engineers specify for a fibre, because it fixes how much light can be launched into it. Notice that a small difference between the two indices gives a small acceptance angle, which is why single-mode fibres are hard to couple light into.</p>
 <p><b>Relevant topics:</b> total internal reflection; Snell's law; critical angle; optical fibres.</p>''',
     "trap": "Using <code>n&#8322;/n&#8321; = 0.8</code> as the answer. That is the sine of the critical angle at the core-cladding <i>wall</i>. The question asks for the acceptance angle at the <i>end face</i>, and converting between them needs the complementary-angle geometry and Snell's law.",
 },
@@ -1535,7 +1535,7 @@ p_bottom = 1.0 x 10&#8309; + 2.0 x 10&#8309; = 3.0 x 10&#8309; Pa</div>
             ("A", "Rationalising a surd into the form the options use")],
     "key": ["expdecay", "surds", "ratio"],
     "stem": '<p>A radioactive source has half-life <code>T</code>.</p><p>What fraction of the original nuclei remain undecayed after a time <code>1.5T</code>?</p>',
-    "opts": ["1/2", "1/4", "3/4", "1/(2&radic;2)", "1/8"],
+    "opts": ["1/2", "1/4", "3/4", "1/(2&#8730;2)", "1/8"],
     "ans": 3,
     "distractors": [
         "gives the fraction left after exactly one half-life",
@@ -1564,11 +1564,11 @@ p_bottom = 1.0 x 10&#8309; + 2.0 x 10&#8309; = 3.0 x 10&#8309; Pa</div>
 <div class="formula">N / N&#8320; = (1/2)<sup>n</sup></div>
 <p>This is just the statement that the quantity halves every time <code>T</code> passes. It is defined for any <code>n</code>, whole or not, because it is an exponential law.</p>
 <p><b>Step 2 — put in n = 1.5.</b> Split the power into a half and a square root, since <code>1.5 = 1 + 1/2</code>:</p>
-<div class="formula">(1/2)<sup>3/2</sup> = (1/2)<sup>1</sup> x (1/2)<sup>1/2</sup> = (1/2) x 1/&radic;2 = 1 / (2&radic;2)</div>
+<div class="formula">(1/2)<sup>3/2</sup> = (1/2)<sup>1</sup> x (1/2)<sup>1/2</sup> = (1/2) x 1/&#8730;2 = 1 / (2&#8730;2)</div>
 <p><b>Step 3 — tidy the form.</b> Rationalising the denominator gives an equivalent expression:</p>
-<div class="formula">1 / (2&radic;2) = &radic;2 / (2 x 2) = &radic;2 / 4 &asymp; 0.35</div>
+<div class="formula">1 / (2&#8730;2) = &#8730;2 / (2 x 2) = &#8730;2 / 4 &asymp; 0.35</div>
 <p>So about 35 per cent of the original nuclei remain.</p>
-<p><b>Answer: D, 1/(2&radic;2).</b></p>
+<p><b>Answer: D, 1/(2&#8730;2).</b></p>
 <p><b>Check it against the whole-number cases.</b> After one half-life, half remains — 0.5. After two, a quarter remains — 0.25. The answer for 1.5 half-lives must lie between those, and <code>0.35</code> does. Any option outside the range <code>0.25</code> to <code>0.5</code> is impossible without any algebra at all, which removes three of the five options immediately.</p>
 <p><b>Why the other four are wrong.</b></p>
 <p>· <b>1/2</b> is the fraction left after one half-life, i.e. after a shorter time than the question asks about.</p>

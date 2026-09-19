@@ -11,7 +11,7 @@
    real paper's own quartiles, logic-level similarity, an independent numeric
    re-derivation of every answer, figure geometry, answer-letter balance, scope
    against the official Round 0 topic note, and renderable text (the fields the site
-   escapes must be plain text, not markup).  The gate suite itself is tested by 46
+   escapes must be plain text, not markup).  The gate suite itself is tested by 51
    mutants, each of which breaks one thing and asserts that the right gate notices.
 
    Derived key: C D B A E A A B E D A A A B D A A E B D A C B E D
@@ -76,7 +76,7 @@ F_A      = 2160/6.0 = 360 N</div>
   id: "S03-02", module: "A", topic: "Dimensional analysis: the vibration frequency of a liquid droplet", diff: 3, rel: [["A", "Matching the base dimensions of both sides of a proposed relation"], ["A", "Solving simultaneous equations in the unknown exponents"], ["F", "Why a smaller droplet vibrates at a higher frequency"]], key: ["dimensions", "droplet", "frequency"], ans: 3, paper: "BANK-S03",
   rel: [["A", "Matching the base dimensions of both sides of a proposed relation"], ["A", "Solving simultaneous equations in the unknown exponents"], ["F", "Why a smaller droplet vibrates at a higher frequency"]],
   q: `<p>A small droplet of liquid, left to itself, vibrates about its spherical shape. The frequency <code>f</code> of that vibration depends only on the surface tension <code>&gamma;</code> of the liquid, its density <code>&rho;</code>, and the radius <code>r</code> of the droplet. Which expression is dimensionally a frequency?</p>`,
-  opts: ["<code>&radic;(&gamma;/(&rho;r))</code>", "<code>&radic;(&gamma;r<sup>3</sup>/&rho;)</code>", "<code>&radic;(&gamma;&rho;/r<sup>3</sup>)</code>", "<code>&radic;(&gamma;/(&rho;r<sup>3</sup>))</code>", "<code>&gamma;/(&rho;r<sup>3</sup>)</code>"],
+  opts: ["<code>&#8730;(&gamma;/(&rho;r))</code>", "<code>&#8730;(&gamma;r<sup>3</sup>/&rho;)</code>", "<code>&#8730;(&gamma;&rho;/r<sup>3</sup>)</code>", "<code>&#8730;(&gamma;/(&rho;r<sup>3</sup>))</code>", "<code>&gamma;/(&rho;r<sup>3</sup>)</code>"],
   sol: `<p><b>What is being tested.</b> Turning a physical statement into three simultaneous equations and solving them. No formula for a droplet is needed or expected: everything is in the question.</p>
 <p><b>Step 1 — write down the dimensions.</b> Read them off the units rather than trying to recall them:</p>
 <div class="formula">[f]     = T^-1
@@ -95,9 +95,9 @@ time:    -2a = -1</div>
   = k sqrt(gamma/(rho r^3))</div>
 <p>Put the dimensions back in to be sure: <code>gamma/(rho r^3)</code> has units <code>(N/m)/(kg/m^3 x m^3) = N m^-1 kg^-1</code>, and since <code>N = kg m s^-2</code> that is <code>s^-2</code>. Its square root is <code>s^-1</code>, a frequency. So <b>Answer: D.</b></p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>&radic;(&gamma;/(&rho;r))</b> is right on mass and time and takes <code>c = -1/2</code>. It is the most tempting wrong answer because it has the right shape — a root, density underneath, radius underneath. It is wrong only in the exponent on <code>r</code>, which is the part of the working that is easiest to rush.</p>
-<p>&middot; <b>&radic;(&gamma;r<sup>3</sup>/&rho;)</b> takes <code>c = +3/2</code>, the sign of the length exponent flipped. It would make bigger droplets vibrate faster, which is the wrong way round.</p>
-<p>&middot; <b>&radic;(&gamma;&rho;/r<sup>3</sup>)</b> puts the density on top, i.e. <code>b = +1/2</code>. That contradicts the mass equation <code>a + b = 0</code>, which is not <code>a - b = 0</code>.</p>
+<p>&middot; <b>&#8730;(&gamma;/(&rho;r))</b> is right on mass and time and takes <code>c = -1/2</code>. It is the most tempting wrong answer because it has the right shape — a root, density underneath, radius underneath. It is wrong only in the exponent on <code>r</code>, which is the part of the working that is easiest to rush.</p>
+<p>&middot; <b>&#8730;(&gamma;r<sup>3</sup>/&rho;)</b> takes <code>c = +3/2</code>, the sign of the length exponent flipped. It would make bigger droplets vibrate faster, which is the wrong way round.</p>
+<p>&middot; <b>&#8730;(&gamma;&rho;/r<sup>3</sup>)</b> puts the density on top, i.e. <code>b = +1/2</code>. That contradicts the mass equation <code>a + b = 0</code>, which is not <code>a - b = 0</code>.</p>
 <p>&middot; <b>&gamma;/(&rho;r<sup>3</sup>)</b> has all three exponents right and no root. Its units are <code>s^-2</code>, so it is a frequency squared. It can be rejected by units alone, without doing any of the exponent algebra — which is worth noticing, because it is the cheapest possible check on any answer of this kind.</p>
 <p><b>The trap.</b> Hunting for a remembered formula for a vibrating droplet. There is none worth remembering, and there does not need to be: the three exponents are forced by the dimensions, and the only freedom left is the dimensionless constant in front, which is exactly the part dimensional analysis is not able to supply.</p>
 <p><b>Relevant topics:</b> base and derived units; the dimensions of mechanical quantities; simultaneous equations in three unknowns; the limits of dimensional analysis; why small droplets ring at high frequency.</p>`,
@@ -180,11 +180,11 @@ F = 20/0.40 = 50 N</div>
 <line x1="420" y1="268" x2="420" y2="150" stroke="#14181f" stroke-width="1.8"/>
 <text x="20" y="126" font-size="11.5" fill="#7b8494">12 V</text>
 <rect x="148" y="97" width="34" height="18" fill="#ffffff" stroke="#14181f" stroke-width="1.7"/>
-<text x="96" y="92" font-size="12" fill="#14181f">3.0 k&Omega;</text>
+<text x="96" y="92" font-size="12" fill="#14181f">3.0 k&#937;</text>
 <rect x="318" y="97" width="34" height="18" fill="#ffffff" stroke="#14181f" stroke-width="1.7"/>
-<text x="404" y="92" font-size="12" text-anchor="end" fill="#14181f">6.0 k&Omega;</text>
+<text x="404" y="92" font-size="12" text-anchor="end" fill="#14181f">6.0 k&#937;</text>
 <rect x="148" y="185" width="34" height="18" fill="#ffffff" stroke="#14181f" stroke-width="1.7"/>
-<text x="96" y="220" font-size="12" fill="#14181f">3.0 k&Omega;</text>
+<text x="96" y="220" font-size="12" fill="#14181f">3.0 k&#937;</text>
 <rect x="318" y="185" width="34" height="18" fill="#ffffff" stroke="#14181f" stroke-width="1.7"/>
 <text x="404" y="220" font-size="12" text-anchor="end" fill="#14181f">R</text>
 <circle cx="80" cy="150" r="4" fill="#14181f" stroke="#14181f" stroke-width="1.6"/>
@@ -465,13 +465,13 @@ so  apparent depth = real depth / n</div>
 <line x1="110" y1="138" x2="92" y2="138" stroke="#14181f" stroke-width="1.8"/>
 <text x="94" y="158" font-size="11.5" text-anchor="end" fill="#7b8494">12 V</text>
 <rect x="220" y="52" width="46" height="16" fill="#ffffff" stroke="#14181f" stroke-width="1.7"/>
-<text x="243" y="42" font-size="12" text-anchor="middle" fill="#14181f">6.0 k&Omega;</text>
+<text x="243" y="42" font-size="12" text-anchor="middle" fill="#14181f">6.0 k&#937;</text>
 <line x1="400" y1="60" x2="400" y2="220" stroke="#14181f" stroke-width="1.8"/>
 <rect x="392" y="120" width="16" height="46" fill="#ffffff" stroke="#14181f" stroke-width="1.7"/>
-<text x="386" y="148" font-size="12" text-anchor="end" fill="#14181f">3.0 k&Omega;</text>
+<text x="386" y="148" font-size="12" text-anchor="end" fill="#14181f">3.0 k&#937;</text>
 <line x1="520" y1="60" x2="520" y2="220" stroke="#14181f" stroke-width="1.8"/>
 <rect x="512" y="120" width="16" height="46" fill="#ffffff" stroke="#14181f" stroke-width="1.7"/>
-<text x="534" y="148" font-size="12" fill="#14181f">3.0 k&Omega;</text>
+<text x="534" y="148" font-size="12" fill="#14181f">3.0 k&#937;</text>
 <text x="534" y="163" font-size="10.5" fill="#7b8494">load</text>
 <circle cx="400" cy="60" r="4" fill="#14181f" stroke="#14181f" stroke-width="1.6"/>
 <circle cx="400" cy="220" r="4" fill="#14181f" stroke="#14181f" stroke-width="1.6"/>
@@ -711,7 +711,7 @@ v = 1.0 m/s</div>
 <line x1="60" y1="200" x2="480" y2="200" stroke="#14181f" stroke-width="2"/>
 <line x1="160" y1="200" x2="360" y2="50" stroke="#14181f" stroke-width="2.6"/>
 <polyline points="214,200 213.972,198.263 213.888,196.527 213.749,194.796 213.553,193.069 213.303,191.35 212.997,189.64 212.636,187.94 212.221,186.253 211.752,184.581 211.229,182.924 210.653,181.284 210.025,179.665 209.345,178.066 208.614,176.49 207.832,174.938 207.001,173.412 206.121,171.914 205.194,170.445 204.22,169.006 203.2,167.6" fill="none" stroke="#7b8494" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="222" y="192" font-size="13" font-weight="bold" fill="#7b8494">&theta;</text>
+<text x="222" y="192" font-size="13" font-weight="bold" fill="#7b8494">&#952;</text>
 <polygon points="275.6,115.8 287.6,131.8 258.8,153.4 246.8,137.4" fill="#dfe8f6" stroke="#14181f" stroke-width="1.6" stroke-linejoin="round"/>
 <line x1="267.2" y1="134.6" x2="267.2" y2="196.6" stroke="#b3352f" stroke-width="2.2" marker-end="url(#s03-16-ar)"/>
 <text x="273.2" y="190.6" font-size="11.5" fill="#b3352f">mg</text>
@@ -814,7 +814,7 @@ tan(theta) = v^2/(r g)</div>
 <line x1="158" y1="132" x2="285.946" y2="195.393" stroke="#1f7a53" stroke-width="2" marker-end="url(#s03-18-ar)"/>
 <text x="308" y="199.393" font-size="10.5" fill="#1f7a53">first order</text>
 <polyline points="210,132 209.982,130.546 209.93,129.092 209.841,127.641 209.718,126.191 209.56,124.746 209.366,123.304 209.138,121.868 208.875,120.437 208.578,119.014 208.246,117.598 207.88,116.19 207.479,114.792 207.045,113.404 206.578,112.026 206.077,110.661 205.543,109.308 204.977,107.968 204.378,106.643" fill="none" stroke="#7b8494" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="190" y="98" font-size="13" font-weight="bold" fill="#7b8494">&theta;</text>
+<text x="190" y="98" font-size="13" font-weight="bold" fill="#7b8494">&#952;</text>
 <text x="150" y="240" font-size="11" text-anchor="middle" fill="#7b8494">300 lines per millimetre</text>
 </svg>
 </figure></p><p>What is the highest order of maximum that can be observed?</p>`,
@@ -941,10 +941,10 @@ P_100   = (3/8) x 37.5 = 14 W</div>
 <defs><marker id="s03-21-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>
 <line x1="184" y1="54" x2="184" y2="94" stroke="#14181f" stroke-width="2.6"/>
 <line x1="196" y1="54" x2="196" y2="94" stroke="#14181f" stroke-width="2.6"/>
-<text x="190" y="44" font-size="12" text-anchor="middle" fill="#14181f">2.0 &mu;F</text>
+<text x="190" y="44" font-size="12" text-anchor="middle" fill="#14181f">2.0 &#956;F</text>
 <line x1="324" y1="54" x2="324" y2="94" stroke="#14181f" stroke-width="2.6"/>
 <line x1="336" y1="54" x2="336" y2="94" stroke="#14181f" stroke-width="2.6"/>
-<text x="330" y="44" font-size="12" text-anchor="middle" fill="#14181f">6.0 &mu;F</text>
+<text x="330" y="44" font-size="12" text-anchor="middle" fill="#14181f">6.0 &#956;F</text>
 <line x1="70" y1="74" x2="184" y2="74" stroke="#14181f" stroke-width="1.8"/>
 <line x1="196" y1="74" x2="324" y2="74" stroke="#14181f" stroke-width="1.8"/>
 <line x1="336" y1="74" x2="450" y2="74" stroke="#14181f" stroke-width="1.8"/>

@@ -15,7 +15,9 @@ Run:  python mutants.py
 import copy
 import os
 import re
+import shutil
 import sys
+import tempfile
 
 import gates as G
 import sec01
@@ -68,7 +70,7 @@ def score_of(q, figdir=None, mids=None, errs=None):
 MUTANTS = []
 
 
-def mutant(name, gate, desc, must_not_fire=False):
+def mutant(name, gate, desc, must_not_fire=False, teardown=False):
     """Register a mutant.
 
     `must_not_fire=True` is for the INVERSE assertion, and it is not decoration.  Every
@@ -78,9 +80,16 @@ def mutant(name, gate, desc, must_not_fire=False):
     symbols.  A gate that fires when it should NOT is as broken as one that stays silent,
     and the only way to test that direction is to build content that is correct and
     assert the gate keeps quiet.
+
+    `teardown=True` is for the mutants that have to break something OUTSIDE the question
+    dict.  Every gate before G8 reads the question, so `qs` is the whole world; the XML
+    well-formedness check reads `fig/*.svg` off disk.  A mutant of that kind returns
+    (figdir, restore) instead of None, and the harness runs `restore()` in a `finally` --
+    including when the gate itself raises, which is the case that matters, because a
+    half-applied mutation left behind is worse than no mutation at all.
     """
     def deco(fn):
-        MUTANTS.append((name, gate, desc, fn, must_not_fire))
+        MUTANTS.append((name, gate, desc, fn, must_not_fire, teardown))
         return fn
     return deco
 
@@ -577,12 +586,180 @@ def m46(qs):
                       "v\u00b2 = u\u00b2 + 2as for the 30\u00b0 slope")
 
 
+@mutant("notation.ambiguous_radical_scope", "G3",
+        "write a radical over a product with no parentheses: root 2h over g")
+def m47(qs):
+    # The defect that actually shipped, in S07-09 option C: `&#8730;3W/2`.  A radical
+    # written as a CHARACTER has no overbar, so nothing on the page says where the
+    # radicand stops -- the reader may take (root 3)W/2 or root(3W)/2, and both are
+    # ordinary readings.  Here the same shape is made out of S01-16's own symbols:
+    # `&#8730;2h/g` is either root(2h)/g or (root 2)h/g, and the option no longer
+    # communicates a single value.
+    #
+    # This mutant is why `rendered()` exists.  The first version of the lint ran on
+    # `visible()` alone, and `visible()` replaces EVERY tag with a space -- so the
+    # original defect read as `√3 W /2` and looked unambiguous.  The blind spot was in
+    # the measurement, not in the regex, and it is the reason the check now judges both
+    # readings: as visible() flattens it, and as the page lays it out.
+    q = find(qs, "S01-16")
+    q["opts"] = list(q["opts"])
+    q["opts"][4] = "&#8730;2h/g"
+
+
+@mutant("notation.single_token_radical_is_fine", "G3",
+        "the same value, with the radicands made explicit", must_not_fire=True)
+def m48(qs):
+    # The partner to m47, and the reason the lint is narrow on purpose.  `&#8730;2` and
+    # `&#8730;(h/g)` are unambiguous by convention -- a bare radical over a SINGLE token
+    # has nowhere else to stop -- and they are everywhere in this corpus.  A gate that
+    # demanded parentheses after every radical would fire on correct content, which is
+    # how a gate teaches an author to satisfy the gate instead of the reader.
+    # Note the option still evaluates to root(2h/g): only the notation changed.
+    q = find(qs, "S01-16")
+    q["opts"] = list(q["opts"])
+    q["opts"][4] = "&#8730;2 &#215; &#8730;(h/g)"
+
+
+@mutant("figure.named_entity_breaks_xml", "G8",
+        "write a figure's theta as &theta;, which XML does not define", teardown=True)
+def m49(qs):
+    # The other defect that shipped: seven figures used &theta;, &Omega;, &mu;.  Those
+    # are HTML entities.  fig/*.svg is an XML document, so XML -- which defines only
+    # amp/lt/gt/quot/apos -- refuses the file, and the browser drops to the error parser
+    # the moment the figure is opened on its own.  Inlined into the page it is perfect,
+    # which is exactly why it survived every text-level check: they all read the entity
+    # as text.  Only an actual parse sees it.
+    #
+    # This is the one mutant that cannot work by editing the question dict, because the
+    # gate reads a file.  It builds a scratch copy of fig/ rather than breaking the real
+    # one, so an interrupted run cannot leave a corrupt figure in the repository.
+    tmp = tempfile.mkdtemp(prefix="bpho-fig-mut-")
+    shutil.copytree(os.path.join(G.HERE, "fig"), os.path.join(tmp, "fig"))
+    p = os.path.join(tmp, "fig", "s01-16.svg")
+    with open(p, encoding="utf-8") as fh:
+        svg = fh.read()
+    bad = svg.replace(">cliff<", ">&theta;cliff<", 1)
+    if bad == svg:
+        raise RuntimeError("anchor '>cliff<' not found in s01-16.svg -- the mutant "
+                           "would be a no-op and would report a false MISSED")
+    with open(p, "w", encoding="utf-8") as fh:
+        fh.write(bad)
+    return os.path.join(tmp, "fig"), lambda: shutil.rmtree(tmp, ignore_errors=True)
+
+
+@mutant("notation.named_root_entity", "G3",
+        "write a radical as &radic;, which XML does not define")
+def m50(qs):
+    # `&radic;` is an HTML named entity; XML defines only amp/lt/gt/quot/apos.  That
+    # asymmetry is what made seven FIGURES unparseable, and the question data carried
+    # 119 of them -- harmless only because the data is rendered as HTML and never parsed
+    # as XML.  Storing a form that is legal in both costs nothing and removes the hazard.
+    #
+    # The radicand is parenthesised so that ONLY the form lint can see this: the scope
+    # lint stays silent on `&#8730;(...)`, which makes the mutant a test of one check
+    # rather than of two at once.
+    q = find(qs, "S01-16")
+    q["opts"] = list(q["opts"])
+    q["opts"][4] = "&radic;(2h/g)"
+
+
+@mutant("notation.numeric_root_is_fine", "G3",
+        "a radical that was not there before, written as &#8730;",
+        must_not_fire=True)
+def m51(qs):
+    # The partner to m50, and a real mutation rather than a control: S01-01 has no
+    # radical anywhere, and this gives one of its options a surd.  `mg&#8730;(9/4)` is
+    # exactly `3mg/2` -- the option's VALUE is untouched, only its notation is new --
+    # so the question is still correct and the gate must stay quiet.  A form lint that
+    # fired here would be banning radicals, not banning a spelling.
+    q = find(qs, "S01-01")
+    q["opts"] = list(q["opts"])
+    q["opts"][2] = "mg&#8730;(9/4)"
+
+
+def check_messages_are_tagged():
+    """Every error gates.py can emit must name the gate that emitted it.
+
+    This runs BEFORE the mutants, and it is the reason the suite is trustworthy rather
+    than merely green.  A mutant asserts `err.startswith(gate)` -- so an error message
+    with no gate id in it is INVISIBLE to the whole harness.  `figure_errors()` appended
+    bare strings for its entire life, and the moment a mutant was written for it the
+    suite reported *** MISSED *** on a defect the gate had caught correctly.  The
+    honest-looking conclusion was "the gate is broken"; the true one was "the gate is
+    fine and cannot be seen".
+
+    An error nobody can attribute is an error nobody owns, and an unowned error is how a
+    defect survives review.  So the property is checked directly, on the source.
+    """
+    import ast
+    src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "gates.py"),
+               encoding="utf-8").read()
+    tree = ast.parse(src)
+    tag = re.compile(r"^G\d+[a-z]?\b")
+
+    def first_literal(node):
+        if isinstance(node, ast.Constant) and isinstance(node.value, str):
+            return node.value
+        if isinstance(node, ast.BinOp) and isinstance(node.op, (ast.Mod, ast.Add)):
+            return first_literal(node.left)
+        if isinstance(node, ast.JoinedStr):
+            for v in node.values:
+                if isinstance(v, ast.Constant) and isinstance(v.value, str):
+                    return v.value
+        return None
+
+    def stamps_on_return(fn):
+        for ret in ast.walk(fn):
+            if isinstance(ret, ast.Return) and ret.value is not None:
+                seg = ast.get_source_segment(src, ret.value) or ""
+                if re.search(r'"G\d+[a-z]?\s*"\s*\+', seg):
+                    return True
+        return False
+
+    enclosing = {}
+    for fn in [n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)]:
+        for child in ast.walk(fn):
+            enclosing[id(child)] = fn
+    stamped = set(fn.name for fn in ast.walk(tree)
+                  if isinstance(fn, ast.FunctionDef) and stamps_on_return(fn))
+
+    bad = []
+    for call in ast.walk(tree):
+        f = getattr(call, "func", None)
+        if not isinstance(call, ast.Call) or not isinstance(f, ast.Attribute):
+            continue
+        if f.attr not in ("append", "extend") or not isinstance(f.value, ast.Name):
+            continue
+        if "err" not in f.value.id.lower() or not call.args:
+            continue
+        txt = first_literal(call.args[0])
+        if txt is None:
+            continue
+        if txt and tag.match(txt):
+            continue
+        owner = enclosing.get(id(call))
+        if owner is not None and owner.name in stamped:
+            continue
+        bad.append((call.lineno, txt[:60]))
+    return bad
+
+
 def main():
     base = G.baseline()
     print("mutation self-test: break one thing, check the right gate notices")
     print("%d mutants\n" % len(MUTANTS))
+
+    untagged = check_messages_are_tagged()
+    if untagged:
+        print("PRE-FLIGHT FAILED: %d error message(s) name no gate, so no mutant can "
+              "see them:" % len(untagged))
+        for lineno, txt in untagged:
+            print("   gates.py line %d: %r" % (lineno, txt))
+        print()
+        return 1
+    print("pre-flight: every message gates.py emits names its gate\n")
     missed = []
-    for name, gate, desc, fn, must_not in MUTANTS:
+    for name, gate, desc, fn, must_not, needs_teardown in MUTANTS:
         qs = copy.deepcopy(GOOD)
         # The non-calculator floors live on spec.SECTIONS, so a mutant can change the
         # STANDARD as well as the content -- see difficulty.section_floor_is_read.  The
@@ -591,9 +768,14 @@ def main():
         # mutant after it, and the suite would report a chain of failures caused by a
         # mutation that had already been undone in every other sense.
         plan = copy.deepcopy(G.spec.SECTIONS)
+        figdir, restore = None, None
         try:
             try:
-                fn(qs)
+                out = fn(qs)
+                # A file-breaking mutant hands back (figdir, restore) instead of None;
+                # everything else mutates `qs` and returns nothing.
+                if needs_teardown:
+                    figdir, restore = out
             except Exception as e:                  # a mutant that cannot even be built
                 missed.append((name, gate, "mutation failed to apply: %s" % e))
                 print("  %-42s %-3s  MUTATION ERROR: %s" % (name, gate, e))
@@ -602,9 +784,12 @@ def main():
             # when the mutant returns puts the standard back before anything reads it,
             # which is exactly how the first version of section_floor_is_read came to
             # report MISSED: it was a mutation nobody ever saw.
-            errs, _ = G.gate_section(1, base=base, verbose=False, questions=qs)
+            errs, _ = G.gate_section(1, base=base, verbose=False, questions=qs,
+                                     figdir=figdir)
         finally:
             G.spec.SECTIONS[:] = plan
+            if restore:                             # scratch copy, removed either way
+                restore()
         hit = [e for e in errs if e.startswith(gate)]
         if must_not:
             if hit:

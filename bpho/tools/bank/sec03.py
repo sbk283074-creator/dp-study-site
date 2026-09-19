@@ -100,10 +100,10 @@ F_A      = 2160/6.0 = 360 N</div>
             ("F", "Why a smaller droplet vibrates at a higher frequency")],
     "key": ["dimensions", "droplet", "frequency"],
     "stem": '<p>A small droplet of liquid, left to itself, vibrates about its spherical shape. The frequency <code>f</code> of that vibration depends only on the surface tension <code>&gamma;</code> of the liquid, its density <code>&rho;</code>, and the radius <code>r</code> of the droplet. Which expression is dimensionally a frequency?</p>',
-    "opts": ['<code>&radic;(&gamma;/(&rho;r))</code>',
-             '<code>&radic;(&gamma;r<sup>3</sup>/&rho;)</code>',
-             '<code>&radic;(&gamma;&rho;/r<sup>3</sup>)</code>',
-             '<code>&radic;(&gamma;/(&rho;r<sup>3</sup>))</code>',
+    "opts": ['<code>&#8730;(&gamma;/(&rho;r))</code>',
+             '<code>&#8730;(&gamma;r<sup>3</sup>/&rho;)</code>',
+             '<code>&#8730;(&gamma;&rho;/r<sup>3</sup>)</code>',
+             '<code>&#8730;(&gamma;/(&rho;r<sup>3</sup>))</code>',
              '<code>&gamma;/(&rho;r<sup>3</sup>)</code>'],
     "ans": 3,
     "distractors": ["takes the length exponent as -1/2 instead of -3/2, which is the exponent a droplet's vibration does not have",
@@ -146,9 +146,9 @@ time:    -2a = -1</div>
   = k sqrt(gamma/(rho r^3))</div>
 <p>Put the dimensions back in to be sure: <code>gamma/(rho r^3)</code> has units <code>(N/m)/(kg/m^3 x m^3) = N m^-1 kg^-1</code>, and since <code>N = kg m s^-2</code> that is <code>s^-2</code>. Its square root is <code>s^-1</code>, a frequency. So <b>Answer: D.</b></p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>&radic;(&gamma;/(&rho;r))</b> is right on mass and time and takes <code>c = -1/2</code>. It is the most tempting wrong answer because it has the right shape — a root, density underneath, radius underneath. It is wrong only in the exponent on <code>r</code>, which is the part of the working that is easiest to rush.</p>
-<p>&middot; <b>&radic;(&gamma;r<sup>3</sup>/&rho;)</b> takes <code>c = +3/2</code>, the sign of the length exponent flipped. It would make bigger droplets vibrate faster, which is the wrong way round.</p>
-<p>&middot; <b>&radic;(&gamma;&rho;/r<sup>3</sup>)</b> puts the density on top, i.e. <code>b = +1/2</code>. That contradicts the mass equation <code>a + b = 0</code>, which is not <code>a - b = 0</code>.</p>
+<p>&middot; <b>&#8730;(&gamma;/(&rho;r))</b> is right on mass and time and takes <code>c = -1/2</code>. It is the most tempting wrong answer because it has the right shape — a root, density underneath, radius underneath. It is wrong only in the exponent on <code>r</code>, which is the part of the working that is easiest to rush.</p>
+<p>&middot; <b>&#8730;(&gamma;r<sup>3</sup>/&rho;)</b> takes <code>c = +3/2</code>, the sign of the length exponent flipped. It would make bigger droplets vibrate faster, which is the wrong way round.</p>
+<p>&middot; <b>&#8730;(&gamma;&rho;/r<sup>3</sup>)</b> puts the density on top, i.e. <code>b = +1/2</code>. That contradicts the mass equation <code>a + b = 0</code>, which is not <code>a - b = 0</code>.</p>
 <p>&middot; <b>&gamma;/(&rho;r<sup>3</sup>)</b> has all three exponents right and no root. Its units are <code>s^-2</code>, so it is a frequency squared. It can be rejected by units alone, without doing any of the exponent algebra — which is worth noticing, because it is the cheapest possible check on any answer of this kind.</p>
 <p><b>The trap.</b> Hunting for a remembered formula for a vibrating droplet. There is none worth remembering, and there does not need to be: the three exponents are forced by the dimensions, and the only freedom left is the dimensionless constant in front, which is exactly the part dimensional analysis is not able to supply.</p>
 <p><b>Relevant topics:</b> base and derived units; the dimensions of mechanical quantities; simultaneous equations in three unknowns; the limits of dimensional analysis; why small droplets ring at high frequency.</p>''',

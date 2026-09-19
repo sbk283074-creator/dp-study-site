@@ -11,7 +11,7 @@
    real paper's own quartiles, logic-level similarity, an independent numeric
    re-derivation of every answer, figure geometry, answer-letter balance, scope
    against the official Round 0 topic note, and renderable text (the fields the site
-   escapes must be plain text, not markup).  The gate suite itself is tested by 46
+   escapes must be plain text, not markup).  The gate suite itself is tested by 51
    mutants, each of which breaks one thing and asserts that the right gate notices.
 
    Derived key: A C E B D D A C E B B D A C E E B D A C A E B D A
@@ -344,7 +344,7 @@ V = 1.25 m/s</div>
 <line x1="130" y1="32" x2="130" y2="18" stroke="#7b8494" stroke-width="1.2"/>
 </svg>
 </figure></p><p>What is the minimum value of u for this to happen?</p>`,
-  opts: ["&radic;(5 g r)", "&radic;(2 g r)", "&radic;(3 g r)", "&radic;(g r)", "&radic;(4 g r)"],
+  opts: ["&#8730;(5 g r)", "&#8730;(2 g r)", "&#8730;(3 g r)", "&#8730;(g r)", "&#8730;(4 g r)"],
   sol: `<p><b>What is being tested.</b> The classic vertical-circle condition: the string stays taut only if, at the top, gravity alone can supply the centripetal force. Energy then connects that top speed to the launch speed at the bottom.</p>
 <p><b>Step 1 — the taut-string condition at the top.</b> At the highest point the tension is smallest. The string is just taut when <code>T = 0</code>, so weight provides all the centripetal force:</p>
 <div class="formula">m v_top^2 / r = m g   =>   v_top^2 = g r</div>
@@ -720,7 +720,7 @@ D = 1.5 m</div>
 <p><b>Step 2 — glass to air.</b> Here <code>n1 = 1.50</code> (glass) and <code>n2 = 1.00</code> (air):</p>
 <div class="formula">sin theta_c = n2 / n1 = 1.00 / 1.50 = 2/3</div>
 <p><b>Step 3 — the value.</b> <code>2/3</code> is about 0.67. So <b>Answer: A.</b></p>
-<p><b>Step 4 — check.</b> The sine must be below 1 (a critical angle exists only because glass is denser than air) and above 0.5 (the critical angle is below 45 degrees since 1/1.5 &gt; 1/√2). 0.67 sits correctly between.</p>
+<p><b>Step 4 — check.</b> The sine must be below 1 (a critical angle exists only because glass is denser than air) and above 0.5 (the critical angle is below 45 degrees since 1/1.5 &gt; 1/&#8730;2). 0.67 sits correctly between.</p>
 <p><b>The distractors.</b></p>
 <p>&middot; <b>1.50</b> is the refractive index read directly as the sine, instead of its reciprocal 2/3.</p>
 <p>&middot; <b>0.50</b> would be the sine if the glass index were 2.00 rather than 1.50.</p>

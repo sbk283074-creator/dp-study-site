@@ -264,10 +264,12 @@ the pattern is worth stating once:
   was attached to the mutation alone, so the floor was put back before the gate read it and
   the mutant reported `MISSED` for a mutation nobody ever saw.
 
-The suite is now **46 mutants**, and `mutants.py` asserts that all 46 behave: every gate has
-been shown to fail on demand, and the three content-correct mutants
+The suite is now **51 mutants**, and `mutants.py` asserts that all 51 behave: every gate has
+been shown to fail on demand, and the six content-correct mutants
 (`structure.case_only_difference`, `numerics.symbolic_check_with_decimal`,
-`scope.recorded_judgement_is_honoured`) have been shown to keep it quiet.
+`scope.recorded_judgement_is_honoured`, `render.plain_unicode_is_fine`,
+`notation.single_token_radical_is_fine`, `notation.numeric_root_is_fine`) have been shown to
+keep it quiet.
 
 The last two were added for a tool fix rather than a gate, and they are the clearest
 example of why one mutant per change is not enough. `_equal` routed any expression
@@ -441,7 +443,16 @@ extension"). The whole site already writes `²`, `½`, `θ`, `√` and `≈` as 
 use, so the check is deliberately blunt: markup in an escaped field fails. Two mutants
 pin it — `render.markup_in_a_rel_label` must fire, and `render.plain_unicode_is_fine`
 must stay **silent**, because a gate that fired on every non-ASCII character would forbid
-the site's own typography. **The suite is 46 mutants.**
+the site's own typography. **The suite is 51 mutants.**
+
+G12 earned its place again a day later. A mechanical sweep of the notation across all seven
+sections rewrote the root symbol to its numeric reference everywhere — right for every
+field the page injects as HTML, and wrong for `S07-12`'s first `rel` label, which is
+escaped, so the candidate would have read `&#8730;(γP/ρ)` verbatim. G12 reported it inside
+a minute. The full sweep is in **`NOTATION-AUDIT.md`**, and its §5 is the same lesson a
+third time: the corpus runs **two** notation policies because it has **two** renderers, and
+a find-and-replace that does not know which field it is in will always be wrong in one of
+them.
 
 The lesson is G11's lesson a second time, with a twist. G11 existed because a whole class
 of defect — "is it in the syllabus?" — had no gate. G12 existed because a class of defect

@@ -32,11 +32,11 @@ QUESTIONS = [
             ("F", "Why a short ripple's speed depends on wavelength at all")],
     "key": ["dimensions", "surface", "ripple"],
     "stem": '<p>Very short ripples on deep water are held in shape by surface tension rather than by gravity. The speed <code>v</code> of such a ripple is found to depend only on the surface tension <code>&gamma;</code> of the water, on its density <code>&rho;</code>, and on the wavelength <code>&lambda;</code>. Which expression is dimensionally a speed?</p>',
-    "opts": ["<code>&radic;(&gamma;&rho;/&lambda;)</code>",
-             "<code>&radic;(&gamma;&lambda;/&rho;)</code>",
-             "<code>&radic;(&gamma;/&rho;&lambda;)</code>",
+    "opts": ["<code>&#8730;(&gamma;&rho;/&lambda;)</code>",
+             "<code>&#8730;(&gamma;&lambda;/&rho;)</code>",
+             "<code>&#8730;(&gamma;/&rho;&lambda;)</code>",
              "<code>&gamma;/(&rho;&lambda;)</code>",
-             "<code>&radic;(&gamma;&rho;)/&lambda;</code>"],
+             "<code>&#8730;(&gamma;&rho;)/&lambda;</code>"],
     "ans": 2,
     "distractors": [
         "multiplies by the density instead of dividing by it, which flips the sign of the mass equation",
@@ -80,10 +80,10 @@ time:         -2a = -1</div>
   = k sqrt(gamma / (rho lambda))</div>
 <p>So <b>Answer: C.</b> The <code>1/2</code> powers are not decoration: they are what the three equations produce, and a solution without a square root is already suspicious.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>&radic;(&gamma;&rho;/&lambda;)</b> divides by the density where it should multiply, i.e. takes <code>b = +1/2</code>. That contradicts the mass equation, which is <code>a + b = 0</code> and not <code>a - b = 0</code>.</p>
-<p>&middot; <b>&radic;(&gamma;&lambda;/&rho;)</b> is right on mass and time but takes <code>c = +1/2</code>, the wrong sign on the wavelength. It is the most tempting wrong answer because it has the right shape — a root, and &lambda; on top.</p>
+<p>&middot; <b>&#8730;(&gamma;&rho;/&lambda;)</b> divides by the density where it should multiply, i.e. takes <code>b = +1/2</code>. That contradicts the mass equation, which is <code>a + b = 0</code> and not <code>a - b = 0</code>.</p>
+<p>&middot; <b>&#8730;(&gamma;&lambda;/&rho;)</b> is right on mass and time but takes <code>c = +1/2</code>, the wrong sign on the wavelength. It is the most tempting wrong answer because it has the right shape — a root, and &lambda; on top.</p>
 <p>&middot; <b>&gamma;/(&rho;&lambda;)</b> has all three exponents right and no square root. It fails on inspection: surface tension is <code>kg s^-2</code> and density times wavelength is <code>kg m^-2</code>, so this combination is <code>m^2 s^-2</code> — a squared speed, not a speed.</p>
-<p>&middot; <b>&radic;(&gamma;&rho;)/&lambda;</b> takes the root and then divides by the wavelength as well, which makes the length exponent <code>-3/2</code> instead of <code>-1/2</code>.</p>
+<p>&middot; <b>&#8730;(&gamma;&rho;)/&lambda;</b> takes the root and then divides by the wavelength as well, which makes the length exponent <code>-3/2</code> instead of <code>-1/2</code>.</p>
 <p><b>The trap.</b> Reaching for a remembered formula. There is no need to know anything about ripples: the three equations are forced by the dimensions, and the only freedom left over is the dimensionless constant <code>k</code>, which is exactly the part dimensional analysis is allowed not to know.</p>
 <p><b>Relevant topics:</b> base and derived units; the dimensions of mechanical quantities; simultaneous equations in three unknowns; the limits of dimensional analysis.</p>''',
     "trap": "Hunting for a remembered ripple formula. The exponents are forced by the dimensions, so the only thing you cannot derive is the dimensionless constant in front.",
@@ -100,11 +100,11 @@ time:         -2a = -1</div>
             ("A", "Solving a quadratic, and choosing the root that is physically possible")],
     "key": ["ladder", "selfsimilar", "quadratic"],
     "stem": '<p>The network below repeats the same two-resistor section without end: a resistor <code>R</code> in series, then a resistor <code>R</code> in parallel with whatever follows. {{FIG:s02-02}}</p><p>What is the resistance measured between the two terminals on the left?</p>',
-    "opts": ["<code>R(1 + &radic;5)/2</code>",
-             "<code>R(1 + &radic;3)</code>",
+    "opts": ["<code>R(1 + &#8730;5)/2</code>",
+             "<code>R(1 + &#8730;3)</code>",
              "<code>2R</code>",
-             "<code>R&radic;2</code>",
-             "<code>R(3 + &radic;5)/2</code>"],
+             "<code>R&#8730;2</code>",
+             "<code>R(3 + &#8730;5)/2</code>"],
     "ans": 0,
     "distractors": [
         "correct",
@@ -145,13 +145,13 @@ R_eq^2 - R R_eq - R^2 = 0</div>
 <p><b>Step 4 — solve and choose the root.</b></p>
 <div class="formula">R_eq = (R +/- sqrt(R^2 + 4R^2))/2
      = R(1 +/- sqrt(5))/2</div>
-<p>So <b>Answer: A</b>, <code>R(1 + &radic;5)/2</code>, which is about <code>1.618R</code>. The minus root is <code>-0.618R</code>, a negative resistance, which no passive network can have; that is the physics choosing between the two roots for you.</p>
-<p><b>Step 5 — check the size of the answer.</b> It must exceed <code>R</code> (there is a resistor in series) and must be less than <code>2R</code> (the parallel branch is smaller than the <code>R</code> in it). <code>1.618R</code> sits between the two, and <code>&radic;5</code> is about <code>2.24</code>, so <code>1.618</code> is right. This one sanity check removes three of the five options.</p>
+<p>So <b>Answer: A</b>, <code>R(1 + &#8730;5)/2</code>, which is about <code>1.618R</code>. The minus root is <code>-0.618R</code>, a negative resistance, which no passive network can have; that is the physics choosing between the two roots for you.</p>
+<p><b>Step 5 — check the size of the answer.</b> It must exceed <code>R</code> (there is a resistor in series) and must be less than <code>2R</code> (the parallel branch is smaller than the <code>R</code> in it). <code>1.618R</code> sits between the two, and <code>&#8730;5</code> is about <code>2.24</code>, so <code>1.618</code> is right. This one sanity check removes three of the five options.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>R(1 + &radic;3)</b> comes from <code>R_eq^2 - 2R R_eq - 2R^2 = 0</code>, i.e. doubling the linear term. It appears if you treat the parallel branch as <code>R</code> in parallel with <code>2R_eq</code>.</p>
+<p>&middot; <b>R(1 + &#8730;3)</b> comes from <code>R_eq^2 - 2R R_eq - 2R^2 = 0</code>, i.e. doubling the linear term. It appears if you treat the parallel branch as <code>R</code> in parallel with <code>2R_eq</code>.</p>
 <p>&middot; <b>2R</b> assumes an endless chain has endless resistance. It does not: each added section is in parallel with everything after it, so the total is pulled back down. The answer is finite, and less than <code>2R</code>.</p>
-<p>&middot; <b>R&radic;2</b> is the geometric mean of <code>R</code> and <code>2R</code>. It looks plausible and is about <code>1.414R</code>, which is inside the allowed range, so the range check alone does not kill it — the algebra does.</p>
-<p>&middot; <b>R(3 + &radic;5)/2</b> is <code>2.618R</code>, the larger root of the <i>other</i> quadratic. It is greater than <code>2R</code>, so the range check rejects it immediately.</p>
+<p>&middot; <b>R&#8730;2</b> is the geometric mean of <code>R</code> and <code>2R</code>. It looks plausible and is about <code>1.414R</code>, which is inside the allowed range, so the range check alone does not kill it — the algebra does.</p>
+<p>&middot; <b>R(3 + &#8730;5)/2</b> is <code>2.618R</code>, the larger root of the <i>other</i> quadratic. It is greater than <code>2R</code>, so the range check rejects it immediately.</p>
 <p><b>The trap.</b> Trying to add up infinitely many sections. The sum does not converge term by term in any convenient way; the fixed-point argument is what makes the problem finite. Whenever a structure repeats endlessly, ask what stays the same when you add one more copy.</p>
 <p><b>Relevant topics:</b> series and parallel combinations; self-similar networks; quadratic equations; choosing the root with physical meaning.</p>''',
     "trap": "Trying to sum the sections one at a time. The endless ladder is a fixed point of the relation 'one more section', and that is the only route to a finite equation.",
@@ -251,11 +251,11 @@ R_eq^2 - R R_eq - R^2 = 0</div>
             ("A", "Summing a geometric series and knowing when it converges")],
     "key": ["bounce", "geometric", "freefall"],
     "stem": '<p>A ball is released from rest at a height <code>h</code> above a hard floor. After each bounce it rises to exactly one quarter of the height from which it fell, and it never stops perfectly. Neglecting air resistance, what is the total time from release until the bouncing has died away?</p>',
-    "opts": ["<code>2&radic;(2h/g)</code>",
-             "<code>3&radic;(2h/g)</code>",
-             "<code>4&radic;(2h/g)</code>",
-             "<code>(1 + &radic;2)&radic;(2h/g)</code>",
-             "<code>(5/2)&radic;(2h/g)</code>"],
+    "opts": ["<code>2&#8730;(2h/g)</code>",
+             "<code>3&#8730;(2h/g)</code>",
+             "<code>4&#8730;(2h/g)</code>",
+             "<code>(1 + &#8730;2)&#8730;(2h/g)</code>",
+             "<code>(5/2)&#8730;(2h/g)</code>"],
     "ans": 1,
     "distractors": [
         "counts only the first drop and the first rebound, and stops the series there",
@@ -285,7 +285,7 @@ R_eq^2 - R R_eq - R^2 = 0</div>
 <p><b>Step 1 — the first drop.</b> The ball falls from rest through <code>h</code> under gravity:</p>
 <div class="formula">h = 0.5 g t^2
 t_0 = sqrt(2h/g)</div>
-<p><b>Step 2 — how long one bounce takes.</b> After a bounce the ball rises to a height <code>h_n</code> and falls back. The time to rise to <code>h_n</code> from rest is <code>&radic;(2h_n/g)</code>, and the fall back takes exactly the same time, because the motion is the same reversed. So one complete bounce lasts</p>
+<p><b>Step 2 — how long one bounce takes.</b> After a bounce the ball rises to a height <code>h_n</code> and falls back. The time to rise to <code>h_n</code> from rest is <code>&#8730;(2h_n/g)</code>, and the fall back takes exactly the same time, because the motion is the same reversed. So one complete bounce lasts</p>
 <div class="formula">t_n = 2 sqrt(2 h_n / g)</div>
 <p>This factor of two is the single most common place to go wrong: a bounce is up <i>and</i> down.</p>
 <p><b>Step 3 — the heights fall by a factor of four.</b> The first rebound reaches <code>h/4</code>, the next <code>h/16</code>, and so on. But time goes as the square root of height, so</p>
@@ -304,10 +304,10 @@ t_3 = t_0 x (1/4)</div>
 <p>So <b>Answer: B.</b></p>
 <p><b>Step 5 — check it is sensible.</b> The total must be finite (the heights die away fast) and must be bigger than <code>t_0</code>. It is three times <code>t_0</code>: one drop, plus a first bounce that takes as long as the drop, plus the rest. Both conditions hold.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>2&radic;(2h/g)</b> counts the drop and the first bounce and stops. It leaves out the whole infinite tail, which adds exactly one more <code>t_0</code>.</p>
-<p>&middot; <b>4&radic;(2h/g)</b> uses a ratio of <code>1/2</code> on the <i>heights</i> rather than on the times. That would be right if the height fell by a factor of two each time, which would mean a ratio of <code>1/&radic;2</code> in the times, and a sum of <code>1 + 2/(1 - 1/&radic;2)</code> — much larger than 4.</p>
-<p>&middot; <b>(1 + &radic;2)&radic;(2h/g)</b> takes each bounce as a single traversal. It is about <code>2.4</code> times <code>t_0</code>, which is the right order of magnitude, so only the algebra separates it from the correct answer.</p>
-<p>&middot; <b>(5/2)&radic;(2h/g)</b> adds three terms and stops. The tail is not negligible: it contributes <code>t_0/2</code>, which is exactly what this option is missing.</p>
+<p>&middot; <b>2&#8730;(2h/g)</b> counts the drop and the first bounce and stops. It leaves out the whole infinite tail, which adds exactly one more <code>t_0</code>.</p>
+<p>&middot; <b>4&#8730;(2h/g)</b> uses a ratio of <code>1/2</code> on the <i>heights</i> rather than on the times. That would be right if the height fell by a factor of two each time, which would mean a ratio of <code>1/&#8730;2</code> in the times, and a sum of <code>1 + 2/(1 - 1/&#8730;2)</code> — much larger than 4.</p>
+<p>&middot; <b>(1 + &#8730;2)&#8730;(2h/g)</b> takes each bounce as a single traversal. It is about <code>2.4</code> times <code>t_0</code>, which is the right order of magnitude, so only the algebra separates it from the correct answer.</p>
+<p>&middot; <b>(5/2)&#8730;(2h/g)</b> adds three terms and stops. The tail is not negligible: it contributes <code>t_0/2</code>, which is exactly what this option is missing.</p>
 <p><b>The trap.</b> Bouncing balls invite you to add up bounces. Almost every such question is really a geometric series question, and the physics only has to supply the ratio. Here the ratio comes from <code>time proportional to the square root of height</code>, which is why it is <code>1/2</code> and not <code>1/4</code>.</p>
 <p><b>Relevant topics:</b> free fall from rest; the symmetry of rise and fall; geometric series and their sums; the square-root relation between time and height.</p>''',
     "trap": "Using the ratio of the heights as the ratio of the times. Time goes as the square root of height, so a factor of four in height is a factor of two in time.",
@@ -324,11 +324,11 @@ t_3 = t_0 x (1/4)</div>
             ("A", "Eliminating the tension between the two equations")],
     "key": ["conical", "resolve", "period"],
     "stem": '<p>A small bob hangs on a light inextensible string of length <code>L</code>. The bob is set moving in a horizontal circle so that the string sweeps out a cone, making a constant angle <code>&theta;</code> with the vertical. {{FIG:s02-05}}</p><p>What is the period of the motion?</p>',
-    "opts": ["<code>2&pi;&radic;(L/g)</code>",
-             "<code>2&pi;&radic;(L sin&theta;/g)</code>",
-             "<code>2&pi;&radic;(L/(g cos&theta;))</code>",
-             "<code>2&pi;&radic;(L cos&theta;/g)</code>",
-             "<code>2&pi;&radic;(g/(L cos&theta;))</code>"],
+    "opts": ["<code>2&pi;&#8730;(L/g)</code>",
+             "<code>2&pi;&#8730;(L sin&theta;/g)</code>",
+             "<code>2&pi;&#8730;(L/(g cos&theta;))</code>",
+             "<code>2&pi;&#8730;(L cos&theta;/g)</code>",
+             "<code>2&pi;&#8730;(g/(L cos&theta;))</code>"],
     "ans": 3,
     "distractors": [
         "treats the cone as a vertical hang, so the angle drops out of the answer entirely",
@@ -376,12 +376,12 @@ omega^2 = g/(L cos(theta))</div>
 <div class="formula">omega = sqrt(g/(L cos(theta)))
 Period = 2 pi / omega = 2 pi sqrt(L cos(theta)/g)</div>
 <p>So <b>Answer: D.</b></p>
-<p><b>Step 6 — test the limit.</b> As <code>&theta;</code> tends to zero the string hangs vertically, <code>cos&theta;</code> tends to 1, and the period tends to <code>2&pi;&radic;(L/g)</code> — exactly the small-swing period of an ordinary pendulum. That is a strong check, because a conical pendulum with a very narrow cone really is almost an ordinary pendulum. As <code>&theta;</code> approaches 90 degrees the period falls towards zero, which is also right: a nearly horizontal string needs an enormous speed to hold the bob up.</p>
+<p><b>Step 6 — test the limit.</b> As <code>&theta;</code> tends to zero the string hangs vertically, <code>cos&theta;</code> tends to 1, and the period tends to <code>2&pi;&#8730;(L/g)</code> — exactly the small-swing period of an ordinary pendulum. That is a strong check, because a conical pendulum with a very narrow cone really is almost an ordinary pendulum. As <code>&theta;</code> approaches 90 degrees the period falls towards zero, which is also right: a nearly horizontal string needs an enormous speed to hold the bob up.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>2&pi;&radic;(L/g)</b> is the limit answer, not the general one. It is what you get by ignoring <code>&theta;</code> altogether.</p>
-<p>&middot; <b>2&pi;&radic;(L sin&theta;/g)</b> uses the radius as though it were the pendulum length. The radius does appear in the force equation, but it cancels.</p>
-<p>&middot; <b>2&pi;&radic;(L/(g cos&theta;))</b> inverts the cosine. That would make the period grow without limit as the string approached horizontal, when in fact the bob must go round faster and faster. The limit check rejects it.</p>
-<p>&middot; <b>2&pi;&radic;(g/(L cos&theta;))</b> inverts the whole expression. Its dimensions are the reciprocal of a time, so it cannot be a period at all.</p>
+<p>&middot; <b>2&pi;&#8730;(L/g)</b> is the limit answer, not the general one. It is what you get by ignoring <code>&theta;</code> altogether.</p>
+<p>&middot; <b>2&pi;&#8730;(L sin&theta;/g)</b> uses the radius as though it were the pendulum length. The radius does appear in the force equation, but it cancels.</p>
+<p>&middot; <b>2&pi;&#8730;(L/(g cos&theta;))</b> inverts the cosine. That would make the period grow without limit as the string approached horizontal, when in fact the bob must go round faster and faster. The limit check rejects it.</p>
+<p>&middot; <b>2&pi;&#8730;(g/(L cos&theta;))</b> inverts the whole expression. Its dimensions are the reciprocal of a time, so it cannot be a period at all.</p>
 <p><b>The trap.</b> Treating <code>sin&theta;</code> and <code>cos&theta;</code> as interchangeable because both are "just the angle". They are attached to different jobs: the cosine carries the weight, the sine carries the centripetal force. Mixing them up is the whole difficulty of this question.</p>
 <p><b>Relevant topics:</b> resolving forces; centripetal acceleration; motion in a horizontal circle; the small-angle limit of the simple pendulum.</p>''',
     "trap": "Swapping sin and cos. The cosine component of the tension holds the weight up; the sine component turns the bob. They are not interchangeable.",
@@ -577,7 +577,7 @@ F_new = F/8</div>
             ("G", "Why minimum deviation happens when the ray passes symmetrically"),
             ("A", "Undoing a sine, and knowing that a sine of 1/2 does not mean an angle of 1/2")],
     "key": ["prism", "refraction", "sine"],
-    "stem": '<p>A ray of monochromatic light passes through a glass prism of refracting angle <code>60&deg;</code> and refractive index <code>&radic;2</code>. The prism is turned until the deviation is as small as it can be. What is the angle of minimum deviation?</p>',
+    "stem": '<p>A ray of monochromatic light passes through a glass prism of refracting angle <code>60&deg;</code> and refractive index <code>&#8730;2</code>. The prism is turned until the deviation is as small as it can be. What is the angle of minimum deviation?</p>',
     "opts": ["<code>45&deg;</code>", "<code>60&deg;</code>", "<code>30&deg;</code>",
              "<code>15&deg;</code>", "<code>22.5&deg;</code>"],
     "ans": 2,
@@ -606,11 +606,11 @@ F_new = F/8</div>
     "sol": '''<p><b>What is being tested.</b> Whether you know the minimum-deviation relation and, more importantly, whether you can undo it in the right order. The physics is one line; the algebra is where marks are lost.</p>
 <p><b>Step 1 — what "minimum deviation" buys you.</b> In general a ray is refracted at two faces and the deviation depends on the angle of incidence. But there is one incidence angle at which the deviation is least, and at that angle the ray passes through the prism <b>symmetrically</b>: it makes the same angle with both faces. That symmetry is what makes the problem solvable, because it means the ray inside makes an angle <code>A/2</code> with each normal, and Snell's law only has to be applied once.</p>
 <div class="formula">n sin(A/2) = sin((A + D)/2)</div>
-<p><b>Step 2 — substitute the numbers.</b> With <code>A = 60&deg;</code> and <code>n = &radic;2</code>:</p>
+<p><b>Step 2 — substitute the numbers.</b> With <code>A = 60&deg;</code> and <code>n = &#8730;2</code>:</p>
 <div class="formula">sqrt(2) sin(30 deg) = sin((60 deg + D)/2)
 sqrt(2) x 1/2 = sin((60 deg + D)/2)
 1/sqrt(2) = sin((60 deg + D)/2)</div>
-<p><b>Step 3 — undo the sine.</b> The angle whose sine is <code>1/&radic;2</code> is <code>45&deg;</code>:</p>
+<p><b>Step 3 — undo the sine.</b> The angle whose sine is <code>1/&#8730;2</code> is <code>45&deg;</code>:</p>
 <div class="formula">(60 deg + D)/2 = 45 deg
 60 deg + D = 90 deg
 D = 30 deg</div>
@@ -621,7 +621,7 @@ D = 30 deg</div>
 <p>&middot; <b>60&deg;</b> assumes <code>D = A</code>. That is true only for the one glass whose index makes it so, and this is not that glass. It is a tempting answer because the prism angle is the only other angle in the question.</p>
 <p>&middot; <b>15&deg;</b> subtracts <code>A/2</code> a second time, so it removes 30 degrees twice from the 60.</p>
 <p>&middot; <b>22.5&deg;</b> divides <code>(A + D)</code> by four instead of two, which halves the half-angle.</p>
-<p><b>The trap.</b> Treating <code>sin&theta;</code> as if it were <code>&theta;</code>. The sine of 30 degrees is a half, and the angle whose sine is a half is 30 degrees — but the angle whose sine is <code>1/&radic;2</code> is <b>45</b> degrees, not <code>0.707</code> degrees and not 30. Writing the inverse sine explicitly, and keeping the degree signs attached, prevents the whole family of slips.</p>
+<p><b>The trap.</b> Treating <code>sin&theta;</code> as if it were <code>&theta;</code>. The sine of 30 degrees is a half, and the angle whose sine is a half is 30 degrees — but the angle whose sine is <code>1/&#8730;2</code> is <b>45</b> degrees, not <code>0.707</code> degrees and not 30. Writing the inverse sine explicitly, and keeping the degree signs attached, prevents the whole family of slips.</p>
 <p><b>Relevant topics:</b> refraction at a plane surface; the prism relation; minimum deviation; inverse trigonometric functions.</p>''',
     "trap": "Treating sin(theta) as though it were theta. The angle whose sine is 1/sqrt(2) is 45 degrees, and that is the step the question is really testing.",
 },

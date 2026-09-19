@@ -2,6 +2,13 @@
 
 How the bank is built, how it is checked, and how to add the next section.
 
+Companion documents:
+
+- **`DIFFICULTY-AUDIT.md`** — the bank measured against the real 2025 paper, and the gates
+  added in response.
+- **`NOTATION-AUDIT.md`** — every symbol in the bank, the four defects found, and the two
+  notation policies the corpus runs under.
+
 ---
 
 ## 1. What it is
@@ -92,12 +99,12 @@ Three things that flattered the author's own work, and what was done about them:
 |---|---|
 | **G1** structure | 25 questions, five options each, unique ids, answer in range, module in scope, module mix matches the plan |
 | **G2** distractors | each wrong option **names the error that produces it**; four distinct named errors; the key is marked correct. Filler options are what separate a worksheet from a competition paper |
-| **G3** agreement & notation | the solution's stated answer equals the stored key; no caret or ASCII exponents reach the reader; markup balanced; no unresolved figure placeholder; **every decimal in visible text is hand-computable** or its sentence says not to compute it |
+| **G3** agreement & notation | the solution's stated answer equals the stored key; no caret or ASCII exponents reach the reader; markup balanced; no unresolved figure placeholder; **every decimal in visible text is hand-computable** or its sentence says not to compute it. Three notation lints read three *different* texts on purpose — the **caret** check reads rendered text, the **ASCII-exponent** check reads markup, and the **root-form** check reads the raw source. Each defect it looks for is invisible in the other two |
 | **G4** profile vs solution | the declared reasoning chain (steps, relations, insight, shape) is cross-checked against the solution text, so a chain cannot be over- or under-stated |
 | **G5** difficulty | measured score vs the real paper's quartiles, plus band counts — and three clauses added after the difficulty audit: **G5b** the top end (≥ 2 questions at ≥ 9 moves, hardest ≥ 22.0), **G5c** the non-calculator axes (per-section `noncalc_min` and `approx_min`), and a **floor** (nothing below 8.0, the paper's own easiest) |
 | **G6** similarity | **logic**-level overlap between every pair, not wording |
 | **G7** numerics | every answer re-derived independently of the solution, in exact arithmetic. A **symbolic** check whose coefficient is written as a decimal is evaluated by substituting a distinct prime per free symbol (`_spot_equal`), because `N()` of an expression with free symbols is not a number and the comparison used to die with sympy's "Cannot convert expression to float" |
-| **G8** figures | at least 8 figure-bearing questions; every referenced figure exists; figure geometry is checked |
+| **G8** figures | at least 8 figure-bearing questions; every referenced figure exists; figure geometry is checked; and **`fig/*.svg` is parsed as XML**. A figure using `&theta;` renders perfectly inline and is not a well-formed SVG document — the browser drops to the error parser the moment it is opened on its own. Only an actual parse sees that |
 | **G9** balance | no answer letter appears more than 10 times in 25 |
 | **G10** hand-check ledger | at least 20 of 25 carry a hand-verified entry in `ledger.json` |
 | **G11** scope | nothing may test material the official Round 0 note excludes (fields, particle physics, RC charging, SHM, rotational dynamics, reactor detail, QM beyond the photoelectric effect). The scan is deliberately crude, so a hit is satisfied by a `profile.scope_note` recording why the question is in scope anyway — a recorded judgement, not a silent pass |
@@ -111,6 +118,47 @@ Every gate had passed them: the labels were well written, they simply could not 
 The lesson is G11's lesson a second time — the suite only knows the properties somebody
 wrote a gate for — with a twist: this property was not about the physics at all, but about
 which of two renderers a field happens to pass through.
+
+**The radical lints exist because a radical has no overbar.** Asked to audit the notation
+across every section, the sweep turned up one shape in which the reader genuinely cannot
+recover the author's meaning. `√` written as a character carries its scope entirely in
+parentheses, so `√(hc/G)` is explicit and `√2` / `√r` are conventional — but **`√3W/2`
+is two questions at once**: `(√3)·W/2` or `√(3W)/2`. `S07-09` option C was exactly that,
+and it is a *statics* question whose whole point is which of two normals is which, so the
+ambiguity sat on the discriminator. It now reads `W√3/2`. A sweep of all 333 radicals in
+the bank found **no other instance**, which is the useful half of the result: the check is
+narrow because the corpus is, and it stays narrow so it does not start firing on correct
+content. The full sweep, including the two negative results that were most worth having, is
+in **`NOTATION-AUDIT.md`**.
+
+The check had to be written twice, and the first version is the instructive one. It ran on
+`visible()` — the tag-stripper every other lint uses — which replaces **every** tag with a
+space. So `√3<code>W</code>/2` was measured as `√3 W /2`: a space after the `3` made it
+look unambiguous, and the lint stayed silent on the very defect it was written for. The
+blind spot was in the *measurement*, not the regex. `rendered()` now models the page
+instead — an inline tag vanishes, a block tag leaves a gap — and the check judges both
+readings.
+
+**G8's parse exists because seven figures were valid HTML and invalid XML.** `&theta;`,
+`&Omega;` and `&mu;` are HTML named entities; XML defines exactly five — amp, lt, gt, quot,
+apos — so `fig/*.svg` was not a well-formed SVG document and failed the moment it was
+opened on its own. Inlined into the page it was perfect, which is why it survived: every
+text-level check read the entity as text and saw a theta. Only `ET.fromstring` sees it, so
+that is what the gate runs now, and `svgkit.svg()` refuses to emit a named entity at all.
+
+The same audit normalised **119 radicals** across sections 1–3 and 5–7 from `&radic;` or
+the bare character to `&#8730;`, and the reason is the one just given: `&radic;` is
+HTML-only, so it is the same hazard as the seven figures, sitting in the content rather
+than in a file. `&#8730;` is the only spelling legal in both, and the newer sections already
+used it.
+
+**That normalisation introduced a bug, and G12 caught it inside a minute.** `S07-12`'s first
+`rel` label held a literal `√`; rewriting it to `&#8730;` was correct for every HTML field
+and wrong for this one, because a `rel` label is escaped — the candidate would have read
+`&#8730;(γP/ρ)`. The two spellings are not an inconsistency, they follow the two renderers,
+and the fix was to put the character back. Worth recording precisely because the sweep that
+caused it was mechanical: the corpus has **two** notation policies, and a find-and-replace
+that does not know which field it is in will always be wrong in one of them.
 
 **G11 exists because of a question that passed all ten of the others.** `S05-21` asked for
 the time constant of an RC circuit. The official scope note is one sentence long and says
@@ -132,11 +180,11 @@ weaker check that only fires when the logic does not.
 ### Why the gates are not trusted on their own
 
 `tools/bank/mutants.py` is the answer to *"don't trust your tool that you write only"*.
-It takes the real, passing section, breaks **exactly one thing** in each of 46 ways, re-runs
+It takes the real, passing section, breaks **exactly one thing** in each of 51 ways, re-runs
 the whole suite, and asserts the right gate notices. A mutation that slips through is a
 hole in the suite and is reported as a failure.
 
-Three of the 44 assert the **opposite** direction — that a gate stays *quiet* on content
+Six of the 51 assert the **opposite** direction — that a gate stays *quiet* on content
 that is correct. That direction matters as much: `S02-19` was once reported as having five
 duplicate options when its five expressions were genuinely distinct, because the duplicate
 check folded the case of the symbols. A gate that fires when it should not is as broken as
@@ -154,6 +202,16 @@ one gate that had been **passing vacuously**:
   parsed as a boolean (`"this is not maths"` → Python's `False`) crashed the suite;
 - a missing figure produced an **untagged** error, so the defect was real but could not be
   attributed to any gate.
+
+That last one turned out to be a whole class rather than an incident, and it is now a
+**pre-flight check**. A mutant asserts `err.startswith(gate)`, so an error message with no
+gate id in it is invisible to the entire harness. `figure_errors()` appended bare strings
+for its whole life — eleven of them — and the moment a mutant was written for the new XML
+check the suite reported *** MISSED *** on a defect the gate had caught correctly. The
+honest-looking conclusion was "the gate is broken"; the true one was "the gate is fine and
+cannot be seen". `check_messages_are_tagged()` now walks `gates.py` with `ast` before any
+mutant runs and refuses to start if a single message fails to name its gate, so the trap
+cannot come back. An error nobody can attribute is an error nobody owns.
 
 ## 5. Per-section workflow
 
@@ -290,7 +348,7 @@ why the median test passed for four sections.
 | **G5c per-section non-calculator floors** — `noncalc_min` and `approx_min` on the plan, 16 and 10 for sections 6–40 | stops the non-calculator axes being satisfied on paper by symbolic options alone |
 | **four questions replaced** in sections 4 and 5 | the ceiling moved from 20.5 to 24.2/25.4, each replacement hand-worked in `ledger.json` |
 
-The gate suite is now **46 mutants** (`python mutants.py`), all behaving: every gate has
+The gate suite is now **51 mutants** (`python mutants.py`), all behaving: every gate has
 been shown to fail on demand and the one content-correct mutant has been shown to keep the
 suite quiet. Four of the new gates needed more than one mutant to prove, because a mutant
 caught by a *neighbouring* clause has demonstrated nothing — the three failures and what
@@ -449,7 +507,9 @@ the data has a built PDF.
 | `svgkit.py` | shared SVG primitives (`ell(...)` sampled ellipses, palette); raises on breakout tags |
 | `gates.py` | the twelve gates, the difficulty scorer, the fingerprint |
 | `measure.py` | read-only re-measurement of a section the way the gate measures it — encodes the absolute-figdir and `supify` traps |
-| `mutants.py` | 46 mutants proving the gates have teeth, both directions |
+| `mutants.py` | 51 mutants proving the gates have teeth, both directions — plus a pre-flight audit that every message `gates.py` emits names its gate |
+| `check_render.js` | the only notation check that reads the DOM rather than the source: walks every question through its real route and fails if an entity reaches the rendered text |
+| `radical_audit.py`, `notation_audit.py` | the two notation sweeps — see `NOTATION-AUDIT.md` |
 | `make_ledger.py` | builds `ledger.json`, the hand-check record |
 | `ledger.json` | per-question method, working, and hand-derived answer |
 | `build_site.py` | gates, then emits `bpho/data/bank-NN.js` |

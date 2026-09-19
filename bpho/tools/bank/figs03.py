@@ -178,9 +178,9 @@ def f_04():
     b.append(T(20, 126, '12 V', 11.5, 'start', GREY))
 
     # the arms, drawn as boxes on the midpoints of the diagonals
-    arms = [((xl + xt) / 2, (ym + yt) / 2, '3.0 k&Omega;', 'start', 96, 92),
-            ((xt + xr) / 2, (yt + ym) / 2, '6.0 k&Omega;', 'end', 404, 92),
-            ((xl + xb) / 2, (ym + yb) / 2, '3.0 k&Omega;', 'start', 96, 220),
+    arms = [((xl + xt) / 2, (ym + yt) / 2, '3.0 k&#937;', 'start', 96, 92),
+            ((xt + xr) / 2, (yt + ym) / 2, '6.0 k&#937;', 'end', 404, 92),
+            ((xl + xb) / 2, (ym + yb) / 2, '3.0 k&#937;', 'start', 96, 220),
             ((xb + xr) / 2, (yb + ym) / 2, 'R', 'end', 404, 220)]
     for ax, ay, lab, anch, lx, ly in arms:
         b.append(RC(ax - 17, ay - 9, 34, 18, '#ffffff', INK, 1.7))
@@ -311,7 +311,7 @@ def f_10():
 
     Label placement is part of the figure, not decoration.  The first version centred each
     lower label on its own branch, so the branch WIRE ran vertically through the middle of
-    "3.0 k&Omega;" and through "load", splitting the text.  The collision linter reported
+    "3.0 k&#937;" and through "load", splitting the text.  The collision linter reported
     "crosses 0px" -- its sampling understated it -- but at 2x the strike-through was
     obvious.  Each label now sits to the side of its wire, which is why the branches are
     120 units apart rather than 70.
@@ -334,17 +334,17 @@ def f_10():
 
     # the upper resistor, on the rail between the supply and the first junction
     b.append(RC(220, xt - 8, 46, 16, '#ffffff', INK, 1.7))
-    b.append(T(243, 42, '6.0 k&Omega;', 12, 'middle', INK))
+    b.append(T(243, 42, '6.0 k&#937;', 12, 'middle', INK))
 
     # the lower resistor, label clear to the left of its wire
     b.append(L(xm, xt, xm, yb, INK, 1.8))
     b.append(RC(xm - 8, 120, 16, 46, '#ffffff', INK, 1.7))
-    b.append(T(xm - 14, 148, '3.0 k&Omega;', 12, 'end', INK))
+    b.append(T(xm - 14, 148, '3.0 k&#937;', 12, 'end', INK))
 
     # the load, in parallel with it, label clear to the right of its wire
     b.append(L(xr, xt, xr, yb, INK, 1.8))
     b.append(RC(xr - 8, 120, 16, 46, '#ffffff', INK, 1.7))
-    b.append(T(xr + 14, 148, '3.0 k&Omega;', 12, 'start', INK))
+    b.append(T(xr + 14, 148, '3.0 k&#937;', 12, 'start', INK))
     b.append(T(xr + 14, 163, 'load', 10.5, 'start', GREY))
 
     for nx, ny in ((xm, xt), (xm, yb), (xr, xt), (xr, yb)):
@@ -418,7 +418,7 @@ def f_16():
 
     # the angle, between the road and the horizontal
     b.append(ARC(vx, vy, 54, 0, -36.87, GREY, 1.3, 20))
-    b.append(T(vx + 62, vy - 8, '&theta;', 13, 'start', GREY, 'bold'))
+    b.append(T(vx + 62, vy - 8, '&#952;', 13, 'start', GREY, 'bold'))
 
     # the car, as a box sitting on the road
     ux, uy = run / math.hypot(run, rise), -rise / math.hypot(run, rise)
@@ -499,7 +499,7 @@ def f_18():
 
     # theta, measured from the normal
     b.append(ARC(gx, yc, 60, 0, -25, GREY, 1.3, 18))
-    b.append(T(gx + 40, yc - 34, '&theta;', 13, 'start', GREY, 'bold'))
+    b.append(T(gx + 40, yc - 34, '&#952;', 13, 'start', GREY, 'bold'))
 
     # clear of the grating, which ends at y = 216
     b.append(T(gx, 240, '300 lines per millimetre', 11, 'middle', GREY))
@@ -570,7 +570,7 @@ def f_21():
     yt, yb = 74.0, 172.0
 
     # the two plates of each capacitor, and the leads between them
-    for cx, lab in ((190.0, '2.0 &mu;F'), (330.0, '6.0 &mu;F')):
+    for cx, lab in ((190.0, '2.0 &#956;F'), (330.0, '6.0 &#956;F')):
         b.append(L(cx - 6, yt - 20, cx - 6, yt + 20, INK, 2.6))
         b.append(L(cx + 6, yt - 20, cx + 6, yt + 20, INK, 2.6))
         b.append(T(cx, yt - 30, lab, 12, 'middle', INK))

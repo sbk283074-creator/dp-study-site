@@ -11,7 +11,7 @@
    real paper's own quartiles, logic-level similarity, an independent numeric
    re-derivation of every answer, figure geometry, answer-letter balance, scope
    against the official Round 0 topic note, and renderable text (the fields the site
-   escapes must be plain text, not markup).  The gate suite itself is tested by 46
+   escapes must be plain text, not markup).  The gate suite itself is tested by 51
    mutants, each of which breaks one thing and asserts that the right gate notices.
 
    Derived key: A C B D E B A C E D B A E C D A E B C D A C B E D

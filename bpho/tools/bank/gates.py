@@ -72,12 +72,21 @@ import math
 import os
 import re
 import sys
+import xml.etree.ElementTree as ET
 from fractions import Fraction
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 import spec  # noqa: E402
+
+# The named-entity pattern lives in svgkit, which is where the guard that PREVENTS one from
+# being written also lives.  Imported rather than restated: two copies of a pattern that
+# must agree is the shape of bug this file keeps finding.
+try:
+    from svgkit import NAMED_ENT  # noqa: E402
+except Exception:                                     # pragma: no cover
+    NAMED_ENT = re.compile(r"&(?!(?:amp|lt|gt|quot|apos)\b)[A-Za-z][A-Za-z0-9]*;")
 
 try:
     import sympy  # noqa: E402
@@ -302,6 +311,25 @@ def visible(t: str) -> str:
     return _html.unescape(re.sub(r"<[^>]+>", " ", t))
 
 
+# Tags that occupy no space of their own on the page.  `visible()` substitutes a space for
+# EVERY tag, which is right for prose and wrong for a radical: `&#8730;3<code>W</code>/2`
+# reaches the reader as `root 3 W / 2` with no gap anywhere, but visible() reports
+# `root 3 W / 2` with a space after the 3 -- so the scope looks unambiguous and the one
+# ambiguous radical in the bank survived every check.  A block tag really does separate.
+INLINE_TAGS = ("code", "sup", "sub", "b", "i", "em", "strong", "span", "tspan",
+               "small", "a", "u", "s", "var", "kbd", "samp")
+
+
+def rendered(t: str) -> str:
+    """Tag-stripped the way the page actually lays it out: an inline tag vanishes, a
+    block tag leaves a gap.  This is the reading a radical's scope must be judged on."""
+    def rep(m):
+        name = re.match(r"</?\s*([A-Za-z0-9]+)", m.group(0))
+        name = name.group(1).lower() if name else ""
+        return "" if name in INLINE_TAGS else " "
+    return _html.unescape(re.sub(r"<[^>]+>", rep, t))
+
+
 def norm_opt(s: str) -> str:
     """Option text reduced to what a candidate would read, for duplicate detection.
 
@@ -398,6 +426,29 @@ APPROX_RE = re.compile(r"≈|≪|for small|small angle|small parameter|to first 
                        r"first-order|second order|negligible|approximately|roughly|"
                        r"order of magnitude|power of ten|estimation", re.I)
 SYM_OPT_RE = re.compile(r"[A-Za-z]\s*[/*^]|</?sup>|<code>|√|∝|π|θ|λ|ρ|σ|ε|μ|ω|α|β|γ|Δ")
+# A radical with no parentheses whose radicand is a multi-character product -- `sqrt 3W`,
+# `sqrt hc`, `sqrt 2gh`.  Two alternatives, because the ambiguity arrives two ways: a
+# digit run followed by letters, or two or more letters.  A SINGLE token is conventional
+# and must not fire (`sqrt 2`, `sqrt r`, `sqrt 200`, `sqrt 0.20`), which is why the second
+# alternative requires at least two characters.
+RAD_SCOPE_RE = re.compile(
+    r"\u221a(?!\()(?:"
+    r"\d+(?:\.\d+)?[A-Za-z\u03b1-\u03c9][A-Za-z0-9\u03b1-\u03c9]*"
+    r"|[A-Za-z\u03b1-\u03c9][A-Za-z0-9\u03b1-\u03c9]+"
+    r")")
+# The root symbol must be stored in ONE spelling: the numeric reference `&#8730;`.
+# `&radic;` is an HTML named entity and XML defines only amp/lt/gt/quot/apos, so it is
+# the same hazard that made seven FIGURES unparseable -- harmless where the text is
+# inlined into HTML, fatal the moment it is parsed as XML.  The bare U+221A character
+# has a different failure mode: it survives every tool run until one of them writes the
+# file without an explicit encoding.  `&#8730;` is immune to both.
+#
+# This check reads the RAW source, and it has to.  `_html.unescape()` maps `&radic;` and
+# `&#8730;` to the SAME character, so by the time `visible()` has run the two spellings
+# are indistinguishable and the check could never fire.  That is the third text a lint
+# in this function reads -- rendered, markup, and raw -- and each one is chosen because
+# the defect it looks for is invisible in the other two.
+ROOT_FORM_RE = re.compile(r"&radic;|\u221a")
 # Where the solution stops reasoning and starts explaining the wrong answers.  Both
 # headings are in use: Section 1 writes "Why the other four are wrong.", Section 2 writes
 # "The distractors."  The approximation scan must stop here, because a bullet explaining
@@ -1088,11 +1139,20 @@ def svg_text_boxes(svg: str, oxy=(0.0, 0.0)):
 
 
 def figure_errors(key: str, svg: str, marker_ids: set):
-    """Everything that can be checked about one figure without a human looking at it."""
+    """Everything that can be checked about one figure without a human looking at it.
+
+    Every message is tagged G8.  It was not always so: these strings went into the error
+    list bare, so a broken figure was reported but attributed to NO gate -- and the
+    mutation test, which asserts that a named gate fires, cannot see an untagged message.
+    It reported a false MISSED on a defect the gate had in fact caught, which is the
+    worst kind of test failure, because the honest response is to go and look for a bug
+    in the gate.  `figures.missing_placeholder` carries the same note for the same
+    reason.  An error that cannot be attributed to a gate is an error nobody owns.
+    """
     errs = []
     m = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', svg)
     if not m:
-        return ["%s: no viewBox" % key]
+        return ["G8 %s: no viewBox" % key]
     W, H = float(m.group(1)), float(m.group(2))
     if "<svg" not in svg:
         errs.append("%s: no <svg>" % key)
@@ -1102,6 +1162,20 @@ def figure_errors(key: str, svg: str, marker_ids: set):
         errs.append("%s: no xmlns" % key)
     if "<figure" not in svg:
         errs.append("%s: not wrapped in <figure class=\"fig\">" % key)
+
+    # fig/*.svg is an XML document, and the page inlines it into HTML.  That asymmetry is
+    # the whole problem: a NAMED entity (&theta;, &Omega;, &mu;, &radic;) is defined in
+    # HTML and NOT in XML, so such a figure renders perfectly on the site and is still not
+    # a well-formed SVG document -- it fails the moment it is opened on its own, where the
+    # browser uses the XML parser.  Seven figures had shipped that way.  Parsing is the
+    # only check that sees it, because every text-level check reads the entity as text.
+    try:
+        ET.fromstring(svg)
+    except ET.ParseError as e:
+        named = sorted(set(NAMED_ENT.findall(svg)))
+        hint = (" -- named entit%s %s: those are HTML-only, use the numeric reference"
+                % ("y" if len(named) == 1 else "ies", ", ".join(named))) if named else ""
+        errs.append("%s: not well-formed XML (%s)%s" % (key, e, hint))
 
     # marker ids must be unique across the WHOLE section: HTML has no id namespace,
     # so two figures defining id="a" collide and one silently gets the wrong arrowhead
@@ -1148,7 +1222,7 @@ def figure_errors(key: str, svg: str, marker_ids: set):
             if ox > 1.0 and oy > 0.5:
                 errs.append("%s: labels %r and %r overlap by %.1fx%.1f"
                             % (key, a["text"][:22], b["text"][:22], ox, oy))
-    return errs
+    return ["G8 " + e for e in errs]
 
 
 def expand_figs(text: str, figdir: str, marker_ids: set, errs: list):
@@ -1179,12 +1253,19 @@ def load_section(n: int):
     return mod
 
 
-def gate_section(n: int, base=None, verbose=True, questions=None):
+def gate_section(n: int, base=None, verbose=True, questions=None, figdir=None):
     """Run all twelve gates on one section.  Returns (errors, stats).
 
     `questions` overrides the module's own list.  It exists for mutants.py, which
     deliberately breaks a known-good question and asserts that the right gate notices.
     A gate suite that has never been shown to fail is not evidence of anything.
+
+    `figdir` overrides where the figures are read from, and it exists for the same
+    reason.  Every gate before G8 reads the QUESTION dict, so a mutant can break one by
+    editing that dict in memory.  The XML well-formedness check is the first gate that
+    reads a FILE, and a mutant that has to write a broken file into the repository in
+    order to be tested is a mutant that leaves a corrupt figure behind if it is
+    interrupted.  Pointing the gate at a scratch copy is the safe way to break it.
     """
     base = base or baseline()
     plan = spec.SECTIONS[n - 1]
@@ -1192,7 +1273,7 @@ def gate_section(n: int, base=None, verbose=True, questions=None):
     mod = load_section(n)
     qs = sorted(questions if questions is not None else mod.QUESTIONS,
                 key=lambda d: d["n"])
-    figdir = os.path.join(HERE, "fig")
+    figdir = figdir or os.path.join(HERE, "fig")
     marker_ids = set()
 
     # ---- G1 structure ------------------------------------------------------
@@ -1303,6 +1384,41 @@ def gate_section(n: int, base=None, verbose=True, questions=None):
                 errs.append("G3 %s: a caret survives to the reader in %s -- %r "
                             "(write <sup> in the source, or remove the space after ^)"
                             % (q["id"], label, txt[max(0, m.start() - 8):m.start() + 6]))
+        # The radical lint.  A radical written as a character/entity has NO overbar, so
+        # its scope is carried entirely by parentheses: `&#8730;(hc/G)` is explicit, and
+        # `&#8730;2` / `&#8730;r` are conventional because the radicand is a single token.
+        # But `&#8730;3W/2` can be read as (root 3)W/2 or as root(3W)/2, and nothing on the
+        # page says which.  It is the one shape in which a reader cannot recover the
+        # author's meaning, so it fails.  Digits alone are fine (`&#8730;200`, `&#8730;0.20`).
+        for label, txt in (("stem", stem), ("sol", sol), ("trap", trap)):
+            for reading, t2 in (("as visible() reads it", visible(txt)),
+                                ("as the page lays it out", rendered(txt))):
+                for m in RAD_SCOPE_RE.finditer(t2):
+                    rad = m.group(0)
+                    errs.append("G3 %s: the radical in %s reads as %r %s, but a bare "
+                                "radical covers only the next token, so its scope is "
+                                "ambiguous -- parenthesise it"
+                                % (q["id"], label, rad, reading))
+        for i, o in enumerate(opts):
+            for t2 in (visible(o), rendered(o)):
+                for m in RAD_SCOPE_RE.finditer(t2):
+                    errs.append("G3 %s: option %s reads as %r -- a bare radical covers "
+                                "only the next token, so the scope is ambiguous"
+                                % (q["id"], LET[i], m.group(0)))
+
+        # One spelling for the root symbol -- see ROOT_FORM_RE.  Raw fields on purpose.
+        for label, raw in (("stem", q["stem"]), ("sol", q["sol"]),
+                           ("trap", q.get("trap", ""))):
+            for m in ROOT_FORM_RE.finditer(raw):
+                errs.append("G3 %s: the radical in %s is written %r -- store it as "
+                            "&#8730; (the numeric reference is the only form that is "
+                            "valid in both HTML and XML)"
+                            % (q["id"], label, raw[m.start():m.start() + 8]))
+        for i, raw in enumerate(q["opts"]):
+            for m in ROOT_FORM_RE.finditer(raw):
+                errs.append("G3 %s: the radical in option %s is written %r -- store it "
+                            "as &#8730;" % (q["id"], LET[i], raw[m.start():m.start() + 8]))
+
         # The ASCII-exponent check tests the MARKUP text instead: there, a correct
         # `m<sup>-3</sup>` still shows its <sup> tag and cannot be confused with a
         # plainly written `m-3`.  Running it on rendered text would turn every correct

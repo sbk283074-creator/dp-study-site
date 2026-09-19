@@ -106,12 +106,12 @@ def f_05():
     # the angle between the string and the vertical.  theta goes INSIDE the wedge, which
     # at this height means between x = px and x = px + (y - py) tan(theta).
     b.append(ARC(px, py, 55, 60, 90, RED, 1.4))
-    b.append(T(163, 92, '&theta;', 12, 'middle', RED))
+    b.append(T(163, 92, '&#952;', 12, 'middle', RED))
 
     # the radius, which is NOT the string length.  Labelled clear of both the dashed
     # radius line and the lower arc of the path ellipse.
     b.append(L(px, by, bx - 9, by, BLUE, 1.5, ' stroke-dasharray="5 4"'))
-    b.append(T(170, by + 32, 'r = L sin&theta;', 11, 'middle', BLUE))
+    b.append(T(170, by + 32, 'r = L sin&#952;', 11, 'middle', BLUE))
 
     # the length of the string
     b.append(T(194, 106, 'L', 12, 'start', INK))
@@ -221,7 +221,7 @@ def f_12():
     # internal resistance is part of the external circuit, which is the error the question
     # is about.
     b.append(RC(112, top - 8, 46, 16, '#ffffff', INK, 1.6))
-    b.append(T(135, 92, 'r = 2 &Omega;', 11, 'middle', RED))
+    b.append(T(135, 92, 'r = 2 &#937;', 11, 'middle', RED))
     b.append(RC(44, 46, 132, 108, 'none', GREY, 1.2))
     b.append(T(46, 172, 'the source', 10.5, 'start', GREY))
 
@@ -230,15 +230,15 @@ def f_12():
         b.append(L(x, top, x, 97, INK, 1.8))
         b.append(L(x, 153, x, bot, INK, 1.8))
         b.append(RC(x - 8, 97, 16, 56, '#ffffff', INK, 1.6))
-        b.append(T(x + 14, 128, '6 &Omega;', 11, 'start', INK))
+        b.append(T(x + 14, 128, '6 &#937;', 11, 'start', INK))
 
     # the series resistor
     b.append(RC(396, top - 8, 46, 16, '#ffffff', INK, 1.6))
-    b.append(T(419, top - 14, '3 &Omega;', 11, 'middle', INK))
+    b.append(T(419, top - 14, '3 &#937;', 11, 'middle', INK))
 
-    b.append(T(xl + 4, 216, 'The source has an internal resistance of 2 &Omega;.',
+    b.append(T(xl + 4, 216, 'The source has an internal resistance of 2 &#937;.',
                11.5, 'start', GREY))
-    b.append(T(xl + 4, 232, 'The two 6 &Omega; resistors are in parallel with each other.',
+    b.append(T(xl + 4, 232, 'The two 6 &#937; resistors are in parallel with each other.',
                11.5, 'start', GREY))
 
     return svg(W, H, 'A circuit: a 12 V source with 2 ohm internal resistance driving two '

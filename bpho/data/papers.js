@@ -49,7 +49,7 @@ window.BPHO_PAPERS = [
   "modules": "A B C D E F G H I J K",
   "questions": "papers/bank-s01-questions.pdf",
   "markscheme": "papers/bank-s01-markscheme.pdf",
-  "qBytes": 620999,
+  "qBytes": 620997,
   "mBytes": 866326,
   "qPages": 12,
   "mPages": 30
@@ -145,8 +145,8 @@ window.BPHO_PAPERS = [
   "modules": "A B C D E F G H I J K L",
   "questions": "papers/bank-s07-questions.pdf",
   "markscheme": "papers/bank-s07-markscheme.pdf",
-  "qBytes": 501727,
-  "mBytes": 782712,
+  "qBytes": 501658,
+  "mBytes": 782713,
   "qPages": 13,
   "mPages": 28
  }
