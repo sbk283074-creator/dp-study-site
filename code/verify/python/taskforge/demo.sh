@@ -3,8 +3,9 @@
 # captured from actually running the commands; nothing is hand-written.
 set -u
 export NO_COLOR=1 TERM=dumb
-PY=/Users/lucas.ma/Downloads/PYTHON/verify-venv/bin/python
-ROOT=/Users/lucas.ma/Downloads/PYTHON/verify/taskforge
+ROOT=$(cd "$(dirname "$0")" && pwd)
+PY="/Users/lucas.ma/Downloads/dp learning final/PYTHON/verify-venv/bin/python"
+[ -x "$PY" ] || PY="$(command -v python3)"
 OUT="$ROOT/demo.txt"
 cd "$ROOT" || exit 1
 rm -f demo.db demo.log fresh.db demo-export.json

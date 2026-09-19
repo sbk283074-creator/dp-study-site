@@ -2,7 +2,9 @@
 (function () {
   "use strict";
 
-  var STORE = "python-mastery-v1";
+  // Substituted per language by _build/build.py. Python keeps "python-mastery-v1" so
+  // progress made before the platform existed is not lost.
+  var STORE = "__STORE__";
   var state = { done: {}, tasks: {}, theme: "light", last: null, collapsed: {} };
 
   try {

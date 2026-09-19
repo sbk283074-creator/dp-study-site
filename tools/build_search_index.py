@@ -18,9 +18,9 @@ Design notes that matter:
    would be blocked by CORS.
 
 3. SINGLE-PAGE APPS NEED HELP.
-   A crawler reading bpho/index.html or PYTHON/index.html sees either an empty
+   A crawler reading bpho/index.html or code/python/index.html sees either an empty
    shell or one enormous document. BPhO's content lives in `window.BPHO_*`
-   globals (dumped by tools/bpho_dump.mjs), and Python Mastery is split into
+   globals (dumped by tools/bpho_dump.mjs), and every CODE track is split into
    <section class="chapter" id="slug"> blocks, so both become many small,
    precisely deep-linked entries instead of one useless one.
 """
@@ -35,7 +35,15 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, 'assets', 'js', 'search-index.js')
 HUB = 'https://sbk283074-creator.github.io/dp-study-site/'
 
-SKIP_FILES = {'tools/example-page.html'}
+SKIP_FILES = {
+    'tools/example-page.html',
+    # Build inputs, not pages: these are shells full of placeholders that only
+    # become real documents once build.py substitutes them.
+    'code/_build/template.html',
+    'code/_build/hub-template.html',
+    # Pure redirects -- indexing them would point readers at a page that bounces.
+    'PYTHON/index.html',
+}
 TEXT_CAP = 460       # chars of body text for an ordinary page
 CHAPTER_CAP = 620    # chars for one chapter of a single-page app
 POEM_CAP = 1100      # a poem plus its context is worth more than a page snippet
@@ -49,7 +57,8 @@ SPACES = [
     (r'^ib-english-vocab/', 'IB English Vocab', 'page'),
     (r'^vocab-review/', 'Vocabulary Review', 'page'),
     (r'^Eng learning/', "The World's Wife Lab", 'page'),
-    (r'^PYTHON/', 'Python Mastery', 'page'),
+    (r'^code/python/', 'Python Mastery', 'page'),
+    (r'^code/', 'CODE', 'page'),
     (r'^qbank/', 'Question Bank', 'page'),
     (r'^math/', 'Maths AA HL', 'page'),
     (r'^physics/', 'Physics HL', 'page'),
@@ -223,10 +232,36 @@ def page_docs(rel, raw):
                      'for Paper 2 and the Individual Oral.'),
             'url': HUB + rel.replace(' ', '%20'),
         }]
-    if rel == 'PYTHON/index.html':
-        got = chapter_docs(rel, raw, 'Python Mastery')
+    # Every CODE track is a hash-routed book: one entry per chapter. The path is
+    # <code>/<lang>/index.html, so future tracks need no change here.
+    if re.match(r'^code/[^/]+/index\.html$', rel):
+        got = chapter_docs(rel, raw, chapter_space_name(rel))
         return got if got else [basic_doc(rel, raw)]
     return [basic_doc(rel, raw)]
+
+
+def chapter_space_name(rel: str) -> str:
+    lang = rel.split('/')[1]
+    return TRACK_NAMES.get(lang, lang.upper() + ' Mastery')
+
+
+# Display names of the CODE tracks (matches code/_build/languages.json).
+TRACK_NAMES = {
+    'python': 'Python Mastery',
+    'cpp': 'C / C++ Mastery',
+    'java': 'Java Mastery',
+    'javascript': 'JavaScript & TypeScript',
+    'csharp': 'C# Mastery',
+    'go': 'Go Mastery',
+    'rust': 'Rust Mastery',
+    'swift': 'Swift',
+    'php': 'PHP',
+    'ruby': 'Ruby',
+    'scala': 'Scala',
+    'dart': 'Dart',
+    'lua': 'Lua',
+    'r': 'R',
+}
 
 
 # --------------------------------------------------------------------------

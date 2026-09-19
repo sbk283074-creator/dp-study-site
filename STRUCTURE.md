@@ -23,8 +23,9 @@ and they are **not interchangeable** — two of them serve the *same API*, but o
 | (nested, ignored) | `~/Downloads/dp learning final/dp learning/ib-dp-platform` | — | a gitignored ~13 GB copy. **Do not edit.** |
 
 Repo A's `.gitignore` line 3 is `dp learning/` — that is why the nested copy is invisible to git.
-Also ignored: `PYTHON/python-mastery/`, `PYTHON/verify/`, `PYTHON/verify-venv/`, `qbank/figures/`,
-`_figures_export/`, `_litfill/`, `tools/_*`. Sources stay local; only built output ships.
+Also ignored: `PYTHON/verify-venv/`, `qbank/figures/`, `_figures_export/`, `_litfill/`, `tools/_*`.
+Note the CODE tracks keep their chapter sources **in** the repo (they are the only copy of the
+content); only heavy local tooling (the 234 MB venv) stays out.
 
 ---
 
@@ -268,12 +269,36 @@ Both read the same index, so both answer correctly.
   source (`getJSON` and `getBookFileUrl`), but `getBookFileUrl` lost its only caller when the book
   reader was switched off, so Rollup tree-shakes it. Use the Netlify count as the stable invariant.
 
-### 03 · Python Mastery — `PYTHON/`
-Ships a **single 2.2 MB `index.html`** — a hash-routed app (`#/01-setting-up-…`).
-Sources are gitignored: `PYTHON/python-mastery/` (`build.py`, `chapters/`, `template.html`, `STYLE.md`,
-`dist/`), plus `PYTHON/verify/` and `PYTHON/verify-venv/` (a real Python 3.13 venv with
-FastAPI/pydantic — 2,798 `.py`, 2,778 `.pyc`, 286 `.so`).
-Rebuild: run `PYTHON/python-mastery/build.py` → emits `PYTHON/index.html`. **No backend.**
+### 03 · CODE Mastery — `code/`
+**A platform of per-language books**, not one Python page. Each language is one self-contained
+`index.html` carrying its whole course; `code/index.html` is the hub that lists them all.
+
+```
+code/
+├── index.html              ← hub: one card per language, with per-book progress bars
+├── _build/                 ← shared build system (one converter for every language)
+│   ├── build.py            ←   python3 build.py [--lang python]  →  builds books + hub
+│   ├── languages.json      ←   the registry: every track, its status and its store key
+│   ├── template.html       ←   book shell (incl. the two top-bar links back to the DP site)
+│   ├── hub-template.html   ←   hub shell
+│   └── assets/             ←   style.css + app.js, shared by every book
+├── python/                 ← track 1 (live): chapters/ (40 md) + parts.json + STYLE.md
+│   └── index.html          ←   2.2 MB built book
+└── verify/python/          ← runnable reference implementations (TaskForge, StudyHub) + bug log
+```
+
+**Rebuild:** `cd code/_build && python3 build.py` → rewrites every live track's book and the hub.
+Adding a language = add a directory with `chapters/` + `parts.json`, then register it in
+`languages.json`; the builder needs no edits. **No backend.**
+
+Caveats worth remembering:
+- Each book has its own `localStorage` key. **Python's is deliberately still `python-mastery-v1`**
+  so existing readers keep their progress after the move. New tracks get `code-mastery-<id>-v1`.
+- Two "back to DP Learning / Question Bank" links were hand-edited into the deployed file once and
+  were missing from the template — rebuilding silently deleted them. They now live in
+  `template.html`, so the build reproduces them. Do not hand-edit any built `index.html`.
+- `PYTHON/index.html` is now a 1.5 KB **redirect** to `../code/python/index.html`; the old 2.2 MB
+  file and its sources were moved with `git mv` (history preserved).
 
 ### 04 · The World's Wife Lab — `Eng learning/`
 Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sources are the poem files

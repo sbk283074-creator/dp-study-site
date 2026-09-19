@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Build the "Python Mastery" book into ONE self-contained HTML file.
+"""Build every language book in the CODE platform, plus the platform hub page.
 
-    python3 build.py          ->  dist/index.html
+    python3 build.py            -> every language in languages.json that has a chapters/ dir
+    python3 build.py python     -> just that one language
 
-No third-party dependencies. The output file works offline: open it by
-double-clicking, no server required.
+Each language becomes ONE self-contained HTML file (offline, double-clickable).
+They are deliberately NOT merged: one book is ~2 MB, so a single file holding every
+language would be >13 MB. The hub page links the books and aggregates progress.
+
+No third-party dependencies.
 """
 from __future__ import annotations
 
@@ -12,21 +16,27 @@ import base64
 import html
 import json
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
-CHAPTERS_DIR = ROOT / "chapters"
-ASSETS_DIR = ROOT / "assets"
-TEMPLATE_FILE = ROOT / "template.html"
-OUTPUT_DIR = ROOT / "dist"
-OUTPUT_FILE = OUTPUT_DIR / "index.html"
+BUILD = Path(__file__).resolve().parent          # code/_build
+PLATFORM = BUILD.parent                          # code/
+SHARED_ASSETS = BUILD / "assets"                 # style.css, app.js -- shared by every book
+TEMPLATE_FILE = BUILD / "template.html"
+HUB_TEMPLATE_FILE = BUILD / "hub-template.html"
+REGISTRY_FILE = BUILD / "languages.json"
 
-PART_TITLES = {
+# Per-language values, filled in by the build loop.
+CHAPTERS_DIR: Path = PLATFORM
+FIGURES_DIR: Path = PLATFORM
+PART_TITLES: dict = {}
+
+DEFAULT_PART_TITLES = {
     0: "Start Here",
     1: "I · Foundations",
     2: "II · Leveling Up",
-    3: "III · Real-World Python",
+    3: "III · Real-World",
     4: "IV · Track A · Full-Stack Web",
     5: "V · Track B · Game Development",
     6: "VI · Appendices",
@@ -142,7 +152,7 @@ def render_figure(alt: str, src: str) -> str:
     SVG is inlined as markup (crisp, tiny). PNG/JPG is inlined base64 — used for
     screenshots of the actually-running projects.
     """
-    path = ASSETS_DIR / src
+    path = FIGURES_DIR / src
     if not path.exists():
         print(f"  ! missing figure: {src}")
         return f'<p><em>[missing figure: {src}]</em></p>'
@@ -326,9 +336,9 @@ def convert(lines: list[str]) -> str:
 # --------------------------------------------------------------------------
 # Build
 # --------------------------------------------------------------------------
-def load_chapters() -> list[Chapter]:
+def load_chapters(chapters_dir: Path) -> list[Chapter]:
     chapters: list[Chapter] = []
-    for path in sorted(CHAPTERS_DIR.glob("*.md")):
+    for path in sorted(chapters_dir.glob("*.md")):
         raw = path.read_text(encoding="utf-8")
         meta, body = parse_front_matter(raw)
         if not meta:
@@ -361,7 +371,7 @@ def load_chapters() -> list[Chapter]:
     return chapters
 
 
-def build_nav(chapters: list[Chapter]) -> str:
+def build_nav(chapters: list[Chapter], part_titles: dict) -> str:
     parts: dict[int, list[Chapter]] = {}
     for chapter in chapters:
         parts.setdefault(chapter.part, []).append(chapter)
@@ -379,7 +389,7 @@ def build_nav(chapters: list[Chapter]) -> str:
             )
         blocks.append(
             f'<div class="nav-part"><button class="nav-part-btn" type="button">'
-            f'<span>{html.escape(PART_TITLES.get(part, f"Part {part}"))}</span>'
+            f'<span>{html.escape(part_titles.get(part, f"Part {part}"))}</span>'
             f'<span class="chev">▾</span></button>'
             f'<div class="nav-items">{"".join(items)}</div></div>'
         )
@@ -418,14 +428,51 @@ def build_content(chapters: list[Chapter]) -> str:
     return "".join(sections)
 
 
-def main() -> None:
+def load_registry() -> list[dict]:
+    data = json.loads(REGISTRY_FILE.read_text(encoding="utf-8"))
+    langs = data["languages"] if isinstance(data, dict) else data
+    return sorted(langs, key=lambda l: l.get("order", 99))
+
+
+def part_titles_for(lang_dir: Path) -> dict:
+    """Part headings are per-language: a C/C++ book has different parts than a Go book."""
+    p = lang_dir / "parts.json"
+    if p.exists():
+        raw = json.loads(p.read_text(encoding="utf-8"))
+        return {int(k): v for k, v in raw.items()}
+    return dict(DEFAULT_PART_TITLES)
+
+
+def meta_for(lang: dict, chapters: list, store: str) -> dict:
+    return {
+        "id": lang["id"],
+        "name": lang["name"],
+        "title": lang["title"],
+        "tagline": lang.get("tagline", ""),
+        "status": lang.get("status", "live"),
+        "store": store,
+        "chapters": len(chapters),
+        "minutes": sum(c.minutes for c in chapters),
+    }
+
+
+def build_book(lang: dict) -> dict | None:
+    """Build one language book into code/<id>/index.html."""
+    global CHAPTERS_DIR, FIGURES_DIR, PART_TITLES
+
+    lang_dir = PLATFORM / lang["id"]
+    CHAPTERS_DIR = lang_dir / "chapters"
+    FIGURES_DIR = lang_dir / "assets"
+    if not CHAPTERS_DIR.is_dir():
+        print(f"  skip {lang['id']}: no chapters/ yet")
+        return None
+
+    PART_TITLES = part_titles_for(lang_dir)
     template = TEMPLATE_FILE.read_text(encoding="utf-8")
-    css = (ASSETS_DIR / "style.css").read_text(encoding="utf-8")
-    js = (ASSETS_DIR / "app.js").read_text(encoding="utf-8")
+    css = (SHARED_ASSETS / "style.css").read_text(encoding="utf-8")
+    js = (SHARED_ASSETS / "app.js").read_text(encoding="utf-8")
 
-    chapters = load_chapters()
-    print(f"Loaded {len(chapters)} chapters")
-
+    chapters = load_chapters(CHAPTERS_DIR)
     payload = [
         {
             "slug": c.slug,
@@ -440,19 +487,103 @@ def main() -> None:
         for c in chapters
     ]
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    # Python keeps its original key so nobody loses the progress they already made.
+    store = lang.get("store") or f"code-mastery-{lang['id']}-v1"
     page = (
         template
         .replace("/*__STYLE__*/", css)
         .replace("/*__DATA__*/", "const CHAPTERS = " + json.dumps(payload, ensure_ascii=False) + ";")
         .replace("/*__SCRIPT__*/", js)
         .replace("__PART_NAMES__", json.dumps(PART_TITLES, ensure_ascii=False))
-        .replace("__NAV__", build_nav(chapters))
+        .replace("__NAV__", build_nav(chapters, PART_TITLES))
         .replace("__CONTENT__", build_content(chapters))
+        .replace("__TITLE__", lang["title"])
+        .replace("__BRAND__", lang["name"])
+        .replace("__TAGLINE__", lang.get("tagline", ""))
+        .replace("__LANG__", lang["id"])
+        .replace("__STORE__", store)
     )
-    OUTPUT_FILE.write_text(page, encoding="utf-8")
-    size_kb = OUTPUT_FILE.stat().st_size / 1024
-    print(f"Built {OUTPUT_FILE}  ({size_kb:.0f} KB, {len(chapters)} chapters)")
+    out = lang_dir / "index.html"
+    out.write_text(page, encoding="utf-8")
+    print(f"  {lang['id']}: {len(chapters)} chapters -> code/{lang['id']}/index.html"
+          f"  ({out.stat().st_size / 1024:.0f} KB)")
+    return meta_for(lang, chapters, store)
+
+
+def scan_meta(lang: dict) -> dict:
+    """Cheap hub metadata (front matter only) for a book we are not rebuilding right now.
+
+    Without this, `build.py python` would rebuild the hub from just that one language
+    and silently drop every other language off the hub page.
+    """
+    chapters_dir = PLATFORM / lang["id"] / "chapters"
+    store = lang.get("store") or f"code-mastery-{lang['id']}-v1"
+    stub: list = []
+    n = minutes = 0
+    if chapters_dir.is_dir():
+        for path in sorted(chapters_dir.glob("*.md")):
+            meta, _ = parse_front_matter(path.read_text(encoding="utf-8"))
+            if not meta:
+                continue
+            n += 1
+            minutes += int(meta.get("minutes", 15) or 15)
+    m = meta_for(lang, stub, store)
+    m["chapters"] = n
+    m["minutes"] = minutes
+    return m
+
+
+def build_hub(metas: list[dict]) -> None:
+    template = HUB_TEMPLATE_FILE.read_text(encoding="utf-8")
+    cards = []
+    for m in metas:
+        name = html.escape(m["name"])
+        tag = html.escape(m["tagline"])
+        if m["status"] == "planned" or m["chapters"] == 0:
+            cards.append(
+                f'<div class="lang-card is-planned">'
+                f'<span class="lang-card__name">{name}</span>'
+                f'<span class="lang-card__tag">{tag}</span>'
+                f'<span class="lang-card__meta">Planned</span></div>'
+            )
+            continue
+        hours = m["minutes"] // 60
+        cards.append(
+            f'<a class="lang-card" href="{m["id"]}/index.html" data-store="{m["store"]}">'
+            f'<span class="lang-card__name">{name}</span>'
+            f'<span class="lang-card__tag">{tag}</span>'
+            f'<span class="lang-card__meta">{m["chapters"]} chapters · {hours} h</span>'
+            f'<span class="lang-card__bar"><i></i></span>'
+            f'<span class="lang-card__pct"></span></a>'
+        )
+    page = (
+        template
+        .replace("__CARDS__", "".join(cards))
+        .replace("__DATA__", json.dumps(metas, ensure_ascii=False))
+    )
+    out = PLATFORM / "index.html"
+    out.write_text(page, encoding="utf-8")
+    print(f"  hub: {len(metas)} entries -> code/index.html ({out.stat().st_size / 1024:.0f} KB)")
+
+
+def main() -> None:
+    langs = load_registry()
+    only = sys.argv[1] if len(sys.argv) > 1 else None
+    if only and not any(l["id"] == only for l in langs):
+        print(f"no language '{only}' in languages.json")
+        sys.exit(1)
+
+    print(f"CODE platform: {len(langs)} language entr(y/ies) registered")
+    metas = []
+    for lang in langs:
+        # Rebuild only the book we were asked for, but always gather hub metadata for
+        # every language so the hub page never loses entries.
+        m = build_book(lang) if (only is None or lang["id"] == only) else scan_meta(lang)
+        if m is None:
+            m = scan_meta(lang)
+        metas.append(m)
+    build_hub(metas)
+    print("done")
 
 
 if __name__ == "__main__":
