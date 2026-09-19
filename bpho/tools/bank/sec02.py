@@ -158,66 +158,87 @@ R_eq^2 - R R_eq - R^2 = 0</div>
 },
 
 # ═════════════════════════════════════════════════════════════════════════════
-# 3 — L, quantum.  Photoelectric effect with a threshold wavelength.
+# 3 — L, quantum.  DEEP (10 moves).  One wavelength, two metals: the photon
+# energy has to be compared with EACH work function before anything else is done.
 # ═════════════════════════════════════════════════════════════════════════════
 {
-    "n": 3, "id": "S02-03", "module": "L", "diff": 2,
-    "topic": "Photoelectric effect: kinetic energy from a threshold wavelength",
-    "rel": [("L", "Photon energy hc/lambda and the meaning of a threshold wavelength"),
-            ("L", "Einstein's equation: photon energy is shared between work function and kinetic energy"),
-            ("A", "Using hc as a single constant instead of h and c separately")],
-    "key": ["photon", "workfunction", "threshold"],
-    "stem": '<p>The threshold wavelength for photoemission from a clean sodium surface is <code>620 nm</code>. Light of wavelength <code>310 nm</code> falls on the surface. What is the maximum kinetic energy of an emitted electron?</p>',
-    "opts": ["<code>1.0 eV</code>", "<code>4.0 eV</code>", "<code>6.0 eV</code>",
-             "<code>0.5 eV</code>", "<code>2.0 eV</code>"],
-    "ans": 4,
-    "distractors": [
-        "halves the threshold energy, taking the work function as hc/1240 nm instead of hc/620 nm",
-        "uses the photon energy of the incident light alone and forgets that the work function has to come off it",
-        "adds the work function to the photon energy instead of subtracting it",
-        "treats the kinetic energy as falling off as the square of the wavelength rather than as 1/lambda",
-        "correct",
-    ],
+    "n": 3, "id": "S02-03", "module": "L", "diff": 3,
+    "topic": "One wavelength on two metals: which one emits, and what the stopping potential is",
+    "rel": [("L", "The photon energy hc/lambda fixes the greatest kinetic energy an emitted electron can have"),
+            ("L", "A metal emits only if the photon energy exceeds its work function, so every metal has a threshold wavelength"),
+            ("L", "The stopping potential in volts is numerically equal to the maximum kinetic energy in electronvolts"),
+            ("A", "Working in electronvolt nanometres so that hc is a single remembered number and no unit conversion is needed")],
+    "key": ["photoelectric", "work function", "stopping potential", "threshold"],
+    "stem": '<p>Light of wavelength 400 nm falls on two clean metal surfaces. Metal A has a work function of 2.0 eV and metal B has a work function of 3.5 eV.</p><p>Which statement is correct?</p>',
+    "opts": ['Only A emits, and its stopping potential is 1.1 V',
+             'Both metals emit, with stopping potentials of 1.1 V for A and 0.40 V for B',
+             'Only B emits, with a stopping potential of 0.40 V',
+             'Neither metal emits, because 400 nm is longer than either threshold wavelength',
+             'Both metals emit, and the two stopping potentials are equal'],
+    "ans": 0,
+    "distractors": ['correct',
+                    'subtracts B\'s work function from the photon energy and keeps the negative result as a magnitude, when a negative kinetic energy means no electron is emitted at all',
+                    'swaps the two work functions, so the metal with the larger one is taken to be the one that emits',
+                    'compares the wavelength with the threshold wavelengths without working them out: 400 nm is SHORTER than A\'s threshold of 620 nm, so A emits',
+                    'assumes the stopping potential is set by the light alone, when it is set by the difference between the photon energy and the work function of that particular metal'],
     "profile": {
         "steps": [
-            ("relate", "convert both wavelengths into photon energies using hc = 1240 eV nm"),
-            ("relate", "recognise that the threshold wavelength is the one whose photon energy equals the work function"),
-            ("eliminate", "subtract the work function from the incident photon energy to get the maximum kinetic energy"),
-            ("check", "confirm the answer is positive, which it must be because the incident wavelength is shorter than the threshold"),
+            ("relate", "write the photon energy as hc over lambda, keeping hc in electronvolt nanometres"),
+            ("solve", "put the wavelength in and get the photon energy in electronvolts"),
+            ("relate", "compare that energy with metal A's work function before doing anything else, since emission is a threshold condition and not a subtraction that always works"),
+            ("solve", "subtract A's work function to get the greatest kinetic energy of an electron leaving A"),
+            ("solve", "convert that kinetic energy into a stopping potential, which is a one-to-one correspondence in these units"),
+            ("relate", "compare the same photon energy with metal B's work function"),
+            ("solve", "find the wavelength that would just free an electron from B, to show why 400 nm is not enough"),
+            ("check", "confirm that A's own threshold wavelength is longer than 400 nm, which is the same statement in the other direction"),
+            ("check", "note that the stopping potential does not depend on the intensity, so a brighter source changes nothing"),
+            ("check", "confirm that the two metals cannot share a stopping potential, since that would need their work functions to be equal"),
         ],
-        "relations": ["E = hc/lambda", "hc = 1240 eV nm",
-                      "W = hc/620 nm = 2.0 eV", "K_max = hc/310 nm - W"],
-        "insight": "A threshold wavelength is not a wavelength you subtract; it is the wavelength whose photon energy equals the work function. Converting it to an energy first is what makes the arithmetic one step.",
-        "shape": "units-consistency",
+        "relations": ["E = hc / &#955;",
+                      "E in eV = 1240 / &#955; in nm",
+                      "KE_max = hf &#8722; &#966;",
+                      "e V_s = KE_max",
+                      "&#955;_threshold = hc / &#966;"],
+        "insight": "Emission is a threshold, not a subtraction. A negative value of hf minus phi does not mean electrons come out slowly; it means none come out at all, and that has to be checked separately for each metal before any kinetic energy is calculated.",
+        "shape": "limiting-case",
         "approx": False,
         "symbolic": False,
         "figure_essential": False,
     },
-    "check": {"kind": "eval", "expr": "1240/310 - 1240/620", "want": "2"},
-    "sol": '''<p><b>What is being tested.</b> Whether you know what a threshold wavelength <i>is</i>, rather than treating it as another number to plug into a subtraction.</p>
-<p><b>Step 1 — turn both wavelengths into energies.</b> For photons, <code>E = hc/&lambda;</code>. The product <code>hc</code> is the one worth remembering, because it is the same for every photon problem. For the record, and never as a step you have to perform:</p>
-<div class="formula">hc = 6.63 x 10^-34 x 3.0 x 10^8
-   = 1.99 x 10^-25 J m
-   = 1240 eV nm</div>
-<p>The last form is the useful one: it lets you work in electron volts and nanometres with no unit conversion at all. Both numbers in the question are already in those units.</p>
-<p><b>Step 2 — the work function.</b> The threshold wavelength is the <i>longest</i> wavelength that still ejects an electron. At that wavelength the electron comes off with no kinetic energy at all, so the photon energy equals the work function exactly:</p>
-<div class="formula">W = hc/620 nm = 1240/620 = 2.0 eV</div>
-<p><b>Step 3 — Einstein's equation.</b> Energy is conserved: the photon gives up its energy, part goes to escape the surface and the rest becomes kinetic energy.</p>
-<div class="formula">K_max = hc/310 nm - W
-      = 1240/310 - 2.0
-      = 4.0 - 2.0
-      = 2.0 eV</div>
-<p>So <b>Answer: E</b>.</p>
-<p><b>Step 4 — check the sign and the size.</b> The incident wavelength, <code>310 nm</code>, is shorter than the threshold, so photoemission happens and <code>K_max</code> must be positive. It must also be less than the incident photon energy, <code>4.0 eV</code>, because the electron has to pay the work function. <code>2.0 eV</code> satisfies both.</p>
+    "check": {"kind": "eval", "expr": "1240/400 - 2.0", "want": "1.1"},
+    "sol": '''<p><b>What is being tested.</b> Whether you treat the photoelectric equation as a subtraction that always produces an answer, or as a threshold condition that can fail. Here it fails for one of the two metals, and the whole question turns on noticing that.</p>
+<p><b>Step 1 — the photon energy, in a form that needs no calculator.</b> The energy of a photon is <code>hc/&#955;</code>. Rather than converting joules to electronvolts at the end, it is far quicker to remember the product in the units the answer wants:</p>
+<div class="formula">hc = 1240 eV nm</div>
+<p>This is worth carrying in the head for this paper: it turns every photon-energy question into a single division.</p>
+<p><b>Step 2 — evaluate it.</b> With <code>&#955;</code> = 400 nm:</p>
+<div class="formula">E = 1240 / 400 = 3.1 eV</div>
+<p><b>Step 3 — compare with metal A's work function.</b> Metal A needs 2.0 eV to release an electron, and the photon brings 3.1 eV. Since 3.1 &gt; 2.0, electrons are emitted. This comparison is the step that decides whether the rest of the calculation is meaningful at all.</p>
+<p><b>Step 4 — the greatest kinetic energy for A.</b> The work function is the price of getting the electron out; whatever is left over becomes kinetic energy:</p>
+<div class="formula">KE_max = E &#8722; &#966;_A = 3.1 &#8722; 2.0 = 1.1 eV</div>
+<p>This is the <i>maximum</i> kinetic energy. Electrons deeper in the metal need more than the work function to escape, so they come out slower; 1.1 eV is the ceiling, reached by the electrons at the surface.</p>
+<p><b>Step 5 — the stopping potential for A.</b> A stopping potential <code>V_s</code> just prevents the fastest electrons from reaching the collector, so <code>e V_s = KE_max</code>. In electronvolts and volts that ratio is one to one:</p>
+<div class="formula">e V_s = 1.1 eV  &#8658;  V_s = 1.1 V</div>
+<p>The stopping potential is a property of the light and the metal together &#8212; never of the light alone.</p>
+<p><b>Step 6 — now compare with metal B.</b> Metal B needs 3.5 eV, and the photon still brings only 3.1 eV. The difference is negative, and a negative kinetic energy is not a small kinetic energy:</p>
+<div class="formula">E &#8722; &#966;_B = 3.1 &#8722; 3.5 = &#8722;0.40 eV</div>
+<p>No electron can leave B. The number &#8722;0.40 eV is not a result, it is a statement that the condition failed.</p>
+<p><b>Step 7 — the threshold wavelength for B, which says the same thing in the other direction.</b> The longest wavelength that can just free an electron from B is</p>
+<div class="formula">&#955;_threshold(B) = hc / &#966;_B = 1240 / 3.5 = 354 nm</div>
+<p>400 nm is longer than 354 nm, so its photons carry less energy than B needs. That is why B stays dark.</p>
+<p><b>Step 8 — the same check for A.</b> Metal A's threshold is <code>1240/2.0 = 620 nm</code>, and 400 nm is comfortably shorter than that, so A emits with room to spare. Writing the condition both ways &#8212; energy above work function, wavelength below threshold &#8212; is a good habit, because the two forms catch different arithmetic slips.</p>
+<p><b>Step 9 — the check that costs nothing.</b> The stopping potential is fixed by the photon energy and the work function. It does not depend on how intense the light is. Making the source brighter sends more electrons per second past the same barrier, but it does not make any single electron faster, so <code>V_s</code> is unchanged. Any option that would move with the intensity is wrong for that reason alone.</p>
+<p><b>Step 10 — could the two stopping potentials be equal?</b> Only if the two work functions were equal, since the photon energy is the same for both. They are 2.0 eV and 3.5 eV, so the difference is 1.5 eV and no common value exists.</p>
+<p>So <b>Answer: A.</b> Only A emits, and its stopping potential is 1.1 V.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>1.0 eV</b> comes from treating the work function as <code>1240/1240</code>, i.e. halving it. The threshold is <code>620 nm</code>, not <code>1240 nm</code>.</p>
-<p>&middot; <b>4.0 eV</b> is the incident photon energy with nothing taken off. It is the most common error in this question: it ignores the work function entirely.</p>
-<p>&middot; <b>6.0 eV</b> adds instead of subtracts. That would mean the electron gains energy from escaping the metal, which is the opposite of what a work function means.</p>
-<p>&middot; <b>0.5 eV</b> comes from an inverse-square law in the wavelength, <code>2.0 x (310/620)^2</code>. Photon energy goes as <code>1/&lambda;</code>, not <code>1/&lambda;^2</code>.</p>
-<p><b>The trap.</b> The word "threshold" invites you to subtract two wavelengths. What you subtract is two <i>energies</i>. Converting first costs one line and removes the whole class of mistake.</p>
-<p><b>Relevant topics:</b> the photon model; work function and threshold frequency; the electron volt; conservation of energy in the photoelectric effect.</p>''',
-    "trap": "Subtracting one wavelength from the other. A threshold wavelength has to be turned into an energy before it can be subtracted from anything.",
+<p>&middot; <b>Both emit, at 1.1 V and 0.40 V</b> is the most dangerous option, because every number in it is arithmetically right. It comes from taking the magnitude of 3.1 &#8722; 3.5 and reporting 0.40 eV as if it were a kinetic energy. That is exactly the mistake the question is aimed at: the photoelectric equation has a domain, and outside it the answer is "no emission", not a smaller number.</p>
+<p>&middot; <b>Only B emits</b> swaps the work functions. B has the larger work function, so it is the harder metal to empty, not the easier one. A quick sanity check disposes of it: a metal with a bigger work function can never emit when a smaller-work-function metal does not, under the same light.</p>
+<p>&middot; <b>Neither emits</b> reasons about wavelengths without working out the thresholds. Metal A's threshold is 620 nm, and 400 nm is shorter than that, so A emits. It is true that 400 nm is longer than B's threshold of 354 nm &#8212; but that is only half the comparison.</p>
+<p>&middot; <b>Both emit, with equal stopping potentials</b> would require the two work functions to be equal. They differ by 1.5 eV.</p>
+<p><b>The trap.</b> Running the photoelectric equation for every metal and reporting whatever comes out. The equation only means anything when the photon energy exceeds the work function; below that it produces a negative number that has no physical reading at all. Checking the threshold first takes one comparison and saves the whole question.</p>
+<p><b>Relevant topics:</b> the photoelectric effect; work function and threshold frequency; <code>hc</code> in electronvolt nanometres; stopping potential; why intensity affects the current but not the maximum kinetic energy.</p>''',
+    "trap": "Subtracting the work function from the photon energy for both metals and keeping the negative answer as a magnitude. A negative kinetic energy means no electron is emitted, not a slow one.",
 },
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # 4 — B, kinematics.  A bouncing ball and the geometric series in time.
@@ -793,66 +814,82 @@ R_p = 3 &Omega;</div>
 },
 
 # ═════════════════════════════════════════════════════════════════════════════
-# 13 — C, forces.  Momentum conservation in a perfectly inelastic collision.
+# 13 — C, forces.  DEEP (10 moves).  A bullet embeds, and then friction removes
+# what is left of the kinetic energy.  Momentum first, energy second, and the
+# two must not be mixed.
 # ═════════════════════════════════════════════════════════════════════════════
 {
-    "n": 13, "id": "S02-13", "module": "C", "diff": 2,
-    "topic": "The common speed after a perfectly inelastic collision between equal masses",
-    "rel": [("C", "Momentum is conserved in a collision, whatever happens to the kinetic energy"),
-            ("C", "After a perfectly inelastic collision the two bodies share one velocity"),
-            ("C", "Momentum is a vector, and a body at rest contributes none of it")],
-    "key": ["momentum", "collision", "inelastic"],
-    "stem": '''<p>A trolley of mass <code>2.0 kg</code> moving on a smooth horizontal track at <code>3.0 m s<sup>-1</sup></code> collides with a second trolley of mass <code>2.0 kg</code> that is at rest. The two trolleys stick together.</p>
-<p>What is their common speed immediately after the collision?</p>''',
-    "opts": ["<code>0.75 m s<sup>-1</sup></code>", "<code>1.5 m s<sup>-1</sup></code>",
-             "<code>3.0 m s<sup>-1</sup></code>", "<code>4.5 m s<sup>-1</sup></code>",
-             "<code>6.0 m s<sup>-1</sup></code>"],
-    "ans": 1,
-    "distractors": [
-        "halves the answer a second time, applying the mass ratio twice over",
-        "correct",
-        "assumes the moving trolley keeps its speed and simply drags the other one along",
-        "adds the two speeds and halves, treating the stationary trolley as if it were moving backwards at the same speed",
-        "reports the total momentum as though it were a speed",
-    ],
+    "n": 13, "id": "S02-13", "module": "C", "diff": 3,
+    "topic": "A bullet embedding in a block: momentum first, then friction, then the coefficient",
+    "rel": [("C", "Momentum is conserved through the embedding, even though most of the kinetic energy is not"),
+            ("C", "After the collision the only horizontal force is friction, so friction doing work is what removes the remaining kinetic energy"),
+            ("C", "The friction force on a block sliding on level ground is the coefficient times the whole weight, because the normal reaction balances it"),
+            ("A", "Dividing out a common factor before substituting, so the arithmetic stays exact and no decimals accumulate")],
+    "key": ["momentum", "collision", "friction", "energy"],
+    "stem": '<p>A bullet of mass 20 g travelling horizontally at 300 m/s embeds itself in a block of mass 1980 g resting on a rough horizontal surface. The block and bullet then slide 1.5 m before coming to rest. Take <code>g</code> = 10 m s<sup>-2</sup>.</p><p>What is the coefficient of friction between the block and the surface?</p>',
+    "opts": ['0.30', '0.60', '0.20', '0.15', '0.45'],
+    "ans": 0,
+    "distractors": ['correct',
+                    'takes the kinetic energy as the speed squared times the mass, leaving out the factor of one half, which doubles the coefficient',
+                    'leaves the speed unsquared, dividing the speed itself by g and the distance instead of the square of the speed',
+                    'takes the sliding distance as 3.0 m, twice the value given, which halves the coefficient',
+                    'takes the sliding distance as 1.0 m, which raises the coefficient by half again'],
     "profile": {
         "steps": [
-            ("relate", "choose momentum conservation, because the track is smooth and no external horizontal force acts"),
-            ("relate", "write the total momentum before the collision, remembering that the stationary trolley contributes nothing"),
-            ("eliminate", "write the total momentum after the collision as one mass moving at one unknown speed"),
-            ("solve", "equate the two and solve for the common speed"),
-            ("check", "confirm the answer lies between the two initial speeds, and that the kinetic energy has fallen"),
+            ("relate", "recognise that the embedding is a collision, so momentum is the quantity that carries across it and kinetic energy is not"),
+            ("solve", "write the momentum before the collision and the momentum after it, with the bullet and block moving together afterwards"),
+            ("solve", "solve for the common speed, keeping the masses in kilograms"),
+            ("solve", "work out the kinetic energy of the block and bullet immediately after the collision"),
+            ("relate", "note that the only horizontal force from then on is friction, and write that force in terms of the coefficient and the weight"),
+            ("solve", "write the work done by friction over the sliding distance"),
+            ("solve", "equate that work to the kinetic energy and solve for the coefficient"),
+            ("check", "find the fraction of the original kinetic energy lost in the embedding, which must be almost all of it"),
+            ("check", "check the dimensions of the result, since a coefficient of friction has none"),
+            ("check", "check the sense of the answer: a larger coefficient must give a shorter slide for the same collision"),
         ],
-        "relations": ["m u = (m + M) v", "p_before = 2.0 x 3.0 = 6.0",
-                      "p_after = 4.0 v", "v = 6.0/4.0"],
-        "insight": "Momentum conservation is the only tool available, because a perfectly inelastic collision is defined by the kinetic energy NOT being conserved. The stationary trolley contributes zero momentum, so the total momentum before is just that of the moving one.",
+        "relations": ["m u = (m + M) V",
+                      "KE = ½ (m + M) V<sup>2</sup>",
+                      "F_friction = &#956; (m + M) g",
+                      "work = F d",
+                      "KE lost in the embedding = (M / (m + M)) &#215; KE_before"],
+        "insight": "Two different conservation laws apply at two different moments. Momentum carries the motion through the embedding, because the collision is far too brief for friction to matter; energy carries it from there to the stop, because from then on the only thing acting is friction. Using energy across the embedding, or momentum after it, is what makes this question go wrong.",
         "shape": "conservation",
         "approx": False,
         "symbolic": False,
         "figure_essential": False,
     },
-    "check": {"kind": "eval", "expr": "(2.0*3.0)/(2.0 + 2.0)", "want": "1.5"},
-    "sol": '''<p><b>What is being tested.</b> Whether you reach for momentum rather than energy when the collision is inelastic. The word "stick" tells you the collision is perfectly inelastic, and that single word decides which conservation law is usable.</p>
-<p><b>Step 1 — which quantity is conserved.</b> The track is smooth, so there is no external horizontal force on the pair. Momentum is therefore conserved. Kinetic energy is <i>not</i>: the trolleys stick, and the energy that disappears goes into deformation, sound and heating at the coupling. A solution that starts from <code>&frac12;mu&sup2; = &frac12;(m+M)v&sup2;</code> is answering a different question.</p>
-<p><b>Step 2 — the momentum before.</b> Only the first trolley is moving:</p>
-<div class="formula">p_before = m u + M x 0 = 2.0 x 3.0 = 6.0 kg m s^-1</div>
-<p>The stationary trolley has no momentum, and forgetting that — or accidentally giving it speed <code>u</code> — is what produces the option <code>4.5 m s<sup>-1</sup></code>.</p>
-<p><b>Step 3 — the momentum after.</b> The two trolleys move as one body of mass <code>4.0 kg</code> at the unknown common speed:</p>
-<div class="formula">p_after = (2.0 + 2.0) v = 4.0 v</div>
-<p><b>Step 4 — equate and solve.</b></p>
-<div class="formula">4.0 v = 6.0
-v = 1.5 m s^-1</div>
-<p>So <b>Answer: B</b>.</p>
-<p><b>Step 5 — check it is sensible.</b> Two checks, both of which the answer passes. First, the common speed must lie between the two initial speeds: <code>0</code> and <code>3.0</code>, and <code>1.5</code> does. A collision that made the pair move faster than the incoming trolley would create momentum from nothing. Second, the kinetic energy must fall. Before, <code>&frac12; x 2.0 x 3.0&sup2; = 9.0 J</code>; after, <code>&frac12; x 4.0 x 1.5&sup2; = 4.5 J</code>. Half the kinetic energy has gone, which is what "sticking" means. Note that the momentum check and the energy check give opposite instructions — one says conserved, the other says reduced — and both are satisfied.</p>
+    "check": {"kind": "eval", "expr": "(0.020*300/2.0)*(0.020*300/2.0)/(2*10*1.5)", "want": "0.30"},
+    "sol": '''<p><b>What is being tested.</b> Whether you know which conservation law belongs to which part of the motion. The embedding is a collision: momentum survives it and kinetic energy does not. The slide afterwards is friction doing work: energy is the right tool there and momentum is not. The question cannot be done with one law alone.</p>
+<p><b>Step 1 — what carries across the embedding.</b> The bullet embeds in a time so short that friction has no chance to change anything. Momentum is therefore conserved through the collision, and the bullet and block move off together as one object of mass <code>m + M</code>.</p>
+<p><b>Step 2 — write the momentum balance.</b> Before, only the bullet moves; after, both move at a common speed <code>V</code>:</p>
+<div class="formula">m u = (m + M) V</div>
+<p><b>Step 3 — the common speed.</b> With <code>m</code> = 20 g, <code>u</code> = 300 m s<sup>-1</sup> and <code>M</code> = 1980 g, so that <code>m + M</code> = 2000 g. The grams cancel in the ratio, so the speed needs no unit conversion at all:</p>
+<div class="formula">V = m u / (m + M) = (20 &#215; 300) / 2000 = 6000 / 2000 = 3.0 m s<sup>-1</sup></div>
+<p>A drop from 300 m s<sup>-1</sup> to 3.0 m s<sup>-1</sup> looks violent, and it is: this is where nearly all the energy goes.</p>
+<p><b>Step 4 — the kinetic energy just after the collision.</b> Energy needs SI units, so the combined mass becomes 2000 g = 2.00 kg at this point. This is the energy that friction now has to remove:</p>
+<div class="formula">KE = ½ (m + M) V<sup>2</sup> = ½ &#215; 2.00 &#215; (3.0)<sup>2</sup> = 9.0 J</div>
+<p><b>Step 5 — the friction force.</b> The block slides on level ground, so the normal reaction equals the total weight and the friction force is</p>
+<div class="formula">F = &#956; (m + M) g = &#956; &#215; 2.00 &#215; 10 = 20&#956; N</div>
+<p><b>Step 6 — the work friction does over the slide.</b> Friction opposes the motion, so it removes energy, and over the distance <code>d</code> = 1.5 m:</p>
+<div class="formula">work = F d = 20&#956; &#215; 1.5 = 30&#956; J</div>
+<p><b>Step 7 — equate and solve.</b> All the kinetic energy has gone by the time the block stops:</p>
+<div class="formula">30&#956; = 9.0  &#8658;  &#956; = 9.0 / 30 = 0.30</div>
+<p>So <b>Answer: A, 0.30.</b></p>
+<p><b>Step 8 — check the energy bookkeeping across the whole event.</b> Back in kilograms, the bullet's original kinetic energy was</p>
+<div class="formula">KE_before = ½ m u<sup>2</sup> = ½ &#215; 0.020 &#215; (300)<sup>2</sup> = 900 J</div>
+<p>and only 9.0 J came out of the collision. So 891 J, or 99% of it, went into deforming the block and heating it. That is characteristic of an embedding: the fraction of kinetic energy that survives is <code>m/(m + M)</code>, here 0.020/2.00 = 1/100. Whenever a light fast object hits a heavy slow one and sticks, expect almost all the energy to be lost, and expect the common speed to be tiny compared with the incoming speed.</p>
+<p><b>Step 9 — check the dimensions.</b> The numerator is a kinetic energy, in kg m<sup>2</sup> s<sup>-2</sup>; the denominator is a force times a distance, which is also kg m<sup>2</sup> s<sup>-2</sup>. The quotient is a pure number, which is what a coefficient of friction has to be. Had the result come out with units, something would have been added that should have been multiplied.</p>
+<p><b>Step 10 — check the sense.</b> A rougher surface must stop the block sooner. Rearranging the same equation gives <code>d = V<sup>2</sup>/(2&#956;g)</code>, in which <code>d</code> falls as <code>&#956;</code> rises. So a coefficient of 0.60 would give a slide of 0.75 m, and 0.15 would give 3.0 m. That one line settles the direction of every wrong option that changes <code>&#956;</code>, and it is worth doing before looking at the list.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>0.75 m s<sup>-1</sup></b> is half of the correct answer: the mass ratio has been applied twice, once to get 1.5 and again to halve it.</p>
-<p>&middot; <b>3.0 m s<sup>-1</sup></b> assumes the moving trolley keeps its speed and simply carries the other along. That would conserve neither momentum nor energy.</p>
-<p>&middot; <b>4.5 m s<sup>-1</sup></b> adds the two speeds and halves: <code>(3.0 + 6.0)/2</code>, or equivalently treats the stationary trolley as moving at <code>-3.0</code> and then takes the magnitude.</p>
-<p>&middot; <b>6.0 m s<sup>-1</sup></b> is the total momentum, <code>6.0 kg m s<sup>-1</sup></code>, reported as a speed. The units do not match, which is the giveaway.</p>
-<p><b>The trap.</b> Reaching for kinetic energy because the question mentions speed. Energy is the right tool for a smooth slide and the wrong tool for a collision that sticks. The test is one question: is anything permanently deformed? If yes, energy is not conserved and momentum is the only route.</p>
-<p><b>Relevant topics:</b> conservation of linear momentum; perfectly inelastic collisions; the difference between conserved and non-conserved quantities; checking an answer against limiting values.</p>''',
-    "trap": "Starting from conservation of kinetic energy. A collision in which the bodies stick is perfectly inelastic, so energy is lost; only momentum is conserved.",
+<p>&middot; <b>0.60</b> comes from taking the kinetic energy as <code>(m + M)V<sup>2</sup></code> without the one half, which doubles everything downstream. It is the commonest slip in this whole family of questions.</p>
+<p>&middot; <b>0.20</b> comes from using <code>V</code> in place of <code>V<sup>2</sup></code>: dividing 3.0 by 10 and by 1.5 gives 0.20. The speed has to be squared, because kinetic energy goes as the square.</p>
+<p>&middot; <b>0.15</b> comes from using 3.0 m for the slide, twice the distance given, which halves the coefficient. The slide is 1.5 m.</p>
+<p>&middot; <b>0.45</b> comes from using 1.0 m for the slide, which raises the coefficient by half. Both this and 0.15 come from misreading <code>d</code> rather than from any error in the physics, which is why the question states it in the first line of the stem.</p>
+<p><b>The trap.</b> Applying energy conservation across the collision. It is the obvious move &#8212; energy is conserved in so many problems that it feels safe &#8212; and here it is simply false. If the collision were treated as elastic the block would leave at almost 300 m s<sup>-1</sup>, the slide would be kilometres long and no option would be close. The signature of an embedding is that momentum is the only thing that survives it.</p>
+<p><b>Relevant topics:</b> conservation of momentum in a perfectly inelastic collision; the fraction of kinetic energy lost; work done by friction; the normal reaction on level ground; checking dimensions and direction as a habit.</p>''',
+    "trap": "Using conservation of energy across the embedding. The collision is perfectly inelastic and loses 99% of the kinetic energy; only momentum carries across it, and energy takes over from the moment the block starts to slide.",
 },
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # 14 — I, capacitors.  Charge is conserved when the plates are isolated.

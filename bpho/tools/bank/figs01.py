@@ -201,36 +201,53 @@ def f_11():
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# s01-12  the current-voltage characteristic of a filament lamp
-# ═════════════════════════════════════════════════════════════════════════════
+# s01-12  a cell driving a series resistor and a parallel pair, one branch removed
 def f_12():
     b = [mk('q12-ar')]
-    X0, Y0 = 60, 210           # origin
-    X1, Y1 = 320, 40           # top right of the plotting area
-    b.append(L(X0, Y0, X1 + 12, Y0, INK, 1.7, ' marker-end="url(#q12-ar)"'))
-    b.append(L(X0, Y0, X0, Y1 - 12, INK, 1.7, ' marker-end="url(#q12-ar)"'))
-    b.append(T(X1 + 14, Y0 + 18, 'V / V', 11.5, 'end', INK))
-    b.append(T(46, Y1 - 6, 'I / A', 11.5, 'end', INK))
-    # the characteristic: straight enough near the origin, then flattening
-    pts = [(60, 210), (100, 176), (140, 146), (180, 122), (220, 104), (260, 92), (320, 82)]
-    b.append(PL(pts, BLUE, 2.4))
-    # the marked point at 6.0 V, 0.40 A
-    px, py = 255, 93
-    b.append(L(X0, py, px, py, GREY, 1.3, ' stroke-dasharray="5 4"'))
-    b.append(L(px, py, px, Y0, GREY, 1.3, ' stroke-dasharray="5 4"'))
-    b.append(CI(px, py, 4, RED, 2, RED))
-    b.append(T(px + 10, py - 8, 'P', 12, 'start', RED))
-    # axis numbers, kept off the curves
-    for v, x in ((2, 125), (4, 190), (6, 255)):
-        b.append(T(x, Y0 + 17, str(v), 11, 'middle', GREY))
-    for i, y in ((0.2, 153), (0.4, 96)):
-        b.append(T(X0 - 8, y + 4, str(i), 11, 'end', GREY))
-    b.append(T(180, 240, 'a filament lamp: the resistance rises as the current rises',
+    # The loop: cell on the left rail, the series resistor on the top rail, and the
+    # parallel pair as the two vertical branches between the rails.  There is no
+    # right-hand rail -- the pair IS the right-hand side, which is the whole point of
+    # the figure.  Drawing a rail as well would short the pair out.
+    b.append(L(110, 70, 458, 70, INK, 2))            # top rail, running on to the pair
+    b.append(L(110, 210, 458, 210, INK, 2))          # bottom rail
+    b.append(L(110, 70, 110, 132, INK, 2))           # left rail, above the cell
+    b.append(L(110, 148, 110, 210, INK, 2))          # left rail, below the cell
+    # the cell, as a long plate and a short plate
+    b.append(L(96, 132, 124, 132, INK, 2.4))
+    b.append(L(104, 148, 116, 148, INK, 5.0))
+    b.append(T(86, 128, '12 V', 11.5, 'end', INK))
+    b.append(T(86, 158, 'r = 1.0 \u03a9', 11.5, 'end', INK))
+    # the series resistor on the top rail
+    b.append(RC(190, 61, 52, 18, WALL, INK, 1.7))
+    b.append(T(216, 48, '6.0 \u03a9', 11.5, 'middle', INK))
+    # branch A: the 6.0 ohm of the pair.  This one stays.  Its label sits clear to the
+    # right of the branch, because a label centred on the branch is a label the branch
+    # is drawn straight through.
+    b.append(L(360, 70, 360, 118, INK, 1.8))
+    b.append(L(360, 164, 360, 210, INK, 1.8))
+    b.append(RC(351, 118, 18, 46, WALL, INK, 1.7))
+    b.append(T(378, 145, '6.0 \u03a9', 11.5, 'start', INK))
+    # branch B: the 3.0 ohm of the pair, ringed in red dashes because the question
+    # takes it away.  The ring encloses the branch AND its label, so the removal is
+    # unambiguous at a glance.
+    b.append(L(450, 70, 450, 118, INK, 1.8))
+    b.append(L(450, 164, 450, 210, INK, 1.8))
+    b.append(RC(441, 118, 18, 46, WALL, INK, 1.7))
+    for (x1, y1, x2, y2) in ((434, 106, 512, 106), (434, 176, 512, 176),
+                             (434, 106, 434, 176), (512, 106, 512, 176)):
+        b.append(L(x1, y1, x2, y2, RED, 1.6, ' stroke-dasharray="5 4"'))
+    b.append(T(468, 128, 'removed', 11, 'start', RED))
+    b.append(T(468, 152, '3.0 \u03a9', 11.5, 'start', INK))
+    # junctions
+    for (x, y) in ((110, 70), (110, 210), (360, 70), (450, 70), (360, 210), (450, 210)):
+        b.append(CI(x, y, 3.4, INK, 1.4, INK))
+    b.append(T(285, 248, 'the 3.0 \u03a9 branch is taken away; the 6.0 \u03a9 of the pair stays',
                11, 'middle', GREY))
-    return svg(360, 250, 'The current-voltage characteristic of a filament lamp. The '
-               'curve passes through the origin and bends over as the current rises, '
-               'because the filament gets hotter and its resistance increases. A point '
-               'P is marked at 6.0 volts and 0.40 amperes.', '\n'.join(b))
+    return svg(580, 268, 'A cell of emf 12 volts and internal resistance 1.0 ohm in series '
+               'with a 6.0 ohm resistor, and then a parallel pair made of a 6.0 ohm branch '
+               'and a 3.0 ohm branch. The 3.0 ohm branch is ringed with red dashes and '
+               'labelled removed, so what remains is the two 6.0 ohm resistors in series '
+               'with the cell.', '\n'.join(b))
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -286,75 +303,38 @@ def f_15():
 
 
 # ═════════════════════════════════════════════════════════════════════════════
-# s01-16  five candidate velocity-time graphs for a bouncing ball
-# ═════════════════════════════════════════════════════════════════════════════
-def _panel(x0, y0, w, h, letter, pts, colour, extra=None):
-    """One candidate v-t panel.
-
-    The time axis runs through the MIDDLE of the panel, not along its bottom edge.
-    That is forced by the physics: the question takes downward as negative, so the
-    ball's velocity is negative for most of the flight and a panel whose axis sits
-    on the bottom edge can only ever show the upward half.  The first draft had it
-    along the bottom, which made every panel contradict the stated convention.
-    """
-    out = [mk('q16%s-ar' % letter)]
-    ymid = y0 + h / 2.0
-    out.append(RC(x0 - 6, y0 - 6, w + 16, h + 26, PANEL))
-    out.append(L(x0, ymid, x0 + w, ymid, INK, 1.5, ' marker-end="url(#q16%s-ar)"' % letter))
-    out.append(L(x0, y0 + h, x0, y0, INK, 1.5, ' marker-end="url(#q16%s-ar)"' % letter))
-    out.append(T(x0 + w + 8, ymid + 12, 't', 11, 'middle', INK))
-    out.append(T(x0 - 12, y0 - 4, 'v', 11, 'middle', INK))
-    if pts:
-        out.append(PL(pts, colour, 2.2))
-    if extra:
-        out.append(extra)
-    out.append(T(x0 + w / 2.0, y0 + h + 17, letter, 12, 'middle', INK, '600'))
-    return out
-
-
+# s01-16  a stone thrown vertically upward from a cliff top, landing at the foot
 def f_16():
-    W, H = 580, 340
-    b = []
-
-    # ---- A: velocity that is never negative.  A decaying zigzag that stays
-    # entirely above the axis -- i.e. a SPEED-time graph.  The error is the
-    # convention: while the ball falls its velocity is negative.
-    pa = [(30, 81), (72, 47), (72, 64), (93, 81), (114, 64), (114, 72.5), (124.5, 81)]
-
-    # ---- B: a curve whose slope steepens without limit
-    b_curve = PA('M225,81 C285,87 335,107 365,133', RED, 2.2)
-
-    # ---- C: rises to a positive peak, falls to zero once, then stays there
-    pc = [(400, 81), (460, 47), (520, 81), (540, 81)]
-
-    # ---- D: straight sections of the SAME slope, but every bounce reaches the
-    # same peak, so the ball would return to its original height.  Same slope is
-    # the point: the error is the equal peaks, not curvature.
-    pd = [(130, 225), (165, 259), (165, 191), (235, 259), (235, 191), (270, 225)]
-
-    # ---- E: straight sections of the same slope, each bounce smaller.  The
-    # troughs and peaks halve in turn, and the durations shrink with them.
-    pe = [(320, 225), (376, 259), (376, 208), (432, 242), (432, 216.5), (460, 233.5)]
-
-    P = [
-        (20, 26, 160, 110, 'A', pa, BLUE, None),
-        (205, 26, 160, 110, 'B', None, RED, b_curve),
-        (390, 26, 160, 110, 'C', pc, AMBER, None),
-        (120, 170, 160, 110, 'D', pd, GREEN, None),
-        (310, 170, 160, 110, 'E', pe, PURPLE, None),
-    ]
-    for (x0, y0, w, h, letter, pts, colour, extra) in P:
-        b += _panel(x0, y0, w, h, letter, pts, colour, extra)
-    b.append(T(W / 2.0, 330, 'downward is negative', 11.5, 'middle', GREY))
-    return svg(W, H, 'Five candidate graphs of velocity against time for a ball released '
-               'from rest, bouncing on the floor and rising lower each time. In every '
-               'panel the time axis runs through the middle, so the part of the motion '
-               'below the axis is the ball falling. A shows a decaying zigzag that never '
-               'goes below the axis. B shows the velocity growing ever more steeply. C '
-               'shows the velocity rising to a positive peak and then falling to zero '
-               'once. D shows straight sections with every bounce reaching the same '
-               'peak. E shows straight sections with each bounce smaller than the one '
-               'before.', '\n'.join(b))
+    b = [mk('q16-ar')]
+    GY = 280                                  # ground level
+    b.append(RC(130, 100, 40, GY - 100, WALL, INK, 1.7))    # the cliff
+    b.append(L(60, GY, 410, GY, INK, 2.2))                  # the ground
+    b.append(T(148, 300, 'cliff', 11, 'middle', GREY))
+    # The throw is VERTICAL, so the flight is a vertical line just clear of the face.
+    # Drawing it as an arc would imply a horizontal component and land the stone
+    # somewhere other than the foot, which is exactly what the question rules out.
+    rx = 185
+    b.append(L(rx, 100, rx, 54, BLUE, 2.3, ' marker-end="url(#q16-ar)"'))   # the rise
+    b.append(L(rx, 54, rx, 276, BLUE, 2.3, ' marker-end="url(#q16-ar)"'))   # the fall
+    b.append(CI(rx, 48, 3.6, RED, 1.6, RED))                                # the peak
+    b.append(T(rx + 12, 44, 'highest point', 11, 'start', RED))
+    # the release point, on the cliff top
+    b.append(CI(rx, 100, 4.2, RED, 1.8, RED))
+    b.append(T(rx + 12, 122, 'release, speed u', 11.5, 'start', INK))
+    # the release level, as a dashed reference line.  It stops well short of the
+    # dimension line on the right so that neither crosses the other's label.
+    b.append(L(rx, 100, 260, 100, GREY, 1.2, ' stroke-dasharray="5 4"'))
+    b.append(T(264, 96, 'release level', 10.5, 'start', GREY))
+    # the height of the cliff, dimensioned
+    b.append(L(350, 100, 350, GY, GREY, 1.3))
+    b.append(L(344, 100, 356, 100, GREY, 1.3))
+    b.append(L(344, GY, 356, GY, GREY, 1.3))
+    b.append(T(362, 196, 'h', 13, 'start', INK, '600'))
+    return svg(440, 320, 'A stone thrown vertically upward with speed u from the top of a '
+               'cliff of height h. The flight is drawn as a vertical line just clear of '
+               'the cliff face: it rises to a highest point above the release level and '
+               'then falls past that level all the way to the foot of the cliff, where '
+               'it lands. The cliff height h is marked on the right.', '\n'.join(b))
 
 
 # ═════════════════════════════════════════════════════════════════════════════

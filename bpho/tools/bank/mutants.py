@@ -13,6 +13,8 @@ that slips through is a hole in the gate suite and is reported as a failure here
 Run:  python mutants.py
 """
 import copy
+import os
+import re
 import sys
 
 import gates as G
@@ -23,6 +25,43 @@ GOOD = [copy.deepcopy(q) for q in sec01.QUESTIONS]
 
 def find(mutated, qid):
     return next(q for q in mutated if q["id"] == qid)
+
+
+# The words that make the scorer's `approx` flag true, in the spellings the question
+# source actually uses.  Both spellings of every entity are listed: `visible()` decodes
+# entities before matching, so a raw `&asymp;` matches the "≈" pattern and the entity form
+# is redundant -- but a replacement pass runs on the RAW source, where it is not.
+APPROX_WORDS = ["≈", "≪", "for small", "small angle", "small parameter",
+                "to first order", "first-order", "second order", "negligible",
+                "approximately", "roughly", "order of magnitude", "power of ten",
+                "estimation", "&asymp;", "&#8776;", "&#8810;", "&lt;&lt;"]
+
+
+def strip_approx(q):
+    """Remove every approximation cue from a question's stem and solution."""
+    for w in APPROX_WORDS:
+        q["sol"] = q["sol"].replace(w, "x")
+        q["stem"] = q["stem"].replace(w, "x")
+    q["profile"]["approx"] = False
+
+
+def score_of(q, figdir=None, mids=None, errs=None):
+    """Measure one question the way `gate_section` measures it.
+
+    The score has to be read from the RENDERED text -- the figure placeholder expanded
+    and the superscripts repaired -- because that is what the gate feeds the scorer.
+    Scoring the raw source gives a different number, and the whole point of re-declaring
+    `diff` in a mutant is to agree with the number the gate will compute.  A helper that
+    measured the source would silently disagree with the thing it is trying to match.
+    """
+    figdir = figdir or os.path.join(G.HERE, "fig")
+    mids = mids if mids is not None else set()
+    errs = errs if errs is not None else []
+    stem = G.expand_figs(G.supify(q["stem"]), figdir, mids, errs)
+    opts = [G.expand_figs(G.supify(o), figdir, mids, errs) for o in q["opts"]]
+    sol = G.expand_figs(G.supify(q["sol"]), figdir, mids, errs)
+    return G.difficulty({"sol": sol, "q": stem, "opts": opts,
+                         "trap": q.get("trap", ""), "rel": q.get("rel", [])})
 
 
 # ── each mutant: (name, gate that must fire, what it breaks, mutate fn) ───────
@@ -252,6 +291,202 @@ def m31(qs):
     q["opts"][3] = "<code>v = K r</code>"
 
 
+# ── the checks added on 2026-09-19: the top end, the bottom end, the non-calculator
+#    axes, and the two rules that stop a deep question being declared rather than built.
+#
+# The whole reason these mutants exist is the one the module docstring gives: a gate
+# that has only ever seen content its own author wrote has proved nothing.  G5b, G5c
+# and the floor were written in the same session as the questions that satisfy them,
+# which is exactly the situation in which a broken check goes unnoticed.
+
+@mutant("difficulty.no_deep_question", "G5",
+        "flatten both long chains so nothing in the section has nine moves")
+def m32(qs):
+    # G5b's first clause.  Renumbering the step markers is enough: `moves` is read off
+    # the highest "Step N" in the solution, so capping them at 6 shortens the chain the
+    # metric sees.  The profile keeps its longer list, which the one-directional G4
+    # check allows -- only an under-declared chain is an error.
+    for qid in ("S01-12", "S01-16"):
+        q = find(qs, qid)
+        q["sol"] = re.sub(r"Step (\d+)",
+                          lambda m: "Step %d" % min(int(m.group(1)), 6), q["sol"])
+
+
+@mutant("difficulty.flat_ceiling", "G5",
+        "leave the chains long but strip everything else that makes them hard")
+def m33(qs):
+    # G5b's second clause, on its own.  Both chains stay at ten moves, so the deep count
+    # is still 2 and the first clause stays quiet; what falls is the CEILING, because the
+    # score also pays for a symbolic answer, a figure, a named trap and the relations
+    # drawn on.  Ten moves alone earn 16.0 + 4.0 + 1.2 = 21.2, under the 22.0 floor.
+    for qid in ("S01-12", "S01-16"):
+        q = find(qs, qid)
+        q["opts"] = ["1", "2", "3", "4", "5"]
+        q["stem"] = re.sub(r"\{\{FIG:[^}]+\}\}", "", q["stem"])
+        q["profile"]["figure_essential"] = False
+        q["profile"]["figure_support"] = False
+        q["rel"] = [("A", "one relation only")]
+        q["trap"] = "none"
+
+
+@mutant("difficulty.no_noncalculator_axis", "G5",
+        "remove every approximation and every symbolic answer")
+def m34(qs):
+    # G5c.  Round 0 is sat without a calculator, so `approx` and `symbolic` are the two
+    # terms in the scorer that encode the skill the paper is actually for; the gate wants
+    # at least six questions per section carrying one of them.
+    #
+    # Getting this mutant to prove G5c took three attempts, and the two failures are
+    # worth keeping because each one proves something about how the gate suite is
+    # ORDERED.  A mutant is only evidence about the gate whose message it actually
+    # produces -- one caught by a neighbouring clause has demonstrated nothing:
+    #
+    #   * the first version stripped all twelve carriers.  Three of them left the top
+    #     quartile on the way, and the suite printed
+    #         caught: G5: only 5 questions reach the 2025 paper's top quartile (15.5)
+    #   * the second stripped the twelve and kept their old `diff`.  Six of them changed
+    #     band, and the suite printed
+    #         caught: G5 S01-03: declared diff 3, but its measured score 14.8 puts it in
+    #                            band 2
+    #
+    # The top-quartile check is reported before the band check, which is reported before
+    # G5c, so both had to be made to pass for the third clause to be observable at all.
+    # What finally works is the smallest mutation that can move the count:
+    #
+    #   * SIX questions carry `approx` (five approximation-only, one carrying both).
+    #     Stripping the flag from all six leaves SEVEN carriers, not six: S01-09 carries
+    #     both axes, so removing its approximation text leaves it a symbolic carrier and
+    #     it still counts.  That was the third failure -- the suite printed `*** MISSED
+    #     ***`, because seven carriers is one over the minimum and G5c stayed quiet.  The
+    #     arithmetic of a mutation has to be done on the MEASURED flags, not on the list
+    #     of question ids you thought you had retired.
+    #   * TWO symbolic carriers therefore lose their symbolic options as well.  S01-14 is
+    #     the one whose score stays in band 3 after the loss and S01-01 is one whose score
+    #     stays in band 2, so neither moves the diff distribution.  They are mutated by
+    #     REPLACING the options rather than by swapping a glyph: writing "E ÷ 2" for
+    #     "E/2" would defeat the detector without changing the question, which tests the
+    #     regex rather than the gate.
+    #   * every stripped question then has its `diff` re-declared from a fresh
+    #     measurement, so the band check agrees and the diff distribution stays legal
+    #     (band 1: 2 of at most 5; band 3: 7 of at least 6).
+    #
+    # Result: five carriers, one under the minimum, and G5c is the finding.
+    ref = G.baseline()["R0-2025"]
+    figdir = os.path.join(G.HERE, "fig")
+    approx_carriers = ("S01-06", "S01-09", "S01-11", "S01-15", "S01-18", "S01-25")
+    for qid in approx_carriers:
+        strip_approx(find(qs, qid))
+
+    # the two symbolic carriers, stripped of their symbolic options
+    sym_carriers = ("S01-01", "S01-14")
+    for qid in sym_carriers:
+        find(qs, qid)["opts"] = ["1", "2", "3", "4", "5"]
+
+    # re-declare the band on every question that was touched, measured the same way
+    # `gate_section` measures it -- same shared marker-id set, same processing order
+    mids, errs = set(), []
+    scores = {}
+    for q in sorted(qs, key=lambda d: d["n"]):
+        scores[q["id"]] = score_of(q, figdir, mids, errs)
+    for qid in approx_carriers + sym_carriers:
+        find(qs, qid)["diff"] = G.band_of(scores[qid], ref)
+
+
+@mutant("difficulty.too_easy_floor", "G5",
+        "leave one question with nothing in it at all")
+def m35(qs):
+    # The floor added on 2026-09-19.  The 2025 paper's easiest question scores 8.3; this
+    # mutant produces an item that is a bare statement with no chain, no formula, no
+    # figure and no trap, which is what a worksheet has and a competition does not.
+    q = find(qs, "S01-01")
+    q["sol"] = "<p>The answer follows from the definition.</p>"
+    q["opts"] = ["1", "2", "3", "4", "5"]
+    q["trap"] = "none"
+    q["rel"] = [("A", "one relation only")]
+    q["stem"] = re.sub(r"\{\{FIG:[^}]+\}\}", "", q["stem"])
+    q["profile"]["figure_essential"] = False
+    q["profile"]["figure_support"] = False
+    q["profile"]["approx"] = False
+    q["profile"]["symbolic"] = False
+    q["profile"]["steps"] = [("relate", "read it off")]
+    q["profile"]["relations"] = ["nothing to relate"]
+
+
+@mutant("profile.deep_without_distinct_relations", "G4",
+        "declare a long chain that names only three distinct relations")
+def m36(qs):
+    # The G4 rule that stops a deep question being PADDING: nine numbered steps on one
+    # relation is nine steps of nothing.  Three distinct relations clears the ordinary
+    # MIN_RELATIONS bar for diff 3 (which is 2), so only the deep rule can object.
+    q = find(qs, "S01-16")
+    q["profile"]["relations"] = ["relation one", "relation two", "relation three"]
+
+
+@mutant("profile.deep_without_a_declared_chain", "G4",
+        "walk a nine-move chain without numbering the steps, and declare only five")
+def m37(qs):
+    # The other half of the same G4 rule.  The steps have to be stripped as well as the
+    # profile shortened, because with ten numbered markers the ordinary "profile declares
+    # fewer steps than the solution walks" check would fire first and this mutant would
+    # be proving that rule instead of this one.  With the markers gone, `moves` falls
+    # back to the formula-block count -- which is the case the metric was built for, and
+    # the only situation in which this clause can fire on its own.
+    q = find(qs, "S01-16")
+    q["sol"] = re.sub(r"Step \d+\s*\u2014\s*", "", q["sol"])
+    while q["sol"].count('class="formula"') < 9:
+        q["sol"] += '<div class="formula">padding relation</div>'
+    q["profile"]["steps"] = q["profile"]["steps"][:5]
+
+
+
+@mutant("difficulty.no_approximation_required", "G5",
+        "answer every approximation with an exact formula")
+def m38(qs):
+    # The second clause of G5c, and the one that matters more.  The union can be satisfied
+    # entirely with symbolic options, so a section can look non-calculator on paper while
+    # never once asking for an approximation -- which is the shape the bank actually had
+    # at the audit: 33% on the union, 10% on the approximation.
+    #
+    # The mutation replaces each approximation with an exact answer: the TEXT goes and the
+    # options are left alone, so the questions stay symbolic and the union clause still
+    # passes.  That is deliberate.  A mutant must produce the message it was written for,
+    # and stripping the options as well would make the union clause fire first and prove
+    # nothing about this one.
+    #
+    # Section 1's approximation floor is 1 (its legacy value, measured at 6), so taking
+    # every carrier to zero is what it takes to fire the clause -- and the union survives
+    # at 7 because the seven symbolic carriers are untouched.
+    ref = G.baseline()["R0-2025"]
+    figdir = os.path.join(G.HERE, "fig")
+    carriers = ("S01-06", "S01-09", "S01-11", "S01-15", "S01-18", "S01-25")
+    for qid in carriers:
+        strip_approx(find(qs, qid))
+    mids, errs = set(), []
+    scores = {}
+    for q in sorted(qs, key=lambda d: d["n"]):
+        scores[q["id"]] = score_of(q, figdir, mids, errs)
+    for qid in carriers:
+        find(qs, qid)["diff"] = G.band_of(scores[qid], ref)
+
+
+@mutant("difficulty.section_floor_is_read", "G5",
+        "hold section 1 to a non-calculator floor it does not meet")
+def m39(qs):
+    # This one breaks the STANDARD rather than the content, and that is the point: the
+    # floors now live on spec.SECTIONS, and a field nothing reads is worse than no field,
+    # because it documents a rule that is not enforced.  The only way to show the plan is
+    # consulted is to change the plan and watch the gate report the changed number.
+    #
+    # Section 1 carries 12 questions with an approximation or a symbolic answer.  Raising
+    # its union floor to 13 -- one above what it has, and above the legacy 6 and the paper
+    # 16 alike, so neither constant can be mistaken for the source of the message -- must
+    # produce a G5c that says "at least 13 wanted".
+    #
+    # The approximation floor's own clause is proved by difficulty.no_approximation_required
+    # above; both fields are read by the same expression, so this mutant covers the pair.
+    G.spec.SECTIONS[0]["noncalc_min"] = 13
+
+
 def main():
     base = G.baseline()
     print("mutation self-test: break one thing, check the right gate notices")
@@ -259,13 +494,27 @@ def main():
     missed = []
     for name, gate, desc, fn, must_not in MUTANTS:
         qs = copy.deepcopy(GOOD)
+        # The non-calculator floors live on spec.SECTIONS, so a mutant can change the
+        # STANDARD as well as the content -- see difficulty.section_floor_is_read.  The
+        # plan is therefore snapshotted and restored around every mutant.  Without this,
+        # the first mutant that raised a floor would silently change the verdict of every
+        # mutant after it, and the suite would report a chain of failures caused by a
+        # mutation that had already been undone in every other sense.
+        plan = copy.deepcopy(G.spec.SECTIONS)
         try:
-            fn(qs)
-        except Exception as e:                      # a mutant that cannot even be built
-            missed.append((name, gate, "mutation failed to apply: %s" % e))
-            print("  %-42s %-3s  MUTATION ERROR: %s" % (name, gate, e))
-            continue
-        errs, _ = G.gate_section(1, base=base, verbose=False, questions=qs)
+            try:
+                fn(qs)
+            except Exception as e:                  # a mutant that cannot even be built
+                missed.append((name, gate, "mutation failed to apply: %s" % e))
+                print("  %-42s %-3s  MUTATION ERROR: %s" % (name, gate, e))
+                continue
+            # ... and the gate call has to be INSIDE the snapshot.  Restoring the plan
+            # when the mutant returns puts the standard back before anything reads it,
+            # which is exactly how the first version of section_floor_is_read came to
+            # report MISSED: it was a mutation nobody ever saw.
+            errs, _ = G.gate_section(1, base=base, verbose=False, questions=qs)
+        finally:
+            G.spec.SECTIONS[:] = plan
         hit = [e for e in errs if e.startswith(gate)]
         if must_not:
             if hit:

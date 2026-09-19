@@ -13,7 +13,7 @@
    gate suite itself is tested by 31 mutants, each of which breaks one thing and
    asserts that the right gate notices.
 
-   Derived key: C A B E C A B D E A D B E C D B A E C D E B D C A
+   Derived key: C A B A C A B D E A D B E C D B A E C D E B D C A
 
    Figures are hand-authored inline SVG in tools/bank/fig/, not generated images. */
 
@@ -213,28 +213,79 @@ I = E / R total = 6.0 / 9.0 = 2/3 A</div>
 },
 
 {
-  id: "S04-04", module: "H", topic: "A uniform wire bent into an equilateral triangle: the resistance between two vertices", diff: 2, rel: [["E", "A uniform wire's resistance is proportional to its length, so bending it divides the total in proportion"], ["H", "Two paths between the same pair of points are in parallel"], ["A", "Reducing a network one stage at a time rather than trying to see the whole answer at once"]], key: ["wire", "triangle", "parallel", "resistance"], ans: 4, paper: "BANK-S04",
-  rel: [["E", "A uniform wire's resistance is proportional to its length, so bending it divides the total in proportion"], ["H", "Two paths between the same pair of points are in parallel"], ["A", "Reducing a network one stage at a time rather than trying to see the whole answer at once"]],
-  q: `<p>A uniform wire of total resistance 12 &#937; is bent into an equilateral triangle. A battery is connected between two of the vertices. What is the resistance of the network between those two vertices?</p>`,
-  opts: ["1.3 &#937;", "4.0 &#937;", "6.0 &#937;", "8.0 &#937;", "2.7 &#937;"],
-  sol: `<p><b>What is being tested.</b> Whether you see a network as paths between two points rather than as a collection of components. The wire is bent into a shape, and shapes do not carry current — paths do.</p>
-<p><b>Step 1 — how much resistance is in each side.</b> The wire is uniform, so its resistance is spread evenly along its length. Bending it into three equal sides divides the 12 &#937; into three equal parts:</p>
-<div class="formula">each side = 12 &#937; / 3 = 4.0 &#937;</div>
-<p><b>Step 2 — find the paths between the chosen vertices.</b> Call the vertices <code>A</code>, <code>B</code> and <code>C</code>, and connect the battery between <code>A</code> and <code>B</code>. Current can leave <code>A</code> and arrive at <code>B</code> in two ways. The first is the direct side <code>AB</code>. The second goes the long way round, through <code>C</code>:</p>
-<div class="formula">direct path: A to B = 4.0 &#937;
-long path: A to C to B = 4.0 + 4.0 = 8.0 &#937;</div>
-<p><b>Step 3 — the two paths are in parallel.</b> They start at the same point and end at the same point, so the p.d. across each is the same and they are in parallel:</p>
-<div class="formula">R = (4.0 &#215; 8.0) / (4.0 + 8.0) = 32 / 12 = 8/3 = 2.7 &#937;</div>
-<p>So <b>Answer: E.</b></p>
-<p><b>Checking it is sensible.</b> The answer must be less than the smaller of the two paths, 4.0 &#937;, because the long path provides an extra route for current and an extra route can only lower the resistance. 2.7 &#937; satisfies that. It must also be more than half of 4.0 &#937;, because the long path is not as good a route as a second 4.0 &#937; path would be; a second 4.0 &#937; path in parallel would give 2.0 &#937;, and the actual long path is worse than that, so the answer is higher. Both bounds are met, so the arithmetic is consistent with the physics.</p>
+  id: "S04-04", module: "H", topic: "A five-resistor network: reducing from the inside out, and why two parallel branches never share the current equally", diff: 3, rel: [["H", "Resistors in series add, and resistors in parallel combine as the reciprocal of the sum of the reciprocals"], ["H", "Two parallel branches carry equal currents only when their resistances are equal; otherwise the smaller resistance takes the larger share"], ["H", "A potential divider: the p.d. across one section is the supply p.d. in the ratio of that section's resistance to the total"], ["A", "Reducing a network in stages, from the inside out, rather than trying to see the whole answer at once"]], key: ["network", "parallel", "currentdivision", "stagedreduction"], ans: 0, paper: "BANK-S04",
+  rel: [["H", "Resistors in series add, and resistors in parallel combine as the reciprocal of the sum of the reciprocals"], ["H", "Two parallel branches carry equal currents only when their resistances are equal; otherwise the smaller resistance takes the larger share"], ["H", "A potential divider: the p.d. across one section is the supply p.d. in the ratio of that section's resistance to the total"], ["A", "Reducing a network in stages, from the inside out, rather than trying to see the whole answer at once"]],
+  q: `<p>The figure shows a 12 V battery of negligible internal resistance driving a network of five resistors whose values are marked on it. R1 = 4.0 &#937; is in series with everything else. The rest of the network is R2 = 6.0 &#937; in parallel with a branch that carries R3 = 8.0 &#937; in series with the pair R4 = 12 &#937; and R5 = 6.0 &#937;. <figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 350" role="img" aria-label="A 12 V battery driving R1 in series with two parallel branches: one branch is R2 alone, and the other is R3 in series with the parallel pair R4 and R5">
+<line x1="74" y1="92" x2="74" y2="178" stroke="#14181f" stroke-width="1.8"/>
+<line x1="60" y1="190" x2="88" y2="190" stroke="#14181f" stroke-width="2.6"/>
+<line x1="66" y1="178" x2="82" y2="178" stroke="#14181f" stroke-width="2.6"/>
+<line x1="74" y1="190" x2="74" y2="300" stroke="#14181f" stroke-width="1.8"/>
+<text x="52" y="188" font-size="11.5" text-anchor="end" fill="#14181f">12 V</text>
+<line x1="74" y1="92" x2="532" y2="92" stroke="#14181f" stroke-width="1.8"/>
+<line x1="74" y1="300" x2="532" y2="300" stroke="#14181f" stroke-width="1.8"/>
+<line x1="532" y1="92" x2="532" y2="300" stroke="#14181f" stroke-width="1.8"/>
+<rect x="140" y="80" width="76" height="24" fill="#e6eaf2" stroke="#14181f" stroke-width="1.8"/>
+<text x="178" y="68" font-size="11.5" text-anchor="middle" fill="#14181f">R1 = 4.0 &#937;</text>
+<rect x="520" y="172" width="24" height="48" fill="#e6eaf2" stroke="#14181f" stroke-width="1.8"/>
+<text x="506" y="198" font-size="11.5" text-anchor="end" fill="#14181f">R2 = 6.0 &#937;</text>
+<line x1="372" y1="92" x2="372" y2="130" stroke="#14181f" stroke-width="1.8"/>
+<rect x="360" y="130" width="24" height="44" fill="#e6eaf2" stroke="#14181f" stroke-width="1.8"/>
+<line x1="372" y1="174" x2="372" y2="196" stroke="#14181f" stroke-width="1.8"/>
+<text x="396" y="152" font-size="11.5" fill="#14181f">R3 = 8.0 &#937;</text>
+<line x1="326" y1="196" x2="408" y2="196" stroke="#14181f" stroke-width="1.8"/>
+<line x1="326" y1="196" x2="326" y2="300" stroke="#14181f" stroke-width="1.8"/>
+<line x1="408" y1="196" x2="408" y2="300" stroke="#14181f" stroke-width="1.8"/>
+<rect x="314" y="232" width="24" height="44" fill="#e6eaf2" stroke="#14181f" stroke-width="1.8"/>
+<rect x="396" y="232" width="24" height="44" fill="#e6eaf2" stroke="#14181f" stroke-width="1.8"/>
+<text x="300" y="256" font-size="11.5" text-anchor="end" fill="#14181f">R4 = 12 &#937;</text>
+<text x="432" y="256" font-size="11.5" fill="#14181f">R5 = 6.0 &#937;</text>
+<circle cx="246" cy="92" r="3.4" fill="#14181f" stroke="#14181f" stroke-width="1.4"/>
+<circle cx="246" cy="300" r="3.4" fill="#14181f" stroke="#14181f" stroke-width="1.4"/>
+<circle cx="372" cy="196" r="3.4" fill="#14181f" stroke="#14181f" stroke-width="1.4"/>
+<text x="234" y="84" font-size="12" text-anchor="end" font-weight="bold" fill="#a8641a">A</text>
+<text x="234" y="316" font-size="12" text-anchor="end" font-weight="bold" fill="#a8641a">B</text>
+<text x="372" y="216" font-size="12" text-anchor="middle" font-weight="bold" fill="#a8641a">C</text>
+<text x="74" y="330" font-size="10" fill="#7b8494">the battery has negligible internal resistance</text>
+</svg>
+</figure></p><p>What is the current in R4?</p>`,
+  opts: ["1/6 A", "1/2 A", "1/3 A", "1/4 A", "1/12 A"],
+  sol: `<p><b>What is being tested.</b> Whether you reduce a network in stages instead of trying to hold the whole thing in your head at once, and whether you resist the very natural assumption that two parallel branches carry equal currents. They carry equal currents only when they have equal resistance, and here they do not.</p>
+<p><b>Step 1 — the innermost pair.</b> R4 and R5 sit side by side between the same two points, so they are in parallel:</p>
+<div class="formula">R4 and R5 in parallel = (12 &#215; 6.0) / (12 + 6.0) = 72 / 18 = 4.0 &#937;</div>
+<p>Start at the inside. Nothing further out can be simplified until this pair has become one number.</p>
+<p><b>Step 2 — the branch that carries R3.</b> R3 is in series with that pair, so the whole lower branch has resistance</p>
+<div class="formula">R3 + 4.0 = 8.0 + 4.0 = 12 &#937;</div>
+<p><b>Step 3 — that branch in parallel with R2.</b> R2 and the branch are connected between the same two nodes, so they are in parallel:</p>
+<div class="formula">6.0 and 12 in parallel = (6.0 &#215; 12) / (6.0 + 12) = 72 / 18 = 4.0 &#937;</div>
+<p><b>Step 4 — the whole network.</b> R1 is in series with everything that follows it:</p>
+<div class="formula">R total = 4.0 + 4.0 = 8.0 &#937;</div>
+<p><b>Step 5 — the current the battery delivers.</b></p>
+<div class="formula">I total = V / R total = 12 / 8.0 = 1.5 A</div>
+<p><b>Step 6 — the p.d. across the parallel section.</b> That section carries the whole 1.5 A and has a resistance of 4.0 &#937;:</p>
+<div class="formula">V parallel = I total &#215; 4.0 = 1.5 &#215; 4.0 = 6.0 V</div>
+<p>The other 6.0 V is across R1, which is what you would expect, because R1 and the parallel section are now two equal 4.0 &#937; resistances in series across a 12 V supply.</p>
+<p><b>Step 7 — the current down the R3 branch.</b> That branch has 12 &#937; across it and 6.0 V across it:</p>
+<div class="formula">I branch = 6.0 / 12 = 0.50 A</div>
+<p>The remaining 1.0 A goes through R2, which is 6.0 V across 6.0 &#937;. The two currents add to 1.5 A, which is the total the battery supplies. This is the step where the equal-split assumption fails: the branch that looks longer and more complicated actually takes the <i>smaller</i> share, because its total resistance is 12 &#937; against R2's 6.0 &#937;.</p>
+<p><b>Step 8 — the p.d. across the inner pair.</b> The 0.50 A now flows through R3 and then through the pair R4 and R5:</p>
+<div class="formula">V inner = I branch &#215; 4.0 = 0.50 &#215; 4.0 = 2.0 V</div>
+<p>The other 4.0 V of the branch's 6.0 V is across R3 itself, so the two parts are in the ratio of their resistances, 8.0 to 4.0.</p>
+<p><b>Step 9 — the current in R4.</b> R4 has 2.0 V across it and a resistance of 12 &#937;:</p>
+<div class="formula">I(R4) = V inner / R4 = 2.0 / 12 = 1/6 A</div>
+<p>So <b>Answer: A.</b></p>
+<p><b>Step 10 — check the split inside the pair.</b> R5 has the same 2.0 V across it and only 6.0 &#937;, so</p>
+<div class="formula">I(R5) = 2.0 / 6.0 = 1/3 A
+1/6 + 1/3 = 1/2 A = I branch</div>
+<p>which is the branch current the step started with. The two currents are in the ratio 1 to 2 and the two resistances are in the ratio 2 to 1, exactly inverse, as they must be when the p.d. is common. So R4 carries the <i>smaller</i> of the two shares even though it is the resistor the question asks about — a reminder that the biggest number in a network is not always in the branch you expect.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>1.3 &#937;</b> is <code>4.0/3</code>, which is what you get by treating all three sides as being in parallel. They are not: the third side does not join the two vertices the battery is connected to, so current through it is not in parallel with the rest. It is in series with one of the other two.</p>
-<p>&middot; <b>4.0 &#937;</b> is the resistance of one side. It is the answer to a different question — the resistance of a single wire — and it ignores the fact that the current has a second route to take.</p>
-<p>&middot; <b>6.0 &#937;</b> is half the total, which is what you get by imagining the triangle as two equal paths of 6.0 &#937;. But the two paths are not equal: one is 4.0 &#937; and the other is 8.0 &#937;. When two parallel paths are unequal, the result is closer to the smaller one, not to the mean.</p>
-<p>&middot; <b>8.0 &#937;</b> is the long path alone. This is the most instructive of the wrong answers, because the long path is a genuine path and its resistance is correctly worked out. The mistake is forgetting that the direct side is still there, offering an easier route in parallel.</p>
-<p><b>The trap.</b> Reading the picture as a circuit diagram. A triangle drawn on the page looks like a loop, and it is tempting to add the sides in series round it. The right question is always "between which two points?", and then "how many ways can the current get from one to the other?".</p>
-<p><b>Relevant topics:</b> resistance and length; series and parallel combinations; networks of identical resistors; the resistance of a wire bent into a polygon.</p>`,
-  trap: `Reading the triangle as a loop and adding the three sides in series, or treating all three as parallel. There are two paths between the chosen vertices, not three.`
+<p>&middot; <b>1/2 A</b> is the current in the whole R3 branch. It is a real number, correctly worked out, and it is the most likely wrong answer because it is one step short of the end. It has not yet been divided between R4 and R5.</p>
+<p>&middot; <b>1/3 A</b> is the current in R5, the 6.0 &#937; partner. The p.d. of 2.0 V is right; the resistor is the wrong one. Notice that R5 takes twice the current of R4, so confusing the two costs a factor of two.</p>
+<p>&middot; <b>1/4 A</b> comes from giving each of the two outer parallel branches half the total current, 0.75 A instead of 0.50 A. Everything after that is done correctly, so the arithmetic is internally consistent — which is exactly why this is the dangerous distractor. The equal split is only valid when the branches are equal, and 6.0 &#937; is not 12 &#937;.</p>
+<p>&middot; <b>1/12 A</b> is 12 V divided by 12 &#937;, applying the battery p.d. directly across R4. It ignores R1 and the whole of the parallel section, so it is the answer you would get if R4 were the only resistor in the circuit.</p>
+<p><b>The trap.</b> Assuming the current divides equally wherever it meets a junction. The rule is the opposite: with a common p.d., the <i>smaller</i> resistance takes the <i>larger</i> current. At Step 7 the equal split would give 0.75 A where the truth is 0.50 A, and that single error survives to the end as 1/4 A instead of 1/6 A.</p>
+<p><b>Relevant topics:</b> series and parallel combinations; the reduction of a network in stages; current division between unequal branches; the potential divider; the p.d. across one resistor of a chain.</p>`,
+  trap: `Assuming two parallel branches share the current equally. With a common p.d. the smaller resistance takes the larger current, so the 12 ohm branch takes 0.50 A where the equal split would give 0.75 A.`
 },
 
 {
@@ -699,119 +750,108 @@ units of &#951; = (kg m s<sup>-2</sup>)(s)(m<sup>-2</sup>)
 },
 
 {
-  id: "S04-15", module: "B", topic: "Crossing a river: the time taken depends only on the component of velocity across the river", diff: 2, rel: [["B", "The velocity of the boat relative to the ground is the vector sum of its velocity relative to the water and the water's velocity"], ["B", "The time to cross depends only on the velocity component perpendicular to the banks"], ["A", "Recognising which quantity in a problem is unaffected by a change in another"]], key: ["river", "crossing", "component", "vectorsum"], ans: 3, paper: "BANK-S04",
-  rel: [["B", "The velocity of the boat relative to the ground is the vector sum of its velocity relative to the water and the water's velocity"], ["B", "The time to cross depends only on the velocity component perpendicular to the banks"], ["A", "Recognising which quantity in a problem is unaffected by a change in another"]],
-  q: `<p>The figure shows a boat leaving the near bank pointed straight across a river, with the current flowing along the bank. The river is 120 m wide and the boat's speed relative to the water is 3.0 m/s. The current is 2.0 m/s. <figure class="fig">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 264" role="img" aria-label="A boat leaving the near bank pointing straight across a river; its velocity relative to the water is drawn across the river, the current is drawn along the bank, and the resultant shows it landing downstream">
+  id: "S04-15", module: "B", topic: "A ball projected horizontally from a cliff and bouncing on the water: the total horizontal distance after three flights", diff: 3, rel: [["B", "Horizontal and vertical motion are independent, and a bounce leaves the horizontal component of velocity unchanged"], ["B", "The time of a vertical flight is proportional to the vertical component of the launch velocity"], ["B", "A vertical fall from rest covers one half of g times the square of the time"], ["C", "Halving the vertical speed takes away three quarters of the kinetic energy of the vertical motion, which is why the later flights are shorter"]], key: ["projectile", "bounce", "independence", "proportional"], ans: 3, paper: "BANK-S04",
+  rel: [["B", "Horizontal and vertical motion are independent, and a bounce leaves the horizontal component of velocity unchanged"], ["B", "The time of a vertical flight is proportional to the vertical component of the launch velocity"], ["B", "A vertical fall from rest covers one half of g times the square of the time"], ["C", "Halving the vertical speed takes away three quarters of the kinetic energy of the vertical motion, which is why the later flights are shorter"]],
+  q: `<p>A ball is projected horizontally at 15 m/s from the top of a cliff 20 m above the sea. It bounces on the water, and at each bounce the vertical component of its velocity is halved and reversed while the horizontal component is unchanged. The figure shows the three flights, ending at the third bounce. <figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 360" role="img" aria-label="A ball projected horizontally at 15 m/s from a cliff 20 m above the sea; it bounces three times, and each flight is flatter than the one before, with horizontal spans of 30 m, 30 m and 15 m">
 <defs><marker id="s04-15-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#b3352f"/></marker></defs>
 <defs><marker id="s04-15-ab" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#2f5fd0"/></marker></defs>
-<line x1="60" y1="70" x2="500" y2="70" stroke="#14181f" stroke-width="2"/>
-<line x1="60" y1="210" x2="500" y2="210" stroke="#14181f" stroke-width="2"/>
-<line x1="66" y1="70" x2="75" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="79" y1="70" x2="88" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="92" y1="70" x2="101" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="105" y1="70" x2="114" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="118" y1="70" x2="127" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="131" y1="70" x2="140" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="144" y1="70" x2="153" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="157" y1="70" x2="166" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="170" y1="70" x2="179" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="183" y1="70" x2="192" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="196" y1="70" x2="205" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="209" y1="70" x2="218" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="222" y1="70" x2="231" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="235" y1="70" x2="244" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="248" y1="70" x2="257" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="261" y1="70" x2="270" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="274" y1="70" x2="283" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="287" y1="70" x2="296" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="300" y1="70" x2="309" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="313" y1="70" x2="322" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="326" y1="70" x2="335" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="339" y1="70" x2="348" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="352" y1="70" x2="361" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="365" y1="70" x2="374" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="378" y1="70" x2="387" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="391" y1="70" x2="400" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="404" y1="70" x2="413" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="417" y1="70" x2="426" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="430" y1="70" x2="439" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="443" y1="70" x2="452" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="456" y1="70" x2="465" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="469" y1="70" x2="478" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="482" y1="70" x2="491" y2="61" stroke="#14181f" stroke-width="1.2"/>
-<line x1="66" y1="210" x2="57" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="79" y1="210" x2="70" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="92" y1="210" x2="83" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="105" y1="210" x2="96" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="118" y1="210" x2="109" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="131" y1="210" x2="122" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="144" y1="210" x2="135" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="157" y1="210" x2="148" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="170" y1="210" x2="161" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="183" y1="210" x2="174" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="196" y1="210" x2="187" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="209" y1="210" x2="200" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="222" y1="210" x2="213" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="235" y1="210" x2="226" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="248" y1="210" x2="239" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="261" y1="210" x2="252" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="274" y1="210" x2="265" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="287" y1="210" x2="278" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="300" y1="210" x2="291" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="313" y1="210" x2="304" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="326" y1="210" x2="317" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="339" y1="210" x2="330" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="352" y1="210" x2="343" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="365" y1="210" x2="356" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="378" y1="210" x2="369" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="391" y1="210" x2="382" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="404" y1="210" x2="395" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="417" y1="210" x2="408" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="430" y1="210" x2="421" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="443" y1="210" x2="434" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="456" y1="210" x2="447" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="469" y1="210" x2="460" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<line x1="482" y1="210" x2="473" y2="219" stroke="#14181f" stroke-width="1.2"/>
-<text x="70" y="58" font-size="10.5" fill="#7b8494">far bank</text>
-<text x="70" y="232" font-size="10.5" fill="#7b8494">near bank</text>
-<line x1="150" y1="210" x2="150" y2="70" stroke="#2f5fd0" stroke-width="2.4" marker-end="url(#s04-15-ab)"/>
-<text x="160" y="140" font-size="11.5" font-weight="bold" fill="#2f5fd0">boat</text>
-<line x1="150" y1="210" x2="290" y2="210" stroke="#1f7a53" stroke-width="2.4" marker-end="url(#s04-15-ar)"/>
-<text x="220" y="202" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#1f7a53">current</text>
-<line x1="150" y1="210" x2="290" y2="70" stroke="#b3352f" stroke-width="2.4" marker-end="url(#s04-15-ar)"/>
-<text x="302" y="80" font-size="11.5" font-weight="bold" fill="#b3352f">resultant</text>
-<circle cx="150" cy="210" r="3.6" fill="#14181f" stroke="#14181f" stroke-width="1.4"/>
-<line x1="150" y1="40" x2="290" y2="40" stroke="#7b8494" stroke-width="1.2"/>
-<line x1="150" y1="35" x2="150" y2="45" stroke="#7b8494" stroke-width="1.2"/>
-<line x1="290" y1="35" x2="290" y2="45" stroke="#7b8494" stroke-width="1.2"/>
-<text x="220" y="55" font-size="11" text-anchor="middle" fill="#7b8494">the current carries it downstream</text>
-<line x1="106" y1="70" x2="106" y2="210" stroke="#7b8494" stroke-width="1.2"/>
-<line x1="101" y1="70" x2="111" y2="70" stroke="#7b8494" stroke-width="1.2"/>
-<line x1="101" y1="210" x2="111" y2="210" stroke="#7b8494" stroke-width="1.2"/>
-<text x="97" y="144" font-size="11" text-anchor="end" fill="#7b8494">width</text>
+<line x1="150" y1="70" x2="150" y2="336" stroke="#14181f" stroke-width="2"/>
+<line x1="150" y1="76" x2="136" y2="86" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="89" x2="136" y2="99" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="102" x2="136" y2="112" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="115" x2="136" y2="125" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="128" x2="136" y2="138" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="141" x2="136" y2="151" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="154" x2="136" y2="164" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="167" x2="136" y2="177" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="180" x2="136" y2="190" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="193" x2="136" y2="203" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="206" x2="136" y2="216" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="219" x2="136" y2="229" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="232" x2="136" y2="242" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="245" x2="136" y2="255" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="258" x2="136" y2="268" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="271" x2="136" y2="281" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="284" x2="136" y2="294" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="297" x2="136" y2="307" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="310" x2="136" y2="320" stroke="#14181f" stroke-width="1.2"/>
+<line x1="150" y1="323" x2="136" y2="333" stroke="#14181f" stroke-width="1.2"/>
+<line x1="92" y1="70" x2="150" y2="70" stroke="#14181f" stroke-width="2"/>
+<line x1="94" y1="70" x2="103" y2="61" stroke="#14181f" stroke-width="1.2"/>
+<line x1="107" y1="70" x2="116" y2="61" stroke="#14181f" stroke-width="1.2"/>
+<line x1="120" y1="70" x2="129" y2="61" stroke="#14181f" stroke-width="1.2"/>
+<line x1="133" y1="70" x2="142" y2="61" stroke="#14181f" stroke-width="1.2"/>
+<line x1="146" y1="70" x2="155" y2="61" stroke="#14181f" stroke-width="1.2"/>
+<rect x="150" y="170" width="420" height="82" fill="#f2f5fa"/>
+<polyline points="150,170 155,171.254 160,172.139 165,172.392 170,171.94 175,170.916 180,169.621 185,168.438 190,167.716 195,167.667 200,168.307 205,169.445 210,170.748 215,171.829 220,172.372 225,172.214 230,171.404 235,170.179 240,168.902 245,167.948 250,167.6 255,167.96 260,168.921 265,170.2 270,171.421 275,172.222 280,172.368 285,171.816 290,170.727 295,169.425 300,168.292 305,167.663 310,167.723 315,168.455 320,169.642 325,170.936 330,171.953 335,172.394 340,172.129 345,171.236 350,169.979 355,168.727 360,167.852 365,167.609 370,168.072 375,169.104 380,170.4 385,171.578 390,172.29 395,172.327 400,171.678 405,170.534 410,169.232 415,168.157 420,167.625 425,167.794 430,168.613 435,169.842 440,171.117 445,172.063 450,172.4 455,172.029 460,171.06 465,169.778 470,168.562 475,167.77 480,167.635 485,168.198 490,169.293 495,170.596 500,171.723 505,172.342 510,172.27 515,171.529 520,170.337 525,169.045 530,168.035 535,167.605 540,167.881 545,168.782 550,170.042 555,171.29 560,172.158 565,172.389 570,171.915" fill="none" stroke="#2f5fd0" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="150,70 153.75,70.0625 157.5,70.25 161.25,70.5625 165,71 168.75,71.5625 172.5,72.25 176.25,73.0625 180,74 183.75,75.0625 187.5,76.25 191.25,77.5625 195,79 198.75,80.5625 202.5,82.25 206.25,84.0625 210,86 213.75,88.0625 217.5,90.25 221.25,92.5625 225,95 228.75,97.5625 232.5,100.25 236.25,103.062 240,106 243.75,109.062 247.5,112.25 251.25,115.562 255,119 258.75,122.562 262.5,126.25 266.25,130.062 270,134 273.75,138.062 277.5,142.25 281.25,146.562 285,151 288.75,155.562 292.5,160.25 296.25,165.062 300,170" fill="none" stroke="#b3352f" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="300,170 303.75,167.562 307.5,165.25 311.25,163.062 315,161 318.75,159.062 322.5,157.25 326.25,155.562 330,154 333.75,152.562 337.5,151.25 341.25,150.062 345,149 348.75,148.062 352.5,147.25 356.25,146.562 360,146 363.75,145.562 367.5,145.25 371.25,145.062 375,145 378.75,145.062 382.5,145.25 386.25,145.562 390,146 393.75,146.562 397.5,147.25 401.25,148.062 405,149 408.75,150.062 412.5,151.25 416.25,152.562 420,154 423.75,155.562 427.5,157.25 431.25,159.062 435,161 438.75,163.062 442.5,165.25 446.25,167.562 450,170" fill="none" stroke="#b3352f" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="450,170 451.875,169.391 453.75,168.812 455.625,168.266 457.5,167.75 459.375,167.266 461.25,166.812 463.125,166.391 465,166 466.875,165.641 468.75,165.312 470.625,165.016 472.5,164.75 474.375,164.516 476.25,164.312 478.125,164.141 480,164 481.875,163.891 483.75,163.812 485.625,163.766 487.5,163.75 489.375,163.766 491.25,163.812 493.125,163.891 495,164 496.875,164.141 498.75,164.312 500.625,164.516 502.5,164.75 504.375,165.016 506.25,165.312 508.125,165.641 510,166 511.875,166.391 513.75,166.812 515.625,167.266 517.5,167.75 519.375,168.266 521.25,168.812 523.125,169.391 525,170" fill="none" stroke="#b3352f" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="152" y1="70" x2="214" y2="70" stroke="#2f5fd0" stroke-width="2.4" marker-end="url(#s04-15-ab)"/>
+<text x="186" y="61" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#2f5fd0">15 m/s</text>
+<line x1="112" y1="70" x2="112" y2="170" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="107" y1="70" x2="117" y2="70" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="107" y1="170" x2="117" y2="170" stroke="#7b8494" stroke-width="1.2"/>
+<text x="103" y="124" font-size="11" text-anchor="end" fill="#7b8494">20 m</text>
+<circle cx="300" cy="170" r="4" fill="#b3352f" stroke="#b3352f" stroke-width="1.4"/>
+<circle cx="450" cy="170" r="4" fill="#b3352f" stroke="#b3352f" stroke-width="1.4"/>
+<circle cx="525" cy="170" r="4" fill="#b3352f" stroke="#b3352f" stroke-width="1.4"/>
+<line x1="150" y1="292" x2="525" y2="292" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="150" y1="287" x2="150" y2="297" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="300" y1="287" x2="300" y2="297" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="450" y1="287" x2="450" y2="297" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="525" y1="287" x2="525" y2="297" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="300" y1="174" x2="300" y2="287" stroke="#7b8494" stroke-width="1.2" stroke-dasharray="5 4"/>
+<line x1="450" y1="174" x2="450" y2="287" stroke="#7b8494" stroke-width="1.2" stroke-dasharray="5 4"/>
+<line x1="525" y1="174" x2="525" y2="287" stroke="#7b8494" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="225" y="310" font-size="11" text-anchor="middle" fill="#7b8494">30 m</text>
+<text x="375" y="310" font-size="11" text-anchor="middle" fill="#7b8494">30 m</text>
+<text x="487" y="310" font-size="11" text-anchor="middle" fill="#7b8494">15 m</text>
+<text x="308" y="196" font-size="10" fill="#7b8494">bounce 1</text>
+<text x="458" y="196" font-size="10" fill="#7b8494">bounce 2</text>
+<text x="529" y="196" font-size="10" fill="#7b8494">bounce 3</text>
+<text x="525" y="330" font-size="10.5" text-anchor="end" fill="#a8641a">the vertical speed is halved at each bounce;</text>
+<text x="525" y="346" font-size="10.5" text-anchor="end" fill="#a8641a">the horizontal speed is not</text>
 </svg>
-</figure></p><p>How long does the crossing take?</p>`,
-  opts: ["24 s", "33 s", "48 s", "40 s", "60 s"],
-  sol: `<p><b>What is being tested.</b> Whether you can separate the two velocities in a relative-motion problem, and whether you notice that one of them does not affect the answer at all.</p>
-<p><b>Step 1 — the two velocities.</b> The boat has a velocity relative to the water of 3.0 m/s, and it is pointed straight across, so that velocity is perpendicular to the banks. The water has a velocity relative to the ground of 2.0 m/s along the banks. The boat's velocity relative to the ground is the vector sum of the two, which is what the resultant arrow in the figure shows.</p>
-<p><b>Step 2 — which component carries the boat across.</b> The width of the river is measured perpendicular to the banks, so only the component of the boat's velocity perpendicular to the banks carries it from one bank to the other. The current is parallel to the banks and has no component in that direction at all. So the crossing speed is just the boat's own speed, 3.0 m/s.</p>
-<p><b>Step 3 — the crossing time.</b></p>
-<div class="formula">t = width / crossing speed
-  = 120 / 3.0
-  = 40 s</div>
+</figure></p><p>Taking g = 10 m/s<sup>2</sup>, what is the total horizontal distance the ball travels from the cliff top to the third bounce?</p>`,
+  opts: ["60 m", "90 m", "45 m", "75 m", "150 m"],
+  sol: `<p><b>What is being tested.</b> Whether you keep the horizontal and vertical parts of a projectile separate right through a sequence of bounces, and whether you notice which of the two the bounce does <i>not</i> touch.</p>
+<p><b>Step 1 — the launch.</b> The ball leaves the cliff top horizontally, so its velocity has only one component to begin with:</p>
+<div class="formula">horizontal: 15 m/s
+vertical: 0</div>
+<p>The vertical motion starts from rest, exactly as if the ball had been dropped. The horizontal motion is unaffected by anything that happens vertically, and that separation is the whole basis of the question.</p>
+<p><b>Step 2 — the time of the first fall.</b> The ball falls 20 m from rest under gravity:</p>
+<div class="formula">s = 0.5 g t squared
+20 = 0.5 &#215; 10 &#215; t squared = 5 t squared
+t squared = 4, so t = 2.0 s</div>
+<p><b>Step 3 — the first horizontal leg.</b> The horizontal speed is constant, so the distance is speed times time:</p>
+<div class="formula">x1 = 15 &#215; 2.0 = 30 m</div>
+<p><b>Step 4 — the vertical speed at the first bounce.</b> The ball has been accelerating downward for 2.0 s:</p>
+<div class="formula">v = g t = 10 &#215; 2.0 = 20 m/s downward</div>
+<p><b>Step 5 — what the bounce does.</b> The vertical component is halved and reversed, so it becomes 10 m/s upward. The horizontal component is untouched and is still 15 m/s. That asymmetry is the heart of the question: the bounce takes energy out of the vertical motion and leaves the horizontal motion exactly as it was.</p>
+<p><b>Step 6 — the time of the second flight.</b> The ball leaves the water at 10 m/s upward and returns to the same level. Rising from 10 m/s to rest and falling back takes twice the time to reach the top:</p>
+<div class="formula">time to the top = 10 / 10 = 1.0 s
+t2 = 2 &#215; 1.0 = 2.0 s</div>
+<p><b>Step 7 — the second horizontal leg.</b></p>
+<div class="formula">x2 = 15 &#215; 2.0 = 30 m</div>
+<p>So the second flight is <i>exactly as wide</i> as the first, and only a quarter as tall — it rose 5 m where the first fell 20 m. That looks wrong until you remember that the horizontal speed never changed, so the same time in the air must give the same distance across.</p>
+<p><b>Step 8 — the third flight.</b> The ball returns to the water at 10 m/s downward, and the bounce halves that again, so it leaves at 5.0 m/s upward:</p>
+<div class="formula">t3 = 2 &#215; 5.0 / 10 = 1.0 s</div>
+<p><b>Step 9 — the third horizontal leg.</b></p>
+<div class="formula">x3 = 15 &#215; 1.0 = 15 m</div>
 <p>So <b>Answer: D.</b></p>
-<p><b>Step 4 — check by working out where the boat lands.</b> The current carries the boat downstream for the whole crossing, so the drift is</p>
-<div class="formula">drift = current &#215; time = 2.0 &#215; 40 = 80 m</div>
-<p>The boat therefore lands 80 m downstream of the point directly opposite, and it has travelled along a diagonal of length <code>&#8730;(120<sup>2</sup> + 80<sup>2</sup>) = &#8730;20800</code>, which is about 144 m. Dividing that by the resultant speed of <code>&#8730;(3.0<sup>2</sup> + 2.0<sup>2</sup>) = 3.6 m/s</code> gives about 40 s again, which is a completely independent confirmation of the same answer. The two routes agreeing is the strongest check available here, and it also shows why the current cannot matter: it lengthens the path and raises the speed by exactly matching amounts.</p>
+<p><b>Step 10 — add the legs and check the pattern.</b></p>
+<div class="formula">x total = 30 + 30 + 15 = 75 m</div>
+<p>The three flight times are 2.0 s, 2.0 s and 1.0 s, in the ratio 2 to 2 to 1, which is exactly the ratio of the vertical launch speeds 20, 10 and 5 — the flight time is proportional to the vertical speed and to nothing else. The horizontal speed is 15 m/s throughout, so the distances are in the same ratio as the times. Every number in the answer comes from those two facts, and they can be checked independently: the ball is in the air for 5.0 s altogether, and 15 m/s for 5.0 s is 75 m.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>24 s</b> adds the two speeds, 3.0 + 2.0 = 5.0 m/s, and divides 120 by that. Speeds in perpendicular directions do not add like ordinary numbers; they combine as the sides of a right-angled triangle. The resultant is 3.6 m/s, not 5.0 m/s.</p>
-<p>&middot; <b>33 s</b> uses the resultant of 3.6 m/s as the crossing speed. The resultant is the right quantity to use if you want the speed along the actual path, and the wrong one if you want the time to cross, because the path is longer than the width. This is the most sophisticated of the wrong answers and it is worth seeing why it fails: it pairs a diagonal speed with a straight-line distance.</p>
-<p>&middot; <b>48 s</b> uses the average of the two speeds, 2.5 m/s. There is no physical reason to average a velocity across the river with a velocity along it; they act in perpendicular directions and are not two estimates of the same thing.</p>
-<p>&middot; <b>60 s</b> uses the current speed, 2.0 m/s, to cross. That would be right only if the boat were pointed downstream and the current were the only thing carrying it across, which is the opposite of the situation in the figure.</p>
-<p><b>The trap.</b> Assuming the current must make the crossing take longer. It is a natural assumption — the current is clearly doing something — and it is wrong. The current changes the direction of travel and the distance covered, but not the time, because it acts at right angles to the motion that is carrying the boat across.</p>
-<p><b>Relevant topics:</b> relative velocity; vector addition at right angles; resolving a velocity into components; motion in two dimensions with constant velocity.</p>`,
-  trap: `Assuming the current makes the crossing take longer. It acts at right angles to the crossing direction, so it changes where the boat lands and not how long it takes.`
+<p>&middot; <b>60 m</b> counts the first two flights and forgets the third. It is the most likely wrong answer, because after two identical 30 m legs it is natural to feel that the pattern has been established and to stop. The ball bounces a third time and travels another 15 m.</p>
+<p>&middot; <b>90 m</b> treats the bounce as perfectly elastic. If the vertical speed came back unchanged at 20 m/s the second flight would last 4.0 s and cover 60 m, giving 30 + 60. The question says the vertical component is halved, and that is the single fact this option ignores.</p>
+<p>&middot; <b>45 m</b> halves the whole flight at the bounce instead of only the vertical part. That would make the second leg 15 m rather than 30 m, and it double-counts the error by also stopping there. Halving the vertical speed halves the <i>time</i>; the horizontal distance then follows from a horizontal speed that has not changed at all.</p>
+<p>&middot; <b>150 m</b> makes the same elastic-bounce mistake as 90 m but carries it through all three flights, giving three legs of 30, 60 and 60 m.</p>
+<p><b>The trap.</b> Assuming that a bounce which clearly removes energy must shorten the next flight. It does shorten the flight in <i>time</i> and in <i>height</i>, but not in horizontal distance, because the horizontal speed is the one quantity the bounce never touches. The figure is drawn to scale for exactly this reason: the second arc is the same width as the first and visibly flatter, and the third is half as wide.</p>
+<p><b>Relevant topics:</b> projectile motion; independence of horizontal and vertical motion; free fall from rest; the time of flight of a vertical launch; velocity-time reasoning without a calculator.</p>`,
+  trap: `Assuming the bounce must shorten the next flight in horizontal distance. It halves the vertical speed and so halves the flight time, but the horizontal speed is unchanged, so the second leg is the same 30 m as the first.`
 },
 
 {

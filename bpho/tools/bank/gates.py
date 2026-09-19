@@ -97,6 +97,38 @@ LETTER_MAX = 10
 TOP_QUARTILE_MIN = 6                    # questions at or above the 2025 paper's p75
 HANDCHECK_MIN = 5                       # hand-worked questions required per section
 
+# ── the top end (added 2026-09-19, after "the difficulty is really low") ──────
+# The section median was never the problem: at 15.2 against the real paper's 13.5 it
+# already passed, and had passed for four sections.  The problem was that the bank was
+# FLAT.  Measured on the 2025 paper, `moves` runs 1,2,2,2,2, 3 x15, 4,4,4, 5, and then a
+# single question at THIRTEEN -- fifteen quick questions and one monster.  The bank ran
+# 2 x3, 3 x6, 4 x51, 5 x47, 6 x18 and stopped dead: nothing above six, in 125 questions.
+# A flat bank of medium questions passes every median test and still leaves a candidate
+# unprepared for the one question that actually selects, so the top end is now a gate.
+#
+# DEEP_MOVES = 9 is where the paper's own outlier lives (it is at 13).  SECTION_MAX_MIN
+# is set just below what a nine-move chain can earn, so the ceiling cannot be reached
+# without one: 1.60*9 + 1.00*4(capped) + 1.50 symbolic + 1.00 fig + 0.80 trap + 3.60 rels
+# is 25.3, and without a figure or a trap it is still 22.5.
+DEEP_MOVES = 9                          # moves at or above this make a question "deep"
+DEEP_MIN = 2                            # deep questions required per section
+SECTION_MAX_MIN = 22.0                  # the section's hardest question must reach this
+# The other end of the same idea.  The 2025 paper's easiest question scores 8.3, so a
+# section with an item below 8.0 contains something the real paper would not have set.
+SECTION_MIN_MIN = 8.0                   # the section's easiest question must stay above this
+# Round 0 is a NON-CALCULATOR paper, and the two terms that encode that skill are
+# `approx` (a required approximation) and `symbolic` (a symbolic answer).  The real paper
+# uses each in 10 of its 25 questions -- 40% -- while the bank used an approximation in
+# 12 of 125 (10%).  Coverage of these two axes is now a gate as well.
+#
+# The floors live on the SECTION PLAN rather than here, so that a section can state the
+# standard it is held to and this gate can report the number it was measured against.
+# Sections 1-5 are grandfathered at the floors they already meet; sections 6-40 must
+# meet the 2025 paper's own profile.  These two constants are only the fallback for a
+# plan entry that does not carry a floor.
+NONCALC_MIN = 6                         # questions per section with approx OR symbolic
+APPROX_MIN = 1                          # ... and of those, the ones requiring an approximation
+
 SHAPES = {
     "ratio-cancellation", "limiting-case", "symmetry", "conservation",
     "dimensional-analysis", "graph-reading", "diagram-geometry", "algebraic-elimination",
@@ -1205,6 +1237,27 @@ def gate_section(n: int, base=None, verbose=True, questions=None):
 
         f = features({"sol": q["_sol"], "q": q["_stem"], "opts": q["_opts"],
                       "trap": q.get("trap", ""), "rel": q.get("rel", [])})
+        # A deep question declares a long chain, and the declaration has to be as long as
+        # the chain it claims.  Nine numbered steps on a single relation is nine steps of
+        # nothing, so a deep question also has to name at least four distinct relations --
+        # that is what R0-25 does (symmetry folding, series/parallel, the balanced bridge,
+        # and ordering without decimals) and what a padded solution cannot fake.
+        #
+        # These two checks come FIRST among the chain checks, and that ordering is not
+        # cosmetic.  The rule below -- "the profile may not declare fewer steps than the
+        # solution walks" -- fires on the same content whenever the solution numbers its
+        # steps, so with the ordinary order in place the deep rule could never be the
+        # reported finding and no mutant could prove it fires.  Putting the more specific
+        # diagnostic first is what makes it observable.
+        if f["moves"] >= DEEP_MOVES:
+            if len(steps) < DEEP_MOVES:
+                errs.append("G4 %s: the solution walks %d moves, so the profile must declare "
+                            "at least %d steps; it declares %d"
+                            % (q["id"], f["moves"], DEEP_MOVES, len(steps)))
+            if len(set(rels)) < 4:
+                errs.append("G4 %s: a deep question must name >= 4 distinct relations, "
+                            "profile has %d -- a long chain on one relation is padding"
+                            % (q["id"], len(set(rels))))
         # the declared chain may not be shorter than the chain the solution actually walks
         if f["n_steps"] and len(steps) < f["n_steps"]:
             errs.append("G4 %s: profile declares %d steps but the solution walks %d "
@@ -1244,6 +1297,18 @@ def gate_section(n: int, base=None, verbose=True, questions=None):
         errs.append("G5: %d question(s) below the 2025 paper's 25th percentile (%.1f); the "
                     "paper itself has only 6, so the section is drifting easy: %s"
                     % (len(easy), ref["p25"], ", ".join("%s=%.1f" % b for b in easy[:6])))
+    # ... and there is a floor as well as a count.  The 2025 paper's EASIEST question
+    # scores 8.3, so a section that dips below 8.0 has an item the real paper would not
+    # have set at all -- usually a one-line recognition question dressed up as a
+    # multiple-choice item.  Section 5 was the first section to trip this: its opening
+    # dimensional-analysis question scored 7.7 because it asked the candidate to
+    # RECOGNISE a combination instead of building one.
+    if min(scores) < SECTION_MIN_MIN:
+        i = scores.index(min(scores))
+        errs.append("G5: the section's easiest question %s scores %.1f, below the %.1f "
+                    "floor -- the 2025 paper's easiest is 8.3, so an item under 8.0 is "
+                    "easier than anything the real paper sets"
+                    % (qs[i]["id"], min(scores), SECTION_MIN_MIN))
     # the top end must be real, not just the middle
     top = [qs[i]["id"] for i in range(len(qs)) if scores[i] >= ref["p75"]]
     if len(top) < TOP_QUARTILE_MIN:
@@ -1266,8 +1331,68 @@ def gate_section(n: int, base=None, verbose=True, questions=None):
     for k, mn in spec.DIFF_MIN.items():
         if dist.get(k, 0) < mn:
             errs.append("G5: %d questions at diff %d, at least %d required" % (dist.get(k, 0), k, mn))
+
+    # ── G5b: the top end ────────────────────────────────────────────────────
+    # The median tests above can all pass on a flat bank.  This one cannot.  It asks
+    # whether the section contains at least DEEP_MIN questions whose reasoning chain is
+    # genuinely long, and whether its hardest question reaches SECTION_MAX_MIN -- the
+    # two things the real paper has (one question at 13 moves, scoring 27.4) and the
+    # bank had none of, in 125 questions.
+    feats = [features({"sol": q["_sol"], "q": q["_stem"], "opts": q["_opts"],
+                       "trap": q.get("trap", ""), "rel": q.get("rel", [])}) for q in qs]
+    moves = [f["moves"] for f in feats]
+    deep = [(qs[i]["id"], moves[i], scores[i]) for i in range(len(qs))
+            if moves[i] >= DEEP_MOVES]
+    if len(deep) < DEEP_MIN:
+        longest = sorted(range(len(qs)), key=lambda i: -moves[i])[:3]
+        errs.append("G5b: only %d question(s) with a reasoning chain of %d+ moves; at least "
+                    "%d wanted -- the section has no top end. Its longest chains are %s. "
+                    "The 2025 paper carries one question at 13 moves, scoring 27.4."
+                    % (len(deep), DEEP_MOVES, DEEP_MIN,
+                       ", ".join("%s=%d" % (qs[i]["id"], moves[i]) for i in longest)))
+    if max(scores) < SECTION_MAX_MIN:
+        errs.append("G5b: the section's hardest question scores %.1f, below the %.1f needed "
+                    "to reach the 2025 paper's top end (its hardest is 27.4)"
+                    % (max(scores), SECTION_MAX_MIN))
+    # A deep question must not have bought its length with decoration.  A figure is only
+    # worth 1.00 and cannot fake nine moves, so the real risk is not illustration -- it is
+    # nine NUMBERED steps for three steps of work.  That cannot be caught from the score,
+    # so it is caught two ways: the profile must declare the chain (G4, below), and every
+    # question is hand-worked into the ledger with its relations enumerated (G10).
+
+    # ── G5c: the non-calculator axes ────────────────────────────────────────
+    # Round 0 is sat without a calculator.  `approx` and `symbolic` are the two terms in
+    # the scorer that encode that, and the 2025 paper uses one or the other in 16 of its
+    # 25 questions against the bank's 41 in 125.  A section that never asks for either is
+    # not training the thing the paper is for.
+    #
+    # Two clauses, and they are not the same clause.  The union can be satisfied entirely
+    # with symbolic options -- an author can give every answer as a formula and never once
+    # require an approximation -- so the second clause exists to stop the axis being met
+    # on paper.  Sections 6-40 are held to the paper's own numbers for both.
+    noncalc = [qs[i]["id"] for i in range(len(qs))
+               if feats[i]["approx"] or feats[i]["symbolic"]]
+    approx_only = [qs[i]["id"] for i in range(len(qs)) if feats[i]["approx"]]
+    noncalc_min = plan.get("noncalc_min", NONCALC_MIN)
+    approx_min = plan.get("approx_min", APPROX_MIN)
+    if len(noncalc) < noncalc_min:
+        errs.append("G5c: only %d question(s) require an approximation or a symbolic answer; "
+                    "at least %d wanted. Round 0 is non-calculator, and the 2025 paper "
+                    "asks for one or the other in 16 of its 25 questions."
+                    % (len(noncalc), noncalc_min))
+    if len(approx_only) < approx_min:
+        errs.append("G5c: only %d question(s) require an APPROXIMATION; at least %d wanted. "
+                    "The 2025 paper requires one in 10 of its 25, and symbolic options "
+                    "alone cannot satisfy this clause -- an answer written as a formula "
+                    "still has to be obtained, and a no-calculator paper that never "
+                    "approximates is testing arithmetic instead."
+                    % (len(approx_only), approx_min))
+
     g5_stats = {"median": sec_median, "p25": sec_p25, "min": min(scores), "max": max(scores),
-                "top_quartile": len(top), "bands": dist}
+                "top_quartile": len(top), "bands": dist,
+                "deep": len(deep), "longest": max(moves), "noncalc": len(noncalc),
+                "approx": len(approx_only),
+                "noncalc_min": noncalc_min, "approx_min": approx_min}
 
     # ---- G6 similarity -----------------------------------------------------
     for i in range(len(qs)):
@@ -1345,6 +1470,8 @@ def gate_section(n: int, base=None, verbose=True, questions=None):
         "median": sec_median,
         "ref_median": ref["median"], "ref_p25": ref["p25"],
         "handchecked": len(checked),
+        "deep": g5_stats["deep"], "longest": g5_stats["longest"],
+        "noncalc": g5_stats["noncalc"],
     }
     if verbose:
         print("section %s  n=%d  figures=%d  hand-checked=%d"
@@ -1357,6 +1484,13 @@ def gate_section(n: int, base=None, verbose=True, questions=None):
         print("  hardest    " + ", ".join(
             "%s=%.1f" % (qs[k]["id"], v) for k, v in
             sorted(enumerate(scores), key=lambda t: -t[1])[:4]))
+        print("  top end    deep(>=%d moves)=%d   longest chain=%d   "
+              "(2025 paper: 1 deep, longest 13)"
+              % (DEEP_MOVES, g5_stats["deep"], g5_stats["longest"]))
+        print("  non-calc   approx-or-symbolic=%d/%d (floor %d)   approximation only=%d/%d "
+              "(floor %d)   (2025 paper: 16/25 and 10/25)"
+              % (g5_stats["noncalc"], len(qs), g5_stats["noncalc_min"],
+                 g5_stats["approx"], len(qs), g5_stats["approx_min"]))
     return errs, stats
 
 

@@ -20,21 +20,42 @@
 window.BPHO_QUESTIONS = (window.BPHO_QUESTIONS || []).concat([
 
 {
-  id: "S05-01", module: "A", topic: "Dimensional analysis: which combination has the dimensions of pressure", diff: 1, rel: [["A", "Pressure is force per unit area, so its dimensions are ML^-1 T^-2"], ["A", "Reducing a compound quantity to its base dimensions"]], key: ["dimensions", "pressure", "baseunits"], ans: 0, paper: "BANK-S05",
-  rel: [["A", "Pressure is force per unit area, so its dimensions are ML^-1 T^-2"], ["A", "Reducing a compound quantity to its base dimensions"]],
-  q: `<p>Which one of the following has the same dimensions as pressure (force divided by area)?</p>`,
-  opts: ["<code>energy / volume</code>", "<code>power / area</code>", "<code>force / length</code>", "<code>momentum / volume</code>", "<code>mass / (area x time)</code>"],
-  sol: `<p><b>What is being tested.</b> Whether you can reduce a compound quantity to its base dimensions and recognise that pressure is force per area.</p>
-<p><b>Step 1 — the dimensions of pressure.</b> Force is mass times acceleration, so <code>[F] = MLT^-2</code>, and area is <code>L^2</code>. Therefore</p>
-<div class="formula">[p] = [F] / [A] = MLT^-2 / L^2 = ML^-1 T^-2</div>
-<p><b>Step 2 — test each option.</b> Energy is <code>ML^2 T^-2</code>, so energy over volume <code>(ML^2 T^-2)/L^3 = ML^-1 T^-2</code> -- exactly the dimensions of pressure. Power is <code>ML^2 T^-3</code>, so power over area is <code>MT^-3</code>; force over length is <code>MT^-2</code>; momentum over volume is <code>ML^-2 T^-1</code>; and mass over area-time is <code>ML^-2 T^-1</code>. Only the first matches. So <b>Answer: A.</b></p>
-<p><b>The distractors.</b></p>
-<p>&middot; <b>power / area</b> gives <code>MT^-3</code>: it carries a time to the minus three instead of minus two, the difference between a flux of energy and an actual pressure.</p>
-<p>&middot; <b>force / length</b> gives <code>MT^-2</code>, a force per unit length such as surface tension, short by one length.</p>
-<p>&middot; <b>momentum / volume</b> gives <code>ML^-2 T^-1</code>, a momentum flux, again missing a length.</p>
-<p>&middot; <b>mass / (area x time)</b> is the same wrong dimensions as the momentum trap, a coincidence that separates the careful from the careless.</p>
-<p><b>Relevant topics:</b> base dimensions; reducing compound quantities; pressure as force per unit area.</p>`,
-  trap: `Treating pressure as a force divided by a length (surface-tension dimensions) instead of by an area. The extra length is the difference between the right answer and three of the five options.`
+  id: "S05-01", module: "A", topic: "Dimensional analysis as a construction: which combination of a density, a speed and a length has the dimensions of a mass flow rate", diff: 3, rel: [["A", "Every physical quantity can be written in the three base dimensions of mass, length and time"], ["A", "A product of powers of the given quantities is matched dimension by dimension, giving one equation for each base dimension"], ["A", "Solving those equations for the three unknown exponents and assembling the combination"], ["A", "Checking the result by substituting the dimensions back in"]], key: ["dimensions", "construction", "exponents", "massflow"], ans: 0, paper: "BANK-S05",
+  rel: [["A", "Every physical quantity can be written in the three base dimensions of mass, length and time"], ["A", "A product of powers of the given quantities is matched dimension by dimension, giving one equation for each base dimension"], ["A", "Solving those equations for the three unknown exponents and assembling the combination"], ["A", "Checking the result by substituting the dimensions back in"]],
+  q: `<p>Three quantities are available: a density &#961; whose dimensions are M L<sup>&#8722;3</sup>, a speed v whose dimensions are L T<sup>&#8722;1</sup>, and a length d whose dimensions are L.</p><p>Which combination of these three has the dimensions of the mass of fluid crossing a section each second, which is M T<sup>&#8722;1</sup>?</p>`,
+  opts: ["&#961; v d<sup>2</sup>", "&#961; v<sup>2</sup> d", "&#961; v / d", "&#961; v d", "&#961; v<sup>2</sup> d<sup>2</sup>"],
+  sol: `<p><b>What is being tested.</b> Whether you can <i>build</i> a combination rather than recognise one. The five options all look like plausible products of the same three symbols, and reading them off by eye is a guess. Writing one equation for each base dimension turns it into arithmetic.</p>
+<p><b>Step 1 — write the dimensions down.</b> Each quantity is given in terms of mass M, length L and time T:</p>
+<div class="formula">[&#961;] = M L&#8722;3      [v] = L T&#8722;1      [d] = L
+target: M T&#8722;1</div>
+<p>The target has no length in it at all. That is the single most useful fact here, and it is what the last equation will have to arrange.</p>
+<p><b>Step 2 — suppose the answer is a product of powers.</b> Any combination of the three must have the form</p>
+<div class="formula">&#961; to the a &#215; v to the b &#215; d to the c</div>
+<p>where a, b and c are numbers still to be found. Multiplying powers adds their exponents, so the dimensions of this product are</p>
+<div class="formula">M to the a &#215; L to the (&#8722;3a + b + c) &#215; T to the (&#8722;b)</div>
+<p><b>Step 3 — match the mass.</b> The target carries M to the first power and only the density contributes any mass:</p>
+<div class="formula">a = 1</div>
+<p><b>Step 4 — match the time.</b> The target carries T to the minus one and only the speed contributes any time:</p>
+<div class="formula">&#8722;b = &#8722;1, so b = 1</div>
+<p><b>Step 5 — match the length.</b> The target carries no length at all, so the length exponent must come to zero. This is the only equation that needs real work, because all three quantities bring a length:</p>
+<div class="formula">&#8722;3a + b + c = 0
+&#8722;3(1) + (1) + c = 0
+c = 2</div>
+<p><b>Step 6 — assemble it.</b> With a = 1, b = 1 and c = 2,</p>
+<div class="formula">&#961; v d squared</div>
+<p>So <b>Answer: A.</b></p>
+<p><b>Step 7 — substitute back and check.</b> Put the dimensions in and see whether they really do give the target:</p>
+<div class="formula">M L&#8722;3 &#215; L T&#8722;1 &#215; L squared = M L to the (&#8722;3 + 1 + 2) T&#8722;1 = M T&#8722;1</div>
+<p>The lengths cancel exactly, which was the whole requirement. Notice how the answer was forced: two of the three exponents were read straight off the mass and time equations, and only the third needed solving. Three unknowns, three equations, no guessing.</p>
+<p><b>Step 8 — check it makes physical sense.</b> A density times a speed times an area is a mass per unit volume, times a distance per second, times an area. The volume per second is area times speed, and multiplying that by the density gives the mass flowing past each second. So the combination is not just dimensionally correct, it is the right physical statement: mass flow rate = density &#215; speed &#215; area.</p>
+<p><b>The distractors.</b> Every wrong option is a real product of the same three symbols, so each one has to be checked rather than dismissed.</p>
+<p>&middot; <b>&#961; v squared d</b> gives M T<sup>&#8722;2</sup>. The squared speed has put a second time into the denominator, so this is a force per unit length rather than a mass per second. It is the nearest miss of the four: only one exponent differs from the answer.</p>
+<p>&middot; <b>&#961; v / d</b> gives M L<sup>&#8722;3</sup> T<sup>&#8722;1</sup>. Dividing by a length where the answer needs a length squared leaves three powers of the length in the denominator.</p>
+<p>&middot; <b>&#961; v d</b> gives M L<sup>&#8722;1</sup> T<sup>&#8722;1</sup>. It is one power of the length short of cancelling — a very easy slip if you count the density's L<sup>&#8722;3</sup> and the speed's L as cancelling and then forget that the length d has to supply two more.</p>
+<p>&middot; <b>&#961; v squared d squared</b> gives M L T<sup>&#8722;2</sup>, which is a force. It overshoots the length by one and the time by one at the same time, so two errors have partly cancelled and the result looks superficially reasonable.</p>
+<p><b>The trap.</b> Treating dimensional analysis as pattern-spotting. The five options differ only in their exponents, so the eye has almost nothing to work with and the confident answer is usually the one that was seen most recently. The method is mechanical and cannot be faked: one equation per base dimension, solved in the order mass, time, length, because that is the order in which the equations become solvable.</p>
+<p><b>Relevant topics:</b> base dimensions; writing a quantity as a product of powers; matching exponents dimension by dimension; mass flow rate; checking a derived combination.</p>`,
+  trap: `Reading the combination off the list by eye. Three base dimensions give three equations, and two of them name an exponent outright, so the answer is forced rather than chosen.`
 },
 
 {
@@ -210,51 +231,97 @@ T = 480 x 5 / 12 = 200 N</div>
 },
 
 {
-  id: "S05-06", module: "C", topic: "A block on a table linked over a pulley: the normal reaction", diff: 2, rel: [["C", "Resolving forces on a body in vertical equilibrium on a horizontal surface"], ["C", "The normal reaction balances only the vertical forces on that body"], ["A", "The hanging weight acts on a different body and does not enter the table's normal force"]], key: ["normal", "equilibrium", "table"], ans: 3, paper: "BANK-S05",
-  rel: [["C", "Resolving forces on a body in vertical equilibrium on a horizontal surface"], ["C", "The normal reaction balances only the vertical forces on that body"], ["A", "The hanging weight acts on a different body and does not enter the table's normal force"]],
-  q: `<p>A 5.0 kg block rests on a rough horizontal table and is joined by a light string over a smooth pulley to a hanging 3.0 kg block. <figure class="fig">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 212" role="img" aria-label="A 5.0 kilogram block on a rough horizontal table joined by a light string over a smooth pulley to a hanging 3.0 kilogram block.">
-<defs><marker id="s05-06-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#b3352f"/></marker></defs>
-<rect x="30" y="118" width="150" height="10" fill="#e6eaf2"/>
-<line x1="30" y1="128" x2="40" y2="138" stroke="#7b8494" stroke-width="0.9"/>
-<line x1="42" y1="128" x2="52" y2="138" stroke="#7b8494" stroke-width="0.9"/>
-<line x1="54" y1="128" x2="64" y2="138" stroke="#7b8494" stroke-width="0.9"/>
-<line x1="66" y1="128" x2="76" y2="138" stroke="#7b8494" stroke-width="0.9"/>
-<line x1="78" y1="128" x2="88" y2="138" stroke="#7b8494" stroke-width="0.9"/>
-<line x1="90" y1="128" x2="100" y2="138" stroke="#7b8494" stroke-width="0.9"/>
-<line x1="102" y1="128" x2="112" y2="138" stroke="#7b8494" stroke-width="0.9"/>
-<circle cx="196" cy="106" r="16" fill="#f2f5fa" stroke="#14181f" stroke-width="1.8"/>
-<circle cx="196" cy="106" r="4" fill="#14181f" stroke="#14181f" stroke-width="1.2"/>
-<line x1="180" y1="92" x2="180" y2="78" stroke="#14181f" stroke-width="1.6"/>
-<line x1="180" y1="78" x2="196" y2="78" stroke="#14181f" stroke-width="1.6"/>
-<rect x="58" y="84" width="56" height="34" fill="#f2f5fa" stroke="#14181f" stroke-width="2"/>
-<text x="86" y="106" font-size="11.5" text-anchor="middle" fill="#14181f">5.0 kg</text>
-<line x1="114" y1="101" x2="180" y2="101" stroke="#14181f" stroke-width="1.8"/>
-<line x1="212" y1="101" x2="212" y2="140" stroke="#14181f" stroke-width="1.8"/>
-<rect x="194" y="140" width="36" height="34" fill="#f2f5fa" stroke="#14181f" stroke-width="2"/>
-<text x="212" y="162" font-size="11.5" text-anchor="middle" fill="#14181f">3.0 kg</text>
-<line x1="212" y1="174" x2="212" y2="200" stroke="#b3352f" stroke-width="1.6" marker-end="url(#s05-06-ar)"/>
-<text x="208" y="186" font-size="10.5" text-anchor="end" fill="#b3352f">weight</text>
-<text x="140" y="90" font-size="10.5" text-anchor="middle" fill="#7b8494">smooth pulley</text>
-<text x="86" y="76" font-size="10.5" text-anchor="middle" fill="#7b8494">rough table</text>
+  id: "S05-06", module: "C", topic: "A ball down a smooth ramp, across a rough floor, then sticking to a second ball: how far the combined mass slides", diff: 3, rel: [["C", "On a smooth ramp every joule of lost potential energy becomes kinetic energy"], ["C", "Work done against friction is the friction force times the distance, and it is taken out of the kinetic energy"], ["C", "In a perfectly inelastic collision momentum is conserved but kinetic energy is not"], ["B", "The speed of a body follows from its kinetic energy through one half m v squared"], ["A", "Chaining three stages that each obey a different conservation law"]], key: ["friction", "inelastic", "momentum", "energychain"], ans: 3, paper: "BANK-S05",
+  rel: [["C", "On a smooth ramp every joule of lost potential energy becomes kinetic energy"], ["C", "Work done against friction is the friction force times the distance, and it is taken out of the kinetic energy"], ["C", "In a perfectly inelastic collision momentum is conserved but kinetic energy is not"], ["B", "The speed of a body follows from its kinetic energy through one half m v squared"], ["A", "Chaining three stages that each obey a different conservation law"]],
+  q: `<p>A 0.50 kg ball is released from rest at a height of 0.40 m at the top of a smooth ramp, as the figure shows. It reaches a rough horizontal surface of coefficient of friction 0.20, slides 1.0 m along it, and then meets a 0.30 kg ball at rest. The two balls stick together and continue over the same rough surface. <figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 300" role="img" aria-label="A 0.50 kilogram ball released from rest at the top of a smooth ramp 0.40 metres high; it reaches a rough horizontal surface, slides 1.0 metre and then sticks to a 0.30 kilogram ball at rest, the two continuing over the same rough surface">
+<defs><marker id="s05-06-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#2f5fd0"/></marker></defs>
+<path d="M110,70 L220,190 L110,190 z" fill="none" stroke="#14181f" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="80" y1="70" x2="80" y2="190" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="75" y1="70" x2="85" y2="70" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="75" y1="190" x2="85" y2="190" stroke="#7b8494" stroke-width="1.2"/>
+<text x="71" y="134" font-size="11" text-anchor="end" fill="#7b8494">0.40 m</text>
+<text x="150" y="134" font-size="10.5" text-anchor="end" fill="#7b8494">smooth</text>
+<line x1="60" y1="190" x2="560" y2="190" stroke="#14181f" stroke-width="1.8"/>
+<line x1="224" y1="190" x2="215" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="237" y1="190" x2="228" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="250" y1="190" x2="241" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="263" y1="190" x2="254" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="276" y1="190" x2="267" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="289" y1="190" x2="280" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="302" y1="190" x2="293" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="315" y1="190" x2="306" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="328" y1="190" x2="319" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="341" y1="190" x2="332" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="354" y1="190" x2="345" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="367" y1="190" x2="358" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="380" y1="190" x2="371" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="393" y1="190" x2="384" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="406" y1="190" x2="397" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="419" y1="190" x2="410" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="432" y1="190" x2="423" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="445" y1="190" x2="436" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="458" y1="190" x2="449" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="471" y1="190" x2="462" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="484" y1="190" x2="475" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="497" y1="190" x2="488" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="510" y1="190" x2="501" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="523" y1="190" x2="514" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="536" y1="190" x2="527" y2="199" stroke="#7b8494" stroke-width="1"/>
+<line x1="549" y1="190" x2="540" y2="199" stroke="#7b8494" stroke-width="1"/>
+<text x="468" y="220" font-size="11" text-anchor="middle" fill="#7b8494">rough, mu = 0.20</text>
+<circle cx="110" cy="70" r="7" fill="#dbe6fb" stroke="#2f5fd0" stroke-width="1.6"/>
+<text x="122" y="56" font-size="11.5" font-weight="bold" fill="#2f5fd0">0.50 kg</text>
+<line x1="250" y1="174" x2="332" y2="174" stroke="#2f5fd0" stroke-width="2" marker-end="url(#s05-06-ar)"/>
+<circle cx="370" cy="182" r="8" fill="#fbe0de" stroke="#b3352f" stroke-width="1.6"/>
+<text x="370" y="158" font-size="11" text-anchor="middle" fill="#b3352f">0.30 kg, at rest</text>
+<line x1="220" y1="240" x2="370" y2="240" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="220" y1="235" x2="220" y2="245" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="220" y1="201" x2="220" y2="240" stroke="#7b8494" stroke-width="1.2" stroke-dasharray="4 4"/>
+<line x1="370" y1="235" x2="370" y2="245" stroke="#7b8494" stroke-width="1.2"/>
+<line x1="370" y1="201" x2="370" y2="240" stroke="#7b8494" stroke-width="1.2" stroke-dasharray="4 4"/>
+<text x="295" y="258" font-size="11" text-anchor="middle" fill="#7b8494">1.0 m</text>
+<line x1="384" y1="190" x2="500" y2="190" stroke="#7b8494" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#s05-06-ar)"/>
+<text x="442" y="178" font-size="11" text-anchor="middle" font-weight="bold" fill="#2f5fd0">how far?</text>
 </svg>
-</figure></p><p>What is the normal reaction of the table on the 5.0 kg block? (Use g = 9.8 m/s^2)</p>`,
-  opts: ["20 N", "78 N", "29 N", "49 N", "50 N"],
-  sol: `<p><b>What is being tested.</b> Whether you resolve forces on the correct body. The normal reaction on the table block balances only the vertical forces on that block, and the string is horizontal, so the hanging mass is irrelevant to it.</p>
-<p><b>Step 1 — the forces on the 5.0 kg block.</b> Vertically: its weight <code>mg</code> acts down, the normal reaction <code>N</code> acts up. Horizontally: the string tension acts sideways. There is no vertical acceleration, so the vertical forces balance on their own.</p>
-<p><b>Step 2 — the string is horizontal.</b> The pulley turns the string through a right angle; at the table block the string is along the table, so its tension has no vertical component. The hanging 3.0 kg block therefore contributes nothing to <code>N</code>.</p>
-<p><b>Step 3 — balance vertically.</b></p>
-<div class="formula">N - mg = 0
-N = 5.0 x 9.8 = 49 N</div>
+</figure></p><p>Taking g = 10 m/s<sup>2</sup>, how far does the combined mass slide after the collision?</p>`,
+  opts: ["0.63 m", "0.78 m", "0.16 m", "0.39 m", "0.31 m"],
+  sol: `<p><b>What is being tested.</b> Whether you notice that this is three problems in a row, and that each one obeys a different rule. Energy is conserved on the smooth ramp. Energy is <i>not</i> conserved along the rough floor — it leaks away as heat. And at the collision energy is not conserved at all, while momentum is.</p>
+<p><b>Step 1 — what the ramp delivers.</b> The ramp is smooth, so no energy is lost on it and all the potential energy the ball had at the top becomes kinetic energy by the bottom:</p>
+<div class="formula">E = m g h = 0.50 &#215; 10 &#215; 0.40 = 2.0 J</div>
+<p>That 2.0 J is the whole energy budget for the rest of the question. Everything that follows is a subtraction from it.</p>
+<p><b>Step 2 — the friction force on the first ball.</b> The rough surface begins at the foot of the ramp. The friction force on a horizontal surface is</p>
+<div class="formula">F = mu m g = 0.20 &#215; 0.50 &#215; 10 = 1.0 N</div>
+<p>Note that only the 0.50 kg ball is moving at this stage, so only 0.50 kg belongs in this force.</p>
+<p><b>Step 3 — the work it does over the 1.0 m.</b></p>
+<div class="formula">W = F d = 1.0 &#215; 1.0 = 1.0 J</div>
+<p><b>Step 4 — the energy the ball still has at the collision.</b></p>
+<div class="formula">E = 2.0 &#8722; 1.0 = 1.0 J</div>
+<p>Half the energy is already gone before anything is hit. This is the step that is most often skipped: the 1.0 m of rough floor is easy to read past.</p>
+<p><b>Step 5 — the speed at the collision.</b> From the kinetic energy,</p>
+<div class="formula">one half m v squared = 1.0
+v squared = 2 &#215; 1.0 / 0.50 = 4.0
+v = 2.0 m/s</div>
+<p><b>Step 6 — the momentum before the collision.</b></p>
+<div class="formula">p = m v = 0.50 &#215; 2.0 = 1.0 kg m/s</div>
+<p><b>Step 7 — the collision.</b> The two balls stick, so this is perfectly inelastic. Momentum is conserved; kinetic energy is not. The combined mass is 0.80 kg:</p>
+<div class="formula">0.80 &#215; V = 1.0
+V = 1.25 m/s</div>
+<p>It is worth pausing on how much energy has just vanished. Before the collision the kinetic energy was 1.0 J; afterwards it is one half &#215; 0.80 &#215; 1.25 squared, which is 5/8 J. The collision destroyed 3/8 J — more than a third of what was left. That energy went into heating and deforming the balls, and it is not available to push them along the floor.</p>
+<p><b>Step 8 — the friction on the combined mass.</b> The mass has grown, so the friction force has grown with it:</p>
+<div class="formula">F = mu m g = 0.20 &#215; 0.80 &#215; 10 = 1.6 N</div>
+<p><b>Step 9 — the distance.</b> All the remaining kinetic energy is turned into work against that force:</p>
+<div class="formula">d = E / F = (5/8) / 1.6 = 25/64 = 0.39 m</div>
 <p>So <b>Answer: D.</b></p>
-<p><b>Step 4 — check.</b> The reaction equals the block's own weight. A common error is to add the hanging mass or to substitute its weight; neither belongs here because the hanging block's pull is horizontal.</p>
+<p><b>Step 10 — check the answer against the two effects.</b> Both changes after the collision push the same way. The collision threw away 3/8 J of the 1.0 J that was left, and the friction force rose from 1.0 N to 1.6 N. So the slide must be shorter than the 1.0 m that came before, and it is. As a second check, ask what would happen with no collision loss at all: 1.0 J against 1.6 N would give 0.63 m, so the collision alone costs about 0.24 m, and the heavier friction costs a little more. 0.39 m is consistent with both.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>20 N</b> comes from a wrong value of <code>g</code> or from taking only part of the weight.</p>
-<p>&middot; <b>78 N</b> adds both masses, <code>(5.0 + 3.0) x 9.8</code>, as if the hanging block also rested on the table.</p>
-<p>&middot; <b>29 N</b> is the hanging block's weight, <code>3.0 x 9.8</code>, wrongly applied to the table block.</p>
-<p>&middot; <b>50 N</b> uses <code>g = 10</code> on the 5.0 kg mass and rounds up.</p>
-<p><b>Relevant topics:</b> resolving forces; normal reaction; which body a force acts on.</p>`,
-  trap: `Adding the hanging 3.0 kg block to the 5.0 kg block, or using the hanging weight, when finding the normal reaction. The string is horizontal, so the hanging mass's weight does not touch the table's normal force.`
+<p>&middot; <b>0.63 m</b> carries the 1.0 J through the collision unchanged. It is the most dangerous wrong answer, because every number in it is right except one assumption: that a collision which joins two bodies together leaves their kinetic energy alone. Joining two bodies always destroys kinetic energy, and the amount destroyed here is a third of the total.</p>
+<p>&middot; <b>0.78 m</b> forgets the 1.0 m of rough floor before the collision, so the ball arrives with the full 2.0 J. It gets 1.25 J after the collision and divides by 1.6 N. The rough stretch is drawn on the figure precisely because it is easy to miss.</p>
+<p>&middot; <b>0.16 m</b> uses the combined 0.80 kg when working out the friction on the first stretch. At that moment only the 0.50 kg ball is moving, and the second ball is at rest and has no friction to overcome.</p>
+<p>&middot; <b>0.31 m</b> comes from writing the kinetic energy after the collision as one half m V rather than one half m V squared. That gives 0.5 J instead of 0.625 J, and the distance falls to 0.31 m. It is a slip of one symbol and it costs 20 per cent of the answer.</p>
+<p><b>The trap.</b> Applying one conservation law across a whole question that needs three. The give-away is the word "stick": wherever two bodies join, momentum carries you across the collision and kinetic energy does not. And wherever a surface is rough, energy is leaving the account entirely, so it must be subtracted rather than conserved.</p>
+<p><b>Relevant topics:</b> conservation of energy on a smooth surface; work done against friction; kinetic energy and speed; conservation of momentum in a perfectly inelastic collision; multi-stage problems.</p>`,
+  trap: `Using one rule for all three stages. Momentum carries the motion through the collision, not kinetic energy, and the 1.0 m of rough floor before the collision has already taken half the energy away.`
 },
 
 {
@@ -742,25 +809,50 @@ C = 2.0 microfarad = 2.0 x 10^-6 F</div>
 },
 
 {
-  id: "S05-22", module: "J", topic: "Melting ice: the time from energy = power x time and latent heat", diff: 2, rel: [["J", "Energy to melt a mass is m L, with L the specific latent heat of fusion"], ["J", "The heater supplies E = P t, so t = m L / P"], ["A", "Multiplying mass by latent heat, then dividing by power"]], key: ["latentheat", "melting", "heatertime"], ans: 4, paper: "BANK-S05",
-  rel: [["J", "Energy to melt a mass is m L, with L the specific latent heat of fusion"], ["J", "The heater supplies E = P t, so t = m L / P"], ["A", "Multiplying mass by latent heat, then dividing by power"]],
-  q: `<p>A 1.0 kW heater is used to melt ice at 0 degrees C. How long does it take to melt 0.20 kg of ice? (Latent heat of fusion of ice = 3.3 x 10^5 J/kg.)</p>`,
-  opts: ["33 s", "132 s", "200 s", "6.6 s", "66 s"],
-  sol: `<p><b>What is being tested.</b> The melting-energy relation E = m L and the heater relation E = P t, combined into t = m L / P.</p>
-<p><b>Step 1 — the energy to melt.</b></p>
-<div class="formula">E = m L = 0.20 x 3.3 x 10^5 = 6.6 x 10^4 J</div>
-<p><b>Step 2 — the heater rate.</b> A 1.0 kW heater supplies <code>P = 1000 J/s</code>.</p>
-<p><b>Step 3 — the time.</b></p>
-<div class="formula">t = E / P = 6.6 x 10^4 / 1000 = 66 s</div>
+  id: "S05-22", module: "J", topic: "Turning ice at minus ten degrees into water at twenty degrees: three stages, and the time a heater needs", diff: 3, rel: [["J", "Warming a substance needs m c times the temperature rise, with no change of state"], ["J", "Melting needs m times the specific latent heat of fusion, with no temperature change"], ["J", "A heater delivers energy at a constant rate, so the time is the total energy divided by the power"], ["A", "Adding three separately computed energies before dividing once"]], key: ["latentheat", "specificheat", "stages", "heatertime"], ans: 4, paper: "BANK-S05",
+  rel: [["J", "Warming a substance needs m c times the temperature rise, with no change of state"], ["J", "Melting needs m times the specific latent heat of fusion, with no temperature change"], ["J", "A heater delivers energy at a constant rate, so the time is the total energy divided by the power"], ["A", "Adding three separately computed energies before dividing once"]],
+  q: `<p>A 500 W heater supplies all of its energy to a 0.50 kg block of ice at &#8722;10 &#176;C. The specific heat capacity of ice is 2100 J kg<sup>-1</sup> K<sup>-1</sup>, of water is 4200 J kg<sup>-1</sup> K<sup>-1</sup>, and the specific latent heat of fusion of ice is 3.3 &#215; 10<sup>5</sup> J kg<sup>-1</sup>. The figure shows the three stages the ice passes through, drawn in proportion to the energy each one needs. <figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 272" role="img" aria-label="Three bars, drawn to scale, showing the energy needed for the three stages of turning ice at minus ten degrees into water at twenty degrees: melting the ice is by far the largest">
+<rect x="110" y="190.455" width="76" height="9.54545" fill="#dbe6fb" stroke="#14181f" stroke-width="1.4"/>
+<rect x="240" y="50" width="76" height="150" fill="#dbe6fb" stroke="#14181f" stroke-width="1.4"/>
+<rect x="370" y="161.818" width="76" height="38.1818" fill="#dbe6fb" stroke="#14181f" stroke-width="1.4"/>
+<line x1="70" y1="200" x2="520" y2="200" stroke="#14181f" stroke-width="1.8"/>
+<text x="148" y="218" font-size="10.5" text-anchor="middle" fill="#14181f">warm the ice</text>
+<text x="148" y="232" font-size="10.5" text-anchor="middle" fill="#7b8494">&#8722;10 to 0 &#176;C</text>
+<text x="278" y="218" font-size="10.5" text-anchor="middle" fill="#14181f">melt the ice</text>
+<text x="278" y="232" font-size="10.5" text-anchor="middle" fill="#7b8494">at 0 &#176;C</text>
+<text x="408" y="218" font-size="10.5" text-anchor="middle" fill="#14181f">warm the water</text>
+<text x="408" y="232" font-size="10.5" text-anchor="middle" fill="#7b8494">0 to 20 &#176;C</text>
+<text x="295" y="258" font-size="10.5" text-anchor="middle" fill="#a8641a">the three stages, drawn in proportion to the energy each needs</text>
+</svg>
+</figure></p><p>How long does the heater take to turn the ice into water at 20 &#176;C?</p>`,
+  opts: ["414 s", "105 s", "456 s", "351 s", "435 s"],
+  sol: `<p><b>What is being tested.</b> Whether you break a heating problem into stages before you reach for a formula, and whether you can tell the stages that have a temperature change from the one that has none. It is the stage with no temperature change that costs the most.</p>
+<p><b>Step 1 — the stages.</b> The ice has to do three things, in order. It must warm from &#8722;10 &#176;C to 0 &#176;C. It must then melt, at a steady 0 &#176;C. And the melt water must then warm from 0 &#176;C to 20 &#176;C. Three stages, three separate energy calculations, and only then an addition.</p>
+<p><b>Step 2 — which formula belongs to which stage.</b> A temperature change needs the specific heat capacity, <code>E = m c &#916;T</code>. A change of state needs a specific latent heat, <code>E = m L</code>, and during it the temperature does not move at all, so there is no &#916;T to put in. Getting these two the right way round is most of the question.</p>
+<p><b>Step 3 — warming the ice.</b> The temperature rise is 10 &#176;C, and the specific heat capacity is the one for <i>ice</i>:</p>
+<div class="formula">E = m c &#916;T = 0.50 &#215; 2100 &#215; 10 = 10 500 J</div>
+<p><b>Step 4 — melting the ice.</b> The ice is now at 0 &#176;C and stays there while it melts, so no temperature appears in this calculation:</p>
+<div class="formula">E = m L = 0.50 &#215; 3.3 &#215; 10 to the fifth = 165 000 J</div>
+<p>Stop and look at that number next to the last one. Melting costs sixteen times as much as warming the ice through ten degrees. The figure is drawn to scale for exactly this reason: the melting bar towers over the other two.</p>
+<p><b>Step 5 — warming the water.</b> The melt water now rises 20 &#176;C, and the specific heat capacity is the one for <i>water</i>, which is twice the value for ice:</p>
+<div class="formula">E = m c &#916;T = 0.50 &#215; 4200 &#215; 20 = 42 000 J</div>
+<p><b>Step 6 — the total energy.</b></p>
+<div class="formula">E = 10 500 + 165 000 + 42 000 = 217 500 J</div>
+<p><b>Step 7 — the time.</b> The heater delivers 500 J every second, so the number of seconds is the total energy divided by 500:</p>
+<div class="formula">t = E / P = 217 500 / 500 = 435 s</div>
 <p>So <b>Answer: E.</b></p>
-<p><b>Step 4 — check.</b> A kilowatt for about a minute melting a few hundred grams of ice matches everyday experience (a kettle melts far less), so the scale is right.</p>
+<p><b>Step 8 — check the three terms against each other.</b> The melting term, 165 000 J, is larger than the other two added together, which come to 52 500 J. That is the normal shape of a heating curve: the flat parts, where a change of state is happening, are where the energy goes. A solution in which the temperature-change terms dominate is a solution that has lost a latent heat somewhere.</p>
+<p><b>Step 9 — check the units at each stage.</b> Mass in kilograms, specific heat capacity in joules per kilogram per kelvin, temperature rise in kelvin or degrees Celsius — the same size for a rise — give joules. Specific latent heat in joules per kilogram times kilograms gives joules. Every term is an energy before they are added, so the addition is legitimate and the division by 500 W gives seconds.</p>
+<p><b>Step 10 — check the size of the answer.</b> 435 s is a little over seven minutes. Half a kilogram of ice is a large block, and a 500 W heater is a small one — a hairdryer on low. Seven minutes is the right kind of number, and it is far from both 105 s and 456 s in a way that the everyday feel of the problem can confirm.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>33 s</b> forgets to divide by the power, offering the energy <code>6.6 x 10^4</code> trimmed by a factor of two.</p>
-<p>&middot; <b>132 s</b> doubles the mass or the latent heat.</p>
-<p>&middot; <b>200 s</b> mishandles the 1000 W and inflates the time threefold.</p>
-<p>&middot; <b>6.6 s</b> divides by 1000 twice.</p>
-<p><b>Relevant topics:</b> latent heat of fusion; E = m L; heater power and time.</p>`,
-  trap: `Forgetting to divide by the heater power (so the energy in joules is offered as seconds), or doubling the mass/latent heat. The time is m L / P = 66 s with P = 1000 W.`
+<p>&middot; <b>414 s</b> starts from ice already at 0 &#176;C and drops the 10 500 J of Step 3. It is a small error with a small effect, and it is the hardest wrong answer to spot because everything else is right.</p>
+<p>&middot; <b>105 s</b> drops the melting stage altogether, leaving 10 500 + 42 000 = 52 500 J. This is the classic error: the ice is warmed, the water is warmed, and the change of state in the middle is forgotten even though it costs more than three times the rest. The figure makes the size of the omission plain.</p>
+<p>&middot; <b>456 s</b> uses the specific heat capacity of water, 4200, for the ice-warming stage, giving 21 000 J instead of 10 500 J. Ice and water are the same substance but not the same material: ice needs only half as much energy per kilogram per degree.</p>
+<p>&middot; <b>351 s</b> stops at 0 &#176;C and leaves out the final warming to 20 &#176;C, so it uses 10 500 + 165 000 = 175 500 J. It is the mirror image of 414 s, and it is the more tempting of the two, because stopping once the ice has melted feels like the end of the problem.</p>
+<p><b>The trap.</b> Treating the whole process as a single warming of water. Doing that gives 0.50 &#215; 4200 &#215; 30 = 63 000 J and a time of 126 s, which is not even one of the options — and it is wrong by a factor of more than three, because it ignores the energy needed to break the ice apart. The defence is to write the three stages down before computing anything, and to ask of each one whether its temperature is changing.</p>
+<p><b>Relevant topics:</b> specific heat capacity; specific latent heat of fusion; the heating curve and its flat portions; energy supplied by a heater; multi-stage energy problems.</p>`,
+  trap: `Treating the process as one warming of water and losing the latent heat of fusion, which alone costs more than three times the other two stages put together.`
 },
 
 {

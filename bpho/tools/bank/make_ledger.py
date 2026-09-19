@@ -77,9 +77,13 @@ LEDGER = {1: {
         "theta = 45, so the smallest n is the equality case 1/sin45 = 1/(1/sqrt2) = sqrt2",
         "C"),
     "S01-12": (
-        "read the coordinates and divide",
-        "the marked point is 6.0 V and 0.40 A; R = V/I = 6.0/0.40 = 15 ohm",
-        "D"),
+        "reduce each configuration to one resistance, then divide the two terminal p.d.s",
+        "before: 6.0 || 3.0 = 18/9 = 2.0 ohm so R_ext = 6.0 + 2.0 = 8.0 ohm; "
+        "I = 12/(8.0 + 1.0) = 4/3 A and V = (4/3)(8.0) = 32/3 V.  "
+        "after removing the 3.0 ohm: R_ext = 6.0 + 6.0 = 12.0 ohm, I = 12/13 A, "
+        "V = (12/13)(12) = 144/13 V.  ratio = (144/13)/(32/3) = 432/416 = 27/26, "
+        "and 27/26 is greater than 1 as it must be, since the load got lighter",
+        "A"),
     "S01-13": (
         "set heat lost equal to heat gained",
         "0.20 x 500 x (200 - t) = 0.10 x 4000 x (t - 20); 100(200 - t) = 400(t - 20); "
@@ -97,12 +101,13 @@ LEDGER = {1: {
         "the fractional change is 2x + x^2, which for small x is 2x",
         "B"),
     "S01-16": (
-        "eliminate on two independent features",
-        "the gradient of a v-t graph is a, and a is -g throughout, so every section must "
-        "be straight with the same slope -- that rules out the curved graphs; and each "
-        "bounce returns less speed, so the peaks must shrink -- that rules out the "
-        "equal-peak graph; only E has both",
-        "E"),
+        "one position equation for the whole flight, then the positive root of the quadratic",
+        "take up as positive with the origin at the release point: y = u t - g t^2/2.  "
+        "Landing is y = -h, so g t^2/2 - u t - h = 0 and t = (u + sqrt(u^2 + 2gh))/g, "
+        "the positive root (the other is a time before the throw).  Check with u = 10, "
+        "g = 10, h = 120: sqrt(100 + 2400) = 50 so t = 60/10 = 6.0 s, and "
+        "y = 10(6) - 5(36) = -120 m, which is the foot of the cliff",
+        "A"),
     "S01-17": (
         "add the gravity component and limiting friction, then equate to mg",
         "down the slope: mg sin(theta) = 5.0 x 10 x 0.60 = 30 N; normal reaction "
@@ -168,11 +173,12 @@ LEDGER = {1: {
         "Numerical check with R = 1: 1 + 1.618/2.618 = 1 + 0.618 = 1.618, which is the root",
         "A"),
     "S02-03": (
-        "threshold wavelength gives the work function, then subtract",
-        "hc = 1240 eV nm, so the threshold photon energy is 1240/620 = 2.0 eV and that is "
-        "the work function. At 310 nm the photon energy is 1240/310 = 4.0 eV. "
-        "Kinetic energy = 4.0 - 2.0 = 2.0 eV",
-        "E"),
+        "photon energy first, then compare with EACH work function before subtracting",
+        "hc = 1240 eV nm, so at 400 nm the photon energy is 1240/400 = 3.1 eV.  "
+        "Metal A: 3.1 > 2.0 so it emits, and KE_max = 3.1 - 2.0 = 1.1 eV, so the "
+        "stopping potential is 1.1 V.  Metal B: 3.1 < 3.5 so nothing is emitted; B's "
+        "threshold is 1240/3.5 = 354 nm and 400 nm is longer than that",
+        "A"),
     "S02-04": (
         "build the series and sum it",
         "t_0 = sqrt(2h/g). Rebound to h/4 gives a rise-and-fall of 2 sqrt(2(h/4)/g) = "
@@ -223,11 +229,12 @@ LEDGER = {1: {
         "the 3 ohm is 4.5 V, leaving 4.5 V across the pair, which 1.5 A gives",
         "B"),
     "S02-13": (
-        "conserve momentum, then divide by the combined mass",
-        "p_before = 2.0 x 3.0 = 6.0 kg m/s; p_after = (2.0 + 2.0)v = 4.0v; "
-        "v = 6.0/4.0 = 1.5 m/s. Energy check: 9.0 J before, 4.5 J after, so half is lost, "
-        "which is what sticking means",
-        "B"),
+        "momentum through the embedding, then friction doing work to the stop",
+        "p = 20 x 300 = 6000 g m/s shared by 2000 g, so V = 3.0 m/s.  "
+        "KE after = (1/2)(2.00)(3.0^2) = 9.0 J.  Friction force = mu x 2.00 x 10 = 20 mu, "
+        "work over 1.5 m = 30 mu, so 30 mu = 9.0 and mu = 0.30.  "
+        "Cross-check: KE before was 900 J, so 99% went in the embedding",
+        "A"),
     "S02-14": (
         "conserve charge, then compare the two energies",
         "Q = CV is fixed. C_total = C + 2C = 3C so V_new = Q/(3C) = V/3. "
@@ -341,12 +348,10 @@ LEDGER = {1: {
         "is 400 J per second",
         "E"),
     "S03-06": (
-        "split the area into two triangles and a rectangle",
-        "0-2.0 s: (1/2) x 2.0 x 12 = 12 m. 2.0-5.0 s: 3.0 x 12 = 36 m. 5.0-8.0 s: "
-        "(1/2) x 3.0 x 12 = 18 m. Total 12 + 36 + 18 = 66 m. Check: holding the peak 12 m/s "
-        "for the whole 8.0 s would be 96 m, and the two ramps take away 12 + 18 = 30 m, "
-        "leaving 66 m",
-        "C"),
+        "stage the journey, then divide the whole distance by the whole time",
+        "stage 1: v = 0.50 x 20 = 10 m/s, s1 = (1/2)(10)(20) = 100 m.  stage 2: s2 = 10 x 30 = 300 m.  "
+        "stage 3: t = 10/1.0 = 10 s so s3 = (1/2)(10)(10) = 50 m.  total 450 m in 60 s, so the average is 450/60 = 7.5 m/s",
+        "A"),
     "S03-07": (
         "use the elastic result for a stationary target",
         "v_target = 2 m u/(m + 3m) = 2mu/(4m) = u/2. Check against both conservation laws: "
@@ -374,11 +379,11 @@ LEDGER = {1: {
         "4.0 V, and loading a divider can only pull the tap down, so 2.4 is less than 4.0",
         "D"),
     "S03-11": (
-        "latent heat divided by power",
-        "energy = mL = 0.50 x 2.3e6 = 1.15e6 J. t = E/P = 1.15e6/2000 = 575 s. "
-        "Check the size: 575 s is a little under ten minutes, which is the right order for "
-        "boiling away half a kilogram of already-boiling water",
-        "C"),
+        "compare the heat available with the heat needed before assuming anything melts",
+        "warm the ice to 0 C: 0.20 x 2100 x 10 = 4200 J.  melt it all: 0.20 x 3.3e5 = 66000 J, so 70200 J is needed.  "
+        "the water can give at most 0.40 x 4200 x 30 = 50400 J, which is not enough, so ice survives at 0 C.  "
+        "heat left for melting = 50400 - 4200 = 46200 J, so 46200/3.3e5 = 0.14 kg melts and 0.20 - 0.14 = 0.060 kg remains",
+        "A"),
     "S03-12": (
         "show that volume and mass both go as A",
         "V = (4/3) pi r^3 = (4/3) pi r0^3 A, so the volume is proportional to A, and the "
@@ -388,12 +393,11 @@ LEDGER = {1: {
         "per nucleon",
         "A"),
     "S03-13": (
-        "find the new edge length, then compare total areas",
-        "1000 cubes means 10 along each edge, so each side is 1.0/10 = 0.10 cm. Original "
-        "area 6 x 1.0^2 = 6.0 cm^2. Each small cube 6 x 0.10^2 = 0.060 cm^2, so the total "
-        "is 1000 x 0.060 = 60 cm^2. Ratio 60/6.0 = 10. Check by the rule: cutting into n "
-        "pieces along each edge multiplies the total area by n, and n = 10",
-        "E"),
+        "scale the length, then square it, then multiply back up by N",
+        "each small cube has side L N^(-1/3), so one piece has area 6 L^2 N^(-2/3).  "
+        "all N together give 6 L^2 N^(1/3), and dividing by the original 6 L^2 leaves N^(1/3).  "
+        "check on N = 8: side L/2, eight pieces of area 1.5 L^2 give 12 L^2 against 6 L^2, a factor of 2 = 8^(1/3)",
+        "A"),
     "S03-14": (
         "separate the variables, then integrate the speed",
         "a = dv/dt = -kv separates to dv/v = -k dt, so v = u e^(-kt). Distance = integral "
@@ -416,12 +420,11 @@ LEDGER = {1: {
         "needs a steeper bank, and 0.75 is just below 1, so the angle is just below 45 deg",
         "A"),
     "S03-17": (
-        "stress gives an area, then the circle relation gives the diameter",
-        "W = 1000 x 10 = 1.0e4 N. At the breaking stress A = W/stress = 1.0e4/1.0e9 = "
-        "1.0e-5 m^2. For a circle A = pi d^2/4, so d = sqrt(4A/pi) = sqrt(1.273e-5) = "
-        "3.57e-3 m, about 3.6 mm. Check the order: a few millimetres is right for a steel "
-        "cable lifting a tonne, and 36 mm would be a structural column",
-        "C"),
+        "rearrange symbolically: stress sets the area, and the area sets the diameter",
+        "sigma = mg/A so A = mg/sigma.  A = pi d^2/4, so pi d^2/4 = mg/sigma and d^2 = 4mg/(pi sigma), "
+        "giving d = sqrt(4mg/(pi sigma)).  Numeric spot check with m = 1000, g = 10, sigma = 1.0e9: "
+        "d^2 = 1.3e-5 m^2 and d = 3.6 mm, which is a sensible cable for a tonne",
+        "A"),
     "S03-18": (
         "require sin(theta) not to exceed 1",
         "d = 1 mm/300 = 3.33e-6 m. The highest order is set by sin(theta) <= 1, so "
@@ -499,12 +502,16 @@ LEDGER = {1: {
         "goes to 90 degrees",
         "B"),
     "S04-04": (
-        "one side in parallel with the other two in series",
-        "Each side is 12/3 = 4.0 ohm. Between two vertices the direct side is 4.0 ohm and the "
-        "other two in series are 8.0 ohm. Parallel: (4.0 x 8.0)/(4.0 + 8.0) = 32/12 = 2.67 "
-        "ohm, which is 2.7 ohm to two figures. Check: a parallel combination must come out "
-        "below its smallest branch, and 2.67 is below 4.0",
-        "E"),
+        "reduce from the inside out: inner pair, then the branch, then the outer parallel "
+        "section, then the total",
+        "R4 and R5 in parallel: (12 x 6.0)/(12 + 6.0) = 72/18 = 4.0 ohm. The lower branch is "
+        "R3 + 4.0 = 8.0 + 4.0 = 12 ohm. In parallel with R2 = 6.0 ohm: (6.0 x 12)/(18) = "
+        "4.0 ohm, so the total is 4.0 + 4.0 = 8.0 ohm and the battery current is 12/8.0 = "
+        "1.5 A. The parallel section carries all of it and has 1.5 x 4.0 = 6.0 V across it, so "
+        "the lower branch takes 6.0/12 = 0.50 A and NOT the 0.75 A an equal split would give. "
+        "Across the inner pair: 0.50 x 4.0 = 2.0 V, so I(R4) = 2.0/12 = 1/6 A. Check by adding "
+        "the pair: I(R5) = 2.0/6.0 = 1/3 A, and 1/6 + 1/3 = 1/2 A, which is the branch current",
+        "A"),
     "S04-05": (
         "multiply the rate out to a lifetime and read the exponent",
         "70 x 60 = 4200 beats an hour; x 24 = 100800 a day; x 365 = 36792000 a year; "
@@ -575,12 +582,15 @@ LEDGER = {1: {
         "these units, and the pascal second is a large viscosity, which fits",
         "C"),
     "S04-15": (
-        "use only the component across the river",
-        "The boat is pointed straight across, so all of its 3.0 m/s is perpendicular to the "
-        "bank and the current only carries it downstream without changing the crossing time: "
-        "t = 120/3.0 = 40 s. Check the distractor route: 120/5.0 = 24 s uses the resultant "
-        "speed, but the resultant points along a diagonal and is not the speed at which the "
-        "boat approaches the far bank",
+        "the flight time is proportional to the vertical launch speed, and the horizontal "
+        "speed is never touched by a bounce",
+        "First fall: 20 = 0.5 x 10 x t^2, so t^2 = 4 and t = 2.0 s, giving a first leg of "
+        "15 x 2.0 = 30 m. The vertical speed at the first bounce is 10 x 2.0 = 20 m/s; halved "
+        "and reversed it is 10 m/s upward, so the second flight lasts 2 x 10/10 = 2.0 s and "
+        "covers another 15 x 2.0 = 30 m. Halved again to 5.0 m/s the third flight lasts "
+        "1.0 s and covers 15 m. Total 30 + 30 + 15 = 75 m. Check: the ball is in the air "
+        "2.0 + 2.0 + 1.0 = 5.0 s and 15 x 5.0 = 75 m, and the three flight times are in the "
+        "ratio 2:2:1, which is exactly the ratio of the vertical speeds 20:10:5",
         "D"),
     "S04-16": (
         "resolve in two directions and eliminate one tension",
@@ -656,10 +666,13 @@ LEDGER = {1: {
 },
 5: {
     "S05-01": (
-        "compare dimensions of each candidate with pressure F/A",
-        "pressure = F/A = M L^-1 T^-2. energy/volume = M L^2 T^-2 / L^3 = M L^-1 T^-2, the same. "
-        "power/area = M L T^-3, force/length = M T^-2, momentum/volume = M L^-2 T^-1, "
-        "mass/(area x time) = M L^-2 T^-1; all different from pressure",
+        "build the product of powers and write one equation for each base dimension",
+        "Suppose the answer is rho^a v^b d^c. Its dimensions are M^a L^(-3a+b+c) T^(-b), and "
+        "the target is M T^-1. Mass: a = 1. Time: -b = -1, so b = 1. Length: -3(1) + 1 + c = 0, "
+        "so c = 2. The combination is rho v d^2, and substituting back gives "
+        "M L^-3 x L T^-1 x L^2 = M T^-1, the lengths cancelling exactly. Check the physics: "
+        "density times speed times area is a volume per second times a density, which is a "
+        "mass per second",
         "A"),
     "S05-02": (
         "take moments about the hinge",
@@ -684,10 +697,16 @@ LEDGER = {1: {
         "triangle 15-19 s = 1/2 x 4 x 20 = 40 m; total = 50 + 200 + 40 = 290 m",
         "D"),
     "S05-06": (
-        "vertical balance for the block on the table",
-        "the hanging block is 3.0 kg, so the string tension is 3.0 x 9.8 = 29.4 N. The 5.0 kg "
-        "block on the table carries its full weight 5.0 x 9.8 = 49 N down and the normal "
-        "reaction up (the string is horizontal), so N = 49 N",
+        "three stages: energy on the ramp, work against friction, then momentum through an "
+        "inelastic collision",
+        "The ramp is smooth, so the kinetic energy at its foot is m g h = 0.50 x 10 x 0.40 = "
+        "2.0 J. Friction on the 0.50 kg ball is 0.20 x 0.50 x 10 = 1.0 N, so over 1.0 m it "
+        "takes 1.0 J and the kinetic energy at the collision is 2.0 - 1.0 = 1.0 J. Hence "
+        "v = sqrt(2 x 1.0 / 0.50) = 2.0 m/s and p = 0.50 x 2.0 = 1.0 kg m/s. Sticking conserves "
+        "momentum: V = 1.0 / 0.80 = 1.25 m/s, so the kinetic energy is 0.5 x 0.80 x 1.25^2 = "
+        "0.625 J, and the collision destroyed 0.375 J of the 1.0 J. Friction on the combined "
+        "mass is 0.20 x 0.80 x 10 = 1.6 N, so the distance is 0.625 / 1.6 = 0.3906 m, which is "
+        "0.39 m to two significant figures",
         "D"),
     "S05-07": (
         "energy between lowest and highest points, then taut-string condition at the top",
@@ -760,8 +779,13 @@ LEDGER = {1: {
         "tau = (1.0 x 10^6) x (2.0 x 10^-6) = 2.0 s",
         "C"),
     "S05-22": (
-        "energy needed equals power times time",
-        "energy = m L = 0.20 x 3.3 x 10^5 = 6.6 x 10^4 J; at 1.0 x 10^3 W, t = 6.6 x 10^4 / 1000 = 66 s",
+        "three stages: warm the ice, melt it, then warm the water; then divide the total by "
+        "the power",
+        "warming the ice: 0.50 x 2100 x 10 = 10500 J. Melting it, with no temperature change: "
+        "0.50 x 3.3 x 10^5 = 165000 J. Warming the water, now with water's own specific heat: "
+        "0.50 x 4200 x 20 = 42000 J. Total 10500 + 165000 + 42000 = 217500 J, and at 500 W the "
+        "time is 217500 / 500 = 435 s. Check: the melting term alone exceeds the other two put "
+        "together, 165000 against 52500, which is the shape a heating curve should have",
         "E"),
     "S05-23": (
         "mass-energy with the given shortcut",

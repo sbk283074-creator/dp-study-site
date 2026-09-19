@@ -200,6 +200,71 @@ def f_03():
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# 04 -- five resistors: two nested levels of parallelism
+# ═══════════════════════════════════════════════════════════════════════════════
+def f_04():
+    """The discriminator is WHERE the inner parallel pair sits.
+
+    R4 and R5 are in parallel with each other but in SERIES with R3, and the whole of
+    that branch is in parallel with R2.  Two nested levels of parallelism have to be
+    visible, because the question turns on reducing the inside first and on the current
+    NOT dividing equally at the outer junction.  A figure that put the five resistors in
+    a row would invite the reader to add them all up.
+    """
+    W, H = 580, 350
+    b = []
+    xl, xr = 74.0, 532.0
+    yt, yb = 92.0, 300.0
+    xA, xC = 246.0, 372.0
+    xL, xR = 326.0, 408.0
+
+    # the outer loop, with the cell in the left rail
+    b.append(L(xl, yt, xl, 178, INK, 1.8))
+    b.append(L(xl - 14, 190, xl + 14, 190, INK, 2.6))     # long plate
+    b.append(L(xl - 8, 178, xl + 8, 178, INK, 2.6))       # short plate
+    b.append(L(xl, 190, xl, yb, INK, 1.8))
+    b.append(T(52, 188, '12 V', 11.5, 'end', INK))
+    b.append(L(xl, yt, xr, yt, INK, 1.8))
+    b.append(L(xl, yb, xr, yb, INK, 1.8))
+    b.append(L(xr, yt, xr, yb, INK, 1.8))
+
+    # R1 in series, on the top rail
+    b.append(RC(140, yt - 12, 76, 24, WALL, INK, 1.8))
+    b.append(T(178, 68, 'R1 = 4.0 &#937;', 11.5, 'middle', INK))
+
+    # R2, the upper parallel branch, in the right rail
+    b.append(RC(xr - 12, 172, 24, 48, WALL, INK, 1.8))
+    b.append(T(506, 198, 'R2 = 6.0 &#937;', 11.5, 'end', INK))
+
+    # the lower branch: R3 in series with the pair R4 and R5
+    b.append(L(xC, yt, xC, 130, INK, 1.8))
+    b.append(RC(xC - 12, 130, 24, 44, WALL, INK, 1.8))
+    b.append(L(xC, 174, xC, 196, INK, 1.8))
+    b.append(T(396, 152, 'R3 = 8.0 &#937;', 11.5, 'start', INK))
+    b.append(L(xL, 196, xR, 196, INK, 1.8))
+    b.append(L(xL, 196, xL, yb, INK, 1.8))
+    b.append(L(xR, 196, xR, yb, INK, 1.8))
+    b.append(RC(xL - 12, 232, 24, 44, WALL, INK, 1.8))
+    b.append(RC(xR - 12, 232, 24, 44, WALL, INK, 1.8))
+    b.append(T(300, 256, 'R4 = 12 &#937;', 11.5, 'end', INK))
+    b.append(T(432, 256, 'R5 = 6.0 &#937;', 11.5, 'start', INK))
+
+    # the three junctions
+    b.append(CI(xA, yt, 3.4, INK, 1.4, INK))
+    b.append(CI(xA, yb, 3.4, INK, 1.4, INK))
+    b.append(CI(xC, 196, 3.4, INK, 1.4, INK))
+    b.append(T(xA - 12, yt - 8, 'A', 12, 'end', AMBER, 'bold'))
+    b.append(T(xA - 12, yb + 16, 'B', 12, 'end', AMBER, 'bold'))
+    b.append(T(xC, 216, 'C', 12, 'middle', AMBER, 'bold'))
+
+    b.append(T(74, 330, 'the battery has negligible internal resistance', 10, 'start', GREY))
+
+    return svg(W, H, 'A 12 V battery driving R1 in series with two parallel branches: one '
+                     'branch is R2 alone, and the other is R3 in series with the parallel '
+                     'pair R4 and R5', '\n'.join(b))
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # 06 -- two projectiles at complementary angles
 # ═══════════════════════════════════════════════════════════════════════════════
 def f_06():
@@ -503,38 +568,78 @@ def f_13():
 # 15 -- crossing a river
 # ═══════════════════════════════════════════════════════════════════════════════
 def f_15():
-    """The discriminator is that the crossing TIME depends only on the component of the
-    boat's velocity perpendicular to the banks -- so the current changes where the boat
-    lands, not how long it takes.  The figure separates the three vectors so that the
-    right-angled structure is visible.
+    """The discriminator is that only the VERTICAL component is halved at each bounce.
+
+    The horizontal speed is untouched, so the flight time halves while the horizontal
+    speed does not: the second arc is as WIDE as the first and only a quarter as tall,
+    and the third is half as wide again.  A figure drawing three equal arcs would make
+    the commonest wrong answer -- that the bounce shortens every flight -- look right.
     """
-    W, H = 560, 264
+    W, H = 580, 360
     b = [mk('s04-15-ar', RED), mk('s04-15-ab', BLUE)]
-    xa, y0, y1 = 150.0, 70.0, 210.0
-    drift = 140.0
+    xs, ys, yw = 150.0, 70.0, 170.0
 
-    b.append(L(60, y0, 500, y0, INK, 2.0))
-    b.append(L(60, y1, 500, y1, INK, 2.0))
-    b += _hatch_up(y0, 66, 494)
-    b += _hatch_down(y1, 66, 494)
-    b.append(T(70, y0 - 12, 'far bank', 10.5, 'start', GREY))
-    b.append(T(70, y1 + 22, 'near bank', 10.5, 'start', GREY))
+    # the cliff, land hatched on the left
+    b.append(L(150, ys, 150, 336, INK, 2.0))
+    yy = ys + 6
+    while yy < 330:
+        b.append(L(150, yy, 136, yy + 10, INK, 1.2))
+        yy += 13
+    b.append(L(92, ys, 150, ys, INK, 2.0))
+    b += _hatch_up(ys, 94, 148)
 
-    b.append(L(xa, y1, xa, y0, BLUE, 2.4, ' marker-end="url(#s04-15-ab)"'))
-    b.append(T(xa + 10, (y0 + y1) / 2.0, 'boat', 11.5, 'start', BLUE, 'bold'))
-    b.append(L(xa, y1, xa + drift, y1, GREEN, 2.4, ' marker-end="url(#s04-15-ar)"'))
-    b.append(T(xa + drift / 2.0, y1 - 8, 'current', 11.5, 'middle', GREEN, 'bold'))
-    b.append(L(xa, y1, xa + drift, y0, RED, 2.4, ' marker-end="url(#s04-15-ar)"'))
-    b.append(T(xa + drift + 12, y0 + 10, 'resultant', 11.5, 'start', RED, 'bold'))
+    # the sea
+    b.append(RC(150, yw, 420, 82, PANEL, 'none', 0))
+    wave = [(150 + 420.0 * i / 84.0, yw + 2.4 * math.sin(i * 0.55)) for i in range(85)]
+    b.append(PL(wave, BLUE, 1.6, 'none'))
 
-    b.append(CI(xa, y1, 3.6, INK, 1.4, INK))
-    b += _dim(xa, y0 - 30, xa + drift, y0 - 30, 'the current carries it downstream')
-    b += _dim(106, y0, 106, y1, 'width')
+    def flight(x0, span, rise, drop_first=False):
+        """The three trajectories, drawn to the SAME scale on both axes, so that the
+        flattening the question turns on is visible rather than asserted."""
+        pts = []
+        for i in range(41):
+            t = i / 40.0
+            y = (yw - rise + rise * t * t) if drop_first else (yw - 4.0 * rise * t * (1 - t))
+            pts.append((x0 + span * t, y))
+        return pts
 
-    return svg(W, H, 'A boat leaving the near bank pointing straight across a river; its '
-                     'velocity relative to the water is drawn across the river, the '
-                     'current is drawn along the bank, and the resultant shows it landing '
-                     'downstream', '\n'.join(b))
+    b.append(PL(flight(xs, 150, 100, True), RED, 2.0))        # 20 m fall, 30 m across
+    b.append(PL(flight(xs + 150, 150, 25), RED, 2.0))         # 5 m rise, 30 m across
+    b.append(PL(flight(xs + 300, 75, 6.25), RED, 2.0))        # 1.25 m rise, 15 m across
+
+    # the launch
+    b.append(L(152, ys, 214, ys, BLUE, 2.4, ' marker-end="url(#s04-15-ab)"'))
+    b.append(T(186, ys - 9, '15 m/s', 11.5, 'middle', BLUE, 'bold'))
+
+    # the height of the cliff
+    b += _dim(112, ys, 112, yw, '20 m')
+
+    # the three bounces
+    for bx in (xs + 150, xs + 300, xs + 375):
+        b.append(CI(bx, yw, 4.0, RED, 1.4, RED))
+
+    # the horizontal spans, dimensioned clear of the water
+    b.append(L(150, 292, 525, 292, GREY, 1.2))
+    for bx in (150, 300, 450, 525):
+        b.append(L(bx, 287, bx, 297, GREY, 1.2))
+    for bx in (300, 450, 525):
+        b.append(_dash(bx, yw + 4, bx, 287))
+    b.append(T(225, 310, '30 m', 11, 'middle', GREY))
+    b.append(T(375, 310, '30 m', 11, 'middle', GREY))
+    b.append(T(487, 310, '15 m', 11, 'middle', GREY))
+
+    b.append(T(308, 196, 'bounce 1', 10, 'start', GREY))
+    b.append(T(458, 196, 'bounce 2', 10, 'start', GREY))
+    b.append(T(529, 196, 'bounce 3', 10, 'start', GREY))
+    # Right-anchored and in two lines: a single long line centred under the dimension
+    # ran back far enough to cross the cliff face, which the figure gate caught as a
+    # stroke through the label.
+    b.append(T(525, 330, 'the vertical speed is halved at each bounce;', 10.5, 'end', AMBER))
+    b.append(T(525, 346, 'the horizontal speed is not', 10.5, 'end', AMBER))
+
+    return svg(W, H, 'A ball projected horizontally at 15 m/s from a cliff 20 m above the '
+                     'sea; it bounces three times, and each flight is flatter than the one '
+                     'before, with horizontal spans of 30 m, 30 m and 15 m', '\n'.join(b))
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -684,6 +789,7 @@ def f_22():
 FIGS = {
     's04-01': f_01,
     's04-03': f_03,
+    's04-04': f_04,
     's04-06': f_06,
     's04-07': f_07,
     's04-08': f_08,

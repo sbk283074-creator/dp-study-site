@@ -49,11 +49,22 @@ that function on the real 2025 paper and the published sample sheet.  The per-se
 requirement is:
 
     diff 1 (core)        at most 5      -- the real paper has none that are easy
-    diff 2 (extension)   at least 14
+    diff 2 (extension)   no floor       -- the band the measurement puts a question in
     diff 3 (challenge)   at least 6
 
-and, once scored, the section median must be at or above the 2025 paper's median.
-See gates.py for the scorer.
+plus, measured rather than declared:
+
+  * the section median must be at or above the 2025 paper's median;
+  * the section must carry at least two questions with a reasoning chain of nine or
+    more moves, and its hardest question must score at least 22.0, because the paper
+    carries one question at thirteen moves scoring 27.4 and a section with no top end
+    is flat even when its median is fine;
+  * the non-calculator axes must be real: see NONCALC_PAPER / APPROX_PAPER below.
+
+See gates.py for the scorer.  The diff-2 floor that used to appear here (14) was
+removed: it was a guessed proportion, and the measurement is what decides a question's
+band now, so a floor on band 2 would contradict the bands of sections whose median sits
+above the paper's p75.
 
 FIGURES
 -------
@@ -111,6 +122,29 @@ assert sum(TARGETS.values()) == N_SECTIONS * PER_SECTION, sum(TARGETS.values())
 DIFF_MAX = {1: 5}          # at most 5 easy questions
 DIFF_MIN = {3: 6}          # at least 6 hard questions
 FIG_MIN = 8                # at least 8 figure-bearing questions
+
+# ── the non-calculator axes, per section ─────────────────────────────────────
+# Round 0 is sat without a calculator, and the scorer has exactly two terms that encode
+# that skill: `approx` (the reasoning needs an approximation) and `symbolic` (the answer
+# is a formula rather than a number).  Measured with the same scorer, the 2025 paper
+# uses one or the other in 16 of its 25 questions and requires an approximation in 10.
+#
+# The bank as it stood at the difficulty audit (sections 1-5, 125 questions) scored
+# 41/125 = 33% and 12/125 = 10% on the same two counts.  So the paper leans on the
+# non-calculator axes about twice as hard as the bank did -- and this is a difficulty
+# axis, not a stylistic one: a question that requires neither is usually just arithmetic,
+# and arithmetic is the one thing a candidate can do slowly instead of wrongly.
+#
+# Sections 1-5 are GRANDFATHERED at floors they actually meet.  Rewriting 125 published
+# questions to close a gap is a different piece of work from closing the gap for the 875
+# questions that are still unwritten, and doing the second while the first is tracked is
+# strictly better than doing neither.  The remediation of 1-5 is an open item in
+# BANK-PLAN section 8.  Every section from 6 on must meet the paper's own profile.
+NONCALC_LEGACY = 6         # sections 1-5: the floor the published sections already meet
+APPROX_LEGACY = 1
+NONCALC_PAPER = 16         # sections 6-40: what the 2025 paper itself achieves, of 25
+APPROX_PAPER = 10
+LEGACY_SECTIONS = 5        # 1..5 were authored before the audit
 
 # ── style reference, per module ──────────────────────────────────────────────
 # Which competitions set questions of comparable difficulty *inside the R0 scope*.
@@ -235,6 +269,7 @@ def sections():
         counts = {}
         for m in ordered:
             counts[m] = counts.get(m, 0) + 1
+        legacy = i <= LEGACY_SECTIONS
         out.append({
             "n": i,
             "code": "S%02d" % i,
@@ -242,6 +277,11 @@ def sections():
             "id_prefix": "S%02d" % i,
             "modules": ordered,
             "counts": counts,
+            # carried on the plan rather than read as a global, so that a section can
+            # state the standard it is held to and a gate can report the number it was
+            # actually measured against
+            "noncalc_min": NONCALC_LEGACY if legacy else NONCALC_PAPER,
+            "approx_min": APPROX_LEGACY if legacy else APPROX_PAPER,
         })
     return out
 

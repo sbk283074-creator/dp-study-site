@@ -215,59 +215,88 @@ I = E / R total = 6.0 / 9.0 = 2/3 A</div>
 },
 
 # ═════════════════════════════════════════════════════════════════════════════
-# 4 -- H, circuits.  A uniform wire bent into a triangle.
+# 4 -- H, circuits.  A five-resistor network: reduce it from the inside out.
 # ═════════════════════════════════════════════════════════════════════════════
 {
-    "n": 4, "id": "S04-04", "module": "H", "diff": 2,
-    "topic": "A uniform wire bent into an equilateral triangle: the resistance between two vertices",
-    "rel": [("E", "A uniform wire's resistance is proportional to its length, so bending it divides the total in proportion"),
-            ("H", "Two paths between the same pair of points are in parallel"),
-            ("A", "Reducing a network one stage at a time rather than trying to see the whole answer at once")],
-    "key": ["wire", "triangle", "parallel", "resistance"],
-    "stem": '<p>A uniform wire of total resistance 12 &#937; is bent into an equilateral triangle. A battery is connected between two of the vertices. What is the resistance of the network between those two vertices?</p>',
-    "opts": ['1.3 &#937;', '4.0 &#937;', '6.0 &#937;', '8.0 &#937;', '2.7 &#937;'],
-    "ans": 4,
-    "distractors": ['treats all three sides as being in parallel, as though the current split three equal ways between the vertices',
-                    'quotes the resistance of a single side, forgetting that there is a second path between the same two vertices',
-                    'takes half the wire\'s total resistance, as though the triangle were two equal paths of 6.0 &#937; each',
-                    'adds the two sides in series and ignores the direct side joining the same two vertices',
-                    'correct'],
+    "n": 4, "id": "S04-04", "module": "H", "diff": 3,
+    "topic": "A five-resistor network: reducing from the inside out, and why two parallel branches never share the current equally",
+    "rel": [("H", "Resistors in series add, and resistors in parallel combine as the reciprocal of the sum of the reciprocals"),
+            ("H", "Two parallel branches carry equal currents only when their resistances are equal; otherwise the smaller resistance takes the larger share"),
+            ("H", "A potential divider: the p.d. across one section is the supply p.d. in the ratio of that section's resistance to the total"),
+            ("A", "Reducing a network in stages, from the inside out, rather than trying to see the whole answer at once")],
+    "key": ["network", "parallel", "currentdivision", "stagedreduction"],
+    "stem": '<p>The figure shows a 12 V battery of negligible internal resistance driving a network of five resistors whose values are marked on it. R1 = 4.0 &#937; is in series with everything else. The rest of the network is R2 = 6.0 &#937; in parallel with a branch that carries R3 = 8.0 &#937; in series with the pair R4 = 12 &#937; and R5 = 6.0 &#937;. {{FIG:s04-04}}</p><p>What is the current in R4?</p>',
+    "opts": ['1/6 A', '1/2 A', '1/3 A', '1/4 A', '1/12 A'],
+    "ans": 0,
+    "distractors": ['correct',
+                    'stops at the branch current, treating the whole of the R3 branch current as the current in R4',
+                    'quotes the current in the partner R5, which has the same p.d. across it but only half the resistance',
+                    'assumes the two parallel branches share the total current equally, so the R3 branch is given 0.75 A instead of 0.50 A',
+                    'applies the full 12 V of the battery directly across R4, ignoring every resistor in front of it'],
     "profile": {
         "steps": [
-            ("relate", "split the wire's total resistance equally between its three sides, because the wire is uniform"),
-            ("relate", "identify the two distinct paths between the chosen pair of vertices"),
-            ("solve", "add the two sides of the long path in series"),
-            ("check", "combine the short path and the long path in parallel, and confirm the result is less than the shorter of them"),
+            ("relate", "combine the innermost pair R4 and R5, which are in parallel with each other"),
+            ("relate", "add R3 in series with that pair to get the resistance of the whole lower branch"),
+            ("relate", "combine that branch in parallel with R2 to get the resistance of the parallel section"),
+            ("relate", "add R1 in series to get the resistance of the whole network"),
+            ("solve", "divide the battery p.d. by the total resistance to get the current the battery delivers"),
+            ("solve", "multiply that current by the resistance of the parallel section to get the p.d. across it"),
+            ("solve", "divide that p.d. by the resistance of the R3 branch to get the branch current"),
+            ("solve", "multiply the branch current by the resistance of the inner pair to get the p.d. across it"),
+            ("solve", "divide that p.d. by R4 to get the current asked for"),
+            ("check", "add the two currents inside the inner pair and confirm they make the branch current"),
         ],
-        "relations": ["12 &#937; / 3 = 4.0 &#937; per side",
-                      "long path = 4.0 + 4.0 = 8.0 &#937;",
-                      "R = (4.0 &#215; 8.0) / (4.0 + 8.0) = 8/3 &#937;"],
-        "insight": "The two chosen vertices are joined by two distinct routes: the single side between them, and the other two sides in series. Seeing the network as two paths rather than three sides is the whole question.",
+        "relations": ["R4 in parallel with R5 = (12 &#215; 6.0) / (12 + 6.0) = 4.0 &#937;",
+                      "lower branch = R3 + 4.0 = 8.0 + 4.0 = 12 &#937;",
+                      "parallel section = (6.0 &#215; 12) / (6.0 + 12) = 4.0 &#937;, so R total = 4.0 + 4.0 = 8.0 &#937;",
+                      "I total = 12 / 8.0 = 1.5 A, so V across the parallel section = 1.5 &#215; 4.0 = 6.0 V",
+                      "branch current = 6.0 / 12 = 0.50 A, so V across the inner pair = 0.50 &#215; 4.0 = 2.0 V",
+                      "I(R4) = 2.0 / 12 = 1/6 A, and I(R5) = 2.0 / 6.0 = 1/3 A, which add to 0.50 A"],
+        "insight": "Reduce from the inside out. The two levels of parallelism cannot be dealt with together, and the current is NOT shared equally between the two outer branches: the 6.0 &#937; branch takes twice what the 12 &#937; branch takes.",
         "shape": "circuit-reduction",
         "approx": False,
         "symbolic": False,
-        "figure_essential": False,
+        "figure_essential": True,
     },
-    "check": {"kind": "eval", "expr": "(12/3)*(12/3*2)/((12/3) + (12/3*2))", "want": "8/3"},
-    "sol": '''<p><b>What is being tested.</b> Whether you see a network as paths between two points rather than as a collection of components. The wire is bent into a shape, and shapes do not carry current — paths do.</p>
-<p><b>Step 1 — how much resistance is in each side.</b> The wire is uniform, so its resistance is spread evenly along its length. Bending it into three equal sides divides the 12 &#937; into three equal parts:</p>
-<div class="formula">each side = 12 &#937; / 3 = 4.0 &#937;</div>
-<p><b>Step 2 — find the paths between the chosen vertices.</b> Call the vertices <code>A</code>, <code>B</code> and <code>C</code>, and connect the battery between <code>A</code> and <code>B</code>. Current can leave <code>A</code> and arrive at <code>B</code> in two ways. The first is the direct side <code>AB</code>. The second goes the long way round, through <code>C</code>:</p>
-<div class="formula">direct path: A to B = 4.0 &#937;
-long path: A to C to B = 4.0 + 4.0 = 8.0 &#937;</div>
-<p><b>Step 3 — the two paths are in parallel.</b> They start at the same point and end at the same point, so the p.d. across each is the same and they are in parallel:</p>
-<div class="formula">R = (4.0 &#215; 8.0) / (4.0 + 8.0) = 32 / 12 = 8/3 = 2.7 &#937;</div>
-<p>So <b>Answer: E.</b></p>
-<p><b>Checking it is sensible.</b> The answer must be less than the smaller of the two paths, 4.0 &#937;, because the long path provides an extra route for current and an extra route can only lower the resistance. 2.7 &#937; satisfies that. It must also be more than half of 4.0 &#937;, because the long path is not as good a route as a second 4.0 &#937; path would be; a second 4.0 &#937; path in parallel would give 2.0 &#937;, and the actual long path is worse than that, so the answer is higher. Both bounds are met, so the arithmetic is consistent with the physics.</p>
+    "check": {"kind": "eval", "expr": "(12/(4+(6*12)/(6+12)))*((6*12)/(6+12))/(8+(12*6)/(12+6))*((12*6)/(12+6))/12", "want": "1/6"},
+    "sol": '''<p><b>What is being tested.</b> Whether you reduce a network in stages instead of trying to hold the whole thing in your head at once, and whether you resist the very natural assumption that two parallel branches carry equal currents. They carry equal currents only when they have equal resistance, and here they do not.</p>
+<p><b>Step 1 — the innermost pair.</b> R4 and R5 sit side by side between the same two points, so they are in parallel:</p>
+<div class="formula">R4 and R5 in parallel = (12 &#215; 6.0) / (12 + 6.0) = 72 / 18 = 4.0 &#937;</div>
+<p>Start at the inside. Nothing further out can be simplified until this pair has become one number.</p>
+<p><b>Step 2 — the branch that carries R3.</b> R3 is in series with that pair, so the whole lower branch has resistance</p>
+<div class="formula">R3 + 4.0 = 8.0 + 4.0 = 12 &#937;</div>
+<p><b>Step 3 — that branch in parallel with R2.</b> R2 and the branch are connected between the same two nodes, so they are in parallel:</p>
+<div class="formula">6.0 and 12 in parallel = (6.0 &#215; 12) / (6.0 + 12) = 72 / 18 = 4.0 &#937;</div>
+<p><b>Step 4 — the whole network.</b> R1 is in series with everything that follows it:</p>
+<div class="formula">R total = 4.0 + 4.0 = 8.0 &#937;</div>
+<p><b>Step 5 — the current the battery delivers.</b></p>
+<div class="formula">I total = V / R total = 12 / 8.0 = 1.5 A</div>
+<p><b>Step 6 — the p.d. across the parallel section.</b> That section carries the whole 1.5 A and has a resistance of 4.0 &#937;:</p>
+<div class="formula">V parallel = I total &#215; 4.0 = 1.5 &#215; 4.0 = 6.0 V</div>
+<p>The other 6.0 V is across R1, which is what you would expect, because R1 and the parallel section are now two equal 4.0 &#937; resistances in series across a 12 V supply.</p>
+<p><b>Step 7 — the current down the R3 branch.</b> That branch has 12 &#937; across it and 6.0 V across it:</p>
+<div class="formula">I branch = 6.0 / 12 = 0.50 A</div>
+<p>The remaining 1.0 A goes through R2, which is 6.0 V across 6.0 &#937;. The two currents add to 1.5 A, which is the total the battery supplies. This is the step where the equal-split assumption fails: the branch that looks longer and more complicated actually takes the <i>smaller</i> share, because its total resistance is 12 &#937; against R2's 6.0 &#937;.</p>
+<p><b>Step 8 — the p.d. across the inner pair.</b> The 0.50 A now flows through R3 and then through the pair R4 and R5:</p>
+<div class="formula">V inner = I branch &#215; 4.0 = 0.50 &#215; 4.0 = 2.0 V</div>
+<p>The other 4.0 V of the branch's 6.0 V is across R3 itself, so the two parts are in the ratio of their resistances, 8.0 to 4.0.</p>
+<p><b>Step 9 — the current in R4.</b> R4 has 2.0 V across it and a resistance of 12 &#937;:</p>
+<div class="formula">I(R4) = V inner / R4 = 2.0 / 12 = 1/6 A</div>
+<p>So <b>Answer: A.</b></p>
+<p><b>Step 10 — check the split inside the pair.</b> R5 has the same 2.0 V across it and only 6.0 &#937;, so</p>
+<div class="formula">I(R5) = 2.0 / 6.0 = 1/3 A
+1/6 + 1/3 = 1/2 A = I branch</div>
+<p>which is the branch current the step started with. The two currents are in the ratio 1 to 2 and the two resistances are in the ratio 2 to 1, exactly inverse, as they must be when the p.d. is common. So R4 carries the <i>smaller</i> of the two shares even though it is the resistor the question asks about — a reminder that the biggest number in a network is not always in the branch you expect.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>1.3 &#937;</b> is <code>4.0/3</code>, which is what you get by treating all three sides as being in parallel. They are not: the third side does not join the two vertices the battery is connected to, so current through it is not in parallel with the rest. It is in series with one of the other two.</p>
-<p>&middot; <b>4.0 &#937;</b> is the resistance of one side. It is the answer to a different question — the resistance of a single wire — and it ignores the fact that the current has a second route to take.</p>
-<p>&middot; <b>6.0 &#937;</b> is half the total, which is what you get by imagining the triangle as two equal paths of 6.0 &#937;. But the two paths are not equal: one is 4.0 &#937; and the other is 8.0 &#937;. When two parallel paths are unequal, the result is closer to the smaller one, not to the mean.</p>
-<p>&middot; <b>8.0 &#937;</b> is the long path alone. This is the most instructive of the wrong answers, because the long path is a genuine path and its resistance is correctly worked out. The mistake is forgetting that the direct side is still there, offering an easier route in parallel.</p>
-<p><b>The trap.</b> Reading the picture as a circuit diagram. A triangle drawn on the page looks like a loop, and it is tempting to add the sides in series round it. The right question is always "between which two points?", and then "how many ways can the current get from one to the other?".</p>
-<p><b>Relevant topics:</b> resistance and length; series and parallel combinations; networks of identical resistors; the resistance of a wire bent into a polygon.</p>''',
-    "trap": "Reading the triangle as a loop and adding the three sides in series, or treating all three as parallel. There are two paths between the chosen vertices, not three.",
+<p>&middot; <b>1/2 A</b> is the current in the whole R3 branch. It is a real number, correctly worked out, and it is the most likely wrong answer because it is one step short of the end. It has not yet been divided between R4 and R5.</p>
+<p>&middot; <b>1/3 A</b> is the current in R5, the 6.0 &#937; partner. The p.d. of 2.0 V is right; the resistor is the wrong one. Notice that R5 takes twice the current of R4, so confusing the two costs a factor of two.</p>
+<p>&middot; <b>1/4 A</b> comes from giving each of the two outer parallel branches half the total current, 0.75 A instead of 0.50 A. Everything after that is done correctly, so the arithmetic is internally consistent — which is exactly why this is the dangerous distractor. The equal split is only valid when the branches are equal, and 6.0 &#937; is not 12 &#937;.</p>
+<p>&middot; <b>1/12 A</b> is 12 V divided by 12 &#937;, applying the battery p.d. directly across R4. It ignores R1 and the whole of the parallel section, so it is the answer you would get if R4 were the only resistor in the circuit.</p>
+<p><b>The trap.</b> Assuming the current divides equally wherever it meets a junction. The rule is the opposite: with a common p.d., the <i>smaller</i> resistance takes the <i>larger</i> current. At Step 7 the equal split would give 0.75 A where the truth is 0.50 A, and that single error survives to the end as 1/4 A instead of 1/6 A.</p>
+<p><b>Relevant topics:</b> series and parallel combinations; the reduction of a network in stages; current division between unequal branches; the potential divider; the p.d. across one resistor of a chain.</p>''',
+    "trap": "Assuming two parallel branches share the current equally. With a common p.d. the smaller resistance takes the larger current, so the 12 ohm branch takes 0.50 A where the equal split would give 0.75 A.",
 },
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # 5 -- A, toolkit.  An estimation carried out in powers of ten.
@@ -845,60 +874,88 @@ units of &#951; = (kg m s<sup>-2</sup>)(s)(m<sup>-2</sup>)
 },
 
 # ═════════════════════════════════════════════════════════════════════════════
-# 15 -- B, kinematics.  Crossing a river: what the crossing time depends on.
+# 15 -- B, kinematics.  A ball bouncing across water: three flights, each flatter.
 # ═════════════════════════════════════════════════════════════════════════════
 {
-    "n": 15, "id": "S04-15", "module": "B", "diff": 2,
-    "topic": "Crossing a river: the time taken depends only on the component of velocity across the river",
-    "rel": [("B", "The velocity of the boat relative to the ground is the vector sum of its velocity relative to the water and the water's velocity"),
-            ("B", "The time to cross depends only on the velocity component perpendicular to the banks"),
-            ("A", "Recognising which quantity in a problem is unaffected by a change in another")],
-    "key": ["river", "crossing", "component", "vectorsum"],
-    "stem": '<p>The figure shows a boat leaving the near bank pointed straight across a river, with the current flowing along the bank. The river is 120 m wide and the boat\'s speed relative to the water is 3.0 m/s. The current is 2.0 m/s. {{FIG:s04-15}}</p><p>How long does the crossing take?</p>',
-    "opts": ['24 s', '33 s', '48 s', '40 s', '60 s'],
+    "n": 15, "id": "S04-15", "module": "B", "diff": 3,
+    "topic": "A ball projected horizontally from a cliff and bouncing on the water: the total horizontal distance after three flights",
+    "rel": [("B", "Horizontal and vertical motion are independent, and a bounce leaves the horizontal component of velocity unchanged"),
+            ("B", "The time of a vertical flight is proportional to the vertical component of the launch velocity"),
+            ("B", "A vertical fall from rest covers one half of g times the square of the time"),
+            ("C", "Halving the vertical speed takes away three quarters of the kinetic energy of the vertical motion, which is why the later flights are shorter")],
+    "key": ["projectile", "bounce", "independence", "proportional"],
+    "stem": '<p>A ball is projected horizontally at 15 m/s from the top of a cliff 20 m above the sea. It bounces on the water, and at each bounce the vertical component of its velocity is halved and reversed while the horizontal component is unchanged. The figure shows the three flights, ending at the third bounce. {{FIG:s04-15}}</p><p>Taking g = 10 m/s<sup>2</sup>, what is the total horizontal distance the ball travels from the cliff top to the third bounce?</p>',
+    "opts": ['60 m', '90 m', '45 m', '75 m', '150 m'],
     "ans": 3,
-    "distractors": ['adds the two speeds to get a resultant of 5.0 m/s and divides the width by that',
-                    'combines the two speeds at right angles into 3.6 m/s and then uses that as the crossing speed',
-                    'takes the average of the boat speed and the current speed',
+    "distractors": ['counts only the first two flights and forgets the third, which is still 15 m long',
+                    'treats the bounce as perfectly elastic, so the second flight lasts as long as the first',
+                    'halves the whole flight at the bounce rather than only the vertical part, so the second flight comes out at 15 m',
                     'correct',
-                    'uses the current speed to cross the river, as though the boat were pointed downstream'],
+                    'treats the bounce as perfectly elastic and counts all three flights at the first flight\'s length'],
     "profile": {
         "steps": [
-            ("relate", "separate the boat's velocity relative to the water from the water's velocity"),
-            ("relate", "note that only the component perpendicular to the banks carries the boat across"),
-            ("solve", "divide the width of the river by that perpendicular component"),
-            ("check", "work out the drift and confirm that the current changes where the boat lands but not how long it takes"),
+            ("relate", "separate the launch into a horizontal component of 15 m/s and a vertical component of zero"),
+            ("solve", "find the time of the first fall by putting 20 m into the free-fall distance equation"),
+            ("solve", "multiply the horizontal speed by that time to get the first horizontal leg"),
+            ("solve", "find the vertical speed at the first bounce, which is g times the fall time"),
+            ("relate", "halve and reverse that vertical speed for the bounce, leaving the horizontal speed alone"),
+            ("solve", "find the time of the second flight from its vertical launch speed"),
+            ("solve", "multiply the horizontal speed by that time to get the second horizontal leg"),
+            ("solve", "halve the vertical speed again and repeat once more for the third flight"),
+            ("solve", "add the three horizontal legs"),
+            ("check", "confirm the times are in the ratio 2 to 2 to 1 and that the horizontal speed never changes"),
         ],
-        "relations": ["t = width / (component across the river)",
-                      "t = 120 / 3.0 = 40 s",
-                      "drift = 2.0 &#215; 40 = 80 m"],
-        "insight": "The crossing time is set by the velocity component perpendicular to the banks, and the current has no component in that direction. So the current changes where the boat lands and not how long the crossing takes.",
-        "shape": "diagram-geometry",
+        "relations": ["u horizontal = 15 m/s, u vertical = 0",
+                      "20 = 0.5 &#215; 10 &#215; t squared, so t = 2.0 s and the first leg is 15 &#215; 2.0 = 30 m",
+                      "vertical speed at the first bounce = 10 &#215; 2.0 = 20 m/s downward",
+                      "after the bounce the vertical speed is 10 m/s upward, so the second flight lasts 2 &#215; 10 / 10 = 2.0 s",
+                      "second leg = 15 &#215; 2.0 = 30 m; after the next bounce the vertical speed is 5.0 m/s, so the third flight lasts 1.0 s",
+                      "third leg = 15 &#215; 1.0 = 15 m, and the total is 30 + 30 + 15 = 75 m"],
+        "insight": "The bounce halves the vertical speed, so each flight time halves - but the horizontal speed is untouched, so the horizontal speed is the one thing that never changes. The second flight is as wide as the first and a quarter as tall; the third is half as wide again.",
+        "shape": "proportionality",
         "approx": False,
         "symbolic": False,
         "figure_essential": True,
     },
-    "check": {"kind": "eval", "expr": "120/3.0", "want": "40"},
-    "sol": '''<p><b>What is being tested.</b> Whether you can separate the two velocities in a relative-motion problem, and whether you notice that one of them does not affect the answer at all.</p>
-<p><b>Step 1 — the two velocities.</b> The boat has a velocity relative to the water of 3.0 m/s, and it is pointed straight across, so that velocity is perpendicular to the banks. The water has a velocity relative to the ground of 2.0 m/s along the banks. The boat's velocity relative to the ground is the vector sum of the two, which is what the resultant arrow in the figure shows.</p>
-<p><b>Step 2 — which component carries the boat across.</b> The width of the river is measured perpendicular to the banks, so only the component of the boat's velocity perpendicular to the banks carries it from one bank to the other. The current is parallel to the banks and has no component in that direction at all. So the crossing speed is just the boat's own speed, 3.0 m/s.</p>
-<p><b>Step 3 — the crossing time.</b></p>
-<div class="formula">t = width / crossing speed
-  = 120 / 3.0
-  = 40 s</div>
+    "check": {"kind": "eval", "expr": "15*(sqrt(2*20/10) + 2*((10*sqrt(2*20/10))/2)/10 + 2*(((10*sqrt(2*20/10))/2)/2)/10)", "want": "75"},
+    "sol": '''<p><b>What is being tested.</b> Whether you keep the horizontal and vertical parts of a projectile separate right through a sequence of bounces, and whether you notice which of the two the bounce does <i>not</i> touch.</p>
+<p><b>Step 1 — the launch.</b> The ball leaves the cliff top horizontally, so its velocity has only one component to begin with:</p>
+<div class="formula">horizontal: 15 m/s
+vertical: 0</div>
+<p>The vertical motion starts from rest, exactly as if the ball had been dropped. The horizontal motion is unaffected by anything that happens vertically, and that separation is the whole basis of the question.</p>
+<p><b>Step 2 — the time of the first fall.</b> The ball falls 20 m from rest under gravity:</p>
+<div class="formula">s = 0.5 g t squared
+20 = 0.5 &#215; 10 &#215; t squared = 5 t squared
+t squared = 4, so t = 2.0 s</div>
+<p><b>Step 3 — the first horizontal leg.</b> The horizontal speed is constant, so the distance is speed times time:</p>
+<div class="formula">x1 = 15 &#215; 2.0 = 30 m</div>
+<p><b>Step 4 — the vertical speed at the first bounce.</b> The ball has been accelerating downward for 2.0 s:</p>
+<div class="formula">v = g t = 10 &#215; 2.0 = 20 m/s downward</div>
+<p><b>Step 5 — what the bounce does.</b> The vertical component is halved and reversed, so it becomes 10 m/s upward. The horizontal component is untouched and is still 15 m/s. That asymmetry is the heart of the question: the bounce takes energy out of the vertical motion and leaves the horizontal motion exactly as it was.</p>
+<p><b>Step 6 — the time of the second flight.</b> The ball leaves the water at 10 m/s upward and returns to the same level. Rising from 10 m/s to rest and falling back takes twice the time to reach the top:</p>
+<div class="formula">time to the top = 10 / 10 = 1.0 s
+t2 = 2 &#215; 1.0 = 2.0 s</div>
+<p><b>Step 7 — the second horizontal leg.</b></p>
+<div class="formula">x2 = 15 &#215; 2.0 = 30 m</div>
+<p>So the second flight is <i>exactly as wide</i> as the first, and only a quarter as tall — it rose 5 m where the first fell 20 m. That looks wrong until you remember that the horizontal speed never changed, so the same time in the air must give the same distance across.</p>
+<p><b>Step 8 — the third flight.</b> The ball returns to the water at 10 m/s downward, and the bounce halves that again, so it leaves at 5.0 m/s upward:</p>
+<div class="formula">t3 = 2 &#215; 5.0 / 10 = 1.0 s</div>
+<p><b>Step 9 — the third horizontal leg.</b></p>
+<div class="formula">x3 = 15 &#215; 1.0 = 15 m</div>
 <p>So <b>Answer: D.</b></p>
-<p><b>Step 4 — check by working out where the boat lands.</b> The current carries the boat downstream for the whole crossing, so the drift is</p>
-<div class="formula">drift = current &#215; time = 2.0 &#215; 40 = 80 m</div>
-<p>The boat therefore lands 80 m downstream of the point directly opposite, and it has travelled along a diagonal of length <code>&#8730;(120<sup>2</sup> + 80<sup>2</sup>) = &#8730;20800</code>, which is about 144 m. Dividing that by the resultant speed of <code>&#8730;(3.0<sup>2</sup> + 2.0<sup>2</sup>) = 3.6 m/s</code> gives about 40 s again, which is a completely independent confirmation of the same answer. The two routes agreeing is the strongest check available here, and it also shows why the current cannot matter: it lengthens the path and raises the speed by exactly matching amounts.</p>
+<p><b>Step 10 — add the legs and check the pattern.</b></p>
+<div class="formula">x total = 30 + 30 + 15 = 75 m</div>
+<p>The three flight times are 2.0 s, 2.0 s and 1.0 s, in the ratio 2 to 2 to 1, which is exactly the ratio of the vertical launch speeds 20, 10 and 5 — the flight time is proportional to the vertical speed and to nothing else. The horizontal speed is 15 m/s throughout, so the distances are in the same ratio as the times. Every number in the answer comes from those two facts, and they can be checked independently: the ball is in the air for 5.0 s altogether, and 15 m/s for 5.0 s is 75 m.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>24 s</b> adds the two speeds, 3.0 + 2.0 = 5.0 m/s, and divides 120 by that. Speeds in perpendicular directions do not add like ordinary numbers; they combine as the sides of a right-angled triangle. The resultant is 3.6 m/s, not 5.0 m/s.</p>
-<p>&middot; <b>33 s</b> uses the resultant of 3.6 m/s as the crossing speed. The resultant is the right quantity to use if you want the speed along the actual path, and the wrong one if you want the time to cross, because the path is longer than the width. This is the most sophisticated of the wrong answers and it is worth seeing why it fails: it pairs a diagonal speed with a straight-line distance.</p>
-<p>&middot; <b>48 s</b> uses the average of the two speeds, 2.5 m/s. There is no physical reason to average a velocity across the river with a velocity along it; they act in perpendicular directions and are not two estimates of the same thing.</p>
-<p>&middot; <b>60 s</b> uses the current speed, 2.0 m/s, to cross. That would be right only if the boat were pointed downstream and the current were the only thing carrying it across, which is the opposite of the situation in the figure.</p>
-<p><b>The trap.</b> Assuming the current must make the crossing take longer. It is a natural assumption — the current is clearly doing something — and it is wrong. The current changes the direction of travel and the distance covered, but not the time, because it acts at right angles to the motion that is carrying the boat across.</p>
-<p><b>Relevant topics:</b> relative velocity; vector addition at right angles; resolving a velocity into components; motion in two dimensions with constant velocity.</p>''',
-    "trap": "Assuming the current makes the crossing take longer. It acts at right angles to the crossing direction, so it changes where the boat lands and not how long it takes.",
+<p>&middot; <b>60 m</b> counts the first two flights and forgets the third. It is the most likely wrong answer, because after two identical 30 m legs it is natural to feel that the pattern has been established and to stop. The ball bounces a third time and travels another 15 m.</p>
+<p>&middot; <b>90 m</b> treats the bounce as perfectly elastic. If the vertical speed came back unchanged at 20 m/s the second flight would last 4.0 s and cover 60 m, giving 30 + 60. The question says the vertical component is halved, and that is the single fact this option ignores.</p>
+<p>&middot; <b>45 m</b> halves the whole flight at the bounce instead of only the vertical part. That would make the second leg 15 m rather than 30 m, and it double-counts the error by also stopping there. Halving the vertical speed halves the <i>time</i>; the horizontal distance then follows from a horizontal speed that has not changed at all.</p>
+<p>&middot; <b>150 m</b> makes the same elastic-bounce mistake as 90 m but carries it through all three flights, giving three legs of 30, 60 and 60 m.</p>
+<p><b>The trap.</b> Assuming that a bounce which clearly removes energy must shorten the next flight. It does shorten the flight in <i>time</i> and in <i>height</i>, but not in horizontal distance, because the horizontal speed is the one quantity the bounce never touches. The figure is drawn to scale for exactly this reason: the second arc is the same width as the first and visibly flatter, and the third is half as wide.</p>
+<p><b>Relevant topics:</b> projectile motion; independence of horizontal and vertical motion; free fall from rest; the time of flight of a vertical launch; velocity-time reasoning without a calculator.</p>''',
+    "trap": "Assuming the bounce must shorten the next flight in horizontal distance. It halves the vertical speed and so halves the flight time, but the horizontal speed is unchanged, so the second leg is the same 30 m as the first.",
 },
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # 16 -- C, forces.  A sign hanging from two wires at unequal angles.

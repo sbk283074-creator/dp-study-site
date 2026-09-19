@@ -30,6 +30,35 @@ from svgkit import (ARC, CI, INK, GREY, BLUE, RED, GREEN, AMBER, PURPLE, PANEL,
 P = 's05'
 
 
+def _dim(x1, y1, x2, y2, label, off=0.0, c=GREY, size=11.0):
+    """A dimension line with end ticks and a centred label.
+
+    Kept local, exactly as figs01..04 keep it, rather than promoted to svgkit: the
+    shared module is imported by five figure files and a change there would have to be
+    re-verified against every one of them.
+    """
+    out = [L(x1, y1, x2, y2, c, 1.2)]
+    if abs(x2 - x1) > abs(y2 - y1):
+        for x in (x1, x2):
+            out.append(L(x, y1 - 5, x, y1 + 5, c, 1.2))
+        out.append(T((x1 + x2) / 2.0, y1 + 15 + off, label, size, 'middle', c))
+    else:
+        for y in (y1, y2):
+            out.append(L(x1 - 5, y, x1 + 5, y, c, 1.2))
+        out.append(T(x1 - 9, (y1 + y2) / 2.0 + 4 + off, label, size, 'end', c))
+    return out
+
+
+def _hatch_down(y, x0, x1, step=13, dx=-9, dy=9, c=GREY, sw=1.0):
+    """Ticks going down-and-left, for a rough horizontal surface at y."""
+    out = []
+    x = x0
+    while x < x1:
+        out.append(L(x, y, x + dx, y + dy, c, sw))
+        x += step
+    return out
+
+
 def _ar(key, colour=INK):
     """A marker id that cannot collide with any other figure's.
 
@@ -164,32 +193,55 @@ def f05():
 # 06 — two blocks, a string and a pulley: which mass sets the normal reaction
 # ═════════════════════════════════════════════════════════════════════════════
 def f06():
-    ar = _ar('06', RED)
+    """The discriminator is WHERE the rough surface begins.
+
+    The ramp is smooth, so the ball keeps every joule of the 2.0 J it gained on the way
+    down; friction starts only at the foot of the ramp, and the hatching shows that the
+    rough surface then continues PAST the second ball, so the combined mass is still
+    being retarded after the collision.  A figure that hatched the whole floor would
+    hide the fact that the first stretch is the only place friction does work before the
+    collision.
+    """
+    ar = _ar('06', BLUE)
     b = []
-    b.append(RC(30, 118, 150, 10, WALL))                 # the table
-    for i in range(0, 76, 12):
-        b.append(L(30 + i, 128, 40 + i, 138, GREY, 0.9))
-    # pulley
-    b.append(CI(196, 106, 16, INK, 1.8, PANEL))
-    b.append(CI(196, 106, 4, INK, 1.2, INK))
-    b.append(L(180, 92, 180, 78, INK, 1.6))
-    b.append(L(180, 78, 196, 78, INK, 1.6))
-    # block on the table: 5.0 kg
-    b.append(RC(58, 84, 56, 34, PANEL, INK, 2.0))
-    b.append(T(86, 106, '5.0 kg', 11.5, 'middle'))
-    # string
-    b.append(L(114, 101, 180, 101, INK, 1.8))
-    b.append(L(212, 101, 212, 140, INK, 1.8))
-    # hanging block: 3.0 kg
-    b.append(RC(194, 140, 36, 34, PANEL, INK, 2.0))
-    b.append(T(212, 162, '3.0 kg', 11.5, 'middle'))
-    b.append(L(212, 174, 212, 200, RED, 1.6, ' marker-end="url(#%s-ar)"' % ('%s-06' % P)))
-    b.append(T(208, 186, 'weight', 10.5, 'end', RED))
-    b.append(T(140, 90, 'smooth pulley', 10.5, 'middle', GREY))
-    b.append(T(86, 76, 'rough table', 10.5, 'middle', GREY))
-    return svg(250, 212,
-               'A 5.0 kilogram block on a rough horizontal table joined by a light '
-               'string over a smooth pulley to a hanging 3.0 kilogram block.',
+    yS, xR, xC = 190.0, 220.0, 370.0
+
+    # the ramp and its height
+    b.append(PA('M110,70 L220,190 L110,190 z', INK, 1.8, 'none'))
+    b += _dim(80, 70, 80, 190, '0.40 m')
+    b.append(T(150, 134, 'smooth', 10.5, 'end', GREY))
+
+    # the floor, rough from the foot of the ramp onwards
+    b.append(L(60, yS, 560, yS, INK, 1.8))
+    b += _hatch_down(yS, 224, 558)
+    b.append(T(468, 220, 'rough, mu = 0.20', 11, 'middle', GREY))
+
+    # the first ball, released from rest at the top
+    b.append(CI(110, 70, 7, BLUE, 1.6, '#dbe6fb'))
+    b.append(T(122, 56, '0.50 kg', 11.5, 'start', BLUE, 'bold'))
+    b.append(L(250, 174, 332, 174, BLUE, 2.0, ' marker-end="url(#%s-ar)"' % (P + '-06')))
+
+    # the second ball, at rest
+    b.append(CI(370, 182, 8, RED, 1.6, '#fbe0de'))
+    b.append(T(370, 158, '0.30 kg, at rest', 11, 'middle', RED))
+
+    # the 1.0 m of rough surface before the collision
+    b.append(L(xR, 240, xC, 240, GREY, 1.2))
+    for x in (xR, xC):
+        b.append(L(x, 235, x, 245, GREY, 1.2))
+        b.append(L(x, 201, x, 240, GREY, 1.2, ' stroke-dasharray="4 4"'))
+    b.append(T(295, 258, '1.0 m', 11, 'middle', GREY))
+
+    # after the collision
+    b.append(L(384, 190, 500, 190, GREY, 2.0,
+               ' stroke-dasharray="7 5" marker-end="url(#%s-ar)"' % (P + '-06')))
+    b.append(T(442, 178, 'how far?', 11, 'middle', BLUE, 'bold'))
+
+    return svg(580, 300,
+               'A 0.50 kilogram ball released from rest at the top of a smooth ramp 0.40 '
+               'metres high; it reaches a rough horizontal surface, slides 1.0 metre and '
+               'then sticks to a 0.30 kilogram ball at rest, the two continuing over the '
+               'same rough surface',
                ar + '\n' + '\n'.join(b))
 
 
@@ -439,6 +491,36 @@ def f20():
                '\n'.join(b))
 
 
+def f22():
+    """The discriminator is the RELATIVE SIZE of the three stages.
+
+    The bar for melting the ice is more than three times the other two bars put
+    together, and it is the stage with no temperature change in it -- so a candidate
+    who leaves the latent heat out is looking at a figure that says so.  The bars are
+    drawn to scale and are not labelled with their values: the figure shows which stage
+    dominates, the arithmetic is still the candidate's job.
+    """
+    b = []
+    base = 200.0
+    px = 150.0 / 165000.0                    # pixels per joule
+    for x, e in ((110, 10500), (240, 165000), (370, 42000)):
+        h = e * px
+        b.append(RC(x, base - h, 76, h, '#dbe6fb', INK, 1.4))
+    b.append(L(70, base, 520, base, INK, 1.8))
+    for x, one, two in ((148, 'warm the ice', '&#8722;10 to 0 &#176;C'),
+                        (278, 'melt the ice', 'at 0 &#176;C'),
+                        (408, 'warm the water', '0 to 20 &#176;C')):
+        b.append(T(x, 218, one, 10.5, 'middle', INK))
+        b.append(T(x, 232, two, 10.5, 'middle', GREY))
+    b.append(T(295, 258, 'the three stages, drawn in proportion to the energy each needs',
+               10.5, 'middle', AMBER))
+    return svg(560, 272,
+               'Three bars, drawn to scale, showing the energy needed for the three '
+               'stages of turning ice at minus ten degrees into water at twenty degrees: '
+               'melting the ice is by far the largest',
+               '\n'.join(b))
+
+
 # ═════════════════════════════════════════════════════════════════════════════
 # 25 — a hydraulic jack: two areas whose ratio is twenty
 # ═════════════════════════════════════════════════════════════════════════════
@@ -486,5 +568,6 @@ FIGS = {
     's05-15': f15,
     's05-16': f16,
     's05-20': f20,
+    's05-22': f22,
     's05-25': f25,
 }

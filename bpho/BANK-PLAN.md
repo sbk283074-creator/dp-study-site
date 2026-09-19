@@ -64,6 +64,13 @@ real paper's own p25 and p75 as the cut-points. A declaration that disagrees wit
 measurement fails the gate. The declared band is a consequence of the measurement, not a
 claim about it.
 
+A median test is not sufficient, and four sections proved it: all four had a median above
+the paper's and none had a top end. The paper is **peaked** — one question at 27.4 and
+thirteen moves, twice the score of its own upper quartile — and a bank that matches the
+median while never setting anything that hard is not "the same or harder", it is a bank
+that has removed the question which actually selects. So the standard now has a **top end**
+as well: see G5b below, and `DIFFICULTY-AUDIT.md` for the measurement that found it.
+
 Two things that were removed because they flattered the author's own work:
 
 - an `elim` term (whether the solution says "eliminate") scored **0.00 on all 25 real
@@ -83,7 +90,7 @@ Two things that were removed because they flattered the author's own work:
 | **G2** distractors | each wrong option **names the error that produces it**; four distinct named errors; the key is marked correct. Filler options are what separate a worksheet from a competition paper |
 | **G3** agreement & notation | the solution's stated answer equals the stored key; no caret or ASCII exponents reach the reader; markup balanced; no unresolved figure placeholder; **every decimal in visible text is hand-computable** or its sentence says not to compute it |
 | **G4** profile vs solution | the declared reasoning chain (steps, relations, insight, shape) is cross-checked against the solution text, so a chain cannot be over- or under-stated |
-| **G5** difficulty | measured score vs the real paper's quartiles, plus band counts |
+| **G5** difficulty | measured score vs the real paper's quartiles, plus band counts — and three clauses added after the difficulty audit: **G5b** the top end (≥ 2 questions at ≥ 9 moves, hardest ≥ 22.0), **G5c** the non-calculator axes (per-section `noncalc_min` and `approx_min`), and a **floor** (nothing below 8.0, the paper's own easiest) |
 | **G6** similarity | **logic**-level overlap between every pair, not wording |
 | **G7** numerics | every answer re-derived independently of the solution, in exact arithmetic |
 | **G8** figures | at least 8 figure-bearing questions; every referenced figure exists; figure geometry is checked |
@@ -221,46 +228,91 @@ against a clock, and mark on paper.
 
 | | Sections | Questions | Status |
 |---|---|---|---|
-| Done | 1–3 | 75 | gated, hand-checked, published |
-| Planned | 4–40 | 925 | not started |
+| Done | 1–5 | 125 | gated, hand-checked, published, difficulty-audited |
+| Planned | 6–40 | 875 | not started |
+
+**Open item carried forward: sections 1–5 under-use the approximation axis.** They sit
+at 6–12 non-calculator questions per section and **1–2** requiring an approximation,
+against the 2025 paper's 16 and 10 out of 25. Sections 6–40 are now gated at the
+paper's own numbers (`spec.NONCALC_PAPER` / `APPROX_PAPER`); sections 1–5 are
+grandfathered at the floors they meet, because rewriting 125 published questions is a
+different piece of work from getting the next 875 right. Closing it means revisiting
+roughly sixty questions. See `DIFFICULTY-AUDIT.md` sections 4a and 6a.
+
+### The difficulty remediation (2026-09-19)
+
+The brief was *"the difficulty is really low, how can you improve it? You should check the
+past paper to ensure the difficulty."* The check is `DIFFICULTY-AUDIT.md`; the short version
+is that the bank was **flat** where the paper is **peaked** — the paper's hardest question
+scored 27.4 at thirteen moves, the bank's scored 20.5 at six, and 125 questions contained
+**none** above six moves. A bank can pass a median test and still have no top end, which is
+why the median test passed for four sections.
+
+| what changed | why it cannot regress |
+|---|---|
+| **G5b deep tier** — every section needs ≥ 2 questions at ≥ 9 moves, and a hardest question ≥ 22.0 | a flat section now fails the suite instead of waiting for a reader |
+| **G5 floor** — no question may score below 8.0 | the paper's easiest is 8.3, so anything under 8.0 is easier than the real paper sets |
+| **G4 deep profile** — a deep question must declare ≥ 9 steps and ≥ 4 distinct relations | stops length being bought with padded numbering |
+| **G5c per-section non-calculator floors** — `noncalc_min` and `approx_min` on the plan, 16 and 10 for sections 6–40 | stops the non-calculator axes being satisfied on paper by symbolic options alone |
+| **four questions replaced** in sections 4 and 5 | the ceiling moved from 20.5 to 24.2/25.4, each replacement hand-worked in `ledger.json` |
+
+The gate suite is now **39 mutants** (`python mutants.py`), all behaving: every gate has
+been shown to fail on demand and the one content-correct mutant has been shown to keep the
+suite quiet. Four of the new gates needed more than one mutant to prove, because a mutant
+caught by a *neighbouring* clause has demonstrated nothing — the three failures and what
+each one taught are recorded beside the mutants in `mutants.py` and summarised in
+`DIFFICULTY-AUDIT.md` section 6b.
 
 **Section 1** — `S01`, 15 figures, mix `A3 B2 C4 D2 E1 F2 G2 H4 I1 J2 K2`, answer sequence
-`BCBEDBECADCDEABEDCBABECAD`, measured median **14.8** against the paper's 13.5 and p25
-**13.4** against the paper's 11.5. All ten gates pass, all 31 mutants are caught, 25/25
-hand-verified in `ledger.json`, and it is live as `BANK-S01` in the practice view.
+`BCBEDBECADCAEABADCBABECAD`, measured median **15.2** against the paper's 13.5, p25 **14.6**
+against 11.5, min 12.6, hardest `S01-16` at **26.9** and `S01-12` at 24.2 (both ten moves).
+Non-calculator: 12 by either axis, 6 by approximation. All ten gates pass, 25/25
+hand-verified, live as `BANK-S01`.
 
-**Section 2** — `S02`, 8 figures, mix `A3 B2 C2 D1 E2 F2 G2 H3 I1 K2 L3 M2`, answer sequence
-`CAEBDEAACBCBBEDBCCACDBBCD`, measured median **16.2** against the paper's 13.5 and p25
-**15.1** against the paper's 11.5, min 11.6, hardest `S02-05` (conical pendulum) at 20.5.
-Bands `d2=8 d3=17` — deliberately harder than the real paper, per the brief. All ten gates
+**Section 2** — `S02`, 8 figures, mix `A3 B2 C2 D1 E2 F2 G2 H3 I1 K2 L3 M2`, answer
+sequence `CAABDEAACBCBAEDBCCACDBBCD`, measured median **16.6** against 13.5, p25 **15.6**
+against 11.5, min 11.6, hardest `S02-03` and `S02-13` at **23.2**. Bands `d2=6 d3=19` —
+deliberately harder than the real paper, per the brief. Non-calculator 8 / 2. All ten gates
 pass, 25/25 hand-verified, live as `BANK-S02`.
 
-Sections 1–2 together: 50 questions, 23 figures, 50/50 hand-checked, 31 mutants caught,
-and `verify_site.js` discovers both tags from `window.BPHO_QUESTIONS` rather than naming
-them, so sections 3–40 are checked the moment they publish.
-
-**Section 3** — `S03`, 11 figures, mix `A3 B2 C4 D1 E1 F2 G2 H3 I1 J2 K2 L1 M1`, answer
-sequence `CDBAECABEDCAEBDACEBDACBED`, measured median **15.2** against the paper's 13.5,
-p25 **14.2** against 11.5, min 11.6, max 18.3 (`S03-14`, deceleration ∝ v), and 12
-questions at or above the paper's own p75. Bands `d2=13 d3=12`; the section has **no
-diff-1 question at all**, which is the brief's "same or even harder" taken literally — the
-easiest question sits just above the real paper's 25th percentile. All ten gates pass,
+**Section 3** — `S03`, 10 figures, mix `A3 B2 C4 D1 E1 F2 G2 H3 I1 J2 K2 L1 M1`, answer
+sequence `CDBAEAABEDAAABDAAEBDACBED`, measured median **15.8** against 13.5, p25 **15.2**
+against 11.5, min 11.6, hardest `S03-17` at **24.3**; **three** deep questions, the most in
+the bank. Bands `d2=9 d3=16`; the section has **no diff-1 question at all**, which is the
+brief's "same or even harder" taken literally — the easiest question sits above the real
+paper's 25th percentile. Non-calculator 6 / 1, the weakest of the five. All ten gates pass,
 25/25 hand-verified, live as `BANK-S03`.
 
 Section 3 was authored with every correct option first and then permuted deterministically
 (`opts` and `distractors` rotated together), so the answer balance of 5 per letter holds by
-construction rather than by luck, and the prose letters were rewritten to match — never the
-key. Six figure defects were found by *looking*, five of which no existing check could see:
-an open bridge circuit, an open series loop, two labels with a wire running through them,
-dangling component dashes, a "normal" drawn along the wrong axis, and the `<sup>` breakout
-below.
+construction rather than by luck, and the prose letters were rewritten to match — never
+the key. Six figure defects were found by *looking*, five of which no existing check could
+see: an open bridge circuit, an open series loop, two labels with a wire running through
+them, dangling component dashes, a "normal" drawn along the wrong axis, and the `<sup>`
+breakout below.
 
-**Papers area** — built alongside section 3. `#/papers` lists all five papers as PDFs (10
-files, 190 pages, 6.6 MB): the 2025 paper, the sample sheet, and sections 1–3, each with its
-markscheme. Both PDF defects found were found by rendering a page to PNG and *looking* at
-it, not by any check: the markscheme's first solution was pushed to page 2 by a
+**Section 4** — `S04`, 13 figures, mix `A3 B2 C3 D2 E1 F2 G2 H4 I1 J1 K2 L2`, answer
+sequence `CABACABDEADBECDBAECDEBDCA`, measured median **15.2** against 13.5, p25 **12.6**
+against 11.5, min 11.6. Hardest `S04-04` and `S04-15`, both at **24.2** and both ten moves:
+a five-resistor circuit reduced in three stages, and a ball whose bounces halve only the
+vertical velocity so the flight times form a geometric series. Non-calculator 8 / 1. All ten
+gates pass, 25/25 hand-verified, live as `BANK-S04`.
+
+**Section 5** — `S05`, 13 figures, mix `A3 B2 C3 D2 E1 F2 G2 H3 I1 J1 K2 L2 M1`, answer
+sequence `ACEBDDACEBBDACEEBDACCEBDA`, measured median **14.2** against 13.5, p25 **14.1**
+against 11.5, min 8.2 — the bank's first section with a diff-1 question, and the section
+that found the G5 floor. Hardest `S05-06` at **25.4** (ramp → rough floor → inelastic
+collision → slide) and `S05-22` at 24.2 (ice warmed, melted, warmed again). Its opening
+dimensional-analysis question was replaced after scoring 7.7, below anything the real paper
+sets, because it asked the candidate to *recognise* a combination rather than build one.
+Non-calculator 7 / 2. All ten gates pass, 25/25 hand-verified, live as `BANK-S05`.
+
+**Papers area** — `#/papers` lists every paper as a downloadable PDF: the 2025 paper, the
+sample sheet, and sections 1–5, each with its markscheme — **7 papers, 14 PDFs, 276
+pages, 9.3 MB**. Both PDF defects found were found by rendering a page to PNG and *looking*
+at it, not by any check: the markscheme's first solution was pushed to page 2 by a
 `break-inside: avoid` on a block that is by nature long, leaving "Worked solutions" over
-half a blank sheet. `verify_site.js` now checks the area in both directions — every card
+half a blank sheet. `verify_site.js` checks the area in both directions — every card
 matches the manifest and every link fetches real `%PDF-` bytes, *and* every bank section in
 the data has a built PDF.
 
@@ -275,7 +327,7 @@ the data has a built PDF.
 | `fig/*.svg` | the generated figures, the actual input to gating and publishing |
 | `svgkit.py` | shared SVG primitives (`ell(...)` sampled ellipses, palette); raises on breakout tags |
 | `gates.py` | the ten gates, the difficulty scorer, the fingerprint |
-| `mutants.py` | 31 mutants proving the gates have teeth, both directions |
+| `mutants.py` | 39 mutants proving the gates have teeth, both directions |
 | `make_ledger.py` | builds `ledger.json`, the hand-check record |
 | `ledger.json` | per-question method, working, and hand-derived answer |
 | `build_site.py` | gates, then emits `bpho/data/bank-NN.js` |

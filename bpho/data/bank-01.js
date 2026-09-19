@@ -13,7 +13,7 @@
    gate suite itself is tested by 31 mutants, each of which breaks one thing and
    asserts that the right gate notices.
 
-   Derived key: B C B E D B E C A D C D E A B E D C B A B E C A D
+   Derived key: B C B E D B E C A D C A E A B A D C B A B E C A D
 
    Figures are hand-authored inline SVG in tools/bank/fig/, not generated images. */
 
@@ -480,44 +480,80 @@ f = f&#8320;, 3f&#8320;, 5f&#8320;, ...</div>
 },
 
 {
-  id: "S01-12", module: "H", topic: "The resistance of a filament lamp at one point on its characteristic", diff: 2, rel: [["H", "Resistance at a point is the ratio V/I at that point"], ["H", "A filament lamp is non-ohmic: its resistance changes with current"], ["A", "Reading a value off a graph, and knowing that a gradient is not a ratio"]], key: ["resistance", "loggraphs", "readdiagram"], ans: 3, paper: "BANK-S01",
-  rel: [["H", "Resistance at a point is the ratio V/I at that point"], ["H", "A filament lamp is non-ohmic: its resistance changes with current"], ["A", "Reading a value off a graph, and knowing that a gradient is not a ratio"]],
-  q: `<p>The graph shows how the current through a filament lamp varies with the potential difference across it. A point on the curve is marked at 6.0 V, 0.40 A. <figure class="fig">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 250" role="img" aria-label="The current-voltage characteristic of a filament lamp. The curve passes through the origin and bends over as the current rises, because the filament gets hotter and its resistance increases. A point P is marked at 6.0 volts and 0.40 amperes.">
+  id: "S01-12", module: "H", topic: "Removing one branch of the load: the ratio of the two terminal potential differences", diff: 3, rel: [["H", "A parallel pair reduces to a single resistance before the loop can be treated as a series loop"], ["H", "Ohm's law applied to the whole circuit, internal resistance included"], ["H", "The terminal potential difference is the emf minus the volts lost across the internal resistance"], ["A", "Answering a question about a ratio by dividing two expressions instead of evaluating either one"]], key: ["terminal", "internal", "ratio", "parallel", "load"], ans: 0, paper: "BANK-S01",
+  rel: [["H", "A parallel pair reduces to a single resistance before the loop can be treated as a series loop"], ["H", "Ohm's law applied to the whole circuit, internal resistance included"], ["H", "The terminal potential difference is the emf minus the volts lost across the internal resistance"], ["A", "Answering a question about a ratio by dividing two expressions instead of evaluating either one"]],
+  q: `<p>The figure shows a cell of emf 12 V and internal resistance 1.0 &#937; driving a load made of a 6.0 &#937; resistor in series with a parallel pair of 6.0 &#937; and 3.0 &#937;. <figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 268" role="img" aria-label="A cell of emf 12 volts and internal resistance 1.0 ohm in series with a 6.0 ohm resistor, and then a parallel pair made of a 6.0 ohm branch and a 3.0 ohm branch. The 3.0 ohm branch is ringed with red dashes and labelled removed, so what remains is the two 6.0 ohm resistors in series with the cell.">
 <defs><marker id="q12-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>
-<line x1="60" y1="210" x2="332" y2="210" stroke="#14181f" stroke-width="1.7" marker-end="url(#q12-ar)"/>
-<line x1="60" y1="210" x2="60" y2="28" stroke="#14181f" stroke-width="1.7" marker-end="url(#q12-ar)"/>
-<text x="334" y="228" font-size="11.5" text-anchor="end" fill="#14181f">V / V</text>
-<text x="46" y="34" font-size="11.5" text-anchor="end" fill="#14181f">I / A</text>
-<polyline points="60,210 100,176 140,146 180,122 220,104 260,92 320,82" fill="none" stroke="#2f5fd0" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
-<line x1="60" y1="93" x2="255" y2="93" stroke="#7b8494" stroke-width="1.3" stroke-dasharray="5 4"/>
-<line x1="255" y1="93" x2="255" y2="210" stroke="#7b8494" stroke-width="1.3" stroke-dasharray="5 4"/>
-<circle cx="255" cy="93" r="4" fill="#b3352f" stroke="#b3352f" stroke-width="2"/>
-<text x="265" y="85" font-size="12" fill="#b3352f">P</text>
-<text x="125" y="227" font-size="11" text-anchor="middle" fill="#7b8494">2</text>
-<text x="190" y="227" font-size="11" text-anchor="middle" fill="#7b8494">4</text>
-<text x="255" y="227" font-size="11" text-anchor="middle" fill="#7b8494">6</text>
-<text x="52" y="157" font-size="11" text-anchor="end" fill="#7b8494">0.2</text>
-<text x="52" y="100" font-size="11" text-anchor="end" fill="#7b8494">0.4</text>
-<text x="180" y="240" font-size="11" text-anchor="middle" fill="#7b8494">a filament lamp: the resistance rises as the current rises</text>
+<line x1="110" y1="70" x2="470" y2="70" stroke="#14181f" stroke-width="2"/>
+<line x1="110" y1="210" x2="470" y2="210" stroke="#14181f" stroke-width="2"/>
+<line x1="110" y1="70" x2="110" y2="132" stroke="#14181f" stroke-width="2"/>
+<line x1="110" y1="148" x2="110" y2="210" stroke="#14181f" stroke-width="2"/>
+<line x1="96" y1="132" x2="124" y2="132" stroke="#14181f" stroke-width="2.4"/>
+<line x1="104" y1="148" x2="116" y2="148" stroke="#14181f" stroke-width="5"/>
+<text x="86" y="128" font-size="11.5" text-anchor="end" fill="#14181f">12 V</text>
+<text x="86" y="158" font-size="11.5" text-anchor="end" fill="#14181f">r = 1.0 Ω</text>
+<rect x="190" y="61" width="52" height="18" fill="#e6eaf2" stroke="#14181f" stroke-width="1.7"/>
+<text x="216" y="48" font-size="11.5" text-anchor="middle" fill="#14181f">6.0 Ω</text>
+<line x1="360" y1="70" x2="360" y2="118" stroke="#14181f" stroke-width="1.8"/>
+<line x1="360" y1="164" x2="360" y2="210" stroke="#14181f" stroke-width="1.8"/>
+<rect x="351" y="118" width="18" height="46" fill="#e6eaf2" stroke="#14181f" stroke-width="1.7"/>
+<text x="378" y="145" font-size="11.5" fill="#14181f">6.0 Ω</text>
+<line x1="450" y1="70" x2="450" y2="118" stroke="#14181f" stroke-width="1.8"/>
+<line x1="450" y1="164" x2="450" y2="210" stroke="#14181f" stroke-width="1.8"/>
+<rect x="441" y="118" width="18" height="46" fill="#e6eaf2" stroke="#14181f" stroke-width="1.7"/>
+<line x1="434" y1="106" x2="512" y2="106" stroke="#b3352f" stroke-width="1.6" stroke-dasharray="5 4"/>
+<line x1="434" y1="176" x2="512" y2="176" stroke="#b3352f" stroke-width="1.6" stroke-dasharray="5 4"/>
+<line x1="434" y1="106" x2="434" y2="176" stroke="#b3352f" stroke-width="1.6" stroke-dasharray="5 4"/>
+<line x1="512" y1="106" x2="512" y2="176" stroke="#b3352f" stroke-width="1.6" stroke-dasharray="5 4"/>
+<text x="468" y="128" font-size="11" fill="#b3352f">removed</text>
+<text x="468" y="152" font-size="11.5" fill="#14181f">3.0 Ω</text>
+<circle cx="110" cy="70" r="3.4" fill="#14181f" stroke="#14181f" stroke-width="1.4"/>
+<circle cx="110" cy="210" r="3.4" fill="#14181f" stroke="#14181f" stroke-width="1.4"/>
+<circle cx="360" cy="70" r="3.4" fill="#14181f" stroke="#14181f" stroke-width="1.4"/>
+<circle cx="450" cy="70" r="3.4" fill="#14181f" stroke="#14181f" stroke-width="1.4"/>
+<circle cx="360" cy="210" r="3.4" fill="#14181f" stroke="#14181f" stroke-width="1.4"/>
+<circle cx="450" cy="210" r="3.4" fill="#14181f" stroke="#14181f" stroke-width="1.4"/>
+<text x="285" y="248" font-size="11" text-anchor="middle" fill="#7b8494">the 3.0 Ω branch is taken away; the 6.0 Ω of the pair stays</text>
 </svg>
-</figure></p><p>What is the resistance of the lamp at that point?</p>`,
-  opts: ["2.4 &Omega;", "6.0 &Omega;", "7.5 &Omega;", "15 &Omega;", "24 &Omega;"],
-  sol: `<p><b>What is being tested.</b> A single distinction that decides a whole family of questions: on a graph of <code>V</code> against <code>I</code>, the resistance is the <i>ratio</i> <code>V/I</code>, which is the slope of the line drawn from the origin to the point — not the gradient of the curve at the point.</p>
-<p><b>Step 1 — what resistance means at a point.</b> Resistance is defined by <code>R = V/I</code>. That is a statement about a pair of values, so it applies at one point on the graph, not along a tangent.</p>
-<p><b>Step 2 — the two different slopes.</b> The gradient of the curve is <code>dV/dI</code>, which has units of ohms too but is a different quantity. For a straight line through the origin they coincide, which is exactly why the distinction is easy to miss. For a curved characteristic they do not.</p>
-<p><b>Step 3 — read the point and divide.</b> The marked point is at <code>V = 6.0 V</code> and <code>I = 0.40 A</code>, so</p>
-<div class="formula">R = V / I = 6.0 / 0.40 = 15 &Omega;</div>
-<p><b>Step 4 — check it is sensible.</b> A 6.0 V lamp drawing 0.40 A has a resistance of 15 &Omega;, which is a realistic value for a small filament lamp when it is hot. Note also that this is much larger than the lamp's resistance when cold, which is the reason its characteristic curves over rather than being straight.</p>
-<p><b>Answer: D, 15 &Omega;.</b></p>
-<p><b>Why the other four are wrong.</b></p>
-<p>· <b>2.4 &Omega;</b> is <code>V &times; I</code>, the product instead of the ratio. Units catch it: volts times amperes is watts, not ohms.</p>
-<p>· <b>6.0 &Omega;</b> divides by <code>1.0 A</code>, i.e. the number on the axis rather than the current at the point.</p>
-<p>· <b>7.5 &Omega;</b> divides by <code>0.80 A</code>, reading the wrong gridline.</p>
-<p>· <b>24 &Omega;</b> divides by <code>0.25 A</code>, again a misread gridline.</p>
-<p><b>The wider point.</b> The same distinction appears in a stress-strain graph, where Young's modulus is the gradient of the linear part rather than a ratio of coordinates, and in a velocity-time graph, where the gradient is acceleration but the ratio of coordinates is average velocity. Ask which of the two the question wants before you start reading numbers.</p>
-<p><b>Relevant topics:</b> resistance; current-voltage characteristics; non-ohmic conductors; reading graphs.</p>`,
-  trap: `Taking the gradient of the curve. On a curved <code>V</code>-<code>I</code> characteristic the gradient <code>dV/dI</code> is not the resistance; the resistance at a point is <code>V/I</code>, the slope of the line from the origin.`
+</figure></p><p>The 3.0 &#937; resistor is now removed, so the cell drives the two 6.0 &#937; resistors in series. Nothing else is changed.</p><p>What is the ratio <code>(terminal p.d. after the removal) / (terminal p.d. before the removal)</code>?</p>`,
+  opts: ["27/26", "9/13", "3/2", "1", "26/27"],
+  sol: `<p><b>What is being tested.</b> Three things at once. That the terminal p.d. of a cell depends on the load; that a network has to be reduced to a single resistance before the current can be found; and that a ratio question is answered by dividing two expressions, not by evaluating either one.</p>
+<p><b>Step 1 — reduce the parallel pair before the change.</b> The 6.0 &#937; and 3.0 &#937; resistors sit side by side across the same two points, so they combine as a parallel pair:</p>
+<div class="formula">R_parallel = (6.0 &#215; 3.0) / (6.0 + 3.0) = 18 / 9 = 2.0 &#937;</div>
+<p>Until that is done the circuit is not a single loop and Ohm's law cannot be applied to it.</p>
+<p><b>Step 2 — the external resistance before the change.</b> The 2.0 &#937; is in series with the 6.0 &#937;:</p>
+<div class="formula">R_ext = 6.0 + 2.0 = 8.0 &#937;</div>
+<p><b>Step 3 — the current before the change.</b> The cell drives the external resistance and its own internal resistance in series, so the current comes from the emf divided by the total:</p>
+<div class="formula">I = E / (R_ext + r) = 12 / (8.0 + 1.0) = 12 / 9 = 4/3 A</div>
+<p><b>Step 4 — the terminal p.d. before the change.</b> The terminal p.d. is what is left across the external resistance, which is this current through 8.0 &#937;:</p>
+<div class="formula">V_before = I R_ext = (4/3) &#215; 8.0 = 32/3 V</div>
+<p>Equivalently it is the emf less the lost volts, 12 &#8722; 4/3 = 32/3 V. Both routes give the same thing, which is the point of the next few steps.</p>
+<p><b>Step 5 — the external resistance after the change.</b> Removing the 3.0 &#937; resistor removes one branch of the parallel pair. The other branch, the 6.0 &#937;, stays, and it is now in series with the 6.0 &#937; that was already in series:</p>
+<div class="formula">R_ext&#8242; = 6.0 + 6.0 = 12.0 &#937;</div>
+<p>Notice the direction: taking a resistor away has <i>raised</i> the external resistance from 8.0 &#937; to 12.0 &#937;. That is the step people get wrong, because removing a component feels like removing a load.</p>
+<p><b>Step 6 — the current after the change.</b> The same emf now drives a larger total resistance, so the current must fall:</p>
+<div class="formula">I&#8242; = E / (R_ext&#8242; + r) = 12 / (12.0 + 1.0) = 12 / 13 A</div>
+<p>It fell from 4/3 = 1.33 A to 12/13 = 0.92 A, as expected.</p>
+<p><b>Step 7 — the terminal p.d. after the change.</b> A smaller current through the internal resistance means fewer lost volts, so more of the emf appears at the terminals:</p>
+<div class="formula">V_after = I&#8242; R_ext&#8242; = (12/13) &#215; 12.0 = 144/13 V</div>
+<p><b>Step 8 — form the ratio.</b> This is what the question actually asks for, and it is why no decimals are needed anywhere:</p>
+<div class="formula">ratio = V_after / V_before = (144/13) / (32/3) = (144 &#215; 3) / (13 &#215; 32) = 432 / 416 = 27/26</div>
+<p><b>Step 9 — the same ratio the short way, as a check.</b> Since V = I R_ext and I = E/(R_ext + r), the terminal p.d. can be written directly in terms of the external resistance:</p>
+<div class="formula">V = E R_ext / (R_ext + r)</div>
+<div class="formula">ratio = (12/13) / (8/9) = (12 &#215; 9) / (13 &#215; 8) = 108 / 104 = 27/26</div>
+<p>The two routes agree. The short form is worth knowing because it removes the currents entirely: for a fixed cell, the terminal p.d. is proportional to <code>R_ext / (R_ext + r)</code>, so a ratio of terminal p.d.s is a ratio of that quantity, and the emf never enters at all.</p>
+<p><b>Step 10 — settle the direction before trusting the number.</b> The ratio must be greater than 1: the external resistance rose, so the current fell, so the volts lost inside the cell fell, so the terminal p.d. rose. 27/26 = 1.04 is greater than 1, which is consistent. Both 9/13 and 26/27 are less than 1 and can be struck out on this argument alone, with no calculation at all. That kind of elimination is worth more than the arithmetic here, because it takes seconds and it cannot go wrong.</p>
+<p>So <b>Answer: A, 27/26.</b></p>
+<p><b>Why the change is so small.</b> The terminal p.d. only rose by 4%. That is because the internal resistance is 1.0 &#937; against an external resistance of 8&#8211;12 &#937;, so the cell is never badly loaded in either arrangement. Had the external resistance been comparable to <code>r</code>, removing a branch would have moved the terminal p.d. a great deal. The size of the effect is set by the ratio r/R_ext, not by the change in the load on its own &#8212; which is a useful thing to carry into any question about internal resistance.</p>
+<p><b>The distractors.</b></p>
+<p>&middot; <b>9/13</b> is the ratio of the two LOST voltages. Lost volts before = I r = 4/3 V; after = I&#8242; r = 12/13 V; and (12/13)/(4/3) = 36/52 = 9/13. It is a real quantity, computed correctly, and it is the wrong one. Because the emf is fixed, the terminal p.d. and the lost volts must move in opposite directions, so whenever one ratio is above 1 the other is below it &#8212; and 9/13 is below. That pairing is the quickest way to see the two apart.</p>
+<p>&middot; <b>3/2</b> is 12.0/8.0, the ratio of the external resistances. It treats the terminal p.d. as proportional to the external resistance, which is what happens in a cell with no internal resistance. With <code>r</code> in the circuit the terminal p.d. rises more slowly than the load does.</p>
+<p>&middot; <b>1</b> is the answer if the terminal p.d. is thought to be a fixed property of the cell. It is not: the terminal p.d. is the emf <i>minus the volts lost across r</i>, and those lost volts depend on the current, which depends on the load. A cell delivers its full emf only on open circuit, when no current flows at all.</p>
+<p>&middot; <b>26/27</b> is the correct fraction turned upside down, so it says the terminal p.d. fell when the load was lightened. The direction argument in Step 10 rejects it.</p>
+<p><b>The trap.</b> Assuming that removing a resistor lowers the terminal p.d. because the circuit now draws less current and something must have got smaller. What gets smaller is the current and the lost volts; what gets larger is the terminal p.d. The three always move in that pattern, and knowing the pattern answers the direction of every such question before the numbers are touched.</p>
+<p><b>Relevant topics:</b> emf and internal resistance; terminal potential difference; lost volts; series and parallel reduction; ratio reasoning without a calculator; why a car battery's terminal p.d. sags when the starter motor draws current and recovers when it stops.</p>`,
+  trap: `Assuming the terminal p.d. is unchanged by the load, or falls when a branch is removed. Removing a branch raises the external resistance, lowers the current, lowers the lost volts, and raises the terminal p.d. &#8212; the ratio must exceed 1.`
 },
 
 {
@@ -645,72 +681,69 @@ C_water = 0.10 x 4000 = 400 J K&#8315;&#185;</div>
 },
 
 {
-  id: "S01-16", module: "B", topic: "Choosing the velocity-time graph of a bouncing ball", diff: 1, rel: [["B", "On a velocity-time graph the gradient is the acceleration, and it stays constant"], ["B", "A bounce reverses the velocity but not its magnitude if no energy is lost"], ["C", "Each bounce is lower, so the speed after each bounce is smaller"]], key: ["graphshape", "kinematics", "readdiagram"], ans: 4, paper: "BANK-S01",
-  rel: [["B", "On a velocity-time graph the gradient is the acceleration, and it stays constant"], ["B", "A bounce reverses the velocity but not its magnitude if no energy is lost"], ["C", "Each bounce is lower, so the speed after each bounce is smaller"]],
-  q: `<p>A ball is released from rest and falls to the ground. It bounces, rises to a smaller height than it started from, and bounces again, each bounce being lower than the last. Air resistance is negligible. <figure class="fig">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 340" role="img" aria-label="Five candidate graphs of velocity against time for a ball released from rest, bouncing on the floor and rising lower each time. In every panel the time axis runs through the middle, so the part of the motion below the axis is the ball falling. A shows a decaying zigzag that never goes below the axis. B shows the velocity growing ever more steeply. C shows the velocity rising to a positive peak and then falling to zero once. D shows straight sections with every bounce reaching the same peak. E shows straight sections with each bounce smaller than the one before.">
-<defs><marker id="q16A-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>
-<rect x="14" y="20" width="176" height="136" fill="#f2f5fa"/>
-<line x1="20" y1="81" x2="180" y2="81" stroke="#14181f" stroke-width="1.5" marker-end="url(#q16A-ar)"/>
-<line x1="20" y1="136" x2="20" y2="26" stroke="#14181f" stroke-width="1.5" marker-end="url(#q16A-ar)"/>
-<text x="188" y="93" font-size="11" text-anchor="middle" fill="#14181f">t</text>
-<text x="8" y="22" font-size="11" text-anchor="middle" fill="#14181f">v</text>
-<polyline points="30,81 72,47 72,64 93,81 114,64 114,72.5 124.5,81" fill="none" stroke="#2f5fd0" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="100" y="153" font-size="12" text-anchor="middle" font-weight="600" fill="#14181f">A</text>
-<defs><marker id="q16B-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>
-<rect x="199" y="20" width="176" height="136" fill="#f2f5fa"/>
-<line x1="205" y1="81" x2="365" y2="81" stroke="#14181f" stroke-width="1.5" marker-end="url(#q16B-ar)"/>
-<line x1="205" y1="136" x2="205" y2="26" stroke="#14181f" stroke-width="1.5" marker-end="url(#q16B-ar)"/>
-<text x="373" y="93" font-size="11" text-anchor="middle" fill="#14181f">t</text>
-<text x="193" y="22" font-size="11" text-anchor="middle" fill="#14181f">v</text>
-<path d="M225,81 C285,87 335,107 365,133" fill="none" stroke="#b3352f" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="285" y="153" font-size="12" text-anchor="middle" font-weight="600" fill="#14181f">B</text>
-<defs><marker id="q16C-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>
-<rect x="384" y="20" width="176" height="136" fill="#f2f5fa"/>
-<line x1="390" y1="81" x2="550" y2="81" stroke="#14181f" stroke-width="1.5" marker-end="url(#q16C-ar)"/>
-<line x1="390" y1="136" x2="390" y2="26" stroke="#14181f" stroke-width="1.5" marker-end="url(#q16C-ar)"/>
-<text x="558" y="93" font-size="11" text-anchor="middle" fill="#14181f">t</text>
-<text x="378" y="22" font-size="11" text-anchor="middle" fill="#14181f">v</text>
-<polyline points="400,81 460,47 520,81 540,81" fill="none" stroke="#a8641a" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="470" y="153" font-size="12" text-anchor="middle" font-weight="600" fill="#14181f">C</text>
-<defs><marker id="q16D-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>
-<rect x="114" y="164" width="176" height="136" fill="#f2f5fa"/>
-<line x1="120" y1="225" x2="280" y2="225" stroke="#14181f" stroke-width="1.5" marker-end="url(#q16D-ar)"/>
-<line x1="120" y1="280" x2="120" y2="170" stroke="#14181f" stroke-width="1.5" marker-end="url(#q16D-ar)"/>
-<text x="288" y="237" font-size="11" text-anchor="middle" fill="#14181f">t</text>
-<text x="108" y="166" font-size="11" text-anchor="middle" fill="#14181f">v</text>
-<polyline points="130,225 165,259 165,191 235,259 235,191 270,225" fill="none" stroke="#1f7a53" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="200" y="297" font-size="12" text-anchor="middle" font-weight="600" fill="#14181f">D</text>
-<defs><marker id="q16E-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>
-<rect x="304" y="164" width="176" height="136" fill="#f2f5fa"/>
-<line x1="310" y1="225" x2="470" y2="225" stroke="#14181f" stroke-width="1.5" marker-end="url(#q16E-ar)"/>
-<line x1="310" y1="280" x2="310" y2="170" stroke="#14181f" stroke-width="1.5" marker-end="url(#q16E-ar)"/>
-<text x="478" y="237" font-size="11" text-anchor="middle" fill="#14181f">t</text>
-<text x="298" y="166" font-size="11" text-anchor="middle" fill="#14181f">v</text>
-<polyline points="320,225 376,259 376,208 432,242 432,216.5 460,233.5" fill="none" stroke="#5b3fa8" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="390" y="297" font-size="12" text-anchor="middle" font-weight="600" fill="#14181f">E</text>
-<text x="290" y="330" font-size="11.5" text-anchor="middle" fill="#7b8494">downward is negative</text>
+  id: "S01-16", module: "B", topic: "A stone thrown upward from a cliff top: the time to reach the foot as an expression", diff: 3, rel: [["B", "Describing the whole vertical flight with a single position equation, taking upward as positive"], ["B", "Asking when the stone reaches a given height turns the motion into a quadratic in the time"], ["A", "Choosing the physically meaningful root of a quadratic and discarding the other"], ["C", "Conservation of energy as an independent route to the speed of impact"]], key: ["projectile", "cliff", "quadratic", "vertical"], ans: 0, paper: "BANK-S01",
+  rel: [["B", "Describing the whole vertical flight with a single position equation, taking upward as positive"], ["B", "Asking when the stone reaches a given height turns the motion into a quadratic in the time"], ["A", "Choosing the physically meaningful root of a quadratic and discarding the other"], ["C", "Conservation of energy as an independent route to the speed of impact"]],
+  q: `<p>A stone is thrown vertically upward with speed <code>u</code> from the top of a vertical cliff of height <code>h</code>. It rises, falls back past the point of release, and lands at the foot of the cliff. The acceleration due to gravity is <code>g</code>. <figure class="fig">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 320" role="img" aria-label="A stone thrown vertically upward with speed u from the top of a cliff of height h. The flight is drawn as a vertical line just clear of the cliff face: it rises to a highest point above the release level and then falls past that level all the way to the foot of the cliff, where it lands. The cliff height h is marked on the right.">
+<defs><marker id="q16-ar" markerWidth="9" markerHeight="9" refX="7" refY="3.2" orient="auto"><path d="M0,0 L7,3.2 L0,6.4 z" fill="#14181f"/></marker></defs>
+<rect x="130" y="100" width="40" height="180" fill="#e6eaf2" stroke="#14181f" stroke-width="1.7"/>
+<line x1="60" y1="280" x2="410" y2="280" stroke="#14181f" stroke-width="2.2"/>
+<text x="148" y="300" font-size="11" text-anchor="middle" fill="#7b8494">cliff</text>
+<line x1="185" y1="100" x2="185" y2="54" stroke="#2f5fd0" stroke-width="2.3" marker-end="url(#q16-ar)"/>
+<line x1="185" y1="54" x2="185" y2="276" stroke="#2f5fd0" stroke-width="2.3" marker-end="url(#q16-ar)"/>
+<circle cx="185" cy="48" r="3.6" fill="#b3352f" stroke="#b3352f" stroke-width="1.6"/>
+<text x="197" y="44" font-size="11" fill="#b3352f">highest point</text>
+<circle cx="185" cy="100" r="4.2" fill="#b3352f" stroke="#b3352f" stroke-width="1.8"/>
+<text x="197" y="122" font-size="11.5" fill="#14181f">release, speed u</text>
+<line x1="185" y1="100" x2="260" y2="100" stroke="#7b8494" stroke-width="1.2" stroke-dasharray="5 4"/>
+<text x="264" y="96" font-size="10.5" fill="#7b8494">release level</text>
+<line x1="350" y1="100" x2="350" y2="280" stroke="#7b8494" stroke-width="1.3"/>
+<line x1="344" y1="100" x2="356" y2="100" stroke="#7b8494" stroke-width="1.3"/>
+<line x1="344" y1="280" x2="356" y2="280" stroke="#7b8494" stroke-width="1.3"/>
+<text x="362" y="196" font-size="13" font-weight="600" fill="#14181f">h</text>
 </svg>
-</figure></p><p>Which graph shows the velocity <code>v</code> of the ball as a function of time <code>t</code>, taking downward as negative?</p>`,
-  opts: ["A &mdash; v falls in a straight line to a negative maximum, then jumps back to the same positive value and the pattern repeats unchanged", "B &mdash; v falls ever more steeply, becoming negative and growing without limit", "C &mdash; v rises to a positive maximum, then falls back to zero once and stays there", "D &mdash; v falls in a straight line, jumps to a positive value, returns to zero, and every bounce reaches the same peak", "E &mdash; v falls in a straight line, jumps to a smaller positive value, returns to zero, and each bounce is smaller than the one before"],
-  sol: `<p><b>What is being tested.</b> Whether you can read the physics off the <i>shape</i> of a graph. Two features decide it, and they are independent of each other.</p>
-<p><b>Step 1 — what the slope means.</b> On a velocity-time graph the gradient is the acceleration. While the ball is in the air the only force on it is its weight, so its acceleration is <code>g</code> downward — the same value on the way up as on the way down, and the same at the top of the flight as anywhere else. In particular the acceleration is <b>not</b> zero at the highest point; only the velocity is.</p>
-<p>So every section of the graph between bounces must be a <b>straight line</b>, and every one of those straight lines must have the <b>same</b> slope. A curve anywhere means a changing acceleration, which would need the force to change.</p>
-<div class="formula">v = u + a t,  with a = -g throughout the flight</div>
-<p><b>Step 2 — what happens at the bounce.</b> The ball hits the floor moving downward and leaves it moving upward, so the velocity reverses sign. The magnitude depends on how much energy the bounce returns: since the ball rises to a smaller height, the rebound speed is smaller.</p>
-<p>Using <code>v&sup2; = 2gh</code>, a bounce to a quarter of the height returns half the speed:</p>
-<div class="formula">v_rebound / v_arrival = &radic;(h_rebound / h_fall)</div>
-<p>So each bounce gives a smaller jump, and the peak speed reached in each flight is smaller than the one before.</p>
-<p><b>Step 3 — assemble the shape.</b> Starting from rest: a straight line of slope <code>-g</code> going negative; a jump up to a smaller positive value; a straight line of slope <code>-g</code> back down to zero at the top of the bounce; then the pattern repeats with smaller peaks.</p>
-<p><b>Answer: E.</b> It is the only option with straight sections of constant slope <i>and</i> shrinking peaks.</p>
-<p><b>Why the other four are wrong.</b></p>
-<p>· <b>A</b> has the ball leave the floor at exactly the speed it arrived with. That is a perfectly elastic bounce, so it would rise to the same height — contradicting the question.</p>
-<p>· <b>B</b> has the slope steepening, which would mean the acceleration grows as the ball falls. Gravity does not do that.</p>
-<p>· <b>C</b> has the ball start off moving upward. It is released from rest, so its velocity starts at zero.</p>
-<p>· <b>D</b> gets the shape right but gives every bounce the same peak speed, so the ball would rise to the same height each time.</p>
-<p><b>The wider point.</b> A velocity-time graph answers two questions at once, and it is worth asking them separately. The <i>slope</i> tells you about force and acceleration; the <i>value</i> tells you about speed and direction. Most graph-choice questions are decided by one or the other, and the best ones by both.</p>
-<p><b>Relevant topics:</b> velocity-time graphs; free fall; bounces and energy loss; interpreting gradients.</p>`,
-  trap: `Choosing the graph with equal peaks. The ball does not return to its starting height, so the speed after each bounce is smaller. Equally, any graph with a <i>curved</i> section is wrong: gravity gives a constant acceleration, so every straight section has the same slope.`
+</figure></p><p>Which expression gives the time from release to landing?</p>`,
+  opts: ["(u + &#8730;(u<sup>2</sup> + 2gh)) / g", "&#8730;(u<sup>2</sup> + 2gh) / g", "u/g + &#8730;(2h/g)", "2u/g + &#8730;(2h/g)", "&#8730;(2h/g)"],
+  sol: `<p><b>What is being tested.</b> Whether you treat the flight as one motion or as two. Adding a rise time to a fall time is the natural move and it is wrong, because the stone does not start falling from rest at the cliff top &#8212; it sweeps past the cliff top already moving downward. The whole flight is one quadratic.</p>
+<p><b>Step 1 — one equation for the whole flight.</b> Take upward as positive and put the origin at the point of release. The stone has initial velocity +<code>u</code> and constant acceleration &#8722;<code>g</code>, so its height after a time <code>t</code> is</p>
+<div class="formula">y = u t &#8722; ½ g t<sup>2</sup></div>
+<p>This single expression is valid from the moment of release until the stone lands. It is positive on the way up, zero when the stone passes back through the release height, and negative below that. Nothing has been split into stages, and nothing needs to be.</p>
+<p><b>Step 2 — when is it highest?</b> The velocity is the gradient of that expression, and at the highest point it is zero:</p>
+<div class="formula">v = u &#8722; g t = 0  &#8658;  t_top = u / g</div>
+<p><b>Step 3 — how high does it get above the release point?</b> Substituting that time back into the position equation:</p>
+<div class="formula">y_max = u(u/g) &#8722; ½ g (u/g)<sup>2</sup> = u<sup>2</sup>/g &#8722; u<sup>2</sup>/(2g) = u<sup>2</sup> / (2g)</div>
+<p>So the highest point is <code>u<sup>2</sup>/(2g)</code> above the thrower's hand, and therefore <code>h + u<sup>2</sup>/(2g)</code> above the foot of the cliff. That second quantity is not asked for, but it is worth writing down because it makes the geometry of the flight clear.</p>
+<p><b>Step 4 — the landing condition.</b> The foot of the cliff is a distance <code>h</code> <i>below</i> the origin, so the landing condition is not <code>y = h</code> but</p>
+<div class="formula">y = &#8722;h</div>
+<p>Getting this sign wrong is the single most common way to lose this question, and it produces an answer that looks perfectly reasonable.</p>
+<p><b>Step 5 — form the quadratic.</b> Setting the position equation equal to &#8722;<code>h</code> and rearranging into standard form:</p>
+<div class="formula">u t &#8722; ½ g t<sup>2</sup> = &#8722;h</div>
+<div class="formula">½ g t<sup>2</sup> &#8722; u t &#8722; h = 0</div>
+<p>The three coefficients are <code>a = g/2</code>, <code>b = &#8722;u</code> and <code>c = &#8722;h</code>.</p>
+<p><b>Step 6 — solve it and choose the root.</b> The quadratic formula gives</p>
+<div class="formula">t = [ u &#177; &#8730;(u<sup>2</sup> + 2gh) ] / g</div>
+<p>One root is positive and one is negative, because <code>&#8730;(u<sup>2</sup> + 2gh)</code> is always greater than <code>u</code>. The negative root would be a time before the stone was released, so it is discarded:</p>
+<div class="formula">t = (u + &#8730;(u<sup>2</sup> + 2gh)) / g</div>
+<p>Discarding a root is a physical decision, not an algebraic one, and it is worth saying out loud: a quadratic in <code>t</code> describes the stone's height at every time, including times before the throw, and only one of its solutions is an event that happens.</p>
+<p><b>Step 7 — a sanity check on the size.</b> The time to the highest point is <code>u/g</code>, and the whole flight must be longer than that. The answer is <code>u/g + &#8730;(u<sup>2</sup> + 2gh)/g</code>, which exceeds <code>u/g</code> by the second term, so it passes.</p>
+<p><b>Step 8 — the speed of impact.</b> The velocity at any time is <code>v = u &#8722; g t</code>, so at the moment of landing</p>
+<div class="formula">v = u &#8722; g &#215; (u + &#8730;(u<sup>2</sup> + 2gh))/g = &#8722;&#8730;(u<sup>2</sup> + 2gh)</div>
+<p>The minus sign is information: the stone is moving downward. The speed is the size of that, <code>&#8730;(u<sup>2</sup> + 2gh)</code>.</p>
+<p><b>Step 9 — the same speed from energy, which uses no time at all.</b> Taking the release point as the zero of potential energy and the foot of the cliff as a drop of <code>h</code>:</p>
+<div class="formula">½ m v<sup>2</sup> = ½ m u<sup>2</sup> + m g h</div>
+<div class="formula">v<sup>2</sup> = u<sup>2</sup> + 2gh  &#8658;  v = &#8730;(u<sup>2</sup> + 2gh)</div>
+<p>The two routes agree, and they had to: the time never enters the energy argument, so this is a genuinely independent check on the algebra. It is the check to reach for whenever a projectile question asks for a speed rather than a time.</p>
+<p><b>Step 10 — the two limits.</b> Push <code>h</code> to zero and the expression becomes <code>(u + u)/g = 2u/g</code>, which is exactly the time for a stone thrown up to come back to the height it was thrown from. Push <code>u</code> to zero and it becomes <code>&#8730;(2gh)/g = &#8730;(2h/g)</code>, the time to fall a height <code>h</code> from rest. Both are known by inspection, and the expression reproduces both. That is strong evidence that the algebra is right, and it is far quicker than re-deriving anything.</p>
+<p>So <b>Answer: A, (u + &#8730;(u<sup>2</sup> + 2gh))/g.</b></p>
+<p><b>A numerical instance, to see the size of it.</b> Take <code>u</code> = 10 m s<sup>-1</sup>, <code>g</code> = 10 m s<sup>-2</sup> and <code>h</code> = 120 m. Then <code>u<sup>2</sup> + 2gh = 100 + 2400 = 2500</code>, so the root is 50 and the time is <code>(10 + 50)/10 = 6.0 s</code>. Substituting back, <code>y = 10(6) &#8722; 5(36) = 60 &#8722; 180 = &#8722;120 m</code>, which is the foot of the cliff. The numbers were chosen so that the root is exact, but the point of the question is that they need not be: the answer is wanted as an expression, and every step above is non-calculator.</p>
+<p><b>The distractors.</b></p>
+<p>&middot; <b>&#8730;(u<sup>2</sup> + 2gh)/g</b> is what the quadratic gives if the <code>+u</code> in the numerator is dropped. It is the time from the highest point to the ground, so it leaves out the whole ascent. It is always smaller than the right answer.</p>
+<p>&middot; <b>u/g + &#8730;(2h/g)</b> adds the rise time to the time a stone dropped from rest would take to fall <code>h</code>. It is the most tempting of the four, because it is right about the ascent and only wrong about the descent: the stone passes the cliff top moving downward at speed <code>u</code>, so it covers the last <code>h</code> in less time than a stone starting from rest. This option therefore overestimates the total, and it is the reason the expression cannot be assembled from two independent pieces.</p>
+<p>&middot; <b>2u/g + &#8730;(2h/g)</b> counts the ascent twice, using the full up-and-back-down time and then adding the fall as well.</p>
+<p>&middot; <b>&#8730;(2h/g)</b> throws the initial upward velocity away entirely and answers a different question: a stone dropped from rest at the cliff top.</p>
+<p><b>The trap.</b> Splitting the flight into a rise and a fall and adding the two times. It feels like the tidy thing to do, and it is the one approach that cannot work here, because the second stage does not begin from rest. One equation for the whole flight avoids the trap completely.</p>
+<p><b>Relevant topics:</b> vertical motion under gravity; the position equation and its quadratic; choosing the physical root; conservation of energy as an independent check; limiting cases as a check on an algebraic result.</p>`,
+  trap: `Adding a rise time to a fall time. The stone passes the cliff top already moving downward at speed u, so the descent takes less time than a drop from rest would, and the two stages cannot be added.`
 },
 
 {

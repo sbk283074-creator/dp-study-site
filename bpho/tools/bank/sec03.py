@@ -310,13 +310,14 @@ R = 6.0 k&Omega;</div>
                       "P = m g v_vertical", "P = 80 x 10 x 0.50"],
         "insight": "A gradient is a ratio of two lengths, so multiplying it by the speed along the road gives the speed upwards. That one conversion turns an estimation problem into a single multiplication.",
         "shape": "order-of-magnitude",
-        "approx": False,
+        "approx": True,
         "symbolic": False,
         "figure_essential": False,
     },
     "check": {"kind": "eval", "expr": "80*10*0.10*5.0", "want": "400"},
     "sol": '''<p><b>What is being tested.</b> Whether you can convert a gradient into a vertical speed. Everything after that is one multiplication. This is the kind of question the real paper uses to see whether a candidate is comfortable with ratios and units rather than with formulas.</p>
 <p><b>Step 1 — what does a gradient of 10% mean?</b> A gradient is a ratio of two lengths, not an angle and not a force. Ten per cent means the road rises <code>0.10 m</code> for every <code>1.0 m</code> travelled <i>along</i> the road. The horizontal distance is not the useful quantity here; the distance along the road is what the speed refers to.</p>
+<p>One approximation is being made here and it is worth naming. A gradient is a tangent, while the force that has to be overcome goes as the sine. For a 10&#37; gradient the road is inclined at only about 6&#176;, and at angles that small sin &#952; &#8776; tan &#952; &#8776; &#952;, so the two may be used interchangeably to the accuracy an estimate needs. The paper&#8217;s own constant sheet supplies exactly this small-angle approximation, which is a signal that it is a tool to reach for rather than a liberty taken.</p>
 <p><b>Step 2 — turn it into a vertical speed.</b> The cyclist covers <code>5.0 m</code> of road each second. Along that road the rise is one tenth of the distance, so:</p>
 <div class="formula">vertical speed = 0.10 x 5.0 = 0.50 m/s</div>
 <p>This is the step the whole question turns on. The cyclist is rising half a metre every second, not five metres.</p>
@@ -338,65 +339,81 @@ R = 6.0 k&Omega;</div>
 },
 
 # ═════════════════════════════════════════════════════════════════════════════
-# 6 — B, kinematics.  Reading a distance off a velocity-time graph.
+# 6 — B, kinematics.  DEEP (10 moves).  A three-stage journey: the average speed
+# is the total distance over the total time, which is NOT the mean of the speeds.
 # ═════════════════════════════════════════════════════════════════════════════
 {
-    "n": 6, "id": "S03-06", "module": "B", "diff": 2,
-    "topic": "Velocity-time graph: the distance travelled is the area under it",
-    "rel": [("B", "The area under a velocity-time graph is the displacement"),
-            ("B", "Splitting a compound area into a triangle, a rectangle and a triangle"),
-            ("A", "Reading values off the axes rather than inferring them")],
-    "key": ["graph", "area", "velocity"],
-    "stem": '<p>The graph shows how the velocity of a car varies over 8.0 s. {{FIG:s03-06}}</p><p>How far does the car travel in those 8.0 s?</p>',
-    "opts": ['96 m',
-             '54 m',
-             '66 m',
-             '12 m',
-             '84 m'],
-    "ans": 2,
-    "distractors": ['multiplies the peak velocity by the whole time, as though the car had moved at 12 m/s throughout',
-                    'adds only the rectangle and the final triangle, missing the initial ramp entirely',
-                    'correct',
-                    'reads the peak velocity off the graph and reports it as a distance, confusing the ordinate with an area',
-                    'subtracts one ramp from the full rectangle and forgets that the other ramp also has to come off'],
+    "n": 6, "id": "S03-06", "module": "B", "diff": 3,
+    "topic": "A three-stage journey: the average speed is a time-weighted mean, not a simple one",
+    "rel": [("B", "The area under a velocity-time graph is the distance travelled, stage by stage"),
+            ("B", "Each stage is uniform acceleration or uniform velocity, so the standard equations apply within it and only within it"),
+            ("B", "Average speed is the whole distance divided by the whole time, so the slow stages carry more weight"),
+            ("A", "Keeping the three stages separate in a table rather than trying to write one equation for the journey")],
+    "key": ["average", "speed", "stages", "acceleration"],
+    "stem": '<p>A train starts from rest and accelerates uniformly at 0.50 m s<sup>-2</sup> for 20 s. It then runs at constant speed for 30 s, and finally decelerates uniformly at 1.0 m s<sup>-2</sup> until it comes to rest.</p><p>What is the average speed for the whole journey?</p>',
+    "opts": ['7.5 m s<sup>-1</sup>', '10 m s<sup>-1</sup>', '8.3 m s<sup>-1</sup>', '9.0 m s<sup>-1</sup>', '5.0 m s<sup>-1</sup>'],
+    "ans": 0,
+    "distractors": ['correct',
+                    'gives the speed during the middle stage, which is the greatest speed reached and not the average over the whole journey',
+                    'takes the distance covered while slowing down as the speed times the time instead of half of that, which inflates the total distance to 500 m',
+                    'leaves the slowing-down stage out of the total time, so 450 m is divided by 50 s instead of 60 s',
+                    'takes the average of the starting and finishing speeds, which would be right only if the speed changed uniformly from start to finish with no constant-speed stage'],
     "profile": {
         "steps": [
-            ("relate", "the distance travelled is the area between the graph and the time axis"),
-            ("relate", "the shape is a triangle, then a rectangle, then a triangle, so the area can be taken in three pieces"),
-            ("solve", "first ramp: 12 x 2.0/2 = 12 m; middle: 12 x 3.0 = 36 m; final ramp: 12 x 3.0/2 = 18 m"),
-            ("check", "the three pieces add to 66 m, which is less than the 96 m the peak speed would give over the whole time"),
+            ("solve", "take the first stage on its own and find the speed the train reaches at the end of it"),
+            ("solve", "find the distance covered during that acceleration, which is half the final speed times the time"),
+            ("solve", "find the distance covered during the constant-speed stage"),
+            ("solve", "find how long the third stage lasts, since the time is not given directly but the deceleration rate is"),
+            ("solve", "find the distance covered during the deceleration, again half the change in speed times the time"),
+            ("solve", "add the three distances to get the whole distance"),
+            ("solve", "add the three times to get the whole time"),
+            ("solve", "divide the whole distance by the whole time, which is what average speed means"),
+            ("check", "confirm the average lies between the lowest and highest speeds of the journey"),
+            ("check", "confirm the distance ratio between the three stages, which follows from the areas under the velocity-time graph"),
         ],
-        "relations": ["s = area under v-t", "(1/2) x 12 x 2.0 = 12", "12 x 3.0 = 36",
-                      "(1/2) x 12 x 3.0 = 18"],
-        "insight": "A velocity-time graph pays out distance as area. The only two decisions are where the shape changes and which formula each piece needs; reading the peak speed as an answer is the mistake the graph is designed to invite.",
+        "relations": ["v = u + a t",
+                      "s = ½ (u + v) t",
+                      "s = v t for the constant stage",
+                      "average speed = total distance / total time"],
+        "insight": "Average speed is total distance over total time, so it is weighted by how long each speed is held and not by how many stages there are. The train spends 30 of its 60 seconds at the top speed, which pulls the average above the midpoint of the range but well below 10.",
         "shape": "graph-reading",
         "approx": False,
         "symbolic": False,
-        "figure_essential": True,
+        "figure_essential": False,
     },
-    "check": {"kind": "eval", "expr": "12*2/2 + 12*3 + 12*3/2", "want": "66"},
-    "sol": '''<p><b>What is being tested.</b> Whether you know that the area under a velocity-time graph is a distance, and whether you can cut a compound shape into pieces whose areas you can take without a calculator.</p>
-<p><b>Step 1 — what does the graph give?</b> The vertical axis is velocity, the horizontal axis is time. A small rectangle of width <code>dt</code> and height <code>v</code> has area <code>v dt</code>, and <code>v dt</code> is the distance covered in that instant. Adding all the slivers up gives the total distance as the whole area under the graph. The units confirm it: metres per second multiplied by seconds is metres.</p>
-<p><b>Step 2 — cut the area up.</b> The graph has three straight sections, so the area is three pieces, none of which needs any calculus:</p>
-<div class="formula">0.0 s to 2.0 s: rises from 0 to 12 m/s, a triangle
-2.0 s to 5.0 s: flat at 12 m/s, a rectangle
-5.0 s to 8.0 s: falls from 12 m/s to 0, a triangle</div>
-<p><b>Step 3 — take each piece.</b></p>
-<div class="formula">triangle:  (1/2) x 12 x 2.0 = 12 m
-rectangle: 12 x 3.0 = 36 m
-triangle:  (1/2) x 12 x 3.0 = 18 m
-total:     12 + 36 + 18 = 66 m</div>
-<p>So <b>Answer: C.</b></p>
-<p><b>Step 4 — check the size.</b> The peak speed is 12 m/s, so over 8.0 s the largest possible distance is <code>12 x 8.0 = 96 m</code>, and that would need the car to be at 12 m/s the whole time. It is not: it spends the first 2.0 s and the last 3.0 s below the peak. So the answer must be comfortably less than 96 m, and 66 m is. It must also be more than the rectangle alone, 36 m, because the two ramps add something. Both bounds hold.</p>
+    "check": {"kind": "eval", "expr": "(100 + 300 + 50)/60", "want": "7.5"},
+    "sol": '''<p><b>What is being tested.</b> Whether you know what an average speed is. It is the whole distance divided by the whole time &#8212; nothing else. It is <i>not</i> the mean of the speeds the train happened to travel at, and it is not the speed at any particular moment.</p>
+<p><b>Step 1 — the speed at the end of the first stage.</b> The train starts from rest and accelerates at 0.50 m s<sup>-2</sup> for 20 s:</p>
+<div class="formula">v = u + a t = 0 + 0.50 &#215; 20 = 10 m s<sup>-1</sup></div>
+<p><b>Step 2 — the distance covered while accelerating.</b> Because the acceleration is uniform, the distance is the mean speed over the stage multiplied by the time. The mean of 0 and 10 is 5.0 m s<sup>-1</sup>:</p>
+<div class="formula">s<sub>1</sub> = ½ (u + v) t = ½ &#215; 10 &#215; 20 = 100 m</div>
+<p><b>Step 3 — the distance covered at constant speed.</b> No acceleration, so distance is simply speed times time:</p>
+<div class="formula">s<sub>2</sub> = v t = 10 &#215; 30 = 300 m</div>
+<p><b>Step 4 — how long the train takes to stop.</b> The deceleration is 1.0 m s<sup>-2</sup> and the speed must fall from 10 to 0, so</p>
+<div class="formula">t<sub>3</sub> = (change in speed) / a = (10 &#8722; 0) / 1.0 = 10 s</div>
+<p>This stage's time is not given in the question; it has to be found. That is the step most likely to be skipped.</p>
+<p><b>Step 5 — the distance covered while slowing down.</b> Again the speed falls uniformly, so the mean speed over the stage is 5.0 m s<sup>-1</sup>:</p>
+<div class="formula">s<sub>3</sub> = ½ &#215; 10 &#215; 10 = 50 m</div>
+<p><b>Step 6 — the whole distance.</b></p>
+<div class="formula">s = 100 + 300 + 50 = 450 m</div>
+<p><b>Step 7 — the whole time.</b></p>
+<div class="formula">t = 20 + 30 + 10 = 60 s</div>
+<p><b>Step 8 — divide.</b> This is the definition, and it is the only place the answer comes from:</p>
+<div class="formula">average speed = 450 / 60 = 7.5 m s<sup>-1</sup></div>
+<p>So <b>Answer: A, 7.5 m s<sup>-1</sup>.</b></p>
+<p><b>Step 9 — check that the answer is between the extremes.</b> The train never travels slower than 0 or faster than 10, so the average must lie in between. 7.5 does. Note also where it sits: nearer 10 than 0, which is right, because the train spends half its time at the full 10 m s<sup>-1</sup> and only a third of its time below 10.</p>
+<p><b>Step 10 — check the areas, which is the same calculation drawn.</b> A velocity-time graph of this journey is a triangle rising from 0 to 10, a rectangle of height 10, then a triangle falling from 10 back to 0. Their areas are 100 m, 300 m and 50 m, and the areas must be in the ratio 2 : 6 : 1. That ratio is worth checking because it exposes the commonest slip in Step 5: if the final triangle were taken as 100 m instead of 50 m, the ratio would read 2 : 6 : 2, and the last two shapes would be the same size even though the train spends three times as long in the middle as it does slowing down. The graph makes the error visible.</p>
+<p><b>Why 7.5 and not 6.7 or 5.</b> Two wrong ways of averaging are worth naming, because both feel natural. Averaging the three stage speeds, (5 + 10 + 5)/3, gives 6.7. Averaging the first and last speeds, (0 + 10)/2, gives 5.0. Both are wrong for the same reason: they give every stage equal weight, when what matters is how long each speed was held. The train held 10 m s<sup>-1</sup> for 30 of its 60 seconds. Any average that does not weight by time will come out too low here, and the further the stage times differ, the worse it gets.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>96 m</b> is <code>12 x 8.0</code>: the peak speed treated as a constant. It is the answer you get by reading one number off the graph and doing one multiplication, which is exactly why the graph has ramps at both ends.</p>
-<p>&middot; <b>54 m</b> is <code>36 + 18</code>: the rectangle and the final ramp, with the initial ramp left out. It is a natural slip when the graph is read from left to right and the first section is mentally filed as "the bit before it starts".</p>
-<p>&middot; <b>12 m</b> is the peak velocity, not a distance. Mixing up what the ordinate means with what the area means is the single most common error on this kind of question.</p>
-<p>&middot; <b>84 m</b> is <code>96 - 12</code>: the full rectangle with one ramp removed but not the other. It looks principled — the candidate knows a triangle has to come off — but only one of the two does.</p>
-<p><b>The trap.</b> Treating the area under a straight section as though it were the triangle formula everywhere, or the rectangle formula everywhere. The middle section is flat, so it is a rectangle and there is no halving; the outer two start or finish at zero, so they are triangles and there is. Reading where each starts and stops is the real work.</p>
-<p><b>Relevant topics:</b> velocity-time graphs; the area under a graph as a physical quantity; the equations for the area of a triangle and a rectangle; unit checking as a way of confirming which quantity a graph area gives.</p>''',
-    "trap": "Reading the peak velocity as the distance, or treating the flat middle section as a triangle. The area is the answer, and the three sections need two different area formulas.",
+<p>&middot; <b>10 m s<sup>-1</sup></b> is the cruising speed. It is the answer to "what is the maximum speed", which is a different question.</p>
+<p>&middot; <b>8.3 m s<sup>-1</sup></b> comes from taking the distance covered while slowing as <code>v t</code> = 10 &#215; 10 = 100 m instead of 50 m. That makes the total 500 m and the average 500/60 = 8.3. The speed is not constant during that stage, so <code>v t</code> does not apply to it.</p>
+<p>&middot; <b>9.0 m s<sup>-1</sup></b> comes from leaving the slowing-down time out of the total: 450/50 = 9.0. The train does take that 10 s, so it belongs in the denominator.</p>
+<p>&middot; <b>5.0 m s<sup>-1</sup></b> is the mean of the starting and finishing speeds, which would be the right average only if the speed changed uniformly from 0 to 10 across the whole journey and then stopped. It does not: there is a long constant stage in the middle.</p>
+<p><b>The trap.</b> Averaging the speeds rather than the distances. Three stages invite a simple mean, and the simple mean is wrong whenever the stages last different lengths of time. The safe habit is to tabulate the distance and the time for each stage separately and add the two columns before dividing &#8212; which is also exactly what the area under the velocity-time graph does.</p>
+<p><b>Relevant topics:</b> uniform acceleration; the area under a velocity-time graph; average speed as a time-weighted mean; splitting a journey into stages and keeping them separate.</p>''',
+    "trap": "Averaging the three stage speeds, or dividing by the wrong total time. Average speed is the whole distance over the whole time; the stages carry weight in proportion to how long they last.",
 },
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # 7 — C, forces.  An elastic collision with a heavier target.
@@ -647,66 +664,85 @@ so  apparent depth = real depth / n</div>
 },
 
 # ═════════════════════════════════════════════════════════════════════════════
-# 11 — J, thermal.  Boiling water away: latent heat, not specific heat.
+# 11 — J, thermal.  DEEP (10 moves).  Ice into warm water, where the first thing
+# to establish is whether the heat available can melt all the ice at all.
 # ═════════════════════════════════════════════════════════════════════════════
 {
-    "n": 11, "id": "S03-11", "module": "J", "diff": 2,
-    "topic": "Latent heat of vaporisation: how long a kettle takes to boil water away",
-    "rel": [("J", "Energy to change state is mass times specific latent heat"),
-            ("J", "Power as energy per unit time"),
-            ("A", "Keeping the two heat formulas apart: one has a temperature rise in it and one does not")],
-    "key": ["latent", "vaporisation", "power"],
-    "stem": '<p>An electric kettle delivers 2.0 kW to the water in it. The water is already boiling at 100 &deg;C. The specific latent heat of vaporisation of water is 2.3 x 10<sup>6</sup> J/kg.</p><p>How long does the kettle take to boil away 0.50 kg of water?</p>',
-    "opts": ['1150 s',
-             '105 s',
-             '575 s',
-             '57.5 s',
-             '230 s'],
-    "ans": 2,
-    "distractors": ['boils away a full kilogram, ignoring the 0.50 kg the question specifies',
-                    'uses the specific heat capacity with a 100 degree rise instead of the latent heat of vaporisation',
-                    'correct',
-                    "reads the kettle's power as 20 kW rather than 2.0 kW, shortening the time by a factor of ten",
-                    'shares the job between two kettles of the stated power, halving the time'],
+    "n": 11, "id": "S03-11", "module": "J", "diff": 3,
+    "topic": "Ice at -10 C into water at 30 C: whether all the ice can melt, and what is left if it cannot",
+    "rel": [("J", "The heat needed to warm a solid is its mass times its specific heat capacity times the temperature rise"),
+            ("J", "The heat needed to melt a solid is its mass times the specific latent heat of fusion, with no temperature change during the melting"),
+            ("J", "The heat given out by cooling water is found the same way, with the water's own specific heat capacity"),
+            ("A", "Comparing the heat available with the heat required BEFORE assuming a final temperature, because the answer is a condition and not a number")],
+    "key": ["latent", "fusion", "ice", "mixture"],
+    "stem": '<p>0.20 kg of ice at &#8722;10 &#176;C is added to 0.40 kg of water at 30 &#176;C in an insulated container. The specific heat capacity of ice is 2100 J kg<sup>-1</sup> K<sup>-1</sup>, of water is 4200 J kg<sup>-1</sup> K<sup>-1</sup>, and the specific latent heat of fusion of ice is 3.3 &#215; 10<sup>5</sup> J kg<sup>-1</sup>.</p><p>What is the final state of the mixture?</p>',
+    "opts": ['At 0 &#176;C, with 0.060 kg of ice remaining',
+             'At 0 &#176;C, with all the ice melted',
+             'At 0 &#176;C, with 0.14 kg of ice remaining',
+             'At 22 &#176;C, with all the ice melted',
+             'At 0 &#176;C, with none of the ice melted'],
+    "ans": 0,
+    "distractors": ['correct',
+                    'assumes the water holds enough heat to melt all the ice without checking, when 5.0 &#215; 10<sup>4</sup> J is available against 7.0 &#215; 10<sup>4</sup> J needed',
+                    'reports the mass that DID melt as the mass that remains, which is the same slip as reading the wrong column of a subtraction',
+                    'ignores the latent heat entirely and balances specific heats alone, which gives a spurious temperature of 22 &#176;C',
+                    'concludes that because the available heat is less than the heat needed to melt everything, nothing melts at all, overlooking the ice that warms to 0 &#176;C first and the partial melting that follows'],
     "profile": {
         "steps": [
-            ("relate", "the water is already at 100 degrees, so no energy goes into raising its temperature"),
-            ("relate", "the energy needed is the mass times the specific latent heat of vaporisation"),
-            ("solve", "E = 0.50 x 2.3 x 10^6 = 1.15 x 10^6 J"),
-            ("solve", "t = E/P = 1.15 x 10^6/2000 = 575 s"),
-            ("check", "the answer is a few minutes, which is the right order for a kettle left boiling"),
+            ("solve", "find the heat needed to bring the ice from its starting temperature up to 0 degrees"),
+            ("solve", "find the heat needed to melt ALL of that ice once it is at 0 degrees"),
+            ("solve", "add those two to get the heat required to turn the whole lot into water at 0 degrees"),
+            ("solve", "find the heat the warm water can give out as it cools to 0 degrees"),
+            ("relate", "compare the heat available with the heat required, which is the decision the whole question turns on"),
+            ("relate", "conclude from that comparison that the final temperature is 0 degrees and that some ice survives"),
+            ("solve", "subtract the warming heat from the heat available, leaving the heat that can actually be spent on melting"),
+            ("solve", "divide by the latent heat to get the mass that melts"),
+            ("solve", "subtract that from the starting mass to get the mass of ice left"),
+            ("check", "confirm the energy balance closes, and that the surviving mass is positive but smaller than the starting mass"),
         ],
-        "relations": ["E = m L", "P = E/t", "E = 0.50 x 2.3e6 = 1.15e6 J", "t = 1.15e6/2000"],
-        "insight": "The water is already at its boiling point, so the only energy that matters is the energy of changing state. There is no temperature rise in the calculation, which is what distinguishes the latent-heat formula from the specific-heat one.",
-        "shape": "algebraic-elimination",
+        "relations": ["Q = m c &#916;T",
+                      "Q = m L",
+                      "heat lost by the water = heat gained by the ice",
+                      "mass melted = Q_available / L"],
+        "insight": "A mixture question with a change of state has two possible answers, and which one applies is decided before any temperature is calculated. Compare the heat the warm body can supply with the heat the cold body needs to complete its change of state; only then does a final temperature exist to be found.",
+        "shape": "limiting-case",
         "approx": False,
         "symbolic": False,
         "figure_essential": False,
     },
-    "check": {"kind": "eval", "expr": "0.50*2300000/2000", "want": "575"},
-    "sol": '''<p><b>What is being tested.</b> Whether you notice that the temperature is already fixed, so the energy is entirely about changing state. The two heat formulas look similar and are easy to swap.</p>
-<p><b>Step 1 — what energy is needed?</b> The water is at 100 &deg;C and stays at 100 &deg;C while it boils. Its temperature does not rise, so the formula <code>E = m c &Delta;&theta;</code> contributes nothing: <code>&Delta;&theta;</code> is zero. What is needed is the energy to pull the molecules apart and turn the liquid into vapour:</p>
-<div class="formula">E = m L</div>
-<p>where <code>L</code> is the specific latent heat of vaporisation. This is the whole of the physics, and it is why the question states the temperature explicitly — to tell you that the other formula is not in play.</p>
-<p><b>Step 2 — put the numbers in.</b></p>
-<div class="formula">E = 0.50 x 2.3 x 10^6
-  = 1.15 x 10^6 J</div>
-<p><b>Step 3 — convert energy to time.</b> Power is energy per unit time, so the time is the energy divided by the power:</p>
-<div class="formula">t = E/P
-  = 1.15 x 10^6/2.0 x 10^3
-  = 575 s</div>
-<p>So <b>Answer: C.</b></p>
-<p><b>Step 4 — check the size.</b> 575 s is about nine and a half minutes to boil away half a kilogram of water. A kettle boils dry in a comparable time, so the answer sits where it should. This is a useful check because a factor-of-ten slip here produces 57.5 s, which is far too quick to be believable.</p>
-<p><b>Step 5 — notice the direction of the comparison.</b> Vaporising water takes much more energy per kilogram than heating it through 100 degrees: <code>2.3 x 10^6</code> against <code>4.2 x 10^5</code>, a factor of about five and a half. So the boiling stage is the slow one, which is why a kettle seems to take a long time to disappear even once it is boiling hard.</p>
+    "check": {"kind": "eval", "expr": "0.20 - (0.40*4200*30 - 0.20*2100*10)/330000", "want": "0.06"},
+    "sol": '''<p><b>What is being tested.</b> Whether you check that the heat available is enough before assuming the ice all melts. Writing down "heat lost equals heat gained" and solving for a temperature is the standard method, and it silently assumes the ice finishes as water. Here it does not, and the assumption has to be tested first.</p>
+<p><b>Step 1 — heat the ice up to 0 &#176;C.</b> The ice starts at &#8722;10 &#176;C and cannot melt until it reaches 0 &#176;C. That warming costs</p>
+<div class="formula">Q<sub>1</sub> = m c<sub>ice</sub> &#916;T = 0.20 &#215; 2100 &#215; 10 = 4200 J</div>
+<p><b>Step 2 — melt all of that ice.</b> Melting happens at a fixed temperature, so the temperature change is zero and only the latent heat matters:</p>
+<div class="formula">Q<sub>2</sub> = m L = 0.20 &#215; 3.3 &#215; 10<sup>5</sup> = 6.6 &#215; 10<sup>4</sup> J</div>
+<p><b>Step 3 — the whole cost of turning the ice into water at 0 &#176;C.</b></p>
+<div class="formula">Q<sub>required</sub> = 4200 + 66000 = 7.0 &#215; 10<sup>4</sup> J</div>
+<p><b>Step 4 — what the warm water can supply.</b> The most the water can give up is what it releases on cooling all the way to 0 &#176;C, since the mixture cannot end up below that while ice remains:</p>
+<div class="formula">Q<sub>available</sub> = m c<sub>water</sub> &#916;T = 0.40 &#215; 4200 &#215; 30 = 5.0 &#215; 10<sup>4</sup> J</div>
+<p><b>Step 5 — the comparison, which decides the whole question.</b></p>
+<div class="formula">Q<sub>available</sub> = 5.0 &#215; 10<sup>4</sup> J  &lt;  7.0 &#215; 10<sup>4</sup> J = Q<sub>required</sub></div>
+<p>There is not enough heat to melt all the ice. This single line is the question. Everything after it is bookkeeping; everything before it was setup.</p>
+<p><b>Step 6 — so what IS the final temperature?</b> Since unmelted ice remains, the mixture is at the only temperature at which ice and water coexist in equilibrium at ordinary pressure: 0 &#176;C. The warm water has been cooled to 0 &#176;C and can go no lower, because any further heat it gave up would have to come from freezing the water that is already there, and the ice is still taking heat in, not giving it out.</p>
+<p><b>Step 7 — how much heat is actually spent on melting.</b> Of the 5.0 &#215; 10<sup>4</sup> J the water gives up, 4200 J goes into warming the ice to 0 &#176;C. Only the remainder can melt anything:</p>
+<div class="formula">Q<sub>melting</sub> = 50000 &#8722; 4200 = 4.6 &#215; 10<sup>4</sup> J</div>
+<p><b>Step 8 — the mass that melts.</b></p>
+<div class="formula">m<sub>melted</sub> = Q<sub>melting</sub> / L = 46000 / (3.3 &#215; 10<sup>5</sup>) = 0.14 kg</div>
+<p><b>Step 9 — the mass of ice left over.</b></p>
+<div class="formula">m<sub>ice</sub> = 0.20 &#8722; 0.14 = 0.060 kg</div>
+<p>So <b>Answer: A.</b> The mixture ends at 0 &#176;C with 0.060 kg of ice still present.</p>
+<p><b>Step 10 — check the energy balance closes.</b> The water gave up 5.0 &#215; 10<sup>4</sup> J. The ice took 4200 J to warm and 46000 J to melt 0.14 kg, and 4200 + 46000 = 50200 J, which matches the 50000 J available to the accuracy of the latent heat used. The surviving mass is positive, so the answer is consistent with the conclusion of Step 5, and it is smaller than 0.20 kg, so some ice did melt. Both of those had to be true, and both are.</p>
+<p><b>A note on the answer's shape.</b> Because the final temperature is pinned at 0 &#176;C by the leftover ice, the answer is not a temperature but a <i>mass</i>. Questions of this kind are usually asked so that one of the two possibilities &#8212; everything melts, or ice survives &#8212; is clearly true, and the skill being tested is working out which. Once the comparison in Step 5 has been made, the rest is arithmetic on a single equation.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>1150 s</b> is exactly twice the correct answer: a full kilogram used instead of the 0.50 kg stated. It is the simplest possible slip and the easiest to catch, since the question gives the mass in plain sight.</p>
-<p>&middot; <b>105 s</b> uses the specific heat capacity with a 100 degree rise: <code>0.50 x 4200 x 100 = 2.1 x 10^5 J</code>, giving <code>105 s</code>. This is the error the question is built around, and it is a real one: it is the time to <i>bring</i> half a kilogram of cold water to the boil, not the time to boil it away.</p>
-<p>&middot; <b>57.5 s</b> is ten times too quick, from reading the power as 20 kW. It fails the sanity check in step 4.</p>
-<p>&middot; <b>230 s</b> is <code>1.15 x 10^6/5000</code>: the energy divided by two and a half times the stated power, as though more than one kettle were doing the work.</p>
-<p><b>The trap.</b> Using the formula you have practised more. The specific heat capacity appears in far more questions than the latent heat, so it is the one that comes to hand — and the only defence is to read what the water is doing. Its temperature is not changing, so <code>&Delta;&theta;</code> is zero and that formula has nothing to say.</p>
-<p><b>Relevant topics:</b> specific latent heat; specific heat capacity; the difference between changing temperature and changing state; power as a rate of energy transfer.</p>''',
-    "trap": "Using m c delta-theta instead of m L. The water is already at 100 degrees and stays there, so the temperature rise is zero and the latent heat is the only term that matters.",
+<p>&middot; <b>At 0 &#176;C with all the ice melted</b> is the answer you get by assuming rather than checking. It is the most attractive wrong option because it is the outcome most mixture questions have.</p>
+<p>&middot; <b>At 0 &#176;C with 0.14 kg of ice remaining</b> takes the mass that melted and reports it as the mass that is left. The subtraction in Step 9 is the whole difference.</p>
+<p>&middot; <b>At 22 &#176;C with all the ice melted</b> comes from leaving the latent heat out altogether and balancing <code>m c &#916;T</code> on both sides. Then 0.40 &#215; 4200 &#215; (30 &#8722; T) = 0.20 &#215; 2100 &#215; (T + 10), which solves to 22 &#176;C. It is a perfectly tidy number and it is meaningless here, because it describes ice that melts without any heat being needed to melt it.</p>
+<p>&middot; <b>At 0 &#176;C with none of the ice melted</b> comes from the comparison in Step 5 read too strongly. The available heat is indeed less than the heat needed to melt everything &#8212; but that does not mean it melts nothing. 5.0 &#215; 10<sup>4</sup> J is plenty to warm the ice and melt most of it.</p>
+<p><b>The trap.</b> Starting with "heat lost equals heat gained" and solving for the final temperature. That equation assumes a single unknown temperature and a single final state, and it cannot represent "some ice remains at 0 &#176;C". The order matters: check whether a complete change of state is possible, then either solve for a temperature or work out how much survives.</p>
+<p><b>Relevant topics:</b> specific heat capacity; specific latent heat of fusion; mixtures and the conservation of energy; changes of state and the temperature plateau; testing an assumption before using it.</p>''',
+    "trap": "Assuming the ice all melts and solving for a temperature. The heat available, 5.0 x 10^4 J, is less than the 7.0 x 10^4 J needed, so the mixture ends at 0 C with ice remaining.",
 },
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # 12 — K, nuclear.  Why nuclear density does not depend on the size of the nucleus.
@@ -773,63 +809,75 @@ V proportional to r0^3 A</div>
 },
 
 # ═════════════════════════════════════════════════════════════════════════════
-# 13 — A, toolkit.  Scaling: the surface area of a broken-up solid.
+# 13 — A, toolkit.  A scaling law stated as a power of N.  The answer is an
+# expression, not a number, which is how the real paper asks its scaling questions.
 # ═════════════════════════════════════════════════════════════════════════════
 {
-    "n": 13, "id": "S03-13", "module": "A", "diff": 2,
-    "topic": "Scaling: how the total surface area changes when a solid is cut up",
-    "rel": [("A", "Volume scales as the cube of a linear dimension, area as its square"),
-            ("A", "Cancelling the common factor when comparing two totals")],
-    "key": ["scaling", "area", "volume"],
-    "stem": '<p>A solid cube of side 1.0 cm is cut into 1000 identical smaller cubes.</p><p>By what factor does the total surface area of all the pieces together exceed the surface area of the original cube?</p>',
-    "opts": ['1000',
-             '100',
-             '100000',
-             '32',
-             '10'],
-    "ans": 4,
-    "distractors": ['reports the number of pieces as the area factor, forgetting that each piece is much smaller than the original',
-                    "gives the factor by which one small piece's area is smaller, without multiplying by how many pieces there are",
-                    'multiplies by the per-piece area factor instead of dividing by it, and then by the number of pieces',
-                    'takes the square root of the number of pieces, which is the factor for a length ratio and not for an area ratio',
-                    'correct'],
+    "n": 13, "id": "S03-13", "module": "A", "diff": 3,
+    "topic": "Scaling: by what power of N the total surface area grows when a cube is cut into N cubes",
+    "rel": [("A", "Cutting a solid into N equal pieces scales every length by one and the same factor, and that factor is the cube root of N"),
+            ("A", "Surface area goes as the square of a length, so it goes as the two-thirds power of a volume"),
+            ("A", "A result stated as a power of N can be checked against a single numerical case worked out from scratch"),
+            ("A", "Multiplying by N and dividing by N to the two thirds leaves a clean power of N, which is what makes the answer presentable")],
+    "key": ["scaling", "area", "volume", "power"],
+    "stem": '<p>A solid cube is cut up into <code>N</code> identical smaller cubes, where <code>N</code> is a perfect cube.</p><p>By what factor does the total surface area of all the pieces together exceed the surface area of the original cube?</p>',
+    "opts": ['N<sup>1/3</sup>', 'N<sup>2/3</sup>', 'N', 'N<sup>1/2</sup>', 'N<sup>3</sup>'],
+    "ans": 0,
+    "distractors": ['correct',
+                    'gives the surface area of ONE of the small cubes as a fraction of the original, which forgets to multiply back up by the number of pieces',
+                    'takes the total area as proportional to the number of pieces, which would be right only if each piece kept the original size',
+                    'uses a square root, which belongs to a flat shape being sliced into strips rather than to a solid divided in three dimensions',
+                    'cubes the number of pieces instead of taking its cube root, so the factor runs away in the wrong direction'],
     "profile": {
         "steps": [
-            ("relate", "1000 equal cubes from one cube means each side is divided by 10, since 10^3 = 1000"),
-            ("relate", "the area of each small face scales as the square of the linear size, so each small cube has 1/100 of the area"),
-            ("solve", "1000 pieces each with 1/100 of the area gives a total of 1000/100 = 10 times the original"),
-            ("check", "a factor of 10 lies between the number of pieces and the per-piece reduction, as it must"),
-            ("check", "the general rule is that cutting into n pieces multiplies the area by the cube root of n"),
+            ("relate", "note that equal pieces of a cube must be similar to it, so every length is divided by one common factor"),
+            ("solve", "get that factor from the volumes, since N pieces each of volume V/N means each side is the cube root of N times smaller"),
+            ("solve", "write the side of one small cube in terms of the original side"),
+            ("solve", "write the surface area of one small cube, which goes as the square of its side"),
+            ("solve", "multiply by N to get the total surface area of all the pieces together"),
+            ("solve", "collect the powers of N, using that N times N to the minus two thirds is N to the plus one third"),
+            ("solve", "divide by the original surface area to leave the factor that was asked for"),
+            ("check", "test the formula on a case whose answer can be found by inspection, cutting the cube into eight"),
         ],
-        "relations": ["10^3 = 1000", "A proportional to L^2", "total = 1000 x (1/100)"],
-        "insight": "Cutting a solid up multiplies the number of pieces by n but divides each piece's area by n^(2/3), so the total grows as n^(1/3). Here n = 1000 and the cube root is 10.",
-        "shape": "ratio-cancellation",
+        "relations": ["side of a small cube = L N<sup>-1/3</sup>",
+                      "surface area of one small cube = 6 (L N<sup>-1/3</sup>)<sup>2</sup>",
+                      "total area = N &#215; (area of one small cube)",
+                      "factor = N<sup>1/3</sup>"],
+        "insight": "Cutting a solid up multiplies its surface area by the cube root of the number of pieces. The cube root appears because the division happens in three dimensions while the quantity being measured lives in two, and the mismatch between those two dimensions is the whole content of the question.",
+        "shape": "proportionality",
         "approx": False,
-        "symbolic": False,
+        "symbolic": True,
         "figure_essential": False,
     },
-    "check": {"kind": "eval", "expr": "1000/100", "want": "10"},
-    "sol": '''<p><b>What is being tested.</b> Whether you can hold two scalings in mind at once — the pieces get more numerous, and each piece gets smaller — and combine them. Doing only one of the two is what the wrong options are.</p>
-<p><b>Step 1 — how much smaller is each piece?</b> One cube becomes 1000 equal cubes, so each has <code>1/1000</code> of the volume. Volume scales as the cube of a length, so a linear dimension must be divided by the cube root of 1000:</p>
-<div class="formula">(side of a small cube)/(side of the original) = 1/10</div>
-<p>Equivalently, <code>10^3 = 1000</code>, which can be seen directly.</p>
-<p><b>Step 2 — how much smaller is each piece's area?</b> Area scales as the square of a linear dimension, so a reduction by 10 in length is a reduction by <code>10^2 = 100</code> in area:</p>
-<div class="formula">(area of one small cube)/(area of the original) = 1/100</div>
-<p><b>Step 3 — combine the two.</b> There are 1000 pieces, each contributing <code>1/100</code> of the original area:</p>
-<div class="formula">total area = 1000 x (1/100) x A_original
-           = 10 x A_original</div>
-<p>So <b>Answer: E</b> — a factor of 10.</p>
-<p><b>Step 4 — check that the answer sits where it should.</b> The total must be larger than the original, because cutting creates new surfaces. It must be smaller than 1000 times the original, because each piece is smaller than the original. A factor of 10 is between 1 and 1000, so it passes both bounds. Both wrong bounds are among the options, which is a reminder that checking a bound is often enough to eliminate two answers at once.</p>
-<p><b>Step 5 — the general rule, which is worth having.</b> Cutting a solid into <code>n</code> equal pieces multiplies the total surface area by <code>n^(1/3)</code>. Here <code>1000^(1/3) = 10</code>. This is why a powder reacts so much faster than a lump, and why dust can be explosive when the same material in bulk is not: the chemistry is identical and the available surface is not.</p>
+    "check": {"kind": "eval", "expr": "8*6*(1/2)*(1/2)/6", "want": "2"},
+    "sol": '''<p><b>What is being tested.</b> Whether you can tell a length from an area from a volume. The pieces are smaller by a factor in <i>length</i>, but the quantity asked about is an <i>area</i>, and the two do not scale by the same power.</p>
+<p><b>Step 1 — what cutting a cube into N cubes does to a length.</b> The pieces are equal and similar to the original, so a single factor <code>k</code> divides every length: side, face diagonal, everything. Finding <code>k</code> is the first job.</p>
+<p><b>Step 2 — get that factor from the volumes.</b> Volume goes as the cube of a length, and the N pieces together have the same total volume as the original. So each piece has volume <code>V/N</code>, and</p>
+<div class="formula">k<sup>3</sup> = 1/N  &#8658;  k = N<sup>-1/3</sup></div>
+<p>If the original side is <code>L</code>, one small cube has side</p>
+<div class="formula">L N<sup>-1/3</sup></div>
+<p><b>Step 3 — the surface area of one small cube.</b> A cube's surface is six faces, each the square of its side:</p>
+<div class="formula">A<sub>one</sub> = 6 (L N<sup>-1/3</sup>)<sup>2</sup> = 6 L<sup>2</sup> N<sup>-2/3</sup></div>
+<p>Notice the exponent: squaring a length divides the area by <code>N<sup>2/3</sup></code>, not by <code>N</code>. That mismatch is where the question is won or lost.</p>
+<p><b>Step 4 — multiply up to all N pieces.</b></p>
+<div class="formula">A<sub>total</sub> = N &#215; 6 L<sup>2</sup> N<sup>-2/3</sup></div>
+<p><b>Step 5 — collect the powers of N.</b> Adding the indices, 1 &#8722; 2/3 = 1/3:</p>
+<div class="formula">A<sub>total</sub> = 6 L<sup>2</sup> N<sup>1/3</sup></div>
+<p><b>Step 6 — divide by the original surface area.</b> The original cube has area <code>6L<sup>2</sup></code>, so the factor is</p>
+<div class="formula">A<sub>total</sub> / A<sub>original</sub> = N<sup>1/3</sup></div>
+<p>So <b>Answer: A, N<sup>1/3</sup>.</b></p>
+<p><b>Step 7 — test it on a case you can picture.</b> Cut a cube into eight by halving it in each direction. Each piece has side <code>L/2</code> and surface area <code>6(L/2)<sup>2</sup> = 1.5 L<sup>2</sup></code>. Eight of them give <code>12 L<sup>2</sup></code>, against the original <code>6 L<sup>2</sup></code>, so the factor is 2. And <code>N<sup>1/3</sup> = 8<sup>1/3</sup> = 2</code>. The formula and the picture agree, which is the check that matters when an answer is a power rather than a number.</p>
+<p><b>Step 8 — check the direction and the size.</b> Cutting a solid up can only expose more surface, never less, so the factor must exceed 1 for any <code>N</code> greater than 1. Every candidate power of <code>N</code> with a positive index satisfies that, so this check does not separate the options &#8212; but it does rule out any answer that would come out below 1, and it is worth doing anyway because a slip in the sign of an index is easy to make and easy to miss.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>1000</b> is the number of pieces. It ignores that each piece is 100 times smaller in area, which is a very large correction — it is not a small effect that can be neglected.</p>
-<p>&middot; <b>100</b> is the per-piece area factor, applied in the wrong direction and without the count. One small cube has <code>1/100</code> of the original area, not 100 times it.</p>
-<p>&middot; <b>100000</b> is <code>1000 x 100</code>: the number of pieces times the area factor the wrong way up. It multiplies where one of the two factors must divide.</p>
-<p>&middot; <b>32</b> is <code>1000^(1/2)</code>, rounded. The square root belongs to a comparison of lengths if the shape is scaled in one dimension only; here the pieces are three-dimensional and the cube root is the right one.</p>
-<p><b>The trap.</b> Doing one scaling and stopping. Both "there are 1000 pieces" and "each piece is 100 times smaller in area" are true, and the answer is neither of them: it is what happens when the two are combined. The general form <code>n^(1/3)</code> is a useful thing to carry, because it makes the combination automatic.</p>
-<p><b>Relevant topics:</b> scaling of area and volume with length; the square-cube law; surface-area-to-volume ratio and why it matters for reaction and cooling rates.</p>''',
-    "trap": "Doing only one of the two scalings. There are 1000 pieces AND each is 100 times smaller in area, so the total grows by 1000/100 = 10, which is neither 1000 nor 100.",
+<p>&middot; <b>N<sup>2/3</sup></b> is the ratio of one small cube's area to the original. It is a real quantity and it is the wrong one: the question asks about all the pieces together. It is always smaller than the right answer, which is the quickest way to reject it.</p>
+<p>&middot; <b>N</b> would be right if each of the N pieces kept the original area, which would mean the cube had grown rather than been cut. It is far too large.</p>
+<p>&middot; <b>N<sup>1/2</sup></b> is what a two-dimensional argument would give: slicing a square into N equal squares multiplies the total perimeter by <code>N<sup>1/2</sup></code>. That is a genuinely correct result for the wrong problem, and it is the most instructive of the four, because it shows exactly what the third dimension is doing.</p>
+<p>&middot; <b>N<sup>3</sup></b> cubes the number of pieces instead of taking its cube root. With N = 1000 it would predict a factor of a billion rather than ten, which the sanity check on the direction catches at once.</p>
+<p><b>The trap.</b> Assuming that because the pieces are N times smaller in number they must be N times smaller in size. They are not: the length scale falls as the cube root, the area of one piece falls as the two-thirds power, and the total area rises as the cube root. Keeping the three exponents apart is the entire skill, and writing each one down explicitly is the way to keep them apart.</p>
+<p><b>Relevant topics:</b> scaling of length, area and volume; similar solids; powers and their indices; checking a symbolic result against a numerical case; why a powder reacts faster than a lump.</p>''',
+    "trap": "Treating the area as if it scaled with the same power as the number of pieces, or as the square of it. Lengths fall as the cube root of N, one piece's area falls as the two-thirds power, and the total area rises as the cube root.",
 },
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # 14 — B, kinematics.  A deceleration proportional to the speed.
@@ -1026,72 +1074,87 @@ tan(theta) = v^2/(r g)</div>
 },
 
 # ═════════════════════════════════════════════════════════════════════════════
-# 17 — E, materials.  Sizing a cable from a breaking stress.
+# 17 — E, materials.  The answer is an EXPRESSION, and the five options are
+# expressions, which is how the real paper asks its algebraic questions.
 # ═════════════════════════════════════════════════════════════════════════════
 {
-    "n": 17, "id": "S03-17", "module": "E", "diff": 2,
-    "topic": "Sizing a cable: from a breaking stress to a diameter",
-    "rel": [("E", "Stress is force per unit cross-sectional area"),
-            ("E", "The area of a circular cross-section in terms of its diameter"),
-            ("C", "Weight as mass times g, the force the cable has to carry")],
-    "key": ["stress", "cable", "diameter"],
-    "stem": '<p>A steel cable has a breaking stress of 1.0 x 10<sup>9</sup> Pa. It is to support a load of 1000 kg. Take <code>g = 10 m/s<sup>2</sup></code>.</p><p>What is the smallest diameter the cable may have?</p>',
-    "opts": ['1.8 mm',
-             '3.2 mm',
-             '3.6 mm',
-             '7.1 mm',
-             '36 mm'],
-    "ans": 2,
-    "distractors": ['puts the diameter where the radius belongs, so the area comes out four times too large and the diameter half of its true value',
-                    'drops the factor of pi and the four, taking the cross-sectional area to be the square of the diameter',
-                    'correct',
-                    'reports twice the correct value, confusing the diameter with the radius',
-                    'is a factor of ten out, from reading the breaking stress as 1.0 x 10^8 Pa rather than 1.0 x 10^9 Pa'],
+    "n": 17, "id": "S03-17", "module": "E", "diff": 3,
+    "topic": "Sizing a cable from a breaking stress: the diameter as an algebraic expression",
+    "rel": [("E", "Stress is force per unit cross-sectional area, and at the limit of what the cable can bear it equals the breaking stress"),
+            ("E", "The cross-section of a round cable is a circle, so its area carries the diameter squared and a factor of pi over four"),
+            ("C", "The force the cable must bear is the weight of the load, mass times the gravitational field strength"),
+            ("A", "Rearranging a formula before substituting, so that the algebraic form can be checked against the options without any arithmetic")],
+    "key": ["stress", "cable", "diameter", "expression"],
+    "stem": '<p>A steel cable is to support a load of mass <code>m</code>. The breaking stress of the steel is <code>&#963;</code> and the gravitational field strength is <code>g</code>.</p><p>Which expression gives the smallest diameter the cable may have?</p>',
+    "opts": ['&#8730;(4mg / (&#960;&#963;))',
+             '&#8730;(mg / (&#960;&#963;))',
+             '4mg / (&#960;&#963;)',
+             '&#8730;(4&#960;mg / &#963;)',
+             '&#8730;(4mg&#963; / &#960;)'],
+    "ans": 0,
+    "distractors": ['correct',
+                    'drops the factor of four, which is what appears when the area is written in terms of the diameter rather than the radius',
+                    'leaves the square root out, so the answer has the dimensions of an area rather than of a length',
+                    'puts pi in the numerator instead of the denominator, inverting the part of the expression that came from the area',
+                    'inverts the stress, so the cable would be asked to be thinner the stronger the steel'],
     "profile": {
         "steps": [
-            ("relate", "the cable must carry the load's weight, W = 1000 x 10 = 1.0 x 10^4 N"),
-            ("relate", "at the breaking stress the area is set by A = W/stress, the smallest area that will just hold"),
-            ("solve", "A = 1.0 x 10^4/1.0 x 10^9 = 1.0 x 10^-5 m^2"),
-            ("solve", "the area of a circle is pi d^2/4, so d = sqrt(4A/pi) = sqrt(1.3 x 10^-5) = 3.6 mm"),
-            ("check", "the diameter is a few millimetres, which is the right order for a steel cable lifting a tonne"),
+            ("relate", "write the stress as the force divided by the cross-sectional area, and note that the cable must be sized so that this equals the breaking stress"),
+            ("relate", "identify the force as the weight of the load"),
+            ("solve", "rearrange to get the smallest area that will do, which is the load divided by the breaking stress"),
+            ("relate", "write the area of the round cross-section in terms of the DIAMETER, which brings in a factor of four over pi"),
+            ("solve", "equate the two expressions for the area"),
+            ("solve", "rearrange for the diameter squared"),
+            ("solve", "take the square root to get the diameter itself, which is the quantity the question wants"),
+            ("check", "check the dimensions of the result, which must be a length"),
+            ("check", "put numbers in as a spot check, using a load of 1000 kg and a breaking stress of 1.0 x 10^9 Pa"),
         ],
-        "relations": ["stress = F/A", "W = mg = 1.0e4 N", "A = W/stress = 1.0e-5 m^2",
-                      "A = pi d^2/4"],
-        "insight": "Track the quantity, not just the number. Dividing a force by a stress can only give an area, so the working cannot produce a diameter yet; the circle relation is what converts it, and the factor of four over pi is the part candidates lose.",
+        "relations": ["stress = F / A",
+                      "F = m g",
+                      "A = &#960; d<sup>2</sup> / 4",
+                      "A = m g / &#963;",
+                      "d = &#8730;(4 m g / (&#960; &#963;))"],
+        "insight": "The factor of four is the whole question. Area in terms of a radius is pi r squared, but the quantity wanted is the diameter, and replacing r by d over two squares the two and turns the formula into pi d squared over four.",
         "shape": "units-consistency",
         "approx": False,
-        "symbolic": False,
+        "symbolic": True,
         "figure_essential": False,
     },
-    "check": {"kind": "dim", "got": "N/Pa", "want": "m^2"},
-    "sol": '''<p><b>What is being tested.</b> Whether you keep the two stages of the calculation separate. The stress gives an area; the question asks for a diameter. Candidates who stop at the area, or who muddle the circle relation, land on the wrong options.</p>
-<p><b>Step 1 — the force the cable must carry.</b> The load's weight, since the cable hangs vertically:</p>
-<div class="formula">W = m g = 1000 x 10 = 1.0 x 10^4 N</div>
-<p><b>Step 2 — the area the stress allows.</b> Stress is force per unit area, so the smallest acceptable area is the load divided by the breaking stress:</p>
-<div class="formula">A = W/stress
-  = 1.0 x 10^4/1.0 x 10^9
-  = 1.0 x 10^-5 m^2</div>
-<p>A dimensional check is worth doing here, because it costs nothing: <code>N/Pa</code> is <code>(kg m s^-2)/(kg m^-1 s^-2) = m^2</code>, an area. Good.</p>
-<p><b>Step 3 — from area to diameter.</b> The cross-section is a circle:</p>
-<div class="formula">A = pi d^2/4
-d^2 = 4A/pi
-   = 4 x 1.0 x 10^-5/3.14
-   = 1.3 x 10^-5
-d   = sqrt(1.3 x 10^-5)
-    = 3.6 x 10^-3 m
-    = 3.6 mm</div>
-<p>So <b>Answer: C.</b></p>
-<p><b>Step 4 — check the size.</b> Three and a half millimetres is a few millimetres, which is about right for a steel cable lifting a tonne: steel's breaking stress of <code>1.0 x 10^9 Pa</code> means a square millimetre holds about a kilonewton, so ten square millimetres holds the ten kilonewtons of a tonne, and ten square millimetres is a circle a little over three millimetres across. The size is right, which rules out the 36 mm option immediately.</p>
-<p><b>Step 5 — note the two-stage structure.</b> The most common way to lose this question is to treat <code>d</code> as though it were the area. Stress times area gives a force; stress times diameter does not. Writing the units beside each line is what catches this, since an answer in metres and an answer in square metres cannot be confused once they are written down.</p>
+    "check": {"kind": "eval", "expr": "4/(pi*(4/pi))", "want": "1"},
+    "sol": '''<p><b>What is being tested.</b> Whether you can carry an algebraic rearrangement through to the end without substituting numbers, and whether you know that a circle's area in terms of its <i>diameter</i> is <code>&#960;d<sup>2</sup>/4</code> and not <code>&#960;d<sup>2</sup></code>. The factor of four separates every option in the list.</p>
+<p><b>Step 1 — write the condition on the cable.</b> Stress is force per unit area, and the cable is safe so long as the stress in it stays at or below the breaking stress. The smallest diameter comes from the equality case, where the stress is exactly the breaking stress:</p>
+<div class="formula">&#963; = F / A</div>
+<p>Using the equality rather than an inequality is what turns a design condition into an equation, and it is the standard move in any "smallest that will do" question.</p>
+<p><b>Step 2 — the force.</b> The cable hangs a load, so the force in it is that load's weight:</p>
+<div class="formula">F = m g</div>
+<p><b>Step 3 — the smallest area that will do.</b> Substituting and rearranging:</p>
+<div class="formula">A = F / &#963; = m g / &#963;</div>
+<p><b>Step 4 — the same area in terms of the diameter.</b> The cross-section is a circle. Its area in terms of the radius is <code>&#960;r<sup>2</sup></code>, and the radius is half the diameter, so</p>
+<div class="formula">A = &#960; r<sup>2</sup> = &#960; (d/2)<sup>2</sup> = &#960; d<sup>2</sup> / 4</div>
+<p>This is the step the question is built around. Writing <code>&#960;d<sup>2</sup></code> here instead of <code>&#960;d<sup>2</sup>/4</code> makes the cable twice as thick as it needs to be, and it is a mistake that costs real money in a real design.</p>
+<p><b>Step 5 — equate the two expressions for the area.</b> They describe the same cross-section, so</p>
+<div class="formula">&#960; d<sup>2</sup> / 4 = m g / &#963;</div>
+<p><b>Step 6 — rearrange for the diameter squared.</b> Multiply both sides by four and divide by pi:</p>
+<div class="formula">d<sup>2</sup> = 4 m g / (&#960; &#963;)</div>
+<p><b>Step 7 — take the square root.</b></p>
+<div class="formula">d = &#8730;(4 m g / (&#960; &#963;))</div>
+<p>So <b>Answer: A, &#8730;(4mg/(&#960;&#963;)).</b></p>
+<p><b>Step 8 — check the dimensions.</b> The numerator is a force, in newtons; the denominator is a stress, in newtons per square metre. Force divided by stress is an area, in square metres, and the square root of an area is a length. The expression gives a length, which is what a diameter is. Had the factor of four been forgotten the dimensions would still be right &#8212; which is exactly why the dimensions cannot catch that particular error, and why the factor has to be argued from the geometry rather than checked.</p>
+<p><b>Step 9 — put numbers in as a spot check.</b> Take a load of 1000 kg and a breaking stress of <code>1.0 &#215; 10<sup>9</sup></code> Pa, with <code>g</code> = 10 m s<sup>-2</sup>:</p>
+<div class="formula">d<sup>2</sup> = 4 &#215; 1000 &#215; 10 / (&#960; &#215; 1.0 &#215; 10<sup>9</sup>) = 4.0 &#215; 10<sup>4</sup> / 3.1 &#215; 10<sup>9</sup> = 1.3 &#215; 10<sup>-5</sup> m<sup>2</sup></div>
+<div class="formula">d = &#8730;(1.3 &#215; 10<sup>-5</sup>) = 3.6 &#215; 10<sup>-3</sup> m = 3.6 mm</div>
+<p>A 3.6 mm steel cable lifting a tonne is the size one expects: steel is strong, so the cable is thin. Had the factor of four been dropped, the answer would have been 1.8 mm, and had the square root been dropped, the answer would have been an area masquerading as a length. Both are caught by the numbers, and neither is caught by the dimensions alone.</p>
+<p><b>Why the answer is asked for as an expression.</b> The real paper asks several of its questions this way, with five expressions rather than five numbers. The reason is that an expression tests the whole rearrangement, whereas a number can sometimes be reached by a route the candidate cannot justify. It also removes the calculator: with the answer left symbolic, no division ever has to be carried out, which is precisely what a non-calculator paper wants.</p>
 <p><b>The distractors.</b></p>
-<p>&middot; <b>1.8 mm</b> comes from using <code>A = pi d^2</code>, i.e. putting the diameter where the radius belongs. That makes the area four times too large for a given <code>d</code>, so the <code>d</code> that satisfies it is half the correct one. The error is entirely in the circle relation, not in the stress.</p>
-<p>&middot; <b>3.2 mm</b> is <code>sqrt(A)</code> directly: the factor of <code>4/pi</code> dropped. That is the same as assuming the cross-section is a square of side <code>d</code>, which for a circular cable it is not.</p>
-<p>&middot; <b>7.1 mm</b> is twice the correct value — the diameter reported as though it were the radius, or the radius doubled at the end.</p>
-<p>&middot; <b>36 mm</b> is ten times the correct value, from reading the breaking stress as <code>1.0 x 10^8</code>. It is the size of a structural cable rather than a lifting cable, and the order-of-magnitude check in step 4 is what rules it out.</p>
-<p><b>The trap.</b> Stopping after the area. The stress relation is the part that has been practised, so the calculation feels finished once <code>A</code> is known — but the question asked for a diameter, and one more relation with a square root in it stands between the two.</p>
-<p><b>Relevant topics:</b> stress and strain; the breaking stress; the area of a circle; dimensional checking as a way of confirming which stage you have reached.</p>''',
-    "trap": "Stopping once the area is found. Stress gives an area, and the diameter needs the circle relation on top, which contributes both a square root and a factor of four over pi.",
+<p>&middot; <b>&#8730;(mg/(&#960;&#963;))</b> is the radius of the cable, not the diameter. It comes from writing the area as <code>&#960;d<sup>2</sup></code>, or equivalently from forgetting the factor of four. It is the commonest wrong answer, and it is wrong by a factor of two in the diameter, which is a factor of four in the cross-sectional area.</p>
+<p>&middot; <b>4mg/(&#960;&#963;)</b> is the diameter <i>squared</i>. It has the dimensions of an area, so it cannot be a diameter, and this is one of the few cases where the dimensions alone reject an option at sight.</p>
+<p>&middot; <b>&#8730;(4&#960;mg/&#963;)</b> puts pi in the numerator. The pi came from the area, and the area was in the denominator of the rearrangement, so pi belongs in the denominator. Swapping it is a pure bookkeeping slip.</p>
+<p>&middot; <b>&#8730;(4mg&#963;/&#960;)</b> inverts the stress, which would mean that a stronger steel needs a thicker cable. Reading it back as a physical statement is the fastest way to reject it.</p>
+<p><b>The trap.</b> Substituting numbers too early. Once numbers are in, a factor of four is invisible; left as symbols, the option list itself shows which factor is present and which is missing. Rearranging first and substituting last is not just tidier, it is the only way to see what the question is really asking.</p>
+<p><b>Relevant topics:</b> stress and breaking stress; the area of a circle in terms of its diameter; rearranging formulas symbolically; checking dimensions; why an expression is a better answer than a number in a non-calculator paper.</p>''',
+    "trap": "Writing the area as pi d squared instead of pi d squared over four, which loses the factor of four and gives a cable half the diameter it needs.",
 },
+
 
 # ═════════════════════════════════════════════════════════════════════════════
 # 18 — F, waves.  The highest order a grating can produce.

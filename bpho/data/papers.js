@@ -49,10 +49,10 @@ window.BPHO_PAPERS = [
   "modules": "A B C D E F G H I J K",
   "questions": "papers/bank-s01-questions.pdf",
   "markscheme": "papers/bank-s01-markscheme.pdf",
-  "qBytes": 581984,
-  "mBytes": 823549,
+  "qBytes": 620999,
+  "mBytes": 866326,
   "qPages": 12,
-  "mPages": 28
+  "mPages": 30
  },
  {
   "tag": "BANK-S02",
@@ -65,10 +65,10 @@ window.BPHO_PAPERS = [
   "modules": "A B C D E F G H I K L M",
   "questions": "papers/bank-s02-questions.pdf",
   "markscheme": "papers/bank-s02-markscheme.pdf",
-  "qBytes": 609621,
-  "mBytes": 829560,
+  "qBytes": 614284,
+  "mBytes": 866355,
   "qPages": 10,
-  "mPages": 31
+  "mPages": 33
  },
  {
   "tag": "BANK-S03",
@@ -77,14 +77,14 @@ window.BPHO_PAPERS = [
   "note": "Original questions written for this course, in the Round 0 format. Not BPhO material.",
   "n": 25,
   "seconds": 3600,
-  "figures": 11,
+  "figures": 10,
   "modules": "A B C D E F G H I J K L M",
   "questions": "papers/bank-s03-questions.pdf",
   "markscheme": "papers/bank-s03-markscheme.pdf",
-  "qBytes": 470759,
-  "mBytes": 827463,
+  "qBytes": 468042,
+  "mBytes": 875714,
   "qPages": 10,
-  "mPages": 32
+  "mPages": 35
  },
  {
   "tag": "BANK-S04",
@@ -93,14 +93,14 @@ window.BPHO_PAPERS = [
   "note": "Original questions written for this course, in the Round 0 format. Not BPhO material.",
   "n": 25,
   "seconds": 3600,
-  "figures": 12,
+  "figures": 13,
   "modules": "A B C D E F G H I J K L",
   "questions": "papers/bank-s04-questions.pdf",
   "markscheme": "papers/bank-s04-markscheme.pdf",
-  "qBytes": 472867,
-  "mBytes": 823071,
+  "qBytes": 532798,
+  "mBytes": 837437,
   "qPages": 10,
-  "mPages": 32
+  "mPages": 33
  },
  {
   "tag": "BANK-S05",
@@ -109,14 +109,14 @@ window.BPHO_PAPERS = [
   "note": "Original questions written for this course, in the Round 0 format. Not BPhO material.",
   "n": 25,
   "seconds": 3600,
-  "figures": 12,
+  "figures": 13,
   "modules": "A B C D E F G H I J K L M",
   "questions": "papers/bank-s05-questions.pdf",
   "markscheme": "papers/bank-s05-markscheme.pdf",
-  "qBytes": 534463,
-  "mBytes": 588214,
+  "qBytes": 586575,
+  "mBytes": 639324,
   "qPages": 13,
-  "mPages": 20
+  "mPages": 23
  }
 ];
 window.BPHO_PAPERS_BUILT = "2026-09-19";
