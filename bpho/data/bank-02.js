@@ -10,7 +10,7 @@
    non-calculator rule, declared-profile vs solution, measured difficulty against the
    real paper's own quartiles, logic-level similarity, an independent numeric
    re-derivation of every answer, figure geometry, and answer-letter balance.  The
-   gate suite itself is tested by 29 mutants, each of which breaks one thing and
+   gate suite itself is tested by 31 mutants, each of which breaks one thing and
    asserts that the right gate notices.
 
    Derived key: C A E B D E A A C B C B B E D B C C A C D B B C D

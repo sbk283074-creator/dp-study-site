@@ -33,6 +33,7 @@ SECTIONS = {
     1: "sec01",
     2: "sec02",
     3: "sec03",
+    4: "sec04",
 }
 
 # Fields the site app reads.  Everything else in the source (distractors, profile,
@@ -132,7 +133,7 @@ def build_one(sec_no: int, base) -> str | None:
    non-calculator rule, declared-profile vs solution, measured difficulty against the
    real paper's own quartiles, logic-level similarity, an independent numeric
    re-derivation of every answer, figure geometry, and answer-letter balance.  The
-   gate suite itself is tested by 29 mutants, each of which breaks one thing and
+   gate suite itself is tested by 31 mutants, each of which breaks one thing and
    asserts that the right gate notices.
 
    Derived key: %s

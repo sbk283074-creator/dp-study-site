@@ -85,6 +85,22 @@ window.BPHO_PAPERS = [
   "mBytes": 827463,
   "qPages": 10,
   "mPages": 32
+ },
+ {
+  "tag": "BANK-S04",
+  "kind": "generated",
+  "label": "Drill bank section 4",
+  "note": "Original questions written for this course, in the Round 0 format. Not BPhO material.",
+  "n": 25,
+  "seconds": 3600,
+  "figures": 12,
+  "modules": "A B C D E F G H I J K L",
+  "questions": "papers/bank-s04-questions.pdf",
+  "markscheme": "papers/bank-s04-markscheme.pdf",
+  "qBytes": 472867,
+  "mBytes": 823071,
+  "qPages": 10,
+  "mPages": 32
  }
 ];
-window.BPHO_PAPERS_BUILT = "2026-09-18";
+window.BPHO_PAPERS_BUILT = "2026-09-19";

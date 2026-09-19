@@ -476,6 +476,184 @@ LEDGER = {1: {
         "2500 kg/m^3, denser than water, so it sinks and the reading stays positive",
         "D"),
 },
+4: {
+    "S04-01": (
+        "find the internal resistance from the lost volts, then re-divide",
+        "I = 4.8/12 = 0.40 A; lost volts = 6.0 - 4.8 = 1.2 V, so r = 1.2/0.40 = 3.0 ohm. With "
+        "6.0 ohm in place: total 9.0 ohm, I = 6.0/9.0 = 2/3 A, V = (2/3) x 6.0 = 4.0 V. Check "
+        "the direction: the new resistor is smaller so the terminal voltage must fall below "
+        "4.8 V, and 4.0 V is below it",
+        "C"),
+    "S04-02": (
+        "put the dimensions of each option into GM and r",
+        "[G] = N m^2 kg^-2 = (kg m s^-2) m^2 kg^-2 = m^3 kg^-1 s^-2, so [GM] = m^3 s^-2. Then "
+        "r^3/GM has dimensions m^3/(m^3 s^-2) = s^2 and its square root is s. Check the "
+        "runner-up: GM/r is m^3 s^-2/m = m^2 s^-2, whose root is m/s, a speed and not a time",
+        "A"),
+    "S04-03": (
+        "moments about the foot, then divide friction by the normal reaction",
+        "The wall is smooth so it gives only a horizontal R; hence N = W and F = R. Moments "
+        "about the foot: R x L sin30 = W x (L/2) cos30, so R = W/(2 tan30) = W/(2/sqrt3) = "
+        "W sqrt3/2. Then mu = F/N = R/W = sqrt3/2. Check the limit: a ladder stood upright "
+        "needs no friction, and the general expression 1/(2 tan theta) goes to zero as theta "
+        "goes to 90 degrees",
+        "B"),
+    "S04-04": (
+        "one side in parallel with the other two in series",
+        "Each side is 12/3 = 4.0 ohm. Between two vertices the direct side is 4.0 ohm and the "
+        "other two in series are 8.0 ohm. Parallel: (4.0 x 8.0)/(4.0 + 8.0) = 32/12 = 2.67 "
+        "ohm, which is 2.7 ohm to two figures. Check: a parallel combination must come out "
+        "below its smallest branch, and 2.67 is below 4.0",
+        "E"),
+    "S04-05": (
+        "multiply the rate out to a lifetime and read the exponent",
+        "70 x 60 = 4200 beats an hour; x 24 = 100800 a day; x 365 = 36792000 a year; "
+        "x 80 = 2943360000, which is 2.9 x 10^9. Check by a second route: a rate of about "
+        "10^2 a minute, a year of about 5 x 10^5 minutes and 80 years of about 4 x 10^7 "
+        "minutes give 10^2 x 4 x 10^7 = 4 x 10^9, the same power of ten",
+        "C"),
+    "S04-06": (
+        "compare the time of flight at the two angles",
+        "Time of flight is 2u sin(theta)/g, so the ratio is sin60/sin30 = (sqrt3/2)/(1/2) = "
+        "sqrt3. Check the companion quantities: the 60-degree ball rises three times as high, "
+        "since sin^2 60 = 3/4 against sin^2 30 = 1/4, but stays up only sqrt3 times as long",
+        "A"),
+    "S04-07": (
+        "resolve the velocity along and perpendicular to the wall",
+        "The component along the wall, v sin(theta), is unchanged. The component along the "
+        "normal reverses, from +v cos(theta) to -v cos(theta), a change of 2v cos(theta), so "
+        "the change in momentum is 2mv cos(theta). Check the limit theta = 0, a head-on "
+        "bounce: the expression becomes 2mv, which is right",
+        "B"),
+    "S04-08": (
+        "set gravity equal to the centripetal requirement at the top",
+        "At the top the weight and the normal reaction both point to the centre, so "
+        "mg + N = mv^2/r. Contact is just lost when N = 0, leaving mg = mv^2/r and "
+        "v = sqrt(gr). Check the runner-up: sqrt(2gr) is the speed needed to reach the top "
+        "from the bottom, which is a different question",
+        "D"),
+    "S04-09": (
+        "the wave speed is the square root of the tension",
+        "v = sqrt(T/mu), so v is proportional to sqrt(T). The tension rises to 121/100 of its "
+        "old value, whose square root is 11/10, so the new speed is 40 x 11/10 = 44 m/s. "
+        "Check the fraction: 1.1^2 = 1.21, which is exactly the stated 21 per cent rise",
+        "E"),
+    "S04-10": (
+        "Snell at the end face, then the critical condition at the wall",
+        "sin i = n sin r at the end face. At the side wall the ray makes an angle 90 - r with "
+        "the normal, so total internal reflection needs sin(90 - r) >= 1/n, that is "
+        "cos r >= 1/n. The largest sin i comes from the largest r, at cos r = 1/n, giving "
+        "sin r = sqrt(1 - 1/n^2) and sin i = n sqrt(1 - 1/n^2) = sqrt(n^2 - 1). Check "
+        "n = sqrt2: sin i = 1, the grazing limit, which is the largest value possible",
+        "A"),
+    "S04-11": (
+        "share the supply in the ratio of the two resistances",
+        "The same current passes through both arms, so the output across the fixed resistor is "
+        "6.0 x 2.0/(1.0 + 2.0) = 6.0 x 2/3 = 4.0 V. Check the direction: the warm thermistor "
+        "has fallen to half the fixed resistance, so it takes only a third of the supply and "
+        "the output must be above half of 6.0 V, as 4.0 V is",
+        "D"),
+    "S04-12": (
+        "combine the volume and the mass scaling laws",
+        "R = r0 A^(1/3), so V = (4/3)pi R^3 is proportional to (A^(1/3))^3 = A. The mass is "
+        "proportional to the mass number A. Density is mass over volume, so it goes as A/A, a "
+        "constant, and the ratio is 1. Check with 8A: the radius doubles, the volume rises by "
+        "2^3 = 8 and the mass rises by 8, leaving the density unchanged",
+        "B"),
+    "S04-13": (
+        "multiply the gradient by the electronic charge",
+        "eV = hf - W rearranges to V = (h/e)f - W/e, so the gradient of the graph is h/e. "
+        "Then h = e x gradient = 1.6e-19 x 4.0e-15 = 6.4e-34 J s. Check the units: "
+        "C x V s = (J/V) x V s = J s. Check the size against the accepted 6.6e-34, which it "
+        "matches to two figures",
+        "E"),
+    "S04-14": (
+        "solve the equation for eta and reduce to base units",
+        "eta = F/(6 pi r v), and 6 pi is dimensionless. [F] = kg m s^-2, [r] = m and "
+        "[v] = m s^-1, so [eta] = kg m s^-2 / (m x m s^-1) = kg m s^-2 / (m^2 s^-1) = "
+        "kg m^-1 s^-1. Check against a familiar value: water has a viscosity of about 1e-3 in "
+        "these units, and the pascal second is a large viscosity, which fits",
+        "C"),
+    "S04-15": (
+        "use only the component across the river",
+        "The boat is pointed straight across, so all of its 3.0 m/s is perpendicular to the "
+        "bank and the current only carries it downstream without changing the crossing time: "
+        "t = 120/3.0 = 40 s. Check the distractor route: 120/5.0 = 24 s uses the resultant "
+        "speed, but the resultant points along a diagonal and is not the speed at which the "
+        "boat approaches the far bank",
+        "D"),
+    "S04-16": (
+        "resolve in two directions and eliminate one tension",
+        "Horizontally T_L sin60 = T_R sin30, so T_L (sqrt3/2) = T_R/2 and T_L = T_R/sqrt3. "
+        "Vertically T_L cos60 + T_R cos30 = W, so T_R/(2 sqrt3) + T_R sqrt3/2 = W, giving "
+        "T_R (1 + 3)/(2 sqrt3) = T_R (2/sqrt3) = W and T_R = W sqrt3/2. Check the size: the "
+        "right-hand wire hangs closer to the vertical, so it carries more than half the "
+        "weight, and sqrt3/2 = 0.87 is more than a half",
+        "B"),
+    "S04-17": (
+        "divide the horizontal equation by the vertical one",
+        "The bob moves on a circle of radius r = L sin(theta). Vertically T cos(theta) = mg; "
+        "horizontally T sin(theta) = m omega^2 r. Dividing gives tan(theta) = "
+        "omega^2 L sin(theta)/g, so omega^2 = g/(L cos(theta)) and the period is "
+        "2 pi sqrt(L cos(theta)/g). Check the limit theta = 0: the expression becomes "
+        "2 pi sqrt(L/g), the simple pendulum, which is right",
+        "A"),
+    "S04-18": (
+        "extension goes inversely with the cross-sectional area",
+        "x = FL/(AE), and F, L and E are the same for both wires, so x is proportional to 1/A "
+        "and A is proportional to d^2. The second wire has twice the diameter and therefore "
+        "four times the area, so one quarter of the extension: the ratio is 1/4. Check the "
+        "direction: a thicker wire is stiffer, so its extension must be the smaller, and 1/4 "
+        "is smaller",
+        "E"),
+    "S04-19": (
+        "the two resonances are the first and the third harmonic",
+        "A pipe closed at one end resonates at f, 3f, 5f, so 400 Hz and 1200 Hz are the first "
+        "and third, and 1200 = 3 x 400 confirms the assignment. The fundamental has wavelength "
+        "4L, so L = v/(4f) = 340/(4 x 400) = 340/1600 = 0.2125 m, about 0.21 m. Check the "
+        "neighbours: 0.85 m would be a quarter of 340/100, a fundamental of 100 Hz rather "
+        "than 400 Hz",
+        "C"),
+    "S04-20": (
+        "the critical angle is fixed by the refractive index",
+        "The light starts inside the material, so it emerges only while the angle of incidence "
+        "stays below the critical angle: sin C = 1/n = 1/sqrt2, so C = 45 degrees. Check the "
+        "exactness: sin45 = 1/sqrt2 precisely, so 45 degrees is the exact answer and not a "
+        "rounded value",
+        "D"),
+    "S04-21": (
+        "reduce the parallel pair, then use the total resistance",
+        "6.0 || 3.0 = (6.0 x 3.0)/(6.0 + 3.0) = 18/9 = 2.0 ohm; total = 2.0 + 2.0 = 4.0 ohm; "
+        "I = 6.0/4.0 = 1.5 A. Check the size: with negligible internal resistance the current "
+        "must exceed 6.0/6.0 = 1.0 A, the value if the battery saw 6.0 ohm, and 1.5 A does",
+        "E"),
+    "S04-22": (
+        "conserve charge, then divide by the total capacitance",
+        "The charge has nowhere to go, so it is still 48 uC, and the two capacitors end up in "
+        "parallel, C = 4.0 + 8.0 = 12 uF. Then V = Q/C = 48/12 = 4.0 V. Check the direction: "
+        "the shared voltage must be below the original 48/4.0 = 12 V, because the same charge "
+        "now sits on more capacitance, and 4.0 V is below it",
+        "B"),
+    "S04-23": (
+        "heat lost equals heat gained",
+        "0.40 c (90 - T) = 0.10 c (T - 10), so 36 - 0.4T = 0.1T - 1 and 37 = 0.5T, giving "
+        "T = 74 C. Check the position: the masses are in the ratio 4:1, so the final "
+        "temperature sits one fifth of the way from 90 towards 10, and 90 - 16 = 74",
+        "D"),
+    "S04-24": (
+        "count the half-lives",
+        "24/8.0 = 3 half-lives, so the fraction remaining is (1/2)^3 = 1/8. Check the "
+        "distractor: 1/3 is what a linear decay would give, but each half-life halves what is "
+        "left rather than removing a fixed amount",
+        "C"),
+    "S04-25": (
+        "equal wavelengths mean equal momenta, then kinetic energy goes as 1/m",
+        "lambda = h/p, so equal de Broglie wavelengths mean equal momenta. With KE = p^2/(2m) "
+        "and p the same, the kinetic energy is inversely proportional to the mass, so "
+        "KE_electron/KE_proton = m_proton/m_electron = 1836. Check the direction: the lighter "
+        "particle carries more kinetic energy at the same momentum, and 1836 is more than 1",
+        "A"),
+},
 }
 
 
