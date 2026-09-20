@@ -63,7 +63,9 @@ what makes the example verifiable. `code/cpp/tools/verify_examples.py` reads the
 | ` ```c run ` / ` ```c bad ` / … | The same directives for C. | Same, via the **C driver** (`clang`) with `-std=c17`. |
 | ` ```cpp run-files ` | A **multi-file listing**: several files in one block, each introduced by a banner comment. | Writes every file, resolves `#include "x.h"` through `-I.`, and links all translation units in one command. See below. |
 | ` ```cpp make-files ` | A multi-file listing that contains its own `Makefile`. | Runs `make` in the listing's directory and then the `prog` it produced, so the **recipe itself** is verified. |
-| ` ```bash ` / ` ```text ` / ` ```makefile ` | Commands and output. | Not compiled. `text` directly after a `run` block is read as its expected output. |
+| ` ```sh run ` | A **shell script**. | Runs with `sh` in an empty temp directory and compares stdout against the `text` fence that follows. Use it when the evidence is a *command* rather than a program — a `curl` transcript, a `make` transcript, a CLI driven with arguments. |
+| ` ```sh run-project ` | A shell script that needs the chapter's project. | Same, but the directory is first seeded with the files of the most recent multi-file listing **in the same chapter** and that listing is built (its own `Makefile` if it has one, otherwise its translation units are compiled). This is how a chapter builds a project once and then exercises it from the shell. |
+| ` ```bash ` / ` ```text ` / ` ```makefile ` | Commands and output. | Not compiled. A shell fence with **no** directive is decoration, not a block: it is neither run nor counted as a fragment. `text` directly after a `run` block is read as its expected output. |
 
 Any directive may take a `-files` suffix: `run-files`, `run-san-files`, `run-san-catch-files`,
 `run-san-leak-files`, `compile-files`, `bad-files`, `warn-files`, `make-files`. The suffix changes only
@@ -97,6 +99,29 @@ Rules for writing one:
 - A `make-files` block is the only way to verify build instructions. If a chapter teaches a Makefile,
   teach it inside one of these rather than in a `bash` fence, or the recipe is unverified prose.
 
+### Shell blocks
+
+A quoted terminal transcript is a claim about what a command printed, and hand-copied transcripts are
+wrong in exactly the way hand-copied anything is wrong. One in this book quoted a `make` message the
+machine has never printed. `sh run` exists so that transcripts are checked like everything else.
+
+Rules for writing one:
+
+- **The script must be self-contained and stop what it starts.** A block that leaves a server
+  listening will fail the *next* run for a reason unrelated to the code, and the harness kills it at
+  `RUN_TIMEOUT` (20 s). Start background processes with `trap 'kill $pid' EXIT`, redirect their output
+  to a file, and `wait` for them.
+- **Do not print anything that is not stable.** A file-descriptor number from `socket()` changes
+  between runs. So does a partial-write byte count. If a value is not reproducible, teach it in prose
+  with **no** output fence rather than betting the gate on it.
+- **`sh run-project` seeds from the most recent `-files` listing in the same chapter**, so the block
+  must come after the listing it uses. If a chapter has two listings, the later one wins.
+- **A demonstration of a rebuild needs `sleep 1` first.** `make` compares timestamps; `touch x && make`
+  inside the same second can be a no-op. Measured on this platform: without the `sleep`, the rebuild
+  happened 2 times out of 5. A block that is a coin flip is worse than no block.
+- **Remember what the harness compares**: stdout only. `stderr` is invisible to it, so a transcript
+  that shows a diagnostic must fold the streams (`2>&1`) inside the script.
+
 ### What the toolchain can and cannot prove
 
 Measured on Apple clang 21 (arm64 macOS). Do not assume these hold elsewhere; the harness
@@ -110,6 +135,9 @@ Measured on Apple clang 21 (arm64 macOS). Do not assume these hold elsewhere; th
 | `valgrind` | not installed | Do not make it the only suggested tool. |
 | `cmake` | not installed | A CMake chapter cannot be machine-verified here — mark it `compile`-free and say so, or teach `make` first, which **is** verifiable. |
 | `make` | **GNU Make 3.81 present** | A Makefile can be verified with a `make-files` block, which runs `make` and then the `prog` it produced. Use it for every build recipe you teach; do not leave a Makefile in a `bash` fence. |
+| `curl` | **present** | A real third-party HTTP client, so its agreement is genuine evidence about a server. But it *normalises* the URL before sending: `/../etc/passwd` arrives as `/etc/passwd` and the server never sees the traversal. A traversal test needs `--path-as-is`, or it tests nothing. |
+| `make` "nothing to do" wording | version-specific | GNU Make 3.81 (macOS) prints ``make: `prog' is up to date.`` with backtick quotes. Other versions word it differently. Quote what you measured and say which `make` you measured it with. |
+| filesystem timestamp granularity | **1 s, and it bites** | `touch x && make` within the same second may do nothing, because the touched file and the object built from it share a timestamp. `sleep 1` first. Measured: 2 rebuilds out of 5 without it. |
 | `-Wimplicit-fallthrough` | **not** enabled by `-Wall -Wextra` on Apple clang | A switch fall-through cannot be a `warn` block — the harness would see silence and fail. Teach the *behaviour* with `run`, and mention the flag in prose. |
 | Incompatible pointer types, `double *p = &x;` | **warning in C, error in C++** | The same "don't do this" example must be `warn` in a C chapter and `bad` in a C++ chapter. Measured, not guessed. |
 | `sizeof` on an array *parameter* | warning `-Wsizeof-array-argument` | A `warn` block, never `run`: `run` builds with `-Werror`, so it would report "does not compile" instead of teaching the lesson. |

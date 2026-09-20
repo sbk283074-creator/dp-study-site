@@ -157,3 +157,16 @@ prog: main.c
 ```text
 Undefined symbols
 ```
+
+10. A shell block whose transcript is wrong. `sh run` compares stdout with the `text`
+    fence, so a hand-written transcript that does not match the real output is caught.
+    This is the case that motivated the directive: a quoted `make` message that the
+    machine has never printed is exactly the sort of error prose hides.
+
+```sh run
+printf 'two\n'
+```
+
+```text
+one
+```

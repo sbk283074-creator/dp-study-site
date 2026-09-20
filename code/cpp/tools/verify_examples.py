@@ -46,6 +46,19 @@ is asserted about the result.
                        link a translation unit fails here, with the linker's own
                        message.
 
+    ```sh run         a shell script. Runs with `sh` in an empty temp directory; stdout
+                       must equal the `text` fence that follows. This is how a `curl`
+                       transcript or a `make` transcript becomes a claim instead of
+                       prose.
+    ```sh run-project the same, but the directory is first seeded with the files of the
+                       most recent multi-file listing in the chapter and that listing
+                       is built (via its `Makefile`, or by compiling its translation
+                       units) — so a chapter can build a project once and then drive it
+                       from the shell without repeating the sources.
+
+A shell fence with **no** directive (a bare ```bash fence) is decoration, not a block:
+it is neither run nor counted as a fragment.
+
 `c` is accepted wherever `cpp` is; it selects -std=c17 and the C driver.
 
 Usage
@@ -76,6 +89,10 @@ CPP_STD = "c++17"
 C_STD = "c17"
 RUN_TIMEOUT = 20  # seconds
 SAN_FLAGS = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-g"]
+
+# Fence languages that mean "this is a shell script, run it with `sh`". A fence in one
+# of these languages is only a *block* when it carries a directive — see parse_chapter.
+SHELL_LANGS = ("sh", "bash", "shell")
 
 
 # --------------------------------------------------------------------------
@@ -132,15 +149,22 @@ def probe_leak_detection(cxx: str) -> bool:
 # Parsing chapters
 # --------------------------------------------------------------------------
 class Block:
-    __slots__ = ("chapter", "line", "lang", "directive", "code", "expected")
+    __slots__ = ("chapter", "line", "lang", "directive", "code", "expected",
+                 "seed", "seed_lang")
 
-    def __init__(self, chapter, line, lang, directive, code, expected=None):
+    def __init__(self, chapter, line, lang, directive, code, expected=None,
+                 seed=None, seed_lang=None):
         self.chapter = chapter
         self.line = line
         self.lang = lang
         self.directive = directive
         self.code = code
         self.expected = expected
+        # The most recent multi-file listing in the same chapter, if any. A
+        # `sh run-project` block is run in a directory seeded with these files, so a
+        # chapter can build a project once and then drive it from the shell.
+        self.seed = seed
+        self.seed_lang = seed_lang
 
     @property
     def where(self) -> str:
@@ -149,6 +173,10 @@ class Block:
     @property
     def is_c(self) -> bool:
         return self.lang in ("c", "h")
+
+    @property
+    def is_shell(self) -> bool:
+        return self.lang in SHELL_LANGS
 
     @property
     def files(self) -> bool:
@@ -200,13 +228,16 @@ FENCE_RE = re.compile(r"^(\s*)```(.*)$")
 # Directives whose following `text` fence is a CLAIM to be verified, not decoration.
 # `bad` is in here because a chapter that quotes a compiler error must quote the one
 # it actually got; otherwise the "don't do this" example is unverified prose.
-WITH_OUTPUT = ("run", "run-san", "run-san-catch", "run-san-leak", "warn", "bad", "make")
+WITH_OUTPUT = ("run", "run-san", "run-san-catch", "run-san-leak", "warn", "bad", "make",
+               "run-project")
 
 
 def parse_chapter(path: Path) -> list[Block]:
     """Pull every fenced block out of one chapter, in order."""
     lines = path.read_text(encoding="utf-8").split("\n")
     blocks: list[Block] = []
+    last_listing: str | None = None
+    last_listing_lang: str | None = None
     i = 0
 
     if lines and lines[0].strip() == "---":
@@ -239,7 +270,14 @@ def parse_chapter(path: Path) -> list[Block]:
         lang = parts[0].lower() if parts else ""
         directive = parts[1].lower() if len(parts) > 1 else ""
 
-        if lang not in ("cpp", "c", "h"):
+        if lang in SHELL_LANGS:
+            # A shell fence is a *block* only when it carries a directive. A bare
+            # ```bash fence is a transcript of commands for the reader, not a claim the
+            # harness can check, so it stays decoration — and is deliberately not
+            # counted as a fragment either, since it was never a candidate.
+            if not directive:
+                continue
+        elif lang not in ("cpp", "c", "h"):
             continue
 
         # A run block may be followed by a `text` fence holding its expected
@@ -264,7 +302,11 @@ def parse_chapter(path: Path) -> list[Block]:
                     expected = "\n".join(exp)
                     i = j + 1  # consume it, so it is not parsed again
 
-        blocks.append(Block(path.stem, open_line, lang, directive, "\n".join(body), expected))
+        blocks.append(Block(path.stem, open_line, lang, directive, "\n".join(body),
+                            expected, seed=last_listing, seed_lang=last_listing_lang))
+        if directive.endswith("-files"):
+            last_listing = "\n".join(body)
+            last_listing_lang = lang
     return blocks
 
 
@@ -358,6 +400,78 @@ def build_make(block: Block, work: Path):
     return proc, exe
 
 
+def check_shell(block: Block, d: str, cxx: str, cc: str) -> Result:
+    """Run a shell script and compare its stdout with the following `text` fence.
+
+    Some of the strongest evidence in this book is not produced by a C program: `curl`
+    talking to the server the chapter just built, `make` reporting what it is about to
+    do, a build driven from the command line. Those transcripts used to be prose the
+    harness could not see — and one of them was wrong, quoting a `make` message that
+    this machine has never printed. A `sh run` block makes them claims.
+
+    `run`         the script runs in an empty directory.
+    `run-project` the script runs in a directory seeded with the files of the most
+                  recent multi-file listing in the same chapter, built first — via its
+                  own `Makefile` if it has one, otherwise by compiling its translation
+                  units. A chapter can therefore build a project once and then exercise
+                  it from the shell instead of repeating the sources.
+    """
+    if d not in ("run", "run-project"):
+        return Result(block, False, f"unknown shell directive '{block.directive}'")
+
+    with tempfile.TemporaryDirectory(prefix="cppverify-sh-") as td:
+        work = Path(td)
+
+        if d == "run-project":
+            if not block.seed:
+                return Result(block, False,
+                              "no multi-file listing earlier in this chapter to seed from")
+            sources = []
+            for name, text in split_files(block.seed):
+                path = work / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text, encoding="utf-8")
+                if path.suffix in (".c", ".cpp"):
+                    sources.append(str(path))
+
+            if (work / "Makefile").exists():
+                build_cmd = ["make"]
+            else:
+                driver = cc if block.seed_lang in ("c", "h") else cxx
+                if not driver:
+                    return Result(block, False, "no compiler on PATH to build the listing")
+                std = C_STD if block.seed_lang in ("c", "h") else CPP_STD
+                build_cmd = [driver, f"-std={std}", "-Wall", "-Wextra", "-Werror",
+                             "-I", str(work), "-o", str(work / "prog")] + sources
+
+            proc = subprocess.run(build_cmd, capture_output=True, text=True,
+                                  timeout=180, cwd=work)
+            if proc.returncode != 0:
+                return Result(block, False, "the listing did not build",
+                              ((proc.stderr or "") + (proc.stdout or "")).strip()[:600])
+
+        script = work / "run.sh"
+        script.write_text(block.code + "\n", encoding="utf-8")
+        try:
+            run = subprocess.run(["sh", str(script)], capture_output=True, text=True,
+                                 timeout=RUN_TIMEOUT, cwd=work, stdin=subprocess.DEVNULL)
+        except subprocess.TimeoutExpired:
+            return Result(block, False,
+                          f"ran longer than {RUN_TIMEOUT}s (a server left running?)")
+
+        if run.returncode != 0:
+            return Result(block, False, f"the script exited {run.returncode}",
+                          ((run.stderr or "") + (run.stdout or "")).strip()[-600:])
+
+        if block.expected is None:
+            return Result(block, True, "ran clean (no output fence to compare)")
+        if norm(run.stdout) != norm(block.expected):
+            return Result(block, False, "OUTPUT DOES NOT MATCH the text fence",
+                          "documented:\n" + norm(block.expected)[:400]
+                          + "\n\nactual:\n" + norm(run.stdout)[:400])
+        return Result(block, True, "script ran, output matches")
+
+
 def check_block(block: Block, cxx: str, cc: str, leak_ok: bool) -> Result:
     d = block.base
     if not d:
@@ -365,6 +479,8 @@ def check_block(block: Block, cxx: str, cc: str, leak_ok: bool) -> Result:
     if block.files and not split_files(block.code):
         return Result(block, False,
                       "no /* ===== filename ===== */ banner found in this multi-file block")
+    if block.is_shell:
+        return check_shell(block, d, cxx, cc)
 
     driver = cc if block.is_c else cxx
     if not driver:
@@ -562,7 +678,7 @@ def run_dir(chapters_dir: Path, filt: str, cxx: str, cc: str, leak_ok: bool,
 # The number of failures `fixtures/bad.md` MUST produce. It is exact on purpose: a
 # fixture that has quietly stopped exercising one of its cases is a gate that has
 # quietly stopped working, and a count is the only cheap way to notice.
-EXPECTED_BAD_FAILURES = 9
+EXPECTED_BAD_FAILURES = 10
 
 
 def self_test(cxx: str, cc: str, leak_ok: bool) -> int:

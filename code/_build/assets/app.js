@@ -131,7 +131,7 @@
     python: "def class return if elif else for while in is not and or None True False lambda try except finally raise with as import from pass break continue yield global nonlocal assert del async await match case",
     javascript: "const let var function return if else for while class new await async import from export try catch finally typeof instanceof",
     sql: "SELECT FROM WHERE JOIN LEFT INNER GROUP BY ORDER LIMIT INSERT INTO VALUES UPDATE SET DELETE CREATE TABLE PRIMARY KEY",
-    bash: "cd ls echo mkdir rm cp mv cat pip python python3 git export source curl",
+    bash: "cd ls echo printf mkdir rm cp mv cat touch sleep kill wait trap make cc clang gcc pip python python3 git export source curl chmod grep sed awk",
     // C keywords. `_Bool`/`_Static_assert` are C99/C11; bool/true/false come from
     // <stdbool.h>. A language with no entry here gets no keyword colouring at all,
     // so adding a book means adding its list.

@@ -232,6 +232,30 @@ int main(void) {
 8
 ```
 
+Shell blocks. `sh run` executes the script and compares stdout with the `text` fence,
+so a command transcript is a claim rather than prose.
+
+```sh run
+printf 'one\n'
+printf '%s\n' "$((6 * 7))"
+```
+
+```text
+one
+42
+```
+
+`sh run-project` runs in a directory seeded with the multi-file listing above and
+already built, so the shell can drive the program that listing produced.
+
+```sh run-project
+./prog
+```
+
+```text
+8
+```
+
 A listing that carries its own Makefile. The harness runs `make` and then the `prog` it
 produced, so the recipe itself is under test — a Makefile that forgets to link a
 translation unit fails here with the linker's own message.
