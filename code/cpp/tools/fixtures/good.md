@@ -150,3 +150,134 @@ A fragment, deliberately not compiled.
 ```cpp
 struct Point { int x; int y; };
 ```
+
+A multi-file listing. Every file is written out, headers resolve through `-I.`, and
+all translation units are linked in one command — so this only passes if the header
+guard works and `point_add` really is defined somewhere.
+
+```c run-files
+/* ===== point.h ===== */
+#ifndef POINT_H
+#define POINT_H
+
+typedef struct {
+    int x;
+    int y;
+} Point;
+
+Point point_add(Point a, Point b);
+
+#endif
+
+/* ===== point.c ===== */
+#include "point.h"
+
+Point point_add(Point a, Point b) {
+    Point result = {a.x + b.x, a.y + b.y};
+    return result;
+}
+
+/* ===== main.c ===== */
+#include <stdio.h>
+#include "point.h"
+
+int main(void) {
+    Point a = {1, 2};
+    Point b = {10, 20};
+    Point sum = point_add(a, b);
+
+    printf("sum = (%d, %d)\n", sum.x, sum.y);
+    return 0;
+}
+```
+
+```text
+sum = (11, 22)
+```
+
+A multi-file listing whose `main` is the second translation unit, and which uses
+`static` for internal linkage.
+
+```c run-files
+/* ===== util.h ===== */
+#ifndef UTIL_H
+#define UTIL_H
+
+int double_it(int value);
+
+#endif
+
+/* ===== util.c ===== */
+#include "util.h"
+
+static int secret_base(void) {
+    return 21;
+}
+
+int double_it(int value) {
+    return value * 2 + secret_base() - 21;
+}
+
+/* ===== main.c ===== */
+#include <stdio.h>
+#include "util.h"
+
+int main(void) {
+    printf("%d\n", double_it(4));
+    return 0;
+}
+```
+
+```text
+8
+```
+
+A listing that carries its own Makefile. The harness runs `make` and then the `prog` it
+produced, so the recipe itself is under test — a Makefile that forgets to link a
+translation unit fails here with the linker's own message.
+
+```c make-files
+/* ===== util.h ===== */
+#ifndef UTIL_H
+#define UTIL_H
+
+int twice(int value);
+
+#endif
+
+/* ===== util.c ===== */
+#include "util.h"
+
+int twice(int value) {
+    return value * 2;
+}
+
+/* ===== main.c ===== */
+#include <stdio.h>
+#include "util.h"
+
+int main(void) {
+    printf("%d\n", twice(21));
+    return 0;
+}
+
+/* ===== Makefile ===== */
+CC = clang
+CFLAGS = -std=c17 -Wall -Wextra -Werror
+
+prog: main.o util.o
+	$(CC) $(CFLAGS) -o prog main.o util.o
+
+main.o: main.c util.h
+	$(CC) $(CFLAGS) -c main.c
+
+util.o: util.c util.h
+	$(CC) $(CFLAGS) -c util.c
+
+clean:
+	rm -f prog main.o util.o
+```
+
+```text
+42
+```

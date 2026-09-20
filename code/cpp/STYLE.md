@@ -61,7 +61,41 @@ what makes the example verifiable. `code/cpp/tools/verify_examples.py` reads the
 | ` ```cpp warn ` | Code the compiler **complains about but still builds** (`-Wformat`, `-Wunused-variable`, …). | Compiles with `-Wall -Wextra` and **no** `-Werror`, then requires the `text` fence to appear inside the diagnostic. Use this whenever the lesson is "`-Wall` catches it" rather than "it does not build". |
 | ` ```cpp ` | A **fragment** (a signature, a struct body, two lines of a bigger idea). | Not compiled. **Use sparingly** — see below. |
 | ` ```c run ` / ` ```c bad ` / … | The same directives for C. | Same, via the **C driver** (`clang`) with `-std=c17`. |
+| ` ```cpp run-files ` | A **multi-file listing**: several files in one block, each introduced by a banner comment. | Writes every file, resolves `#include "x.h"` through `-I.`, and links all translation units in one command. See below. |
+| ` ```cpp make-files ` | A multi-file listing that contains its own `Makefile`. | Runs `make` in the listing's directory and then the `prog` it produced, so the **recipe itself** is verified. |
 | ` ```bash ` / ` ```text ` / ` ```makefile ` | Commands and output. | Not compiled. `text` directly after a `run` block is read as its expected output. |
+
+Any directive may take a `-files` suffix: `run-files`, `run-san-files`, `run-san-catch-files`,
+`run-san-leak-files`, `compile-files`, `bad-files`, `warn-files`, `make-files`. The suffix changes only
+*how the block is built*, never what is asserted about the result.
+
+### Multi-file listings
+
+A chapter about headers, separate compilation or Makefiles cannot be verified by a single-file block.
+The convention is a **banner** before each file, which is a valid C comment so the listing is still
+exactly the code a reader would type:
+
+    ```c run-files
+    /* ===== point.h ===== */
+    #ifndef POINT_H
+    ...
+    /* ===== main.c ===== */
+    ...
+    ```
+
+Rules for writing one:
+
+- **Banners are listing separators, not file contents.** Say so in prose the first time a listing
+  appears, because a `/* ===== Makefile ===== */` line would be a syntax error if pasted into a
+  Makefile. A reader who does not know the convention will type it.
+- Every file must be named. A `-files` block with no banner **fails** rather than being guessed at.
+- All translation units are linked together in one command, so a missing definition is a **linker**
+  error — `duplicate symbol` or `Undefined symbols` — not a compiler error. That distinction is
+  teachable content; use it.
+- The `Makefile` in a `make-files` block must produce an executable called `prog` in its own directory.
+  Recipes need **tab** indentation, and the harness will not fix it for you.
+- A `make-files` block is the only way to verify build instructions. If a chapter teaches a Makefile,
+  teach it inside one of these rather than in a `bash` fence, or the recipe is unverified prose.
 
 ### What the toolchain can and cannot prove
 
@@ -75,6 +109,7 @@ Measured on Apple clang 21 (arm64 macOS). Do not assume these hold elsewhere; th
 | UBSan | works, but **the exit code stays 0** | A UB demo must be `run-san-catch`, never `run`. A plain `run` block with UB would pass on exit code alone. |
 | `valgrind` | not installed | Do not make it the only suggested tool. |
 | `cmake` | not installed | A CMake chapter cannot be machine-verified here — mark it `compile`-free and say so, or teach `make` first, which **is** verifiable. |
+| `make` | **GNU Make 3.81 present** | A Makefile can be verified with a `make-files` block, which runs `make` and then the `prog` it produced. Use it for every build recipe you teach; do not leave a Makefile in a `bash` fence. |
 | `-Wimplicit-fallthrough` | **not** enabled by `-Wall -Wextra` on Apple clang | A switch fall-through cannot be a `warn` block — the harness would see silence and fail. Teach the *behaviour* with `run`, and mention the flag in prose. |
 | Incompatible pointer types, `double *p = &x;` | **warning in C, error in C++** | The same "don't do this" example must be `warn` in a C chapter and `bad` in a C++ chapter. Measured, not guessed. |
 | `sizeof` on an array *parameter* | warning `-Wsizeof-array-argument` | A `warn` block, never `run`: `run` builds with `-Werror`, so it would report "does not compile" instead of teaching the lesson. |
@@ -155,3 +190,9 @@ you actually got, not a paraphrase. The `bad` directive exists to keep that hone
 4. Front matter present with all six keys; part number matches the chapter's position.
 5. One `:::scenario` + `:::solution`, one `:::pitfall`, `## Key takeaways`, `## Practice`,
    `## Solutions` all present.
+
+Before publishing a batch, run `python3 tools/verify_examples.py --self-test`. It must print
+`self-test PASSED`, which means `fixtures/good.md` still passes **and** `fixtures/bad.md` still fails
+with exactly the expected number of failures. If the self-test fails, the harness has gone blind and
+every chapter it has ever approved is suspect. When you add a new directive to the harness, add a
+`must_pass` case to `good.md` and a `must_fail` case to `bad.md`, and bump `EXPECTED_BAD_FAILURES`.

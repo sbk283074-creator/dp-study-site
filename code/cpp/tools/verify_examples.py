@@ -19,6 +19,33 @@ in `code/cpp/STYLE.md`:
                          real diagnostic - so a quoted error is verified too.
     ```cpp               a fragment; deliberately not compiled (keep these rare)
 
+Any directive may carry a `-files` suffix, which marks the block as a *multi-file
+listing* rather than a single program. The listing holds several files, each
+introduced by a banner comment:
+
+    ```cpp run-files
+    /* ===== point.h ===== */
+    ...
+    /* ===== point.c ===== */
+    ...
+    /* ===== main.c ===== */
+    ...
+    ```
+
+Every file is written into a temp directory, headers resolve through `-I.`, and all
+translation units are handed to the driver in one link — so a missing definition is
+a link error, exactly as it would be for the reader. `run-files`, `run-san-files`,
+`run-san-catch-files`, `run-san-leak-files`, `compile-files`, `bad-files` and
+`warn-files` all work; the suffix only changes *how the block is built*, never what
+is asserted about the result.
+
+    ```cpp make-files  a multi-file listing that includes its own `Makefile`. The
+                       harness runs `make` in the listing's directory and then runs
+                       the `prog` it produced, so the chapter's build instructions
+                       are verified rather than trusted. A recipe that forgets to
+                       link a translation unit fails here, with the linker's own
+                       message.
+
 `c` is accepted wherever `cpp` is; it selects -std=c17 and the C driver.
 
 Usage
@@ -124,15 +151,56 @@ class Block:
         return self.lang in ("c", "h")
 
     @property
+    def files(self) -> bool:
+        """A multi-file listing: several files in one block, separated by banners."""
+        return self.directive.endswith("-files")
+
+    @property
+    def base(self) -> str:
+        """The directive with the `-files` suffix removed. `run-files` -> `run`."""
+        return self.directive[:-len("-files")] if self.files else self.directive
+
+    @property
     def standard(self) -> str:
         return C_STD if self.is_c else CPP_STD
+
+
+# A multi-file block is one listing holding several files, separated by a banner
+# comment. The banner is a valid C comment, so the block is still exactly the code
+# a reader would type; the separator is the only convention the harness adds.
+#
+#     /* ===== point.h ===== */
+#     #ifndef POINT_H
+#     ...
+FILE_BANNER_RE = re.compile(r"^\s*/\*\s*=+\s*(\S+)\s*=+\s*\*/\s*$")
+
+
+def split_files(code: str) -> list[tuple[str, str]]:
+    """Split a multi-file listing into (name, contents) pairs, in order."""
+    files: list[tuple[str, str]] = []
+    name: str | None = None
+    body: list[str] = []
+
+    for line in code.split("\n"):
+        m = FILE_BANNER_RE.match(line)
+        if m:
+            if name is not None:
+                files.append((name, "\n".join(body).strip("\n") + "\n"))
+            name = m.group(1)
+            body = []
+            continue
+        if name is not None:
+            body.append(line)
+    if name is not None:
+        files.append((name, "\n".join(body).strip("\n") + "\n"))
+    return files
 
 
 FENCE_RE = re.compile(r"^(\s*)```(.*)$")
 # Directives whose following `text` fence is a CLAIM to be verified, not decoration.
 # `bad` is in here because a chapter that quotes a compiler error must quote the one
 # it actually got; otherwise the "don't do this" example is unverified prose.
-WITH_OUTPUT = ("run", "run-san", "run-san-catch", "run-san-leak", "warn", "bad")
+WITH_OUTPUT = ("run", "run-san", "run-san-catch", "run-san-leak", "warn", "bad", "make")
 
 
 def parse_chapter(path: Path) -> list[Block]:
@@ -177,7 +245,7 @@ def parse_chapter(path: Path) -> list[Block]:
         # A run block may be followed by a `text` fence holding its expected
         # output. Consume it only for directives that produce output.
         expected = None
-        if directive in WITH_OUTPUT:
+        if directive.removesuffix("-files") in WITH_OUTPUT:
             j = i
             while j < len(lines) and not lines[j].strip():
                 j += 1
@@ -242,6 +310,18 @@ class Result:
         self.skipped = skipped
 
 
+def write_files(block: Block, work: Path) -> list[str]:
+    """Write a multi-file listing into `work`. Returns the translation units."""
+    sources = []
+    for name, text in split_files(block.code):
+        path = work / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+        if path.suffix in (".c", ".cpp"):
+            sources.append(str(path))
+    return sources
+
+
 def build(block: Block, driver: str, work: Path, sanitize: bool, werror: bool):
     exe = work / "prog"
     cmd = [driver, f"-std={block.standard}", "-Wall", "-Wextra"]
@@ -249,16 +329,42 @@ def build(block: Block, driver: str, work: Path, sanitize: bool, werror: bool):
         cmd.append("-Werror")
     if sanitize:
         cmd += SAN_FLAGS
-    src = work / ("prog.c" if block.is_c else "prog.cpp")
-    src.write_text(block.code + "\n", encoding="utf-8")
-    cmd += ["-o", str(exe), str(src)]
+
+    if block.files:
+        # Multi-file listing: write every file, then hand every translation unit to
+        # the driver in one link. Headers are found via -I. so `#include "point.h"`
+        # resolves exactly as it would in the reader's own directory.
+        cmd += ["-I", str(work), "-o", str(exe)] + write_files(block, work)
+    else:
+        src = work / ("prog.c" if block.is_c else "prog.cpp")
+        src.write_text(block.code + "\n", encoding="utf-8")
+        cmd += ["-o", str(exe), str(src)]
+
     return subprocess.run(cmd, capture_output=True, text=True, timeout=180), exe
 
 
+def build_make(block: Block, work: Path):
+    """Write a listing and let its OWN Makefile build it.
+
+    A chapter that teaches a Makefile is making a claim about that Makefile, so the
+    Makefile has to be part of the example rather than something the harness works
+    around. If the recipe is wrong the block fails — which is the point, because
+    build instructions are the easiest thing in a book to get quietly wrong. The
+    Makefile is expected to produce an executable called `prog` in its own directory.
+    """
+    exe = work / "prog"
+    write_files(block, work)
+    proc = subprocess.run(["make"], capture_output=True, text=True, timeout=180, cwd=work)
+    return proc, exe
+
+
 def check_block(block: Block, cxx: str, cc: str, leak_ok: bool) -> Result:
-    d = block.directive
+    d = block.base
     if not d:
         return Result(block, True, "fragment (not compiled)")
+    if block.files and not split_files(block.code):
+        return Result(block, False,
+                      "no /* ===== filename ===== */ banner found in this multi-file block")
 
     driver = cc if block.is_c else cxx
     if not driver:
@@ -322,8 +428,8 @@ def check_block(block: Block, cxx: str, cc: str, leak_ok: bool) -> Result:
                 return Result(block, False, "does not compile", proc.stderr.strip()[:600])
             return Result(block, True, "compiles clean (-Wall -Wextra -Werror)")
 
-        if d in ("run", "run-san", "run-san-catch", "run-san-leak"):
-            sanitize = d != "run"
+        if d in ("run", "run-san", "run-san-catch", "run-san-leak", "make"):
+            sanitize = d in ("run-san", "run-san-catch", "run-san-leak")
 
             if d == "run-san-leak" and not leak_ok:
                 return Result(block, True,
@@ -331,12 +437,22 @@ def check_block(block: Block, cxx: str, cc: str, leak_ok: bool) -> Result:
                               "(macOS ships no LeakSanitizer; use Linux or valgrind)",
                               skipped=True)
 
+            if d == "make" and not shutil.which("make"):
+                return Result(block, True, "SKIPPED — no `make` on PATH", skipped=True)
+
             try:
-                proc, exe = build(block, driver, work, sanitize=sanitize, werror=True)
+                if d == "make":
+                    proc, exe = build_make(block, work)
+                else:
+                    proc, exe = build(block, driver, work, sanitize=sanitize, werror=True)
             except subprocess.TimeoutExpired:
                 return Result(block, False, "compiler timed out")
             if proc.returncode != 0:
-                return Result(block, False, "does not compile", proc.stderr.strip()[:600])
+                # `make` puts the compiler's complaints on stdout as well as stderr.
+                blob = (proc.stderr or "") + (proc.stdout or "")
+                return Result(block, False,
+                              "does not build" if d == "make" else "does not compile",
+                              blob.strip()[:600])
 
             try:
                 run = subprocess.run([str(exe)], capture_output=True, text=True,
@@ -386,32 +502,16 @@ def check_block(block: Block, cxx: str, cc: str, leak_ok: bool) -> Result:
 # --------------------------------------------------------------------------
 # main
 # --------------------------------------------------------------------------
-def main() -> int:
-    ap = argparse.ArgumentParser(description="Verify every C/C++ example in the book.")
-    ap.add_argument("filter", nargs="?", default="", help="only chapters whose name contains this")
-    ap.add_argument("-v", "--verbose", action="store_true", help="show every block")
-    ap.add_argument("--cc", default=None, help="C++ compiler (default: clang++, g++, c++)")
-    ap.add_argument("--dir", default=None,
-                    help="read chapters from here instead of code/cpp/chapters")
-    args = ap.parse_args()
+def run_dir(chapters_dir: Path, filt: str, cxx: str, cc: str, leak_ok: bool,
+            verbose: bool) -> tuple[int, int, int, int, list[str]]:
+    """Verify every chapter in a directory.
 
-    chapters_dir = Path(args.dir).resolve() if args.dir else CHAPTERS
-    cxx, cc = pick_compilers(args.cc)
-    if not cxx:
-        print("no C++ compiler on PATH (looked for clang++, g++, c++)", file=sys.stderr)
-        return 2
-
-    leak_ok = probe_leak_detection(cxx)
-
-    files = sorted(p for p in chapters_dir.glob("*.md") if args.filter in p.name)
+    Returns (failures, total, skipped, fragments, broken_chapter_names).
+    """
+    files = sorted(p for p in chapters_dir.glob("*.md") if filt in p.name)
     if not files:
-        print(f"no chapters match {args.filter!r} in {chapters_dir}", file=sys.stderr)
-        return 2
-
-    print(f"C++ driver : {cxx}")
-    print(f"C driver   : {cc or '(none found)'}")
-    print(f"leak detect: {'yes' if leak_ok else 'NO — leak blocks will be reported SKIPPED'}")
-    print(f"chapters   : {len(files)}\n")
+        print(f"no chapters match {filt!r} in {chapters_dir}", file=sys.stderr)
+        return -1, 0, 0, 0, []
 
     total = failures = skipped = fragments = 0
     broken: list[str] = []
@@ -442,7 +542,7 @@ def main() -> int:
         tail = ("  —  " + ", ".join(note)) if note else ""
         print(f"[{mark}] {path.stem}  —  {len(results) - len(bad)}/{len(results)} block(s){tail}")
 
-        if args.verbose:
+        if verbose:
             for r in results:
                 flag = "SKIP" if r.skipped else ("  ok  " if r.ok else " FAIL ")
                 print(f"        {flag} {r.block.where:<26} {r.block.directive:<15} {r.note}")
@@ -455,6 +555,76 @@ def main() -> int:
             print()
         for r in skips:
             print(f"        SKIP  {r.block.where}  [{r.block.directive}]  {r.note}")
+
+    return failures, total, skipped, fragments, broken
+
+
+# The number of failures `fixtures/bad.md` MUST produce. It is exact on purpose: a
+# fixture that has quietly stopped exercising one of its cases is a gate that has
+# quietly stopped working, and a count is the only cheap way to notice.
+EXPECTED_BAD_FAILURES = 9
+
+
+def self_test(cxx: str, cc: str, leak_ok: bool) -> int:
+    """Prove the harness can still fail.
+
+    A gate that has never failed is not evidence of anything. `good.md` must pass;
+    `bad.md` must fail with exactly EXPECTED_BAD_FAILURES failures. If bad.md starts
+    passing, the harness has gone blind and every chapter it has ever approved is
+    suspect.
+    """
+    fixtures = HERE / "fixtures"
+    print("############ HARNESS SELF-TESTS ############")
+
+    print("\n--- fixtures/good.md  (must pass) ---")
+    f_good, _, _, _, _ = run_dir(fixtures, "good", cxx, cc, leak_ok, verbose=False)
+    good_ok = f_good == 0
+    print(f"good.md failures = {f_good} (want 0)  {'PASS' if good_ok else 'FAIL'}")
+
+    print("\n--- fixtures/bad.md  (must fail, exactly) ---")
+    f_bad, _, _, _, _ = run_dir(fixtures, "bad", cxx, cc, leak_ok, verbose=False)
+    bad_ok = f_bad == EXPECTED_BAD_FAILURES
+    print(f"bad.md failures = {f_bad} (want {EXPECTED_BAD_FAILURES})  "
+          f"{'PASS' if bad_ok else 'FAIL'}")
+
+    print()
+    if good_ok and bad_ok:
+        print("self-test PASSED — the harness catches what it claims to catch")
+        return 0
+    print("self-test FAILED — do not trust this harness until it is fixed")
+    return 1
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Verify every C/C++ example in the book.")
+    ap.add_argument("filter", nargs="?", default="", help="only chapters whose name contains this")
+    ap.add_argument("-v", "--verbose", action="store_true", help="show every block")
+    ap.add_argument("--cc", default=None, help="C++ compiler (default: clang++, g++, c++)")
+    ap.add_argument("--dir", default=None,
+                    help="read chapters from here instead of code/cpp/chapters")
+    ap.add_argument("--self-test", action="store_true",
+                    help="check the harness itself against tools/fixtures before trusting it")
+    args = ap.parse_args()
+
+    chapters_dir = Path(args.dir).resolve() if args.dir else CHAPTERS
+    cxx, cc = pick_compilers(args.cc)
+    if not cxx:
+        print("no C++ compiler on PATH (looked for clang++, g++, c++)", file=sys.stderr)
+        return 2
+
+    leak_ok = probe_leak_detection(cxx)
+
+    if args.self_test:
+        return self_test(cxx, cc, leak_ok)
+
+    print(f"C++ driver : {cxx}")
+    print(f"C driver   : {cc or '(none found)'}")
+    print(f"leak detect: {'yes' if leak_ok else 'NO — leak blocks will be reported SKIPPED'}")
+
+    failures, total, skipped, fragments, broken = run_dir(
+        chapters_dir, args.filter, cxx, cc, leak_ok, args.verbose)
+    if failures < 0:
+        return 2
 
     print("-" * 72)
     if failures:

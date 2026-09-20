@@ -1,8 +1,8 @@
 ---
 chapter: 0
 part: 0
-title: Harness self-test — six failures it MUST report
-summary: This file must FAIL, with exactly six failures. If it passes, the harness is blind.
+title: Harness self-test — nine failures it MUST report
+summary: This file must FAIL, with exactly nine failures. If it passes, the harness is blind.
 minutes: 1
 tags: [selftest, must-fail]
 ---
@@ -90,4 +90,70 @@ int main() {
 
 ```text
 error: missing semicolon before 'return'
+```
+
+7. A `run-files` block whose files compile but do not LINK. Each translation unit is
+   valid on its own, so a harness that compiled the files separately would see two
+   successes; the missing definition only shows up at link time. Must be caught.
+
+```c run-files
+/* ===== helper.c ===== */
+int helper(void) {
+    return 1;
+}
+
+/* ===== main.c ===== */
+int helper(void);
+int missing(void);
+
+int main(void) {
+    return helper() + missing();
+}
+```
+
+8. A `run-files` block with no banner, so there is no way to tell which file is which.
+   Silently treating the whole block as one file would run the wrong experiment. Must be
+   caught rather than guessed at.
+
+```c run-files
+#include <stdio.h>
+
+int main(void) {
+    printf("this is not a multi-file listing\n");
+    return 0;
+}
+```
+
+9. A `make-files` block whose Makefile builds something that does not link. Every file
+   in the listing is correct C; the *recipe* is wrong. A harness that compiled the
+   files itself would never see this, which is exactly why the Makefile has to be part
+   of the example. Must be caught, and with the linker's message rather than a guess.
+
+```c make-files
+/* ===== util.h ===== */
+int twice(int value);
+
+/* ===== util.c ===== */
+#include "util.h"
+
+int twice(int value) {
+    return value * 2;
+}
+
+/* ===== main.c ===== */
+#include <stdio.h>
+#include "util.h"
+
+int main(void) {
+    printf("%d\n", twice(21));
+    return 0;
+}
+
+/* ===== Makefile ===== */
+prog: main.c
+	clang -std=c17 -o prog main.c
+```
+
+```text
+Undefined symbols
 ```
