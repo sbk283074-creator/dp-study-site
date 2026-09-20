@@ -305,3 +305,24 @@ clean:
 ```text
 42
 ```
+
+A `run-abort` block: the program must die with a non-zero exit, and the `text` fence
+must appear in stderr. The C++ runtime, not a sanitizer, is what catches this.
+
+```cpp run-abort
+#include <stdexcept>
+
+struct Bad {
+    ~Bad() noexcept(false) { throw std::runtime_error("from destructor"); }
+};
+
+int main() {
+    Bad b;
+    throw std::runtime_error("from the body");
+}
+```
+
+```text
+terminating due to uncaught exception
+```
+

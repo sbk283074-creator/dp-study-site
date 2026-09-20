@@ -12,6 +12,11 @@ in `code/cpp/STYLE.md`:
                          the `text` fence must appear in that report
     ```cpp run-san-leak  must leak. Leak detection is unavailable on macOS, so there
                          it is reported SKIPPED rather than passed
+    ```cpp run-abort     must DIE, with a non-zero exit, and the `text` fence must
+                         appear in stderr. For the failures the C++ runtime catches
+                         rather than the sanitizer: a throwing destructor during
+                         unwinding, an uncaught exception. Not `run-san-catch`, which
+                         would promise a sanitizer report the reader will never see
     ```cpp compile       complete program -> compile only (needs stdin, sockets, ...)
     ```cpp bad           MUST NOT COMPILE. Compiles => the gate fails. A "don't do
                          this" example that actually compiles teaches nothing. A
@@ -228,8 +233,8 @@ FENCE_RE = re.compile(r"^(\s*)```(.*)$")
 # Directives whose following `text` fence is a CLAIM to be verified, not decoration.
 # `bad` is in here because a chapter that quotes a compiler error must quote the one
 # it actually got; otherwise the "don't do this" example is unverified prose.
-WITH_OUTPUT = ("run", "run-san", "run-san-catch", "run-san-leak", "warn", "bad", "make",
-               "run-project")
+WITH_OUTPUT = ("run", "run-san", "run-san-catch", "run-san-leak", "run-abort", "warn", "bad",
+               "make", "run-project")
 
 
 def parse_chapter(path: Path) -> list[Block]:
@@ -544,7 +549,7 @@ def check_block(block: Block, cxx: str, cc: str, leak_ok: bool) -> Result:
                 return Result(block, False, "does not compile", proc.stderr.strip()[:600])
             return Result(block, True, "compiles clean (-Wall -Wextra -Werror)")
 
-        if d in ("run", "run-san", "run-san-catch", "run-san-leak", "make"):
+        if d in ("run", "run-san", "run-san-catch", "run-san-leak", "run-abort", "make"):
             sanitize = d in ("run-san", "run-san-catch", "run-san-leak")
 
             if d == "run-san-leak" and not leak_ok:
@@ -583,6 +588,26 @@ def check_block(block: Block, cxx: str, cc: str, leak_ok: bool) -> Result:
             if "not supported on this platform" in err:
                 return Result(block, False, "the sanitizer refused to run here",
                               squash(err)[:300])
+
+            if d == "run-abort":
+                # A program that must DIE, but not because of memory corruption: a
+                # throwing destructor during unwinding, an uncaught exception, an
+                # assertion. The sanitizer is not the thing that catches it — the C++
+                # runtime is — so this is not `run-san-catch`, and calling it that
+                # would teach the reader to expect a sanitizer report they will never
+                # see. Non-zero exit is the assertion; the `text` fence must appear in
+                # stderr, which is where the runtime's last words go.
+                if run.returncode == 0:
+                    return Result(block, False,
+                                  "EXPECTED the program to die, but it exited 0")
+                if block.expected and not matches(block.expected, err):
+                    return Result(block, False,
+                                  "stderr does not contain the documented phrase",
+                                  "documented: " + squash(block.expected)[:200]
+                                  + "\n\nactual: " + squash(err)[:300])
+                last = next((l for l in reversed(err.strip().splitlines()) if l.strip()), "")
+                return Result(block, True, f"died with exit {run.returncode}, as documented",
+                              last.strip()[:160])
 
             if d in ("run-san-catch", "run-san-leak"):
                 caught = run.returncode != 0 or "runtime error" in err or "ERROR: " in err \
@@ -678,7 +703,7 @@ def run_dir(chapters_dir: Path, filt: str, cxx: str, cc: str, leak_ok: bool,
 # The number of failures `fixtures/bad.md` MUST produce. It is exact on purpose: a
 # fixture that has quietly stopped exercising one of its cases is a gate that has
 # quietly stopped working, and a count is the only cheap way to notice.
-EXPECTED_BAD_FAILURES = 10
+EXPECTED_BAD_FAILURES = 11
 
 
 def self_test(cxx: str, cc: str, leak_ok: bool) -> int:

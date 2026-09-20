@@ -170,3 +170,20 @@ printf 'two\n'
 ```text
 one
 ```
+
+11. A `run-abort` block whose program does not die. The assertion is a non-zero exit,
+    so a program that compiles, runs and returns 0 is a failure — and the `text` fence
+    is never reached, because there is no stderr to look in.
+
+```cpp run-abort
+#include <cstdio>
+
+int main() {
+    std::printf("still alive\n");
+    return 0;
+}
+```
+
+```text
+terminating due to uncaught exception
+```
