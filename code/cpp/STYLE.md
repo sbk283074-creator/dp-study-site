@@ -72,6 +72,41 @@ Any directive may take a `-files` suffix: `run-files`, `run-san-files`, `run-san
 `run-san-leak-files`, `compile-files`, `bad-files`, `warn-files`, `make-files`. The suffix changes only
 *how the block is built*, never what is asserted about the result.
 
+### A `text` fence belongs to the block directly above it
+
+The parser attaches an expected output only when the `text` fence is the **next fence in the file**.
+Blank lines are skipped; prose and other fences are not. So this is verified:
+
+````
+```cpp run
+...
+```
+
+```text
+the output
+```
+````
+
+and this is **not**:
+
+````
+```cpp run
+...
+```
+
+A paragraph explaining what you just saw.
+
+```text
+the output
+```
+````
+
+In the second form the block reports `ran clean (no output fence to compare)` and the transcript is
+unverified prose — while in the rendered book it looks exactly like a verified one. Nothing warns you.
+This shipped once: a `make-files` listing whose self-test transcript sat three paragraphs below it, so
+18 blocks read "all behaved as declared" with the chapter's most important transcript unchecked. Write
+the output immediately under its block; put the discussion after it.
+
 ### Multi-file listings
 
 A chapter about headers, separate compilation or Makefiles cannot be verified by a single-file block.
@@ -141,6 +176,10 @@ Measured on Apple clang 21 (arm64 macOS). Do not assume these hold elsewhere; th
 | filesystem timestamp granularity | **1 s, and it bites** | `touch x && make` within the same second may do nothing, because the touched file and the object built from it share a timestamp. `sleep 1` first. Measured: 2 rebuilds out of 5 without it. |
 | `-Wimplicit-fallthrough` | **not** enabled by `-Wall -Wextra` on Apple clang | A switch fall-through cannot be a `warn` block — the harness would see silence and fail. Teach the *behaviour* with `run`, and mention the flag in prose. |
 | A throwing destructor during unwinding | **`std::terminate`, exit 134** | `libc++abi: terminating due to uncaught exception of type ...` goes to **stderr**, so the block is `run-abort` with the fence naming that phrase. Not `run-san-catch`: the sanitizer reports nothing, and promising the reader a sanitizer report they will never see is worse than not verifying the example. |
+| **Measuring a file-descriptor leak** | **count `/dev/fd`** | No leak detector can see a descriptor, and macOS has none anyway. `opendir("/dev/fd")` and count the entries, minus 3 for `.`/`..`/the directory itself. Print only the **difference** across a call — the absolute count depends on what the shell handed the process, so an absolute number is not portable. This is how a server chapter proves an early `return` leaks `+1` while RAII leaks `+0`, and it is the only honest way to verify an RAII claim about sockets. |
+| `unique_ptr<T, D>` owning a file descriptor | **does not compile** | `unique_ptr<T,D>` calls `D` with a `T *` and `close` takes an `int`, so there is no `T` that fits. The diagnostic points into `unique_ptr.h` and never names the real problem — quote the first `error:` line (`cannot initialize a parameter of type 'int' with an lvalue of type 'pointer' (aka 'int *')`) and ignore the `note:` lines. Use it as a `bad` block: it is the reason a handle type needs its own RAII class. |
+| Member destruction order | **reverse declaration order** | A member whose destructor *uses* another member must be declared **before** it, because construction is declaration order and destruction is the reverse. Verified with a `Logger` holding a `Socket *`: logger declared first prints `close` then `send`. Same ordering rule as `-Wreorder-ctor` in reverse. |
+| `std::move`, `std::thread`, `std::mutex` | **include `<utility>`; no `-pthread` needed on macOS** | `std::move` compiled by luck through transitive includes in one file and failed in another — include `<utility>` explicitly wherever it is called. `std::thread`/`std::mutex`/`std::lock_guard` link and run **without** `-pthread` on this macOS but need it on Linux, so any concurrency chapter must say so in prose. |
 | Incompatible pointer types, `double *p = &x;` | **warning in C, error in C++** | The same "don't do this" example must be `warn` in a C chapter and `bad` in a C++ chapter. Measured, not guessed. |
 | `sizeof` on an array *parameter* | warning `-Wsizeof-array-argument` | A `warn` block, never `run`: `run` builds with `-Werror`, so it would report "does not compile" instead of teaching the lesson. |
 | `long double` | 8 bytes on arm64 macOS, 16 on x86-64 Linux | The sharpest reason never to print a size without naming the target. |
