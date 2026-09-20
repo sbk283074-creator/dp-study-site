@@ -132,14 +132,26 @@ CALLOUT_KINDS = {
 
 
 def render_code(lang: str, code: str) -> str:
+    """Render one fenced code block.
+
+    The fence info string may carry directives after the language — `cpp run`,
+    `cpp bad`, `cpp run-san`. Those drive each book's example-verification
+    harness (`code/<lang>/tools/verify_examples.py`) and are NOT part of the
+    language, so only the first token becomes the language label; the rest ride
+    along in `data-cmd`. A fence with no directive renders exactly as before.
+    """
+    parts = lang.split()
+    lang_name = parts[0] if parts else ""
+    cmd = " ".join(parts[1:])
     pretty = {"py": "python", "sh": "bash", "console": "bash", "js": "javascript",
               "html": "html", "sql": "sql", "json": "json", "yaml": "yaml",
               "toml": "toml", "text": "text"}
-    lang_key = pretty.get(lang.lower(), lang.lower() or "text")
-    label = "output" if lang.lower() in {"console", "text", ""} else lang_key
+    lang_key = pretty.get(lang_name.lower(), lang_name.lower() or "text")
+    label = "output" if lang_name.lower() in {"console", "text", ""} else lang_key
     body = html.escape(code.rstrip("\n"), quote=False)
+    cmd_attr = f' data-cmd="{html.escape(cmd)}"' if cmd else ""
     return (
-        f'<div class="code" data-lang="{lang_key}">'
+        f'<div class="code" data-lang="{lang_key}"{cmd_attr}>'
         f'<div class="code-bar"><span class="code-lang">{html.escape(label)}</span>'
         f'<button class="copy-btn" type="button">Copy</button></div>'
         f'<pre><code class="language-{lang_key}">{body}</code></pre></div>'
