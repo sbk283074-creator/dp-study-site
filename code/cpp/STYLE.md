@@ -158,6 +158,39 @@ Rules for writing one:
 - **Remember what the harness compares**: stdout only. `stderr` is invisible to it, so a transcript
   that shows a diagnostic must fold the streams (`2>&1`) inside the script.
 
+### Fragments and solutions are not verified, so you must verify them
+
+A bare ` ```cpp ` fence is never compiled, and neither is anything inside a `:::solution` callout unless
+it carries a directive. That is the largest unverified surface in a chapter, and the `N/N blocks` line
+says nothing about it — a chapter can report every block green while a solution teaches code that does
+not build.
+
+Two habits, both cheap:
+
+- **Apply every solution to a copy of the module and compile it.** Extract the code, patch it in with a
+  script, build with the same flags, run it. Chapter 29's solutions were checked this way and one of
+  them was wrong: the suggested one-line patch
+  (`if (cp >= 0xD800 && cp <= 0xDFFF) return utf8(0xFFFD);`) looked right, compiled, and did not work —
+  it fired before the parser had looked for a low surrogate, so it would have replaced every valid emoji
+  in the input. The fix needed changes at three separate rejection points. A patch that passes the cases
+  you thought of and corrupts the ones you did not is the worst kind of wrong answer to ship.
+- **State the measurement next to the fragment.** If a solution's result was observed, put the observed
+  values in the prose or a table. A table of measured inputs and outputs is honest evidence even when the
+  code beside it is a fragment; a fragment with no evidence is a claim.
+
+### Generate listings from the files, do not retype them
+
+A multi-file listing is a copy of files that exist on disk. Retyping it invites a transcription error that
+no gate will catch, because the harness compiles *the listing* — a typo that still compiles is a silent
+divergence between what you verified and what you teach.
+
+Write a small generator that reads the real files and splices them into the chapter, and capture each
+`text` fence by **running the program** rather than pasting its output. Chapter 29's chapter file is
+produced by `tools/gen/29/gen.py`, which compiles and runs every demo, captures stdout (or the sanitizer
+report) and writes it into the fence; the demo sources and the project it splices live beside it in
+`tools/gen/29/`. Two consequences worth having: the fences are correct by construction, and re-running the
+generator after a code change updates the transcript instead of leaving it stale.
+
 ### What the toolchain can and cannot prove
 
 Measured on Apple clang 21 (arm64 macOS). Do not assume these hold elsewhere; the harness
@@ -184,6 +217,11 @@ Measured on Apple clang 21 (arm64 macOS). Do not assume these hold elsewhere; th
 | `sizeof` on an array *parameter* | warning `-Wsizeof-array-argument` | A `warn` block, never `run`: `run` builds with `-Werror`, so it would report "does not compile" instead of teaching the lesson. |
 | `long double` | 8 bytes on arm64 macOS, 16 on x86-64 Linux | The sharpest reason never to print a size without naming the target. |
 | SDL2 / Raylib / GLFW | not installed | Track B cannot be compiled here. Any code in those chapters must be labelled **not machine-verified** — the project's existing rule. |
+| Unbounded recursion on attacker-controlled input | **ASan reports `stack-overflow`** | A recursive-descent parser fed 200,000 `[` dies with a guard-page hit. Not catchable, no unwinding, no destructors. Use `run-san-catch` with `stack-overflow` as the fence — that is the string ASan prints. Without a sanitizer it is a plain SIGSEGV (exit 139), which is a coin flip for a fence. |
+| Uncaught `std::bad_variant_access` | **`std::terminate`, exit 134** | Reading the wrong alternative of a `std::variant` throws; uncaught, libc++abi prints `terminating due to uncaught exception of type std::bad_variant_access` to **stderr**. A `run-abort` block with `std::bad_variant_access` as the fence. Never a `run` block — it would pass on exit code alone. |
+| `strtod` as a JSON number parser | **accepts a superset** | `nan`, `inf`, `+5`, `.5`, `0x10` and `1e999` all convert happily. A JSON parser must scan the shape first and only then convert. Measurable: the strict version refuses `01`, `+5`, `.5`, `1.` and `1e`. |
+| `%.15g` for round-tripping a `double` | **not enough — use `%.17g`** | Measured: `%.15g` writes `0.1 + 0.2` as `0.3`, which parses back to a *different* `double`. `1.0 / 3.0` likewise. Seventeen significant digits always suffice; fifteen do not. The cost is ugliness — `%.17g` writes `0.1` as `0.10000000000000001` — which is why real libraries ship a shortest-round-trip algorithm instead. |
+| `std::vector<Json>` / `std::map<std::string, Json>` as `std::variant` alternatives | **compiles** | A recursive value type works: the containers are complete types even while the element type is still being declared, so the variant has a known size. Do not reach for `std::unique_ptr` indirection or a pimpl unless something actually fails to compile. |
 
 **Never write a fragment when a program will do.** A fragment teaches the shape; a program teaches
 the shape *and* proves it. If a concept needs three lines of context, write the complete program —
