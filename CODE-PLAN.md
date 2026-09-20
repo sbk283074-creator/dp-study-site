@@ -9,7 +9,7 @@
 |---|---|---|
 | **P0** | `code/` 骨架 + 泛化构建器（`_build/`，位置参数 + `languages.json` 注册表）+ 平台首页 | ✅ 完成 |
 | **P1** | Python 迁入 `code/python`（`git mv`，历史保留）+ Hub 接线 + `PYTHON/` 跳转页 + 搜索索引重建 | ✅ 完成 |
-| **P2** | C/C++ 赛道骨架 + 前几章 | ⬜ 未开始 |
+| **P2** | C/C++ 赛道 | 🟡 进行中：ch00–ch30 已完成并全部机器验证（487 个代码块全绿） |
 | **P3** | Java (+Kotlin) 赛道 | ⬜ 未开始 |
 | **P4** | TypeScript / C# / Go / Rust 赛道 + 迷你赛道 | ⬜ 未开始 |
 | **P5** | 终极项目 Nebula Arena（全栈多语言） | ⬜ 未开始 |
@@ -21,6 +21,24 @@
 新增语言的标准操作：建 `code/<lang>/`（`chapters/` + `parts.json`）→ 在 `_build/languages.json`
 注册 → `cd code/_build && python3 build.py`（位置参数：`python3 build.py python` 只构建一个）。
 构建器无需改动。改完跑一次 `sh code/_build/check-idempotent.sh` 确认重跑构建零字节变化。
+
+### 0.1 C/C++ 赛道剩余章节（ch31 起）
+
+已定稿：Part 0(ch00–01) · Part I C 基础(02–07) · Part II C 进阶(08–12) · Part III 项目1
+用 C 写静态 HTTP 服务器(13–17) · Part IV 过渡到 C++(18–26) · Part V C++ Web 服务(27–30)。
+
+| 章 | Part | 主题 | 备注 |
+|---|---|---|---|
+| 31 | V | SQLite 与 C API | SDK 里有 `sqlite3.h`（`-lsqlite3`），**可机器验证**；用 RAII 包一层 |
+| 32 | V | HTML、模板与转义 | 渲染页面 + XSS 转义 |
+| 33 | V | 并发：同时服务多个客户端 | 线程/线程池/互斥；macOS 免 `-pthread`、Linux 需要，已在 STYLE 记录 |
+| 34 | V | CAPSTONE A：完整的 Web 服务 | 收束整条 Track A |
+| 35–40 | VI | Track B：C++ 游戏 | **SDL2/Raylib/GLFW 本机未安装**，这些章的代码必须标注"未经机器验证" |
+| 41–43 | VII | 附录 | 工具链、调试、下一步 |
+
+写新章的固定流程（`code/cpp/STYLE.md` 是完整契约）：在 `tools/gen/<NN>/` 写真实源码 →
+`gen.py` 编译运行并抓取**真实**输出拼装章节 → `tools/verify_examples.py <slug>` 必须零失败 →
+`cd code/_build && python3 build.py` 重建。**严禁手写输出围栏。**
 
 ---
 
