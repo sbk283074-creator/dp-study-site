@@ -277,7 +277,8 @@ Both read the same index, so both answer correctly.
 code/
 ├── index.html              ← hub: one card per language, with per-book progress bars
 ├── _build/                 ← shared build system (one converter for every language)
-│   ├── build.py            ←   python3 build.py [--lang python]  →  builds books + hub
+│   ├── build.py            ←   python3 build.py [<lang-id>]  →  builds books + hub
+│   │                           (positional, not --lang; no arg = every live track)
 │   ├── languages.json      ←   the registry: every track, its status and its store key
 │   ├── template.html       ←   book shell (incl. the two top-bar links back to the DP site)
 │   ├── hub-template.html   ←   hub shell
@@ -290,6 +291,13 @@ code/
 **Rebuild:** `cd code/_build && python3 build.py` → rewrites every live track's book and the hub.
 Adding a language = add a directory with `chapters/` + `parts.json`, then register it in
 `languages.json`; the builder needs no edits. **No backend.**
+
+**Check it stayed reproducible:** `sh code/_build/check-idempotent.sh` — it hashes every built page,
+runs the build again, and fails if a single byte moved. There is no `dist/` staging area, so
+"the dist matches the deployed file" is not a property this layout can have; **idempotence is the
+property that matters**. It needs checking mechanically because each book is a ~2 MB single file,
+where a dropped link or a stale chapter is invisible by eye — that is exactly how the `.tb-site`
+links went missing once.
 
 Caveats worth remembering:
 - Each book has its own `localStorage` key. **Python's is deliberately still `python-mastery-v1`**
