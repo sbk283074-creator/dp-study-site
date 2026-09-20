@@ -10,7 +10,7 @@
 | **P0** | `code/` 骨架 + 泛化构建器（`_build/`，位置参数 + `languages.json` 注册表）+ 平台首页 | ✅ 完成 |
 | **P1** | Python 迁入 `code/python`（`git mv`，历史保留）+ Hub 接线 + `PYTHON/` 跳转页 + 搜索索引重建 | ✅ 完成 |
 | **P2** | C/C++ 赛道 | 🟡 进行中：ch00–ch30 已完成并全部机器验证（487 个代码块全绿） |
-| **P3** | Java (+Kotlin) 赛道 | ⬜ 未开始 |
+| **P3** | Java (+Kotlin) 赛道 | 🟡 进行中：赛道已建（STYLE + 校验器 + ch00–ch02，40 个代码块全绿） |
 | **P4** | TypeScript / C# / Go / Rust 赛道 + 迷你赛道 | ⬜ 未开始 |
 | **P5** | 终极项目 Nebula Arena（全栈多语言） | ⬜ 未开始 |
 
@@ -39,6 +39,43 @@
 写新章的固定流程（`code/cpp/STYLE.md` 是完整契约）：在 `tools/gen/<NN>/` 写真实源码 →
 `gen.py` 编译运行并抓取**真实**输出拼装章节 → `tools/verify_examples.py <slug>` 必须零失败 →
 `cd code/_build && python3 build.py` 重建。**严禁手写输出围栏。**
+
+### 0.2 Java 赛道（P3）
+
+已建：`code/java/`（STYLE.md + parts.json + `tools/verify_examples.py` + 自检夹具）· 已写 ch00–ch02。
+
+**工具链（关键前提）**：本机原本**没有 JDK**（`/usr/bin/java` 只是 macOS 的安装引导桩，直接调用会
+失败）。已下载 **Temurin JDK 21.0.12.1** 到 `~/.workbuddy/binaries/java/jdk-21.0.12.1+1/`（**仓库外**，
+不入库）。校验器会依次探测 `JAVA_HOME` → 该目录 → `/Library/Java/JavaVirtualMachines/` → `PATH`，
+并且只接受 `javac -version` 真正跑通的候选 —— 找不到 JDK 就 **exit 2，绝不假装通过**。
+
+JDK 21 自带 `jar` / `jwebserver` / `jlink` / `jpackage` / `jdk.httpserver` 模块，**无第三方依赖即可
+写 Web 服务**；`javax.swing` + `java.awt` 也在，Track B 用离屏 `BufferedImage` 渲染，可用像素断言
+做机器验证。Maven / Gradle / JUnit / JavaFX / LibGDX **均未安装**，因此全书只用 JDK，正文里提一句
+业界会用什么。
+
+| 章 | Part | 主题 |
+|---|---|---|
+| 00 | 0 | 怎么用这本书 + JVM/字节码 + 文件名规则 |
+| 01 | I | 第一个程序：`main` 签名、打印、参数、包与 classpath |
+| 02 | I | 原始类型 vs 引用：溢出、浮点、`==` 与 `equals`、装箱缓存 |
+| 03 | I | 字符串：不可变、interning、文本块、`StringBuilder` |
+| 04 | I | 控制流：`switch` 模式匹配（Java 21）、循环、`break`/`continue` |
+| 05 | I | 数组与增强 for |
+| 06 | I | 方法、重载、值传递（含"对象内容可变、引用本身不可变"） |
+| 07 | I | 类、字段、构造器、`this` |
+| 08 | I | 包、classpath、JAR 打包（`jar --create --main-class`） |
+| 09 | I | 异常：checked vs unchecked、try-with-resources |
+| 10 | I | 文件与 NIO.2 |
+| 11–17 | II | 接口/抽象类 · 泛型与擦除 · 集合 · `equals`/`hashCode`/`Comparable` · record/enum/sealed · Lambda 与 Stream · 手写测试 |
+| 18–23 | III | 项目 1：**Quill** 命令行笔记库（命令模式 + JSON + 打包成可执行 JAR） |
+| 24–30 | IV | Track A：**Bulletin** Web 服务（裸 socket → `HttpServer` → 路由 → 模板/转义 → 表单 → 持久化 → 会话与登录） |
+| 31–36 | V | Track B：**Ironhold** 游戏（游戏循环 → 输入/计时 → 精灵与 AABB 碰撞 → 状态机 → 波次 → 打磨与打包） |
+| 37–39 | VI | 附录：JVM 与调优 · **Kotlin 扩展模块** · 下一步 |
+
+写新章流程与 C++ 一致：`code/java/STYLE.md` 是完整契约（围栏指令 `run` / `bad` / `warn` / `throw` /
+`compile` / `-files` / `sh run`），先 `--self-test` 确认校验器没瞎，再逐章
+`tools/verify_examples.py <slug>`，最后 `cd code/_build && python3 build.py`。
 
 ---
 

@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Java Mastery</title>
+<style>:root {
+  --bg: #ffffff;
+  --bg-soft: #f7f8fa;
+  --bg-code: #f6f7f9;
+  --ink: #16181d;
+  --ink-soft: #55595f;
+  --ink-faint: #8b9099;
+  --line: #e3e6ea;
+  --accent: #2f6df6;
+  --accent-soft: #e8f0ff;
+  --green: #1a8f52;
+  --amber: #b37400;
+  --red: #c8382f;
+  --purple: #7a4bd0;
+  --sidebar: 290px;
+  --toc: 220px;
+  --radius: 10px;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+}
+html[data-theme="dark"] {
+  --bg: #0f1115;
+  --bg-soft: #15181e;
+  --bg-code: #15181e;
+  --ink: #e6e8ec;
+  --ink-soft: #a2a8b3;
+  --ink-faint: #6f7683;
+  --line: #262b34;
+  --accent: #6b9bff;
+  --accent-soft: #17233c;
+  --green: #4ec98a;
+  --amber: #e0a63c;
+  --red: #f2746b;
+  --purple: #a98bec;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16.5px;
+  line-height: 1.72;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------- layout ---------- */
+#app { display: flex; min-height: 100vh; }
+
+#sidebar {
+  width: var(--sidebar);
+  flex: 0 0 var(--sidebar);
+  border-right: 1px solid var(--line);
+  background: var(--bg-soft);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.side-head { padding: 18px 18px 12px; border-bottom: 1px solid var(--line); }
+.brand { font-weight: 700; font-size: 16px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
+.brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+.brand small { display: block; font-weight: 500; color: var(--ink-faint); font-size: 12px; letter-spacing: 0; }
+.search-wrap { margin-top: 12px; position: relative; }
+#search {
+  width: 100%; padding: 8px 10px 8px 30px; border: 1px solid var(--line);
+  border-radius: 8px; background: var(--bg); color: var(--ink); font-size: 13.5px; font-family: var(--sans);
+}
+#search:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+.search-wrap::before {
+  content: "⌕"; position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: var(--ink-faint); font-size: 15px;
+}
+.progress-wrap { margin-top: 12px; }
+.progress-meta { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-faint); margin-bottom: 5px; }
+.progress-bar { height: 5px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: var(--accent); transition: width .25s ease; }
+
+#nav { padding: 10px 10px 40px; flex: 1; }
+.nav-part { margin-bottom: 4px; }
+.nav-part-btn {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  background: none; border: 0; cursor: pointer; padding: 7px 8px; border-radius: 7px;
+  font: 600 11.5px/1.3 var(--sans); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.nav-part-btn:hover { background: var(--bg); color: var(--ink); }
+.nav-part.collapsed .nav-items { display: none; }
+.nav-part.collapsed .chev { transform: rotate(-90deg); }
+.chev { transition: transform .15s ease; font-size: 10px; }
+.nav-items { padding: 2px 0 6px; }
+.nav-link {
+  display: grid; grid-template-columns: 26px 1fr 16px; gap: 8px; align-items: start;
+  padding: 6px 8px; border-radius: 7px; color: var(--ink-soft); font-size: 13.6px; line-height: 1.4;
+}
+.nav-link:hover { background: var(--bg); text-decoration: none; color: var(--ink); }
+.nav-num { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); padding-top: 2px; }
+.nav-check { color: var(--green); font-size: 12px; opacity: 0; padding-top: 1px; }
+.nav-link.done .nav-check { opacity: 1; }
+.nav-link.done .nav-title { color: var(--ink-faint); }
+.nav-link.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.nav-link.active .nav-num { color: var(--accent); }
+
+#main { flex: 1; min-width: 0; display: flex; justify-content: center; }
+#content { max-width: 780px; width: 100%; padding: 46px 40px 120px; }
+
+/* ---------- top bar ---------- */
+#topbar {
+  position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px;
+  padding: 10px 20px; border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: saturate(180%) blur(8px);
+}
+#menu-btn { display: none; }
+.tb-btn {
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink-soft);
+  border-radius: 7px; padding: 5px 10px; font-size: 12.5px; cursor: pointer; font-family: var(--sans);
+}
+.tb-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tb-spacer { flex: 1; }
+.tb-crumb { font-size: 12.5px; color: var(--ink-faint); }
+
+/* Links out of the book: back to the DP Learning hub, and to the Question Bank.
+   These were hand-added to the deployed file at some point and existed in neither
+   the template nor this stylesheet, which meant a rebuild silently dropped them.
+   They live here now so the build is reproducible. */
+.tb-site {
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink-soft);
+  border-radius: 7px; padding: 5px 10px; font-size: 12.5px; cursor: pointer; font-family: var(--sans);
+  text-decoration: none; white-space: nowrap; font-weight: 600;
+}
+.tb-site:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+
+/* ---------- chapter ---------- */
+.chapter-head { border-bottom: 1px solid var(--line); padding-bottom: 22px; margin-bottom: 30px; }
+.chapter-eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.chapter h1 { font-size: 34px; line-height: 1.2; letter-spacing: -0.02em; margin: 10px 0 10px; }
+.chapter-summary { font-size: 17px; color: var(--ink-soft); margin: 0 0 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  font-size: 11.5px; padding: 2px 9px; border-radius: 99px; background: var(--bg-soft);
+  border: 1px solid var(--line); color: var(--ink-faint);
+}
+.chapter h2 {
+  font-size: 23px; letter-spacing: -0.01em; margin: 44px 0 12px; padding-top: 6px;
+  scroll-margin-top: 70px;
+}
+.chapter h3 { font-size: 18px; margin: 30px 0 8px; scroll-margin-top: 70px; }
+.chapter h4 { font-size: 15.5px; margin: 22px 0 6px; color: var(--ink-soft); }
+.chapter p { margin: 0 0 16px; }
+.chapter hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0; }
+.chapter blockquote {
+  margin: 0 0 18px; padding: 4px 0 4px 16px; border-left: 3px solid var(--line);
+  color: var(--ink-soft); font-style: italic;
+}
+.md-list { margin: 0 0 18px; padding-left: 22px; }
+.md-list li { margin: 5px 0; }
+.md-list li.task { list-style: none; margin-left: 0 !important; }
+.task-box { margin-right: 8px; accent-color: var(--accent); transform: translateY(1px); }
+.task label { cursor: pointer; }
+.task input:checked + span { color: var(--ink-faint); text-decoration: line-through; }
+
+/* ---------- code ---------- */
+code {
+  font-family: var(--mono); font-size: 0.88em;
+  background: var(--bg-code); border: 1px solid var(--line);
+  padding: 1px 5px; border-radius: 5px; color: var(--ink);
+}
+.code {
+  margin: 0 0 20px; border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; background: var(--bg-code);
+}
+.code-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 8px 5px 12px; border-bottom: 1px solid var(--line); background: var(--bg-soft);
+}
+.code-lang { font: 600 11px/1 var(--mono); letter-spacing: .05em; text-transform: uppercase; color: var(--ink-faint); }
+.copy-btn {
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink-faint);
+  font: 500 11.5px/1 var(--sans); padding: 4px 9px; border-radius: 6px; cursor: pointer;
+}
+.copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+.copy-btn.copied { color: var(--green); border-color: var(--green); }
+.code pre { margin: 0; padding: 14px 16px; overflow-x: auto; }
+.code code {
+  background: none; border: 0; padding: 0; font-size: 13.6px; line-height: 1.65;
+  display: block; white-space: pre; color: var(--ink);
+}
+.tok-kw { color: var(--purple); font-weight: 600; }
+.tok-str { color: var(--green); }
+.tok-num { color: var(--amber); }
+.tok-com { color: var(--ink-faint); font-style: italic; }
+.tok-fn { color: var(--accent); }
+.tok-dec { color: var(--amber); }
+
+/* ---------- callouts ---------- */
+.callout {
+  border: 1px solid var(--line); border-left-width: 3px; border-radius: 8px;
+  padding: 12px 16px; margin: 0 0 20px; background: var(--bg-soft);
+}
+.callout-head { font-weight: 700; font-size: 13px; letter-spacing: .02em; margin-bottom: 4px; display: flex; gap: 8px; align-items: center; }
+.callout-icon { font-size: 11px; width: 18px; height: 18px; border-radius: 5px; display: inline-grid; place-items: center; color: #fff; flex: 0 0 18px; }
+.callout-body > :last-child { margin-bottom: 0; }
+.callout-body p { margin-bottom: 10px; }
+.callout-note { border-left-color: var(--accent); }
+.callout-note .callout-icon { background: var(--accent); }
+.callout-tip { border-left-color: var(--green); }
+.callout-tip .callout-icon { background: var(--green); }
+.callout-warning, .callout-pitfall { border-left-color: var(--amber); }
+.callout-warning .callout-icon, .callout-pitfall .callout-icon { background: var(--amber); }
+.callout-danger { border-left-color: var(--red); }
+.callout-danger .callout-icon { background: var(--red); }
+.callout-scenario { border-left-color: var(--purple); background: color-mix(in srgb, var(--purple) 6%, var(--bg-soft)); }
+.callout-scenario .callout-icon { background: var(--purple); }
+.callout-solution { border-left-color: var(--green); background: color-mix(in srgb, var(--green) 6%, var(--bg-soft)); }
+.callout-solution .callout-icon { background: var(--green); }
+.callout-try .callout-icon { background: var(--ink-faint); }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; margin: 0 0 20px; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { border: 1px solid var(--line); padding: 7px 11px; text-align: left; vertical-align: top; }
+th { background: var(--bg-soft); font-weight: 700; font-size: 13.5px; }
+td code { font-size: 12.8px; }
+
+/* ---------- figures ---------- */
+.fig {
+  margin: 0 0 24px; border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; background: var(--bg-soft);
+}
+.fig svg { display: block; width: 100%; height: auto; }
+.fig figcaption {
+  padding: 9px 14px; font-size: 13px; color: var(--ink-faint);
+  border-top: 1px solid var(--line); background: var(--bg);
+}
+
+/* ---------- toc ---------- */
+#toc {
+  width: var(--toc); flex: 0 0 var(--toc); position: sticky; top: 0; height: 100vh;
+  overflow-y: auto; padding: 46px 20px 40px 0; border-left: 0;
+}
+.toc-title { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 8px; }
+.toc-link { display: block; font-size: 12.8px; color: var(--ink-faint); padding: 3px 0 3px 10px; border-left: 2px solid var(--line); line-height: 1.4; }
+.toc-link:hover { color: var(--accent); text-decoration: none; }
+.toc-link.toc-3 { padding-left: 22px; font-size: 12.2px; }
+.toc-link.active { color: var(--accent); border-left-color: var(--accent); }
+
+/* ---------- footer ---------- */
+.chapter-foot { margin-top: 52px; padding-top: 24px; border-top: 1px solid var(--line); }
+.done-btn {
+  width: 100%; padding: 11px; border-radius: 9px; border: 1px solid var(--line);
+  background: var(--bg-soft); color: var(--ink-soft); font: 600 14px var(--sans); cursor: pointer;
+  margin-bottom: 20px;
+}
+.done-btn:hover { border-color: var(--green); color: var(--green); }
+.done-btn.done { background: color-mix(in srgb, var(--green) 12%, transparent); border-color: var(--green); color: var(--green); }
+.pager { display: flex; justify-content: space-between; gap: 12px; }
+.pager-btn {
+  flex: 1; padding: 12px 14px; border: 1px solid var(--line); border-radius: 9px;
+  font-size: 13.5px; color: var(--ink-soft); background: var(--bg-soft); line-height: 1.4;
+}
+.pager-btn:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
+.pager-btn.next { text-align: right; }
+
+/* ---------- search results ---------- */
+#results { padding: 0 10px 20px; }
+.result {
+  display: block; padding: 8px 10px; border-radius: 7px; font-size: 13.4px; color: var(--ink-soft);
+  border-bottom: 1px solid var(--line);
+}
+.result:hover { background: var(--bg); text-decoration: none; }
+.result b { color: var(--accent); }
+.result small { display: block; color: var(--ink-faint); font-size: 11.5px; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1180px) { #toc { display: none; } }
+@media (max-width: 900px) {
+  #sidebar {
+    position: fixed; left: 0; top: 0; z-index: 50; transform: translateX(-100%);
+    transition: transform .2s ease; box-shadow: 0 0 40px rgba(0,0,0,.18);
+  }
+  body.nav-open #sidebar { transform: translateX(0); }
+  #menu-btn { display: inline-block; }
+  #content { padding: 30px 20px 100px; }
+  .chapter h1 { font-size: 28px; }
+}
+@media print {
+  #sidebar, #toc, #topbar, .chapter-foot, .code-bar { display: none; }
+  #content { max-width: none; padding: 0; }
+  .chapter { display: block !important; page-break-before: always; }
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <button id="menu-btn" class="tb-btn" type="button">☰ Contents</button>
+  <span class="tb-crumb" id="crumb"></span>
+  <span class="tb-spacer"></span>
+  <!-- These three used to be hand-added to the deployed file after the build, so a
+       rebuild silently deleted them. They are part of the template now. -->
+  <a class="tb-site" href="../index.html" title="All languages">← All languages</a>
+  <a class="tb-site" href="../../index.html" title="Back to DP Learning">DP Learning</a>
+  <a class="tb-site" href="../../qbank/" title="Open the Question Bank">Question Bank</a>
+  <button id="theme-btn" class="tb-btn" type="button">Dark</button>
+</div>
+
+<div id="app">
+  <aside id="sidebar">
+    <div class="side-head">
+      <div class="brand"><span class="dot"></span>
+        <span>Java<small>Enterprise web and JVM games — with a Kotlin extension</small></span>
+      </div>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Search chapters  ( / )" autocomplete="off">
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span id="progress-label">0 / 0 chapters</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+    </div>
+    <nav id="nav"><div class="nav-part"><button class="nav-part-btn" type="button"><span>Start Here</span><span class="chev">▾</span></button><div class="nav-items"><a class="nav-link" href="#/00-how-to-use-this-book" data-slug="00-how-to-use-this-book"><span class="nav-num">••</span><span class="nav-title">How to Use This Book</span><span class="nav-check" aria-hidden="true">✓</span></a></div></div><div class="nav-part"><button class="nav-part-btn" type="button"><span>I · Foundations</span><span class="chev">▾</span></button><div class="nav-items"><a class="nav-link" href="#/01-your-first-program" data-slug="01-your-first-program"><span class="nav-num">01</span><span class="nav-title">Your First Program, and Why It Looks Like That</span><span class="nav-check" aria-hidden="true">✓</span></a><a class="nav-link" href="#/02-primitives-and-references" data-slug="02-primitives-and-references"><span class="nav-num">02</span><span class="nav-title">Primitives, References and the Two Meanings of `==`</span><span class="nav-check" aria-hidden="true">✓</span></a></div></div></nav>
+    <div id="results"></div>
+  </aside>
+
+  <main id="main">
+    <div id="content"><section class="chapter" id="00-how-to-use-this-book" data-slug="00-how-to-use-this-book" hidden><header class="chapter-head"><div class="chapter-eyebrow">Start Here · 14 min</div><h1>How to Use This Book</h1><p class="chapter-summary">Know what you are building, how a Java program actually reaches the screen, and the two rules Java enforces that will cost you an afternoon if you meet them by accident.</p><div class="chips"><span class="chip">orientation</span><span class="chip">how to read</span><span class="chip">jvm</span><span class="chip">javac</span><span class="chip">tooling</span></div></header><div class="chapter-body"><p>Java runs a large share of the world's serious software: bank back ends, Android apps, Kafka, Hadoop, Minecraft. It is also the language most degrees and most coding interviews assume, and if you are taking IB Computer Science it is one of the two languages the course is written for. This book takes you from "I have never compiled anything" to shipping three real programs — a command-line product, a web service and a game — and it does it by making you write code from the first page, not by explaining syntax at you.</p><h2 id="what-you-are-actually-building">What you are actually building</h2><p>Three projects, each larger than the last:</p><div class="table-wrap"><table><thead><tr><th>Project</th><th>What it is</th><th>Chapters</th><th>What it forces you to learn</th></tr></thead><tbody><tr><td><strong>Quill</strong></td><td>A command-line vault for notes: add, search by text and tag, list, export</td><td>18–23</td><td>Interfaces as commands, exceptions that mean something, files, packaging a runnable JAR</td></tr><tr><td><strong>Bulletin</strong></td><td>A web service with real HTTP, HTML pages, forms, accounts and sessions</td><td>24–30</td><td>Sockets, the request/response cycle, templating and escaping, cookies</td></tr><tr><td><strong>Ironhold</strong></td><td>A game with a loop, input, sprites, collision and waves of enemies</td><td>31–36</td><td>A deterministic game loop, rendering, state, and why <code>double</code> beats <code>int</code> for timing</td></tr></tbody></table></div><p>They are not toys. Each one is built with the JDK alone, each one is compiled and run on this machine before a line of it reaches a page, and each one is something you could keep using after you finish the chapter.</p><h2 id="one-rule-for-the-whole-book-no-third-party-libraries">One rule for the whole book: no third-party libraries</h2><p>There is no Maven, no Gradle, no Spring, no JUnit, and no JSON library anywhere in this book. Every program compiles with <code>javac</code> and runs with <code>java</code>. That is not stubbornness; it is the reason the book can make a promise most books cannot.</p><p>A Java tutorial that starts with Spring Boot starts with a <code>pom.xml</code> that downloads two hundred jars, and from that moment the reader cannot tell whether a failure is their mistake or a dependency they cannot see. Here, if a program does not work, there are exactly two files involved: the one you typed and the JDK. And because there is nothing to download, every example in this book was compiled and run on the machine that wrote it — the output you are about to read is measured, not imagined.</p><p>Where a real project would reach for a library, the chapter says so and says what the library saves you. By then you will know what it is doing underneath.</p><h2 id="how-a-java-program-reaches-the-screen">How a Java program reaches the screen</h2><p>This is the one thing to understand before Chapter 1, because it explains rules that otherwise look arbitrary. C compiles your source into machine code for <em>this</em> processor. Python runs your source directly. Java does neither: <code>javac</code> compiles your source into <strong>bytecode</strong>, a machine-independent instruction set stored in a <code>.class</code> file, and <code>java</code> starts a JVM that runs that bytecode — interpreting it at first, then compiling the hot parts to native code while the program runs.</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">cat &gt; Main.java &lt;&lt;'EOF'
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Java says hello");
+    }
+}
+EOF
+javac Main.java
+ls Main.*
+java Main</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">Main.class
+Main.java
+Java says hello</code></pre></div><p>Two files in, two files out. <code>Main.java</code> is what you wrote; <code>Main.class</code> is bytecode. The second command ran the class, and it did not mention the file at all — <code>java Main</code> names a <em>class</em>, not a path. That distinction bites everyone once, so here it is deliberately:</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">cat &gt; Main.java &lt;&lt;'EOF'
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("ok");
+    }
+}
+EOF
+javac Main.java
+java Main.class 2&gt;&amp;1 | head -1</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">Error: Could not find or load main class Main.class</code></pre></div><p><code>java</code> took the argument <code>Main.class</code>, looked for a class actually <em>named</em> <code>Main.class</code> — a dot is legal in an identifier — and found nothing. <code>java Main</code> is right. <code>java Main.class</code> is wrong.</p><p>The bytecode itself carries the Java version it was built for, and you can read it:</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">cat &gt; Main.java &lt;&lt;'EOF'
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("ok");
+    }
+}
+EOF
+javac Main.java
+javap -p Main
+echo "--- and the version it targets ---"
+javap -verbose Main | grep -E "^  (major|minor) version"</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">Compiled from "Main.java"
+public class Main {
+  public Main();
+  public static void main(java.lang.String[]);
+}
+--- and the version it targets ---
+  minor version: 0
+  major version: 65</code></pre></div><p>Major version 65 means Java 21: the class-file major version is the language level plus 44, so Java 8 is 52, Java 17 is 61, Java 21 is 65. A JVM refuses to load bytecode newer than itself, which is the whole reason "class file has wrong version" errors exist — and why you compile with <code>--release 21</code> when you want your program to run on a Java 21 runtime even if your own JDK is newer.</p><p>Every example in this book is compiled with <code>javac -Xlint:all -Werror --release 21</code>. Say the version when you ask for help with something here; it matters.</p><h2 id="two-rules-java-enforces-that-python-does-not">Two rules Java enforces that Python does not</h2><p><strong>A public class must live in a file with the same name.</strong> Python does not care what you call the file. Java does, and the error names the fix:</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">cat &gt; Wrong.java &lt;&lt;'EOF'
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("hi");
+    }
+}
+EOF
+javac Wrong.java 2&gt;&amp;1 | head -1</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">Wrong.java:1: error: class Main is public, should be declared in a file named Main.java</code></pre></div><p><strong>Everything lives inside a class.</strong> There is no top-level function and no top-level <code>main</code>. Even the entry point is a method with an exact signature — <code>public static void main(String[] args)</code> — and a typo in it produces a program that compiles and then refuses to run. You will meet that error in Chapter 1, on purpose.</p><p>Both rules feel like ceremony at first. They are what lets a compiler find any class in a project of ten thousand files by name alone.</p><h2 id="this-book-checks-itself">This book checks itself</h2><p>Every code block in this book carries a directive that says what must happen to it: <code>run</code> means it compiles and prints exactly the output shown beneath it, <code>bad</code> means the compiler <em>rejects</em> it and the quoted error is the real one, <code>warn</code> means it compiles but the compiler complains, <code>throw</code> means it dies with the stated exception. A script reads those directives and executes every block:</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">echo "python3 tools/verify_examples.py          # every chapter"
+echo "python3 tools/verify_examples.py 00-how-to-use-this-book"</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">python3 tools/verify_examples.py          # every chapter
+python3 tools/verify_examples.py 00-how-to-use-this-book</code></pre></div><p>That is why the transcripts above are trustworthy: this chapter's own blocks are re-compiled and re-run by that script, and a hand-copied transcript that drifts from reality fails it. The script has a <code>--self-test</code> of its own — a fixture that must pass and a fixture that must fail — because a gate that has gone quietly blind is worse than no gate.</p><div class="callout callout-scenario"><div class="callout-head"><span class="callout-icon">◈</span>You are handed a Java project and it does not start</div><div class="callout-body"><p>Someone leaves you a folder of <code>.java</code> files and a note that says "run it". There is no <code>README</code>, no <code>pom.xml</code>, and no obvious starting point.</p><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Solution</div><div class="callout-body"><p>Find the entry point before you try to build anything. Every runnable Java program has a <code>public static void main(String[] args)</code> somewhere, and there is usually one:</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">cat &gt; Main.java &lt;&lt;'EOF'
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("bulletin starts");
+    }
+}
+EOF
+grep -rl "static void main" --include="*.java" .
+echo "--- build it, then name the class, not the file ---"
+javac -d out Main.java
+java -cp out Main</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">./Main.java
+--- build it, then name the class, not the file ---
+bulletin starts</code></pre></div><p>Then <code>javac -d out Main.java</code> followed by <code>java -cp out Main</code>. Two habits make the rest easy: always compile with <code>-d out</code> so class files do not litter the source tree, and always pass <code>-cp</code> when running, so the JVM looks where you actually put the classes. If it still says <code>Could not find or load main class</code>, you are naming a file, or your class has a <code>package</code> declaration and you must name it with the package in front: <code>java -cp out com.acme.Main</code>.</p></div></div></div></div><div class="callout callout-pitfall"><div class="callout-head"><span class="callout-icon">!</span>Copying a Java program into a differently named file</div><div class="callout-body"><p>It happens constantly: you paste an example into <code>Test.java</code> or <code>Example.java</code>, and the compiler answers <code>class Main is public, should be declared in a file named Main.java</code>. Beginners read that as "Java is broken" and start renaming things at random. The rule is one line: a public type's name and its file's name must match, exactly, including case. Rename the file, or make the class non-public — not both, and not neither.</p></div></div><h2 id="key-takeaways">Key takeaways</h2><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem"><code>javac</code> turns source into bytecode in a <code>.class</code> file; <code>java</code> runs that bytecode in a JVM. The</li></ul><p>two steps are separate and always will be.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem"><code>java Main</code> names a <strong>class</strong>. <code>java Main.class</code> is an error that says <code>ClassNotFoundException</code>,</li></ul><p>because a dot is legal inside a class name.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">A public class must be declared in a file of the same name; the compiler error tells you the</li></ul><p>name it wanted.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">Class-file major version 65 means Java 21. The number is the language level plus 44, and a JVM</li></ul><p>will not load bytecode newer than itself.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">Every example here is compiled with <code>-Xlint:all -Werror --release 21</code> and run before it is</li></ul><p>printed. The harness that does it is <code>tools/verify_examples.py</code>, and it has its own self-test.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">This book uses no third-party libraries, so nothing you read depends on a download.</li></ul><h2 id="practice">Practice</h2><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Write a program that prints the Java version it is running under, using</span></label></li></ul><p><code>System.getProperty("java.version")</code>, and compile it with <code>--release 21</code>.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Put a <code>public class Ledger</code> in a file called <code>Account.java</code>, read the compiler error, then</span></label></li></ul><p>fix it two different ways and say which way you would keep in a real project.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Run <code>javap -verbose</code> on a class compiled with <code>--release 17</code> and one compiled with</span></label></li></ul><p><code>--release 21</code>. Report both major versions and work out which JVMs can run each.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Compile a program with <code>-d out</code> and then run it three ways: <code>java -cp out Main</code>,</span></label></li></ul><p><code>java Main</code> from inside <code>out</code>, and <code>java -cp . Main</code>. Explain which two work and why.</p><h2 id="solutions">Solutions</h2><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 1</div><div class="callout-body"><p><code>System.getProperty</code> reads a JVM property; <code>java.version</code> is the runtime's version, which is not necessarily the version you compiled for.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Version {
+    public static void main(String[] args) {
+        System.out.println("java.version  = " + System.getProperty("java.version"));
+        System.out.println("class format  = " + (Runtime.version().feature() + 44));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">java.version  = 21.0.12.1
+class format  = 65</code></pre></div><p>Measured on Temurin 21.0.12.1. Your first line will differ if your JDK differs; the second will be 65 on any Java 21 runtime.</p></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 2</div><div class="callout-body"><p>Option one: rename the file to <code>Ledger.java</code>. Option two: drop <code>public</code>, which makes the class package-private and lets the file be called anything. Keep the rename. A class you intend to use from other packages should be public, and a file whose name does not match its content costs every reader a moment of doubt forever.</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">cat &gt; Ledger.java &lt;&lt;'EOF'
+public class Ledger {
+    public static void main(String[] args) {
+        System.out.println("ledger opens");
+    }
+}
+EOF
+javac -d out Ledger.java
+java -cp out Ledger</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">ledger opens</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 3</div><div class="callout-body"><p><code>--release 17</code> produces major version 61, <code>--release 21</code> produces 65. A Java 21 JVM runs both; a Java 17 JVM runs the first and refuses the second with <code>UnsupportedClassVersionError</code>. That is why <code>--release</code> exists: it lets a newer JDK emit bytecode an older runtime accepts, and it also stops you from accidentally using an API that the older runtime does not have.</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">cat &gt; Main.java &lt;&lt;'EOF'
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("same source, two targets");
+    }
+}
+EOF
+javac --release 17 -d out17 Main.java
+javac --release 21 -d out21 Main.java
+echo "release 17 -&gt; $(javap -verbose -cp out17 Main | grep 'major' | tr -s ' ')"
+echo "release 21 -&gt; $(javap -verbose -cp out21 Main | grep 'major' | tr -s ' ')"
+java -cp out17 Main</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">release 17 -&gt;  major version: 61
+release 21 -&gt;  major version: 65
+same source, two targets</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 4</div><div class="callout-body"><p><code>java -cp out Main</code> works, because you told the JVM where the class lives. <code>java Main</code> from inside <code>out</code> works, because the default classpath is the current directory. <code>java -cp . Main</code> from the project root fails, because <code>Main.class</code> is in <code>out</code>, not in <code>.</code>; you get <code>Could not find or load main class Main</code>. The classpath is a list of <em>roots</em>, not a list of files: the JVM looks for <code>Main.class</code> underneath each root, following the package as directories.</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">cat &gt; Main.java &lt;&lt;'EOF'
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("found me");
+    }
+}
+EOF
+javac -d out Main.java
+java -cp out Main
+cd out &amp;&amp; java Main &amp;&amp; cd ..
+java -cp . Main 2&gt;&amp;1 | head -1</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">found me
+found me
+Error: Could not find or load main class Main</code></pre></div></div></div></div><div class="chapter-foot"><button class="done-btn" type="button" data-slug="00-how-to-use-this-book">Mark chapter complete</button><div class="pager"><span></span><a class="pager-btn next" href="#/01-your-first-program" data-slug="01-your-first-program">Your First Program, and Why It Looks Like That →</a></div></div></section><section class="chapter" id="01-your-first-program" data-slug="01-your-first-program" hidden><header class="chapter-head"><div class="chapter-eyebrow">Chapter 01 · 40 min</div><h1>Your First Program, and Why It Looks Like That</h1><p class="chapter-summary">Write, compile and run a Java program; know what every word of `public static void main(String[] args)` is for, and how to print and read arguments.</p><div class="chips"><span class="chip">main</span><span class="chip">printing</span><span class="chip">arguments</span><span class="chip">packages</span><span class="chip">classpath</span></div></header><div class="chapter-body"><p>Every Java program you will ever run starts the same way, and the ceremony around that start is a dozen words you did not choose. This chapter explains each of them, because knowing why they are there turns "Java is verbose" into "Java is explicit" — and it means that when a program refuses to start, you will know which of the twelve words to look at first.</p><h2 id="the-smallest-program-java-will-run">The smallest program Java will run</h2><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Greet {
+    public static void main(String[] args) {
+        System.out.println("Java says hello");
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">Java says hello</code></pre></div><p>Three things happen here, and each is a rule rather than a style choice.</p><p><strong>The file must be named <code>Greet.java</code>.</strong> A public class and its file share a name, exactly. <strong>Everything is inside a class.</strong> Java has no top-level functions, so there is no way to write a program that is not a class. Try it and the compiler says what it wanted:</p><div class="code" data-lang="java" data-cmd="bad"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">System.out.println("no class here");</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">error: class, interface, enum, or record expected</code></pre></div><p><strong><code>main</code> is the one name the JVM looks for.</strong> A class without it compiles happily and is useless as a starting point.</p><h2 id="every-word-of-public-static-void-mainstring-args">Every word of <code>public static void main(String[] args)</code></h2><div class="table-wrap"><table><thead><tr><th>Word</th><th>What it does</th><th>What happens without it</th></tr></thead><tbody><tr><td><code>public</code></td><td>The JVM starts your program from outside the class, so the method must be reachable from anywhere.</td><td><code>Main method not found</code></td></tr><tr><td><code>static</code></td><td>The JVM calls it before any object exists. A non-static <code>main</code> would need an instance, and there is nobody to make one.</td><td><code>Main method is not static</code></td></tr><tr><td><code>void</code></td><td>The JVM ignores what you return, so it insists you return nothing.</td><td><code>Main method must return a value of type void</code></td></tr><tr><td><code>main</code></td><td>The name the launcher looks up. Case matters.</td><td><code>Main method not found</code></td></tr><tr><td><code>String[] args</code></td><td>The command-line arguments, as an array. The parameter is always exactly this.</td><td><code>Main method not found</code></td></tr></tbody></table></div><p>The table is not theoretical — those are the three errors the JVM actually prints, and each one names the word you got wrong. Here is the first of them, from a program that compiles cleanly and still will not start:</p><div class="code" data-lang="java" data-cmd="throw"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class NoMain {
+    public static void main(String args) {
+        System.out.println("this line never prints");
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">Error: Main method not found in class NoMain</code></pre></div><p><code>String args</code> is a perfectly legal parameter — one string — so <code>javac</code> has nothing to complain about. The program compiles, the class file exists, and the JVM rejects it at launch. This is the one failure mode in Java that no compiler flag catches, which is why it earns a place in Chapter 1 instead of a footnote.</p><h2 id="printing-println-print-printf">Printing: <code>println</code>, <code>print</code>, <code>printf</code></h2><p><code>System.out</code> is an object with methods on it, and the three you use constantly differ only in what they do at the end:</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Output {
+    public static void main(String[] args) {
+        System.out.println("println ends the line");
+        System.out.print("print does not, so this continues ");
+        System.out.println("and this finishes it");
+        System.out.printf("printf formats: %d, %.2f, %s%n", 7, 3.14159, "text");
+        System.out.printf("width: |%5d|%-5d|%05d|%n", 42, 42, 42);
+        System.out.printf("a literal percent needs doubling: 100%%%n");
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">println ends the line
+print does not, so this continues and this finishes it
+printf formats: 7, 3.14, text
+width: |   42|42   |00042|
+a literal percent needs doubling: 100%</code></pre></div><p><code>%d</code> is an integer, <code>%.2f</code> a floating-point number to two decimal places, <code>%s</code> anything at all, and <code>%n</code> a newline. That last one is worth memorising over <code>\n</code>: <code>%n</code> is the line separator of the machine you are on, so it is <code>\r\n</code> on Windows and <code>\n</code> everywhere else, and your output looks right on both.</p><div class="callout callout-pitfall"><div class="callout-head"><span class="callout-icon">!</span>The capital that costs ten minutes</div><div class="callout-body"><p>Java is case-sensitive and <code>System</code>, <code>Out</code> and <code>Println</code> are three separate words to it. The compiler's answer is <code>cannot find symbol</code>, which is accurate but does not tell you that you typed <code>System.Out.println</code> instead of <code>System.out.println</code>. When you see <code>cannot find symbol</code> on something you are certain exists, check the capitalisation before you check anything else.</p><div class="code" data-lang="java" data-cmd="bad"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Case {
+    public static void main(String[] args) {
+        System.Out.println("capital O");
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">cannot find symbol</code></pre></div></div></div><h2 id="arguments-arrive-as-an-array">Arguments arrive as an array</h2><p>Whatever you type after the class name lands in <code>args</code>, and <code>args.length</code> tells you how many there were:</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">cat &gt; Args.java &lt;&lt;'EOF'
+public class Args {
+    public static void main(String[] args) {
+        System.out.println("count = " + args.length);
+        System.out.println("first = " + args[0]);
+        System.out.println("last  = " + args[args.length - 1]);
+    }
+}
+EOF
+javac -d out Args.java
+java -cp out Args alpha beta gamma</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">count = 3
+first = alpha
+last  = gamma</code></pre></div><p><code>args</code> is always present and never null; with no arguments it is an array of length 0. That is worth knowing before Chapter 5, where arrays get their own chapter and where <code>args[0]</code> on an empty array becomes your first exception.</p><h2 id="a-second-class-means-a-second-file">A second class means a second file</h2><p>One public class per file is the rule, so a program that needs a helper is two files. This is also how you call a method that lives somewhere else:</p><div class="code" data-lang="java" data-cmd="run-files"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">// ===== Format.java =====
+public class Format {
+    public static String banner(String text) {
+        return "*** " + text + " ***";
+    }
+}
+
+// ===== Main.java =====
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(Format.banner("quill"));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">*** quill ***</code></pre></div><p><code>Format.banner(...)</code> is a <strong>static</strong> call: no object is involved, you name the class and the method. The banners (<code>// ===== Format.java =====</code>) are this book's way of showing several files in one listing — they are comments, so the listing is still exactly what you would type, but you would put each part in its own file.</p><div class="callout callout-scenario"><div class="callout-head"><span class="callout-icon">◈</span>The class file is there and Java says it is not</div><div class="callout-body"><p>You compiled successfully, <code>Main.class</code> is sitting in <code>out/</code>, and <code>java -cp out Main</code> answers <code>Error: Could not find or load main class Main</code>. You check the spelling. You check the case. It is right.</p><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Solution</div><div class="callout-body"><p>Look for a <code>package</code> line at the top of the source. A class in a package has a <strong>fully qualified name</strong> — package, dot, class — and that is the only name the JVM will accept. The class file is written into a directory matching the package, under the classpath root:</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">mkdir -p src/app
+cat &gt; src/app/Main.java &lt;&lt;'EOF'
+package app;
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("found through the package");
+    }
+}
+EOF
+javac -d out src/app/Main.java
+ls out/app
+java -cp out Main 2&gt;&amp;1 | head -1
+java -cp out app.Main</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">Main.class
+Error: Could not find or load main class Main
+found through the package</code></pre></div><p>The classpath is a list of <em>roots</em>, and the JVM turns a class name into a path underneath one of them: <code>app.Main</code> becomes <code>out/app/Main.class</code>. <code>Main</code> on its own would be <code>out/Main.class</code>, which does not exist — hence the error, which is telling the truth and is easy to misread as a spelling problem. Get used to naming classes in full; every real project puts code in packages.</p></div></div></div></div><h2 id="key-takeaways">Key takeaways</h2><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">A runnable Java program is a public class with <code>public static void main(String[] args)</code>, in a file</li></ul><p>named after the class.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem"><code>javac</code> produces a <code>.class</code> file of bytecode; <code>java</code> runs the <strong>class</strong>, named in full if it has a</li></ul><p>package. <code>java Main.class</code> is always wrong.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">A wrong <code>main</code> signature compiles and fails at launch with <code>Main method not found</code>, <code>not static</code>,</li></ul><p>or <code>must return a value of type void</code> — the JVM names the word you got wrong.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem"><code>println</code> ends the line, <code>print</code> does not, <code>printf</code> formats; use <code>%n</code>, not <code>\n</code>, and <code>%%</code> for a</li></ul><p>literal percent.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">Command-line arguments arrive in <code>args</code>, an array that is empty rather than absent when you pass</li></ul><p>none.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem"><code>-d out</code> keeps class files out of your source tree; <code>-cp out</code> tells the JVM where to look.</li></ul><h2 id="practice">Practice</h2><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Write a program that prints a three-line title using <code>printf</code>, with the title supplied as a</span></label></li></ul><p>command-line argument and a fallback of <code>"untitled"</code> when none is given.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Write a program with two classes: one holds <code>public static int square(int n)</code>, the other</span></label></li></ul><p>prints the squares of 1 to 5.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Compile the previous program with <code>-d build</code> and run it from a different directory using an</span></label></li></ul><p>absolute <code>-cp</code>.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Write a program whose class is in the package <code>tools.text</code> and run it. Then try running it</span></label></li></ul><p>without the package prefix and write down the exact error.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Make <code>main</code> non-static on purpose, compile, and read the launcher's message. Put the one-line</span></label></li></ul><p>fix in a comment.</p><h2 id="solutions">Solutions</h2><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 1</div><div class="callout-body"><p><code>args.length == 0</code> is how you detect "no arguments", and remember that <code>args[0]</code> would throw if you read it without checking.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Title {
+    public static void main(String[] args) {
+        String title = args.length == 0 ? "untitled" : args[0];
+        System.out.printf("+%s+%n", "-".repeat(title.length() + 2));
+        System.out.printf("| %s |%n", title);
+        System.out.printf("+%s+%n", "-".repeat(title.length() + 2));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">+----------+
+| untitled |
++----------+</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 2</div><div class="callout-body"><p>Two files, because one public class per file. A <code>static</code> method is called on the class, so no object is needed.</p><div class="code" data-lang="java" data-cmd="run-files"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">// ===== Maths.java =====
+public class Maths {
+    public static int square(int n) {
+        return n * n;
+    }
+}
+
+// ===== Main.java =====
+public class Main {
+    public static void main(String[] args) {
+        for (int n = 1; n &lt;= 5; n++) {
+            System.out.println(n + " squared = " + Maths.square(n));
+        }
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">1 squared = 1
+2 squared = 4
+3 squared = 9
+4 squared = 16
+5 squared = 25</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 3</div><div class="callout-body"><p>The classpath can be absolute, which is what a script or a build tool would use. Nothing about the class file says where it will be run from.</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">mkdir -p demo
+cat &gt; demo/Maths.java &lt;&lt;'EOF'
+public class Maths {
+    public static int square(int n) { return n * n; }
+}
+EOF
+cat &gt; demo/Main.java &lt;&lt;'EOF'
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("square of 6 = " + Maths.square(6));
+    }
+}
+EOF
+javac -d build demo/Maths.java demo/Main.java
+cd /tmp &amp;&amp; java -cp "$OLDPWD/build" Main</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">square of 6 = 36</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 4</div><div class="callout-body"><p>The package is part of the name; leaving it off gives you the same <code>Could not find or load main class</code> as the scenario, and it is the single most common Java beginner error after a wrong <code>main</code> signature.</p><div class="code" data-lang="bash" data-cmd="run"><div class="code-bar"><span class="code-lang">bash</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-bash">mkdir -p src/tools/text
+cat &gt; src/tools/text/Words.java &lt;&lt;'EOF'
+package tools.text;
+public class Words {
+    public static void main(String[] args) {
+        System.out.println("words, from a package");
+    }
+}
+EOF
+javac -d out src/tools/text/Words.java
+java -cp out tools.text.Words
+java -cp out Words 2&gt;&amp;1 | head -1</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">words, from a package
+Error: Could not find or load main class Words</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 5</div><div class="callout-body"><p>A non-static <code>main</code> is an ordinary method that happens to be called <code>main</code>. The JVM needs to call it before any object exists, so it insists on <code>static</code>.</p><div class="code" data-lang="java" data-cmd="throw"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class NotStatic {
+    public void main(String[] args) {
+        System.out.println("never runs");
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">Error: Main method is not static in class NotStatic</code></pre></div><p>The fix is one word: <code>public static void main(String[] args)</code>.</p></div></div></div><div class="chapter-foot"><button class="done-btn" type="button" data-slug="01-your-first-program">Mark chapter complete</button><div class="pager"><a class="pager-btn" href="#/00-how-to-use-this-book" data-slug="00-how-to-use-this-book">← How to Use This Book</a><a class="pager-btn next" href="#/02-primitives-and-references" data-slug="02-primitives-and-references">Primitives, References and the Two Meanings of `==` →</a></div></div></section><section class="chapter" id="02-primitives-and-references" data-slug="02-primitives-and-references" hidden><header class="chapter-head"><div class="chapter-eyebrow">Chapter 02 · 55 min</div><h1>Primitives, References and the Two Meanings of `==`</h1><p class="chapter-summary">Know all eight primitive types and their real ranges, why integer overflow is silent, why `0.1 + 0.2` is not `0.3`, and why `==` compares references rather than values.</p><div class="chips"><span class="chip">primitives</span><span class="chip">references</span><span class="chip">boxing</span><span class="chip">overflow</span><span class="chip">equality</span></div></header><div class="chapter-body"><p>Java has two kinds of value, and almost every confusing thing in the language comes from the boundary between them. A <strong>primitive</strong> holds a value directly: an <code>int</code> <em>is</em> a number. A <strong>reference</strong> holds the address of an object: a <code>String</code> variable <em>points at</em> text somewhere else. Because <code>==</code> asks a different question for each one, Java has two ways to compare things, and using the wrong one produces a bug that passes your tests and fails in production. This chapter is about that boundary.</p><h2 id="eight-primitives">Eight primitives</h2><p>There are exactly eight, and they are part of the language rather than classes — which is why they are spelled in lower case.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Sizes {
+    public static void main(String[] args) {
+        System.out.println("byte    " + Byte.SIZE    + " bits  " + Byte.MIN_VALUE    + " .. " + Byte.MAX_VALUE);
+        System.out.println("short   " + Short.SIZE   + " bits  " + Short.MIN_VALUE   + " .. " + Short.MAX_VALUE);
+        System.out.println("int     " + Integer.SIZE + " bits  " + Integer.MIN_VALUE + " .. " + Integer.MAX_VALUE);
+        System.out.println("long    " + Long.SIZE    + " bits  " + Long.MIN_VALUE    + " .. " + Long.MAX_VALUE);
+        System.out.println("float   " + Float.SIZE   + " bits");
+        System.out.println("double  " + Double.SIZE  + " bits");
+        System.out.println("char    " + Character.SIZE + " bits  (unsigned, a UTF-16 code unit)");
+        System.out.println("boolean " + true + " — one bit of meaning, no defined size");
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">byte    8 bits  -128 .. 127
+short   16 bits  -32768 .. 32767
+int     32 bits  -2147483648 .. 2147483647
+long    64 bits  -9223372036854775808 .. 9223372036854775807
+float   32 bits
+double  64 bits
+char    16 bits  (unsigned, a UTF-16 code unit)
+boolean true — one bit of meaning, no defined size</code></pre></div><p>Those ranges are fixed by the language specification, not by the machine, which is the whole point: an <code>int</code> is 32 bits on a phone, a server and a mainframe. There is no unsigned <code>int</code> in Java — one genuine gap next to C — and <code>char</code> is the closest thing, being an unsigned 16-bit number that happens to print as a character.</p><p>Literals can carry a suffix to say which type they are, and underscores to stay readable:</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Literals {
+    public static void main(String[] args) {
+        var whole   = 10;      // int
+        var big     = 10L;     // long
+        var precise = 10.0;    // double
+        var rough   = 10.0f;   // float
+        System.out.println(whole + " " + big + " " + precise + " " + rough);
+        System.out.println("1_000_000 = " + 1_000_000);
+        System.out.println("0b1010 = " + 0b1010 + ", 0xFF = " + 0xFF + ", 0b1 = " + 0b1);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">10 10 10.0 10.0
+1_000_000 = 1000000
+0b1010 = 10, 0xFF = 255, 0b1 = 1</code></pre></div><h2 id="overflow-is-silent-which-is-why-it-is-dangerous">Overflow is silent, which is why it is dangerous</h2><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Overflow {
+    public static void main(String[] args) {
+        System.out.println("MAX_VALUE + 1        = " + (Integer.MAX_VALUE + 1));
+        System.out.println("1_000_000 * 1_000_000 = " + (1_000_000 * 1_000_000));
+        System.out.println("as longs            = " + (1_000_000L * 1_000_000L));
+        try {
+            Math.addExact(Integer.MAX_VALUE, 1);
+        } catch (ArithmeticException e) {
+            System.out.println("addExact says       : " + e.getMessage());
+        }
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">MAX_VALUE + 1        = -2147483648
+1_000_000 * 1_000_000 = -727379968
+as longs            = 1000000000000
+addExact says       : integer overflow</code></pre></div><p>Integer arithmetic wraps around and nothing tells you. A quantity that grows — a counter, a byte count, a price in cents — eventually crosses <code>Integer.MAX_VALUE</code> and turns negative, and the bug appears somewhere else entirely. <code>Math.addExact</code> and <code>Math.multiplyExact</code> do the same arithmetic and <strong>throw</strong> instead of wrapping; use them where an overflow means the data is already wrong.</p><h2 id="floating-point-precise-enough-to-be-trusted-not-exact-enough-to-be-com">Floating point: precise enough to be trusted, not exact enough to be compared</h2><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Floats {
+    public static void main(String[] args) {
+        System.out.println("0.1 + 0.2 == 0.3 : " + (0.1 + 0.2 == 0.3));
+        System.out.println("0.1 + 0.2        = " + (0.1 + 0.2));
+        System.out.println("1.0 / 0          = " + (1.0 / 0));
+        System.out.println("0.0 / 0          = " + (0.0 / 0));
+        System.out.println("NaN == NaN       : " + (Double.NaN == Double.NaN));
+        System.out.println("Double.isNaN(NaN): " + Double.isNaN(Double.NaN));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">0.1 + 0.2 == 0.3 : false
+0.1 + 0.2        = 0.30000000000000004
+1.0 / 0          = Infinity
+0.0 / 0          = NaN
+NaN == NaN       : false
+Double.isNaN(NaN): true</code></pre></div><p><code>double</code> cannot represent <code>0.1</code> exactly, for the same reason decimal notation cannot represent 1/3 exactly, so <code>0.1 + 0.2</code> is a hair above <code>0.3</code>. Two consequences you will use for the rest of your life: never compare floating-point numbers with <code>==</code>, and never store money in a <code>double</code>. Floating division by zero does <strong>not</strong> throw — it produces <code>Infinity</code> or <code>NaN</code> — and <code>NaN</code> is the only value in Java that is not equal to itself.</p><p>Integer division is the other half of the story: it truncates towards zero, and dividing by an integer zero throws.</p><div class="code" data-lang="java" data-cmd="throw"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Divide {
+    public static void main(String[] args) {
+        int items = 12;
+        int people = 0;
+        System.out.println(items / people);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">ArithmeticException: / by zero</code></pre></div><h2 id="widening-is-free-narrowing-needs-a-cast">Widening is free; narrowing needs a cast</h2><p>Java will happily put a small type into a bigger one, because nothing can be lost. The other direction loses bits, so it refuses unless you say you meant it:</p><div class="code" data-lang="java" data-cmd="bad"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Narrow {
+    public static void main(String[] args) {
+        int n = 5L;
+        System.out.println(n);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">incompatible types: possible lossy conversion from long to int</code></pre></div><p>The same rule catches a literal that does not fit, which is a nicer error than a silent wrap:</p><div class="code" data-lang="java" data-cmd="bad"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class TooBig {
+    public static void main(String[] args) {
+        byte b = 200;
+        System.out.println(b);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">incompatible types: possible lossy conversion from int to byte</code></pre></div><h2 id="primitives-have-values-references-point-at-objects">Primitives have values; references point at objects</h2><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Defaults {
+    static int count;
+    static boolean flag;
+    static String text;
+    public static void main(String[] args) {
+        System.out.println("int     = " + count);
+        System.out.println("boolean = " + flag);
+        System.out.println("String  = " + text);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">int     = 0
+boolean = false
+String  = null</code></pre></div><p>A field always has a value, even before you assign one: zero, <code>false</code>, or <code>null</code>. A <strong>local</strong> variable gets no such courtesy — the compiler insists you assign it first, precisely because "uninitialised" is what causes the bugs above:</p><div class="code" data-lang="java" data-cmd="bad"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Uninitialised {
+    public static void main(String[] args) {
+        int total;
+        System.out.println(total);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">variable total might not have been initialized</code></pre></div><p>Each primitive has a <strong>wrapper</strong> class — <code>Integer</code>, <code>Long</code>, <code>Double</code>, <code>Boolean</code> and so on — and Java converts between them automatically. That convenience hides the trap this chapter is named for:</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Boxing {
+    public static void main(String[] args) {
+        Integer p = 127, q = 127;
+        Integer r = 128, s = 128;
+        System.out.println("127 == 127     : " + (p == q));
+        System.out.println("128 == 128     : " + (r == s));
+        System.out.println("128.equals(128): " + r.equals(s));
+        Integer boxed = 128;
+        int plain = 128;
+        System.out.println("Integer == int : " + (boxed == plain));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">127 == 127     : true
+128 == 128     : false
+128.equals(128): true
+Integer == int : true</code></pre></div><p><code>==</code> on two objects asks "is this the same object?" — and it answers <code>true</code> for 127 by accident, because the JDK caches the boxed values from −128 to 127 and hands out the same object for both. At 128 the cache stops, <code>==</code> becomes false, and a program that worked all through testing starts lying. The last line is the useful exception: comparing a wrapper to a primitive <strong>unboxes</strong> the wrapper, so <code>==</code> compares numbers and behaves as you expect.</p><div class="callout callout-pitfall"><div class="callout-head"><span class="callout-icon">!</span>`==` on boxed numbers, the bug that passes review</div><div class="callout-body"><div class="code" data-lang="java"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">Integer a = 127, b = 127;
+System.out.println(a == b);   // true  — cached
+Integer c = 128, d = 128;
+System.out.println(c == d);   // false — not cached</code></pre></div><p>Someone changes a constant from 100 to 1000 and a passing check starts failing. Nothing about the code looks wrong; <code>==</code> simply never meant "equal value" for objects. Use <code>.equals()</code> for every object comparison, including boxed numbers, and let <code>==</code> mean "same object" or "same primitive" and nothing else.</p></div></div><h2 id="char-is-a-number-that-prints-as-a-letter"><code>char</code> is a number that prints as a letter</h2><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Chars {
+    public static void main(String[] args) {
+        char c = 'A';
+        System.out.println("c          = " + c);
+        System.out.println("(int) c    = " + (int) c);
+        System.out.println("(char)(c+1)= " + (char) (c + 1));
+        System.out.println("'a' - 'A'  = " + ('a' - 'A'));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">c          = A
+(int) c    = 65
+(char)(c+1)= B
+'a' - 'A'  = 32</code></pre></div><p>Arithmetic on <code>char</code> produces an <code>int</code>, which is why the cast back to <code>char</code> is required. This is the mechanism behind every letter-counting and Caesar-cipher exercise, and it is the reason a <code>char</code> can hold an emoji only as a pair of code units — a topic Chapter 3 takes up.</p><div class="callout callout-scenario"><div class="callout-head"><span class="callout-icon">◈</span>The billing report is a cent out</div><div class="callout-body"><p>A report sums ten thousand prices stored as <code>double</code> and the total is wrong by a few cents. Nobody can reproduce it with three items.</p><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Solution</div><div class="callout-body"><p>Move the decimal point out of the type. Money is a count of the smallest unit, so keep it as a <code>long</code> number of cents and format it only when you print — and format from the integer, never from a division that reintroduces the error.</p><div class="code" data-lang="java" data-cmd="run-files"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">// ===== Money.java =====
+public class Money {
+    /** Cents, always. A long holds about 92 quadrillion cents. */
+    public static long of(String text) {
+        String clean = text.replace("£", "").replace(",", "");
+        int dot = clean.indexOf('.');
+        if (dot &lt; 0) return Long.parseLong(clean) * 100;
+        long pounds = Long.parseLong(clean.substring(0, dot));
+        String pence = clean.substring(dot + 1);
+        while (pence.length() &lt; 2) pence = pence + "0";
+        return pounds * 100 + Long.parseLong(pence.substring(0, 2));
+    }
+
+    public static String show(long cents) {
+        long sign = cents &lt; 0 ? -1 : 1;
+        long abs = Math.abs(cents);
+        return (sign &lt; 0 ? "-£" : "£") + abs / 100 + "." + String.format("%02d", abs % 100);
+    }
+}
+
+// ===== Main.java =====
+public class Main {
+    public static void main(String[] args) {
+        long total = 0;
+        for (String price : new String[] {"19.99", "0.10", "0.20", "5.00"}) {
+            total += Money.of(price);
+        }
+        System.out.println("cents   = " + total);
+        System.out.println("display = " + Money.show(total));
+        System.out.println("as double = " + (19.99 + 0.10 + 0.20 + 5.00));
+        System.out.println("sum of ten 0.10 in double = " + (0.1 + 0.1 + 0.1 + 0.1 + 0.1
+                + 0.1 + 0.1 + 0.1 + 0.1 + 0.1));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">cents   = 2529
+display = £25.29
+as double = 25.29
+sum of ten 0.10 in double = 0.9999999999999999</code></pre></div><p>The integer total is exact by construction; the <code>double</code> column is right here by luck and wrong by a cent once the list is long enough. If you need decimal arithmetic on non-money values, <code>BigDecimal</code> is the class — but it is slower and its constructor-from-<code>double</code> reproduces the same error, so build it from a <code>String</code>.</p></div></div></div></div><h2 id="key-takeaways">Key takeaways</h2><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">There are eight primitive types (<code>byte</code>, <code>short</code>, <code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>char</code>,</li></ul><p><code>boolean</code>) with ranges fixed by the language, not by the machine.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">Integer overflow wraps silently; <code>Math.addExact</code> and <code>Math.multiplyExact</code> throw instead.</li><li class="ul-item" style="margin-left:0.0rem">Never compare <code>double</code> values with <code>==</code>, and never store money in one. <code>NaN</code> is not equal to</li></ul><p>itself; floating division by zero gives <code>Infinity</code> or <code>NaN</code>, integer division by zero throws.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">Widening conversions are implicit; narrowing needs a cast, and a literal that does not fit its</li></ul><p>variable is a compile error rather than a silent wrap.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">Fields get default values (<code>0</code>, <code>false</code>, <code>null</code>); local variables must be assigned before use.</li><li class="ul-item" style="margin-left:0.0rem"><code>==</code> compares references for objects and values for primitives. Boxed values from −128 to 127 are</li></ul><p>cached, so <code>==</code> on <code>Integer</code> works for small numbers and fails for larger ones. Use <code>.equals()</code>.</p><h2 id="practice">Practice</h2><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Convert 100 °C to °F and print it. Then change the formula to use integer division and</span></label></li></ul><p>explain why the answer changes.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Write <code>Money.show</code> for a negative amount and check that <code>-1</code> cent prints <code>-£0.01</code>, not</span></label></li></ul><p><code>£0.-1</code>.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Print the numbers 100 to 130 twice, once comparing boxed <code>Integer</code>s with <code>==</code> and once with</span></label></li></ul><p><code>.equals()</code>, and count how many answers differ.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Multiply two large <code>long</code> values with <code>Math.multiplyExact</code> and catch the exception; then do</span></label></li></ul><p>the same with <code>*</code> and print the wrapped result.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Print the uppercase alphabet using a <code>char</code> loop, and then print the alphabet using</span></label></li></ul><p><code>'a' + i</code> without a cast — read the compiler error and fix it.</p><h2 id="solutions">Solutions</h2><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 1</div><div class="callout-body"><p><code>9.0 / 5.0</code> is floating division; <code>9 / 5</code> is integer division and evaluates to <code>1</code>, which loses the fraction before the multiplication ever happens.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Temperatures {
+    public static void main(String[] args) {
+        int celsius = 100;
+        double correct = celsius * 9.0 / 5.0 + 32;
+        double wrong = celsius * 9 / 5 + 32;
+        System.out.println("correct = " + correct);
+        System.out.println("wrong   = " + wrong);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">correct = 212.0
+wrong   = 212.0</code></pre></div><p>Both happen to agree here because 100 divides evenly by 5. Try 99 °C and the wrong version reads 210.0 instead of 210.2 — an integer division bug that hides whenever the numbers divide nicely.</p></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 2</div><div class="callout-body"><p><code>Math.abs(Long.MIN_VALUE)</code> is still negative, but no amount of money reaches it. The safe shape is to format the sign separately and take the absolute value of the rest.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Negative {
+    static String show(long cents) {
+        String sign = cents &lt; 0 ? "-" : "";
+        long abs = Math.abs(cents);
+        return sign + "£" + abs / 100 + "." + String.format("%02d", abs % 100);
+    }
+    public static void main(String[] args) {
+        System.out.println(show(-1));
+        System.out.println(show(-250));
+        System.out.println(show(0));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">-£0.01
+-£2.50
+£0.00</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 3</div><div class="callout-body"><p>The boundary is at 127: everything up to and including it compares equal, and 128 onwards does not. That is the whole <code>IntegerCache</code> range, and it is why this bug survives code review.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Cache {
+    public static void main(String[] args) {
+        int same = 0, differs = 0;
+        for (int n = 100; n &lt;= 130; n++) {
+            Integer a = n, b = n;
+            boolean eq = (a == b);
+            boolean equals = a.equals(b);
+            if (eq != equals) differs++; else same++;
+            if (n &gt;= 125 &amp;&amp; n &lt;= 129) {
+                System.out.println(n + ": == " + eq + ", equals " + equals);
+            }
+        }
+        System.out.println("differing answers = " + differs + " of " + (same + differs));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">125: == true, equals true
+126: == true, equals true
+127: == true, equals true
+128: == false, equals true
+129: == false, equals true
+differing answers = 3 of 31</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 4</div><div class="callout-body"><p><code>multiplyExact</code> throws where <code>*</code> silently wraps. In code where an overflow means the data is wrong anyway, the exception is the feature: it fails at the point of the mistake instead of three reports later.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Exact {
+    public static void main(String[] args) {
+        long a = 4_000_000_000L;
+        long b = 4_000_000_000L;
+        try {
+            Math.multiplyExact(a, b);
+        } catch (ArithmeticException e) {
+            System.out.println("exact: " + e.getMessage());
+        }
+        System.out.println("plain: " + (a * b));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">exact: long overflow
+plain: -2446744073709551616</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 5</div><div class="callout-body"><p><code>'a' + i</code> is an <code>int</code>, because <code>char</code> arithmetic promotes to <code>int</code>. The compiler refuses to put an <code>int</code> back into a <code>char</code> without a cast, which is the narrowing rule from earlier in this chapter.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Alphabet {
+    public static void main(String[] args) {
+        StringBuilder upper = new StringBuilder();
+        StringBuilder lower = new StringBuilder();
+        for (int i = 0; i &lt; 26; i++) {
+            upper.append((char) ('A' + i));
+            lower.append((char) ('a' + i));
+        }
+        System.out.println(upper);
+        System.out.println(lower);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">ABCDEFGHIJKLMNOPQRSTUVWXYZ
+abcdefghijklmnopqrstuvwxyz</code></pre></div></div></div></div><div class="chapter-foot"><button class="done-btn" type="button" data-slug="02-primitives-and-references">Mark chapter complete</button><div class="pager"><a class="pager-btn" href="#/01-your-first-program" data-slug="01-your-first-program">← Your First Program, and Why It Looks Like That</a><span></span></div></div></section></div>
+  </main>
+
+  <aside id="toc">
+    <div class="toc-title">On this page</div>
+    <div id="toc-list"></div>
+  </aside>
+</div>
+
+<script>
+var PART_NAMES = {"0": "Start Here", "1": "I · Foundations", "2": "II · Leveling Up", "3": "III · Project 1 · Quill, a Command-Line Vault", "4": "IV · Track A · Bulletin, a Java Web Service", "5": "V · Track B · Ironhold, a Java Game", "6": "VI · Appendices & the Kotlin Extension"};
+const CHAPTERS = [{"slug": "00-how-to-use-this-book", "title": "How to Use This Book", "number": 0, "part": 0, "minutes": 14, "summary": "Know what you are building, how a Java program actually reaches the screen, and the two rules Java enforces that will cost you an afternoon if you meet them by accident.", "tags": ["orientation", "how to read", "jvm", "javac", "tooling"], "toc": [{"level": 2, "id": "what-you-are-actually-building", "text": "What you are actually building"}, {"level": 2, "id": "one-rule-for-the-whole-book-no-third-party-libraries", "text": "One rule for the whole book: no third-party libraries"}, {"level": 2, "id": "how-a-java-program-reaches-the-screen", "text": "How a Java program reaches the screen"}, {"level": 2, "id": "two-rules-java-enforces-that-python-does-not", "text": "Two rules Java enforces that Python does not"}, {"level": 2, "id": "this-book-checks-itself", "text": "This book checks itself"}, {"level": 2, "id": "key-takeaways", "text": "Key takeaways"}, {"level": 2, "id": "practice", "text": "Practice"}, {"level": 2, "id": "solutions", "text": "Solutions"}]}, {"slug": "01-your-first-program", "title": "Your First Program, and Why It Looks Like That", "number": 1, "part": 1, "minutes": 40, "summary": "Write, compile and run a Java program; know what every word of `public static void main(String[] args)` is for, and how to print and read arguments.", "tags": ["main", "printing", "arguments", "packages", "classpath"], "toc": [{"level": 2, "id": "the-smallest-program-java-will-run", "text": "The smallest program Java will run"}, {"level": 2, "id": "every-word-of-public-static-void-mainstring-args", "text": "Every word of public static void main(String[] args)"}, {"level": 2, "id": "printing-println-print-printf", "text": "Printing: println, print, printf"}, {"level": 2, "id": "arguments-arrive-as-an-array", "text": "Arguments arrive as an array"}, {"level": 2, "id": "a-second-class-means-a-second-file", "text": "A second class means a second file"}, {"level": 2, "id": "key-takeaways", "text": "Key takeaways"}, {"level": 2, "id": "practice", "text": "Practice"}, {"level": 2, "id": "solutions", "text": "Solutions"}]}, {"slug": "02-primitives-and-references", "title": "Primitives, References and the Two Meanings of `==`", "number": 2, "part": 1, "minutes": 55, "summary": "Know all eight primitive types and their real ranges, why integer overflow is silent, why `0.1 + 0.2` is not `0.3`, and why `==` compares references rather than values.", "tags": ["primitives", "references", "boxing", "overflow", "equality"], "toc": [{"level": 2, "id": "eight-primitives", "text": "Eight primitives"}, {"level": 2, "id": "overflow-is-silent-which-is-why-it-is-dangerous", "text": "Overflow is silent, which is why it is dangerous"}, {"level": 2, "id": "floating-point-precise-enough-to-be-trusted-not-exact-enough-to-be-com", "text": "Floating point: precise enough to be trusted, not exact enough to be compared"}, {"level": 2, "id": "widening-is-free-narrowing-needs-a-cast", "text": "Widening is free; narrowing needs a cast"}, {"level": 2, "id": "primitives-have-values-references-point-at-objects", "text": "Primitives have values; references point at objects"}, {"level": 2, "id": "char-is-a-number-that-prints-as-a-letter", "text": "char is a number that prints as a letter"}, {"level": 2, "id": "key-takeaways", "text": "Key takeaways"}, {"level": 2, "id": "practice", "text": "Practice"}, {"level": 2, "id": "solutions", "text": "Solutions"}]}];
+</script>
+<script>/* Shared site behaviour for every language book: routing, progress, search, highlighting. */
+(function () {
+  "use strict";
+
+  // Substituted per language by _build/build.py. Python keeps "python-mastery-v1" so
+  // progress made before the platform existed is not lost.
+  var STORE = "code-mastery-java-v1";
+
+  // The book's display name, as substituted into <title> by _build/build.py. Captured
+  // here because the router rewrites document.title on every navigation and needs the
+  // book name to put back. Shared file: never hardcode a language name in it.
+  var BOOK_TITLE = document.title;
+
+  var state = { done: {}, tasks: {}, theme: "light", last: null, collapsed: {} };
+
+  try {
+    var saved = JSON.parse(localStorage.getItem(STORE) || "{}");
+    Object.keys(state).forEach(function (k) { if (saved[k]) state[k] = saved[k]; });
+  } catch (e) { /* first visit */ }
+
+  function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* ---------------- theme ---------------- */
+  function applyTheme() {
+    document.documentElement.setAttribute("data-theme", state.theme);
+    var b = $("#theme-btn");
+    if (b) b.textContent = state.theme === "dark" ? "Light" : "Dark";
+  }
+
+  /* ---------------- routing ---------------- */
+  function slugFromHash() {
+    var h = (location.hash || "").replace(/^#\/?/, "");
+    if (h && document.getElementById(h)) return h;
+    return (window.CHAPTERS[0] || {}).slug;
+  }
+
+  function show(slug, opts) {
+    opts = opts || {};
+    $$(".chapter").forEach(function (s) { s.hidden = s.dataset.slug !== slug; });
+    var section = document.getElementById(slug);
+    if (!section) return;
+
+    $$(".nav-link").forEach(function (a) { a.classList.toggle("active", a.dataset.slug === slug); });
+    var crumb = $("#crumb");
+    var meta = CHAPTERS.filter(function (c) { return c.slug === slug; })[0];
+    if (crumb && meta) {
+      crumb.textContent = (PART_NAMES[meta.part] || "") + (meta.number ? " · Ch " + meta.number : "");
+    }
+
+    // build the right-hand TOC
+    var toc = $("#toc-list");
+    if (toc) {
+      toc.innerHTML = (meta && meta.toc.length)
+        ? meta.toc.map(function (t) {
+            return '<a class="toc-link toc-' + t.level + '" href="#' + t.id + '">' + escapeHtml(t.text) + "</a>";
+          }).join("")
+        : "";
+    }
+    $$(".toc-link").forEach(function (a) {
+      a.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        var el = document.getElementById(a.getAttribute("href").slice(1));
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    // Highlight this chapter's code blocks on first view. Doing it lazily keeps the
+    // initial paint fast even though the book carries 1400+ code blocks.
+    var blocks = section.querySelectorAll(".code code");
+    for (var b = 0; b < blocks.length; b++) highlight(blocks[b]);
+
+    state.last = slug;
+    save();
+    document.body.classList.remove("nav-open");
+    if (!opts.keepScroll) window.scrollTo(0, 0);
+    // The book's own name, taken from the <title> the build already substituted.
+    // Do NOT hardcode a language here: this file is shared by every book.
+    document.title = (meta ? meta.title + " — " : "") + BOOK_TITLE;
+    syncDone(slug);
+    highlightToc();
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  /* ---------------- progress ---------------- */
+  function syncDone(slug) {
+    var btn = $('.done-btn[data-slug="' + slug + '"]');
+    if (btn) {
+      var isDone = !!state.done[slug];
+      btn.classList.toggle("done", isDone);
+      btn.textContent = isDone ? "✓ Completed — click to reset" : "Mark chapter complete";
+    }
+    var link = $('.nav-link[data-slug="' + slug + '"]');
+    if (link) link.classList.toggle("done", !!state.done[slug]);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    var total = CHAPTERS.length || 1;
+    var n = Object.keys(state.done).filter(function (k) { return state.done[k]; }).length;
+    var pct = Math.round((n / total) * 100);
+    var fill = $("#progress-fill");
+    if (fill) fill.style.width = pct + "%";
+    var label = $("#progress-label");
+    if (label) label.textContent = n + " / " + total + " chapters";
+    var pctLabel = $("#progress-pct");
+    if (pctLabel) pctLabel.textContent = pct + "%";
+  }
+
+  /* ---------------- TOC scrollspy ---------------- */
+  function highlightToc() {
+    var links = $$(".toc-link");
+    if (!links.length) return;
+    var best = null;
+    links.forEach(function (a) {
+      var el = document.getElementById(a.getAttribute("href").slice(1));
+      if (el && el.getBoundingClientRect().top <= 120) best = a;
+    });
+    links.forEach(function (a) { a.classList.toggle("active", a === best); });
+  }
+
+  /* ---------------- lightweight keyword highlighter ---------------- */
+  var KEYWORDS = {
+    python: "def class return if elif else for while in is not and or None True False lambda try except finally raise with as import from pass break continue yield global nonlocal assert del async await match case",
+    javascript: "const let var function return if else for while class new await async import from export try catch finally typeof instanceof",
+    sql: "SELECT FROM WHERE JOIN LEFT INNER GROUP BY ORDER LIMIT INSERT INTO VALUES UPDATE SET DELETE CREATE TABLE PRIMARY KEY",
+    bash: "cd ls echo printf mkdir rm cp mv cat touch sleep kill wait trap make cc clang gcc pip python python3 git export source curl chmod grep sed awk",
+    // C keywords. `_Bool`/`_Static_assert` are C99/C11; bool/true/false come from
+    // <stdbool.h>. A language with no entry here gets no keyword colouring at all,
+    // so adding a book means adding its list.
+    c: "auto break case char const continue default do double else enum extern float for goto if inline int long register restrict return short signed sizeof static struct switch typedef union unsigned void volatile while _Bool _Static_assert bool true false NULL size_t",
+    // C++ keywords, including the ones with no C equivalent that this book teaches.
+    cpp: "alignas alignof and auto bool break case catch char class const constexpr const_cast continue decltype default delete do double dynamic_cast else enum explicit export extern false float for friend goto if inline int long mutable namespace new noexcept nullptr operator override private protected public register reinterpret_cast return short signed sizeof static static_cast struct switch template this throw true try typedef typename union unsigned using virtual void volatile while bool size_t",
+    html: "",
+  };
+
+  function highlight(node) {
+    if (node.dataset.hl === "1") return;
+    node.dataset.hl = "1";
+    var lang = (node.className.match(/language-([\w-]+)/) || [])[1] || "text";
+    var words = (KEYWORDS[lang] || "").split(" ");
+    if (!words.length) return;
+    var kw = new RegExp("\\b(" + words.join("|") + ")\\b", "g");
+    var src = node.textContent;
+
+    // Split into tokens in one pass: comments, strings, numbers, decorators, words.
+    var pattern = /(#[^\n]*|\/\/[^\n]*)|("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|(@[\w.]+)|\b(\d+\.?\d*)\b|([A-Za-z_]\w*)/g;
+    var out = "", last = 0, m;
+    function put(text, cls) {
+      out += cls ? '<span class="tok-' + cls + '">' + escapeHtml(text) + "</span>" : escapeHtml(text);
+    }
+    while ((m = pattern.exec(src)) !== null) {
+      put(src.slice(last, m.index));
+      last = m.index + m[0].length;
+      if (m[1]) put(m[0], "com");
+      else if (m[2]) put(m[0], "str");
+      else if (m[3]) put(m[0], "dec");
+      else if (m[4]) put(m[0], "num");
+      else if (m[5]) {
+        var followed = src[pattern.lastIndex] === "(";
+        var isKw = words.indexOf(m[0]) !== -1;
+        put(m[0], isKw ? "kw" : (followed ? "fn" : null));
+      }
+    }
+    put(src.slice(last));
+    node.innerHTML = out;
+  }
+
+  /* ---------------- search ---------------- */
+  function runSearch(q) {
+    var box = $("#results");
+    var nav = $("#nav");
+    q = (q || "").trim().toLowerCase();
+    if (q.length < 2) { box.innerHTML = ""; nav.style.display = ""; return; }
+    nav.style.display = "none";
+    var hits = [];
+    CHAPTERS.forEach(function (c) {
+      var hay = (c.title + " " + c.summary + " " + (c.tags || []).join(" ")).toLowerCase();
+      var idx = hay.indexOf(q);
+      if (idx === -1) return;
+      hits.push({ c: c, snippet: c.summary });
+    });
+    box.innerHTML = hits.length
+      ? hits.map(function (h) {
+          return '<a class="result" href="#/' + h.c.slug + '" data-slug="' + h.c.slug + '">' +
+            escapeHtml(h.c.title) + "<small>" + escapeHtml(h.c.summary.slice(0, 90)) + "</small></a>";
+        }).join("")
+      : '<div class="result">No matches.</div>';
+  }
+
+  /* ---------------- init ---------------- */
+  function init() {
+    applyTheme();
+
+    $("#theme-btn").addEventListener("click", function () {
+      state.theme = state.theme === "dark" ? "light" : "dark";
+      applyTheme(); save();
+    });
+
+    $("#menu-btn").addEventListener("click", function () {
+      document.body.classList.toggle("nav-open");
+    });
+
+    // collapsible parts
+    $$(".nav-part-btn").forEach(function (btn) {
+      var part = btn.parentNode;
+      var key = btn.textContent.trim();
+      if (state.collapsed[key]) part.classList.add("collapsed");
+      btn.addEventListener("click", function () {
+        part.classList.toggle("collapsed");
+        state.collapsed[key] = part.classList.contains("collapsed");
+        save();
+      });
+    });
+
+    $("#search").addEventListener("input", function (e) { runSearch(e.target.value); });
+
+    // navigation (delegated)
+    document.addEventListener("click", function (ev) {
+      var a = ev.target.closest ? ev.target.closest("[data-slug]") : null;
+      if (a && (a.classList.contains("nav-link") || a.classList.contains("result") ||
+                a.classList.contains("pager-btn"))) {
+        location.hash = "#/" + a.dataset.slug;
+        return;
+      }
+      var copy = ev.target.closest ? ev.target.closest(".copy-btn") : null;
+      if (copy) {
+        var code = copy.closest(".code").querySelector("code");
+        var text = code ? code.textContent : "";
+        var done = function () {
+          copy.textContent = "Copied";
+          copy.classList.add("copied");
+          setTimeout(function () { copy.textContent = "Copy"; copy.classList.remove("copied"); }, 1200);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, done);
+        } else {
+          var ta = document.createElement("textarea");
+          ta.value = text; document.body.appendChild(ta); ta.select();
+          try { document.execCommand("copy"); } catch (e) {}
+          document.body.removeChild(ta); done();
+        }
+      }
+    });
+
+    // mark complete
+    document.addEventListener("click", function (ev) {
+      var b = ev.target.closest ? ev.target.closest(".done-btn") : null;
+      if (!b) return;
+      var slug = b.dataset.slug;
+      state.done[slug] = !state.done[slug];
+      save(); syncDone(slug);
+    });
+
+    // exercise checkboxes
+    $$(".task-box").forEach(function (box, i) {
+      var key = box.closest(".chapter").dataset.slug + ":" + i;
+      box.checked = !!state.tasks[key];
+      box.addEventListener("change", function () { state.tasks[key] = box.checked; save(); });
+    });
+
+    window.addEventListener("hashchange", function () { show(slugFromHash()); });
+    window.addEventListener("scroll", highlightToc, { passive: true });
+    document.addEventListener("keydown", function (e) {
+      if (/input|textarea/i.test((e.target.tagName || ""))) return;
+      var i = CHAPTERS.findIndex(function (c) { return c.slug === slugFromHash(); });
+      if (e.key === "ArrowRight" && i < CHAPTERS.length - 1) location.hash = "#/" + CHAPTERS[i + 1].slug;
+      if (e.key === "ArrowLeft" && i > 0) location.hash = "#/" + CHAPTERS[i - 1].slug;
+      if (e.key === "/") { e.preventDefault(); $("#search").focus(); }
+    });
+
+    var start = (location.hash || "").replace(/^#\/?/, "");
+    show(document.getElementById(start) ? start : (state.last && document.getElementById(state.last)
+      ? state.last : CHAPTERS[0].slug), { keepScroll: false });
+    updateProgress();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else { init(); }
+})();
+</script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+</body>
+</html>
