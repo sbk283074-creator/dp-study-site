@@ -54,8 +54,13 @@ POEM_CAP = 1100      # a poem plus its context is worth more than a page snippet
 SPACES = [
     (r'^challenge-bank/', 'Challenge Bank', 'page'),
     (r'^bpho/', 'BPhO Round 0', 'page'),
-    (r'^ib-english-vocab/', 'IB English Vocab', 'page'),
-    (r'^vocab-review/', 'Vocabulary Review', 'page'),
+    # One Vocabulary section, two systems inside it. They keep their own names so a
+    # result still says which system it came from.
+    (r'^vocab/', 'Vocabulary', 'page'),
+    (r'^ib-english-vocab/', 'Vocabulary · Daily Programme', 'page'),
+    (r'^vocab-review/', 'Vocabulary · Word Bank', 'page'),
+    (r'^essays/', 'English Essays', 'page'),
+    (r'^reports/', 'Scientific Report Writing', 'page'),
     (r'^Eng learning/', "The World's Wife Lab", 'page'),
     (r'^code/python/', 'Python Mastery', 'page'),
     (r'^code/', 'CODE', 'page'),

@@ -82,9 +82,10 @@
         { t: "Code Mastery", d: "Python, C/C++, Java, TypeScript, C#, Go and Rust \u2014 each to a website and a game.", u: "code/" },
         { t: "The World's Wife Lab", d: "Duffy's collection, poem by poem.", u: "Eng%20learning/" },
         { t: "Challenge Bank", d: "Original hard problems with full markschemes.", u: "challenge-bank/site/" },
-        { t: "IB English Vocab", d: "Daily IB English Lang & Lit vocabulary with literary examples.", u: "ib-english-vocab/" },
+        { t: "Vocabulary", d: "Two systems: a 112-day IB English programme and a 1,452-word review station.", u: "vocab/" },
         { t: "BPhO Round 0", d: "British Physics Olympiad \u2014 topics, drills, timed mocks.", u: "bpho/" },
-        { t: "Vocabulary Review", d: "1,452 curated B2-C1 words with IPA, audio, examples and Anki export.", u: "vocab-review/" }
+        { t: "English Essays", d: "Not built yet \u2014 this feature is under development.", u: "essays/" },
+        { t: "Scientific Report Writing", d: "Not built yet \u2014 this feature is under development.", u: "reports/" }
       ]
     },
     {
@@ -182,8 +183,11 @@
     if (p.indexOf("/python") > -1) return "Python Mastery";
     if (p.indexOf("/code/") > -1) return "Code Mastery";
     if (p.indexOf("/eng%20learning") > -1 || p.indexOf("/eng learning") > -1) return "The World's Wife Lab";
-    if (p.indexOf("/ib-english-vocab/") > -1) return "IB English Vocab";
-    if (p.indexOf("/vocab-review/") > -1) return "Vocabulary Review";
+    if (p.indexOf("/vocab/") > -1) return "Vocabulary";
+    if (p.indexOf("/ib-english-vocab/") > -1) return "Vocabulary";
+    if (p.indexOf("/vocab-review/") > -1) return "Vocabulary";
+    if (p.indexOf("/essays/") > -1) return "English Essays";
+    if (p.indexOf("/reports/") > -1) return "Scientific Report Writing";
     return "";
   }
 
