@@ -57,7 +57,7 @@ what makes the example verifiable. `code/cpp/tools/verify_examples.py` reads the
 | ` ```cpp run-san-catch ` | A program that **must be caught** by the sanitizer. | Requires a non-zero exit **or** a sanitizer report, and requires the `text` fence to appear inside that report. |
 | ` ```cpp run-san-leak ` | A program that **must leak**. | Same, but leak detection does not exist on macOS — there it is reported **SKIPPED**, never "passed". |
 | ` ```cpp compile ` | A complete program that must **build but not run** (needs input, opens a socket, is a header, …). | Compiles only. |
-| ` ```cpp bad ` | **Intentionally wrong code.** | Asserts the compiler **rejects** it with a real `error:`. If it compiles, the harness fails — which means the "don't do this" example was not actually wrong. |
+| ` ```cpp bad ` | **Intentionally wrong code.** | Asserts the compiler **rejects** it with a real `error:`. If it compiles, the harness fails — which means the "don't do this" example was not actually wrong. A following `text` fence is **verified**: the quoted words must appear in the real diagnostic, so you cannot paraphrase an error message. |
 | ` ```cpp warn ` | Code the compiler **complains about but still builds** (`-Wformat`, `-Wunused-variable`, …). | Compiles with `-Wall -Wextra` and **no** `-Werror`, then requires the `text` fence to appear inside the diagnostic. Use this whenever the lesson is "`-Wall` catches it" rather than "it does not build". |
 | ` ```cpp ` | A **fragment** (a signature, a struct body, two lines of a bigger idea). | Not compiled. **Use sparingly** — see below. |
 | ` ```c run ` / ` ```c bad ` / … | The same directives for C. | Same, via the **C driver** (`clang`) with `-std=c17`. |
@@ -75,6 +75,10 @@ Measured on Apple clang 21 (arm64 macOS). Do not assume these hold elsewhere; th
 | UBSan | works, but **the exit code stays 0** | A UB demo must be `run-san-catch`, never `run`. A plain `run` block with UB would pass on exit code alone. |
 | `valgrind` | not installed | Do not make it the only suggested tool. |
 | `cmake` | not installed | A CMake chapter cannot be machine-verified here — mark it `compile`-free and say so, or teach `make` first, which **is** verifiable. |
+| `-Wimplicit-fallthrough` | **not** enabled by `-Wall -Wextra` on Apple clang | A switch fall-through cannot be a `warn` block — the harness would see silence and fail. Teach the *behaviour* with `run`, and mention the flag in prose. |
+| Incompatible pointer types, `double *p = &x;` | **warning in C, error in C++** | The same "don't do this" example must be `warn` in a C chapter and `bad` in a C++ chapter. Measured, not guessed. |
+| `sizeof` on an array *parameter* | warning `-Wsizeof-array-argument` | A `warn` block, never `run`: `run` builds with `-Werror`, so it would report "does not compile" instead of teaching the lesson. |
+| `long double` | 8 bytes on arm64 macOS, 16 on x86-64 Linux | The sharpest reason never to print a size without naming the target. |
 | SDL2 / Raylib / GLFW | not installed | Track B cannot be compiled here. Any code in those chapters must be labelled **not machine-verified** — the project's existing rule. |
 
 **Never write a fragment when a program will do.** A fragment teaches the shape; a program teaches

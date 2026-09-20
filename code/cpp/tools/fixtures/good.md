@@ -2,7 +2,7 @@
 chapter: 0
 part: 0
 title: Harness self-test — every directive used correctly
-summary: This file must pass. It exercises all five directives.
+summary: This file must pass. It exercises all six directives.
 minutes: 1
 tags: [selftest, must-pass]
 ---
@@ -61,6 +61,20 @@ int main() {
 }
 ```
 
+The same rejection, this time with the diagnostic quoted. `bad` now treats a following
+`text` fence as a claim: the quoted words must appear in the real error.
+
+```cpp bad
+int main() {
+    int x = 5
+    return 0;
+}
+```
+
+```text
+expected ';' at end of declaration
+```
+
 A memory bug that the sanitizer must catch. The text fence names the report.
 
 ```cpp run-san-catch
@@ -112,6 +126,23 @@ int main() {
 
 ```text
 leak
+```
+
+A warning the compiler emits but does not treat as fatal. The documented phrase must
+appear in the diagnostic.
+
+```cpp warn
+#include <iostream>
+
+int main() {
+    int unused = 5;
+    std::cout << "hi\n";
+    return 0;
+}
+```
+
+```text
+unused variable 'unused'
 ```
 
 A fragment, deliberately not compiled.

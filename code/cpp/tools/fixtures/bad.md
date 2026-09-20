@@ -1,8 +1,8 @@
 ---
 chapter: 0
 part: 0
-title: Harness self-test — five failures it MUST report
-summary: This file must FAIL, with exactly five failures. If it passes, the harness is blind.
+title: Harness self-test — six failures it MUST report
+summary: This file must FAIL, with exactly six failures. If it passes, the harness is blind.
 minutes: 1
 tags: [selftest, must-fail]
 ---
@@ -74,4 +74,20 @@ int main() {
 
 ```text
 -2147483648
+```
+
+6. A `bad` block that IS correctly rejected, but whose quoted diagnostic is invented. The
+   block is genuinely bad and the build genuinely fails, so an exit-code-only check would
+   wave it through — and the chapter would teach the reader to expect an error message that
+   does not exist. Must be caught.
+
+```cpp bad
+int main() {
+    int x = 5
+    return 0;
+}
+```
+
+```text
+error: missing semicolon before 'return'
 ```

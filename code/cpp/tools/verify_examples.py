@@ -14,7 +14,9 @@ in `code/cpp/STYLE.md`:
                          it is reported SKIPPED rather than passed
     ```cpp compile       complete program -> compile only (needs stdin, sockets, ...)
     ```cpp bad           MUST NOT COMPILE. Compiles => the gate fails. A "don't do
-                         this" example that actually compiles teaches nothing.
+                         this" example that actually compiles teaches nothing. A
+                         following `text` fence, if present, must appear inside the
+                         real diagnostic - so a quoted error is verified too.
     ```cpp               a fragment; deliberately not compiled (keep these rare)
 
 `c` is accepted wherever `cpp` is; it selects -std=c17 and the C driver.
@@ -127,7 +129,10 @@ class Block:
 
 
 FENCE_RE = re.compile(r"^(\s*)```(.*)$")
-WITH_OUTPUT = ("run", "run-san", "run-san-catch", "run-san-leak", "warn")
+# Directives whose following `text` fence is a CLAIM to be verified, not decoration.
+# `bad` is in here because a chapter that quotes a compiler error must quote the one
+# it actually got; otherwise the "don't do this" example is unverified prose.
+WITH_OUTPUT = ("run", "run-san", "run-san-catch", "run-san-leak", "warn", "bad")
 
 
 def parse_chapter(path: Path) -> list[Block]:
@@ -275,6 +280,11 @@ def check_block(block: Block, cxx: str, cc: str, leak_ok: bool) -> Result:
             if "error:" not in proc.stderr:
                 return Result(block, False, "failed, but with no 'error:' in the diagnostic",
                               proc.stderr.strip()[:400])
+            if block.expected and not matches(block.expected, proc.stderr):
+                return Result(block, False,
+                              "the diagnostic does not contain the documented phrase",
+                              "documented: " + squash(block.expected)[:220]
+                              + "\n\nactual: " + squash(proc.stderr)[:400])
             first = next((l for l in proc.stderr.splitlines() if "error:" in l), "")
             return Result(block, True, "correctly rejected", first.strip()[:160])
 

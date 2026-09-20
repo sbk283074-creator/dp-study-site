@@ -1,10 +1,16 @@
-/* Python Mastery — site behaviour: routing, progress, search, highlighting. */
+/* Shared site behaviour for every language book: routing, progress, search, highlighting. */
 (function () {
   "use strict";
 
   // Substituted per language by _build/build.py. Python keeps "python-mastery-v1" so
   // progress made before the platform existed is not lost.
   var STORE = "__STORE__";
+
+  // The book's display name, as substituted into <title> by _build/build.py. Captured
+  // here because the router rewrites document.title on every navigation and needs the
+  // book name to put back. Shared file: never hardcode a language name in it.
+  var BOOK_TITLE = document.title;
+
   var state = { done: {}, tasks: {}, theme: "light", last: null, collapsed: {} };
 
   try {
@@ -70,7 +76,9 @@
     save();
     document.body.classList.remove("nav-open");
     if (!opts.keepScroll) window.scrollTo(0, 0);
-    document.title = (meta ? meta.title + " — " : "") + "Python Mastery";
+    // The book's own name, taken from the <title> the build already substituted.
+    // Do NOT hardcode a language here: this file is shared by every book.
+    document.title = (meta ? meta.title + " — " : "") + BOOK_TITLE;
     syncDone(slug);
     highlightToc();
   }
@@ -118,12 +126,18 @@
     links.forEach(function (a) { a.classList.toggle("active", a === best); });
   }
 
-  /* ---------------- python-ish highlighter ---------------- */
+  /* ---------------- lightweight keyword highlighter ---------------- */
   var KEYWORDS = {
     python: "def class return if elif else for while in is not and or None True False lambda try except finally raise with as import from pass break continue yield global nonlocal assert del async await match case",
     javascript: "const let var function return if else for while class new await async import from export try catch finally typeof instanceof",
     sql: "SELECT FROM WHERE JOIN LEFT INNER GROUP BY ORDER LIMIT INSERT INTO VALUES UPDATE SET DELETE CREATE TABLE PRIMARY KEY",
     bash: "cd ls echo mkdir rm cp mv cat pip python python3 git export source curl",
+    // C keywords. `_Bool`/`_Static_assert` are C99/C11; bool/true/false come from
+    // <stdbool.h>. A language with no entry here gets no keyword colouring at all,
+    // so adding a book means adding its list.
+    c: "auto break case char const continue default do double else enum extern float for goto if inline int long register restrict return short signed sizeof static struct switch typedef union unsigned void volatile while _Bool _Static_assert bool true false NULL size_t",
+    // C++ keywords, including the ones with no C equivalent that this book teaches.
+    cpp: "alignas alignof and auto bool break case catch char class const constexpr const_cast continue decltype default delete do double dynamic_cast else enum explicit export extern false float for friend goto if inline int long mutable namespace new noexcept nullptr operator override private protected public register reinterpret_cast return short signed sizeof static static_cast struct switch template this throw true try typedef typename union unsigned using virtual void volatile while bool size_t",
     html: "",
   };
 
