@@ -332,7 +332,7 @@ td code { font-size: 12.8px; }
         <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
       </div>
     </div>
-    <nav id="nav"><div class="nav-part"><button class="nav-part-btn" type="button"><span>Start Here</span><span class="chev">▾</span></button><div class="nav-items"><a class="nav-link" href="#/00-how-to-use-this-book" data-slug="00-how-to-use-this-book"><span class="nav-num">••</span><span class="nav-title">How to Use This Book</span><span class="nav-check" aria-hidden="true">✓</span></a></div></div><div class="nav-part"><button class="nav-part-btn" type="button"><span>I · Foundations</span><span class="chev">▾</span></button><div class="nav-items"><a class="nav-link" href="#/01-your-first-program" data-slug="01-your-first-program"><span class="nav-num">01</span><span class="nav-title">Your First Program, and Why It Looks Like That</span><span class="nav-check" aria-hidden="true">✓</span></a><a class="nav-link" href="#/02-primitives-and-references" data-slug="02-primitives-and-references"><span class="nav-num">02</span><span class="nav-title">Primitives, References and the Two Meanings of `==`</span><span class="nav-check" aria-hidden="true">✓</span></a></div></div></nav>
+    <nav id="nav"><div class="nav-part"><button class="nav-part-btn" type="button"><span>Start Here</span><span class="chev">▾</span></button><div class="nav-items"><a class="nav-link" href="#/00-how-to-use-this-book" data-slug="00-how-to-use-this-book"><span class="nav-num">••</span><span class="nav-title">How to Use This Book</span><span class="nav-check" aria-hidden="true">✓</span></a></div></div><div class="nav-part"><button class="nav-part-btn" type="button"><span>I · Foundations</span><span class="chev">▾</span></button><div class="nav-items"><a class="nav-link" href="#/01-your-first-program" data-slug="01-your-first-program"><span class="nav-num">01</span><span class="nav-title">Your First Program, and Why It Looks Like That</span><span class="nav-check" aria-hidden="true">✓</span></a><a class="nav-link" href="#/02-primitives-and-references" data-slug="02-primitives-and-references"><span class="nav-num">02</span><span class="nav-title">Primitives, References and the Two Meanings of `==`</span><span class="nav-check" aria-hidden="true">✓</span></a><a class="nav-link" href="#/03-strings" data-slug="03-strings"><span class="nav-num">03</span><span class="nav-title">Strings, and Why They Never Change</span><span class="nav-check" aria-hidden="true">✓</span></a></div></div></nav>
     <div id="results"></div>
   </aside>
 
@@ -772,7 +772,226 @@ plain: -2446744073709551616</code></pre></div></div></div><div class="callout ca
         System.out.println(lower);
     }
 }</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">ABCDEFGHIJKLMNOPQRSTUVWXYZ
-abcdefghijklmnopqrstuvwxyz</code></pre></div></div></div></div><div class="chapter-foot"><button class="done-btn" type="button" data-slug="02-primitives-and-references">Mark chapter complete</button><div class="pager"><a class="pager-btn" href="#/01-your-first-program" data-slug="01-your-first-program">← Your First Program, and Why It Looks Like That</a><span></span></div></div></section></div>
+abcdefghijklmnopqrstuvwxyz</code></pre></div></div></div></div><div class="chapter-foot"><button class="done-btn" type="button" data-slug="02-primitives-and-references">Mark chapter complete</button><div class="pager"><a class="pager-btn" href="#/01-your-first-program" data-slug="01-your-first-program">← Your First Program, and Why It Looks Like That</a><a class="pager-btn next" href="#/03-strings" data-slug="03-strings">Strings, and Why They Never Change →</a></div></div></section><section class="chapter" id="03-strings" data-slug="03-strings" hidden><header class="chapter-head"><div class="chapter-eyebrow">Chapter 03 · 50 min</div><h1>Strings, and Why They Never Change</h1><p class="chapter-summary">Work with immutable strings, know what the string pool does to `==`, build text with StringBuilder, and handle characters that need two `char`s.</p><div class="chips"><span class="chip">strings</span><span class="chip">immutability</span><span class="chip">interning</span><span class="chip">StringBuilder</span><span class="chip">unicode</span></div></header><div class="chapter-body"><p>A <code>String</code> in Java cannot be modified. Every method that looks like it changes one — <code>toUpperCase</code>, <code>replace</code>, <code>concat</code>, <code>trim</code> — returns a <strong>new</strong> string and leaves the original alone. That single design decision is why strings are safe to share between threads, why they can be cached, and why building a sentence in a loop is the classic Java performance mistake. It is also why <code>==</code> on strings appears to work in your first program and fails in your first real one.</p><h2 id="nothing-you-do-to-a-string-changes-it">Nothing you do to a string changes it</h2><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Immutable {
+    public static void main(String[] args) {
+        String s = "hello";
+        String upper = s.toUpperCase();
+        System.out.println("upper    = " + upper);
+        System.out.println("original = " + s);
+        System.out.println("concat returned the same object: " + (s.concat("!") == s));
+        System.out.println("equalsIgnorecase works: " + "Hello".equalsIgnoreCase("HELLO"));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">upper    = HELLO
+original = hello
+concat returned the same object: false
+equalsIgnorecase works: true</code></pre></div><p>If you come from a language where strings are mutable, the habit to unlearn is calling a method and expecting the variable to change. In Java you always assign the result: <code>s = s.toUpperCase();</code></p><h2 id="the-string-pool-and-why-sometimes-works-anyway">The string pool, and why <code>==</code> sometimes works anyway</h2><p>The compiler keeps one copy of every string literal it can see, and hands out references to it. Two literals with the same text are therefore the <em>same object</em>, which is the only reason <code>==</code> ever returns true for strings:</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Pool {
+    public static void main(String[] args) {
+        String a = "ab";
+        String b = "a" + "b";            // folded by the compiler into "ab"
+        String c = new String("ab");     // explicitly a fresh object
+        String d = "a".concat("b");      // computed at run time
+        System.out.println("a == b (folded literal) : " + (a == b));
+        System.out.println("a == c (new object)     : " + (a == c));
+        System.out.println("a == d (computed)       : " + (a == d));
+        System.out.println("a.equals(c)             : " + a.equals(c));
+        System.out.println("a == c.intern()         : " + (a == c.intern()));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">a == b (folded literal) : true
+a == c (new object)     : false
+a == d (computed)       : false
+a.equals(c)             : true
+a == c.intern()         : true</code></pre></div><p><code>intern()</code> puts a string into the pool and returns the pooled copy, which is the only legitimate way to make <code>==</code> work — and it exists for memory, not for comparisons.</p><div class="callout callout-pitfall"><div class="callout-head"><span class="callout-icon">!</span>Comparing strings with `==`</div><div class="callout-body"><div class="code" data-lang="java"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">if (input == "yes") { ... }     // wrong, and it works sometimes</code></pre></div><p>Two string literals are the same object, so <code>input == "yes"</code> is true when <code>input</code> was assigned the literal <code>"yes"</code> and false when it came from a file, a socket, a database or <code>substring</code>. That is the worst possible failure: correct while you test, wrong in production. Use <code>.equals()</code>, always, with no exceptions and no shortcuts.</p></div></div><p>Single quotes and double quotes are different types, and the compiler is firm about it:</p><div class="code" data-lang="java" data-cmd="bad"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Quotes {
+    public static void main(String[] args) {
+        String s = 'c';
+        System.out.println(s);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">incompatible types: char cannot be converted to String</code></pre></div><p><code>'c'</code> is a <code>char</code>, a 16-bit number. <code>"c"</code> is a <code>String</code>. The distinction is not cosmetic — see the last section of this chapter.</p><h2 id="the-operations-you-use-every-day">The operations you use every day</h2><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">import java.util.Arrays;
+
+public class Operations {
+    public static void main(String[] args) {
+        System.out.println("length      : " + "quill".length());
+        System.out.println("substring   : " + "abcdef".substring(2, 4));
+        System.out.println("contains    : " + "quill".contains("uill"));
+        System.out.println("replace     : " + "a-b-c".replace('-', '/'));
+        System.out.println("join        : " + String.join("-", "x", "y", "z"));
+        System.out.println("repeat      : " + "ab".repeat(3));
+        System.out.println("split       : " + Arrays.toString("a,b,,c".split(",")));
+        System.out.println("split(-1)   : " + Arrays.toString("a,b,,c".split(",", -1)));
+        System.out.println("isBlank     : " + "   ".isBlank() + ", isEmpty: " + "   ".isEmpty());
+        System.out.println("strip       : [" + "  padded  ".strip() + "]");
+        System.out.println("format      : " + String.format("%s has %d notes", "quill", 3));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">length      : 5
+substring   : cd
+contains    : true
+replace     : a/b/c
+join        : x-y-z
+repeat      : ababab
+split       : [a, b, , c]
+split(-1)   : [a, b, , c]
+isBlank     : true, isEmpty: false
+strip       : [padded]
+format      : quill has 3 notes</code></pre></div><p>Three of those are worth committing to memory. <code>substring(start, end)</code> takes the end index as <strong>exclusive</strong>, so <code>substring(2, 4)</code> is two characters. <code>split</code> takes a <strong>regular expression</strong>, not a literal — splitting on <code>.</code> needs <code>"\\."</code>, because <code>.</code> means "any character". And <code>isBlank</code> asks about whitespace while <code>isEmpty</code> asks about length zero, which are different questions for <code>"   "</code>.</p><h2 id="text-blocks-for-anything-multi-line">Text blocks for anything multi-line</h2><p>Since Java 15, three double quotes open a <strong>text block</strong> — a string that may span lines and keeps its formatting. Embedded HTML, SQL and JSON stop being a wall of concatenation:</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Blocks {
+    public static void main(String[] args) {
+        String page = """
+                &lt;article class="note"&gt;
+                  &lt;h1&gt;%s&lt;/h1&gt;
+                  &lt;p&gt;%d words&lt;/p&gt;
+                &lt;/article&gt;
+                """;
+        System.out.println(page.formatted("First note", 240));
+        System.out.println("--- indentation is stripped to the least-indented line ---");
+        String indented = """
+                line one
+                  line two
+                """;
+        System.out.print(indented);
+        System.out.println("--- a trailing backslash joins lines ---");
+        System.out.println("""
+                a very long sentence that \
+                continues without a newline
+                """);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">&lt;article class="note"&gt;
+  &lt;h1&gt;First note&lt;/h1&gt;
+  &lt;p&gt;240 words&lt;/p&gt;
+&lt;/article&gt;
+
+--- indentation is stripped to the least-indented line ---
+line one
+  line two
+--- a trailing backslash joins lines ---
+a very long sentence that continues without a newline</code></pre></div><p><code>formatted(...)</code> is <code>String.format</code> as an instance method, which reads better than <code>String.format(page, ...)</code> when the template is a variable.</p><h2 id="building-text-in-a-loop">Building text in a loop</h2><p>Because every <code>+</code> makes a new string, adding to one in a loop copies the whole thing each time. The cost is quadratic, and it is measurable:</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Building {
+    static long millis(Runnable job) {
+        long start = System.nanoTime();
+        job.run();
+        return (System.nanoTime() - start) / 1_000_000;
+    }
+
+    public static void main(String[] args) {
+        final int n = 50_000;
+        long concat = millis(() -&gt; {
+            String s = "";
+            for (int i = 0; i &lt; n; i++) s += "x";
+        });
+        long builder = millis(() -&gt; {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i &lt; n; i++) sb.append("x");
+        });
+        System.out.println("concat  : many copies of a growing string");
+        System.out.println("builder : one mutable buffer");
+        System.out.println("builder faster: " + (builder &lt; concat));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">concat  : many copies of a growing string
+builder : one mutable buffer
+builder faster: true</code></pre></div><p>The exact milliseconds depend on the machine, so this chapter does not print them; the ordering does not, and at fifty thousand appends it is not close. <code>StringBuilder</code> is the tool whenever the number of appends is not known at compile time. Compilers do quietly use a <code>StringBuilder</code> for a single expression like <code>a + b + c</code>, so this is about loops specifically — do not contort one-line concatenations to avoid a builder that was never needed.</p><h2 id="a-char-is-not-always-a-character">A <code>char</code> is not always a character</h2><p>Java strings are sequences of UTF-16 <strong>code units</strong>, and one <code>char</code> holds one of them. Characters outside the Basic Multilingual Plane — emoji, most newer pictographs, some scripts — need <strong>two</strong>:</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Unicode {
+    public static void main(String[] args) {
+        String emoji = "😀";
+        System.out.println("length()        = " + emoji.length());
+        System.out.println("codePointCount  = " + emoji.codePointCount(0, emoji.length()));
+        System.out.println("charAt(0)       = " + Integer.toHexString(emoji.charAt(0)));
+        System.out.println("codePointAt(0)  = " + Integer.toHexString(emoji.codePointAt(0)));
+        String name = "Ada 😀";
+        System.out.println("name length     = " + name.length());
+        System.out.println("name code points= " + name.codePointCount(0, name.length()));
+        String cut = name.substring(0, 5);
+        System.out.println("cut             = " + cut);
+        System.out.println("cut ends on a lone half: " + Character.isHighSurrogate(cut.charAt(4)));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">length()        = 2
+codePointCount  = 1
+charAt(0)       = d83d
+codePointAt(0)  = 1f600
+name length     = 6
+name code points= 5
+cut             = Ada ?
+cut ends on a lone half: true</code></pre></div><p><code>length()</code> counts code units, not characters. Slicing by code units can cut a surrogate pair in half, and the broken half prints as <code>?</code> — which is what those stray question marks in production logs usually are. When the text can contain emoji, iterate by code point (<code>codePoints()</code>), count with <code>codePointCount</code>, and slice with <code>offsetByCodePoints</code>.</p><div class="callout callout-scenario"><div class="callout-head"><span class="callout-icon">◈</span>A &quot;20 character&quot; preview renders a question mark</div><div class="callout-body"><p>A list view shows the first twenty characters of each note. Notes with emoji in them end in <code>?</code>, and the bug report says the database is corrupting text.</p><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Solution</div><div class="callout-body"><p>The database is fine; <code>substring(0, 20)</code> counts code units and can stop between the two halves of one character. Cut on a code-point boundary instead, and say in the code why:</p><div class="code" data-lang="java" data-cmd="run-files"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">// ===== Preview.java =====
+public class Preview {
+    /** First `max` characters, never splitting a surrogate pair. */
+    public static String of(String text, int max) {
+        if (text.codePointCount(0, text.length()) &lt;= max) return text;
+        int end = text.offsetByCodePoints(0, max);
+        return text.substring(0, end) + "…";
+    }
+}
+
+// ===== Main.java =====
+public class Main {
+    public static void main(String[] args) {
+        String note = "Meeting notes 😀😀😀 and more text after";
+        String naive = note.substring(0, 15);
+        String safe = Preview.of(note, 15);
+        System.out.println("naive: [" + naive + "]");
+        System.out.println("safe : [" + safe + "]");
+        System.out.println("naive ends on a half : " + Character.isHighSurrogate(naive.charAt(14)));
+        System.out.println("safe ends on a half  : " + Character.isHighSurrogate(safe.charAt(safe.length() - 2)));
+        System.out.println("safe code points     = " + safe.codePointCount(0, safe.length()));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">naive: [Meeting notes ?]
+safe : [Meeting notes 😀…]
+naive ends on a half : true
+safe ends on a half  : false
+safe code points     = 16</code></pre></div><p><code>offsetByCodePoints(0, max)</code> converts "fifteen characters" into "this many code units", so the slice lands between characters. The ellipsis is a single code point, which is why the safe version counts sixteen rather than fifteen.</p></div></div></div></div><h2 id="key-takeaways">Key takeaways</h2><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">A <code>String</code> is immutable: every transforming method returns a new one, so assign the result.</li><li class="ul-item" style="margin-left:0.0rem">Compare strings with <code>.equals()</code> (or <code>equalsIgnoreCase</code>), never <code>==</code>. Literals are pooled, so <code>==</code></li></ul><p>works until the string comes from somewhere else.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem"><code>substring(start, end)</code> ends exclusively; <code>split</code> takes a regular expression; <code>isBlank</code> and</li></ul><p><code>isEmpty</code> ask different questions.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">Text blocks (<code>"""</code>) hold multi-line text and strip the common indentation; <code>formatted(...)</code> fills</li></ul><p>them in.</p><ul class="md-list"><li class="ul-item" style="margin-left:0.0rem">Use <code>StringBuilder</code> when appending in a loop. A single <code>a + b + c</code> expression is already fine.</li><li class="ul-item" style="margin-left:0.0rem"><code>length()</code> counts UTF-16 code units, not characters. Emoji need two, so use <code>codePointCount</code></li></ul><p>and <code>offsetByCodePoints</code> when text can contain them.</p><h2 id="practice">Practice</h2><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Write a program that reads two strings and reports whether they are equal ignoring case and</span></label></li></ul><p>surrounding whitespace, without creating a third string unnecessarily.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Turn <code>"one two three"</code> into <code>"ONE-TWO-THREE"</code> using <code>split</code>, a loop and <code>String.join</code>.</span></label></li><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Build a multiplication table with <code>StringBuilder</code> and print it as one string.</span></label></li><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Write <code>Preview.of</code> from the scenario so that a <code>max</code> larger than the text returns the text</span></label></li></ul><p>unchanged and <code>max</code> of zero returns just the ellipsis.</p><ul class="md-list"><li class="task" style="margin-left:0.0rem"><label><input type="checkbox" class="task-box"><span>Print every code point of <code>"A😀B"</code> as hexadecimal, and show what <code>charAt</code> alone would give.</span></label></li></ul><h2 id="solutions">Solutions</h2><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 1</div><div class="callout-body"><p><code>strip()</code> removes Unicode whitespace and returns a new string; <code>equalsIgnoreCase</code> then does the comparison. Comparing stripped copies avoids the trap of comparing a trimmed string to an untrimmed one.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Compare {
+    public static void main(String[] args) {
+        String a = "  Hello  ";
+        String b = "HELLO";
+        System.out.println("raw equal      : " + a.equals(b));
+        System.out.println("raw ignore case: " + a.equalsIgnoreCase(b));
+        System.out.println("stripped       : " + a.strip().equalsIgnoreCase(b.strip()));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">raw equal      : false
+raw ignore case: false
+stripped       : true</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 2</div><div class="callout-body"><p><code>split(" ")</code> splits on a single space; <code>" +"</code> would be the regular expression for "one or more spaces", which is usually what you want with real input.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">import java.util.Arrays;
+
+public class Words {
+    public static void main(String[] args) {
+        String[] parts = "one two three".split(" +");
+        for (int i = 0; i &lt; parts.length; i++) parts[i] = parts[i].toUpperCase();
+        System.out.println(Arrays.toString(parts));
+        System.out.println(String.join("-", parts));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">[ONE, TWO, THREE]
+ONE-TWO-THREE</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 3</div><div class="callout-body"><p>One builder, one string at the end. Building this with <code>+=</code> inside the double loop would allocate a new string twice per cell.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Table {
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        for (int row = 1; row &lt;= 3; row++) {
+            for (int col = 1; col &lt;= 3; col++) {
+                sb.append(String.format("%3d", row * col));
+            }
+            sb.append('\n');
+        }
+        System.out.print(sb);
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">  1  2  3
+  2  4  6
+  3  6  9</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 4</div><div class="callout-body"><p>The two edge cases are the ones a tester will find: <code>max</code> beyond the end, and <code>max</code> of zero. Both are one line once <code>codePointCount</code> is the thing being compared.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class Preview {
+    static String of(String text, int max) {
+        if (max &lt;= 0) return "…";
+        if (text.codePointCount(0, text.length()) &lt;= max) return text;
+        return text.substring(0, text.offsetByCodePoints(0, max)) + "…";
+    }
+    public static void main(String[] args) {
+        String note = "Short note";
+        System.out.println("[" + of(note, 100) + "]");
+        System.out.println("[" + of(note, 0) + "]");
+        System.out.println("[" + of("Exactly ten", 10) + "]");
+        System.out.println("[" + of("Exactly ten", 9) + "]");
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">[Short note]
+[…]
+[Exactly te…]
+[Exactly t…]</code></pre></div></div></div><div class="callout callout-solution"><div class="callout-head"><span class="callout-icon">✔</span>Exercise 5</div><div class="callout-body"><p><code>codePoints()</code> returns a stream of <code>int</code> code points, which sidesteps the whole surrogate question. Iterating <code>charAt</code> instead would report four "characters" for a three-character string.</p><div class="code" data-lang="java" data-cmd="run"><div class="code-bar"><span class="code-lang">java</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-java">public class CodePoints {
+    public static void main(String[] args) {
+        String s = "A😀B";
+        System.out.println("length        = " + s.length());
+        System.out.println("code points   = " + s.codePointCount(0, s.length()));
+        s.codePoints().forEach(cp -&gt; System.out.println("  U+" + Integer.toHexString(cp).toUpperCase()));
+    }
+}</code></pre></div><div class="code" data-lang="text"><div class="code-bar"><span class="code-lang">output</span><button class="copy-btn" type="button">Copy</button></div><pre><code class="language-text">length        = 4
+code points   = 3
+  U+41
+  U+1F600
+  U+42</code></pre></div></div></div></div><div class="chapter-foot"><button class="done-btn" type="button" data-slug="03-strings">Mark chapter complete</button><div class="pager"><a class="pager-btn" href="#/02-primitives-and-references" data-slug="02-primitives-and-references">← Primitives, References and the Two Meanings of `==`</a><span></span></div></div></section></div>
   </main>
 
   <aside id="toc">
@@ -783,7 +1002,7 @@ abcdefghijklmnopqrstuvwxyz</code></pre></div></div></div></div><div class="chapt
 
 <script>
 var PART_NAMES = {"0": "Start Here", "1": "I · Foundations", "2": "II · Leveling Up", "3": "III · Project 1 · Quill, a Command-Line Vault", "4": "IV · Track A · Bulletin, a Java Web Service", "5": "V · Track B · Ironhold, a Java Game", "6": "VI · Appendices & the Kotlin Extension"};
-const CHAPTERS = [{"slug": "00-how-to-use-this-book", "title": "How to Use This Book", "number": 0, "part": 0, "minutes": 14, "summary": "Know what you are building, how a Java program actually reaches the screen, and the two rules Java enforces that will cost you an afternoon if you meet them by accident.", "tags": ["orientation", "how to read", "jvm", "javac", "tooling"], "toc": [{"level": 2, "id": "what-you-are-actually-building", "text": "What you are actually building"}, {"level": 2, "id": "one-rule-for-the-whole-book-no-third-party-libraries", "text": "One rule for the whole book: no third-party libraries"}, {"level": 2, "id": "how-a-java-program-reaches-the-screen", "text": "How a Java program reaches the screen"}, {"level": 2, "id": "two-rules-java-enforces-that-python-does-not", "text": "Two rules Java enforces that Python does not"}, {"level": 2, "id": "this-book-checks-itself", "text": "This book checks itself"}, {"level": 2, "id": "key-takeaways", "text": "Key takeaways"}, {"level": 2, "id": "practice", "text": "Practice"}, {"level": 2, "id": "solutions", "text": "Solutions"}]}, {"slug": "01-your-first-program", "title": "Your First Program, and Why It Looks Like That", "number": 1, "part": 1, "minutes": 40, "summary": "Write, compile and run a Java program; know what every word of `public static void main(String[] args)` is for, and how to print and read arguments.", "tags": ["main", "printing", "arguments", "packages", "classpath"], "toc": [{"level": 2, "id": "the-smallest-program-java-will-run", "text": "The smallest program Java will run"}, {"level": 2, "id": "every-word-of-public-static-void-mainstring-args", "text": "Every word of public static void main(String[] args)"}, {"level": 2, "id": "printing-println-print-printf", "text": "Printing: println, print, printf"}, {"level": 2, "id": "arguments-arrive-as-an-array", "text": "Arguments arrive as an array"}, {"level": 2, "id": "a-second-class-means-a-second-file", "text": "A second class means a second file"}, {"level": 2, "id": "key-takeaways", "text": "Key takeaways"}, {"level": 2, "id": "practice", "text": "Practice"}, {"level": 2, "id": "solutions", "text": "Solutions"}]}, {"slug": "02-primitives-and-references", "title": "Primitives, References and the Two Meanings of `==`", "number": 2, "part": 1, "minutes": 55, "summary": "Know all eight primitive types and their real ranges, why integer overflow is silent, why `0.1 + 0.2` is not `0.3`, and why `==` compares references rather than values.", "tags": ["primitives", "references", "boxing", "overflow", "equality"], "toc": [{"level": 2, "id": "eight-primitives", "text": "Eight primitives"}, {"level": 2, "id": "overflow-is-silent-which-is-why-it-is-dangerous", "text": "Overflow is silent, which is why it is dangerous"}, {"level": 2, "id": "floating-point-precise-enough-to-be-trusted-not-exact-enough-to-be-com", "text": "Floating point: precise enough to be trusted, not exact enough to be compared"}, {"level": 2, "id": "widening-is-free-narrowing-needs-a-cast", "text": "Widening is free; narrowing needs a cast"}, {"level": 2, "id": "primitives-have-values-references-point-at-objects", "text": "Primitives have values; references point at objects"}, {"level": 2, "id": "char-is-a-number-that-prints-as-a-letter", "text": "char is a number that prints as a letter"}, {"level": 2, "id": "key-takeaways", "text": "Key takeaways"}, {"level": 2, "id": "practice", "text": "Practice"}, {"level": 2, "id": "solutions", "text": "Solutions"}]}];
+const CHAPTERS = [{"slug": "00-how-to-use-this-book", "title": "How to Use This Book", "number": 0, "part": 0, "minutes": 14, "summary": "Know what you are building, how a Java program actually reaches the screen, and the two rules Java enforces that will cost you an afternoon if you meet them by accident.", "tags": ["orientation", "how to read", "jvm", "javac", "tooling"], "toc": [{"level": 2, "id": "what-you-are-actually-building", "text": "What you are actually building"}, {"level": 2, "id": "one-rule-for-the-whole-book-no-third-party-libraries", "text": "One rule for the whole book: no third-party libraries"}, {"level": 2, "id": "how-a-java-program-reaches-the-screen", "text": "How a Java program reaches the screen"}, {"level": 2, "id": "two-rules-java-enforces-that-python-does-not", "text": "Two rules Java enforces that Python does not"}, {"level": 2, "id": "this-book-checks-itself", "text": "This book checks itself"}, {"level": 2, "id": "key-takeaways", "text": "Key takeaways"}, {"level": 2, "id": "practice", "text": "Practice"}, {"level": 2, "id": "solutions", "text": "Solutions"}]}, {"slug": "01-your-first-program", "title": "Your First Program, and Why It Looks Like That", "number": 1, "part": 1, "minutes": 40, "summary": "Write, compile and run a Java program; know what every word of `public static void main(String[] args)` is for, and how to print and read arguments.", "tags": ["main", "printing", "arguments", "packages", "classpath"], "toc": [{"level": 2, "id": "the-smallest-program-java-will-run", "text": "The smallest program Java will run"}, {"level": 2, "id": "every-word-of-public-static-void-mainstring-args", "text": "Every word of public static void main(String[] args)"}, {"level": 2, "id": "printing-println-print-printf", "text": "Printing: println, print, printf"}, {"level": 2, "id": "arguments-arrive-as-an-array", "text": "Arguments arrive as an array"}, {"level": 2, "id": "a-second-class-means-a-second-file", "text": "A second class means a second file"}, {"level": 2, "id": "key-takeaways", "text": "Key takeaways"}, {"level": 2, "id": "practice", "text": "Practice"}, {"level": 2, "id": "solutions", "text": "Solutions"}]}, {"slug": "02-primitives-and-references", "title": "Primitives, References and the Two Meanings of `==`", "number": 2, "part": 1, "minutes": 55, "summary": "Know all eight primitive types and their real ranges, why integer overflow is silent, why `0.1 + 0.2` is not `0.3`, and why `==` compares references rather than values.", "tags": ["primitives", "references", "boxing", "overflow", "equality"], "toc": [{"level": 2, "id": "eight-primitives", "text": "Eight primitives"}, {"level": 2, "id": "overflow-is-silent-which-is-why-it-is-dangerous", "text": "Overflow is silent, which is why it is dangerous"}, {"level": 2, "id": "floating-point-precise-enough-to-be-trusted-not-exact-enough-to-be-com", "text": "Floating point: precise enough to be trusted, not exact enough to be compared"}, {"level": 2, "id": "widening-is-free-narrowing-needs-a-cast", "text": "Widening is free; narrowing needs a cast"}, {"level": 2, "id": "primitives-have-values-references-point-at-objects", "text": "Primitives have values; references point at objects"}, {"level": 2, "id": "char-is-a-number-that-prints-as-a-letter", "text": "char is a number that prints as a letter"}, {"level": 2, "id": "key-takeaways", "text": "Key takeaways"}, {"level": 2, "id": "practice", "text": "Practice"}, {"level": 2, "id": "solutions", "text": "Solutions"}]}, {"slug": "03-strings", "title": "Strings, and Why They Never Change", "number": 3, "part": 1, "minutes": 50, "summary": "Work with immutable strings, know what the string pool does to `==`, build text with StringBuilder, and handle characters that need two `char`s.", "tags": ["strings", "immutability", "interning", "StringBuilder", "unicode"], "toc": [{"level": 2, "id": "nothing-you-do-to-a-string-changes-it", "text": "Nothing you do to a string changes it"}, {"level": 2, "id": "the-string-pool-and-why-sometimes-works-anyway", "text": "The string pool, and why == sometimes works anyway"}, {"level": 2, "id": "the-operations-you-use-every-day", "text": "The operations you use every day"}, {"level": 2, "id": "text-blocks-for-anything-multi-line", "text": "Text blocks for anything multi-line"}, {"level": 2, "id": "building-text-in-a-loop", "text": "Building text in a loop"}, {"level": 2, "id": "a-char-is-not-always-a-character", "text": "A char is not always a character"}, {"level": 2, "id": "key-takeaways", "text": "Key takeaways"}, {"level": 2, "id": "practice", "text": "Practice"}, {"level": 2, "id": "solutions", "text": "Solutions"}]}];
 </script>
 <script>/* Shared site behaviour for every language book: routing, progress, search, highlighting. */
 (function () {
