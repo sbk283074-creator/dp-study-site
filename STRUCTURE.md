@@ -37,7 +37,7 @@ The hub's nav-card row ("Choose where you want to study") numbers them **01–06
 |---|---|---|---|---|---|
 | 01 | DP Learning hub | `index.html` | `/dp-study-site/` | static HTML + shared widgets | none |
 | 02 | Question Bank | `qbank/` | `/dp-study-site/qbank/` | **React SPA** (pre-built) | **Cloudflare API** + Netlify figures |
-| 03 | Python Mastery | `PYTHON/index.html` | `/dp-study-site/PYTHON/` | single-file app, 2.2 MB | none |
+| 03 | Code Mastery | `code/` (hub) + `code/python/index.html` (book) | `/dp-study-site/code/` | platform hub + one self-contained book per track | none |
 | 04 | The World's Wife Lab | `Eng learning/index.html` | `/dp-study-site/Eng%20learning/` | single-file app, 504 KB | none |
 | 05 | Challenge Bank | `challenge-bank/site/` | `/dp-study-site/challenge-bank/site/` | **generated static** | Cloudflare (**AI only**) |
 | 06 | BPhO Round 0 | `bpho/` | `/dp-study-site/bpho/` | static SPA, hash-routed | Cloudflare (**AI only**) |
@@ -137,7 +137,7 @@ What the index covers, and the two things it cannot scrape:
 |---|---|
 | Tracked HTML (hub, 7 subjects, core, guides, both vocab spaces, qbank, Lit Lab, 5 Challenge Bank indexes, 9 paper pages) | scraped, text capped at 460 chars |
 | 331 Challenge Bank questions | `challenge-bank/site/q/*.html`, labelled with id / topic / difficulty / marks / paper |
-| `PYTHON/index.html` (2.2 MB, hash-routed) | split into its **40 `<section class="chapter" id="slug">`** blocks → `#/<slug>` deep links |
+| `code/python/index.html` (2.2 MB, hash-routed) | split into its **40 `<section class="chapter" id="slug">`** blocks → `#/<slug>` deep links |
 | **BPhO** (shell page; content is `window.BPHO_*`) | `tools/bpho_dump.mjs` evaluates the `data/*.js` globals → 435 entries (plan, modules, glossary, worked examples, 163 questions). It **auto-discovers** `modules-N.js` / `questions-N.js` by glob — a hand-maintained file list silently dropped `questions-3.js` from the index once, so new shards are now picked up automatically |
 | **World's Wife Lab** (content is one inline `const SEED` literal) | `tools/englab_dump.mjs` brace-matches and evaluates `SEED` → 30 poems with text, key passages and analysis |
 
@@ -305,6 +305,14 @@ Caveats worth remembering:
 - Two "back to DP Learning / Question Bank" links were hand-edited into the deployed file once and
   were missing from the template — rebuilding silently deleted them. They now live in
   `template.html`, so the build reproduces them. Do not hand-edit any built `index.html`.
+- **`assets/ai-widget.js` keeps its own hardcoded site map.** Moving a space means editing it in
+  three places: the `SITE` array, the path→label function, and the "suggested flow" line. It builds
+  its nav in JavaScript, so **grepping the static HTML will not find these** — when `PYTHON/` moved
+  to `code/`, all three were missed while the HTML looked clean. Check it whenever a space moves.
+  Every page also loads it from the **absolute production URL** with a cache-busting query
+  (`…/dp-study-site/assets/ai-widget.js?v=13`), so a local edit cannot be tested locally — the
+  browser fetches the *deployed* copy. **Deploying a widget change therefore needs the `?v=` number
+  bumped in every page that loads it**, or browsers keep serving the cached build.
 - `PYTHON/index.html` is now a 1.5 KB **redirect** to `../code/python/index.html`; the old 2.2 MB
   file and its sources were moved with `git mv` (history preserved).
 

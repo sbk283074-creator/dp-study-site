@@ -79,7 +79,7 @@
       items: [
         { t: "DP Learning \u2014 hub", d: "Six subjects, the DP core, the study plan.", u: "index.html" },
         { t: "Question Bank", d: "9,969 real questions \u2014 practise and review.", u: "qbank/" },
-        { t: "Python Mastery", d: "A focused, self-contained Python course.", u: "PYTHON/" },
+        { t: "Code Mastery", d: "Python, C/C++, Java, TypeScript, C#, Go and Rust \u2014 each to a website and a game.", u: "code/" },
         { t: "The World's Wife Lab", d: "Duffy's collection, poem by poem.", u: "Eng%20learning/" },
         { t: "Challenge Bank", d: "Original hard problems with full markschemes.", u: "challenge-bank/site/" },
         { t: "IB English Vocab", d: "Daily IB English Lang & Lit vocabulary with literary examples.", u: "ib-english-vocab/" },
@@ -180,6 +180,7 @@
     if (p.indexOf("/challenge-bank/") > -1) return "Challenge Bank";
     if (p.indexOf("/bpho/") > -1) return "BPhO Round 0";
     if (p.indexOf("/python") > -1) return "Python Mastery";
+    if (p.indexOf("/code/") > -1) return "Code Mastery";
     if (p.indexOf("/eng%20learning") > -1 || p.indexOf("/eng learning") > -1) return "The World's Wife Lab";
     if (p.indexOf("/ib-english-vocab/") > -1) return "IB English Vocab";
     if (p.indexOf("/vocab-review/") > -1) return "Vocabulary Review";
@@ -318,7 +319,7 @@
     out += '<div class="dp-ai-nav-group"><span class="dp-ai-nav-group-lab">Suggested flow</span>' +
       '<p class="dp-ai-nav-flow">Understand a topic in <a href="' + HUB + 'index.html">DP Learning</a> ' +
       '\u2192 test it in the <a href="' + HUB + 'qbank/">Question Bank</a> ' +
-      '\u2192 build fluency in <a href="' + HUB + 'PYTHON/">Python Mastery</a> ' +
+      '\u2192 build fluency in <a href="' + HUB + 'code/">Code Mastery</a> ' +
       '\u2192 go line by line through <a href="' + HUB + 'Eng%20learning/">The World\u2019s Wife</a> ' +
       '\u2192 stretch on the <a href="' + HUB + 'challenge-bank/site/">Challenge Bank</a> ' +
       '\u2192 then compete in <a href="' + HUB + 'bpho/">BPhO Round 0</a>.</p></div>';

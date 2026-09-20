@@ -2,7 +2,7 @@
 
 Verified by building the project exactly as printed and running it.
 
-* Build: `/Users/lucas.ma/Downloads/PYTHON/verify/taskforge/` (files copied verbatim from the chapter;
+* Build: `code/verify/python/taskforge/` (files copied verbatim from the chapter;
   only the two chapter-sanctioned additions below — `reopen` and `--week` — were added so the
   documented commands could be exercised).
 * Env: Python 3.13.12, SQLAlchemy 2.0.52, typer 0.27.2, click 8.5.0, rich 15.0.0, pytest 9.1.1,
