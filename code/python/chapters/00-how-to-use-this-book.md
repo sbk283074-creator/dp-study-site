@@ -36,11 +36,11 @@ it and write it again from memory.
 | IV · Track A | 24–30 | Build and deploy a full-stack web application with FastAPI |
 | V · Track B | 31–36 | Build and package a complete game with Pygame |
 | VI · Appendices | 37–38 | Recipes and a bank of practice problems |
-| VII · How Python Actually Works | 39–40 | See the interpreter and the object model under the features you already use |
+| VII · How Python Actually Works | 39–43 | See the interpreter, the object model, the memory rules and the descriptor protocol under the features you already use |
 | XII · Where Next | 62 | Turn the skills into evidence, and choose what to learn next |
 
 Parts VIII–XI are being written now: Algorithms & Complexity, Security, Architecture & Patterns, and
-Performance & Data at Scale. They fill chapters 41–61, and they sit deliberately *after* the applied
+Performance & Data at Scale. They fill chapters 44–61, and they sit deliberately *after* the applied
 tracks — they are what turns "I can build things" into "I can choose what to build". Each one appears
 in this table once its first chapter ships.
 
