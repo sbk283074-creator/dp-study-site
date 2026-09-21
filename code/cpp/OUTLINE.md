@@ -61,9 +61,9 @@
 - ✅ 28 Templates
 - ✅ 29 The Standard Library
 - ✅ 30 Exceptions and Error Handling
-- ★ 31 Operator Overloading and Iterators — *making your types feel built-in; writing iterators*
-- ★ 32 Value Categories and Perfect Forwarding — *lvalues/rvalues, `std::move`, `std::forward`*
-- ★ 33 C++20/23 — *concepts, ranges, `std::expected`, `std::span`, `format`*
+- ✅ 31 Operator Overloading and Iterators — *making your types feel built-in; writing iterators* — 20/20 blocks
+- ✅ 32 Value Categories and Perfect Forwarding — *lvalues/rvalues, `std::move`, `std::forward`* — 14/14 blocks
+- ✅ 33 C++20/23 — *concepts, ranges, `std::expected`, `std::span`, `format`* — 15/15 blocks, `std: c++23`
 
 ## Part V · Track A · C++ Web Service — 34–45 (12)
 

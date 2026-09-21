@@ -72,6 +72,28 @@ Any directive may take a `-files` suffix: `run-files`, `run-san-files`, `run-san
 `run-san-leak-files`, `compile-files`, `bad-files`, `warn-files`, `make-files`. The suffix changes only
 *how the block is built*, never what is asserted about the result.
 
+### Raising the language standard for one chapter
+
+The harness compiles C++ at `-std=c++17` and C at `-std=c17`. A chapter that teaches a newer
+standard puts it in its frontmatter:
+
+```
+---
+chapter: 33
+std: c++23
+...
+```
+
+Every block in that chapter is then compiled with that `-std=`. Only `c++17`, `c++20`, `c++23`,
+`c17` and `c11` are accepted — anything else is a hard error at verification time, so a typo cannot
+silently pass. The default is unchanged, which means **no existing chapter changes meaning**, and a
+chapter that needs a newer standard has to say so out loud instead of leaning on whatever the
+compiler happens to default to.
+
+Prefer a `sh run` block for the "this is C++20 and that is C++17" comparison: compile the same source
+twice inside the script and print both verdicts. That makes the standard a *measured* difference
+rather than an assertion in prose.
+
 ### A `text` fence belongs to the block directly above it
 
 The parser attaches an expected output only when the `text` fence is the **next fence in the file**.

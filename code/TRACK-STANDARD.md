@@ -167,7 +167,7 @@ Produced by `_build/check-standard.py --no-verify`. Every failure below is a rea
 | Track | Kind | Chapters | Unmet | Verdict |
 |---|---|---|---|---|
 | `python` | full | 50 / 63 | 6 | **FAIL** — chapters 49–61 unwritten; 28 chapters still have no verified block; layers 4 (security), 5 (architecture), 6 (performance) absent |
-| `cpp` | full | 35 / 67 | 9 | **FAIL** — chapters 31–33 unwritten; 0 capstones (45, 54 unwritten); 1 project of 3; layers 2–6 absent |
+| `cpp` | full | 38 / 67 | 8 | **FAIL** — ch00–37 written and contiguous, 602 blocks green; 0 capstones (45, 54 unwritten); 1 project of 3; layers 2–6 absent |
 | `java` | full | 4 / 40 | 9 | **FAIL** — early build-out; median 2,306 words is under the 2,400 floor; layers absent |
 | the other 11 | mixed | 0 | — | **not started** — build to this standard, not to a copy of Python |
 

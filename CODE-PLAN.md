@@ -35,21 +35,39 @@
 （零处 SSRF / 路径穿越 / 时序攻击）→ Part IX 64–65。审计同时确认长项应保留：
 C++ 中位章节 4,398 词（下限 2,400）、无占位章。
 
-**已完成 35 / 67（全部机器验证，整条赛道 553 个代码块全绿）：**
+**已完成 38 / 67（全部机器验证，整条赛道 602 个代码块全绿，ch00–37 连续无缺口）：**
 
 | Part | 章号 | 状态 |
 |---|---|---|
 | 0 Start Here | 00–01 | ✅ |
-| I · C Foundations | 02–09 | ✅（08 位/字节序/内存布局、09 编译流水线为本轮新增） |
-| II · C Advanced | 10–16 | ✅（15 预处理器、16 未定义行为与 Sanitizer 为本轮新增） |
+| I · C Foundations | 02–09 | ✅（08 位/字节序/内存布局、09 编译流水线为上一轮新增） |
+| II · C Advanced | 10–16 | ✅（15 预处理器、16 未定义行为与 Sanitizer 为上一轮新增） |
 | III · 项目1 静态 HTTP 服务器 | 17–21 | ✅ |
-| IV · 过渡到现代 C++ | 22–30 | 🟡 已完成 22–30；**31 运算符重载与迭代器 / 32 值类别与完美转发 / 33 C++20-23 待写** |
+| IV · 过渡到现代 C++ | 22–33 | ✅ **本轮补齐 31 / 32 / 33，Part IV 完成** |
 | V · Track A Web 服务 | 34–45 | 🟡 已完成 34–37；**38–45 待写**（SQLite 可验证：SDK 有 `sqlite3.h` + `-lsqlite3`） |
 | VI · Track B 游戏 | 46–54 | ⬜ 全部待写 |
 | VII · 附录 | 55–58 | ⬜ 全部待写 |
 | VIII · 算法与复杂度 | 59–63 | ⬜ 全部待写（审计新增） |
 | IX · 安全加固 | 64–65 | ⬜ 全部待写（审计新增） |
 | X · Where Next | 66 | ⬜ 待写 |
+
+#### 本轮（2026-09-21 晚）完成的 3 章与实测数据
+
+| 章 | 主题 | 块数 | 词数 | 关键实测结论 |
+|---|---|---|---|---|
+| 31 | Operator Overloading and Iterators | 20/20 | 6,007 | `(a + 3) += 5` **能编译**（成员 `+=` 可在右值上调用），只是修改随临时对象丢弃 → 比"编译报错"更值得讲；`std::sort` 作用在 `list` 上时，报错落在 `<algorithm>` 内部的 `__last - __first`，而非调用点 |
+| 32 | Value Categories and Perfect Forwarding | 14/14 | 4,845 | `return std::move(local)` 被 `-Wpessimizing-move` 判为**错误**（`-Werror` 下编不过），故做成 `warn` 块；`std::move` 作用在 const 对象上静默复制，无任何诊断 |
+| 33 | C++20 and C++23 | 15/15 | 4,873 | 本机 libc++ 实测可用：concepts / ranges / span / `<compare>` / `std::format`（c++20）与 `std::expected`（c++23）；**不支持** `{:.1%}` 浮点百分比格式（编译期报错）→ 已移除 |
+
+#### 本轮对工具链的唯一改动：按章 `std:` 覆盖
+
+ch33 需要 C++20/23，而校验器原来全局写死 `-std=c++17`。改动（`code/cpp/tools/verify_examples.py`）：
+
+- 新增 `chapter_std(path)`：读章节 frontmatter 的 `std:` 行，白名单 `c++17 / c++20 / c++23 / c17 / c11`，**不在白名单即硬报错**（防止拼写静默通过）。
+- `Block.__slots__` 增加 `std`，`Block.standard` 属性优先用它；`run_dir` 为每章的每个块赋值；`check_shell` 的 `-std=` 同步。
+- **默认值不变**，因此既有 35 章的语义完全不受影响；需要新标准的章必须显式声明。
+- 已写入 `code/cpp/STYLE.md`（新增"Raising the language standard for one chapter"一节）。
+- **已做"故意移除即失败"验证**：临时章带 `std: c++20` 时 1/1 绿，删掉该行后同一份代码立即红（`error: expected expression`，`<concepts>` 不可用）。探针已删除。
 
 **写作时的硬约束（实测，见 `code/cpp/STYLE.md`）：**
 - **SDL2 / Raylib / GLFW / ncurses 均未安装，且无 homebrew、无 cmake** → Track B（46–54）

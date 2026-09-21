@@ -93,6 +93,35 @@ CHAPTERS = HERE.parent / "chapters"
 CPP_STD = "c++17"
 C_STD = "c17"
 RUN_TIMEOUT = 20  # seconds
+
+# A chapter may raise the language standard for its own blocks with a `std:` line
+# in its frontmatter (`std: c++20`). The default stays at c++17/c17 so that no
+# existing chapter changes meaning, and so that a chapter *needing* a newer
+# standard has to say so out loud instead of quietly relying on the compiler's
+# default. Only these two values are accepted — a typo must fail loudly here
+# rather than be passed to the driver as a `-std=` it may or may not know.
+ALLOWED_STD = {"c++17", "c++20", "c++23", "c17", "c11"}
+
+
+def chapter_std(path: Path) -> str | None:
+    """Read `std:` from a chapter's YAML frontmatter, or None to use the default."""
+    try:
+        head = path.read_text(encoding="utf-8").split("\n", 40)[:40]
+    except OSError:
+        return None
+    if not head or head[0].strip() != "---":
+        return None
+    for line in head[1:]:
+        if line.strip() == "---":
+            break
+        m = re.match(r"^std:\s*(\S+)\s*$", line)
+        if m:
+            value = m.group(1)
+            if value not in ALLOWED_STD:
+                raise SystemExit(f"{path.name}: std: {value!r} is not one of "
+                                 f"{sorted(ALLOWED_STD)}")
+            return value
+    return None
 SAN_FLAGS = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-g"]
 
 # Fence languages that mean "this is a shell script, run it with `sh`". A fence in one
@@ -155,7 +184,7 @@ def probe_leak_detection(cxx: str) -> bool:
 # --------------------------------------------------------------------------
 class Block:
     __slots__ = ("chapter", "line", "lang", "directive", "code", "expected",
-                 "seed", "seed_lang")
+                 "seed", "seed_lang", "std")
 
     def __init__(self, chapter, line, lang, directive, code, expected=None,
                  seed=None, seed_lang=None):
@@ -170,6 +199,9 @@ class Block:
         # chapter can build a project once and then drive it from the shell.
         self.seed = seed
         self.seed_lang = seed_lang
+        # Language standard forced by the chapter's frontmatter `std:` line, or
+        # None to fall back to CPP_STD / C_STD. Set by run_dir.
+        self.std = None
 
     @property
     def where(self) -> str:
@@ -195,6 +227,8 @@ class Block:
 
     @property
     def standard(self) -> str:
+        if self.std:
+            return self.std
         return C_STD if self.is_c else CPP_STD
 
 
@@ -445,7 +479,7 @@ def check_shell(block: Block, d: str, cxx: str, cc: str) -> Result:
                 driver = cc if block.seed_lang in ("c", "h") else cxx
                 if not driver:
                     return Result(block, False, "no compiler on PATH to build the listing")
-                std = C_STD if block.seed_lang in ("c", "h") else CPP_STD
+                std = block.std or (C_STD if block.seed_lang in ("c", "h") else CPP_STD)
                 build_cmd = [driver, f"-std={std}", "-Wall", "-Wextra", "-Werror",
                              "-I", str(work), "-o", str(work / "prog")] + sources
 
@@ -659,6 +693,9 @@ def run_dir(chapters_dir: Path, filt: str, cxx: str, cc: str, leak_ok: bool,
 
     for path in files:
         blocks = parse_chapter(path)
+        std = chapter_std(path)
+        for b in blocks:
+            b.std = std
         actionable = [b for b in blocks if b.directive]
         frags = len(blocks) - len(actionable)
         if not actionable and not frags:
