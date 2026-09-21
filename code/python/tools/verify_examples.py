@@ -57,7 +57,13 @@ PYTHON = sys.executable
 
 # Directives this harness knows about. Anything else on a fence is a typo, and a
 # typo must fail loudly rather than silently downgrade the block to a fragment.
-KNOWN = {"run", "bad", "throw", "repl", "compile", ""}
+#
+# `run` also asserts that the program wrote nothing to stderr. A block that
+# emits a SyntaxWarning or a DeprecationWarning passes on stdout alone, and the
+# reader -- who does see the warning in their terminal -- is then looking at
+# output the book never showed. `run-noisy` is the explicit opt-out for a block
+# whose stderr is part of the lesson.
+KNOWN = {"run", "run-noisy", "bad", "throw", "repl", "compile", ""}
 
 
 class Block:
@@ -389,11 +395,18 @@ def check_block(block: Block) -> Result:
         last = next((l for l in reversed(err.strip().splitlines()) if l.strip()), "")
         return Result(block, True, f"failed with exit {rc}, as documented", last.strip()[:160])
 
-    # run
+    # run / run-noisy
     out, err, rc = run_script(block.code)
     if rc != 0:
         return Result(block, False, f"exited {rc}",
                       "\n".join((err or "").strip().splitlines()[-6:])[:600])
+    if d == "run" and err.strip():
+        return Result(block, False,
+                      "wrote to stderr (the reader will see output this book "
+                      "does not show)",
+                      "\n".join(err.strip().splitlines()[:4])[:400]
+                      + "\n\nif the stderr IS the lesson, tag the fence "
+                        "`run-noisy` instead.")
     if block.expected is None:
         return Result(block, True, "ran clean (no output fence to compare)")
     if norm(out) != norm(block.expected):
@@ -454,7 +467,7 @@ def self_test() -> int:
     return 1
 
 
-EXPECTED_BAD_FAILURES = 9
+EXPECTED_BAD_FAILURES = 10
 
 
 # --------------------------------------------------------------------------

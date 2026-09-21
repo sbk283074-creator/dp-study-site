@@ -2,7 +2,7 @@
 chapter: 1
 part: 1
 title: Setting Up Your Python Workbench
-summary: Install Python, run your first script, and build a workspace you will still be using at Chapter 39.
+summary: Install Python, run your first script, and build a workspace you will still be using at Chapter 62.
 minutes: 30
 tags: [installation, repl, vscode, pip]
 ---

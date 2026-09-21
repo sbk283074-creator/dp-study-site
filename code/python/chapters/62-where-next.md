@@ -1,7 +1,7 @@
 ---
-chapter: 39
-part: 6
-title: "What to Learn Next"
+chapter: 62
+part: 12
+title: "Where to Go Next"
 summary: Take an honest inventory of what you can now actually build, then pick one specialisation and one deep project to carry into the next ninety days. A roadmap for direction, portfolio, open source, interviews, and the month right after the last page.
 minutes: 25
 tags: [roadmap, portfolio, open source, career]

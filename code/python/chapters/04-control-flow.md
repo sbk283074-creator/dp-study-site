@@ -2,7 +2,7 @@
 chapter: 4
 part: 1
 title: Control Flow
-summary: Make decisions, dispatch on values, and write loops that terminate — including the input-validation loop you will use in every script from here to Chapter 39.
+summary: Make decisions, dispatch on values, and write loops that terminate — including the input-validation loop you will use in every script from here to Chapter 62.
 minutes: 35
 tags: [if/else, boolean logic, match, while loops, validation]
 ---

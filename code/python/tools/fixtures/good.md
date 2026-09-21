@@ -110,3 +110,18 @@ Traceback (most recent call last):
   ...
 StopIteration
 ```
+
+A block whose stderr IS the lesson must be able to say so. `run-noisy` is the
+explicit opt-out from the "wrote to stderr" failure; without it this block
+would fail, and the only way to fix it would be to delete the demonstration.
+
+```python run-noisy
+import warnings
+
+warnings.warn("this warning is the point of the example", stacklevel=1)
+print("and this is on stdout")
+```
+
+```text
+and this is on stdout
+```

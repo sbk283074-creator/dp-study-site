@@ -1,4 +1,4 @@
-# Fixture — every block here must FAIL, and the harness must catch all nine
+# Fixture — every block here must FAIL, and the harness must catch all ten
 
 One: a `run` block whose output does not match its fence.
 
@@ -75,4 +75,14 @@ the frames, but it must not swallow the exception the fence claims.
 Traceback (most recent call last):
   ...
 ValueError: this is not the error that was raised
+```
+
+Ten: a `run` block that writes to stderr. Its stdout is empty and its exit code
+is zero, so it passed before this check existed — while the reader, who sees the
+warning in their terminal, was looking at a warning the book never showed.
+
+```python run
+import warnings
+
+warnings.warn("the book never showed this", stacklevel=1)
 ```

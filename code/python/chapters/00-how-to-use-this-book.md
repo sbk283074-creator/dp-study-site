@@ -30,12 +30,19 @@ it and write it again from memory.
 
 | Part | Chapters | What you become able to do |
 |---|---|---|
-| I · Foundations | 1–10 | Write real scripts: read files, transform data, handle mistakes |
-| II · Leveling Up | 11–17 | Write code other people can maintain: classes, tests, type hints |
+| I · Foundations | 01–09 | Write real scripts: read files, transform data, handle mistakes |
+| II · Leveling Up | 10–17 | Write code other people can maintain: classes, tests, type hints |
 | III · Real-World Python | 18–23 | Consume APIs, query databases, automate work, ship a CLI product |
 | IV · Track A | 24–30 | Build and deploy a full-stack web application with FastAPI |
 | V · Track B | 31–36 | Build and package a complete game with Pygame |
-| VI · Appendices | 37–39 | Recipes, practice problems, and where to go next |
+| VI · Appendices | 37–38 | Recipes and a bank of practice problems |
+| VII · How Python Actually Works | 39–40 | See the interpreter and the object model under the features you already use |
+| XII · Where Next | 62 | Turn the skills into evidence, and choose what to learn next |
+
+Parts VIII–XI are being written now: Algorithms & Complexity, Security, Architecture & Patterns, and
+Performance & Data at Scale. They fill chapters 41–61, and they sit deliberately *after* the applied
+tracks — they are what turns "I can build things" into "I can choose what to build". Each one appears
+in this table once its first chapter ships.
 
 Parts I–III are mandatory and linear. After that the book forks: Track A is web development,
 Track B is game development. You can do either one, or do both — Track A and Track B do not
