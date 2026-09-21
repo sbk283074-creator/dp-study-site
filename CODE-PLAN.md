@@ -9,7 +9,7 @@
 |---|---|---|
 | **P0** | `code/` 骨架 + 泛化构建器（`_build/`，位置参数 + `languages.json` 注册表）+ 平台首页 | ✅ 完成 |
 | **P1** | Python 迁入 `code/python`（`git mv`，历史保留）+ Hub 接线 + `PYTHON/` 跳转页 + 搜索索引重建 | ✅ 完成 |
-| **P2** | C/C++ 赛道 | 🟡 进行中：ch00–ch30 已完成并全部机器验证（487 个代码块全绿） |
+| **P2** | C/C++ 赛道 | 🟡 进行中：**35 / 67 章**（ch00–16、17–30、34–37），全部机器验证 —— 整条赛道 **553 个代码块全绿**（3 个因 macOS 无泄漏检测按设计跳过）。权威清单见 `code/cpp/OUTLINE.md` |
 | **P3** | Java (+Kotlin) 赛道 | 🟡 进行中：赛道已建（STYLE + 校验器 + ch00–ch02，40 个代码块全绿） |
 | **P4** | TypeScript / C# / Go / Rust 赛道 + 迷你赛道 | ⬜ 未开始 |
 | **P5** | 终极项目 Nebula Arena（全栈多语言） | ⬜ 未开始 |
@@ -22,19 +22,41 @@
 注册 → `cd code/_build && python3 build.py`（位置参数：`python3 build.py python` 只构建一个）。
 构建器无需改动。改完跑一次 `sh code/_build/check-idempotent.sh` 确认重跑构建零字节变化。
 
-### 0.1 C/C++ 赛道剩余章节（ch31 起）
+### 0.1 C/C++ 赛道：67 章总表与缺口
 
-已定稿：Part 0(ch00–01) · Part I C 基础(02–07) · Part II C 进阶(08–12) · Part III 项目1
-用 C 写静态 HTTP 服务器(13–17) · Part IV 过渡到 C++(18–26) · Part V C++ Web 服务(27–30)。
+> **本节已于 2026-09-21 重写。** 旧版把 C/C++ 排到 ch43（44 章），那是单语言的规模；
+> Lucas 要求"两门语言合一本，至少 50 章且更深"，随后 `DEPTH-AUDIT.md` 又补上两层，
+> 因此**权威清单已迁移到 `code/cpp/OUTLINE.md`（67 章，ch00–66）**。本节只记录
+> 现状、缺口与写作约束；逐章主题以 OUTLINE 为准，避免两处失同步。
 
-| 章 | Part | 主题 | 备注 |
-|---|---|---|---|
-| 31 | V | SQLite 与 C API | SDK 里有 `sqlite3.h`（`-lsqlite3`），**可机器验证**；用 RAII 包一层 |
-| 32 | V | HTML、模板与转义 | 渲染页面 + XSS 转义 |
-| 33 | V | 并发：同时服务多个客户端 | 线程/线程池/互斥；macOS 免 `-pthread`、Linux 需要，已在 STYLE 记录 |
-| 34 | V | CAPSTONE A：完整的 Web 服务 | 收束整条 Track A |
-| 35–40 | VI | Track B：C++ 游戏 | **SDL2/Raylib/GLFW 本机未安装**，这些章的代码必须标注"未经机器验证" |
-| 41–43 | VII | 附录 | 工具链、调试、下一步 |
+**为什么要 67 章而不是 44：** ① C 与 C++ 是两门语言，各需完整主轴；② 深度审计
+（`code/DEPTH-AUDIT.md`，全库零计数取证据）发现两个真实空洞并新增两个 Part——
+**无代价理论**（全书零处 Big-O / amortised cost）→ Part VIII 59–63；**无安全层**
+（零处 SSRF / 路径穿越 / 时序攻击）→ Part IX 64–65。审计同时确认长项应保留：
+C++ 中位章节 4,398 词（下限 2,400）、无占位章。
+
+**已完成 35 / 67（全部机器验证，整条赛道 553 个代码块全绿）：**
+
+| Part | 章号 | 状态 |
+|---|---|---|
+| 0 Start Here | 00–01 | ✅ |
+| I · C Foundations | 02–09 | ✅（08 位/字节序/内存布局、09 编译流水线为本轮新增） |
+| II · C Advanced | 10–16 | ✅（15 预处理器、16 未定义行为与 Sanitizer 为本轮新增） |
+| III · 项目1 静态 HTTP 服务器 | 17–21 | ✅ |
+| IV · 过渡到现代 C++ | 22–30 | 🟡 已完成 22–30；**31 运算符重载与迭代器 / 32 值类别与完美转发 / 33 C++20-23 待写** |
+| V · Track A Web 服务 | 34–45 | 🟡 已完成 34–37；**38–45 待写**（SQLite 可验证：SDK 有 `sqlite3.h` + `-lsqlite3`） |
+| VI · Track B 游戏 | 46–54 | ⬜ 全部待写 |
+| VII · 附录 | 55–58 | ⬜ 全部待写 |
+| VIII · 算法与复杂度 | 59–63 | ⬜ 全部待写（审计新增） |
+| IX · 安全加固 | 64–65 | ⬜ 全部待写（审计新增） |
+| X · Where Next | 66 | ⬜ 待写 |
+
+**写作时的硬约束（实测，见 `code/cpp/STYLE.md`）：**
+- **SDL2 / Raylib / GLFW / ncurses 均未安装，且无 homebrew、无 cmake** → Track B（46–54）
+  的代码必须标注"未经机器验证"；可替代方案是自写软渲染器（帧缓冲 → PPM/像素断言），零依赖且可验证。
+- **UBSan 退出码仍为 0**（macOS）→ UB 演示一律 `run-san-catch`，绝不用 `run`，否则会假绿。
+- **macOS 无泄漏检测** → 泄漏演示只能标 SKIPPED，并在正文说明需在 Linux/valgrind 下复现。
+- **C++20 modules 在 Apple clang 不可用** → 不写这一章。
 
 写新章的固定流程（`code/cpp/STYLE.md` 是完整契约）：在 `tools/gen/<NN>/` 写真实源码 →
 `gen.py` 编译运行并抓取**真实**输出拼装章节 → `tools/verify_examples.py <slug>` 必须零失败 →

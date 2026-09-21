@@ -1,0 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void) {
+    int *p = malloc(sizeof(int));
+    if (!p) return 1;
+    *p = 7;
+    printf("before free: %d\n", *p);
+    free(p);
+    printf("after free:  %d\n", *p);   /* use after free */
+    return 0;
+}

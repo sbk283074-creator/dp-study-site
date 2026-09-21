@@ -29,8 +29,8 @@
 - ✅ 05 Control Flow
 - ✅ 06 Functions and the Stack
 - ✅ 07 Pointers and Memory
-- ★ 08 Bits, Bytes, Endianness and Memory Layout — *what the bytes actually are*
-- ★ 09 The Compile Pipeline, Linking and Build Systems — *preprocess → compile → assemble → link; Make and CMake*
+- ✅ 08 Bits, Bytes, Endianness and Memory Layout — *what the bytes actually are*
+- ✅ 09 The Compile Pipeline, Linking and Build Systems — *preprocess → compile → assemble → link; Make and CMake*
 
 ## Part II · C Advanced — 10–16 (7)
 
@@ -39,8 +39,8 @@
 - ✅ 12 Dynamic Memory
 - ✅ 13 Files and Streams
 - ✅ 14 Headers and Multiple Files
-- ★ 15 The Preprocessor — *macros, includes, conditionals, and why they are dangerous*
-- ★ 16 Undefined Behaviour and Sanitizers — *the contract you must not break; ASan/UBSan/TSan*
+- ✅ 15 The Preprocessor — *macros, includes, conditionals, and why they are dangerous*
+- ✅ 16 Undefined Behaviour and Sanitizers — *the contract you must not break; ASan/UBSan/TSan*
 
 ## Part III · Project 1 · A C Systems Tool — 17–21 (5)
 

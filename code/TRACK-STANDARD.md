@@ -166,15 +166,16 @@ Produced by `_build/check-standard.py --no-verify`. Every failure below is a rea
 
 | Track | Kind | Chapters | Unmet | Verdict |
 |---|---|---|---|---|
-| `python` | full | 40 / 55–70 | 7 | **FAIL** — all 5 layers absent; 28 chapters have no verified block; needs the 23 chapters in `python/OUTLINE.md` |
-| `cpp` | full | 33 / 55–70 | 9 | **FAIL** — chapters 15, 16, 31–33 unwritten; 0 capstones (45, 54 unwritten); 1 project of 3; all 5 layers absent |
-| `java` | full | 4 / 55–70 | 9 | **FAIL** — early build-out; layers absent |
+| `python` | full | 50 / 63 | 6 | **FAIL** — chapters 49–61 unwritten; 28 chapters still have no verified block; layers 4 (security), 5 (architecture), 6 (performance) absent |
+| `cpp` | full | 35 / 67 | 9 | **FAIL** — chapters 31–33 unwritten; 0 capstones (45, 54 unwritten); 1 project of 3; layers 2–6 absent |
+| `java` | full | 4 / 40 | 9 | **FAIL** — early build-out; median 2,306 words is under the 2,400 floor; layers absent |
 | the other 11 | mixed | 0 | — | **not started** — build to this standard, not to a copy of Python |
 
 What the checker *passes* is worth stating too, because it shows the existing tracks are not
-broken: Python's median chapter is 3,723 words and C++'s is 4,398 (floors 2,400); Python has its
-2 capstones and 3 projects; C++ has no stub chapters; and every existing chapter passes the
-per-chapter template except the 28 awaiting their first verified block.
+broken: Python's median chapter is 3,917 words and C++'s is 4,211 (floor 2,400); Python has its
+2 capstones and 3 projects; **every C++ chapter passes the per-chapter template**; and C++ has no
+stub chapters. Python's remaining 28 per-chapter issues are all the same one — a chapter with no
+verified block yet, which the harness build-out is clearing.
 
 No track is conformant today. That is the honest state and the reason the standard exists: it
 converts "is it deep enough?" from an opinion into a list of things to build.
