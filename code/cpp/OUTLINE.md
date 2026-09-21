@@ -1,12 +1,20 @@
 # C / C++ Mastery — the chapter outline
 
-> **60 chapters (ch00–59).** ✅ = written and machine-verified · ★ = to write.
+> **67 chapters (ch00–66).** ✅ = written and machine-verified · ★ = to write.
 >
 > Parts 0–IV keep the numbers the in-progress renumbering already gave them, so no written
 > chapter moves. Parts V–VII are the build-out. The additions beyond Lucas's 57-chapter sketch
 > are the *engineering* chapters (async I/O, sessions/auth, config/logging, end-to-end testing,
 > packaging, security, design patterns) — the content that turns "knows C++" into "can ship a
 > real project".
+>
+> **Parts VIII–IX are new (2026-09-21), from `code/DEPTH-AUDIT.md`.** The audit found the same two
+> holes here that it found in Python: **no theory of cost** (zero occurrences of Big-O, amortised
+> cost, or any data structure not built in) and **no security layer** (zero of SSRF, path
+> traversal, timing attacks, supply chain). C++ is the best language in the platform to teach
+> algorithms — the reader can *measure* the constant factor and see the cache effect — and it is
+> the language where security starts as memory safety. `59 Where to Go Next` becomes `66` so the
+> book still ends with it.
 
 ## Part 0 · Start Here — 00–01 (2)
 
@@ -86,13 +94,52 @@
 - ★ 53 Performance and Profiling (frame budget, cache, profilers)
 - ★ 54 **CAPSTONE B — The Complete Game**
 
-## Part VII · Appendices — 55–59 (5)
+## Part VII · Appendices — 55–58 (4)
 
 - ★ 55 The Toolchain, Build and Debug Reference (compilers, CMake, gdb/lldb, sanitizers, Valgrind)
 - ★ 56 Compile-time Programming and Metaprogramming (`constexpr`, `if constexpr`, `static_assert`)
 - ★ 57 C/C++ Interop, Libraries and the Ecosystem (calling C, `extern "C"`, package managers, ABI)
 - ★ 58 Design Patterns and Architecture in C++ (RAII idioms, pimpl, DI, SOLID)
-- ★ 59 Where to Go Next
+
+## Part VIII · Algorithms & Complexity — 59–63 (5) ★
+
+> New. Chapter 35 of the Python track implements A* and chapter 29 uses `std::sort`; this part is
+> what makes it possible to see that A* is graph search and to choose a container on evidence. C++
+> is the right language for it because the reader can measure the constant factor, not just the
+> exponent.
+
+- ★ 59 Complexity and the Cost Model — *Big-O, Θ and Ω, growth rates, amortised cost, `std::chrono`
+  benchmarking done properly, and the cache: why the same algorithm is an order of magnitude
+  faster here than in Python, and when it is not*
+- ★ 60 Core Data Structures — *`std::vector` growth and amortised push_back, linked lists and why
+  they usually lose to vector, `deque`, hash tables by hand (chaining vs open addressing) and
+  against `unordered_map`, binary heaps and `priority_queue`, balanced trees and `std::map` vs
+  `unordered_map`, tries; each chosen for a stated cost*
+- ★ 61 Sorting and Searching — *comparison sorts, introsort in `std::sort`, stability and
+  `stable_sort`, partial sorting with `nth_element`, `lower_bound`/`upper_bound`, and the strict
+  weak ordering bug that makes a comparator UB*
+- ★ 62 Graphs — *adjacency list vs matrix and their cache behaviour, BFS, DFS, topological sort and
+  cycle detection, Dijkstra with a `priority_queue`, and A\* as Dijkstra plus a heuristic*
+- ★ 63 Recursion, Memoisation and Dynamic Programming — *the recursion tree, overlapping
+  subproblems, memoisation with a map vs a vector, top-down vs bottom-up, edit distance, knapsack,
+  and stack depth as a real constraint in C++*
+
+## Part IX · Security and Hardening — 64–65 (2) ★
+
+> New. Chapter 16 teaches UB as a correctness problem and chapter 39 teaches escaping; this part is
+> where UB becomes an attack surface and escaping becomes one control among many.
+
+- ★ 64 Memory Safety and Undefined Behaviour as a Security Problem — *buffer overflows and off-by-one,
+  signed/unsigned integer overflow, use-after-free and double free, format string bugs, uninitialised
+  reads, `std::span` and bounds-checked access, and how each one becomes an exploit rather than a
+  crash*
+- ★ 65 Hardening Real Programs — *parsing untrusted input safely, TOCTOU, path traversal, injection,
+  constant-time comparison, what never to implement yourself (crypto), and the mitigations:
+  `_FORTIFY_SOURCE`, stack canaries, ASLR, static analysis, and fuzzing with libFuzzer*
+
+## Part X · Where Next — 66 (1)
+
+- ★ 66 Where to Go Next — *moved from 59, rewritten to account for Parts VIII–IX*
 
 ---
 
@@ -108,6 +155,8 @@
 - **Engineering, not just language.** Build systems (09), end-to-end testing (44), profiling (53),
   packaging/ABI (57), architecture (58). Python covers these in `ch11`/`ch22`/`ch29`; the C++
   track now does too.
+- **The two layers the depth audit found missing are now present** — a theory of cost (59–63) and
+  security (64–65). `DEPTH-AUDIT.md` has the measurements that motivated them.
 
 Optional further additions if wanted later (each needs a small renumber of 34–37): custom memory
 allocators, a serialization/binary-protocol chapter, and a dedicated version-control/CI chapter.

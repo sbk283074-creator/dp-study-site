@@ -90,6 +90,18 @@ are not.
 
 Keyboard shortcuts: `←` and `→` move between chapters, `/` jumps to search.
 
+:::pitfall Collecting resources instead of finishing one
+The failure mode that ends most self-taught attempts is not difficulty. It is opening a second
+book, a third course, and a fourth video series the first time a topic feels hard — because
+starting something new feels like progress and being confused does not. It is not progress. You
+now have four half-finished introductions and no working programs.
+
+When a chapter here is hard, the fix is to slow down inside it, not to leave it: re-read the
+section, type the example again from scratch, and break it deliberately to see what happens. If
+you still cannot make it work, ask about that specific line and move on — a chapter you finished
+badly is worth more than three you abandoned cleanly.
+:::
+
 ## Key takeaways
 
 - Type the code; never copy-paste it. Muscle memory is the point.
@@ -97,6 +109,7 @@ Keyboard shortcuts: `←` and `→` move between chapters, `/` jumps to search.
 - Attempt every exercise before opening the solutions section.
 - Parts I–III are linear; Tracks A and B are independent choices afterwards.
 - Keep one `~/python-mastery` folder with one subfolder per chapter.
+- Finishing a chapter badly beats abandoning three cleanly — the cost is the topic you skipped, not the time you spent.
 
 ## Practice
 
