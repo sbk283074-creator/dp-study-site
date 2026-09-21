@@ -41,7 +41,7 @@ Regexes are full of backslashes, and backslashes in normal Python strings start 
 `"\b"` is a backspace character, not a word boundary. A **raw string** — prefix `r` — passes
 backslashes through untouched:
 
-```python
+```python repl
 >>> len("\b")        # one character: backspace
 1
 >>> len(r"\b")       # two characters: backslash, b
@@ -342,13 +342,13 @@ Two rules that prevent nearly every timezone bug:
 
 ### Floats are binary, and binary cannot hold `0.1`
 
-```python
+```python repl
 >>> 0.1 + 0.2
 0.30000000000000004
 >>> 0.1 + 0.2 == 0.3
 False
 >>> f"{0.1:.30f}"
-'0.100000000000000005551115123125782'
+'0.100000000000000005551115123126'
 ```
 
 Floats are stored in base 2, and just as `1/3` has no exact decimal representation, `0.1` has no
@@ -566,19 +566,26 @@ Three follow-ups that stop this recurring:
 :::
 
 :::pitfall `0.1 + 0.2` is not `0.3`
-```python
+```python repl
 >>> 0.1 + 0.2 == 0.3
 False
 >>> 0.1 + 0.2
 0.30000000000000004
 >>> sum([0.1] * 10) == 1.0
-False
+True
 ```
 
 Computers store floats in binary, and `0.1` has no exact binary representation — the stored value
 is the closest approximation, so arithmetic on it carries a tiny error that sometimes becomes
 visible and sometimes cancels out. That unpredictability is what makes it dangerous: your test
 passes, and the customer's invoice does not.
+
+Note that last line, and note it carefully, because it is the trap in miniature. It is `True` for a
+reason you must not rely on. Since Python 3.12, `sum()` adds floats with compensated (Neumaier)
+summation, which recovers the lost bits when the errors happen to cancel. `+` is still
+uncompensated — hence `False` two lines above — and on Python 3.11 and earlier this same expression
+returns `False`. An arithmetic result that changes with the interpreter version is exactly the
+ground you do not want your money code standing on.
 
 Three responses, and which to use when:
 

@@ -18,7 +18,7 @@ that causes bugs for years.
 A **value** is a piece of data: `42`, `3.14`, `"hello"`, `True`. Every value has a **type**, and
 the type decides what you are allowed to do with it. Ask any value its type with `type()`:
 
-```python
+```python repl
 >>> type(42)
 <class 'int'>
 >>> type(3.14)
@@ -50,7 +50,7 @@ Here is the model to delete from your head: a variable is a box, and assignment 
 the box. The accurate model: **a value exists somewhere in memory, and a name is a label stuck to
 it.** Assignment sticks a label on a value. Reassignment moves the label to a different value.
 
-```python
+```python repl
 >>> x = 10
 >>> y = x          # y now labels the same value 10
 >>> x = 20         # x moves to a new value
@@ -62,7 +62,7 @@ Moving `x` did not touch `y`. They were labels on the same value, and then `x` w
 stuck somewhere else. For numbers this is invisible, because numbers can never change. It becomes
 visible with values that *can* change — lists and dicts, which arrive in Chapter 6:
 
-```python
+```python repl
 >>> a = [1, 2, 3]
 >>> b = a          # b labels the SAME list — no copy is made
 >>> b.append(4)
@@ -83,7 +83,7 @@ The rules are short:
 - Case-sensitive: `total`, `Total`, and `TOTAL` are three different names.
 - Cannot be a reserved keyword (`if`, `for`, `class`, `return`, `None`, `True`...).
 
-```python
+```python repl
 >>> import keyword
 >>> keyword.iskeyword("for")
 True
@@ -105,7 +105,7 @@ them, and following them means your code looks like everyone else's on day one o
 
 You can assign several names at once, which is how you write initial values compactly:
 
-```python
+```python repl
 >>> width, height = 1920, 1080
 >>> x = y = 0
 ```
@@ -113,7 +113,7 @@ You can assign several names at once, which is how you write initial values comp
 The first line is **tuple unpacking**: the values on the right are packed into a tuple and pulled
 apart into the names on the left. The classic use is a swap, which needs no temporary variable:
 
-```python
+```python repl
 >>> a, b = 1, 2
 >>> a, b = b, a
 >>> a, b
@@ -123,7 +123,7 @@ apart into the names on the left. The classic use is a swap, which needs no temp
 Unpacking also unpacks sequences, which is how you split a `"city, country"` string (Chapter 3
 covers a cleaner way with `partition`):
 
-```python
+```python repl
 >>> first, rest = "Ada Lovelace".split(maxsplit=1)
 >>> first, rest
 ('Ada', 'Lovelace')
@@ -162,7 +162,7 @@ want an integer answer, use `//`.
 `//` rounds **down** (toward negative infinity, not toward zero), and `%` returns a remainder
 whose sign matches the divisor. This surprises people exactly once:
 
-```python
+```python repl
 >>> 7 // 2, -7 // 2
 (3, -4)
 >>> 7 % 3, -7 % 3
@@ -172,9 +172,9 @@ whose sign matches the divisor. This surprises people exactly once:
 Modulo is the workhorse for "wrap around" logic: `minutes % 60` gives you the minute of the hour,
 `(hour + 9) % 24` gives you a time nine hours from now. `divmod(a, b)` hands you both at once:
 
-```python
->>> divmod(200, 60)
-(3, 20)          # 200 seconds is 3 minutes 20 seconds
+```python repl
+>>> divmod(200, 60)     # 200 seconds is 3 minutes 20 seconds
+(3, 20)
 ```
 
 ### Operator precedence
@@ -201,14 +201,21 @@ after you.
 Data rarely arrives in the type you want. `input()` gives you strings; files give you strings;
 APIs give you whatever the server felt like. Convert explicitly:
 
-```python
->>> int("42")           # 42
->>> int(3.9)            # 3   — truncates toward zero, does not round
->>> int(-3.9)           # -3
->>> float("3.5")        # 3.5
->>> str(42)             # '42'
->>> bool("")            # False
->>> bool("False")       # True  — any non-empty string is true!
+```python repl
+>>> int("42")           # a string of digits converts
+42
+>>> int(3.9)            # truncates toward zero, does not round
+3
+>>> int(-3.9)
+-3
+>>> float("3.5")
+3.5
+>>> str(42)
+'42'
+>>> bool("")            # the empty string is falsy
+False
+>>> bool("False")       # any non-empty string is true!
+True
 ```
 
 Two rules that will save you:
@@ -320,7 +327,7 @@ a properly aligned report column.
 `==` asks "are these values equal?" `is` asks "are these labels on the very same object?" They are
 different questions, and Python will let you confuse them:
 
-```python
+```python repl
 >>> a = 500
 >>> b = 500
 >>> a == b          # True  — same value
@@ -352,9 +359,9 @@ prints `151515` where the total should be `45`, and another crashes with
 The CSV reader hands you strings (Chapter 19 shows it doing exactly this), so `quantity` is `"3"`
 and `price` is `15`. Watch what each combination does:
 
-```python
+```python repl
 >>> "3" * 15          # string repetition, not multiplication
-'333333333333333333333333333333'
+'333333333333333'
 >>> "3" * 15.0        # float repeats are rejected outright
 TypeError: can't multiply sequence by non-int of type 'float'
 ```

@@ -18,7 +18,7 @@ six months from now.
 `for` does not need a list. It needs an **iterable** — anything that can hand out its items one at
 a time. Lists, tuples, strings, dicts, sets, files, and `range()` all qualify.
 
-```python
+```python repl
 >>> for ch in "python":
 ...     print(ch.upper(), end="")
 PYTHON
@@ -36,7 +36,7 @@ if you want more.
 `range(stop)`, `range(start, stop)`, `range(start, stop, step)` produces numbers lazily without
 building a list, which means `range(10_000_000)` costs nothing.
 
-```python
+```python repl
 >>> list(range(5))
 [0, 1, 2, 3, 4]
 >>> list(range(2, 10, 3))

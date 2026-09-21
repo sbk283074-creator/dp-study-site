@@ -62,6 +62,52 @@ Part numbers:
 - Lists: `-` for bullets, `1.` for ordered. Indent 2 spaces for nesting.
 - Do **not** use raw HTML, `<details>`, footnotes, or emoji.
 
+## The verification contract — READ THIS BEFORE WRITING A FENCE
+
+`tools/verify_examples.py` reads a **directive** off every fence and turns it into a check. The
+directive is the second word on the opening fence line. It is not rendered as a language label
+(only the first word is), so it costs the reader nothing and buys the book a gate.
+
+    ```python run       a complete program. Run it; compare stdout against the `text`
+                        fence that follows, if there is one.
+    ```python repl      a REPL transcript. Every `>>>` entry is pushed through a real
+                        InteractiveConsole and its output compared line for line.
+    ```python bad       code that must FAIL. Requires a non-zero exit and, if a `text`
+                        fence follows, the quoted words in stderr.
+    ```python throw     an alias of `bad`, for failures that are exceptions.
+    ```python compile   must parse but must NOT run (needs arguments, opens a socket,
+                        blocks on input).
+    ```sh run           a shell script; stdout is compared against the `text` fence.
+    ```python           a fragment. NOT checked. Use sparingly.
+
+A `text` fence belongs to the block **directly above it**. Blank lines are skipped; a paragraph or
+another fence in between breaks the attachment silently. An unknown directive is a hard failure —
+a typo must never quietly downgrade a block to a fragment.
+
+Rules that follow from this:
+
+- **A `text` fence is a claim, and it is checked.** If a transcript is paraphrased, rounded, or
+  stale, the build fails. Do not write an output fence you have not seen the program produce.
+- **Generate transcripts, do not retype them.** Run the code and paste what it printed.
+- **A transcript must replay.** Tag it `repl` only if every entry's output is what a real REPL
+  prints. Two consequences worth knowing, because they are easy to get wrong:
+  - A comment may trail an **input** line (`>>> x = 1  # set it`) but never an **output** line —
+    the REPL does not echo comments, so a comment after the output is a false claim.
+  - The REPL shows the **result** of an expression, and it shows it with `repr()`. So
+    `f"{name!r}"` prints `"'Ada\\t'"`, not `"'Ada\t'"`: the value is a string, and the REPL reprs
+    that string, escaping the backslash a second time.
+- **A worked answer to an exercise is not a transcript.** `>>> fizzbuzz(15)` in a chapter that
+  never defines `fizzbuzz` is illustration. Leave it as a bare fragment rather than tagging it
+  `repl`; the harness cannot and should not replay it.
+- **A transcript that calls a name from an earlier fence is a session fragment.** The harness
+  starts a fresh console per fence. Do not tag these `repl` until session continuity exists.
+- **Do not put machine-specific output in a `text` fence.** `sys.path` on your laptop is not a
+  fact about the reader's. Show it as an illustrative fragment, or print something stable.
+- Run `python3 tools/verify_examples.py` before you call a chapter done, and
+  `python3 tools/verify_examples.py --self-test` after you touch the harness. A gate that cannot
+  fail is not a gate: new harness behaviour needs a `must_pass` case in `fixtures/good.md` and a
+  `must_fail` case in `fixtures/bad.md`.
+
 ## Content rules
 
 - Every runnable snippet must be complete and copy-pasteable, and must actually work on

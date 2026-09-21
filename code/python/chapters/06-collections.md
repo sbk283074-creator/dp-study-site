@@ -45,7 +45,7 @@ in Chapter 4.
 
 ### The methods that matter
 
-```python
+```python repl
 >>> tasks = ["write chapter", "review PR"]
 >>> tasks.append("ship build")          # add one item to the end
 >>> tasks.extend(["clean up", "rest"])  # add every item from another iterable
@@ -53,6 +53,7 @@ in Chapter 4.
 >>> tasks.remove("clean up")            # delete the first matching *value*
 >>> last = tasks.pop()                  # remove and return the last item
 >>> tasks.pop(0)                        # remove and return item at index 0
+'write chapter'
 >>> tasks.index("review PR")
 1
 >>> len(tasks)
@@ -68,7 +69,7 @@ The distinction beginners blur: `append` adds **one element**, `extend` adds **s
 new sorted list. Both accept `key=` (a function applied to each item to decide its ranking) and
 `reverse=True`.
 
-```python
+```python repl
 >>> names = ["ada", "Grace", "linus", "Barbara"]
 >>> sorted(names)                          # default: by character code, so capitals first
 ['Barbara', 'Grace', 'ada', 'linus']
@@ -76,8 +77,8 @@ new sorted list. Both accept `key=` (a function applied to each item to decide i
 ['ada', 'Barbara', 'Grace', 'linus']
 >>> sorted(names, key=len)                 # shortest first
 ['ada', 'Grace', 'linus', 'Barbara']
->>> names
-['ada', 'Grace', 'linus', 'Barbara']      # untouched
+>>> names                                 # untouched: sorted() left it alone
+['ada', 'Grace', 'linus', 'Barbara']
 
 >>> numbers = [4, 8, 15, 16, 23, 42]
 >>> numbers.sort(reverse=True)
@@ -100,12 +101,12 @@ a new value.
 
 Assignment never copies. It binds a second name to the same object.
 
-```python
+```python repl
 >>> a = [1, 2, 3]
 >>> b = a          # b is another name for the SAME list
 >>> b.append(4)
->>> a
-[1, 2, 3, 4]       # a changed too
+>>> a                        # a changed too — b was never a copy
+[1, 2, 3, 4]
 ```
 
 This bites hard when you pass a list into a function and the function mutates it — the caller's
@@ -122,12 +123,12 @@ list changes. To actually copy:
 `list(a)`, `a.copy()`, and `a[:]` copy only the outer container. If the list holds other lists or
 dicts, those inner objects are still shared:
 
-```python
+```python repl
 >>> matrix = [[1, 2], [3, 4]]
 >>> copy = matrix.copy()
 >>> copy[0].append(99)
->>> matrix
-[[1, 2, 99], [3, 4]]       # the original changed
+>>> matrix                      # the original changed: copy was shallow
+[[1, 2, 99], [3, 4]]
 ```
 
 Use `copy.deepcopy()` when the structure is nested. It is slower, so only reach for it when you
@@ -139,7 +140,7 @@ genuinely have nested mutables.
 A tuple is a list you promise not to change. Write it with parentheses (or with no brackets at
 all — the comma makes the tuple, not the parens).
 
-```python
+```python repl
 >>> point = (3, 4)
 >>> point[0] = 99
 TypeError: 'tuple' object does not support item assignment
@@ -149,7 +150,7 @@ That immutability buys you three things:
 
 1. **Packing and unpacking.** Multiple assignment is tuple packing and unpacking wearing a
    disguise.
-   ```python
+   ```python repl
    >>> name, age = ("ada", 36)        # unpack
    >>> name, age = age, name          # swap, no temp variable
    >>> first, *rest = [1, 2, 3, 4]    # starred unpacking
@@ -171,7 +172,7 @@ forgetting it is a classic source of "why is this an int?" bugs.
 You need to find a value by a label — a username, an ID, a config key — rather than by index.
 That's a dict: unordered-in-principle pairs of key and value, with O(1) lookup.
 
-```python
+```python repl
 >>> user = {"name": "ada", "age": 36, "active": True}
 >>> user["name"]
 'ada'
@@ -187,7 +188,7 @@ expected outcome. That single distinction makes your intentions readable.
 
 ### The methods worth memorising
 
-```python
+```python repl
 >>> counts = {}
 >>> for word in ["red", "blue", "red", "green"]:
 ...     counts[word] = counts.get(word, 0) + 1
@@ -221,7 +222,7 @@ in. Treat it as guaranteed, not accidental; JSON round-trips and config files de
 
 A dict comprehension builds one in a single expression (Chapter 7 goes deep on comprehensions):
 
-```python
+```python repl
 >>> {name: len(name) for name in ["ada", "grace", "linus"]}
 {'ada': 3, 'grace': 5, 'linus': 5}
 ```
@@ -235,7 +236,7 @@ You need to throw away duplicates, or ask "have I seen this before?" a million t
 set: unordered, unique, and blindingly fast at `in` — a set membership check is roughly constant
 time no matter how big it gets, while a list check scans every element.
 
-```python
+```python repl
 >>> tags = {"python", "web", "python", "game"}
 >>> sorted(tags)
 ['game', 'python', 'web']
@@ -247,7 +248,7 @@ False
 
 Set algebra maps directly onto real questions:
 
-```python
+```python repl
 >>> python_devs = {"ada", "grace", "linus"}
 >>> game_devs = {"linus", "margaret"}
 >>> sorted(python_devs | game_devs)          # union — everyone

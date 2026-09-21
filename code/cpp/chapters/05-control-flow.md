@@ -456,7 +456,7 @@ total 42
 The alternative without `goto` is a chain of nested `if`s or a repeated block of cleanup code, and
 both get worse with every resource you add. With `goto`, there is exactly one cleanup path, it is
 reached from every failure point, and `free(NULL)` is defined to do nothing — so the labels are safe
-even when nothing was allocated. Chapter 7 will make this pattern much less necessary, and Chapter 24
+even when nothing was allocated. Chapter 7 will make this pattern much less necessary, and Chapter 28
 removes it entirely with `std::unique_ptr`. Until then it is the honest answer.
 
 Two rules keep it safe: jump **forwards** to a label at the end of the function, and never jump over a

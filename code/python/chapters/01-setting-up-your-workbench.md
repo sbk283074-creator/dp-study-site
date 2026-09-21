@@ -58,7 +58,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 The `>>>` is the prompt. Type an expression, press Enter, and Python prints the result:
 
-```python
+```python repl
 >>> 2 + 3
 5
 >>> "hello".upper()
@@ -271,7 +271,7 @@ different fix, and the error message tells you which world you are in.
 ## Solutions
 
 :::solution Exercise 2
-```python
+```python repl
 >>> 7 * 6
 42
 >>> "python".replace("p", "P")

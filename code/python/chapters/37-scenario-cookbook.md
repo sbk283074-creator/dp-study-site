@@ -493,10 +493,10 @@ point cannot represent most decimal fractions exactly.
 :::
 
 :::solution Use `Decimal` for money, and round once at the boundary
-```python
+```python repl
 >>> 0.1 + 0.2
 0.30000000000000004
->>> sum([0.1] * 10) == 1.0
+>>> 0.1 * 3 == 0.3
 False
 ```
 

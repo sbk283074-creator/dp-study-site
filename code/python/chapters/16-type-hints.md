@@ -36,7 +36,7 @@ A bare annotation with no value is legal and useful: `cache: dict[str, int]` dec
 for a type checker without creating anything. Parameters use `name: type`, returns use `-> type`
 after the closing paren, and everything is available on the function object:
 
-```python
+```python repl
 >>> def double(x: int) -> int: ...
 >>> double.__annotations__
 {'x': <class 'int'>, 'return': <class 'int'>}

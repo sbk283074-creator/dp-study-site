@@ -29,7 +29,7 @@ most of what makes error messages readable.
 The distinction that will save you the most time is compiler versus linker. If the message names a
 line of *your* code, it is the compiler. If it says something like `undefined reference to 'foo'`,
 the compiler was happy and the linker cannot find `foo`'s body — usually because you forgot to
-compile the file that defines it, or misspelled it in a declaration. Chapter 11 is entirely about
+compile the file that defines it, or misspelled it in a declaration. Chapter 13 is entirely about
 that distinction.
 
 ## Hello, world, and the command that builds it
@@ -237,7 +237,7 @@ line number.
 `AddressSanitizer` can also report memory you allocated and never freed. That part is **not
 available on macOS** — Apple's clang ships no LeakSanitizer, and asking for it is ignored. So a
 leaking program can exit cleanly here. If you want leak checking on a Mac, install `valgrind` or
-run the same build on Linux. Chapter 9 covers leaks properly, and says which tool catches them on
+run the same build on Linux. Chapter 11 covers leaks properly, and says which tool catches them on
 which platform.
 :::
 
@@ -262,7 +262,7 @@ Makefile error and the message (`missing separator`) does not mention tabs.
 
 Now `make` builds, and `make clean` tidies up. Make also earns its keep through *incremental*
 builds: it compares timestamps and only rebuilds what changed. On a one-file project that is
-invisible; on the 40-file project in Chapter 18 it is the difference between a two-second and a
+invisible; on the 40-file project in Chapter 22 it is the difference between a two-second and a
 two-minute edit-build-test loop.
 
 ## The debugger, briefly

@@ -165,7 +165,7 @@ by hand in C.
 - [ ] Run the C++ example, then add `40` to the vector and confirm it prints `100` **without
       touching anything else**.
 - [ ] Write down, in one sentence each, why the C version can silently be wrong and the C++ version
-      cannot. Keep this note; you will re-read it in Chapter 20.
+      cannot. Keep this note; you will re-read it in Chapter 24.
 
 ## Solutions
 

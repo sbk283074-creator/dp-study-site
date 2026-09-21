@@ -39,11 +39,11 @@ it. Confusing those two is most of the difficulty in this chapter.
 Passing a function to another function is how `sorted(key=...)`, `map()`, and `filter()` worked
 back in Chapter 7:
 
-```python
+```python repl
 >>> sorted(["bb", "a", "ccc"], key=len)
 ['a', 'bb', 'ccc']
->>> sorted(["bb", "a", "ccc"], key=lambda s: s[-1])
-['ccc', 'a', 'bb']
+>>> sorted(["bb", "a", "ccc"], key=lambda s: s[-1], reverse=True)
+['ccc', 'bb', 'a']
 ```
 
 ## Inner functions and closures

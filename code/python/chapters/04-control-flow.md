@@ -30,7 +30,7 @@ Note `3 == 3.0` is `True` — Python compares numeric values across types rather
 
 Python also lets you **chain** comparisons the way you would write them in maths:
 
-```python
+```python repl
 >>> age = 30
 >>> 18 <= age < 65
 True
@@ -101,7 +101,7 @@ Both `and` and `or` **short-circuit**: they stop evaluating as soon as the answe
 stops at the first falsey operand; `or` stops at the first truthy one. That is not a curiosity —
 it is how you write safe guards:
 
-```python
+```python repl
 >>> total, count = 10, 0
 >>> if count != 0 and total / count > 2:
 ...     print("above target")
@@ -352,7 +352,7 @@ before anyone notices, and the post-mortem is uncomfortable.
 The expression does not say what its author meant. `or` takes two complete conditions, and a
 non-empty string on its own is truthy:
 
-```python
+```python repl
 >>> day = "Wed"
 >>> day == "Sat" or "Sun"          # parsed as (day == "Sat") or ("Sun")
 'Sun'

@@ -61,7 +61,7 @@ values.
 
 If a function has no `return`, or a `return` with no value, it returns `None`:
 
-```python
+```python repl
 >>> def nothing():
 ...     pass
 >>> print(nothing())
@@ -70,7 +70,7 @@ None
 
 That is why `result` above was `None`. It is also the source of a classic bug:
 
-```python
+```python repl
 >>> numbers = [3, 1, 2]
 >>> numbers = numbers.sort()      # sort() returns None!
 ```
@@ -303,10 +303,10 @@ take a function and return a better one.
 with no name allowed. It earns its place when a function is needed for exactly one moment and is
 trivial:
 
-```python
+```python repl
 >>> names = ["ada", "grace", "alan"]
 >>> sorted(names, key=lambda name: name[-1])
-['ada', 'alan', 'grace']
+['ada', 'grace', 'alan']
 ```
 
 It stops being a good idea the moment the expression grows. This is bad:

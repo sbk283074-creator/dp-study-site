@@ -102,7 +102,7 @@ incompatible pointer types initializing 'double *' with an expression of type 'i
 The program builds and runs. It reads eight bytes as a `double` when only four were allocated, so it
 consumes four bytes of whatever happens to sit next to `count`, and prints a number that is not 5 and
 never was. This is the case that makes C++ worth the extra ceremony: the identical code is a hard
-error there (Chapter 20), and you will not miss the warning-as-error once you have spent an afternoon
+error there (Chapter 24), and you will not miss the warning-as-error once you have spent an afternoon
 chasing a number that was never 5.
 
 ## Pointer arithmetic walks in elements
@@ -497,7 +497,7 @@ and refuses to write past it, which is the same contract `strcpy` does not offer
 
 The third option, when the result genuinely must outlive the call, is for the function to `malloc` and
 for the caller to `free`. That works, but it splits the ownership across two functions and the rule
-"whoever allocates, frees" is the first thing to get lost in a codebase. Chapter 24 replaces the whole
+"whoever allocates, frees" is the first thing to get lost in a codebase. Chapter 28 replaces the whole
 arrangement with `std::string` and `std::unique_ptr`, where the type carries the ownership and the
 compiler enforces it. Until then, the caller-owns-the-buffer shape is the one to reach for.
 :::

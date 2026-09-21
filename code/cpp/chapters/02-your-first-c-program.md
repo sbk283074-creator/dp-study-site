@@ -36,7 +36,7 @@ Four lines do real work, and each one is worth naming.
 standard input/output header in at that point, which is where the compiler learns that `printf`
 exists and what arguments it takes. Without it, `printf` is an unknown name and the build fails.
 The angle brackets mean "look in the system include directories"; `"myfile.h"` with quotes means
-"look next to this file first" (Chapter 11).
+"look next to this file first" (Chapter 13).
 
 **`int main(void)`** is the entry point. `int` is the return type — `main` gives a number back.
 `(void)` means "takes no arguments", which in C is not the same as `()`: an empty pair of
@@ -180,7 +180,7 @@ count as a double: 0.000000
 This one builds cleanly under `-Wall -Wextra -Werror` and prints nonsense, because by the time the
 format string meets the argument the compiler has lost the connection between them — the argument's
 type was erased at the `...`. Wrapper functions that forward a format string are exactly where this
-bug lives in real code. Chapter 15 shows how to hand the compiler back enough information to check
+bug lives in real code. Chapter 19 shows how to hand the compiler back enough information to check
 through the wrapper.
 :::
 
@@ -258,7 +258,7 @@ Two things there are not optional. The `&` in `&width` passes the **address** of
 its value — `scanf` needs to know where to write. Forgetting the `&` is the single most common
 `scanf` mistake and it usually crashes. And checking `scanf`'s return value, which is the number of
 items it successfully converted, is how you find out that the user typed `three` instead of `3`.
-Chapter 12 makes that check systematic.
+Chapter 14 makes that check systematic.
 
 :::scenario The script that "worked" and then deleted the wrong files
 A build script runs `make clean`, then `rm -rf build/`, then copies artifacts. One day `make clean`

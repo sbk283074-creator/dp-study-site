@@ -68,7 +68,7 @@ error, because the final backslash escapes the closing quote.
 
 A string is a sequence of characters, numbered from `0`. Negative indices count from the end:
 
-```python
+```python repl
 >>> word = "Python"
 >>> word[0], word[5], word[-1]
 ('P', 'n', 'n')
@@ -110,7 +110,7 @@ now; off-by-one errors in slicing are the most common bug in string code.
 
 You cannot change a character in place:
 
-```python
+```python repl
 >>> word = "Python"
 >>> word[0] = "J"
 TypeError: 'str' object does not support item assignment
@@ -119,7 +119,7 @@ TypeError: 'str' object does not support item assignment
 This is not a limitation to work around, it is the design. Every string method **returns a new
 string**; the original never changes:
 
-```python
+```python repl
 >>> name = "ada"
 >>> name.upper()      # produces a new string
 'ADA'
@@ -161,7 +161,7 @@ territory.
 
 `startswith()` and `endswith()` accept a tuple of candidates, which beats chaining `or`:
 
-```python
+```python repl
 >>> "report.pdf".endswith((".pdf", ".txt", ".md"))
 True
 ```
@@ -169,7 +169,7 @@ True
 `partition()` is the right tool for `key = value` lines, because it always returns exactly three
 items and never raises:
 
-```python
+```python repl
 >>> "timeout=30".partition("=")
 ('timeout', '=', '30')
 >>> "timeout".partition("=")
@@ -178,7 +178,7 @@ items and never raises:
 
 Membership testing uses `in`, which reads like English and answers with a `bool`:
 
-```python
+```python repl
 >>> "love" in "Ada Lovelace"
 False
 >>> "Love" in "Ada Lovelace"
@@ -192,7 +192,7 @@ Note the case sensitivity. Caseless searching means normalising both sides first
 `split()` with no argument splits on **any run of whitespace** and discards empty fields.
 `split(" ")` splits on single spaces and keeps the empties. Given messy input:
 
-```python
+```python repl
 >>> "  Ada   Lovelace ".split()
 ['Ada', 'Lovelace']
 >>> "  Ada   Lovelace ".split(" ")
@@ -204,7 +204,7 @@ Reach for `split(" ")` only when empty fields are meaningful — a fixed-width f
 — and prefer the `csv` module (Chapter 19) for real tabular data. To collapse messy whitespace in
 text, combine the two:
 
-```python
+```python repl
 >>> " ".join("  Ada   Lovelace  ".split())
 'Ada Lovelace'
 ```
@@ -248,7 +248,7 @@ Bolt                  240
 
 Percentages use `%`, which multiplies by 100 and adds the sign for you:
 
-```python
+```python repl
 >>> f"{0.125:.1%}", f"{0.125:.2%}"
 ('12.5%', '12.50%')
 ```
@@ -266,14 +266,16 @@ print(f"{qty} @ {price:.2f} = {price * qty:,.2f}")
 
 When you want a value with a custom repr, add `!r` (or `!s`, `!a`):
 
-```python
+```python repl
 >>> name = "Ada\t"
 >>> f"{name!r}"
-"'Ada\t'"
+"'Ada\\t'"
 ```
 
-The extra quotes and the visible `\t` are the point: `!r` shows you what is really in the string,
-which is how you spot invisible whitespace.
+The extra quotes and the doubled backslash are the point. `!r` returns a *string* whose contents
+are `'Ada\t'`, and the REPL then displays that string with `repr()` as well — so the backslash is
+escaped a second time on screen. The value really holds a tab character; the display says `\\t`.
+That gap between the value and its display is exactly how you spot invisible whitespace.
 
 ### The `=` debugger spec
 
@@ -349,7 +351,7 @@ Text is an abstraction; files and networks move **bytes**. A `str` is a sequence
 characters; `bytes` is a sequence of 0–255 integers. Convert with `encode()` and `decode()`, and
 always name the encoding:
 
-```python
+```python repl
 >>> text = "café"
 >>> data = text.encode("utf-8")
 >>> data
@@ -366,9 +368,9 @@ most `str` methods but no formatting and no f-strings.
 :::pitfall Mixing `str` and `bytes`
 Python will not guess an encoding for you:
 
-```python
+```python repl
 >>> "café" + b"!"
-TypeError: can't concat str to bytes
+TypeError: can only concatenate str (not "bytes") to str
 >>> b"caf\xc3\xa9".upper()
 b'CAF\xc3\xa9'
 ```
@@ -456,7 +458,7 @@ blank users. The dev environment never showed it.
 Logs are usually padded for alignment, so `- - admin - - -` style lines contain runs of spaces.
 `split(" ")` treats each space as a delimiter and hands back the empty fields between them:
 
-```python
+```python repl
 >>> line = "2026-08-01 09:14:02  admin   login"
 >>> parts = line.split(" ")
 >>> parts

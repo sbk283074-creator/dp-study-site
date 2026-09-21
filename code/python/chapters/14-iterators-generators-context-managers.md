@@ -20,7 +20,7 @@ An **iterable** is anything you can loop over: a list, a string, a dict, a file 
 `range`. An **iterator** is the thing that actually does the walking. They are not the same
 object, and the distinction explains almost every confusing thing about looping.
 
-```python
+```python repl
 >>> nums = [10, 20, 30]
 >>> it = iter(nums)      # ask the list for an iterator
 >>> next(it)             # pull one value
@@ -64,7 +64,7 @@ The loop stops on `StopIteration` and Python swallows the exception — that is 
 it. Knowing this lets you do things `for` cannot, like pulling two values at a time or stopping
 on a sentinel value:
 
-```python
+```python repl
 >>> it = iter(["keep", "keep", "STOP", "never seen"])
 >>> for line in it:
 ...     if line == "STOP":
@@ -80,7 +80,7 @@ iterator* share one position, which is where the pitfall at the end of this chap
 
 Dictionaries make the iterable/iterator split obvious, because you choose what you want to walk:
 
-```python
+```python repl
 >>> d = {"a": 1, "b": 2}
 >>> list(iter(d))
 ['a', 'b']
@@ -215,7 +215,7 @@ The rule:
   especially as the argument to `sum()`, `any()`, `all()`, `max()`, `min()`, `join()`, or a
   `for` loop.
 
-```python
+```python repl
 >>> sum(n * n for n in range(1_000_000))
 333332833333500000
 ```
@@ -259,7 +259,7 @@ it, `list(naturals())` will hang until your machine dies.
 | `pairwise(it)` | overlapping pairs: `(1,2)`, `(2,3)`, ... |
 | `batched(it, n)` | fixed-size tuples (new in 3.12) |
 
-```python
+```python repl
 >>> from itertools import batched, chain
 >>> list(batched("abcdefg", 3))
 [('a', 'b', 'c'), ('d', 'e', 'f'), ('g',)]
@@ -535,7 +535,7 @@ for when you genuinely need the whole thing.
 :::pitfall An iterator is single-use
 This bites everyone exactly once, usually in a debugging session:
 
-```python
+```python repl
 >>> gen = (n * 2 for n in range(3))
 >>> list(gen)
 [0, 2, 4]
@@ -546,7 +546,7 @@ This bites everyone exactly once, usually in a debugging session:
 >>> max(gen)
 Traceback (most recent call last):
   ...
-ValueError: max() arg is an empty sequence
+ValueError: max() iterable argument is empty
 ```
 
 The first `list(gen)` drained it. Every subsequent call sees an exhausted iterator and gets

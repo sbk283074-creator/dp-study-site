@@ -39,7 +39,7 @@ static int double_it(int value) {  /* definition: the body */
 ```
 
 The prototype is the contract and the definition is the implementation, and they can live far apart —
-in different files, in fact, which is what a header file is for (Chapter 11). The compiler checks
+in different files, in fact, which is what a header file is for (Chapter 13). The compiler checks
 every call against the prototype, which is why the argument types and the return type are worth
 getting right before you write the body.
 
@@ -254,7 +254,7 @@ The answer is right and the call count is the lesson. Twenty-one thousand calls 
 twenty-first Fibonacci number, because `fib(n - 1)` and `fib(n - 2)` recompute the same subtrees over
 and over. Each extra input value roughly multiplies the work by 1.6, so `fib(40)` would be about
 two hundred million calls. **A correct recursive function can still be the wrong program.** When the
-recursion tree has overlapping branches, you either add a cache (Chapter 19) or you write it as a
+recursion tree has overlapping branches, you either add a cache (Chapter 23) or you write it as a
 loop.
 
 The failure mode when the base case is wrong is worse than slow:
