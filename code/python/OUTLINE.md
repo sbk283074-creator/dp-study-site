@@ -106,9 +106,9 @@
   `cmp_to_key`, binary search and its off-by-one, `bisect` for insertion and rank*
 - ✅ 47 Graphs — *adjacency list vs matrix, BFS, DFS, topological sort and cycle detection,
   Dijkstra with a heap, and A\* (Chapter 35) as Dijkstra plus a heuristic*
-- ★ 48 Recursion, Memoisation and Dynamic Programming — *the recursion tree, overlapping
-  subproblems, `functools.lru_cache`, top-down vs bottom-up, edit distance, knapsack, and the
-  recursion limit as a design constraint*
+- ✅ 48 Recursion, Memoisation and Dynamic Programming — *the recursion tree, overlapping
+  subproblems, `functools.lru_cache`, top-down vs bottom-up, edit distance, LCS, knapsack and
+  pseudo-polynomial time, coin change, rolling rows, and the recursion limit as a design constraint*
 - ★ 49 A Method for Unseen Problems — *read the constraints first, derive a complexity budget,
   pick the structure, then the algorithm; worked interview-style problems from statement to
   proof of complexity, including the ones where the answer is "sort it first"*
