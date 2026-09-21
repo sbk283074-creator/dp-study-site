@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 29</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards (interactive reveal) */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid, .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 29 / 112 — Application &amp; Synthesis</div>
+  <div class="date">Monday, 21 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 5)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot today">29</div>
+      <div class="dot">30</div>
+      <div class="dot">31</div>
+      <div class="dot">32</div>
+      <div class="dot">33</div>
+      <div class="dot">34</div>
+      <div class="dot">35</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--gold);">Day 29 →</strong></td><td><strong>Application &amp; Synthesis</strong> — argumentation &amp; synthesis vocabulary (12 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 30:</strong></td><td>Comparative &amp; Multi-text Vocabulary — juxtaposition &amp; analogy in full Paper 2 paragraphs</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 31:</strong></td><td>Evaluative &amp; Judgement Language in practice — nuance, mitigate, problematic at sentence level</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 32:</strong></td><td>Discourse &amp; Register for Argumentative Writing — academic register, hedging in synthesis</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 33:</strong></td><td>Critical Synthesis — integrating multiple lenses (feminist / Marxist / postcolonial / psychoanalytic)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 34:</strong></td><td>Mixed consolidation of the Week 5 toolkit (0 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 35:</strong></td><td>Week 5 review &amp; assessment — apply the full arsenal to a live passage (0 new words)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Day 22 spaced review<br>(Stylistic &amp; Linguistic / Argumentative)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Application &amp; Synthesis</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Weeks 1–3 locked the <em>device</em> vocabulary (what a text does) and Week 4 added the <em>metalanguage</em> of stylistics, syntax, word-meaning, sound, and the four critical lenses. Today — Week 5, Day 1 — the programme flips from <em>acquiring</em> vocabulary to <em>deploying</em> it. The twelve words below are the <em>argumentative and synthesising</em> verbs and nouns that turn your 240-word toolkit into fluent written production: they let you assert, refute, corroborate, reconcile, and extrapolate on unseen IB set-texts, in complete Paper 2 paragraphs, under exam pressure.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 22 spaced review (stylistic / argumentative metalanguage) &rarr; (2) 12 new application &amp; synthesis terms &rarr; (3) distinction boxes (assert/refute, corroborate/validate, juxtapose/analogous) &rarr; (4) practice exercises.
+
+  <!-- ============ DAY 22 SPACED REVIEW ============ -->
+  <h2><span class="icon">🔁</span> Day 22 Spaced Review — 12 Stylistic &amp; Linguistic / Argumentative Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    A 7-day spaced-repetition pass on the metalanguage and argumentative frame from Day 22 — the exact toolkit today's synthesis words will operate on. Read each, <strong>recall its precise mechanism before looking</strong>, then check. These are the words that hold your Week 3 devices together; they must be instantaneous before Week 5's application work begins.
+  </p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">cohesion</div>
+      <div class="rdef"><em>The grammatical/lexical links (reference, conjunction, repetition) binding a text on the page.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">coherence</div>
+      <div class="rdef"><em>The semantic sense a reader constructs, even without those links.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">deixis</div>
+      <div class="rdef"><em>Context-dependent shifters (I / here / now) anchoring language to the speaker's situation.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">lexical field</div>
+      <div class="rdef"><em>A network of semantically related words clustered around a domain, accumulating meaning.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">foregrounding</div>
+      <div class="rdef"><em>The effect when language deviates from norm, making an item salient — why a device matters.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">intonation</div>
+      <div class="rdef"><em>The pitch contour carrying attitude and force beyond the literal words.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">thesis</div>
+      <div class="rdef"><em>The specific, provable claim an essay argues.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">contention</div>
+      <div class="rdef"><em>The broader debatable stance a writer enters.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">premise</div>
+      <div class="rdef"><em>The proposition an argument logically rests on.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">qualify</div>
+      <div class="rdef"><em>To restrict a claim's scope so it survives counter-evidence.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">concede</div>
+      <div class="rdef"><em>To grant a point to the opposing view before resuming one's own.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">rebut</div>
+      <div class="rdef"><em>To counter an opposing claim with evidence.</em></div>
+    </div>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> Could you separate <em>cohesion</em> from <em>coherence</em> (page-level link vs. reader-built sense), and <em>thesis</em> from <em>contention</em> (specific provable claim vs. broad debatable stance), without peeking? Those two pairs anchor Day 22. Today's words — <em>assert, refute, corroborate, validate</em> — sit directly on top of this frame: you assert a <em>thesis</em>, you refute a <em>contention</em>, you corroborate a <em>premise</em>. Keep the frame live; the synthesis words are useless without it.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Application &amp; Synthesis Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge">NEW CATEGORY — "APPLICATION &amp; SYNTHESIS"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">From naming the text to steering the argument.</strong> Day 22's twelve words gave you the <em>frame</em> (thesis, premise, qualify, concede, rebut). Today's twelve give you the <em>moves</em> that frame performs in motion — the active verbs and nouns of argumentation and synthesis. Four build and defend a claim (<em>assert, refute, corroborate, validate</em>); four organise comparison and resolution (<em>juxtapose, analogous, reconcile, dialectic</em>); four refine judgement and reasoning (<em>nuance, mitigate, problematic, extrapolate</em>). Together they are the difference between a commentary that <em>lists</em> devices and one that <em>argues</em> with them — the signature of the top band in both Paper 1 and Paper 2.
+  </p>
+
+  <!-- Word 1: assert -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">assert</span>
+      <span class="ipa">/əˈsɜːt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To state a position or claim firmly and explicitly as one's own — the active act of putting forward a proposition to be argued.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[This essay asserts] that [X]" · "[The speaker asserts] agency [through…]" · "[I assert] the reading that…"
+    </div>
+    <p class="example">
+      "Where a weak essay merely 'suggests', a 7-band commentary asserts: 'The text asserts the irreducibility of grief to language' — the verb stakes a claim the evidence must then earn."
+      <span class="source">— essay / commentary framing</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>refute</strong> (word 2): you <em>assert</em> your own claim; you <em>refute</em> an opponent's. Assert is the thesis-planting move — pair it with <strong>qualify</strong> (Day 22) so the assertion is scoped, not bald. Connects to Day 1's <em>contend</em> / <em>argue</em>. In drama, a character who <em>asserts</em> controls the conversation — name it when analysing dialogue power. Root: Latin <em>asserere</em>, 'to claim'.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> assert a claim · strongly assert · assert one's position · assert agency · the text asserts</p>
+  </div>
+
+  <!-- Word 2: refute -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">refute</span>
+      <span class="ipa">/rɪˈfjuːt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To prove a claim false or unsustainable by counter-evidence or logic — the active dismissal of an opposing position.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[This view is refuted by] [evidence Y]" · "[The passage refutes] the reading that…" · "[X refutes] Y"
+    </div>
+    <p class="example">
+      "A weak essay merely disagrees; a strong one refutes: 'The bland "happy ending" reading is refuted by the final image of the unopened letter, which withholds the reconciliation the plot seemed to promise.'"
+      <span class="source">— counter-argument framing</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>concede</strong> / <strong>rebut</strong> (Day 22): concede yields a point, rebut counters and resumes, <em>refute</em> demolishes. Refutation must meet the claim on its own ground with evidence, not assertion. Connects to Day 1's <em>subvert</em> / <em>undermine</em>. In Paper 2, refuting a critical position shows command of the global argument. Pair <em>assert</em> → <em>refute</em> as your claim-and-defend spine.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> refute a claim · refute the argument · directly refute · refute the reading · refute a misconception</p>
+  </div>
+
+  <!-- ASSERT vs REFUTE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: assert vs. refute</h4>
+    <p>Both are argumentative moves, but they point in opposite directions:</p>
+    <p style="margin-top:8px;">
+      <strong>assert</strong> — Creation. You put <em>your own</em> claim forward to be argued.<br>
+      &rarr; "This essay <em>asserts</em> that grief is figured as chosen, not inflicted."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>refute</strong> — Demolition. You knock an <em>opposing</em> claim down with evidence.<br>
+      &rarr; "The 'passive victim' reading is <em>refuted</em> by the syntax of self-blame."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: are you building your case (assert) or tearing down another's (refute)? They are not opposites in the sense of cancelling each other — you can assert without refuting, and refute without stating your own alternative. In IB, a mature paragraph often does both: assert a thesis early, then refute the predictable counter-reading before resuming. Used together they are the architecture of a 7.
+    </p>
+  </div>
+
+  <!-- Word 3: corroborate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">corroborate</span>
+      <span class="ipa">/kəˈrɒbəreɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To confirm or lend support to a claim with additional, independent evidence — strengthening a position by the convergence of sources or details.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[This detail corroborates] the reading that…" · "[Two passages corroborate] each other" · "[The imagery corroborates] the thesis"
+    </div>
+    <p class="example">
+      "In a Paper 2, the recurring lexical field of 'light' in Text A corroborates the 'blindness' motif in Text B — the two texts independently point to the same conclusion about perception, and the correspondence is itself evidence."
+      <span class="source">— comparative essay</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The collaborative cousin of <em>refute</em>. Where refute knocks down, corroborate builds up by agreement across evidence. Use it to show your reading is not isolated: when two details — or two texts — agree, name the corroboration. Links to Day 26's <em>semantic field</em> / <em>collocation</em>: shared fields corroborate. In comparative essays, 'corroborate' is the hinge word that joins the two texts. Distinct from <strong>validate</strong> (box below). Root: Latin <em>corroborare</em>, 'to strengthen'.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> corroborate a claim · mutually corroborate · corroborating evidence · corroborate the thesis · evidence corroborates</p>
+  </div>
+
+  <!-- Word 4: validate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">validate</span>
+      <span class="ipa">/ˈvælɪdeɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To demonstrate that a claim, feeling, or reading is legitimate or well-founded — to show a position holds up under scrutiny.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The structure validates] the interpretation that…" · "[This reading is validated by] [the form]" · "[X validates] Y"
+    </div>
+    <p class="example">
+      "The sonnet's volta does not merely restate the premise; it validates it — the turn from doubt to conviction enacts, in form, the very argument the poem has been building."
+      <span class="source">— poetic structure analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>corroborate</strong> (box below): corroborate = adds supporting evidence <em>from elsewhere</em>; validate = shows the claim is sound <em>on its own terms</em>, often via the text's own form or logic. Both build; validate is internal, corroborate external. Use validate when you show a reading 'works' because the text's structure demands it. Pair with Day 22's <em>premise</em> — a valid argument follows from a sound premise.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> validate a claim · validate the reading · validate an interpretation · validate one's experience · the form validates</p>
+  </div>
+
+  <!-- CORROBORATE vs VALIDATE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: corroborate vs. validate</h4>
+    <p>Both strengthen a claim, but the source of the strength differs:</p>
+    <p style="margin-top:8px;">
+      <strong>corroborate</strong> — External. Adds <em>independent evidence from elsewhere</em> (another detail, another text) that agrees.<br>
+      &rarr; "Text B's 'blindness' field <em>corroborates</em> Text A's thesis."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>validate</strong> — Internal. Shows the claim is <em>sound on the text's own terms</em> (its form, its logic).<br>
+      &rarr; "The volta <em>validates</em> the reading — the form enacts the argument."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: is the support <em>outside</em> the claim (corroborate) or <em>inside</em> it (validate)? In a comparative essay you corroborate across texts; in a single-text commentary you validate through structure. Using both precisely tells the examiner you know where your evidence lives — a subtle but real top-band signal.
+    </p>
+  </div>
+
+  <!-- Word 5: juxtapose -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">juxtapose</span>
+      <span class="ipa">/ˌdʒʌkstəˈpəʊz/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To place two or more items side by side so that their contrast or comparison produces meaning — the compositional act of putting X against Y.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The poet juxtaposes] [image A] with [image B]" · "[Juxtaposed], the scenes [mean]" · "[The extract juxtaposes] [past and present]"
+    </div>
+    <p class="example">
+      "In Carol Ann Duffy's monologues, the mundane 'cooking, cleaning' is juxtaposed with the mythic — the gap between them is the poem's whole point about ordinary women erased from history."
+      <span class="source">— The World's Wife analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The core comparative verb. In Paper 2 you do not 'compare' vaguely; you <em>juxtapose</em> specific features ('Text A's claustrophobic deixis juxtaposed with Text B's open spatial field'). Distinct from <strong>analogous</strong> (box below): juxtapose stages <em>contrast</em>; analogous marks <em>similarity</em>. Links to Day 15's <em>contrast</em> and the critical lenses. The juxtaposition is only half the work — you must then <em>state its effect</em> for it to count as analysis.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> juxtapose A with B · sharp juxtaposition · juxtapose past and present · visual juxtaposition · the juxtaposition of</p>
+  </div>
+
+  <!-- Word 6: analogous -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">analogous</span>
+      <span class="ipa">/əˈnæləɡəs/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Similar in a relevant structural or functional respect, such that a mapping from one case to another clarifies both.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[X is analogous to] [Y in that…]" · "[An analogous movement occurs] in…" · "[The structure is analogous]"
+    </div>
+    <p class="example">
+      "The entrapment of the narrator in Text A is analogous to the speaker's paralysis in Text B — not identical, but the same underlying logic of confinement, which lets a reading of one illuminate the other."
+      <span class="source">— comparative analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>juxtapose</strong> (box below): analogous claims <em>similarity</em>; juxtapose stages <em>contrast</em>. In comparative work, 'analogous' is your word for 'these two are usefully alike' without collapsing their differences. Guard against <em>false analogy</em> — the similarity must be structural, not superficial. Connects to Day 26's <em>semantic field</em> (shared fields often signal analogy). Used well, it is the bridge between two set-texts in Paper 2.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> analogous to · strikingly analogous · an analogous structure · analogous movement · broadly analogous</p>
+  </div>
+
+  <!-- JUXTAPOSE vs ANALOGOUS distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: juxtapose vs. analogous</h4>
+    <p>Both organise comparison, but they organise it around opposite relations:</p>
+    <p style="margin-top:8px;">
+      <strong>juxtapose</strong> — Places items together to highlight <em>difference / contrast</em>.<br>
+      &rarr; "The mythic is <em>juxtaposed</em> with the domestic — the gap is the point."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>analogous</strong> — Marks items as <em>similar</em> in a relevant respect.<br>
+      &rarr; "The two speakers' paralysis is <em>analogous</em> — same logic of confinement."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: am I stressing the <em>gap</em> (juxtapose) or the <em>resonance</em> (analogous)? A comparative paragraph usually needs both — juxtapose to expose difference, mark analogy to build a shared reading. Confusing them is a common slip: do not call a contrast 'analogous', nor a similarity a 'juxtaposition'. This pair is exam armour for Paper 2.
+    </p>
+  </div>
+
+  <!-- Word 7: reconcile -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">reconcile</span>
+      <span class="ipa">/ˈrekənsaɪl/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To show how apparently contradictory readings, details, or positions can coexist or be resolved — to hold tension without flattening it.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The essay reconciles] [reading A] with [reading B]" · "[These need not be reconciled] if…" · "[X reconciles] the two impulses"
+    </div>
+    <p class="example">
+      "A sophisticated commentary reconciles the text's bleak ending with its moments of tenderness: the tenderness is not a denial of bleakness but its human cost, and holding both is the point."
+      <span class="source">— interpretive synthesis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The move that separates a 7 from a 5. Where amateur analysis picks one reading and dismisses the other, you <em>reconcile</em> — show how both are true at different levels. Links to Day 1's <em>nuance</em> / <em>problematize</em> and Day 22's <em>qualify</em>. In multi-lens work, reconcile a feminist and a Marxist reading rather than choosing. Avoid <em>forced</em> reconciliation that erases real contradiction — sometimes texts refuse to be reconciled, and naming that is itself insight.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> reconcile two readings · difficult to reconcile · reconcile A with B · reconcile the contradiction · cannot be reconciled</p>
+  </div>
+
+  <!-- Word 8: dialectic -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">dialectic</span>
+      <span class="ipa">/ˌdaɪəˈlektɪk/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A method or dynamic in which opposing positions engage and are resolved or advanced into a synthesis — the productive tension of thesis meeting antithesis.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A dialectic between] [X and Y] drives…" · "[The text stages] a dialectic of…" · "[The essay deploys] a dialectic"
+    </div>
+    <p class="example">
+      "The novel's structure enacts a dialectic between imprisonment and escape: each escape attempt generates a tighter confinement, so the two terms define each other rather than cancel."
+      <span class="source">— narrative structure analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Naming 'dialectic' lets you describe a text as <em>thinking through</em> conflict, not merely containing it. Distinct from 'debate' (which stays unresolved) — a dialectic moves toward <em>synthesis</em> (see word 7). Connects to Hegelian critical theory (Day 24) and to Day 22's concede–rebut architecture. In Paper 2, framing your comparison as a dialectic between the two texts is a top-band organisational move.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> dialectic between · a dialectic of · stages a dialectic · Hegelian dialectic · resolve the dialectic</p>
+  </div>
+
+  <!-- Word 9: nuance -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">nuance</span>
+      <span class="ipa">/ˈnjuːɑːns/</span>
+      <span class="pos">noun / verb</span>
+    </div>
+    <p class="definition">A subtle distinction or gradation of meaning, tone, or attitude; as a verb, to refine or qualify a claim with such distinctions.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The nuance lies in] [the shift from… to…]" · "[To nuance the claim]: [X, though not Y]" · "[A crucial nuance]"
+    </div>
+    <p class="example">
+      "The difference between the two speakers is a nuance of register, not of vocabulary: both use 'love', but one's ironic intonation (Day 22) hollows it out while the other's asserts it — the word is identical, the meaning opposite."
+      <span class="source">— tone &amp; register analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The word that names <em>precision</em> itself. In IB, 'nuanced' is the highest-praise adjective; deploying 'nuance' (and its verb form) shows you can hold fine discriminations — exactly Day 1's <em>nuanced</em> trait made operational. Pair with <strong>qualify</strong> (Day 22): to nuance is to qualify with detail. Guard against using it as a vague compliment; always specify <em>which</em> nuance. Links to Day 18's <em>connotation</em> / <em>register</em>.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a crucial nuance · nuance of tone · nuanced reading · nuance the claim · subtle nuance</p>
+  </div>
+
+  <!-- Word 10: mitigate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">mitigate</span>
+      <span class="ipa">/ˈmɪtɪɡeɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To reduce the force, severity, or persuasiveness of something — typically used to lessen the impact of an opposing point or a damaging reading.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[This detail mitigates] the charge that…" · "[The ending mitigates] the bleakness" · "[X mitigates] Y"
+    </div>
+    <p class="example">
+      "One might read the protagonist's silence as complicity; yet the framing of that silence — low-angle, held — mitigates the charge, relocating agency from absence to withheld speech."
+      <span class="source">— counter-reading</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The soft-counterpart of <strong>refute</strong> (word 2). You do not always demolish the counter-claim; sometimes you <em>mitigate</em> it — show it is weaker than it first appears. Distinct from <strong>concede</strong> (Day 22): concede yields the point; mitigate shrinks it. A concede–mitigate–rebut sequence is a complete counter-argument architecture. Connects to Day 1's <em>qualified</em> / <em>measured</em>. Use when the opposition has real force you cannot simply dismiss.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> mitigate the charge · mitigate the effect · partly mitigate · mitigate a reading · serve to mitigate</p>
+  </div>
+
+  <!-- Word 11: problematic -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">problematic</span>
+      <span class="ipa">/ˌprɒbləˈmætɪk/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Open to objection or critique; conceptually or ideologically contestable — not 'wrong' but requiring interrogation.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The representation of X is] problematic because…" · "[A problematic assumption] underlies…" · "[This is problematic] in its…"
+    </div>
+    <p class="example">
+      "The text's framing of the servant's dialect (Day 26) is problematic: it marks class through language in a way that risks naturalising the very hierarchy the novel elsewhere critiques — a contradiction worth interrogating, not overlooking."
+      <span class="source">— critical-theory reading</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Your critical-theory verb (Day 24 lenses deploy through it). 'Problematic' signals you are applying a lens — feminist, Marxist, postcolonial, psychoanalytic — to expose ideology, not merely noting a flaw. Distinct from 'wrong': problematic invites analysis of <em>why</em> and <em>how</em> the text does the thing. Links to Day 1's <em>interrogate</em> / <em>problematize</em>. In IB, calling something problematic and then showing the mechanism is the move that earns critical-perceptive marks.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> problematic representation · a problematic assumption · ideologically problematic · problematic because · deeply problematic</p>
+  </div>
+
+  <!-- Word 12: extrapolate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">extrapolate</span>
+      <span class="ipa">/ɪkˈstræpəleɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To infer or project a general principle or conclusion from specific textual evidence — to reason outward from the instance to the claim.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[From this detail we can extrapolate] that…" · "[The pattern extrapolates to] the whole text" · "[Extrapolating]: [X implies Y]"
+    </div>
+    <p class="example">
+      "From the single repeated image of the locked door, the essay extrapolates a governing metaphor of psychological enclosure that reorganises the entire narrative — one detail, properly read, opens the whole."
+      <span class="source">— close-reading to thesis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The reasoning verb that connects close reading to thesis. You 'extrapolate' when a local feature licenses a global claim ('this comma implies this worldview'). Distinct from 'generalise' (which risks losing specificity) — extrapolation keeps the evidence visible as its ground. Links to Day 1's <em>infer</em> / <em>deduce</em> and Day 22's <em>premise</em>. In Paper 1, extrapolation is the bridge from 'what the text does' to 'what it means'. Pair with <strong>qualify</strong> so the extrapolation is scoped, not overblown.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> extrapolate from · extrapolate a principle · extrapolate to · extrapolate the pattern · can be extrapolated</p>
+  </div>
+
+  <!-- ============ PRACTICE ============ -->
+  <h2><span class="icon">✏️</span> Practice — Deploy, Don't Just Name</h2>
+  <div class="practice-box">
+    <p style="font-size:14px; color:var(--ink-soft);">Four drills. Write short answers; the model notes follow each.</p>
+    <ol>
+      <li>
+        <strong>Word-bank insertion.</strong> Choose the correct Day 29 word for each gap (each used once):
+        <div class="word-bank">
+          <strong>Word bank:</strong> assert · refute · corroborate · validate · juxtapose · analogous · reconcile · dialectic · nuance · mitigate · problematic · extrapolate
+        </div>
+        <span style="color:var(--ink);">a)</span> The two texts' shared 'light' imagery ____________ each other's reading of perception. &rarr; <em>corroborate</em><br>
+        <span style="color:var(--ink);">b)</span> The sonnet's volta ____________ the interpretation that doubt gives way to conviction. &rarr; <em>validate</em><br>
+        <span style="color:var(--ink);">c)</span> A Marxist reading and a feminist reading can be ____________ rather than set against one another. &rarr; <em>reconciled</em><br>
+        <span style="color:var(--ink);">d)</span> From the locked-door motif we can ____________ a metaphor of enclosure for the whole text. &rarr; <em>extrapolate</em><br>
+        <span style="color:var(--ink);">e)</span> The servant's dialect is ____________ because it risks naturalising the class hierarchy. &rarr; <em>problematic</em><br>
+        <span style="color:var(--ink);">f)</span> The mundane is ____________ with the mythic to expose the gap. &rarr; <em>juxtaposed</em>
+      </li>
+      <li>
+        <strong>Mini synthesis.</strong> On the passage below, deploy <strong>at least three</strong> Day 29 words and state each one's <em>effect</em>:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Passage</span>
+          "I am not your mirror. I am the woman who cooked, who waited, who watched you become a myth. You wrote me small; I write myself large."
+        </div>
+        <span style="color:var(--ink-soft); font-size:13px;">Model: the speaker <em>asserts</em> agency by rejecting the 'mirror' role (the verb stakes a claim the rest earns); the domestic 'cooked / waited / watched' is <em>juxtaposed</em> with 'myth', exposing the gap between erasure and self-making; the two clauses stage a <em>dialectic</em> of silence and voice that the final sentence resolves into assertion. Each move is tied to an effect, not just named.</span>
+      </li>
+      <li>
+        <strong>Frame the claim.</strong> Turn this blunt thesis into a 7-band version by (a) <em>asserting</em> it, (b) <em>qualifying</em> it (Day 22), and (c) adding a <em>concede–mitigate–rebut</em> beat:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Blunt</span>
+          "The poem is about women being silenced."
+        </div>
+        <span style="color:var(--ink-soft); font-size:13px;">Model: <em>Asserted + qualified</em> — "This essay asserts that the poem figures female silence as <strong>chosen</strong> rather than inflicted, <strong>though only insofar as</strong> that choice is forged under constraint." <em>Concede–mitigate–rebut</em> — "Admittedly the speaker is literally unheard; yet the form <em>mitigates</em> that charge by giving her the final word, which <em>refutes</em> any reading of pure victimhood." The claim is now arguable, scoped, and defended.</span>
+      </li>
+      <li>
+        <strong>Distinguish on demand.</strong> In one sentence each, separate these two Day 29 pairs you will be tested on: (i) <em>assert</em> vs. <em>refute</em> (create your claim vs. demolish an opposing one); (ii) <em>juxtapose</em> vs. <em>analogous</em> (staged contrast vs. marked similarity). Keep both pairs in your exam armour alongside the Day 22 distinctions.
+      </li>
+    </ol>
+  </div>
+
+  <!-- ============ TIPS ============ -->
+  <h2><span class="icon">🎯</span> Study Tips — Making the Moves Automatic</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Assert your claim; don't merely suggest.</strong> "This suggests that…" is a 5; "This essay asserts that…" is a 7. The verb signals ownership of the argument — and it sets up the concede–rebut architecture that follows.
+    </li>
+    <li>
+      <strong>Refute on the opponent's ground, with evidence.</strong> A rebuttal that only disagrees is weak; one that meets the counter-claim where it stands and answers it with a textual detail is what examiners reward. Refute is demolition done precisely.
+    </li>
+    <li>
+      <strong>Corroborate across texts; validate on internal form.</strong> In Paper 2, use corroborate to join your two set-texts; in a single-text commentary, use validate to show the reading follows from the text's own structure. Knowing which verb fits tells the examiner where your evidence lives.
+    </li>
+    <li>
+      <strong>Juxtapose for contrast, mark analogy for similarity.</strong> A comparative paragraph usually needs both — expose the gap, then build the resonance. Confusing them (calling a contrast 'analogous') is a slip that costs the top band. These two are your Paper 2 hinge words.
+    </li>
+    <li>
+      <strong>Reconcile contradictions; don't flatten them.</strong> Holding two readings at once — and showing how both are true at different levels — is the single highest-leverage move in interpretive work. Forced reconciliation that erases real tension is the failure mode to avoid.
+    </li>
+    <li>
+      <strong>These twelve words make your argument <em>move</em>; pair every one with a device or detail.</strong> 'Juxtapose' without the images, 'extrapolate' without the detail, 'validate' without the form — these are empty. Every synthesis verb should hang a Week 3 device or a textual fact on it. The move without the evidence is scaffolding with no building.</li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 30 (Next): Week 5, Day 2 — Comparative &amp; Multi-text Vocabulary</strong><br>
+    Today gave you the synthesis moves. Day 30 drills them into full Paper 2 paragraphs: deepen <em>juxtapose</em> / <em>analogous</em> / <em>dialectic</em> on two unseen set-texts, learn the contrastive structures (parallelism, antithesis, concession clauses) that stage comparison, and practise synthesising two texts under a single lens. You'll learn to write the comparative sentence that earns the top band — one that names the relation <em>and</em> its effect in a single move.<br><br>
+    <strong style="color:var(--ink);">Milestone:</strong> 252 words learned (of ~1,300). Week 5 begins — the Application &amp; Synthesis phase that turns your 240-word toolkit into fluent written argument. 🏆
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 5, Day 29<br>
+  252 words learned so far (+12 today) · 1,048 to go · Week 5 begins 🏆
+</footer>
+
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+<script src="../assets/vocab-ask-ai.js" defer></script>
+</body>
+</html>
