@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 28</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall intro */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .note-box {
+    background: var(--paper-warm);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .note-box strong { color: var(--ink); }
+
+  /* Flash-recall master sheet */
+  .crib-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 12.5px;
+  }
+  .crib-table th {
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .crib-table td {
+    border: 1px solid var(--line);
+    padding: 7px 10px;
+    vertical-align: top;
+  }
+  .crib-table td.term {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    width: 24%;
+  }
+  .crib-table td.pillar {
+    color: var(--gold);
+    font-weight: 600;
+    width: 16%;
+  }
+  .crib-table td.def { color: var(--ink-soft); }
+  .crib-table tr:nth-child(even) td { background: #fff; }
+  .crib-table tr:nth-child(odd) td { background: #fcfaf5; }
+
+  /* Model paragraph */
+  .model {
+    background: var(--paper-warm);
+    border-left: 4px solid var(--purple);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 14px 0;
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.85;
+  }
+  .model .hl { background: #fff3d6; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+
+  /* Practice */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol { padding-left: 20px; margin-top: 8px; }
+  .practice-box ol li { font-size: 14px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.7; }
+  .practice-box ol li strong { color: var(--ink); }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 13.5px;
+  }
+  .usage-box .label {
+    font-weight: 700; color: var(--gold);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    display: block; margin-bottom: 4px;
+  }
+
+  /* Rubric */
+  .rubric { width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
+  .rubric th, .rubric td { border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top; }
+  .rubric th { background: var(--paper-warm); color: var(--ink); }
+  .rubric td.crit { font-weight:700; color: var(--ink); width:16%; }
+  .rubric td .band { font-weight:700; }
+  .rubric td .b1 { color: var(--coral); }
+  .rubric td .b2 { color: var(--gold); }
+  .rubric td .b3 { color: var(--teal); }
+
+  /* Distinction quick-ref */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    margin: 12px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .distinction-box p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Tips */
+  .tips-list { list-style: none; counter-reset: tip; }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  @media (max-width: 600px) {
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .crib-table { font-size: 11px; }
+    .crib-table td.term { width: 30%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 28 / 112 — Week 4 Review &amp; Assessment</div>
+  <div class="date">Monday, 21 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Week tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 4)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">22</div>
+      <div class="dot done">23</div>
+      <div class="dot done">24</div>
+      <div class="dot done">25</div>
+      <div class="dot done">26</div>
+      <div class="dot done">27</div>
+      <div class="dot today">28</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 22 →</strong></td><td>Stylistic &amp; Linguistic Analysis</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 23 →</strong></td><td>Syntax &amp; Discourse Analysis</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 24 →</strong></td><td>Critical Theory Vocabulary</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 25 →</strong></td><td>Sound &amp; Metre</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 26 →</strong></td><td>Lexical &amp; Semantic Analysis</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 27 →</strong></td><td>Mixed Consolidation — all 60 regrouped + distinction pairs</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 28:</strong></td><td><strong>Week 4 Review &amp; Assessment</strong> — flash-recall of all 60 + guided mini-analysis</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced repetition -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">All Week 4 words<br>(Days 22–26)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">0</div>
+      <div class="sr-note">Assessment day</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">est. 45–60 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Week 4 capstone — no new words, pure retrieval + application.</strong> Day 27 regrouped the sixty terms into five functional grids. Today you <em>prove</em> they're yours: first a cover-and-recall master sheet (all 60, by grid), then a guided mini-analysis that deploys the metalanguage, syntax moves, word-meaning, sound, and critical-lens vocabulary exactly as a Paper 1 commentary or Paper 2 paragraph must under timed conditions. The difference between Day 27 and Day 28 is the difference between <em>recognising</em> a term and <em>owning</em> it.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Flash-Recall Master Sheet &rarr; (2) Guided Mini-Analysis (model + rubric) &rarr; (3) Your Task — analyse a passage &rarr; (4) Distinction Quick-Ref &rarr; (5) Assessment Tips &rarr; (6) Day 29 preview.
+  </div>
+
+  <!-- ============ FLASH-RECALL MASTER SHEET ============ -->
+  <h2><span class="icon">🔁</span> Flash-Recall Master Sheet — All 60 Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    This is your capstone crib. <strong>Cover the Definition column</strong> with a piece of paper and write each term's meaning from memory; then check. A term is "known" only when you can reproduce its definition <em>and</em> name a near-neighbour it must be distinguished from (see Quick-Ref below).
+  </p>
+
+  <h3>① Stylistic &amp; Argument Metalanguage (Day 22 · 13 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Grid</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">cohesion</td><td class="pillar">metalang.</td><td class="def">The grammatical/lexical links (reference, conjunctions, substitution) that make a text hang together as a unit.</td></tr>
+    <tr><td class="term">coherence</td><td class="pillar">metalang.</td><td class="def">The logical, top-down readability of a text — whether its meaning flows and makes sense as a whole.</td></tr>
+    <tr><td class="term">deixis</td><td class="pillar">metalang.</td><td class="def">Context-dependent words (I, you, here, now) whose reference shifts with speaker, time, place.</td></tr>
+    <tr><td class="term">foregrounding</td><td class="pillar">metalang.</td><td class="def">Making language conspicuous — via deviation or parallelism — to force reader attention on a feature.</td></tr>
+    <tr><td class="term">intonation</td><td class="pillar">metalang.</td><td class="def">The pitch contour of speech (rise/fall) that signals attitude or pragmatic force.</td></tr>
+    <tr><td class="term">thesis</td><td class="pillar">metalang.</td><td class="def">The central, arguable claim a text advances and sets out to prove.</td></tr>
+    <tr><td class="term">contention</td><td class="pillar">metalang.</td><td class="def">The writer's stated position or assertion — what they argue for.</td></tr>
+    <tr><td class="term">premise</td><td class="pillar">metalang.</td><td class="def">A proposition accepted as true on which an argument is built.</td></tr>
+    <tr><td class="term">qualify</td><td class="pillar">metalang.</td><td class="def">To limit or temper a claim, acknowledging its boundaries or exceptions.</td></tr>
+    <tr><td class="term">concede</td><td class="pillar">metalang.</td><td class="def">To grant a point to the opposing view before rebutting it.</td></tr>
+    <tr><td class="term">rebut</td><td class="pillar">metalang.</td><td class="def">To counter and refute an opposing argument with evidence or logic.</td></tr>
+    <tr><td class="term">discourse marker</td><td class="pillar">metalang.</td><td class="def">A word/phrase (however, moreover, therefore) signalling logical or sequential relation between units.</td></tr>
+    <tr><td class="term">illocutionary act</td><td class="pillar">metalang.</td><td class="def">The intended action an utterance performs (request, warn, promise) beyond its literal sense.</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">② Syntax &amp; Sentence Moves (Day 23 · 10 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Grid</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">declarative</td><td class="pillar">syntax</td><td class="def">A sentence type that states information — the default clause in exposition.</td></tr>
+    <tr><td class="term">interrogative</td><td class="pillar">syntax</td><td class="def">A sentence type that asks a question (direct or rhetorical).</td></tr>
+    <tr><td class="term">imperative</td><td class="pillar">syntax</td><td class="def">A sentence type that gives a command or instruction.</td></tr>
+    <tr><td class="term">exclamative</td><td class="pillar">syntax</td><td class="def">A sentence type expressing strong feeling or emphasis.</td></tr>
+    <tr><td class="term">coordination</td><td class="pillar">syntax</td><td class="def">Linking clauses of equal status with and/but/or (paratactic, equal weight).</td></tr>
+    <tr><td class="term">subordination</td><td class="pillar">syntax</td><td class="def">Linking clauses of unequal status with subordinators (hypotactic, nested).</td></tr>
+    <tr><td class="term">nominalisation</td><td class="pillar">syntax</td><td class="def">Turning a process/verb into a noun ("decide" &rarr; "decision"), compressing and formalising.</td></tr>
+    <tr><td class="term">passive</td><td class="pillar">syntax</td><td class="def">Voice where the patient/recipient becomes subject and the agent is backgrounded or omitted.</td></tr>
+    <tr><td class="term">ellipsis</td><td class="pillar">syntax</td><td class="def">Omission of a recoverable element, for economy or effect.</td></tr>
+    <tr><td class="term">fronting</td><td class="pillar">syntax</td><td class="def">Moving a normally-late element to clause-initial position for emphasis.</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">③ Word-Choice &amp; Meaning (Day 26 · 13 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Grid</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">denotation</td><td class="pillar">meaning</td><td class="def">The literal, dictionary meaning of a word.</td></tr>
+    <tr><td class="term">connotation</td><td class="pillar">meaning</td><td class="def">The associations and feelings a word carries beyond its denotation.</td></tr>
+    <tr><td class="term">semantic field</td><td class="pillar">meaning</td><td class="def">A network of related meanings clustering around a concept, building texture.</td></tr>
+    <tr><td class="term">lexical set</td><td class="pillar">meaning</td><td class="def">A group of words belonging to the same topic or word-class.</td></tr>
+    <tr><td class="term">lexical field</td><td class="pillar">meaning</td><td class="def">The domain of related words a writer draws on to build a consistent world.</td></tr>
+    <tr><td class="term">collocation</td><td class="pillar">meaning</td><td class="def">Words that habitually co-occur ("bitterly regret", "heavily defended").</td></tr>
+    <tr><td class="term">register</td><td class="pillar">meaning</td><td class="def">The level of formality appropriate to a context or audience.</td></tr>
+    <tr><td class="term">dialect</td><td class="pillar">meaning</td><td class="def">A regional or social variety of language with distinct forms.</td></tr>
+    <tr><td class="term">jargon</td><td class="pillar">meaning</td><td class="def">Specialised vocabulary of a profession, discipline, or group.</td></tr>
+    <tr><td class="term">euphemism</td><td class="pillar">meaning</td><td class="def">A mild term substituted for a harsh or blunt one.</td></tr>
+    <tr><td class="term">idiom</td><td class="pillar">meaning</td><td class="def">A fixed expression whose meaning is non-literal ("spill the beans").</td></tr>
+    <tr><td class="term">ambiguity</td><td class="pillar">meaning</td><td class="def">A word or structure with more than one plausible reading.</td></tr>
+    <tr><td class="term">polysemy</td><td class="pillar">meaning</td><td class="def">A single word carrying multiple related senses ("bank" = river / money).</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">④ Sound &amp; Metre (Day 25 · 12 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Grid</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">alliteration</td><td class="pillar">sound</td><td class="def">Repetition of initial consonant sounds ("dark, descending").</td></tr>
+    <tr><td class="term">assonance</td><td class="pillar">sound</td><td class="def">Repetition of vowel sounds within words ("lake", "fate").</td></tr>
+    <tr><td class="term">consonance</td><td class="pillar">sound</td><td class="def">Repetition of final/consonant sounds ("blank", "think").</td></tr>
+    <tr><td class="term">onomatopoeia</td><td class="pillar">sound</td><td class="def">A word whose sound echoes its sense ("buzz", "crash").</td></tr>
+    <tr><td class="term">sibilance</td><td class="pillar">sound</td><td class="def">Repeated sibilant /s/ sounds, often hushed or sinister.</td></tr>
+    <tr><td class="term">rhyme</td><td class="pillar">sound</td><td class="def">Corresponding sounds at line-ends (or internal).</td></tr>
+    <tr><td class="term">metre</td><td class="pillar">sound</td><td class="def">The regular rhythmic pattern of stressed/unstressed syllables.</td></tr>
+    <tr><td class="term">iamb</td><td class="pillar">sound</td><td class="def">A metrical foot of unstressed + stressed (da-DUM).</td></tr>
+    <tr><td class="term">trochee</td><td class="pillar">sound</td><td class="def">A metrical foot of stressed + unstressed (DA-dum).</td></tr>
+    <tr><td class="term">caesura</td><td class="pillar">sound</td><td class="def">A pause or break within a line of verse.</td></tr>
+    <tr><td class="term">enjambment</td><td class="pillar">sound</td><td class="def">A line running on into the next without punctuation (syntactic overflow).</td></tr>
+    <tr><td class="term">euphony</td><td class="pillar">sound</td><td class="def">Pleasing, smooth sound resulting from harmonious phonemes.</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">⑤ Critical Lenses (Day 24 · 12 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Grid</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">patriarchy</td><td class="pillar">lens</td><td class="def">A social system privileging male authority and marginalising women.</td></tr>
+    <tr><td class="term">intersectionality</td><td class="pillar">lens</td><td class="def">How overlapping identities (race, class, gender) compound oppression.</td></tr>
+    <tr><td class="term">the male gaze</td><td class="pillar">lens</td><td class="def">The framing of women as objects for male looking/desire.</td></tr>
+    <tr><td class="term">ideology</td><td class="pillar">lens</td><td class="def">A system of beliefs that naturalises a particular worldview.</td></tr>
+    <tr><td class="term">hegemony</td><td class="pillar">lens</td><td class="def">The dominance of one group's ideology as "common sense".</td></tr>
+    <tr><td class="term">alienation</td><td class="pillar">lens</td><td class="def">Estrangement of individuals from their labour, selves, or society.</td></tr>
+    <tr><td class="term">othering</td><td class="pillar">lens</td><td class="def">Defining a group as alien/different to establish in-group superiority.</td></tr>
+    <tr><td class="term">the subaltern</td><td class="pillar">lens</td><td class="def">Subordinate, marginalised groups excluded from power and voice.</td></tr>
+    <tr><td class="term">hybridity</td><td class="pillar">lens</td><td class="def">The blending of cultures producing new, mixed identities.</td></tr>
+    <tr><td class="term">the unconscious</td><td class="pillar">lens</td><td class="def">The repressed drives and desires beneath conscious thought (Freud).</td></tr>
+    <tr><td class="term">repression</td><td class="pillar">lens</td><td class="def">The psychic burying of distressing impulses from consciousness.</td></tr>
+    <tr><td class="term">the uncanny</td><td class="pillar">lens</td><td class="def">The eerie familiarity of something both known and strange (Freud).</td></tr>
+  </table>
+
+  <div class="note-box">
+    <strong>Self-score:</strong> If you can reproduce ≥54/60 definitions unprompted, Week 4 is locked in. If 5–10 are fuzzy, mark them and give them a 1-day intense pass before Day 29. If more than 10 fail, redo the Day 27 grids first — don't advance on shaky ground.
+  </div>
+
+  <!-- ============ GUIDED MINI-ANALYSIS ============ -->
+  <h2><span class="icon">✍️</span> Guided Mini-Analysis — Model &amp; Rubric</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    The capstone skill is <em>deploying</em> these terms on a real passage. Below: a model paragraph that names terms from <strong>all five grids</strong>. Highlighted = Week 4 vocabulary.
+  </p>
+  <div class="model">
+    A <span class="hl">thesis</span> that the text <span class="hl">foregrounds</span> female entrapment is advanced through <span class="hl">cohesion</span> built on a <span class="hl">lexical field</span> of confinement, while the <span class="hl">register</span> shifts from <span class="hl">formal</span> to <span class="hl">colloquial</span> as the narrator's <span class="hl">stance</span> frays. <span class="hl">Nominalisation</span> ("the erasure of her name") and the <span class="hl">passive</span> voice background the agent, and an <span class="hl">imperative</span> ("leave") jolts the <span class="hl">declarative</span> calm — a <span class="hl">coordination</span> of equal clauses that withholds cause where <span class="hl">subordination</span> would supply it. <span class="hl">Alliteration</span> ("silent, shuttered") and <span class="hl">sibilance</span> ("she slipped, she sighed") slow the line toward a <span class="hl">caesura</span>, and <span class="hl">enjambment</span> spills the confession across the <span class="hl">metre</span>. Through a <span class="hl">patriarchy</span> lens, the <span class="hl">male gaze</span> frames her as object, and the <span class="hl">uncanny</span> recurrence of her mother's voice reads as <span class="hl">repression</span> surfacing from the <span class="hl">unconscious</span>. The effect is a text where stylistic choice, sentence move, and critical lens interlock so tightly that meaning cannot be read at a single level.
+  </div>
+  <p style="font-size:13px; color:var(--ink-soft); margin-top:8px;">
+    That paragraph names <strong>24</strong> distinct Week 4 terms across all five grids — metalanguage (thesis, foregrounding, cohesion, lexical field, register, stance), syntax (nominalisation, passive, imperative, declarative, coordination, subordination), word-meaning (formal, colloquial), sound (alliteration, sibilance, caesura, enjambment, metre), lens (patriarchy, male gaze, uncanny, repression, unconscious). It moves macro &rarr; micro and ties each device to an <em>effect</em>, not just a label.
+  </p>
+
+  <h3 style="margin-top:20px;">Self-Marking Rubric (use after Your Task below)</h3>
+  <table class="rubric">
+    <tr><th>Criterion</th><th>1–3 (Developing)</th><th>4–6 (Proficient)</th><th>7–9 (Excellent)</th></tr>
+    <tr><td class="crit">Identify</td><td class="b1"><span class="band b1">1–3</span> Names few / wrong devices</td><td class="b2"><span class="band b2">4–6</span> Names most devices correctly</td><td class="b3"><span class="band b3">7–9</span> Names every device, precisely</td></tr>
+    <tr><td class="crit">Distinguish</td><td class="b1"><span class="band b1">1–3</span> No near-neighbour awareness</td><td class="b2"><span class="band b2">4–6</span> Occasional correct pair choice</td><td class="b3"><span class="band b3">7–9</span> Right term from a pair every time</td></tr>
+    <tr><td class="crit">Five-grid balance</td><td class="b1"><span class="band b1">1–3</span> One grid only (e.g. all lens)</td><td class="b2"><span class="band b2">4–6</span> 2–3 grids represented</td><td class="b3"><span class="band b3">7–9</span> All 5 grids deployed deliberately</td></tr>
+    <tr><td class="crit">Integrate</td><td class="b1"><span class="band b1">1–3</span> Labels listed, not analysed</td><td class="b2"><span class="band b2">4–6</span> Words attached to effects</td><td class="b3"><span class="band b3">7–9</span> Devices drive the argument about meaning</td></tr>
+  </table>
+
+  <!-- ============ YOUR TASK ============ -->
+  <h2><span class="icon">✏️</span> Your Task — Analyse the Passage</h2>
+  <div class="practice-box">
+    <p style="font-size:14px; color:var(--ink-soft);">Write ONE analytical paragraph (9–12 sentences) on the passage below. Then self-mark with the rubric.</p>
+    <div class="usage-box" style="margin:12px 0;">
+      <span class="label">Passage</span>
+      "The door was locked from the outside. She waited, and she listened, and she wrote nothing down. The city speaks in a language she cannot name; the city forgets her by morning. Light is a question, light is a cage — and still she climbs. When the boy asked why the windows were barred, his father said only that safety has its price, and the silence afterwards was its own answer."
+    </div>
+    <p style="font-size:13.5px; color:var(--ink); margin-bottom:8px;"><strong>Requirements:</strong></p>
+    <ol>
+      <li>Name <strong>at least eight</strong> Week 4 terms, with <strong>all five grids represented</strong> (metalanguage + syntax + meaning + sound + lens).</li>
+      <li>Use <strong>at least one correct distinction pair</strong> (e.g. coordination vs. subordination; nominalisation vs. passive; denotation vs. connotation; iamb vs. trochee; ideology vs. hegemony; othering vs. subaltern).</li>
+      <li>For each device, state its <strong>effect</strong> — what it makes the reader feel or understand — not just its name.</li>
+      <li>Move from macro (a critical lens / overall stylistic shape) to micro (a specific sound or syntactic move) at least once.</li>
+    </ol>
+    <p style="font-size:13px; color:var(--ink-soft); margin-top:10px;">
+      <strong>Starter:</strong> "The extract opens through a <span class="hl">[lens]</span> reading, where the <span class="hl">[metalanguage term]</span> establishes… The <span class="hl">[syntax move]</span> ('…') withholds / supplies cause, while the <span class="hl">[sound term]</span> ('…') slows the line so the reader feels… Tonally, the shift in <span class="hl">[register/meaning term]</span> means the <span class="hl">[lens term]</span> of confinement carries a <span class="hl">[meaning term]</span> weight, so the reader infers…"
+    </p>
+    <p style="font-size:13px; color:var(--ink-soft); margin-top:8px;">
+      <strong>Then self-mark:</strong> target 7–9 on every rubric row. If Identify or Five-grid balance drops below 4, your Week 4 toolkit still has gaps — revisit the Master Sheet above.
+    </p>
+  </div>
+
+  <!-- ============ DISTINCTION QUICK-REF ============ -->
+  <h2><span class="icon">⚖️</span> Distinction Quick-Ref (Your Exam Armour)</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    The fifteen pairs most often confused across the five grids. In an essay, naming the <em>right</em> term from a pair is what separates 5 from 7.
+  </p>
+  <div class="distinction-box">
+    <h4>① cohesion vs. coherence</h4>
+    <p><strong>Cohesion</strong> is the visible linking (pronouns, conjunctions, lexical ties); <strong>coherence</strong> is the invisible logical sense. A text can be cohesive but incoherent.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>② thesis vs. contention</h4>
+    <p><strong>Thesis</strong> is the overall central claim; <strong>contention</strong> is the specific asserted position argued within it. Umbrella vs. the point being fought for.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>③ qualify vs. concede</h4>
+    <p><strong>Qualify</strong> limits your own claim ("this is largely true"); <strong>concede</strong> grants a point to the opponent before rebutting. Both hedge force, opposite direction.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>④ coordination vs. subordination</h4>
+    <p><strong>Coordination</strong> links equal clauses (and/but); <strong>subordination</strong> nests unequal clauses (because/although). Equal vs. nested.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑤ sentence function vs. illocutionary act</h4>
+    <p><strong>Sentence function</strong> is grammatical (declarative/interrogative); <strong>illocutionary act</strong> is pragmatic — what the utterance DOES (request, warn). Form vs. force.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑥ nominalisation vs. passive</h4>
+    <p><strong>Nominalisation</strong> turns a process into a noun; <strong>passive</strong> shifts the patient to subject. Both background the agent, different mechanism.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑦ denotation vs. connotation</h4>
+    <p><strong>Denotation</strong> = literal meaning; <strong>connotation</strong> = felt associations. Word-choice analysis lives in connotation.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑧ semantic field vs. lexical set</h4>
+    <p><strong>Semantic field</strong> = related meanings around a concept (loose web); <strong>lexical set</strong> = words of the same topic/class (tighter). Field is meaning-based, set is class-based.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑨ polysemy vs. ambiguity</h4>
+    <p><strong>Polysemy</strong> = one word, multiple related senses ("bank"); <strong>ambiguity</strong> = a structure/word with two distinct readings. Polysemy is inherent, ambiguity is undecidable.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑩ alliteration vs. assonance</h4>
+    <p><strong>Alliteration</strong> repeats initial consonants; <strong>assonance</strong> repeats vowel sounds within words. Edge vs. middle of the word.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑪ iamb vs. trochee</h4>
+    <p><strong>Iamb</strong> = unstressed-stressed (da-DUM); <strong>trochee</strong> = stressed-unstressed (DA-dum). Opposite foot.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑫ caesura vs. enjambment</h4>
+    <p><strong>Caesura</strong> = a pause within a line; <strong>enjambment</strong> = a line running on without pause. Stop vs. flow.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑬ ideology vs. hegemony</h4>
+    <p><strong>Ideology</strong> is a belief system; <strong>hegemony</strong> is that ideology's dominance felt as "common sense". Belief vs. its grip.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑭ othering vs. the subaltern</h4>
+    <p><strong>Othering</strong> is the act of marking a group as alien; <strong>the subaltern</strong> is the marginalised group itself (no voice in power). Process vs. subject.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑮ patriarchy vs. the male gaze</h4>
+    <p><strong>Patriarchy</strong> is the systemic structure of male authority; <strong>the male gaze</strong> is one mechanism — framing women as objects for male looking. System vs. lens.</p>
+  </div>
+
+  <!-- ============ ASSESSMENT TIPS ============ -->
+  <h2><span class="icon">🎯</span> Assessment Tips</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Recognition is not ownership.</strong> You "know" a Week 4 term only when you can spell it, define it, and deploy it on an unseen passage in under a minute. The Master Sheet tests the first two; the Your Task tests the third. All three must pass.
+    </li>
+    <li>
+      <strong>Reach for one term from each grid, every time.</strong> A commentary that names twelve lens terms but no syntax move or sound device is unbalanced and caps below the top band. The five-grid balance row in the rubric is the single biggest lever on your mark.
+    </li>
+    <li>
+      <strong>The pair is the differentiator.</strong> "This is coordination" gets identification; "this is coordination, not subordination, because the clauses are equal and withhold cause" gets the top band. The fifteen distinctions are your edge — keep them alive into the application phase.
+    </li>
+    <li>
+      <strong>Devices must drive meaning, not decorate.</strong> Top commentaries use each term to explain an effect ("the enjambment spills the confession, refusing the closure a full stop would grant"). If you can delete the device name and the sentence loses nothing, you've listed, not analysed.
+    </li>
+    <li>
+      <strong>Macro before micro.</strong> Orient with a critical lens or overall stylistic shape (patriarchy, foregrounding) before zooming into a single sound or syntactic move. The model paragraph moves whole-text &rarr; sentence on purpose. Examiners reward that architecture of thought.
+    </li>
+    <li>
+      <strong>Week 4 is the application engine of the whole programme.</strong> These sixty terms turn your Phase 1–3 device toolkit into argument: the metalanguage frames the claim, the syntax moves show how the text persuades, and the lenses reveal what it hides. Lock them in now and the remaining weeks become synthesis, not relearning.</li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 29 (Next): Week 5, Day 1 — Application &amp; Synthesis</strong><br>
+    Week 4 gave you the metalanguage, syntax moves, word-meaning, sound, and critical-lens toolkit. Week 5 turns it into <em>synthesis</em>: deploy the entire 240-word repertoire (Phases 1–4) on unseen IB set-text passages, with argumentative-essay vocabulary (thesis / contention / qualify / concede / rebut) embedded in complete Paper 2 paragraphs, plus deeper multi-lens practice (feminist, Marxist, postcolonial, psychoanalytic) on a single extract. Retrieval becomes fluent production.<br><br>
+    <strong style="color:var(--ink);">Milestone:</strong> 240 words learned (of ~1,300). Week 4 complete — the Mastery &amp; Application foundation is now locked. 🏆
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 4, Day 28<br>
+  240 words learned so far (+0 today) · 1,060 to go · Week 4 complete 🏆
+</footer>
+
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+<script src="../assets/vocab-ask-ai.js" defer></script>
+</body>
+</html>
