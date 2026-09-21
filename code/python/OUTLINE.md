@@ -96,7 +96,7 @@
 > Chapter 35 already implements A*. This part is what makes it possible to see that A* is graph
 > search, and to choose a data structure on evidence rather than habit.
 
-- ★ 44 Complexity and the Cost Model — *Big-O, Θ and Ω, growth rates, amortised cost, the real
+- ✅ 44 Complexity and the Cost Model — *Big-O, Θ and Ω, growth rates, amortised cost, the real
   constant factors of Python operations measured with `timeit`, and the difference between a
   benchmark and a guess*
 - ★ 45 Core Data Structures — *dynamic arrays, linked lists, stacks, queues and `deque`, a hash

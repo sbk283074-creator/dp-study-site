@@ -37,12 +37,13 @@ it and write it again from memory.
 | V · Track B | 31–36 | Build and package a complete game with Pygame |
 | VI · Appendices | 37–38 | Recipes and a bank of practice problems |
 | VII · How Python Actually Works | 39–43 | See the interpreter, the object model, the memory rules and the descriptor protocol under the features you already use |
+| VIII · Algorithms & Complexity | 44–49 | Reason about what code costs before you run it, and choose a data structure on evidence |
 | XII · Where Next | 62 | Turn the skills into evidence, and choose what to learn next |
 
-Parts VIII–XI are being written now: Algorithms & Complexity, Security, Architecture & Patterns, and
-Performance & Data at Scale. They fill chapters 44–61, and they sit deliberately *after* the applied
-tracks — they are what turns "I can build things" into "I can choose what to build". Each one appears
-in this table once its first chapter ships.
+Parts IX–XI are being written now: Security, Architecture & Patterns, and Performance & Data at
+Scale. They fill chapters 50–61, and they sit deliberately *after* the applied tracks — they are what
+turns "I can build things" into "I can choose what to build". Each one appears in this table once its
+first chapter ships.
 
 Parts I–III are mandatory and linear. After that the book forks: Track A is web development,
 Track B is game development. You can do either one, or do both — Track A and Track B do not
