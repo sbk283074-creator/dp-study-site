@@ -99,7 +99,7 @@
 - ✅ 44 Complexity and the Cost Model — *Big-O, Θ and Ω, growth rates, amortised cost, the real
   constant factors of Python operations measured with `timeit`, and the difference between a
   benchmark and a guess*
-- ★ 45 Core Data Structures — *dynamic arrays, linked lists, stacks, queues and `deque`, a hash
+- ✅ 45 Core Data Structures — *dynamic arrays, linked lists, stacks, queues and `deque`, a hash
   table written by hand to see why `dict` is O(1), heaps and `heapq`, balanced trees vs `bisect`
   vs sorted list, tries; each one chosen for a stated cost*
 - ★ 46 Sorting and Searching — *comparison sorts, why `sorted` is Timsort and stable, `key=` vs
