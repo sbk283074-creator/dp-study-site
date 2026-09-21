@@ -122,6 +122,29 @@ def chapter_std(path: Path) -> str | None:
                                  f"{sorted(ALLOWED_STD)}")
             return value
     return None
+
+
+def chapter_libs(path: Path) -> tuple[str, ...]:
+    """Read `libs:` from a chapter's frontmatter: `libs: sqlite3` or `libs: [a, b]`."""
+    try:
+        head = path.read_text(encoding="utf-8").split("\n", 40)[:40]
+    except OSError:
+        return ()
+    if not head or head[0].strip() != "---":
+        return ()
+    for line in head[1:]:
+        if line.strip() == "---":
+            break
+        m = re.match(r"^libs:\s*(.+?)\s*$", line)
+        if m:
+            raw = m.group(1).strip()
+            if raw.startswith("[") and raw.endswith("]"):
+                raw = raw[1:-1]
+            names = tuple(n.strip().strip("'\"") for n in raw.split(",") if n.strip())
+            if not names:
+                raise SystemExit(f"{path.name}: libs: declared but empty")
+            return names
+    return ()
 SAN_FLAGS = ["-fsanitize=address,undefined", "-fno-omit-frame-pointer", "-g"]
 
 # Fence languages that mean "this is a shell script, run it with `sh`". A fence in one
@@ -184,7 +207,7 @@ def probe_leak_detection(cxx: str) -> bool:
 # --------------------------------------------------------------------------
 class Block:
     __slots__ = ("chapter", "line", "lang", "directive", "code", "expected",
-                 "seed", "seed_lang", "std")
+                 "seed", "seed_lang", "std", "libs")
 
     def __init__(self, chapter, line, lang, directive, code, expected=None,
                  seed=None, seed_lang=None):
@@ -202,6 +225,11 @@ class Block:
         # Language standard forced by the chapter's frontmatter `std:` line, or
         # None to fall back to CPP_STD / C_STD. Set by run_dir.
         self.std = None
+        # Libraries the chapter needs linked (`libs: sqlite3`). The harness used
+        # to compile with no `-l` at all, which silently forbade every
+        # third-party library -- and a chapter that cannot link is a chapter
+        # that has to fake its evidence.
+        self.libs: tuple[str, ...] = ()
 
     @property
     def where(self) -> str:
@@ -230,6 +258,11 @@ class Block:
         if self.std:
             return self.std
         return C_STD if self.is_c else CPP_STD
+
+    @property
+    def link_flags(self) -> list[str]:
+        """`-l<name>` flags declared by the chapter, e.g. `libs: sqlite3`."""
+        return [f"-l{name}" for name in self.libs]
 
 
 # A multi-file block is one listing holding several files, separated by a banner
@@ -421,6 +454,10 @@ def build(block: Block, driver: str, work: Path, sanitize: bool, werror: bool):
         src.write_text(block.code + "\n", encoding="utf-8")
         cmd += ["-o", str(exe), str(src)]
 
+    # Libraries last: a `-l` before its object file is silently ignored by the
+    # linker on some platforms, and a chapter that needs one must get it.
+    cmd += block.link_flags
+
     return subprocess.run(cmd, capture_output=True, text=True, timeout=180), exe
 
 
@@ -482,6 +519,7 @@ def check_shell(block: Block, d: str, cxx: str, cc: str) -> Result:
                 std = block.std or (C_STD if block.seed_lang in ("c", "h") else CPP_STD)
                 build_cmd = [driver, f"-std={std}", "-Wall", "-Wextra", "-Werror",
                              "-I", str(work), "-o", str(work / "prog")] + sources
+                build_cmd += block.link_flags
 
             proc = subprocess.run(build_cmd, capture_output=True, text=True,
                                   timeout=180, cwd=work)
@@ -694,8 +732,10 @@ def run_dir(chapters_dir: Path, filt: str, cxx: str, cc: str, leak_ok: bool,
     for path in files:
         blocks = parse_chapter(path)
         std = chapter_std(path)
+        libs = chapter_libs(path)
         for b in blocks:
             b.std = std
+            b.libs = libs
         actionable = [b for b in blocks if b.directive]
         frags = len(blocks) - len(actionable)
         if not actionable and not frags:
