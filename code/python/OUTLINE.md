@@ -104,7 +104,7 @@
   vs sorted list, tries; each one chosen for a stated cost*
 - ✅ 46 Sorting and Searching — *comparison sorts, why `sorted` is Timsort and stable, `key=` vs
   `cmp_to_key`, binary search and its off-by-one, `bisect` for insertion and rank*
-- ★ 47 Graphs — *adjacency list vs matrix, BFS, DFS, topological sort and cycle detection,
+- ✅ 47 Graphs — *adjacency list vs matrix, BFS, DFS, topological sort and cycle detection,
   Dijkstra with a heap, and A\* (Chapter 35) as Dijkstra plus a heuristic*
 - ★ 48 Recursion, Memoisation and Dynamic Programming — *the recursion tree, overlapping
   subproblems, `functools.lru_cache`, top-down vs bottom-up, edit distance, knapsack, and the
