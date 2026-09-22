@@ -224,9 +224,31 @@
   broken in 4 different ways, and 5 hosts answering 4, 4, 4, 5 and 5 requests, where the last row
   answers no more than the one above it and differs only in finding the breakage before the first
   request.*
-- ★ 55 Dependency Injection and Inversion of Control — *constructor injection, seams via
-  `Protocol`, why DI is about testing rather than about frameworks, and why FastAPI's `Depends` is
-  dependency injection whether or not it is called that*
+- ✅ 55 Dependency Injection and Inversion of Control — *what injection changes, counted rather than
+  asserted, with several counts coming out against the practice. A ledger that builds its own
+  database handle against one that takes it: both pass all 6 behaviours, and 0 of the 6 can be handed
+  a stand-in under the first design against 6 of 6 under the second, decided by the one line that
+  names the concrete type. A module-level handle over 3 behaviours in 3 orders, where all 3 change
+  their result depending on what ran before them — and the first order is the one that passes, which
+  is the order somebody would write them in. A `Protocol` seam with 3 implementations the consumer
+  names 0 of, where 2 of the 3 return a value for every key and the third returns two and a `None`
+  and the protocol said nothing about which is allowed. Inversion measured as the direction of the
+  reference: **each design holds exactly 1 reference between the policy and the mechanism and they
+  point in opposite directions**, so inversion is not a reduction in coupling — what changes is which
+  module is on the receiving end, which is why the interface belongs to the consumer. Wiring and
+  where a typo is found: 6 services, 6 dependencies and one undeclared name, where the hand-written
+  root and the lazy container both get through 5 of 6 and the eager one constructs 0 of 6 — the
+  container's gain is that the graph is data, and its cost is that `NameError` naming a thing becomes
+  `KeyError` naming a string. A framework's `Depends` marker: 5 parameters across 4 handlers, 4
+  marked, and the handler bodies name a provider in 0 of them. Lifetimes over 3 requests — 1, 3 and 6
+  instances for singleton, per-request and transient — and a singleton that captured a per-request
+  object handing 2 of the 3 requests the wrong session with nothing raising. A service locator that
+  names 0 of 3 dependencies in the signature while one override reaches all 4 callers. The pitfall is
+  the case where injection does not pay: a pure function behind an interface, adding 2 classes, 2
+  functions and 10 lines for 1 implementation that no test needed to replace. The scenario is a
+  checkout wired 3 ways — builds its own (0 of 3 tests run, 1 file names the vendor), takes one from
+  every caller (3 of 3 tests, but 3 files name the vendor, which is where most refactors stop), and
+  takes one wired in a composition root (3 of 3 tests and 1 file).*
 - ★ 56 Hexagonal Architecture — *ports and adapters, the dependency rule, repository and unit of
   work, the boundary that keeps SQLAlchemy out of the domain, and where FastAPI and Pygame each
   sit relative to it*
