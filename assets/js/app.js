@@ -73,6 +73,19 @@ const NAV = [
     ]
   },
   {
+    id: 'essays', group: 'English Essays · writing skills', dot: '#b03060', open: false,
+    meta: 'P1 · P2 · HL Essay · IO — a skills layer',
+    items: [
+      { p: 'essays/index.html', t: 'Overview & the four writing tasks', n: '00' },
+      { p: 'essays/writing-styles.html', t: 'Essay types & registers', n: '01' },
+      { p: 'essays/devices.html', t: 'Literary & stylistic devices', n: '02' },
+      { p: 'essays/vocabulary.html', t: 'Analytical vocabulary bank', n: '03' },
+      { p: 'essays/questions.html', t: 'Question bank & model plans', n: '04' },
+      { p: 'essays/examples.html', t: 'Annotated model essays', n: '05' },
+      { p: 'essays/toolkit.html', t: 'Analysis toolkit & checklists', n: '06' }
+    ]
+  },
+  {
     id: 'chinese', group: 'Chinese A: Lang & Lit SL', dot: '#c0392b', open: false,
     meta: 'Paper 1 35% · Paper 2 35% · IO 30%',
     items: [
@@ -143,7 +156,7 @@ function currentPath() {
   const full = location.pathname.split('/');
   const file = full[full.length - 1] || 'index.html';
   const parent = full[full.length - 2] || '';
-  const known = ['math', 'physics', 'cs', 'english', 'chinese'];
+  const known = ['math', 'physics', 'cs', 'english', 'chinese', 'essays'];
   return known.includes(parent) ? parent + '/' + file : file;
 }
 
@@ -201,7 +214,7 @@ function hrefTo(target) {
   const rootIdx = segs.length ? -1 : 0;
   // count how many segments of `here` come after the site root:
   // site root is the folder containing assets/ -> find by known subject dirs
-  const known = ['math', 'physics', 'cs', 'english', 'chinese'];
+  const known = ['math', 'physics', 'cs', 'english', 'chinese', 'essays'];
   let up = 0;
   for (let i = segs.length - 1; i >= 0; i--) { if (known.includes(segs[i])) up++; }
   return '../'.repeat(up) + target;
