@@ -109,9 +109,12 @@
 - ✅ 48 Recursion, Memoisation and Dynamic Programming — *the recursion tree, overlapping
   subproblems, `functools.lru_cache`, top-down vs bottom-up, edit distance, LCS, knapsack and
   pseudo-polynomial time, coin change, rolling rows, and the recursion limit as a design constraint*
-- ★ 49 A Method for Unseen Problems — *read the constraints first, derive a complexity budget,
-  pick the structure, then the algorithm; worked interview-style problems from statement to
-  proof of complexity, including the ones where the answer is "sort it first"*
+- ✅ 49 A Method for Unseen Problems — *a repeatable procedure for a problem you have never seen:
+  read the constraints as a complexity budget, pick the structure the budget allows, then prove the
+  complexity by counting; worked end to end on one problem three ways (where the answer is unique but
+  the witness is not), on fitting an exponent to timings, on the problems where the answer is "sort it
+  first", the ones where a set is not enough, the sweep that is wrong rather than slow, and the ones
+  where the budget says meet in the middle*
 
 ## Part IX · Security — 50–53 (4) ★
 
