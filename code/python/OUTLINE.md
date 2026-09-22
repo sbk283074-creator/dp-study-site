@@ -140,8 +140,22 @@
   100% as the check moves to the fixed point); eight sinks against seven encoders, where three of the
   six encoders that change anything make a sink **worse** than doing nothing; a blocklist scored
   against 7,680 generated strings; and log forging, where 24 of 84 lines are requests nobody made*
-- ★ 52 Untrusted Data — *`pickle`, `yaml.load`, XML entity expansion, zip/tar path traversal and
-  the "zip slip" bug, `marshal`, size and depth limits, and schema validation as a boundary*
+- ✅ 52 Untrusted Data — *the other half of injection: a value that is not parsed as syntax in a
+  statement but reconstructed as an object, a path, a tree or a length. `pickle` as a program rather
+  than a description (`__reduce__` returns a callable and its arguments — six payloads, six stdlib
+  functions, six calls, and the stream needs no class of yours), the four operations that run it
+  (`dumps`, `loads`, `copy.copy`, `copy.deepcopy`), and why JSON and `marshal` are not "safer pickle"
+  but formats that cannot express the object; XML entity expansion measured at a factor of ten per
+  line (125 bytes → 30 characters, 573 bytes → 3 billion); zip slip, where `zipfile` sanitises 0 of 6
+  members and tarfile instead offers each member to a filter that refuses 0, 3 or 4 of 7 depending on
+  which you name; schema validation as a boundary (presence alone accepted 7 hostile bodies of 12, and
+  `True` is an `int` so only `type(x) is t` catches it); the allow-list that resolves the four types
+  the application has where `getattr(builtins, ...)` resolves none of those and all three dangerous
+  ones; and message framing, where trusting a declared length got 2 of 7 messages right before the
+  reader died and misattributed every byte after it. Two blocks are about checks that measure the
+  wrong quantity — a 4096-byte upload limit that passes all six documents while three of them expand
+  past a hundred million characters. **`yaml.load` and `defusedxml` are not covered: PyYAML and
+  defusedxml are not installed, and this track is stdlib-only.***
 - ★ 53 Web Security — *XSS and the escaping contexts, CSRF and why `SameSite` is not enough, SSRF
   and allow-lists, open redirects, authentication vs authorization and the IDOR bug, session
   fixation, timing attacks on comparison, secret management, and dependency supply chain
