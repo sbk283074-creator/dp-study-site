@@ -116,7 +116,7 @@
   first", the ones where a set is not enough, the sweep that is wrong rather than slow, and the ones
   where the budget says meet in the middle*
 
-## Part IX · Security — 50–53 (4) ★
+## Part IX · Security — 50–53 (4) ✅
 
 > Chapters 18, 19, 27 and 28 already do the right things. This part is the framework that turns
 > those habits into principles the reader can apply to code nobody has written yet.
@@ -156,10 +156,29 @@
   wrong quantity — a 4096-byte upload limit that passes all six documents while three of them expand
   past a hundred million characters. **`yaml.load` and `defusedxml` are not covered: PyYAML and
   defusedxml are not installed, and this track is stdlib-only.***
-- ★ 53 Web Security — *XSS and the escaping contexts, CSRF and why `SameSite` is not enough, SSRF
-  and allow-lists, open redirects, authentication vs authorization and the IDOR bug, session
-  fixation, timing attacks on comparison, secret management, and dependency supply chain
-  (`pip-audit`, pinning, reproducible installs)*
+- ✅ 53 Web Security — *the same two mechanisms in the one place where you hold neither end: a
+  browser, a session, and a set of services you did not write. Four rendering contexts against one
+  escaper (8 of 24 renders broken raw, 2 of 24 after `html.escape`, and both survivors are the
+  unquoted-attribute context, where the payload needs a space and a space is not one of the four
+  characters an HTML escaper escapes); `SameSite` over eight request shapes (None sends on 8, Lax on
+  3, Strict on 2, and Lax's single exception is a top-level navigation with a safe method, which is
+  why state changes must not be GETs); four SSRF validators accepting 3, 3, 2 and 0 of fourteen
+  hostile URLs, where the string checks remove classes of a different kind rather than being three
+  attempts at one; three open-redirect checks accepting 4, 7 and 1 of nine, where the check that
+  looks correct — `urlparse` netloc empty — accepts **more** than the check it replaced; IDOR as a
+  route guard against a row scope (4 of 12 endpoint-and-caller pairs leak, one leaking endpoint's
+  guard is correct, and one scope takes it to 0); session lifecycle over five attacks and four
+  settings (5, 4, 3, 1, and the one that survives all four is a password change, which is not a
+  session event at all), with a token table where every measurable generator is 1000 distinct out of
+  1000 and two of them are reproduced in full by an attacker who never saw one; an early-exit
+  comparison that recovered 27 of 28 bytes and misses the last one because there is no byte after it
+  to differ at; three secret detectors finding 2, 3 and 5 of six credentials at a cost of 0, 1 and 3
+  false alarms, where the keyword list held `api key` and not `key`; the dependency supply chain
+  (125 resolutions → 27 → 25 → 1, where the last two rows are the same number and not the same
+  thing, plus 4 of 6 install steps running package-authored code); and the logging category, where
+  32 of 54 lines carry a credential and 6 of the 29 requests an incident would need produce no line
+  at all. The scenario walks one password reset link and counts six mistakes in six different
+  places.*
 
 ## Part X · Architecture & Patterns — 54–57 (4) ★
 
