@@ -86,6 +86,19 @@ const NAV = [
     ]
   },
   {
+    id: 'reports', group: 'Scientific Report Writing', dot: '#0a6f80', open: false,
+    meta: 'Lab reports · math reports · writing craft',
+    items: [
+      { p: 'reports/index.html', t: 'Overview & the two report families', n: '00' },
+      { p: 'reports/lab-format.html', t: 'Lab report format (IMRaD)', n: '01' },
+      { p: 'reports/writing-strategy.html', t: 'Scientific writing craft', n: '02' },
+      { p: 'reports/math-report.html', t: 'The mathematical report', n: '03' },
+      { p: 'reports/data-figures.html', t: 'Data, tables & figures', n: '04' },
+      { p: 'reports/examples.html', t: 'Annotated model excerpts', n: '05' },
+      { p: 'reports/toolkit.html', t: 'Checklists & pre-submission', n: '06' }
+    ]
+  },
+  {
     id: 'chinese', group: 'Chinese A: Lang & Lit SL', dot: '#c0392b', open: false,
     meta: 'Paper 1 35% · Paper 2 35% · IO 30%',
     items: [
@@ -156,7 +169,7 @@ function currentPath() {
   const full = location.pathname.split('/');
   const file = full[full.length - 1] || 'index.html';
   const parent = full[full.length - 2] || '';
-  const known = ['math', 'physics', 'cs', 'english', 'chinese', 'essays'];
+  const known = ['math', 'physics', 'cs', 'english', 'chinese', 'essays', 'reports'];
   return known.includes(parent) ? parent + '/' + file : file;
 }
 
@@ -214,7 +227,7 @@ function hrefTo(target) {
   const rootIdx = segs.length ? -1 : 0;
   // count how many segments of `here` come after the site root:
   // site root is the folder containing assets/ -> find by known subject dirs
-  const known = ['math', 'physics', 'cs', 'english', 'chinese', 'essays'];
+  const known = ['math', 'physics', 'cs', 'english', 'chinese', 'essays', 'reports'];
   let up = 0;
   for (let i = segs.length - 1; i >= 0; i--) { if (known.includes(segs[i])) up++; }
   return '../'.repeat(up) + target;

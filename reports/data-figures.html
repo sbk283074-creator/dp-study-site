@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-subject="reports">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data, tables &amp; figures — presenting evidence as argument</title>
+<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<div id="app-shell">
+
+<span class="eyebrow">Scientific Report Writing · Data &amp; figures</span>
+<h1 class="page-title">Data, tables &amp; figures</h1>
+<p class="lede">Tables and graphs are not decoration — they are the evidence your argument rests on. A reader trusts a
+report whose data is presented cleanly and doubts one whose graph has no units. This page is the
+<strong>communication</strong> side of data: how to build tables and figures that argue for you. The measurement maths
+(uncertainty, propagation, best-fit lines, significant figures) is owned by the
+<a href="../physics/F-skills-ia.html">Physics IA page</a>; here we handle how you <em>show</em> it.</p>
+<div class="page-meta">
+  <span class="tag">Tables</span>
+  <span class="tag">Graphs</span>
+  <span class="tag">Significant figures</span>
+  <span class="tag">Choosing the right visual</span>
+</div>
+
+<h2>1. Tables — units in the header, not the cells</h2>
+<p>A table's job is to let the reader find a value and trust it. Two rules dominate:</p>
+<ul>
+  <li><strong>Put the unit in the column (or row) header, never repeated in every cell.</strong> A column headed "Time
+  / s" with entries "0.0, 1.2, 2.4" is correct; a column of "1.2 s, 2.4 s" is noisy and error-prone.</li>
+  <li><strong>Align numbers on the decimal point</strong> (or at least right-align them) so trends and magnitudes are
+  visible at a glance. A ragged left edge hides a ten-fold jump.</li>
+</ul>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Length / m</th><th>Period / s</th><th>Uncertainty / s</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>0.200</td><td>0.90</td><td>0.02</td></tr>
+    <tr><td>0.400</td><td>1.27</td><td>0.02</td></tr>
+    <tr><td>0.600</td><td>1.55</td><td>0.03</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Keep <strong>raw data and processed data in separate tables</strong> (or clearly labelled sections): the measurements
+as taken, then the calculated quantities. State the number of significant figures or decimal places consistently — a
+column mixing "0.90" and "1.273" looks careless even if the values are right.</p>
+
+<h2>2. Graphs — the axis is a sentence</h2>
+<p>A graph that cannot be read is worse than no graph. The conventions:</p>
+<ul>
+  <li><strong>Label both axes with quantity and unit:</strong> "Period T / s", not "T" and not "seconds". The unit
+  belongs with the quantity, with a slash.</li>
+  <li><strong>Choose the right plot for the relationship.</strong> If theory predicts y = a·xⁿ, plot log y vs log x to
+  get a straight line of slope n (log–log), or plot y vs xⁿ directly if n is known. Fitting a straight line to curved
+  data and calling it linear is a classic error.</li>
+  <li><strong>Best-fit, not connect-the-dots.</strong> Draw the line or curve that minimises scatter; the individual
+  points stay visible. State the gradient and its units, and compare it to the theoretical value.</li>
+  <li><strong>Error bars where they matter.</strong> If you treated uncertainty (and you should), show it on the graph.
+  A best-fit line should pass through or near the error bars, not just the central points.</li>
+  <li><strong>Caption below, reference in text.</strong> "Figure 1 shows the period increasing with √L" — the figure is
+  evidence you cite, not a illustration you drop in.</li>
+</ul>
+<div class="callout callout--trap">
+  <span class="callout__label">Classic mistake</span>
+  <p>An axis reading "Time" with no unit, or a graph titled "Graph 1" with no caption. The reader should be able to
+  reconstruct what was plotted from the figure alone. No unit on an axis is an automatic "imprecise communication" flag
+  in the IB Data Analysis criterion.</p>
+</div>
+
+<h2>3. Significant figures &amp; rounding — a communication act</h2>
+<p>How many digits you write is itself a claim about precision. The full rules (and why they are claims) are on the
+<a href="../physics/F-skills-ia.html">Physics IA page</a>; the writing-relevant summary:</p>
+<ul>
+  <li><strong>Quote uncertainty to one significant figure</strong> (sometimes two if the first digit is 1). "±0.03",
+  not "±0.0341".</li>
+  <li><strong>Match the decimal places of the value to the uncertainty.</strong> If you write "9.6 ± 0.3", both stop at
+  the tenths; "9.62 ± 0.3" over-claims precision on the value.</li>
+  <li><strong>Be consistent within a column.</strong> A results table where every entry shows the same number of decimal
+  places reads as careful, even before the reader checks a number.</li>
+  <li><strong>Don't round mid-calculation.</strong> Keep guard digits; round only the reported final value. Rounding
+  too early is a silent source of error.</li>
+</ul>
+<div class="callout callout--why">
+  <span class="callout__label">Why this is writing, not arithmetic</span>
+  <p>An uncertainty of "±0.03 s" tells the reader "I trust this to the hundredth of a second." Writing "±0.0341 s"
+  claims microsecond trust you don't have, and writing "±0.03" next to "9.623" contradicts yourself. The digit count
+  is part of the message; getting it right is part of writing clearly.</p>
+</div>
+
+<h2>4. Choosing the right visual</h2>
+<p>Don't reach for the first chart type. Match the visual to the job:</p>
+<div class="table-wrap">
+<table>
+  <thead><tr><th>To show…</th><th>Use…</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>A trend or relationship between two continuous variables</td><td>A <strong>scatter + best-fit line</strong></td><td>Reveals slope, scatter, whether linear.</td></tr>
+    <tr><td>Summarised values in rows/columns</td><td>A <strong>table</strong></td><td>Precise lookup; better than a bar for exact numbers.</td></tr>
+    <tr><td>Parts of a whole (percentages)</td><td>A <strong>pie or stacked bar</strong></td><td>Shows proportion at a glance.</td></tr>
+    <tr><td>Comparing magnitudes across categories</td><td>A <strong>bar chart</strong></td><td>Easy magnitude comparison.</td></tr>
+    <tr><td>A model fit or theoretical curve</td><td>A <strong>line/curve on the scatter</strong></td><td>Lets data and theory sit on one axes.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2>5. Diagrams &amp; apparatus sketches</h2>
+<p>For a lab report, a labelled apparatus diagram often communicates the method faster than prose. Rules: original (don't
+scan the manual), labelled with part names and the measured quantities marked, and <strong>referenced</strong> from the
+Methods ("Figure 2 shows the setup; the ruler measured the drop height h"). A figure you never mention in the text is
+dead weight.</p>
+
+<div class="callout callout--link">
+  <span class="callout__label">Where the maths lives</span>
+  <p>Uncertainty propagation, the significant-figure rules in full, drawing and using a line of best fit, and error bars
+  are all worked on <a href="../physics/F-skills-ia.html">Physics · Skills &amp; the scientific investigation</a>. This
+  page is about presenting the result of that maths so a reader trusts it.</p>
+</div>
+
+<h2>Sources</h2>
+<p>Table/graph conventions (units in headers, axis labelling with units, best-fit vs connect-the-dots, error bars,
+choosing chart type) reflect standard scientific-data presentation guidance and the IB Data Analysis criterion's
+"precise communication" expectations (units, decimal places, significant figures), summarised on the
+<a href="../physics/F-skills-ia.html">Physics IA page</a>. Verify exact IB wording against the guide your cohort uses.</p>
+
+<div class="pagenav">
+  <a href="math-report.html">← The mathematical report</a>
+  <a href="examples.html">Annotated model excerpts →</a>
+</div>
+
+</div>
+<script src="../assets/js/app.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+</body>
+</html>
