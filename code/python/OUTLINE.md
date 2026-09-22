@@ -91,7 +91,7 @@
   `__set_name__`, `__prepare__`, a real metaclass (a registry and a validator), and the point at
   which the right answer is "do not"*
 
-## Part VIII · Algorithms & Complexity — 44–49 (6) ★
+## Part VIII · Algorithms & Complexity — 44–49 (6) ✅
 
 > Chapter 35 already implements A*. This part is what makes it possible to see that A* is graph
 > search, and to choose a data structure on evidence rather than habit.
@@ -121,9 +121,12 @@
 > Chapters 18, 19, 27 and 28 already do the right things. This part is the framework that turns
 > those habits into principles the reader can apply to code nobody has written yet.
 
-- ★ 50 Thinking Like an Attacker — *assets, trust boundaries and threat modelling; the OWASP Top
-  Ten mapped onto the specific Python code in this book; why "it is only internal" is not a
-  control*
+- ✅ 50 Thinking Like an Attacker — *five counts and two assumptions: inventory the assets and the four
+  controls over each, count trust boundaries rather than components, count inputs rather than
+  endpoints, run STRIDE for completeness and see why it cannot rank, and hold the book against the
+  OWASP Top Ten; then test the two assumptions every design quietly makes -- that "internal" means
+  unreachable (nine of thirteen components were reachable before the SSRF existed) and that two
+  defences multiply (independence predicted 4.6 inputs through, 14 got through)*
 - ★ 51 Injection — *SQL injection and why parameterised queries work at the protocol level;
   command injection and `subprocess` without `shell=True`; template injection; `eval`/`exec` and
   `ast.literal_eval`; log injection*
