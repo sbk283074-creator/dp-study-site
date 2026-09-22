@@ -185,8 +185,45 @@
 > Chapters 23 and 33 teach architecture by example. This part supplies the names, so the reader can
 > read a codebase they did not write and can argue about a design instead of asserting it.
 
-- ★ 54 Patterns You Will Actually Use — *strategy, observer, adapter, factory, composite, and the
-  Python-specific twist: which of the GoF patterns are already built into the language*
+- ✅ 54 Patterns You Will Actually Use — *six shapes that get written again and again, each one
+  measured against the thing it replaced, and several of the measurements coming out against the
+  pattern. A five-method strategy written twice: the chain compares the method name 15 times to
+  resolve 5 calls and the table once per call, which is the argument everybody makes and it is true —
+  and the line count goes the other way, 24 lines of chain against 35 lines of table, with the table
+  mentioning every name twice (once as a function, once as a key) where the chain mentions each once.
+  What the table actually buys is in the third measurement: both refuse an unknown method, but the
+  chain whose last branch is a default charges it the standard rate, so the request succeeds and the
+  only signal is a plausible number. `functools.singledispatch` as the strategy pattern with the
+  selection already written — 4 handlers, 9 values, 4 reaching the default, where `True` and a
+  `Money` subclass both land on the `int` handler because the dispatch walks the mro, and where the
+  second argument decides nothing at all. The observer pattern as a three-line loop: the version that
+  does not isolate failures raised after 2 of 6 subscribers had run and lost the three after it, the
+  isolating version ran 5 of 6 and returned the failure as data, and all 6 orderings of three folding
+  subscribers leave a different value, so the order is part of the result and nothing in the pattern
+  says what it is. An adapter measured as a count of places — 4 fields read in 4 places directly
+  against 4 read in 1 behind a translation, indistinguishable under v1 and 4-of-4 versus 1-of-1
+  missing under v2 — and the honest version of the argument, which is that with a single call site
+  there is no difference at all. A factory registry: 5 handlers defined, 3 registered at import, 5
+  after an import nobody wrote for that reason, and a `globals()` lookup resolving 6 of 8 requests
+  where the registry resolved 5 — **not the same five**, since three of the names it answered for
+  were not handlers and two of the registry's handlers were not module-level names. A composite of 12
+  nodes (8 files, 4 directories, 3 implementations of the interface) where every query visits all 12,
+  and a caching node that takes it to 13, 1, 1 — the pattern working exactly as advertised, and the
+  node that has to be invalidated with no method in the interface for it. `@` as the decorator
+  pattern: 5 things a function carries, a bare decorator losing 4 of them (the module survives by
+  accident, because the decorator was defined in the same module), `functools.wraps` restoring 5, and
+  a decorator factory being 3 nested functions. An interface check worth what it costs: 4 objects
+  against 3 ways of naming the interface, where a plain `Protocol` raises `TypeError` for all 4, a
+  `runtime_checkable` one accepts 4 of 4 — including an object whose method takes no arguments and
+  one whose method name is bound to the number five — and an ABC accepts 1, having made every class
+  that already satisfied it be edited to say so. And the chapter's own method turned on its own
+  subject: 5 frames for one expression with 4 of them pure forwarding, and 5 layers each with exactly
+  1 implementation, so every seam has one thing on each side. The pitfall is the case where the
+  pattern does not pay — 4 classes, 6 defs and 33 lines against 0 classes, 1 function and 9 lines,
+  both raising `KeyError` on an unknown channel. The scenario is a plugin host: 8 plugins, 4 of them
+  broken in 4 different ways, and 5 hosts answering 4, 4, 4, 5 and 5 requests, where the last row
+  answers no more than the one above it and differs only in finding the breakage before the first
+  request.*
 - ★ 55 Dependency Injection and Inversion of Control — *constructor injection, seams via
   `Protocol`, why DI is about testing rather than about frameworks, and why FastAPI's `Depends` is
   dependency injection whether or not it is called that*
