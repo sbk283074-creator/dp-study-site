@@ -127,9 +127,19 @@
   OWASP Top Ten; then test the two assumptions every design quietly makes -- that "internal" means
   unreachable (nine of thirteen components were reachable before the SSRF existed) and that two
   defences multiply (independence predicted 4.6 inputs through, 14 got through)*
-- ★ 51 Injection — *SQL injection and why parameterised queries work at the protocol level;
-  command injection and `subprocess` without `shell=True`; template injection; `eval`/`exec` and
-  `ast.literal_eval`; log injection*
+- ✅ 51 Injection — *the one mechanism behind six different bug classes: a value arrives where
+  something parses it, and the parser cannot tell the value from the syntax it stands in. Why
+  parameterised queries work at the protocol level (28 rows interpolated against 1 bound, and the one
+  is the real name), and the slot where binding is not an option at all (`ORDER BY ?` sorts by a
+  constant — the allow-list delivers all four orderings and accepts zero hostile values); command
+  injection where the position decides rather than the payload (the same eight payloads run zero times
+  in `argv[1]` and eight times in `argv[0]`, and `['sh','-c',f-string]` with `shell=False` runs all
+  eight); template injection, where field access is enough (`{0.secret}` contains no call, no import
+  and no name); `eval` against `ast.literal_eval` against a filter that ran 3 of 8 code strings;
+  path traversal and the rule that the value you check must be the value you use (33.3% → 88.9% →
+  100% as the check moves to the fixed point); eight sinks against seven encoders, where three of the
+  six encoders that change anything make a sink **worse** than doing nothing; a blocklist scored
+  against 7,680 generated strings; and log forging, where 24 of 84 lines are requests nobody made*
 - ★ 52 Untrusted Data — *`pickle`, `yaml.load`, XML entity expansion, zip/tar path traversal and
   the "zip slip" bug, `marshal`, size and depth limits, and schema validation as a boundary*
 - ★ 53 Web Security — *XSS and the escaping contexts, CSRF and why `SameSite` is not enough, SSRF
