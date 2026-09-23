@@ -256,7 +256,7 @@
   premature abstraction and YAGNI, the strangler fig, and the cost of a layer you did not need.
   Written and verified: 4/4 blocks.*
 
-## Part XI · Performance & Data at Scale — 58–61 (4) ★
+## Part XI · Performance & Data at Scale — 58–61 (4) ✅
 
 - ✅ 58 Measure First — *the one rule of the part, that a number you did not count is a guess, taught
   by counting rather than timing in all 15 blocks. Four phases of a report each looping exactly 400
@@ -309,15 +309,48 @@
   with four workers, where per-worker caches are worse than a shared one on both counts: 221 store
   reads with 199 stale reads against 95 and none, and publishing the invalidation to every worker is
   correct and costs 307.*
-- ★ 60 Databases at Scale — *indexes and reading a query plan, the isolation levels and the
-  anomalies they prevent, connection pooling, the N+1 problem revisited at a scale where it
-  matters, and transactions under contention. **Re-scoped**: this track is stdlib-only, so the
-  chapter builds its pool and its isolation demonstrations on `sqlite3` and threads rather than
-  on SQLAlchemy, which is not installed and is not needed to make the counts.*
-- ★ 61 Counting Instead of Vectorising — *the array and the column store, built from `array` and
-  `collections` rather than from NumPy and pandas, which are not installed on this track; what a
-  vectorised kernel saves measured as work removed rather than as elapsed time, groupby and join
-  written as counts, and the cases where the array is the wrong tool*
+- ✅ 60 Databases at Scale — *an index is a second copy kept sorted, so the write path pays for it
+  forever and the read path pays once, and the crossover between a scan and an index is a property
+  of the ratio between a sequential row and a random one rather than of the index. One index over
+  4,096 rows costs 45,057 comparisons to build and pays back after 22 lookups, saving 2,035 each.
+  Swept from a thousandth of the table to all of it: at a quarter the indexed plan touches 100,068
+  pages against the scan's 100,000 and the scan wins, and sweeping the cost of a random touch from
+  1 to 16 moves the crossover from all of the table to a sixteenth. Round trips scale with the rows
+  a loop walked, not with the answer: 200 parents meant 201 statements and 2,200 rows received for
+  an answer of 2,000. Counting by fetching sent 80,000 values where asking the database sent 1.
+  **A lost update is not slow, it is wrong**: two connections read-modify-wrote one balance and lost
+  790 of the 1,980 units asked for, on all 20 pairs, and no transaction boundary fixes it because
+  the read happened before the other writer committed — compare-and-set loses nothing and refuses
+  20 times. A pooled connection carries a transaction between borrowers: one leaked transaction made
+  somebody else's unfinished write durable, leaving 5 rows where there should be 4, and resetting on
+  return costs one call. The pitfall is the predicate the index cannot serve — `lower(email) = ?`
+  visited 20,000 rows to return the row that `email = ?` visited 1 row to return. The scenario is a
+  report endpoint where four changes each move exactly one of the four counts: the join removed
+  10,000 statements, the aggregate 999,950 rows received, the index 990,000 rows visited and the
+  connection 49 opens, taking 10,100 / 1,020,000 / 1,000,000 / 50 to 100 / 10,050 / 10,000 / 1.*
+  Written and verified: 12/12 blocks.
+- ✅ 61 Counting Instead of Vectorising — *the array and the column store built from `array` and
+  `collections` rather than from NumPy and pandas, with every claim about how many times the data is
+  touched and none about how fast a touch is. Reading one field of 100,000 six-field records walked
+  600,000 values as records and 100,000 as columns, and sweeping the fields a query reads from 1 to
+  6 takes that ratio from 6.0 to 1.0 — **a query that reads every field is not faster in a column
+  layout, it is the same, and the transposition has already been paid for**. A kernel's real saving
+  is passes: six transformations as six passes cost 1,200,000 reads and writes and fused into one
+  pass 200,000, while rewriting the loop as a comprehension makes the same 1,200,000 and allocates 7
+  containers instead of 1. Group-by four ways over 20,000 keys and 50 groups: a walk per group
+  examined 1,000,000 items, sort-then-walk 279,682, one pass hashing 20,000, and a walk of
+  already-key-ordered rows 20,000 — the last two examine the same number of items and only one of
+  them hashes. A join three ways: a nested loop is the product (4,000 orders against 1,000 customers
+  is 4,000,000 comparisons), a hash join the sum (5,000), sort-merge n log n (52,778), and the
+  nested loop was 500 times the hash join at 1,000 orders and 800 times at 4,000. Where the column
+  layout is the wrong tool: a delete costs 1 container and 99,989 shifted elements as records
+  against 6 containers and 599,934 as columns. The pitfall is the transform that runs before the
+  filter — 7,000,000 element visits against 1,600,000 — together with the case where the reordering
+  changes the answer, keeping 250 rows one way and 500 the other. The scenario is a four-stage
+  pipeline where the group and the join are 91% of 2,200,000 visits and the transform people
+  optimise first is 4.5%, and where moving the filter in front of it saves 99,000 — a rounding
+  error, in deliberate contrast to the pitfall where the same move was worth 4.4×.*
+  Written and verified: 12/12 blocks.
 
 ## Part XII · Where Next — 62 (1)
 
