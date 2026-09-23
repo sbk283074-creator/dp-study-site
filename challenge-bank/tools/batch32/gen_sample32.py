@@ -461,7 +461,7 @@ item = {
         "checked_by": "ai",
         "status": "pass",
     },
-    "status": "draft",
+    "status": "published",
     "authored_by": "ai",
     "created_at": "2026-09-23",
     "updated_at": "2026-09-23",

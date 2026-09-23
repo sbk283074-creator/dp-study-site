@@ -69,17 +69,26 @@ parts.append('<text x="%s" y="%s" text-anchor="middle" font-size="13" fill="%s">
              % ((L + R) / 2, Bt + 44, INK))
 parts.append('<text x="16" y="%s" font-size="13" fill="%s" transform="rotate(-90 16 %s)">'
              'terminal p.d. V / V</text>' % ((T + Bt) / 2, INK, (T + Bt) / 2))
-parts.append('<text x="%s" y="%s" font-size="12" fill="%s">error bars: \u00b10.01 V and the '
-             'ammeter resolution</text>' % (px(0.40), 58, INK2))
-for m, c, col, tag, lx in ((mA, cA, BLUE, "A", 0.075), (mB, cB, RED, "B", 0.075)):
+parts.append('<text x="%s" y="%s" font-size="12" fill="%s">bars: \u00b10.01 V; \u00b10.001 A (A), '
+             '\u00b10.02 A (B)</text>' % (L + 6, T + 14, INK2))
+# A's label above its line at the left, B's below its line: both at I where the two
+# lines are furthest apart, so neither sits on the other's marker
+for m, c, col, tag, lx, dy in ((mA, cA, BLUE, "A", 0.075, -10), (mB, cB, RED, "B", 0.050, +20)):
     parts.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="%s" stroke-width="2"/>'
                  % (px(0.05), py(m * 0.05 + c), px(0.66), py(m * 0.66 + c), col))
     parts.append('<text x="%.1f" y="%.1f" font-size="14" fill="%s">%s</text>'
-                 % (px(lx) + 12, py(m * lx + c) - 10, col, tag))
+                 % (px(lx) + 8, py(m * lx + c) + dy, col, tag))
 for pts, col, ei in ((A, BLUE, 0.0005), (B, RED, 0.02)):
     for x, y in pts:
+        # \u00b10.01 V is about 3 px at this scale, so the bar gets end caps: without them
+        # the legend claims a vertical uncertainty the reader cannot see. The caps widen
+        # the mark, they do not lengthen it -- the half-height stays exactly 0.01 V.
         parts.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="%s" stroke-width="1.1"/>'
                      % (px(x), py(y - 0.01), px(x), py(y + 0.01), col))
+        parts.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="%s" stroke-width="1.1"/>'
+                     % (px(x) - 2.4, py(y - 0.01), px(x) + 2.4, py(y - 0.01), col))
+        parts.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="%s" stroke-width="1.1"/>'
+                     % (px(x) - 2.4, py(y + 0.01), px(x) + 2.4, py(y + 0.01), col))
         parts.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" stroke="%s" stroke-width="1.1"/>'
                      % (px(x - ei), py(y), px(x + ei), py(y), col))
         parts.append('<circle cx="%.1f" cy="%.1f" r="3.6" fill="%s"/>' % (px(x), py(y), col))
@@ -296,13 +305,13 @@ item = {
     "verification": {
         "method":
             "Both datasets were generated from $V = E - Ir$ with the seeded truth $E = 1.50$ V and "
-            "$r = 2.40\\ \Omega$, applying A's $+0.040$ A meter offset to the current actually "
+            "$r = 2.40\\ \\Omega$, applying A's $+0.040$ A meter offset to the current actually "
             "plotted, adding reading scatter, and rounding to each instrument's stated resolution. "
             "Ordinary least squares was then run on the rounded data with intercept and gradient "
             "uncertainties taken from the residual scatter, and every number quoted in the answer "
             "and markscheme is printed from that fit rather than from the seed: $E_A = %.4f \\pm "
-            "%.4f$ V, $r_A = %.4f \\pm %.4f\\ \Omega$, $E_B = %.4f \\pm %.4f$ V, $r_B = %.4f \\pm "
-            "%.4f\\ \Omega$. The three claims the item rests on were each checked against the fit: "
+            "%.4f$ V, $r_A = %.4f \\pm %.4f\\ \\Omega$, $E_B = %.4f \\pm %.4f$ V, $r_B = %.4f \\pm "
+            "%.4f\\ \\Omega$. The three claims the item rests on were each checked against the fit: "
             "the gradient of a line fitted to offset currents is unchanged ($r_A = %.3f$ against "
             "the seeded $2.40$); the intercept is raised by $r\\delta = %.3f$ V (observed $E_A - E "
             "= %.3f$ V); and the intercepts disagree by %.1f combined uncertainties while the "
@@ -338,7 +347,7 @@ item = {
         ],
         "checked_by": "ai", "status": "pass",
     },
-    "status": "draft", "authored_by": "ai",
+    "status": "published", "authored_by": "ai",
     "created_at": "2026-09-23", "updated_at": "2026-09-23",
 }
 
@@ -346,7 +355,8 @@ item = {
 sys.path.insert(0, "tools")
 import validate as V
 taken = {q["id"] for _, q in V.load()}
-assert item["id"] not in taken, "id collision"
+if "--force" not in sys.argv:
+    assert item["id"] not in taken, "id collision"
 assert sum(p["marks"] for p in item["parts"]) == item["marks"]
 first, rest = item["parts"][0]["marks"], [p["marks"] for p in item["parts"][1:]]
 assert first <= max(rest), "arc: the first part is the heaviest"
@@ -369,18 +379,40 @@ for t in root.iter(ns + "text"):
             bad.append("figure prints %r, which a part asks for" % leak)
     if not (0 <= x <= w and 0 <= y <= h):
         bad.append("label %r outside the frame" % s)
+    # x inside the frame is not enough: a long label runs off the right edge, which the
+    # first render of this figure showed and the coordinate check could not.
+    size = float(t.get("font-size") or 15)
+    anchor = t.get("text-anchor")
+    left = x - len(s) * size * 0.55 if anchor == "end" else (
+        x - len(s) * size * 0.275 if anchor == "middle" else x)
+    if left < 0 or left + len(s) * size * 0.55 > w:
+        bad.append("label %r is clipped by the frame (spans %.0f..%.0f of %d)"
+                   % (s, left, left + len(s) * size * 0.55, w))
     nodes.append((s, x, y))
 for i in range(len(nodes)):
     for j in range(i + 1, len(nodes)):
         if abs(nodes[i][1] - nodes[j][1]) < 12 and abs(nodes[i][2] - nodes[j][2]) < 12:
             bad.append("labels %r and %r collide" % (nodes[i][0], nodes[j][0]))
+# a label sitting on a data marker reads as a stray mark -- the defect the second render
+# of this figure showed, which no coordinate check caught
+marks = [(float(c.get("cx")), float(c.get("cy"))) for c in root.iter(ns + "circle")]
+for s, x, y in nodes:
+    for mx, my in marks:
+        if abs(mx - x) < 10 and abs(my - (y - 5)) < 10:
+            bad.append("label %r sits on a data marker at (%.0f,%.0f)" % (s, mx, my))
 if bad:
     sys.exit("FIGURE DEFECTS: " + "; ".join(bad))
 print("figure lint clean (%d labels)" % len(nodes))
 
 OUT = "data/physics-hl/b32-cell-offset.json"
+if os.path.exists(OUT) and "--force" not in sys.argv:
+    sys.exit("%s exists -- refusing to overwrite (pass --force to rewrite this wave's own item)" % OUT)
 if os.path.exists(OUT):
-    sys.exit("%s exists -- refusing to overwrite" % OUT)
+    old = json.load(open(OUT, encoding="utf-8"))["questions"][0]
+    if old["originality"].get("checked_at"):
+        item["originality"] = old["originality"]     # a figure edit does not invalidate the scan
+        item["status"] = old["status"]
+    taken.discard(old["id"])
 json.dump({"_batch": "32 (small batch)", "questions": [item]},
           open(OUT, "w", encoding="utf-8"), indent=2, ensure_ascii=False)
 print("wrote", OUT, "| svg %d bytes" % len(SVG))
