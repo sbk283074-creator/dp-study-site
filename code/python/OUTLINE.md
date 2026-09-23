@@ -370,9 +370,14 @@
 - **Depth is added by collapsing features, not by adding more of them.** Part VII's five chapters
   replace "learn five more features" with "learn the one mechanism that produces five features you
   already use". That is what makes a book higher-level rather than longer.
-- **Every new chapter is machine-verified.** The harness exists (58 blocks, 0 failures), the
-  directive contract is in `STYLE.md`, and `text` fences are checked claims — so Part VIII's
-  benchmarks and Part VII's `dis` output are captured from real runs, not written from memory.
+- **Every new chapter is machine-verified.** The harness exists (393 blocks), the directive contract
+  is in `STYLE.md`, and `text` fences are checked claims — so Part VIII's benchmarks and Part VII's
+  `dis` output are captured from real runs, not written from memory.
+- **One known hole, and it is the last of its kind.** Chapters 44 and 45 still carry blocks that
+  print a *measured* time rather than a *counted* operation, so they pass on an idle machine and fail
+  under load — observed 19/22, 20/22 and 21/22 for chapter 44 across three consecutive runs. Every
+  chapter written since then counts instead of timing. Converting those two chapters' blocks to
+  counts is the remaining work on this front.
 
 ## Order of work
 
