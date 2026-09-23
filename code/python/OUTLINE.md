@@ -249,23 +249,52 @@
   checkout wired 3 ways — builds its own (0 of 3 tests run, 1 file names the vendor), takes one from
   every caller (3 of 3 tests, but 3 files name the vendor, which is where most refactors stop), and
   takes one wired in a composition root (3 of 3 tests and 1 file).*
-- ★ 56 Hexagonal Architecture — *ports and adapters, the dependency rule, repository and unit of
-  work, the boundary that keeps SQLAlchemy out of the domain, and where FastAPI and Pygame each
-  sit relative to it*
-- ★ 57 Refactoring and When Not to Abstract — *code smells, the disciplined refactoring loop,
-  premature abstraction and YAGNI, the strangler fig, and the cost of a layer you did not need*
+- ✅ 56 Hexagonal Architecture — *ports and adapters, the dependency rule, repository and unit of
+  work, the boundary that keeps the storage engine out of the domain, and where a web framework and
+  a game loop each sit relative to it. Written and verified: 5/5 blocks.*
+- ✅ 57 Refactoring and When Not to Abstract — *code smells, the disciplined refactoring loop,
+  premature abstraction and YAGNI, the strangler fig, and the cost of a layer you did not need.
+  Written and verified: 4/4 blocks.*
 
 ## Part XI · Performance & Data at Scale — 58–61 (4) ★
 
-- ★ 58 Measure First — *`cProfile`, `timeit`, `py-spy`, `tracemalloc` and flame graphs; finding the
-  hot loop in a real program; why the bottleneck is never where you guessed*
+- ✅ 58 Measure First — *the one rule of the part, that a number you did not count is a guess, taught
+  by counting rather than timing in all 15 blocks. Four phases of a report each looping exactly 400
+  times, where the loop counts are identical and cannot rank them and the work counts say one phase
+  does 99.8% of the work — a count of iterations counts how often code was reached, not what it did.
+  A `cProfile` run where `normalise` is entered 3,000 times doing one thing and `count_words` 5 times
+  doing 1,200, so the call-count ranking and the operation-count ranking disagree about which to look
+  at first, because a profiler counts entries and cannot see the loop inside one. Three ways to find
+  a duplicate at four sizes, where **doubling the input multiplies the work by 4.01, 2.28 and 2.00**,
+  and the fitted exponents 2.00 / 1.19 / 1.00 are what name the shapes — with the note that counting
+  the pass over neighbours and leaving the sort out makes the sort-based version report itself as
+  linear. Three ways to total a column that all produce 897 while holding 557, 257 and 0 items in
+  intermediates, and why `sys.getsizeof` is in the same category as a timing. Attribution: one
+  function entered 8,600 times from 4 call sites, where two sites are 95% of the work and halving the
+  function's cost removes 4,300 units while **deleting one duplicate pass removes 4,200** — the same
+  size of win and only one of them is a deletion. Why one run is not a measurement: 5 candidates
+  whose true costs differ by 20 units measured with a wobble of 60, where run 1 gets 1 of 5 positions
+  right and 9 runs average 1.11, the median of the 9 gets 5 of 5 because a symmetric error cancels,
+  and the count gets 5 of 5 on the first run and needs no repetition at all. A complexity class used
+  for what it is actually for: 4 counts fitted to an exponent predicting a 5th size the program has
+  not run, within 2.8%. The peak against the total: 5,000 rows read exactly once in all three designs,
+  holding 5,000, 32 or 1 at once. And the order to fix things in: 6 fixes ranked by work removed
+  against work removed per line changed, where the two orders disagree in 2 of 6 positions because a
+  memo removes 3.0x the work of a set at 13.3x the lines. The pitfall is the benchmark that measures
+  something else — 6 designs all declaring 50, of which 1 enters the function 50 times, 4 never enter
+  it, and all 6 produce a number. The scenario is a 5-phase report where 2 phases are 99.7% of the
+  work, both are one-line loops, and the 2 fixes a reader reaches for first are 0.1% each.*
 - ★ 59 Caching — *in-process `lru_cache`, cache-aside vs write-through vs write-behind,
-  invalidation as the hard part, TTLs, stampedes, and Redis as a shared cache*
+  invalidation as the hard part, TTLs, stampedes, and a shared cache*
 - ★ 60 Databases at Scale — *indexes and reading a query plan, the isolation levels and the
-  anomalies they prevent, connection pooling, async SQLAlchemy, and the N+1 problem revisited at
-  a scale where it matters*
-- ★ 61 Vectorising with NumPy and pandas — *arrays and broadcasting, vectorised vs looped code
-  measured side by side, groupby and joins, and the cases where pandas is the wrong tool*
+  anomalies they prevent, connection pooling, the N+1 problem revisited at a scale where it
+  matters, and transactions under contention. **Re-scoped**: this track is stdlib-only, so the
+  chapter builds its pool and its isolation demonstrations on `sqlite3` and threads rather than
+  on SQLAlchemy, which is not installed and is not needed to make the counts.*
+- ★ 61 Counting Instead of Vectorising — *the array and the column store, built from `array` and
+  `collections` rather than from NumPy and pandas, which are not installed on this track; what a
+  vectorised kernel saves measured as work removed rather than as elapsed time, groupby and join
+  written as counts, and the cases where the array is the wrong tool*
 
 ## Part XII · Where Next — 62 (1)
 
