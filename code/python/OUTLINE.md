@@ -284,8 +284,31 @@
   something else — 6 designs all declaring 50, of which 1 enters the function 50 times, 4 never enter
   it, and all 6 produce a number. The scenario is a 5-phase report where 2 phases are 99.7% of the
   work, both are one-line loops, and the 2 fixes a reader reaches for first are 0.1% each.*
-- ★ 59 Caching — *in-process `lru_cache`, cache-aside vs write-through vs write-behind,
-  invalidation as the hard part, TTLs, stampedes, and a shared cache*
+- ✅ 59 Caching — *a cache is a copy of an answer, so it is a correctness decision before it is a
+  performance one, and the chapter is arranged so the counts get harder as they go. The hit rate is a
+  property of the caller: the same function behind the same cache gave 82.8% on one access pattern
+  and 36.6% on another, because the misses are the number of distinct keys and nothing else (172
+  against 634). Three places to put the write — cache-aside did 41 store reads, write-through 16 and
+  write-behind 6 store writes against 40, and write-behind is the only one with a disagreement count
+  above zero, 45 reads that got an answer the store did not have. **The precise invalidation is the
+  wrong one**: dropping the three entries the key named left 10 reads stale because a derived value
+  depended on the source without naming it, and dropping 1 entry instead left 14, so the policy that
+  looks most careful is the worst. A TTL as two numbers at once — 5 ticks gave a staleness bound of 4
+  and 80 loads, 100 ticks a bound of 99 and 4 loads, and the 100-tick setting left 14.8x as many stale
+  reads from 20x fewer loads because the count depends on how the TTL falls against the source's change
+  period. The stampede: 50 callers arriving together computed the same answer 50 times, and a hit rate
+  computed afterwards does not show it. The key as the correctness of the cache — naming the item gave
+  30 hits and 18 wrong answers, naming the type gave 39 hits and 36 wrong answers, and a key that is
+  different on every call is a memory leak with a hit rate of zero (50 entries for 50 calls). Why the
+  hit rate is not the metric: 90% over a two-unit call removed 180 units, 40% over a hundred-unit call
+  removed 4,000. Every bounded eviction policy fails a scan — LRU 0, FIFO 0, random 7 hits out of 400,
+  while not evicting got 200, so the spread across policies is 1.8 points and the spread from any
+  policy to keeping everything is 48.2. Two levels multiply their miss rates, 260 store reads down to
+  125. The pitfall is the key that is different every time — one of five designs answers the wrong
+  question on half the calls while reporting nothing but hits. The scenario is a read-heavy service
+  with four workers, where per-worker caches are worse than a shared one on both counts: 221 store
+  reads with 199 stale reads against 95 and none, and publishing the invalidation to every worker is
+  correct and costs 307.*
 - ★ 60 Databases at Scale — *indexes and reading a query plan, the isolation levels and the
   anomalies they prevent, connection pooling, the N+1 problem revisited at a scale where it
   matters, and transactions under contention. **Re-scoped**: this track is stdlib-only, so the
