@@ -11,6 +11,131 @@ review pass over each item.
 
 ---
 
+## 0. Standing rules from the owner — binding, read before every batch
+
+Set by the owner of this project on 2026-09-23. These six rules are not relaxable to
+make a batch easier to write, and everything else in this document exists to serve them.
+Where a rule already has a gate, the gate is named; where it has none, it is a review
+item and the batch must say so out loud rather than claim compliance.
+
+### 0.1 Figures where the situation needs one — never because a batch needs a number
+
+A proportion of every batch carries a graph, especially in Maths, Physics and Computer
+Science. **Do not generate a graph for the sake of generating a graph.** A figure is
+justified only when the situation cannot be stated without it: a waveform whose shape
+is the argument, a locus, a circuit, a data plot whose reading *is* the question, a
+structure whose labelling the candidate must interpret. A figure that restates the stem
+is worse than none, because it spends the ratchet and teaches the student nothing.
+
+Figures must be **accurate**, and the author checks that personally — the rendered
+image, not only the markup. Containment, collisions and answer-leaks are linted;
+shape, proportion, physical plausibility and legibility are only caught by looking.
+
+*Enforced by:* `FIGURE_COVERAGE_FLOOR` is a floor, not a quota; the load-bearing test
+(§4.3.1 rule 2); the giveaway rule (a figure carries givens, never a derived
+conclusion); the render-and-read pass. *Not yet automated:* "was this situation
+un-statable without the figure?" — every batch records that judgement per item.
+
+### 0.2 Hard means harder logic, not harder arithmetic
+
+A question is hard because it puts the candidate in a **new situation** that demands a
+decision they would not have made — something to notice, reject, invert or construct.
+It is not hard because the numbers are ugly, the algebra is long, or four substitutions
+are needed. Nobody's verdict that a question "feels hard" counts: the claim has to be
+falsifiable, which is what `difficulty_evidence` is for.
+
+The practical test: **if a GDC would remove the difficulty, the item was never hard.**
+If the `failure_point` describes a slip, a long expansion or a fiddly surd rather than a
+choice the candidate has to make, the lever is wrong and the item is redesigned — not
+relabelled.
+
+To find genuinely hard *thinking*, **research widely on the internet** for problems from
+other systems — 高考压轴题, 强基计划, 数学/物理竞赛, A-Level and Further Maths, AP,
+Singapore H2, university entrance tests — and adapt them, provided the **knowledge**
+tested stays inside the IB DP syllabus the subject is pinned to. Borrow the situation and
+the idea; never the question; never difficulty imported from content IB does not examine.
+
+*Enforced by:* the rubric (§2.3) and `lever_type` taxonomy (§2.4); `source_family` and
+`provenance.adaptation` (§4.5). *Not yet automated:* whether a lever is a decision or
+drudgery — read the evidence, and treat a calculation-flavoured `failure_point` as a
+design defect. Every batch records what was searched, and prefers a source the bank has
+not used before.
+
+### 0.3 IB register, with the parts ramping the difficulty
+
+Adapted or invented, every item is rewritten into IB form: recognised command terms,
+`(M1)(A1)(R1)(AG)` at the point each mark is earned, explicit condonation /
+follow-through / forfeiture in `markscheme_notes`, "show that" anchors instead of
+quoting the result, exact values and 3 s.f. with units where IB wants them.
+
+The parts then **lead the difficulty upward, one sub-question at a time**: an entry
+point a prepared candidate can reach, a middle that forces the decision, and a summit
+that rewards having made it. The heaviest part is never the first — and a flat sequence
+of equally-weighted parts is a design failure even when the arc test passes.
+
+Cover **every question type the IB papers actually contain**, per subject and per paper
+(§4.3): MCQ and data-based for Physics P1A/P1B, short- and extended-response Sections A
+and B for Maths P1/P2, the two compulsory problem-solving questions for P3, Theme A
+extended response plus the pre-seen case study for CS P1 and all-extended Theme B for CS
+P2, case-study and quantitative sections for BM. When node coverage reads 100%, the brief
+comes from the paper's structure — its components and sections — not from the topic list.
+
+*Enforced by:* command-term and mark-coherence rules, the arc test, `PAPER_TYPES` and
+`SECTION_RULES`. *Not yet automated:* monotone escalation across parts, and type
+coverage as a plan rather than an accident — each batch names the components it fills.
+
+### 0.4 Similarity means the same *method*, not the same words
+
+Two questions sharing almost no vocabulary can be the same question, and two sharing
+almost all their nouns can be different. Judge repetition by the **logic and solving
+method**: the sequence of moves a candidate must make. Text overlap is a weak proxy and
+catches only copying.
+
+Before planning a batch, read the approach ledger (§4.6) and check that no two items in
+it share a skeleton; after writing, the gate scores them. A near-threshold score against
+a sibling item is a warning to change the *treatment*, not to change the context.
+
+*Enforced by:* the approach gate over `verification.solution_skeleton` (reject ≥ 0.50),
+plus the lexical gates (≥ 0.35 external, ≥ 0.25 internal).
+
+### 0.5 The arithmetic must be right — this is the precondition for everything else
+
+Before an item ships, every number in it is **derived independently and then checked**:
+recompute the integral, run the code, evaluate the closed form by quadrature, rebuild the
+stimulus figures from the same expression the markscheme uses. Write the answer before the
+stem, so the question is well-posed. Where the prose and the answer disagree, the answer
+wins and the prose is corrected.
+
+**If the calculation cannot be guaranteed, the batch stops.** Nothing else in this list
+matters if the maths is wrong — a false markscheme is worse than no markscheme, because a
+student learns the wrong thing from it.
+
+*Enforced by:* `verification.assertions` (executed by the validator, density ≥ 0.5 per
+mark), `verification.method` naming the independent route, and the §5.5 answer-independence
+rule. *The gate cannot see a wrong assertion that agrees with a wrong answer* — so the
+second route must be a genuinely different method, not the same algebra re-run.
+
+### 0.6 Weight the subjects: Physics, Maths and CS carry the difficulty
+
+Those three are the point of the bank, and their items must be **harder than the normal
+textbook question** — above the end-of-chapter grade, in the register of the hardest exam
+parts and paper-3 / competition-adjacent reasoning. Business Management SL is written
+sparingly, and its difficulty comes only from messy data, clashing criteria and a
+decision with no clean answer, never from HL content (§4.1).
+
+*Enforced by:* batch composition. A wave that adds only BM, or that adds Physics/Maths/CS
+items a strong student would find routine, has missed the brief.
+
+### What a batch must record, against §0
+
+In its `PLAN.md` milestone entry: how many items carry figures and why each one is
+load-bearing; which external sources were searched and what was adapted; which paper
+components and question types were targeted; the independent verification route for every
+numeric claim; and any rule above that the batch satisfied by judgement rather than by a
+gate.
+
+---
+
 ## 1. Scope
 
 Four subjects, pinned to the guides a May 2028 candidate actually sits:
