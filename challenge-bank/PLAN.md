@@ -1,14 +1,14 @@
 # IB Challenge Bank — Generation Plan
 
 **Cohort: class of 2028 (final examination session May 2028).**
-**Status: live. 331 questions across the four subjects, every priority-1 and priority-2 syllabus node
+**Status: live. 337 questions across the four subjects, every priority-1 and priority-2 syllabus node
 covered (166/166 nodes, 100%). The difficulty label is now a measured property rather than a declared
-one: from 2026-09-13 every item must carry `difficulty_evidence`, and 246 of 331 do. The difficulty-5
+one: from 2026-09-13 every item must carry `difficulty_evidence`, and 252 of 337 do. The difficulty-5
 backlog is **cleared** — no item claims difficulty 5 without evidence — and the 85 items that remain
 unbacked are all difficulty-4 claims, a published, ratcheting backlog described in
 `STANDARD.md` §2.2–§2.5 and measured by `tools/difficulty_audit.py`. All 13
 lever types are in use, the largest share is 15%, and every subject is inside the 50% difficulty-5 cap
-(Maths 48%, Physics 44%, CS 41%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
+(Maths 48%, Physics 44%, CS 46%, BM 23%). Both calibration debts are cleared: R1 (no new Physics d5 while
 the share was above the cap) and R2 (no item claimed difficulty 3 — the 3-5 scale had collapsed to two
 points) were paid by Batches 21–23, and the backlog pass added a fifth difficulty-3 item. The audit prints
 `calibration OK` and `--check --strict` exits 0.
@@ -16,13 +16,14 @@ The `topic` label is now a closed vocabulary per subject, enforced by `validate.
 question page and filterable on every subject page.**
 **Figure coverage is now a first-class gate rather than a nice-to-have.** Batch 23 raised the share of
 items that carry a self-authored graph to 75 of 301 = 25%; Batch 26 took it to 84 of 310 = 27.1%; Batch 27
-to 89 of 315 = 28.3%; Batch 28 to 94 of 320 = 29.4%; Batch 29 to 98 of 325 = 30.2%; Batch 30 takes it to
-**104 of 331 = 31.4%** and raises
-the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.30 to
-**0.31** — the floor may rise and may
-never fall, so a later batch cannot quietly spend the coverage. No subject prints a gap: CS 48%,
-Physics 39%, Maths 22%, BM 21%, against a 15% target — but only **4 non-figure items of headroom** are left
-(104/335 = 31.04% passes, 104/336 = 30.95% fails), so the ratchet now *forces* a batch to carry figures
+to 89 of 315 = 28.3%; Batch 28 to 94 of 320 = 29.4%; Batch 29 to 98 of 325 = 30.2%; Batch 30 to
+104 of 331 = 31.4%; Batch 31 takes it to
+**110 of 337 = 32.6%** and raises
+the bank-wide ratchet `FIGURE_COVERAGE_FLOOR` from 0.31 to
+**0.32** — the floor may rise and may
+never fall, so a later batch cannot quietly spend the coverage. No subject prints a gap: CS 52%,
+Physics 39%, Maths 22%, BM 21%, against a 15% target — but only **6 non-figure items of headroom** are left
+(110/343 = 32.07% passes, 110/344 = 31.98% fails), so the ratchet now *forces* a batch to carry figures
 rather than
 merely encouraging it. Every figure is drawn by hand as a plain-Python SVG
 string builder,
@@ -1668,12 +1669,66 @@ similarity score, and no BM item ships containing HL-only content.
     five Physics items did the same thing to the Physics cell one wave earlier, 326 → 320. The authoring
     skill previously claimed the target *rises* as the bank grows; it now says the opposite, with both
     measurements written down.
+- **Batch 31 — DONE (6 CS HL Paper 2 items, 331 → 337).** The brief came from the paper structure for the
+  third wave running, and this time in its sharpest form yet: not the subject, not the paper, but **one
+  component of one paper**. CS HL Paper 2 held **12 items carrying 194 marks**, against Paper 1's 49 items
+  and 707 marks, while Paper 2 is the paper that examines **Theme B** — 93 of the 195 HL teaching hours.
+  Node coverage read 100% throughout and `coverage.py --next 12` returned **0 gaps for the fifth wave
+  running**, which is exactly why the gap was invisible: every Theme B node already had an item, and the
+  *component* had almost none.
+  - **The nine holes were found by reading the guide text, not the node list.** Dumping what the 12
+    existing P2 items already owned showed nine Theme B subtopics with no P2 item at all. Six were
+    selected, one per subtopic, each with a different lever: `CS-B4.1-301` (hash tables, with the load
+    factor as a `non_governing_variable`), `CS-B4.1-401` (removing a linked-list node you can only point
+    at, `implicit_dependence`), `CS-B3.1-201` (UML static against instance members, `non_obvious_tool`),
+    `CS-B2.1-201` (try/except/finally, `decoy_technique`), `CS-B3.2-301` (composition against aggregation,
+    `binding_constraint`) and `CS-B3.2-401` (the singleton and shared session state, `wrong_design_cost`).
+    Four of the six are adapted from other syllabuses (2 UK A-Level, 2 AP CSA), so the cross-syllabus
+    count moves **120 → 124**.
+  - **All six carry a hand-authored SVG, and rendering them earned its place again.** Every figure was
+    built by a plain-Python string builder and then *rendered and read* — the step that in Batch 30 caught
+    four defects invisible to a text audit. It caught six here, and two of them were the same class as
+    Batch 30's worst: **four of the six first drafts printed their own answers** (`load factor 0.50`,
+    `1 of 16 buckets used = 6.25%`, `34 x 11 = 374`, `a saving of 37.5%`, `an AttributeError escapes`).
+    Every one of those is something the item asks the candidate to produce. A third defect was subtler and
+    more embarrassing: the aggregation multiplicities in the composition/aggregation figure were
+    **inverted** — `0..*` at the room end — when UML puts the count of *that* class per *one* of the other
+    (the `Department 1 —— 1..* Professor` convention), so the correct labels are `1..*` at the room end and
+    `1` at the projector end. The remaining three were collisions: a footnote over a mark, a multiplicity
+    label over a subtitle, and a label 4 px from the viewBox edge.
+  - **The answer-print defect is now a gate rather than a habit.** `b31_figs.py` grew an `ANSWER_TELLS`
+    list — the derived strings an item's own figure must never contain — and refuses to pass a figure whose
+    prose carries one. The list is per-batch; the *rule* is general and is now written into the authoring
+    skill: **a figure carries givens, never derived conclusions.**
+  - **Numbers after the wave.** 337 items — **Maths 136 / 1939 marks**, Physics 95 / 1131, **CS 67 / 997**,
+    BM 39 / 563. Difficulty **5 / 185 / 147**. Evidence **252 / 337 (75%)**, `difficulty 5 with no
+    evidence` **0**, `labels the evidence does not permit` **0**, assertions **3831 → 3918** (+87, exactly
+    the six items). CS Paper 2 goes **12 → 18 items** and **194 → 290 marks**. d5 shares: Maths 48%,
+    CS 46%, Physics 44%, BM 23%. Similarity on the new items: external ≤ 0.006, internal ≤ 0.010,
+    approach ≤ 0.089 — the least similar wave yet. Bank-wide maxima unchanged at 0.090 / 0.073 / 0.366.
+  - **The published assertion total was stale by three, and this pass found it.** The corpus at the
+    Batch 30 commit already held **3831** assertions, while `README.md` and `STANDARD.md` published
+    **3828**. It is the smallest possible instance of the §5 defect — a number written into prose that no
+    gate re-derives — and it was found only because this batch had to measure its own delta and could not
+    make 3918 − 87 land on 3828. Both documents now read 3918, and the delta is stated as +87 so the
+    arithmetic is checkable from the batch alone.
+  - **The ratchet moved again.** Coverage went **104/331 = 31.4% → 110/337 = 32.6%**, so
+    `FIGURE_COVERAGE_FLOOR` moves **0.31 → 0.32**. That leaves **6 non-figure items of headroom**
+    (110/343 = 32.07% still passes, 110/344 = 31.98% fails). **Maths is still the thinnest at 30/136 =
+    22%** and the only subject under 25%, so the next figure wave has its target.
+  - **The generator's own self-check caught two mechanical defects before the gate did.** The first run
+    passed the generator and then failed all six items twice under `validate.py`:
+    `difficulty_evidence.lever_type` was absent (the field is required and the taxonomy is closed), and
+    every `solution_skeleton` had seven steps against a 3–6 bound. Both are now checked in the generator,
+    along with the 80%-of-median word test computed over the corpus *the batch will join* rather than the
+    one it is leaving — which is how the generator caught that its own long answers had raised the CS
+    median to 652 and pushed one item's answer under the 80% line before `validate.py` ever ran.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet
   for each subject (8 files), regenerated by `build.py` on every build. The question paper prints no
   answers and no markscheme notes; the answer booklet carries the full answers. Current headers: maths
-  136 questions / 1939 marks, physics 95 / 1131, CS 61 / 901, BM SL 39 / 563 — all difficulty 3–5, May
+  136 questions / 1939 marks, physics 95 / 1131, CS 67 / 997, BM SL 39 / 563 — all difficulty 3–5, May
   2028 cohort.
 
 Quality over quantity is explicit: a batch ships only when every item in it passes all gates. If that

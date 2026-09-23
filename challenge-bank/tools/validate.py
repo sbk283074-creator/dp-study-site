@@ -767,6 +767,31 @@ def check(q, seen_ids, medians):
                 if (p.get("marks") or 0) != 1:
                     fail.append("part (%s): MCQ worth %s mark(s), must be 1"
                                 % (lab, p.get("marks")))
+                # ---- the stated key must be the keyed option ---------------
+                # The site prints the options and the markscheme prints the
+                # letter, so if the answer's letter and the `correct` flag ever
+                # disagree the published markscheme states a false answer -- and
+                # nothing used to look at either. STANDARD.md 4.3 makes this
+                # assertion the precondition for redistributing the all-A
+                # clusters: no letter may be moved until the gate can tell
+                # whether the prose still agrees.
+                key = next((str(o.get("label")) for o in opts if o.get("correct")), None)
+                if key:
+                    # Two printed conventions exist in the bank: `**(a) B.**` and
+                    # the compact `**(a)** B` on a key line. Both are matched
+                    # exactly -- a looser pattern happily matched the "A" of
+                    # "Angular momentum..." and reported the key as stated.
+                    lab_re = re.escape(str(lab))
+                    answer = str(q.get("answer") or "")
+                    stated = re.search(r"\*\*\(%s\)\s+([A-D])\.\*\*" % lab_re, answer) \
+                        or re.search(r"\*\*\(%s\)\*\*\s+([A-D])(?=[\s,.;:]|$)" % lab_re, answer)
+                    if stated:
+                        if stated.group(1) != key:
+                            fail.append("part (%s): the answer states %s but the keyed "
+                                        "option is %s" % (lab, stated.group(1), key))
+                    else:
+                        warn.append("part (%s): the answer never states which option "
+                                    "is correct (key is %s)" % (lab, key))
 
         if qtype == "data_based":
             stim = q.get("stimulus")

@@ -317,9 +317,9 @@ the table above, and enforced by `SECTION_RULES` in `tools/validate.py`:
 | BM SL P1, P2 | `A`, `B` | P1 20 + 10, P2 20 + 20 (no local guide; verified online) |
 
 A section is only checked when one is present. How many items carry one is a coverage question, not an
-error: **231 of the 331 items sit on a paper that has sections, and 221 of those carry a label** — the
-10 that do not are 7 CS P1, 2 BM P1 and 1 BM P2. The remaining **100 items are on the three papers with
-no sections at all** (Physics P2 59, Maths P3 29, CS P2 12), where a label is not merely missing but
+error: **231 of the 337 items sit on a paper that has sections, and 221 of those carry a label** — the
+10 that do not are 7 CS P1, 2 BM P1 and 1 BM P2. The remaining **106 items are on the three papers with
+no sections at all** (Physics P2 59, Maths P3 29, CS P2 18), where a label is not merely missing but
 impossible.
 
 **The CS Paper 2 type table was wrong, and the gate could not see it (fixed 2026-09-16).** `PAPER_TYPES`
@@ -398,7 +398,7 @@ worth recording rather than inventing an answer: **CS P1 is split 17 `not allowe
 **Two more rendered fields are now closed as well.** `level` is stated twice — `build.py` derives one
 from the subject slug and prints the item's own `level` beside it — so `SUBJECT_LEVEL` requires them to
 agree; and `language`, which renders as a bare chip, is closed to
-`python / java / pseudocode / sql` (`LANGUAGE_VALUES`). Both were already correct across all 331 items,
+`python / java / pseudocode / sql` (`LANGUAGE_VALUES`). Both were already correct across all 337 items,
 which is the point: they are cheap checks added while they cost nothing, so a future batch cannot drift
 them silently.
 
@@ -455,18 +455,19 @@ The failure mode this rule exists to prevent is a bank that looks thorough and i
 bank stood at **45/255 = 18%**, with **Maths at 8.3% (9/109)** and **BM at 0% (0/30)**. Maths and BM are
 the two subjects with the widest gap between what the guide presents and what the bank contains. Batches
 22 and 22b were written against that gap and moved it, and the figure work that followed kept moving it:
-the bank now stands at **104/331 = 31%**, with **Maths at 22% (30/136)** — above the per-subject target —
-**CS at 48% (29/61)**, **Physics at 39% (37/95)** and **BM at 21% (8/39)**, against 0%
+the bank now stands at **110/337 = 33%**, with **Maths at 22% (30/136)** — above the per-subject target —
+**CS at 52% (35/67)**, **Physics at 39% (37/95)** and **BM at 21% (8/39)**, against 0%
 for BM at Batch 21. `FIGURE_COVERAGE_FLOOR` was raised from 0.17 to **0.19** in the same change that
-earned it and has since been raised seven times more, to **0.24**, then to **0.25** by Batch 25, then to
+earned it and has since been raised eight times more, to **0.24**, then to **0.25** by Batch 25, then to
 **0.27** by Batch 26, then to **0.28** by Batch 27, then to **0.29** by Batch 28, then to **0.30** by
-Batch 29, then to **0.31** by Batch 30, which is the
+Batch 29, then to **0.31** by Batch 30, then to **0.32** by Batch 31, which is the
 ratchet working as designed: coverage
 rose, and the floor followed it up so the gain cannot be spent later. Every subject now clears the 15%
 per-subject target, so the audit prints no gap. That is the intended state — the gap visible until it is
 closed, and then a floor that stops it reopening. The bank-wide floor has now become the binding
-constraint rather than the per-subject one: **two non-figure items of headroom** remain, so the next
-batch cannot be plain text at all.
+constraint rather than the per-subject one: **six non-figure items of headroom** remain, so the next
+batch cannot be plain text at all. **Maths remains the thinnest at 22% (30/136)**, and it is the only
+subject still under 25%, so the next figure wave has an obvious target.
 
 **Solution skeleton.** Every new item carries `verification.solution_skeleton`: three to six short
 steps naming the *method*, not the answer ("linearise by squaring and fit the gradient", not "find k").
@@ -765,11 +766,11 @@ rather than only a sum. Run it after any change to the rubric.
 4. **Status:** new items are `draft` until the gates pass, then `published`.
 5. **Re-brief:** coverage is re-measured after every batch; the next brief comes from the new gaps.
 
-Current state: 331 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
+Current state: 337 questions · **166 / 166 nodes covered (100%)**, and **every priority-1 and
 priority-2 node is done** — Maths 32/32 must + 51/51 should (83/83 overall), Physics 24/24 (complete),
-CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 331
-carry `verification.assertions` (3828 assertions in total), `validate.py` reports 0 failures, and 246 of
-the 331 carry a `difficulty_evidence` block — the other 85 are the grandfathered backlog described in
+CS 25/25 (complete), BM 26/26 must + 8/8 should (34/34 complete, including all 8 Toolkit nodes). All 337
+carry `verification.assertions` (3918 assertions in total), `validate.py` reports 0 failures, and 252 of
+the 337 carry a `difficulty_evidence` block — the other 85 are the grandfathered backlog described in
 §4.7, which `--strict` reports as warnings and plain `--check` ignores unless the bank gets worse. **No
 item claims difficulty 5 without evidence**; all 85 outstanding items are difficulty-4 claims.
 

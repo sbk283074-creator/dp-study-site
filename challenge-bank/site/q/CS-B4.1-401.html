@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B4.1-401 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>B4.1 Fundamentals of ADTs</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B4.1-401</p>
+<button type="button" class="q-done-page" data-qid="CS-B4.1-401" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-B4.1-401">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B4.1 (Fundamentals of ADTs: linked lists, node structure, traversal and the cost of insertion and deletion)</span><span class="chip">P2</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">Explain</span><span class="chip">Describe</span><span class="chip">Determine</span><span class="chip">State</span></div>
+<div class="box"><h4>A logger that keeps its readings in a singly linked list</h4><p>A data logger keeps its most recent readings in a singly linked list. Each node holds one reading in a field called data and one pointer in a field called next that points at the following node. The last node's next pointer is None, and the whole list is reached through a single variable head that points at the first node. No node holds a pointer to the node before it.</p>
+<p>After four readings have been logged the list is A -&gt; B -&gt; C -&gt; D, where A is the node that head points at and D is the last node.</p>
+<p>A method remove(node) is added to the class. It is called with a reference to the node that should be deleted and with nothing else: it is not given head, and it is not told where the node sits in the list.</p></div>
+<figure><svg viewBox="0 0 660 248" role="img" aria-label="A singly linked list of four nodes A, B, C and D joined by one-way next pointers and reached from a head pointer. Node B is marked as the node to remove, and the last node's next pointer is None." xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="660" height="248" fill="#ffffff"/><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/></marker><marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#dc2626"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/></marker><marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b45309"/></marker></defs><text x="24" y="26" font-size="12.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="600">A singly linked list: each node holds a value and one next pointer</text><rect x="110" y="100" width="82" height="52" rx="5" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5"/><text x="151.0" y="123" font-size="15" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" font-weight="600">A</text><text x="151.0" y="140" font-size="8.8" fill="#64748b" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">next</text><line x1="195" y1="126.0" x2="233" y2="126.0" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" marker-end="url(#ah)"/><rect x="240" y="100" width="82" height="52" rx="5" fill="#fee2e2" stroke="#dc2626" stroke-width="2.0"/><text x="281.0" y="123" font-size="15" fill="#dc2626" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" font-weight="600">B</text><text x="281.0" y="140" font-size="8.8" fill="#64748b" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">next</text><line x1="325" y1="126.0" x2="363" y2="126.0" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" marker-end="url(#ah)"/><rect x="370" y="100" width="82" height="52" rx="5" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5"/><text x="411.0" y="123" font-size="15" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" font-weight="600">C</text><text x="411.0" y="140" font-size="8.8" fill="#64748b" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">next</text><line x1="455" y1="126.0" x2="493" y2="126.0" stroke="#2563eb" stroke-width="1.8" stroke-linecap="round" marker-end="url(#ah)"/><rect x="500" y="100" width="82" height="52" rx="5" fill="#f8fafc" stroke="#1e293b" stroke-width="1.5"/><text x="541.0" y="123" font-size="15" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" font-weight="600">D</text><text x="541.0" y="140" font-size="8.8" fill="#64748b" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">next</text><line x1="44" y1="126.0" x2="103" y2="126.0" stroke="#1e293b" stroke-width="1.8" stroke-linecap="round" marker-end="url(#ah)"/><text x="44" y="116.0" font-size="10.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="600">head</text><polyline points="281.0,156 281.0,174 151.0,174" fill="none" stroke="#64748b" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 3"/><text x="287.0" y="172" font-size="9.5" fill="#64748b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">no pointer is drawn this way</text><line x1="272.0" y1="186" x2="290.0" y2="200" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round"/><line x1="290.0" y1="186" x2="272.0" y2="200" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round"/><text x="541.0" y="174" font-size="10" fill="#dc2626" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">next = None</text><text x="281.0" y="88" font-size="10.5" fill="#dc2626" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" font-weight="600">the node to remove</text><text x="24" y="216" font-size="10.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">The list is reached from head. The node to remove is identified by a direct</text><text x="24" y="230" font-size="10.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">reference to it, not by its value and not by its position in the list.</text></svg><figcaption>A singly linked list of four nodes. Node B is the node to be removed, and the list is reached only through head.</figcaption></figure>
+<section id="q-print">
+<h2>Question</h2>
+<p>Evaluate the design of remove(node). Assume the list is never empty when remove is called, and that no other part of the program holds a reference to the node that is deleted.</p>
+<ol class="parts"><li><span class="marks">[4 marks]</span><strong>(a)</strong> <p>Explain why remove(node) cannot delete node by changing the pointer that currently reaches it.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Describe the technique that remove(node) can use instead, stating what it must do to the node's data field and what it must do to its next field.</p> <em>(Describe)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Determine which of the four nodes A, B, C and D a correctly written remove(node) can delete in a list of four nodes, and explain what goes wrong for the node it cannot delete.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>State the single change to the node's structure that would make every node deletable in a constant number of steps, and state what that change costs.</p> <em>(State)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="16" data-ai-ref="CS-B4.1-401">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>Evaluate the design of remove(node). Assume the list is never empty when remove is called, and that no other part of the program holds a reference to the node that is deleted.
+
+(a) Explain why remove(node) cannot delete node by changing the pointer that currently reaches it. [4 marks] (Explain)
+(b) Describe the technique that remove(node) can use instead, stating what it must do to the node&#x27;s data field and what it must do to its next field. [4 marks] (Describe)
+(c) Determine which of the four nodes A, B, C and D a correctly written remove(node) can delete in a list of four nodes, and explain what goes wrong for the node it cannot delete. [5 marks] (Determine)
+(d) State the single change to the node&#x27;s structure that would make every node deletable in a constant number of steps, and state what that change costs. [3 marks] (State)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>Part (a).</strong> In a singly linked list the only pointer that reaches node is the next pointer of the node before it. Deleting node means changing that predecessor's next pointer so that it skips over node and points at node.next. <strong>(M1)</strong></p>
+<p>The method receives a reference to node itself. From node there is no pointer backwards, so the predecessor cannot be reached from the argument. The only route to the predecessor is to start at head and walk forward until some node's next pointer is node — which costs a traversal of the whole list up to that point, and which would make the reference that was passed in pointless, since the same walk would have found the node by value. <strong>(A1)</strong></p>
+<p>So the method holds the object that must disappear, while the thing that must change is a field of a different object it has no way to name. <strong>(A1)(A1)</strong></p>
+<p><strong>Part (b).</strong> The technique is to overwrite the node with its successor and then unlink the successor, in two assignments:</p>
+<pre><code>node.data = node.next.data
+node.next = node.next.next
+</code></pre>
+<p>The first line copies the successor's reading into the node the caller is holding, so that node's value becomes the successor's value. <strong>(M1)</strong> The second line makes the node point past its successor, so the successor is no longer reachable from anywhere in the list. <strong>(A1)</strong> The caller's reference stays valid, the list is one node shorter, and the node that is actually released is the successor rather than the node the caller named. <strong>(A1)</strong></p>
+<p>It is worth being explicit that the *object* the caller holds survives while the *value* it was created with does not. Any other part of the program that kept a reference to the successor is now holding a node that is no longer in the list, and any part that looks for the deleted value will find it in the node it did not nominate. <strong>(A1)</strong></p>
+<p><strong>Part (c).</strong> It works for A, B and C.</p>
+<p>For A: A.data becomes B's reading and A.next becomes C, so the list reads (B) -&gt; C -&gt; D. For B: B.data becomes C's reading and B.next becomes D, giving A -&gt; (C) -&gt; D. For C: C.data becomes D's reading and C.next becomes D.next, which is None, giving A -&gt; B -&gt; (D). <strong>(M1)(A1)(A1)</strong></p>
+<p>It fails for D. D is the last node, so D.next is None, and the first assignment evaluates None.data. In Python that raises AttributeError; in a language without exceptions it would follow a null pointer and the program would be undefined from that point on. <strong>(A1)</strong></p>
+<p>So three of the four nodes can be deleted and the one that cannot is the one whose successor does not exist. <strong>(A1)</strong> The failure is not a corner case in the arithmetic sense — it is the ordinary case of deleting the last item, which any logger will reach as soon as it trims its oldest reading. Note also that in a circular list no node has next equal to None, so the technique would appear to work on all four nodes; for the last node it would overwrite the head's data, corrupting the list silently instead of failing loudly, which is worse.</p>
+<p><strong>Part (d).</strong> Give each node a second pointer to the node before it, making the list doubly linked. <strong>(M1)</strong> Then the node can be unlinked directly by joining its two neighbours to each other, which is a constant number of pointer assignments for every node including the last one. <strong>(A1)</strong></p>
+<p>The cost is one extra reference per node. Four nodes need four extra references, so the node structure doubles in size for a list that holds one reading per node. <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p><strong>(a)</strong> M1 for identifying that the predecessor's next pointer is the one that must change. A1 for the observation that no backward pointer exists from the argument. A1 for the consequence: the predecessor cannot be named from node. A1 for noting that reaching it requires a traversal from head, which defeats the purpose of the argument. Accept any phrasing that distinguishes the object held from the field that must change.</p>
+<p><strong>(b)</strong> M1 for the copy-the-successor idea in any form. A1 for the data assignment, A1 for the next assignment. A1 for stating that the successor is the node actually released, or that the caller's reference remains valid. A candidate who describes traversing to the predecessor scores nothing here even if the traversal is correct, because part (a) established that the reference makes it unnecessary.</p>
+<p><strong>(c)</strong> M1 for the correct list after one removal, A1 for the list after a second, A1 for the third. A1 for identifying D as the failure. A1 for the reason: D.next is None, so the copy dereferences None. Do not award the final A1 for "the last node always fails" without the null dereference; the mark is for the mechanism. Accept a discussion of the circular case in place of the null-dereference explanation only if the null case is also stated.</p>
+<p><strong>(c) alternative.</strong> A candidate who answers "all four, because you can also check whether the node is the last one and traverse from head in that case" should be given full marks for the determination *and* the explanation, since the traversal is correct for that one node; award the marks and note that the constant-time claim of part (d) is what the traversal fails.</p>
+<p><strong>(d)</strong> M1 for the previous pointer. A1 for the constant-time unlink. A1 for the cost, expressed as one extra reference per node. Accept "a doubly linked list" as naming the change.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>This item takes a task that sounds routine — delete a node you have been handed — and makes it impossible as stated, for a reason that is invisible in the wording of the task. The candidate is given the object that must disappear; the object that must change is a different one. Nothing in the signature says so, and the failure only appears when the candidate tries to write the assignment.</p>
+<p>The trap is that the natural implementation is not merely inefficient, it cannot be written at all. A candidate who has met linked lists will produce "find the node before this one and point it past this one", which is a correct description of deletion and cannot be executed with the argument supplied. The instruction that the method is given nothing else is doing the work: without it, the candidate can quietly assume head is available and never notice the problem.</p>
+<p>The workable technique is genuinely surprising, and it is worth noticing how much it gives up. It does not delete the node the caller named; it deletes the node after it and then disguises the survivor. That means the identity of the node object is preserved while its contents are replaced, which is exactly backwards from what a caller expects, and it is the reason the technique is a trap in production code even though it is correct as an algorithm.</p>
+<p>Part (c) turns the technique against itself. The trick works on three nodes of four and fails on the last, and the last is not a rare case — it is what happens the first time the logger trims its oldest reading. The failure is a null dereference, which in an exception-free language is silent corruption rather than an error. The circular list makes it worse rather than better: no node has a null next pointer, so the technique never raises, and instead overwrites the head's data. Part (d) is short by design — the answer is one pointer, and the item is testing whether the candidate can name the structural cause rather than patch the symptom.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme B: Computational thinking and problem-solving — B4.1 Fundamentals of ADTs</dd></div>
+  <div><dt>Challenge lever</dt><dd>The method is handed the object that must disappear but the only pointer that has to change belongs to a different object that the method cannot reach, so the obvious implementation is impossible and the workable one deletes a node the caller did not name.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B4.1 (Fundamentals of ADTs: linked lists, node structure, traversal and the cost of insertion and deletion)</dd></div>
+  <div><dt>Inspiration</dt><dd>AP Computer Science A — singly linked lists, node traversal and node removal</dd></div>
+  <div><dt>Adaptation</dt><dd>The source archetype is the AP free-response task that supplies a list class and asks the candidate to implement a removal method. Three of the four permitted changes were made. The structure was changed from &quot;implement the method&quot; to &quot;evaluate a method whose signature makes the implementation impossible&quot;, so the answer is an impossibility argument rather than code. The given-versus-asked was inverted: the source states that the predecessor is reachable and asks for the link update, while this item withholds every route to the predecessor and asks what remains. The reasoning chain was extended from &quot;write the update&quot; to &quot;establish what cannot be done, then find what can, then find where that fails&quot;. The context, the four-node list, the figures and the part decomposition are new, and no wording is reproduced from any examination paper or textbook.</dd></div>
+  <div><dt>Verification</dt><dd>The list and the technique were simulated in Python over a four-node singly linked list. The copy-the-successor technique was applied to each of the four nodes in turn and the resulting list recorded: it succeeds for the first three and raises AttributeError for the last, because the last node&#x27;s next pointer is None. The doubly linked case was checked separately and succeeds for all four nodes. The circular case was checked and found to succeed without raising while overwriting the head&#x27;s data.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>PH_HL_Topic_4_HL-paper1_q34 (similarity 0.003)</dd></div>
+  <div><dt>Nearest item here</dt><dd>PHYS-A.1-102 (similarity 0.002)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · </dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+</body>
+</html>

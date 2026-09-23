@@ -117,6 +117,13 @@ figure svg{max-width:100%;height:auto;background:#fff;border:1px solid var(--lin
 figcaption{font-size:13px;color:var(--muted);margin-top:6px}
 ol.parts{padding-left:22px}
 ol.parts li{margin-bottom:12px}
+ol.opts{list-style:none;padding-left:6px;margin:6px 0 0}
+ol.opts li{margin:3px 0;font-size:15px}
+.opt-key{display:inline-block;margin-left:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:#fff;background:var(--ok);padding:1px 7px;border-radius:9px;vertical-align:1px}
+.opt-why{display:block;margin:2px 0 0 22px;font-size:13px;color:var(--muted)}
+.opts-scheme{padding-left:18px}
+.opts-scheme>li{margin-bottom:12px}
+.opts-scheme ol.opts{margin:4px 0 0}
 .marks{float:right;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
 details{border:1px solid var(--line);border-radius:var(--radius);margin:12px 0;background:#fff}
 details[open]{background:#fff}
@@ -686,6 +693,49 @@ def figure_html(fig):
 
 
 # --------------------------------------------------------------------------
+# multiple-choice options
+# --------------------------------------------------------------------------
+def options_html(part, scheme=False):
+    """The four choices of one MCQ part.
+
+    These used to exist only in the JSON. A Paper 1A candidate cannot answer a
+    multiple-choice question they cannot see, so both the on-screen question and
+    the printable paper now print the options, and the markscheme prints them
+    with the reason each distractor is there -- for an MCQ the per-option
+    rationale *is* the markscheme (validate.py says as much).
+
+    The label is taken from the stored `label`, never from list position, so the
+    letter a student reads is the letter `validate.py` checked.
+    """
+    opts = part.get("options") or []
+    if not opts:
+        return ""
+    items = []
+    for o in opts:
+        line = "<strong>%s.</strong> %s" % (html.escape(str(o.get("label", "?"))),
+                                            inline(o.get("text", "")))
+        if scheme:
+            if o.get("correct"):
+                line += ' <span class="opt-key">correct</span>'
+            if o.get("rationale"):
+                line += '<span class="opt-why">%s</span>' % inline(o["rationale"])
+        items.append("<li>%s</li>" % line)
+    return '<ol class="opts">%s</ol>' % "".join(items)
+
+
+def options_scheme_html(q):
+    """Per-part option blocks for a markscheme surface."""
+    parts = [p for p in (q.get("parts") or []) if p.get("options")]
+    if not parts:
+        return ""
+    chunks = "".join('<li><strong>(%s)</strong> %s</li>'
+                     % (html.escape(str(p.get("label", "?"))), options_html(p, scheme=True))
+                     for p in parts)
+    return ("<h4>Options, and the error each distractor names</h4>"
+            '<ul class="opts-scheme">%s</ul>' % chunks)
+
+
+# --------------------------------------------------------------------------
 # reusable question / answer bodies (pages, papers, PDF builder)
 # --------------------------------------------------------------------------
 def question_body_html(q):
@@ -694,10 +744,11 @@ def question_body_html(q):
     Reused by the question page, the per-subject paper and the custom builder so
     every surface renders the item identically."""
     parts = "".join(
-        '<li><span class="marks">[%s mark%s]</span><strong>(%s)</strong> %s%s</li>'
+        '<li><span class="marks">[%s mark%s]</span><strong>(%s)</strong> %s%s%s</li>'
         % (p["marks"], "" if p["marks"] == 1 else "s",
            html.escape(p["label"]), md(p["text"]),
-           " <em>(%s)</em>" % html.escape(p["command_term"]) if p.get("command_term") else "")
+           " <em>(%s)</em>" % html.escape(p["command_term"]) if p.get("command_term") else "",
+           options_html(p))
         for p in q.get("parts") or []
     )
     return (stimulus_html(q.get("stimulus")) + figure_html(q.get("figure")) +
@@ -706,7 +757,8 @@ def question_body_html(q):
 
 def answer_body_html(q):
     return (md(q.get("answer")) +
-            "<h4>Markscheme notes</h4>" + md(q.get("markscheme_notes")))
+            "<h4>Markscheme notes</h4>" + md(q.get("markscheme_notes")) +
+            options_scheme_html(q))
 
 
 def subject_level(slug):
@@ -963,10 +1015,11 @@ def question_card(q, slug):
 
 def build_question_page(q, slug):
     parts = "".join(
-        '<li><span class="marks">[%s mark%s]</span><strong>(%s)</strong> %s%s</li>'
+        '<li><span class="marks">[%s mark%s]</span><strong>(%s)</strong> %s%s%s</li>'
         % (p["marks"], "" if p["marks"] == 1 else "s",
            html.escape(p["label"]), md(p["text"]),
-           " <em>(%s)</em>" % html.escape(p["command_term"]) if p.get("command_term") else "")
+           " <em>(%s)</em>" % html.escape(p["command_term"]) if p.get("command_term") else "",
+           options_html(p))
         for p in q.get("parts") or []
     )
     prov = q.get("provenance") or {}

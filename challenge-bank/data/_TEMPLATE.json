@@ -1,5 +1,5 @@
 {
-  "_note": "Authoring skeleton. Files whose name starts with _ are skipped by build.py, validate.py, coverage.py and similarity_check.py. Three examples follow: (1) a standard extended-response item, (2) an MCQ cluster for Physics P1A, (3) a data-based item for Physics P1B. Copy whichever matches the paper you are writing for.",
+  "_note": "Authoring skeleton. Files whose name starts with _ are skipped by build.py, validate.py, coverage.py and similarity_check.py. Three examples follow: (1) a standard extended-response item, (2) an MCQ cluster for Physics P1A, (3) a data-based item for Physics P1B. Copy whichever matches the paper you are writing for.  `difficulty` is not free: validate.py scores the difficulty_evidence block out of 9 (STANDARD.md 2.3) and a label of 5 needs 8, a 4 needs 6, with all three prose fields each scoring full marks. Lower the label, never the evidence.",
   "questions": [
     {
       "id": "MATH-AHL0.0-001",
@@ -16,8 +16,21 @@
       "marks": 15,
       "difficulty": 4,
       "challenge_mechanism": "Name the single mechanism that makes this hard, in one full sentence. 'Multi-step' is not a mechanism. Say what the student has to notice, reject, or invert.",
-      "command_terms": ["Show that", "Hence", "Determine"],
-      "tags": ["differential equations", "geometry"],
+      "difficulty_evidence": {
+        "lever_type": "ONE term from the closed taxonomy in STANDARD.md 2.4: implicit_dependence | variable_swap | exceptional_parameter | decoy_technique | binding_constraint | partial_cancellation | non_governing_variable | derived_limit | aggregate_recovery | wrong_design_cost | quant_vs_judgement | non_obvious_tool | seeded_anomaly. Anything else is a hard failure, on purpose.",
+        "naive_path": "What a well-prepared student actually tries first, concretely enough that a reviewer could attempt it. >= 8 words. This is the field that makes the trap testable.",
+        "failure_point": "The exact step where that path breaks, and why. >= 8 words, and it must not restate naive_path -- a trap that cannot be located apart from the path is not a trap.",
+        "wrong_answer": "The plausible result the naive path yields instead. >= 8 words, and it must differ from the real answer. This commits you to a number a reviewer can check."
+      },
+      "command_terms": [
+        "Show that",
+        "Hence",
+        "Determine"
+      ],
+      "tags": [
+        "differential equations",
+        "geometry"
+      ],
       "stimulus": null,
       "figure": null,
       "question": "The stem. Sets the scene, gives the data, and introduces anything a later part refers back to.",
@@ -46,6 +59,7 @@
       "explanation": "The key insight, why the question is hard, and the classic wrong turns. Minimum 195 words for maths.",
       "provenance": {
         "inspired_by": "original",
+        "source_family": "Closed list (STANDARD.md 4.5): original | ib | china-gaokao | china-qiangji | china-competition | uk-alevel | uk-further-maths | us-ap | singapore-alevel | other. If it is anything but `original`, `resource_origin` must name the source -- and the difficulty has to survive the adaptation, not be borrowed from content this syllabus does not examine.",
         "adaptation": "Required unless inspired_by is 'original'. State what was borrowed and what changed.",
         "resource_origin": null,
         "source_url": null,
@@ -79,7 +93,6 @@
       "created_at": "2026-09-11",
       "updated_at": "2026-09-11"
     },
-
     {
       "id": "PHYS-X.0-001",
       "subject": "Physics HL",
@@ -95,8 +108,20 @@
       "marks": 4,
       "difficulty": 5,
       "challenge_mechanism": "One sentence naming the discriminating step. For MCQ this is usually the move that separates the correct option from the strongest distractor, not simply 'it is multi-step'.",
-      "command_terms": ["Calculate", "Determine"],
-      "tags": ["rotation", "mcq"],
+      "difficulty_evidence": {
+        "lever_type": "ONE term from the closed taxonomy in STANDARD.md 2.4: implicit_dependence | variable_swap | exceptional_parameter | decoy_technique | binding_constraint | partial_cancellation | non_governing_variable | derived_limit | aggregate_recovery | wrong_design_cost | quant_vs_judgement | non_obvious_tool | seeded_anomaly. Anything else is a hard failure, on purpose.",
+        "naive_path": "What a well-prepared student actually tries first, concretely enough that a reviewer could attempt it. >= 8 words. This is the field that makes the trap testable.",
+        "failure_point": "The exact step where that path breaks, and why. >= 8 words, and it must not restate naive_path -- a trap that cannot be located apart from the path is not a trap.",
+        "wrong_answer": "The plausible result the naive path yields instead. >= 8 words, and it must differ from the real answer. This commits you to a number a reviewer can check."
+      },
+      "command_terms": [
+        "Calculate",
+        "Determine"
+      ],
+      "tags": [
+        "rotation",
+        "mcq"
+      ],
       "stimulus": null,
       "figure": null,
       "question": "Optional shared preamble for the cluster. Each MCQ below is self-contained and answerable on its own, as in a real Paper 1A.",
@@ -139,6 +164,7 @@
       "explanation": "What the cluster discriminates. Name the misconception each distractor targets and why a guessing student is unlikely to land on the key.",
       "provenance": {
         "inspired_by": "original",
+        "source_family": "Closed list (STANDARD.md 4.5): original | ib | china-gaokao | china-qiangji | china-competition | uk-alevel | uk-further-maths | us-ap | singapore-alevel | other. If it is anything but `original`, `resource_origin` must name the source -- and the difficulty has to survive the adaptation, not be borrowed from content this syllabus does not examine.",
         "adaptation": "Original. Distractor set designed from the known error patterns for this subtopic.",
         "resource_origin": null,
         "source_url": null,
@@ -170,7 +196,6 @@
       "created_at": "2026-09-11",
       "updated_at": "2026-09-11"
     },
-
     {
       "id": "PHYS-X.0-002",
       "subject": "Physics HL",
@@ -186,15 +211,44 @@
       "marks": 12,
       "difficulty": 5,
       "challenge_mechanism": "One sentence: what the data hides. Typically the relationship is only visible after a non-obvious linearisation, or one row is anomalous and must be defended rather than discarded.",
-      "command_terms": ["State", "Describe", "Calculate", "Determine", "Suggest", "Evaluate"],
-      "tags": ["data-based", "uncertainties", "graph"],
+      "difficulty_evidence": {
+        "lever_type": "ONE term from the closed taxonomy in STANDARD.md 2.4: implicit_dependence | variable_swap | exceptional_parameter | decoy_technique | binding_constraint | partial_cancellation | non_governing_variable | derived_limit | aggregate_recovery | wrong_design_cost | quant_vs_judgement | non_obvious_tool | seeded_anomaly. Anything else is a hard failure, on purpose.",
+        "naive_path": "What a well-prepared student actually tries first, concretely enough that a reviewer could attempt it. >= 8 words. This is the field that makes the trap testable.",
+        "failure_point": "The exact step where that path breaks, and why. >= 8 words, and it must not restate naive_path -- a trap that cannot be located apart from the path is not a trap.",
+        "wrong_answer": "The plausible result the naive path yields instead. >= 8 words, and it must differ from the real answer. This commits you to a number a reviewer can check."
+      },
+      "command_terms": [
+        "State",
+        "Describe",
+        "Calculate",
+        "Determine",
+        "Suggest",
+        "Evaluate"
+      ],
+      "tags": [
+        "data-based",
+        "uncertainties",
+        "graph"
+      ],
       "stimulus": {
         "title": "Student investigation",
         "body": "Describe the apparatus and method in the past tense, as a student report. Include the controlled variables and the measurement resolution of each instrument, because later parts will ask about them.",
         "table": {
           "caption": "Measured values, with units in the column headers.",
-          "columns": ["quantity / unit", "quantity / unit"],
-          "rows": [["1.00", "2.00"], ["2.00", "4.00"]]
+          "columns": [
+            "quantity / unit",
+            "quantity / unit"
+          ],
+          "rows": [
+            [
+              "1.00",
+              "2.00"
+            ],
+            [
+              "2.00",
+              "4.00"
+            ]
+          ]
         }
       },
       "figure": null,
@@ -230,6 +284,7 @@
       "explanation": "What the question is really testing: usually that the student must choose the transformation, not be told it.",
       "provenance": {
         "inspired_by": "original",
+        "source_family": "Closed list (STANDARD.md 4.5): original | ib | china-gaokao | china-qiangji | china-competition | uk-alevel | uk-further-maths | us-ap | singapore-alevel | other. If it is anything but `original`, `resource_origin` must name the source -- and the difficulty has to survive the adaptation, not be borrowed from content this syllabus does not examine.",
         "adaptation": "Original dataset generated from the model with deliberate scatter and one seeded anomaly.",
         "resource_origin": null,
         "source_url": null,

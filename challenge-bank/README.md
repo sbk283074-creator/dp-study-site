@@ -18,15 +18,15 @@ design and provably not copied.
 |---|---|---:|---:|
 | Math AA HL | 2021 (runs to Nov 2028) | 136 | 83 / 83 (100%) |
 | Physics HL | 2025 | 95 | 24 / 24 (100%) |
-| Computer Science HL | 2027 (new Theme A/B) | 61 | 25 / 25 (100%) |
+| Computer Science HL | 2027 (new Theme A/B) | 67 | 25 / 25 (100%) |
 | Business Management SL | 2024 | 39 | 34 / 34 (100%) |
-| **Total** | | **331** | **166 / 166 (100%)** |
+| **Total** | | **337** | **166 / 166 (100%)** |
 
 **Every priority-1 ("must-cover") and priority-2 ("should-cover") node is done** — Maths 32/32 + 51/51,
 Physics 24/24, CS 25/25, BM 26/26 + 8/8 Toolkit. The bank covers **all 166 syllabus nodes** across the
 four subjects; the only remaining work is the optional priority-3 ("stretch") tail.
 
-All 331 items are difficulty 3–5 (**5 at difficulty 3, 185 at difficulty 4, 141 at difficulty 5**), and
+All 337 items are difficulty 3–5 (**5 at difficulty 3, 185 at difficulty 4, 147 at difficulty 5**), and
 pass `validate.py`
 with **0 failures**. The originality gate is clean: **0 items above threshold**, highest external score
 0.090, highest internal score 0.073 and highest approach score 0.366 (limits 0.35 / 0.25 / 0.50). The
@@ -34,12 +34,12 @@ approach maximum is `MATH-AHL1.11-201` against `MATH-AHL1.11-001`, two items on 
 the partial-fractions-then-telescoping method — the gate judges the method different enough, and the two
 are different questions with different answers (¾ against ¼).
 
-Every item carries a `verification.assertions` list — **3828 machine-checked assertions** in total — so
+Every item carries a `verification.assertions` list — **3918 machine-checked assertions** in total — so
 the arithmetic in every answer is re-derived by the validator on each run, not merely asserted by the
-author. **104 items are figure-bearing (31%)**, with the figure inlined into `question.figure` so a page
+author. **110 items are figure-bearing (33%)**, with the figure inlined into `question.figure` so a page
 renders identically on `file://` and over HTTP.
 
-**The figures are hand-drawn, and the gate enforces it.** 98 of the 104 are raw SVG and the other six are
+**The figures are hand-drawn, and the gate enforces it.** 104 of the 110 are raw SVG and the other six are
 `<table>` and `<pre>` blocks, all of them emitted by a plain-Python string builder — some in
 `tools/make_figures.py`, which writes the named set in
 `data/_figures.json`, and the rest inline in the batch generator that authored the item — with no
@@ -51,13 +51,14 @@ their own curve from the same expression the markscheme integrates, so the pictu
 drift apart: Batch 23's two unbounded tails are plotted from `1/x**2` and `1/sqrt(x)`, the very
 integrands whose antiderivatives the answer evaluates.
 Coverage is tracked as a **ratchet**: `difficulty_audit.py` holds a bank-wide floor
-(`FIGURE_COVERAGE_FLOOR`, now **0.31**) that may rise but may never fall, so a later batch cannot add
+(`FIGURE_COVERAGE_FLOOR`, now **0.32**) that may rise but may never fall, so a later batch cannot add
 text-only items and let the share sag back. Batch 26 raised it from 0.25 to 0.27; Batch 27 to 0.28;
 Batch 28 to 0.29, because all five of its items carry a hand-authored figure, which moved coverage to
 94/320 = 29.4%; Batch 29 to **0.30**, because four of its five do, which moved coverage to
-98/325 = 30.2%; and Batch 30 to **0.31**, because **all six** of its items do, which moved coverage to
-104/331 = 31.4%. That leaves
-**4 non-figure items of headroom** (104/335 = 31.04% still passes; 104/336 = 30.95% fails), so a
+98/325 = 30.2%; Batch 30 to **0.31**, because **all six** of its items do, which moved coverage to
+104/331 = 31.4%; and Batch 31 to **0.32**, because **all six** of its items do again, which moved coverage
+to 110/337 = 32.6%. That leaves
+**6 non-figure items of headroom** (110/343 = 32.07% still passes; 110/344 = 31.98% fails), so a
 plain-text batch is effectively ruled out — the ratchet has reached the point where it forces the issue
 rather than merely encouraging it. Batches 27 and 28 were both aimed by reading the per-subject column
 rather than the gap line, which never prints because no subject is below target. Batch 28 went further
@@ -97,11 +98,11 @@ What the audit reports today:
 
 | | now | at the 2026-09-13 baseline |
 |---|---|---|
-| items with evidence for the label | **246 / 331** | 0 / 172 |
+| items with evidence for the label | **252 / 337** | 0 / 172 |
 | difficulty 5 with no evidence | **0** | 79 |
 | labels the evidence does not permit | **0** | — |
-| items claiming difficulty 5 | 43% | 46% |
-| items claiming difficulty 3 | **2%** | 0% |
+| items claiming difficulty 5 | 44% | 46% |
+| items claiming difficulty 3 | **1%** | 0% |
 
 The evidence row is now the story, and it is the intended one. What changed on 2026-09-13 is not the
 distribution but the fact that the bank now *states its backlog as a number* instead of passing every
@@ -113,7 +114,7 @@ difficulty-4 claim, so the audit reports them as a backlog rather than as an unb
 top-tier label.
 
 **Clearing it was not a transcription exercise.** The 79 items were read one at a time, and reading them
-produced four label corrections in the direction §4.7 asks for — down, never up:
+produced five label corrections in the direction §4.7 asks for — down, never up:
 
 | item | was | now | why the evidence does not permit 5 |
 |---|---:|---:|---|
@@ -141,7 +142,7 @@ item that closed it is on **A.3**, a node with no such incumbent, and it is a ge
 question rather than a relabelled hard one — which is the distinction the earlier note was protecting.
 
 **The rubric score is a documentation gate, not a difficulty meter, and this is worth knowing before
-trying.** Measured across all 246 evidenced items: **226 score 9/9**, 19 score 8/9 and one scores 7/9 —
+trying.** Measured across all 252 evidenced items: **232 score 9/9**, 19 score 8/9 and one scores 7/9 —
 and 8 of 9 is already enough for the top label, so a score below 9 is not by itself a demotion. What the
 score tests is whether the three evidence statements are present, long enough and mutually distinct, and
 whether the arc and assertion-density tests hold; it does not measure how many *ideas* an item contains.
@@ -168,9 +169,9 @@ the baseline on
 every run, so a share that rose past 49% would stop the pipeline rather than pass quietly.
 
 Batch 15 also closed the last gap in the lever taxonomy: **all 13 lever types are in use**, and the
-largest single share is **15%** of evidenced items (`non_governing_variable`, 36 of 246), so the bank is
+largest single share is **15%** of evidenced items (`non_governing_variable`, 37 of 252), so the bank is
 no longer one trick in different clothes. That share barely moved while the evidenced set grew from
-**38 items to 246** — it was 18% of those 38, measured at the Batch 15 commit — which is the useful
+**38 items to 252** — it was 18% of those 38, measured at the Batch 15 commit — which is the useful
 reading: the backfill was spread across the taxonomy rather than concentrated in the levers that were
 already busy. Batch 28 used five distinct levers (`derived_limit`, `wrong_design_cost`,
 `seeded_anomaly`, `partial_cancellation`, `implicit_dependence`), one per item, so no share moved by
@@ -221,9 +222,19 @@ challenge-bank/
     q/<id>.html             one page per question, with collapsed answer / markscheme / why-it's-hard
     papers/<subject>-paper.html     printable question paper (no answers printed)
     papers/<subject>-answers.html   matching answer booklet (answers + markscheme notes)
+    papers/builder.html     assemble a custom timed paper from any selection of items
     assets/                 local CSS + JS; MathJax is loaded from CDN with a local fallback
   export/<subject>.json     the same questions in the shape backend/src/import.js accepts
 ```
+
+**MCQ options are printed on every surface.** The four choices of a Paper 1A cluster live in
+`parts[].options`, and until 2026-09-23 `build.py` rendered them nowhere — a candidate reading the
+printable Physics paper met "Which statement is correct?" with no statements, on 95 of the questions.
+`options_html` now renders them in the question page, the custom builder and the paper, and
+`options_scheme_html` renders them in the markscheme with the keyed option badged and each
+distractor's `rationale` printed under it, because for an MCQ the per-option rationale *is* the
+markscheme. The label printed is the stored `label`, never the list position, so the letter a student
+reads is the letter `validate.py` checked.
 
 `site/` is committed on purpose so the folder can be served straight from GitHub Pages or opened
 from `file://`. Data is loaded as JS globals rather than via `fetch()`, because `fetch()` is blocked

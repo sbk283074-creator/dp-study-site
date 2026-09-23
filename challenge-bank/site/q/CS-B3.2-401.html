@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-B3.2-401 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>B3.2 Fundamentals of OOP for multiple classes (HL only)</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-B3.2-401</p>
+<button type="button" class="q-done-page" data-qid="CS-B3.2-401" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-B3.2-401">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme B: Computational thinking and problem-solving</span><span class="chip chip-key">B3.2 (Fundamentals of OOP for multiple classes: design patterns, the singleton, and the scope of shared state)</span><span class="chip">P2</span><span class="chip">16 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">State</span><span class="chip">Determine</span><span class="chip">Explain</span><span class="chip">Justify</span></div>
+<div class="box"><h4>A singleton holding a mutable setting</h4><p>A web application runs 12 user sessions at the same time. Each session needs to know which measurement units to display, and the user can change the units at any moment.</p>
+<p>The units are held in a class called Settings, which is written as a singleton: a private static attribute holds the one instance, a static method getInstance() returns it, and an instance attribute units holds the current unit name. Every session obtains the settings object through getInstance() and reads and writes units on it. Because there is only ever one Settings object, every session is reading and writing the same field.</p>
+<p>In one hour the units field is changed 34 times across the 12 sessions.</p></div>
+<figure><svg viewBox="0 0 660 344" role="img" aria-label="A class diagram in which four Session objects each hold a reference to the same Settings object. Settings has a static instance attribute, a mutable units attribute, and a static getInstance method." xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="660" height="344" fill="#ffffff"/><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/></marker><marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker><marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#dc2626"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a"/></marker><marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b45309"/></marker></defs><text x="24" y="26" font-size="12.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="600">A singleton: every session reaches the same mutable object</text><rect x="400" y="84" width="226" height="154" rx="4" fill="#ffffff" stroke="#2563eb" stroke-width="2.0"/><line x1="400" y1="114" x2="626" y2="114" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/><line x1="400" y1="176" x2="626" y2="176" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/><text x="513.0" y="104" font-size="13.5" fill="#2563eb" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" font-weight="700">Settings</text><text x="413" y="134" font-size="10.5" fill="#1e293b" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">- instance : Settings</text><line x1="413" y1="137.5" x2="545.3" y2="137.5" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><text x="413" y="152" font-size="10.5" fill="#1e293b" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">- units : string</text><text x="413" y="196" font-size="10.5" fill="#1e293b" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">+ getInstance() : Settings</text><line x1="413" y1="199.5" x2="576.8" y2="199.5" stroke="#1e293b" stroke-width="1.1" stroke-linecap="round"/><text x="413" y="214" font-size="10.5" fill="#1e293b" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">+ setUnits(u : string)</text><text x="513.0" y="258" font-size="10" fill="#2563eb" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" text-anchor="middle">exactly one instance</text><rect x="30" y="62" width="150" height="46" rx="5" fill="#f8fafc" stroke="#1e293b" stroke-width="1.4"/><text x="105" y="82" font-size="11.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" font-weight="600">Session 1</text><text x="105" y="98" font-size="9" fill="#64748b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle">reads and writes units</text><line x1="182" y1="85" x2="392" y2="161.0" stroke="#64748b" stroke-width="1.3" stroke-linecap="round" marker-end="url(#ahm)"/><rect x="30" y="118" width="150" height="46" rx="5" fill="#f8fafc" stroke="#1e293b" stroke-width="1.4"/><text x="105" y="138" font-size="11.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" font-weight="600">Session 2</text><text x="105" y="154" font-size="9" fill="#64748b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle">reads and writes units</text><line x1="182" y1="141" x2="392" y2="161.0" stroke="#64748b" stroke-width="1.3" stroke-linecap="round" marker-end="url(#ahm)"/><rect x="30" y="174" width="150" height="46" rx="5" fill="#f8fafc" stroke="#1e293b" stroke-width="1.4"/><text x="105" y="194" font-size="11.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" font-weight="600">Session 3</text><text x="105" y="210" font-size="9" fill="#64748b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle">reads and writes units</text><line x1="182" y1="197" x2="392" y2="161.0" stroke="#64748b" stroke-width="1.3" stroke-linecap="round" marker-end="url(#ahm)"/><rect x="30" y="230" width="150" height="46" rx="5" fill="#f8fafc" stroke="#1e293b" stroke-width="1.4"/><text x="105" y="250" font-size="11.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle" font-weight="600">Session 4</text><text x="105" y="266" font-size="9" fill="#64748b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" text-anchor="middle">reads and writes units</text><line x1="182" y1="253" x2="392" y2="161.0" stroke="#64748b" stroke-width="1.3" stroke-linecap="round" marker-end="url(#ahm)"/><text x="24" y="302" font-size="10.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">12 sessions run concurrently. In one hour the units field is changed 34 times,</text><text x="24" y="318" font-size="10.5" fill="#1e293b" font-family="ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">and the underlined members are the only ones that exist once.</text></svg><figcaption>Four sessions holding references to one shared Settings object. The underlined members are static.</figcaption></figure>
+<section id="q-print">
+<h2>Question</h2>
+<p>Evaluate the singleton as a home for the units field. Assume the 12 sessions overlap in time, that any of them may change the units at any moment, and that a session reads the units immediately before it formats a measurement.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>State what a session reads when it asks the settings object for the units, if a different session changed the units a fraction of a second earlier.</p> <em>(State)</em></li><li><span class="marks">[4 marks]</span><strong>(b)</strong> <p>Determine the number of session-and-change pairs in which a session observes a change it did not make, and express that number as a percentage of all session-and-change pairs.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(c)</strong> <p>Explain why the singleton is the right pattern for obtaining the settings but the wrong pattern for storing the units field, and state where a session's own units should be held instead.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(d)</strong> <p>A colleague proposes keeping the singleton and adding a sessionId attribute, so that setUnits can ignore changes made by other sessions. Justify whether that repairs the design.</p> <em>(Justify)</em></li></ol>
+<p class="reveal-note">Total: 16 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="16" data-ai-ref="CS-B3.2-401">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>Evaluate the singleton as a home for the units field. Assume the 12 sessions overlap in time, that any of them may change the units at any moment, and that a session reads the units immediately before it formats a measurement.
+
+(a) State what a session reads when it asks the settings object for the units, if a different session changed the units a fraction of a second earlier. [3 marks] (State)
+(b) Determine the number of session-and-change pairs in which a session observes a change it did not make, and express that number as a percentage of all session-and-change pairs. [4 marks] (Determine)
+(c) Explain why the singleton is the right pattern for obtaining the settings but the wrong pattern for storing the units field, and state where a session&#x27;s own units should be held instead. [5 marks] (Explain)
+(d) A colleague proposes keeping the singleton and adding a sessionId attribute, so that setUnits can ignore changes made by other sessions. Justify whether that repairs the design. [4 marks] (Justify)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>Part (a).</strong> The session reads the most recently written value, whichever session wrote it. There is one storage location, so the last write wins, and the session has no way to tell whether the value it received is the one it set. <strong>(M1)(A1)(A1)</strong></p>
+<p><strong>Part (b).</strong> Each of the 34 changes is visible to every session except the one that made it, so each change produces 12 - 1 = 11 unintended observations. The number of such session-and-change pairs is therefore 34 x 11 = 374. <strong>(M1)(A1)</strong></p>
+<p>The total number of session-and-change pairs is 34 x 12 = 408. <strong>(A1)</strong></p>
+<p>So 374 / 408 = 0.91666..., which is 91.7% to one decimal place. <strong>(A1)</strong> The 34 pairs that are not unintended are the ones in which a session observes its own change.</p>
+<p><strong>Part (c).</strong> The singleton is the right pattern for obtaining the settings. The units are a property of the application rather than of a session, so the value has to be reachable from anywhere in the code; constructing a fresh Settings per session would give each session a different starting value; and a single access point means the configuration is loaded once rather than repeatedly. getInstance() supplies all three without exposing a global variable. <strong>(M1)(A1)(A1)</strong></p>
+<p>It is the wrong pattern for storing a mutable value that belongs to a session, because one storage location cannot hold two different values at the same moment. Two sessions that want different units are not in conflict about the object — they are in conflict about the field, and no care taken at the access point can resolve that. <strong>(A1)</strong></p>
+<p>The units a session is using belong to that session, so they should be held in an instance attribute of the session, or passed into the formatting call as a parameter. The singleton can still hold the default units, which is a value about the application rather than about any session. <strong>(A1)</strong></p>
+<p><strong>Part (d).</strong> Adding sessionId does not repair the design. It lets setUnits refuse a write that came from another session, so a session's own writes are protected from being overwritten by its neighbours. <strong>(M1)(A1)</strong></p>
+<p>But the field is still a single storage location. The sessionId records whose value is currently stored; it does not let two sessions each have one. If session 1 sets the units to metres and session 2 then sets them to feet, the field holds one of those two values and the other session has lost its setting. Refusing the second write does not preserve session 1's value *for* session 2 — it merely prevents session 2 from setting anything at all, so the second session is now unable to choose its units rather than able to choose them independently. <strong>(A1)</strong></p>
+<p>The test to apply is whether two sessions can hold two different values at the same moment. A single field cannot, whatever guard is placed on the setter, because the guard changes who is allowed to write and not how many values exist. Repairing the design means one value per session, which means moving the field out of the singleton; the singleton can keep the default and the access point. <strong>(A1)</strong></p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p><strong>(a)</strong> M1 for the last-write-wins idea, A1 for naming the most recent value, A1 for noting that the reading session cannot tell whose value it received. A candidate who answers "its own value" has missed the sharing and scores nothing in this part.</p>
+<p><strong>(b)</strong> M1 for 12 - 1 = 11 sessions per change, A1 for 374. A1 for 408 as the total. A1 for 91.7%. Accept 91.67% or 0.917. A candidate who computes 34 x 12 = 408 as the unintended count has confused the total with the subset and should lose the first A1.</p>
+<p><strong>(c)</strong> M1 for the access-point argument, A1 for reachability from anywhere in the code, A1 for a single shared initial value or a single load. A1 for the observation that one storage location cannot hold two values at once. A1 for moving the units into the session or passing them per call. Do not award the final A1 for a restatement of the problem in part (a); the mark is for naming where the value should live.</p>
+<p><strong>(d)</strong> M1 for stating what the guard does, A1 for recognising that it protects a session's own writes. A1 for the observation that the field remains one location. A1 for the conclusion that the second session is blocked rather than served, or for the two-values-at-once test. A candidate who concludes that the proposal repairs the design because writes are now checked scores at most two marks.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The singleton is the pattern most often taught as a recipe and least often taught with its limits, and this item separates the two uses that the recipe runs together. The pattern exists to guarantee that one object of a class exists and to give it a known access point. Neither of those guarantees says anything about whether the object's *fields* are safe to share, and the item is built on that gap.</p>
+<p>The trap is that the code is a textbook singleton. A candidate who knows the pattern will recognise it, will see getInstance() implemented correctly with a private static instance and a static accessor, and will have no reason to suspect it. The defect is not in the implementation of the pattern but in what has been put inside the object, and nothing about the pattern's shape draws attention to it.</p>
+<p>The counting in part (b) is designed so that the wrong model produces a plausible number. A candidate who counts each change once will report 34 unintended observations, which is the number of changes, not the number of sessions that saw them. A candidate who counts every pair will report 408. Only the model in which each change is seen by every session except its author gives 374, and 374/408 = 91.7% is the figure that makes the problem's scale visible: nine out of ten observations in this system are of a value the session did not choose.</p>
+<p>Part (c) is the conceptual centre and it asks for a separation that the pattern's own name conceals. The same object can be the right home for a default and the wrong home for a session's setting, and a candidate who can say which is which has understood scope rather than syntax.</p>
+<p>Part (d) is the hardest part because the proposed fix is thoughtful. Guarding the setter with a session identifier is exactly the kind of repair a competent engineer reaches for, and it does improve the behaviour: a session's writes are no longer clobbered by its neighbours. What it cannot do is change the number of values the field can hold, which is one. The item's test — can two sessions hold two different values at the same moment — is deliberately a question about storage rather than about permissions, because that is the distinction the fix obscures. A session that is forbidden to set its units has not been given its own units; it has been given the other session's units and told not to argue.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme B: Computational thinking and problem-solving — B3.2 Fundamentals of OOP for multiple classes (HL only)</dd></div>
+  <div><dt>Challenge lever</dt><dd>The singleton is correctly applied and still wrong, because the pattern guarantees one object and the field that breaks is a mutable value that has to differ per session, so the candidate must separate the access point from the storage location.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>B3.2 (Fundamentals of OOP for multiple classes: design patterns, the singleton, and the scope of shared state)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Not adapted from an external source. The application, the session count, the change rate and the proposed repair in part (d) were written for this item.</dd></div>
+  <div><dt>Verification</dt><dd>The shared-field model was simulated in Python: 12 sessions were modelled as holding a reference to one settings object, 34 writes were applied, and the number of (session, write) pairs in which the session&#x27;s read differed from its own last write was counted directly rather than derived. The count was 374 of 408, confirming that the derivation and the simulation agree.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>no shared 5-grams with the 12,796-question corpus (similarity 0.0)</dd></div>
+  <div><dt>Nearest item here</dt><dd>no shared 5-grams with any other question here (similarity 0.0)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · </dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+</body>
+</html>

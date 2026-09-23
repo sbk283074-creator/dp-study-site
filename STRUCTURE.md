@@ -334,7 +334,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 ### 05 · Challenge Bank — `challenge-bank/`
 **Fully generated. The JSON is the source of truth, not the HTML.**
 - Data: `challenge-bank/data/{math-aa-hl,physics-hl,computer-science-hl,business-management-sl}/*.json`
-  — **331 questions** (Math AA HL 136, Physics HL 95, CS HL 61, BM SL 39). Re-measured 2026-09-17;
+  — **337 questions** (Math AA HL 136, Physics HL 95, CS HL 67, BM SL 39). Re-measured 2026-09-23;
   the count comes from `tools/validate.py`'s `load()`, never from a glob.
   **Do not count these with a glob.** The filenames are not uniform — `batch21.json`, `batch22.json`,
   `batch22c.json` and `batch23.json` sit beside `p3-batch2.json`, `p1b-data.json`,
@@ -361,7 +361,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - Tooling: `challenge-bank/tools/*.py` — `validate.py` (43 KB), `make_figures.py` (40 KB), `fix_json.py`,
   `ship.py`, `coverage.py`, `difficulty_audit.py`, …
 - Docs: `README.md`, `STANDARD.md`, `PLAN.md`, `AUDIT_*.md`.
-- Output: `challenge-bank/site/` — `index.html`, `q/` (331 question pages), one index per
+- Output: `challenge-bank/site/` — `index.html`, `q/` (337 question pages), one index per
   subject, `papers/`, `assets/site.js`.
 - **AI:** four launcher buttons per question (full worked solution / hint only / guided steps /
   mark my attempt), generated into `site/assets/site.js` from a Python string in `build.py`. They call
@@ -372,21 +372,38 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
 - **Figures:** hand-authored inline SVG stored in the question JSON as
   `figure = {type:"svg", content, caption}`. `build.py::figure_html` handles **three** types, not one —
   `svg` (`<figure>` + optional `<figcaption>`), `table` (delegates to `table_html`) and `code`
-  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 331 items: **104
-  figure-bearing (98 svg / 4 code / 2 table) = 31%**, with every subject above the 15% per-subject
-  target (Maths 22%, Physics 39%, CS 48%, BM 21%). No charting library is involved anywhere: every
-  figure is a plain-Python SVG string builder in `tools/make_figures.py`, and `validate.py` fails on the
+  (`<pre><code>`, content HTML-escaped) — and returns `""` for anything else. At 337 items: **110
+  figure-bearing (104 svg / 4 code / 2 table) = 33%**, with every subject above the 15% per-subject
+  target (Maths 22%, Physics 39%, CS 52%, BM 21%). No charting library is involved anywhere: every
+  figure is a plain-Python SVG string builder — the named set in `tools/make_figures.py`, the rest
+  inline in the batch generator that authored the item (which is `/tmp`-only, so the JSON copy is the
+  only durable one — see the trap note below), and `validate.py` fails on the
   fingerprints of matplotlib / Chart.js / plotly / vega / bokeh / `<canvas` / `data:image/`, so the
   "without other tools" rule is gate-enforced. `FIGURE_COVERAGE_FLOOR` in `difficulty_audit.py` is a
-  **ratchet** (now 0.31): it may rise and may never fall, and it is now the binding constraint — four
+  **ratchet** (now 0.32): it may rise and may never fall, and it is now the binding constraint — six
   non-figure items of headroom remain, so a new batch must carry figures. A stimulus table is separate
   from a figure: it
   lives in `stimulus.table` and is emitted by `stimulus_html`, so an item can carry a table with no
   `figure`.
+- **MCQ options are printed now, and the key is measured.** Until 2026-09-23 `build.py` rendered
+  `parts[].options` **nowhere** — not on the question page, not in the printable paper — so a Physics
+  P1A candidate met "Which statement is correct?" with no statements on 95 questions, and the fact that
+  every authored cluster keys its answer at the *first* option went unnoticed for six waves.
+  `options_html` / `options_scheme_html` now print the choices on every surface, with the keyed option
+  badged and each `rationale` shown in the markscheme (for an MCQ the per-option rationale *is* the
+  markscheme). Two gates came with the fix: `validate.py` fails any part whose answer states a letter
+  different from the option flagged `correct` (and warns where no letter is stated at all), and
+  `difficulty_audit.py` section 6 reports the key distribution against `KEY_SPREAD_CEILING` (0.80, a
+  ratchet that may only fall) plus `KEY_MONO_CLUSTERS_MAX` (14). Measured 2026-09-23: **A 76, B 6, C 7,
+  D 6** over 95 questions, with **14 clusters keying all five parts at A**. Redistributing them is the
+  published backlog and it is *not* a regex job — 14 of those clusters name other options by letter in
+  their markscheme prose ("Option B inverts it, option C assumes…"), so a blind reorder would turn a
+  markscheme sentence into a false statement. That is exactly why the letter-versus-key assertion ships
+  first, as STANDARD §4.3 already said it must.
 - **Difficulty is evidenced, and the top-tier debt is cleared.** Every item must carry
   `difficulty_evidence` (`lever_type` from a closed 13-term taxonomy + `naive_path` + `failure_point` +
   `wrong_answer`); the rubric scores it out of 9 and the label must be earned (d5 needs 8). As of
-  2026-09-17: **246 of 331 items evidenced, `difficulty 5 with no evidence: 0`**, and the 85 outstanding
+  2026-09-23: **252 of 337 items evidenced, `difficulty 5 with no evidence: 0`**, and the 85 outstanding
   items are all difficulty-4 claims. Reading the 79-item difficulty-5 backlog produced
   **five label corrections, all downwards** — `MATH-P3-010` 5→4, `MATH-AHL5.9-001` 5→4,
   `MATH-AHL5.10-001` 5→3, `MATH-AHL5.11-001` 5→4, `PHYS-E.2-101` 5→4 — while
@@ -398,7 +415,7 @@ Ships a **single 504 KB `index.html`**; `data-page-node-id` injected (52). Sourc
   the table to P1 → `{structured, extended_response, case_study}`, P2 → `{extended_response}` produced
   **17 failures with no data change**, and the 17 items were then re-filed by their own `topic` field
   (9 Theme A → P1, 8 Theme B → P2 as `extended_response`). Per-paper distribution is now Maths P1 67 /
-  P2 40 / P3 29, Physics P1A **19 clusters (95 questions)** / P1B 17 / P2 59, **CS P1 49** / P2 12,
+  P2 40 / P3 29, Physics P1A **19 clusters (95 questions)** / P1B 17 / P2 59, **CS P1 49** / P2 18,
   BM P1 10 / P2 29.
 - **`section` is checked too, and the same lesson applied twice.** `section` renders as a student-visible
   chip (`P1 · Section A`) and feeds the paper builder, and was validated nowhere. `SECTION_RULES` in

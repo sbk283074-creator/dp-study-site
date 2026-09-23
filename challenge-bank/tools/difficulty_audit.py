@@ -46,11 +46,28 @@ SUBJECT_ORDER = ["Math AA HL", "Physics HL", "Computer Science HL", "Business Ma
 # The bank-wide floor is a RATCHET -- it may rise and may not fall -- and the
 # per-subject target is reported as a gap rather than a debt, so it stays visible
 # without turning the pipeline red on a backlog that is being paid down.
-FIGURE_COVERAGE_FLOOR = 0.31        # bank-wide, ratchet (measured 104/331 = 31.4%, 2026-09-17)
-                                    # headroom: 4 non-figure items (104/335 = 31.04% still passes;
-                                    # 104/336 = 30.95% fails). Batch 30 was the first Maths wave
-                                    # since Batch 27 and took Maths 24/130 = 18% to 30/136 = 22%.
+FIGURE_COVERAGE_FLOOR = 0.32        # bank-wide, ratchet (measured 110/337 = 32.6%, 2026-09-17)
+                                    # headroom: 6 non-figure items (110/343 = 32.07% still passes;
+                                    # 110/344 = 31.98% fails). Batch 31 was a CS HL Paper 2 wave and
+                                    # carried all six of its items, taking CS 29/61 = 48% to
+                                    # 35/67 = 52% and the bank 104/331 = 31.4% to 110/337 = 32.6%.
+                                    # Maths is still the thinnest at 30/136 = 22%.
 FIGURE_SUBJECT_TARGET = 0.15        # per subject, reported gap
+
+# Every MCQ option set is authored with the correct answer written first, so a
+# batch that does not rotate leaves its whole key at A. The site prints the
+# options and the markscheme prints the letter, so an all-A bank is a paper whose
+# answer booklet says "A" seventy times -- the same defect BPhO found in its own
+# 81 questions. This is measured for the same reason the figure share is: a claim
+# nobody counts quietly rots.
+#
+# KEY_SPREAD_CEILING is a ratchet that runs the other way -- the largest single
+# letter's share may FALL and may not rise -- and it is baselined at the state
+# found on 2026-09-23 rather than at the target, because 14 legacy clusters key
+# all five of their parts at A and a gate that blocks on that gets switched off.
+# Redistributing them is the published backlog; no new cluster may join it.
+KEY_SPREAD_CEILING = 0.80           # ratchet (measured A 76/95 = 80.0%, 2026-09-23)
+KEY_MONO_CLUSTERS_MAX = 14          # clusters keying every part at one letter (measured 2026-09-23)
 
 # The state measured on 2026-09-13, when the standard took force.
 #
@@ -274,9 +291,46 @@ def main():
         print("\n   figure target gaps (not a debt -- the ratchet is bank-wide and holds): %s"
               % ", ".join("%s %d/%d" % (g[0], g[1], g[2]) for g in fig_gaps))
 
+    # ------------------------------------------------------- the MCQ key
+    print("\n6. Is the multiple-choice answer key spread, or is it always A?\n")
+    mcq = [q for q in items if q.get("question_type") == "mcq"]
+    keys = collections.Counter()
+    mono = []
+    for q in mcq:
+        got = []
+        for p in q.get("parts") or []:
+            k = next((str(o.get("label")) for o in (p.get("options") or []) if o.get("correct")), None)
+            if k:
+                keys[k] += 1
+                got.append(k)
+        if len(set(got)) == 1 and len(got) > 1:
+            mono.append((q["id"], got[0], len(got)))
+    nk = sum(keys.values())
+    if nk:
+        worst, worst_n = keys.most_common(1)[0]
+        print("   %d MCQ questions across %d clusters; keyed %s"
+              % (nk, len(mcq), ", ".join("%s %d" % (k, keys[k]) for k in sorted(keys))))
+        print("   largest single letter: %s at %d/%d = %.0f%%  (ratchet ceiling %.0f%%)"
+              % (worst, worst_n, nk, 100 * worst_n / nk, 100 * KEY_SPREAD_CEILING))
+        if worst_n / nk > KEY_SPREAD_CEILING:
+            regressions.append("R6 MCQ key concentration %.0f%% has risen above the ratchet ceiling %.0f%%"
+                               % (100 * worst_n / nk, 100 * KEY_SPREAD_CEILING))
+        if mono:
+            print("   clusters keying every part at one letter: %d of %d" % (len(mono), len(mcq)))
+            print("     %s" % ", ".join("%s(%s)" % (i, l) for i, l, _ in sorted(mono)))
+            print("     backlog: redistributing them needs the letter-versus-key assertion in")
+            print("     validate.py (added 2026-09-23) and a read of every distractor sentence --")
+            print("     %d of these clusters name other options by letter in their markscheme." % len(mono))
+            if len(mono) > KEY_MONO_CLUSTERS_MAX:
+                regressions.append("R7 single-letter clusters rose from %d to %d -- author the rotation "
+                                   "in the assembler, do not reorder stored options"
+                                   % (KEY_MONO_CLUSTERS_MAX, len(mono)))
+    else:
+        print("   no MCQ items in the bank")
+
     # -------------------------------------------------------------- backlog
     if args.backlog:
-        print("\n6. Backlog -- items with no difficulty_evidence\n")
+        print("\n7. Backlog -- items with no difficulty_evidence\n")
         for s in SUBJECT_ORDER:
             qs = [q for q in without if q.get("subject") == s]
             if qs:
