@@ -370,9 +370,14 @@
 - **Depth is added by collapsing features, not by adding more of them.** Part VII's five chapters
   replace "learn five more features" with "learn the one mechanism that produces five features you
   already use". That is what makes a book higher-level rather than longer.
-- **Every new chapter is machine-verified.** The harness exists (393 blocks), the directive contract
+- **Every new chapter is machine-verified.** The harness exists (441 blocks), the directive contract
   is in `STYLE.md`, and `text` fences are checked claims — so Part VIII's benchmarks and Part VII's
   `dis` output are captured from real runs, not written from memory.
+- **The whole book is machine-verified, including the chapters that predate the harness.** The depth
+  sweep that closed this ran in three batches (ch08–11, ch12–25, then ch26–36 and 00/38/62) and gave
+  every one of the 63 chapters two counted blocks — a `## Counted:` section placed immediately before
+  `## Key takeaways`, with its generators in `tools/gen/<NN>/`. `check-standard.py python` now reports
+  **0 issues**, where it previously failed on 28 chapters for the single clause `>= 1 verified block`.
 - **One known hole, and it is the last of its kind.** Chapters 44 and 45 still carry blocks that
   print a *measured* time rather than a *counted* operation, so they pass on an idle machine and fail
   under load — observed 19/22, 20/22 and 21/22 for chapter 44 across three consecutive runs. Every

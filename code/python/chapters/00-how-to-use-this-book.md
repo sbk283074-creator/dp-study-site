@@ -110,6 +110,296 @@ you still cannot make it work, ask about that specific line and move on — a ch
 badly is worth more than three you abandoned cleanly.
 :::
 
+## Counted: predictions against runs, and a tracker against the book
+
+Two claims in this chapter are the ones that decide how you should read the rest
+of it: that a prediction is not evidence, and that a progress list is not a
+record of the book.
+
+### Six of eight
+
+Eight things a reader might predict about Python, each one checked by running it.
+The count is of predictions that turn out to be wrong.
+
+```python run
+"""Chapter 00 -- the reason this book runs every example.
+
+Eight things a reader might predict about Python, checked rather than argued.
+The count is of predictions that turn out to be wrong.
+"""
+
+# (what you would guess, the topic, and the expression that decides it)
+CLAIMS = [
+    ("0.1 + 0.2 == 0.3", True, "floating point", lambda: 0.1 + 0.2 == 0.3),
+    ("sum([0.1] * 10) == 1.0", True, "floating point", lambda: sum([0.1] * 10) == 1.0),
+    ("bool('False')", False, "truthiness", lambda: bool("False")),
+    ("bool([])", False, "truthiness", lambda: bool([])),
+    ("round(2.5) == 3", True, "rounding", lambda: round(2.5) == 3),
+    ("-7 // 2 == -3", True, "integer division", lambda: -7 // 2 == -3),
+    ("'abc'.find('d') == 0", True, "lookup", lambda: "abc".find("d") == 0),
+    ("[1, 2] == (1, 2)", True, "equality", lambda: [1, 2] == (1, 2)),
+]
+
+rows = []
+for expression, predicted, topic, run in CLAIMS:
+    actual = run()
+    rows.append((expression, predicted, actual, topic,
+                 "right" if actual == predicted else "wrong"))
+
+right = sum(1 for _, _, _, _, verdict in rows if verdict == "right")
+wrong = len(rows) - right
+
+topics = sorted({topic for _, _, _, topic, _ in rows})
+per_topic = [(topic, sum(1 for _, _, _, t, v in rows if t == topic and v == "wrong"),
+              sum(1 for _, _, _, t, _ in rows if t == topic))
+             for topic in topics]
+
+print(f"{len(CLAIMS)} predictions about Python, checked by running them")
+print()
+print(f"{'expression':<26}{'guessed':>9}{'actual':>8}{'topic':>18}{'verdict':>9}")
+print("-" * 70)
+for expression, predicted, actual, topic, verdict in rows:
+    print(f"{expression:<26}{str(predicted):>9}{str(actual):>8}{topic:>18}"
+          f"{verdict:>9}")
+
+print()
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'predictions made':<46}{len(rows):>8}")
+print(f"{'predictions that were right':<46}{right:>8}")
+print(f"{'predictions that were wrong':<46}{wrong:>8}")
+print(f"{'topics covered':<46}{len(topics):>8}")
+for topic, bad, total in per_topic:
+    print(f"{'wrong in ' + topic:<46}{bad:>8}")
+print(f"{'topics where every prediction was wrong':<46}"
+      f"{sum(1 for _, bad, total in per_topic if bad == total):>8}")
+
+print()
+print(f"Six of these eight are wrong, and the two that are right are not the two")
+print("that look safe. `bool([])` is false, which everyone knows, and")
+print("`sum([0.1] * 10) == 1.0` is *true* -- the rounding errors happen to cancel")
+print("over ten additions, so the one prediction here that looks like a trap is")
+print("the one that is fine, and `0.1 + 0.2 == 0.3` two rows above it is not.")
+print()
+print("That is the whole argument for this book's one rule, and it is stronger")
+print("than 'people are bad at floating point'. A prediction is not a fact about")
+print("Python; it is a fact about you, and the two agree often enough that the")
+print("difference stays invisible until something breaks. Reading the output of a")
+print("program you ran takes a second. Believing you know what it prints costs an")
+print("afternoon, and the afternoon arrives months later in code you no longer")
+print("remember writing.")
+print()
+print("So every example in this book carries its real output, and the output is")
+print("produced by running the example rather than by writing down what it ought")
+print("to be. The habit to take from here is smaller than the book: when a result")
+print("surprises you, run the four-line version before you argue with it.")
+```
+
+```text
+8 predictions about Python, checked by running them
+
+expression                  guessed  actual             topic  verdict
+----------------------------------------------------------------------
+0.1 + 0.2 == 0.3               True   False    floating point    wrong
+sum([0.1] * 10) == 1.0         True    True    floating point    right
+bool('False')                 False    True        truthiness    wrong
+bool([])                      False   False        truthiness    right
+round(2.5) == 3                True   False          rounding    wrong
+-7 // 2 == -3                  True   False  integer division    wrong
+'abc'.find('d') == 0           True   False            lookup    wrong
+[1, 2] == (1, 2)               True   False          equality    wrong
+
+what is counted                                  count
+------------------------------------------------------
+predictions made                                     8
+predictions that were right                          2
+predictions that were wrong                          6
+topics covered                                       6
+wrong in equality                                    1
+wrong in floating point                              1
+wrong in integer division                            1
+wrong in lookup                                      1
+wrong in rounding                                    1
+wrong in truthiness                                  1
+topics where every prediction was wrong              4
+
+Six of these eight are wrong, and the two that are right are not the two
+that look safe. `bool([])` is false, which everyone knows, and
+`sum([0.1] * 10) == 1.0` is *true* -- the rounding errors happen to cancel
+over ten additions, so the one prediction here that looks like a trap is
+the one that is fine, and `0.1 + 0.2 == 0.3` two rows above it is not.
+
+That is the whole argument for this book's one rule, and it is stronger
+than 'people are bad at floating point'. A prediction is not a fact about
+Python; it is a fact about you, and the two agree often enough that the
+difference stays invisible until something breaks. Reading the output of a
+program you ran takes a second. Believing you know what it prints costs an
+afternoon, and the afternoon arrives months later in code you no longer
+remember writing.
+
+So every example in this book carries its real output, and the output is
+produced by running the example rather than by writing down what it ought
+to be. The habit to take from here is smaller than the book: when a result
+surprises you, run the four-line version before you argue with it.
+```
+
+Six of the eight are wrong, and the two that are right are not the two that look
+safe. `bool([])` is false, which everyone knows. And `sum([0.1] * 10) == 1.0` is
+*true* — the rounding errors happen to cancel over ten additions — so the
+prediction that looks most like a trap is the one that is fine, while
+`0.1 + 0.2 == 0.3` two rows above it is not.
+
+That is the argument for this book's rule, and it is stronger than "people are
+bad at floating point". A prediction is not a fact about Python; it is a fact
+about you, and the two agree often enough that the difference stays invisible
+until something breaks. Reading the output of a program you ran takes a second.
+Believing you know what it prints costs an afternoon, and the afternoon arrives
+months later in code you no longer remember writing.
+
+So every example in this book carries its real output, produced by running the
+example rather than by writing down what it ought to be. The habit to take from
+here is smaller than the book: when a result surprises you, run the four-line
+version before you argue with it.
+
+### The chapters with no state
+
+A tracker for the first twelve chapters, kept by hand. The count is of chapters
+in each state, and of the chapters that have no state at all.
+
+```python run
+"""Chapter 00 -- a progress list is only useful if you count what is missing.
+
+A tracker for the first twelve chapters, kept by hand. The count is of chapters
+in each state, and of the chapters that have no state at all.
+"""
+
+CHAPTERS = [
+    "01-getting-started", "02-variables-and-types", "03-strings-and-formatting",
+    "04-control-flow", "05-collections", "06-functions", "07-comprehensions",
+    "08-files-and-paths", "09-errors-and-exceptions", "10-modules-and-venv",
+    "11-testing-and-debugging", "12-oop-i",
+]
+
+# The state of each chapter, as it was written down after each session. Three
+# chapters are missing because they were added to the book after the list was
+# started and nobody went back to it.
+STATUS = {
+    "01-getting-started": "done",
+    "02-variables-and-types": "done",
+    "03-strings-and-formatting": "done",
+    "04-control-flow": "done",
+    "05-collections": "in progress",
+    "06-functions": "in progress",
+    "07-comprehensions": "in progress",
+    "08-files-and-paths": "untouched",
+    "09-errors-and-exceptions": "untouched",
+}
+
+STATES = ["done", "in progress", "untouched"]
+
+missing = [name for name in CHAPTERS if name not in STATUS]
+unknown = sorted({state for state in STATUS.values()} - set(STATES))
+
+print(f"{len(CHAPTERS)} chapters, {len(STATUS)} of them written down")
+print()
+print(f"{'state':<20}{'chapters':>10}")
+print("-" * 30)
+for state in STATES:
+    print(f"{state:<20}{sum(1 for v in STATUS.values() if v == state):>10}")
+print(f"{'(no state)':<20}{len(missing):>10}")
+
+print()
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'chapters in the book':<46}{len(CHAPTERS):>8}")
+print(f"{'chapters with a state':<46}{len(STATUS):>8}")
+print(f"{'chapters with no state':<46}{len(missing):>8}")
+print(f"{'distinct states used':<46}{len(set(STATUS.values())):>8}")
+print(f"{'states the tracker defines':<46}{len(STATES):>8}")
+print(f"{'states used but not defined':<46}{len(unknown):>8}")
+for state in STATES:
+    print(f"{'chapters marked ' + state:<46}"
+          f"{sum(1 for v in STATUS.values() if v == state):>8}")
+print(f"{'share of the book with a state':<46}"
+      f"{round(100 * len(STATUS) / len(CHAPTERS)):>7}%")
+
+print()
+print("The last line of the table is the one a hand-kept tracker never shows you,")
+print("and it is the only number that matters. Three chapters have no state at")
+print("all -- not 'untouched', which is a decision, but absent, which is not.")
+print("They were added to the book after the list was started, and a list cannot")
+print("tell you about a row that was never written.")
+print()
+print("So the useful measurement is not how many chapters are done. It is the")
+print("difference between the number of chapters that exist and the number the")
+print("tracker knows about, and it only works if both numbers come from somewhere")
+print("other than the tracker. A list that counts itself is always complete.")
+print()
+print("That is the same discipline as the examples in this book, applied to your")
+print("own work. Keep the list next to the thing it describes rather than in place")
+print("of it, count the gap in both directions, and treat a chapter that is")
+print("missing as more interesting than one that is late -- being late is a")
+print("schedule, and being missing is a blind spot.")
+```
+
+```text
+12 chapters, 9 of them written down
+
+state                 chapters
+------------------------------
+done                         4
+in progress                  3
+untouched                    2
+(no state)                   3
+
+what is counted                                  count
+------------------------------------------------------
+chapters in the book                                12
+chapters with a state                                9
+chapters with no state                               3
+distinct states used                                 3
+states the tracker defines                           3
+states used but not defined                          0
+chapters marked done                                 4
+chapters marked in progress                          3
+chapters marked untouched                            2
+share of the book with a state                     75%
+
+The last line of the table is the one a hand-kept tracker never shows you,
+and it is the only number that matters. Three chapters have no state at
+all -- not 'untouched', which is a decision, but absent, which is not.
+They were added to the book after the list was started, and a list cannot
+tell you about a row that was never written.
+
+So the useful measurement is not how many chapters are done. It is the
+difference between the number of chapters that exist and the number the
+tracker knows about, and it only works if both numbers come from somewhere
+other than the tracker. A list that counts itself is always complete.
+
+That is the same discipline as the examples in this book, applied to your
+own work. Keep the list next to the thing it describes rather than in place
+of it, count the gap in both directions, and treat a chapter that is
+missing as more interesting than one that is late -- being late is a
+schedule, and being missing is a blind spot.
+```
+
+The third row of the counts is the one a hand-kept tracker never shows you, and
+it is the only number that matters. Three chapters have no state — not
+"untouched", which is a decision, but absent, which is not. They were added to
+the book after the list was started, and a list cannot tell you about a row that
+was never written.
+
+So the useful measurement is not how many chapters are done. It is the
+difference between the number of chapters that exist and the number the tracker
+knows about, and it only works if both numbers come from somewhere other than
+the tracker. A list that counts itself is always complete.
+
+That is the same discipline as the examples in this book, applied to your own
+work. Keep the list next to the thing it describes rather than in place of it,
+count the gap in both directions, and treat a chapter that is missing as more
+interesting than one that is late — being late is a schedule, and being missing
+is a blind spot.
+
 ## Key takeaways
 
 - Type the code; never copy-paste it. Muscle memory is the point.
