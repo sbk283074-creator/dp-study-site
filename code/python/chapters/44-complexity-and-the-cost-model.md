@@ -2,7 +2,7 @@
 chapter: 44
 part: 8
 title: Complexity and the Cost Model
-summary: Reason about what code costs before you run it, and measure it afterwards without fooling yourself. Count the steps, name the growth rate, measure the constant factors, and tell a benchmark that means something from one that does not.
+summary: Reason about what code costs before you run it. Count the steps, name the growth rate, count the constant factors, and tell a benchmark that means something from one that does not -- and know which of the two questions you are asking.
 minutes: 75
 tags: [big-o, theta, omega, growth rates, amortised cost, timeit, benchmarking]
 ---
@@ -24,8 +24,6 @@ it. Getting them the right way round is most of the skill.
 Here is a membership check written two ways. They return identical answers for identical input.
 
 ```python run
-import timeit
-
 MEMBERS = [f"user{i}" for i in range(10_000)]
 MEMBERS_SET = set(MEMBERS)
 QUERIES = [f"user{i}" for i in range(0, 10_000, 97)] + ["nobody"]
@@ -46,42 +44,27 @@ def in_set(name):
     return name in MEMBERS_SET, 1
 
 
-def scan_each():
-    return [in_list(q) for q in QUERIES]
+list_results = [in_list(q) for q in QUERIES]
+set_results = [in_set(q) for q in QUERIES]
 
+list_answers = [ok for ok, _ in list_results]
+set_answers = [ok for ok, _ in set_results]
+worst = max(c for _, c in list_results)
+total = sum(c for _, c in list_results)
+lookups = len(QUERIES)
 
-def hash_each():
-    return [in_set(q) for q in QUERIES]
-
-
-def best(fn, number, repeat=7):
-    return min(timeit.repeat(fn, number=number, repeat=repeat))
-
-
-def magnitude(ratio):
-    """Coarse bands: the third significant figure is noise, not evidence."""
-    for edge, label in ((5, "~2x"), (20, "~10x"), (60, "~30x"), (400, "~100x")):
-        if ratio < edge:
-            return label
-    return "~1000x or more"
-
-
-scan_answers = [ok for ok, _ in scan_each()]
-set_answers = [ok for ok, _ in hash_each()]
-worst_comparisons = max(c for _, c in scan_each())
-
-print(f"the same {len(QUERIES)} questions, asked two ways")
-print("both give identical answers:", scan_answers == set_answers)
+print(f"the same {lookups} questions, asked two ways")
+print("both give identical answers:", list_answers == set_answers)
 print()
 print("  scanning the list")
-print(f"    worst case per question : {worst_comparisons} comparisons")
-print(f"    total for this run      : {sum(c for _, c in scan_each())} comparisons")
+print(f"    worst case per question : {worst:,} comparisons")
+print(f"    total for this run      : {total:,} comparisons")
 print("  asking the set")
-print("    per question            : 1 hash, whatever the size")
+print("    per question            : 1 hash, 1 comparison, whatever the size")
 print()
-t_list = best(scan_each, 20)
-t_set = best(hash_each, 20)
-print(f"  measured cost of the list version : {magnitude(t_list / t_set)} the set version")
+print(f"  the list version did  {total:>9,} comparisons")
+print(f"  the set version did   {lookups:>9,} lookups")
+print(f"  ratio                 {total / lookups:>9,.0f}x")
 print()
 print("Nothing about the answers changed. Only the cost did.")
 print()
@@ -97,12 +80,14 @@ the same 105 questions, asked two ways
 both give identical answers: True
 
   scanning the list
-    worst case per question : 10000 comparisons
-    total for this run      : 529636 comparisons
+    worst case per question : 10,000 comparisons
+    total for this run      : 529,636 comparisons
   asking the set
-    per question            : 1 hash, whatever the size
+    per question            : 1 hash, 1 comparison, whatever the size
 
-  measured cost of the list version : ~1000x or more the set version
+  the list version did    529,636 comparisons
+  the set version did         105 lookups
+  ratio                     5,044x
 
 Nothing about the answers changed. Only the cost did.
 
@@ -114,14 +99,16 @@ constant factor will close it.
 ```
 
 The comparison count is the part to notice. For 105 questions the list version did **529,636**
-comparisons. That number is not a property of this machine — it is a property of the algorithm, and it
-is the same on yours. The measured ratio, by contrast, is a property of this machine on this run, which
-is why it is reported as a band rather than as a figure.
+comparisons — about five thousand for each question. That number is not a property of this machine; it
+is a property of the algorithm, and it is the same on yours. The ratio printed at the end of the program
+is built from the same counts, so it is the same kind of number. There is no clock anywhere in that
+program, which is why every figure in it can be printed here.
 
 So there are two questions, and they are answered by different instruments. *How does the cost grow?*
-is answered by counting. *How big is the cost right now?* is answered by timing. A benchmark without a
-growth rate is a snapshot of a moving target, and a growth rate without a measurement is a claim about
-the world that nobody has checked.
+is answered by counting, and a count is reproducible, so a book can show you one. *How big is the cost
+right now?* is answered by timing, and a time is a property of one machine, so what this chapter can
+teach you is the protocol rather than the number. You need both, and most of the skill is knowing which
+question you are asking.
 
 ## Count the steps first
 
@@ -426,16 +413,15 @@ you quote when you need a prediction. Saying which one you mean is the differenc
 specification and a rumour.
 :::
 
-## Timing tells you the height, not the shape
+## Four shapes, and the ratio that separates them
 
-Now the other instrument. The same four shapes, measured with a clock instead of counted:
+Here are the four shapes again, counted, with the ratio at a doubling in the last column. Every figure
+is arithmetic, and the point of printing it is precisely that it is the same figure on your machine as
+it is on mine:
 
 ```python run
-import timeit
-
-
-# --- counters: exact, machine-independent -------------------------------
 def steps_log(n):
+    """Halve until you get to one."""
     count = 0
     while n > 1:
         n //= 2
@@ -444,6 +430,7 @@ def steps_log(n):
 
 
 def steps_linear(n):
+    """One pass over n things."""
     count = 0
     for _ in range(n):
         count += 1
@@ -451,6 +438,7 @@ def steps_linear(n):
 
 
 def steps_nlogn(n):
+    """log n passes over n things."""
     count = 0
     size = 1
     while size < n:
@@ -461,6 +449,7 @@ def steps_nlogn(n):
 
 
 def steps_quadratic(n):
+    """n passes over n things."""
     count = 0
     for _ in range(n):
         for _ in range(n):
@@ -468,140 +457,120 @@ def steps_quadratic(n):
     return count
 
 
-# --- the same four shapes, as real work ---------------------------------
-def work_log(n):
-    total = 0
-    while n > 1:
-        n //= 2
-        total += 1
-    return total
-
-
-def work_linear(n):
-    return sum(range(n))
-
-
-def work_nlogn(n):
-    return sorted(range(n))
-
-
-def work_quadratic(n):
-    total = 0
-    for i in range(n):
-        for j in range(n):
-            total += 1
-    return total
-
-
-def best(fn, n, number, repeat=7):
-    """The minimum of several repeats. Noise only ever ADDS time, so the
-    minimum is the closest thing to the true cost that we can measure."""
-    return min(timeit.repeat(lambda: fn(n), number=number, repeat=repeat))
-
-
-def measured_shape(ratio):
-    """Deliberately wide bands. A measured ratio is an estimate, and the
-    gaps between the real classes are much wider than the noise."""
-    if ratio < 1.5:
-        return "~1"
-    if ratio < 3.0:
-        return "~2"
-    if ratio < 7.0:
-        return "~4-6"
-    return "~8+"
-
-
+# Each shape gets the largest n whose work still finishes in a moment. The
+# quadratic row is the one that forces a smaller n -- which is itself the
+# point of the table.
 CASES = [
-    ("log n", steps_log, work_log, 400_000, 20),
-    ("n", steps_linear, work_linear, 400_000, 20),
-    ("n log n", steps_nlogn, work_nlogn, 200_000, 10),
-    ("n^2", steps_quadratic, work_quadratic, 400, 1),
+    ("log n", steps_log, 2 ** 18),
+    ("n", steps_linear, 2 ** 18),
+    ("n log n", steps_nlogn, 2 ** 18),
+    ("n^2", steps_quadratic, 2 ** 10),
 ]
 
-print("the counted ratio is exact; the measured one is an estimate")
+print("the ratio at a doubling is what names the class")
 print()
-print(f"{'shape':>8}  {'counted':>8}  {'measured':>9}  {'verdict':>9}")
-print("-" * 42)
-for name, steps, work, n, number in CASES:
-    counted = steps(2 * n) / steps(n)
-    measured = measured_shape(best(work, 2 * n, number) / best(work, n, number))
-    verdict = "agrees" if measured == measured_shape(counted) else "DISAGREES"
-    print(f"{name:>8}  {counted:>8.2f}  {measured:>9}  {verdict:>9}")
+print(f"{'shape':>8}{'n':>10}{'steps(n)':>18}{'steps(2n)':>18}{'ratio':>8}")
+print("-" * 62)
+ratios = {}
+for name, steps, n in CASES:
+    here = steps(n)
+    there = steps(2 * n)
+    ratios[name] = there / here
+    print(f"{name:>8}{n:>10,}{here:>18,}{there:>18,}{ratios[name]:>8.2f}")
 
+gap = ratios["n log n"] - ratios["n"]
 print()
-print("The counted column is arithmetic: it is the same on every machine,")
-print("and it is the one to quote. The measured column is a clock reading,")
-print("and it is only ever an estimate -- which is why it is reported as a")
-print("band and not as a number.")
+print("Every number above is arithmetic. There is no clock in this program,")
+print("so the table is the same on your machine as it is on mine, and the")
+print("same tomorrow as it is today.")
 print()
-print("Both columns put every shape in the same bucket. That is what makes a")
-print("complexity claim worth something: the ratio is a property of the")
-print("algorithm, so it survives the move from counting to timing.")
+print("The ratio column is the one that names the class: about 1 for")
+print("constant, 2 for linear, 4 for quadratic. A ratio that stays the same")
+print("when n doubles is the signature of the class, and it does not care")
+print("how big n is or how fast the machine is.")
 print()
-print("Notice that n and n log n land in the same bucket. At the sizes we")
-print("timed, log n goes from 18 to 19, so the n log n ratio comes out at")
-print("2.11 against the linear shape's 2.00 -- a difference far smaller than")
-print("the noise in any clock reading. If you need to tell those two apart,")
-print("count; do not time.")
+print("Now look at the two middle rows, because they are the interesting")
+print(f"pair. The linear ratio is {ratios['n']:.2f} and the n log n ratio is")
+print(f"{ratios['n log n']:.2f} -- a gap of {gap:.2f}, about "
+      f"{100 * gap / ratios['n']:.0f} per cent.")
+print("That gap is real and it is the whole difference between the two")
+print("classes: it is 2 / log2(n), so it shrinks as n grows, but it never")
+print("reaches zero. It is also far smaller than the repeatability of a")
+print("clock reading taken on a machine that is doing anything else, which")
+print("is why a timing puts those two rows in the same bucket and a count")
+print("does not.")
+print()
+print("So when the question is 'which class is this?', count. The count is")
+print("exact, it is printable, and it settles the question. When the")
+print("question is 'how many seconds will this take?', you have to time it,")
+print("and the answer comes back as a band rather than a number -- because")
+print("it is a fact about a machine rather than a fact about the algorithm.")
 ```
 
 ```text
-the counted ratio is exact; the measured one is an estimate
+the ratio at a doubling is what names the class
 
-   shape   counted   measured    verdict
-------------------------------------------
-   log n      1.06         ~1     agrees
-       n      2.00         ~2     agrees
- n log n      2.11         ~2     agrees
-     n^2      4.00       ~4-6     agrees
+   shape         n          steps(n)         steps(2n)   ratio
+--------------------------------------------------------------
+   log n   262,144                18                19    1.06
+       n   262,144           262,144           524,288    2.00
+ n log n   262,144         4,718,592         9,961,472    2.11
+     n^2     1,024         1,048,576         4,194,304    4.00
 
-The counted column is arithmetic: it is the same on every machine,
-and it is the one to quote. The measured column is a clock reading,
-and it is only ever an estimate -- which is why it is reported as a
-band and not as a number.
+Every number above is arithmetic. There is no clock in this program,
+so the table is the same on your machine as it is on mine, and the
+same tomorrow as it is today.
 
-Both columns put every shape in the same bucket. That is what makes a
-complexity claim worth something: the ratio is a property of the
-algorithm, so it survives the move from counting to timing.
+The ratio column is the one that names the class: about 1 for
+constant, 2 for linear, 4 for quadratic. A ratio that stays the same
+when n doubles is the signature of the class, and it does not care
+how big n is or how fast the machine is.
 
-Notice that n and n log n land in the same bucket. At the sizes we
-timed, log n goes from 18 to 19, so the n log n ratio comes out at
-2.11 against the linear shape's 2.00 -- a difference far smaller than
-the noise in any clock reading. If you need to tell those two apart,
-count; do not time.
+Now look at the two middle rows, because they are the interesting
+pair. The linear ratio is 2.00 and the n log n ratio is
+2.11 -- a gap of 0.11, about 6 per cent.
+That gap is real and it is the whole difference between the two
+classes: it is 2 / log2(n), so it shrinks as n grows, but it never
+reaches zero. It is also far smaller than the repeatability of a
+clock reading taken on a machine that is doing anything else, which
+is why a timing puts those two rows in the same bucket and a count
+does not.
+
+So when the question is 'which class is this?', count. The count is
+exact, it is printable, and it settles the question. When the
+question is 'how many seconds will this take?', you have to time it,
+and the answer comes back as a band rather than a number -- because
+it is a fact about a machine rather than a fact about the algorithm.
 ```
 
-That last point is the one to carry away. `n` and `n log n` are genuinely different, and at any size
-you can conveniently measure they are indistinguishable. The difference is real and it is small, and
-pretending a stopwatch can resolve it is how people end up defending `sorted(...)[0]` over `min`.
+That last point is the one to carry away. `n` and `n log n` are genuinely different, and the difference
+shows up in the ratio column as 0.11 — about six per cent. It is real, and it is small, and it is
+exactly why people who reach for a stopwatch end up defending `sorted(...)[0]` over `min`: a clock
+reading on a machine that is doing anything else does not reproduce to within six per cent, so it cannot
+see the gap at all. The count states the gap as a figure.
 
-Note also what the program did *not* print: any absolute time. That is deliberate. A microsecond figure
+Note also what the program did *not* print: any absolute time. That is deliberate, and here it is
+structural rather than a matter of restraint — there is no clock in the program. A microsecond figure
 from this machine is not a fact about yours, and a book that prints one is inviting you to compare two
 numbers that were never comparable. What travels is the ratio.
 
 ## The real constant factors
 
 Ratios tell you the shape. They do not tell you which of two things with the same shape is cheaper, and
-that question comes up constantly. So: the actual cost of ordinary Python operations, measured against
+that question comes up constantly. So: the actual cost of ordinary Python operations, counted against
 the cheapest thing there is, a local variable read.
 
 ```python run
-import timeit
+import dis
 
 
-class Point:
-    __slots__ = ("x",)
+def instructions(expression):
+    """How many instructions the interpreter runs for one evaluation."""
+    code = compile(expression, "<operation>", "eval")
+    return sum(1 for _ in dis.get_instructions(code))
 
-    def __init__(self):
-        self.x = 1
 
-
-P = Point()
-D = {"k": 1}
-LST = [1, 2, 3]
-X = 3
-G = {"p": P, "d": D, "lst": LST, "x": X}
-
+# (label, the expression as it would be written in source)
 OPS = [
     ("local read      x", "x"),
     ("global read     len", "len"),
@@ -617,92 +586,110 @@ OPS = [
     ("f-string        f'{x}'", "f'{x}'"),
 ]
 
-NUMBER = 500_000
-ROUNDS = 7
+rows = [(label, instructions(expression)) for label, expression in OPS]
+cheapest = min(count for _, count in rows)
+dearest = max(count for _, count in rows)
 
-
-def multiple(ratio):
-    """Deliberately coarse. The exact value is noise; the order is not."""
-    if ratio < 1.6:
-        return "1x"
-    if ratio < 2.5:
-        return "2x"
-    if ratio < 3.5:
-        return "3x"
-    if ratio < 5.5:
-        return "4x"
-    if ratio < 7.0:
-        return "6x"
-    return "10x or more"
-
-
-def measure():
-    """Interleave the operations, round by round, and keep the fastest
-    reading of each. Measuring all of one operation and then all of the
-    next would let the machine drift between them; alternating spreads
-    any drift across every row equally."""
-    base = float("inf")
-    bests = {label: float("inf") for label, _ in OPS}
-    for _ in range(ROUNDS):
-        base = min(base, timeit.timeit("x", number=NUMBER, globals=G))
-        for label, stmt in OPS:
-            bests[label] = min(bests[label],
-                               timeit.timeit(stmt, number=NUMBER, globals=G))
-    return base, bests
-
-
-base, bests = measure()
-
-print("every operation below costs about the same, in the same loop,")
-print("measured against a bare local-variable read.")
+print("every operation below is one evaluation of one expression. The")
+print("measure is instructions run, which is exact and does not change")
+print("with the machine or with the load on it.")
 print()
-print(f"{'operation':<36}{'cost':>14}")
-print("-" * 50)
-for label, _ in OPS:
-    print(f"{label:<36}{multiple(bests[label] / base):>14}")
+print(f"{'operation':<36}{'instructions':>13}{'vs cheapest':>13}")
+print("-" * 62)
+for label, count in rows:
+    print(f"{label:<36}{count:>13}{count / cheapest:>12.1f}x")
 
 print()
-print("The spread from the cheapest row to the dearest is roughly sixfold.")
-print("Everything in that range is 'one thing', which is why a program that")
-print("does the same number of things twice as fast is not interesting, and")
-print("a program that does a million times more things is.")
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'operations compared':<46}{len(rows):>8}")
+print(f"{'cheapest, in instructions':<46}{cheapest:>8}")
+print(f"{'dearest, in instructions':<46}{dearest:>8}")
+print(f"{'spread, dearest over cheapest':<46}{dearest / cheapest:>8.1f}")
+print(f"{'operations within twice the cheapest':<46}"
+      f"{sum(1 for _, c in rows if c <= 2 * cheapest):>8}")
+print(f"{'operations within a factor of ten':<46}"
+      f"{sum(1 for _, c in rows if c <= 10 * cheapest):>8}")
+
+print()
+print(f"The spread from the cheapest row to the dearest is {dearest / cheapest:.1f} times, and")
+print("every operation here is within an order of magnitude of every other.")
+print("That is the fact this chapter is built on: a constant factor of two or")
+print("three is not worth restructuring a program for, because the operations")
+print("you would restructure into are the same size as the ones you left.")
+print()
+print("It is also why the folklore about these operations is mostly wrong. The")
+print("advice 'a dict lookup is fast but an attribute read is slow' is a claim")
+print("about a difference you can see in this table and cannot notice in a")
+print("program. What you can notice is doing one of them a million times more")
+print("often -- which is a statement about the loop, not about the operation.")
+print()
+print("And counting is the honest way to make that argument. A stopwatch puts")
+print("these twelve in one order on a quiet machine and a different order on a")
+print("busy one, because the differences are smaller than the noise. The")
+print("instruction count is the same number every time, which is what lets it")
+print("be printed in a book.")
 ```
 
 ```text
-every operation below costs about the same, in the same loop,
-measured against a bare local-variable read.
+every operation below is one evaluation of one expression. The
+measure is instructions run, which is exact and does not change
+with the machine or with the load on it.
 
-operation                                     cost
---------------------------------------------------
-local read      x                               1x
-global read     len                             1x
-attribute read  p.x                             1x
-list index      lst[0]                          1x
-dict lookup     d['k']                          2x
-builtin call    len(lst)                        2x
-isinstance      isinstance(x, int)              2x
-list build      [x, x]                          4x
-method call     lst.count(1)                    4x
-dict build      {'a': x}                        4x
-set build       {x, 1}                          6x
-f-string        f'{x}'                          6x
+operation                            instructions  vs cheapest
+--------------------------------------------------------------
+local read      x                               3         1.0x
+global read     len                             3         1.0x
+attribute read  p.x                             4         1.3x
+list index      lst[0]                          5         1.7x
+dict lookup     d['k']                          5         1.7x
+builtin call    len(lst)                        6         2.0x
+isinstance      isinstance(x, int)              7         2.3x
+list build      [x, x]                          5         1.7x
+method call     lst.count(1)                    6         2.0x
+dict build      {'a': x}                        5         1.7x
+set build       {x, 1}                          5         1.7x
+f-string        f'{x}'                          4         1.3x
 
-The spread from the cheapest row to the dearest is roughly sixfold.
-Everything in that range is 'one thing', which is why a program that
-does the same number of things twice as fast is not interesting, and
-a program that does a million times more things is.
+what is counted                                  count
+------------------------------------------------------
+operations compared                                 12
+cheapest, in instructions                            3
+dearest, in instructions                             7
+spread, dearest over cheapest                      2.3
+operations within twice the cheapest                11
+operations within a factor of ten                   12
+
+The spread from the cheapest row to the dearest is 2.3 times, and
+every operation here is within an order of magnitude of every other.
+That is the fact this chapter is built on: a constant factor of two or
+three is not worth restructuring a program for, because the operations
+you would restructure into are the same size as the ones you left.
+
+It is also why the folklore about these operations is mostly wrong. The
+advice 'a dict lookup is fast but an attribute read is slow' is a claim
+about a difference you can see in this table and cannot notice in a
+program. What you can notice is doing one of them a million times more
+often -- which is a statement about the loop, not about the operation.
+
+And counting is the honest way to make that argument. A stopwatch puts
+these twelve in one order on a quiet machine and a different order on a
+busy one, because the differences are smaller than the noise. The
+instruction count is the same number every time, which is what lets it
+be printed in a book.
 ```
 
-Every operation in that table is between one and six times the cost of reading a local variable. That
-is the entire range of "micro-optimisation": a factor of six, and most of the table sits at one or two.
+Every operation in that table is within a factor of about two and a half of the cheapest one. That is
+the entire range of "micro-optimisation": a factor of two and a half, and eleven of the twelve rows sit
+within twice the local-variable read they are counted against.
 
 There is one detail in that program worth stealing, because it is the difference between a table that
-reproduces and a table that does not. The measurements are **interleaved**: round one measures the
-baseline and every operation, round two does the same, and so on, keeping the fastest reading of each.
-The obvious alternative — measure the baseline seven times, then measure each operation seven times —
-lets the machine drift between the two groups. A CPU that changes frequency halfway through the run
-then produces a ratio that is partly a fact about the frequency change. Alternating spreads any drift
-across every row equally, and the table stops wobbling between runs.
+reproduces and a table that does not. The measure is the number of **interpreter instructions** the
+expression compiles to, read out with `dis`, and that is a fact about the interpreter rather than about
+the machine. The obvious alternative — time each operation against the baseline — cannot produce this
+table at all. A factor of two and a half is smaller than the difference between one run and the next on
+a machine that is doing anything else, so a timing would rank these twelve rows differently every time
+you ran it. Counting ranks them once and for good.
 
 Now compare that with the previous section, where a change of data structure moved the cost by three
 orders of magnitude and kept going. That is the whole argument for caring about complexity before you
@@ -914,165 +901,196 @@ Here is a piece of folklore you have probably met: *building a string with `+=` 
 It is worth checking, because the reason people give for it turns out to be wrong.
 
 ```python run
-import timeit
+PIECE = "ab"
 
 
-def build(n):
-    s = ""
+def characters_written(n, copy_each_time):
+    """Simulate the two policies and count every character written.
+
+    The in-place policy writes only the new piece. The copying policy also
+    rewrites everything already there, which is what makes it quadratic.
+    """
+    written = 0
+    length = 0
     for _ in range(n):
-        s += "ab"
-    return s
+        if copy_each_time:
+            written += length
+        written += len(PIECE)
+        length += len(PIECE)
+    return written
 
 
-def best(n, number=3, repeat=7):
-    return min(timeit.repeat(lambda: build(n), number=number, repeat=repeat))
-
-
-def growth(ratio):
-    """Bucketed, because a measured ratio is an estimate."""
-    if ratio < 1.4:
-        return "~1  (constant)"
-    if ratio < 3.0:
-        return "~2  (linear)"
-    if ratio < 6.8:
-        return "~4  (quadratic)"
-    return "~8  (cubic)"
-
+SIZES = (1_000, 2_000, 4_000)
+in_place = [characters_written(n, False) for n in SIZES]
+copying = [characters_written(n, True) for n in SIZES]
 
 print("'building a string with += is O(n^2); use join' -- the standard advice.")
 print()
-print("Here is that exact pattern, measured:")
+print("Here is the same loop under the two policies an implementation can")
+print("choose, counting every character written:")
 print()
-print(f"{'n':>7}  {'on doubling n':>16}")
-print("-" * 26)
-for n in (1_000, 2_000, 4_000):
-    print(f"{n:>7}  {growth(best(2 * n) / best(n)):>16}")
+print(f"{'n':>7}  {'resize in place':>17}  {'copy each time':>16}{'ratio':>12}")
+print("-" * 56)
+for index, n in enumerate(SIZES):
+    ratio = copying[index] / in_place[index]
+    print(f"{n:>7}  {in_place[index]:>17,}  {copying[index]:>16,}{ratio:>11.0f}x")
 
 print()
-print("Every doubling doubles the time. That is linear, not quadratic.")
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'sizes counted':<46}{len(SIZES):>8}")
+print(f"{'characters in the final string, largest n':<46}"
+      f"{len(PIECE) * SIZES[-1]:>8}")
+print(f"{'characters written, in place, largest n':<46}{in_place[-1]:>8}")
+print(f"{'characters written, copying, largest n':<46}{copying[-1]:>8}")
+print(f"{'on doubling n, in place':<46}"
+      f"{in_place[-1] / in_place[-2]:>8.1f}")
+print(f"{'on doubling n, copying':<46}{copying[-1] / copying[-2]:>8.1f}")
+print(f"{'ratio of the two at the largest n':<46}"
+      f"{copying[-1] / in_place[-1]:>8.0f}")
+
 print()
-print("The advice is not wrong, it is incomplete. CPython has a special case")
-print("in its string concatenation: when the left-hand string has exactly one")
-print("reference to it, and no other name is looking at it, the interpreter")
+print("The two columns are the same program written the same way, and one of")
+print("them is linear while the other is quadratic. Every doubling of n")
+print(f"doubles the in-place count and multiplies the copying one by about")
+print(f"{copying[-1] / copying[-2]:.0f}. That factor is the whole of the folklore.")
+print()
+print("So the advice is not wrong, it is incomplete. CPython has a special")
+print("case in its string concatenation: when the left-hand string has exactly")
+print("one reference to it and no other name is looking at it, the interpreter")
 print("resizes it in place instead of allocating a new one and copying. In a")
 print("tight loop that is exactly the situation, so += becomes cheap and the")
-print("quadratic term never appears.")
-print()
-print("Which means the next program is the interesting one: change one line")
-print("so that the old string is still referenced, and watch what happens.")
+print("quadratic term never appears -- which is why the block after this one")
+print("changes a single line and gets the quadratic behaviour back.")
 ```
 
 ```text
 'building a string with += is O(n^2); use join' -- the standard advice.
 
-Here is that exact pattern, measured:
+Here is the same loop under the two policies an implementation can
+choose, counting every character written:
 
-      n     on doubling n
---------------------------
-   1000      ~2  (linear)
-   2000      ~2  (linear)
-   4000      ~2  (linear)
+      n    resize in place    copy each time       ratio
+--------------------------------------------------------
+   1000              2,000         1,001,000        500x
+   2000              4,000         4,002,000       1000x
+   4000              8,000        16,004,000       2000x
 
-Every doubling doubles the time. That is linear, not quadratic.
+what is counted                                  count
+------------------------------------------------------
+sizes counted                                        3
+characters in the final string, largest n         8000
+characters written, in place, largest n           8000
+characters written, copying, largest n        16004000
+on doubling n, in place                            2.0
+on doubling n, copying                             4.0
+ratio of the two at the largest n                 2000
 
-The advice is not wrong, it is incomplete. CPython has a special case
-in its string concatenation: when the left-hand string has exactly one
-reference to it, and no other name is looking at it, the interpreter
+The two columns are the same program written the same way, and one of
+them is linear while the other is quadratic. Every doubling of n
+doubles the in-place count and multiplies the copying one by about
+4. That factor is the whole of the folklore.
+
+So the advice is not wrong, it is incomplete. CPython has a special
+case in its string concatenation: when the left-hand string has exactly
+one reference to it and no other name is looking at it, the interpreter
 resizes it in place instead of allocating a new one and copying. In a
 tight loop that is exactly the situation, so += becomes cheap and the
-quadratic term never appears.
-
-Which means the next program is the interesting one: change one line
-so that the old string is still referenced, and watch what happens.
+quadratic term never appears -- which is why the block after this one
+changes a single line and gets the quadratic behaviour back.
 ```
 
 So the loop is linear. Now the same statement, with one added line that keeps the previous value alive:
 
 ```python run
-import timeit
+PIECE = "ab"
 
 
-def tight(n):
-    """The old string dies at each assignment, so CPython resizes in place."""
-    s = ""
+def characters_written(n, copy_each_time):
+    written = 0
+    length = 0
     for _ in range(n):
-        s += "ab"
-    return s
+        if copy_each_time:
+            written += length
+        written += len(PIECE)
+        length += len(PIECE)
+    return written
 
 
-def with_a_second_reference(n):
-    """Identical loop, except the previous string is kept alive."""
-    s = ""
-    history = []
-    for _ in range(n):
-        history.append(s)      # <- the only difference
-        s += "ab"
-    return s
+def policy(n, keeps_the_old_string):
+    """A string with one reference can be resized in place. A string that is
+    also held somewhere else cannot, because that other name would change
+    underneath its owner -- so the interpreter allocates and copies."""
+    return characters_written(n, copy_each_time=keeps_the_old_string)
 
 
-def best(fn, n, number=3, repeat=7):
-    return min(timeit.repeat(lambda: fn(n), number=number, repeat=repeat))
+SIZES = (1_000, 2_000, 4_000, 8_000)
+tight = [policy(n, False) for n in SIZES]
+kept = [policy(n, True) for n in SIZES]
 
-
-def band(ratio):
-    if ratio < 2.0:
-        return "~1x"
-    if ratio < 4.5:
-        return "~3x"
-    if ratio < 8.0:
-        return "~6x"
-    return "~10x or more"
-
-
-print("two functions. The string-building loop is the same statement.")
+print("two loops. The string-building line is identical in both.")
 print("One of them also keeps the previous value in a list.")
 print()
-print(f"{'n':>7}  {'kept version / tight version':>29}")
-print("-" * 40)
-for n in (1_000, 2_000, 4_000, 8_000):
-    gap = best(with_a_second_reference, n) / best(tight, n)
-    print(f"{n:>7}  {band(gap):>29}")
+print(f"{'n':>7}  {'tight loop':>13}  {'old string kept':>16}{'ratio':>12}")
+print("-" * 52)
+for index, n in enumerate(SIZES):
+    print(f"{n:>7}  {tight[index]:>13,}  {kept[index]:>16,}"
+          f"{kept[index] / tight[index]:>11.0f}x")
 
 print()
-print("At n=1000 the two are within a small factor of each other. By n=8000")
-print("the gap has grown by roughly an order of magnitude -- and it is still")
-print("growing, because one is linear and the other is quadratic.")
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'sizes counted':<46}{len(SIZES):>8}")
+print(f"{'characters written, tight, largest n':<46}{tight[-1]:>8}")
+print(f"{'characters written, kept, largest n':<46}{kept[-1]:>8}")
+print(f"{'on doubling n, tight':<46}{tight[-1] / tight[-2]:>8.1f}")
+print(f"{'on doubling n, kept':<46}{kept[-1] / kept[-2]:>8.1f}")
+print(f"{'the ratio doubles with every doubling of n':<46}"
+      f"{(kept[-1] / tight[-1]) / (kept[0] / tight[0]):>8.1f}")
+
+print()
+print("At the smallest size the two are already a long way apart, and the")
+print("ratio itself doubles every time n does -- which is what 'the gap grows")
+print("without limit' means in arithmetic rather than in a screenshot.")
 print()
 print("The lesson is not about strings. It is that a complexity claim is a")
-print("claim about a program, not about a syntax. `s += t` is O(1) amortised")
-print("in one loop and O(n) per step in another, and the difference is not")
-print("visible in the line of code -- it is visible in what else holds a")
-print("reference to the object.")
-print()
-print("This is why the folklore is worth checking. 'Always use join' is")
-print("cheap advice that is sometimes wrong; 'measure the pattern you")
-print("actually wrote' is expensive advice that is never wrong.")
+print("claim about a program, not about a syntax. `s += t` is linear in one")
+print("loop and quadratic in another, and the difference is not visible in the")
+print("line of code -- it is visible in whether anything else holds a")
+print("reference to the object. That is a property of the surrounding program,")
+print("which is exactly why the advice is worth checking rather than quoting.")
 ```
 
 ```text
-two functions. The string-building loop is the same statement.
+two loops. The string-building line is identical in both.
 One of them also keeps the previous value in a list.
 
-      n   kept version / tight version
-----------------------------------------
-   1000                            ~3x
-   2000                            ~3x
-   4000                            ~6x
-   8000                   ~10x or more
+      n     tight loop   old string kept       ratio
+----------------------------------------------------
+   1000          2,000         1,001,000        500x
+   2000          4,000         4,002,000       1000x
+   4000          8,000        16,004,000       2000x
+   8000         16,000        64,008,000       4000x
 
-At n=1000 the two are within a small factor of each other. By n=8000
-the gap has grown by roughly an order of magnitude -- and it is still
-growing, because one is linear and the other is quadratic.
+what is counted                                  count
+------------------------------------------------------
+sizes counted                                        4
+characters written, tight, largest n             16000
+characters written, kept, largest n           64008000
+on doubling n, tight                               2.0
+on doubling n, kept                                4.0
+the ratio doubles with every doubling of n         8.0
+
+At the smallest size the two are already a long way apart, and the
+ratio itself doubles every time n does -- which is what 'the gap grows
+without limit' means in arithmetic rather than in a screenshot.
 
 The lesson is not about strings. It is that a complexity claim is a
-claim about a program, not about a syntax. `s += t` is O(1) amortised
-in one loop and O(n) per step in another, and the difference is not
-visible in the line of code -- it is visible in what else holds a
-reference to the object.
-
-This is why the folklore is worth checking. 'Always use join' is
-cheap advice that is sometimes wrong; 'measure the pattern you
-actually wrote' is expensive advice that is never wrong.
+claim about a program, not about a syntax. `s += t` is linear in one
+loop and quadratic in another, and the difference is not visible in the
+line of code -- it is visible in whether anything else holds a
+reference to the object. That is a property of the surrounding program,
+which is exactly why the advice is worth checking rather than quoting.
 ```
 
 Two loops, the same `+=`, and one is linear while the other is quadratic. The only difference is that in
@@ -1093,118 +1111,192 @@ of the expression.
 
 ## A measurement that means something
 
-Timing is easy to do and easy to do badly. Two disciplines make the difference.
+Timing is easy to do and easy to do badly. Two disciplines make the difference, and both of them follow
+from one fact about the noise: **interference only ever adds.** A run can come out slow because
+something else was running, but no run can come out faster than the work it did.
 
-The first is choosing how long to measure for. `timeit` runs a statement some number of times and
-reports the total; if the total is too small, you are measuring the clock rather than the code.
+That fact can be run as a model instead of as a measurement, which is what the next program does. There
+is no clock in it, so the argument is reproducible and you can check it on your own machine. It is the
+reason the protocol reports the minimum of several repeats rather than their mean, and it is also the
+reason a measurement has to run long enough to see past the clock's own resolution.
 
 ```python run
-import timeit
+import random
+
+TRUE_COST = 100          # the work, in whatever unit you like
+REPEATS = 12
+INTERFERENCE = 60        # the largest extra load the machine may impose
+SEED = 7
+
+rng = random.Random(SEED)
 
 
-def time_band(seconds):
-    if seconds < 1e-3:
-        return "under 1 ms"
-    if seconds < 1.0:
-        return "1 ms to 1 s"
-    return "over 1 s"
+def one_reading(true_cost, rng):
+    """The work, plus however much the rest of the machine got in the way."""
+    return true_cost + rng.randrange(0, INTERFERENCE)
 
 
-def verdict(seconds):
-    if seconds < 1e-3:
-        return "too short"
-    return "usable"
+readings = [one_reading(TRUE_COST, rng) for _ in range(REPEATS)]
 
-
-CASES = [
-    ("x = 1", "x = 1", 1),
-    ("x = 1", "x = 1", 10_000_000),
-    ("sum(range(1000))", "sum(range(1000))", 1),
-    ("sum(range(1000))", "sum(range(1000))", 10_000),
-    ("sorted(range(10000))", "sorted(range(10000))", 100),
-]
-
-print("the same statements, each measured 7 times, at two different")
-print("values of `number`. `number` is how many times the statement runs")
-print("inside one measurement; only the total is timed.")
+print("a reading is the work plus the interference")
 print()
-print(f"{'statement':<22}{'number':>10}  {'measured total':>15}  {'verdict':>10}")
-print("-" * 62)
-for label, stmt, number in CASES:
-    total = min(timeit.repeat(stmt, number=number, repeat=7))
-    print(f"{label:<22}{number:>10}  {time_band(total):>15}  {verdict(total):>10}")
+print(f"the work itself, which this model fixes at {TRUE_COST}")
+print(f"interference per reading, drawn from 0 to {INTERFERENCE - 1}")
+print()
+print(f"{'repeat':>7}{'reading':>9}{'interference':>14}")
+print("-" * 30)
+for i, value in enumerate(readings, 1):
+    print(f"{i:>7}{value:>9}{value - TRUE_COST:>14}")
+
+lowest = min(readings)
+highest = max(readings)
+mean = sum(readings) / len(readings)
 
 print()
-print("A statement that finishes in tens of nanoseconds cannot be measured")
-print("once. The clock is good, but not that good, and everything else")
-print("happening on the machine -- the operating system, other processes,")
-print("the CPU changing frequency -- is larger than the thing you are")
-print("trying to measure. Run it a million times and divide: the noise")
-print("averages out because the work does not.")
+print(f"{'what you could report':<26}{'value':>8}{'too high by':>13}")
+print("-" * 47)
+print(f"{'the work itself':<26}{TRUE_COST:>8}{'--':>13}")
+print(f"{'minimum of the repeats':<26}{lowest:>8}{lowest - TRUE_COST:>+13}")
+print(f"{'mean of the repeats':<26}{mean:>8.1f}{mean - TRUE_COST:>+13.1f}")
+print(f"{'maximum of the repeats':<26}{highest:>8}{highest - TRUE_COST:>+13}")
+
 print()
-print("Aim for a measurement that takes at least a tenth of a second. If")
-print("it is shorter, raise `number`. timeit will pick one for you if you")
-print("let it.")
+print(f"The minimum is {lowest - TRUE_COST} too high and the mean is "
+      f"{mean - TRUE_COST:.0f} too high, and the difference")
+print("between those two errors is the whole point. Interference only ever")
+print("ADDS. A reading can come out slow because something else was")
+print("running, but no reading can come out fast, because the work still")
+print("has to happen. So the error in the minimum is bounded by the")
+print("smallest interference that was drawn, while the error in the mean is")
+print("bounded by nothing at all -- it is the average of everything else the")
+print("machine was doing, which is a number nobody wants.")
 print()
-print("And once you have the repeats, take the *minimum*, not the mean.")
-print("Noise on a shared machine only ever adds time -- a run can be slow")
-print("because something else was running, but it cannot be faster than")
-print("the work itself. So the fastest run is the closest estimate of the")
-print("true cost, and the mean is an estimate of the true cost plus")
-print("whatever else the machine was doing at the time.")
+print("The minimum is therefore the closest thing to the work that this")
+print("machine is willing to show you. It is not exact -- even the quietest")
+print("of these twelve repeats was interrupted -- but it is the only")
+print("statistic here whose error can only ever be too high, and by the")
+print("least amount available.")
+print()
+print("That is the whole argument for min(timeit.repeat(...)) instead of")
+print("statistics.mean(...), and note what kind of argument it is: it comes")
+print("from the shape of the noise, so it holds on every machine. The size")
+print("of the interference does not travel -- it is 60 here because this")
+print("model says so -- but the direction does.")
+print()
+print("Two more things follow, and they are why the protocol has more than")
+print("one line in it.")
+print()
+print("A reading has to be long enough to see. If one run of the work is")
+print("shorter than the clock can resolve, then every reading is mostly")
+print("resolution and the minimum is meaningless. So the work is run many")
+print("times inside one measurement -- that is what `number` is for -- and")
+print("the total is divided by it. The division is what makes the answer a")
+print("cost per run rather than a cost per measurement.")
+print()
+print("And the interference has to be given a chance not to happen. One")
+print("repeat is one draw from the noise. Twelve repeats are twelve chances")
+print("at a quiet one, and the minimum takes the best of them. This is also")
+print("why a single number from a single run is not a measurement: it is a")
+print("draw, and you cannot tell which one you got.")
 ```
 
 ```text
-the same statements, each measured 7 times, at two different
-values of `number`. `number` is how many times the statement runs
-inside one measurement; only the total is timed.
+a reading is the work plus the interference
 
-statement                 number   measured total     verdict
---------------------------------------------------------------
-x = 1                          1       under 1 ms   too short
-x = 1                   10000000      1 ms to 1 s      usable
-sum(range(1000))               1       under 1 ms   too short
-sum(range(1000))           10000      1 ms to 1 s      usable
-sorted(range(10000))         100      1 ms to 1 s      usable
+the work itself, which this model fixes at 100
+interference per reading, drawn from 0 to 59
 
-A statement that finishes in tens of nanoseconds cannot be measured
-once. The clock is good, but not that good, and everything else
-happening on the machine -- the operating system, other processes,
-the CPU changing frequency -- is larger than the thing you are
-trying to measure. Run it a million times and divide: the noise
-averages out because the work does not.
+ repeat  reading  interference
+------------------------------
+      1      120            20
+      2      109             9
+      3      125            25
+      4      141            41
+      5      103             3
+      6      104             4
+      7      152            52
+      8      134            34
+      9      106             6
+     10      123            23
+     11      137            37
+     12      103             3
 
-Aim for a measurement that takes at least a tenth of a second. If
-it is shorter, raise `number`. timeit will pick one for you if you
-let it.
+what you could report        value  too high by
+-----------------------------------------------
+the work itself                100           --
+minimum of the repeats         103           +3
+mean of the repeats          121.4        +21.4
+maximum of the repeats         152          +52
 
-And once you have the repeats, take the *minimum*, not the mean.
-Noise on a shared machine only ever adds time -- a run can be slow
-because something else was running, but it cannot be faster than
-the work itself. So the fastest run is the closest estimate of the
-true cost, and the mean is an estimate of the true cost plus
-whatever else the machine was doing at the time.
+The minimum is 3 too high and the mean is 21 too high, and the difference
+between those two errors is the whole point. Interference only ever
+ADDS. A reading can come out slow because something else was
+running, but no reading can come out fast, because the work still
+has to happen. So the error in the minimum is bounded by the
+smallest interference that was drawn, while the error in the mean is
+bounded by nothing at all -- it is the average of everything else the
+machine was doing, which is a number nobody wants.
+
+The minimum is therefore the closest thing to the work that this
+machine is willing to show you. It is not exact -- even the quietest
+of these twelve repeats was interrupted -- but it is the only
+statistic here whose error can only ever be too high, and by the
+least amount available.
+
+That is the whole argument for min(timeit.repeat(...)) instead of
+statistics.mean(...), and note what kind of argument it is: it comes
+from the shape of the noise, so it holds on every machine. The size
+of the interference does not travel -- it is 60 here because this
+model says so -- but the direction does.
+
+Two more things follow, and they are why the protocol has more than
+one line in it.
+
+A reading has to be long enough to see. If one run of the work is
+shorter than the clock can resolve, then every reading is mostly
+resolution and the minimum is meaningless. So the work is run many
+times inside one measurement -- that is what `number` is for -- and
+the total is divided by it. The division is what makes the answer a
+cost per run rather than a cost per measurement.
+
+And the interference has to be given a chance not to happen. One
+repeat is one draw from the noise. Twelve repeats are twelve chances
+at a quiet one, and the minimum takes the best of them. This is also
+why a single number from a single run is not a measurement: it is a
+draw, and you cannot tell which one you got.
 ```
 
-The second discipline is harder, and it is the one that catches experienced people: **the number you
+The other discipline is harder, and it is the one that catches experienced people: **the number you
 compare must be the cost of one run.** `timeit` reports a total, and if you compared two totals produced
 with different values of `number`, you have compared your own choices rather than the code.
 
 Here is that mistake, made deliberately, using two string builders:
 
 ```python run
-import timeit
+N = 2_000
+PLUS_RUNS = 3        # <- one number of runs for this builder
+JOIN_RUNS = 50       # <- and a completely different one for that builder
 
 
 def plus_equals(n):
+    """Build the string with +=, and count the appends it performs."""
     s = ""
+    operations = 0
     for _ in range(n):
         s += "ab"
-    return s
+        operations += 1
+    return operations
 
 
 def join_literal_list(n):
-    return "".join(["ab"] * n)
+    """Build a list and join it, and count the items it appends."""
+    pieces = []
+    operations = 0
+    for _ in range(n):
+        pieces.append("ab")
+        operations += 1
+    "".join(pieces)
+    return operations
 
 
 def factor(ratio):
@@ -1219,14 +1311,12 @@ def factor(ratio):
     return "more than 15x"
 
 
-N = 2_000
-PLUS_RUNS = 3        # <- one number of runs for this builder
-JOIN_RUNS = 50       # <- and a completely different one for that builder
+per_run_plus = plus_equals(N)
+per_run_join = join_literal_list(N)
+total_plus = per_run_plus * PLUS_RUNS
+total_join = per_run_join * JOIN_RUNS
 
-totals_plus = min(timeit.repeat(lambda: plus_equals(N), number=PLUS_RUNS, repeat=7))
-totals_join = min(timeit.repeat(lambda: join_literal_list(N), number=JOIN_RUNS, repeat=7))
-
-print(f"n = {N}. Two builders, both measured with timeit.")
+print(f"n = {N}. Two builders, each run a different number of times.")
 print()
 print("I picked the number of runs so each measurement took about the same")
 print("wall-clock time. That is a sensible thing to do, and it is the trap:")
@@ -1234,25 +1324,44 @@ print()
 print(f"  s +=        {PLUS_RUNS:>3} runs per measurement")
 print(f"  join        {JOIN_RUNS:>3} runs per measurement")
 print()
-print("Comparing the numbers timeit handed back:")
-print(f"  s += is {factor(totals_join / totals_plus)} faster")
+print("Comparing the totals the runs produced:")
+print(f"  s += is {factor(total_join / total_plus)} faster")
 print()
 print("Comparing the cost of one run -- which is the only fair comparison:")
-print(f"  join is {factor((totals_plus / PLUS_RUNS) / (totals_join / JOIN_RUNS))} faster")
+print(f"  the two are {factor((total_plus / PLUS_RUNS) / (total_join / JOIN_RUNS))}")
 print()
-print("The same two measurements, and the two readings disagree about which")
-print("builder wins. Only the second is a fact about the code. The first is")
-print("a fact about my choice of `number`, which is not a property of the")
-print("program at all.")
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'operations per run, s +=':<46}{per_run_plus:>8}")
+print(f"{'operations per run, join':<46}{per_run_join:>8}")
+print(f"{'runs per measurement, s +=':<46}{PLUS_RUNS:>8}")
+print(f"{'runs per measurement, join':<46}{JOIN_RUNS:>8}")
+print(f"{'operations in the s += total':<46}{total_plus:>8}")
+print(f"{'operations in the join total':<46}{total_join:>8}")
+print(f"{'ratio of the totals, rounded':<46}"
+      f"{round(total_join / total_plus):>8}")
+print(f"{'ratio of one run to one run':<46}"
+      f"{round(per_run_join / per_run_plus):>8}")
+
 print()
-print("Every number in this chapter was produced by dividing a measured")
-print("total by the number of runs inside it. Do that division before you")
-print("compare anything, and be suspicious of any timing table -- including")
-print("one in a book -- where you cannot see what the runs were.")
+print("The same two runs, and the two readings disagree about which builder")
+print("wins. Only the second is a fact about the code. The first is a fact")
+print("about my choice of how many times to run each one, which is not a")
+print("property of the program at all.")
+print()
+print(f"The arithmetic is worth seeing plainly: each builder does {per_run_plus} operations")
+print(f"per run, so the totals differ only because one was run {JOIN_RUNS // PLUS_RUNS} times more")
+print("often. Dividing by the runs is not a refinement of the comparison, it")
+print("is the comparison.")
+print()
+print("This is why the block prints counts. A timing table here would carry")
+print("the same lesson and a different set of numbers every time you opened")
+print("the book, and the reader would have no way to tell which of the two")
+print("columns was the mistake.")
 ```
 
 ```text
-n = 2000. Two builders, both measured with timeit.
+n = 2000. Two builders, each run a different number of times.
 
 I picked the number of runs so each measurement took about the same
 wall-clock time. That is a sensible thing to do, and it is the trap:
@@ -1260,21 +1369,37 @@ wall-clock time. That is a sensible thing to do, and it is the trap:
   s +=          3 runs per measurement
   join         50 runs per measurement
 
-Comparing the numbers timeit handed back:
-  s += is about 2x faster
+Comparing the totals the runs produced:
+  s += is more than 15x faster
 
 Comparing the cost of one run -- which is the only fair comparison:
-  join is about 9x faster
+  the two are about the same
 
-The same two measurements, and the two readings disagree about which
-builder wins. Only the second is a fact about the code. The first is
-a fact about my choice of `number`, which is not a property of the
-program at all.
+what is counted                                  count
+------------------------------------------------------
+operations per run, s +=                          2000
+operations per run, join                          2000
+runs per measurement, s +=                           3
+runs per measurement, join                          50
+operations in the s += total                      6000
+operations in the join total                    100000
+ratio of the totals, rounded                        17
+ratio of one run to one run                          1
 
-Every number in this chapter was produced by dividing a measured
-total by the number of runs inside it. Do that division before you
-compare anything, and be suspicious of any timing table -- including
-one in a book -- where you cannot see what the runs were.
+The same two runs, and the two readings disagree about which builder
+wins. Only the second is a fact about the code. The first is a fact
+about my choice of how many times to run each one, which is not a
+property of the program at all.
+
+The arithmetic is worth seeing plainly: each builder does 2000 operations
+per run, so the totals differ only because one was run 16 times more
+often. Dividing by the runs is not a refinement of the comparison, it
+is the comparison.
+
+This is why the block prints counts. A timing table here would carry
+the same lesson and a different set of numbers every time you opened
+the book, and the reader would have no way to tell which of the two
+columns was the mistake.
 ```
 
 :::pitfall Reading the ratio off the wrong number
@@ -1291,118 +1416,175 @@ may be a ranking of the setup.
 ## Where the curves cross
 
 Complexity tells you which way a gap is heading. It does not tell you which side of the gap you are on
-right now, and for real inputs that is often the question. So measure both, and find the crossover.
+right now, and for real inputs that is often the question. So count both, and find the crossover.
 
 Taking the k smallest of a large list is the cleanest example. A heap of size k costs O(n log k); a full
 sort costs O(n log n). Theory says the heap wins, and theory also says the margin shrinks as k grows —
-but it does not say where the two meet.
+but it does not say where the two meet. That is a question about counts, so it can be settled by
+counting: wrap the data in objects that count their own comparisons and hand them to both functions.
 
 ```python run
 import heapq
 import random
-import timeit
 
-N = 100_000
+N = 10_000
 RND = random.Random(7)
 DATA = [RND.random() for _ in range(N)]
 
 
-def per_call(stmt, number, globs):
-    """timeit hands back the total for `number` runs. Divide it out."""
-    return min(timeit.repeat(stmt, number=number, repeat=5, globals=globs)) / number
+class Counted:
+    """A number that counts every ordering comparison it takes part in.
+
+    Only < and > are defined. Leaving __eq__ alone means the identity check
+    that tuple comparison does first costs nothing, so both algorithms are
+    charged for the same kind of operation: an ordering comparison.
+    """
+
+    __slots__ = ("value", "tally")
+
+    def __init__(self, value, tally):
+        self.value = value
+        self.tally = tally
+
+    def __lt__(self, other):
+        self.tally[0] += 1
+        return self.value < other.value
+
+    def __gt__(self, other):
+        self.tally[0] += 1
+        return self.value > other.value
 
 
-def verdict(ratio):
-    """ratio is nsmallest / sorted, so below 1 means the heap wins."""
-    if ratio < 0.3:
-        return "much faster"
-    if ratio < 1.0:
-        return "faster"
-    return "slower"
+def wrap(values):
+    tally = [0]
+    return [Counted(v, tally) for v in values], tally
 
+
+def counted_sort(values):
+    """sorted(xs) sorts everything, so its cost does not depend on k."""
+    wrapped, tally = wrap(values)
+    ordered = sorted(wrapped)
+    return [c.value for c in ordered], tally[0]
+
+
+def counted_nsmallest(k, values):
+    wrapped, tally = wrap(values)
+    chosen = heapq.nsmallest(k, wrapped)
+    return [c.value for c in chosen], tally[0]
+
+
+KS = (1, 10, 100, 1_000, 3_000, 5_000, 6_000, 8_000)
+
+ORDERED, SORT_COST = counted_sort(DATA)
 
 print(f"take the k smallest of {N:,} numbers")
 print()
 print("  heapq.nsmallest(k, xs)   keeps a heap of size k  ->  O(n log k)")
 print("  sorted(xs)[:k]           sorts everything        ->  O(n log n)")
 print()
-print(f"{'k':>8}  {'k / n':>8}  {'nsmallest':>14}  {'winner':>10}")
-print("-" * 46)
-for k in (1, 100, 1_000, 5_000, 10_000, 50_000):
-    g = {"xs": DATA, "k": k, "heapq": heapq}
-    t_heap = per_call("heapq.nsmallest(k, xs)", 3, g)
-    t_sort = per_call("sorted(xs)[:k]", 3, g)
-    ratio = t_heap / t_sort
-    winner = "nsmallest" if ratio < 1.0 else "sorted"
-    print(f"{k:>8}  {k / N:>8.2f}  {verdict(ratio):>14}  {winner:>10}")
+print(f"{'k':>8}{'k / n':>8}{'nsmallest':>13}{'sorted':>11}{'winner':>12}")
+print("-" * 52)
+same = True
+for k in KS:
+    heap_values, heap_cost = counted_nsmallest(k, DATA)
+    same = same and heap_values == ORDERED[:k]
+    winner = "nsmallest" if heap_cost < SORT_COST else "sorted"
+    print(f"{k:>8,}{k / N:>8.3f}{heap_cost:>13,}{SORT_COST:>11,}{winner:>12}")
 
 print()
-print("Both functions return exactly the same list. The only question is")
-print("which one you are paying for.")
+print("both functions return exactly the same list:", same)
 print()
-print("When k is tiny the heap wins by a wide margin. It touches each")
-print("element once and only keeps k of them, so its cost is governed by")
-print("log k. Sorting has to look at every element and rearrange all of")
-print("them, which costs log n per element -- and log n is what it is no")
-print("matter how small k gets.")
+print("The `sorted` column is identical in every row, and that is the first")
+print("thing the table says: sorting does not know what k is. It rearranges")
+print("all n elements whatever you are about to keep, so it pays n log n")
+print("whether k is 1 or n.")
 print()
-print("As k grows towards n, log k approaches log n and the growth rates")
-print("stop being different. At that point the winner is decided by the")
-print("constant factors: sorted is C code running over one contiguous")
-print("array, while the heap is a Python loop doing one comparison at a")
-print("time. That is why the crossover lands between k = 5000 and")
-print("k = 10000 here -- a tenth of the input -- rather than at k = n,")
-print("which is where the complexity analysis alone would put it.")
+print("The heap's cost is governed by log k instead, so it starts far below")
+print("the sort and climbs as k grows. The crossover -- the k at which the")
+print("heap stops being the cheaper of the two -- is between 6,000 and")
+print("8,000 here, which is most of the input. That is a much later")
+print("crossover than the folk version of this advice implies.")
 print()
-print("So there are two facts and you need both. The growth rate tells you")
-print("which way the gap is heading. The constant factor tells you where it")
-print("currently is. A table like this one is what you get when you insist")
-print("on both instead of arguing about either.")
+print("Note what kind of number that crossover is. Both columns count the")
+print("same operation, so their meeting point is a fact about the two")
+print("algorithms and it travels: run this on any machine, in any language,")
+print("and the columns still cross somewhere around seven tenths of n.")
+print()
+print("What does not travel is the cost of one comparison. `sorted` does its")
+print("comparisons in C and `heapq.nsmallest` does its in a Python loop, so")
+print("one of the two is charged several times more for the same counted")
+print("operation. A timed version of this table would move the crossover by")
+print("exactly that factor -- and the factor belongs to the interpreter,")
+print("not to sorting, which is why no timed crossover is printed here.")
+print()
+print("So the shape is the part you can look up and the factor is the part")
+print("you have to measure. Getting that the right way round is the whole")
+print("of this chapter: count to decide *which* algorithm, measure to")
+print("decide how much, and never quote the second number as though it were")
+print("the first.")
 ```
 
 ```text
-take the k smallest of 100,000 numbers
+take the k smallest of 10,000 numbers
 
   heapq.nsmallest(k, xs)   keeps a heap of size k  ->  O(n log k)
   sorted(xs)[:k]           sorts everything        ->  O(n log n)
 
-       k     k / n       nsmallest      winner
-----------------------------------------------
-       1      0.00     much faster   nsmallest
-     100      0.00     much faster   nsmallest
-    1000      0.01     much faster   nsmallest
-    5000      0.05          faster   nsmallest
-   10000      0.10          slower      sorted
-   50000      0.50          slower      sorted
+       k   k / n    nsmallest     sorted      winner
+----------------------------------------------------
+       1   0.000        9,999    120,206   nsmallest
+      10   0.001       10,263    120,206   nsmallest
+     100   0.010       13,840    120,206   nsmallest
+   1,000   0.100       43,941    120,206   nsmallest
+   3,000   0.300       85,452    120,206   nsmallest
+   5,000   0.500      111,456    120,206   nsmallest
+   6,000   0.600      119,678    120,206   nsmallest
+   8,000   0.800      128,504    120,206      sorted
 
-Both functions return exactly the same list. The only question is
-which one you are paying for.
+both functions return exactly the same list: True
 
-When k is tiny the heap wins by a wide margin. It touches each
-element once and only keeps k of them, so its cost is governed by
-log k. Sorting has to look at every element and rearrange all of
-them, which costs log n per element -- and log n is what it is no
-matter how small k gets.
+The `sorted` column is identical in every row, and that is the first
+thing the table says: sorting does not know what k is. It rearranges
+all n elements whatever you are about to keep, so it pays n log n
+whether k is 1 or n.
 
-As k grows towards n, log k approaches log n and the growth rates
-stop being different. At that point the winner is decided by the
-constant factors: sorted is C code running over one contiguous
-array, while the heap is a Python loop doing one comparison at a
-time. That is why the crossover lands between k = 5000 and
-k = 10000 here -- a tenth of the input -- rather than at k = n,
-which is where the complexity analysis alone would put it.
+The heap's cost is governed by log k instead, so it starts far below
+the sort and climbs as k grows. The crossover -- the k at which the
+heap stops being the cheaper of the two -- is between 6,000 and
+8,000 here, which is most of the input. That is a much later
+crossover than the folk version of this advice implies.
 
-So there are two facts and you need both. The growth rate tells you
-which way the gap is heading. The constant factor tells you where it
-currently is. A table like this one is what you get when you insist
-on both instead of arguing about either.
+Note what kind of number that crossover is. Both columns count the
+same operation, so their meeting point is a fact about the two
+algorithms and it travels: run this on any machine, in any language,
+and the columns still cross somewhere around seven tenths of n.
+
+What does not travel is the cost of one comparison. `sorted` does its
+comparisons in C and `heapq.nsmallest` does its in a Python loop, so
+one of the two is charged several times more for the same counted
+operation. A timed version of this table would move the crossover by
+exactly that factor -- and the factor belongs to the interpreter,
+not to sorting, which is why no timed crossover is printed here.
+
+So the shape is the part you can look up and the factor is the part
+you have to measure. Getting that the right way round is the whole
+of this chapter: count to decide *which* algorithm, measure to
+decide how much, and never quote the second number as though it were
+the first.
 ```
 
-Notice that the crossover is nowhere near where the complexity analysis would put it. Both functions are
-asymptotically different, but the heap is written in Python and the sort is written in C, so the heap
-starts losing at a tenth of the input rather than at the end of it. A pure asymptotic argument would
-have told you the heap always wins; a pure benchmark at k=100 would have told you the heap always wins;
-only measuring across the range shows the flip.
+Notice where the crossover lands: between 6,000 and 8,000, which is most of the input. That is much
+later than the folklore about `nsmallest` implies, and it is worth being precise about what the table
+does and does not say. It says the heap does fewer comparisons than the sort for every k below about
+seven tenths of n, and it says that as a fact about the two algorithms — the same table comes out of any
+machine, in any language.
+
+What it does not say is when the heap becomes slower in wall-clock time, because the two functions do
+not pay the same price for a comparison. `sorted` compares in C; `heapq.nsmallest` compares in a Python
+loop, where each comparison costs several times more. A timed version of this table would move the
+crossover by exactly that factor, in one direction or the other. The factor belongs to the interpreter,
+so this book leaves it out and tells you to measure it — which is the division of labour the rest of the
+chapter is about.
 
 :::scenario The dedupe that was fine until it wasn't
 A service ingests rows from a partner's export file. Some rows repeat, and the downstream consumer
@@ -1420,12 +1602,9 @@ def dedupe(rows):
 It is correct. It has tests. It preserves order, which a `set(rows)` would not. Nobody has ever
 complained about it.
 
-The partner's export grows. Here is the same logic against a set, measured at the sizes involved:
+The partner's export grows. Here is the same logic against a set, counted at the sizes involved:
 
 ```python run
-import timeit
-
-
 def make_rows(n):
     """n rows, about a tenth of them repeats."""
     return [f"row-{i % (n * 9 // 10)}" for i in range(n)]
@@ -1434,71 +1613,79 @@ def make_rows(n):
 def dedupe_by_list(rows):
     """Is this row already in the output? Scan the output to find out."""
     out = []
+    comparisons = 0
     for row in rows:
-        if row not in out:          # O(len(out)) -- a scan, every time
+        for existing in out:
+            comparisons += 1
+            if existing == row:
+                break
+        else:
             out.append(row)
-    return out
+    return out, comparisons
 
 
 def dedupe_by_set(rows):
     """The same question, asked of a set instead."""
     seen = set()
     out = []
+    probes = 0
     for row in rows:
-        if row not in seen:         # O(1)
+        probes += 1
+        if row not in seen:
             seen.add(row)
             out.append(row)
-    return out
+    return out, probes
 
 
-def band(ratio):
-    if ratio < 12.0:
-        return "~10x"
-    if ratio < 45.0:
-        return "~25x"
-    if ratio < 130.0:
-        return "~80x"
-    if ratio < 300.0:
-        return "~200x"
-    return "400x or more"
+SIZES = (250, 500, 1_000, 2_000, 4_000, 8_000)
 
-
-def per_call(stmt, number, globs):
-    return min(timeit.repeat(stmt, number=number, repeat=5, globals=globs)) / number
-
-
-print("both functions return the same list -- check it once:")
 probe = make_rows(2_000)
-print("  identical output:", dedupe_by_list(probe) == dedupe_by_set(probe))
-print(f"  {len(probe)} rows in, {len(dedupe_by_set(probe))} rows out")
+print("both functions return the same list -- check it once:")
+print("  identical output:", dedupe_by_list(probe)[0] == dedupe_by_set(probe)[0])
+print(f"  {len(probe)} rows in, {len(dedupe_by_set(probe)[0])} rows out")
 print()
-print(f"{'rows':>8}  {'list version / set version':>28}")
-print("-" * 40)
-for n in (250, 500, 1_000, 2_000, 4_000, 8_000):
+print(f"{'rows':>8}{'list: comparisons':>19}{'set: probes':>14}{'ratio':>11}")
+print("-" * 52)
+list_counts = []
+for n in SIZES:
     rows = make_rows(n)
-    number = max(1, 2_000 // n)
-    g = {"f": dedupe_by_list, "rows": rows}
-    t_list = per_call("f(rows)", number, g)
-    g = {"f": dedupe_by_set, "rows": rows}
-    t_set = per_call("f(rows)", number, g)
-    print(f"{n:>8}  {band(t_list / t_set):>28}")
+    _, comparisons = dedupe_by_list(rows)
+    _, probes = dedupe_by_set(rows)
+    list_counts.append(comparisons)
+    print(f"{n:>8}{comparisons:>19,}{probes:>14,}"
+          f"{comparisons / probes:>10.0f}x")
 
 print()
-print("At 250 rows the list version is already about 25 times slower -- the")
-print("kind of thing that gets waved through in review as 'fine for now'.")
-print("Every doubling of the input doubles that gap again, because one")
-print("version is O(n) and the other is O(n^2). By 8000 rows it is four")
-print("hundred times slower, and it has not finished getting worse.")
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'sizes tried':<46}{len(SIZES):>8}")
+print(f"{'rows at the smallest size':<46}{SIZES[0]:>8}")
+print(f"{'rows at the largest size':<46}{SIZES[-1]:>8}")
+print(f"{'comparisons, list, smallest':<46}{list_counts[0]:>8}")
+print(f"{'comparisons, list, largest':<46}{list_counts[-1]:>8}")
+print(f"{'probes, set, largest':<46}{SIZES[-1]:>8}")
+print(f"{'on doubling the input, list':<46}"
+      f"{list_counts[-1] / list_counts[-2]:>8.1f}")
+print(f"{'on doubling the input, set':<46}{2.0:>8.1f}")
+print(f"{'times more work the list does, largest':<46}"
+      f"{round(list_counts[-1] / SIZES[-1]):>8}")
+
 print()
-print("The fix is two lines: keep a set of what you have already seen, and")
-print("ask the set instead of scanning the output. The output list stays,")
-print("because order matters and a set does not preserve it.")
+print(f"At {SIZES[0]} rows the list version already does {round(list_counts[0] / SIZES[0])} times the work,")
+print("which is the kind of thing that gets waved through in review as 'fine")
+print(f"for now'. Every doubling of the input multiplies its comparisons by")
+print(f"about {list_counts[-1] / list_counts[-2]:.0f} while the set's probes merely double, so the gap does")
+print("not settle -- it widens without limit.")
 print()
-print("What makes this scenario worth reading is not the fix. It is that")
-print("the function was correct, the tests passed, and the only symptom")
-print("was a gap that grew. A quadratic is not a bug at any particular")
-print("size -- it is a bug waiting for the input to get bigger, which is")
-print("to say, waiting for you to ship it.")
+print("The fix is two lines: keep a set of what you have already seen, and ask")
+print("the set instead of scanning the output. The output list stays, because")
+print("order matters and a set does not preserve it.")
+print()
+print("What makes this scenario worth reading is not the fix. It is that the")
+print("function was correct, the tests passed, and the only symptom was a gap")
+print("that grew. A quadratic is not a bug at any particular size -- it is a")
+print("bug waiting for the input to get bigger, which is to say, waiting for")
+print("you to ship it.")
 ```
 
 ```text
@@ -1506,30 +1693,42 @@ both functions return the same list -- check it once:
   identical output: True
   2000 rows in, 1800 rows out
 
-    rows    list version / set version
-----------------------------------------
-     250                          ~25x
-     500                          ~25x
-    1000                          ~80x
-    2000                          ~80x
-    4000                         ~200x
-    8000                  400x or more
+    rows  list: comparisons   set: probes      ratio
+----------------------------------------------------
+     250             25,525           250       102x
+     500            102,300           500       205x
+    1000            409,600         1,000       410x
+    2000          1,639,200         2,000       820x
+    4000          6,558,400         4,000      1640x
+    8000         26,236,800         8,000      3280x
 
-At 250 rows the list version is already about 25 times slower -- the
-kind of thing that gets waved through in review as 'fine for now'.
-Every doubling of the input doubles that gap again, because one
-version is O(n) and the other is O(n^2). By 8000 rows it is four
-hundred times slower, and it has not finished getting worse.
+what is counted                                  count
+------------------------------------------------------
+sizes tried                                          6
+rows at the smallest size                          250
+rows at the largest size                          8000
+comparisons, list, smallest                      25525
+comparisons, list, largest                    26236800
+probes, set, largest                              8000
+on doubling the input, list                        4.0
+on doubling the input, set                         2.0
+times more work the list does, largest            3280
 
-The fix is two lines: keep a set of what you have already seen, and
-ask the set instead of scanning the output. The output list stays,
-because order matters and a set does not preserve it.
+At 250 rows the list version already does 102 times the work,
+which is the kind of thing that gets waved through in review as 'fine
+for now'. Every doubling of the input multiplies its comparisons by
+about 4 while the set's probes merely double, so the gap does
+not settle -- it widens without limit.
 
-What makes this scenario worth reading is not the fix. It is that
-the function was correct, the tests passed, and the only symptom
-was a gap that grew. A quadratic is not a bug at any particular
-size -- it is a bug waiting for the input to get bigger, which is
-to say, waiting for you to ship it.
+The fix is two lines: keep a set of what you have already seen, and ask
+the set instead of scanning the output. The output list stays, because
+order matters and a set does not preserve it.
+
+What makes this scenario worth reading is not the fix. It is that the
+function was correct, the tests passed, and the only symptom was a gap
+that grew. A quadratic is not a bug at any particular size -- it is a
+bug waiting for the input to get bigger, which is to say, waiting for
+you to ship it.
 ```
 
 The corrected version keeps the output list — because order matters and a set does not preserve it — and
@@ -1672,95 +1871,116 @@ sides at once.
 
 :::solution Exercise 2
 ```python run
-import timeit
 from collections import deque
 
 
 def drain_list(n):
     """pop(0) removes the first element and shifts everything left."""
     xs = list(range(n))
+    moved = 0
     while xs:
         xs.pop(0)
+        moved += len(xs)      # every remaining element shifts down one slot
+    return moved
 
 
 def drain_deque(n):
-    """popleft removes the first element and shifts nothing."""
+    """popleft removes the first element and moves a pointer instead."""
     d = deque(range(n))
+    moved = 0
     while d:
         d.popleft()
-
-
-def per_call(fn, n, number=3, repeat=5):
-    return min(timeit.repeat(lambda: fn(n), number=number, repeat=repeat)) / number
-
-
-def growth(ratio):
-    if ratio < 1.4:
-        return "~1  (constant)"
-    if ratio < 3.0:
-        return "~2  (linear)"
-    if ratio < 6.8:
-        return "~4  (quadratic)"
-    return "~8  (cubic)"
+    return moved
 
 
 SIZES = (1_000, 2_000, 4_000, 8_000)
-list_times = [per_call(drain_list, n) for n in SIZES]
-deque_times = [per_call(drain_deque, n) for n in SIZES]
+list_moves = [drain_list(n) for n in SIZES]
+deque_moves = [drain_deque(n) for n in SIZES]
 
 print("drain n items from the front, two ways")
 print()
-print(f"{'n':>7}  {'pop(0)':>18}  {'popleft':>18}")
-print("-" * 46)
-for i, n in enumerate(SIZES):
-    if i == 0:
-        continue
-    print(f"{n:>7}  {growth(list_times[i] / list_times[i - 1]):>18}  "
-          f"{growth(deque_times[i] / deque_times[i - 1]):>18}")
+print(f"{'n':>7}{'pop(0) moves':>16}{'popleft moves':>16}")
+print("-" * 39)
+for index, n in enumerate(SIZES):
+    print(f"{n:>7}{list_moves[index]:>16,}{deque_moves[index]:>16,}")
 
 print()
-print("Both loops remove every element, and both are correct. The left")
-print("column is quadratic and the right column is linear, and the reason")
-print("is one line of the implementation: a list stores its elements in one")
-print("contiguous array, so removing the first one leaves a hole that every")
-print("remaining element has to move into. A deque is a ring buffer, so")
-print("removing the first element moves a pointer and nothing else.")
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'sizes tried':<46}{len(SIZES):>8}")
+print(f"{'elements drained, largest n':<46}{SIZES[-1]:>8}")
+print(f"{'moves, pop(0), smallest n':<46}{list_moves[0]:>8}")
+print(f"{'moves, pop(0), largest n':<46}{list_moves[-1]:>8}")
+print(f"{'moves, popleft, every n':<46}{deque_moves[-1]:>8}")
+print(f"{'on doubling n, pop(0)':<46}"
+      f"{list_moves[-1] / list_moves[-2]:>8.1f}")
+print(f"{'on doubling n, popleft':<46}{1.0:>8.1f}")
+print(f"{'times more work pop(0) does, largest n':<46}"
+      f"{list_moves[-1] / max(1, SIZES[-1]):>8.0f}")
+
 print()
-print("This is the everyday version of the chapter's argument. `while xs:`")
-print("looks the same in both functions; the cost model is entirely")
-print("different; and at a thousand items you would not notice. The rule")
-print("that falls out of it: if you are removing from the front of a queue,")
-print("use a deque. If you are removing from the front of a list, ask")
-print("yourself why.")
+print("Both loops remove every element, and both are correct. The left column")
+print("is quadratic and the right column is zero, and the reason is one line of")
+print("the implementation: a list stores its elements in one contiguous array,")
+print("so removing the first one leaves a hole that every remaining element has")
+print("to move into. A deque is a ring buffer, so removing the first element")
+print("moves a pointer and nothing else.")
+print()
+print(f"The zero is the part worth looking at. It is not a small number, it is")
+print(f"the absence of the operation: at {SIZES[-1]:,} items the list has moved")
+print(f"{list_moves[-1]:,} elements and the deque has moved none. No constant factor")
+print("closes a gap like that -- only changing the data structure does.")
+print()
+print("This is the everyday version of the chapter's argument. `while xs:` looks")
+print("the same in both functions, the cost model is entirely different, and at")
+print("a thousand items you would not notice. The rule that falls out of it: if")
+print("you are removing from the front of a queue, use a deque. If you are")
+print("removing from the front of a list, ask yourself why.")
 ```
 
 ```text
 drain n items from the front, two ways
 
-      n              pop(0)             popleft
-----------------------------------------------
-   2000     ~4  (quadratic)        ~2  (linear)
-   4000     ~4  (quadratic)        ~2  (linear)
-   8000     ~4  (quadratic)        ~2  (linear)
+      n    pop(0) moves   popleft moves
+---------------------------------------
+   1000         499,500               0
+   2000       1,999,000               0
+   4000       7,998,000               0
+   8000      31,996,000               0
 
-Both loops remove every element, and both are correct. The left
-column is quadratic and the right column is linear, and the reason
-is one line of the implementation: a list stores its elements in one
-contiguous array, so removing the first one leaves a hole that every
-remaining element has to move into. A deque is a ring buffer, so
-removing the first element moves a pointer and nothing else.
+what is counted                                  count
+------------------------------------------------------
+sizes tried                                          4
+elements drained, largest n                       8000
+moves, pop(0), smallest n                       499500
+moves, pop(0), largest n                      31996000
+moves, popleft, every n                              0
+on doubling n, pop(0)                              4.0
+on doubling n, popleft                             1.0
+times more work pop(0) does, largest n            4000
 
-This is the everyday version of the chapter's argument. `while xs:`
-looks the same in both functions; the cost model is entirely
-different; and at a thousand items you would not notice. The rule
-that falls out of it: if you are removing from the front of a queue,
-use a deque. If you are removing from the front of a list, ask
-yourself why.
+Both loops remove every element, and both are correct. The left column
+is quadratic and the right column is zero, and the reason is one line of
+the implementation: a list stores its elements in one contiguous array,
+so removing the first one leaves a hole that every remaining element has
+to move into. A deque is a ring buffer, so removing the first element
+moves a pointer and nothing else.
+
+The zero is the part worth looking at. It is not a small number, it is
+the absence of the operation: at 8,000 items the list has moved
+31,996,000 elements and the deque has moved none. No constant factor
+closes a gap like that -- only changing the data structure does.
+
+This is the everyday version of the chapter's argument. `while xs:` looks
+the same in both functions, the cost model is entirely different, and at
+a thousand items you would not notice. The rule that falls out of it: if
+you are removing from the front of a queue, use a deque. If you are
+removing from the front of a list, ask yourself why.
 ```
 
-The first row is skipped because at n=500→1000 the O(n) setup still competes with the O(n²) drain, so
-the ratio has not settled. That is itself worth noticing: a growth ratio is only informative once the
-term you care about dominates.
+The growth column is the one to read. Every doubling of n multiplies the list's work by four and leaves
+the deque's at zero, and that is the difference between a quadratic and a constant stated as a ratio
+rather than as an adjective.
 
 The fix is a data-structure change, not a micro-optimisation. `deque` is a ring buffer — a fixed array
 with a head pointer — so removing from the front advances the pointer instead of shifting anything.
@@ -1882,191 +2102,174 @@ result, different cost — which is the chapter's recurring theme.
 :::solution Exercise 4
 ```python run
 import math
-import random
-import timeit
-
-RND = random.Random(11)
-DATA = [RND.random() for _ in range(200_000)]
 
 
-def per_call(stmt, number, globs):
-    return min(timeit.repeat(stmt, number=number, repeat=5, globals=globs)) / number
+def min_comparisons(n):
+    """Finding the smallest of n items: one comparison per item after the
+    first, and no way to do better -- the answer is only known once every
+    item has lost a comparison."""
+    return n - 1
 
 
-def growth(ratio):
-    if ratio < 1.4:
-        return "~1  (constant)"
-    if ratio < 3.0:
-        return "~2  (linear)"
-    if ratio < 6.8:
-        return "~4  (quadratic)"
-    return "~8  (cubic)"
+def sorted_comparisons(n):
+    """A comparison sort of n items costs n log2(n) comparisons, which is the
+    information-theoretic floor for sorting and the practical figure for
+    Timsort on random data."""
+    return round(n * math.log2(n))
 
 
-def factor(ratio):
-    if ratio < 1.5:
-        return "about the same"
-    if ratio < 3.0:
-        return "~2x"
-    if ratio < 7.0:
-        return "~5x"
-    if ratio < 15.0:
-        return "~10x"
-    return "15x or more"
+SIZES = (25_000, 50_000, 100_000, 200_000)
+min_counts = [min_comparisons(n) for n in SIZES]
+sort_counts = [sorted_comparisons(n) for n in SIZES]
 
-
-print("the smallest of n numbers, two ways")
+print("the smallest of n numbers, two ways, counted")
 print()
-print(f"{'n':>8}  {'min(xs)':>18}  {'sorted(xs)[0]':>18}")
-print("-" * 48)
-previous = {}
-last_ratio = 1.0
-for n in (25_000, 50_000, 100_000, 200_000):
-    xs = DATA[:n]
-    g = {"xs": xs}
-    t_min = per_call("min(xs)", 20, g)
-    t_sort = per_call("sorted(xs)[0]", 3, g)
-    last_ratio = t_sort / t_min
-    if previous:
-        print(f"{n:>8}  {growth(t_min / previous['min']):>18}  "
-              f"{growth(t_sort / previous['sort']):>18}")
-    previous = {"min": t_min, "sort": t_sort}
+print(f"{'n':>9}{'min(xs)':>15}{'sorted(xs)[0]':>17}{'ratio':>11}")
+print("-" * 52)
+for index, n in enumerate(SIZES):
+    print(f"{n:>9,}{min_counts[index]:>15,}{sort_counts[index]:>17,}"
+          f"{sort_counts[index] / min_counts[index]:>10.0f}x")
 
 print()
-print(f"and at the largest size, sorted takes {factor(last_ratio)} what min takes")
-print()
-print("Both growth columns read about 2, and that is the honest result: at")
-print("any size you can conveniently measure, n and n log n are not")
-print("distinguishable by timing. The difference is real -- log n goes from")
-print("17 to 18 between the last two rows -- but it lands as a few percent")
-print("of the ratio, which is smaller than the noise in the clock.")
-print()
-print("So the argument for min does not come from that table. It comes")
-print("from counting:")
-print()
-print(f"{'n':>8}  {'min: n - 1':>12}  {'sorted: n log n':>16}")
-print("-" * 40)
-for n in (25_000, 50_000, 100_000, 200_000):
-    print(f"{n:>8}  {n - 1:>12}  {round(n * math.log2(n)):>16}")
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'sizes compared':<46}{len(SIZES):>8}")
+print(f"{'comparisons, min, smallest n':<46}{min_counts[0]:>8}")
+print(f"{'comparisons, min, largest n':<46}{min_counts[-1]:>8}")
+print(f"{'comparisons, sorted, smallest n':<46}{sort_counts[0]:>8}")
+print(f"{'comparisons, sorted, largest n':<46}{sort_counts[-1]:>8}")
+print(f"{'on doubling n, min':<46}"
+      f"{min_counts[-1] / min_counts[-2]:>8.1f}")
+print(f"{'on doubling n, sorted':<46}"
+      f"{sort_counts[-1] / sort_counts[-2]:>8.2f}")
+print(f"{'the gap widens on every doubling':<46}"
+      f"{int(sort_counts[-1] / min_counts[-1] > sort_counts[0] / min_counts[0]):>8}")
 
 print()
-print("Those numbers are exact, and they say what the clock could not: the")
-print("gap between the two approaches widens as n grows, without limit.")
+print("Both growth columns read about 2, and that is the honest result: at any")
+print("size you can conveniently measure, n and n log n are not distinguishable")
+print(f"by their growth ratio. The difference is real -- log n goes from {math.log2(SIZES[0]):.0f} to")
+print(f"{math.log2(SIZES[-1]):.0f} across this table -- but it lands as a few percent of the ratio.")
 print()
-print("The practical rule is still the simple one. If you want the minimum,")
-print("ask for the minimum -- `min`, not `sorted(...)[0]`. The complexity")
-print("argument makes it right at scale, the readability argument makes it")
-print("right immediately, and this exercise is a reminder that the")
-print("complexity argument had to be made by counting, because the")
-print("stopwatch was never going to make it.")
+print("What the counting does show is the gap itself, which widens on every")
+print(f"doubling of n: {sort_counts[0] / min_counts[0]:.0f} times at the smallest size, {sort_counts[-1] / min_counts[-1]:.0f} times at the")
+print("largest. That is a fact about the algorithms and it does not depend on")
+print("the machine, which is why it can be quoted.")
+print()
+print("The practical rule is still the simple one. If you want the minimum, ask")
+print("for the minimum -- `min`, not `sorted(...)[0]`. The complexity argument")
+print("makes it right at scale, the readability argument makes it right")
+print("immediately, and this exercise is a reminder that the complexity argument")
+print("had to be made by counting, because the stopwatch was never going to")
+print("make it.")
 ```
 
 ```text
-the smallest of n numbers, two ways
+the smallest of n numbers, two ways, counted
 
-       n             min(xs)       sorted(xs)[0]
-------------------------------------------------
-   50000        ~2  (linear)        ~2  (linear)
-  100000        ~2  (linear)        ~2  (linear)
-  200000        ~2  (linear)        ~2  (linear)
+        n        min(xs)    sorted(xs)[0]      ratio
+----------------------------------------------------
+   25,000         24,999          365,241        15x
+   50,000         49,999          780,482        16x
+  100,000         99,999        1,660,964        17x
+  200,000        199,999        3,521,928        18x
 
-and at the largest size, sorted takes 15x or more what min takes
+what is counted                                  count
+------------------------------------------------------
+sizes compared                                       4
+comparisons, min, smallest n                     24999
+comparisons, min, largest n                     199999
+comparisons, sorted, smallest n                 365241
+comparisons, sorted, largest n                 3521928
+on doubling n, min                                 2.0
+on doubling n, sorted                             2.12
+the gap widens on every doubling                     1
 
-Both growth columns read about 2, and that is the honest result: at
-any size you can conveniently measure, n and n log n are not
-distinguishable by timing. The difference is real -- log n goes from
-17 to 18 between the last two rows -- but it lands as a few percent
-of the ratio, which is smaller than the noise in the clock.
+Both growth columns read about 2, and that is the honest result: at any
+size you can conveniently measure, n and n log n are not distinguishable
+by their growth ratio. The difference is real -- log n goes from 15 to
+18 across this table -- but it lands as a few percent of the ratio.
 
-So the argument for min does not come from that table. It comes
-from counting:
+What the counting does show is the gap itself, which widens on every
+doubling of n: 15 times at the smallest size, 18 times at the
+largest. That is a fact about the algorithms and it does not depend on
+the machine, which is why it can be quoted.
 
-       n    min: n - 1   sorted: n log n
-----------------------------------------
-   25000         24999            365241
-   50000         49999            780482
-  100000         99999           1660964
-  200000        199999           3521928
-
-Those numbers are exact, and they say what the clock could not: the
-gap between the two approaches widens as n grows, without limit.
-
-The practical rule is still the simple one. If you want the minimum,
-ask for the minimum -- `min`, not `sorted(...)[0]`. The complexity
-argument makes it right at scale, the readability argument makes it
-right immediately, and this exercise is a reminder that the
-complexity argument had to be made by counting, because the
-stopwatch was never going to make it.
+The practical rule is still the simple one. If you want the minimum, ask
+for the minimum -- `min`, not `sorted(...)[0]`. The complexity argument
+makes it right at scale, the readability argument makes it right
+immediately, and this exercise is a reminder that the complexity argument
+had to be made by counting, because the stopwatch was never going to
+make it.
 ```
 
-This is the exercise where the honest answer is more interesting than the expected one. The timing table
-does not separate the two functions, because n and n log n are simply too close to tell apart at these
-sizes. What the timing *does* show is the constant factor: `sorted` is more than fifteen times slower
-right now, because it does far more work per element.
+This is the exercise where the honest answer is more interesting than the expected one. At n = 200,000,
+`min` performs 199,999 comparisons and `sorted` performs 3,521,928 — a gap of eighteen times, and it
+widens on every doubling.
 
-The counting table is what settles the argument. At n = 200,000, `min` performs 199,999 comparisons and
-`sorted` performs about 3.5 million, and that gap grows by roughly a factor of 2.1 for every doubling
-while the comparison counts grow by 2 and 2.1 respectively. Over enough doublings it becomes an order of
-magnitude, then two.
+The awkward part is the growth columns. Both read about 2, because n and n log n are too close to tell
+apart by their ratio at these sizes: log n goes from 15 to 18 across the table, which lands as a few per
+cent. So the ratio column cannot separate the two functions, and a stopwatch would not separate them
+either. What separates them is the size of the gap, and the gap only becomes visible when you count it.
 
-So the answer to "which argument does the timing support?" is: the constant-factor argument, at this
+So the answer to "which argument does this table support?" is: the constant-factor argument, at this
 size. The complexity argument is real but it needs counting to be visible — which is exactly the lesson
 from the `n` versus `n log n` row in the earlier table.
 :::
 
 :::solution Exercise 5
 ```python run
-import timeit
+import sys
 
 
 def build(n):
-    a = []
+    """Append n items; return the reallocations and the elements copied."""
+    items = []
+    copies = 0
+    reallocations = 0
+    size = sys.getsizeof(items)
     for i in range(n):
-        a.append(i)
-    return a
-
-
-def per_append(n):
-    """Total time for n appends, divided by n."""
-    number = max(1, 400_000 // n)
-    total = min(timeit.repeat(lambda: build(n), number=number, repeat=5)) / number
-    return total / n
-
-
-def growth(ratio):
-    if ratio < 1.4:
-        return "flat"
-    if ratio < 1.8:
-        return "slightly up"
-    return "rising"
+        items.append(i)
+        grown = sys.getsizeof(items)
+        if grown != size:
+            copies += len(items) - 1     # everything already there was copied
+            reallocations += 1
+            size = grown
+    return copies, reallocations
 
 
 SIZES = (10_000, 20_000, 40_000, 80_000, 160_000, 320_000)
 
-print("cost of one append, as the list gets longer")
+print("what one append costs, as the list gets longer")
 print()
-print(f"{'n':>8}  {'vs previous':>13}")
-print("-" * 24)
-previous = None
+print(f"{'n':>9}{'reallocations':>15}{'elements copied':>17}{'copies per append':>19}")
+print("-" * 60)
+per_append = []
 for n in SIZES:
-    cost = per_append(n)
-    if previous is None:
-        print(f"{n:>8}  {'--':>13}")
-    else:
-        print(f"{n:>8}  {growth(cost / previous):>13}")
-    previous = cost
+    copies, reallocations = build(n)
+    per_append.append(copies / n)
+    print(f"{n:>9,}{reallocations:>15,}{copies:>17,}{copies / n:>19.2f}")
 
 print()
-print("Every row says 'flat', which is the amortised O(1) claim measured")
-print("rather than asserted. Doubling the length of the list does not")
-print("double the cost of the next append.")
+print(f"The last column is the one to read, and it does not grow. It wobbles")
+print(f"between {min(per_append):.2f} and {max(per_append):.2f} and has no trend: multiplying the")
+print("length of the list by thirty-two leaves the copies per append where")
+print("it found them. The total number of copies grows in proportion to n,")
+print("which means the average append copies a constant number of elements")
+print("-- and that is what amortised O(1) means.")
 print()
-print("What makes this worth running yourself is that the claim is easy to")
-print("doubt. You know from the previous program that a reallocation copies")
-print("every element, and that some appends therefore cost O(n). If you")
-print("measured a single append you might catch a reallocation and conclude")
-print("that append is O(n) -- which would be a true statement about that")
-print("one append and a useless statement about the loop.")
+print("The reallocation column is the reason the claim is easy to doubt.")
+print("Look at how few reallocations there are: the array does not grow by")
+print("one slot at a time, it overshoots, and the overshoot is what buys the")
+print("amortised constant. A policy that grew by one slot per append would")
+print("copy n(n-1)/2 elements over n appends -- quadratic, and the copies")
+print("per append would double every time n did.")
+print()
+print("That is also why measuring one append proves nothing. Some appends")
+print("cost nothing at all and a handful cost O(n). If you timed a single")
+print("append you might catch a reallocation and conclude that append is")
+print("O(n) -- which would be a true statement about that one append and a")
+print("useless statement about the loop.")
 print()
 print("So the measurement has to match the claim. The claim is about a")
 print("sequence of n appends, so the measurement is the total for n appends")
@@ -2076,27 +2279,36 @@ print("result.")
 ```
 
 ```text
-cost of one append, as the list gets longer
+what one append costs, as the list gets longer
 
-       n    vs previous
-------------------------
-   10000             --
-   20000           flat
-   40000           flat
-   80000           flat
-  160000           flat
-  320000           flat
+        n  reallocations  elements copied  copies per append
+------------------------------------------------------------
+   10,000             47           83,136               8.31
+   20,000             53          170,688               8.53
+   40,000             59          348,472               8.71
+   80,000             65          709,140               8.86
+  160,000             70        1,280,164               8.00
+  320,000             76        2,598,356               8.12
 
-Every row says 'flat', which is the amortised O(1) claim measured
-rather than asserted. Doubling the length of the list does not
-double the cost of the next append.
+The last column is the one to read, and it does not grow. It wobbles
+between 8.00 and 8.86 and has no trend: multiplying the
+length of the list by thirty-two leaves the copies per append where
+it found them. The total number of copies grows in proportion to n,
+which means the average append copies a constant number of elements
+-- and that is what amortised O(1) means.
 
-What makes this worth running yourself is that the claim is easy to
-doubt. You know from the previous program that a reallocation copies
-every element, and that some appends therefore cost O(n). If you
-measured a single append you might catch a reallocation and conclude
-that append is O(n) -- which would be a true statement about that
-one append and a useless statement about the loop.
+The reallocation column is the reason the claim is easy to doubt.
+Look at how few reallocations there are: the array does not grow by
+one slot at a time, it overshoots, and the overshoot is what buys the
+amortised constant. A policy that grew by one slot per append would
+copy n(n-1)/2 elements over n appends -- quadratic, and the copies
+per append would double every time n did.
+
+That is also why measuring one append proves nothing. Some appends
+cost nothing at all and a handful cost O(n). If you timed a single
+append you might catch a reallocation and conclude that append is
+O(n) -- which would be a true statement about that one append and a
+useless statement about the loop.
 
 So the measurement has to match the claim. The claim is about a
 sequence of n appends, so the measurement is the total for n appends
@@ -2105,12 +2317,12 @@ test a claim about a sequence, that mismatch is the bug -- not the
 result.
 ```
 
-Timing a single `append` is unreliable for a second reason beyond the amortisation issue: a single call
-finishes in tens of nanoseconds, which is inside the noise floor of the clock. You would be measuring
-the timer.
+Timing a single `append` would be unreliable for a second reason beyond the amortisation issue: a
+single call finishes in tens of nanoseconds, which is inside the noise floor of the clock. You would be
+measuring the timer.
 
-The right measurement follows from the claim. "Amortised O(1)" is a statement about a sequence of n
-appends, so the measurement is the total for n appends divided by n. When the claim and the measurement
-are about the same thing, the result is boring and trustworthy — which is what a correct measurement of
-a correct claim should look like.
+So the count follows from the claim. "Amortised O(1)" is a statement about a sequence of n appends, so
+what gets divided by n is the total copies over n appends. When the claim and the count are about the
+same thing, the result is boring and trustworthy — which is what a correct count of a correct claim
+should look like.
 :::

@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
-"""Chapter 44 demo 1 -- two programs, one answer, very different cost."""
-import timeit
+"""Chapter 44 demo 1 -- two programs, one answer, very different cost.
+
+The comparison count is exact. in_list stops at the first match, so the
+number of comparisons a query costs is a property of the data, not of the
+machine, the load, or the interpreter build. That is what makes it the kind
+of number a book can print.
+"""
 
 MEMBERS = [f"user{i}" for i in range(10_000)]
 MEMBERS_SET = set(MEMBERS)
@@ -22,42 +27,27 @@ def in_set(name):
     return name in MEMBERS_SET, 1
 
 
-def scan_each():
-    return [in_list(q) for q in QUERIES]
+list_results = [in_list(q) for q in QUERIES]
+set_results = [in_set(q) for q in QUERIES]
 
+list_answers = [ok for ok, _ in list_results]
+set_answers = [ok for ok, _ in set_results]
+worst = max(c for _, c in list_results)
+total = sum(c for _, c in list_results)
+lookups = len(QUERIES)
 
-def hash_each():
-    return [in_set(q) for q in QUERIES]
-
-
-def best(fn, number, repeat=7):
-    return min(timeit.repeat(fn, number=number, repeat=repeat))
-
-
-def magnitude(ratio):
-    """Coarse bands: the third significant figure is noise, not evidence."""
-    for edge, label in ((5, "~2x"), (20, "~10x"), (60, "~30x"), (400, "~100x")):
-        if ratio < edge:
-            return label
-    return "~1000x or more"
-
-
-scan_answers = [ok for ok, _ in scan_each()]
-set_answers = [ok for ok, _ in hash_each()]
-worst_comparisons = max(c for _, c in scan_each())
-
-print(f"the same {len(QUERIES)} questions, asked two ways")
-print("both give identical answers:", scan_answers == set_answers)
+print(f"the same {lookups} questions, asked two ways")
+print("both give identical answers:", list_answers == set_answers)
 print()
 print("  scanning the list")
-print(f"    worst case per question : {worst_comparisons} comparisons")
-print(f"    total for this run      : {sum(c for _, c in scan_each())} comparisons")
+print(f"    worst case per question : {worst:,} comparisons")
+print(f"    total for this run      : {total:,} comparisons")
 print("  asking the set")
-print("    per question            : 1 hash, whatever the size")
+print("    per question            : 1 hash, 1 comparison, whatever the size")
 print()
-t_list = best(scan_each, 20)
-t_set = best(hash_each, 20)
-print(f"  measured cost of the list version : {magnitude(t_list / t_set)} the set version")
+print(f"  the list version did  {total:>9,} comparisons")
+print(f"  the set version did   {lookups:>9,} lookups")
+print(f"  ratio                 {total / lookups:>9,.0f}x")
 print()
 print("Nothing about the answers changed. Only the cost did.")
 print()

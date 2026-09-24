@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
-"""Chapter 44 demo 15 -- the scenario: a dedupe that was fine until it wasn't."""
-import timeit
+"""Chapter 44 demo 15 -- the scenario: a dedupe that was fine until it wasn't.
+
+The count is of comparisons: how many times the two versions look at a value
+that is already in the output. It is exact, so the growth is visible in the
+table rather than argued about.
+"""
 
 
 def make_rows(n):
@@ -11,68 +15,76 @@ def make_rows(n):
 def dedupe_by_list(rows):
     """Is this row already in the output? Scan the output to find out."""
     out = []
+    comparisons = 0
     for row in rows:
-        if row not in out:          # O(len(out)) -- a scan, every time
+        for existing in out:
+            comparisons += 1
+            if existing == row:
+                break
+        else:
             out.append(row)
-    return out
+    return out, comparisons
 
 
 def dedupe_by_set(rows):
     """The same question, asked of a set instead."""
     seen = set()
     out = []
+    probes = 0
     for row in rows:
-        if row not in seen:         # O(1)
+        probes += 1
+        if row not in seen:
             seen.add(row)
             out.append(row)
-    return out
+    return out, probes
 
 
-def band(ratio):
-    if ratio < 12.0:
-        return "~10x"
-    if ratio < 45.0:
-        return "~25x"
-    if ratio < 130.0:
-        return "~80x"
-    if ratio < 300.0:
-        return "~200x"
-    return "400x or more"
+SIZES = (250, 500, 1_000, 2_000, 4_000, 8_000)
 
-
-def per_call(stmt, number, globs):
-    return min(timeit.repeat(stmt, number=number, repeat=5, globals=globs)) / number
-
-
-print("both functions return the same list -- check it once:")
 probe = make_rows(2_000)
-print("  identical output:", dedupe_by_list(probe) == dedupe_by_set(probe))
-print(f"  {len(probe)} rows in, {len(dedupe_by_set(probe))} rows out")
+print("both functions return the same list -- check it once:")
+print("  identical output:", dedupe_by_list(probe)[0] == dedupe_by_set(probe)[0])
+print(f"  {len(probe)} rows in, {len(dedupe_by_set(probe)[0])} rows out")
 print()
-print(f"{'rows':>8}  {'list version / set version':>28}")
-print("-" * 40)
-for n in (250, 500, 1_000, 2_000, 4_000, 8_000):
+print(f"{'rows':>8}{'list: comparisons':>19}{'set: probes':>14}{'ratio':>11}")
+print("-" * 52)
+list_counts = []
+for n in SIZES:
     rows = make_rows(n)
-    number = max(1, 2_000 // n)
-    g = {"f": dedupe_by_list, "rows": rows}
-    t_list = per_call("f(rows)", number, g)
-    g = {"f": dedupe_by_set, "rows": rows}
-    t_set = per_call("f(rows)", number, g)
-    print(f"{n:>8}  {band(t_list / t_set):>28}")
+    _, comparisons = dedupe_by_list(rows)
+    _, probes = dedupe_by_set(rows)
+    list_counts.append(comparisons)
+    print(f"{n:>8}{comparisons:>19,}{probes:>14,}"
+          f"{comparisons / probes:>10.0f}x")
 
 print()
-print("At 250 rows the list version is already about 25 times slower -- the")
-print("kind of thing that gets waved through in review as 'fine for now'.")
-print("Every doubling of the input doubles that gap again, because one")
-print("version is O(n) and the other is O(n^2). By 8000 rows it is four")
-print("hundred times slower, and it has not finished getting worse.")
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'sizes tried':<46}{len(SIZES):>8}")
+print(f"{'rows at the smallest size':<46}{SIZES[0]:>8}")
+print(f"{'rows at the largest size':<46}{SIZES[-1]:>8}")
+print(f"{'comparisons, list, smallest':<46}{list_counts[0]:>8}")
+print(f"{'comparisons, list, largest':<46}{list_counts[-1]:>8}")
+print(f"{'probes, set, largest':<46}{SIZES[-1]:>8}")
+print(f"{'on doubling the input, list':<46}"
+      f"{list_counts[-1] / list_counts[-2]:>8.1f}")
+print(f"{'on doubling the input, set':<46}{2.0:>8.1f}")
+print(f"{'times more work the list does, largest':<46}"
+      f"{round(list_counts[-1] / SIZES[-1]):>8}")
+
 print()
-print("The fix is two lines: keep a set of what you have already seen, and")
-print("ask the set instead of scanning the output. The output list stays,")
-print("because order matters and a set does not preserve it.")
+print(f"At {SIZES[0]} rows the list version already does {round(list_counts[0] / SIZES[0])} times the work,")
+print("which is the kind of thing that gets waved through in review as 'fine")
+print(f"for now'. Every doubling of the input multiplies its comparisons by")
+print(f"about {list_counts[-1] / list_counts[-2]:.0f} while the set's probes merely double, so the gap does")
+print("not settle -- it widens without limit.")
 print()
-print("What makes this scenario worth reading is not the fix. It is that")
-print("the function was correct, the tests passed, and the only symptom")
-print("was a gap that grew. A quadratic is not a bug at any particular")
-print("size -- it is a bug waiting for the input to get bigger, which is")
-print("to say, waiting for you to ship it.")
+print("The fix is two lines: keep a set of what you have already seen, and ask")
+print("the set instead of scanning the output. The output list stays, because")
+print("order matters and a set does not preserve it.")
+print()
+print("What makes this scenario worth reading is not the fix. It is that the")
+print("function was correct, the tests passed, and the only symptom was a gap")
+print("that grew. A quadratic is not a bug at any particular size -- it is a")
+print("bug waiting for the input to get bigger, which is to say, waiting for")
+print("you to ship it.")

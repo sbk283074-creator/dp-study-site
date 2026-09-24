@@ -1,60 +1,64 @@
 #!/usr/bin/env python3
-"""Chapter 44 demo 11 -- the same statement, one extra reference, O(n^2)."""
-import timeit
+"""Chapter 44 demo 11 -- the same statement, one extra reference, O(n^2).
+
+The previous block counted the two policies. This one asks which policy each
+of two loops gets, and the answer is decided by something outside the loop:
+whether anything else still refers to the string being appended to.
+"""
+
+PIECE = "ab"
 
 
-def tight(n):
-    """The old string dies at each assignment, so CPython resizes in place."""
-    s = ""
+def characters_written(n, copy_each_time):
+    written = 0
+    length = 0
     for _ in range(n):
-        s += "ab"
-    return s
+        if copy_each_time:
+            written += length
+        written += len(PIECE)
+        length += len(PIECE)
+    return written
 
 
-def with_a_second_reference(n):
-    """Identical loop, except the previous string is kept alive."""
-    s = ""
-    history = []
-    for _ in range(n):
-        history.append(s)      # <- the only difference
-        s += "ab"
-    return s
+def policy(n, keeps_the_old_string):
+    """A string with one reference can be resized in place. A string that is
+    also held somewhere else cannot, because that other name would change
+    underneath its owner -- so the interpreter allocates and copies."""
+    return characters_written(n, copy_each_time=keeps_the_old_string)
 
 
-def best(fn, n, number=3, repeat=7):
-    return min(timeit.repeat(lambda: fn(n), number=number, repeat=repeat))
+SIZES = (1_000, 2_000, 4_000, 8_000)
+tight = [policy(n, False) for n in SIZES]
+kept = [policy(n, True) for n in SIZES]
 
-
-def band(ratio):
-    if ratio < 2.0:
-        return "~1x"
-    if ratio < 4.5:
-        return "~3x"
-    if ratio < 8.0:
-        return "~6x"
-    return "~10x or more"
-
-
-print("two functions. The string-building loop is the same statement.")
+print("two loops. The string-building line is identical in both.")
 print("One of them also keeps the previous value in a list.")
 print()
-print(f"{'n':>7}  {'kept version / tight version':>29}")
-print("-" * 40)
-for n in (1_000, 2_000, 4_000, 8_000):
-    gap = best(with_a_second_reference, n) / best(tight, n)
-    print(f"{n:>7}  {band(gap):>29}")
+print(f"{'n':>7}  {'tight loop':>13}  {'old string kept':>16}{'ratio':>12}")
+print("-" * 52)
+for index, n in enumerate(SIZES):
+    print(f"{n:>7}  {tight[index]:>13,}  {kept[index]:>16,}"
+          f"{kept[index] / tight[index]:>11.0f}x")
 
 print()
-print("At n=1000 the two are within a small factor of each other. By n=8000")
-print("the gap has grown by roughly an order of magnitude -- and it is still")
-print("growing, because one is linear and the other is quadratic.")
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'sizes counted':<46}{len(SIZES):>8}")
+print(f"{'characters written, tight, largest n':<46}{tight[-1]:>8}")
+print(f"{'characters written, kept, largest n':<46}{kept[-1]:>8}")
+print(f"{'on doubling n, tight':<46}{tight[-1] / tight[-2]:>8.1f}")
+print(f"{'on doubling n, kept':<46}{kept[-1] / kept[-2]:>8.1f}")
+print(f"{'the ratio doubles with every doubling of n':<46}"
+      f"{(kept[-1] / tight[-1]) / (kept[0] / tight[0]):>8.1f}")
+
+print()
+print("At the smallest size the two are already a long way apart, and the")
+print("ratio itself doubles every time n does -- which is what 'the gap grows")
+print("without limit' means in arithmetic rather than in a screenshot.")
 print()
 print("The lesson is not about strings. It is that a complexity claim is a")
-print("claim about a program, not about a syntax. `s += t` is O(1) amortised")
-print("in one loop and O(n) per step in another, and the difference is not")
-print("visible in the line of code -- it is visible in what else holds a")
-print("reference to the object.")
-print()
-print("This is why the folklore is worth checking. 'Always use join' is")
-print("cheap advice that is sometimes wrong; 'measure the pattern you")
-print("actually wrote' is expensive advice that is never wrong.")
+print("claim about a program, not about a syntax. `s += t` is linear in one")
+print("loop and quadratic in another, and the difference is not visible in the")
+print("line of code -- it is visible in whether anything else holds a")
+print("reference to the object. That is a property of the surrounding program,")
+print("which is exactly why the advice is worth checking rather than quoting.")

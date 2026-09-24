@@ -42,7 +42,9 @@ print("six sorted lists")
 for index, items in enumerate(LISTS):
     print(f"  list {index}: {items}")
 print()
-print(f"merged: {merged}")
+print("merged:")
+for start in range(0, len(merged), 12):
+    print("   ", merged[start:start + 12])
 print()
 print("agrees with a plain sort :", merged == merge_by_sorting(LISTS))
 print()

@@ -1,45 +1,48 @@
 #!/usr/bin/env python3
-"""Chapter 45 demo -- what deque gives up to be O(1) at both ends."""
-import timeit
+"""Chapter 45 demo -- what deque gives up to be O(1) at both ends.
+
+The first table is counted rather than timed. CPython's deque is a doubly
+linked list of fixed-size blocks, so reaching slot i means walking blocks
+from whichever end is nearer -- and that walk can be counted exactly.
+"""
 from collections import deque
 
 N = 100_000
-ROUNDS = 5
-TRIES = 1_000
-
-ITEMS = deque(range(N))
+BLOCK = 64          # CPython's deque block size, in pointers
 
 
-def read_at(index):
-    for _ in range(TRIES):
-        ITEMS[index]
+def hops_to_reach(index):
+    """Blocks the interpreter steps through to reach slot i.
+
+    CPython indexes a deque from whichever end is nearer, so the cost is the
+    distance to that end divided by the block size. The result is
+    arithmetic: it is the same on every machine, and no clock appears.
+    """
+    if index < 0:
+        index += N
+    from_left = index // BLOCK
+    from_right = (N - 1 - index) // BLOCK
+    return min(from_left, from_right)
 
 
-def time_one(index):
-    return min(timeit.repeat(lambda: read_at(index), number=1, repeat=ROUNDS))
-
-
-def band(ratio):
-    for edge, label in ((3, "same band"), (30, "~10x slower"), (300, "~100x slower")):
-        if ratio < edge:
-            return label
-    return "~1000x slower or more"
-
-
-print("reading one slot of a deque, a thousand times")
+print("reaching one slot of a deque, by position")
+print(f"  {N:,} items, {BLOCK} pointers per block")
 print()
-print(f"{'position':<18}{'index':>10}  {'measured':>20}")
-print("-" * 50)
-base = time_one(0)
-print(f"{'left end':<18}{0:>10}  {'baseline':>20}")
-for label, index in (("right end", -1), ("middle", N // 2), ("near the right", N - 10)):
-    print(f"{label:<18}{index:>10}  {band(time_one(index) / base):>20}")
+print(f"{'position':<18}{'index':>10}{'block hops':>13}")
+print("-" * 41)
+print(f"{'left end':<18}{0:>10}{hops_to_reach(0):>13,}")
+for label, index in (("right end", -1),
+                     ("near the right", N - 10),
+                     ("a quarter in", N // 4),
+                     ("middle", N // 2)):
+    print(f"{label:<18}{index:>10}{hops_to_reach(index):>13,}")
 print()
 print("A deque is not a list with extra methods. It is a doubly linked list")
 print("of fixed-size blocks, and that layout is why the two ends are cheap")
-print("and the middle is not: reaching index n/2 means walking the block")
-print("chain. CPython walks from whichever end is nearer, so the two ends")
-print("and the two ends' neighbours are fast and the centre is the worst")
+print("and the middle is not: reaching the middle of this deque means")
+print(f"stepping through {hops_to_reach(N // 2):,} blocks, while reaching either end means stepping")
+print("through none. CPython walks from whichever end is nearer, so both")
+print("ends and both ends' neighbours are free and the centre is the worst")
 print("case.")
 print()
 print("So `deque` is not a drop-in list replacement. Swap a list for a deque")

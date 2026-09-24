@@ -1,80 +1,69 @@
 #!/usr/bin/env python3
-"""Chapter 44 solution 4 -- the cheapest way to find one element."""
+"""Chapter 44 solution 4 -- the cheapest way to find one element.
+
+Both approaches are counted here, and that is the whole point of the exercise:
+n and n log n are not distinguishable by timing at any size you can
+conveniently measure, so the argument for one of them has to be made by
+counting.
+"""
 import math
-import random
-import timeit
-
-RND = random.Random(11)
-DATA = [RND.random() for _ in range(200_000)]
 
 
-def per_call(stmt, number, globs):
-    return min(timeit.repeat(stmt, number=number, repeat=5, globals=globs)) / number
+def min_comparisons(n):
+    """Finding the smallest of n items: one comparison per item after the
+    first, and no way to do better -- the answer is only known once every
+    item has lost a comparison."""
+    return n - 1
 
 
-def growth(ratio):
-    if ratio < 1.4:
-        return "~1  (constant)"
-    if ratio < 3.0:
-        return "~2  (linear)"
-    if ratio < 6.8:
-        return "~4  (quadratic)"
-    return "~8  (cubic)"
+def sorted_comparisons(n):
+    """A comparison sort of n items costs n log2(n) comparisons, which is the
+    information-theoretic floor for sorting and the practical figure for
+    Timsort on random data."""
+    return round(n * math.log2(n))
 
 
-def factor(ratio):
-    if ratio < 1.5:
-        return "about the same"
-    if ratio < 3.0:
-        return "~2x"
-    if ratio < 7.0:
-        return "~5x"
-    if ratio < 15.0:
-        return "~10x"
-    return "15x or more"
+SIZES = (25_000, 50_000, 100_000, 200_000)
+min_counts = [min_comparisons(n) for n in SIZES]
+sort_counts = [sorted_comparisons(n) for n in SIZES]
 
-
-print("the smallest of n numbers, two ways")
+print("the smallest of n numbers, two ways, counted")
 print()
-print(f"{'n':>8}  {'min(xs)':>18}  {'sorted(xs)[0]':>18}")
-print("-" * 48)
-previous = {}
-last_ratio = 1.0
-for n in (25_000, 50_000, 100_000, 200_000):
-    xs = DATA[:n]
-    g = {"xs": xs}
-    t_min = per_call("min(xs)", 20, g)
-    t_sort = per_call("sorted(xs)[0]", 3, g)
-    last_ratio = t_sort / t_min
-    if previous:
-        print(f"{n:>8}  {growth(t_min / previous['min']):>18}  "
-              f"{growth(t_sort / previous['sort']):>18}")
-    previous = {"min": t_min, "sort": t_sort}
+print(f"{'n':>9}{'min(xs)':>15}{'sorted(xs)[0]':>17}{'ratio':>11}")
+print("-" * 52)
+for index, n in enumerate(SIZES):
+    print(f"{n:>9,}{min_counts[index]:>15,}{sort_counts[index]:>17,}"
+          f"{sort_counts[index] / min_counts[index]:>10.0f}x")
 
 print()
-print(f"and at the largest size, sorted takes {factor(last_ratio)} what min takes")
-print()
-print("Both growth columns read about 2, and that is the honest result: at")
-print("any size you can conveniently measure, n and n log n are not")
-print("distinguishable by timing. The difference is real -- log n goes from")
-print("17 to 18 between the last two rows -- but it lands as a few percent")
-print("of the ratio, which is smaller than the noise in the clock.")
-print()
-print("So the argument for min does not come from that table. It comes")
-print("from counting:")
-print()
-print(f"{'n':>8}  {'min: n - 1':>12}  {'sorted: n log n':>16}")
-print("-" * 40)
-for n in (25_000, 50_000, 100_000, 200_000):
-    print(f"{n:>8}  {n - 1:>12}  {round(n * math.log2(n)):>16}")
+print(f"{'what is counted':<46}{'count':>8}")
+print("-" * 54)
+print(f"{'sizes compared':<46}{len(SIZES):>8}")
+print(f"{'comparisons, min, smallest n':<46}{min_counts[0]:>8}")
+print(f"{'comparisons, min, largest n':<46}{min_counts[-1]:>8}")
+print(f"{'comparisons, sorted, smallest n':<46}{sort_counts[0]:>8}")
+print(f"{'comparisons, sorted, largest n':<46}{sort_counts[-1]:>8}")
+print(f"{'on doubling n, min':<46}"
+      f"{min_counts[-1] / min_counts[-2]:>8.1f}")
+print(f"{'on doubling n, sorted':<46}"
+      f"{sort_counts[-1] / sort_counts[-2]:>8.2f}")
+print(f"{'the gap widens on every doubling':<46}"
+      f"{int(sort_counts[-1] / min_counts[-1] > sort_counts[0] / min_counts[0]):>8}")
 
 print()
-print("Those numbers are exact, and they say what the clock could not: the")
-print("gap between the two approaches widens as n grows, without limit.")
+print("Both growth columns read about 2, and that is the honest result: at any")
+print("size you can conveniently measure, n and n log n are not distinguishable")
+print(f"by their growth ratio. The difference is real -- log n goes from {math.log2(SIZES[0]):.0f} to")
+print(f"{math.log2(SIZES[-1]):.0f} across this table -- but it lands as a few percent of the ratio.")
 print()
-print("The practical rule is still the simple one. If you want the minimum,")
-print("ask for the minimum -- `min`, not `sorted(...)[0]`. The complexity")
-print("argument makes it right at scale, the readability argument makes it")
-print("right immediately, and this exercise is a reminder that the")
-print("complexity argument had to be made by counting, because the")
-print("stopwatch was never going to make it.")
+print("What the counting does show is the gap itself, which widens on every")
+print(f"doubling of n: {sort_counts[0] / min_counts[0]:.0f} times at the smallest size, {sort_counts[-1] / min_counts[-1]:.0f} times at the")
+print("largest. That is a fact about the algorithms and it does not depend on")
+print("the machine, which is why it can be quoted.")
+print()
+print("The practical rule is still the simple one. If you want the minimum, ask")
+print("for the minimum -- `min`, not `sorted(...)[0]`. The complexity argument")
+print("makes it right at scale, the readability argument makes it right")
+print("immediately, and this exercise is a reminder that the complexity argument")
+print("had to be made by counting, because the stopwatch was never going to")
+print("make it.")

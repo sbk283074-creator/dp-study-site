@@ -1,62 +1,106 @@
 #!/usr/bin/env python3
-"""Chapter 44 demo 14 -- where two algorithms cross over."""
+"""Chapter 44 demo 14 -- where two algorithms cross over, counted.
+
+Both functions return the same list. The comparison count is exact, and it
+is collected by handing each algorithm objects that count their own
+comparisons -- so the count is of the real work of the real function rather
+than of a model of it.
+"""
 import heapq
 import random
-import timeit
 
-N = 100_000
+N = 10_000
 RND = random.Random(7)
 DATA = [RND.random() for _ in range(N)]
 
 
-def per_call(stmt, number, globs):
-    """timeit hands back the total for `number` runs. Divide it out."""
-    return min(timeit.repeat(stmt, number=number, repeat=5, globals=globs)) / number
+class Counted:
+    """A number that counts every ordering comparison it takes part in.
+
+    Only < and > are defined. Leaving __eq__ alone means the identity check
+    that tuple comparison does first costs nothing, so both algorithms are
+    charged for the same kind of operation: an ordering comparison.
+    """
+
+    __slots__ = ("value", "tally")
+
+    def __init__(self, value, tally):
+        self.value = value
+        self.tally = tally
+
+    def __lt__(self, other):
+        self.tally[0] += 1
+        return self.value < other.value
+
+    def __gt__(self, other):
+        self.tally[0] += 1
+        return self.value > other.value
 
 
-def verdict(ratio):
-    """ratio is nsmallest / sorted, so below 1 means the heap wins."""
-    if ratio < 0.3:
-        return "much faster"
-    if ratio < 1.0:
-        return "faster"
-    return "slower"
+def wrap(values):
+    tally = [0]
+    return [Counted(v, tally) for v in values], tally
 
+
+def counted_sort(values):
+    """sorted(xs) sorts everything, so its cost does not depend on k."""
+    wrapped, tally = wrap(values)
+    ordered = sorted(wrapped)
+    return [c.value for c in ordered], tally[0]
+
+
+def counted_nsmallest(k, values):
+    wrapped, tally = wrap(values)
+    chosen = heapq.nsmallest(k, wrapped)
+    return [c.value for c in chosen], tally[0]
+
+
+KS = (1, 10, 100, 1_000, 3_000, 5_000, 6_000, 8_000)
+
+ORDERED, SORT_COST = counted_sort(DATA)
 
 print(f"take the k smallest of {N:,} numbers")
 print()
 print("  heapq.nsmallest(k, xs)   keeps a heap of size k  ->  O(n log k)")
 print("  sorted(xs)[:k]           sorts everything        ->  O(n log n)")
 print()
-print(f"{'k':>8}  {'k / n':>8}  {'nsmallest':>14}  {'winner':>10}")
-print("-" * 46)
-for k in (1, 100, 1_000, 5_000, 10_000, 50_000):
-    g = {"xs": DATA, "k": k, "heapq": heapq}
-    t_heap = per_call("heapq.nsmallest(k, xs)", 3, g)
-    t_sort = per_call("sorted(xs)[:k]", 3, g)
-    ratio = t_heap / t_sort
-    winner = "nsmallest" if ratio < 1.0 else "sorted"
-    print(f"{k:>8}  {k / N:>8.2f}  {verdict(ratio):>14}  {winner:>10}")
+print(f"{'k':>8}{'k / n':>8}{'nsmallest':>13}{'sorted':>11}{'winner':>12}")
+print("-" * 52)
+same = True
+for k in KS:
+    heap_values, heap_cost = counted_nsmallest(k, DATA)
+    same = same and heap_values == ORDERED[:k]
+    winner = "nsmallest" if heap_cost < SORT_COST else "sorted"
+    print(f"{k:>8,}{k / N:>8.3f}{heap_cost:>13,}{SORT_COST:>11,}{winner:>12}")
 
 print()
-print("Both functions return exactly the same list. The only question is")
-print("which one you are paying for.")
+print("both functions return exactly the same list:", same)
 print()
-print("When k is tiny the heap wins by a wide margin. It touches each")
-print("element once and only keeps k of them, so its cost is governed by")
-print("log k. Sorting has to look at every element and rearrange all of")
-print("them, which costs log n per element -- and log n is what it is no")
-print("matter how small k gets.")
+print("The `sorted` column is identical in every row, and that is the first")
+print("thing the table says: sorting does not know what k is. It rearranges")
+print("all n elements whatever you are about to keep, so it pays n log n")
+print("whether k is 1 or n.")
 print()
-print("As k grows towards n, log k approaches log n and the growth rates")
-print("stop being different. At that point the winner is decided by the")
-print("constant factors: sorted is C code running over one contiguous")
-print("array, while the heap is a Python loop doing one comparison at a")
-print("time. That is why the crossover lands between k = 5000 and")
-print("k = 10000 here -- a tenth of the input -- rather than at k = n,")
-print("which is where the complexity analysis alone would put it.")
+print("The heap's cost is governed by log k instead, so it starts far below")
+print("the sort and climbs as k grows. The crossover -- the k at which the")
+print("heap stops being the cheaper of the two -- is between 6,000 and")
+print("8,000 here, which is most of the input. That is a much later")
+print("crossover than the folk version of this advice implies.")
 print()
-print("So there are two facts and you need both. The growth rate tells you")
-print("which way the gap is heading. The constant factor tells you where it")
-print("currently is. A table like this one is what you get when you insist")
-print("on both instead of arguing about either.")
+print("Note what kind of number that crossover is. Both columns count the")
+print("same operation, so their meeting point is a fact about the two")
+print("algorithms and it travels: run this on any machine, in any language,")
+print("and the columns still cross somewhere around seven tenths of n.")
+print()
+print("What does not travel is the cost of one comparison. `sorted` does its")
+print("comparisons in C and `heapq.nsmallest` does its in a Python loop, so")
+print("one of the two is charged several times more for the same counted")
+print("operation. A timed version of this table would move the crossover by")
+print("exactly that factor -- and the factor belongs to the interpreter,")
+print("not to sorting, which is why no timed crossover is printed here.")
+print()
+print("So the shape is the part you can look up and the factor is the part")
+print("you have to measure. Getting that the right way round is the whole")
+print("of this chapter: count to decide *which* algorithm, measure to")
+print("decide how much, and never quote the second number as though it were")
+print("the first.")

@@ -97,8 +97,8 @@
 > search, and to choose a data structure on evidence rather than habit.
 
 - ✅ 44 Complexity and the Cost Model — *Big-O, Θ and Ω, growth rates, amortised cost, the real
-  constant factors of Python operations measured with `timeit`, and the difference between a
-  benchmark and a guess*
+  constant factors of Python operations counted in interpreter instructions, and the difference
+  between a count and a measurement*
 - ✅ 45 Core Data Structures — *dynamic arrays, linked lists, stacks, queues and `deque`, a hash
   table written by hand to see why `dict` is O(1), heaps and `heapq`, balanced trees vs `bisect`
   vs sorted list, tries; each one chosen for a stated cost*
@@ -378,11 +378,13 @@
   every one of the 63 chapters two counted blocks — a `## Counted:` section placed immediately before
   `## Key takeaways`, with its generators in `tools/gen/<NN>/`. `check-standard.py python` now reports
   **0 issues**, where it previously failed on 28 chapters for the single clause `>= 1 verified block`.
-- **One known hole, and it is the last of its kind.** Chapters 44 and 45 still carry blocks that
-  print a *measured* time rather than a *counted* operation, so they pass on an idle machine and fail
-  under load — observed 19/22, 20/22 and 21/22 for chapter 44 across three consecutive runs. Every
-  chapter written since then counts instead of timing. Converting those two chapters' blocks to
-  counts is the remaining work on this front.
+- **No known hole.** The last one was chapters 44 and 45, whose blocks printed *measured* times and
+  therefore passed on an idle machine and failed under load — 7 of chapter 44's 22 blocks and 1 of
+  chapter 45's 20 were observed failing under 8-way CPU contention, and the set changed from run to
+  run. All 18 clock-dependent blocks in those two chapters were rewritten to count (interpreter
+  instructions via `dis`, comparisons, element shifts, elements copied, block hops), and the two
+  chapters now report 22/22 and 20/20 across three consecutive runs *under the same load* that used
+  to break them. `tools/gen/44` and `tools/gen/45` contain no `timeit` import at all.
 
 ## Order of work
 

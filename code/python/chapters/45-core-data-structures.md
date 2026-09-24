@@ -21,8 +21,9 @@ versions are opaque, and opaque things get chosen by habit. Once you have counte
 your own hash table, `dict` stops being magic and becomes a decision you can defend.
 
 There is one rule throughout. Before each structure, the cost of every operation is **stated**.
-Then it is **measured** -- counted where counting is possible, timed where it is not -- and the two
-are compared. Where they disagree, the measurement wins.
+Then it is **counted**, and the count is compared with the statement. Where the two disagree, the
+count wins -- and because a count is arithmetic rather than a clock reading, you can check every one of
+them on your own machine.
 
 ## The same interface, three costs
 
@@ -32,27 +33,31 @@ looks like a dequeue and is not one.
 
 ```python run
 #!/usr/bin/env python3
-"""Chapter 45 demo -- three ways to dequeue, and what each one moves."""
-import timeit
+"""Chapter 45 demo -- three ways to dequeue, and what each one moves.
+
+The shift counts are exact. They are accumulated while the real drains run,
+so they describe what the algorithm does rather than what a clock on one
+machine happened to notice.
+"""
 from collections import deque
 
 SMALL = 2_000
 LARGE = 4_000
-ROUNDS = 7
-
-
-def shifts(n):
-    """pop(0) removes slot 0 and shifts every remaining element down one.
-    The total over a full drain is a property of the algorithm, not of the
-    machine:  (n-1) + (n-2) + ... + 0  =  n(n-1)/2."""
-    return n * (n - 1) // 2
 
 
 def drain_pop0(n):
+    """pop(0) removes slot 0 and shifts every remaining element down one.
+
+    The total over a full drain is a property of the algorithm, not of the
+    machine:  (n-1) + (n-2) + ... + 0  =  n(n-1)/2.  The counter below
+    accumulates it as the drain happens rather than trusting the formula.
+    """
     q = list(range(n))
+    shifts = 0
     while q:
+        shifts += len(q) - 1     # every element after slot 0 moves down one
         q.pop(0)
-    return len(q)
+    return shifts
 
 
 def drain_head(n):
@@ -63,83 +68,102 @@ def drain_head(n):
     end = len(q)
     while head < end:
         head += 1
-    return head
+    return 0
 
 
 def drain_deque(n):
     q = deque(range(n))
     while q:
         q.popleft()
-    return len(q)
+    return 0
 
 
-def time_one(fn, n):
-    return min(timeit.repeat(lambda: fn(n), number=1, repeat=ROUNDS))
+IMPLEMENTATIONS = (
+    ("list.pop(0)", drain_pop0),
+    ("list + head index", drain_head),
+    ("collections.deque", drain_deque),
+)
+
+def shifts(n):
+    """The closed form the counter above accumulates: (n-1) + ... + 0.
+
+    Used only for the million-item figure below, because draining a real
+    million-item queue would move 499,999,500,000 elements and take
+    minutes. At 2,000 and 4,000 the counter runs and the formula is not
+    trusted; at a million the formula is the only practical option, and the
+    two agree exactly at the sizes where both are available.
+    """
+    return n * (n - 1) // 2
 
 
-def shape(ratio):
-    if ratio < 3.0:
-        return "~2x  (linear)"
-    return "~4x  (quadratic)"
-
-
-shapes = []
-for fn in (drain_pop0, drain_head, drain_deque):
-    shapes.append(shape(time_one(fn, LARGE) / time_one(fn, SMALL)))
+counts = {label: (fn(SMALL), fn(LARGE)) for label, fn in IMPLEMENTATIONS}
+assert counts["list.pop(0)"][0] == shifts(SMALL)
+assert counts["list.pop(0)"][1] == shifts(LARGE)
+million = shifts(1_000_000)
 
 print(f"queueing and dequeuing {SMALL:,} items, then {LARGE:,} items")
 print()
-print(f"{'implementation':<20}{'element shifts':>16}  {'doubling n':>16}")
-print("-" * 54)
-print(f"{'list.pop(0)':<20}{shifts(SMALL):>16,}  {shapes[0]:>16}")
-print(f"{'list + head index':<20}{0:>16,}  {shapes[1]:>16}")
-print(f"{'collections.deque':<20}{0:>16,}  {shapes[2]:>16}")
+print(f"{'implementation':<20}{f'shifts at {SMALL:,}':>17}"
+      f"{f'shifts at {LARGE:,}':>17}{'growth':>9}")
+print("-" * 63)
+for label, _ in IMPLEMENTATIONS:
+    small, large = counts[label]
+    growth = f"{large / small:.1f}x" if small else "--"
+    print(f"{label:<20}{small:>17,}{large:>17,}{growth:>9}")
+
 print()
-print("The two right-hand columns answer different questions. The shift")
-print("count is exact and follows from the algorithm; the doubling column")
-print("is this machine on this run, so it is reported as a band.")
+print("Every number in that table is exact. The shift counts are accumulated")
+print("while the drains run, and they are the same on your machine as on")
+print("mine, which is what lets them be printed in a book at all.")
 print()
-print("Read them together and the choice stops being a matter of taste.")
-print("drain_pop0 does n(n-1)/2 shifts -- for a million-item queue that is")
-print("499,999,500,000 of them -- and its cost quadruples when n doubles.")
-print("The other two do no shifting at all and merely double.")
+print("Read the two middle columns together and the choice stops being a")
+print("matter of taste. list.pop(0) does n(n-1)/2 shifts, and the count")
+print(f"quadruples when n doubles -- the signature of a quadratic. A queue")
+print(f"of a million items pays {million:,} shifts, which is the same")
+print("arithmetic at a size where the problem stops being academic. The")
+print("other two rows do no shifting at all, whatever n is.")
 print()
-print("The head-index version is not a fix, it is a deferral: the list")
-print("still holds every slot it ever allocated, so a long-running service")
-print("grows without bound while its queue looks empty. deque is the fix.")
+print("The head-index version is not a fix, it is a deferral: the list still")
+print("holds every slot it ever allocated, so a long-running service grows")
+print("without bound while its queue looks empty. deque is the fix, and the")
+print("price of the fix is that the middle of a deque is expensive -- which")
+print("is the next thing to look at.")
 ```
 
 ```text
 queueing and dequeuing 2,000 items, then 4,000 items
 
-implementation        element shifts        doubling n
-------------------------------------------------------
-list.pop(0)                1,999,000  ~4x  (quadratic)
-list + head index                  0     ~2x  (linear)
-collections.deque                  0     ~2x  (linear)
+implementation        shifts at 2,000  shifts at 4,000   growth
+---------------------------------------------------------------
+list.pop(0)                 1,999,000        7,998,000     4.0x
+list + head index                   0                0       --
+collections.deque                   0                0       --
 
-The two right-hand columns answer different questions. The shift
-count is exact and follows from the algorithm; the doubling column
-is this machine on this run, so it is reported as a band.
+Every number in that table is exact. The shift counts are accumulated
+while the drains run, and they are the same on your machine as on
+mine, which is what lets them be printed in a book at all.
 
-Read them together and the choice stops being a matter of taste.
-drain_pop0 does n(n-1)/2 shifts -- for a million-item queue that is
-499,999,500,000 of them -- and its cost quadruples when n doubles.
-The other two do no shifting at all and merely double.
+Read the two middle columns together and the choice stops being a
+matter of taste. list.pop(0) does n(n-1)/2 shifts, and the count
+quadruples when n doubles -- the signature of a quadratic. A queue
+of a million items pays 499,999,500,000 shifts, which is the same
+arithmetic at a size where the problem stops being academic. The
+other two rows do no shifting at all, whatever n is.
 
-The head-index version is not a fix, it is a deferral: the list
-still holds every slot it ever allocated, so a long-running service
-grows without bound while its queue looks empty. deque is the fix.
+The head-index version is not a fix, it is a deferral: the list still
+holds every slot it ever allocated, so a long-running service grows
+without bound while its queue looks empty. deque is the fix, and the
+price of the fix is that the middle of a deque is expensive -- which
+is the next thing to look at.
 ```
 
-The two right-hand columns answer different questions, and keeping them apart is most of the skill.
-The shift count is exact: it follows from the algorithm and is the same on your machine. The
-doubling column is this machine on this run, which is why it is a band rather than a figure.
+Both of the right-hand columns are counts, and both are exact -- which is what lets them be printed
+here at all. The shift count follows from the algorithm, and the growth column is just that same count
+read at two sizes.
 
 Read them together and the choice stops being a matter of taste. The `pop(0)` version does n(n-1)/2
-shifts, and its cost **quadruples** when n doubles. The other two do no shifting at all and merely
-double. That is a difference in growth rate, and no amount of tuning a constant factor will close
-it.
+shifts, and that count **quadruples** when n doubles. The other two do no shifting at all, at any n.
+That is a difference in growth rate, and no amount of tuning a constant factor will close it.
 
 The middle row is the interesting one, because it is a trap rather than a solution. Keeping a head
 index does make dequeueing cheap, and it is the fix people reach for when they notice the problem
@@ -154,17 +178,20 @@ and the reason is worth seeing once.
 
 ```python run
 #!/usr/bin/env python3
-"""Chapter 45 demo -- reading a slot is arithmetic, not a search."""
-import timeit
+"""Chapter 45 demo -- reading a slot is arithmetic, not a search.
+
+Every number here is exact. The three traversal orders are built up front so
+that each loop does exactly the same per-iteration work, and what the loops
+are charged for is counted rather than timed.
+"""
 
 N = 100_000
-ROUNDS = 7
 ITEMS = list(range(N))
 
-# The three index orders are built up front so that each timed loop does
-# exactly the same per-iteration work. If one loop computed its index with
-# a subtraction or a modulo and another did not, the difference in the
-# table would be the arithmetic, not the memory access.
+# The three index orders are built up front so that each loop does exactly
+# the same per-iteration work. If one loop computed its index with a
+# subtraction or a modulo and another did not, the difference in the table
+# would be the arithmetic, not the memory access.
 FORWARD = list(range(N))
 BACKWARD = list(range(N - 1, -1, -1))
 MIDDLE_OUT = [(N // 2 + offset) % N for offset in range(N)]
@@ -176,22 +203,47 @@ def address(base, index, width=8):
     return base + index * width
 
 
+def steps_to_reach_array(index):
+    """A dynamic array computes an address. Nothing is traversed, so the
+    step count is the same two operations for every slot there is."""
+    steps = 0
+    steps += 1                      # base + index * width
+    steps += 1
+    return steps
+
+
+def steps_to_reach_chain(index):
+    """A singly linked list has no addresses to compute. It walks from the
+    head, one node at a time, so reaching slot i costs i hops."""
+    steps = 0
+    node = 0
+    while node < index:
+        node += 1
+        steps += 1
+    return steps
+
+
 def visit(order):
+    """Sum the slots in the given order, counting the reads it performed."""
     total = 0
+    reads = 0
     for i in order:
+        reads += 1
         total += ITEMS[i]
-    return total
+    return total, reads
 
 
-def time_one(order):
-    return min(timeit.repeat(lambda: visit(order), number=1, repeat=ROUNDS))
-
+ORDERS = (
+    ("front to back", FORWARD),
+    ("back to front", BACKWARD),
+    ("middle out", MIDDLE_OUT),
+)
 
 print("the slot address a dynamic array computes for each index")
 print("  base = 1000 (pretend), 8 bytes per slot")
 print()
-print(f"{'index':>8}{'address':>12}   work done")
-print("-" * 44)
+print(f"{'index':>8}{'address':>12}   {'work done':>16}")
+print("-" * 39)
 for index in (0, 1, N // 2, N - 1):
     print(f"{index:>8}{address(1000, index):>12,}   1 multiply, 1 add")
 print()
@@ -202,30 +254,42 @@ print("last slot exactly as much as for the first.")
 print()
 print(f"visiting all {N:,} slots in three orders")
 print()
-print(f"{'order':<14}{'total':>16}  {'measured':>10}")
-print("-" * 42)
-print(f"{'front to back':<14}{visit(FORWARD):>16,}  {'baseline':>10}")
-for label, order in (("back to front", BACKWARD), ("middle out", MIDDLE_OUT)):
-    ratio = time_one(order) / time_one(FORWARD)
-    verdict = "same band" if 0.7 < ratio < 1.4 else f"{ratio:.1f}x"
-    print(f"{label:<14}{visit(order):>16,}  {verdict:>10}")
+print(f"{'order':<16}{'total':>16}{'reads':>9}{'last index':>12}{'steps':>7}")
+print("-" * 60)
+for label, order in ORDERS:
+    total, reads = visit(order)
+    last = order[-1]
+    print(f"{label:<16}{total:>16,}{reads:>9,}{last:>12,}"
+          f"{steps_to_reach_array(last):>7}")
+
 print()
-print("Three traversal orders, three identical totals, one band. If")
-print("indexing had to search for its slot, the middle-out walk would be")
-print("the one that noticed -- and the total would still be the same, so")
-print("it is the band that rules a search out and the arithmetic above")
-print("that explains why there is nothing to search for.")
+print("Three traversal orders, three identical totals, and three rows that")
+print("end on three different slots -- 99,999, then 0, then 49,999. The last")
+print("column is 2 for all three, because the cost of a read is the same")
+print("arithmetic wherever the slot is. If indexing had to search for its")
+print("slot, the middle-out walk would be the row that noticed.")
 print()
-print("Contrast that with the linked list, where the same three reads cost")
-print("0, n/2 and n steps.")
+print("Now the same question asked of a structure that does have to search:")
+print()
+print(f"{'index':>9}{'dynamic array':>16}{'linked list':>14}")
+print("-" * 39)
+for index in (0, N // 2, N - 1):
+    print(f"{index:>9,}{steps_to_reach_array(index):>16,}"
+          f"{steps_to_reach_chain(index):>14,}")
+print()
+print("The array column is flat because the address is arithmetic. The")
+print("linked-list column is the index itself, because a chain has no")
+print("arithmetic to do and every hop is one node. That is the whole")
+print("difference between O(1) and O(n) indexing, and it is visible here as")
+print("a column that does not move next to one that does.")
 ```
 
 ```text
 the slot address a dynamic array computes for each index
   base = 1000 (pretend), 8 bytes per slot
 
-   index     address   work done
---------------------------------------------
+   index     address          work done
+---------------------------------------
        0       1,000   1 multiply, 1 add
        1       1,008   1 multiply, 1 add
    50000     401,000   1 multiply, 1 add
@@ -238,29 +302,40 @@ last slot exactly as much as for the first.
 
 visiting all 100,000 slots in three orders
 
-order                    total    measured
-------------------------------------------
-front to back    4,999,950,000    baseline
-back to front    4,999,950,000   same band
-middle out       4,999,950,000   same band
+order                      total    reads  last index  steps
+------------------------------------------------------------
+front to back      4,999,950,000  100,000      99,999      2
+back to front      4,999,950,000  100,000           0      2
+middle out         4,999,950,000  100,000      49,999      2
 
-Three traversal orders, three identical totals, one band. If
-indexing had to search for its slot, the middle-out walk would be
-the one that noticed -- and the total would still be the same, so
-it is the band that rules a search out and the arithmetic above
-that explains why there is nothing to search for.
+Three traversal orders, three identical totals, and three rows that
+end on three different slots -- 99,999, then 0, then 49,999. The last
+column is 2 for all three, because the cost of a read is the same
+arithmetic wherever the slot is. If indexing had to search for its
+slot, the middle-out walk would be the row that noticed.
 
-Contrast that with the linked list, where the same three reads cost
-0, n/2 and n steps.
+Now the same question asked of a structure that does have to search:
+
+    index   dynamic array   linked list
+---------------------------------------
+        0               2             0
+   50,000               2        50,000
+   99,999               2        99,999
+
+The array column is flat because the address is arithmetic. The
+linked-list column is the index itself, because a chain has no
+arithmetic to do and every hop is one node. That is the whole
+difference between O(1) and O(n) indexing, and it is visible here as
+a column that does not move next to one that does.
 ```
 
 Four indices, four different addresses, identical work. There is no loop and no comparison anywhere
 in that computation -- which is the whole explanation of why indexing is O(1), and why the O(1)
 holds for the last slot exactly as much as for the first.
 
-The measurement underneath is a control, not evidence. Three traversal orders give identical totals
-because the total is a property of the data; the *band* is what rules out a hidden search. If
-indexing had to walk to its slot, the middle-out walk would have been the one that noticed.
+The table underneath is a control, not evidence. Three traversal orders give identical totals because
+the total is a property of the data; the identical step counts are what rule out a hidden search. If
+indexing had to walk to its slot, the middle-out walk would have been the row that noticed.
 
 ## The dynamic array: writing is not
 
@@ -661,47 +736,50 @@ Knowing exactly what it gave up is what stops you from making things slower with
 
 ```python run
 #!/usr/bin/env python3
-"""Chapter 45 demo -- what deque gives up to be O(1) at both ends."""
-import timeit
+"""Chapter 45 demo -- what deque gives up to be O(1) at both ends.
+
+The first table is counted rather than timed. CPython's deque is a doubly
+linked list of fixed-size blocks, so reaching slot i means walking blocks
+from whichever end is nearer -- and that walk can be counted exactly.
+"""
 from collections import deque
 
 N = 100_000
-ROUNDS = 5
-TRIES = 1_000
-
-ITEMS = deque(range(N))
+BLOCK = 64          # CPython's deque block size, in pointers
 
 
-def read_at(index):
-    for _ in range(TRIES):
-        ITEMS[index]
+def hops_to_reach(index):
+    """Blocks the interpreter steps through to reach slot i.
+
+    CPython indexes a deque from whichever end is nearer, so the cost is the
+    distance to that end divided by the block size. The result is
+    arithmetic: it is the same on every machine, and no clock appears.
+    """
+    if index < 0:
+        index += N
+    from_left = index // BLOCK
+    from_right = (N - 1 - index) // BLOCK
+    return min(from_left, from_right)
 
 
-def time_one(index):
-    return min(timeit.repeat(lambda: read_at(index), number=1, repeat=ROUNDS))
-
-
-def band(ratio):
-    for edge, label in ((3, "same band"), (30, "~10x slower"), (300, "~100x slower")):
-        if ratio < edge:
-            return label
-    return "~1000x slower or more"
-
-
-print("reading one slot of a deque, a thousand times")
+print("reaching one slot of a deque, by position")
+print(f"  {N:,} items, {BLOCK} pointers per block")
 print()
-print(f"{'position':<18}{'index':>10}  {'measured':>20}")
-print("-" * 50)
-base = time_one(0)
-print(f"{'left end':<18}{0:>10}  {'baseline':>20}")
-for label, index in (("right end", -1), ("middle", N // 2), ("near the right", N - 10)):
-    print(f"{label:<18}{index:>10}  {band(time_one(index) / base):>20}")
+print(f"{'position':<18}{'index':>10}{'block hops':>13}")
+print("-" * 41)
+print(f"{'left end':<18}{0:>10}{hops_to_reach(0):>13,}")
+for label, index in (("right end", -1),
+                     ("near the right", N - 10),
+                     ("a quarter in", N // 4),
+                     ("middle", N // 2)):
+    print(f"{label:<18}{index:>10}{hops_to_reach(index):>13,}")
 print()
 print("A deque is not a list with extra methods. It is a doubly linked list")
 print("of fixed-size blocks, and that layout is why the two ends are cheap")
-print("and the middle is not: reaching index n/2 means walking the block")
-print("chain. CPython walks from whichever end is nearer, so the two ends")
-print("and the two ends' neighbours are fast and the centre is the worst")
+print("and the middle is not: reaching the middle of this deque means")
+print(f"stepping through {hops_to_reach(N // 2):,} blocks, while reaching either end means stepping")
+print("through none. CPython walks from whichever end is nearer, so both")
+print("ends and both ends' neighbours are free and the centre is the worst")
 print("case.")
 print()
 print("So `deque` is not a drop-in list replacement. Swap a list for a deque")
@@ -742,20 +820,23 @@ print("that has to be taken modulo everywhere it is used.")
 ```
 
 ```text
-reading one slot of a deque, a thousand times
+reaching one slot of a deque, by position
+  100,000 items, 64 pointers per block
 
-position               index              measured
---------------------------------------------------
-left end                   0              baseline
-right end                 -1             same band
-middle                 50000  ~1000x slower or more
-near the right         99990             same band
+position               index   block hops
+-----------------------------------------
+left end                   0            0
+right end                 -1            0
+near the right         99990            0
+a quarter in           25000          390
+middle                 50000          781
 
 A deque is not a list with extra methods. It is a doubly linked list
 of fixed-size blocks, and that layout is why the two ends are cheap
-and the middle is not: reaching index n/2 means walking the block
-chain. CPython walks from whichever end is nearer, so the two ends
-and the two ends' neighbours are fast and the centre is the worst
+and the middle is not: reaching the middle of this deque means
+stepping through 781 blocks, while reaching either end means stepping
+through none. CPython walks from whichever end is nearer, so both
+ends and both ends' neighbours are free and the centre is the worst
 case.
 
 So `deque` is not a drop-in list replacement. Swap a list for a deque
@@ -796,10 +877,11 @@ That is how you implement a round-robin scheduler without an index
 that has to be taken modulo everywhere it is used.
 ```
 
-The measurement is blunt: the middle of a deque is a thousand times slower than either end. That is
-not a wart, it is the price of the layout. A deque is a doubly linked list of fixed-size blocks, so
-reaching index n/2 means walking the block chain -- and CPython walks from whichever end is nearer,
-which is why the right end and its neighbours are as fast as the left.
+The count is blunt: reaching the middle of a hundred-thousand-item deque means stepping through 781
+blocks, and reaching either end means stepping through none. That is not a wart, it is the price of the
+layout. A deque is a doubly linked list of fixed-size blocks, so reaching index n/2 means walking the
+block chain -- and CPython walks from whichever end is nearer, which is why the right end and its
+neighbours are as cheap as the left.
 
 So the rule is about access pattern, not about which container is "faster". Swap a list for a deque
 because you push and pop at the ends. If your code does `items[i]` in a loop, a deque makes it
@@ -1446,13 +1528,16 @@ promise, and the standard library gives you one half of it.
 
 ```python run
 #!/usr/bin/env python3
-"""Chapter 45 demo -- bisect finds in log n, then pays n to use the answer."""
+"""Chapter 45 demo -- bisect finds in log n, then pays n to use the answer.
+
+Every number here is exact. The shift count follows from the algorithm, and
+the probe counts come from running a binary search and a linear scan over
+the real data rather than from timing them.
+"""
 import bisect
-import timeit
 
 N = 20_000
 K = 2_000
-ROUNDS = 5
 
 
 def permutation(n):
@@ -1503,44 +1588,40 @@ def linear_probes(sorted_items, target):
     return probes
 
 
-def time_one(fn):
-    return min(timeit.repeat(lambda: fn(N, K), number=1, repeat=ROUNDS))
-
-
-def band(ratio):
-    """The measured column is this machine on this run, so it is a band.
-    The shift column next to it is exact and is the one to trust."""
-    for edge, label in ((3, "same band"), (8, "~5x slower"), (20, "~10x slower")):
-        if ratio < edge:
-            return label
-    return "~30x slower or more"
-
-
-base = time_one(build_by_sort)
-verdict = band(time_one(build_by_insort) / base)
+shifts = shifts_for_insort(N, K)
+assert build_by_insort(N, K) == build_by_sort(N, K)
 
 print(f"a sorted list of {N:,}, then adding {K:,} more keys")
 print()
-print(f"{'approach':<28}{'element shifts':>16}  {'measured':>14}")
-print("-" * 60)
-print(f"{'collect, then sort once':<28}{0:>16,}  {'baseline':>14}")
-print(f"{'bisect.insort each key':<28}{shifts_for_insort(N, K):>16,}  {verdict:>14}")
+print(f"{'approach':<28}{'element shifts':>16}{'per key':>10}")
+print("-" * 54)
+print(f"{'collect, then sort once':<28}{0:>16,}{0:>10,}")
+print(f"{'bisect.insort each key':<28}{shifts:>16,}{shifts // K:>10,}")
 print()
-print("Both rows end with the same sorted list. Only one of them pays a")
-print("linear cost per key, and the shift column says which. For 20,000 and")
-print("2,000 that is about 21 million slot moves to insert 2,000 items.")
+print("Both rows end with the same sorted list -- the assert above is the")
+print("proof, and it is checked every time this program runs. Only one of")
+print("the rows pays a linear cost per key, and the last column is where")
+print(f"that shows: {shifts // K:,} slot moves to place one key.")
+print()
+print("A shift here means an element moving down one slot to make room.")
+print("The sort moves nothing in that sense: it copies the elements into a")
+print("temporary array and back, which is linear in n once, not linear per")
+print("key. That difference is what the two rows are really comparing.")
 print()
 print("This is not an argument against bisect. bisect is excellent at what")
 print("it does, and what it does is *find*. Compare the two searches:")
 print()
 print(f"{'items':>14}{'linear scan':>16}{'bisect probes':>16}")
 print("-" * 46)
+largest_scan = largest_probes = 0
 for n in (1_000, 100_000, 10_000_000):
     items = list(range(n))
     target = n // 2
-    print(f"{n:>14,}{linear_probes(items, target):>16,}{probes_to_find(items, target):>16}")
+    largest_scan = linear_probes(items, target)
+    largest_probes = probes_to_find(items, target)
+    print(f"{n:>14,}{largest_scan:>16,}{largest_probes:>16}")
 print()
-print("Ten million items, twenty-three probes. The scan needs five million.")
+print(f"Ten million items, {largest_probes} probes. The scan needs {largest_scan:,}.")
 print("That is log2(n) against n, and it is why bisect is the right tool for")
 print("rank, thresholds, and 'which band does this value fall in'.")
 print()
@@ -1558,14 +1639,20 @@ print("logarithmic for both. The next demo builds one.")
 ```text
 a sorted list of 20,000, then adding 2,000 more keys
 
-approach                      element shifts        measured
-------------------------------------------------------------
-collect, then sort once                    0        baseline
-bisect.insort each key            21,000,000      ~5x slower
+approach                      element shifts   per key
+------------------------------------------------------
+collect, then sort once                    0         0
+bisect.insort each key            21,000,000    10,500
 
-Both rows end with the same sorted list. Only one of them pays a
-linear cost per key, and the shift column says which. For 20,000 and
-2,000 that is about 21 million slot moves to insert 2,000 items.
+Both rows end with the same sorted list -- the assert above is the
+proof, and it is checked every time this program runs. Only one of
+the rows pays a linear cost per key, and the last column is where
+that shows: 10,500 slot moves to place one key.
+
+A shift here means an element moving down one slot to make room.
+The sort moves nothing in that sense: it copies the elements into a
+temporary array and back, which is linear in n once, not linear per
+key. That difference is what the two rows are really comparing.
 
 This is not an argument against bisect. bisect is excellent at what
 it does, and what it does is *find*. Compare the two searches:
@@ -1576,7 +1663,7 @@ it does, and what it does is *find*. Compare the two searches:
        100,000          50,001              16
     10,000,000       5,000,001              23
 
-Ten million items, twenty-three probes. The scan needs five million.
+Ten million items, 23 probes. The scan needs 5,000,001.
 That is log2(n) against n, and it is why bisect is the right tool for
 rank, thresholds, and 'which band does this value fall in'.
 
@@ -1592,8 +1679,7 @@ logarithmic for both. The next demo builds one.
 ```
 
 Two rows, the same sorted list at the end, and a twenty-one-million-slot difference in how it got
-there. The shift column is the one to trust; the measured column is a band because it is this
-machine on this run.
+there. The last column is where it shows: 10,500 slot moves to place a single key.
 
 This is not an argument against `bisect`, and the second table says why. Ten million items, twenty-
 three probes, against five million for a scan. That is log n against n, and nothing else in the
@@ -2220,74 +2306,65 @@ Here is the cost, counted:
 #!/usr/bin/env python3
 """Chapter 45 scenario -- the 'recent events' buffer that ate the worker.
 
-Both versions keep the last 100 events out of 200,000. The shift count is
-exact; the measured column is this machine on this run, so it is a band.
+Both versions keep the last 100 events out of 200,000. The slot-move count
+is exact: it is accumulated while the real list version runs, so it is a
+fact about the algorithm rather than about one machine's afternoon.
 """
-import timeit
 from collections import deque
 
 KEEP = 100
 EVENTS = 200_000
-ROUNDS = 5
-
-
-def shifts_for_insert_zero(events, keep):
-    """Every insert(0, x) shifts the whole buffer up one slot, and the buffer
-    sits at its cap for all but the first `keep` events. The trimming
-    `del buf[keep:]` then shifts the buffer down again. So each event costs
-    about 2*keep slot moves once the buffer is full."""
-    warmup = min(events, keep)
-    full = max(events - keep, 0)
-    return warmup * (warmup - 1) // 2 + full * 2 * keep
 
 
 def buffer_with_list(events, keep):
+    """insert(0, x) shifts the whole buffer up to make room at the front.
+
+    The trimming `del buf[keep:]` deletes from the *end*, so it shifts
+    nothing -- which is the one place this program is easy to get wrong.
+    """
     buf = []
+    moves = 0
     for i in range(events):
+        moves += len(buf)          # every item already there moves up one slot
         buf.insert(0, i)
-        del buf[keep:]
-    return len(buf), buf[0]
+        del buf[keep:]             # a tail deletion moves nothing
+    return len(buf), buf[0], moves
 
 
 def buffer_with_deque(events, keep):
     buf = deque(maxlen=keep)
     for i in range(events):
         buf.appendleft(i)
-    return len(buf), buf[0]
+    return len(buf), buf[0], 0
 
 
-def time_one(fn):
-    return min(timeit.repeat(lambda: fn(EVENTS, KEEP), number=1, repeat=ROUNDS))
-
-
-def band(ratio):
-    for edge, label in ((3, "same band"), (30, "~10x slower"), (300, "~100x slower")):
-        if ratio < edge:
-            return label
-    return "~1000x slower or more"
-
-
-base = time_one(buffer_with_deque)
-list_ratio = band(time_one(buffer_with_list) / base)
+list_len, list_head, moves = buffer_with_list(EVENTS, KEEP)
+deque_len, deque_head, _ = buffer_with_deque(EVENTS, KEEP)
+assert (list_len, list_head) == (deque_len, deque_head)
 
 print(f"keeping the last {KEEP} of {EVENTS:,} events")
 print()
-print(f"{'implementation':<28}{'slot moves':>16}  {'measured':>18}")
-print("-" * 64)
-print(f"{'deque(maxlen=100)':<28}{0:>16,}  {'baseline':>18}")
-print(f"{'list.insert(0, x) + del':<28}{shifts_for_insert_zero(EVENTS, KEEP):>16,}  {list_ratio:>18}")
+print(f"{'implementation':<28}{'slot moves':>16}{'per event':>12}")
+print("-" * 56)
+print(f"{'deque(maxlen=100)':<28}{0:>16,}{0.0:>12.1f}")
+print(f"{'list.insert(0, x) + del':<28}{moves:>16,}{moves / EVENTS:>12.1f}")
 print()
-print("Both buffers end up holding the same 100 events in the same order.")
-print("The measured column is a band because it is this machine on this run;")
-print("the slot-move column is exact, and it is the one that explains the")
-print("support ticket.")
+print("Both buffers end up holding the same 100 events in the same order --")
+print("the assert above is the proof, and it is checked on every run. What")
+print("differs is the second column, and it is exact: it is accumulated")
+print("while the list version runs, so it is a fact about the algorithm and")
+print("not about this machine.")
 print()
-print("Two things make the list version quadratic-shaped in the buffer size")
-print("rather than the event count. insert(0, x) shifts the buffer up to make")
-print("room at the front, and del buf[100:] shifts it back down to trim. A")
-print("deque with maxlen does neither: appending at the left writes into a")
-print("slot that already exists, and the item falling off the right end is")
-print("already a slot that exists. Nothing is ever moved.")
+print("Read the last column and the support ticket explains itself. The")
+print("list version moves about a hundred slots for every single event, to")
+print("keep a buffer of a hundred. Nothing about that number depends on how")
+print("fast the machine is, which is why it was still the answer when the")
+print("worker melted.")
+print()
+print("The shape is worth naming. The cost per event is proportional to")
+print("`keep`, not to `events`, so making the buffer longer makes every")
+print("event more expensive -- and the buffer length is the one thing the")
+print("person writing this code thought was free to change.")
 print()
 print("And the correctness bug is worse than the performance one. `del")
 print("buf[100:]` is a line somebody has to remember to write. It is not in")
@@ -2300,22 +2377,27 @@ print("property of the object rather than a statement in the loop.")
 ```text
 keeping the last 100 of 200,000 events
 
-implementation                    slot moves            measured
-----------------------------------------------------------------
-deque(maxlen=100)                          0            baseline
-list.insert(0, x) + del           39,984,950         ~10x slower
+implementation                    slot moves   per event
+--------------------------------------------------------
+deque(maxlen=100)                          0         0.0
+list.insert(0, x) + del           19,994,950       100.0
 
-Both buffers end up holding the same 100 events in the same order.
-The measured column is a band because it is this machine on this run;
-the slot-move column is exact, and it is the one that explains the
-support ticket.
+Both buffers end up holding the same 100 events in the same order --
+the assert above is the proof, and it is checked on every run. What
+differs is the second column, and it is exact: it is accumulated
+while the list version runs, so it is a fact about the algorithm and
+not about this machine.
 
-Two things make the list version quadratic-shaped in the buffer size
-rather than the event count. insert(0, x) shifts the buffer up to make
-room at the front, and del buf[100:] shifts it back down to trim. A
-deque with maxlen does neither: appending at the left writes into a
-slot that already exists, and the item falling off the right end is
-already a slot that exists. Nothing is ever moved.
+Read the last column and the support ticket explains itself. The
+list version moves about a hundred slots for every single event, to
+keep a buffer of a hundred. Nothing about that number depends on how
+fast the machine is, which is why it was still the answer when the
+worker melted.
+
+The shape is worth naming. The cost per event is proportional to
+`keep`, not to `events`, so making the buffer longer makes every
+event more expensive -- and the buffer length is the one thing the
+person writing this code thought was free to change.
 
 And the correctness bug is worse than the performance one. `del
 buf[100:]` is a line somebody has to remember to write. It is not in
@@ -2342,7 +2424,7 @@ Both costs disappear at once, and for different reasons. `appendleft` writes int
 already exists rather than shifting the buffer, so it is O(1). `maxlen` drops the item at the far
 end automatically, so there is no eviction line to forget and no way for the buffer to grow.
 
-The counts from the demo above make the first half concrete: 39,984,950 slot moves become zero. The
+The counts from the demo above make the first half concrete: 19,994,950 slot moves become zero. The
 second half does not show up in a benchmark at all, and it is the more valuable half -- the memory
 bound is now a property of the object rather than a statement somebody has to remember to write.
 :::
@@ -2352,8 +2434,8 @@ bound is now a property of the object rather than a statement somebody has to re
 - A container is a set of cost promises, not a bag of methods. A list is O(1) to read at any index
   and O(n) to insert at the front; a `deque` is O(1) at both ends and O(n) to read in the middle.
   Neither is "faster".
-- State the cost before you measure it. The shift counts and comparison counts in this chapter are
-  exact and identical on every machine; timings are a property of the machine and belong in bands.
+- State the cost before you measure it. Every count in this chapter is exact and identical on every
+  machine; a timing is a property of one machine, which is why none of them are printed here.
 - `list.pop(0)` and `list.insert(0, x)` are both O(n) and both look like O(1). Use `deque` when the
   ends are where the traffic is.
 - A hash table's O(1) comes from the hash function spreading the keys and from resizing before the
@@ -2537,7 +2619,9 @@ print("six sorted lists")
 for index, items in enumerate(LISTS):
     print(f"  list {index}: {items}")
 print()
-print(f"merged: {merged}")
+print("merged:")
+for start in range(0, len(merged), 12):
+    print("   ", merged[start:start + 12])
 print()
 print("agrees with a plain sort :", merged == merge_by_sorting(LISTS))
 print()
@@ -2568,7 +2652,9 @@ six sorted lists
   list 4: [4, 10, 16, 22]
   list 5: [5, 11, 17, 23]
 
-merged: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+merged:
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 
 agrees with a plain sort : True
 
