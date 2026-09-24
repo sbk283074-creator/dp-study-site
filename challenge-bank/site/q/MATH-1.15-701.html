@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MATH-1.15-701 — Maths AA HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>1.15 Proof by induction applied to a recurrence that is combinatorial rather than algebraic, and the degenerate configurations at which the counted formula fails</h1>
+<p class="lede"><a href="../math-aa-hl/index.html">Mathematics: analysis and approaches HL</a> · MATH-1.15-701</p>
+<button type="button" class="q-done-page" data-qid="MATH-1.15-701" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="MATH-1.15-701">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Topic 1: Number and algebra</span><span class="chip chip-key">AHL 1.15 (proof by mathematical induction), with AHL 3.11 (the equation of a straight line) and SL 4.10 (sequences) for the recurrence</span><span class="chip">P1 · Section B</span><span class="chip">14 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">technology: not allowed</span><span class="chip">Determine</span><span class="chip">Prove</span><span class="chip">Determine</span><span class="chip">Evaluate</span></div>
+
+<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 340" role="img" aria-label="Four lines in general position: no two parallel, no three through a common point, with their six points of intersection marked"><rect x="0" y="0" width="560" height="340" fill="#ffffff"/><line x1="70.0" y1="0.0" x2="560.0" y2="205.8" stroke="#2f5fd0" stroke-width="2"/><line x1="0.0" y1="289.5" x2="526.4" y2="0.0" stroke="#2f5fd0" stroke-width="2"/><line x1="128.6" y1="0.0" x2="371.4" y2="340.0" stroke="#2f5fd0" stroke-width="2"/><line x1="171.0" y1="340.0" x2="494.8" y2="0.0" stroke="#2f5fd0" stroke-width="2"/><circle cx="328.8" cy="108.7" r="3.4" fill="#b3352f"/><circle cx="153.7" cy="35.1" r="3.4" fill="#b3352f"/><circle cx="373.4" cy="127.4" r="3.4" fill="#b3352f"/><circle cx="240.8" cy="157.1" r="3.4" fill="#b3352f"/><circle cx="460.0" cy="36.5" r="3.4" fill="#b3352f"/><circle cx="285.5" cy="219.7" r="3.4" fill="#b3352f"/></svg><figcaption>Four lines in general position: no two parallel and no three passing through a common point. Their six points of intersection are marked.</figcaption></figure>
+<section id="q-print">
+<h2>Question</h2>
+<p>A set of lines in a plane is said to be in <strong>general position</strong> if no two are parallel and no three pass through a common point.</p>
+<p>The figure shows four lines in general position. The regions into which the lines divide the plane are the separate parts of the plane bounded by them, including the unbounded ones.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Using the figure, write down the number of regions formed by one, two, three and four lines in general position, and use these values to conjecture an expression for $R_{n+1}$ in terms of $R_n$.</p> <em>(Determine)</em></li><li><span class="marks">[5 marks]</span><strong>(b)</strong> <p>Prove by mathematical induction that the number of regions formed by $n$ lines in general position is $R_n = \dfrac{n^2 + n + 2}{2}$ for all $n \ge 1$. In your argument you must justify the step from $n$ to $n+1$ by reference to how the new line is divided.</p> <em>(Prove)</em></li><li><span class="marks">[3 marks]</span><strong>(c)</strong> <p>Exactly two of the four lines in the figure are now drawn parallel to one another, with no three lines passing through a common point. Determine the number of regions formed, and explain which single feature of the induction step accounts for the change.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(d)</strong> <p>A student claims that making three lines concurrent costs more regions than making two lines parallel, because a triple point destroys two intersections while a parallel pair destroys only one. Evaluate this claim for four lines, determining the number of regions in each arrangement, and state what it shows about the formula for general position.</p> <em>(Evaluate)</em></li></ol>
+<p class="reveal-note">Total: 14 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Math AA HL" data-ai-diff="5" data-ai-marks="14" data-ai-ref="MATH-1.15-701">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>A set of lines in a plane is said to be in **general position** if no two are parallel and no three pass through a common point.
+
+The figure shows four lines in general position. The regions into which the lines divide the plane are the separate parts of the plane bounded by them, including the unbounded ones.
+
+(a) Using the figure, write down the number of regions formed by one, two, three and four lines in general position, and use these values to conjecture an expression for $R_{n+1}$ in terms of $R_n$. [3 marks] (Determine)
+(b) Prove by mathematical induction that the number of regions formed by $n$ lines in general position is $R_n = \dfrac{n^2 + n + 2}{2}$ for all $n \ge 1$. In your argument you must justify the step from $n$ to $n+1$ by reference to how the new line is divided. [5 marks] (Prove)
+(c) Exactly two of the four lines in the figure are now drawn parallel to one another, with no three lines passing through a common point. Determine the number of regions formed, and explain which single feature of the induction step accounts for the change. [3 marks] (Determine)
+(d) A student claims that making three lines concurrent costs more regions than making two lines parallel, because a triple point destroys two intersections while a parallel pair destroys only one. Evaluate this claim for four lines, determining the number of regions in each arrangement, and state what it shows about the formula for general position. [3 marks] (Evaluate)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Counting from the figure: $R_1 = 2$, $R_2 = 4$, $R_3 = 7$, $R_4 = 11$ <strong>(A1)</strong>.<br>The successive differences are $2, 3, 4$, so the natural conjecture is</p>
+<p>$$R_{n+1} = R_n + (n+1), \qquad R_1 = 2. \tag{AG}$$</p>
+<p><strong>(b)</strong> *Base case.* For $n = 1$ the formula gives $(1 + 1 + 2)/2 = 2$, which is the number of half-<br>planes into which one line divides the plane <strong>(M1)</strong>.</p>
+<p>*Inductive hypothesis.* Suppose for some $k \ge 1$ that $k$ lines in general position give<br>$R_k = (k^2 + k + 2)/2$.</p>
+<p>*Inductive step.* Add a $(k+1)$-th line $L$ in general position. It meets each of the $k$ existing<br>lines, and since no three are concurrent those $k$ intersection points are all distinct, so they<br>divide $L$ into $k+1$ pieces: two unbounded rays and $k-1$ bounded segments <strong>(M1)</strong>. Each of the<br>$k+1$ pieces lies inside exactly one existing region and cuts that region into two, so precisely<br>$k+1$ regions are added, and no region is cut twice because a region convex on the line cannot be<br>entered and left again by the same straight piece <strong>(R1)</strong>. Hence</p>
+<p>$$R_{k+1} = R_k + (k+1) = \frac{k^2 + k + 2}{2} + k + 1 = \frac{k^2 + 3k + 4}{2}<br>= \frac{(k+1)^2 + (k+1) + 2}{2} \tag{A1}$$</p>
+<p>which is the required form with $n = k+1$. Since the base case holds and the step holds for every<br>$k \ge 1$, the result is true for all $n \ge 1$ <strong>(A1)</strong>.</p>
+<p><strong>(c)</strong> With one parallel pair, the count is $11 - 1 = 10$ regions <strong>(A1)</strong>. The induction step is<br>what changes: the line parallel to an existing one meets only $k-1$ of them rather than $k$, so it<br>is divided into $k$ pieces instead of $k+1$ and adds $k$ regions instead of $k+1$. One missing<br>intersection, one missing region <strong>(R1)</strong>.</p>
+<p><strong>(d)</strong> Take four lines with exactly one triple point and otherwise general. Build them in order:<br>the first three concurrent lines give $6$ regions (three lines through one point cut the plane into<br>six sectors), and the fourth line, meeting all three at three distinct points, is divided into four<br>pieces and adds $4$ regions. Total $6 + 4 = 10$ <strong>(A1)</strong>.</p>
+<p>So the claim is <strong>false</strong>: a triple point and a parallel pair each cost exactly one region relative<br>to general position, both giving $10$ where general position gives $11$. The student's error is<br>counting destroyed *intersection points* rather than the distinct points at which one added line is<br>cut. A triple point removes two intersection points from the arrangement but only one distinct<br>point from the line that completes it, and it is the number of distinct points on the newly added<br>line -- not the total in the figure -- that governs how many regions that line creates <strong>(R1)</strong>.<br>The formula for general position is therefore fragile in a specific way: it fails by one for each<br>parallel pair and by one for each triple point, so for $n$ lines with $p$ parallel pairs and $t$<br>triple points the count is $\frac{n^2+n+2}{2} - p - t$ <strong>(A1)</strong>.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p><strong>(a)</strong> (A1) for the four values 2, 4, 7, 11 -- accept a single slip in one value if the<br>differences are then consistent with the candidate's own counts. (M1) is not available here; the<br>mark is for reading the figure correctly. The conjecture $R_{n+1} = R_n + (n+1)$ must be stated in<br>general form; $R_{n+1} = R_n + n$ follows from the same counts misread by one and should be carried<br>through into (b) with follow-through rather than being marked wrong in isolation.</p>
+<p><strong>(b)</strong> (M1) for the base case with the value checked, not merely asserted. (M1) for the division of<br>the new line into $k+1$ pieces -- this is the substance of the question and a candidate who writes<br>"$R_{k+1} = R_k + k + 1$ because there is one more line" without explaining why has not earned it.<br>(R1) for the justification that each piece splits a different region, which is what makes the count<br>exact rather than a lower bound. (A1) for the algebraic completion of the step, and (A1) for the<br>concluding statement that the result follows for all $n \ge 1$ by induction; a proof that omits the<br>reference to the hypothesis scores at most 3 of the 5.</p>
+<p><strong>(c)</strong> (A1) for 10. (R1) for locating the change in the induction step. Do not accept an answer<br>obtained by subtracting from 11 without saying why one region is lost; the explanation is the mark.</p>
+<p><strong>(d)</strong> (A1) for 10 in the concurrent case -- allow any correct route, including the general<br>$n + 1 + V$ count with $V$ the number of vertices, or direct drawing. (R1) for identifying that the<br>student counted intersection points rather than distinct points on the added line. (A1) for the<br>corrected general expression $R_n = \frac{n^2+n+2}{2} - p - t$. A candidate who agrees with the<br>student but produces the right counts has contradicted their own arithmetic and should be awarded<br>the numerical mark only.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The item is built on a defect of the induction habit: students learn to prove the<br>algebraic identity and are rarely required to justify the combinatorial claim the identity rests<br>on. Here $R_{n+1} = R_n + (n+1)$ is not arithmetic -- it is a statement about how a line is cut<br>into pieces and which pieces lie in which regions, and it is precisely that statement which breaks<br>when general position is dropped. Part (b)'s reasoning mark exists to make that visible.</p>
+<p>Parts (c) and (d) are the point of the question. Both departures from general position destroy<br>intersection points, and the student in (d) reasons that the bigger destruction must cost more<br>regions. It does not. What governs the count is the number of *distinct* points at which the<br>newly added line is cut, and a parallel pair removes one such point from one line while a triple<br>point also removes one such point from one line -- the fact that the triple point removes two<br>intersection points from the total tally is a red herring, since both of those points lie on the<br>same line and collapse into one. The two arrangements cost the same, and both give 10 where general<br>position gives 11.</p>
+<p>The wrong answer is 9 for the concurrent case, obtained by subtracting two on the grounds that two<br>intersections have been lost, and the second is 10 for the parallel case obtained by drawing it<br>out and miscounting the unbounded regions -- a real hazard here, since four lines with one parallel<br>pair have two unbounded 'corridors' that students routinely count once. Neither error involves any<br>algebra, which is why the parts are marked for the explanation as much as the number.</p>
+<p>For a candidate who has seen the formula before, the item is not hard; for one who has had to<br>derive why it is true, the last two parts are unanswerable from memory. That asymmetry is the<br>challenge, and it is the reason the figure is supplied: it fixes $n = 4$ and lets the counting be<br>checked, so no part of the item can be passed by reciting a closed form.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Topic 1: Number and algebra — 1.15 Proof by induction applied to a recurrence that is combinatorial rather than algebraic, and the degenerate configurations at which the counted formula fails</dd></div>
+  <div><dt>Challenge lever</dt><dd>The induction step is a claim about geometry -- a new line is cut into $n+1$ pieces by $n$ distinct intersection points and each piece splits one region -- so the formula survives only while general position holds, and the two ways it can fail do so by exactly the same amount, which is the opposite of what counting destroyed intersection points predicts.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>AHL 1.15 (proof by mathematical induction), with AHL 3.11 (the equation of a straight line) and SL 4.10 (sequences) for the recurrence</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Original. The &#x27;regions of an arrangement of lines&#x27; sequence is classical and appears in most combinatorics texts, and the lazy-caterer formula $R_n = (n^2+n+2)/2$ is standard. What is constructed here is the pairing: the induction is asked for as a *geometric* justification rather than an algebraic verification, and the two degenerate configurations are then set against each other so that the candidate must discover they cost the same. The command structure, the markscheme annotations and the explicit reasoning marks are IB&#x27;s, not the source&#x27;s.</dd></div>
+  <div><dt>Verification</dt><dd>The counts were verified by an independent construction rather than by the closed form. Lines were added one at a time and the number of regions incremented by (distinct intersection points on the new line + 1), giving $R_1..R_5 = [1, 2, 4, 7, 11, 16]$ in general position, which matches $(n^2+n+2)/2$ for every $n$ tested. The two degenerate cases were built the same way: one parallel pair among four lines gives 10, and one triple point among four lines gives 10, while three lines through a single point give 6 by direct construction (six sectors) -- which is also what the incremental rule gives, since the third line meets the previous two at one distinct point and adds two regions. The claim $R_n = (n^2+n+2)/2 - p - t$ was then checked against the incremental construction for several $(n, p, t)$ combinations. Arithmetic assertions below re-derive each value from the recurrence, not from the closed form.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2019May_TZ2_q07 (similarity 0.007)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL5.19-202 (similarity 0.002)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-24</dd></div>
+</dl>
+<div class="pager"><a href="../math-aa-hl/index.html">← All Maths AA HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+</body>
+</html>

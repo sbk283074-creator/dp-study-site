@@ -580,8 +580,8 @@ The failure mode this rule exists to prevent is a bank that looks thorough and i
 bank stood at **45/255 = 18%**, with **Maths at 8.3% (9/109)** and **BM at 0% (0/30)**. Maths and BM are
 the two subjects with the widest gap between what the guide presents and what the bank contains. Batches
 22 and 22b were written against that gap and moved it, and the figure work that followed kept moving it:
-the bank now stands at **110/337 = 33%**, with **Maths at 22% (30/136)** — above the per-subject target —
-**CS at 52% (35/67)**, **Physics at 39% (37/95)** and **BM at 21% (8/39)**, against 0%
+the bank now stands at **114/342 = 33%**, with **Maths at 23% (32/138)** — above the per-subject target —
+**CS at 52% (35/68)**, **Physics at 40% (39/97)** and **BM at 21% (8/39)**, against 0%
 for BM at Batch 21. `FIGURE_COVERAGE_FLOOR` was raised from 0.17 to **0.19** in the same change that
 earned it and has since been raised eight times more, to **0.24**, then to **0.25** by Batch 25, then to
 **0.27** by Batch 26, then to **0.28** by Batch 27, then to **0.29** by Batch 28, then to **0.30** by

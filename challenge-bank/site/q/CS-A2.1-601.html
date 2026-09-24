@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A2.1-601 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A2.1 Network fundamentals: a stated model of a windowed connection, where the throughput is governed by bytes in flight per round trip rather than by the rated capacity of the link</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A2.1-601</p>
+<button type="button" class="q-done-page" data-qid="CS-A2.1-601" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-A2.1-601">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A2.1 Network fundamentals (the difference between latency, bandwidth and throughput), with A2.3 Data transmissions (packet switching and retransmission)</span><span class="chip">P1 · Section A</span><span class="chip">15 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">Calculate</span><span class="chip">Explain</span><span class="chip">Determine</span><span class="chip">Determine</span></div>
+
+
+<section id="q-print">
+<h2>Question</h2>
+<p>A network engineer is asked to size a connection for a new service. Use the model given above to answer the questions that follow. Numerical answers should be given to three significant figures.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>For a loss probability of $p = 0.01$, calculate the average window in packets and the resulting throughput in Mbit/s.</p> <em>(Calculate)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>The link is rated at 100 Mbit/s but the connection delivers the value found in part (a). Explain, referring to the two formulas, what it is that limits this connection, and why the rating does not appear in the answer.</p> <em>(Explain)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>A new service requires a sustained throughput of 20 Mbit/s on this connection with the same round-trip time. Determine the maximum packet loss probability the network can tolerate.</p> <em>(Determine)</em></li><li><span class="marks">[2 marks]</span><strong>(d)</strong> <p>Two upgrades are proposed: route the traffic so that the round-trip time is halved, or improve the network so that the loss probability is halved. Determine the throughput produced by each and state which is the more effective.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(e)</strong> <p>An engineer proposes achieving the 20 Mbit/s requirement by using packets with four times the MSS, leaving $p = 0.01$ unchanged. Evaluate this proposal.</p> <em>(Evaluate)</em></li></ol>
+<p class="reveal-note">Total: 15 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="15" data-ai-ref="CS-A2.1-601">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>A network engineer is asked to size a connection for a new service. Use the model given above to answer the questions that follow. Numerical answers should be given to three significant figures.
+
+(a) For a loss probability of $p = 0.01$, calculate the average window in packets and the resulting throughput in Mbit/s. [3 marks] (Calculate)
+(b) The link is rated at 100 Mbit/s but the connection delivers the value found in part (a). Explain, referring to the two formulas, what it is that limits this connection, and why the rating does not appear in the answer. [3 marks] (Explain)
+(c) A new service requires a sustained throughput of 20 Mbit/s on this connection with the same round-trip time. Determine the maximum packet loss probability the network can tolerate. [4 marks] (Determine)
+(d) Two upgrades are proposed: route the traffic so that the round-trip time is halved, or improve the network so that the loss probability is halved. Determine the throughput produced by each and state which is the more effective. [2 marks] (Determine)
+(e) An engineer proposes achieving the 20 Mbit/s requirement by using packets with four times the MSS, leaving $p = 0.01$ unchanged. Evaluate this proposal. [3 marks] (Evaluate)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> The window is $W = 1.22 / \\sqrt{0.01} = 1.22 / 0.1 = 12.2$ packets <strong>(M1)</strong>, so about<br>twelve full segments are acknowledged per round trip. The throughput is</p>
+<p>$$S = \frac{12.2 \times 1460 \times 8}{0.040} = 3.56 \times 10^{6}\ \mathrm{bit\,s^{-1}}<br>= 3.56\ \mathrm{Mbit/s}. \tag{A1}$$</p>
+<p>A candidate who rounds the window to 12 packets first obtains $3.50\ \mathrm{Mbit/s}$, which is<br>accepted <strong>(A1)</strong>.</p>
+<p><strong>(b)</strong> The rating of 100 Mbit/s is the capacity of the wire; it never enters either formula, and<br>that is not an omission <strong>(M1)</strong>. What the model allows onto the link is $W \times \mathrm{MSS}$<br>bytes once every round trip, so the achievable rate is set by <strong>how much can be in flight</strong> and<br><strong>how long a round trip takes</strong>, not by how fast the wire could carry it. The link is idle for most<br>of every round trip: putting 12.2 segments on a $100\ \mathrm{Mbit/s}$ wire takes<br>$\frac{12.2 \times 1460 \times 8}{100 \times 10^{6}} = 1.43\ \mathrm{ms}$, which is $3.6\%$ of the<br>$40\ \mathrm{ms}$ cycle, and the remaining $96.4\%$ is waiting for acknowledgements <strong>(A1)</strong>. Losses set $W$ through $1.22/\sqrt{p}$, so it is the loss<br>probability and the round-trip time that govern the throughput; the wire rating only becomes the<br>limit once the window is large enough to fill it, which at $p = 0.01$ it is nowhere near<br><strong>(R1)</strong>.</p>
+<p><strong>(c)</strong> The relation must be run backwards: $p$ is the unknown, and it sits inside a square root in<br>the denominator <strong>(M1)</strong>. From $S = W \times \mathrm{MSS} \times 8 / \mathrm{RTT}$,</p>
+<p>$$W = \frac{S \times \mathrm{RTT}}{\mathrm{MSS} \times 8}<br>= \frac{20 \times 10^{6} \times 0.040}{1460 \times 8} = 68.5\ \mathrm{packets}. \tag{A1}$$</p>
+<p>Then from $W = 1.22 / \sqrt{p}$, squaring is required and $\sqrt{p} = 1.22 / W$ <strong>(M1)</strong>, so</p>
+<p>$$p = \left(\frac{1.22 \times \mathrm{MSS} \times 8}{S \times \mathrm{RTT}}\right)^{2}<br>= \left(\frac{1.22}{68.5}\right)^{2} = 3.17 \times 10^{-4},$$</p>
+<p>i.e. about <strong>one packet in 3150</strong>, or $0.032\%$ <strong>(A1)</strong>. The common slip is to divide rather than<br>to square, giving $p = 1.22/68.5 = 0.0178$ --- a loss rate fifty-six times more forgiving than the<br>network can actually support, and one that would be reported as a comfortably achievable target.</p>
+<p><strong>(d)</strong> Halving the round-trip time doubles the throughput, because $\mathrm{RTT}$ appears to the<br>first power in the denominator: $S = 3.56 \times 2 = 7.12\ \mathrm{Mbit/s}$; halving the loss<br>probability multiplies the window by $\sqrt{2}$, because $p$ appears under a square root:<br>$W = 1.22/\sqrt{0.005} = 17.3$ packets and $S = 5.04\ \mathrm{Mbit/s}$ <strong>(M1)</strong>. The routing change is<br>the more effective, by a factor of $7.12 / 5.04 = 1.41 = \sqrt{2}$, and the reason is in the<br>exponents: the model is linear in $1/\mathrm{RTT}$ and only proportional to $1/\sqrt{p}$ <strong>(A1)</strong>.</p>
+<p><strong>(e)</strong> Substituting $4 \times \mathrm{MSS}$ gives $S = 4 \times 3.56 = 14.2\ \mathrm{Mbit/s}$,<br>which the model does scale linearly with <strong>(M1)</strong> --- and even that is short of the 20<br>$\mathrm{Mbit/s}$ required, so the proposal cannot reach the target on the model's own terms<br><strong>(A1)</strong>. It also fails on the way there: a segment of $4 \times 1460 = 5840$ bytes does not fit an<br>Ethernet frame, whose MTU is 1500 bytes, so the data would be fragmented, and a fragment carries the<br>same loss exposure as a whole segment --- losing any fragment retransmits the datagram, so the<br>effective loss probability rises rather than staying at $0.01$ <strong>(A1)</strong>. The MSS is not a free<br>variable to be traded against $p$; it is fixed by the link, which is exactly why the model treats<br>it as a constant.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p><strong>(a)</strong> (M1) for $W = 12.2$ packets; (A1) for $3.56\ \mathrm{Mbit/s}$. Accept $3.5$ from a window<br>rounded to 12, and accept $3.6$ from $\sqrt{0.01} = 0.1$ carried to one significant figure at the<br>end. Do not accept an answer that uses the 100 Mbit/s rating --- that is part (b)'s misconception,<br>and it earns nothing here.</p>
+<p><strong>(b)</strong> (M1) for observing that the rating does not appear in the model, (A1) for quantifying the<br>idle time or the bytes-in-flight limit, (R1) for naming what does govern the rate. A candidate who<br>says only "there is overhead" or "TCP is slow" has not used the two formulas given and scores (M1)<br>at most; the question says *referring to the two formulas*, and that is the reasoning being marked.<br>Accept the bandwidth-delay-product argument in place of the idle-time argument: $100\ \mathrm{Mbit/s}<br>\times 40\ \mathrm{ms} = 500\ \mathrm{KB} \approx 342$ packets would be needed to fill the pipe, and<br>$12$ is far short of it.</p>
+<p><strong>(c)</strong> (M1) for committing to the inversion by solving for $W$, (A1) for $W = 68.5$ packets, (M1)<br>for squaring rather than dividing, (A1) for $p = 3.17 \times 10^{-4}$. Accept $3.2 \times 10^{-4}$,<br>$0.032\%$, or "about one packet in 3000". The division slip $p = 0.0178$ loses the two marks that<br>depend on the square; do not carry it forward as if it were the target value. Follow-through is<br>allowed from a part-(a) throughput the candidate computed wrongly, provided the inversion is<br>correctly performed on their own number.</p>
+<p><strong>(d)</strong> (M1) for both values, $7.12$ and $5.04\ \mathrm{Mbit/s}$; (A1) for the routing change<br>together with the exponent reason. A numerical answer with no reason scores (M1) only. A candidate who answers "halving $p$ is better because losses are<br>the root cause" has reasoned from intuition against their own arithmetic and scores the two<br>numerical marks only.</p>
+<p><strong>(e)</strong> (M1) for the model's $14.2\ \mathrm{Mbit/s}$, (A1) for noting that this still misses the<br>20 required, (A1) for the objection. Accept the MTU argument, the fragmentation argument, or the<br>observation that a larger segment carries proportionally more data per loss and so raises the cost<br>of a loss; do not accept "it would work" or a bare "MSS cannot be changed" without a reason. The engineer's proposal is attractive precisely because the algebra<br>works, which is why the (M1) is awarded freely and the (A1) is not.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The item is one misconception with two formulas attached to it. Students who have been taught<br>that a $100\ \mathrm{Mbit/s}$ link delivers $100\ \mathrm{Mbit/s}$ will compute part (a) correctly<br>and be dissatisfied with the answer, and part (b) exists to make them say why the number is small<br>rather than let it pass. The governing quantity is the product of the window and the segment size<br>divided by the round-trip time; the wire rating is a ceiling that this connection never approaches,<br>and the model says so plainly by not containing $100\ \mathrm{Mbit/s}$ anywhere.</p>
+<p>Part (c) is where the difficulty actually sits. The formula has been used in one direction --- give<br>me $p$, I will tell you $S$ --- and the question asks the other way. The unknown is under a square<br>root in a denominator, so the inversion requires squaring at the end, and the reflex is to divide:<br>$1.22 / 68.5 = 0.0178$, which is a loss rate fifty-six times more permissive than the truth and<br>would be reported as a comfortable margin. Nothing in the arithmetic looks wrong; the number is a<br>small decimal, in the right order of magnitude to be plausible, and only the structure of the model<br>says it is not.</p>
+<p>Part (d) rewards the same structural reading rather than the calculation. Both upgrades are<br>"factor of two" changes, and they are not equal, because $\mathrm{RTT}$ enters to the first power<br>and $p$ enters under a root: the ratio comes out at $\sqrt{2}$, and a candidate who has understood<br>the model can predict that before computing it. Part (e) closes the item on the kind of judgement<br>the papers increasingly ask for: the proposal produces the right number from the given model, and it<br>is still wrong, because the model treats as a free constant something the link fixes. Learning to<br>distract oneself with an algebra that is valid inside a model and void outside it is the transfer<br>this item is for.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme A: Concepts of computer science — A2.1 Network fundamentals: a stated model of a windowed connection, where the throughput is governed by bytes in flight per round trip rather than by the rated capacity of the link</dd></div>
+  <div><dt>Challenge lever</dt><dd>The model has only ever been read forwards, from loss probability to throughput; part (c) asks for the reverse, and because the unknown sits under a square root in a denominator the inversion ends in a squaring that the familiar direction never requires --- so the reflex division produces a loss rate fifty-six times too forgiving and looks entirely plausible.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A2.1 Network fundamentals (the difference between latency, bandwidth and throughput), with A2.3 Data transmissions (packet switching and retransmission)</dd></div>
+  <div><dt>Inspiration</dt><dd>the A-level and IB-style &#x27;why is my fast link slow&#x27; packet-trace question, and the TCP steady-state window model used in university networking courses</dd></div>
+  <div><dt>Adaptation</dt><dd>The situation is the standard one; the question is not. A-level treatments ask the candidate to read a graph of throughput against loss or to explain one effect in prose. Here (i) the model is stated in full so that no protocol knowledge is required and the algebra is the assessment, (ii) the given and asked quantities are inverted relative to every worked example of this model --- the loss probability is the unknown, and it hides under a square root, (iii) part (d) asks which of two &#x27;factor of two&#x27; upgrades wins, which is a comparison of exponents rather than a calculation, and (iv) part (e) supplies a proposal that the model endorses and the physical link refutes. IB command terms, marking annotations and the three-significant-figure convention are applied throughout.</dd></div>
+  <div><dt>Verification</dt><dd>Every value was computed from the two stated formulas and then cross-checked by an independent route. $W(0.01) = 12.2$ packets and $S = 3.56\ \mathrm{Mbit/s}$; the inversion in (c) was checked by substituting the answer back into the forward model, so that $W = 1.22/\sqrt{3.172673e-04} = 68.5$ packets returns $S = 20.0000\ \mathrm{Mbit/s}$ against the required 20. The two upgrades in (d) were computed both from the formula and from the exponents alone ($\times 2$ and $\times\sqrt{2}$), agreeing at $7.12$ and $5.04$ $\mathrm{Mbit/s}$, and their ratio is $\sqrt{2}$ to three figures. The idle-time claim in (b) was checked two ways: $12.2$ segments take $1.42\ \mathrm{ms}$ of $40\ \mathrm{ms}$, and the bandwidth-delay product of the link is $500\ \mathrm{KB} = 342$ packets against a window of $12.2$. The division slip $1.22/W = 0.01781$ was computed explicitly to confirm that it is $56$ times the correct tolerance, which is what makes it a plausible wrong answer rather than a straw one.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MAAQB_18N_3_AHL_TZ0_HCA_4 (similarity 0.003)</dd></div>
+  <div><dt>Nearest item here</dt><dd>PHYS-C.4-501 (similarity 0.014)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-24</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+</body>
+</html>

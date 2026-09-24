@@ -1,0 +1,137 @@
+{
+  "_batch": "33",
+  "questions": [
+    {
+      "id": "CS-A2.1-601",
+      "subject": "Computer Science HL",
+      "level": "HL",
+      "syllabus_ref": "A2.1 Network fundamentals (the difference between latency, bandwidth and throughput), with A2.3 Data transmissions (packet switching and retransmission)",
+      "topic": "Theme A: Concepts of computer science",
+      "subtopic": "A2.1 Network fundamentals: a stated model of a windowed connection, where the throughput is governed by bytes in flight per round trip rather than by the rated capacity of the link",
+      "paper": "P1",
+      "section": "A",
+      "question_type": "structured",
+      "technology": null,
+      "language": null,
+      "marks": 15,
+      "difficulty": 5,
+      "challenge_mechanism": "The model has only ever been read forwards, from loss probability to throughput; part (c) asks for the reverse, and because the unknown sits under a square root in a denominator the inversion ends in a squaring that the familiar direction never requires --- so the reflex division produces a loss rate fifty-six times too forgiving and looks entirely plausible.",
+      "difficulty_evidence": {
+        "lever_type": "variable_swap",
+        "naive_path": "Compute the window and the throughput as the question's own example does, then for the required throughput divide 1.22 by the window it implies and report the quotient as the loss probability.",
+        "failure_point": "The unknown $p$ is under a square root in the denominator of $W = 1.22/\\sqrt{p}$, so solving for it means isolating the root and squaring both sides, and the quotient $1.22/W$ is the square root of the answer rather than the answer.",
+        "wrong_answer": "A maximum tolerable loss probability of $0.0178$, obtained by dividing instead of squaring, which is fifty-six times the network's real tolerance of $3.17 \\times 10^{-4}$ and would be reported as a comfortable margin on a link that cannot support the service."
+      },
+      "command_terms": [
+        "Calculate",
+        "Explain",
+        "Determine",
+        "Determine",
+        "Evaluate"
+      ],
+      "tags": [
+        "networks",
+        "throughput",
+        "bandwidth",
+        "latency",
+        "congestion window",
+        "packet loss",
+        "model inversion",
+        "P1",
+        "Section A",
+        "batch33"
+      ],
+      "stimulus": null,
+      "figure": null,
+      "question": "A network engineer is asked to size a connection for a new service. Use the model given above to answer the questions that follow. Numerical answers should be given to three significant figures.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Calculate",
+          "text": "For a loss probability of $p = 0.01$, calculate the average window in packets and the resulting throughput in Mbit/s."
+        },
+        {
+          "label": "b",
+          "marks": 3,
+          "command_term": "Explain",
+          "text": "The link is rated at 100 Mbit/s but the connection delivers the value found in part (a). Explain, referring to the two formulas, what it is that limits this connection, and why the rating does not appear in the answer."
+        },
+        {
+          "label": "c",
+          "marks": 4,
+          "command_term": "Determine",
+          "text": "A new service requires a sustained throughput of 20 Mbit/s on this connection with the same round-trip time. Determine the maximum packet loss probability the network can tolerate."
+        },
+        {
+          "label": "d",
+          "marks": 2,
+          "command_term": "Determine",
+          "text": "Two upgrades are proposed: route the traffic so that the round-trip time is halved, or improve the network so that the loss probability is halved. Determine the throughput produced by each and state which is the more effective."
+        },
+        {
+          "label": "e",
+          "marks": 3,
+          "command_term": "Evaluate",
+          "text": "An engineer proposes achieving the 20 Mbit/s requirement by using packets with four times the MSS, leaving $p = 0.01$ unchanged. Evaluate this proposal."
+        }
+      ],
+      "answer": "**(a)** The window is $W = 1.22 / \\\\sqrt{0.01} = 1.22 / 0.1 = 12.2$ packets **(M1)**, so about\ntwelve full segments are acknowledged per round trip. The throughput is\n\n$$S = \\frac{12.2 \\times 1460 \\times 8}{0.040} = 3.56 \\times 10^{6}\\ \\mathrm{bit\\,s^{-1}}\n= 3.56\\ \\mathrm{Mbit/s}. \\tag{A1}$$\n\nA candidate who rounds the window to 12 packets first obtains $3.50\\ \\mathrm{Mbit/s}$, which is\naccepted **(A1)**.\n\n**(b)** The rating of 100 Mbit/s is the capacity of the wire; it never enters either formula, and\nthat is not an omission **(M1)**. What the model allows onto the link is $W \\times \\mathrm{MSS}$\nbytes once every round trip, so the achievable rate is set by **how much can be in flight** and\n**how long a round trip takes**, not by how fast the wire could carry it. The link is idle for most\nof every round trip: putting 12.2 segments on a $100\\ \\mathrm{Mbit/s}$ wire takes\n$\\frac{12.2 \\times 1460 \\times 8}{100 \\times 10^{6}} = 1.43\\ \\mathrm{ms}$, which is $3.6\\%$ of the\n$40\\ \\mathrm{ms}$ cycle, and the remaining $96.4\\%$ is waiting for acknowledgements **(A1)**. Losses set $W$ through $1.22/\\sqrt{p}$, so it is the loss\nprobability and the round-trip time that govern the throughput; the wire rating only becomes the\nlimit once the window is large enough to fill it, which at $p = 0.01$ it is nowhere near\n**(R1)**.\n\n**(c)** The relation must be run backwards: $p$ is the unknown, and it sits inside a square root in\nthe denominator **(M1)**. From $S = W \\times \\mathrm{MSS} \\times 8 / \\mathrm{RTT}$,\n\n$$W = \\frac{S \\times \\mathrm{RTT}}{\\mathrm{MSS} \\times 8}\n= \\frac{20 \\times 10^{6} \\times 0.040}{1460 \\times 8} = 68.5\\ \\mathrm{packets}. \\tag{A1}$$\n\nThen from $W = 1.22 / \\sqrt{p}$, squaring is required and $\\sqrt{p} = 1.22 / W$ **(M1)**, so\n\n$$p = \\left(\\frac{1.22 \\times \\mathrm{MSS} \\times 8}{S \\times \\mathrm{RTT}}\\right)^{2}\n= \\left(\\frac{1.22}{68.5}\\right)^{2} = 3.17 \\times 10^{-4},$$\n\ni.e. about **one packet in 3150**, or $0.032\\%$ **(A1)**. The common slip is to divide rather than\nto square, giving $p = 1.22/68.5 = 0.0178$ --- a loss rate fifty-six times more forgiving than the\nnetwork can actually support, and one that would be reported as a comfortably achievable target.\n\n**(d)** Halving the round-trip time doubles the throughput, because $\\mathrm{RTT}$ appears to the\nfirst power in the denominator: $S = 3.56 \\times 2 = 7.12\\ \\mathrm{Mbit/s}$; halving the loss\nprobability multiplies the window by $\\sqrt{2}$, because $p$ appears under a square root:\n$W = 1.22/\\sqrt{0.005} = 17.3$ packets and $S = 5.04\\ \\mathrm{Mbit/s}$ **(M1)**. The routing change is\nthe more effective, by a factor of $7.12 / 5.04 = 1.41 = \\sqrt{2}$, and the reason is in the\nexponents: the model is linear in $1/\\mathrm{RTT}$ and only proportional to $1/\\sqrt{p}$ **(A1)**.\n\n**(e)** Substituting $4 \\times \\mathrm{MSS}$ gives $S = 4 \\times 3.56 = 14.2\\ \\mathrm{Mbit/s}$,\nwhich the model does scale linearly with **(M1)** --- and even that is short of the 20\n$\\mathrm{Mbit/s}$ required, so the proposal cannot reach the target on the model's own terms\n**(A1)**. It also fails on the way there: a segment of $4 \\times 1460 = 5840$ bytes does not fit an\nEthernet frame, whose MTU is 1500 bytes, so the data would be fragmented, and a fragment carries the\nsame loss exposure as a whole segment --- losing any fragment retransmits the datagram, so the\neffective loss probability rises rather than staying at $0.01$ **(A1)**. The MSS is not a free\nvariable to be traded against $p$; it is fixed by the link, which is exactly why the model treats\nit as a constant.",
+      "markscheme_notes": "**(a)** (M1) for $W = 12.2$ packets; (A1) for $3.56\\ \\mathrm{Mbit/s}$. Accept $3.5$ from a window\nrounded to 12, and accept $3.6$ from $\\sqrt{0.01} = 0.1$ carried to one significant figure at the\nend. Do not accept an answer that uses the 100 Mbit/s rating --- that is part (b)'s misconception,\nand it earns nothing here.\n\n**(b)** (M1) for observing that the rating does not appear in the model, (A1) for quantifying the\nidle time or the bytes-in-flight limit, (R1) for naming what does govern the rate. A candidate who\nsays only \"there is overhead\" or \"TCP is slow\" has not used the two formulas given and scores (M1)\nat most; the question says *referring to the two formulas*, and that is the reasoning being marked.\nAccept the bandwidth-delay-product argument in place of the idle-time argument: $100\\ \\mathrm{Mbit/s}\n\\times 40\\ \\mathrm{ms} = 500\\ \\mathrm{KB} \\approx 342$ packets would be needed to fill the pipe, and\n$12$ is far short of it.\n\n**(c)** (M1) for committing to the inversion by solving for $W$, (A1) for $W = 68.5$ packets, (M1)\nfor squaring rather than dividing, (A1) for $p = 3.17 \\times 10^{-4}$. Accept $3.2 \\times 10^{-4}$,\n$0.032\\%$, or \"about one packet in 3000\". The division slip $p = 0.0178$ loses the two marks that\ndepend on the square; do not carry it forward as if it were the target value. Follow-through is\nallowed from a part-(a) throughput the candidate computed wrongly, provided the inversion is\ncorrectly performed on their own number.\n\n**(d)** (M1) for both values, $7.12$ and $5.04\\ \\mathrm{Mbit/s}$; (A1) for the routing change\ntogether with the exponent reason. A numerical answer with no reason scores (M1) only. A candidate who answers \"halving $p$ is better because losses are\nthe root cause\" has reasoned from intuition against their own arithmetic and scores the two\nnumerical marks only.\n\n**(e)** (M1) for the model's $14.2\\ \\mathrm{Mbit/s}$, (A1) for noting that this still misses the\n20 required, (A1) for the objection. Accept the MTU argument, the fragmentation argument, or the\nobservation that a larger segment carries proportionally more data per loss and so raises the cost\nof a loss; do not accept \"it would work\" or a bare \"MSS cannot be changed\" without a reason. The engineer's proposal is attractive precisely because the algebra\nworks, which is why the (M1) is awarded freely and the (A1) is not.",
+      "explanation": "The item is one misconception with two formulas attached to it. Students who have been taught\nthat a $100\\ \\mathrm{Mbit/s}$ link delivers $100\\ \\mathrm{Mbit/s}$ will compute part (a) correctly\nand be dissatisfied with the answer, and part (b) exists to make them say why the number is small\nrather than let it pass. The governing quantity is the product of the window and the segment size\ndivided by the round-trip time; the wire rating is a ceiling that this connection never approaches,\nand the model says so plainly by not containing $100\\ \\mathrm{Mbit/s}$ anywhere.\n\nPart (c) is where the difficulty actually sits. The formula has been used in one direction --- give\nme $p$, I will tell you $S$ --- and the question asks the other way. The unknown is under a square\nroot in a denominator, so the inversion requires squaring at the end, and the reflex is to divide:\n$1.22 / 68.5 = 0.0178$, which is a loss rate fifty-six times more permissive than the truth and\nwould be reported as a comfortable margin. Nothing in the arithmetic looks wrong; the number is a\nsmall decimal, in the right order of magnitude to be plausible, and only the structure of the model\nsays it is not.\n\nPart (d) rewards the same structural reading rather than the calculation. Both upgrades are\n\"factor of two\" changes, and they are not equal, because $\\mathrm{RTT}$ enters to the first power\nand $p$ enters under a root: the ratio comes out at $\\sqrt{2}$, and a candidate who has understood\nthe model can predict that before computing it. Part (e) closes the item on the kind of judgement\nthe papers increasingly ask for: the proposal produces the right number from the given model, and it\nis still wrong, because the model treats as a free constant something the link fixes. Learning to\ndistract oneself with an algebra that is valid inside a model and void outside it is the transfer\nthis item is for.",
+      "provenance": {
+        "inspired_by": "the A-level and IB-style 'why is my fast link slow' packet-trace question, and the TCP steady-state window model used in university networking courses",
+        "source_family": "uk-alevel",
+        "adaptation": "The situation is the standard one; the question is not. A-level treatments ask the candidate to read a graph of throughput against loss or to explain one effect in prose. Here (i) the model is stated in full so that no protocol knowledge is required and the algebra is the assessment, (ii) the given and asked quantities are inverted relative to every worked example of this model --- the loss probability is the unknown, and it hides under a square root, (iii) part (d) asks which of two 'factor of two' upgrades wins, which is a comparison of exponents rather than a calculation, and (iv) part (e) supplies a proposal that the model endorses and the physical link refutes. IB command terms, marking annotations and the three-significant-figure convention are applied throughout.",
+        "resource_origin": "AQA/OCR A-level Computer Science network-performance questions (throughput below stated bandwidth) and the standard TCP steady-state window model as presented in university first-course networking notes; the model itself is stated in the question",
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.003,
+        "nearest_bank_id": "MAAQB_18N_3_AHL_TZ0_HCA_4",
+        "max_internal_similarity": 0.014,
+        "nearest_internal_id": "PHYS-C.4-501",
+        "max_approach_similarity": 0.084,
+        "nearest_approach_id": "MATH-AHL2.10-202",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Math AA/AA HL"
+      },
+      "verification": {
+        "method": "Every value was computed from the two stated formulas and then cross-checked by an independent route. $W(0.01) = 12.2$ packets and $S = 3.56\\ \\mathrm{Mbit/s}$; the inversion in (c) was checked by substituting the answer back into the forward model, so that $W = 1.22/\\sqrt{3.172673e-04} = 68.5$ packets returns $S = 20.0000\\ \\mathrm{Mbit/s}$ against the required 20. The two upgrades in (d) were computed both from the formula and from the exponents alone ($\\times 2$ and $\\times\\sqrt{2}$), agreeing at $7.12$ and $5.04$ $\\mathrm{Mbit/s}$, and their ratio is $\\sqrt{2}$ to three figures. The idle-time claim in (b) was checked two ways: $12.2$ segments take $1.42\\ \\mathrm{ms}$ of $40\\ \\mathrm{ms}$, and the bandwidth-delay product of the link is $500\\ \\mathrm{KB} = 342$ packets against a window of $12.2$. The division slip $1.22/W = 0.01781$ was computed explicitly to confirm that it is $56$ times the correct tolerance, which is what makes it a plausible wrong answer rather than a straw one.",
+        "assertions": [
+          "approx(1.22/sqrt(0.01), 12.2, 1e-12)",
+          "approx(3.562400e+06/1e6, 3.56, 0.005)",
+          "approx(3.172673e-04, 3.17e-4, 1e-6)",
+          "approx(1.22/sqrt(3.172673e-04), 68.5, 0.1)",
+          "approx(1.000100e+05*8/0.040/1e6, 20.0, 0.05)",
+          "approx(7.124800e+06/1e6, 7.12, 0.01)",
+          "approx(5.037994e+06/1e6, 5.04, 0.01)",
+          "approx(7.124800e+06/5.037994e+06, sqrt(2), 1e-3)",
+          "approx(1.22/68.5, 0.0178, 1e-4)",
+          "approx((1.22/(20e6*0.040/(1460*8)))**2, 3.172673440e-04, 1e-12)",
+          "approx(0.0178/3.172673e-04, 56.1, 0.6)",
+          "approx(12.2*1460*8/100e6*1000, 1.43, 0.02)",
+          "approx(100e6*0.040/8/1460, 342.5, 0.5)",
+          "approx(1.424960e+07/1e6, 14.2, 0.02)",
+          "4*1460 > 1500",
+          "3.17e-4 < 0.01"
+        ],
+        "solution_skeleton": [
+          "evaluate the stated window model at the given loss probability",
+          "convert packets per round trip into a bit rate through the segment size",
+          "rearrange the throughput relation to find the window a target rate demands",
+          "isolate the square root and square both sides to recover the loss probability",
+          "compare two interventions by the exponent each variable carries",
+          "test a proposal that the model supports but the physical link does not"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-24",
+      "updated_at": "2026-09-24"
+    }
+  ]
+}

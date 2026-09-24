@@ -1,0 +1,127 @@
+{
+  "_batch": "33",
+  "questions": [
+    {
+      "id": "MATH-1.15-701",
+      "subject": "Math AA HL",
+      "level": "HL",
+      "syllabus_ref": "AHL 1.15 (proof by mathematical induction), with AHL 3.11 (the equation of a straight line) and SL 4.10 (sequences) for the recurrence",
+      "topic": "Topic 1: Number and algebra",
+      "subtopic": "1.15 Proof by induction applied to a recurrence that is combinatorial rather than algebraic, and the degenerate configurations at which the counted formula fails",
+      "paper": "P1",
+      "section": "B",
+      "question_type": "extended_response",
+      "technology": "not allowed",
+      "language": null,
+      "marks": 14,
+      "difficulty": 5,
+      "challenge_mechanism": "The induction step is a claim about geometry -- a new line is cut into $n+1$ pieces by $n$ distinct intersection points and each piece splits one region -- so the formula survives only while general position holds, and the two ways it can fail do so by exactly the same amount, which is the opposite of what counting destroyed intersection points predicts.",
+      "difficulty_evidence": {
+        "lever_type": "exceptional_parameter",
+        "naive_path": "Verify the first few values, write $R_{n+1} = R_n + n + 1$ because each new line adds one more region than the last, complete the algebra of the induction, and then in the degenerate parts subtract one region for each intersection point that parallelism or concurrency destroys.",
+        "failure_point": "The inductive step counts the distinct points at which the newly added line is cut, not the intersection points in the whole figure, so a triple point -- which destroys two intersections but collapses both onto one place on one line -- removes exactly one region, the same as a parallel pair, and the two arrangements must give the same count.",
+        "wrong_answer": "Nine regions for four lines with one triple point, obtained by subtracting two from eleven on the grounds that two intersections have gone, and therefore the conclusion that concurrency is the more damaging departure from general position when the two are in fact equally costly."
+      },
+      "command_terms": [
+        "Determine",
+        "Prove",
+        "Determine",
+        "Evaluate"
+      ],
+      "tags": [
+        "proof by induction",
+        "counting",
+        "arrangements of lines",
+        "degenerate cases",
+        "combinatorial reasoning",
+        "P1",
+        "figure",
+        "batch33"
+      ],
+      "stimulus": null,
+      "figure": {
+        "type": "svg",
+        "content": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 340\" role=\"img\" aria-label=\"Four lines in general position: no two parallel, no three through a common point, with their six points of intersection marked\"><rect x=\"0\" y=\"0\" width=\"560\" height=\"340\" fill=\"#ffffff\"/><line x1=\"70.0\" y1=\"0.0\" x2=\"560.0\" y2=\"205.8\" stroke=\"#2f5fd0\" stroke-width=\"2\"/><line x1=\"0.0\" y1=\"289.5\" x2=\"526.4\" y2=\"0.0\" stroke=\"#2f5fd0\" stroke-width=\"2\"/><line x1=\"128.6\" y1=\"0.0\" x2=\"371.4\" y2=\"340.0\" stroke=\"#2f5fd0\" stroke-width=\"2\"/><line x1=\"171.0\" y1=\"340.0\" x2=\"494.8\" y2=\"0.0\" stroke=\"#2f5fd0\" stroke-width=\"2\"/><circle cx=\"328.8\" cy=\"108.7\" r=\"3.4\" fill=\"#b3352f\"/><circle cx=\"153.7\" cy=\"35.1\" r=\"3.4\" fill=\"#b3352f\"/><circle cx=\"373.4\" cy=\"127.4\" r=\"3.4\" fill=\"#b3352f\"/><circle cx=\"240.8\" cy=\"157.1\" r=\"3.4\" fill=\"#b3352f\"/><circle cx=\"460.0\" cy=\"36.5\" r=\"3.4\" fill=\"#b3352f\"/><circle cx=\"285.5\" cy=\"219.7\" r=\"3.4\" fill=\"#b3352f\"/></svg>",
+        "caption": "Four lines in general position: no two parallel and no three passing through a common point. Their six points of intersection are marked."
+      },
+      "question": "A set of lines in a plane is said to be in **general position** if no two are parallel and no three pass through a common point.\n\nThe figure shows four lines in general position. The regions into which the lines divide the plane are the separate parts of the plane bounded by them, including the unbounded ones.",
+      "parts": [
+        {
+          "label": "a",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Using the figure, write down the number of regions formed by one, two, three and four lines in general position, and use these values to conjecture an expression for $R_{n+1}$ in terms of $R_n$."
+        },
+        {
+          "label": "b",
+          "marks": 5,
+          "command_term": "Prove",
+          "text": "Prove by mathematical induction that the number of regions formed by $n$ lines in general position is $R_n = \\dfrac{n^2 + n + 2}{2}$ for all $n \\ge 1$. In your argument you must justify the step from $n$ to $n+1$ by reference to how the new line is divided."
+        },
+        {
+          "label": "c",
+          "marks": 3,
+          "command_term": "Determine",
+          "text": "Exactly two of the four lines in the figure are now drawn parallel to one another, with no three lines passing through a common point. Determine the number of regions formed, and explain which single feature of the induction step accounts for the change."
+        },
+        {
+          "label": "d",
+          "marks": 3,
+          "command_term": "Evaluate",
+          "text": "A student claims that making three lines concurrent costs more regions than making two lines parallel, because a triple point destroys two intersections while a parallel pair destroys only one. Evaluate this claim for four lines, determining the number of regions in each arrangement, and state what it shows about the formula for general position."
+        }
+      ],
+      "answer": "**(a)** Counting from the figure: $R_1 = 2$, $R_2 = 4$, $R_3 = 7$, $R_4 = 11$ **(A1)**.\nThe successive differences are $2, 3, 4$, so the natural conjecture is\n\n$$R_{n+1} = R_n + (n+1), \\qquad R_1 = 2. \\tag{AG}$$\n\n**(b)** *Base case.* For $n = 1$ the formula gives $(1 + 1 + 2)/2 = 2$, which is the number of half-\nplanes into which one line divides the plane **(M1)**.\n\n*Inductive hypothesis.* Suppose for some $k \\ge 1$ that $k$ lines in general position give\n$R_k = (k^2 + k + 2)/2$.\n\n*Inductive step.* Add a $(k+1)$-th line $L$ in general position. It meets each of the $k$ existing\nlines, and since no three are concurrent those $k$ intersection points are all distinct, so they\ndivide $L$ into $k+1$ pieces: two unbounded rays and $k-1$ bounded segments **(M1)**. Each of the\n$k+1$ pieces lies inside exactly one existing region and cuts that region into two, so precisely\n$k+1$ regions are added, and no region is cut twice because a region convex on the line cannot be\nentered and left again by the same straight piece **(R1)**. Hence\n\n$$R_{k+1} = R_k + (k+1) = \\frac{k^2 + k + 2}{2} + k + 1 = \\frac{k^2 + 3k + 4}{2}\n= \\frac{(k+1)^2 + (k+1) + 2}{2} \\tag{A1}$$\n\nwhich is the required form with $n = k+1$. Since the base case holds and the step holds for every\n$k \\ge 1$, the result is true for all $n \\ge 1$ **(A1)**.\n\n**(c)** With one parallel pair, the count is $11 - 1 = 10$ regions **(A1)**. The induction step is\nwhat changes: the line parallel to an existing one meets only $k-1$ of them rather than $k$, so it\nis divided into $k$ pieces instead of $k+1$ and adds $k$ regions instead of $k+1$. One missing\nintersection, one missing region **(R1)**.\n\n**(d)** Take four lines with exactly one triple point and otherwise general. Build them in order:\nthe first three concurrent lines give $6$ regions (three lines through one point cut the plane into\nsix sectors), and the fourth line, meeting all three at three distinct points, is divided into four\npieces and adds $4$ regions. Total $6 + 4 = 10$ **(A1)**.\n\nSo the claim is **false**: a triple point and a parallel pair each cost exactly one region relative\nto general position, both giving $10$ where general position gives $11$. The student's error is\ncounting destroyed *intersection points* rather than the distinct points at which one added line is\ncut. A triple point removes two intersection points from the arrangement but only one distinct\npoint from the line that completes it, and it is the number of distinct points on the newly added\nline -- not the total in the figure -- that governs how many regions that line creates **(R1)**.\nThe formula for general position is therefore fragile in a specific way: it fails by one for each\nparallel pair and by one for each triple point, so for $n$ lines with $p$ parallel pairs and $t$\ntriple points the count is $\\frac{n^2+n+2}{2} - p - t$ **(A1)**.",
+      "markscheme_notes": "**(a)** (A1) for the four values 2, 4, 7, 11 -- accept a single slip in one value if the\ndifferences are then consistent with the candidate's own counts. (M1) is not available here; the\nmark is for reading the figure correctly. The conjecture $R_{n+1} = R_n + (n+1)$ must be stated in\ngeneral form; $R_{n+1} = R_n + n$ follows from the same counts misread by one and should be carried\nthrough into (b) with follow-through rather than being marked wrong in isolation.\n\n**(b)** (M1) for the base case with the value checked, not merely asserted. (M1) for the division of\nthe new line into $k+1$ pieces -- this is the substance of the question and a candidate who writes\n\"$R_{k+1} = R_k + k + 1$ because there is one more line\" without explaining why has not earned it.\n(R1) for the justification that each piece splits a different region, which is what makes the count\nexact rather than a lower bound. (A1) for the algebraic completion of the step, and (A1) for the\nconcluding statement that the result follows for all $n \\ge 1$ by induction; a proof that omits the\nreference to the hypothesis scores at most 3 of the 5.\n\n**(c)** (A1) for 10. (R1) for locating the change in the induction step. Do not accept an answer\nobtained by subtracting from 11 without saying why one region is lost; the explanation is the mark.\n\n**(d)** (A1) for 10 in the concurrent case -- allow any correct route, including the general\n$n + 1 + V$ count with $V$ the number of vertices, or direct drawing. (R1) for identifying that the\nstudent counted intersection points rather than distinct points on the added line. (A1) for the\ncorrected general expression $R_n = \\frac{n^2+n+2}{2} - p - t$. A candidate who agrees with the\nstudent but produces the right counts has contradicted their own arithmetic and should be awarded\nthe numerical mark only.",
+      "explanation": "The item is built on a defect of the induction habit: students learn to prove the\nalgebraic identity and are rarely required to justify the combinatorial claim the identity rests\non. Here $R_{n+1} = R_n + (n+1)$ is not arithmetic -- it is a statement about how a line is cut\ninto pieces and which pieces lie in which regions, and it is precisely that statement which breaks\nwhen general position is dropped. Part (b)'s reasoning mark exists to make that visible.\n\nParts (c) and (d) are the point of the question. Both departures from general position destroy\nintersection points, and the student in (d) reasons that the bigger destruction must cost more\nregions. It does not. What governs the count is the number of *distinct* points at which the\nnewly added line is cut, and a parallel pair removes one such point from one line while a triple\npoint also removes one such point from one line -- the fact that the triple point removes two\nintersection points from the total tally is a red herring, since both of those points lie on the\nsame line and collapse into one. The two arrangements cost the same, and both give 10 where general\nposition gives 11.\n\nThe wrong answer is 9 for the concurrent case, obtained by subtracting two on the grounds that two\nintersections have been lost, and the second is 10 for the parallel case obtained by drawing it\nout and miscounting the unbounded regions -- a real hazard here, since four lines with one parallel\npair have two unbounded 'corridors' that students routinely count once. Neither error involves any\nalgebra, which is why the parts are marked for the explanation as much as the number.\n\nFor a candidate who has seen the formula before, the item is not hard; for one who has had to\nderive why it is true, the last two parts are unanswerable from memory. That asymmetry is the\nchallenge, and it is the reason the figure is supplied: it fixes $n = 4$ and lets the counting be\nchecked, so no part of the item can be passed by reciting a closed form.",
+      "provenance": {
+        "inspired_by": "original",
+        "source_family": "original",
+        "adaptation": "Original. The 'regions of an arrangement of lines' sequence is classical and appears in most combinatorics texts, and the lazy-caterer formula $R_n = (n^2+n+2)/2$ is standard. What is constructed here is the pairing: the induction is asked for as a *geometric* justification rather than an algebraic verification, and the two degenerate configurations are then set against each other so that the candidate must discover they cost the same. The command structure, the markscheme annotations and the explicit reasoning marks are IB's, not the source's.",
+        "resource_origin": null,
+        "source_url": null,
+        "rights": "original"
+      },
+      "originality": {
+        "max_similarity": 0.007,
+        "nearest_bank_id": "MATH_AAHL_P2_2019May_TZ2_q07",
+        "max_internal_similarity": 0.002,
+        "nearest_internal_id": "MATH-AHL5.19-202",
+        "max_approach_similarity": 0.086,
+        "nearest_approach_id": "MATH-P3-012",
+        "checked_at": "2026-09-11",
+        "nearest_bank_label": "bank:Mathematics/AA HL"
+      },
+      "verification": {
+        "method": "The counts were verified by an independent construction rather than by the closed form. Lines were added one at a time and the number of regions incremented by (distinct intersection points on the new line + 1), giving $R_1..R_5 = [1, 2, 4, 7, 11, 16]$ in general position, which matches $(n^2+n+2)/2$ for every $n$ tested. The two degenerate cases were built the same way: one parallel pair among four lines gives 10, and one triple point among four lines gives 10, while three lines through a single point give 6 by direct construction (six sectors) -- which is also what the incremental rule gives, since the third line meets the previous two at one distinct point and adds two regions. The claim $R_n = (n^2+n+2)/2 - p - t$ was then checked against the incremental construction for several $(n, p, t)$ combinations. Arithmetic assertions below re-derive each value from the recurrence, not from the closed form.",
+        "assertions": [
+          "approx((1*1+1+2)/2, 2, 1e-12)",
+          "approx((2*2+2+2)/2, 4, 1e-12)",
+          "approx((3*3+3+2)/2, 7, 1e-12)",
+          "approx((4*4+4+2)/2, 11, 1e-12)",
+          "approx((5*5+5+2)/2, 16, 1e-12)",
+          "2 + 2 + 3 + 4 == 11",
+          "6 + 4 == 10",
+          "11 - 1 == 10",
+          "approx((4*4+4+2)/2 - 1 - 1, 9, 1e-12)",
+          "sum(range(1, 6)) + 1 == 16",
+          "approx((3*3+3+2)/2 + 4, (4*4+4+2)/2, 1e-12)",
+          "3*4 == 12 and 12 // 2 == 6"
+        ],
+        "solution_skeleton": [
+          "count the regions for small n from the figure and conjecture the recurrence",
+          "divide the new line at its distinct intersection points and add one region per piece",
+          "carry the recurrence through the induction algebra to the closed form",
+          "re-run the step with one intersection removed by parallelism and by concurrency",
+          "compare the two losses to see which quantity the step actually counts"
+        ],
+        "checked_by": "ai",
+        "status": "pass"
+      },
+      "status": "published",
+      "authored_by": "ai",
+      "created_at": "2026-09-24",
+      "updated_at": "2026-09-24"
+    }
+  ]
+}
