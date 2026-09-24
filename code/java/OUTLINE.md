@@ -6,13 +6,13 @@
 > is kept exactly, and the written chapters keep their numbers, so nothing already published moves.
 >
 > The Java track starts from a stronger position than C/C++ did: `tools/verify_examples.py` is
-> already in place and reports **141/141 blocks behaved as declared**, with `self-test PASSED`. Every
+> already in place and reports **218/218 blocks behaved as declared**, with `self-test PASSED`. Every
 > ★ chapter below is expected to arrive with its own `tools/gen/<NN>/` generator, exactly as the
 > C++ track does.
 >
-> Chapters 04–10 were written in one run and each arrived with a `tools/gen/<NN>/` directory holding
-> its Java sources and a `gen.py` that captures every transcript live. The harness is the arbiter:
-> no output in a `text` fence was typed by hand.
+> Chapters 04–10 (Part I) and 11–15 (Part II so far) were each written with a `tools/gen/<NN>/`
+> directory holding the Java sources and a `gen.py` that captures every transcript live. The harness
+> is the arbiter: no output in a `text` fence was typed by hand.
 
 ## Part 0 · Start Here — 00–01 (2)
 
@@ -33,11 +33,11 @@
 
 ## Part II · Leveling Up — 11–19 (9)
 
-- ★ 11 Generics and Type Erasure
-- ★ 12 The Collections Framework — *`List`, `Set`, `Map`, `Comparable`, `Comparator`*
-- ★ 13 Exceptions and `try`-with-resources
-- ★ 14 Lambdas, Functional Interfaces and Method References
-- ★ 15 Streams and `Optional`
+- ✅ 11 Generics and Type Erasure
+- ✅ 12 The Collections Framework — *`List`, `Set`, `Map`, `Comparable`, `Comparator`*
+- ✅ 13 Exceptions and `try`-with-resources
+- ✅ 14 Lambdas, Functional Interfaces and Method References
+- ✅ 15 Streams and `Optional`
 - ★ 16 Records, Enums and Sealed Types
 - ★ 17 I/O, NIO.2 and `Files`
 - ★ 18 Dates, Times, `BigDecimal` and Formatting
