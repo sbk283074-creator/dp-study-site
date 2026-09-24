@@ -3,13 +3,16 @@
 > **60 chapters (ch00–59).** ✅ = written and machine-verified · ★ = to write.
 >
 > Held to the same standard as `code/cpp/OUTLINE.md`. The existing 7-part structure in `parts.json`
-> is kept exactly, and the four written chapters keep their numbers, so nothing already published
-> moves.
+> is kept exactly, and the written chapters keep their numbers, so nothing already published moves.
 >
 > The Java track starts from a stronger position than C/C++ did: `tools/verify_examples.py` is
-> already in place and reports **53/53 blocks behaved as declared**, with `self-test PASSED`. Every
+> already in place and reports **141/141 blocks behaved as declared**, with `self-test PASSED`. Every
 > ★ chapter below is expected to arrive with its own `tools/gen/<NN>/` generator, exactly as the
 > C++ track does.
+>
+> Chapters 04–10 were written in one run and each arrived with a `tools/gen/<NN>/` directory holding
+> its Java sources and a `gen.py` that captures every transcript live. The harness is the arbiter:
+> no output in a `text` fence was typed by hand.
 
 ## Part 0 · Start Here — 00–01 (2)
 
@@ -20,13 +23,13 @@
 
 - ✅ 02 Primitives and References
 - ✅ 03 Strings
-- ★ 04 Operators, Casting and Integer Arithmetic — *overflow, integer division, `Math`, promotion*
-- ★ 05 Control Flow — *`if`, `switch` expressions, the three loops*
-- ★ 06 Methods, Overloading and the Call Stack
-- ★ 07 Arrays and the Enhanced `for`
-- ★ 08 Classes, Objects and Encapsulation
-- ★ 09 Inheritance, Interfaces and Polymorphism
-- ★ 10 `Object`: `equals`, `hashCode`, `toString` — *the contract every collection depends on*
+- ✅ 04 Operators, Casting and Integer Arithmetic — *overflow, integer division, `Math`, promotion*
+- ✅ 05 Control Flow — *`if`, `switch` expressions, the three loops*
+- ✅ 06 Methods, Overloading and the Call Stack
+- ✅ 07 Arrays and the Enhanced `for`
+- ✅ 08 Classes, Objects and Encapsulation
+- ✅ 09 Inheritance, Interfaces and Polymorphism
+- ✅ 10 `Object`: `equals`, `hashCode`, `toString` — *the contract every collection depends on*
 
 ## Part II · Leveling Up — 11–19 (9)
 

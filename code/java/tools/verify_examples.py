@@ -161,16 +161,29 @@ def parse_blocks(text: str) -> list[dict]:
     return [b for b in blocks if not b.get("consumed")]
 
 
-TYPE_RE = re.compile(r"^\s*(?:public\s+|final\s+|abstract\s+|sealed\s+|non-sealed\s+)*"
-                     r"(?:class|record|enum|interface)\s+(\w+)", re.M)
+TYPE_RE = re.compile(r"^(?P<indent>[ \t]*)"
+                     r"(?:public\s+|final\s+|abstract\s+|sealed\s+|non-sealed\s+)*"
+                     r"(?:class|record|enum|interface)\s+(?P<name>\w+)", re.M)
 MAIN_RE = re.compile(r"\bstatic\s+void\s+main\s*\(")
 PACKAGE_RE = re.compile(r"^\s*package\s+([\w.]+)\s*;", re.M)
 
 
 def main_class_of(source: str) -> str | None:
-    """The type that holds `main`, qualified by its package if it has one."""
+    """The type that holds `main`, qualified by its package if it has one.
+
+    The type is the last one declared before `main` that is *less indented than
+    `main` itself* -- that is, the last declaration `main` could be inside. The
+    obvious rule, "the last type declared before `main`", is wrong as soon as a
+    sibling nested type sits in between. A nested `interface`, `enum` or `record`
+    is matched by TYPE_RE -- a nested *class* almost always carries `static`,
+    which TYPE_RE does not accept, which is why the bug hid for so long -- so it
+    would be taken for the enclosing type and the file written under the wrong
+    name. That failure reads `class Foo is public, should be declared in a file
+    named Foo.java`, which names neither the cause nor the fix.
+    """
     pkg = PACKAGE_RE.search(source)
-    names = [(m.start(), m.group(1)) for m in TYPE_RE.finditer(source)]
+    names = [(m.start(), m.group("name"), len(m.group("indent")))
+             for m in TYPE_RE.finditer(source)]
     main_at = None
     for m in MAIN_RE.finditer(source):
         main_at = m.start()
@@ -183,10 +196,14 @@ def main_class_of(source: str) -> str | None:
             return None
         cls = names[0][1]
         return f"{pkg.group(1)}.{cls}" if pkg else cls
+    line_start = source.rfind("\n", 0, main_at) + 1
+    prefix = source[line_start:main_at]
+    main_indent = len(prefix) - len(prefix.lstrip(" \t"))
     before = [n for n in names if n[0] < main_at]
     if not before:
         return None
-    cls = before[-1][1]
+    enclosing = [n for n in before if n[2] < main_indent]
+    cls = (enclosing or before)[-1][1]
     return f"{pkg.group(1)}.{cls}" if pkg else cls
 
 
