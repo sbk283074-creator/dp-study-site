@@ -45,9 +45,12 @@
 
 ## Part III · Project 1 · Quill — 20–24 (5)
 
-- ★ 20 The Project — Quill, a Command-Line Vault
-- ★ 21 Reading and Parsing Input
-- ★ 22 Persistence — Files, Serialization and a Real Format
+- ✅ 20 The Project — Quill, a Command-Line Vault — *exit codes as a contract, `Note` as a record, a
+  sealed command hierarchy, an append-only vault, the CLI driven for real*
+- ✅ 21 Reading and Parsing Input — *`readLine` vs `Scanner`, `null` vs `""`, `parseInt`'s real
+  accept-set, CRLF, and `add` reading its body from standard input*
+- ✅ 22 Persistence — Files, Serialization and a Real Format — *escaping and the backslash order,
+  round-trip properties, why not `Serializable`, charsets, a file header, atomic replace*
 - ★ 23 A Command Layer and Argument Parsing
 - ★ 24 Assembling Quill
 

@@ -107,6 +107,10 @@ class Gen:
         self.out_dir = chapters_dir
         self.out_name = out_name
         self.audit: list[str] = []
+        # The most recent `run-files` listing, kept so that a later
+        # `sh run-project` can be seeded with it -- exactly as the harness does
+        # when it walks a chapter and remembers the last multi-file listing.
+        self._project: dict[str, str] | None = None
 
     # -- sources ---------------------------------------------------------
     def read(self, name: str) -> str:
@@ -183,6 +187,7 @@ class Gen:
 
     def run_files(self, names: list[str]) -> str:
         files = {n: self.read(n) for n in names}
+        self._project = files
         with tempfile.TemporaryDirectory() as td:
             work = Path(td)
             self._write(work, files)
@@ -247,11 +252,25 @@ class Gen:
                                       quote(r.stderr, contains, lines)))
 
     def sh(self, name: str, directive: str = "run") -> str:
-        """A self-contained shell script, run in an empty directory with the JDK on PATH."""
+        """A self-contained shell script, run in an empty directory with the JDK on PATH.
+
+        With `directive="run-project"` the directory is first seeded with the files of
+        the most recent `run_files` listing in this chapter, and those are compiled
+        into `out/` -- which is exactly what the harness does for the same directive.
+        A `sh run-project` block must therefore come *after* the listing it drives.
+        """
         import os
         script = self.read(name)
         with tempfile.TemporaryDirectory() as td:
             work = Path(td)
+            if directive == "run-project":
+                if not self._project:
+                    raise SystemExit(f"{name}: `sh run-project` needs a `run-files` "
+                                     f"listing earlier in the chapter")
+                self._write(work, self._project)
+                c = self._compile(work, list(self._project), werror=True)
+                if c.returncode != 0:
+                    raise SystemExit(f"{name}: the project does not compile:\n{c.stderr}")
             path = work / "_block.sh"
             path.write_text(script + "\n", encoding="utf-8")
             env = dict(os.environ)
