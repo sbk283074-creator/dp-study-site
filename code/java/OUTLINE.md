@@ -13,7 +13,7 @@
 > Chapters 04–10 (Part I), 11–19 (all of Part II) and 20–24 (all of Part III) were each written with a
 > `tools/gen/<NN>/` directory holding the Java sources and a `gen.py` that captures every transcript
 > live. The harness is the arbiter: no output in a `text` fence was typed by hand. Part IV has started
-> the same way (25–26).
+> the same way (25–27).
 
 ## Part 0 · Start Here — 00–01 (2)
 
