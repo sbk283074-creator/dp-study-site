@@ -80,8 +80,10 @@ def main(argv: list[str]) -> int:
         if not where.is_dir():
             raise SystemExit(f"no such generator directory: {where}")
         print(f"\n===== gen/{d} =====")
-        for path in sorted(where.glob("*.java")):
-            row = probe(path)
+        # Probe once and cache: probe() does three javac and two java runs, so
+        # probing again for the output section doubled the cost of every sweep.
+        rows = [probe(path) for path in sorted(where.glob("*.java"))]
+        for row in rows:
             if "note" in row:
                 print(f"{row['name']:<24} {row['note']}")
                 continue
@@ -100,8 +102,7 @@ def main(argv: list[str]) -> int:
             print(f"{row['name']:<24} rc={row['rc']} stderr={row['stderr']} "
                   f"maxw={row['maxw']} {row['stable']}{flag}{warn}")
         print("\n--- output ---")
-        for path in sorted(where.glob("*.java")):
-            row = probe(path)
+        for row in rows:
             if row.get("stdout"):
                 print(f"\n### {row['name']}")
                 sys.stdout.write(row["stdout"])

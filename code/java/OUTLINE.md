@@ -6,11 +6,11 @@
 > is kept exactly, and the written chapters keep their numbers, so nothing already published moves.
 >
 > The Java track starts from a stronger position than C/C++ did: `tools/verify_examples.py` is
-> already in place and reports **218/218 blocks behaved as declared**, with `self-test PASSED`. Every
+> already in place and reports **275/275 blocks behaved as declared**, with `self-test PASSED`. Every
 > ★ chapter below is expected to arrive with its own `tools/gen/<NN>/` generator, exactly as the
 > C++ track does.
 >
-> Chapters 04–10 (Part I) and 11–15 (Part II so far) were each written with a `tools/gen/<NN>/`
+> Chapters 04–10 (Part I) and 11–19 (all of Part II) were each written with a `tools/gen/<NN>/`
 > directory holding the Java sources and a `gen.py` that captures every transcript live. The harness
 > is the arbiter: no output in a `text` fence was typed by hand.
 
@@ -38,10 +38,10 @@
 - ✅ 13 Exceptions and `try`-with-resources
 - ✅ 14 Lambdas, Functional Interfaces and Method References
 - ✅ 15 Streams and `Optional`
-- ★ 16 Records, Enums and Sealed Types
-- ★ 17 I/O, NIO.2 and `Files`
-- ★ 18 Dates, Times, `BigDecimal` and Formatting
-- ★ 19 Testing with JUnit and Debugging
+- ✅ 16 Records, Enums and Sealed Types — *compact constructors, ordinal order, exhaustive switch*
+- ✅ 17 I/O, NIO.2 and `Files` — *`Path` as a value, encodings, `walk` vs `list`, atomic writes*
+- ✅ 18 Dates, Times, `BigDecimal` and Formatting — *`Period` vs `Duration`, zones, scale and rounding*
+- ✅ 19 Testing with a Hand-Built Test Runner — *annotations, reflection, assertions, test doubles*
 
 ## Part III · Project 1 · Quill — 20–24 (5)
 
@@ -137,6 +137,14 @@ notice them.
    web and JVM games — with a Kotlin extension", and modern JVM work frequently mixes the two. The
    extension is kept to two chapters (57, 58) so it does not dilute the Java material, and it is
    placed in the appendices rather than as a second track.
+3. **The database chapters build the engine.** There is no JDBC driver in the JDK, and this track
+   takes no third-party jars, so chapters 32–33 implement a small in-memory engine behind the JDBC
+   interfaces by hand rather than connecting to a real database. This is the same trade as the
+   testing chapters, which build their own runner because JUnit is not installed. A reader who needs
+   a real database will need a driver — SQLite, H2 and PostgreSQL are named in prose — but the lesson
+   that matters most, that `?` placeholders are what prevent SQL injection, survives intact, and the
+   whole thing stays verifiable offline. It is a contested choice, so it is stated rather than
+   quietly worked around.
 
 ## Optional further additions if wanted later
 

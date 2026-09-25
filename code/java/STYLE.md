@@ -208,6 +208,7 @@ cannot run something.
 | Virtual threads (Java 21) | **present** | `Executors.newVirtualThreadPerTaskExecutor()` runs and is verifiable. Teach it, and say plainly that it is 21+. |
 | Text blocks (`"""`) | **present** | Use them for embedded HTML and JSON rather than concatenated strings. |
 | JUnit | **not installed** | Testing chapters build a tiny assertion harness by hand. That is honest here: it is verifiable, and it teaches what JUnit does. Say in prose what a real project would use. |
+| JDBC drivers | **not installed** | The JDK ships `java.sql` (the API) and no driver, and this track takes no third-party jars. Database chapters build a small in-memory engine behind the JDBC interfaces by hand. That is verifiable offline, it teaches what a driver actually does, and the `?`-placeholder lesson — the one that prevents SQL injection — survives intact. Name SQLite, H2 and PostgreSQL in prose as what a real project would use. |
 | JavaFX / LibGDX | **not installed** | Do not make them load-bearing. Track B uses Swing/AWT, which is in the JDK. |
 
 **Never write a fragment when a program will do.** A fragment teaches the shape; a program teaches
