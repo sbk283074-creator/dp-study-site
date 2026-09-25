@@ -6,14 +6,14 @@
 > is kept exactly, and the written chapters keep their numbers, so nothing already published moves.
 >
 > The Java track starts from a stronger position than C/C++ did: `tools/verify_examples.py` is
-> already in place and reports **380/380 blocks behaved as declared**, with `self-test PASSED`. Every
+> already in place and reports **391/391 blocks behaved as declared**, with `self-test PASSED`. Every
 > ★ chapter below is expected to arrive with its own `tools/gen/<NN>/` generator, exactly as the
 > C++ track does.
 >
 > Chapters 04–10 (Part I), 11–19 (all of Part II) and 20–24 (all of Part III) were each written with a
 > `tools/gen/<NN>/` directory holding the Java sources and a `gen.py` that captures every transcript
 > live. The harness is the arbiter: no output in a `text` fence was typed by hand. Part IV has started
-> the same way (25–28).
+> the same way (25–29).
 
 ## Part 0 · Start Here — 00–01 (2)
 
@@ -76,7 +76,11 @@
   eight rules, `Json` as a sealed value type, escaping measured per character, numbers kept as text
   so `2^53 + 1` survives, and the 10 KB body that kills the thread with an `Error` no `catch`
   handles*
-- ★ 29 HTML Templates and Escaping — *and the XSS it prevents*
+- ✅ 29 HTML Templates and Escaping — *escaping as a function of the destination rather than the
+  value, the five characters and the one-pass buffer, `{{ }}` versus `{{{ }}}` and the raw marker
+  that is greppable but not a proof, the `javascript:` URL that HTML escaping does not touch, the
+  case-folded scheme allowlist that fails closed, and the `<script>` block where entities are not
+  decoded*
 - ★ 30 Concurrency — Thread Pools and `ExecutorService`
 - ★ 31 Threads, Locks and the Java Memory Model
 - ★ 32 JDBC and a Real Database
