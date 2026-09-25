@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 30</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid, .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 30 / 112 — Comparative &amp; Multi-text Vocabulary</div>
+  <div class="date">Tuesday, 22 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 5)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">29</div>
+      <div class="dot today">30</div>
+      <div class="dot">31</div>
+      <div class="dot">32</div>
+      <div class="dot">33</div>
+      <div class="dot">34</div>
+      <div class="dot">35</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 29:</strong></td><td><strong>Application &amp; Synthesis</strong> — argumentation &amp; synthesis verbs (assert, refute, corroborate, validate, juxtapose, analogous, reconcile, dialectic, nuance, mitigate, problematic, extrapolate)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 30 →</strong></td><td><strong>Comparative &amp; Multi-text Vocabulary</strong> — the grammar &amp; logic of comparing two set-texts (12 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 31:</strong></td><td>Evaluative &amp; Judgement Language in practice — nuance, mitigate, problematic at sentence level</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 32:</strong></td><td>Discourse &amp; Register for Argumentative Writing — academic register, hedging in synthesis</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 33:</strong></td><td>Critical Synthesis — integrating multiple lenses (feminist / Marxist / postcolonial / psychoanalytic)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 34:</strong></td><td>Mixed consolidation of the Week 5 toolkit (0 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 35:</strong></td><td>Week 5 review &amp; assessment — apply the full arsenal to a live passage (0 new words)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Day 15 spaced review<br>(Tropes — metaphor, simile, irony…)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Comparative &amp; Multi-text</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Weeks 1–3 locked the <em>device</em> vocabulary (what a text does) and Week 4 added the <em>metalanguage</em> of stylistics, syntax, word-meaning, sound, and the four critical lenses. Day 29 flipped the programme from <em>acquiring</em> to <em>deploying</em> — you learned the synthesis moves (assert, refute, juxtapose, analogous, reconcile, dialectic). Today — Week 5, Day 2 — those moves get their <em>comparative grammar</em>: the sentence structures and relational concepts that let you write a full Paper 2 paragraph comparing two unseen set-texts, naming the relation <em>and</em> its effect in a single move.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 15 spaced review (the foundational tropes — remember these are the building blocks every comparative claim rests on) &rarr; (2) 12 new comparative &amp; multi-text terms &rarr; (3) distinction boxes (parallelism/antithesis, synthesis/counterpoint, divergence/convergence) &rarr; (4) practice exercises.
+
+  <!-- ============ DAY 15 SPACED REVIEW ============ -->
+  <h2><span class="icon">🔁</span> Day 15 Spaced Review — 12 Foundational Tropes</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    A 15-day spaced-repetition pass on the core tropes from Day 15 — the figures every comparative and stylistic claim ultimately rests on. Read each, <strong>recall its precise mechanism before looking</strong>, then check. These devices are what today's comparative structures will operate on: you cannot stage a <em>parallelism</em> of two texts if you cannot name the <em>metaphor</em> each text builds.
+  </p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">metaphor</div>
+      <div class="rdef"><em>A figure of substitution — "X is Y" — that carries meaning by equating two unlike things without "like" or "as".</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">simile</div>
+      <div class="rdef"><em>A stated comparison using "like" or "as" — "X is like Y". Weaker claim than metaphor; the gap stays visible.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">personification</div>
+      <div class="rdef"><em>Attributing human qualities, motives, or actions to non-human things, animals, or abstractions.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">symbolism</div>
+      <div class="rdef"><em>A concrete item standing for an abstract idea beyond itself (the door = opportunity / enclosure).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">irony</div>
+      <div class="rdef"><em>A gap between what is said and what is meant, or what happens and what is expected — meaning lives in the gap.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">motif</div>
+      <div class="rdef"><em>A recurring element (image, idea, sound, object) that accumulates significance across a text.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">juxtaposition</div>
+      <div class="rdef"><em>Placing items side by side so that their contrast or comparison produces meaning (the device-level twin of Day 29's verb).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">hyperbole</div>
+      <div class="rdef"><em>Deliberate, obvious exaggeration for emphasis or effect — not a factual claim.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">allusion</div>
+      <div class="rdef"><em>A brief, often un-signalled reference to another text, person, event, or work — meaning borrowed from outside.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">metonymy</div>
+      <div class="rdef"><em>A thing substituted for something closely associated with it (the crown = monarchy; the pen = writing).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">oxymoron</div>
+      <div class="rdef"><em>A self-contradictory pairing of adjacent words (deafening silence) that compresses a tension into a phrase.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">anaphora</div>
+      <div class="rdef"><em>Repetition of a word or phrase at the start of successive clauses / lines — emphasis through rhythm (a scheme that also stages accumulation).</em></div>
+    </div>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> Could you separate <em>metaphor</em> from <em>simile</em> (equivalence without "like" vs. stated comparison with "like"), and <em>juxtaposition</em> from <em>irony</em> (placement-for-contrast vs. saying/meaning gap), without peeking? Those two pairs anchor Day 15. Today's words — <em>parallelism, antithesis, counterpoint</em> — are the <em>structures</em> you build on top of these tropes: a metaphor in Text A set in parallelism with a metaphor in Text B is a comparative claim. Keep the device layer live; the comparative grammar is useless without it.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Comparative &amp; Multi-text Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge">NEW CATEGORY — "COMPARATIVE &amp; MULTI-TEXT"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">From the move to the relation.</strong> Day 29 gave you the <em>moves</em> (you juxtapose, you reconcile, you synthesise). Today gives you the <em>grammar and logic of the relation</em> itself — the words that say precisely <em>how</em> two texts sit together. Three are the <em>contrastive sentence structures</em> that stage comparison (<em>parallelism, antithesis, concession</em>); four are the <em>multi-text relations</em> that hold two texts in one reading (<em>synthesis, counterpoint, intertextuality, correspondence</em>); five are the <em>comparative dynamics</em> that map similarity and difference exactly (<em>equivalence, symmetry, divergence, convergence, foil</em>). Together they are the difference between a Paper 2 that merely mentions both texts and one that genuinely <em>compares</em> them — the signature of the top band.
+  </p>
+
+  <!-- Word 1: parallelism -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">parallelism</span>
+      <span class="ipa">/ˈpærəlɛlɪzəm/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The repetition of similar syntactic structure across clauses or sentences, setting comparable items side by side so the reader reads them as one system of meaning.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[Text A and Text B both] open with [X], a parallelism that…" · "The parallelism between [clause A] and [clause B]…" · "[The writer deploys parallelism] to stage…"
+    </div>
+    <p class="example">
+      "Both set-texts open on a closed door — 'the gate was locked' / 'the door would not give' — and the parallelism forces the reader to read the two enclosures as a single structure of meaning rather than two isolated images."
+      <span class="source">— comparative opening paragraph</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The grammatical engine of comparison. Distinct from mere <strong>repetition</strong> (which emphasises within one text) — parallelism <em>across two texts</em> is the comparative structure that makes them weighable together. It is the sentence-level form of Day 29's <em>juxtapose</em>: you juxtapose by building parallel lines. Pair with <strong>antithesis</strong> (word 2) — parallel structure carries either similarity or opposition. In Paper 2, open with a parallelism of the two texts' openings to signal immediate comparison. Links to Day 19's <em>isocolon</em> (balanced clauses) at the device level.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> syntactic parallelism · parallelism between · deploy parallelism · marked parallelism · parallelism of structure</p>
+  </div>
+
+  <!-- Word 2: antithesis -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">antithesis</span>
+      <span class="ipa">/ænˈtɪθɪsɪs/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The juxtaposition of sharply contrasting ideas in balanced, often parallel, grammatical structure — opposition made visible and measurable.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A] and [not-A] stand in antithesis" · "[The antithesis between] [X and Y]" · "[The sentence stages] an antithesis"
+    </div>
+    <p class="example">
+      "In the soliloquy, 'to be or not to be' is the archetypal antithesis: two impossible positions held in one balanced line, and the balance itself is the meaning — the speaker cannot occupy either, only the tension between."
+      <span class="source">— dramatic structure analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> A specific kind of <em>balanced contrast</em>. Distinct from <strong>paradox</strong> (which is self-contradictory within one idea) — antithesis sets <em>two opposed ideas</em> against each other. In multi-text work, an <em>antithesis between the two texts' worldviews</em> is a top-band comparative claim: Text A affirms X, Text B affirms not-X, and the essay reads the gap. Connects to Day 15's <em>juxtaposition</em> (the placement) and Day 19's <em>antimetabole</em> / <em>chiasmus</em> (the structural figures). Use antithesis when the opposition is the point; use parallelism when the alignment is.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> stark antithesis · antithesis between · an antithesis of · stage an antithesis · rhetorical antithesis</p>
+  </div>
+
+  <!-- PARALLELISM vs ANTITHESIS distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: parallelism vs. antithesis</h4>
+    <p>Both are balanced structures, but they balance opposite relations:</p>
+    <p style="margin-top:8px;">
+      <strong>parallelism</strong> — Alignment. Repeats similar structure to set items <em>side by side</em> as comparable.<br>
+      &rarr; "Both texts open on a locked door — the <em>parallelism</em> reads them as one system."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>antithesis</strong> — Opposition. Balances <em>contrasted ideas</em> so the gap is the point.<br>
+      &rarr; "Freedom / confinement stand in <em>antithesis</em> — the balance enacts the conflict."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: am I aligning (parallelism) or opposing (antithesis)? They often appear in the same sentence — parallel structure carrying an antithetical relation ("Text A affirms…; Text B denies…"). Naming which you intend tells the examiner you control the structure. In Paper 2, parallelism opens the comparison; antithesis drives the argument.
+    </p>
+  </div>
+
+  <!-- Word 3: concession -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">concession</span>
+      <span class="ipa">/kənˈsɛʃən/</span>
+      <span class="pos">noun (concessive clause)</span>
+    </div>
+    <p class="definition">The grammatical structure (typically "although / while / even though") that yields a point before resuming one's own — the sentence-level form of Day 22's <em>concede</em>.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[Although X], [Y]" · "[While Text A does…], [Text B…]" · "[The concessive clause] concedes…"
+    </div>
+    <p class="example">
+      "A strong comparative opening runs: 'While both poets figure the sea as freedom, they diverge sharply in the cost they attach to it' — the concessive clause concedes the similarity before the antithesis earns the argument."
+      <span class="source">— Paper 2 topic sentence</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The structure that <em>performs</em> Day 22's <em>concede</em>. Distinct from <strong>rebut</strong> (which answers) — concession <em>yields</em>, then you resume your own claim. The concede–mitigate–rebut sequence (Day 29) almost always opens with a concessive clause. In Paper 2, leading with a concession shows command of the global argument: you grant the obvious similarity, then earn the difference. Links to Day 23's <em>subordination</em> / clause linkage (the concessive clause is a subordinate clause). Never let a concession hang — always resume.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> concessive clause · a concession to · open with a concession · concession of · grammatical concession</p>
+  </div>
+
+  <!-- Word 4: synthesis -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">synthesis</span>
+      <span class="ipa">/ˈsɪnθɪsɪs/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The fused reading that emerges from holding two texts together — a single argument neither text alone supports.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The essay's synthesis] is that…" · "[X and Y synthesise into] [a reading]" · "[A dialectic resolves into] synthesis"
+    </div>
+    <p class="example">
+      "The two texts never meet in the world, but the essay's synthesis — that both figure freedom as a discipline imposed from without — joins them into one claim that neither carries alone."
+      <span class="source">— Paper 2 conclusion</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The goal of Paper 2. Distinct from <strong>summary</strong> (which lists both texts) — synthesis <em>fuses</em> them into a new claim. Connects to Day 29's <em>dialectic</em> (which resolves into synthesis) and <em>reconcile</em>. The marker of the top band: your conclusion is a synthesis, not a recap of Text A then Text B. Guard against a synthesis that flattens difference (cf. reconcile's failure mode — forced unity erases real tension). Name the synthesis, then show it follows from both texts' evidence.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a synthesis of · reach a synthesis · synthesise X and Y · textual synthesis · the synthesis is</p>
+  </div>
+
+  <!-- Word 5: counterpoint -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">counterpoint</span>
+      <span class="ipa">/ˈkaʊntəpɔɪnt/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A contrasting element set against another so that each is clarified by their opposition — comparison achieved through deliberate contrast.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[X serves as] counterpoint to [Y]" · "[The secondary character is] a counterpoint" · "[A counterpoint emerges]"
+    </div>
+    <p class="example">
+      "The boisterous chorus is counterpoint to the solitary protagonist; read together, the noise defines the silence, and the silence the noise — each only legible against the other."
+      <span class="source">— character / texture analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Contrast-as-clarification. Distinct from <strong>foil</strong> (word 12, a specific figure thrown into relief) — counterpoint is the broader <em>structural relation</em>. In multi-text work, set Text B as counterpoint to Text A to expose what A suppresses. Links to Day 15's <em>juxtaposition</em> and to Day 29's <em>analogous</em> (counterpoint is the contrastive twin of analogy — one marks difference, the other similarity). Use counterpoint when the opposition is what makes both texts intelligible.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a counterpoint to · serve as counterpoint · striking counterpoint · counterpoint between · set in counterpoint</p>
+  </div>
+
+  <!-- SYNTHESIS vs COUNTERPOINT distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: synthesis vs. counterpoint</h4>
+    <p>Both hold two texts in one reading, but they hold them differently:</p>
+    <p style="margin-top:8px;">
+      <strong>synthesis</strong> — Fusion. The two texts <em>merge</em> into one claim neither carries alone.<br>
+      &rarr; "The essay's <em>synthesis</em>: both figure freedom as imposed discipline."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>counterpoint</strong> — Contrast. The two texts are set <em>against</em> each other so each clarifies the other.<br>
+      &rarr; "Text B is <em>counterpoint</em> to Text A, exposing what A withholds."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: am I <em>merging</em> (synthesis) or <em>opposing</em> (counterpoint)? A mature Paper 2 does both — uses counterpoint to expose difference, then synthesis to fuse the difference into a claim. Confusing them is a common slip: do not call a fused reading 'counterpoint', nor a contrastive relation a 'synthesis'. This pair is exam armour for the comparison and the conclusion.
+    </p>
+  </div>
+
+  <!-- Word 6: intertextuality -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">intertextuality</span>
+      <span class="ipa">/ˌɪntətɛkstʃuˈælɪti/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The network of relations a text has to other texts; meaning made across texts rather than within one.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The poem's intertextuality] with [Text B]" · "[An intertextual echo] of…" · "[Intertextuality] frames…"
+    </div>
+    <p class="example">
+      "The protagonist's 'nevermore' is an intertextual echo of the canonical elegy; the essay reads the later text against the earlier one, and the echo becomes an argument about literary inheritance."
+      <span class="source">— intertextual reading</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The theoretical frame for all comparative work (cf. Day 24's lenses — intertextuality is the structural counterpart to influence / echo / rewriting). Names the fact that no IB set-text is read in isolation. In Paper 2, naming <em>intertextuality</em> lets you discuss allusion, pastiche, or re-vision as <em>argument</em>, not ornament. Distinct from <strong>allusion</strong> (Day 15, a specific device) — intertextuality is the <em>whole relation</em> the allusion participates in. Use it to justify why comparing these two texts is itself meaningful.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> intertextual echo · intertextuality with · an intertextual reading · marked intertextuality · intertextual relation</p>
+  </div>
+
+  <!-- Word 7: correspondence -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">correspondence</span>
+      <span class="ipa">/ˌkɒrɪˈspɒndəns/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A recognisable match between features of two texts that licenses a comparative claim.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A clear correspondence] between [X in A] and [Y in B]" · "[The correspondence suggests]…" · "[Note the correspondence]"
+    </div>
+    <p class="example">
+      "There is a close correspondence between Text A's repeated 'window' and Text B's 'frame': both are thresholds the speaker cannot cross, and the match grounds the essay's reading of enclosure."
+      <span class="source">— evidence-level comparison</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The evidence-level word for "these two things line up". Distinct from <strong>analogy</strong> (Day 29, a claimed structural similarity) — correspondence is the <em>observable match</em> you then interpret. In Paper 2, spot correspondences first, then decide whether they are <em>analogous</em> (similar) or <em>counterpoint</em> (contrast). Links to Day 26's <em>semantic field</em> / <em>collocation</em> (shared fields are correspondences). Name the correspondence before you argue from it — evidence before claim.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a correspondence between · close correspondence · the correspondence suggests · note the correspondence · structural correspondence</p>
+  </div>
+
+  <!-- Word 8: equivalence -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">equivalence</span>
+      <span class="ipa">/ɪˈkwɪvələns/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The structural or semantic equality that lets two items be compared on the same footing.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[X is in equivalence with] [Y]" · "[The grammar establishes] equivalence" · "[An equivalence of] scale"
+    </div>
+    <p class="example">
+      "Both monologues run to the same fourteen lines; the formal equivalence signals that the two speakers are to be weighed, not ranked — the essay reads them as equal witnesses rather than one authoritative, one minor."
+      <span class="source">— formal comparison</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The condition that makes comparison <em>fair</em>. Without equivalence (different scale, mode, era, or genre), comparison risks <strong>false analogy</strong> (Day 29). Distinct from <strong>symmetry</strong> (word 9, a mirrored shape) — equivalence is about <em>comparability</em>, symmetry about <em>mirrored form</em>. In Paper 2, establish equivalence before comparing, or name why the difference is itself productive (then you are doing divergence, word 10). Equivalence is the gatekeeper of a valid comparison.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> structural equivalence · equivalence of · in equivalence with · establish equivalence · formal equivalence</p>
+  </div>
+
+  <!-- Word 9: symmetry -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">symmetry</span>
+      <span class="ipa">/ˈsɪmɪtri/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">Balanced correspondence between elements across two texts or within one, so that parts mirror or answer one another.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A symmetry between] [A's opening] and [B's close]" · "[The symmetry answers]…" · "[Mirror symmetry]"
+    </div>
+    <p class="example">
+      "Text A opens on birth, Text B closes on death; the symmetry between the two frames turns the pair into a single arc about continuity, and the essay builds its thesis on that mirror."
+      <span class="source">— macro-structural comparison</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The visible <em>shape</em> of a relation. Distinct from <strong>equivalence</strong> (comparability) — symmetry is the <em>mirrored form</em> you can point to. In multi-text analysis, symmetry is often the detail that triggers a synthesis. Links to Day 19's <em>isocolon</em> (balanced clauses) at the sentence level and to Day 15's <em>motif</em> (recurrence that can mirror across texts). Use symmetry to show <em>design</em>, not accident — "the texts happen to both begin with X" is weaker than "the symmetry is deliberate and means Y".
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a symmetry between · mirror symmetry · formal symmetry · the symmetry answers · broken symmetry</p>
+  </div>
+
+  <!-- Word 10: divergence -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">divergence</span>
+      <span class="ipa">/daɪˈvɜːdʒəns/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The point at which two texts or strands move apart; difference made productive rather than merely noted.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A sharp divergence] between [A and B]" · "[The texts diverge] on [X]" · "[The divergence is productive]"
+    </div>
+    <p class="example">
+      "Both poets mourn a parent, yet they diverge on form: one fragments the line, the other holds it whole — and the divergence is the essay's evidence that grief has no single shape."
+      <span class="source">— comparative difference</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The difference-half of comparison made <em>active</em>. Distinct from <strong>counterpoint</strong> (which sets contrast for clarification) — divergence is the <em>measured point of parting</em> you then explain. In Paper 2, name the divergence <em>and</em> its cause / effect; a bare "they differ" is not analysis. Pair with <strong>convergence</strong> (word 11) — the two moves that keep a comparison honest. If you cannot explain the divergence, it is coincidence, not comparison.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a divergence between · sharp divergence · the texts diverge · productive divergence · point of divergence</p>
+  </div>
+
+  <!-- Word 11: convergence -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">convergence</span>
+      <span class="ipa">/kənˈvɜːdʒəns/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The point at which two texts or strands meet; agreement made productive.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[A convergence] between [A and B]" · "[The texts converge] on [X]" · "[The convergence grounds]"
+    </div>
+    <p class="example">
+      "Though separated by a century, the two novels converge on the same image of the unopened letter — and that convergence, not their many differences, is what lets the essay synthesise them."
+      <span class="source">— comparative agreement</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The agreement-half of comparison. Distinct from <strong>correspondence</strong> (observable match) — convergence is the <em>meeting-point</em> you argue from. In Paper 2, convergence often seeds the synthesis; divergence tests it. Together with divergence they are the two moves that keep a comparison honest: converge to build the shared claim, diverge to show where it breaks and why that matters. Links loosely to Day 25's <em>rhyme</em> / <em>caesura</em> (sound-level meeting) only as a metaphor.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a convergence between · the texts converge · point of convergence · convergence on · striking convergence</p>
+  </div>
+
+  <!-- DIVERGENCE vs CONVERGENCE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: divergence vs. convergence</h4>
+    <p>Both describe how two texts relate, but they point in opposite directions:</p>
+    <p style="margin-top:8px;">
+      <strong>divergence</strong> — Parting. The texts <em>move apart</em>; difference made productive.<br>
+      &rarr; "They <em>diverge</em> on form — one fragments the line, one holds it whole."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>convergence</strong> — Meeting. The texts <em>come together</em>; agreement made productive.<br>
+      &rarr; "They <em>converge</em> on the unopened letter — the seed of the synthesis."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: are the texts parting (divergence) or meeting (convergence)? A mature Paper 2 uses both — converge to build the shared claim, diverge to show where it breaks and why that matters. Confusing them (calling a meeting-point a 'divergence') inverts your argument. This pair, with correspondence / equivalence, is the evidence logic of every top-band comparison.
+    </p>
+  </div>
+
+  <!-- Word 12: foil -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">foil</span>
+      <span class="ipa">/fɔɪl/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A character, detail, or text that, by contrast, throws another into relief — the comparative device at the level of figures.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[X is] a foil to [Y]" · "[The secondary text foils] the primary" · "[A foil reveals]"
+    </div>
+    <p class="example">
+      "Read alone, the hero seems rash; set beside the cautious foil-character, his rashness becomes a principle, not an accident — the foil resolves an interpretive question the single text left open."
+      <span class="source">— character comparison</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The character / element-level cousin of <strong>counterpoint</strong> and <strong>juxtaposition</strong>. In multi-text work, set Text B as foil to Text A to expose what A withholds. Distinct from counterpoint (broader structural relation) — foil is specifically the <em>figure thrown into relief</em>. Classic IB move: compare two characters as foils, or two texts as foils. Links to Day 15's <em>juxtaposition</em> and Day 29's <em>analogous</em> (a foil is the contrastive version of an analogy). Use foil when one text exists partly to define the other.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a foil to · serve as a foil · foiled by · the foil reveals · character foil</p>
+  </div>
+
+  <!-- ============ PRACTICE ============ -->
+  <h2><span class="icon">✏️</span> Practice — Write the Comparative Sentence</h2>
+  <div class="practice-box">
+    <p style="font-size:14px; color:var(--ink-soft);">Four drills. Write short answers; the model notes follow each.</p>
+    <ol>
+      <li>
+        <strong>Word-bank insertion.</strong> Choose the correct Day 30 word for each gap (each used once):
+        <div class="word-bank">
+          <strong>Word bank:</strong> parallelism · antithesis · concession · synthesis · counterpoint · intertextuality · correspondence · equivalence · symmetry · divergence · convergence · foil
+        </div>
+        <span style="color:var(--ink);">a)</span> "While both texts mourn loss, they ____________ sharply on the form it takes." &rarr; <em>diverge</em><br>
+        <span style="color:var(--ink);">b)</span> "The boisterous chorus is ____________ to the silent protagonist, defining each by the other." &rarr; <em>counterpoint</em><br>
+        <span style="color:var(--ink);">c)</span> "A ____________ clause opens the paragraph: 'Although both poets…', before the argument resumes." &rarr; <em>concession</em><br>
+        <span style="color:var(--ink);">d)</span> "The two novels ____________ on the image of the unopened letter, seeding the essay's claim." &rarr; <em>converge</em><br>
+        <span style="color:var(--ink);">e)</span> "The essay's ____________ — that both figure freedom as imposed — joins the texts into one claim." &rarr; <em>synthesis</em><br>
+        <span style="color:var(--ink);">f)</span> "The ____________ between Text A's 'window' and Text B's 'frame' grounds the reading of enclosure." &rarr; <em>correspondence</em>
+      </li>
+      <li>
+        <strong>Mini comparative paragraph.</strong> On the two lines below, deploy <strong>at least three</strong> Day 30 words and state each one's <em>effect</em>:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Texts</span>
+          Text A: "I am the door they locked." &nbsp;·&nbsp; Text B: "She was the window they framed."
+        </div>
+        <span style="color:var(--ink-soft); font-size:13px;">Model: the <em>parallelism</em> of the two openings ('door' / 'window', both governed by 'they') forces the reader to read the figures as one system of confinement (the structure aligns them); the <em>correspondence</em> between 'locked' and 'framed' is then read as a <em>divergence</em> — A's enclosure is active denial, B's is display — and naming that divergence is what turns a similarity into an argument about two kinds of control.</span>
+      </li>
+      <li>
+        <strong>Write the top-band comparative sentence.</strong> Combine a <em>concessive clause</em> (concession) + a <em>parallelism</em> of the two texts + a <em>named relation</em> (divergence / convergence / antithesis) + its <em>effect</em>, in one sentence:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Starter</span>
+          "Although both poets figure the sea as freedom…"
+        </div>
+        <span style="color:var(--ink-soft); font-size:13px;">Model: "Although both poets figure the sea as freedom, the parallelism of their closing lines — A's 'I swim' beside B's 'I sink' — exposes a sharp <em>divergence</em> in the cost each attaches to that freedom, and the divergence is what lets the essay argue that liberation is text-specific, not shared." One sentence: relation named <em>and</em> effect stated — the move Day 29 previewed.</span>
+      </li>
+      <li>
+        <strong>Distinguish on demand.</strong> In one sentence each, separate these Day 30 pairs you will be tested on: (i) <em>parallelism</em> vs. <em>antithesis</em> (alignment vs. opposition, both balanced); (ii) <em>divergence</em> vs. <em>convergence</em> (texts parting vs. meeting). Keep both pairs in your exam armour alongside the Day 29 and Day 15 distinctions.
+      </li>
+    </ol>
+  </div>
+
+  <!-- ============ TIPS ============ -->
+  <h2><span class="icon">🎯</span> Study Tips — Making Comparison Automatic</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Lead comparative paragraphs with a concessive clause.</strong> "Although both texts…, they diverge on…" yields the similarity, then earns the difference. The concessive structure (concession) is the single most reliable way to open a 7-band Paper 2 paragraph — it shows you see both texts before you judge them.
+    </li>
+    <li>
+      <strong>Parallelism is your comparison engine.</strong> Repeat the same syntactic shape across the two texts ("Text A opens on X; Text B closes on Y") so the reader reads them as one system. Without parallel structure, a comparison reads as two separate observations; with it, as one argument.
+    </li>
+    <li>
+      <strong>Name the relation AND its effect in a single sentence.</strong> The top-band comparative move — previewed in Day 29 — is one clause that says "they diverge (relation) because each attaches a different cost to freedom (effect)". A comparison that names the relation but not the effect is description; both together is analysis.
+    </li>
+    <li>
+      <strong>Synthesis, not summary.</strong> Your Paper 2 conclusion should fuse the two texts into one claim neither carries alone (synthesis), not recap Text A then Text B. If your final paragraph could be split back into two texts, it is summary — rewrite it as fusion.
+    </li>
+    <li>
+      <strong>Use correspondence and equivalence to prove the comparison is fair.</strong> Before arguing, show the two texts actually match (correspondence) and are comparable on the same footing (equivalence). Skipping this step is how comparisons collapse into false analogy — the failure mode Day 29 warned about.
+    </li>
+    <li>
+      <strong>Divergence and convergence keep a comparison honest.</strong> Converge to build the shared claim; diverge to show where it breaks and why that matters. A comparison that only converges is naively unified; one that only diverges is two texts that happen to sit near each other. Use both, and tie each to cause and effect.</li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 31 (Next): Week 5, Day 3 — Evaluative &amp; Judgement Language in practice</strong><br>
+    Today gave you the comparative grammar. Day 31 drops it into sentences: deploy <em>nuance</em>, <em>mitigate</em>, and <em>problematic</em> (Day 29's refinement words) at the level of the clause — learn to qualify a claim without weakening it, to mark a representation as problematic through a lens, and to hold fine discriminations under exam pressure. You'll practise the evaluative sentence that signals perceptive judgement — the move that separates a 5 from a 7 in both papers.<br><br>
+    <strong style="color:var(--ink);">Milestone:</strong> 264 words learned (of ~1,300). Week 5 continues — the Application &amp; Synthesis phase that turns your 252-word toolkit into fluent comparative argument. 🏆
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 5, Day 30<br>
+  264 words learned so far (+12 today) · 1,036 to go · Week 5 continues 🏆
+</footer>
+
+
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+<script src="../assets/vocab-ask-ai.js" defer></script>
+</body>
+</html>
