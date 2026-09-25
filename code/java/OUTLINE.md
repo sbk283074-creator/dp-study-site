@@ -6,14 +6,14 @@
 > is kept exactly, and the written chapters keep their numbers, so nothing already published moves.
 >
 > The Java track starts from a stronger position than C/C++ did: `tools/verify_examples.py` is
-> already in place and reports **346/346 blocks behaved as declared**, with `self-test PASSED`. Every
+> already in place and reports **357/357 blocks behaved as declared**, with `self-test PASSED`. Every
 > ★ chapter below is expected to arrive with its own `tools/gen/<NN>/` generator, exactly as the
 > C++ track does.
 >
 > Chapters 04–10 (Part I), 11–19 (all of Part II) and 20–24 (all of Part III) were each written with a
 > `tools/gen/<NN>/` directory holding the Java sources and a `gen.py` that captures every transcript
 > live. The harness is the arbiter: no output in a `text` fence was typed by hand. Part IV has started
-> the same way (25).
+> the same way (25–26).
 
 ## Part 0 · Start Here — 00–01 (2)
 
@@ -66,7 +66,9 @@
 - ✅ 25 How the Web Works — *a real HTTP exchange read off a socket, byte-at-a-time head parsing, TCP
   framing, status-code families, headers as a case-insensitive multimap, `safe` vs `idempotent`,
   `Content-Length` in bytes, and `%2F` path smuggling*
-- ★ 26 The JDK HTTP Server — *`HttpServer`, handlers, the request/response model*
+- ✅ 26 The JDK HTTP Server — *`com.sun.net.httpserver` with no dependency, the three
+  `sendResponseHeaders` length modes, context matching by path segment, the server's own HTML 404, the
+  single-threaded default executor measured, and `set` vs `add`*
 - ★ 27 Requests, Responses and Routing
 - ★ 28 JSON — Parsing and Generating
 - ★ 29 HTML Templates and Escaping — *and the XSS it prevents*
