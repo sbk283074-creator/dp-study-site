@@ -1836,12 +1836,78 @@ similarity score, and no BM item ships containing HL-only content.
   - **Numbers after the wave, measured from the data rather than typed.** 342 items — Maths
     138 / 1967 marks, Physics 97 / 1149, CS 68 / 1012, BM SL
     39 / 563; 4691 marks in all. Difficulty 5 / 186 / 151. d5 shares: Maths
-    **49%** (at the cap — the next Maths wave must be written at d4), Physics
+    **49%** (at the cap; see the note on the cap below — it is a diagnostic on the labels, not a budget on difficulty), Physics
     44%, CS 47%, BM 23%. Evidence 257 / 342,
     `difficulty 5 with no evidence` **0**, `labels the evidence does not permit` **0**, all 13 levers
     in use. Assertions 3997. Figures 114 / 342 = 33%. Sourcing 127 items
     outside `original` (`uk-alevel` 44, `other` 7 — the first entry from the Indian systems).
     `validate.py` 0 failures, `difficulty_audit --check` exit 0.
+- **Batch 34 — DONE (3 items, 342 → 345; the owner's correction to the cap rule landed here).**
+  - **Three briefs, all read off the node/component measurement rather than from a topic list.** A
+    sweep of which syllabus nodes have no item on which paper component found three concrete holes:
+    **B.2 (greenhouse effect) has no Paper 1A item at all** — its 19 clusters cover kinematics,
+    thermal cycles, waves, fields and photons but not radiation balance; **AHL 5.17 volumes of
+    revolution** carries items with no figure, and it is the one sub-topic whose whole difficulty is
+    geometric; and **A1.2 data representation** had integers, two's complement and check digits but
+    never floating point. The CS item also feeds the component that is still inverted: Section A
+    carries 260 of Paper 1's marks against Section B's 382, where the guide gives Section A 56 of 80.
+  - **`PHYS-B.2-601`** (P1A, five MCQs, d4, `non_governing_variable`) is built on one fact told five
+    ways — absorption is a matter of wavelength, not of quantity, and the atmosphere is transparent
+    where the Sun shines and partly opaque where the Earth shines. The discriminating question (e)
+    offers two hypothetical gases and asks which cools the planet's heat loss more: the answer is the
+    one whose band lies in the atmospheric window, not the wider, stronger, more familiar band that
+    sits on top of the carbon dioxide one already drawn. The wrong answer is the one that sounds
+    like science. Supporting numbers all computed: radiating level 254.6 K, 278 K without the
+    albedo, 360 K without the factor of four, Wien ratio 22.7.
+  - **`MATH-5.17-701`** (P1 Section B, 14 marks, d5, `non_obvious_tool`) rotates a region that
+    straddles the axis of rotation. Between two curves the integrand is decided by *which is on top*
+    — the habit a hundred area questions build — but about an axis it is decided by *which is
+    further away*, and the two questions change answer at different x-values: the switch is at
+    $\sqrt{2}$, where the ordinates have equal modulus, not at $\sqrt{3}$ where the curve crosses
+    the axis. Volume $= \frac{32\pi(11\sqrt{2}-4)}{105} = 11.06$; the single-washer route returns
+    **minus** 3.83, and the plausible-looking $\sqrt{3}$ split returns 7.67, 30.6% low.
+  - **`CS-A1.2-601`** (P1 Section A, 12 marks, d5, `variable_swap`) states a 16-bit floating-point
+    format and then asks the question the format is never asked: given a required *absolute* error
+    over an interval, how many mantissa bits? The unknown sits in an exponent, and because the bound
+    is absolute while the format's precision is relative, the binding case is the largest value in
+    the interval — exponent 9 — so $n = 13$. Part (d) then shows the answer to (c) is a proof of
+    impossibility: the exponent field that reaches 1000 needs 5 bits, leaving 10 mantissa bits, and
+    the smallest format satisfying both needs 19 bits, not 16.
+  - **Five defects caught before shipping, four of them by the machine and one by the eye.**
+    (1) An assertion compared $0.199951172$ against the exact stored value at 1e-12 and failed —
+    my own transcription rounding, caught by the gate that exists to catch exactly that. (2) The
+    same again at 6 decimal places on the Wien ratio. (3) The spectrum's log axis spanned 1–100 µm,
+    so the solar curve peaked off-frame and its label was clipped. (4) **The collision check itself
+    was wrong**: it compared text *anchor points*, and five 90-pixel band labels 60 pixels apart
+    passed it while rendering as an unreadable smear — the check now compares estimated extents, and
+    the labels are chemical formulae. (5) The rendered figure then contradicted the answer: part
+    (e)'s text claimed no band lies between 8 and 12 µm, and the graph showed ozone at 9.0–10.2 µm.
+    The gas was moved to 10.5–12.5 µm, the genuinely open gap, in all five places it is named.
+    **(4) is the one to carry forward: a lint that passes a defect is worse than no lint, and it is
+    the same failure shape as the CS Paper 2 table — a check written against the wrong quantity.**
+  - **Sourcing, and what was refused.** Two searches (A-level practical data-handling; AP CSA
+    free-response questions) returned resource catalogues rather than questions. Nothing was claimed
+    from them: `CS-A1.2-601` and `PHYS-B.2-601` are recorded `original`, and `MATH-5.17-701` is
+    recorded `uk-further-maths` naming only the worked-example collections actually consulted, with
+    the adaptation stated. A citation that was not earned is worse than no citation.
+  - **The owner's correction, recorded because it changes how the cap is read.** This wave was
+    planned after I wrote that Maths "must be written at d4" because it sits at the 50% cap. That
+    was wrong and it has been removed from PLAN.md and from the authoring skill: the cap is a
+    **diagnostic on the labels**, not a budget on difficulty, and designing an easier question to
+    protect a statistic is the same sin as relabelling an earned one. If a subject crosses 50%, the
+    response is to audit whether the existing d5 labels earn 8 of 9 and demote the ones that do not —
+    which is how the 2026-09-16 backlog pass produced five downward corrections.
+  - **Numbers after the wave, measured from the data.** 345 items — Maths 139 / 1981
+    marks, Physics 98 / 1154, CS 69 / 1024, BM SL 39 / 563;
+    4722 marks. Difficulty 5 / 187 / 153. d5 shares: Maths 49%, CS
+    48%, Physics 44%, BM 23%. Evidence 260 / 345,
+    `difficulty 5 with no evidence` 0, all 13 levers in use. Assertions 4038. Figures 116 /
+    345 = 34% (Maths 24%, Physics 41%, CS 51%). Sourcing
+    128 items outside `original`. `validate.py` 0 failures, `difficulty_audit --check` exit 0.
+  - **Follow-up this wave leaves open:** the extent-based label check should be ported back into
+    `tools/batch32/` and `tools/batch33/` generators, whose figures passed the older anchor-only
+    test — they rendered clean when looked at, but the check that cleared them was weaker than this
+    one.
 - **Priority-3 ("stretch") tail:** optional deeper items beyond the must/should nodes — open when there is
   appetite; the four subjects are otherwise complete for priority-1 and priority-2 coverage.
 - **Printables — DONE.** `site/papers/` holds a printable question paper and a matching answer booklet

@@ -354,7 +354,7 @@ function loadIndex() {
   if (window.DP_SEARCH_INDEX) { INDEX = window.DP_SEARCH_INDEX; return; }
   const s = document.createElement('script');
   // Absolute URL so it works from any depth, and versioned to match the palette.
-  s.src = 'https://sbk283074-creator.github.io/dp-study-site/assets/js/search-index.js?v=12';
+  s.src = 'https://sbk283074-creator.github.io/dp-study-site/assets/js/search-index.js?v=13';
   // Without onload, a query typed before the index arrives is answered with
   // "No results" and stays wrong until the student happens to type another
   // character. Re-render once the index lands.

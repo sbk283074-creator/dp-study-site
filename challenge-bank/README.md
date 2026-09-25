@@ -16,17 +16,17 @@ design and provably not copied.
 
 | Subject | Guide in force | Questions | Nodes covered |
 |---|---|---:|---:|
-| Math AA HL | 2021 (runs to Nov 2028) | 138 | 83 / 83 (100%) |
-| Physics HL | 2025 | 97 | 24 / 24 (100%) |
-| Computer Science HL | 2027 (new Theme A/B) | 68 | 25 / 25 (100%) |
+| Math AA HL | 2021 (runs to Nov 2028) | 139 | 83 / 83 (100%) |
+| Physics HL | 2025 | 98 | 24 / 24 (100%) |
+| Computer Science HL | 2027 (new Theme A/B) | 69 | 25 / 25 (100%) |
 | Business Management SL | 2024 | 39 | 34 / 34 (100%) |
-| **Total** | | **342** | **166 / 166 (100%)** |
+| **Total** | | **345** | **166 / 166 (100%)** |
 
 **Every priority-1 ("must-cover") and priority-2 ("should-cover") node is done** — Maths 32/32 + 51/51,
 Physics 24/24, CS 25/25, BM 26/26 + 8/8 Toolkit. The bank covers **all 166 syllabus nodes** across the
 four subjects; the only remaining work is the optional priority-3 ("stretch") tail.
 
-All 342 items are difficulty 3–5 (**5 at difficulty 3, 186 at difficulty 4, 151 at
+All 345 items are difficulty 3–5 (**5 at difficulty 3, 187 at difficulty 4, 153 at
 difficulty 5**), and pass `validate.py`
 with **0 failures**. The originality gate is clean: **0 items above threshold**, highest external score
 0.090, highest internal score 0.073 and highest approach score 0.366 (limits 0.35 / 0.25 / 0.50). The
@@ -34,9 +34,9 @@ approach maximum is `MATH-AHL1.11-201` against `MATH-AHL1.11-001`, two items on 
 the partial-fractions-then-telescoping method — the gate judges the method different enough, and the two
 are different questions with different answers (¾ against ¼).
 
-Every item carries a `verification.assertions` list — **3997 machine-checked assertions** in total — so
+Every item carries a `verification.assertions` list — **4038 machine-checked assertions** in total — so
 the arithmetic in every answer is re-derived by the validator on each run, not merely asserted by the
-author. **114 items are figure-bearing (33%)**, with the figure inlined into `question.figure` so a page
+author. **116 items are figure-bearing (34%)**, with the figure inlined into `question.figure` so a page
 renders identically on `file://` and over HTTP.
 
 **The figures are hand-drawn, and the gate enforces it.** 104 of the 110 are raw SVG and the other six are
@@ -80,7 +80,7 @@ The per-subject companion
 (`FIGURE_SUBJECT_TARGET = 0.15`) is *reported* rather than enforced, and no subject prints a gap:
 **CS 48%, Physics 39%, Maths 22%, BM 21%**.
 
-**Sourcing is recorded, not claimed.** 127 items are drawn from other syllabuses — 高考, 强基, 竞赛,
+**Sourcing is recorded, not claimed.** 128 items are drawn from other syllabuses — 高考, 强基, 竞赛,
 A-Level, Further Maths, AP, 新加坡 A-Level, four from IB itself, and six recorded as `other` — and each names
 `provenance.resource_origin` and
 `provenance.adaptation`.
@@ -98,7 +98,7 @@ What the audit reports today:
 
 | | now | at the 2026-09-13 baseline |
 |---|---|---|
-| items with evidence for the label | **257 / 342** | 0 / 172 |
+| items with evidence for the label | **260 / 345** | 0 / 172 |
 | difficulty 5 with no evidence | **0** | 79 |
 | labels the evidence does not permit | **0** | — |
 | items claiming difficulty 5 | 44% | 46% |

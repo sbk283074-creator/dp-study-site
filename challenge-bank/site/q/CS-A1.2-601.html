@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CS-A1.2-601 — CS HL — IB Challenge Bank</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script>
+window.MathJax={tex:{inlineMath:[],displayMath:[['\\(','\\)'],['$','$'],['$$','$$'],['\\[','\\]']],
+processEscapes:true},options:{skipHtmlTags:['script','noscript','style','textarea','pre','code']},
+startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(fixInlineMath)}};
+function fixInlineMath(){
+  document.querySelectorAll('mjx-container[display="true"]').forEach(function(c){
+    var parent=c.parentElement, hasText=false, i, n, ch=parent.childNodes;
+    for(i=0;i<ch.length;i++){ n=ch[i]; if(n.nodeType===3 && n.textContent.trim().length>0){hasText=true;break;} }
+    if(hasText){ c.style.setProperty('display','inline-block','important'); c.style.verticalAlign='middle'; c.style.margin='0 0.12em'; }
+    else{ c.style.display='block'; c.style.margin='0.6em auto'; c.style.textAlign='center'; }
+  });
+}
+function mjFallback(){var s=document.createElement('script');
+s.src='https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js';s.async=true;document.head.appendChild(s);}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" onerror="mjFallback()"></script>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="../index.html">IB Challenge Bank</a>
+  <nav><a href="../math-aa-hl/index.html">Maths AA HL</a><a href="../physics-hl/index.html">Physics HL</a><a href="../computer-science-hl/index.html">CS HL</a><a href="../business-management-sl/index.html">BM SL</a><a href="../papers/builder.html">Paper builder</a><a href="../index.html">About</a><a class="ext" href="../../../index.html">Study system &#8599;</a></nav>
+</div></header>
+<main><div class="wrap">
+
+<h1>A1.2 Data representation and computer logic: a stated 16-bit floating-point format inverted to find the mantissa width a given absolute error demands, and the range that then no longer fits</h1>
+<p class="lede"><a href="../computer-science-hl/index.html">Computer science HL</a> · CS-A1.2-601</p>
+<button type="button" class="q-done-page" data-qid="CS-A1.2-601" aria-pressed="false">Mark done</button>
+<button type="button" class="q-pick-page" data-qid="CS-A1.2-601">Add to paper</button>
+<button type="button" class="q-pdf" data-print-q>Save as PDF</button>
+<div class="meta"><span class="chip chip-topic">Theme A: Concepts of computer science</span><span class="chip chip-key">A1.2 Data representation and computer logic (the floating-point representation of real numbers, and the limits of precision and range that follow from a fixed number of bits)</span><span class="chip">P1 · Section A</span><span class="chip">12 marks</span><span class="chip chip-hard">difficulty 5</span><span class="chip">Determine</span><span class="chip">Determine</span><span class="chip">Determine</span><span class="chip">Explain</span></div>
+
+
+<section id="q-print">
+<h2>Question</h2>
+<p>A machine uses a <strong>16-bit floating-point format</strong> with three fields:</p>
+<p>| field | bits | meaning |<br>|---|---|---|<br>| sign | 1 | 0 for positive, 1 for negative |<br>| exponent | 6 | stored as the true exponent plus a bias of 32 |<br>| mantissa | 9 | the fractional part after the binary point, with a leading 1 assumed |</p>
+<p>A bit pattern with sign $s$, exponent field $e$ and mantissa field $m$ therefore stores the value</p>
+<p>$$(-1)^{s} \times 1.m \times 2^{\,(e - 32)}$$</p>
+<p>with $0 \le e \le 63$ and $m$ a nine-bit binary fraction. Numbers are stored by <strong>rounding to nearest</strong>. No subnormal values and no reserved bit patterns are used.</p>
+<ol class="parts"><li><span class="marks">[3 marks]</span><strong>(a)</strong> <p>Determine the value actually stored for each of $0.5$, $0.25$, $0.2$ and $0.1$, and state which of the four are represented exactly, justifying your answer.</p> <em>(Determine)</em></li><li><span class="marks">[3 marks]</span><strong>(b)</strong> <p>Determine the largest finite value this format can represent, and the smallest positive normalised value.</p> <em>(Determine)</em></li><li><span class="marks">[4 marks]</span><strong>(c)</strong> <p>A program stores every measurement in the interval $500 \le v \le 1000$ using this format's field widths for the sign and exponent, but with a mantissa of $n$ bits. Given that no stored value may differ from the true value by more than $0.05$, determine the least possible value of $n$.</p> <em>(Determine)</em></li><li><span class="marks">[2 marks]</span><strong>(d)</strong> <p>Using your answer to part (c), explain why no 16-bit format of this kind, with any choice of field widths, can meet the program's requirement.</p> <em>(Explain)</em></li></ol>
+<p class="reveal-note">Total: 12 marks. Try the question before revealing anything below.</p>
+</section>
+<div class="qai" data-ai data-ai-subject="Computer Science HL" data-ai-diff="5" data-ai-marks="12" data-ai-ref="CS-A1.2-601">
+<div class="qai-head">
+  <span class="qai-title">Ask AI</span>
+  <span class="qai-sub">Opens the study assistant focused on this question &mdash; the whole item is sent, not just its topic.</span>
+</div>
+<div class="qai-modes">
+  <button type="button" class="qai-btn" data-ai-mode="solution">Full worked solution</button>
+  <button type="button" class="qai-btn" data-ai-mode="hint">Hint only</button>
+  <button type="button" class="qai-btn" data-ai-mode="steps">Guided steps</button>
+  <button type="button" class="qai-btn" data-ai-mode="mark">Mark my attempt</button>
+</div>
+<div class="qai-src" hidden>A machine uses a **16-bit floating-point format** with three fields:
+
+| field | bits | meaning |
+|---|---|---|
+| sign | 1 | 0 for positive, 1 for negative |
+| exponent | 6 | stored as the true exponent plus a bias of 32 |
+| mantissa | 9 | the fractional part after the binary point, with a leading 1 assumed |
+
+A bit pattern with sign $s$, exponent field $e$ and mantissa field $m$ therefore stores the value
+
+$$(-1)^{s} \times 1.m \times 2^{\,(e - 32)}$$
+
+with $0 \le e \le 63$ and $m$ a nine-bit binary fraction. Numbers are stored by **rounding to nearest**. No subnormal values and no reserved bit patterns are used.
+
+(a) Determine the value actually stored for each of $0.5$, $0.25$, $0.2$ and $0.1$, and state which of the four are represented exactly, justifying your answer. [3 marks] (Determine)
+(b) Determine the largest finite value this format can represent, and the smallest positive normalised value. [3 marks] (Determine)
+(c) A program stores every measurement in the interval $500 \le v \le 1000$ using this format&#x27;s field widths for the sign and exponent, but with a mantissa of $n$ bits. Given that no stored value may differ from the true value by more than $0.05$, determine the least possible value of $n$. [4 marks] (Determine)
+(d) Using your answer to part (c), explain why no 16-bit format of this kind, with any choice of field widths, can meet the program&#x27;s requirement. [2 marks] (Explain)</div>
+</div>
+<details><summary>Reveal the answer</summary><div class="body"><p><strong>(a)</strong> Each value is written as $1.m \\times 2^{E}$ and the mantissa rounded to nine bits.</p>
+<p>$0.5 = 1.0 \\times 2^{-1}$, so the exponent field is $-1 + 32 = 31 = 011111_2$ and the mantissa<br>field is all zeros: the pattern $0\ 011111\ 000000000$ stores exactly $0.5$. $0.25 = 1.0 \\times<br>2^{-2}$ gives $0\ 011110\ 000000000$, also exact <strong>(A1)</strong>.</p>
+<p>$0.2 = 1.6 \\times 2^{-3}$, and $1.6$ in binary is $1.1001100110011\\ldots$, a repeating expansion.<br>The nine stored bits are $100110011$, giving $1.100110011_2 = 1.599609375$ and a stored value of<br>$0.199951172$ --- an error of $4.9e-05$, not zero. $0.1 = 1.6 \\times 2^{-4}$ has the same<br>significand and the same repeating tail, so it too is inexact <strong>(M1)</strong>.</p>
+<p>The exact ones are $0.5$ and $0.25$, and the reason is that they are powers of two: a binary<br>fraction can represent $k/2^{j}$ exactly and nothing else, so any value whose denominator is not a<br>power of two --- $0.2 = 1/5$ and $0.1 = 1/10$ --- has no finite expansion however many bits are<br>used <strong>(A1)</strong>. Adding more mantissa bits shrinks those two errors but never removes them.</p>
+<p><strong>(b)</strong> The largest value uses $e = 63$ and every mantissa bit set: $1.111111111_2 = 2 - 2^{-9} =<br>1.998046875$, so</p>
+<p>$$V_{\\max} = (2 - 2^{-9}) \\times 2^{31} = 4,290,772,992,$$</p>
+<p>about $4.29 \\times 10^{9}$ <strong>(A1)</strong>. The smallest positive normalised value uses $e = 0$ and a zero<br>mantissa: $1.0 \\times 2^{-32} = 2.328e-10$ <strong>(A1)</strong>. Note that the leading 1 is assumed, so the<br>smallest value is not reached by shrinking the mantissa --- only by shrinking the exponent, which is<br>why the format has a gap between $2.328e-10$ and zero that no pattern fills <strong>(A1)</strong>.</p>
+<p><strong>(c)</strong> The requirement is stated as an absolute error, so the binding case is the <strong>largest</strong> value<br>in the interval, because that is where one unit in the last place is physically biggest. Values from<br>512 up to 1000 have true exponent 9, since $2^{9} = 512 \\le v &lt; 1024 = 2^{10}$ <strong>(M1)</strong>. With $n$<br>mantissa bits the spacing there is</p>
+<p>$$\\mathrm{ulp} = 2^{9} \\times 2^{-n},$$</p>
+<p>and rounding to nearest halves it, so the condition is</p>
+<p>$$\\frac{2^{9}}{2^{n} \\times 2} \\le 0.05<br>\\quad\\Longrightarrow\\quad 2^{n} \\ge \\frac{512}{0.1} = 5120 .$$ <strong>(M1)</strong></p>
+<p>Now $2^{12} = 4096 &lt; 5120$ and $2^{13} = 8192 &gt; 5120$, so</p>
+<p>$$n = 13 \\ \\text{bits},$$</p>
+<p>giving a maximum error of $2^{9}/2^{13}/2 = 0.0312$ at $v = 1000$ <strong>(A1)</strong>. The format as designed,<br>with nine mantissa bits, has a maximum error of $0.5$ over this range --- ten times the allowance<br><strong>(A1)</strong>.</p>
+<p><strong>(d)</strong> Meeting the error bound needs $n = 13$ mantissa bits. The range also has to reach 1000, and<br>the largest true exponent is $2^{E-1}$ for an $E$-bit excess-$2^{E-1}-1$ field, so $E = 4$ tops out<br>at $2^{8} = 256$ and cannot represent 1000 at all, while $E = 5$ reaches $2^{16}$ <strong>(M1)</strong>. That<br>leaves $16 - 1 - 5 = 10$ bits for the mantissa, whose error bound is $2^{9}/2^{10}/2 = 0.25$ ---<br>five times too large. The two requirements are in opposite directions and the format has only 16<br>bits to spend between them: the smallest design that satisfies both is $1 + 5 + 13 = 19$ bits<br><strong>(A1)</strong>.</p></div></details>
+<details><summary>Markscheme notes</summary><div class="body"><p><strong>(a)</strong> (M1) for at least one of the two inexact values carried through a binary expansion; (A1)<br>for the pair $\{0.5, 0.25\}$ with the powers-of-two reason. Accept a stored value for $0.2$ in<br>$[0.1999, 0.2000]$ and for $0.1$ in $[0.09997, 0.10000]$. A candidate who declares all four exact<br>because "the format has nine bits, which is plenty" has missed the criterion entirely; award the<br>method mark only if their expansions are otherwise correct.</p>
+<p><strong>(b)</strong> (A1) for $4\\,290\\,840\\,576$ or $4.29 \\times 10^{9}$, (A1) for $2.33 \\times 10^{-10}$,<br>(A1) for the observation about the assumed leading 1. A candidate who reports the smallest positive<br>value as $2^{-32}$ times a mantissa of $0.000000001$ has misread the format, since the leading 1 is<br>not stored; do not penalise the arithmetic that follows.</p>
+<p><strong>(c)</strong> (M1) for identifying exponent 9 as the binding case, (M1) for $\\mathrm{ulp} = 2^{9-n}$ and<br>the halving for round-to-nearest, (A1) for $2^{n} \\ge 5120$, (A1) for $n = 13$. Award (M1) but no<br>(A1) to a candidate who works from $0.05/1000$ as a relative error and stops: that is the natural<br>route and it does not reach the bit count. If the question's rounding convention is read as<br>truncation instead, $n = 14$ follows and full credit is available for a consistent argument.</p>
+<p><strong>(d)</strong> (M1) for the exponent-field comparison at $E = 4$ and $E = 5$, (A1) for the bit count that<br>survives and why it fails. Do not accept "16 bits is just not enough" without the comparison; the<br>mark is for showing the two demands compete for the same 15 bits.</p></div></details>
+<details><summary>Why this question is hard</summary><div class="body"><p>The item asks the question a floating-point lesson never poses. Every worked example runs<br>the format forwards: here is a bit pattern, read off its value; here is a value, write its pattern.<br>Part (c) reverses it --- the error is given and the number of bits is the unknown --- and the<br>reversal is not a matter of algebra, because the quantity being solved for sits in an exponent<br>inside a power of two, and because the error bound is stated in absolute terms while the format's<br>precision is fundamentally relative.</p>
+<p>That second point is where a prepared student still goes wrong. The natural move is to compute<br>$0.05/1000 = 5 \\times 10^{-5}$, compare it with $2^{-9} \\approx 2 \\times 10^{-3}$, conclude that<br>nine bits are far too few, and stop without a number. The comparison is not wrong, but it is not an<br>answer: the absolute error at a given magnitude is $2^{E-n-1}$, so the bits needed depend on the<br>exponent of the largest value in the range, not on the ratio the candidate just formed. And the<br>exponent is 9 because $2^9 \\le 1000 &lt; 2^{10}$, which is a fact about the interval's top end rather<br>than about 0.05.</p>
+<p>Part (d) then closes the trap. The requirement is not merely unmet by the given format --- it cannot<br>be met by *any* 16-bit format of the family, because the range and the precision compete for the<br>same fifteen bits, and the smallest design that satisfies both needs nineteen. A candidate who<br>answers "increase the mantissa" has solved (c) and missed (d): the answer to (c) is the proof that<br>(d) is impossible. That inversion, from "what does this format give" to "can any format give this",<br>is the transfer the item is built to test, and it is the reason the numbers were chosen as 500 to<br>1000 and 0.05 rather than as rounder ones.</p></div></details>
+<h2>Metadata</h2>
+<dl class="kv">
+  <div><dt>Topic</dt><dd>Theme A: Concepts of computer science — A1.2 Data representation and computer logic: a stated 16-bit floating-point format inverted to find the mantissa width a given absolute error demands, and the range that then no longer fits</dd></div>
+  <div><dt>Challenge lever</dt><dd>The format is always used forwards, from bit pattern to value; here the absolute error is given and the number of mantissa bits is the unknown, which sits in an exponent --- and because the bound is absolute while the format&#x27;s precision is relative, the binding case is the largest value in the interval, not the ratio 0.05/1000 that the candidate reaches for.</dd></div>
+  <div><dt>Syllabus reference</dt><dd>A1.2 Data representation and computer logic (the floating-point representation of real numbers, and the limits of precision and range that follow from a fixed number of bits)</dd></div>
+  <div><dt>Inspiration</dt><dd>original</dd></div>
+  <div><dt>Adaptation</dt><dd>Original construction from the guide&#x27;s own bullet on representing real numbers in floating-point form. The classical treatment asks for a bit pattern or a decimal value; what is written here is the reverse problem --- a required absolute error over a stated interval, with the bit width as the unknown --- and then the impossibility that follows when the same 16 bits must also carry the range. The field widths, the interval and the tolerance are chosen so that the answer is not the format&#x27;s own 9 bits and not any 16-bit design.</dd></div>
+  <div><dt>Verification</dt><dd>Every stored value was produced by the rounding rule the question states, in code, not by hand: $0.2 = 1.6 \times 2^{-3}$ rounds to the significand $1.599609375$ and stores $0.199951172$, an error of $4.9e-05$; $0.1$ behaves the same way at exponent $-4$; $0.5$ and $0.25$ are exact. The extremes are $(2 - 2^{-9}) \times 2^{31} = 4,290,772,992$ and $2^{-32} = 2.328e-10$. The bit count in (c) was found by searching over $n$ and testing the condition at $v = 1000$ rather than by solving the inequality and trusting the algebra: $n = 12$ gives a maximum error of $0.0625$, which fails, and $n = 13$ gives $0.0312$, which passes. The impossibility in (d) was checked by enumerating every split of the 15 available bits between exponent and mantissa: the smallest exponent field that reaches 1000 is 5 bits, which leaves 10 mantissa bits and an error of $0.25$, and no wider exponent helps because the mantissa only shrinks.</dd></div>
+  <div><dt>Nearest bank match</dt><dd>MATH_AAHL_P2_2020Nov_TZ0_q05 (similarity 0.009)</dd></div>
+  <div><dt>Nearest item here</dt><dd>MATH-AHL5.18-001 (similarity 0.006)</dd></div>
+  <div><dt>Status</dt><dd>published · authored by ai · 2026-09-25</dd></div>
+</dl>
+<div class="pager"><a href="../computer-science-hl/index.html">← All CS HL questions</a></div>
+
+</div></main>
+<footer class="site"><div class="wrap">
+  Original questions written for the class of 2028 (May 2028 session). Nothing here is copied from an IB
+  past paper, textbook or question bank; figures are authored, not scanned. Part of the
+  <a href="../../../index.html">DP study system</a>.
+</div></footer>
+<div id="cb-pickbar" class="cb-pickbar" hidden>
+  <span><b data-n>0</b> question<span data-plural>s</span> selected</span>
+  <a class="btn cb-pickbar-build" href="#">Build paper</a>
+  <button type="button" class="cb-pickbar-clear" id="cb-clear">Clear</button>
+</div>
+<script src="../assets/site.js"></script>
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+</body>
+</html>
