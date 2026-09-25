@@ -6,7 +6,7 @@
 > is kept exactly, and the written chapters keep their numbers, so nothing already published moves.
 >
 > The Java track starts from a stronger position than C/C++ did: `tools/verify_examples.py` is
-> already in place and reports **357/357 blocks behaved as declared**, with `self-test PASSED`. Every
+> already in place and reports **369/369 blocks behaved as declared**, with `self-test PASSED`. Every
 > ★ chapter below is expected to arrive with its own `tools/gen/<NN>/` generator, exactly as the
 > C++ track does.
 >
@@ -69,7 +69,9 @@
 - ✅ 26 The JDK HTTP Server — *`com.sun.net.httpserver` with no dependency, the three
   `sendResponseHeaders` length modes, context matching by path segment, the server's own HTML 404, the
   single-threaded default executor measured, and `set` vs `add`*
-- ★ 27 Requests, Responses and Routing
+- ✅ 27 Requests, Responses and Routing — *`Request`/`Response` as immutable records, the one adapter
+  file that still names `HttpExchange`, `404` vs `405` and the `Allow` header, first-match-wins
+  registration order, `Response.length()` in bytes, and an uncaught handler giving the client nothing*
 - ★ 28 JSON — Parsing and Generating
 - ★ 29 HTML Templates and Escaping — *and the XSS it prevents*
 - ★ 30 Concurrency — Thread Pools and `ExecutorService`
