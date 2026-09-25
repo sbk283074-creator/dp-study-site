@@ -6,13 +6,13 @@
 > is kept exactly, and the written chapters keep their numbers, so nothing already published moves.
 >
 > The Java track starts from a stronger position than C/C++ did: `tools/verify_examples.py` is
-> already in place and reports **275/275 blocks behaved as declared**, with `self-test PASSED`. Every
+> already in place and reports **334/334 blocks behaved as declared**, with `self-test PASSED`. Every
 > ★ chapter below is expected to arrive with its own `tools/gen/<NN>/` generator, exactly as the
 > C++ track does.
 >
-> Chapters 04–10 (Part I) and 11–19 (all of Part II) were each written with a `tools/gen/<NN>/`
-> directory holding the Java sources and a `gen.py` that captures every transcript live. The harness
-> is the arbiter: no output in a `text` fence was typed by hand.
+> Chapters 04–10 (Part I), 11–19 (all of Part II) and 20–24 (all of Part III) were each written with a
+> `tools/gen/<NN>/` directory holding the Java sources and a `gen.py` that captures every transcript
+> live. The harness is the arbiter: no output in a `text` fence was typed by hand.
 
 ## Part 0 · Start Here — 00–01 (2)
 
@@ -51,8 +51,10 @@
   accept-set, CRLF, and `add` reading its body from standard input*
 - ✅ 22 Persistence — Files, Serialization and a Real Format — *escaping and the backslash order,
   round-trip properties, why not `Serializable`, charsets, a file header, atomic replace*
-- ★ 23 A Command Layer and Argument Parsing
-- ★ 24 Assembling Quill
+- ✅ 23 A Command Layer and Argument Parsing — *parse into a value before executing anything, a sealed
+  command hierarchy, `UsageException` and the retired exit code `3`, `--vault` and the `--` terminator*
+- ✅ 24 Assembling Quill — *the six files and their one-way arrows, exit codes as the public interface,
+  an end-to-end test table, why `main` cannot be tested, `jar --main-class`, a closed hierarchy*
 
 ## Part IV · Track A · Bulletin — 25–39 (15)
 
