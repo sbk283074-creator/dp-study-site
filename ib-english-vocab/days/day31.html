@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 31</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid, .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 31 / 112 — Evaluative &amp; Judgement Language</div>
+  <div class="date">Saturday, 26 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 5)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">29</div>
+      <div class="dot done">30</div>
+      <div class="dot today">31</div>
+      <div class="dot">32</div>
+      <div class="dot">33</div>
+      <div class="dot">34</div>
+      <div class="dot">35</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 29:</strong></td><td><strong>Application &amp; Synthesis</strong> — argumentation &amp; synthesis verbs (assert, refute, corroborate, validate, juxtapose, analogous, reconcile, dialectic, nuance, mitigate, problematic, extrapolate)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 30:</strong></td><td><strong>Comparative &amp; Multi-text Vocabulary</strong> — the grammar &amp; logic of comparing two set-texts (12 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 31 →</strong></td><td><strong>Evaluative &amp; Judgement Language in practice</strong> — evaluate, assess, perceive, discern, judicious, measured, salient, cogent, tenable, caveat, critique, criterion (12 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 32:</strong></td><td>Discourse &amp; Register for Argumentative Writing — academic register, hedging in synthesis</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 33:</strong></td><td>Critical Synthesis — integrating multiple lenses (feminist / Marxist / postcolonial / psychoanalytic)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 34:</strong></td><td>Mixed consolidation of the Week 5 toolkit (0 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 35:</strong></td><td>Week 5 review &amp; assessment — apply the full arsenal to a live passage (0 new words)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Day 16 spaced review<br>(More devices — paradox, synecdoche, imagery…)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Evaluative &amp; Judgement</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Weeks 1–3 locked the <em>device</em> vocabulary and Week 4 added the <em>metalanguage</em> of stylistics, syntax, word-meaning, sound, and the four critical lenses. Day 29 flipped the programme to <em>deploying</em> — the synthesis moves (assert, refute, juxtapose, reconcile). Day 30 gave those moves their <em>comparative grammar</em> (parallelism, antithesis, convergence, divergence). Today — Week 5, Day 3 — you learn the <em>language of judgement itself</em>: the verbs, adjectives, and nouns that let you <em>evaluate</em> a text without merely describing it, and signal perceptive judgement in both papers. This is the register that separates a 5 from a 7.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 16 spaced review (the foundational device set 2 — paradox, synecdoche, imagery, allegory…) &rarr; (2) 12 new evaluative &amp; judgement terms &rarr; (3) distinction boxes (evaluate/assess, judicious/measured, tenable/cogent) &rarr; (4) practice exercises. The device review is deliberate: you evaluate <em>devices</em>, so the judgement language lands on solid ground.
+  </div>
+
+  <!-- ============ DAY 16 SPACED REVIEW ============ -->
+  <h2><span class="icon">🔁</span> Day 16 Spaced Review — 12 More Literary Devices &amp; Rhetoric</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    A 15-day spaced pass on the second device set from Day 16 — the adjacent figures (contrast, part &amp; sense, whole-text modes, sound &amp; structure) that round out your technical vocabulary. Read each, <strong>recall its precise mechanism before looking</strong>, then check. You will be <em>evaluating</em> these very devices in today's new words — solid recall here makes the judgement language land.
+  </p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">paradox</div>
+      <div class="rdef"><em>A statement that seems self-contradictory yet may reveal a deeper truth (spans a sentence or whole text).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">synecdoche</div>
+      <div class="rdef"><em>A part made to represent the whole (or whole for part) — "all hands on deck" (hands = sailors).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">imagery</div>
+      <div class="rdef"><em>Figurative / sensory language appealing to the senses; the pattern of images in a text.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">allegory</div>
+      <div class="rdef"><em>A narrative whose characters / events stand for abstract ideas — sustained symbolism across a whole text.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">antithesis</div>
+      <div class="rdef"><em>Contrasting ideas in balanced, parallel structure ("best of times, worst of times").</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">epistrophe</div>
+      <div class="rdef"><em>Repetition of a word / phrase at the END of successive clauses — the twin of anaphora.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">apostrophe</div>
+      <div class="rdef"><em>Addressing a dead / absent / imaginary figure or abstraction as if present and able to reply.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">alliteration</div>
+      <div class="rdef"><em>Repetition of initial consonant sounds for rhythm, mood, or emphasis (ask what the sound does).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">euphemism</div>
+      <div class="rdef"><em>A mild word substituted for a harsh / blunt one — a power device that obscures.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">pun</div>
+      <div class="rdef"><em>A play on words exploiting similar sounds or double meanings (compressed, constructed ambiguity).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">satire</div>
+      <div class="rdef"><em>A mode using humour / irony / ridicule to expose and criticise vice or folly — the stance behind "satirical".</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">tricolon</div>
+      <div class="rdef"><em>A series of three parallel units — the "rule of three" for balance, rhythm, rhetorical force.</em></div>
+    </div>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> Could you separate <em>synecdoche</em> from <em>metonymy</em> (part/whole vs. association — the Day 16 box), and <em>antithesis</em> from <em>juxtaposition</em> (parallel wording vs. side-by-side placement — the Day 16 box), without peeking? Those two pairs anchor Day 16. Today's new words are the <em>judgement</em> layer you drape over these devices: you don't just name the paradox, you <em>evaluate</em> what it reveals; you don't just spot the tricolon, you judge whether its rhythm is <em>cogent</em>. Keep the device layer live — the evaluative grammar is useless without it.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Evaluative &amp; Judgement Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge gold">NEW CATEGORY — "EVALUATIVE &amp; JUDGEMENT LANGUAGE"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">From naming to judging.</strong> Day 29 gave you the <em>moves</em> (assert, refute, nuance, mitigate) and Day 30 the <em>comparative grammar</em>. Today gives you the <em>register of judgement</em> — the words that say precisely how you weigh a text. Four are the <em>verbs of evaluation</em> (<em>evaluate, assess, perceive, discern</em>); five are the <em>adjectives of judgement</em> that mark a 7-band writer (<em>judicious, measured, salient, cogent, tenable</em>); three are the <em>nouns of critical method</em> (<em>caveat, critique, criterion</em>). Together they are the difference between an essay that <em>describes</em> a device and one that <em>evaluates</em> it — the signature of perceptive, personal response in both Paper 1 and Paper 2, and the spine of your IO and HLE rationale.
+  </p>
+
+  <!-- Word 1: evaluate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">evaluate</span>
+      <span class="ipa">/ɪˈvæljueɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To judge or determine the significance, worth, or quality of something, especially by close examination — not merely to describe it.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The essay must evaluate] [the extent to which]…" · "[We can evaluate] [the effect] [by asking]…" · "[evaluate] [what the device gains the text]"
+    </div>
+    <p class="example">
+      "A top-band commentary does not merely describe the shift to free verse; it evaluates the shift — arguing that the loosened form is what lets the poet register fragmentation as form, not just as content."
+      <span class="source">— commentary judgement</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The verb behind the Paper 1 / Paper 2 command term "evaluate". Distinct from <strong>describe</strong> or <strong>summarise</strong> — evaluate = pronounce a judgement of value or significance. In both papers, an "evaluate" question demands you weigh (cf. Day 22's <em>qualify</em> / <em>concede</em>). Pair with <strong>salient</strong> (word 7): first decide what is salient, then evaluate it. Connects to Day 29's <em>nuance</em> — evaluation that holds fine distinctions is the goal. Never end a paragraph on description; end it on an evaluated claim.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> evaluate the effect · evaluate the significance · evaluate to what extent · critically evaluate · evaluate the device</p>
+  </div>
+
+  <!-- Word 2: assess -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">assess</span>
+      <span class="ipa">/əˈsɛs/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To estimate the nature, quality, or extent of something; to take stock of strengths and limits, often two-sided.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[Assess the effectiveness of]…" · "[The essay assesses] [both the gain and the cost]" · "[assess] [whether the premise holds]"
+    </div>
+    <p class="example">
+      "Rather than asserting the metaphor works, the paragraph assesses it — naming what the 'door' gains the poem (closure as threat) and what it costs (the speaker's agency), so the reader sees the figure weighed, not celebrated."
+      <span class="source">— comparative paragraph</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>evaluate</strong> (which judges value) — assess = take stock / measure extent, often inventorying both sides. In Paper 2, <em>assess</em> both texts' treatments before you synthesise (cf. Day 30's convergence / divergence). Links to Day 22's <em>premise</em> (you assess whether the premise holds). Use assess when you are cataloguing strengths AND limits; use evaluate when you are pronouncing significance. The two verbs are the engine of a balanced paragraph.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> assess the effectiveness · assess the impact · assess both · assess the cost · assess whether</p>
+  </div>
+
+  <!-- EVALUATE vs ASSESS distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: evaluate vs. assess</h4>
+    <p>Both are judgement verbs, but they land on different endpoints:</p>
+    <p style="margin-top:8px;">
+      <strong>evaluate</strong> — Value. Judge the significance / worth of something — "this device <em>evaluates</em> to a critique of power."<br>
+      &rarr; Ends on a pronouncement of meaning.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>assess</strong> — Extent. Measure the nature / quality / limits — "the paragraph <em>assesses</em> both the gain and the cost."<br>
+      &rarr; Ends on a taken-stock balance.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: am I pronouncing significance (evaluate) or measuring extent (assess)? A mature paragraph does both — assesses the figure's moving parts, then evaluates its overall effect. Confusing them (calling a stock-take an 'evaluation') leaves the paragraph without a judgement; the examiner reads description, not analysis. This pair is exam armour for any "evaluate" command term.
+    </p>
+  </div>
+
+  <!-- Word 3: perceive -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">perceive</span>
+      <span class="ipa">/pəˈsiːv/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To become aware of or interpret meaning, intent, or effect — to read a text's signal rather than merely see its surface.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The reader is positioned to perceive]…" · "[We perceive] [not X but Y]" · "[perceive the subtext]"
+    </div>
+    <p class="example">
+      "The deadpan opening positions the reader to perceive the narrator not as unreliable but as meticulously withholding — the perception is built into the gap between what is said and what is withheld."
+      <span class="source">— narrative-position analysis</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from literal "see" — perceive = interpretive awareness. Connects to Day 18's <em>subtext</em> / <em>inference</em> (you perceive the subtext) and to Day 24's lenses (you perceive <em>through</em> a lens). Vital reader-response language: "the reader perceives X" names the text's work on its audience. Avoid the intentional fallacy "the author wants us to feel" — say "the text positions the reader to perceive". Perceive is the verb that keeps your analysis on the page, not in the author's head.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> the reader perceives · positioned to perceive · perceive as · perceive the gap · how we perceive</p>
+  </div>
+
+  <!-- Word 4: discern -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">discern</span>
+      <span class="ipa">/dɪˈsɜːn/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To distinguish or recognise fine differences; to separate signal from noise.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[Discern the difference between]…" · "[The critic must discern] [what is structural vs. incidental]" · "[discern X from Y]"
+    </div>
+    <p class="example">
+      "A perceptive reading discerns between the repeated 'window' that is a motif (structural) and the isolated 'window' that is mere setting (incidental) — only the first earns analytical weight."
+      <span class="source">— close-reading move</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from <strong>perceive</strong> (awareness) — discern = fine discrimination, the separation of like things. This is the verb behind Day 29's <em>nuance</em>. In exams, discern is your guard against <strong>conflate</strong> (Day 1) — name the difference you discern, then argue its effect. High-value phrasing: "discern X from Y" shows the marker you control similarity AND difference. A reading that cannot discern structural from incidental detail is a reading that analyses the wrong things.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> discern between · discern X from Y · difficult to discern · discern the pattern · discern what is</p>
+  </div>
+
+  <!-- Word 5: judicious -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">judicious</span>
+      <span class="ipa">/dʒuˈdɪʃəs/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Showing sound judgement, wisdom, and discretion — especially in selection or decision.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a judicious choice of] [evidence]" · "[judicious restraint]" · "[a judicious analyst]"
+    </div>
+    <p class="example">
+      "The essay's judicious selection of just two stanzas — rather than paraphrasing the whole poem — lets the analysis go deep instead of wide, and the restraint itself reads as confidence."
+      <span class="source">— essay-strategy note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Describes the <em>writer's</em> judgement, not the text. Distinct from "clever" or "skilful" — judicious specifically marks wisdom in choice / restraint. Pair with <strong>measured</strong> (word 6): a judicious analyst writes in measured prose. In self-reflection (Learner Portfolio / IO rationale) you can call your own selection judicious — but in textual analysis apply it to the author's craft choices, not to the text's content. Avoid overusing it on the text itself ("a judicious metaphor" is off); reserve it for decisions and selection.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> judicious choice · judicious use · judicious selection · judicious restraint · a judicious reader</p>
+  </div>
+
+  <!-- Word 6: measured -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">measured</span>
+      <span class="ipa">/ˈmɛʒəd/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Careful, restrained, proportionate in expression — controlled rather than exaggerated.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a measured claim]" · "[measured tone]" · "[a measured response]"
+    </div>
+    <p class="example">
+      "The conclusion is measured: it does not overstate the synthesis ('the two texts concur on enclosure') but qualifies it ('on enclosure, though not on who is enclosed'), and the qualification is what makes the claim credible."
+      <span class="source">— argument-quality note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The register of a 7-band essay. Distinct from <strong>tentative</strong> (uncertain) — measured = confident but proportionate. Links to Day 22's <em>qualify</em> / <em>concede</em> and to Day 29's <em>mitigate</em> (measured writing mitigates its own claims). Use measured to describe your own evaluative sentences: a measured judgement names the limit without collapsing the point. This is the antidote to both overclaim and hedge — the two failure modes that cap essays at band 4–5.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a measured claim · measured tone · measured response · measured language · carefully measured</p>
+  </div>
+
+  <!-- JUDICIOUS vs MEASURED distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: judicious vs. measured</h4>
+    <p>Both are quality-of-judgement adjectives, but they praise different things:</p>
+    <p style="margin-top:8px;">
+      <strong>judicious</strong> — Wisdom in <em>choice</em>: sound discretion in what you select or decide (a judicious choice of evidence).<br>
+      &rarr; About the <em>decision</em>.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>measured</strong> — Restraint in <em>expression</em>: proportionate, controlled, not overstated (a measured claim).<br>
+      &rarr; About the <em>wording</em>.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: am I praising the selection (judicious) or the tone (measured)? They often co-occur — a judicious analyst writes in measured prose — but they are not interchangeable. Calling a well-chosen quotation "measured" (or a well-balanced sentence "judicious") mismatches the praise. In exams, deploy judicious on your method, measured on your claims; both signal a writer in control.
+    </p>
+  </div>
+
+  <!-- Word 7: salient -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">salient</span>
+      <span class="ipa">/ˈseɪliənt/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Most noticeable, prominent, or important — the feature that stands out and demands analytical attention.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[the salient feature is]…" · "[the salient contrast between]…" · "[what is most salient]"
+    </div>
+    <p class="example">
+      "Across both set-texts the salient feature is not the grief itself but its grammar — one text fragments the line, the other holds it — and naming that formal salience is what lifts the comparison above plot-summary."
+      <span class="source">— comparative framing</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Your filter for what to analyse. Distinct from "interesting" (subjective) — salient = prominently significant. Connects to Day 1's <em>foreground</em> (you foreground the salient) and to Day 30's <em>correspondence</em> (the salient match). In Paper 2, state what is salient before you <em>evaluate</em> it (word 1) — evidence-selection logic. Avoid analysing the merely obvious; analyse the salient. A comparison built on the salient feature is a comparison that earns its conclusion.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> the salient feature · most salient · salient point · salient contrast · salient detail</p>
+  </div>
+
+  <!-- Word 8: cogent -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">cogent</span>
+      <span class="ipa">/ˈkəʊdʒənt/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Clear, logical, and convincing — an argument that compels assent by the quality of its reasoning.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a cogent argument]" · "[cogent because]…" · "[less cogent when]…"
+    </div>
+    <p class="example">
+      "The paragraph's claim that enclosure is gendered is cogent: it chains three pieces of evidence (the locked gate, the framed window, the withheld key) into one inference the reader cannot dodge."
+      <span class="source">— argument-quality note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Describes reasoning quality, not the writer. Distinct from <strong>tenable</strong> (word 9, merely defensible) — cogent = actively convincing. In exam feedback, "cogent" is the praise you want; earn it by linking claim &rarr; evidence &rarr; effect in one move (cf. Day 30's "name relation AND effect"). Use cogent of arguments, tenable of positions — see the box below. A cogent paragraph is the visible product of all Week 5's moves working together.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a cogent argument · cogent analysis · less cogent · cogent because · cogent case</p>
+  </div>
+
+  <!-- Word 9: tenable -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">tenable</span>
+      <span class="ipa">/ˈtɛnəbl/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Able to be defended or maintained against challenge — a position that survives scrutiny.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a tenable position]" · "[no longer tenable]" · "[a reading remains tenable]"
+    </div>
+    <p class="example">
+      "Reading the 'door' as pure optimism is no longer tenable once the second stanza locks it from outside; the essay keeps its reading only by acknowledging the turn."
+      <span class="source">— claim-defensibility note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The floor of a good argument. Distinct from <strong>cogent</strong> (convincing) — tenable = merely survivable under challenge. In exams, before calling a reading "correct", ask if it is <em>tenable</em>: can you defend it with text? A tenable-but-unexciting claim beats a bold-but-indefensible one. Links to Day 22's <em>premise</em> (a tenable premise supports the claim) and to Day 29's <em>corroborate</em> (corroboration makes a reading tenable). Tenable is the gate; cogent is the goal.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a tenable position · no longer tenable · remain tenable · intellectually tenable · barely tenable</p>
+  </div>
+
+  <!-- TENABLE vs COGENT distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: tenable vs. cogent</h4>
+    <p>Both judge argument quality, but at different thresholds:</p>
+    <p style="margin-top:8px;">
+      <strong>tenable</strong> — Defensible. The position <em>survives</em> challenge — "the reading is still <em>tenable</em> if you weigh the second stanza."<br>
+      &rarr; The floor: it holds up.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>cogent</strong> — Convincing. The reasoning <em>compels</em> assent — "the argument is <em>cogent</em> because it chains three proofs."<br>
+      &rarr; The ceiling: it persuades.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: does the claim merely hold (tenable) or actively persuade (cogent)? Every cogent argument is tenable, but not every tenable one is cogent. In exams, aim for cogent; if a counter-reading is tenable but not cogent, you can concede it (Day 22) without letting it collapse your thesis. Confusing them — calling a merely-defensible claim "cogent" — overstates your case and invites the marker to push back. This pair, with evaluate / assess, is the spine of defensible judgement.
+    </p>
+  </div>
+
+  <!-- Word 10: caveat -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">caveat</span>
+      <span class="ipa">/ˈkævɪæt/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A warning or qualification that limits a claim; a stated exception.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[with the caveat that]…" · "[a necessary caveat]" · "[the caveat is that]…"
+    </div>
+    <p class="example">
+      "The essay's synthesis holds — with the caveat that both poets figure freedom differently, so the shared 'enclosure' is structural, not emotional, and the reader is warned before over-reading the parallel."
+      <span class="source">— qualifying move</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The noun behind Day 22's <em>qualify</em> / <em>concede</em>. Distinct from <strong>refutation</strong> — a caveat limits, it does not destroy. In top-band writing, plant a caveat <em>proactively</em> (cf. Day 29's <em>mitigate</em>) to show you see the limit; it strengthens, not weakens, the claim. Use caveat when guarding a generalisation: "X is true, with the caveat that…". This is the visible structure of perceptive judgement — the marker sees you holding the claim and its boundary at once.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> with the caveat that · a necessary caveat · the caveat is · one caveat · important caveat</p>
+  </div>
+
+  <!-- Word 11: critique -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">critique</span>
+      <span class="ipa">/krɪˈtiːk/</span>
+      <span class="pos">noun / verb</span>
+    </div>
+    <p class="definition">A detailed, reasoned evaluation of a text's merits, methods, or assumptions — not mere fault-finding.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a critique of] [the narrator's reliability]" · "[the essay critiques] [the ideology]" · "[offer a critique]"
+    </div>
+    <p class="example">
+      "The IO rationale offers a critique of the text's class politics — not 'the book is bad' but a reasoned account of how its form naturalises privilege, which is exactly the move Day 24's Marxist lens names."
+      <span class="source">— IO / extended-essay framing</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> Distinct from "criticise" (negative) — critique = reasoned evaluation, which can be affirmative. Connects to Day 24's lenses (a feminist / Marxist <em>critique</em>) and to Day 22's <em>thesis</em> / <em>contention</em>. In the IO and HLE, "critique" is the expected verb; use it precisely. Avoid the colloquial "critique = pan" — an IB critique <em>weighs</em>, it does not merely fault. A critique that only attacks is not a critique; it is a dismissal.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a critique of · offer a critique · feminist critique · Marxist critique · critical critique</p>
+  </div>
+
+  <!-- Word 12: criterion -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">criterion</span>
+      <span class="ipa">/kraɪˈtɪəriən/</span>
+      <span class="pos">noun (pl. criteria)</span>
+    </div>
+    <p class="definition">A standard or principle by which something is judged or evaluated.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[by what criterion]…" · "[the criterion of] [coherence]" · "[apply a single criterion]"
+    </div>
+    <p class="example">
+      "Before comparing the two texts, the essay states its criterion — not 'which is better' but 'which more fully dramatises enclosure' — and holding both texts to one explicit standard is what makes the comparison fair (cf. Day 30's equivalence)."
+      <span class="source">— comparative-method note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The backbone of any evaluation. Distinct from <strong>evidence</strong> (the data) — criterion = the standard you judge by. In Paper 2, name your criterion before comparing (it pre-empts false analogy, Day 29). Links to Day 30's <em>equivalence</em> (the criterion establishes comparability). Plural is <em>criteria</em> (not "criterions"). Use criterion to show the examiner your judgement is principled, not impressionistic — a positioned, defensible reading starts from a stated criterion.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> by what criterion · the criterion of · single criterion · stated criterion · apply the criterion</p>
+  </div>
+
+  <!-- ============ PRACTICE ============ -->
+  <h2><span class="icon">✏️</span> Practice — Write the Evaluative Sentence</h2>
+  <div class="practice-box">
+    <p style="font-size:14px; color:var(--ink-soft);">Four drills. Write short answers; the model notes follow each.</p>
+    <ol>
+      <li>
+        <strong>Word-bank insertion.</strong> Choose the correct Day 31 word for each gap (each used once):
+        <div class="word-bank">
+          <strong>Word bank:</strong> evaluate · assess · perceive · discern · judicious · measured · salient · cogent · tenable · caveat · critique · criterion
+        </div>
+        <span style="color:var(--ink);">a)</span> "Before comparing the two texts, state your ____________ — 'which more fully dramatises enclosure', not 'which is better'." &rarr; <em>criterion</em><br>
+        <span style="color:var(--ink);">b)</span> "A perceptive reading must ____________ the repeated 'window' (a motif) from the isolated one (mere setting)." &rarr; <em>discern</em><br>
+        <span style="color:var(--ink);">c)</span> "The conclusion is ____________: it qualifies the synthesis instead of overstating it." &rarr; <em>measured</em><br>
+        <span style="color:var(--ink);">d)</span> "The essay's ____________ selection of two stanzas lets the analysis go deep, not wide." &rarr; <em>judicious</em><br>
+        <span style="color:var(--ink);">e)</span> "Reading the 'door' as pure optimism is no longer ____________ once the second stanza locks it." &rarr; <em>tenable</em><br>
+        <span style="color:var(--ink);">f)</span> "The IO rationale offers a Marxist ____________ of how the form naturalises privilege." &rarr; <em>critique</em>
+      </li>
+      <li>
+        <strong>Mini evaluative paragraph.</strong> On the two lines below, deploy <strong>at least three</strong> Day 31 words and state each one's <em>effect</em>:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Texts</span>
+          Text A: "the gate was locked" &nbsp;·&nbsp; Text B: "the door would not give"
+        </div>
+        <span style="color:var(--ink-soft); font-size:13px;">Model: the <em>salient</em> feature of both openings is enclosure (the effect: the comparison is lifted above plot to form); the essay <em>assesses</em> what the 'lock' gains each poem and what it costs the speaker (the effect: the figure is weighed, not celebrated); the resulting claim that both texts figure freedom as externally imposed is <em>cogent</em> because it chains the two images into one inference the reader cannot dodge.</span>
+      </li>
+      <li>
+        <strong>Write the top-band evaluative sentence.</strong> Combine a <em>concessive clause</em> (Day 30 / Day 22 concede) + a <em>caveat</em> (word 10) + an <em>evaluate</em> (word 1) of the effect, in one sentence:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Starter</span>
+          "Although both texts figure the door as enclosure…"
+        </div>
+        <span style="color:var(--ink-soft); font-size:13px;">Model: "Although both texts figure the door as enclosure, the parallelism is — with the caveat that they enclose different subjects — best evaluated as a shared critique of externally imposed freedom, since each text's lock denies the speaker agency rather than merely withholding space." One sentence: relation conceded, limit stated, significance pronounced. The move Day 29 previewed, now fluent.</span>
+      </li>
+      <li>
+        <strong>Distinguish on demand.</strong> In one sentence each, separate these Day 31 pairs you will be tested on: (i) <em>evaluate</em> vs. <em>assess</em> (value pronounced vs. extent measured); (ii) <em>tenable</em> vs. <em>cogent</em> (defensible vs. convincing); (iii) <em>judicious</em> vs. <em>measured</em> (wise choice vs. restrained expression). Keep all three pairs in your exam armour alongside the Day 29 and Day 30 distinctions.
+      </li>
+    </ol>
+  </div>
+
+  <!-- ============ TIPS ============ -->
+  <h2><span class="icon">🎯</span> Study Tips — Making Judgement Visible</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Evaluate, don't just describe.</strong> The verb in the command term "evaluate" demands a judgement of significance, not a paraphrase. End every paragraph on an evaluated claim — "this device evaluates to a critique of…" — never on a description of the device. Description is band 3; evaluation is band 7.
+    </li>
+    <li>
+      <strong>Assess both sides before you synthesise.</strong> In Paper 2, assess what each text gains and costs before fusing them (cf. Day 30's convergence / divergence). A synthesis built on an un-assessed figure collapses the moment a counter-reading appears. Assess is the inventory; evaluate is the verdict.
+    </li>
+    <li>
+      <strong>Perceive through a lens, not an intention.</strong> "The text positions the reader to perceive X" (word 3) keeps your analysis on the page; "the author wants us to feel X" commits the intentional fallacy. Perception language (perceive / discern) is how you discuss reader-response without speculating about the writer's mind — and discern is your guard against conflating like details.
+    </li>
+    <li>
+      <strong>Measured beats both overclaim and hedge.</strong> A measured claim names its limit without collapsing its point (word 6). Overclaim ("this proves…") invites the marker to push back; hedge ("this perhaps might suggest…") abandons the argument. Measured — confident but proportionate — is the register of a 7. Plant a caveat (word 10) proactively to make the limit visible.
+    </li>
+    <li>
+      <strong>State your criterion before you compare.</strong> In Paper 2, name the standard you judge by (word 12) up front — "which more fully dramatises enclosure", not "which is better". A stated criterion pre-empts false analogy (Day 29) and establishes the comparability Day 30's equivalence requires. Principled judgement starts from a principle.
+    </li>
+    <li>
+      <strong>Tenable is the floor, cogent the goal.</strong> Before calling a reading "correct", check it is tenable (defensible with text); then push it to cogent (convincing by reasoning). A tenable-but-unexciting claim beats a bold-but-indefensible one — and a cogent paragraph is the visible product of all Week 5's moves (assert, qualify, parallel, evaluate) working together. Hold the claim and its boundary at once.</li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 32 (Next): Week 5, Day 4 — Discourse &amp; Register for Argumentative Writing</strong><br>
+    Today gave you the judgement language. Day 32 dresses it in the right <em>register</em>: the academic tone, hedging moves, and discourse markers that let a comparative claim sound authoritative without sounding dogmatic — the final piece of the fluent-argument toolkit before Week 5's critical-synthesis capstone.<br><br>
+    <strong style="color:var(--ink);">Milestone:</strong> 276 words learned (of ~1,300). Week 5 continues — the Application &amp; Synthesis phase that turns your 264-word toolkit into perceptive, evaluated comparative argument. 🏆
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 5, Day 31<br>
+  276 words learned so far (+12 today) · 1,024 to go · Week 5 continues 🏆
+</footer>
+
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+<script src="../assets/vocab-ask-ai.js" defer></script>
+</body>
+</html>
