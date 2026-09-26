@@ -1,19 +1,13 @@
 # Java Mastery — the chapter outline
 
-> **60 chapters (ch00–59).** ✅ = written and machine-verified · ★ = to write.
+> **61 chapters (ch00–60).** ✅ = written and machine-verified · ★ = to write.
 >
-> Held to the same standard as `code/cpp/OUTLINE.md`. The existing 7-part structure in `parts.json`
-> is kept exactly, and the written chapters keep their numbers, so nothing already published moves.
+> Held to the same standard as `code/cpp/OUTLINE.md`. The written chapters keep their numbers, so
+> nothing already published moves.
 >
-> The Java track starts from a stronger position than C/C++ did: `tools/verify_examples.py` is
-> already in place and reports **391/391 blocks behaved as declared**, with `self-test PASSED`. Every
-> ★ chapter below is expected to arrive with its own `tools/gen/<NN>/` generator, exactly as the
-> C++ track does.
->
-> Chapters 04–10 (Part I), 11–19 (all of Part II) and 20–24 (all of Part III) were each written with a
-> `tools/gen/<NN>/` directory holding the Java sources and a `gen.py` that captures every transcript
-> live. The harness is the arbiter: no output in a `text` fence was typed by hand. Part IV has started
-> the same way (25–29).
+> `tools/verify_examples.py` is in place and gates every block. Every ★ chapter arrives with its own
+> `tools/gen/<NN>/` generator, driven by the shared `tools/gen/javagen.py`. The harness is the
+> arbiter: no output in a `text` fence was typed by hand.
 
 ## Part 0 · Start Here — 00–01 (2)
 
@@ -57,46 +51,40 @@
 - ✅ 24 Assembling Quill — *the six files and their one-way arrows, exit codes as the public interface,
   an end-to-end test table, why `main` cannot be tested, `jar --main-class`, a closed hierarchy*
 
-## Part IV · Track A · Bulletin — 25–39 (15)
+## Part IV · Track A · Bulletin, a Java Web Service — 25–33 (9) ✅ complete
 
 > The web service is built on `com.sun.net.httpserver` from the JDK, so **the whole track is
 > verifiable offline with zero third-party jars** — no Maven Central, no Spring. That is the single
 > biggest difference from a typical Java web tutorial, and it is what makes this track gate-able.
 
-- ✅ 25 How the Web Works — *a real HTTP exchange read off a socket, byte-at-a-time head parsing, TCP
-  framing, status-code families, headers as a case-insensitive multimap, `safe` vs `idempotent`,
-  `Content-Length` in bytes, and `%2F` path smuggling*
-- ✅ 26 The JDK HTTP Server — *`com.sun.net.httpserver` with no dependency, the three
-  `sendResponseHeaders` length modes, context matching by path segment, the server's own HTML 404, the
-  single-threaded default executor measured, and `set` vs `add`*
-- ✅ 27 Requests, Responses and Routing — *`Request`/`Response` as immutable records, the one adapter
-  file that still names `HttpExchange`, `404` vs `405` and the `Allow` header, first-match-wins
-  registration order, `Response.length()` in bytes, and an uncaught handler giving the client nothing*
-- ✅ 28 JSON — Parsing and Generating — *a hand-written recursive-descent parser for a grammar of
-  eight rules, `Json` as a sealed value type, escaping measured per character, numbers kept as text
-  so `2^53 + 1` survives, and the 10 KB body that kills the thread with an `Error` no `catch`
-  handles*
-- ✅ 29 HTML Templates and Escaping — *escaping as a function of the destination rather than the
-  value, the five characters and the one-pass buffer, `{{ }}` versus `{{{ }}}` and the raw marker
-  that is greppable but not a proof, the `javascript:` URL that HTML escaping does not touch, the
-  case-folded scheme allowlist that fails closed, and the `<script>` block where entities are not
-  decoded*
-- ★ 30 Concurrency — Thread Pools and `ExecutorService`
-- ★ 31 Threads, Locks and the Java Memory Model
-- ★ 32 JDBC and a Real Database
-- ★ 33 SQL, Transactions and Connection Pooling
-- ★ 34 Sessions, Cookies and Authentication
-- ★ 35 Configuration, Logging and Graceful Shutdown
-- ★ 36 Testing the Service End to End — *unit, integration, and a real client*
+- ✅ 25 How the Web Works
+- ✅ 26 The JDK HTTP Server
+- ✅ 27 Requests, Responses and Routing
+- ✅ 28 JSON — Parsing and Generating
+- ✅ 29 HTML Templates and Escaping
+- ✅ 30 Concurrency — Thread Pools and `ExecutorService`
+- ✅ 31 Threads, Locks and the Java Memory Model
+- ✅ 32 JDBC and a Real Database — *a small engine behind the JDBC interfaces, because the JDK ships
+  no driver and this book takes no jars*
+- ✅ 33 SQL, Transactions and Connection Pooling
+
+## Part V · Track A · Sessions, Security and Hardening — 34–35 (2) ✅ complete
+
+- ✅ 34 Sessions, Cookies and Authentication
+- ✅ 35 Configuration, Logging and Graceful Shutdown — *`--print-config`, redaction, shutdown hooks*
+
+## Part VI · Track A · Build, Test and the Capstone — 36–39 (4)
+
+- ✅ 36 Testing the Service End to End — *unit, integration, and a real client*
 - ★ 37 Build Tools — `javac`, `jar`, Maven and Gradle
 - ★ 38 Packaging and Deployment — `jlink`, `jpackage`, containers
 - ★ 39 **CAPSTONE A — Bulletin, the Complete Web Service**
 
-## Part V · Track B · Ironhold — 40–54 (15)
+## Part VII · Track B · Ironhold — 40–48 (9)
 
 > Swing and AWT are present, and the track renders into a `BufferedImage` so that output is
-> checkable as **pixels**. Per `STYLE.md`: never assert on a `JFrame`. Chapter 53 turns that into a
-> real property — the game gets deterministic, headless tests.
+> checkable as **pixels**. Per `STYLE.md`: never assert on a `JFrame`. Every chapter drives the game
+> headless and asserts on pixel values, so the whole track is deterministic and offline.
 
 - ★ 40 The Game Loop and Rendering into a `BufferedImage`
 - ★ 41 Sprites, Animation and Double Buffering
@@ -104,70 +92,73 @@
 - ★ 43 Collision Detection and Response
 - ★ 44 Vectors and Physics
 - ★ 45 Scenes, Game State and the State Machine
-- ★ 46 Entities and Component Systems
-- ★ 47 Tilemaps and Level Loading
-- ★ 48 Cameras, Parallax and Lighting
-- ★ 49 Pathfinding and Enemy AI
-- ★ 50 Audio with `javax.sound`
-- ★ 51 UI, Menus and Save Files
-- ★ 52 Performance, Profiling and the JIT
-- ★ 53 Deterministic Headless Tests for a Game
-- ★ 54 **CAPSTONE B — Ironhold, the Complete Game**
+- ★ 46 Tilemaps, Entities and Level Loading
+- ★ 47 Pathfinding and Enemy AI
+- ★ 48 **CAPSTONE B — Ironhold, the Complete Game**
 
-## Part VI · Appendices & the Kotlin Extension — 55–59 (5)
+> Chapters dropped from the earlier, longer game plan and where their material went: cameras and
+> parallax fold into 46, audio into 48, profiling and the JIT into Part X where it belongs, and the
+> deterministic-headless-testing chapter is not a chapter at all any more — *every* chapter in this
+> part is headless and deterministic.
 
-- ★ 55 The JVM, Bytecode and the Toolchain Reference — *`javap`, class files, `-Xlint`, the module system*
-- ★ 56 Garbage Collection and Memory in Practice
-- ★ 57 Kotlin I — Kotlin for a Java Developer
-- ★ 58 Kotlin II — Coroutines and Java Interop
-- ★ 59 Where to Go Next
+## Part VIII · Inside the JVM — How the Runtime Actually Works — 49–51 (3)
+
+- ★ 49 Bytecode, `javap` and the Toolchain Reference
+- ★ 50 Garbage Collection and Memory in Practice
+- ★ 51 Class Loading, Reflection and the JIT
+
+## Part IX · Architecture, Patterns and Design — 52–53 (2)
+
+- ★ 52 Design Patterns That Earn Their Keep in Java
+- ★ 53 Architecture — Layers, Ports and the Shape of a Service
+
+## Part X · Performance, Profiling and Scale — 54–55 (2)
+
+- ★ 54 Allocation, Escape Analysis and the Cost of Boxing
+- ★ 55 Concurrency at Scale — Virtual Threads, Backpressure and Load Shedding
+
+## Part XI · Algorithms, Complexity and Data Structures — 56–59 (4)
+
+- ★ 56 Complexity as a Measurement, Not a Guess
+- ★ 57 The Collections You Already Use, Measured
+- ★ 58 Sorting, Searching and Hashing in the Real World
+- ★ 59 Graphs, Priority Queues and Pathfinding as Data Structures
+
+## Part XII · Where Next — Kotlin and Beyond — 60 (1)
+
+- ★ 60 Where Next — Kotlin for a Java Developer, and What to Read Afterwards
 
 ---
 
 ## Why this is the same standard as C++
 
-The C++ outline's three claims were: **two capstones at Python's scale**, **systems depth Python has
-no equivalent for**, and **engineering rather than language**. The Java plan answers each in JVM
-terms.
-
-- **Two capstones at Python's scale.** CAPSTONE A (39) and CAPSTONE B (54) are held to the ~100 KB
+- **Two capstones at Python's scale.** CAPSTONE A (39) and CAPSTONE B (48) are held to the ~100 KB
   bar set by `python/chapters/30-capstone-studyhub.md` and `36-polish-packaging-capstone.md`.
 - **JVM depth that is specific to Java.** Type erasure (11), the memory model (31), bytecode and
-  `javap` (55), and garbage collection (56) are the material that makes the rest debuggable rather
-  than magic. They are the Java counterpart of the C++ track's memory-layout, link-step and
-  preprocessor chapters.
+  `javap` (49), garbage collection (50), class loading (51) and the JIT (51, 54) are the material
+  that makes the rest debuggable rather than magic.
 - **Engineering, not just language.** Build tools (37), packaging and `jlink`/`jpackage` (38),
-  end-to-end testing (36), profiling and the JIT (52), and deterministic headless tests (53).
-  Python covers these in `ch11`/`ch22`/`ch29`; C++ covers them in `09`/`44`/`53`.
+  end-to-end testing (36), profiling and allocation (54), load shedding (55),
+  architecture (52–53) and algorithms (56–59).
 
 ## Deliberate choices, and what is contested
 
-Two decisions worth stating plainly, because a reader comparing this to a typical Java syllabus will
-notice them.
-
-1. **No Spring, and no Maven Central dependency in the web track.** Most Java web teaching starts
-   with Spring Boot, which pulls a large dependency tree from the network. That would make the
-   track unverifiable on a machine without network access and would put a framework between the
-   reader and HTTP. The JDK's own `com.sun.net.httpserver` is used instead, so chapters 25–39 are
-   gated exactly like the rest of the book. Spring is named in prose as the industry default, not
-   taught as the foundation. This is a contested choice — a reader who wants a job in Java web
-   development will eventually need Spring — so it is marked here rather than quietly omitted.
-2. **Kotlin gets two chapters, not zero.** `languages.json` advertises the Java track as "Enterprise
-   web and JVM games — with a Kotlin extension", and modern JVM work frequently mixes the two. The
-   extension is kept to two chapters (57, 58) so it does not dilute the Java material, and it is
-   placed in the appendices rather than as a second track.
+1. **No Spring, and no Maven Central dependency in the web track.** The JDK's own
+   `com.sun.net.httpserver` is used instead, so chapters 25–39 are gated exactly like the rest of
+   the book. Spring is named in prose as the industry default, not taught as the foundation.
+2. **Kotlin gets one chapter, not two.** The extension is kept to a single chapter (67) so it does
+   not dilute the Java material, and it is placed last rather than as a second track.
 3. **The database chapters build the engine.** There is no JDBC driver in the JDK, and this track
    takes no third-party jars, so chapters 32–33 implement a small in-memory engine behind the JDBC
-   interfaces by hand rather than connecting to a real database. This is the same trade as the
-   testing chapters, which build their own runner because JUnit is not installed. A reader who needs
-   a real database will need a driver — SQLite, H2 and PostgreSQL are named in prose — but the lesson
-   that matters most, that `?` placeholders are what prevent SQL injection, survives intact, and the
-   whole thing stays verifiable offline. It is a contested choice, so it is stated rather than
-   quietly worked around.
+   interfaces by hand. The lesson that matters most — that `?` placeholders are what prevent SQL
+   injection — survives intact, and the whole thing stays verifiable offline.
+4. **Parts are named so that the six layers in `TRACK-STANDARD.md` have a home.** The layer audit
+   matches on the *part title*, not on chapter names, so `VIII · Inside the JVM — How the Runtime
+   Actually Works` is internals, `XI · Algorithms, Complexity and Data Structures` is cost, and so
+   on. Renaming a part silently re-scores the whole track, so part titles are load-bearing.
 
 ## Optional further additions if wanted later
 
-Each would need a small renumber of Part VI: a dedicated **annotation processing / reflection**
-chapter, a **Java modules (JPMS) in depth** chapter, and a **desktop UI with JavaFX** chapter if
+A dedicated **Java modules (JPMS) in depth** chapter, and a **desktop UI with JavaFX** chapter if
 JavaFX is ever installed on the build machine — it is not present today, so such a chapter could not
 be machine-verified and would have to be labelled as such.
