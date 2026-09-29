@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 31</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid, .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 32 / 112 — Discourse &amp; Register</div>
+  <div class="date">Tuesday, 29 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 5)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">29</div>
+      <div class="dot done">30</div>
+      <div class="dot done">31</div>
+      <div class="dot today">32</div>
+      <div class="dot">33</div>
+      <div class="dot">34</div>
+      <div class="dot">35</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 29:</strong></td><td><strong>Application &amp; Synthesis</strong> — argumentation &amp; synthesis moves (assert, refute, corroborate, validate, juxtapose, analogous, reconcile, dialectic, nuance, mitigate, problematic, extrapolate)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 30:</strong></td><td><strong>Comparative &amp; Multi-text Vocabulary</strong> — the grammar &amp; logic of comparing two set-texts (12 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 31:</strong></td><td><strong>Evaluative &amp; Judgement Language in practice</strong> — evaluate, assess, perceive, discern, judicious, measured, salient, cogent, tenable, caveat, critique, criterion (12 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 32 →</strong></td><td><strong>Discourse &amp; Register for Argumentative Writing</strong> — the academic register, hedging moves, modality &amp; stance that let a comparative claim sound authoritative without dogmatic</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 33:</strong></td><td>Critical Synthesis — integrating multiple lenses (feminist / Marxist / postcolonial / psychoanalytic) into one comparative essay</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 34:</strong></td><td>Mixed consolidation of the Week 5 toolkit (0 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 35:</strong></td><td>Week 5 review &amp; assessment — apply the full arsenal to a live passage (0 new words)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Day 17 spaced review<br>(Structure &amp; Narrative Terms)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Discourse &amp; Register</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Weeks 1–4 built the <em>device</em> vocabulary, the <em>metalanguage</em> of stylistics, and the four critical lenses. Week 5 is the <em>deploy</em> phase. Day 29 gave you the <em>moves</em> (assert, refute, reconcile); Day 30 gave them their <em>comparative grammar</em> (parallelism, convergence, divergence); Day 31 gave you the <em>language of judgement</em> (evaluate, assess, tenable, cogent). Today — Week 5, Day 4 — you learn the <em>register</em> that dresses all of it: the academic tone, hedging moves, modality, and stance that let a comparative claim sound authoritative without sounding dogmatic. This is the difference between an essay that merely <em>states</em> and one that <em>persuades</em>.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 17 spaced review (the structure &amp; narrative terms — foreshadowing, frame narrative, unreliable narrator…) &rarr; (2) 12 new discourse &amp; register terms &rarr; (3) distinction boxes (hedge/qualify, objectivity/impersonality, tentative/assertive) &rarr; (4) practice. The structure review is deliberate: you will be <em>writing about</em> these narrative devices using the new register — the form gives the content something to wear.
+  </div>
+
+  <!-- ============ DAY 17 SPACED REVIEW ============ -->
+  <h2><span class="icon">🔁</span> Day 17 Spaced Review — 12 Structure &amp; Narrative Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    A 15-day spaced pass on the structural toolkit from Day 17 — the machinery of how a story is built and told. Read each, <strong>recall its precise mechanism before looking</strong>, then check. You will be <em>arguing about</em> these very structures in today's new words — a confident academic register is how you make that argument land.
+  </p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">foreshadowing</div>
+      <div class="rdef"><em>Hints or clues planted early about events that will occur later — looks <strong>forward</strong>.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">flashback</div>
+      <div class="rdef"><em>An interruption of chronology to show an earlier event (analepsis) — looks <strong>back</strong>.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">flash-forward</div>
+      <div class="rdef"><em>A scene that jumps <strong>ahead</strong> of present time (prolepsis) — dramatic irony or suspense.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">frame narrative</div>
+      <div class="rdef"><em>A story that encloses one or more inner stories — <strong>vertical nesting</strong> (story within story).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">unreliable narrator</div>
+      <div class="rdef"><em>A narrator whose account the reader should doubt — bias, limited knowledge, deception, or instability.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">stream of consciousness</div>
+      <div class="rdef"><em>Unedited, continuous flow of a character's thoughts — a <strong>mode</strong>, not necessarily false.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">interior monologue</div>
+      <div class="rdef"><em>A character's inward thoughts voiced to themselves — more ordered and grammatical than SoC.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">epiphany</div>
+      <div class="rdef"><em>A sudden moment of revelation or insight (Joyce's "showing-forth") — the internal "end".</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">denouement</div>
+      <div class="rdef"><em>The final resolution / unravelling of plot after the climax — the external "end".</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">non-linear narrative</div>
+      <div class="rdef"><em>Plot not in strict chronological order — the broad category containing flashback / flash-forward.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">retrospective narration</div>
+      <div class="rdef"><em>A later-vantage voice recounting past events — a whole present tense situated in the future.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">cyclic structure</div>
+      <div class="rdef"><em>Ending returns to / echoes the beginning — a <strong>horizontal loop</strong> signalling fate or stasis.</em></div>
+    </div>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> Could you separate <em>flashback</em> from <em>flash-forward</em> (direction of the time-jump — Day 17 box), <em>unreliable narrator</em> from <em>stream of consciousness</em> (truth-value vs. mode — Day 17 box), and <em>frame narrative</em> from <em>cyclic structure</em> (nesting vs. looping — Day 17 box), without peeking? Those three pairs anchor Day 17. Today's new words are the <em>register</em> you drape over these structures: you don't just name the unreliable narrator, you write about it with <em>objectivity</em> and <em>stance</em>; you don't just spot the cyclic structure, you argue its effect in a <em>discursive</em>, <em>assertive</em> paragraph. Keep the structural layer live — the register is useless without something to say.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Discourse &amp; Register Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge gold">NEW CATEGORY — "DISCOURSE &amp; REGISTER FOR ARGUMENTATIVE WRITING"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">From saying to sounding right.</strong> Days 29–31 gave you what to <em>argue</em> and how to <em>judge</em> it. Today gives you the <em>register</em> — the academic tone and discourse machinery that makes a comparative claim read as authoritative without reading as dogmatic. Three words handle <em>caution</em> (hedge, modality, tentative); three handle <em>position</em> (stance, objectivity, impersonality); three handle <em>argument shape</em> (discursive, exposition, formality); and three handle <em>grounding</em> (assertive, attribution, evidential). Together they are the difference between an essay that states and one that persuades — the final register piece before Week 5's critical-synthesis capstone.
+  </p>
+
+  <!-- Word 1: hedge -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">hedge</span>
+      <span class="ipa">/hɛdʒ/</span>
+      <span class="pos">verb / noun</span>
+    </div>
+    <p class="definition">To use cautious, non-committal language that reduces the force of a claim — softening certainty without abandoning the point.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The essay hedges its claim by]…" · "[a hedge such as 'arguably' / 'to some extent']" · "[hedge the generalisation]"
+    </div>
+    <p class="example">
+      "Rather than asserting that the poem is 'about grief', the paragraph hedges — 'the speaker appears, at least provisionally, to figure loss as enclosure' — and the caution is what makes the reading credible rather than over-claimed."
+      <span class="source">— comparative paragraph</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The verb behind "hedging". Distinct from <strong>qualify</strong> (Day 22) — qualify = add a stated limitation or exception; hedge = soften via modality / understatement more broadly (cf. Day 31's <em>measured</em>). A hedge is the <em>how</em>; a qualification is one <em>kind</em> of hedge. In top-band writing, hedge <em>selectively</em>: hedge the bold generalisation, never the evidence. Over-hedging collapses into the tentative register (see box C) — the failure mode that caps essays at band 4–5. Use hedge to sound authoritative-yet-honest.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> hedge the claim · a hedge against · hedging language · carefully hedged · hedge by saying</p>
+  </div>
+
+  <!-- HEDGE vs QUALIFY distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: hedge vs. qualify</h4>
+    <p>Both soften a claim, but they soften in different ways:</p>
+    <p style="margin-top:8px;">
+      <strong>hedge</strong> — Broad caution. Reduce a claim's force via modality / understatement ("arguably", "to some extent", "it may be that").<br>
+      &rarr; Lowers certainty without stating a specific limit.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>qualify</strong> — Specific limit. Add a clause or exception that bounds the claim (Day 22: "the reading holds, <em>provided</em> we weigh the second stanza").<br>
+      &rarr; States the precise boundary.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: am I lowering certainty generally (hedge) or stating a specific limit (qualify)? Every qualification is a kind of hedge, but not every hedge is a qualification. In exams, a measured paragraph does both — hedges the bold opening, then qualifies the synthesis (Day 30) with a stated caveat (Day 31). Confusing them (calling a vague "perhaps" a "qualification") leaves the claim undefined. This pair, with assertive / tentative, is exam armour for the register question.
+    </p>
+  </div>
+
+  <!-- Word 2: modality -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">modality</span>
+      <span class="ipa">/məʊˈdælɪti/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The grammatical expression of the speaker's degree of certainty, possibility, or obligation — realised through modal verbs and adverbs.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[the shift from 'must' to 'might'] [signals]…" · "[high modality] [asserts] / [low modality] [hedges]" · "[modal verbs encode stance]"
+    </div>
+    <p class="example">
+      "The critic's move from 'the text <em>must</em> be read as' to 'it <em>might</em> be read as' is a shift in modality — the high-modality opening asserts authority, the low-modality close hedges, and the slide itself performs intellectual humility."
+      <span class="source">— discourse-analysis note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The technical term for the grammar of hedge (word 1). Distinct from <strong>tone</strong> — modality is the <em>linguistic mechanism</em> (will / would / may / must), tone is the <em>attitude</em> it conveys. Connects to Day 23's <em>illocutionary act</em> (modality shapes a sentence's pragmatic force). In Paper 1 commentary, name a modality shift and state what it does — "the modal slide performs doubt" is a 7-band observation. Avoid the vague "the writer uses cautious language"; say <em>which</em> modality and <em>why</em>.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> high / low modality · shift in modality · epistemic modality · modality encodes · modal verbs</p>
+  </div>
+
+  <!-- Word 3: stance -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">stance</span>
+      <span class="ipa">/stɑːns/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The writer's attitudinal or intellectual position toward the subject, signalled through word-choice, tone, and evidence selection.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The essay adopts a stance of] [detached critique]" · "[the critic's stance toward the narrator]" · "[signal a clear stance]"
+    </div>
+    <p class="example">
+      "The comparative essay takes a stance of measured feminist critique — not outrage but close attention to how the two texts figure agency differently — and the restraint is what makes the position persuasive rather than polemical."
+      <span class="source">— Paper 2 framing</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The position you argue <em>from</em>. Distinct from <strong>thesis</strong> (Day 22) — thesis = the specific claim; stance = the broader intellectual posture behind it (feminist, sceptical, celebratory). Connects to Day 24's lenses (a Marxist <em>stance</em> deploys Marxist <em>critique</em>). In the IO and HLE rationale, name your stance explicitly; in essays, let it show through modality and evidence choice rather than declaring it. A clear stance marks a positioned, personal response — the difference between band 5 and band 7.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> adopt a stance · critical stance · the writer's stance · a clear stance · stance toward</p>
+  </div>
+
+  <!-- Word 4: objectivity -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">objectivity</span>
+      <span class="ipa">/ɒbdʒɛkˈtɪvɪti/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The quality of being detached, factual, and evidence-based rather than personal, emotional, or impressionistic.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The analysis maintains objectivity by]…" · "[objectivity is achieved through evidence]" · "[apparent objectivity masks a stance]"
+    </div>
+    <p class="example">
+      "The commentary's objectivity is not neutrality — it weighs both texts' treatments of enclosure against the same criterion (Day 30 / Day 31) before pronouncing, so the judgement reads as earned, not imposed."
+      <span class="source">— comparative-method note</span>
+    </div>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The register <em>goal</em> for academic writing. Distinct from <strong>impersonality</strong> (word 5) — objectivity is the <em>quality</em> of detachment; impersonality is the <em>grammatical means</em> (agentless constructions) that helps achieve it. Connects to Day 31's <em>measured</em> and <em>salient</em>. In exams, objectivity is earned by evidence and stated criteria, not by stripping all voice — a fully voiceless essay is not objective, it is empty. Show the marker you hold a stance while weighing evidence fairly.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> maintain objectivity · apparent objectivity · objective analysis · objectivity requires · false objectivity</p>
+  </div>
+
+  <!-- Word 5: impersonality -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">impersonality</span>
+      <span class="ipa">/ɪmˌpɜːsəˈnælɪti/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The use of agentless, non-personal constructions (passives, nominalisations, "it is argued that…") to signal academic distance.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[impersonality is signalled by the passive]…" · "[the essay achieves impersonality through] [agentless claims]" · "[impersonal constructions distance the writer]"
+    </div>
+    <p class="example">
+      "The paragraph's impersonality — 'it may be observed that', 'the effect is produced by' — removes the first-person writer and lets the textual evidence speak, which is exactly the register Day 23's <em>nominalisation</em> and <em>passive</em> build grammatically."
+      <span class="source">— style note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The grammatical <em>how</em> of objectivity (word 4). Distinct from outright omission of voice — impersonality is a register choice, not the absence of thought. Links to Day 23's <em>nominalisation</em> / <em>passive</em> (the syntactic engines of impersonality) and to Day 31's avoidance of the intentional fallacy ("the author wants us to feel"). Use impersonality to signal academic distance, but keep a <em>stance</em> (word 3) visible through evidence choice — pure impersonality with no position is the empty-essay trap.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> achieve impersonality · impersonal constructions · impersonality signals · the impersonality of · strategic impersonality</p>
+  </div>
+
+  <!-- OBJECTIVITY vs IMPERSONALITY distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: objectivity vs. impersonality</h4>
+    <p>Both describe academic distance, but one is the aim and the other is the method:</p>
+    <p style="margin-top:8px;">
+      <strong>objectivity</strong> — The <em>quality</em>: detachment, fairness, evidence-based judgement (a stance of weighing both sides).<br>
+      &rarr; What you are trying to achieve.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>impersonality</strong> — The <em>means</em>: agentless, non-personal grammar (passives, "it is argued that") that signals distance.<br>
+      &rarr; How you signal it grammatically.
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: am I describing the <em>fairness of the judgement</em> (objectivity) or the <em>grammar of distance</em> (impersonality)? You can be objective without being impersonal (a clear first-person stance that weighs evidence) and impersonal without being objective (agentless prose that smuggles a bias). In exams, aim for objective judgement expressed through partly-impersonal grammar — never confuse the two, and never let impersonality hollow out your stance. This pair anchors the register toolkit.
+    </p>
+  </div>
+
+  <!-- Word 6: discursive -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">discursive</span>
+      <span class="ipa">/dɪsˈkɜːsɪv/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Relating to reasoned argument and the orderly, connected development of ideas in prose (as opposed to lyric or purely descriptive writing).</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a discursive essay]" · "[the discursive mode]" · "[discursive development of the claim]"
+    </div>
+    <p class="example">
+      "The Paper 2 response is firmly discursive: each paragraph advances the argument one step — claim, evidence, effect, link — rather than merely describing a device, so the essay reads as reasoning, not catalogue."
+      <span class="source">— essay-structure note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The mode of the argumentative essay itself. Distinct from "descriptive" — a discursive essay <em>develops</em> a thesis (cf. Day 22's <em>thesis</em> / <em>contention</em>); a descriptive one just lists. Connects to Day 1's <em>foreground</em> (you foreground the argument, not the plot) and to Day 31's <em>evaluate</em> (discursive writing evaluates, it does not summarise). Use discursive to describe your own essay's shape, and to justify why a paragraph belongs — it moves the claim forward.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a discursive essay · discursive mode · discursive development · more discursive · discursive reasoning</p>
+  </div>
+
+  <!-- Word 7: exposition -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">exposition</span>
+      <span class="ipa">/ˌɛkspəˈzɪʃən/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The clear, systematic explanation or laying-out of an argument, position, or set of ideas.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The opening paragraph offers a succinct exposition of]…" · "[exposition of the criterion]" · "[the exposition establishes the terms]"
+    </div>
+    <p class="example">
+      "The essay's exposition states the comparative criterion (Day 31) up front — 'which text more fully dramatises enclosure' — and that one clear sentence frames everything that follows, so the comparison is principled from the first line."
+      <span class="source">— comparative-method note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The opening move of a discursive essay. Distinct from <strong>argument</strong> itself — exposition <em>lays out</em> the terms / thesis; argument then <em>defends</em> them. Links to Day 22's <em>thesis</em> / <em>premise</em> and to Day 31's stated <em>criterion</em>. In Paper 2, a tight exposition (state texts, state criterion, state contention) is the single highest-leverage paragraph — it pre-empts false analogy (Day 29) and establishes comparability (Day 30). Write exposition as the map; the rest of the essay is the journey.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a clear exposition · exposition of · the exposition establishes · succinct exposition · expository</p>
+  </div>
+
+  <!-- Word 8: tentative -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">tentative</span>
+      <span class="ipa">/ˈtɛntətɪv/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Hesitant or cautious in commitment — a register that under-claims and defers judgement.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a tentative claim]" · "[overly tentative] [perhaps might suggest]" · "[tentative opening that gains confidence]"
+    </div>
+    <p class="example">
+      "The draft's tentative register — 'this perhaps might be suggesting something about freedom' — abandons the argument instead of advancing it; the revised sentence states the claim and hedges only the limit, and the essay immediately reads a band higher."
+      <span class="source">— register-revision note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The register <em>failure mode</em> to avoid. Distinct from <strong>measured</strong> (Day 31) — measured = confident but proportionate; tentative = unsure and evasive. Over-tentative prose ("this possibly could be seen as maybe suggesting") is the classic band 4–5 tell. The fix is not to over-claim (Day 29's warning) but to be <em>assertive</em> about what the evidence supports and <em>hedge</em> only where genuinely uncertain. See box C: tentative vs. assertive.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a tentative claim · overly tentative · tentative opening · sounds tentative · tentative conclusion</p>
+  </div>
+
+  <!-- Word 9: assertive -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">assertive</span>
+      <span class="ipa">/əˈsɜːtɪv/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Confident and direct in advancing a claim — the register to cultivate, holding a position without arrogance or over-claim.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[an assertive claim]" · "[assertive without dogmatic]" · "[the essay is assertive about the effect]"
+    </div>
+    <p class="example">
+      "The revised paragraph is assertive: 'The locked gate figures freedom as externally imposed' — stated cleanly, then hedged only at the boundary ('in both texts, though the subjects enclosed differ'). The claim is held; the limit is visible. That is the register of a 7."
+      <span class="source">— register-revision note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The register <em>target</em>. Distinct from <strong>over-claim</strong> (Day 29's warning) — assertive = confident about what the text supports; over-claim = saying more than the evidence allows. Links to Day 31's <em>measured</em> and <em>tenable</em>. The mature move is assertive about the defensible core, hedged at the edge — assertive, not dogmatic. See box C: tentative vs. assertive. An assertive essay is the visible product of all Week 5's moves (assert, qualify, evaluate) working together.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> an assertive claim · assertive without dogmatic · assertive tone · become assertive · assertive analysis</p>
+  </div>
+
+  <!-- TENTATIVE vs ASSERTIVE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: tentative vs. assertive</h4>
+    <p>Both are registers of commitment, but they sit at opposite ends of the confidence axis:</p>
+    <p style="margin-top:8px;">
+      <strong>tentative</strong> — Under-claims. "This perhaps might be suggesting…" — defers judgement, abandons the argument.<br>
+      &rarr; The failure mode that caps essays at band 4–5.
+    </p>
+    <p style="margin-top:8px;">
+      <strong>assertive</strong> — Holds the claim. "The gate figures freedom as imposed" — confident about what the evidence supports, hedged only at the edge.<br>
+      &rarr; The register of a 7 (confident, not dogmatic).
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: does my sentence advance the claim (assertive) or abandon it (tentative)? The middle ground is <em>measured</em> (Day 31) — assertive about the defensible core, hedged at the boundary. Tentative is not the same as careful: careful writing still states; tentative writing whispers. In exams, audit your openers — if three consecutive sentences begin "perhaps / maybe / it could be argued that", you are in the tentative trap. Flip them to assertive claims and watch the band rise. This pair, with hedge / qualify, is the spine of fluent argumentative register.
+    </p>
+  </div>
+
+  <!-- Word 10: attribution -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">attribution</span>
+      <span class="ipa">/ˌætrɪˈbjuːʃən/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The act of ascribing a view, claim, or wording to a source ("X argues that…", "as Y observes…").</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The essay uses attribution to] [frame the critic's view]" · "[attribution of the claim to the text]" · "[explicit attribution]"
+    </div>
+    <p class="example">
+      "The paragraph opens with attribution — 'As the Marxist lens would have it, the form naturalises privilege' — which lets the essay deploy Day 24's critique without asserting the position as its own unexamined axiom."
+      <span class="source">— IO / extended-essay framing</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The politeness-and-rigour move of academic register. Distinct from <strong>quotation</strong> (the words) — attribution = the <em>credit / framing</em> of a view. Connects to Day 24's lenses (attribute the lens, don't own it) and to Day 31's <em>critique</em>. In the EE, IO rationale, and HLE, attribution is mandatory — you must show whose idea a claim is. In essays, attribution lets you stage a position before evaluating it (Day 31), so the reader sees you reasoning, not parroting.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> use attribution · explicit attribution · attribution of · attribute the claim · attribution to</p>
+  </div>
+
+  <!-- Word 11: evidential -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">evidential</span>
+      <span class="ipa">/ˌɛvɪˈdɛnʃəl/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Relating to the evidence that supports a claim; signalling that a statement is grounded in textual proof.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[an evidential sentence]" · "[evidential support for the claim]" · "[make the analysis evidential]"
+    </div>
+    <p class="example">
+      "The strongest sentences are evidential — 'the repeated locked gate (ll. 4, 11, 29) figures enclosure as the poem's governing image' — because the line references turn a reading into proof the marker can verify."
+      <span class="source">— close-reading note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The quality that makes a claim <em>tenable</em> (Day 31). Distinct from <strong>assertive</strong> (confidence) — evidential = the claim is <em>backed</em>; assertive = the claim is <em>stated</em>. An evidential assertion is the goal: state boldly, ground in text. Connects to Day 30's "name relation AND effect" and to Day 1's <em>evidence</em>. Audit each claim for an evidential anchor (a line, a feature, a contrast) — a claim with no evidence is a floating assertion, however confident.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> evidential support · make it evidential · evidential sentence · evidential basis · lacks evidential</p>
+  </div>
+
+  <!-- Word 12: formality -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">formality</span>
+      <span class="ipa">/fɔːˈmælɪti/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">The degree of rigid, conventional structure in language — the axis along which register runs from intimate / casual to academic / ceremonial.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The essay maintains high formality]" · "[a shift in formality]" · "[formality signals the register]"
+    </div>
+    <p class="example">
+      "The commentary holds high formality throughout — no contractions, no slang, no second-person address — which is what lets a personal reading of the poem read as literary analysis rather than a text message."
+      <span class="source">— register note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The axis, not the system (the system is <em>register</em>, taught Day 26 as a word-meaning term — here we use formality for the academic-essay end of that axis). Distinct from <strong>register</strong> — register is the whole context-appropriate variety; formality is its formality/informality dimension. In IB, the essay and commentary demand high formality: no contractions, no colloquialism, no "you". A sudden drop in formality (e.g. "the poet really wants us to feel…") signals the intentional fallacy (Day 31) and breaks the academic stance. Hold formality; vary tone (Day 30 / Day 31).
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> high formality · shift in formality · maintain formality · level of formality · formality signals</p>
+  </div>
+
+  <!-- ============ PRACTICE ============ -->
+  <h2><span class="icon">✏️</span> Practice — Deploy the Register</h2>
+  <div class="practice-box">
+    <p style="font-size:14px; color:var(--ink-soft);">Four drills. Write short answers; the model notes follow each.</p>
+    <ol>
+      <li>
+        <strong>Word-bank insertion.</strong> Choose the correct Day 32 word for each gap (each used once):
+        <div class="word-bank">
+          <strong>Word bank:</strong> hedge · modality · stance · objectivity · impersonality · discursive · exposition · tentative · assertive · attribution · evidential · formality
+        </div>
+        <span style="color:var(--ink);">a)</span> "The paragraph's ____________ — 'it may be observed that' — removes the first-person writer and signals academic distance." &rarr; <em>impersonality</em><br>
+        <span style="color:var(--ink);">b)</span> "A mature essay is ____________ about what the evidence supports, but hedged at the boundary." &rarr; <em>assertive</em><br>
+        <span style="color:var(--ink);">c)</span> "The opening offers a succinct ____________ of the comparative criterion before the argument begins." &rarr; <em>exposition</em><br>
+        <span style="color:var(--ink);">d)</span> "The slide from 'must' to 'might' is a shift in ____________ that performs intellectual humility." &rarr; <em>modality</em><br>
+        <span style="color:var(--ink);">e)</span> "Overuse of 'perhaps might suggest' is the ____________ register that abandons the argument." &rarr; <em>tentative</em><br>
+        <span style="color:var(--ink);">f)</span> "Each claim needs an ____________ anchor — a line reference or a named feature — to be credible." &rarr; <em>evidential</em>
+      </li>
+      <li>
+        <strong>Mini discursive paragraph.</strong> On the two lines below, deploy <strong>at least four</strong> Day 32 words and state each one's <em>effect</em>:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Texts</span>
+          Text A: "the gate was locked" &nbsp;·&nbsp; Text B: "the door would not give"
+        </div>
+        <span style="color:var(--ink-soft); font-size:13px;">Model: the essay opens with a clear <em>exposition</em> of its criterion (the effect: the comparison is principled from line one); it takes a <em>stance</em> of measured feminist critique (the effect: the position persuades rather than polemicises); its <em>impersonality</em> — agentless, evidence-led — signals <em>objectivity</em> (the effect: the judgement reads as earned); and every claim is <em>evidential</em>, anchored to the repeated lock (the effect: the reading is tenable, not asserted).</span>
+      </li>
+      <li>
+        <strong>Rewrite the tentative sentence.</strong> Turn this band-4 sentence into an <em>assertive</em> one that still hedges its limit:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Tentative (avoid)</span>
+          "This perhaps might be suggesting that maybe the door is like a kind of prison or something."
+        </div>
+        <span style="color:var(--ink-soft); font-size:13px;">Model: "The locked door figures freedom as externally imposed — in both texts, though the subjects enclosed differ." Assertive about the core claim, hedged only at the boundary (cf. Day 31's <em>measured</em> + Day 30's convergence). One sentence: stated, qualified, evidential.</span>
+      </li>
+      <li>
+        <strong>Distinguish on demand.</strong> In one sentence each, separate these Day 32 pairs you will be tested on: (i) <em>hedge</em> vs. <em>qualify</em> (broad caution vs. stated limit); (ii) <em>objectivity</em> vs. <em>impersonality</em> (the aim vs. the grammatical means); (iii) <em>tentative</em> vs. <em>assertive</em> (under-claim vs. hold-the-claim). Keep all three pairs in your exam armour alongside the Day 29, Day 30, and Day 31 distinctions.</li>
+    </ol>
+  </div>
+
+  <!-- ============ TIPS ============ -->
+  <h2><span class="icon">🎯</span> Study Tips — Sounding Authoritative, Not Dogmatic</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Register is the clothes your argument wears.</strong> Days 29–31 gave you the moves, the comparative grammar, and the judgement language. Today's register (formality, impersonality, stance) is what makes that content read as academic. Hold high formality in the essay and commentary — no contractions, no "you", no slang — but vary <em>tone</em> (measured, urgent, ironic). Formality is the axis; tone is the attitude.
+    </li>
+    <li>
+      <strong>Hedge selectively, never globally.</strong> A hedge (word 1) lowers certainty; modality (word 2) is its grammar. Hedge the bold generalisation, never the evidence. A paragraph that hedges its opening but states its synthesis (Day 30) reads as confident-and-honest; a paragraph that hedges everything reads as tentative (word 8) — the band 4–5 tell. And remember: a <em>qualification</em> (Day 22) is a specific kind of hedge, not the same thing.
+    </li>
+    <li>
+      <strong>Objectivity is earned, not declared.</strong> Objectivity (word 4) comes from weighing evidence against a stated criterion (Day 31) and a clear exposition (word 7) — not from stripping all voice. Impersonality (word 5) is the grammatical help (passives, "it is argued that", Day 23's nominalisation), but pure impersonality with no stance (word 3) is the empty-essay trap. Hold a position; let the evidence speak.
+    </li>
+    <li>
+      <strong>Be assertive, not dogmatic, not tentative.</strong> The register target is assertive (word 9): state what the text supports, hedge only the limit. This is the measured middle between over-claim (Day 29) and the tentative whisper. Audit your openers — three "perhaps / maybe / it could be argued" in a row means you are in the tentative trap. Flip them to assertive claims and the band rises.
+    </li>
+    <li>
+      <strong>Anchor every claim evidentially.</strong> Evidential (word 11) = back the claim with a line reference, a named feature, or a contrast (Day 30's "name relation AND effect"). An assertive claim with no evidence is a floating assertion; an evidential assertion is the goal — state boldly, ground in text. This is what makes a reading <em>tenable</em> (Day 31) under the marker's scrutiny.
+    </li>
+    <li>
+      <strong>Attribute before you evaluate.</strong> Attribution (word 10) lets you stage a lens (Day 24) or a critic's view before weighing it (Day 31) — "as the Marxist lens would have it…" — so the reader sees you reasoning, not parroting. In the EE, IO rationale, and HLE, attribution is mandatory; in essays it is the politeness-and-rigour move that separates discursive (word 6) argument from assertion. Name whose idea a claim is.</li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 33 (Next): Week 5, Day 5 — Critical Synthesis</strong><br>
+    Today dressed your argument in the right register. Day 33 is the capstone: integrating <em>multiple lenses</em> (feminist / Marxist / postcolonial / psychoanalytic from Day 24) into one comparative essay — deploying the moves, the judgement language, and the register you have built all week on a single, synthesised reading. The fluent-argument toolkit is nearly complete.<br><br>
+    <strong style="color:var(--ink);">Milestone:</strong> 288 words learned (of ~1,300). Week 5 continues — the Application &amp; Synthesis phase that turns your 276-word toolkit into perceptive, evaluated, well-registered comparative argument. 🏆
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 5, Day 32<br>
+  288 words learned so far (+12 today) · 1,012 to go · Week 5 continues 🏆
+</footer>
+
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+<script src="../assets/vocab-ask-ai.js" defer></script>
+</body>
+</html>
