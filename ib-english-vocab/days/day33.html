@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 33</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .recall-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  details.recall-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--purple);
+    overflow: hidden;
+  }
+  details.recall-card[open] { border-left-color: var(--teal); }
+  details.recall-card summary {
+    padding: 14px 16px;
+    cursor: pointer;
+    list-style: none;
+    outline: none;
+  }
+  details.recall-card summary::-webkit-details-marker { display: none; }
+  details.recall-card summary::before {
+    content: "?";
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--purple-soft);
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 8px;
+    transition: background 0.2s;
+  }
+  details.recall-card[open] summary::before {
+    content: "\2713";
+    background: var(--teal);
+  }
+  details.recall-card summary .rword {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  details.recall-card summary .rpat {
+    display: block;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  details.recall-card .reveal-body {
+    padding: 0 16px 14px;
+  }
+  details.recall-card .rdef {
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  details.recall-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  details.recall-card .rquestion {
+    font-size: 12px;
+    color: var(--purple);
+    font-style: italic;
+    padding-left: 8px;
+    border-left: 3px solid var(--purple-soft);
+  }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Word Cards */
+  .word-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .word-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--teal);
+  }
+  .word-card.verb::before { background: var(--teal); }
+  .word-card.adj::before { background: var(--gold); }
+  .word-card.noun::before { background: var(--coral); }
+
+  .word-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .word {
+    font-family: Georgia, serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .ipa {
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .pos {
+    display: inline-block;
+    background: var(--paper-warm);
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .word-card.verb .pos { background: #e6fffa; color: var(--teal); }
+  .word-card.adj .pos { background: #fef5e7; color: var(--gold); }
+  .word-card.noun .pos { background: #fff5f5; color: var(--coral); }
+
+  .definition {
+    font-size: 15px;
+    color: var(--ink);
+    margin: 10px 0 12px;
+  }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 13px;
+  }
+  .usage-box .label {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .example {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 8px 0;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-soft);
+  }
+  .example .source {
+    display: block;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .ib-tip {
+    background: #e6fffa;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .ib-tip .label {
+    color: var(--teal);
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .collocations {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 8px;
+  }
+  .collocations strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid, .recall-list { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 33 / 112 — Critical Synthesis</div>
+  <div class="date">Wednesday, 30 September 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 5)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">29</div>
+      <div class="dot done">30</div>
+      <div class="dot done">31</div>
+      <div class="dot done">32</div>
+      <div class="dot today">33</div>
+      <div class="dot">34</div>
+      <div class="dot">35</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 29:</strong></td><td><strong>Application &amp; Synthesis</strong> — argumentation &amp; synthesis moves (assert, refute, corroborate, validate, juxtapose, analogous, reconcile, dialectic, nuance, mitigate, problematic, extrapolate)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 30:</strong></td><td><strong>Comparative &amp; Multi-text Vocabulary</strong> — the grammar &amp; logic of comparing two set-texts (12 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 31:</strong></td><td><strong>Evaluative &amp; Judgement Language in practice</strong> — evaluate, assess, perceive, discern, judicious, measured, salient, cogent, tenable, caveat, critique, criterion (12 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 32:</strong></td><td><strong>Discourse &amp; Register for Argumentative Writing</strong> — hedge, modality, stance, objectivity, impersonality, discursive, exposition, tentative, assertive, attribution, evidential, formality (12 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 33 →</strong></td><td><strong>Critical Synthesis</strong> — integrating multiple lenses (feminist / Marxist / postcolonial / psychoanalytic) into one comparative essay</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 34:</strong></td><td>Mixed consolidation of the Week 5 toolkit (0 new words)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 35:</strong></td><td>Week 5 review &amp; assessment — apply the full arsenal to a live passage (0 new words)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Day 3 spaced review<br>(Writing-Method Verbs I)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">12</div>
+      <div class="sr-note">Critical Synthesis</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">24</div>
+      <div class="sr-note">est. 35–45 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Day 3's writing-method verbs are now <em>30 days</em> old — this is the final, decisive spaced pass. Research shows a word survives into long-term memory once it has been recalled across the full 1 / 2 / 4 / 7 / 15 / 30-day ladder; today closes that ladder for the craft toolkit. You learned <em>how texts are built</em> (craft, weave, orchestrate, frame) on Day 3; all week you have learned <em>what to argue</em> and <em>how to sound right</em> doing it. Today's new words are the capstone: they let you <em>combine</em> the four critical lenses from Day 24 into a single, synthesised reading — the move that separates a band-5 list of observations from a band-7 essay.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Day 3 spaced review (the <em>craft</em> verbs — 30-day confirmation) &rarr; (2) 12 new Critical-Synthesis terms &rarr; (3) distinction boxes (negotiate/mediate, provisional/tentative, triangulate/corroborate) &rarr; (4) practice. The craft review is deliberate: you will be <em>writing about</em> how authors build texts using today's synthesis verbs — the method vocabulary gives today's lens-language something concrete to grip.
+  </div>
+
+  <!-- ============ DAY 3 SPACED REVIEW (30-DAY) ============ -->
+  <h2><span class="icon">🔁</span> Day 3 Spaced Review — 12 Writing-Method Verbs I</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    The 30-day final pass on the authorial-craft toolkit from Day 3 — the verbs for <em>how texts are built</em>. Read each, <strong>recall its specific metaphor and mechanism before looking</strong>, then check. Today's synthesis words ask you to argue <em>across</em> readings; these craft verbs keep that argument anchored to the <em>textual page</em>. If a definition feels shaky, that verb will reappear in Day 34's consolidation.
+  </p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">craft</div>
+      <div class="rdef"><em>Construct with deliberate skill and artistry</em> — foregrounds the author's conscious choices.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">deploy</div>
+      <div class="rdef"><em>Position a technique strategically for effect</em> — military metaphor of tactical intent.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">weave</div>
+      <div class="rdef"><em>Interlace multiple strands into one fabric</em> — many threads &rarr; whole.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">render</div>
+      <div class="rdef"><em>Represent / translate, or cause to become</em> — "render X as Y" implies transformation.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">orchestrate</div>
+      <div class="rdef"><em>Coordinate multiple elements with precision</em> — musical metaphor of control.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">sculpt</div>
+      <div class="rdef"><em>Shape by deliberate refinement</em> — carve away the inessential until form remains.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">layer</div>
+      <div class="rdef"><em>Build meaning in strata</em> — readings accumulate depth with each pass.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">embed</div>
+      <div class="rdef"><em>Fix an element deep within structure</em> — so it becomes integral, not decorative.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">frame</div>
+      <div class="rdef"><em>Present within a perspective / boundary that shapes meaning</em> — the frame is never neutral.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">thread</div>
+      <div class="rdef"><em>Run one motif continuously through the text</em> — one strand, always present.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">infuse</div>
+      <div class="rdef"><em>Fill the prose with a quality (author is subject)</em> — like steeping tea.</div>
+    </div>
+    <div class="review-card">
+      <div class="rword">suffuse</div>
+      <div class="rdef"><em>Spread a quality / atmosphere through everything (atmosphere is subject)</em> — total, enveloping.</div>
+    </div>
+
+  </div>
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> Could you separate <em>weave</em> from <em>thread</em> (many strands vs. one strand — Day 3 box A), <em>infuse</em> from <em>suffuse</em> (author puts in vs. atmosphere spreads through — Day 3 box B), and <em>craft</em> from <em>sculpt</em> (overall construction vs. shaping by removing — Day 3 tip 5), without peeking? Those three pairs anchor Day 3. Today's synthesis words are the <em>moves</em> you perform on top of this craft layer: you don't just name that Morrison <em>weaves</em> memory and history, you <em>triangulate</em> that weaving against a feminist and a postcolonial lens and <em>negotiate</em> between the readings. Keep the craft layer live — synthesis without textual ground is floating theory.
+  </div>
+
+  <!-- ============ TODAY'S NEW VOCABULARY ============ -->
+  <h2><span class="icon">📖</span> Today's New Words — 12 Critical-Synthesis Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    <span class="category-badge gold">NEW CATEGORY — "CRITICAL SYNTHESIS: INTEGRATING MULTIPLE LENSES"</span>
+  </p>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:20px;">
+    <strong style="color:var(--ink);">From one lens to many.</strong> Day 24 gave you the four critical lenses (feminist / Marxist / postcolonial / psychoanalytic); Days 29–32 gave you the moves, the judgement language, and the register to argue with them. Today gives you the <em>synthesis</em> machinery — the verbs and nouns that let you hold two or three lenses at once and produce one reading richer than any single lens could. Three words handle <em>cross-lens inquiry</em> (interrogate, triangulate, situate); three handle <em>managing multiple readings</em> (negotiate, mediate, conflate — conflate being the trap to avoid); three handle <em>epistemic caution</em> (provisional, contingent, heuristic); and three handle <em>frameworks of synthesis</em> (paradigm, subsume, matrix). Together they are the capstone of the Application &amp; Synthesis phase — the difference between an essay that applies one lens and one that <em>thinks</em>.
+  </p>
+
+  <!-- Word 1: interrogate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">interrogate</span>
+      <span class="ipa">/ɪnˈtɛrəɡeɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To subject a text, assumption, or category to sustained, systematic critical questioning — pressing past the first answer rather than accepting it.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The essay interrogates] [the category of 'freedom']…" · "[interrogate the text's silent assumptions]" · "[interrogate X through a feminist lens]"
+    </div>
+    <p class="example">
+      "Rather than merely noting that the ending is ambiguous, the paragraph interrogates the category of 'resolution' itself — asking who is permitted closure in this text and who is not — and the question, not a settled answer, becomes the essay's engine."
+      <span class="source">— comparative paragraph</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> More than "question" — interrogation is sustained and systematic (cf. Day 3's use of the word, where it meant rigorous critical pressure). Distinct from <strong>problematize</strong> (Day 1) — problematize = reveal hidden complexity in something settled; interrogate = actively press a text for what it withholds. Connects to Day 24's lenses: you <em>interrogate</em> a text <em>through</em> a lens. In top-band writing, interrogate the assumptions your set-texts share — that is where comparative synthesis begins. Avoid the weak "the text questions" — say <em>which</em> assumption the essay interrogates and <em>to what effect</em>.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> interrogate the assumption · interrogate a category · interrogate through a lens · sustainedly interrogate · interrogate the silence</p>
+  </div>
+
+  <!-- Word 2: triangulate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">triangulate</span>
+      <span class="ipa">/traɪˈæŋɡjʊleɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To confirm or locate a reading by cross-referencing two or more independent lenses, texts, or pieces of evidence — as a surveyor fixes a position from three points.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[triangulate the reading using] [a feminist and a postcolonial lens]" · "[the claim is triangulated against] [two texts]" · "[triangulate X with Y]"
+    </div>
+    <p class="example">
+      "The essay triangulates its claim about enclosure — a Marxist reading of property, a postcolonial reading of dispossession, and the textual evidence of the repeated gate — so that no single lens carries the argument alone, and the convergence is what makes the synthesis convincing."
+      <span class="source">— Paper 2 framing</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The method of multi-lens synthesis. Distinct from <strong>corroborate</strong> (Day 29) — corroborate = confirm a reading with supporting evidence; triangulate = fix a reading by holding <em>multiple independent angles</em> in tension (lenses, texts, passages). Connects to Day 30's <em>convergence</em> (triangulation seeks the point where lenses converge) and to Day 31's <em>criterion</em> (the fixed point you triangulate from). In exams, "triangulate" signals mature method: you are not cherry-picking one lens, you are locating the reading where several cohere. This is the headline verb of Day 33.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> triangulate the reading · triangulate with · triangulate against · triangulate using lenses · triangulated claim</p>
+  </div>
+
+  <!-- Word 3: situate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">situate</span>
+      <span class="ipa">/ˈsɪtʃueɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To place a text, claim, or reading within its social, historical, cultural, or formal context — so that meaning is understood as produced by, not floating free of, circumstance.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The essay situates the text within] [its colonial moment]" · "[situate the claim in context]" · "[situate X against Y]"
+    </div>
+    <p class="example">
+      "Before applying the postcolonial lens, the paragraph situates the novel in the specific history of indentured labour it encodes — and that contextual placement is what stops the lens from becoming a generic template and makes the reading historically exact."
+      <span class="source">— IO / extended-essay framing</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The contextual move that rescues lens-criticism from vagueness. Distinct from <strong>contextualise</strong> (near-synonym, but situate carries the spatial metaphor — you fix the text's <em>position</em>). Connects to Day 24's lenses (a Marxist reading must be <em>situated</em> in the text's political economy) and to Day 31's <em>caveat</em> (situating is how you avoid over-claiming). In the IO and EE, situate every text before you lens it — the marker rewards a reading that knows <em>where</em> the text stands. A lens applied with no situation is a lens applied blindly.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> situate within · situate the text · situate the claim · situate against · historically situate</p>
+  </div>
+
+  <!-- Word 4: negotiate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">negotiate</span>
+      <span class="ipa">/nɪˈɡəʊʃɪeɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To move between two or more competing readings, pressures, or identities without collapsing them into one — holding the tension while working through it.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The narrator negotiates] [two cultural identities]" · "[the essay negotiates between] [a feminist and a psychoanalytic reading]" · "[negotiate the tension]"
+    </div>
+    <p class="example">
+      "The comparative essay negotiates between a feminist reading of silence-as-resistance and a psychoanalytic reading of silence-as-repression — refusing to decide which is 'true' and instead showing how the text keeps both in play, so the contradiction is the point."
+      <span class="source">— Paper 2 body paragraph</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The verb for <em>holding</em> multiple readings. Distinct from <strong>reconcile</strong> (Day 29) — reconcile = bring two readings into agreement; negotiate = move between them without forcing agreement (often the richer move). Connects to Day 30's <em>divergence</em> / <em>convergence</em> and to Day 31's <em>nuance</em>. In essays, "negotiate" lets you show a text resists single-lens resolution — a mark of sophistication. See box A: negotiate vs. mediate.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> negotiate between · negotiate the tension · negotiate identities · negotiate readings · negotiate competing</p>
+  </div>
+
+  <!-- NEGOTIATE vs MEDIATE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: negotiate vs. mediate</h4>
+    <p>Both handle tension between readings, but they handle it differently:</p>
+    <p style="margin-top:8px;">
+      <strong>negotiate</strong> — Move <em>between</em> two readings, holding the tension; you stay inside the contradiction and work through it.<br>
+      &rarr; "The essay negotiates between a feminist and a psychoanalytic reading, refusing to decide."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>mediate</strong> — Act as the <em>link or resolution</em> that connects two elements; you stand between them and show how they relate.<br>
+      &rarr; "The motif of the gate mediates between the public and private spheres, connecting the two texts' treatments of enclosure."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: am I <em>moving between</em> two positions (negotiate) or <em>standing between them to connect</em> them (mediate)? Negotiate keeps the readings distinct and in tension; mediate shows the thread that runs between them. In exams, negotiate is the verb for irresolvable complexity, mediate for the structural hinge that joins two texts. Both are synthesis armour — use negotiate when the contradiction is the argument, mediate when a shared device is the argument. This pair anchors the multi-lens toolkit.
+    </p>
+  </div>
+
+  <!-- Word 5: mediate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">mediate</span>
+      <span class="ipa">/ˈmiːdɪeɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To act as the link, hinge, or point of contact between two elements, readings, or texts — showing how they relate rather than merely that they differ.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The image mediates between] [the personal and the political]" · "[X mediates the two texts' treatments of]" · "[the device mediates]"
+    </div>
+    <p class="example">
+      "The repeated figure of the threshold mediates between the two set-texts: in both, the doorway figures the limit of agency, but the essays' different historical situations mean the same image does different work — and naming that mediation is what turns a comparison into a synthesis."
+      <span class="source">— comparative-method note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The structural hinge of comparison. Distinct from <strong>foil</strong> (Day 30) — a foil is a contrast that throws the other into relief; mediate is the <em>connecting</em> term that shows how two things relate. Connects to Day 30's <em>correspondence</em> (mediation is how you prove a correspondence is meaningful, not accidental). In Paper 2, find the element that <em>mediates</em> between your two texts — that is your comparison's spine. See box A: mediate vs. negotiate.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> mediate between · mediate the two texts · the device mediates · mediates the relation · historically mediate</p>
+  </div>
+
+  <!-- Word 6: conflate -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">conflate</span>
+      <span class="ipa">/kənˈfleɪt/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To merge two distinct things into one, usually erroneously — treating as identical what should be kept separate. (In synthesis, the failure to be avoided.)</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The essay wrongly conflates] [silence with absence]" · "[conflate the two lenses]" · "[be careful not to conflate]"
+    </div>
+    <p class="example">
+      "A weak comparative essay conflates the Marxist 'alienation' and the postcolonial 'othering' — they look alike but one is about labour and the other about difference; the strong essay keeps them distinct and shows where they intersect, which is the real synthesis."
+      <span class="source">— method warning</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The trap-word of multi-lens work. Distinct from <strong>synthesise</strong> (Day 30, noun) — synthesis = hold distinct readings and show their productive relation; conflation = erase the distinction and lose the insight. Connects to Day 29's warning against <em>false analogy</em> (conflating two texts that merely resemble each other). In exams, the marker rewards you for <em>not</em> conflating: "although both texts figure enclosure, they must not be conflated — the first is material, the second psychological." Spotting a potential conflation is itself a top-band move. (Also taught Day 3 as an authorial tactic — there, conflation can be deliberate; in your own writing, it is the error to prevent.)
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> wrongly conflate · conflate X with Y · careful not to conflate · conflate the two · avoid conflation</p>
+  </div>
+
+  <!-- Word 7: provisional -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">provisional</span>
+      <span class="ipa">/prəˈvɪʒənl/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Tentative in the productive sense — held as true for now, open to revision in light of further evidence or another lens. A stance of epistemic humility, not weakness.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a provisional reading]" · "[the claim is offered provisionally]" · "[provisionally, the text suggests]"
+    </div>
+    <p class="example">
+      "The paragraph offers a provisional synthesis — 'read thus far, the two texts converge on enclosure-as-control' — and then opens the claim to a psychoanalytic counter-reading, so the essay models the intellectual honesty the syllabus rewards without abandoning its argument."
+      <span class="source">— register note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The sophisticated cousin of <strong>tentative</strong> (Day 32) — but do not confuse them (see box B). Tentative = under-claim, abandons the argument (band 4–5 tell); provisional = holds a defensible claim while marking it open to revision (band 7 move). Connects to Day 31's <em>caveat</em> and <em>measured</em>. In exams, a provisional claim is assertive about what the evidence supports and explicit that another lens might shift it — confidence with intellectual humility. This is the register of mature synthesis.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a provisional reading · offered provisionally · provisional claim · provisional synthesis · hold provisionally</p>
+  </div>
+
+  <!-- PROVISIONAL vs TENTATIVE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: provisional vs. tentative</h4>
+    <p>Both signal uncertainty, but one is a strength and the other is a weakness:</p>
+    <p style="margin-top:8px;">
+      <strong>provisional</strong> — Held as true <em>for now</em>, open to revision. A claim is stated, then marked revisable.<br>
+      &rarr; "Read thus far, the texts converge — though a psychoanalytic lens may revise this." (confident + honest)
+    </p>
+    <p style="margin-top:8px;">
+      <strong>tentative</strong> — Under-claims; defers judgement and abandons the argument.<br>
+      &rarr; "This perhaps might be suggesting something about control or whatever." (whispers, goes nowhere)
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: does my sentence <em>state and mark-as-revisable</em> (provisional) or <em>whisper and retreat</em> (tentative)? Provisional is the band-7 register of synthesis — you hold a position while inviting another lens; tentative is the band-4–5 failure mode Day 32 warned against. Both hedge, but provisional hedges at the <em>edge</em> of an asserted claim, tentative hedges the claim out of existence. In multi-lens essays, be provisional, never tentative. This pair (with hedge / qualify) is exam armour for the synthesis question.
+    </p>
+  </div>
+
+  <!-- Word 8: contingent -->
+  <div class="word-card adj">
+    <div class="word-header">
+      <span class="word">contingent</span>
+      <span class="ipa">/kənˈtɪndʒənt/</span>
+      <span class="pos">adjective</span>
+    </div>
+    <p class="definition">Dependent on particular circumstances, context, or historical moment — not universal or necessary; what is so only because things happened to fall out this way.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The meaning is contingent on] [its colonial context]" · "[a contingent, not universal, claim]" · "[contingent reading]"
+    </div>
+    <p class="example">
+      "The essay insists the 'happy ending' is contingent — produced by a specific ideological context, not inherent in the form — so a Marxist and a feminist lens yield different endings, and the difference itself becomes the comparative argument."
+      <span class="source">— comparative-method note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The concept that makes contextual lens-work rigorous. Distinct from <strong>relative</strong> (everything-varies, which collapses into "anything goes") — contingent = dependent on <em>specifiable</em> circumstances, which you then name. Connects to <em>situate</em> (word 3): to situate a text is to show its meaning is contingent. In exams, "contingent" lets you refuse universal claims without sliding into relativism — the mark of a nuanced (Day 3 / Day 29) reading. Use it to qualify a synthesis: "the convergence holds, but it is contingent on the historical coincidence of the two texts' moments."
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> contingent on · historically contingent · a contingent claim · not universal but contingent · contingency (n.)</p>
+  </div>
+
+  <!-- Word 9: paradigm -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">paradigm</span>
+      <span class="ipa">/ˈpærədaɪm/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">A conceptual model or framework through which we organise and interpret a set of texts or phenomena — the lens-system that makes certain readings possible and others invisible.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a feminist paradigm of reading]" · "[shift the paradigm]" · "[the dominant paradigm]"
+    </div>
+    <p class="example">
+      "The essay names the psychoanalytic paradigm it is working within — desire, repression, the uncanny — before applying it, so the reader sees the framework generating the reading, not the reading floating free of method; that overt paradigm-awareness is what separates a band-7 essay from a band-4 impression."
+      <span class="source">— method note</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The big frame that contains the four lenses (Day 24). Distinct from <strong>lens</strong> (a single angle) — a paradigm is the wider model; feminist / Marxist / postcolonial / psychoanalytic are lenses <em>within</em> broader paradigms. Connects to <em>stance</em> (Day 32) and to Day 31's <em>criterion</em> (the paradigm supplies the criterion). In exams, name your paradigm explicitly (especially in the EE rationale and IO) — showing you know <em>which</em> framework produces your reading is methodological sophistication. See box C: paradigm vs. matrix.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a paradigm of · shift the paradigm · dominant paradigm · work within a paradigm · paradigm (n.)</p>
+  </div>
+
+  <!-- Word 10: heuristic -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">heuristic</span>
+      <span class="ipa">/hjʊˈrɪstɪk/</span>
+      <span class="pos">noun / adjective</span>
+    </div>
+    <p class="definition">A practical rule, question, or method that aids discovery — a way of approaching a text that helps you find readings, even if it does not guarantee a single 'correct' answer.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[a useful heuristic is to ask] [who is silenced?]" · "[the lens as heuristic]" · "[apply the heuristic]"
+    </div>
+    <p class="example">
+      "The essay offers a heuristic rather than a verdict — 'ask of each text, who is permitted speech?' — and lets that question generate the comparative reading, so the method is transferable to other texts and the argument shows its workings."
+      <span class="source">— IO / EE rationale</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The meta-tool of synthesis — a lens used as a <em>heuristic</em> is a question you put to a text, not a conclusion you impose. Distinct from <strong>method</strong> (broader) — a heuristic is a specific, repeatable prompt ("who benefits?", "what is repressed?"). Connects to Day 24's lenses (each lens is really a heuristic: the feminist lens = the heuristic 'where is power gendered?'). In the EE and IO, naming your heuristic shows the examiner your inquiry is principled, not impressionistic. A heuristic is humble: it finds readings, it does not dictate them.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a useful heuristic · apply the heuristic · the lens as heuristic · heuristic question · heuristic (adj.)</p>
+  </div>
+
+  <!-- TRIANGULATE vs CORROBORATE distinction -->
+  <div class="distinction-box">
+    <h4>⚠️ Crucial Distinction: triangulate vs. corroborate</h4>
+    <p>Both confirm a reading, but they confirm it differently:</p>
+    <p style="margin-top:8px;">
+      <strong>corroborate</strong> (Day 29) — Confirm a reading with <em>supporting</em> evidence of the same kind. More evidence &rarr; more confidence in one claim.<br>
+      &rarr; "The second stanza corroborates the first: both figure the gate as imprisonment."
+    </p>
+    <p style="margin-top:8px;">
+      <strong>triangulate</strong> — Fix a reading by holding <em>multiple independent angles</em> (lenses, texts, passages) in tension. The convergence of different kinds of evidence &rarr; the reading is located, not just supported.<br>
+      &rarr; "The claim is triangulated: a Marxist reading of property, a postcolonial reading of dispossession, and the gate imagery all meet at enclosure-as-control."
+    </p>
+    <p style="margin-top:8px; font-size:12px; color:var(--ink-soft);">
+      The test: am I <em>piling up similar evidence</em> (corroborate) or <em>cross-referencing independent angles</em> (triangulate)? Corroboration deepens one lens; triangulation is the multi-lens move itself — it is what makes Week 5's synthesis more than a list of single-lens observations. In exams, "the reading is triangulated across a feminist and a postcolonial lens" signals method maturity; "the two texts corroborate each other" signals only agreement. Use both: corroborate within a lens, triangulate across lenses. This pair (with negotiate / mediate) is the spine of the synthesis toolkit.
+    </p>
+  </div>
+
+  <!-- Word 11: subsume -->
+  <div class="word-card verb">
+    <div class="word-header">
+      <span class="word">subsume</span>
+      <span class="ipa">/səbˈsjuːm/</span>
+      <span class="pos">verb</span>
+    </div>
+    <p class="definition">To absorb a particular case, reading, or text into a broader category or framework — placing the specific under the general without losing the specific's force.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[The local image is subsumed under] [the wider pattern of enclosure]" · "[subsume X within Y]" · "[the reading subsumes both texts]"
+    </div>
+    <p class="example">
+      "The essay subsumes the two texts' different gates under one comparative category — 'enclosure as the condition of subjectivity' — so the specific historical differences remain visible while the larger claim holds them both, and the comparison becomes a genuine synthesis rather than two adjacent summaries."
+      <span class="source">— comparative-method note</span>
+    </div>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The move that turns a comparison into a synthesis. Distinct from <strong>generalise</strong> (which can flatten specifics) — subsume keeps the particular instance inside the larger category, visible. Connects to <em>paradigm</em> (word 9: you subsume cases under a paradigm) and to Day 30's <em>synthesis</em> (subsuming is how synthesis is built — particulars held within a whole). In Paper 2, after comparing, subsume: "both, though historically distinct, are subsumed under enclosure-as-control." That sentence is the synthesis moment. Avoid the over-generalisation trap (Day 29) — subsume, don't erase.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> subsume under · subsume X within · subsumed by · subsume both texts · subsumption (n.)</p>
+  </div>
+
+  <!-- Word 12: matrix -->
+  <div class="word-card noun">
+    <div class="word-header">
+      <span class="word">matrix</span>
+      <span class="ipa">/ˈmeɪtrɪks/</span>
+      <span class="pos">noun</span>
+    </div>
+    <p class="definition">An interdependent framework or network within which elements are located and given meaning — the grid of relations (contexts, lenses, structures) that holds a reading together.</p>
+    <div class="usage-box">
+      <span class="label">Literary Usage Pattern</span>
+      "[situated within a matrix of] [power and gender]" · "[the matrix of relations]" · "[read against the matrix]"
+    </div>
+    <p class="example">
+      "The comparative essay reads each text against a matrix of power, gender, and history — not one lens at a time but as a living grid — so that a feminist observation about silence immediately interacts with a postcolonial observation about voice, and the synthesis is the grid, not any single cell."
+      <span class="source">— synthesis model</span>
+    </p>
+    <div class="ib-tip">
+      <span class="label">IB Tip</span> The network-version of <em>paradigm</em> (word 9) — where paradigm is the model, matrix is the web of relations the model connects. Distinct from <strong>framework</strong> (looser) — matrix implies the elements mutually determine each other. Connects to <em>intertextuality</em> (Day 30, the matrix of texts) and to <em>situate</em> (word 3, you place a text in the matrix). In exams, "read against a matrix of" signals you are doing simultaneous multi-lens synthesis, not serial single-lens application — the band-7 signature. Use matrix to describe the whole your synthesis produces. See box C: matrix vs. paradigm.
+    </div>
+    <p class="collocations"><strong>Common collocations:</strong> a matrix of · within the matrix · read against the matrix · the matrix of relations · matrix (n.)</p>
+  </div>
+
+  <!-- ============ PRACTICE ============ -->
+  <h2><span class="icon">✏️</span> Practice — Synthesise the Lenses</h2>
+  <div class="practice-box">
+    <p style="font-size:14px; color:var(--ink-soft);">Four drills. Write short answers; the model notes follow each.</p>
+    <ol>
+      <li>
+        <strong>Word-bank insertion.</strong> Choose the correct Day 33 word for each gap (each used once):
+        <div class="word-bank">
+          <strong>Word bank:</strong> interrogate · triangulate · situate · negotiate · mediate · conflate · provisional · contingent · paradigm · heuristic · subsume · matrix
+        </div>
+        <span style="color:var(--ink);">a)</span> "The essay ____________ its claim by holding a feminist and a postcolonial lens in tension — the convergence is what convinces." &rarr; <em>triangulates</em><br>
+        <span style="color:var(--ink);">b)</span> "Before lensing, the paragraph ____________ the novel in its specific history of indentured labour." &rarr; <em>situates</em><br>
+        <span style="color:var(--ink);">c)</span> "A weak essay ____________ alienation with othering — they look alike but are not the same." &rarr; <em>conflates</em><br>
+        <span style="color:var(--ink);">d)</span> "The reading is offered ____________ — held for now, open to a psychoanalytic revision." &rarr; <em>provisionally</em><br>
+        <span style="color:var(--ink);">e)</span> "The repeated gate ____________ between the two texts' treatments of enclosure." &rarr; <em>mediates</em><br>
+        <span style="color:var(--ink);">f)</span> "The meaning is ____________ on context — not universal, but produced by a specific moment." &rarr; <em>contingent</em>
+      </li>
+      <li>
+        <strong>Mini synthesis paragraph.</strong> On the lines below, deploy <strong>at least four</strong> Day 33 words and <strong>two</strong> Day 24 lenses to synthesise one reading of the two given texts; state each word's effect:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Texts</span>
+          Text A: a locked gate (material enclosure) &nbsp;·&nbsp; Text B: a silenced narrator (psychic enclosure)
+        </div>
+        <span style="color:var(--ink-soft); font-size:13px;">Model: the essay first <em>situates</em> both texts in their gendered histories (effect: the lens is historically exact, not a template); it then <em>triangulates</em> a Marxist reading of property with a feminist reading of silence (effect: the claim is located where two independent angles meet, not merely supported); it <em>negotiates</em> between the material and the psychic readings (effect: the contradiction is held, not forced into agreement); and it offers the synthesis <em>provisionally</em> (effect: confident yet open to a psychoanalytic revision — the register of mature synthesis). The two gates are <em>subsumed</em> under one category, enclosure-as-condition, without erasing their difference.</span>
+      </li>
+      <li>
+        <strong>Reframe the single-lens reading.</strong> Turn this one-lens sentence into a multi-lens synthesis using <em>triangulate</em>, <em>situate</em>, and <em>paradigm</em>:
+        <div class="usage-box" style="margin:10px 0;">
+          <span class="label">Single-lens (avoid)</span>
+          "The text is sexist because the woman is silent."
+        </div>
+        <span style="color:var(--ink-soft); font-size:13px;">Model: "Situated within a feminist paradigm of gendered speech, the silence is legible as resistance; triangulated against a postcolonial paradigm of dispossession, the same silence reads as enforced erasure — and the essay holds both, so the silence is not 'sexist' but a site where gender and empire intersect." Three moves: situate the frame, triangulate the lenses, refuse the conflation.</span>
+      </li>
+      <li>
+        <strong>Distinguish on demand.</strong> In one sentence each, separate these Day 33 pairs you will be tested on: (i) <em>negotiate</em> vs. <em>mediate</em> (move between vs. link); (ii) <em>provisional</em> vs. <em>tentative</em> (revisable claim vs. abandoned claim); (iii) <em>triangulate</em> vs. <em>corroborate</em> (cross-angle location vs. same-kind support). Keep all three pairs in your exam armour alongside the Day 29, Day 30, Day 31, and Day 32 distinctions.</li>
+    </ol>
+  </div>
+
+  <!-- ============ TIPS ============ -->
+  <h2><span class="icon">🎯</span> Study Tips — Synthesis Is a Method, Not a Summary</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>One lens is a start; synthesis is the band 7.</strong> Day 24 gave you four lenses; Days 29–32 gave you the moves and register to argue with them. Today's words let you <em>triangulate</em> and <em>negotiate</em> between lenses so a reading emerges that no single lens could produce. An essay that applies feminist criticism <em>and then</em> Marxist criticism in two separate blocks is serial, not synthesised; an essay that holds both in a <em>matrix</em> is synthesis. The marker rewards the second.
+    </li>
+    <li>
+      <strong>Triangulate, don't just corroborate.</strong> Corroboration (Day 29) piles up similar evidence for one claim; triangulation fixes a claim by holding independent angles — lenses, texts, passages — in tension. Use corroboration <em>within</em> a lens and triangulation <em>across</em> lenses. "The reading is triangulated across a feminist and a postcolonial lens" is the sentence that marks Week 5's capstone; "the two texts agree" is not.
+    </li>
+    <li>
+      <strong>Provisional, never tentative.</strong> Synthesis requires holding a claim while inviting another lens — that is <em>provisional</em> (word 7), the band-7 register. It is not <em>tentative</em> (Day 32), the band-4–5 whisper that abandons the argument. State the defensible core, mark it open to revision, name the lens that might shift it. Confidence with intellectual humility is the sound of mature synthesis.
+    </li>
+    <li>
+      <strong>Conflate is the trap; distinction is the skill.</strong> Multi-lens work tempts you to merge look-alike concepts — alienation with othering, silence with absence. Resist: <em>conflate</em> (word 6) is the error to prevent. The top-band move is to show where two readings <em>intersect</em> while keeping them distinct. "Although both figure enclosure, they must not be conflated — the first is material, the second psychic" is exactly the nuance the syllabus rewards.
+    </li>
+    <li>
+      <strong>Situate before you lens.</strong> A lens applied with no situation is a lens applied blindly. <em>Situate</em> (word 3) every text in its history, context, and form before the paradigm does its work — that is what stops feminist or postcolonial reading from becoming a generic template. In the IO and EE, situation is mandatory; in essays, it is what makes a lens reading historically exact rather than vaguely 'relevant'.
+    </li>
+    <li>
+      <strong>Subsume the particulars into the synthesis.</strong> After comparing two texts point by point, <em>subsume</em> (word 11) them under one comparative category so the specific differences stay visible inside the larger claim. "Both, though historically distinct, are subsumed under enclosure-as-control" is the synthesis sentence; two adjacent summaries is not. Synthesis = particulars held within a whole, never particulars erased. That is the Whole of Week 5's Application &amp; Synthesis phase.</li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 34 (Next): Week 5, Day 6 — Mixed Consolidation</strong><br>
+    Today gave you the synthesis machinery — the verbs and nouns that hold multiple lenses at once. Day 34 regroups the whole Week 5 toolkit (Days 29–33: moves, comparative grammar, judgement language, register, synthesis) into one revision grid with the full set of distinction pairs, then drills it on a live passage. No new words — pure consolidation before the Week 5 assessment.<br><br>
+    <strong style="color:var(--ink);">Milestone:</strong> 300 words learned (of ~1,300). Week 5 completes — the Application &amp; Synthesis phase that turns your 288-word toolkit into perceptive, evaluated, well-registered, multi-lens comparative argument. 🏆
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 5, Day 33<br>
+  300 words learned so far (+12 today) · 1,000 to go · Week 5 continues 🏆
+</footer>
+
+
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+<script src="../assets/vocab-ask-ai.js" defer></script>
+</body>
+</html>
