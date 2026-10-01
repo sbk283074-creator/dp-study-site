@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 34</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall Cards (interactive reveal) */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+
+  /* Review Cards */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .review-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--teal);
+    transition: transform 0.15s;
+  }
+  .review-card .rword {
+    font-family: Georgia, serif;
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--ink);
+  }
+  .review-card .rdef {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+  .review-card .rdef em { color: var(--teal); font-style: normal; font-weight: 600; }
+  .review-prompt {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .review-prompt strong { color: var(--ink); }
+
+  /* Distinction Box */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .distinction-box p {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Practice Section */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol {
+    padding-left: 20px;
+    margin-top: 8px;
+  }
+  .practice-box ol li {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .practice-box ol li strong { color: var(--ink); }
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold-soft);
+    min-width: 80px;
+    text-align: center;
+    color: transparent;
+    user-select: none;
+  }
+  .word-bank {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .word-bank strong { color: var(--ink); }
+
+  /* Tips Section */
+  .tips-list {
+    list-style: none;
+    counter-reset: tip;
+  }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category Badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .category-badge.gold {
+    background: linear-gradient(135deg, #b8860b 0%, #d4a933 100%);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .review-grid { grid-template-columns: 1fr; }
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .word { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 34 / 112 — Week 5 Mixed Consolidation</div>
+  <div class="date">Thursday, 1 October 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Weekly Tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 5)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">29</div>
+      <div class="dot done">30</div>
+      <div class="dot done">31</div>
+      <div class="dot done">32</div>
+      <div class="dot done">33</div>
+      <div class="dot today">34</div>
+      <div class="dot">35</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 29:</strong></td><td>Application &amp; Synthesis — build / defend, compare / resolve, refine / reason (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 30:</strong></td><td>Comparative &amp; Multi-text Vocabulary — contrastive structures, multi-text relations, comparative dynamics (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 31:</strong></td><td>Evaluative &amp; Judgement Language — verbs of evaluation, adjectives of judgement, critical method (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 32:</strong></td><td>Discourse &amp; Register for Argumentative Writing — hedge, modality, stance, objectivity, attribution (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 33:</strong></td><td>Critical Synthesis — interrogate, triangulate, provisional, paradigm, conflate (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 34 →</strong></td><td><strong>Mixed Consolidation</strong> — all 60 Week 5 terms regrouped by function + distinction grid</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 35:</strong></td><td>Week 5 review &amp; assessment — apply the full Week 5 toolkit to a live passage</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced Repetition Status -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">All Week 5 words<br>(Days 29–33)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">0</div>
+      <div class="sr-note">Consolidation day</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">est. 40–55 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Where you are in the curve:</strong> Week 5 is the <em>application</em> week — it takes the metalanguage you built in Week 4 and trains you to <em>deploy</em> it. Five days, five faces of the same act: <em>application &amp; synthesis</em> (Day 29), <em>comparative &amp; multi-text</em> (Day 30), <em>evaluative &amp; judgement</em> (Day 31), <em>discourse &amp; register</em> (Day 32), and <em>critical synthesis</em> (Day 33). Sixty terms in five sittings is a lot to hold — so today we do <em>not</em> learn anything new. We <strong>regroup</strong> all sixty by <em>function</em> (what each word lets you DO in an essay or commentary), so the words stop living in five separate lists and start living as one interconnected toolkit. The spaced-repetition pass <em>is</em> the week itself: this consolidation rehearses all sixty at the moment just before they would begin to fade.
+    <br><br>
+    <strong>Today's flow:</strong> (1) five functional recall grids (60 words, by job not by day) &rarr; (2) fifteen distinction pairs — your Week 5 exam armour &rarr; (3) mixed practice &rarr; (4) Day 35 preview. Note one bridge worth making now: <em>register</em> vocabulary (Day 32) is the stylistic skin that the <em>argument</em> moves (Days 29 / 31) wear — a cogent claim delivered in a tentative, hedged register reads very differently from the same claim stated assertively.
+  </div>
+
+  <!-- ============ FUNCTIONAL REGROUPING ============ -->
+  <h2><span class="icon">🔁</span> Week 5 Recall — 60 Terms by Function</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    Read each word and <strong>recall its precise definition before looking</strong>. They are ordered by <em>job</em>, not by day — this interleaving is what turns five lists into one toolkit.
+  </p>
+
+  <h3>① Claiming &amp; Defending (Days 29 + 31 critical method · 12 terms)</h3>
+  <p style="font-size:13px; color:var(--ink-soft); margin-bottom:10px;">The words that stake, attack, support, and qualify a position in argumentative writing.</p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">assert</div>
+      <div class="rdef"><em>To state a claim firmly as true — the baseline argumentative move.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">refute</div>
+      <div class="rdef"><em>To prove a claim or opposing view wrong through counter-evidence.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">corroborate</div>
+      <div class="rdef"><em>To support a claim with additional evidence that confirms it.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">validate</div>
+      <div class="rdef"><em>To establish a claim as legitimate or sound — not merely confirm.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">hedge</div>
+      <div class="rdef"><em>A word / structure that softens commitment ("might", "seems") — modal caution.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">stance</div>
+      <div class="rdef"><em>The writer's adopted position / attitude toward the subject.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">assertive</div>
+      <div class="rdef"><em>A tone / manner that states positions firmly (opposite of tentative).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">tentative</div>
+      <div class="rdef"><em>A manner that withholds full commitment — hedged, cautious.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">caveat</div>
+      <div class="rdef"><em>A warning or limiting condition attached to a claim.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">tenable</div>
+      <div class="rdef"><em>(Of a position) able to be defended without contradiction.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">cogent</div>
+      <div class="rdef"><em>(Of an argument) clear, logical, and convincing.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">critique</div>
+      <div class="rdef"><em>A detailed analysis that judges strengths and weaknesses.</em></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px;">② Evaluating &amp; Judging (Days 31 + 33 inquiry · 12 terms)</h3>
+  <p style="font-size:13px; color:var(--ink-soft); margin-bottom:10px;">The words that name how you assess quality, detect fine effects, and position a reading.</p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">evaluate</div>
+      <div class="rdef"><em>To make a judgement of value or significance.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">assess</div>
+      <div class="rdef"><em>To estimate or measure the weight / quality of something.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">perceive</div>
+      <div class="rdef"><em>To become aware of / take in a feature, pattern, or effect.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">discern</div>
+      <div class="rdef"><em>To detect or distinguish finely a subtle effect / difference.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">judicious</div>
+      <div class="rdef"><em>Showing wise, careful judgement.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">measured</div>
+      <div class="rdef"><em>Restrained, balanced in tone — not overstated.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">salient</div>
+      <div class="rdef"><em>Most noticeable / important — the point that stands out.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">criterion</div>
+      <div class="rdef"><em>A standard by which something is judged.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">interrogate</div>
+      <div class="rdef"><em>To probe a text / claim closely with questions.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">triangulate</div>
+      <div class="rdef"><em>To confirm a reading by cross-checking multiple sources / lenses.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">heuristic</div>
+      <div class="rdef"><em>A provisional rule-of-thumb for inquiry, not a fixed law.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">situate</div>
+      <div class="rdef"><em>To place a text / claim in its context (historical, cultural).</em></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px;">③ Comparing &amp; Relating Texts (Days 29 + 30 · 12 terms)</h3>
+  <p style="font-size:13px; color:var(--ink-soft); margin-bottom:10px;">The multi-text vocabulary for placing texts in dialogue and naming their relations.</p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">juxtapose</div>
+      <div class="rdef"><em>To place elements side by side to invite comparison / contrast.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">analogous</div>
+      <div class="rdef"><em>Similar in function / relation though different in detail.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">reconcile</div>
+      <div class="rdef"><em>To show how apparently conflicting readings can coexist.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">dialectic</div>
+      <div class="rdef"><em>A method of arriving at truth through opposing positions.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">parallelism</div>
+      <div class="rdef"><em>Repeated grammatical structure to link or contrast ideas.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">antithesis</div>
+      <div class="rdef"><em>Opposing ideas in balanced / parallel structure.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">concession</div>
+      <div class="rdef"><em>A concessive clause yielding ground to the opposing view.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">synthesis</div>
+      <div class="rdef"><em>Combining distinct elements into a connected whole.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">counterpoint</div>
+      <div class="rdef"><em>A contrasting element that sets off the main idea.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">intertextuality</div>
+      <div class="rdef"><em>A text's dialogue with other texts (allusion, echo, quotation).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">correspondence</div>
+      <div class="rdef"><em>A matching / echoing relation between two texts.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">foil</div>
+      <div class="rdef"><em>A character / detail that highlights another by contrast.</em></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px;">④ Contrastive Dynamics &amp; Register Framing (Days 30 + 32 · 12 terms)</h3>
+  <p style="font-size:13px; color:var(--ink-soft); margin-bottom:10px;">The words that name how elements move apart / together, and how argumentative prose is framed.</p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">equivalence</div>
+      <div class="rdef"><em>A relation of equal weight / value between elements.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">symmetry</div>
+      <div class="rdef"><em>Balanced, mirroring structure between parts.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">divergence</div>
+      <div class="rdef"><em>Elements moving apart / differing from one another.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">convergence</div>
+      <div class="rdef"><em>Elements coming together / agreeing.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">modality</div>
+      <div class="rdef"><em>Grammatical encoding of certainty / commitment (will, may, must).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">objectivity</div>
+      <div class="rdef"><em>Freedom from personal bias in treatment.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">impersonality</div>
+      <div class="rdef"><em>Absence of personal voice / first-person in style.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">discursive</div>
+      <div class="rdef"><em>Moving between topics in a reasoned, exploratory way.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">exposition</div>
+      <div class="rdef"><em>Writing that explains / sets out information.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">attribution</div>
+      <div class="rdef"><em>Crediting a claim / idea explicitly to its source.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">evidential</div>
+      <div class="rdef"><em>Markers showing the source of knowledge ("according to").</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">formality</div>
+      <div class="rdef"><em>The level of formal register appropriate to the context.</em></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:28px;">⑤ Critical Synthesis &amp; Extending Reasoning (Days 29 + 33 · 12 terms)</h3>
+  <p style="font-size:13px; color:var(--ink-soft); margin-bottom:10px;">The words that manage readings across lenses, hold conclusions open, and extend reasoning.</p>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="rword">negotiate</div>
+      <div class="rdef"><em>To work through the tensions between competing readings.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">mediate</div>
+      <div class="rdef"><em>To stand between / connect two positions.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">conflate</div>
+      <div class="rdef"><em>To wrongly merge distinct things — a trap to avoid.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">provisional</div>
+      <div class="rdef"><em>A conclusion held as temporary / open to revision.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">contingent</div>
+      <div class="rdef"><em>Dependent on particular circumstances (not necessary).</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">paradigm</div>
+      <div class="rdef"><em>A framework / model organising how we see things.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">subsume</div>
+      <div class="rdef"><em>To place a case correctly under a broader category.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">matrix</div>
+      <div class="rdef"><em>A grid / framework for mapping relations between ideas.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">nuance</div>
+      <div class="rdef"><em>A subtle distinction or shade of meaning.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">mitigate</div>
+      <div class="rdef"><em>To soften or reduce the force of a claim / problem.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">problematic</div>
+      <div class="rdef"><em>(adj.) open to challenge / raising difficulties.</em></div>
+    </div>
+    <div class="review-card">
+      <div class="rword">extrapolate</div>
+      <div class="rdef"><em>To extend a reading / reasoning beyond the given evidence.</em></div>
+    </div>
+  </div>
+
+  <div class="review-prompt">
+    <strong>Self-assessment:</strong> The five grids answer five different analytical questions. <em>① Claiming &amp; defending</em> = "what move am I making on this claim?" <em>② Evaluating &amp; judging</em> = "how good is this reasoning?" <em>③ Comparing &amp; relating</em> = "how do these texts speak to each other?" <em>④ Contrastive dynamics &amp; register</em> = "how do the parts move, and how does the prose sound?" <em>⑤ Critical synthesis</em> = "how do I hold multiple readings without collapsing them?" A strong Paper 2 essay reaches for at least one term from each grid. Today's job is to make all sixty retrievable — not as five lists, but as one web. Notice the bridges: <em>synthesis</em> (③) is what <em>reconcile</em> (③) and <em>negotiate</em> (⑤) both aim toward; <em>hedge</em> (①) is the register-level face of <em>provisional</em> (⑤); <em>attribution</em> (④) is how you make a <em>validated</em> (①) claim survive marker scrutiny.
+  </div>
+
+  <!-- ============ DISTINCTION GRID ============ -->
+  <h2><span class="icon">⚖️</span> The 15 Distinction Pairs (Your Week 5 Exam Armour)</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:16px;">
+    IB markers reward precise discrimination. These are the pairs most often confused across the five Week 5 pillars — know the exact seam between each (three per pillar).
+  </p>
+
+  <div class="distinction-box">
+    <h4>① assert vs. refute</h4>
+    <p><strong>assert</strong> — to state your own claim firmly as true (build).<br>
+    <strong>refute</strong> — to tear down an opposing claim with counter-evidence (attack).<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Both are claim-moves, but assert constructs your position while refute dismantles theirs. An essay needs both: assert your reading, then refute the obvious alternative.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>② hedge vs. caveat</h4>
+    <p><strong>hedge</strong> — a grammatical / lexical softener of commitment ("might", "appears to") woven into the claim itself.<br>
+    <strong>caveat</strong> — a separate limiting clause or warning attached after the claim ("with the caveat that…").<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Both reduce overstatement, but hedge is internal modulation of force; caveat is an external qualification. Name which one you see.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>③ assertive vs. tentative</h4>
+    <p><strong>assertive</strong> — a manner that commits fully and states positions without qualification.<br>
+    <strong>tentative</strong> — a manner that withholds, hedges, and signals openness to revision.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">These are opposite stances (①). Top-band writing modulates between them deliberately: assertive on the thesis, tentative when conceding limitation.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>④ evaluate vs. assess</h4>
+    <p><strong>evaluate</strong> — to make a judgement of <em>value / significance</em> (good, effective, revealing).<br>
+    <strong>assess</strong> — to estimate or <em>measure</em> the weight / scale of something (how much, how far).<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Often near-synonyms, but evaluation carries the value-verdict; assessment carries the measurement. "Assess the effect, then evaluate its success" is the cleaner sequence.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑤ perceive vs. discern</h4>
+    <p><strong>perceive</strong> — to become aware of / take in a feature or pattern broadly.<br>
+    <strong>discern</strong> — to detect or distinguish something <em>finely</em>, often against noise.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Perceive is the wide take; discern is the sharp eye. You perceive a mood shift, then discern the exact device producing it.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑥ judicious vs. measured</h4>
+    <p><strong>judicious</strong> — showing <em>wise</em> judgement in what is chosen or said.<br>
+    <strong>measured</strong> — restrained and <em>balanced in tone</em>, not overstated.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Judicious is about the wisdom of the choice; measured is about the temperance of the delivery. A judicious point can still be delivered unmeasured (shouted); aim for both.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑦ juxtapose vs. synthesis</h4>
+    <p><strong>juxtapose</strong> — to place elements side by side so the reader makes the comparison.<br>
+    <strong>synthesis</strong> — to combine those elements into a single connected whole or argument.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Juxtaposition invites comparison; synthesis performs the merging. A comparative essay juxtaposes first, then synthesises — don't confuse the two moves.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑧ parallelism vs. antithesis</h4>
+    <p><strong>parallelism</strong> — repeated grammatical structure linking ideas (similar or contrasting).<br>
+    <strong>antithesis</strong> — <em>opposing</em> ideas held in that parallel structure.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Antithesis is a species of parallelism: all antithesis uses parallel structure, but not all parallelism is antithetical. "Speech is silver; silence is golden" = antithesis; a list of three parallel clauses = parallelism.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑨ counterpoint vs. correspondence</h4>
+    <p><strong>counterpoint</strong> — a <em>contrasting</em> element that sets the main idea in relief.<br>
+    <strong>correspondence</strong> — a <em>matching / echoing</em> relation between texts.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Opposite relational directions: counterpoint is difference that sharpens; correspondence is similarity that resonates. Name which relation you are arguing.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑩ divergence vs. convergence</h4>
+    <p><strong>divergence</strong> — elements moving <em>apart</em> / differing from one another.<br>
+    <strong>convergence</strong> — elements coming <em>together</em> / agreeing.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">The opposed dynamics of multi-text comparison (④). Two texts converge on a theme but diverge in tone — state both to show the nuance.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑪ objectivity vs. impersonality</h4>
+    <p><strong>objectivity</strong> — a <em>quality of stance</em>: freedom from personal bias in treatment.<br>
+    <strong>impersonality</strong> — a <em>feature of style</em>: absence of first-person / personal voice.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">You can write impersonally yet be biased, or write personally yet be objective. One is about the mind's position; the other about the page's voice.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑫ modality vs. evidential</h4>
+    <p><strong>modality</strong> — grammatical encoding of <em>certainty / commitment</em> (will, may, must).<br>
+    <strong>evidential</strong> — markers showing the <em>source of knowledge</em> ("according to", "evidently").<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Both manage how a claim is pinned down, but modality governs how sure you sound; evidential governs where your evidence comes from. A hedged claim with clear evidentials is stronger than either alone.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑬ negotiate vs. mediate</h4>
+    <p><strong>negotiate</strong> — to <em>work through</em> the tensions between competing readings.<br>
+    <strong>mediate</strong> — to <em>stand between / connect</em> two positions without choosing.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Negotiate is active resolution-in-progress; mediate is holding the line between. Both belong to critical synthesis (⑤) — use negotiate when you resolve, mediate when you map.</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑭ provisional vs. contingent</h4>
+    <p><strong>provisional</strong> — a conclusion held as <em>temporary / open to revision</em>.<br>
+    <strong>contingent</strong> — a claim <em>dependent on circumstances</em> (not universally necessary).<br>
+    <span style="font-size:12px; color:var(--ink-soft);">Both are epistemic caution (⑤), but provisional is about time (subject to change); contingent is about condition (true only if…). Don't collapse "I may be wrong later" with "this holds only here".</span></p>
+  </div>
+
+  <div class="distinction-box">
+    <h4>⑮ conflate vs. subsume</h4>
+    <p><strong>conflate</strong> — to <em>wrongly</em> merge distinct things, distorting both (the trap).<br>
+    <strong>subsume</strong> — to place a case <em>correctly</em> under a broader category.<br>
+    <span style="font-size:12px; color:var(--ink-soft);">The difference is correctness. Conflate is the error markers punish; subsume is the disciplined move that builds a paradigm (⑤). Recognising the seam is itself a top-band skill.</span></p>
+  </div>
+
+  <!-- ============ PRACTICE EXERCISES ============ -->
+  <h2><span class="icon">✏️</span> Practice Exercises</h2>
+  <div class="practice-box">
+    <h3>Exercise 1: Name the Term</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Identify the single best Week 5 term for each extract. Use the functional grids above.</p>
+    <div class="word-bank">
+      <strong>Pool:</strong> assert · refute · corroborate · validate · hedge · caveat · evaluate · discern · judicious · cogent · critique · juxtapose · synthesis · intertextuality · foil · divergence · convergence · modality · attribution · provisional · triangulate · conflate · extrapolate · mitigate
+    </div>
+    <ol>
+      <li>"The poem seems, at least on a first reading, to mourn the city" — the commitment is softened grammatically. &rarr; <span class="blank">________</span></li>
+      <li>"Where Text A laments war, Text B celebrates it" — the two move in opposite directions. &rarr; <span class="blank">________</span></li>
+      <li>"As Bloom notes in The Anxiety of Influence, the later poet echoes the earlier" — the source is named explicitly. &rarr; <span class="blank">________</span></li>
+      <li>"One must not confuse the narrator's irony with the author's belief" — the warning against wrongly merging. &rarr; <span class="blank">________</span></li>
+      <li>"Strikingly, the same image recurs in both her collections" — a matching relation between texts. &rarr; <span class="blank">________</span></li>
+      <li>"This reading is convincing because three independent critics arrive at it" — the claim is confirmed by cross-checking. &rarr; <span class="blank">________</span></li>
+      <li>"The gentle uncle highlights, by contrast, the tyrant's cruelty" — a detail that sets off another. &rarr; <span class="blank">________</span></li>
+      <li>"We might tentatively conclude, though the evidence is thin" — held as temporary / open. &rarr; <span class="blank">________</span></li>
+      <li>"The essay dismantles the opposing view with a single counter-example" — the attack move. &rarr; <span class="blank">________</span></li>
+      <li>"From this single stanza we can reasonably extend the argument to the whole sequence" — reasoning beyond the given. &rarr; <span class="blank">________</span></li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 2: Mini Comparative Synthesis</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">Below are two short text openings. Write ONE analytical paragraph (6–8 sentences) naming <strong>at least eight</strong> Week 5 terms (across the five grids) and explaining how the texts relate and how your argument is positioned.</p>
+    <div class="usage-box" style="margin-bottom:14px;">
+      <span class="label">Text A</span>
+      "The river remembers every name it has taken. We are only the latest syllable." (a lyric of erosion and belonging)
+      <br><br>
+      <span class="label">Text B</span>
+      "They renamed the river for the factory. Progress, they called it." (a satirical editorial on erasure)
+    </div>
+    <ol>
+      <li><strong>Your analysis:</strong> (deploy ≥8 terms — e.g. juxtapose, foil, counterpoint, convergence / divergence, intertextuality, stance, hedge, evaluate, triangulate, provisional, synthesis…)</li>
+    </ol>
+
+    <h3 style="margin-top:24px;">Exercise 3: Distinguish &amp; Defend</h3>
+    <p style="font-size:13px; color:var(--ink-soft); margin-bottom:8px;">In 1–2 sentences each, explain the seam between the pair and give a literary / essay example.</p>
+    <ol>
+      <li><strong>evaluate</strong> vs. <strong>assess</strong> — value-judgement or measurement?</li>
+      <li><strong>parallelism</strong> vs. <strong>antithesis</strong> — structure shared or ideas opposed?</li>
+      <li><strong>objectivity</strong> vs. <strong>impersonality</strong> — stance or style?</li>
+      <li><strong>conflate</strong> vs. <strong>subsume</strong> — the wrong merge or the right category?</li>
+    </ol>
+  </div>
+
+  <!-- ============ BUILDING YOUR TOOLKIT ============ -->
+  <h2><span class="icon">🎯</span> Building Your Week 5 Toolkit</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Week 5 is the deployment week of the whole programme so far.</strong> Weeks 1–4 gave you the words for <em>what texts do</em>; Week 5 gives you the words for <em>what you do with texts</em> — claim, compare, judge, frame, synthesise. Together they are the vocabulary for a complete Paper 2 essay and a confident IOC.
+    </li>
+    <li>
+      <strong>Regroup, don't re-list.</strong> Today you met the same sixty words ordered by <em>function</em>. That interleaving is the difference between memorising five lists and owning one toolkit. When you write a real comparative essay, reach for one term from each grid rather than twelve from one.
+    </li>
+    <li>
+      <strong>The fifteen distinction pairs are where marks are won or lost.</strong> Saying "these texts juxtapose" gets you the identification; saying "they juxtapose rather than synthesise, because the opposition is left unresolved" gets you the top band. Precision of discrimination is the IB differentiator.
+    </li>
+    <li>
+      <strong>The grids are bridged, not walled.</strong> Synthesis (③) is what reconcile (③) and negotiate (⑤) both aim toward; hedge (①) is the register-level face of provisional (⑤); attribution (④) is how a validated (①) claim survives marker scrutiny. A band-7 paragraph names the bridge: "the writer hedges the claim, keeping it provisional, then validates it through attribution."
+    </li>
+    <li>
+      <strong>Register is the skin your argument wears.</strong> The same cogent claim reads entirely differently in an assertive versus a tentative register; objectivity and impersonality are how you signal that the judgement is the text's, not your mood's. Pair every claim-move (①) with a deliberate register choice (④).
+    </li>
+    <li>
+      <strong>Conflate is the trap; subsume is the discipline.</strong> Week 5's hardest single skill is holding two readings without wrongly merging them. Practise on a real pair of set-texts this week: juxtapose their positions, then either reconcile / synthesise them correctly (subsume under a shared paradigm) or state the divergence — but never silently conflate. By Day 35's assessment you'll have a complete, connected Week 5 toolkit ready under exam conditions.
+    </li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 35 (Next): Week 5 Review &amp; Assessment</strong><br>
+    With Day 34 you complete the Week 5 consolidation. Day 35 is the week's <em>assessment day</em> (0 new words): a flash-recall of all 60 Week 5 terms (self-test grid, no peeking) + a guided mini-analysis of a live passage using the whole application toolkit, with a four-criterion self-marking rubric and a distinction quick-ref. Week 5 then closes — and the programme's Phase 4 (Mastery &amp; Application) continues building toward full examiner-ready fluency.<br><br>
+    <strong style="color:var(--ink);">Milestone:</strong> 300 words learned (of ~1,300). Week 5 complete — your entire application &amp; synthesis toolkit is now in your hands. 🏆
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 5, Day 34<br>
+  300 words learned so far (+0 today) · 1,000 to go · Mixed consolidation 🔀
+</footer>
+
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+<script src="../assets/vocab-ask-ai.js" defer></script>
+</body>
+</html>
