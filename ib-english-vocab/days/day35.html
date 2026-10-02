@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB English Vocabulary Plan — Day 35</title>
+<style>
+  :root {
+    --ink: #1a2238;
+    --ink-soft: #4a5568;
+    --paper: #faf8f3;
+    --paper-warm: #f5f0e6;
+    --gold: #b8860b;
+    --gold-soft: #d4a933;
+    --teal: #2c7a7b;
+    --teal-soft: #4fd1c5;
+    --coral: #c53030;
+    --coral-soft: #fc8181;
+    --purple: #6b46c1;
+    --purple-soft: #b794f4;
+    --line: #e2dcd0;
+    --shadow: 0 2px 8px rgba(26,34,56,0.08);
+    --shadow-lg: 0 4px 16px rgba(26,34,56,0.12);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    padding: 0;
+  }
+  .container { max-width: 820px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, #1a2238 0%, #2d3a5c 100%);
+    color: #fff;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  header h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  header .subtitle {
+    font-size: 15px;
+    color: var(--gold-soft);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  header .day-badge {
+    display: inline-block;
+    background: rgba(212,169,51,0.2);
+    border: 1px solid var(--gold-soft);
+    color: var(--gold-soft);
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  header .date {
+    margin-top: 12px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Section titles */
+  h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--ink);
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--gold-soft);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 24px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 24px 0 12px;
+  }
+
+  /* Progress tracker */
+  .tracker {
+    display: flex;
+    gap: 4px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+  .tracker .dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .tracker .dot.done { background: var(--teal); color: #fff; }
+  .tracker .dot.today { background: var(--gold); color: #fff; box-shadow: 0 0 0 3px rgba(212,169,51,0.3); }
+
+  /* Spaced Repetition Status */
+  .sr-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .sr-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .sr-card .sr-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sr-card .sr-count {
+    font-family: Georgia, serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .sr-card.review .sr-count { color: var(--teal); }
+  .sr-card.new .sr-count { color: var(--gold); }
+  .sr-card.total .sr-count { color: var(--purple); }
+  .sr-card .sr-note {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  /* Recall intro */
+  .recall-intro {
+    background: linear-gradient(135deg, #f0fdfa 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .recall-intro strong { color: var(--ink); }
+  .note-box {
+    background: var(--paper-warm);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .note-box strong { color: var(--ink); }
+
+  /* Flash-recall master sheet */
+  .crib-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 12.5px;
+  }
+  .crib-table th {
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .crib-table td {
+    border: 1px solid var(--line);
+    padding: 7px 10px;
+    vertical-align: top;
+  }
+  .crib-table td.term {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    color: var(--ink);
+    width: 24%;
+  }
+  .crib-table td.pillar {
+    color: var(--gold);
+    font-weight: 600;
+    width: 16%;
+  }
+  .crib-table td.def { color: var(--ink-soft); }
+  .crib-table tr:nth-child(even) td { background: #fff; }
+  .crib-table tr:nth-child(odd) td { background: #fcfaf5; }
+
+  /* Model paragraph */
+  .model {
+    background: var(--paper-warm);
+    border-left: 4px solid var(--purple);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 14px 0;
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.85;
+  }
+  .model .hl { background: #fff3d6; padding: 0 3px; border-radius: 3px; font-weight: 600; }
+
+  /* Practice */
+  .practice-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-top: 12px;
+  }
+  .practice-box ol { padding-left: 20px; margin-top: 8px; }
+  .practice-box ol li { font-size: 14px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.7; }
+  .practice-box ol li strong { color: var(--ink); }
+  .usage-box {
+    background: var(--paper-warm);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 13.5px;
+  }
+  .usage-box .label {
+    font-weight: 700; color: var(--gold);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    display: block; margin-bottom: 4px;
+  }
+
+  /* Rubric */
+  .rubric { width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
+  .rubric th, .rubric td { border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top; }
+  .rubric th { background: var(--paper-warm); color: var(--ink); }
+  .rubric td.crit { font-weight:700; color: var(--ink); width:16%; }
+  .rubric td .band { font-weight:700; }
+  .rubric td .b1 { color: var(--coral); }
+  .rubric td .b2 { color: var(--gold); }
+  .rubric td .b3 { color: var(--teal); }
+
+  /* Distinction quick-ref */
+  .distinction-box {
+    background: linear-gradient(135deg, #fef5e7 0%, #fff 100%);
+    border-radius: 12px;
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    margin: 12px 0;
+    border-left: 4px solid var(--gold);
+  }
+  .distinction-box h4 { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .distinction-box p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+  .distinction-box p strong { color: var(--ink); }
+
+  /* Tips */
+  .tips-list { list-style: none; counter-reset: tip; }
+  .tips-list li {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    font-size: 14px;
+    color: var(--ink-soft);
+    position: relative;
+    padding-left: 52px;
+  }
+  .tips-list li::before {
+    counter-increment: tip;
+    content: counter(tip);
+    position: absolute;
+    left: 16px; top: 14px;
+    width: 28px; height: 28px;
+    background: var(--teal);
+    color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .tips-list li strong { color: var(--ink); }
+
+  /* Category badge */
+  .category-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #6b46c1 0%, #9f7aea 100%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--ink-soft);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+    margin-top: 48px;
+  }
+  footer strong { color: var(--ink); }
+
+  @media (max-width: 600px) {
+    .sr-status { grid-template-columns: 1fr; }
+    header h1 { font-size: 22px; }
+    .crib-table { font-size: 11px; }
+    .crib-table td.term { width: 30%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="subtitle">IB English Language &amp; Literature</div>
+  <h1>Vocabulary Mastery Programme</h1>
+  <div class="day-badge">Day 35 / 112 — Week 5 Review &amp; Assessment</div>
+  <div class="date">Friday, 2 October 2026</div>
+</header>
+
+<div class="container">
+
+  <!-- Week tracker -->
+  <h2><span class="icon">📅</span> This Week (Week 5)</h2>
+  <div style="background:#fff; border-radius:12px; padding:20px; box-shadow:var(--shadow);">
+    <div class="tracker">
+      <div class="dot done">29</div>
+      <div class="dot done">30</div>
+      <div class="dot done">31</div>
+      <div class="dot done">32</div>
+      <div class="dot done">33</div>
+      <div class="dot done">34</div>
+      <div class="dot today">35</div>
+    </div>
+    <table style="width:100%; font-size:13px; border-collapse:collapse; margin-top:8px;">
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; width:14%; vertical-align:top;"><strong style="color:var(--ink);">Day 29:</strong></td><td>Application &amp; Synthesis — build / defend, compare / resolve, refine / reason (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 30:</strong></td><td>Comparative &amp; Multi-text Vocabulary — contrastive structures, multi-text relations, comparative dynamics (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 31:</strong></td><td>Evaluative &amp; Judgement Language — verbs of evaluation, adjectives of judgement, critical method (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 32:</strong></td><td>Discourse &amp; Register for Argumentative Writing — hedge, modality, stance, objectivity, attribution (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 33:</strong></td><td>Critical Synthesis — interrogate, triangulate, provisional, paradigm, conflate (done)</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--gold);">Day 34 →</strong></td><td>Mixed Consolidation — all 60 Week 5 terms regrouped by function + distinction grid</td>
+      </tr>
+      <tr style="color:var(--ink-soft);">
+        <td style="padding:4px 0; vertical-align:top;"><strong style="color:var(--ink);">Day 35:</strong></td><td><strong>Week 5 Review &amp; Assessment</strong> — flash-recall of all 60 + guided mini-analysis</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Spaced repetition -->
+  <h2><span class="icon">🧠</span> Spaced Repetition — Today's Schedule</h2>
+  <div class="sr-status">
+    <div class="sr-card review">
+      <div class="sr-label">Review</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">All Week 5 words<br>(Days 29–33)</div>
+    </div>
+    <div class="sr-card new">
+      <div class="sr-label">New Words</div>
+      <div class="sr-count">0</div>
+      <div class="sr-note">Assessment day</div>
+    </div>
+    <div class="sr-card total">
+      <div class="sr-label">Today Total</div>
+      <div class="sr-count">60</div>
+      <div class="sr-note">est. 45–60 min</div>
+    </div>
+  </div>
+  <div class="recall-intro">
+    <strong>Week 5 capstone — no new words, pure retrieval + application.</strong> Day 34 regrouped the sixty terms by <em>function</em> (five grids). Today you <em>prove</em> they're yours: first a cover-and-recall master sheet (all 60, by grid), then a guided mini-analysis that deploys the application vocabulary exactly as a Paper 2 comparative essay or an IOC must under timed conditions. The difference between Day 34 and Day 35 is the difference between <em>recognising</em> a word and <em>owning</em> it.
+    <br><br>
+    <strong>Today's flow:</strong> (1) Flash-Recall Master Sheet &rarr; (2) Guided Mini-Analysis (model + rubric) &rarr; (3) Your Task — analyse a passage &rarr; (4) Distinction Quick-Ref &rarr; (5) Assessment Tips &rarr; (6) Day 36 preview.
+  </div>
+
+  <!-- ============ FLASH-RECALL MASTER SHEET ============ -->
+  <h2><span class="icon">🔁</span> Flash-Recall Master Sheet — All 60 Terms</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    This is your capstone crib. <strong>Cover the Definition column</strong> with a piece of paper and write each term's meaning from memory; then check. A term is "known" only when you can reproduce its definition <em>and</em> name a near-neighbour it must be distinguished from (see Quick-Ref below).
+  </p>
+
+  <h3>① Claiming &amp; Defending (Days 29 + 31 · 12 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Grid</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">assert</td><td class="pillar">claim</td><td class="def">To state a claim firmly as true — the baseline argumentative move.</td></tr>
+    <tr><td class="term">refute</td><td class="pillar">claim</td><td class="def">To prove a claim or opposing view wrong through counter-evidence.</td></tr>
+    <tr><td class="term">corroborate</td><td class="pillar">claim</td><td class="def">To support a claim with additional evidence that confirms it.</td></tr>
+    <tr><td class="term">validate</td><td class="pillar">claim</td><td class="def">To establish a claim as legitimate or sound — not merely confirm.</td></tr>
+    <tr><td class="term">hedge</td><td class="pillar">claim</td><td class="def">A word / structure that softens commitment ("might", "seems") — modal caution.</td></tr>
+    <tr><td class="term">stance</td><td class="pillar">claim</td><td class="def">The writer's adopted position / attitude toward the subject.</td></tr>
+    <tr><td class="term">assertive</td><td class="pillar">claim</td><td class="def">A tone / manner that states positions firmly (opposite of tentative).</td></tr>
+    <tr><td class="term">tentative</td><td class="pillar">claim</td><td class="def">A manner that withholds full commitment — hedged, cautious.</td></tr>
+    <tr><td class="term">caveat</td><td class="pillar">claim</td><td class="def">A warning or limiting condition attached to a claim.</td></tr>
+    <tr><td class="term">tenable</td><td class="pillar">claim</td><td class="def">(Of a position) able to be defended without contradiction.</td></tr>
+    <tr><td class="term">cogent</td><td class="pillar">claim</td><td class="def">(Of an argument) clear, logical, and convincing.</td></tr>
+    <tr><td class="term">critique</td><td class="pillar">claim</td><td class="def">A detailed analysis that judges strengths and weaknesses.</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">② Evaluating &amp; Judging (Days 31 + 33 · 12 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Grid</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">evaluate</td><td class="pillar">judge</td><td class="def">To make a judgement of value or significance.</td></tr>
+    <tr><td class="term">assess</td><td class="pillar">judge</td><td class="def">To estimate or measure the weight / quality of something.</td></tr>
+    <tr><td class="term">perceive</td><td class="pillar">judge</td><td class="def">To become aware of / take in a feature, pattern, or effect.</td></tr>
+    <tr><td class="term">discern</td><td class="pillar">judge</td><td class="def">To detect or distinguish finely a subtle effect / difference.</td></tr>
+    <tr><td class="term">judicious</td><td class="pillar">judge</td><td class="def">Showing wise, careful judgement.</td></tr>
+    <tr><td class="term">measured</td><td class="pillar">judge</td><td class="def">Restrained, balanced in tone — not overstated.</td></tr>
+    <tr><td class="term">salient</td><td class="pillar">judge</td><td class="def">Most noticeable / important — the point that stands out.</td></tr>
+    <tr><td class="term">criterion</td><td class="pillar">judge</td><td class="def">A standard by which something is judged.</td></tr>
+    <tr><td class="term">interrogate</td><td class="pillar">judge</td><td class="def">To probe a text / claim closely with questions.</td></tr>
+    <tr><td class="term">triangulate</td><td class="pillar">judge</td><td class="def">To confirm a reading by cross-checking multiple sources / lenses.</td></tr>
+    <tr><td class="term">heuristic</td><td class="pillar">judge</td><td class="def">A provisional rule-of-thumb for inquiry, not a fixed law.</td></tr>
+    <tr><td class="term">situate</td><td class="pillar">judge</td><td class="def">To place a text / claim in its context (historical, cultural).</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">③ Comparing &amp; Relating Texts (Days 29 + 30 · 12 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Grid</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">juxtapose</td><td class="pillar">relate</td><td class="def">To place elements side by side to invite comparison / contrast.</td></tr>
+    <tr><td class="term">analogous</td><td class="pillar">relate</td><td class="def">Similar in function / relation though different in detail.</td></tr>
+    <tr><td class="term">reconcile</td><td class="pillar">relate</td><td class="def">To show how apparently conflicting readings can coexist.</td></tr>
+    <tr><td class="term">dialectic</td><td class="pillar">relate</td><td class="def">A method of arriving at truth through opposing positions.</td></tr>
+    <tr><td class="term">parallelism</td><td class="pillar">relate</td><td class="def">Repeated grammatical structure to link or contrast ideas.</td></tr>
+    <tr><td class="term">antithesis</td><td class="pillar">relate</td><td class="def">Opposing ideas in balanced / parallel structure.</td></tr>
+    <tr><td class="term">concession</td><td class="pillar">relate</td><td class="def">A concessive clause yielding ground to the opposing view.</td></tr>
+    <tr><td class="term">synthesis</td><td class="pillar">relate</td><td class="def">Combining distinct elements into a connected whole.</td></tr>
+    <tr><td class="term">counterpoint</td><td class="pillar">relate</td><td class="def">A contrasting element that sets off the main idea.</td></tr>
+    <tr><td class="term">intertextuality</td><td class="pillar">relate</td><td class="def">A text's dialogue with other texts (allusion, echo, quotation).</td></tr>
+    <tr><td class="term">correspondence</td><td class="pillar">relate</td><td class="def">A matching / echoing relation between two texts.</td></tr>
+    <tr><td class="term">foil</td><td class="pillar">relate</td><td class="def">A character / detail that highlights another by contrast.</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">④ Contrastive Dynamics &amp; Register Framing (Days 30 + 32 · 12 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Grid</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">equivalence</td><td class="pillar">dynamic</td><td class="def">A relation of equal weight / value between elements.</td></tr>
+    <tr><td class="term">symmetry</td><td class="pillar">dynamic</td><td class="def">Balanced, mirroring structure between parts.</td></tr>
+    <tr><td class="term">divergence</td><td class="pillar">dynamic</td><td class="def">Elements moving apart / differing from one another.</td></tr>
+    <tr><td class="term">convergence</td><td class="pillar">dynamic</td><td class="def">Elements coming together / agreeing.</td></tr>
+    <tr><td class="term">modality</td><td class="pillar">dynamic</td><td class="def">Grammatical encoding of certainty / commitment (will, may, must).</td></tr>
+    <tr><td class="term">objectivity</td><td class="pillar">dynamic</td><td class="def">Freedom from personal bias in treatment.</td></tr>
+    <tr><td class="term">impersonality</td><td class="pillar">dynamic</td><td class="def">Absence of personal voice / first-person in style.</td></tr>
+    <tr><td class="term">discursive</td><td class="pillar">dynamic</td><td class="def">Moving between topics in a reasoned, exploratory way.</td></tr>
+    <tr><td class="term">exposition</td><td class="pillar">dynamic</td><td class="def">Writing that explains / sets out information.</td></tr>
+    <tr><td class="term">attribution</td><td class="pillar">dynamic</td><td class="def">Crediting a claim / idea explicitly to its source.</td></tr>
+    <tr><td class="term">evidential</td><td class="pillar">dynamic</td><td class="def">Markers showing the source of knowledge ("according to").</td></tr>
+    <tr><td class="term">formality</td><td class="pillar">dynamic</td><td class="def">The level of formal register appropriate to the context.</td></tr>
+  </table>
+
+  <h3 style="margin-top:28px;">⑤ Critical Synthesis &amp; Extending Reasoning (Days 29 + 33 · 12 terms)</h3>
+  <table class="crib-table">
+    <tr><th>Term</th><th>Grid</th><th>Definition (cover &amp; recall)</th></tr>
+    <tr><td class="term">negotiate</td><td class="pillar">synthesis</td><td class="def">To work through the tensions between competing readings.</td></tr>
+    <tr><td class="term">mediate</td><td class="pillar">synthesis</td><td class="def">To stand between / connect two positions without choosing.</td></tr>
+    <tr><td class="term">conflate</td><td class="pillar">synthesis</td><td class="def">To wrongly merge distinct things — a trap to avoid.</td></tr>
+    <tr><td class="term">provisional</td><td class="pillar">synthesis</td><td class="def">A conclusion held as temporary / open to revision.</td></tr>
+    <tr><td class="term">contingent</td><td class="pillar">synthesis</td><td class="def">Dependent on particular circumstances (not necessary).</td></tr>
+    <tr><td class="term">paradigm</td><td class="pillar">synthesis</td><td class="def">A framework / model organising how we see things.</td></tr>
+    <tr><td class="term">subsume</td><td class="pillar">synthesis</td><td class="def">To place a case correctly under a broader category.</td></tr>
+    <tr><td class="term">matrix</td><td class="pillar">synthesis</td><td class="def">A grid / framework for mapping relations between ideas.</td></tr>
+    <tr><td class="term">nuance</td><td class="pillar">synthesis</td><td class="def">A subtle distinction or shade of meaning.</td></tr>
+    <tr><td class="term">mitigate</td><td class="pillar">synthesis</td><td class="def">To soften or reduce the force of a claim / problem.</td></tr>
+    <tr><td class="term">problematic</td><td class="pillar">synthesis</td><td class="def">(adj.) open to challenge / raising difficulties.</td></tr>
+    <tr><td class="term">extrapolate</td><td class="pillar">synthesis</td><td class="def">To extend a reading / reasoning beyond the given evidence.</td></tr>
+  </table>
+
+  <div class="note-box">
+    <strong>Self-score:</strong> If you can reproduce ≥54/60 definitions unprompted, Week 5 is locked in. If 5–10 are fuzzy, mark them and give them a 1-day intense pass before Day 36. If more than 10 fail, redo the Day 34 grids first — don't advance on shaky ground.
+  </div>
+
+  <!-- ============ GUIDED MINI-ANALYSIS ============ -->
+  <h2><span class="icon">✍️</span> Guided Mini-Analysis — Model &amp; Rubric</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    The capstone skill is <em>deploying</em> these terms on a real passage. Below: a model paragraph that names terms from <strong>all five grids</strong>. Highlighted = Week 5 vocabulary.
+  </p>
+  <div class="model">
+    Texts A and B <span class="hl">juxtapose</span> a rural and an urban grief; A <span class="hl">converges</span> with the pastoral tradition while B <span class="hl">diverges</span> into satire. I <span class="hl">assert</span> the reading that <span class="hl">reconciles</span> both as critiques of progress, and <span class="hl">corroborate</span> it by <span class="hl">triangulating</span> the pair with a third lens. The writers hold a <span class="hl">judicious</span>, <span class="hl">measured</span> <span class="hl">stance</span>, <span class="hl">hedging</span> every claim so it stays <span class="hl">provisional</span>, their prose <span class="hl">objective</span> and <span class="hl">impersonal</span>. A <span class="hl">cogent</span> paragraph must <span class="hl">evaluate</span> the effect, <span class="hl">discern</span> the exact tonal turn, and <span class="hl">situate</span> the texts historically. The opening <span class="hl">parallelism</span> yields to a <span class="hl">foil</span> that sharpens the <span class="hl">counterpoint</span>. To avoid <span class="hl">conflating</span> the narrators we <span class="hl">subsume</span> each under its <span class="hl">paradigm</span>; the <span class="hl">synthesis</span> is <span class="hl">contingent</span> on the reader's readiness to <span class="hl">negotiate</span> the ambiguity, and we <span class="hl">extrapolate</span> from one stanza to the whole.
+  </div>
+  <p style="font-size:13px; color:var(--ink-soft); margin-top:8px;">
+    That paragraph names <strong>28 distinct Week 5 terms across all five grids</strong> — claim (assert, reconcile, corroborate, stance, hedge, provisional, cogent), judge (judicious, measured, evaluate, discern, situate), relate (juxtapose, converge, diverge, parallelism, foil, counterpoint), dynamic (objectivity, impersonality), synthesis (conflate, subsume, paradigm, synthesis, contingent, negotiate, extrapolate). It moves macro → micro and ties each move to an <em>effect</em>, not just a label.
+  </p>
+
+  <h3 style="margin-top:20px;">Self-Marking Rubric (use after Your Task below)</h3>
+  <table class="rubric">
+    <tr><th>Criterion</th><th>1–3 (Developing)</th><th>4–6 (Proficient)</th><th>7–9 (Excellent)</th></tr>
+    <tr><td class="crit">Identify</td><td class="b1"><span class="band b1">1–3</span> Names few / wrong terms</td><td class="b2"><span class="band b2">4–6</span> Names most terms correctly</td><td class="b3"><span class="band b3">7–9</span> Names every term, precisely</td></tr>
+    <tr><td class="crit">Distinguish</td><td class="b1"><span class="band b1">1–3</span> No near-neighbour awareness</td><td class="b2"><span class="band b2">4–6</span> Occasional correct pair choice</td><td class="b3"><span class="band b3">7–9</span> Right term from a pair every time</td></tr>
+    <tr><td class="crit">Five-grid balance</td><td class="b1"><span class="band b1">1–3</span> One grid only</td><td class="b2"><span class="band b2">4–6</span> 2–3 grids represented</td><td class="b3"><span class="band b3">7–9</span> All 5 grids deployed deliberately</td></tr>
+    <tr><td class="crit">Integrate</td><td class="b1"><span class="band b1">1–3</span> Labels listed, not analysed</td><td class="b2"><span class="band b2">4–6</span> Words attached to effects</td><td class="b3"><span class="band b3">7–9</span> Terms drive the argument about meaning</td></tr>
+  </table>
+
+  <!-- ============ YOUR TASK ============ -->
+  <h2><span class="icon">✏️</span> Your Task — Analyse the Passage</h2>
+  <div class="practice-box">
+    <p style="font-size:14px; color:var(--ink-soft);">Write ONE analytical paragraph (9–12 sentences) on the two extracts below. Then self-mark with the rubric.</p>
+    <div class="usage-box" style="margin:12px 0;">
+      <span class="label">Text A</span>
+      "The river remembers every name it has taken. We are only the latest syllable, washed smooth by a current older than our grief." (a lyric of erosion and belonging)
+      <br><br>
+      <span class="label">Text B</span>
+      "They renamed the river for the factory. Progress, they called it, and the water learned to carry ash instead of light." (a satirical editorial on erasure)
+    </div>
+    <p style="font-size:13.5px; color:var(--ink); margin-bottom:8px;"><strong>Requirements:</strong></p>
+    <ol>
+      <li>Name <strong>at least eight</strong> Week 5 terms, with <strong>all five grids represented</strong> (claim + judge + relate + dynamic + synthesis).</li>
+      <li>Use <strong>at least one correct distinction pair</strong> (e.g. converge vs. diverge; evaluate vs. assess; conflate vs. subsume; objectivity vs. impersonality).</li>
+      <li>For each term, state its <strong>effect</strong> — what it makes the reader understand or how it positions your argument — not just its name.</li>
+      <li>Move from macro (how the texts relate as a pair) to micro (a specific move in one line) at least once.</li>
+    </ol>
+    <p style="font-size:13px; color:var(--ink-soft); margin-top:10px;">
+      <strong>Starter:</strong> "The two texts <span class="hl">[relate term]</span> a pastoral and a satirical response to loss; A <span class="hl">[dynamic term]</span> with tradition while B <span class="hl">[dynamic term]</span> into critique. I <span class="hl">[claim term]</span> that…, <span class="hl">[claim term]</span> by <span class="hl">[judge term]</span>. The writers' <span class="hl">[claim term]</span> is <span class="hl">[judge term]</span>, and the prose stays <span class="hl">[dynamic term]</span>. To avoid <span class="hl">[synthesis term]</span>, we <span class="hl">[synthesis term]</span> each under its <span class="hl">[synthesis term]</span>…"
+    </p>
+    <p style="font-size:13px; color:var(--ink-soft); margin-top:8px;">
+      <strong>Then self-mark:</strong> target 7–9 on every rubric row. If Five-grid balance or Identify drops below 4, your Week 5 toolkit still has gaps — revisit the Master Sheet above.
+    </p>
+  </div>
+
+  <!-- ============ DISTINCTION QUICK-REF ============ -->
+  <h2><span class="icon">⚖️</span> Distinction Quick-Ref (Your Exam Armour)</h2>
+  <p style="font-size:14px; color:var(--ink-soft); margin-bottom:8px;">
+    The fifteen pairs most often confused across the five Week 5 grids. In an essay, naming the <em>right</em> term from a pair is what separates 5 from 7.
+  </p>
+  <div class="distinction-box">
+    <h4>① assert vs. refute</h4>
+    <p><strong>assert</strong> — to state your own claim firmly as true (build); <strong>refute</strong> — to tear down an opposing claim with counter-evidence (attack). An essay needs both: assert your reading, then refute the obvious alternative.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>② hedge vs. caveat</h4>
+    <p><strong>hedge</strong> — a grammatical / lexical softener woven into the claim itself ("might"); <strong>caveat</strong> — a separate limiting clause attached after the claim. Both reduce overstatement, but hedge is internal force-modulation; caveat is external qualification.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>③ assertive vs. tentative</h4>
+    <p><strong>assertive</strong> — a manner that commits fully; <strong>tentative</strong> — a manner that withholds and signals openness to revision. Top-band writing modulates between them deliberately.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>④ evaluate vs. assess</h4>
+    <p><strong>evaluate</strong> — a judgement of <em>value / significance</em> (good, effective); <strong>assess</strong> — an estimate of <em>weight / scale</em> (how much, how far). "Assess the effect, then evaluate its success" is the cleaner sequence.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑤ perceive vs. discern</h4>
+    <p><strong>perceive</strong> — to take in a feature broadly; <strong>discern</strong> — to detect it <em>finely</em>, often against noise. You perceive a mood shift, then discern the exact device producing it.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑥ judicious vs. measured</h4>
+    <p><strong>judicious</strong> — wise <em>choice</em> of what is said; <strong>measured</strong> — restrained <em>tone</em> of how it is delivered. A judicious point can still be delivered unmeasured; aim for both.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑦ juxtapose vs. synthesis</h4>
+    <p><strong>juxtapose</strong> — place side by side so the reader compares; <strong>synthesis</strong> — combine into one connected whole. A comparative essay juxtaposes first, then synthesises.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑧ parallelism vs. antithesis</h4>
+    <p><strong>parallelism</strong> — repeated structure linking ideas (similar or opposing); <strong>antithesis</strong> — <em>opposing</em> ideas held in that parallel structure. All antithesis uses parallel structure; not all parallelism is antithetical.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑨ counterpoint vs. correspondence</h4>
+    <p><strong>counterpoint</strong> — a <em>contrasting</em> element that sets the main idea in relief; <strong>correspondence</strong> — a <em>matching / echoing</em> relation. Opposite relational directions: difference that sharpens vs. similarity that resonates.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑩ divergence vs. convergence</h4>
+    <p><strong>divergence</strong> — elements moving <em>apart</em>; <strong>convergence</strong> — elements coming <em>together</em>. Two texts converge on a theme but diverge in tone — state both to show nuance.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑪ objectivity vs. impersonality</h4>
+    <p><strong>objectivity</strong> — a <em>quality of stance</em>: freedom from bias; <strong>impersonality</strong> — a <em>feature of style</em>: absence of first-person voice. You can write impersonally yet be biased.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑫ modality vs. evidential</h4>
+    <p><strong>modality</strong> — grammatical encoding of <em>certainty</em> (will, may, must); <strong>evidential</strong> — markers showing the <em>source of knowledge</em> ("according to"). A hedged claim with clear evidentials is stronger than either alone.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑬ negotiate vs. mediate</h4>
+    <p><strong>negotiate</strong> — to <em>work through</em> the tensions between readings (active resolution); <strong>mediate</strong> — to <em>stand between</em> two positions without choosing (mapping). Resolve with negotiate, map with mediate.</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑭ provisional vs. contingent</h4>
+    <p><strong>provisional</strong> — held as <em>temporary / open to revision</em> (about time); <strong>contingent</strong> — true only <em>under certain conditions</em> (about circumstance). Don't collapse "I may be wrong later" with "this holds only here".</p>
+  </div>
+  <div class="distinction-box">
+    <h4>⑮ conflate vs. subsume</h4>
+    <p><strong>conflate</strong> — to <em>wrongly</em> merge distinct things (the trap markers punish); <strong>subsume</strong> — to place a case <em>correctly</em> under a broader category (the disciplined move). Recognising the seam is itself a top-band skill.</p>
+  </div>
+
+  <!-- ============ ASSESSMENT TIPS ============ -->
+  <h2><span class="icon">🎯</span> Assessment Tips</h2>
+  <ol class="tips-list">
+    <li>
+      <strong>Recognition is not ownership.</strong> You "know" a Week 5 term only when you can spell it, define it, and deploy it on an unseen passage in under a minute. The Master Sheet tests the first two; Your Task tests the third. All three must pass.
+    </li>
+    <li>
+      <strong>Reach for one term from each grid, every time.</strong> A Paper 2 paragraph that names twelve claim-verbs but no synthesis or dynamic term is unbalanced and caps below the top band. The Five-grid balance row in the rubric is the single biggest lever on your mark.
+    </li>
+    <li>
+      <strong>The pair is the differentiator.</strong> "These texts juxtapose" gets identification; "they juxtapose rather than synthesise, because the opposition is left unresolved" gets the top band. The fifteen distinctions are your edge — keep them alive into Phase 4.
+    </li>
+    <li>
+      <strong>Terms must drive meaning, not decorate.</strong> Top essays use each term to explain an effect ("the convergence of the two openings forces the reader to read them as one argument"). If you can delete the term and the sentence loses nothing, you've listed, not analysed.
+    </li>
+    <li>
+      <strong>Macro before micro.</strong> Orient with how the texts relate (juxtapose, converge, diverge) before zooming into a single move (parallelism, foil). The model paragraph moves whole-pair → single line on purpose. Examiners reward that architecture of thought.
+    </li>
+    <li>
+      <strong>Week 5 is the application spine of the whole programme.</strong> Everything before — device metalanguage (Week 3) and stylistic / linguistic analysis (Week 4) — is the evidence; Week 5 is what you DO with it. Lock these sixty in now and the remaining phases become genuine mastery, not relearning.</li>
+  </ol>
+
+  <!-- ============ COMING UP ============ -->
+  <h2><span class="icon">⏭️</span> Coming Up</h2>
+  <div style="background:var(--paper-warm); border-radius:12px; padding:20px; font-size:14px; color:var(--ink-soft);">
+    <strong style="color:var(--ink);">Day 36 (Next): Week 6, Day 1 — Descriptive Precision: Setting &amp; Character Adjectives</strong><br>
+    Week 5 closed the application phase. Day 36 opens <strong>Phase 2 — Descriptive Precision</strong>, the adjective-power phase the programme has not yet delivered: the words that give <em>colour</em> to character and setting analysis (setting / atmosphere adjectives, character-trait adjectives, tone-and-register adjectives). These pair naturally with the metalanguage of Weeks 3–5 — you will soon describe a "sombre, languid" setting <em>and</em> name the device producing that mood. Phase 2 runs Weeks 6–9 and finally completes the four-phase spine.<br><br>
+    <strong style="color:var(--ink);">Milestone:</strong> 300 words learned (of ~1,300). Week 5 complete — your entire application &amp; synthesis toolkit is now in your hands. 🏆
+  </div>
+
+</div>
+
+<footer>
+  <strong>IB English Vocabulary Mastery Programme</strong> · Week 5, Day 35<br>
+  300 words learned so far (+0 today) · 1,000 to go · Week 5 complete 🏆
+</footer>
+
+<script src="https://sbk283074-creator.github.io/dp-study-site/assets/ai-widget.js?v=13" defer></script>
+<script src="../assets/vocab-ask-ai.js" defer></script>
+</body>
+</html>
